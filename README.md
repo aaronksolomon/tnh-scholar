@@ -55,7 +55,7 @@ Additional tools:
 ### Steps
 
 1. **Clone the repository**:
-- git clone https://github.com/your-username/tnh-scholar.git
+- git clone https://github.com/aaronksolomon/tnh-scholar.git
 - cd tnh-scholar
   
 2. **Install dependencies**:
