@@ -85,4 +85,4 @@ This project depends on contributions! Please check the `CONTRIBUTING.md` file f
 
 ## License
 
-This project is licensed under the GNU General Public License V3.0 - see the `LICENSE.md` file for details.
+This project is licensed under the [GPL-3.0 License](LICENSE) - see the `LICENSE.md` file for details.
