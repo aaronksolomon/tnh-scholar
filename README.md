@@ -18,7 +18,7 @@ This project leverages machine learning models, including fine-tuned BERT, GPT, 
 
 The repository is organized as follows:
 
-/data
+/data_processing
   - Datasets and preprocessing scripts.
   - Includes textual datasets such as books, Dharma talks, interviews in English, Vietnamese, and French.
 
@@ -32,7 +32,7 @@ The repository is organized as follows:
 
 /docs
   - Documentation for the project setup, training processes, and progress.
-  - Includes project goals, steps, and setup instructions.
+  - To include project goals, design, feasibility, steps, etc. 
 
 ## Models and Tools
 
