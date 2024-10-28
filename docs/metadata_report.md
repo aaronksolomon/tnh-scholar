@@ -19,6 +19,23 @@ The process of extracting and handling metadata for training models from Thich N
 - **Regular Expressions (Regex)**: Used for detecting patterns in text, such as chapter titles, quotes, and headings.
 - **SpaCy**: Considered for creating custom NLP models for detecting metadata like "paragraphs" or "quotes," but this would require additional training data.
 
+### **Potential Tools for Further Exploration**:
+- **Prodigy**: A powerful annotation tool designed for training NLP models. It can be used to manually annotate text for metadata like "heading," "paragraph," "quote," etc. This helps create a labeled dataset that can train models to automatically identify such elements.
+- **Label Studio**: An open-source data labeling tool that supports text, image, and audio annotation. It can be used to manually annotate and label different structural elements like chapters, quotes, and sections for model training or evaluation.
+- **LayoutParser**: A deep learning-based tool for document layout analysis. It can be useful for extracting structural information from scanned PDFs or documents with more complex layouts. This would be particularly useful if you're dealing with non-EPUB formatted books or sources.
+- **Tesseract OCR**: An open-source optical character recognition (OCR) engine, useful for converting scanned images and PDFs into text that can then be processed for structural extraction. If you have scanned books, Tesseract can be the starting point for transforming them into searchable text.
+- **PDFMiner**: A library for extracting text and metadata from PDFs. It can be used when working with PDF versions of books and helps retain the structure of the content for further processing.
+- **Hugging Face Transformers**: A versatile library that offers pre-trained models for text classification, zero-shot classification, and other tasks. It can be leveraged to automate the detection of structural elements, such as headings, quotes, or sections, without the need for extensive manual training.
+- **Fairseq**: An open-source sequence-to-sequence learning library from Facebook AI. It can be explored for training custom translation models or for tasks that require document-level context understanding across large texts.
+- **OpenRefine**: A tool for cleaning and transforming data. It could be useful for preprocessing and standardizing the extracted text metadata, ensuring consistency across your dataset.
+- **Whoosh**: A fast, featureful full-text indexing and searching library. Once the metadata is extracted, Whoosh can be used to build a lightweight search engine for indexing and retrieving relevant text chunks.
+- NLTK
+- Textacy
+- Tika
+- Polyglot
+- Gensim
+- Doccano
+
 ### **Current Approaches for Metadata Extraction**:
 
 #### **A. Rule-Based Extraction**:
