@@ -1,6 +1,56 @@
 # Apple
 .DS_Store 
 
+# Private data (copyrighted or otherwise to be kept private)
+private_*
+
+# Big files
+*.pdf
+*.jpeg
+*.jpg
+*.png
+
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+*.mp3
+*.wav
+*.flac
+*.aac
+
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+
+*.iso
+*.dmg
+*.exe
+*.msi
+
+*.sqlite
+*.db
+*.mdb
+
+*.csv
+*.pkl
+*.h5
+*.npy
+*.pt
+
+*.bak
+*.old
+*.tmp
+
+*.o
+*.so
+*.dll
+*.class
+*.jar
+
 # VS code
 .vscode
 
@@ -8,6 +58,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Node.js and .pyc
+node_modules/
 
 # C extensions
 *.so
