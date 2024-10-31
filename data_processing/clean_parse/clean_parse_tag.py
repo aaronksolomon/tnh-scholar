@@ -1,4 +1,10 @@
 import re
+import os
+from bs4 import BeautifulSoup
+from bs4 import NavigableString
+
+# Global variable for storing the working directory for input and output data in the TNH Scholar project
+tnh_scholar_working_dir = None
 
 def normalize_newlines(text: str, spacing: int = 2) -> str:
     """
@@ -27,11 +33,6 @@ def normalize_newlines(text: str, spacing: int = 2) -> str:
     newlines = '\n' * spacing
     return re.sub(r'\n{2,}', newlines, text)
 
-import os
-
-# Global variable for storing the working directory
-working_directory = None
-
 def set_working_directory(directory: str) -> None:
     """
     Sets the global working directory to the specified path.
@@ -41,9 +42,9 @@ def set_working_directory(directory: str) -> None:
     directory : str
         The path to the directory to be set as the working directory.
     """
-    global working_directory
+    global tnh_scholar_working_dir
     if os.path.isdir(directory):
-        working_directory = directory
+        tnh_scholar_working_dir = directory
     else:
         raise ValueError(f"The directory '{directory}' does not exist or is not a valid directory.")
 
@@ -69,11 +70,11 @@ def get_text_from_file(file_path: str) -> str:
     >>> print(text)
     'This is the content of the file.'
     """
-    global working_directory
+    global tnh_scholar_working_dir
     
     # If a working directory is set, look for the file there
-    if working_directory:
-        full_path = os.path.join(working_directory, file_path)
+    if tnh_scholar_working_dir:
+        full_path = os.path.join(tnh_scholar_working_dir, file_path)
     else:
         # Otherwise, just use the file path directly
         full_path = file_path
@@ -101,11 +102,11 @@ def write_text_to_file(file_path: str, content: str) -> None:
     >>> set_working_directory("/path/to/directory")
     >>> write_text_to_file("example.txt", "This is some content.")
     """
-    global working_directory
+    global tnh_scholar_working_dir
     
     # If a working directory is set, use it; otherwise, use the file path as given
-    if working_directory:
-        full_path = os.path.join(working_directory, file_path)
+    if tnh_scholar_working_dir:
+        full_path = os.path.join(tnh_scholar_working_dir, file_path)
     else:
         full_path = file_path
 
@@ -148,8 +149,6 @@ def clean_text(text):
     return text.strip()  # Ensure any leading/trailing spaces are removed
 
 ## tag work
-
-from bs4 import BeautifulSoup
 
 def extract_tags_by_attributes(soup: BeautifulSoup, tags_with_attributes: dict[str, dict]) -> dict[tuple[str, tuple], list[BeautifulSoup]]:
     """
@@ -232,11 +231,6 @@ def get_all_tag_names(soup: BeautifulSoup) -> list[str]:
     """
     return list(set([tag.name for tag in soup.find_all(True)]))
 
-# # Example usage:
-# soup = BeautifulSoup('<p>Paragraph</p><div><span>Text</span></div>', 'html.parser')
-# all_tags = get_all_tag_names(soup)
-# print(all_tags)
-
 def get_all_attribute_values(soup: BeautifulSoup, tag: str) -> dict[str, set[str]]:
     """
     Extract all unique attribute-value pairs for a given HTML tag across the soup.
@@ -276,8 +270,167 @@ def get_all_attribute_values(soup: BeautifulSoup, tag: str) -> dict[str, set[str
             # Add the attribute to the dictionary if not already present
             if attr not in attributes_with_values:
                 attributes_with_values[attr] = set()
-            # Add the value to the set of values for the attribute
-            attributes_with_values[attr].add(value)
+            # Check if the value is a list (e.g., class="class1 class2") and handle accordingly
+            if isinstance(value, list):
+                attributes_with_values[attr].update(value)  # Add all elements from the list
+            else:
+                attributes_with_values[attr].add(value)  # Add a single value
 
     return attributes_with_values
 
+def remove_all_tags_with_attribute(soup: BeautifulSoup, attr_name: str, attr_value_pattern: str = None) -> None:
+    """
+    Remove unwanted tags with specific attributes from a BeautifulSoup object.
+    
+    This function removes tags with a specific attribute (e.g., 'class') that matches a regular expression pattern.
+    
+
+    Parameters:
+    -----------
+    soup : BeautifulSoup
+        The parsed HTML content to clean.
+    
+    attr_name : str
+        The attribute name to match (e.g., 'class', 'id'). If None, no attribute filtering is done.
+    
+    attr_value_pattern : str, optional
+        A regular expression pattern to match attribute values. Only tags whose specified attribute 
+        matches this pattern will be removed. If None, the function removes all tags with the specified attribute.
+    
+    Returns:
+    --------
+    None
+        The function modifies the BeautifulSoup object in place, removing the unwanted tags or attributes.
+
+    Example:
+    --------
+    >>> soup = BeautifulSoup('<div class="calibre1">Text</div><p class="keep">Keep me</p>', 'html.parser')
+    >>> remove_all_tags_with_attribute(soup, attr_name='class', attr_value_pattern=r'calibre.*')
+    >>> print(soup)
+    <p class="keep">Keep me</p>
+    """
+    
+    tags_to_remove = []
+
+    # Find all tags in the soup
+    for element in soup.find_all(True):
+        # If an attribute name is specified, filter tags by the attribute
+        if attr_name in element.attrs:
+            attr_value = element[attr_name]
+            if attr_value_pattern:
+                # If there's a pattern, check for a match
+                if isinstance(attr_value, list):
+                    # Check if any value in the list matches the pattern
+                    if any(re.match(attr_value_pattern, val) for val in attr_value):
+                        tags_to_remove.append(element)
+                else:
+                    # If it's a string, check the pattern directly
+                    if re.match(attr_value_pattern, attr_value):
+                        tags_to_remove.append(element)
+        elif not attr_name:
+            # If no attribute is specified, remove the entire tag
+            tags_to_remove.append(element)
+
+    # Remove all collected tags
+    for tag in tags_to_remove:
+        tag.decompose()
+
+def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: str, attr_name: str, attr_value_pattern: str = None) -> None:
+    """
+    Remove a specific tags with specific attributes from a BeautifulSoup object.
+    
+    This function removes tags with a specific attribute (e.g., 'class') that matches a regular expression pattern.
+    
+
+    Parameters:
+    -----------
+    soup : BeautifulSoup
+        The parsed HTML content to clean.
+
+    tag_list : the list of tags to remove if matchin attribute is found
+    
+    attr_name : str
+        The attribute name to match (e.g., 'class', 'id'). If None, no attribute filtering is done.
+    
+    attr_value_pattern : str, optional
+        A regular expression pattern to match attribute values. Only tags whose specified attribute 
+        matches this pattern will be removed. If None, the function removes all tags with the specified attribute.
+    
+    Returns:
+    --------
+    None
+        The function modifies the BeautifulSoup object in place, removing the unwanted tags or attributes.
+
+    Example:
+    --------
+    >>> soup = BeautifulSoup('<div class="calibre1">Text</div><p class="keep">Keep me</p>', 'html.parser')
+    >>> remove_tags_with_attribute(soup, 'div', 'class', attr_value_pattern=r'calibre.*')
+    >>> print(soup)
+    <p class="keep">Keep me</p>
+    """
+
+    tags_to_remove = []
+
+    # Find all tags in the soup
+    for element in soup.find_all(*tag_list):
+        # If an attribute name is specified, filter tags by the attribute
+        if attr_name in element.attrs:
+            attr_value = element[attr_name]
+            if attr_value_pattern:
+                # If there's a pattern, check for a match
+                if isinstance(attr_value, list):
+                    # Check if any value in the list matches the pattern
+                    if any(re.match(attr_value_pattern, val) for val in attr_value):
+                        tags_to_remove.append(element)
+                else:
+                    # If it's a string, check the pattern directly
+                    if re.match(attr_value_pattern, attr_value):
+                        tags_to_remove.append(element)
+        elif not attr_name:
+            # If no attribute is specified, remove the entire tag
+            tags_to_remove.append(element)
+
+    # Remove all collected tags
+    for tag in tags_to_remove:
+        tag.decompose()
+
+def reduced_tags_and_text(soup: BeautifulSoup):
+    """
+    Truncates the text content of all NavigableString elements in a BeautifulSoup object to the 
+    first five words and appends ellipses ("...") if the text contains more than five words.
+    The function modifies the soup in-place and returns the modified BeautifulSoup object.
+
+    Parameters:
+    -----------
+    soup : BeautifulSoup
+        A BeautifulSoup object representing the parsed HTML or XML content.
+
+    Returns:
+    --------
+    BeautifulSoup
+        The modified BeautifulSoup object with truncated text.
+
+    Example:
+    --------
+    >>> from bs4 import BeautifulSoup
+    >>> html_content = "<p>This is a paragraph with more than five words.</p>"
+    >>> soup = BeautifulSoup(html_content, 'html.parser')
+    >>> result = reduced_tags_and_text(soup)
+    >>> print(result.prettify())
+    <p>This is a paragraph with ...</p>
+
+    Notes:
+    ------
+    - Only NavigableString elements (text nodes) are truncated. HTML tags and structure remain unchanged.
+    - The function does not remove or alter tags but only modifies the text within the tags.
+    """
+    # Traverse through all elements in the soup recursively, targeting text nodes
+    for element in soup.find_all(string=True):  # Find all NavigableString text nodes
+        if isinstance(element, NavigableString):
+            words = element.split()
+            if len(words) > 5:
+                truncated_text = ' '.join(words[:5]) + " ..."
+                # Replace the original text with the truncated version
+                element.replace_with(truncated_text)
+
+    return soup  # Return the modified soup object
