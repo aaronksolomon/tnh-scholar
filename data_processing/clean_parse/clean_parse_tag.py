@@ -2,6 +2,7 @@ import re
 import os
 from bs4 import BeautifulSoup
 from bs4 import NavigableString
+from typing import Union
 
 # Global variable for storing the working directory for input and output data in the TNH Scholar project
 tnh_scholar_working_dir = None
@@ -117,7 +118,7 @@ def write_text_to_file(file_path: str, content: str) -> None:
 def clean_text(text):
     """
     Cleans a given text by replacing specific unwanted characters such as 
-    newline, tab, and non-breaking spaces with regular spaces.
+    tab, and non-breaking spaces with regular spaces.
 
     This function takes a string as input and applies replacements 
     based on a predefined mapping of characters to replace.
@@ -136,7 +137,6 @@ def clean_text(text):
     """
     # Define a mapping of characters to replace
     replace_map = {
-        '\n': ' ',       # Replace newlines with space
         '\t': ' ',       # Replace tabs with space
         '\xa0': ' ',     # Replace non-breaking space with regular space
         # Add more replacements as needed
@@ -335,7 +335,7 @@ def remove_all_tags_with_attribute(soup: BeautifulSoup, attr_name: str, attr_val
     for tag in tags_to_remove:
         tag.decompose()
 
-def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: str, attr_name: str, attr_value_pattern: str = None) -> None:
+def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: Union[list[str], str], attr_name: str, attr_value_pattern: str = None) -> None:
     """
     Remove a specific tags with specific attributes from a BeautifulSoup object.
     
@@ -347,7 +347,7 @@ def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: str, attr_name: st
     soup : BeautifulSoup
         The parsed HTML content to clean.
 
-    tag_list : the list of tags to remove if matchin attribute is found
+    tag_list : the list of tags to remove if matchin attribute is found; if a single string, then this string is split into tags.
     
     attr_name : str
         The attribute name to match (e.g., 'class', 'id'). If None, no attribute filtering is done.
@@ -368,6 +368,9 @@ def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: str, attr_name: st
     >>> print(soup)
     <p class="keep">Keep me</p>
     """
+
+    if isinstance(tag_list, str):
+        tag_list = tag_list.split()
 
     tags_to_remove = []
 
@@ -394,11 +397,75 @@ def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: str, attr_name: st
     for tag in tags_to_remove:
         tag.decompose()
 
-def reduced_tags_and_text(soup: BeautifulSoup):
+def remove_attributes(soup: BeautifulSoup, attr_name: str, attr_value_pattern: str = None, tag: str = None) -> None:
     """
-    Truncates the text content of all NavigableString elements in a BeautifulSoup object to the 
-    first five words and appends ellipses ("...") if the text contains more than five words.
-    The function modifies the soup in-place and returns the modified BeautifulSoup object.
+    Remove unwanted attributes from a specific tag or all tags in a BeautifulSoup object.
+
+    This function removes attributes based on the tag name and/or attribute value pattern. It can:
+    - Remove attributes from a specific tag (e.g., 'div').
+    - Remove attributes with a specific attribute value that matches a regular expression pattern.
+    - Remove attributes from all tags if no specific tag is provided.
+
+    Parameters:
+    -----------
+    soup : BeautifulSoup
+        The parsed HTML content to clean.
+    
+    attr_name : str
+        The attribute name to remove (e.g., 'class', 'id').
+    
+    attr_value_pattern : str, optional
+        A regular expression pattern to match attribute values. Only attributes whose values
+        match this pattern will be removed. If None, the attribute will be removed unconditionally.
+
+    tag : str, optional
+        The tag name to filter by (e.g., 'div', 'span'). If None, the attribute will be removed 
+        from all tags that have the specified attribute.
+
+    Returns:
+    --------
+    None
+        The function modifies the BeautifulSoup object in place, removing the unwanted attributes.
+
+    Example:
+    --------
+    >>> soup = BeautifulSoup('<div class="calibre1">Text</div><p class="keep">Keep me</p>', 'html.parser')
+    >>> remove_attributes(soup, attr_name='class', attr_value_pattern=r'calibre.*')
+    >>> print(soup)
+    <div>Text</div><p class="keep">Keep me</p>
+    """
+    
+    # Find all tags, filtered by tag name if provided
+    for element in soup.find_all(tag or True):
+        # Check if the tag has the specified attribute
+        if attr_name in element.attrs:
+            attr_value = element[attr_name]
+            
+            # Check if we are matching the attribute value against a pattern
+            if attr_value_pattern:
+                # If the attribute value is a list (e.g., for class attribute), handle that case
+                if isinstance(attr_value, list):
+                    # Remove the attribute if any value in the list matches the pattern
+                    if any(re.match(attr_value_pattern, val) for val in attr_value):
+                        del element[attr_name]
+                else:
+                    # For single values, remove the attribute if it matches the pattern
+                    if re.match(attr_value_pattern, attr_value):
+                        del element[attr_name]
+            else:
+                # If no pattern is specified, remove the attribute unconditionally
+                del element[attr_name]
+
+from bs4 import BeautifulSoup
+from bs4.element import NavigableString
+import copy
+
+def generate_reduced_text_soup(soup: BeautifulSoup) -> BeautifulSoup:
+    """
+    Creates a copy of a BeautifulSoup object and truncates the text content of all NavigableString 
+    elements in the copied BeautifulSoup object to the first five words, appending ellipses ("...") 
+    if the text contains more than five words. The function returns a new BeautifulSoup object, 
+    leaving the original unmodified.
 
     Parameters:
     -----------
@@ -408,14 +475,14 @@ def reduced_tags_and_text(soup: BeautifulSoup):
     Returns:
     --------
     BeautifulSoup
-        The modified BeautifulSoup object with truncated text.
+        A new BeautifulSoup object with truncated text.
 
     Example:
     --------
     >>> from bs4 import BeautifulSoup
     >>> html_content = "<p>This is a paragraph with more than five words.</p>"
     >>> soup = BeautifulSoup(html_content, 'html.parser')
-    >>> result = reduced_tags_and_text(soup)
+    >>> result = reduce_tags_and_text(soup)
     >>> print(result.prettify())
     <p>This is a paragraph with ...</p>
 
@@ -423,14 +490,154 @@ def reduced_tags_and_text(soup: BeautifulSoup):
     ------
     - Only NavigableString elements (text nodes) are truncated. HTML tags and structure remain unchanged.
     - The function does not remove or alter tags but only modifies the text within the tags.
+    - The original BeautifulSoup object is left unchanged.
     """
-    # Traverse through all elements in the soup recursively, targeting text nodes
-    for element in soup.find_all(string=True):  # Find all NavigableString text nodes
+    # Create a deep copy of the soup object to avoid modifying the original
+    new_soup = copy.deepcopy(soup)
+
+    # Traverse through all elements in the copied soup, targeting text nodes
+    for element in new_soup.find_all(string=True):  # Find all NavigableString text nodes
         if isinstance(element, NavigableString):
             words = element.split()
             if len(words) > 5:
                 truncated_text = ' '.join(words[:5]) + " ..."
-                # Replace the original text with the truncated version
+                # Replace the text with the truncated version in the copied soup
                 element.replace_with(truncated_text)
 
-    return soup  # Return the modified soup object
+    return new_soup  # Return the modified copy of the soup object
+
+def tag_has_visible_text(tag) -> bool:
+    """
+    Check if a BeautifulSoup tag has visible text content, meaning it contains text that is not 
+    solely whitespace.
+
+    This function is useful for determining whether a tag has meaningful text content, as opposed to 
+    being empty or containing only whitespace. 
+
+    Parameters:
+    -----------
+    tag : BeautifulSoup tag
+        The BeautifulSoup tag to check for visible text content.
+
+    Returns:
+    --------
+    bool
+        True if the tag contains visible text (after stripping whitespace), otherwise False.
+
+    Example:
+    --------
+    >>> from bs4 import BeautifulSoup
+    >>> html_content = "<div>   </div><p>This is text content.</p>"
+    >>> soup = BeautifulSoup(html_content, 'html.parser')
+    >>> div_tag = soup.find('div')
+    >>> tag_has_visible_text(div_tag)
+    False
+
+    >>> p_tag = soup.find('p')
+    >>> tag_has_visible_text(p_tag)
+    True
+
+    Notes:
+    ------
+    - This function ignores any nested tags, focusing only on direct visible text content.
+    - Whitespace-only content is considered empty and will return False.
+    """
+    return bool(tag.get_text(strip=True))
+
+def tag_has_descendants(tag) -> bool:
+    """
+    Check if a BeautifulSoup tag has any descendants (nested elements), such as child tags 
+    or text nodes.
+
+    This function is useful for determining if a tag contains any nested structure, whether 
+    directly or indirectly, as opposed to being a standalone empty tag.
+
+    Parameters:
+    -----------
+    tag : BeautifulSoup tag
+        The BeautifulSoup tag to check for descendants.
+
+    Returns:
+    --------
+    bool
+        True if the tag contains any descendants (nested tags or text nodes), otherwise False.
+
+    Example:
+    --------
+    >>> from bs4 import BeautifulSoup
+    >>> html_content = "<div><p>Text inside paragraph.</p></div>"
+    >>> soup = BeautifulSoup(html_content, 'html.parser')
+    >>> div_tag = soup.find('div')
+    >>> tag_has_descendants(div_tag)
+    True
+    
+    >>> empty_tag = soup.new_tag('div')
+    >>> tag_has_descendants(empty_tag)
+    False
+
+    Notes:
+    ------
+    - This function checks if there are any nested tags or text nodes within the tag,
+      regardless of depth. If the tag has even a single nested element, it returns True.
+    - Ideal for use in filtering or cleaning HTML where nested structures are significant.
+    """
+    return any(tag.descendants)
+
+def remove_empty_tags(soup: BeautifulSoup, tag_list) -> None:
+    """
+    Remove empty tags from a BeautifulSoup object based on a specified list or space-separated string of tag names.
+    
+    This function examines each specified tag and checks if it is empty (contains no visible text).
+    If a tag contains only nested elements (i.e., descendants) but no visible text, it will be unwrapped
+    (preserving the nested content). Tags that contain neither text nor descendants are completely removed
+    from the document.
+
+    Parameters:
+    -----------
+    soup : BeautifulSoup
+        The parsed HTML or XML content to clean.
+    
+    tag_list : list or str
+        A list of tag names (e.g., ['div', 'a']) or a space-separated string (e.g., 'div a') specifying
+        which tags should be checked and removed if empty. Only tags matching these names will be considered.
+    
+    Returns:
+    --------
+    None
+        This function modifies the BeautifulSoup object in place, removing or unwrapping tags as needed.
+
+    Example:
+    --------
+    >>> from bs4 import BeautifulSoup
+    >>> html_content = "<div></div><a href='link'><span></span></a><p>Content</p>"
+    >>> soup = BeautifulSoup(html_content, 'html.parser')
+    >>> remove_empty_tags(soup, 'div a')
+    >>> print(soup)
+    <span></span><p>Content</p>
+
+    Notes:
+    ------
+    - This function relies on two helper functions, `tag_has_visible_text` and `tag_has_descendants`:
+        - `tag_has_visible_text(tag)`: Returns True if the tag contains visible text (ignoring whitespace).
+        - `tag_has_descendants(tag)`: Returns True if the tag has nested elements (descendants).
+    - The function operates in place, meaning it directly modifies the `soup` object passed to it.
+    - Tags with descendants but no visible text are unwrapped rather than removed, ensuring that nested 
+      content remains intact.
+    - Useful for cleaning up HTML or XML content by removing purely empty elements without affecting structure.
+    """
+    
+    # Ensure tag_list is a list, even if passed as a space-separated string
+    if isinstance(tag_list, str):
+        tag_list = tag_list.split()
+
+    # Process tags in tag_list to either unwrap or remove
+    for tag_name in tag_list:
+        for tag in soup.find_all(tag_name):
+            # Check if the tag is empty (no text content) and has no nested elements
+            if not tag_has_visible_text(tag):
+                if tag_has_descendants(tag):
+                    # Tag has descendants, so unwrap it instead of decomposing
+                    tag.unwrap()
+                else:
+                    # Tag is truly empty of meaningful content, so decompose it
+                    tag.decompose()
