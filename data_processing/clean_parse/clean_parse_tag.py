@@ -1,7 +1,7 @@
 import re
 import os
 from bs4 import BeautifulSoup
-from bs4 import NavigableString
+from bs4 import NavigableString, Tag
 from typing import Union
 
 # Global variable for storing the working directory for input and output data in the TNH Scholar project
@@ -115,7 +115,7 @@ def write_text_to_file(file_path: str, content: str) -> None:
     with open(full_path, 'w', encoding='utf-8') as file:
         file.write(content)
 
-def clean_text(text):
+def clean_text(text, newline=False):
     """
     Cleans a given text by replacing specific unwanted characters such as 
     tab, and non-breaking spaces with regular spaces.
@@ -141,6 +141,9 @@ def clean_text(text):
         '\xa0': ' ',     # Replace non-breaking space with regular space
         # Add more replacements as needed
     }
+
+    if newline:
+        replace_map['\n'] = '' # remove newlines
 
     # Loop through the replace map and replace each character
     for old_char, new_char in replace_map.items():
@@ -641,3 +644,58 @@ def remove_empty_tags(soup: BeautifulSoup, tag_list) -> None:
                 else:
                     # Tag is truly empty of meaningful content, so decompose it
                     tag.decompose()
+
+def unwrap_redundant_tags(soup: BeautifulSoup, tag_list) -> None:
+    """
+    Unwrap tags that do not have any attributes and contain only a single child tag, 
+    by first collecting tags to unwrap, then processing them in a separate loop.
+
+    Parameters:
+    -----------
+    soup : BeautifulSoup
+        The parsed HTML content to clean.
+    
+    tag_list : list or str
+        A list of tag names (e.g., ['span', 'a']) or a space-separated string (e.g., 'span a') specifying
+        which tags should be checked and unwrapped if redundant.
+
+    Returns:
+    --------
+    None
+        This function modifies the BeautifulSoup object in place, unwrapping redundant tags as needed.
+
+    Example:
+    --------
+    >>> from bs4 import BeautifulSoup
+    >>> html_content = '''
+    ... <p><span><span class="bold">Table of Contents</span></span></p>
+    ... <p><a><span class="italic"><span class="underline">Title Page</span></span></a></p>
+    ... '''
+    >>> soup = BeautifulSoup(html_content, 'html.parser')
+    >>> unwrap_redundant_tags(soup, 'span a')
+    >>> print(soup)
+    <p><span class="bold">Table of Contents</span></p>
+    <p><span class="italic"><span class="underline">Title Page</span></span></p>
+
+    Notes:
+    ------
+    - This function only unwraps tags that contain no attributes and have a single child with identical text content.
+    - The function operates in place, meaning it directly modifies the `soup` object passed to it.
+    """
+    if isinstance(tag_list, str):
+        tag_list = tag_list.split()
+
+    # Step 1: Collect tags to unwrap
+    tags_to_unwrap = []
+    for tag in soup.descendants:
+        if tag.name in tag_list:
+            # Check if the tag has no attributes and exactly one child that is a tag
+            if not tag.attrs and len(tag.contents) == 1 and isinstance(tag.contents[0], Tag):
+                child = tag.contents[0]
+                # If tag adds no unique structure or information, mark it for unwrapping
+                if tag.get_text(strip=True) == child.get_text(strip=True):
+                    tags_to_unwrap.append(tag)
+
+    # Step 2: Unwrap collected tags
+    for tag in tags_to_unwrap:
+        tag.unwrap()
