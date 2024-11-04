@@ -741,3 +741,43 @@ def remove_tag_whitespace(html_str: str) -> str:
     cleaned_html = re.sub(r'>\s+<', '><', str(soup))
     
     return cleaned_html
+
+def normalize_quotes(text: str) -> str:
+    """
+    Transforms all smart quotes in the input text to standard straight quotes.
+    
+    This function replaces both single and double smart quotes (Unicode) with
+    their standard straight quote counterparts. Specifically, it:
+    
+    - Converts left and right single smart quotes (‘ and ’) to ASCII single quote (').
+    - Converts left and right double smart quotes (“ and ”) to ASCII double quote (").
+
+    Parameters
+    ----------
+    text : str
+        The input text containing potential smart quotes.
+    
+    Returns
+    -------
+    str
+        The text with all smart quotes replaced by standard straight quotes.
+
+    Examples
+    --------
+    >>> text = '“This is a ‘smart’ quoted text.”'
+    >>> normalize_quotes(text)
+    '"This is a \'smart\' quoted text."'
+
+    Notes
+    -----
+    Smart quotes are often automatically inserted by word processors but can
+    introduce inconsistencies when parsing or tokenizing text data. This function
+    is useful for data preprocessing, ensuring uniform quote styles in text for
+    tasks like NLP model training or XML/HTML parsing.
+
+    """
+    # Replace left and right double smart quotes with straight double quote
+    text = text.replace("\u201C", "\"").replace("\u201D", "\"")
+    # Replace left and right single smart quotes with straight single quote
+    text = text.replace("\u2018", "'").replace("\u2019", "'")
+    return text
