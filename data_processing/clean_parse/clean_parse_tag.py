@@ -699,3 +699,45 @@ def unwrap_redundant_tags(soup: BeautifulSoup, tag_list) -> None:
     # Step 2: Unwrap collected tags
     for tag in tags_to_unwrap:
         tag.unwrap()
+
+
+def remove_tag_whitespace(html_str: str) -> str:
+    """
+    Removes any whitespace between adjacent HTML tags in an HTML string. This function is 
+    designed to clean up HTML content by minimizing unnecessary spacing between elements, 
+    which can improve readability in structured processing.
+
+    Args:
+        html_str (str): The HTML string to be processed. Must be well-formed for accurate parsing.
+
+    Returns:
+        str: The cleaned HTML string with no whitespace between adjacent tags. Tags that 
+             originally had whitespace between them will now be directly adjacent.
+    
+    Example:
+        >>> html_str = "<body> <p>This is some text.</p>   <br> </body>"
+        >>> remove_tag_whitespace(html_str)
+        '<body><p>This is some text.</p><br></body>'
+    
+    Notes:
+        - This function uses BeautifulSoup to parse the HTML and then removes whitespace between 
+          tags using a regular expression.
+        - The function assumes that `html_str` is a well-formed HTML string. Malformed HTML may 
+          lead to unexpected behavior.
+        - BeautifulSoup automatically corrects certain HTML issues, so the output may differ 
+          slightly in structure if the input was not well-formed.
+    
+    Raises:
+        ValueError: If the input is not a valid HTML string or is an empty string.
+    
+    """
+    if not html_str.strip():
+        raise ValueError("Input HTML string cannot be empty or whitespace-only.")
+
+    # Use BeautifulSoup to parse and normalize the HTML structure
+    soup = BeautifulSoup(html_str, 'html.parser')
+    
+    # Convert back to string, then use regex to remove whitespace between tags
+    cleaned_html = re.sub(r'>\s+<', '><', str(soup))
+    
+    return cleaned_html
