@@ -218,15 +218,15 @@ Output in pythonic as a list of tuples: (query, text). Truncate the text in the 
 Text:
 
 
-## Input 8 prompt
+## Input 8 prompt (modified!)
 
-Generate query, text pairs for a project aimed at training a BERT-based search model on finding relevant passages in the works of Thich Nhat Hanh. The project focuses on helping people find info about Plum Village practices as well as researching Thay's teachings and Buddhist teachings. The generated queries should capture the key concepts and themes from the text (without too much semantic overlap), some broad context questions generally relevant to Plum Village (not directly from the text), and also some detailed information specific to the text.
+Generate query, text pairs for a project aimed at training a BERT-based search model on finding relevant passages in the works of Thich Nhat Hanh. The project focuses on helping people find info about Plum Village practices as well as researching Thay's teachings and Buddhist teachings. The generated queries should capture the key concepts and themes from the text (without too much semantic overlap), some broad context questions generally relevant to Plum Village (not directly from the text), and also some detailed information specific to the text. Metadata, such as tagged titles, etc. can be ignored for this semantic based search training.
 
 12 queries: 1-3 words in length
 12 queries: 4-7 words in length
 8 queries: full sentence questions
 
-Give the result in a code block as a python list of tuples: (query, text). Truncate the text in the pair to the first 10 words.
+Give the result in a code block as csv form: query, text. 
 
 Text:
 
@@ -271,3 +271,15 @@ queries_text_pairs = [
     ("What is the importance of touching the body affectionately?", "We should touch each part in an affectionate and caring..."),
     ("How does mindfulness reveal the interdependent nature of the universe?", "Every hair on our head and every cell in our body...")
 ]
+
+### Working prompt
+
+Generate query, text pairs for a project aimed at training a BERT-based search model on finding relevant passages in the works of Thich Nhat Hanh. The project focuses on helping people find info about Plum Village practices as well as researching Thay's teachings and Buddhist teachings. The generated queries should capture the key concepts and themes from the text (without too much semantic overlap), some broad context questions generally relevant to Plum Village (not directly from the text), and also some detailed information specific to the text. Metadata, such as tagged titles, etc. can be ignored for this semantic based search training.
+
+12 queries: 1-3 words in length
+12 queries: 4-7 words in length
+8 queries: full sentence questions
+
+Give the result in a code block as csv form: query, text. 
+
+Text:
