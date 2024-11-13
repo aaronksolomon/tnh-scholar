@@ -4,6 +4,12 @@
 # Private data (copyrighted or otherwise to be kept private)
 private_*
 
+# OCR processed output:
+ocr_processed_ouput/
+
+# processed journals:
+processed_journal_data/
+
 # Big files
 *.pdf
 *.jpeg
