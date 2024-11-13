@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.panel {
+    width: 48%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+.translated-content p { 
+    /* styling for <p> tags inside translated sections */
+    margin: 10px 0;
+}
+
+.footnote {
+    font-size: 0.9em;
+    color: gray;
+    display: inline;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.quote {
+    font-style: italic;
+    margin: 10px 20px;
+}
+
+.collapsible {
+    cursor: pointer;
+    padding: 5px;
+    background-color: #e0e0e0;
+    border: none;
+    text-align: left;
+}
+
+.content {
+    display: none;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
