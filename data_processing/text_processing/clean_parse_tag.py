@@ -3,6 +3,7 @@ import os
 from bs4 import BeautifulSoup
 from bs4 import NavigableString, Tag
 from typing import Union
+import warnings
 
 # Global variable for storing the working directory for input and output data in the TNH Scholar project
 tnh_scholar_working_dir = None
@@ -102,10 +103,12 @@ def get_text_from_file(file_path: str) -> str:
     with open(full_path, 'r', encoding='utf-8') as file:
         return file.read()
     
-def write_text_to_file(file_path: str, content: str) -> None:
+def write_text_to_file(file_path: str, content: str, force: bool = False) -> None:
     """
-    Writes the given content to a text file, saving it in the global working 
-    directory if set, otherwise in the current working directory.
+    Writes the given content to a text file. Saves the file in the global 
+    working directory if set, otherwise in the current working directory. 
+    Checks if the file already exists and raises a warning if it does, unless 
+    force=True is specified to overwrite.
 
     Parameters:
     ----------
@@ -113,23 +116,37 @@ def write_text_to_file(file_path: str, content: str) -> None:
         The name or relative path of the text file to write.
     content : str
         The content to be written to the file.
+    force : bool, optional
+        If True, overwrite the file if it exists. Default is False.
+
+    Raises:
+    ------
+    FileExistsWarning
+        If the file already exists and force is set to False.
+    OSError
+        If the file cannot be written due to I/O errors.
 
     Example:
     --------
     >>> set_working_directory("/path/to/directory")
-    >>> write_text_to_file("example.txt", "This is some content.")
+    >>> write_text_to_file("example.txt", "This is some content.", force=True)
     """
     global tnh_scholar_working_dir
-    
-    # If a working directory is set, use it; otherwise, use the file path as given
-    if tnh_scholar_working_dir:
-        full_path = os.path.join(tnh_scholar_working_dir, file_path)
-    else:
-        full_path = file_path
 
-    # Write the content to the specified file
-    with open(full_path, 'w', encoding='utf-8') as file:
-        file.write(content)
+    # Determine the full path based on the working directory
+    full_path = os.path.join(tnh_scholar_working_dir, file_path) if tnh_scholar_working_dir else file_path
+
+    # Check if the file exists and warn if not overwriting
+    if os.path.exists(full_path) and not force:
+        warnings.warn(f"The file '{full_path}' already exists. Use force=True to overwrite.", FileExistsWarning)
+        return
+
+    try:
+        # Write the content to the specified file
+        with open(full_path, 'w', encoding='utf-8') as file:
+            file.write(content)
+    except OSError as e:
+        raise OSError(f"Failed to write to file '{full_path}'.") from e
 
 def clean_text(text, newline=False):
     """
