@@ -1,51 +1,67 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+.flex-row {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px; /* Adds space between the image and text */
 }
 
 .panel {
-    width: 48%;
     border: 1px solid #ccc;
     padding: 10px;
-    overflow-y: scroll;
+    box-sizing: border-box;
+    flex: 1; /* Allows panels to grow/shrink based on available space */
 }
 
-.translated-content p { 
-    /* styling for <p> tags inside translated sections */
-    margin: 10px 0;
+#original-image-panel img {
+    max-width: 100%;
+    height: auto;
 }
 
-.footnote {
+.underbar {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+.content p {
+    margin: 5px 0;
     font-size: 0.9em;
-    color: gray;
-    display: inline;
+    line-height: 1.5;
+    color: #333;
 }
 
 .title {
     font-weight: bold;
     font-size: 1.5em;
     text-align: center;
+    margin-bottom: 20px;
 }
 
-.quote {
+.subtitle {
     font-style: italic;
-    margin: 10px 20px;
-}
-
-.collapsible {
-    cursor: pointer;
-    padding: 5px;
-    background-color: #e0e0e0;
-    border: none;
-    text-align: left;
-}
-
-.content {
-    display: none;
-    padding: 10px;
-    border-top: 1px solid #ccc;
+    font-size: 1.2em; /* Slightly smaller than the title */
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px; /* Consistent spacing with the title */
+    color: #555; /* Optional: Subtle gray tone for differentiation */
 }
