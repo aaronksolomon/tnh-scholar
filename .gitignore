@@ -10,6 +10,9 @@ ocr_processed_ouput/
 # processed journals:
 processed_journal_data/
 
+# gpt batch files:
+gpt_batch_files/
+
 # Big files
 *.pdf
 *.jpeg
