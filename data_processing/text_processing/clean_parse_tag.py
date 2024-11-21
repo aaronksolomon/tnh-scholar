@@ -66,15 +66,18 @@ def get_working_directory():
 
     return tnh_scholar_working_dir
 
-def get_text_from_file(file_path: str) -> str:
+def get_text_from_file(file_path: str, search_path: str = None) -> str:
     """
-    Reads the entire content of a text file, looking first in the global working 
-    directory if set, otherwise in the current working directory.
+    Reads the entire content of a text file, looking first in the specified directory 
+    if provided, then in the global working directory if set, otherwise in the current working directory.
 
     Parameters:
     ----------
     file_path : str
         The name or relative path to the text file.
+    search_path : str, optional
+        The directory path to look for the file. If specified, it overrides 
+        the global working directory and the current working directory.
 
     Returns:
     -------
@@ -84,22 +87,25 @@ def get_text_from_file(file_path: str) -> str:
     Example:
     --------
     >>> set_working_directory("/path/to/directory")
-    >>> text = get_text_from_file("example.txt")
+    >>> text = get_text_from_file("example.txt", dir="/another/path")
     >>> print(text)
     'This is the content of the file.'
     """
     global tnh_scholar_working_dir
     
-    # If a working directory is set, look for the file there
-    if tnh_scholar_working_dir:
+    # Determine the directory to use
+    if search_path:
+        full_path = os.path.join(search_path, file_path)
+    elif tnh_scholar_working_dir:
         full_path = os.path.join(tnh_scholar_working_dir, file_path)
     else:
-        # Otherwise, just use the file path directly
         full_path = file_path
 
+    # Check if the file exists
     if not os.path.exists(full_path):
         raise FileNotFoundError(f"The file '{full_path}' does not exist.")
     
+    # Read and return the content of the file
     with open(full_path, 'r', encoding='utf-8') as file:
         return file.read()
     
