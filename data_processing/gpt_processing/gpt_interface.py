@@ -5,19 +5,25 @@ import json
 from datetime import datetime
 from typing import List, Dict
 
-
-
 MAX_TOKENS = 16000
 MAX_BATCH_LIST = 100
 open_ai_working_model = "gpt-4o"
 open_ai_current_client = None
 
-encoding = tiktoken.encoding_for_model(open_ai_working_model)
+open_ai_encoding = tiktoken.encoding_for_model(open_ai_working_model)
+
+class ClientNotInitializedError(Exception):
+    """Exception raised when the OpenAI client is not initialized."""
+    pass
 
 def token_count(text):
-    return len(encoding.encode(text))
+    return len(open_ai_encoding.encode(text))
 
 def get_api_client():
+    if open_ai_current_client is None:
+        raise ClientNotInitializedError(
+            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
+        )
     return open_ai_current_client
 
 def set_api_client():
@@ -53,6 +59,11 @@ def generate_messages(system_message, user_message_wrapper, text_list_to_process
 def run_immediate_chat_process(messages, response_object=None):
     global open_ai_current_client
 
+    if open_ai_current_client is None:
+        raise ClientNotInitializedError(
+            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
+        )
+    
     try:
         if response_object:
             chat_completion = open_ai_current_client.beta.chat.completions.parse(
@@ -127,7 +138,13 @@ def start_batch(jsonl_file, description=None):
         jsonl_file = "batch_requests.jsonl"
         start_batch(client, jsonl_file)
     """
+    global open_ai_current_client
 
+    if open_ai_current_client is None:
+        raise ClientNotInitializedError(
+            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
+        )
+    
     basename = os.path.splitext(os.path.basename(jsonl_file))[0]
 
     # Generate a default description if none is provided
@@ -186,6 +203,13 @@ def get_completed_batches() -> List[Dict]:
     """
     Retrieve the list of active batches using the OpenAI API.
     """
+    global open_ai_current_client
+
+    if open_ai_current_client is None:
+        raise ClientNotInitializedError(
+            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
+        )
+    
     try:
         batches = open_ai_current_client.batches.list(limit=MAX_BATCH_LIST)
         batch_list = []
@@ -220,6 +244,13 @@ def get_batch_response(batch_id):
     - If completed: A list of lists containing query-text pairs.
     - If not completed: A string with the batch status.
     """
+    global open_ai_current_client
+
+    if open_ai_current_client is None:
+        raise ClientNotInitializedError(
+            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
+        )
+    
     # Check the batch status
     batch_status = open_ai_current_client.batches.retrieve(batch_id)
     if batch_status.status != 'completed':
