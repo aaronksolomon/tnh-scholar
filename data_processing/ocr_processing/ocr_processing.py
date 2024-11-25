@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import base64
 import warnings
+from typing import Callable
 
 DEFAULT_ANNOTATION_FONT_PATH = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
 DEFAULT_ANNOTATION_FONT_SIZE = 12 # default annotation font size
@@ -23,6 +24,21 @@ class PDFParseWarning(Warning):
     """
     pass
 
+def pil_to_bytes(image: Image.Image, format: str = "PNG") -> bytes:
+    """
+    Converts a Pillow image to raw bytes.
+
+    Parameters:
+        image (Image.Image): The Pillow image object to convert.
+        format (str): The format to save the image as (e.g., "PNG", "JPEG"). Default is "PNG".
+
+    Returns:
+        bytes: The raw bytes of the image.
+    """
+    with io.BytesIO() as output:
+        image.save(output, format=format)
+        return output.getvalue()
+    
 def start_image_annotator_client(
     credentials_file: str = None,
     api_endpoint: str = "vision.googleapis.com",
@@ -110,127 +126,6 @@ def load_pdf_pages(pdf_path: Path) -> fitz.Document:
     except Exception as e:
         raise Exception(f"An unexpected error occurred while opening the PDF: {e}")
 
-
-def extract_images_from_page(page: fitz.Page) -> bytes:
-    """
-    Extracts the first image from the given PDF page.
-
-    Parameters:
-        page (fitz.Page): The PDF page object.
-
-    Returns:
-        bytes: The raw byte content of the first image on the page.
-
-    Raises:
-        ValueError: If no images are found on the page.
-        IndexError: If the image reference cannot be retrieved.
-        Exception: For unexpected errors during image extraction.
-
-    Example:
-        >>> import fitz
-        >>> doc = fitz.open("/path/to/document.pdf")
-        >>> page = doc.load_page(0)  # Load the first page
-        >>> try:
-        >>>     image_bytes = extract_images_from_page(page)
-        >>>     print(f"Extracted {len(image_bytes)} bytes from the image.")
-        >>> except Exception as e:
-        >>>     print(f"Error extracting image: {e}")
-    """
-    try:
-        images = page.get_images(full=True)
-        if not images:
-            raise ValueError("No images found on the page.")
-
-        xref = images[0][0]  # Get the first image reference
-        base_image = page.parent.extract_image(xref)
-
-        if "image" not in base_image:
-            raise ValueError("The extracted image data is incomplete.")
-
-        return base_image["image"]  # Get the raw JPEG byte content
-    except ValueError as ve:
-        raise ve  # Re-raise the ValueError for calling functions to handle.
-    except IndexError as ie:
-        raise IndexError("Failed to retrieve the image reference.") from ie
-    except Exception as e:
-        raise Exception(f"An unexpected error occurred during image extraction: {e}")
-
-
-def annotate_image_with_text(image_bytes: bytes, 
-                             text_annotations: List[vision.EntityAnnotation], 
-                             annotation_font_path: str, 
-                             font_size: int = DEFAULT_ANNOTATION_FONT_SIZE) -> Image.Image:
-    """
-    Annotates an image with bounding boxes and text descriptions from OCR results.
-
-    Parameters:
-        image_bytes (bytes): The raw byte content of the image.
-        text_annotations (List[vision.EntityAnnotation]): OCR results containing bounding boxes and text.
-        annotation_font_path (str): Path to the font file.
-        font_size (int): Font size for text annotations.
-
-    Returns:
-        Image.Image: The annotated image.
-
-    Raises:
-        ValueError: If image_bytes is empty or None.
-        OSError: If the image cannot be opened or processed.
-        IOError: If the font file cannot be loaded.
-        Exception: For any other unexpected errors.
-
-    Example:
-        >>> from google.cloud import vision
-        >>> import io
-        >>> from PIL import Image
-        >>> # Example image bytes and annotations (replace with actual data)
-        >>> image_bytes = open("/path/to/image.jpg", "rb").read()
-        >>> text_annotations = [
-        >>>     vision.EntityAnnotation(
-        >>>         description="Example Text",
-        >>>         bounding_poly=vision.BoundingPoly(
-        >>>             vertices=[vision.Vertex(x=10, y=10), vision.Vertex(x=100, y=10),
-        >>>                       vision.Vertex(x=100, y=50), vision.Vertex(x=10, y=50)]
-        >>>         )
-        >>>     )
-        >>> ]
-        >>> try:
-        >>>     annotated_image = annotate_image_with_text(image_bytes, text_annotations, "/path/to/font.ttf", 15)
-        >>>     annotated_image.show()
-        >>> except Exception as e:
-        >>>     print(f"Error during annotation: {e}")
-    """
-    if not image_bytes:
-        raise ValueError("The image_bytes parameter is empty or None.")
-    
-    try:
-        pil_image = Image.open(io.BytesIO(image_bytes))
-    except OSError as e:
-        raise OSError(f"Failed to open the image: {e}")
-
-    try:
-        font = ImageFont.truetype(annotation_font_path, font_size)
-    except IOError as e:
-        raise IOError(f"Failed to load the font from '{annotation_font_path}': {e}")
-
-    draw = ImageDraw.Draw(pil_image)
-
-    try:
-        for i, text_obj in enumerate(text_annotations):
-            vertices = [(vertex.x, vertex.y) for vertex in text_obj.bounding_poly.vertices]
-            if len(vertices) == 4:  # Ensure there are exactly 4 vertices for a rectangle
-                draw.polygon(vertices, outline="red", width=2)
-                if i > 0:  # Skip the first bounding box (whole text region)
-                    # Offset the text position by DEFAULT_ANNOTATION_OFFSET pixels
-                    text_position = (vertices[0][0] + DEFAULT_ANNOTATION_OFFSET, 
-                                     vertices[0][1] + DEFAULT_ANNOTATION_OFFSET)
-                    draw.text(text_position, text_obj.description, fill="red", font=font)
-    except AttributeError as e:
-        raise ValueError(f"Invalid text annotation structure: {e}")
-    except Exception as e:
-        raise Exception(f"An error occurred during image annotation: {e}")
-
-    return pil_image
-
 def get_page_dimensions(page: fitz.Page) -> dict:
     """
     Extracts the width and height of a single PDF page in both inches and pixels.
@@ -264,17 +159,161 @@ def get_page_dimensions(page: fitz.Page) -> dict:
         "height_px": height_px
     }
 
-def process_single_image(image_bytes: bytes, 
-                         client: vision.ImageAnnotatorClient, 
-                         feature_type: str = DEFAULT_ANNOTATION_METHOD, 
-                         language_hints: List = DEFAULT_ANNOTATION_LANGUAGE_HINTS) -> List[vision.EntityAnnotation]:
+def extract_image_from_page(page: fitz.Page) -> Image.Image:
+    """
+    Extracts the first image from the given PDF page and returns it as a PIL Image.
+
+    Parameters:
+        page (fitz.Page): The PDF page object.
+
+    Returns:
+        Image.Image: The first image on the page as a Pillow Image object.
+
+    Raises:
+        ValueError: If no images are found on the page or the image data is incomplete.
+        Exception: For unexpected errors during image extraction.
+
+    Example:
+        >>> import fitz
+        >>> from PIL import Image
+        >>> doc = fitz.open("/path/to/document.pdf")
+        >>> page = doc.load_page(0)  # Load the first page
+        >>> try:
+        >>>     image = extract_image_from_page(page)
+        >>>     image.show()  # Display the image
+        >>> except Exception as e:
+        >>>     print(f"Error extracting image: {e}")
+    """
+    try:
+        # Get images from the page
+        images = page.get_images(full=True)
+        if not images:
+            raise ValueError("No images found on the page.")
+
+        # Extract the first image reference
+        xref = images[0][0]  # Get the first image's xref
+        base_image = page.parent.extract_image(xref)
+
+        # Validate the extracted image data
+        if "image" not in base_image or "width" not in base_image or "height" not in base_image:
+            raise ValueError("The extracted image data is incomplete.")
+
+        # Convert the raw image bytes into a Pillow image
+        image_bytes = base_image["image"]
+        pil_image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+
+        return pil_image
+
+    except ValueError as ve:
+        raise ve  # Re-raise for calling functions to handle
+    except Exception as e:
+        raise Exception(f"An unexpected error occurred during image extraction: {e}")
+
+def annotate_image_with_text(
+    image: Image.Image,
+    text_annotations: List[EntityAnnotation],
+    annotation_font_path: str,
+    font_size: int = 12
+) -> Image.Image:
+    """
+    Annotates a PIL image with bounding boxes and text descriptions from OCR results.
+
+    Parameters:
+        pil_image (Image.Image): The input PIL image to annotate.
+        text_annotations (List[EntityAnnotation]): OCR results containing bounding boxes and text.
+        annotation_font_path (str): Path to the font file for text annotations.
+        font_size (int): Font size for text annotations.
+
+    Returns:
+        Image.Image: The annotated PIL image.
+
+    Raises:
+        ValueError: If the input image is None.
+        IOError: If the font file cannot be loaded.
+        Exception: For any other unexpected errors.
+    """
+    if image is None:
+        raise ValueError("The input image is None.")
+
+    try:
+        font = ImageFont.truetype(annotation_font_path, font_size)
+    except IOError as e:
+        raise IOError(f"Failed to load the font from '{annotation_font_path}': {e}")
+
+    draw = ImageDraw.Draw(image)
+
+    try:
+        for i, text_obj in enumerate(text_annotations):
+            vertices = [(vertex.x, vertex.y) for vertex in text_obj.bounding_poly.vertices]
+            if len(vertices) == 4:  # Ensure there are exactly 4 vertices for a rectangle
+                # Draw the bounding box
+                draw.polygon(vertices, outline="red", width=2)
+
+                # Skip the first bounding box (whole text region)
+                if i > 0:
+                    # Offset the text position slightly for clarity
+                    text_position = (vertices[0][0] + 2, vertices[0][1] + 2)
+                    draw.text(text_position, text_obj.description, fill="red", font=font)
+
+    except AttributeError as e:
+        raise ValueError(f"Invalid text annotation structure: {e}")
+    except Exception as e:
+        raise Exception(f"An error occurred during image annotation: {e}")
+
+    return image
+
+def make_image_preprocess_mask(mask_height: float) -> Callable[[Image.Image, int], Image.Image]:
+    """
+    Creates a preprocessing function that masks a specified height at the bottom of the image.
+
+    Parameters:
+        mask_height (float): The proportion of the image height to mask at the bottom (0.0 to 1.0).
+
+    Returns:
+        Callable[[Image.Image, int], Image.Image]: A preprocessing function that takes an image
+        and page number as input and returns the processed image.
+    """
+    def pre_process_image(image: Image.Image, page_number: int) -> Image.Image:
+        """
+        Preprocesses the image by masking the bottom region or performing other preprocessing steps.
+
+        Parameters:
+            image (Image.Image): The input image as a Pillow object.
+            page_number (int): The page number of the image (useful for conditional preprocessing).
+
+        Returns:
+            Image.Image: The preprocessed image.
+        """
+
+        if page_number > 0:  # don't apply mask to cover page.
+            # Make a copy of the image to avoid modifying the original
+            draw = ImageDraw.Draw(image)
+
+            # Get image dimensions
+            width, height = image.size
+
+            # Mask the bottom region based on the specified height proportion
+            mask_pixels = int(height * mask_height)
+            draw.rectangle([(0, height - mask_pixels), (width, height)], fill="black")
+
+        return image
+
+    return pre_process_image
+
+def process_single_image(
+    image: Image.Image,
+    client: vision.ImageAnnotatorClient,
+    feature_type: str = DEFAULT_ANNOTATION_METHOD,
+    language_hints: List = DEFAULT_ANNOTATION_LANGUAGE_HINTS,
+) -> List[vision.EntityAnnotation]:
     """
     Processes a single image with the Google Vision API and returns text annotations.
 
     Parameters:
-        image_bytes (bytes): Raw bytes of the image.
+        image (Image.Image): The preprocessed Pillow image object.
         client (vision.ImageAnnotatorClient): Google Vision API client for text detection.
         feature_type (str): Type of text detection to use ('TEXT_DETECTION' or 'DOCUMENT_TEXT_DETECTION').
+        language_hints (List): Language hints for OCR.
 
     Returns:
         List[vision.EntityAnnotation]: Text annotations from the Vision API response.
@@ -282,6 +321,9 @@ def process_single_image(image_bytes: bytes,
     Raises:
         ValueError: If no text is detected.
     """
+    # Convert the Pillow image to bytes
+    image_bytes = pil_to_bytes(image, format="PNG")
+
     # Map feature type
     feature_map = {
         "TEXT_DETECTION": vision.Feature.Type.TEXT_DETECTION,
@@ -291,56 +333,75 @@ def process_single_image(image_bytes: bytes,
         raise ValueError(f"Invalid feature type '{feature_type}'. Use 'TEXT_DETECTION' or 'DOCUMENT_TEXT_DETECTION'.")
 
     # Prepare Vision API request
-    image = vision.Image(content=image_bytes)
+    vision_image = vision.Image(content=image_bytes)
     features = [vision.Feature(type=feature_map[feature_type])]
     image_context = vision.ImageContext(language_hints=language_hints)
 
     # Make the API call
-    response = client.annotate_image({
-        "image": image,
-        "features": features,
-        "image_context": image_context,
-    })
-    
+    response = client.annotate_image(
+        {"image": vision_image, "features": features, "image_context": image_context}
+    )
     if not response:
         raise ValueError("No Response from image processing!")
     return response
 
-def process_page(page: fitz.Page, 
-                 client: vision.ImageAnnotatorClient, 
-                 annotation_font_path: str) -> Tuple[str, List[vision.EntityAnnotation], Image.Image, Image.Image, dict]:
+def process_page(
+    page: fitz.Page,
+    client: vision.ImageAnnotatorClient,
+    annotation_font_path: str,
+    preprocessor: Callable[[Image.Image, int], Image.Image] = None
+) -> Tuple[str, List[vision.EntityAnnotation], Image.Image, Image.Image, dict]:
     """
     Processes a single PDF page, extracting text, word locations, and annotated images.
 
     Parameters:
         page (fitz.Page): The PDF page object.
         client (vision.ImageAnnotatorClient): Google Vision API client for text detection.
+        pre_processor (Callable[[Image.Image, int], Image.Image]): Preprocessing function for the image.
         annotation_font_path (str): Path to the font file for annotations.
 
     Returns:
-        Tuple[str, List[vision.EntityAnnotation], Image.Image, Image.Image, dict]: Full page text, word locations,
-        annotated image, and unannotated image, page_dimensions
+        Tuple[str, List[vision.EntityAnnotation], Image.Image, Image.Image, dict]:
+            - Full page text (str)
+            - Word locations (List of vision.EntityAnnotation)
+            - Annotated image (Pillow Image object)
+            - Original unprocessed image (Pillow Image object)
+            - Page dimensions (dict)
     """
-    image_bytes = extract_images_from_page(page)
-    unannotated_image = Image.open(io.BytesIO(image_bytes)).copy()
+    # Extract the original image from the PDF page
+    original_image = extract_image_from_page(page)
 
-    # Annotate image with Vision API
-    response = process_single_image(image_bytes, client)
+    # Make a copy of the original image for processing
+    processed_image = original_image.copy()
+
+    # Apply the preprocessing function (if provided)
+    if preprocessor:
+        print("preprocessing...")
+        processed_image = preprocessor(processed_image, page.number)
+        processed_image.show()
+
+    # Annotate the processed image using the Vision API
+    response = process_single_image(processed_image, client)
     text_annotations = response.text_annotations
 
-    full_page_text = text_annotations[0].description  # First element is the full page text
-    word_locations = text_annotations[1:]  # Remaining elements are word locations
+    # Extract full text and word locations
+    full_page_text = text_annotations[0].description if text_annotations else ""
+    word_locations = text_annotations[1:] if len(text_annotations) > 1 else []
 
-    annotated_image = annotate_image_with_text(image_bytes, text_annotations, annotation_font_path)
-    page_dimensions =  get_page_dimensions(page)
+    # Create an annotated image with bounding boxes and labels
+    annotated_image = annotate_image_with_text(processed_image, text_annotations, annotation_font_path)
 
-    return full_page_text, word_locations, annotated_image, unannotated_image, page_dimensions
+    # Get page dimensions (from the original PDF page, not the image)
+    page_dimensions = get_page_dimensions(page)
+
+    return full_page_text, word_locations, annotated_image, original_image, page_dimensions
 
 def build_processed_pdf(
     pdf_path: Path,
     client: vision.ImageAnnotatorClient,
+    preprocessor: Callable = None,    
     annotation_font_path: Path = DEFAULT_ANNOTATION_FONT_PATH
-) -> Tuple[List[str], List[List[vision.EntityAnnotation]], List[Image.Image], List[Image.Image]]:
+ ) -> Tuple[List[str], List[List[vision.EntityAnnotation]], List[Image.Image], List[Image.Image]]:
     """
     Processes a PDF document, extracting text, word locations, annotated images, and unannotated images.
 
@@ -400,7 +461,7 @@ def build_processed_pdf(
 
         try:
             page = doc.load_page(page_num)
-            full_page_text, word_locations, annotated_image, unannotated_image, page_dimensions = process_page(page, client, annotation_font_path)
+            full_page_text, word_locations, annotated_image, unannotated_image, page_dimensions = process_page(page, client, annotation_font_path, preprocessor)
 
             if page_num == 0: #save first page info
                 first_page_dimensions = page_dimensions
