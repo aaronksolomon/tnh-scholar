@@ -18,11 +18,24 @@ DEFAULT_ANNOTATION_OFFSET = 2  # pixels to offset annotation labels in labeled i
 DEFAULT_ANNOTATION_LANGUAGE_HINTS = ['vi'] 
 DEFAULT_ANNOTATION_METHOD = "DOCUMENT_TEXT_DETECTION"
 
+import warnings
+
 class PDFParseWarning(Warning):
     """
     Custom warning class for PDF parsing issues.
+    Encapsulates minimal logic for displaying warnings with a custom format.
     """
-    pass
+
+    @staticmethod
+    def warn(message: str):
+        """
+        Display a warning message with custom formatting.
+
+        Parameters:
+            message (str): The warning message to display.
+        """
+        formatted_message = f"\033[93mPDFParseWarning: {message}\033[0m"
+        print(formatted_message)  # Simply prints the warning
 
 def pil_to_bytes(image: Image.Image, format: str = "PNG") -> bytes:
     """
@@ -341,8 +354,7 @@ def process_single_image(
     response = client.annotate_image(
         {"image": vision_image, "features": features, "image_context": image_context}
     )
-    if not response:
-        raise ValueError("No Response from image processing!")
+    
     return response
 
 def process_page(
@@ -376,17 +388,23 @@ def process_page(
 
     # Apply the preprocessing function (if provided)
     if preprocessor:
-        print("preprocessing...")
+        # print("preprocessing...") # debug
         processed_image = preprocessor(processed_image, page.number)
-        processed_image.show()
+        # processed_image.show() # debug
 
     # Annotate the processed image using the Vision API
     response = process_single_image(processed_image, client)
-    text_annotations = response.text_annotations
 
-    # Extract full text and word locations
-    full_page_text = text_annotations[0].description if text_annotations else ""
-    word_locations = text_annotations[1:] if len(text_annotations) > 1 else []
+    if response:
+        text_annotations = response.text_annotations
+        # Extract full text and word locations
+        full_page_text = text_annotations[0].description if text_annotations else ""
+        word_locations = text_annotations[1:] if len(text_annotations) > 1 else []
+    else:
+        # return empty data
+        full_page_text = ""
+        word_locations = []
+        text_annotations = []
 
     # Create an annotated image with bounding boxes and labels
     annotated_image = annotate_image_with_text(processed_image, text_annotations, annotation_font_path)
@@ -463,19 +481,25 @@ def build_processed_pdf(
             page = doc.load_page(page_num)
             full_page_text, word_locations, annotated_image, unannotated_image, page_dimensions = process_page(page, client, annotation_font_path, preprocessor)
 
-            if page_num == 0: #save first page info
-                first_page_dimensions = page_dimensions
-            elif page_dimensions != first_page_dimensions: # verify page dimensions are consistent
-                warnings.warn(
-                f"Page {page_num + 1} has different dimensions than page 1."
-                f"({page_dimensions}) compared to the first page: ({first_page_dimensions}).",
-                PDFParseWarning
-            )
+            if full_page_text: # this is not an empty page
 
-            text_pages.append(full_page_text)
-            word_locations_list.append(word_locations)
-            annotated_images.append(annotated_image)
-            unannotated_images.append(unannotated_image)
+                if page_num == 0: #save first page info
+                    first_page_dimensions = page_dimensions
+                elif page_dimensions != first_page_dimensions: # verify page dimensions are consistent
+                    PDFParseWarning.warn(
+                    f"Page {page_num + 1} has different dimensions than page 1."
+                    f"({page_dimensions}) compared to the first page: ({first_page_dimensions})."
+                )
+
+                text_pages.append(full_page_text)
+                word_locations_list.append(word_locations)
+                annotated_images.append(annotated_image)
+                unannotated_images.append(unannotated_image)
+            else:
+                PDFParseWarning.warn(
+                    f"Page {page_num + 1} empty, skipping...\n"
+                    f"  (Note that total document length will be reduced.)"
+                )
 
         except ValueError as ve:
             print(f"ValueError on page {page_num + 1}: {ve}")
