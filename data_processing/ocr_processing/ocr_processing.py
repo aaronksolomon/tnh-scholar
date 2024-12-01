@@ -614,7 +614,7 @@ def save_processed_pdf_data(output_dir: Path, base_name: str, text_pages: List[s
 
     print(f"Processed data saved in: {base_path}")
 
-def load_processed_PDF_data(output_dir: Path, base_name: str) -> Tuple[List[str], List[List[EntityAnnotation]], List[Image.Image], List[Image.Image]]:
+def load_processed_PDF_data(base_path: Path) -> Tuple[List[str], List[List[EntityAnnotation]], List[Image.Image], List[Image.Image]]:
     """
     Loads processed PDF data from files using metadata for file references.
 
@@ -633,7 +633,6 @@ def load_processed_PDF_data(output_dir: Path, base_name: str) -> Tuple[List[str]
         FileNotFoundError: If any required files are missing.
         ValueError: If the metadata file is incomplete or invalid.
     """
-    base_path = output_dir / base_name
     metadata_file = base_path / "metadata.json"
 
     # Load metadata
