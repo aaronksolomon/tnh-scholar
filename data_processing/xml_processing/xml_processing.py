@@ -2,27 +2,30 @@ import os
 from xml.sax.saxutils import escape
 from typing import List
 import re
-
 from pathlib import Path
-from xml.sax.saxutils import escape
-from typing import List
 
-def save_pages_to_xml(output_xml_path: Path, text_pages: List[str], overwrite: bool = False) -> None:
+def save_pages_to_xml(
+    output_xml_path: Path,
+    text_pages: List[str],
+    overwrite: bool = False,
+    xml_content: bool = False
+) -> None:
     """
-    Generates and saves an XML file containing text pages, with an option to overwrite existing files.
-
+    Generates and saves an XML file containing text pages, with a <pagebreak> tag indicating the page ends.
+    
     Parameters:
-        text_pages (List[str]): A list of strings, each representing the text content of a page.
         output_xml_path (Path): The Path object for the file where the XML file will be saved.
+        text_pages (List[str]): A list of strings, each representing the text content of a page.
         overwrite (bool): If True, overwrites the file if it exists. Default is False.
-
+    
     Returns:
         None
-
+    
     Raises:
-        ValueError: If the input list of text_pages is empty.
+        ValueError: If the input list of text_pages is empty or contains invalid types.
         FileExistsError: If the file already exists and overwrite is False.
-        OSError: If there's an issue creating directories or saving the XML file.
+        PermissionError: If the file cannot be created due to insufficient permissions.
+        OSError: For other file I/O-related errors.
     """
     if not text_pages:
         raise ValueError("The text_pages list is empty. Cannot generate XML.")
@@ -41,21 +44,63 @@ def save_pages_to_xml(output_xml_path: Path, text_pages: List[str], overwrite: b
             xml_file.write("<?xml version='1.0' encoding='UTF-8'?>\n")
             xml_file.write("<document>\n")
 
-            # Add each page with its content, escaping special characters for XML safety
+            # Add each page with its content and <pagebreak> tag
             for page_number, text in enumerate(text_pages, start=1):
-                escaped_text = escape(text.strip()) if text.strip() else ""
-                xml_file.write(f"  <page page='{page_number}'>\n")
+                if not isinstance(text, str):
+                    raise ValueError(f"Invalid page content at index {page_number - 1}: expected a string.")
+                
+                content = text.strip()
+                escaped_text = escape(content)
                 xml_file.write(f"    {escaped_text}\n")
-                xml_file.write("  </page>\n")
+                xml_file.write(f"    <pagebreak page='{page_number}' />\n")
 
             # Close the root element
             xml_file.write("</document>\n")
 
         print(f"XML file successfully saved at {output_xml_path}")
 
+    except PermissionError as e:
+        raise PermissionError(f"Permission denied while writing to {output_xml_path}: {e}")
+
     except OSError as e:
-        raise OSError(f"Error saving XML file at {output_xml_path}: {e}")
+        raise OSError(f"An OS-related error occurred while saving XML file at {output_xml_path}: {e}")
+
+    except Exception as e:
+        raise RuntimeError(f"An unexpected error occurred: {e}")
+
+def join_xml_data_to_doc(
+    file_path: Path, data: List[str], overwrite: bool = False
+) -> None:
+    """
+    Joins a list of XML-tagged data with newlines, wraps it with <document> tags, 
+    and writes it to the specified file. Raises an exception if the file exists 
+    and overwrite is not set.
+
+    Args:
+        file_path (Path): Path to the output file.
+        data (List[str]): List of XML-tagged data strings.
+        overwrite (bool): Whether to overwrite the file if it exists.
+
+    Raises:
+        FileExistsError: If the file exists and overwrite is False.
+        ValueError: If the data list is empty.
+
+    Example:
+        >>> join_xml_data_to_doc(Path("output.xml"), ["<tag>Data</tag>"], overwrite=True)
+    """
+    if file_path.exists() and not overwrite:
+        raise FileExistsError(f"The file {file_path} already exists and overwrite is not set.")
     
+    if not data:
+        raise ValueError("The data list cannot be empty.")
+    
+    # Create the XML content
+    joined_data = "\n".join(data)  # Joining data with newline
+    xml_content = f"<document>\n{joined_data}\n</document>"
+    
+    # Write to file
+    file_path.write_text(xml_content, encoding='utf-8')
+
 def remove_page_tags(text):
     """
     Removes <page ...> and </page> tags from a text string.
