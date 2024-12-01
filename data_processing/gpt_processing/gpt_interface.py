@@ -6,6 +6,7 @@ from datetime import datetime
 from typing import List, Dict
 from pathlib import Path
 import ast
+import logging
 
 MAX_BATCH_LIST = 30
 OPEN_AI_DEFAULT_MODEL = "gpt-4o"
@@ -13,13 +14,16 @@ open_ai_current_client = None
 DEFAULT_MODEL_SETTINGS = {
     "gpt-4o": {
         "max_tokens": 16000,
-        "context_limit": 128000  # Total context limit for the model
+        "context_limit": 128000,  # Total context limit for the model
+        "temperature": 1.0
     },
     "gpt-3.5-turbo": {
         "max_tokens": 4096,  # Set conservatively to avoid errors
         "context_limit": 16384  # Same as gpt-4o
         }
     }
+
+logger = logging.getLogger("gpt_interface")
 
 # Dictionary of model configurations
 open_ai_model_settings = DEFAULT_MODEL_SETTINGS
@@ -49,18 +53,21 @@ def set_api_client():
             api_key=os.environ.get("OPENAI_API_KEY"),
         )
         open_ai_current_client = client
+
+        logger.info(f"Open AI API client successfully set: {client}")
+
         return client
     except Exception as e:
-        print(f"Error: {e}")
+        logger.error(f"Error: {e}", exc_info=True)
         return False
     
 def set_model_settings(model_settings_dict):
     global open_ai_model_settings
     open_ai_model_settings = model_settings_dict
     
-def generate_messages(system_message, user_message_wrapper, text_list_to_process):
+def generate_messages(system_message: str, user_message_wrapper: callable, data_list_to_process: List):
     messages = []
-    for text_element in text_list_to_process:    
+    for data_element in data_list_to_process:    
         message_block = [
                     {
                         "role": "system",
@@ -68,7 +75,7 @@ def generate_messages(system_message, user_message_wrapper, text_list_to_process
                     },
                     {
                         "role": "user",
-                        "content": user_message_wrapper(text_element),                                         
+                        "content": user_message_wrapper(data_element),                                         
                     }
                 ]
         messages.append(message_block)        
@@ -97,10 +104,33 @@ def run_immediate_chat_process(messages, response_object=None, model=OPEN_AI_DEF
         return chat_completion
     
     except Exception as e:
-        print(f"Error: {e}")
+        logger.error(f"Error: {e}", exc_info=True)
         return None
-    
-def create_jsonl_file_for_batch(messages, output_file_path=None, model=OPEN_AI_DEFAULT_MODEL, tools=None, json_mode=False):
+
+def log_batch_creation_info(batch_file_path: Path, request_obj: Dict, total_tokens: int):
+    """
+    Logs details about the JSONL batch creation process as a single coherent log message.
+
+    Parameters:
+        batch_file_path (Path): The path to the JSONL batch file being created.
+        request_obj (Dict): The request object being logged, containing details like method, URL, and body.
+
+    Returns:
+        None
+    """
+    logger.info(f"Creating JSONL batch file with {total_tokens} requested tokens at: {batch_file_path}")
+    logger.debug(f"Batch request details: Method={request_obj['method']}, URL={request_obj['url']}")
+
+    # Prepare batch parameters as a coherent string
+    body = request_obj.get("body", {})
+    batch_parameters = "\n".join(
+        f"    {key}: {value}" for key, value in body.items() if key != "messages"
+    )
+
+    # Log the combined parameters
+    logger.debug(f"Batch parameters:\n{batch_parameters}")
+
+def create_jsonl_file_for_batch(messages, output_file_path=None, max_token_list=[], model=OPEN_AI_DEFAULT_MODEL, tools=None, json_mode=False):
     """
     Creates a JSONL file for batch processing, with each request using the same system message, user messages, 
     and optional function schema for function calling.
@@ -116,8 +146,15 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, model=OPEN_AI_D
     """
     global open_ai_model_settings
 
-    max_tokens = open_ai_model_settings[model]['max_tokens']
+    message_count = len(messages)
+    total_tokens = 0
+
+    if not max_token_list: 
+        max_tokens = open_ai_model_settings[model]['max_tokens']
+        max_token_list = [max_tokens] * message_count
+        
     temperature = open_ai_model_settings[model]['temperature']
+    total_tokens = sum(max_token_list)
 
     if output_file_path is None:
         date_str = datetime.now().strftime("%m%d%Y")
@@ -125,7 +162,10 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, model=OPEN_AI_D
 
     requests = []      
     for i, message in enumerate(messages):
-        # Add the function schema if provided
+        
+        # get max_tokens
+        max_tokens = max_token_list[i]
+
         request_obj = {
             "custom_id": f"request-{i+1}",
             "method": "POST",
@@ -142,7 +182,8 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, model=OPEN_AI_D
         if tools:
             request_obj["body"]["tools"] = tools
         
-        print_request_info(request_obj)
+        if i==0:  # log first iteration only.
+            log_batch_creation_info(output_file_path, request_obj, total_tokens)
 
         requests.append(request_obj)
 
@@ -152,14 +193,10 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, model=OPEN_AI_D
             json.dump(request, f)
             f.write("\n")
     
-    print(f"JSONL file created at: {output_file_path}")
+    logger.info(f"JSONL file created at: {output_file_path}")
     return output_file_path
 
-def print_request_info(request_obj):
-    body = request_obj["body"]
-    for key, value in body.items():
-        if key != "messages":
-            print(f"{key}: {value}")
+
 
 def start_batch(jsonl_file: Path, description=""):
     """
@@ -219,7 +256,7 @@ def start_batch(jsonl_file: Path, description=""):
                 "basename": basename
             }
         )
-        print(f"Batch Initiated: {description}")
+        logger.info(f"Batch Initiated: {description}")
         return batch
     except Exception as e:
         return {"error": f"Batch creation failed: {e}"}
@@ -242,7 +279,7 @@ def get_active_batches() -> List[Dict]:
                 batch_list.append(batch_info)
         return batch_list
     except Exception as e:
-        print(f"Error fetching active batches: {e}")
+        logger.error(f"Error fetching active batches: {e}")
         return []
 
 def get_batch_status(batch_id):
@@ -279,7 +316,7 @@ def get_completed_batches() -> List[Dict]:
                 batch_list.append(batch_info)
         return batch_list
     except Exception as e:
-        print(f"Error fetching active batches: {e}")
+        logger.error(f"Error fetching active batches: {e}", exc_info=True)
         return []
 
 
@@ -309,7 +346,7 @@ def get_all_batch_info():
             batch_list.append(batch_info)
         return batch_list
     except Exception as e:
-        print(f"Error fetching active batches: {e}")
+        logger.error(f"Error fetching active batches: {e}", exc_info=True)
         return []
 
 def get_batch_response(batch_id):
@@ -335,7 +372,7 @@ def get_batch_response(batch_id):
     # Check the batch status
     batch_status = open_ai_current_client.batches.retrieve(batch_id)
     if batch_status.status != 'completed':
-        print(f"Batch status: {batch_status.status}")
+        logger.info(f"Batch status for {batch_id}: {batch_status.status}")
         return batch_status.status
 
     # Retrieve the output file contents
@@ -358,7 +395,7 @@ def get_last_batch_response(n: int = 0):
     completed = get_completed_batches()
     return get_batch_response(completed[n]['id'])
 
-def run_single_oa_batch(
+def run_single_batch(
     user_prompts: List,
     system_message: str,
     user_wrap_function: callable = None,
@@ -376,7 +413,6 @@ def run_single_oa_batch(
     Raises:
         Exception: If an error occurs during file processing.
     """
-    #logger = logging.getLogger(__name__)
 
     try:
         if not user_wrap_function:
@@ -391,21 +427,16 @@ def run_single_oa_batch(
         create_jsonl_file_for_batch(batch_message_seq, batch_file)
         #logger.info(f"Batch file created successfully: {output_file}")
 
-    except FileNotFoundError:
-        #logger.error(f"File not found: {input_xml_file}")
-        raise
-    except ValueError as e:
-        #logger.error(f"Value error: {e}")
-        raise
     except Exception as e:
-        #logger.error(f"Unexpected error while processing {input_xml_file}: {e}")
+        logger.error(f"Error while creating immediate batch file {batch_file}: {e}")
         raise
 
     try: 
-        batch =  start_batch(batch_file, description="temp batch process run.")
+        batch =  start_batch(batch_file, description="temporary batch process run.")
         return batch.id
     
     except Exception as e:
+        logger.error(f"Failed to start single batch process: {e}", exc_info=True)
         raise
 
 def delete_old_files(cutoff_date: datetime):
@@ -431,6 +462,6 @@ def delete_old_files(cutoff_date: datetime):
             try:
                 # Delete the file
                 client.files.delete(file.id)
-                print(f"Deleted file: {file.id} (created on {file_created_at})")
+                logger.info(f"Deleted file: {file.id} (created on {file_created_at})")
             except Exception as e:
-                print(f"Failed to delete file {file.id}: {e}")
+                logger.error(f"Failed to delete file {file.id}: {e}", exc_info=True)
