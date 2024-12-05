@@ -3,12 +3,12 @@ from xml.sax.saxutils import escape
 from typing import List
 import re
 from pathlib import Path
+from typing import List, Optional, Tuple
 
 def save_pages_to_xml(
     output_xml_path: Path,
     text_pages: List[str],
     overwrite: bool = False,
-    xml_content: bool = False
 ) -> None:
     """
     Generates and saves an XML file containing text pages, with a <pagebreak> tag indicating the page ends.
@@ -117,8 +117,225 @@ def remove_page_tags(text):
     text = re.sub(r"</page>", "", text)
     return text
 
+from typing import List, Optional, Tuple
+
+def split_xml_on_pagebreaks(
+    text: str,
+    page_groups: Optional[List[Tuple[int, int]]] = None,
+    keep_pagebreaks: bool = True,
+) -> List[str]:
+    """
+    Splits an XML document into individual pages based on <pagebreak> tags.
+    Optionally groups pages together based on page_groups and retains <pagebreak> tags if keep_pagebreaks is True.
+
+    Parameters:
+        text (str): The XML document as a string.
+        page_groups (Optional[List[Tuple[int, int]]]): A list of tuples defining page ranges to group together.
+                                                      Each tuple is of the form (start_page, end_page), inclusive.
+        keep_pagebreaks (bool): Whether to retain the <pagebreak> tags in the returned data. Default is False.
+
+    Returns:
+        List[str]: A list of page contents as strings, either split by pages or grouped by page_groups.
+
+    Raises:
+        ValueError: If the expected preamble or <document> tags are missing.
+    """
+    # Split text into lines
+    lines = text.splitlines()
+
+    # Preprocess: Remove `<?xml ... ?>` preamble and <document> tags
+    if lines[0].startswith("<?xml"):
+        lines.pop(0)
+    else:
+        raise ValueError("Missing `<?xml ... ?>` preamble on the first line.")
+    if lines[0].strip() == "<document>":
+        lines.pop(0)
+    else:
+        raise ValueError("Missing `<document>` opening tag on the second line.")
+    if lines[-1].strip() == "</document>":
+        lines.pop(-1)
+    else:
+        raise ValueError("Missing `</document>` closing tag on the last line.")
+
+    # Process content to split pages based on <pagebreak> tags
+    pages = []
+    current_page = []
+
+    for line in lines:
+        if "<pagebreak" in line:  # Page boundary detected
+            if current_page:
+                page_content = "\n".join(current_page).strip()
+                if keep_pagebreaks:
+                    page_content += f"\n{line.strip()}"  # Retain the <pagebreak> tag
+                pages.append(page_content)
+                current_page = []
+        else:
+            current_page.append(line)
+
+    # Append the last page if it exists
+    if current_page:
+        pages.append("\n".join(current_page).strip())
+
+    # Validate that pages are extracted
+    if not pages:
+        raise ValueError("No pages found in the XML content.")
+
+    # Group pages if page_groups is provided
+    if page_groups:
+        grouped_pages = []
+        for start, end in page_groups:
+            group_content = []
+            for i in range(start - 1, end):  # Page numbers are 1-based, so adjust to 0-based indexing
+                if 0 <= i < len(pages):  # Ensure the index is within bounds
+                    group_content.append(pages[i])
+            if group_content:
+                grouped_pages.append("\n".join(group_content).strip())
+        return grouped_pages
+
+    return pages
+
+# def split_xml_on_pagebreaks(text: str) -> list[str]:
+#     """
+#     Splits an XML document into individual pages based on <pagebreak> tags.
+#     Removes the `<?xml ... ?>` preamble and <document> tags as part of preprocessing.
+
+#     Parameters:
+#         text (str): The XML document as a string.
+
+#     Returns:
+#         list[str]: A list of page contents as strings, in the order they appear.
+
+#     Raises:
+#         ValueError: If the expected preamble or <document> tags are missing.
+#     """
+#     # Split text into lines
+#     lines = text.splitlines()
+
+#     # Preprocess: Remove `<?xml ... ?>` preamble and <document> tags
+#     if lines[0].startswith("<?xml"):
+#         lines.pop(0)
+#     else:
+#         raise ValueError("Missing `<?xml ... ?>` preamble on the first line.")
+#     if lines[0].strip() == "<document>":
+#         lines.pop(0)
+#     else:
+#         raise ValueError("Missing `<document>` opening tag on the second line.")
+#     if lines[-1].strip() == "</document>":
+#         lines.pop(-1)
+#     else:
+#         raise ValueError("Missing `</document>` closing tag on the last line.")
+
+#     # Process content to split pages based on <pagebreak> tags
+#     pages = []
+#     current_page = []
+
+#     for line in lines:
+#         if "<pagebreak" in line:  # Page boundary detected
+#             if current_page:
+#                 pages.append("\n".join(current_page).strip())
+#                 current_page = []
+#         else:
+#             current_page.append(line)
+
+#     # Append the last page if it exists
+#     if current_page:
+#         pages.append("\n".join(current_page).strip())
+
+#     # Validate that pages are contiguous and numbered starting from 1
+#     if len(pages) == 0:
+#         raise ValueError("No pages found in the XML content.")
+    
+#     # If no page_groups, return individual pages
+#     if not page_groups:
+#         return [content for _, content in pages]
+
+#     # Group pages based on page_groups
+#     grouped_pages = []
+#     for start, end in page_groups:
+#         group_content = ""
+#         for page_num, content in pages:
+#             if start <= page_num <= end:
+#                 group_content += content
+#         if group_content:
+#             grouped_pages.append(group_content)
+
+#     return grouped_pages
+
+#     return pages
+
+
+
+# def split_xml_on_pagebreaks(text: str, page_groups: Optional[List[Tuple[int, int]]] = None) -> List[str]:
+#     """
+#     Splits an XML document into individual pages based on <pagebreak> tags.
+#     Optionally groups pages together based on page_groups.
+
+#     Parameters:
+#         text (str): The XML document as a string.
+#         page_groups (Optional[List[Tuple[int, int]]]): A list of tuples defining page ranges to group together.
+#                                                       Each tuple is of the form (start_page, end_page), inclusive.
+
+#     Returns:
+#         List[str]: A list of page contents as strings, either split by pages or grouped by page_groups.
+
+#     Raises:
+#         ValueError: If the expected preamble or <document> tags are missing.
+#     """
+#     # Split text into lines
+#     lines = text.splitlines()
+
+#     # Preprocess: Remove `<?xml ... ?>` preamble and <document> tags
+#     if lines[0].startswith("<?xml"):
+#         lines.pop(0)
+#     else:
+#         raise ValueError("Missing `<?xml ... ?>` preamble on the first line.")
+#     if lines[0].strip() == "<document>":
+#         lines.pop(0)
+#     else:
+#         raise ValueError("Missing `<document>` opening tag on the second line.")
+#     if lines[-1].strip() == "</document>":
+#         lines.pop(-1)
+#     else:
+#         raise ValueError("Missing `</document>` closing tag on the last line.")
+
+#     # Process content to split pages based on <pagebreak> tags
+#     pages = []
+#     current_page = []
+
+#     for line in lines:
+#         if "<pagebreak" in line:  # Page boundary detected
+#             if current_page:
+#                 pages.append("\n".join(current_page).strip())
+#                 current_page = []
+#         else:
+#             current_page.append(line)
+
+#     # Append the last page if it exists
+#     if current_page:
+#         pages.append("\n".join(current_page).strip())
+
+#     # Validate that pages are extracted
+#     if not pages:
+#         raise ValueError("No pages found in the XML content.")
+
+#     # Group pages if page_groups is provided
+#     if page_groups:
+#         grouped_pages = []
+#         for start, end in page_groups:
+#             group_content = []
+#             for i in range(start - 1, end):  # Page numbers are 1-based, so adjust to 0-based indexing
+#                 if 0 <= i < len(pages):  # Ensure the index is within bounds
+#                     group_content.append(pages[i])
+#             if group_content:
+#                 grouped_pages.append("\n".join(group_content).strip())
+#         return grouped_pages
+
+#     return pages
+
 def split_xml_pages(text, page_groups=None):
     """
+    DEPRICATED: use split_xml_on_pagebreaks
+
     Splits an XML document into individual pages based on <page> tags.
     Optionally groups pages together based on page_groups.
 
