@@ -7,10 +7,13 @@ from typing import List, Dict
 from pathlib import Path
 import ast
 import logging
+from logging.handlers import RotatingFileHandler
+import time
+from math import floor
 
 MAX_BATCH_LIST = 30
 OPEN_AI_DEFAULT_MODEL = "gpt-4o"
-open_ai_current_client = None
+client = None
 DEFAULT_MODEL_SETTINGS = {
     "gpt-4o": {
         "max_tokens": 16000,
@@ -23,13 +26,50 @@ DEFAULT_MODEL_SETTINGS = {
         }
     }
 
-logger = logging.getLogger("gpt_interface")
-
 # Dictionary of model configurations
 open_ai_model_settings = DEFAULT_MODEL_SETTINGS
 
 open_ai_encoding = tiktoken.encoding_for_model(OPEN_AI_DEFAULT_MODEL)
 
+# logger for this module
+logger = logging.getLogger("gpt_interface")
+
+# Dedicated logger for system messages
+system_message_logger = logging.getLogger("SystemMessageLogger")
+system_message_logger.setLevel(logging.INFO)
+system_message_handler = RotatingFileHandler("system_message_log.txt", maxBytes=1000000, backupCount=3)
+system_message_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
+system_message_logger.addHandler(system_message_handler)
+
+# Set system_message_logger propagation
+system_message_logger.propagate = False
+
+import os
+from openai import OpenAI
+
+class OpenAIClient:
+    """Minimal Singleton class for managing the OpenAI client."""
+    _instance = None
+
+    def __init__(self, api_key: str):
+        """Initialize the OpenAI client."""
+        self.client = OpenAI(api_key=api_key)
+
+    @classmethod
+    def get_instance(cls):
+        """
+        Get or initialize the OpenAI client.
+
+        Returns:
+            OpenAI: The singleton OpenAI client instance.
+        """
+        if cls._instance is None:
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                raise ValueError("API key not found. Set the 'OPENAI_API_KEY' environment variable.")
+            cls._instance = cls(api_key)
+        return cls._instance.client
+    
 class ClientNotInitializedError(Exception):
     """Exception raised when the OpenAI client is not initialized."""
     pass
@@ -38,34 +78,21 @@ def token_count(text):
     return len(open_ai_encoding.encode(text))
 
 def get_api_client():
-    if open_ai_current_client is None:
-        raise ClientNotInitializedError(
-            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
-        )
-    return open_ai_current_client
-
-def set_api_client():
-    global open_ai_current_client
-
-    try:
-        client = OpenAI(
-            # This is the default and can be omitted
-            api_key=os.environ.get("OPENAI_API_KEY"),
-        )
-        open_ai_current_client = client
-
-        logger.info(f"Open AI API client successfully set: {client}")
-
-        return client
-    except Exception as e:
-        logger.error(f"Error: {e}", exc_info=True)
-        return False
+    client = OpenAIClient.get_instance()
+    return client
     
 def set_model_settings(model_settings_dict):
     global open_ai_model_settings
     open_ai_model_settings = model_settings_dict
+
+def get_model_settings(model, parameter):
+    return open_ai_model_settings[model][parameter]
     
-def generate_messages(system_message: str, user_message_wrapper: callable, data_list_to_process: List):
+def generate_messages(system_message: str, user_message_wrapper: callable, data_list_to_process: List, log_system_message=True):
+    
+    if log_system_message:
+        system_message_logger.info(f"System Message:\n{system_message}")
+
     messages = []
     for data_element in data_list_to_process:    
         message_block = [
@@ -81,33 +108,36 @@ def generate_messages(system_message: str, user_message_wrapper: callable, data_
         messages.append(message_block)        
     return messages
 
-def run_immediate_chat_process(messages, response_object=None, model=OPEN_AI_DEFAULT_MODEL):
-    global open_ai_current_client
+def run_immediate_chat_process(messages, max_tokens: int =  0, response_object=None, model=OPEN_AI_DEFAULT_MODEL):
+    client = get_api_client()
 
-    if open_ai_current_client is None:
-        raise ClientNotInitializedError(
-            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
-        )
-    
+    if max_tokens == 0:
+        max_tokens = open_ai_model_settings[model]['max_tokens']
+
     try:
         if response_object:
-            chat_completion = open_ai_current_client.beta.chat.completions.parse(
+            chat_completion = client.beta.chat.completions.parse(
                 messages=messages,
                 model=model,
-                response_format=response_object
+                response_format=response_object,
+                max_completion_tokens=max_tokens
             )
         else: 
-            chat_completion = open_ai_current_client.chat.completions.create(
+            chat_completion = client.chat.completions.create(
                 messages=messages,
                 model=model,
+                max_completion_tokens=max_tokens
             )
         return chat_completion
     
     except Exception as e:
-        logger.error(f"Error: {e}", exc_info=True)
+        logger.error(f"Error running immediate chat: {e}", exc_info=True)
         return None
+    
+def get_completion_content(chat_completion):
+    return chat_completion.choices[0].message.content
 
-def log_batch_creation_info(batch_file_path: Path, request_obj: Dict, total_tokens: int):
+def _log_batch_creation_info(batch_file_path: Path, request_obj: Dict, total_tokens: int):
     """
     Logs details about the JSONL batch creation process as a single coherent log message.
 
@@ -118,7 +148,7 @@ def log_batch_creation_info(batch_file_path: Path, request_obj: Dict, total_toke
     Returns:
         None
     """
-    logger.info(f"Creating JSONL batch file with {total_tokens} requested tokens at: {batch_file_path}")
+    logger.info(f"Creating JSONL batch file with \033[91m{total_tokens}\033[0m requested tokens:\n\t{batch_file_path}")
     logger.debug(f"Batch request details: Method={request_obj['method']}, URL={request_obj['url']}")
 
     # Prepare batch parameters as a coherent string
@@ -159,6 +189,11 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, max_token_list=
     if output_file_path is None:
         date_str = datetime.now().strftime("%m%d%Y")
         output_file_path = f"batch_requests_{date_str}.jsonl"
+    
+    # Ensure the directory for the output file exists
+    output_dir = Path(output_file_path).parent
+    if not output_dir.exists():
+        output_dir.mkdir(parents=True, exist_ok=True)
 
     requests = []      
     for i, message in enumerate(messages):
@@ -183,7 +218,7 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, max_token_list=
             request_obj["body"]["tools"] = tools
         
         if i==0:  # log first iteration only.
-            log_batch_creation_info(output_file_path, request_obj, total_tokens)
+            _log_batch_creation_info(output_file_path, request_obj, total_tokens)
 
         requests.append(request_obj)
 
@@ -196,8 +231,156 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, max_token_list=
     logger.info(f"JSONL file created at: {output_file_path}")
     return output_file_path
 
+def poll_batch_for_response(
+    batch_id: str, interval: int = 10, timeout: int = 3600, backoff_factor: float = 1.3, max_interval: int = 600
+) -> bool | list:
+    """
+    Poll the batch status until it completes, fails, or expires.
+    
+    Args:
+        batch_id (str): The ID of the batch to poll.
+        interval (int): Initial time (in seconds) to wait between polls. Default is 10 seconds.
+        timeout (int): Maximum duration (in seconds) to poll before timing out. Use 1 hour as default.
+        backoff_factor (int): Factor by which the interval increases after each poll.
+        max_interval (int): Maximum polling interval in seconds.
 
+    Returns:
+        list: The batch response if successful.
+        bool: Returns False if the batch fails, times out, or expires.
 
+    Raises:
+        RuntimeError: If the batch ID is not found or if an unexpected error occurs.
+    """
+    start_time = time.time()
+    logger.info(f"Polling batch status for batch ID {batch_id} ...")
+
+    attempts = 0
+    while True:
+        try:
+            time.sleep(interval)
+            elapsed_time = time.time() - start_time
+
+            # Check for timeout
+            if elapsed_time > timeout:
+                logger.error(f"Polling timed out after {timeout} seconds for batch ID {batch_id}.")
+                return False
+
+            # Get batch status
+            batch_status = get_batch_status(batch_id)
+            logger.debug(f"Batch ID {batch_id} status: {batch_status}")
+
+            if not batch_status:
+                raise RuntimeError(f"Batch ID {batch_id} not found or invalid response from `get_batch_status`.")
+
+            # Handle completed batch
+            if batch_status == "completed":
+                logger.info(f"Batch processing for ID {batch_id} completed successfully.")
+                try:
+                    return get_batch_response(batch_id)
+                except Exception as e:
+                    logger.error(f"Error retrieving response for batch ID {batch_id}: {e}", exc_info=True)
+                    raise RuntimeError(f"Failed to retrieve response for batch ID {batch_id}.") from e
+
+            # Handle failed batch
+            elif batch_status == "failed":
+                logger.error(f"Batch processing for ID {batch_id} failed.")
+                return False
+
+            # Log ongoing status and adjust interval
+            logger.info(f"Batch status: {batch_status}. Retrying in {interval} seconds...")
+            attempts += 1
+            interval = min(floor(interval * backoff_factor), max_interval)
+
+        except Exception as e:
+            logger.error(f"Unexpected error while polling batch ID {batch_id}: {e}", exc_info=True)
+            raise RuntimeError(f"Error during polling for batch ID {batch_id}.") from e
+            
+def _log_batch_start_info(batch, description):
+    """
+    Log the batch object and its metadata using the logger. Helper function for start_batch
+
+    Args:
+        batch: The Batch object returned by start_batch.
+        logger: The logger instance for logging.
+    """
+    logger.info(f"Batch Initiated with description: {description}")
+    logger.info(f"batch info: {batch.id}, {batch.created_at}, {batch.input_file_id} ")
+
+def start_batch_with_retries(
+    jsonl_file: Path,
+    description: str = "",
+    max_retries: int = 20,
+    retry_delay: int = 5,
+    poll_interval: int = 10,
+    timeout: int = 3600
+) -> list:
+    """
+    Starts a batch with retries and polls for its completion.
+
+    Args:
+        jsonl_file (Path): Path to the JSONL file for batch input.
+        description (str): A description for the batch job (optional).
+        max_retries (int): Maximum number of retries to start and complete the batch (default: 3).
+        retry_delay (int): Delay in seconds between retries (default: 60).
+        poll_interval (int): Interval in seconds for polling batch status (default: 10).
+        timeout (int): Timeout in seconds for polling (default: 23 hours).
+
+    Returns:
+        list: The batch response if completed successfully.
+
+    Raises:
+        RuntimeError: If the batch fails after all retries or encounters an error.
+    """
+    for attempt in range(max_retries):
+        try:
+            # Start the batch
+            batch = start_batch(jsonl_file, description=description)
+            if not batch:
+                raise RuntimeError("Batch unable to start.")
+            batch_id = batch.id
+            if not batch_id:
+                raise RuntimeError("Batch started but no ID was returned.")
+
+            logger.info(
+                f"Batch started: attempt {attempt + 1}.",
+                extra={"batch_id": batch_id, "description": description}
+            )
+
+            # Poll for batch completion
+            response = poll_batch_for_response(
+                batch_id, interval=poll_interval, timeout=timeout
+            )
+            if response:
+                logger.info(
+                    f"Batch completed successfully after {attempt + 1} attempts.",
+                    extra={"batch_id": batch_id, "description": description}
+                )
+                return response
+
+            else:  # No response means batch failed. Retry.
+                logger.error(
+                    f"Attempt {attempt + 1} failed. Retrying batch process in {retry_delay} seconds...",
+                    extra={"attempt": attempt + 1, "max_retries": max_retries, "description": description}
+                )
+                time.sleep(retry_delay)
+
+        except Exception as e:
+            logger.error(
+                f"Batch start and polling failed on attempt {attempt + 1}: {e}",
+                exc_info=True,
+                extra={"attempt": attempt + 1, "description": description}
+            )
+            time.sleep(retry_delay)
+
+    # If the loop completes without success
+    logger.error(
+        f"Failed to complete batch after {max_retries} retries.",
+        extra={"description": description}
+    )
+    raise RuntimeError(
+        f"Error: Failed to complete batch after {max_retries} retries."
+    )
+    
 def start_batch(jsonl_file: Path, description=""):
     """
     Starts a batch process using OpenAI's client with an optional description and JSONL batch file.
@@ -215,12 +398,7 @@ def start_batch(jsonl_file: Path, description=""):
         jsonl_file = Path("batch_requests.jsonl")
         start_batch(jsonl_file)
     """
-    global open_ai_current_client
-
-    if open_ai_current_client is None:
-        raise ClientNotInitializedError(
-            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
-        )
+    client = get_api_client()
     
     if not isinstance(jsonl_file, Path):
         raise TypeError("The 'jsonl_file' argument must be a pathlib.Path object.")
@@ -237,7 +415,7 @@ def start_batch(jsonl_file: Path, description=""):
     try:
         # Attempt to create the input file for the batch process
         with jsonl_file.open("rb") as file:
-            batch_input_file = open_ai_current_client.files.create(
+            batch_input_file = client.files.create(
                 file=file,
                 purpose="batch"
             )
@@ -247,7 +425,7 @@ def start_batch(jsonl_file: Path, description=""):
     
     try:
         # Attempt to create the batch with specified input file and metadata description
-        batch = open_ai_current_client.batches.create(
+        batch = client.batches.create(
             input_file_id=batch_input_file_id,
             endpoint="/v1/chat/completions",
             completion_window="24h",
@@ -256,8 +434,11 @@ def start_batch(jsonl_file: Path, description=""):
                 "basename": basename
             }
         )
-        logger.info(f"Batch Initiated: {description}")
+
+        # log the batch
+        _log_batch_start_info(batch, description)
         return batch
+    
     except Exception as e:
         return {"error": f"Batch creation failed: {e}"}
     
@@ -265,8 +446,10 @@ def get_active_batches() -> List[Dict]:
     """
     Retrieve the list of active batches using the OpenAI API.
     """
+    client = get_api_client()
+
     try:
-        batches = open_ai_current_client.batches.list(limit=MAX_BATCH_LIST)
+        batches = client.batches.list(limit=MAX_BATCH_LIST)
         batch_list = []
         for batch in batches:
             if batch.status == "in_progress":
@@ -283,9 +466,9 @@ def get_active_batches() -> List[Dict]:
         return []
 
 def get_batch_status(batch_id):
-    global open_ai_current_client
+    client = get_api_client()
 
-    batch = open_ai_current_client.batches.retrieve(batch_id)
+    batch = client.batches.retrieve(batch_id)
     return batch.status
 
 
@@ -293,15 +476,10 @@ def get_completed_batches() -> List[Dict]:
     """
     Retrieve the list of active batches using the OpenAI API.
     """
-    global open_ai_current_client
-
-    if open_ai_current_client is None:
-        raise ClientNotInitializedError(
-            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
-        )
+    client = get_api_client()
     
     try:
-        batches = open_ai_current_client.batches.list(limit=MAX_BATCH_LIST)
+        batches = client.batches.list(limit=MAX_BATCH_LIST)
         batch_list = []
         for batch in batches:
             if batch.status == "completed":
@@ -324,15 +502,10 @@ def get_all_batch_info():
     """
     Retrieve the list of batches up to MAX_BATCH_LIST using the OpenAI API.
     """
-    global open_ai_current_client
-
-    if open_ai_current_client is None:
-        raise ClientNotInitializedError(
-            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
-        )
+    client = get_api_client()
     
     try:
-        batches = open_ai_current_client.batches.list(limit=MAX_BATCH_LIST)
+        batches = client.batches.list(limit=MAX_BATCH_LIST)
         batch_list = []
         for batch in batches:
             batch_info = {
@@ -349,35 +522,30 @@ def get_all_batch_info():
         logger.error(f"Error fetching active batches: {e}", exc_info=True)
         return []
 
-def get_batch_response(batch_id):
+def get_batch_response(batch_id: str) -> List:
     """
     Retrieves the status of a batch job and returns the result if completed.
     Parses the JSON result file, collects the output messages,
     and returns them as a Python list.
     
     Args:
-    - batch (Batch): The batch object to retrieve status and results for.
+    - batch_id : The batch_id string to retrieve status and results for.
 
     Returns:
     - If completed: A list containing the message content for each response of the batch process.
     - If not completed: A string with the batch status.
     """
-    global open_ai_current_client
-
-    if open_ai_current_client is None:
-        raise ClientNotInitializedError(
-            "The OpenAI client is not initialized. Please set `open_ai_current_client` before calling this function."
-        )
+    client = get_api_client()
     
     # Check the batch status
-    batch_status = open_ai_current_client.batches.retrieve(batch_id)
+    batch_status = client.batches.retrieve(batch_id)
     if batch_status.status != 'completed':
         logger.info(f"Batch status for {batch_id}: {batch_status.status}")
         return batch_status.status
 
     # Retrieve the output file contents
     file_id = batch_status.output_file_id
-    file_response = open_ai_current_client.files.content(file_id)
+    file_response = client.files.content(file_id)
 
     # Parse the JSON lines in the output file
     results = []
@@ -439,7 +607,7 @@ def run_single_batch(
         logger.error(f"Failed to start single batch process: {e}", exc_info=True)
         raise
 
-def delete_old_files(cutoff_date: datetime):
+def delete_api_files(cutoff_date: datetime):
     """
     Delete all files on OpenAI's storage older than a given date at midnight.
 
@@ -447,9 +615,7 @@ def delete_old_files(cutoff_date: datetime):
     - cutoff_date (datetime): The cutoff date. Files older than this date will be deleted.
     """
     # Set the OpenAI API key
-    global open_ai_current_client
-
-    client = open_ai_current_client
+    client = get_api_client()
 
     # Get a list of all files
     files = client.files.list()
@@ -462,6 +628,6 @@ def delete_old_files(cutoff_date: datetime):
             try:
                 # Delete the file
                 client.files.delete(file.id)
-                logger.info(f"Deleted file: {file.id} (created on {file_created_at})")
+                print(f"Deleted file: {file.id} (created on {file_created_at})")
             except Exception as e:
                 logger.error(f"Failed to delete file {file.id}: {e}", exc_info=True)
