@@ -11,6 +11,7 @@ from pathlib import Path
 import base64
 import warnings
 from typing import Callable
+import logging
 
 DEFAULT_ANNOTATION_FONT_PATH = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
 DEFAULT_ANNOTATION_FONT_SIZE = 12 # default annotation font size
@@ -19,6 +20,8 @@ DEFAULT_ANNOTATION_LANGUAGE_HINTS = ['vi']
 DEFAULT_ANNOTATION_METHOD = "DOCUMENT_TEXT_DETECTION"
 
 import warnings
+
+logger = logging.getLogger("ocr_processing")
 
 class PDFParseWarning(Warning):
     """
@@ -403,8 +406,8 @@ def process_page(
     else:
         # return empty data
         full_page_text = ""
-        word_locations = []
-        text_annotations = []
+        word_locations = [EntityAnnotation()] 
+        text_annotations = [EntityAnnotation()]  # create empty data structures to allow storing to proceed.
 
     # Create an annotated image with bounding boxes and labels
     annotated_image = annotate_image_with_text(processed_image, text_annotations, annotation_font_path)
@@ -466,7 +469,7 @@ def build_processed_pdf(
     if doc.page_count == 0:
         raise ValueError(f"The PDF file '{pdf_path}' contains no pages.")
 
-    print(f"Processing document with {doc.page_count} pages...")
+    logger.info(f"Processing file with {doc.page_count} pages:\n\t{pdf_path}")
 
     text_pages = []
     word_locations_list = []
@@ -475,7 +478,7 @@ def build_processed_pdf(
     first_page_dimensions = None
 
     for page_num in range(doc.page_count):
-        print(f"Processing page {page_num + 1}/{doc.page_count}...")
+        logger.info(f"Processing page {page_num + 1}/{doc.page_count}...")
 
         try:
             page = doc.load_page(page_num)
@@ -497,8 +500,8 @@ def build_processed_pdf(
                 unannotated_images.append(unannotated_image)
             else:
                 PDFParseWarning.warn(
-                    f"Page {page_num + 1} empty, skipping...\n"
-                    f"  (Note that total document length will be reduced.)"
+                    f"Page {page_num + 1} empty, added empty datastructures...\n"
+                    # f"  (Note that total document length will be reduced.)"
                 )
 
         except ValueError as ve:
@@ -554,7 +557,7 @@ def deserialize_entity_annotations_from_json(data: str) -> List[List[EntityAnnot
 
     return deserialized_data
 
-def save_processed_pdf_data(output_dir: Path, base_name: str, text_pages: List[str], 
+def save_processed_pdf_data(output_dir: Path, journal_name: str, text_pages: List[str], 
                             word_locations: List[List[EntityAnnotation]], 
                             annotated_images: List[Image.Image], 
                             unannotated_images: List[Image.Image]):
@@ -573,7 +576,7 @@ def save_processed_pdf_data(output_dir: Path, base_name: str, text_pages: List[s
         None
     """
     # Create output directories
-    base_path = output_dir / base_name
+    base_path = output_dir / journal_name / "ocr_data"
     images_dir = base_path / "images"
 
     base_path.mkdir(parents=True, exist_ok=True)
@@ -600,7 +603,7 @@ def save_processed_pdf_data(output_dir: Path, base_name: str, text_pages: List[s
 
     # Save metadata
     metadata = {
-        "source_pdf": base_name,
+        "source_pdf": journal_name,
         "page_count": len(text_pages),
         "images_directory": str(images_dir),  # Convert Path to string for JSON serialization
         "files": {
