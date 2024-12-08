@@ -10,6 +10,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 import time
 from math import floor
+from logging_config import get_child_logger
+
 
 MAX_BATCH_LIST = 30
 OPEN_AI_DEFAULT_MODEL = "gpt-4o"
@@ -32,20 +34,7 @@ open_ai_model_settings = DEFAULT_MODEL_SETTINGS
 open_ai_encoding = tiktoken.encoding_for_model(OPEN_AI_DEFAULT_MODEL)
 
 # logger for this module
-logger = logging.getLogger("gpt_interface")
-
-# Dedicated logger for system messages
-system_message_logger = logging.getLogger("SystemMessageLogger")
-system_message_logger.setLevel(logging.INFO)
-system_message_handler = RotatingFileHandler("system_message_log.txt", maxBytes=1000000, backupCount=3)
-system_message_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
-system_message_logger.addHandler(system_message_handler)
-
-# Set system_message_logger propagation
-system_message_logger.propagate = False
-
-import os
-from openai import OpenAI
+logger = get_child_logger(__name__)
 
 class OpenAIClient:
     """Minimal Singleton class for managing the OpenAI client."""
@@ -89,9 +78,6 @@ def get_model_settings(model, parameter):
     return open_ai_model_settings[model][parameter]
     
 def generate_messages(system_message: str, user_message_wrapper: callable, data_list_to_process: List, log_system_message=True):
-    
-    if log_system_message:
-        system_message_logger.info(f"System Message:\n{system_message}")
 
     messages = []
     for data_element in data_list_to_process:    
