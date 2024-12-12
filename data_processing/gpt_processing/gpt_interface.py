@@ -1,5 +1,6 @@
 import tiktoken
 import os
+from dotenv import load_dotenv
 from openai import OpenAI
 import json
 from datetime import datetime
@@ -12,10 +13,10 @@ import time
 from math import floor
 from logging_config import get_child_logger
 
-
 MAX_BATCH_LIST = 30
 OPEN_AI_DEFAULT_MODEL = "gpt-4o"
-client = None
+DEFAULT_MAX_BATCH_RETRY = 60
+
 DEFAULT_MODEL_SETTINGS = {
     "gpt-4o": {
         "max_tokens": 16000,
@@ -34,10 +35,10 @@ open_ai_model_settings = DEFAULT_MODEL_SETTINGS
 open_ai_encoding = tiktoken.encoding_for_model(OPEN_AI_DEFAULT_MODEL)
 
 # logger for this module
-logger = get_child_logger(__name__)
+logger = get_child_logger("gpt_interface")
 
 class OpenAIClient:
-    """Minimal Singleton class for managing the OpenAI client."""
+    """Singleton class for managing the OpenAI client."""
     _instance = None
 
     def __init__(self, api_key: str):
@@ -53,9 +54,15 @@ class OpenAIClient:
             OpenAI: The singleton OpenAI client instance.
         """
         if cls._instance is None:
+            # Load the .env file
+            load_dotenv()
+
+            # Retrieve the API key from the environment
             api_key = os.getenv("OPENAI_API_KEY")
             if not api_key:
-                raise ValueError("API key not found. Set the 'OPENAI_API_KEY' environment variable.")
+                raise ValueError("API key not found. Set it in the .env file with the key 'OPENAI_API_KEY'.")
+
+            # Initialize the singleton instance
             cls._instance = cls(api_key)
         return cls._instance.client
     
@@ -119,9 +126,80 @@ def run_immediate_chat_process(messages, max_tokens: int =  0, response_object=N
     except Exception as e:
         logger.error(f"Error running immediate chat: {e}", exc_info=True)
         return None
+
+def run_immediate_completion_simple(system_message, user_message, model=OPEN_AI_DEFAULT_MODEL, max_tokens: int =  -1, response_object=None):
+    client = get_api_client()
+
+    if max_tokens == -1:
+        max_tokens = open_ai_model_settings[model]['max_tokens']
+
+    message_block = [
+                    {
+                        "role": "system",
+                        "content": system_message
+                    },
+                    {
+                        "role": "user",
+                        "content": user_message                                         
+                    }
+    ]
+
+    try:
+        logger.debug(f"Starting chat completion with response_object={response_object} and max_tokens={max_tokens}...")
+
+        if response_object:
+            chat_completion = client.beta.chat.completions.parse(
+                messages=message_block,
+                model=model,
+                response_format=response_object,
+                max_completion_tokens=max_tokens
+            )
+        else: 
+            chat_completion = client.chat.completions.create(
+                messages=message_block,
+                model=model,
+                max_completion_tokens=max_tokens
+            )
+        return chat_completion
     
+    except Exception as e:
+        logger.error(f"Error running immediate chat: {e}", exc_info=True)
+        return None
+
+def run_transcription_speech(audio_file: Path, 
+                             model: str = OPEN_AI_DEFAULT_MODEL, 
+                             response_format="verbose_json", 
+                             prompt="",
+                             mode: str = "transcribe"):  # mode can be "transcribe" or "translate"
+    
+    client = get_api_client()
+
+    with audio_file.open("rb") as file:
+        if mode == "transcribe":
+            transcript = client.audio.transcriptions.create(
+                    model=model,
+                    response_format=response_format,
+                    prompt=prompt,
+                    file=file
+                )
+        elif mode == "translate":
+            transcript = client.audio.translations.create(
+                model=model,
+                response_format=response_format,
+                prompt=prompt,
+                file=file
+            )
+        else:
+            logger.error(f"Invalid mode: {mode}, in speech transcription generation.")
+            raise ValueError(f"'translate' or 'transcribe' expected, not {mode}.")
+    
+    return transcript
+
 def get_completion_content(chat_completion):
     return chat_completion.choices[0].message.content
+
+def get_completion_object(chat_completion):
+    return chat_completion.choices[0].message.parsed
 
 def _log_batch_creation_info(batch_file_path: Path, request_obj: Dict, total_tokens: int):
     """
@@ -292,81 +370,6 @@ def _log_batch_start_info(batch, description):
     logger.info(f"Batch Initiated with description: {description}")
     logger.info(f"batch info: {batch.id}, {batch.created_at}, {batch.input_file_id} ")
 
-def start_batch_with_retries(
-    jsonl_file: Path,
-    description: str = "",
-    max_retries: int = 20,
-    retry_delay: int = 5,
-    poll_interval: int = 10,
-    timeout: int = 3600
-) -> list:
-    """
-    Starts a batch with retries and polls for its completion.
-
-    Args:
-        jsonl_file (Path): Path to the JSONL file for batch input.
-        description (str): A description for the batch job (optional).
-        max_retries (int): Maximum number of retries to start and complete the batch (default: 3).
-        retry_delay (int): Delay in seconds between retries (default: 60).
-        poll_interval (int): Interval in seconds for polling batch status (default: 10).
-        timeout (int): Timeout in seconds for polling (default: 23 hours).
-
-    Returns:
-        list: The batch response if completed successfully.
-
-    Raises:
-        RuntimeError: If the batch fails after all retries or encounters an error.
-    """
-    for attempt in range(max_retries):
-        try:
-            # Start the batch
-            batch = start_batch(jsonl_file, description=description)
-            if not batch:
-                raise RuntimeError("Batch unable to start.")
-            batch_id = batch.id
-            if not batch_id:
-                raise RuntimeError("Batch started but no ID was returned.")
-
-            logger.info(
-                f"Batch started: attempt {attempt + 1}.",
-                extra={"batch_id": batch_id, "description": description}
-            )
-
-            # Poll for batch completion
-            response = poll_batch_for_response(
-                batch_id, interval=poll_interval, timeout=timeout
-            )
-            if response:
-                logger.info(
-                    f"Batch completed successfully after {attempt + 1} attempts.",
-                    extra={"batch_id": batch_id, "description": description}
-                )
-                return response
-
-            else:  # No response means batch failed. Retry.
-                logger.error(
-                    f"Attempt {attempt + 1} failed. Retrying batch process in {retry_delay} seconds...",
-                    extra={"attempt": attempt + 1, "max_retries": max_retries, "description": description}
-                )
-                time.sleep(retry_delay)
-
-        except Exception as e:
-            logger.error(
-                f"Batch start and polling failed on attempt {attempt + 1}: {e}",
-                exc_info=True,
-                extra={"attempt": attempt + 1, "description": description}
-            )
-            time.sleep(retry_delay)
-
-    # If the loop completes without success
-    logger.error(
-        f"Failed to complete batch after {max_retries} retries.",
-        extra={"description": description}
-    )
-    raise RuntimeError(
-        f"Error: Failed to complete batch after {max_retries} retries."
-    )
-    
 def start_batch(jsonl_file: Path, description=""):
     """
     Starts a batch process using OpenAI's client with an optional description and JSONL batch file.
@@ -428,6 +431,136 @@ def start_batch(jsonl_file: Path, description=""):
     except Exception as e:
         return {"error": f"Batch creation failed: {e}"}
     
+def start_batch_with_retries(
+    jsonl_file: Path,
+    description: str = "",
+    max_retries: int = DEFAULT_MAX_BATCH_RETRY,
+    retry_delay: int = 5,
+    poll_interval: int = 10,
+    timeout: int = 3600
+) -> list[str]:
+    """
+    Starts a batch with retries and polls for its completion.
+
+    Args:
+        jsonl_file (Path): Path to the JSONL file for batch input.
+        description (str): A description for the batch job (optional).
+        max_retries (int): Maximum number of retries to start and complete the batch (default: 3).
+        retry_delay (int): Delay in seconds between retries (default: 60).
+        poll_interval (int): Interval in seconds for polling batch status (default: 10).
+        timeout (int): Timeout in seconds for polling (default: 23 hours).
+
+    Returns:
+        list: The batch response if completed successfully.
+
+    Raises:
+        RuntimeError: If the batch fails after all retries or encounters an error.
+    """
+    for attempt in range(max_retries):
+        try:
+            # Start the batch
+            batch = start_batch(jsonl_file, description=description)
+            if not batch or 'error' in batch:
+                raise RuntimeError(f"Failed to start batch: {batch.get('error', 'Unknown error')}")
+            
+            batch_id = batch.id
+            if not batch_id:
+                raise RuntimeError("Batch started but no ID was returned.")
+
+            logger.info(
+                f"Batch started: attempt {attempt + 1}.",
+                extra={"batch_id": batch_id, "description": description}
+            )
+
+            # Poll for batch completion
+            response_list = poll_batch_for_response(
+                batch_id, interval=poll_interval, timeout=timeout
+            )
+
+            # Check for a response
+            if response_list:
+                logger.info(
+                    f"Batch completed successfully after {attempt + 1} attempts.",
+                    extra={"batch_id": batch_id, "description": description}
+                )
+                break # exit for loop
+
+            else:  # No response means batch failed. Retry.
+                logger.error(
+                    f"Attempt {attempt + 1} failed. Retrying batch process in {retry_delay} seconds...",
+                    extra={"attempt": attempt + 1, "max_retries": max_retries, "description": description}
+                )
+                time.sleep(retry_delay)
+
+        except Exception as e:
+            logger.error(
+                f"Batch start and polling failed on attempt {attempt + 1}: {e}",
+                exc_info=True,
+                extra={"attempt": attempt + 1, "description": description}
+            )
+            time.sleep(retry_delay)
+
+    else:  # else the loop completed before succesful result
+        logger.error(
+            f"Failed to complete batch after {max_retries} retries.",
+            extra={"description": description}
+        )
+        raise RuntimeError(
+            f"Error: Failed to complete batch after {max_retries} retries."
+        )
+    
+    return response_list
+    
+def run_single_batch(
+    user_prompts: List,
+    system_message: str,
+    user_wrap_function: callable = None,
+    max_token_list: List[int] = [],
+    description= ""
+) -> List[str]:
+    """
+    Generate a batch file for the OpenAI (OA) API and send it.
+
+    Parameters:
+        system_message (str): System message template for batch processing.
+        user_wrap_function (callable): Function to wrap user input for processing pages.
+
+    Returns:
+        str: Path to the created batch file.
+
+    Raises:
+        Exception: If an error occurs during file processing.
+    """
+
+    try:
+        if not user_wrap_function:
+            user_wrap_function = lambda x: x
+
+        # Generate messages for the pages
+        batch_message_seq = generate_messages(system_message, user_wrap_function, user_prompts)
+
+        batch_file = Path("./temp_batch_run.jsonl")
+
+        # Save the batch file
+        create_jsonl_file_for_batch(batch_message_seq, batch_file, max_token_list=max_token_list)
+        #logger.info(f"Batch file created successfully: {output_file}")
+
+    except Exception as e:
+        logger.error(f"Error while creating immediate batch file {batch_file}: {e}")
+        raise
+
+    try: 
+
+        if not description:
+            description = f"Single batch process: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        response_list = start_batch_with_retries(batch_file, description=description)
+    
+    except Exception as e:
+        logger.error(f"Failed to complete batch process: {e}", exc_info=True)
+        raise 
+
+    return response_list
+   
 def get_active_batches() -> List[Dict]:
     """
     Retrieve the list of active batches using the OpenAI API.
@@ -508,7 +641,7 @@ def get_all_batch_info():
         logger.error(f"Error fetching active batches: {e}", exc_info=True)
         return []
 
-def get_batch_response(batch_id: str) -> List:
+def get_batch_response(batch_id: str) -> List[str]:
     """
     Retrieves the status of a batch job and returns the result if completed.
     Parses the JSON result file, collects the output messages,
@@ -548,50 +681,6 @@ def get_last_batch_response(n: int = 0):
     assert n < MAX_BATCH_LIST
     completed = get_completed_batches()
     return get_batch_response(completed[n]['id'])
-
-def run_single_batch(
-    user_prompts: List,
-    system_message: str,
-    user_wrap_function: callable = None,
-):
-    """
-    Generate a batch file for the OpenAI (OA) API and send it.
-
-    Parameters:
-        system_message (str): System message template for batch processing.
-        user_wrap_function (callable): Function to wrap user input for processing pages.
-
-    Returns:
-        str: Path to the created batch file.
-
-    Raises:
-        Exception: If an error occurs during file processing.
-    """
-
-    try:
-        if not user_wrap_function:
-            user_wrap_function = lambda x: x
-
-        # Generate messages for the pages
-        batch_message_seq = generate_messages(system_message, user_wrap_function, user_prompts)
-
-        batch_file = Path("./temp_batch_run.jsonl")
-
-        # Save the batch file
-        create_jsonl_file_for_batch(batch_message_seq, batch_file)
-        #logger.info(f"Batch file created successfully: {output_file}")
-
-    except Exception as e:
-        logger.error(f"Error while creating immediate batch file {batch_file}: {e}")
-        raise
-
-    try: 
-        batch =  start_batch(batch_file, description="temporary batch process run.")
-        return batch.id
-    
-    except Exception as e:
-        logger.error(f"Failed to start single batch process: {e}", exc_info=True)
-        raise
 
 def delete_api_files(cutoff_date: datetime):
     """
