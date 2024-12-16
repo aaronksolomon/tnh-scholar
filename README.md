@@ -7,11 +7,11 @@
 This project leverages machine learning models, including fine-tuned BERT, GPT, MarianMT (and potentially other) models, to support:
 - **Text Query and Search**: Retrieve relevant passages from Thich Nhat Hanh's writings, Dharma talks, and interviews.
 - **Conversational Interactions**: Explore teachings interactively using a fine-tuned GPT-based system.
-- **Multilingual Translation**: Translate texts across Thich Nhat Hanh's primary teaching languages—English, Vietnamese, and French.
+- **Multilingual Translation and Transcription**: Transcribe (from audio or other sources) and Translate texts across Thich Nhat Hanh's (and other Dharma Teachers') primary teaching languages—English, Vietnamese, and French.
 
 ### Current Goals
 - Start with a proof-of-concept implementation using a small dataset of English texts.
-- Evaluate model performance across querying, translation, and interactive tasks.
+- Evaluate model performance across querying, translation, transcritpion and simple interactive tasks.
 - Gradually expand the dataset to include transcriptions of Dharma talks and interactive sessions, and support multiple languages.
 
 ## Directory Structure
