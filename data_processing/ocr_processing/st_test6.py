@@ -1,3 +1,5 @@
+import streamlit as st
+
 class Page:
     """
     Represents a single page in a document editor.
@@ -126,17 +128,18 @@ class DocumentEditor:
         with col3:
             st.button("Next Page ➡️", on_click=self.navigate, args=("next",))
 
-    def save_text(self):
-        """
-        Saves the text from the current page's text area.
-        """
-        import streamlit as st
+    # def save_text(self):
+    #     """
+    #     Saves the text from the current page's text area.
+    #     """
+    #     import streamlit as st
 
-        current_page = self.get_current_page()
-        text_key = 
-        if text_key in st.session_state:
-            new_text = st.session_state[text_key]
-            current_page.save_text(new_text)
+    #     current_page = self.get_current_page()
+    #     text_key = "unknown"  # not yet implemented!!
+    #     if text_key in st.session_state:
+    #         new_text = st.session_state[text_key]
+    #         current_page.save_text(new_text)
+
     def save_text(self):
         """
         Save the current text to the corresponding page in the document.
