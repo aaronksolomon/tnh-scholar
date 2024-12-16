@@ -306,7 +306,7 @@ def lines_from_wrapped_text(text: str, start: int, end: int, keep_brackets=False
     
     # Validate indices
     if start < 1 or end < 1 or start > end or end > len(lines):
-        raise ValueError("Invalid start or end indices for the given text.")
+        raise ValueError("Invalid start or end indices for the given text: start:{start}, end: {end}")
 
     # Extract lines and validate formatting
     result = []
