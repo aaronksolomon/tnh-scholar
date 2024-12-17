@@ -8,7 +8,7 @@ name = "tnh-scholar"
 version = "0.1.0"
 description = "A package for..."
 readme = "README.md"
-license = "LICENSE"
+license = { file = "LICENSE" }
 authors = [{ name = "Aaron K. Solomon", email = "aaron.kyle.solomon@gmail.com" }]
 
 dependencies = [
@@ -27,7 +27,7 @@ dependencies = [
     "pydub==0.25.1",
     "python-dotenv==1.0.1",
     "setuptools==75.6.0",
-    "spacy==3.8.2",
+    "spacy==3.7.6",
     "streamlit==1.40.1",
     "tiktoken==0.8.0",
     "transformers==4.47.0",
@@ -36,3 +36,7 @@ dependencies = [
 
 [project.scripts]
 audio-transcribe = "CLI_tools.audio_transcribe.audio_transcribe:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = { find = { include = ["tnh_scholar*"] } }
