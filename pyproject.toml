@@ -8,8 +8,8 @@ name = "tnh-scholar"
 version = "0.1.0"
 description = "A package for..."
 readme = "README.md"
-license = { text = "MIT" }
-authors = [{ name = "Your Name", email = "your.email@example.com" }]
+license = "LICENSE"
+authors = [{ name = "Aaron K. Solomon", email = "aaron.kyle.solomon@gmail.com" }]
 
 dependencies = [
     "beautifulsoup4==4.12.3",
