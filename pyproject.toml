@@ -27,7 +27,7 @@ dependencies = [
     "pydub==0.25.1",
     "python-dotenv==1.0.1",
     "setuptools==75.6.0",
-    "spacy==3.7.8",
+    "spacy==3.7.4",
     "streamlit==1.40.1",
     "tiktoken==0.8.0",
     "transformers==4.47.0",
