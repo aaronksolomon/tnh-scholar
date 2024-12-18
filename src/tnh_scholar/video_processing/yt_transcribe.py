@@ -5,8 +5,8 @@ import argparse
 import os
 import sys
 import logging
-import src.logging_config as logging_config
-from src.logging_config import setup_logging, get_child_logger
+import src.tnh_scholar.logging_config as logging_config
+from src.tnh_scholar.logging_config import setup_logging, get_child_logger
 from video_processing import (
     get_youtube_urls_from_csv, 
     download_audio_yt,
@@ -16,7 +16,7 @@ from video_processing import (
     process_audio_chunks
 )
 
-setup_logging(log_filename="transcription.log")
+setup_logging(log_filepath="transcription.log")
 logger = get_child_logger("yt_transcribe")
 
 # Parameters

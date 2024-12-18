@@ -12,7 +12,7 @@ from dataclasses import dataclass
 import json
 import csv
 import warnings
-from src.logging_config import get_child_logger
+from tnh_scholar.logging_config import get_child_logger
 
 MIN_SILENCE_LENGTH = 1000 # 1 second in ms, for splitting on silence
 SILENCE_DBFS_THRESHOLD = -30    # Silence threshold in dBFS

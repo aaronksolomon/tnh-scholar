@@ -8,7 +8,7 @@ import logging
 from typing import List, Dict, Any
 import json
 import warnings
-from src.logging_config import get_child_logger
+from tnh_scholar.logging_config import get_child_logger
 
 from tnh_scholar.gpt_processing import (
     run_transcription_speech
