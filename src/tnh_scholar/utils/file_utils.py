@@ -1,6 +1,6 @@
 from pathlib import Path
 import logging
-import src.logging_config as logging_config
+import tnh_scholar.logging_config as logging_config
 from typing import Generator
 import re
 import shutil

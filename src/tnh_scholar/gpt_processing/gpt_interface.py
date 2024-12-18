@@ -11,7 +11,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import time
 from math import floor
-from src.logging_config import get_child_logger
+from tnh_scholar.logging_config import get_child_logger
 
 MAX_BATCH_LIST = 30
 OPEN_AI_DEFAULT_MODEL = "gpt-4o"
