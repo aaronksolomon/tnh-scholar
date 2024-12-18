@@ -1,5 +1,9 @@
 from pathlib import Path
 import shutil
+import tnh_scholar.logging_config
+from tnh_scholar.logging_config import get_child_logger
+
+logger = get_child_logger("environement_checking")
 
 def ensure_env_file_exists(root_dir: Path) -> None:
     """
@@ -38,6 +42,7 @@ def check_requirements(requirements_file: Path) -> None:
     name_map = {
         "python-dotenv": "dotenv",
         "openai_whisper": "whisper",
+        "protobuf": "google.protobuf"
         # Add other mappings if needed
     }
 
@@ -71,6 +76,7 @@ def check_env(root_dir: Path, requirements_file: Path) -> None:
         >>> check_env(Path("/path/to/tnh-scholar"), Path("/path/to/tnh-scholar/requirements.txt"))
         # Ensures .env, checks requirements.
     """
+    logger.debug(f"root_dir: {root_dir}, requirements_file: {requirements_file}")
     ensure_env_file_exists(root_dir)
     if shutil.which("ffmpeg") is None:
         print("WARNING: ffmpeg not found in PATH. Please install ffmpeg.")
