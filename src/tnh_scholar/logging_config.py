@@ -33,6 +33,27 @@ LOG_COLORS = {
 DEFAULT_CONSOLE_FORMAT_STRING = "%(asctime)s - %(name)s - %(log_color)s%(levelname)s%(reset)s - %(message)s"
 DEFAULT_FILE_FORMAT_STRING = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
+class OMPFilter(logging.Filter):
+    def filter(self, record):
+        # Suppress messages containing "OMP:"
+        return "OMP:" not in record.getMessage()
+
+# class StderrToLogger:
+#     """
+#     Redirects stderr messages to an existing logger.
+#     """
+#     def __init__(self, logger: logging.Logger, log_level: int = logging.ERROR):
+#         self.logger = logger
+#         self.log_level = log_level
+
+#     def write(self, message: str):
+#         # Avoid logging empty lines or whitespace
+#         if message.strip():
+#             self.logger.log(self.log_level, message.strip())
+
+#     def flush(self):
+#         pass  # Required for compatibility with file-like objects
+
 def setup_logging(
     log_level=logging.INFO,
     log_filepath=DEFAULT_LOG_FILEPATH,
@@ -71,6 +92,8 @@ def setup_logging(
             log_colors=LOG_COLORS,
         )
         console_handler.setFormatter(console_formatter)
+        # Add the OMP filter to the console handler
+        console_handler.addFilter(OMPFilter())
         base_logger.addHandler(console_handler)
 
     # Plain file handler
