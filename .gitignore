@@ -16,6 +16,9 @@ processed_videos/
 # gpt batch files:
 gpt_batch_files/
 
+# sandbox for testing:
+sandbox/
+
 # Big files
 *.pdf
 *.jpeg
