@@ -13,7 +13,7 @@ def ensure_directory_exists(dir_path: Path) -> None:
         dir_path (Path): Directory path to ensure exists.
     """
     # Stub Implementation
-    return Path.exists()
+    return dir_path.exists()
 
 def iterate_subdir(directory: Path, recursive: bool = False) -> Generator[Path, None, None]:
     """
