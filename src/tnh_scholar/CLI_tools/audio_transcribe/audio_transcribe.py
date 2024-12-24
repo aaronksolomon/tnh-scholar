@@ -25,16 +25,19 @@ from pathlib import Path
 import click
 import logging
 import tnh_scholar.logging_config as logging_config
-from tnh_scholar.logging_config import setup_logging, get_child_logger
-from tnh_scholar import PROJECT_ROOT_DIR, LOG_DIR, CLI_TOOLS_DIR
+from tnh_scholar.logging_config import setup_logging, get_child_logger, StderrToLogger
+from tnh_scholar import PROJECT_ROOT_DIR, CLI_TOOLS_DIR
 
 # --- Setup logging early ---
-setup_logging(log_filepath=LOG_DIR / "audio_transcribe.log", log_level=logging.DEBUG)
+LOG_DIR = Path.cwd() / "logs"
+setup_logging(log_filepath=LOG_DIR / "audio_transcribe.log", log_level=logging.INFO)
 logger = get_child_logger("audio_transcribe")
+#sys.stderr = StderrToLogger(logger, log_level=logging.WARNING)
 
 from tnh_scholar.video_processing import (
     get_youtube_urls_from_csv, 
     download_audio_yt,
+    get_video_download_path_yt
 )
 from tnh_scholar.audio_processing import (
     split_audio, 
@@ -42,42 +45,45 @@ from tnh_scholar.audio_processing import (
     process_audio_file
 )
 from tnh_scholar.utils import (
-    ensure_directory_exists
-)
+    ensure_directory_exists,
+    get_user_confirmation
+    )
+
 from .environment import check_env
 from .validate import validate_inputs
 
 # Settings
 DEFAULT_CHUNK_DURATION = 7 * 60 # 7 minutes
 REQUIREMENTS_PATH = CLI_TOOLS_DIR / "audio_transcribe" / "environment" / "requirements.txt"
+REDOWNLOAD_COMFIRMATION_STR = "An mp3 file corresponding to {url} already exists in the output path:\n\t{output_dir}.\nSKIP download ([Y]/n)?"
+DEFAULT_OUTPUT_DIR = "./audio_transcriptions"
+DEFAULT_PROMPT = "Dharma, Deer Park, Thay, Thich Nhat Hanh, Bodhicitta, Bodhisattva, Mahayana"
 
 check_env(PROJECT_ROOT_DIR, REQUIREMENTS_PATH)
 
 @click.command()
-@click.option('--full', is_flag=True, help='Perform full pipeline: split and transcribe.')
-@click.option('--split', is_flag=True, help='Split downloaded/local audio into chunks.')
-@click.option('--transcribe', is_flag=True, help='Transcribe the audio chunks.')
+@click.option('-s', '--split', is_flag=True, help='Split downloaded/local audio into chunks.')
+@click.option('-t', '--transcribe', is_flag=True, help='Transcribe the audio chunks.')
 @click.option('--yt_url', type=str, help='Single YouTube URL to process.')
-@click.option('--yt_url_cvs', type=click.Path(exists=True), help='A CSV File containing multiple YouTube URLs. The first column of the file must be the URL and Second column a start time (if specified).')
-@click.option('--audio', type=click.Path(exists=True), help='Path to a local audio file.')
+@click.option('--yt_url_csv', type=click.Path(exists=True), help='A CSV File containing multiple YouTube URLs. The first column of the file must be the URL and Second column a start time (if specified).')
+@click.option('-f', '--file', type=click.Path(exists=True), help='Path to a local audio file.')
 @click.option('--chunk_dir', type=click.Path(), help='Directory for pre-existing chunks or where to store new chunks.')
-@click.option('--output_dir', type=click.Path(), default='./video_transcriptions', help='Base output directory.')
-@click.option('--chunk_duration', type=int, default=DEFAULT_CHUNK_DURATION, help='Max chunk duration in seconds (default: 10 minutes).')
-@click.option('--no_chunks', is_flag=True, help='Run transcription directly on the audio files source(s). WARNING: for files > 10 minutes in Length, the Open AI transcription API may fail.')
-@click.option('--start_time', type=str, help='Start time offset for the input media (HH:MM:SS).')
+@click.option('-o', '--output_dir', type=click.Path(), default=DEFAULT_OUTPUT_DIR, help=f"Base output directory. DEFAULT: '{DEFAULT_OUTPUT_DIR}' ")
+@click.option('-d', '--chunk_duration', type=int, default=DEFAULT_CHUNK_DURATION, help='Max chunk duration in seconds (default: 10 minutes).')
+@click.option('-x', '--no_chunks', is_flag=True, help='Run transcription directly on the audio files source(s). WARNING: for files > 10 minutes in Length, the Open AI transcription API may fail.')
+@click.option('--start', 'start_time', type=str, help='Start time offset for the input media (HH:MM:SS).')
 @click.option('--translate', is_flag=True, help='Include translation in the transcription if set.')
-@click.option('--prompt', type=str, default="Dharma, Deer Park, Thay, Thich Nhat Hanh, Bodhicitta, Bodhisattva, Mahayana",
-              help='Prompt or keywords to guide the transcription.')
-@click.option('--silence_boundaries', is_flag=False, help='Use silence detection to split audio file(s)')
-@click.option('--whisper_boundaries', is_flag=True, help='Use a whisper based model to audio at sentence boundaries.')
+@click.option('-p', '--prompt', type=str, default=DEFAULT_PROMPT, help='Prompt or keywords to guide the transcription.')
+@click.option('--silence_boundaries', is_flag=True, help='Use silence detection to split audio file(s)')
+@click.option('--whisper_boundaries', is_flag=True, help='(DEFAULT) Use a whisper based model to audio at sentence boundaries.')
+@click.option('-l', '--language', type=str, help="The two letter language code. e.g. 'vi' for Vietnamese. Used for splitting only. DEFAULT: English ('en').")
 
 def main(
-    full: bool,
     split: bool,
     transcribe: bool,
     yt_url: str | None,
     yt_url_csv: str | None,
-    audio: str | None,
+    file: str | None,
     chunk_dir: str | None,
     output_dir: str,
     chunk_duration: int,
@@ -86,7 +92,8 @@ def main(
     translate: bool,
     prompt: str,
     silence_boundaries: bool,
-    whisper_boundaries: bool
+    whisper_boundaries: bool,
+    language: str | None
 ) -> None:
     """
     Entry point for the audio transcription pipeline.
@@ -103,7 +110,8 @@ def main(
     """
     logger.info("Starting audio transcription pipeline...")
 
-    if full:
+    # initial parameter processing
+    if not split and not transcribe: # if neither set, we assume both.
         split = True
         transcribe = True
 
@@ -111,10 +119,17 @@ def main(
         is_download = True
     else:
         is_download = False
+    
+    if not language:
+        language = 'en'
+
+    # default logic for splitting boundaries
+    if not whisper_boundaries and not silence_boundaries:
+        whisper_boundaries = True
 
     try:
         # Validate input arguments
-        audio_file: Path | None = Path(audio) if audio else None
+        audio_file: Path | None = Path(file) if file else None
         chunk_directory: Path | None = Path(chunk_dir) if chunk_dir else None
         out_dir = Path(output_dir)
         
@@ -122,7 +137,7 @@ def main(
             is_download=is_download,
             yt_url=yt_url,
             yt_url_list=Path(yt_url_csv) if yt_url_csv else None,
-            audio=audio_file,
+            audio_file=audio_file,
             split=split,
             transcribe=transcribe,
             chunk_dir=chunk_directory,
@@ -142,10 +157,22 @@ def main(
         downloaded_files: list[Path] = []
         if is_download:
             for url in urls:
-                logger.info(f"Downloading from YouTube: {url}")
-                ensure_directory_exists(out_dir)
-                downloaded_file = download_audio_yt(url, out_dir, start_time=start_time)
-                downloaded_files.append(downloaded_file)
+                download_path = get_video_download_path_yt(out_dir, url)
+                if download_path.exists():                    
+                    if get_user_confirmation(REDOWNLOAD_COMFIRMATION_STR.format(url=url, output_dir=out_dir)): 
+                        logger.info(f"Skipping download for {url}.")
+                    else:
+                        logger.info(f"Re-downloading {url}:")
+                        download_path = download_audio_yt(url, out_dir, start_time=start_time)
+                        logger.info(f"Successfully downloaded {url} to {download_path}")
+                else:
+                    logger.info(f"Downloading from YouTube: {url}")
+                    ensure_directory_exists(out_dir)
+                    download_path = download_audio_yt(url, out_dir, start_time=start_time)
+                    logger.info(f"Successfully downloaded {url} to {download_path}")
+
+                downloaded_files.append(download_path)
+                
 
         # If we have a local audio file specified (no yt_download), treat that as our input
         if audio_file and not is_download:
@@ -162,12 +189,19 @@ def main(
                 
                 logger.info(f"Splitting audio into chunks for {afile}")
 
-                detection_method = "whisper" if whisper_boundaries else "silence"
+                if not whisper_boundaries and not silence_boundaries:
+                    detection_method = "whisper" 
+                elif silence_boundaries: 
+                    detection_method = "silence"
+                else:
+                    detection_method = "whisper"
+
                 split_audio(
                     audio_file=afile,
                     method=detection_method,
                     output_dir=chunk_output_dir,
-                    max_duration=chunk_duration
+                    max_duration=chunk_duration,
+                    language=language
                 )
 
         # If transcribe is requested, we must have a chunk directory to transcribe from
@@ -205,5 +239,5 @@ def main(
         logger.info("Audio transcription pipeline completed successfully.")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
-        logger.deubug(f"traceback info", exc_info=True)
+        logger.debug(f"traceback info", exc_info=True)
         sys.exit(1)
