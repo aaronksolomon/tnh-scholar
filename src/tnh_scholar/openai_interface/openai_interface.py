@@ -12,6 +12,7 @@ from logging.handlers import RotatingFileHandler
 import time
 from math import floor
 from tnh_scholar.logging_config import get_child_logger
+from tnh_scholar.text_processing import get_text_from_file
 
 MAX_BATCH_LIST = 30
 OPEN_AI_DEFAULT_MODEL = "gpt-4o"
@@ -72,6 +73,10 @@ class ClientNotInitializedError(Exception):
 
 def token_count(text):
     return len(open_ai_encoding.encode(text))
+
+def token_count_file(text_file: Path):
+    text = get_text_from_file(text_file)
+    return token_count(text)
 
 def get_api_client():
     client = OpenAIClient.get_instance()

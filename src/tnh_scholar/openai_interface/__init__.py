@@ -1,5 +1,6 @@
-from .gpt_interface import (
+from .openai_interface import (
     token_count, 
+    token_count_file,
     get_api_client, 
     set_model_settings, 
     get_model_settings,

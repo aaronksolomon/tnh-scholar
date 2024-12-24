@@ -6,7 +6,7 @@ import re
 import json
 from pathlib import Path
 from typing import List, Dict
-from tnh_scholar.gpt_processing import start_batch, token_count, get_api_client, set_api_client
+from tnh_scholar.openai_interface import start_batch, token_count, get_api_client, set_api_client
 
 # Constants
 ENQUEUED_BATCH_TOKEN_LIMIT = 90000  # Adjust this based on your API rate limits
@@ -98,7 +98,7 @@ import json
 import time
 from pathlib import Path
 from typing import List, Dict
-from tnh_scholar.gpt_processing import start_batch, token_count, set_api_client
+from tnh_scholar.openai_interface import start_batch, token_count, set_api_client
 
 # Constants
 ENQUEUED_BATCH_TOKEN_LIMIT = 90000  # Adjust this based on your API rate limits
