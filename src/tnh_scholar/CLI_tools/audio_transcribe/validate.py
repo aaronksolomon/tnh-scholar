@@ -4,7 +4,7 @@ def validate_inputs(
     is_download: bool,
     yt_url: str | None,
     yt_url_list: Path | None,
-    audio: Path | None,
+    audio_file: Path | None,
     split: bool,
     transcribe: bool,
     chunk_dir: Path | None,
@@ -73,7 +73,7 @@ def validate_inputs(
     # 3. Logic when no YouTube download:
     if not is_download:
         # If splitting but no download, need an audio file
-        if split and audio is None:
+        if split and audio_file is None:
             raise ValueError("Splitting requested but no audio file provided and no YouTube download source available.")
         
         # If transcribing but not splitting or downloading:
@@ -81,7 +81,7 @@ def validate_inputs(
         if transcribe and not split:
             if no_chunks:
                 # Direct transcription, need an audio file
-                if audio is None:
+                if audio_file is None:
                     raise ValueError("Transcription requested with no_chunks=True but no audio file provided.")
             else:
                 # no_chunks=False, we need chunks from chunk_dir
