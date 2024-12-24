@@ -1,14 +1,14 @@
 
 from pathlib import Path
 import re
-from data_processing.text_processing import get_text_from_file
+from tnh_scholar.text_processing import get_text_from_file
 
-from data_processing.gpt_processing import(
+from tnh_scholar.openai_interface import(
     token_count, generate_messages, create_jsonl_file_for_batch,
     start_batch_with_retries, run_immediate_chat_process, get_completion_content
 ) 
  
-from data_processing.xml_processing import split_xml_on_pagebreaks, join_xml_data_to_doc, split_xml_pages, save_pages_to_xml
+from tnh_scholar.xml_processing import split_xml_on_pagebreaks, join_xml_data_to_doc, split_xml_pages, save_pages_to_xml
 
 import logging
 
