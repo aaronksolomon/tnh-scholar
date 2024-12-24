@@ -10,7 +10,7 @@ import json
 import warnings
 from tnh_scholar.logging_config import get_child_logger
 
-from tnh_scholar.gpt_processing import (
+from tnh_scholar.openai_interface import (
     run_transcription_speech
 )
 
@@ -31,7 +31,7 @@ def custom_to_json(transcript: TranscriptionVerbose) -> str:
     Returns:
         str: JSON string with problematic values fixed.
     """
-    logger.debug("Begin custom_to_json function.")
+    logger.debug("Entered custom_to_json function.")
     try:
         # Use warnings.catch_warnings to catch specific warnings
         with warnings.catch_warnings(record=True) as caught_warnings:
@@ -56,7 +56,7 @@ def custom_to_json(transcript: TranscriptionVerbose) -> str:
             data[key] = float(f"{value:.18f}")
     
     # Serialize the cleaned dictionary back to JSON
-    logger.debug("Dumping json in custom_to_json")
+    logger.debug("Dumping json in custom_to_json...")
     return json.dumps(data)
 
 def get_text_from_transcript(transcript: TranscriptionVerbose) -> str:
@@ -95,7 +95,7 @@ def get_transcription(file: Path, model: str, prompt: str, jsonl_out, mode="tran
       
     # Use the custom_to_json function
     json_output = custom_to_json(transcript)
-    logger.debug(f"Serialized JSON output: {json_output}")
+    logger.debug(f"Serialized JSON output excerpt: {json_output[:1000]}...")
     
     # Write the serialized JSON to the JSONL file
     jsonl_out.write(json_output + "\n")
@@ -142,8 +142,11 @@ def process_audio_chunks(
     if not audio_files:
         raise FileNotFoundError(f"No audio files found in the directory: {directory}")
     
-    audio_file_info = [str(file) for file in audio_files]  # get strings for logging
-    logger.info(f"Audio files found:\n\t{audio_file_info}")
+    # log files to process:
+    audio_file_names = [file.name for file in audio_files]  # get strings for logging
+    audio_file_name_str = "\n\t".join(audio_file_names)
+    audio_file_count = len(audio_file_names)
+    logger.info(f"{audio_file_count} audio files found in {directory}:\n\t{audio_file_name_str}")
 
     # Initialize the output content
     stitched_transcription = []
