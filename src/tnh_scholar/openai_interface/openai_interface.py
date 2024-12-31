@@ -90,7 +90,6 @@ def get_model_settings(model, parameter):
     return open_ai_model_settings[model][parameter]
     
 def generate_messages(system_message: str, user_message_wrapper: callable, data_list_to_process: List, log_system_message=True):
-
     messages = []
     for data_element in data_list_to_process:    
         message_block = [
