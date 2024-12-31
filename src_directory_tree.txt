@@ -1,0 +1,95 @@
+src
+├── __init__.py
+├── tnh_scholar
+│   ├── CLI_tools
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   └── audio_transcribe
+│   │       ├── __init__.py
+│   │       ├── __pycache__
+│   │       ├── audio_transcribe.py
+│   │       ├── environment
+│   │       │   ├── __init__.py
+│   │       │   ├── __pycache__
+│   │       │   ├── env.py
+│   │       │   └── requirements.txt
+│   │       └── validate.py
+│   ├── __init__.py
+│   ├── __pycache__
+│   ├── audio_processing
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── audio_processing.py
+│   │   └── audio_transcription.py
+│   ├── journal_processing
+│   │   ├── __init__.py
+│   │   └── journal_process.py
+│   ├── logging_config.py
+│   ├── ocr_processing
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── development
+│   │   │   ├── st_test.py
+│   │   │   ├── st_test2.py
+│   │   │   ├── st_test3.py
+│   │   │   ├── st_test4.py
+│   │   │   ├── st_test5.py
+│   │   │   └── st_test6.py
+│   │   ├── ocr_editor.py
+│   │   └── ocr_processing.py
+│   ├── openai_interface
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── gpt_batch_files
+│   │   │   ├── batch_tests
+│   │   │   │   ├── TEST_clean_batch_phat-giao-viet-nam-1956-01.jsonl
+│   │   │   │   └── test_batch.jsonl
+│   │   │   ├── journal_cleaning_batches
+│   │   │   │   └── clean_batch_phat-giao-viet-nam-1956-01.jsonl
+│   │   │   └── journal_translate_batches
+│   │   │       ├── translate_base_batch_phat-giao-viet-nam-1956-01.jsonl
+│   │   │       └── translate_batch_phat-giao-viet-nam-1956-28.jsonl
+│   │   ├── openai_interface.py
+│   │   └── run_oa_batch_jobs.py
+│   ├── openai_text_processing
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── response_objects.py
+│   │   ├── system_messages.py
+│   │   ├── system_messages_to_save.txt
+│   │   ├── text_process_interface.py
+│   │   └── text_processing.py
+│   ├── text_processing
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── clean_parse_tag.py
+│   │   ├── initial_cleaning_scripts.py
+│   │   └── v2_cleaning_scripts.py
+│   ├── utils
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── file_utils.py
+│   │   ├── json_utils.py
+│   │   ├── progress_utils.py
+│   │   └── user_io_utils.py
+│   ├── video_processing
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── logs
+│   │   │   ├── audio_extract_testing.log
+│   │   │   ├── postprocessing_english.log
+│   │   │   └── transcription_process_stepwise.log
+│   │   ├── video_processing.py
+│   │   └── yt_transcribe.py
+│   └── xml_processing
+│       ├── __init__.py
+│       ├── __pycache__
+│       ├── extract_tags.py
+│       └── xml_processing.py
+└── tnh_scholar.egg-info
+    ├── PKG-INFO
+    ├── SOURCES.txt
+    ├── dependency_links.txt
+    ├── entry_points.txt
+    ├── requires.txt
+    └── top_level.txt
