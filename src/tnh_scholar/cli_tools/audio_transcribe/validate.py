@@ -60,7 +60,7 @@ def validate_inputs(
     """
 
     # 1. Check that we have at least one action
-    if not (is_download or split or transcribe):
+    if not is_download and not split and not transcribe:
         raise ValueError("No actions requested. At least one of --yt_download, --split, --transcribe, or --full must be set.")
 
     # 2. Validate YouTube download logic
@@ -75,26 +75,26 @@ def validate_inputs(
         # If splitting but no download, need an audio file
         if split and audio_file is None:
             raise ValueError("Splitting requested but no audio file provided and no YouTube download source available.")
-        
-        # If transcribing but not splitting or downloading:
-        # Check no_chunks scenario:
+
         if transcribe and not split:
             if no_chunks:
                 # Direct transcription, need an audio file
                 if audio_file is None:
                     raise ValueError("Transcription requested with no_chunks=True but no audio file provided.")
-            else:
-                # no_chunks=False, we need chunks from chunk_dir
-                if chunk_dir is None:
-                    raise ValueError("Transcription requested without splitting or downloading and no_chunks=False. Must provide --chunk_dir with pre-split chunks.")
+            elif chunk_dir is None:
+                raise ValueError("Transcription requested without splitting or downloading and no_chunks=False. Must provide --chunk_dir with pre-split chunks.")
 
-    # 4. no_chunks flag validation:
+    # Check no_chunks scenario:
     # no_chunks and split are mutually exclusive
-    if no_chunks and split:
-        raise ValueError("Cannot use --no_chunks and --split together. Choose one option.")
+    # If transcribing but not splitting or downloading:
     # If no_chunks and chunk_dir provided, it doesn't make sense since we won't use chunks at all.
-    if no_chunks and chunk_dir is not None:
-        raise ValueError("Cannot specify --chunk_dir when --no_chunks is set.")
+    # 4. no_chunks flag validation:
+    # no_chunks=False, we need chunks from chunk_dir
+    if no_chunks:
+        if split:
+            raise ValueError("Cannot use --no_chunks and --split together. Choose one option.")
+        if chunk_dir is not None:
+            raise ValueError("Cannot specify --chunk_dir when --no_chunks is set.")
 
     # 5. Boundaries flags:
     # If splitting is not requested but boundaries flags are set, it's meaningless. 
@@ -102,13 +102,13 @@ def validate_inputs(
     # We'll require that boundaries only matter if split is True.
     if not split and (silence_boundaries or whisper_boundaries):
         raise ValueError("Boundary detection flags given but splitting is not requested. Remove these flags or enable --split.")
-        
+
     # If split is True, we must have a consistent boundary method:
     if split:
         # If both whisper and silence are somehow True:
         if silence_boundaries and whisper_boundaries:
             raise ValueError("Cannot use both --silence_boundaries and --whisper_boundaries simultaneously.")
-        
+
         # If both are False:
         # Given the original snippet, whisper_boundaries is True by default. 
         # For the sake of robustness, let's say if user sets both off, we can't proceed:
