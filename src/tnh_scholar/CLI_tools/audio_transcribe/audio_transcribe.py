@@ -25,13 +25,14 @@ from pathlib import Path
 import click
 import logging
 import tnh_scholar.logging_config as logging_config
-from tnh_scholar.logging_config import setup_logging, get_child_logger, StderrToLogger
+from tnh_scholar.logging_config import setup_logging, get_child_logger
 from tnh_scholar import PROJECT_ROOT_DIR, CLI_TOOLS_DIR
 
 # --- Setup logging early ---
 LOG_DIR = Path.cwd() / "logs"
 setup_logging(log_filepath=LOG_DIR / "audio_transcribe.log", log_level=logging.INFO)
 logger = get_child_logger("audio_transcribe")
+
 #sys.stderr = StderrToLogger(logger, log_level=logging.WARNING)
 
 from tnh_scholar.video_processing import (
@@ -55,7 +56,7 @@ from .validate import validate_inputs
 # Settings
 DEFAULT_CHUNK_DURATION = 7 * 60 # 7 minutes
 REQUIREMENTS_PATH = CLI_TOOLS_DIR / "audio_transcribe" / "environment" / "requirements.txt"
-REDOWNLOAD_COMFIRMATION_STR = "An mp3 file corresponding to {url} already exists in the output path:\n\t{output_dir}.\nSKIP download ([Y]/n)?"
+RE_DOWNLOAD_CONFIRMATION_STR = "An mp3 file corresponding to {url} already exists in the output path:\n\t{output_dir}.\nSKIP download ([Y]/n)?"
 DEFAULT_OUTPUT_DIR = "./audio_transcriptions"
 DEFAULT_PROMPT = "Dharma, Deer Park, Thay, Thich Nhat Hanh, Bodhicitta, Bodhisattva, Mahayana"
 
@@ -77,7 +78,6 @@ check_env(PROJECT_ROOT_DIR, REQUIREMENTS_PATH)
 @click.option('--silence_boundaries', is_flag=True, help='Use silence detection to split audio file(s)')
 @click.option('--whisper_boundaries', is_flag=True, help='(DEFAULT) Use a whisper based model to audio at sentence boundaries.')
 @click.option('-l', '--language', type=str, help="The two letter language code. e.g. 'vi' for Vietnamese. Used for splitting only. DEFAULT: English ('en').")
-
 def main(
     split: bool,
     transcribe: bool,
@@ -115,11 +115,7 @@ def main(
         split = True
         transcribe = True
 
-    if yt_url or yt_url_csv:
-        is_download = True
-    else:
-        is_download = False
-    
+    is_download = bool(yt_url or yt_url_csv)
     if not language:
         language = 'en'
 
@@ -132,7 +128,7 @@ def main(
         audio_file: Path | None = Path(file) if file else None
         chunk_directory: Path | None = Path(chunk_dir) if chunk_dir else None
         out_dir = Path(output_dir)
-        
+
         validate_inputs(
             is_download=is_download,
             yt_url=yt_url,
@@ -148,10 +144,12 @@ def main(
 
         # Determine the list of URLs if we are downloading from YouTube
         urls: list[str] = []
-        if is_download and yt_url_csv:
-            urls = get_youtube_urls_from_csv(Path(yt_url_csv))
-        elif is_download and yt_url:
-            urls = [yt_url]
+        if yt_url_csv:
+            if is_download:
+                urls = get_youtube_urls_from_csv(Path(yt_url_csv))
+        elif yt_url:
+            if is_download:
+                urls = [yt_url]
 
         # If we are downloading from YouTube, handle that
         downloaded_files: list[Path] = []
@@ -159,7 +157,7 @@ def main(
             for url in urls:
                 download_path = get_video_download_path_yt(out_dir, url)
                 if download_path.exists():                    
-                    if get_user_confirmation(REDOWNLOAD_COMFIRMATION_STR.format(url=url, output_dir=out_dir)): 
+                    if get_user_confirmation(RE_DOWNLOAD_CONFIRMATION_STR.format(url=url, output_dir=out_dir)): 
                         logger.info(f"Skipping download for {url}.")
                     else:
                         logger.info(f"Re-downloading {url}:")
@@ -172,7 +170,7 @@ def main(
                     logger.info(f"Successfully downloaded {url} to {download_path}")
 
                 downloaded_files.append(download_path)
-                
+
 
         # If we have a local audio file specified (no yt_download), treat that as our input
         if audio_file and not is_download:
@@ -180,24 +178,25 @@ def main(
 
         # If splitting is requested, split either the downloaded files or the provided audio
         if split:
-            for afile in downloaded_files:
-                audio_name = afile.stem
+            for audio_file in downloaded_files:
+                audio_name = audio_file.stem
                 audio_output_dir = out_dir / audio_name
                 ensure_directory_exists(audio_output_dir)
-                chunk_output_dir = chunk_directory if chunk_directory else (audio_output_dir / "chunks")
+                chunk_output_dir = chunk_directory or audio_output_dir / "chunks"
                 ensure_directory_exists(chunk_output_dir)
-                
-                logger.info(f"Splitting audio into chunks for {afile}")
 
-                if not whisper_boundaries and not silence_boundaries:
-                    detection_method = "whisper" 
-                elif silence_boundaries: 
-                    detection_method = "silence"
-                else:
+                logger.info(f"Splitting audio into chunks for {audio_file}")
+
+                if (
+                    not whisper_boundaries
+                    and not silence_boundaries
+                    or not silence_boundaries
+                ):
                     detection_method = "whisper"
-
+                else: 
+                    detection_method = "silence"
                 split_audio(
-                    audio_file=afile,
+                    audio_file=audio_file,
                     method=detection_method,
                     output_dir=chunk_output_dir,
                     max_duration=chunk_duration,
@@ -206,26 +205,22 @@ def main(
 
         # If transcribe is requested, we must have a chunk directory to transcribe from
         if transcribe:
-            if no_chunks:
-                 for afile in downloaded_files:
-                    audio_name = afile.stem
-                    audio_output_dir = out_dir / audio_name
-                    transcript_file = audio_output_dir / f"{audio_name}.txt"
+            for audio_file in downloaded_files:
+                audio_name = audio_file.stem
+                audio_output_dir = out_dir / audio_name
+                transcript_file = audio_output_dir / f"{audio_name}.txt"
+                if no_chunks:
                     jsonl_file = audio_output_dir / f"{audio_name}.jsonl"
                     logger.info(f"Transcribing {audio_name} directly without chunking...")
                     process_audio_file(
-                        audio_file=afile,
+                        audio_file=audio_file,
                         output_file=transcript_file, 
                         jsonl_file=jsonl_file, 
                         prompt=prompt, 
                         translate=translate)
 
-            else:
-                for afile in downloaded_files:
-                    audio_name = afile.stem
-                    audio_output_dir = out_dir / audio_name
-                    transcript_file = audio_output_dir / f"{audio_name}.txt"
-                    chunk_output_dir = chunk_directory if chunk_directory else (audio_output_dir / "chunks")
+                else:
+                    chunk_output_dir = chunk_directory or audio_output_dir / "chunks"
                     jsonl_file = audio_output_dir / f"{audio_name}.jsonl"
                     logger.info(f"Transcribing chunks from {chunk_output_dir}")
                     process_audio_chunks(
@@ -239,5 +234,5 @@ def main(
         logger.info("Audio transcription pipeline completed successfully.")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
-        logger.debug(f"traceback info", exc_info=True)
+        logger.debug("traceback info", exc_info=True)
         sys.exit(1)
