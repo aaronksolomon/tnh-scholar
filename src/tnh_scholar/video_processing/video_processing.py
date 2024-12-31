@@ -17,6 +17,21 @@ from tnh_scholar.utils import get_user_confirmation
 
 logger = get_child_logger("video_processing")
 
+class NoTranscriptAvailable(Exception):
+    """
+    Exception raised when a transcript is not available in the specified language for a video.
+
+    Attributes:
+        video_url (str): The URL of the video where the transcript was requested.
+        lang (str): The requested language for the transcript.
+        message (str): Explanation of the error.
+    """
+    def __init__(self, video_url: str, lang: str, message: str = "Transcript not available"):
+        self.video_url = video_url
+        self.lang = lang
+        self.message = f"{message} in '{lang}' for video: {video_url}"
+        super().__init__(self.message)
+        
 def get_youtube_urls_from_csv(file_path: Path) -> List[str]:
     """
     Reads a CSV file containing YouTube URLs and titles, logs the titles, 
@@ -68,13 +83,12 @@ def get_video_download_path_yt(output_dir: Path, url: str) -> str:
         'skip_download': True,  # Don't download, just fetch metadata
         'outtmpl': str(output_dir / '%(title)s.%(ext)s')
     }
-    
+
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)  # Extract metadata without downloading
         filepath = ydl.prepare_filename(info)
 
-    download_path = Path(filepath).with_suffix('.mp3') # ensure mp3 format for audio downloads.
-    return download_path
+    return Path(filepath).with_suffix('.mp3')
 
 def download_audio_yt(url: str, output_dir: Path, start_time: str = None, prompt_overwrite=True) -> Path:
     """
@@ -111,7 +125,20 @@ def download_audio_yt(url: str, output_dir: Path, start_time: str = None, prompt
         filename = ydl.prepare_filename(info)
         return Path(filename).with_suffix('.mp3')
 
-def get_transcript(video_url, lang='en'):
+def get_transcript(video_url: str, lang: str = 'en'):
+    """
+    Retrieves the transcript URL for a video in the specified language.
+
+    Args:
+        video_url (str): The URL of the video.
+        lang (str): The desired language for the transcript. Defaults to 'en'.
+
+    Returns:
+        str: The URL of the transcript.
+
+    Raises:
+        NoTranscriptAvailable: If the transcript is not available in the specified language.
+    """
     options = {
         'writesubtitles': True,  # Enables downloading subtitles
         'subtitleslangs': [lang],  # Specify desired language
@@ -124,4 +151,4 @@ def get_transcript(video_url, lang='en'):
         if lang in subtitles:
             return subtitles[lang][0]['url']  # Return URL of transcript
         else:
-            raise Exception(f"No transcript available in '{lang}' for this video.")
+            raise NoTranscriptAvailable(video_url=video_url, lang=lang)
