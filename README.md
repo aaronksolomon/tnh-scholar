@@ -14,6 +14,9 @@ This project leverages machine learning models, including fine-tuned BERT, GPT, 
 - Evaluate model performance across querying, translation, transcritpion and simple interactive tasks.
 - Gradually expand the dataset to include transcriptions of Dharma talks and interactive sessions, and support multiple languages.
 
+### Notes and Configurations
+- Developed on MacOS. All filenames and directories should be in lowercase.
+
 ## Directory Structure
 
 The repository is organized as follows:
