@@ -1,0 +1,37 @@
+.
+├── __pycache__
+├── build
+│   └── bdist.macosx-11.0-arm64
+├── data
+│   ├── PDF
+│   └── books
+├── data_processing
+├── dist
+├── docs
+│   ├── gpt_4o_search_query_text_pair_testing
+│   ├── gpt_4o_toc_tag_generation_testing
+│   └── gpt_4o_translations experiments
+├── evaluation
+├── logs
+├── models
+├── notebooks
+│   ├── html_viewing
+│   ├── journal_processing
+│   ├── ocr_processing
+│   ├── query_text_generation
+│   ├── testing
+│   ├── text_processing
+│   └── video_processing
+├── processed_data
+│   ├── processed_journal_data
+│   └── processed_videos
+├── sandbox
+│   ├── audio_transcriptions
+│   ├── logs
+│   └── video_transcriptions
+├── src
+│   ├── tnh_scholar
+│   └── tnh_scholar.egg-info
+├── tests
+│   └── openai_text_processing
+└── tnh_scholar.egg-info
