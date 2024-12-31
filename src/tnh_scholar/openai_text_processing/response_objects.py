@@ -1,0 +1,162 @@
+
+from pydantic import BaseModel, Field
+from typing import List
+
+TALK_SECTIONS_DESCRIPTION = (
+    "Ordered list of sections for the talk. "
+    "The sequence of line ranges for the sections must cover every line "
+    "from start to finish without any overlaps or gaps."
+)
+
+class BaseSection(BaseModel):
+    """
+    Base class for a section, containing shared attributes.
+    """
+    start_line: int = Field(
+        ..., 
+        description="Starting line number of the section (inclusive)."
+    )
+    end_line: int = Field(
+        ..., 
+        description="Ending line number of the section (inclusive)."
+    )
+
+class SectionEn(BaseSection):
+    """
+    Represents a section of a Dharma talk in English with a title and summary.
+    """
+    title: str = Field(
+        ..., 
+        description="Title of the section in English."
+    )
+    summary: str = Field(
+        ..., 
+        description="Summary of the section content in English."
+    )
+    
+class SectionVi(BaseSection):
+    """
+    Represents a section of a Dharma talk in Vietnamese, with a Vietnamese title, 
+    English translation of the title, and summary.
+    """
+    title_vi: str = Field(
+        ..., 
+        description="Title of the section in Vietnamese."
+    )
+    title_en: str = Field(
+        ..., 
+        description="Translated title of the section in English."
+    )
+    summary: str = Field(
+        ..., 
+        description="Summary of the section content in English."
+    )
+
+class DharmaTalkEn(BaseModel):
+    """
+    Represents an English Dharma Talk, including a summary
+    and sections.
+    """
+    talk_summary: str = Field(
+        ..., 
+        description="Overall summary of the Dharma talk in English."
+    )
+    sections: List[SectionEn] = Field(
+        ..., 
+        description=TALK_SECTIONS_DESCRIPTION
+    )
+    
+class DharmaTalkVi(BaseModel):
+    """
+    Represents a Vietnamese Dharma Talk, including a summary in English 
+    and sections
+    """
+    talk_summary: str = Field(
+        ..., 
+        description="Overall summary of the Dharma talk in English."
+    )
+    sections: List[SectionVi] = Field(
+        ..., 
+        description=TALK_SECTIONS_DESCRIPTION
+    )
+    
+# class BaseSection(BaseModel):
+#     start_line: int = Field(..., description="Starting line number of the section (inclusive).")
+#     end_line: int = Field(..., description="Ending line number of the section (inclusive).")
+
+# class SectionEn(BaseSection):
+#     title: str = Field(..., description="Title of the section")
+#     summary: str = Field(..., description="Summary of the section")
+
+# class SectionVi(BaseSection):
+#     title_vi: str = Field(..., description="Section title (Vienamese).")
+#     title_en: str = Field(..., description="Translated title (English).")
+#     summary: str = Field(..., description="Section summary (English).")
+
+# class DharmaTalkEn(BaseModel):
+#     talk_summary: str = Field(..., description="Dharma talk summary in English.")
+#     sections: List[SectionEn] = Field(..., description="Ordered list of sections.")
+
+# class DharmaTalkVi(BaseModel):
+#     talk_summary: str = Field(..., description="Dharma talk summary in English.")
+#     sections: List[SectionVi] = Field(..., description="Ordered list of sections. The sequence of line ranges for the sections must cover every line from start to finish without any overlaps or gaps.")
+    
+# class Section(BaseModel):
+#     title: str = Field(
+#         ..., 
+#         description="The title of the section"
+#     )
+#     summary: str = Field(
+#         ..., 
+#         description="A summary of the section"
+#     )
+#     start_line: int = Field(
+#         ..., 
+#         description="The starting line number of the section."
+#     )
+#     end_line: int = Field(
+#         ...,
+#         description="The ending line number of the section."
+#     )
+
+# class DharmaTalkSections(BaseModel):
+#     talk_summary: str = Field(
+#         ..., 
+#         description="A summary of the Dharma talk content."
+#     )
+#     sections: List[Section] = Field(
+#         ..., 
+#         description="An ordered list of sections with their titles and included start and end line numbers."
+#     )
+    
+# class Section(BaseModel):
+#     title_vi: str = Field(
+#         ..., 
+#         description="The title of the section in Vietnamese."
+#     )
+#     title_en: str = Field(
+#         ..., 
+#         description="The translation of the title of the section in English."
+#     )
+#     summary: str = Field(
+#         ..., 
+#         description="A summary of the section in English."
+#     )
+#     start_line: int = Field(
+#         ..., 
+#         description="The starting line number of this section."
+#     )
+#     end_line: int = Field(
+#         ...,
+#         description="The ending line number of this section."
+#     )
+
+# class DharmaTalkSections(BaseModel):
+#     talk_summary: str = Field(
+#         ..., 
+#         description="A summary of the Dharma talk in English."
+#     )
+#     sections: List[Section] = Field(
+#         ..., 
+#         description="An ordered list of sections with their titles and included start and end line numbers. The sequence of line ranges for the sections must cover every line from start to finish without any overlaps or gaps."
+#     )
