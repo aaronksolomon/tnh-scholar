@@ -13,25 +13,7 @@ import csv
 import warnings
 from tnh_scholar.logging_config import get_child_logger
 
-MIN_SILENCE_LENGTH = 1000 # 1 second in ms, for splitting on silence
-SILENCE_DBFS_THRESHOLD = -30    # Silence threshold in dBFS
-MAX_DURATION_MS = 10 * 60 * 1000  # Max chunk length in milliseconds, 10m
-MAX_DURATION_S = 10 * 60 # Max chunk length in seconds, 10m
-SEEK_LENGTH = 100 # miliseconds. for silence detection, the scan interval
-TOKEN_BUFFER = 500   # additional tokens to request as a buffer when parsing text.
-
-# from tnh_scholar.gpt_processing import (
-#     run_transcription_speech, 
-#     token_count, 
-#     run_immediate_completion_simple, 
-#     run_single_batch, 
-#     get_completion_content, 
-#     get_completion_object
-# )
-
 from tnh_scholar.utils import get_user_confirmation
-
-# from tnh_scholar.text_processing import get_text_from_file, write_text_to_file
 
 logger = get_child_logger("video_processing")
 
@@ -125,6 +107,21 @@ def download_audio_yt(url: str, output_dir: Path, start_time: str = None, prompt
         logger.info(f"Postprocessor start time set to: {start_time}")
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=True)  # Extract metadata without downloading
+        info = ydl.extract_info(url, download=True)  # Extract metadata and download
         filename = ydl.prepare_filename(info)
         return Path(filename).with_suffix('.mp3')
+
+def get_transcript(video_url, lang='en'):
+    options = {
+        'writesubtitles': True,  # Enables downloading subtitles
+        'subtitleslangs': [lang],  # Specify desired language
+        'skip_download': True,  # Do not download the video
+    }
+
+    with yt_dlp.YoutubeDL(options) as ydl:
+        info = ydl.extract_info(video_url, download=False)
+        subtitles = info.get('subtitles', {})
+        if lang in subtitles:
+            return subtitles[lang][0]['url']  # Return URL of transcript
+        else:
+            raise Exception(f"No transcript available in '{lang}' for this video.")
