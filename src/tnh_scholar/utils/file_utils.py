@@ -47,7 +47,7 @@ def copy_files_with_regex(
     preserve_structure: bool = True
 ) -> None:
     """
-    Copies files from one level down in the source directory to the destination directory
+    Copies files from subdirectories one level down in the source directory to the destination directory
     if they match any regex pattern. Optionally preserves the directory structure.
 
     Args:
@@ -56,13 +56,16 @@ def copy_files_with_regex(
         regex_patterns (list[str]): List of regex patterns to match file names.
         preserve_structure (bool): Whether to preserve the directory structure. Defaults to True.
 
+    Raises:
+        ValueError: If the source directory does not exist or is not a directory.
+
     Example:
-        copy_files_with_regex(
-            source_dir=Path("/path/to/source"),
-            destination_dir=Path("/path/to/destination"),
-            regex_patterns=[r'.*\.txt$', r'.*\.log$'],
-            preserve_structure=True
-        )
+        >>> copy_files_with_regex(
+        ...     source_dir=Path("/path/to/source"),
+        ...     destination_dir=Path("/path/to/destination"),
+        ...     regex_patterns=[r'.*\\.txt$', r'.*\\.log$'],
+        ...     preserve_structure=True
+        ... )
     """
     if not source_dir.is_dir():
         raise ValueError(f"The source directory {source_dir} does not exist or is not a directory.")
@@ -93,11 +96,3 @@ def copy_files_with_regex(
 
                         shutil.copy2(file_path, target_path)
                         print(f"Copied: {file_path} -> {target_path}")
-
-# Example usage
-# copy_files_with_regex(
-#     source_dir=Path("/path/to/source"),
-#     destination_dir=Path("/path/to/destination"),
-#     regex_patterns=[r'.*\.txt$', r'.*\.py$'],
-#     preserve_structure=True
-# )
