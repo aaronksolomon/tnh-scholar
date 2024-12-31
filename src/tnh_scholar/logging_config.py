@@ -5,7 +5,7 @@ import colorlog
 
 BASE_LOG_NAME = "tnh"  # tnh-scholar project
 BASE_LOG_DIR = Path("./logs") 
-DEFAULT_LOG_FILEPATH = Path("main")
+DEFAULT_LOG_FILEPATH = Path("main.log")
 MAX_FILE_SIZE = 10 * 1024 * 1024 # 10 mb
 
 # Define custom log level: PRIORITY_INFO
@@ -24,7 +24,7 @@ LOG_COLORS = {
     "DEBUG": "bold_green",
     "INFO": "cyan",
     "PRIORITY_INFO": "bold_cyan",
-    "WARNING": "yellow",
+    "WARNING": "bold_yellow",
     "ERROR": "bold_red",
     "CRITICAL": "bold_red",
 }
@@ -37,22 +37,6 @@ class OMPFilter(logging.Filter):
     def filter(self, record):
         # Suppress messages containing "OMP:"
         return "OMP:" not in record.getMessage()
-
-# class StderrToLogger:
-#     """
-#     Redirects stderr messages to an existing logger.
-#     """
-#     def __init__(self, logger: logging.Logger, log_level: int = logging.ERROR):
-#         self.logger = logger
-#         self.log_level = log_level
-
-#     def write(self, message: str):
-#         # Avoid logging empty lines or whitespace
-#         if message.strip():
-#             self.logger.log(self.log_level, message.strip())
-
-#     def flush(self):
-#         pass  # Required for compatibility with file-like objects
 
 def setup_logging(
     log_level=logging.INFO,
