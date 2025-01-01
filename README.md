@@ -1,6 +1,6 @@
 # TNH Scholar
 
-**TNH Scholar** is an AI-driven project designed to explore, query, and translate the teachings of Thich Nhat Hanh. The project aims to create a resource for practitioners and scholars to deeply engage with mindfulness and spiritual wisdom through natural language processing and machine learning models.
+**TNH Scholar** is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and other Plum Village Monastics. The project aims to create a resource for practitioners and scholars to deeply engage with mindfulness and spiritual wisdom through natural language processing and machine learning models.
 
 ## Project Overview
 
@@ -51,7 +51,7 @@ Additional tools:
 ## Setup Instructions
 
 ### Prerequisites
-- **Python 3.11+** with necessary packages (see `requirements.txt`).
+- **Python 3.12+** with necessary packages (see `requirements.txt`).
 - **Hugging Face API** and **OpenAI API** access for model training and interaction.
 - **Google Cloud SDK** for cloud-based infrastructure.
 
