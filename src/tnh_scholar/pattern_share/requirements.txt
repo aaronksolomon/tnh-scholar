@@ -1,0 +1,8 @@
+# requirements.txt
+streamlit>=1.32.0
+supabase>=2.3.0
+langchain>=0.1.0
+langchain-openai>=0.0.5
+pyyaml>=6.0.1
+gitpython>=3.1.40
+python-dotenv>=1.0.0
