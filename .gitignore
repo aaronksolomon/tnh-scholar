@@ -4,6 +4,9 @@
 # Private data (copyrighted or otherwise to be kept private)
 private_*
 
+# streamlit secrets:
+secrets.toml
+
 # OCR processed output:
 ocr_processed_ouput/
 
