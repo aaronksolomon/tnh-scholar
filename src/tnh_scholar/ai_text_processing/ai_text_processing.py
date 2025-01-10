@@ -1,6 +1,7 @@
 # AI based text processing routines and classes
 
 # external package imports
+from ast import Num
 from pathlib import Path
 from typing import List, Dict
 import logging
@@ -11,17 +12,21 @@ from typing import Dict, Generator, List, Optional, Pattern, Union
 import logging
 from abc import ABC, abstractmethod
 from typing import Optional, Dict, Type, TypeVar, List, Optional, Tuple
-from numpy import source
+from click import style
+from numpy import average
 from pydantic import BaseModel, Field
+from random import sample
 
 # internal package imports
+from regex import template
 from tnh_scholar.openai_interface import token_count
-from tnh_scholar.text_processing import bracket_lines, unbracket_lines, lines_from_bracketed_text
-from tnh_scholar.text_processing import get_text_from_file, write_text_to_file
+from tnh_scholar.text_processing import bracket_lines, unbracket_lines, lines_from_bracketed_text, NumberedText
+from tnh_scholar.text_processing import get_text_from_file, write_text_to_file, normalize_newlines
 from tnh_scholar.utils import iterate_subdir, load_json_into_model, save_model_to_json
 from tnh_scholar.ai_text_processing.lang import get_language_code, get_language_name
 from tnh_scholar.ai_text_processing.response_format import TextObject, Section
 from tnh_scholar.ai_text_processing.patterns import Pattern, PatternManager
+
 
 from .openai_process_interface import openai_process_text
 from tnh_scholar.logging_config import get_child_logger
@@ -31,19 +36,79 @@ from tnh_scholar import PATTERN_REPO
 
 # Constants
 MIN_SECTION_COUNT = 3
-DEFAULT_SECTION_TOKENS = 650
-DEFAULT_SECTION_TOKEN_SIZE = 5000
+DEFAULT_SECTION_TOKEN_SIZE = 650
+DEFAULT_SECTION_RESULT_MAX_SIZE = 4000
 DEFAULT_REVIEW_COUNT = 3
-DEFAULT_SECTION_PATTERN = "default_generate_sections"
+DEFAULT_SECTION_PATTERN = "default_section"
 DEFAULT_PUNCTUATE_PATTERN = "default_punctuate"
 DEFAULT_PUNCTUATE_STYLE = "APA"
-DEFAULT_XML_FORMAT_PATTERN = "default_xml_format_section"
+DEFAULT_XML_FORMAT_PATTERN = "default_xml_format"
 DEFAULT_PUNCTUATE_MODEL = "gpt-4o-mini"
-DEFAULT_SECTION_MODEL = "gpt-4o"
+DEFAULT_OPENAI_MODEL = "gpt-4o"
 DEFAULT_TRANSLATE_SEGMENT_SIZE = 20
 DEFAULT_TRANSLATE_STYLE = "'American Dharma Teaching'"
+DEFAULT_TRANSLATION_PATTERN = "default_line_translation"
+DEFAULT_TRANSLATE_CONTEXT_LINES = 3
+DEFAULT_LINE_SAMPLE_SIZE = 70 # number of lines to sample for calculating average tokens per line.
+DEFAULT_TRANSLATION_TARGET_TOKENS = 650
+TRANSCRIPT_SEGMENT_MARKER = "TRANSCRIPT_SEGMENT"
+PRECEDING_CONTEXT_MARKER = "PRECEDING_CONTEXT"
+FOLLOWING_CONTEXT_MARKER = "FOLLOWING_CONTEXT"
+
+
+
 
 ResponseFormat = TypeVar('ResponseFormat', bound=BaseModel)
+
+from typing import Optional, Any
+from pathlib import Path
+
+class LocalPatternManager:
+    """
+    A simple singleton implementation of PatternManager that ensures only one instance
+    is created and reused throughout the application lifecycle.
+    
+    This class wraps the PatternManager to provide efficient pattern loading by
+    maintaining a single reusable instance.
+    
+    Attributes:
+        _instance (Optional[SingletonPatternManager]): The singleton instance
+        _pattern_manager (Optional[PatternManager]): The wrapped PatternManager instance
+    """
+    _instance: Optional['LocalPatternManager'] = None
+    
+    def __new__(cls) -> 'LocalPatternManager':
+        """
+        Create or return the singleton instance.
+        
+        Returns:
+            SingletonPatternManager: The singleton instance
+        """
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._pattern_manager = None
+        return cls._instance
+    
+    @property
+    def pattern_manager(self) -> 'PatternManager':
+        """
+        Lazy initialization of the PatternManager instance.
+        
+        Returns:
+            PatternManager: The wrapped PatternManager instance
+            
+        Raises:
+            RuntimeError: If PATTERN_REPO is not properly configured
+        """
+        if self._pattern_manager is None:
+            try:
+                self._pattern_manager = PatternManager(PATTERN_REPO)
+            except ImportError as e:
+                raise RuntimeError(
+                    "Failed to initialize PatternManager. Ensure pattern_manager "
+                    f"module and PATTERN_REPO are properly configured: {e}"
+                ) from e
+        return self._pattern_manager
 
 @dataclass
 class ProcessedSection:
@@ -84,6 +149,8 @@ class OpenAIProcessor(TextProcessor):
     """OpenAI-based text processor implementation."""
     
     def __init__(self, model: Optional[str] = None, max_tokens: int = 0):
+        if not model:
+            model = DEFAULT_OPENAI_MODEL
         self.model = model
         self.max_tokens = max_tokens
 
@@ -113,7 +180,8 @@ class TextPunctuator:
     def __init__(
         self,
         processor: TextProcessor,
-        punctuate_pattern: Pattern,
+        punctuate_pattern: Optional[Pattern] = None,
+        source_language: Optional[str] = None,
         review_count: int = DEFAULT_REVIEW_COUNT,
         style_convention = DEFAULT_PUNCTUATE_STYLE
     ):
@@ -126,7 +194,8 @@ class TextPunctuator:
             section_count: Target number of sections
             review_count: Number of review passes
         """
-
+            
+        self.source_language = source_language
         self.processor = processor
         self.punctuate_pattern = punctuate_pattern
         self.review_count = review_count
@@ -143,14 +212,17 @@ class TextPunctuator:
         """
         
         if not source_language:
-            source_language = get_language_name(text)
-            
+            if self.source_language:
+                source_language = self.source_language
+            else:
+                source_language = get_language_name(text)
+                
         template_values = {
             "source_language": source_language,
             "review_count": self.review_count,
             "style_convention": self.style_convention
         }
-        
+
         if template_dict:
             template_values |= template_dict
             
@@ -161,8 +233,9 @@ class TextPunctuator:
             punctuate_instructions
         )
         logger.info("Punctuation completed.")
-        
-        return text    
+
+        # normalize newline spacing to 1 newline between lines and return
+        return normalize_newlines(text, spacing=1)    
 
 def punctuate_text(
     text, 
@@ -174,18 +247,19 @@ def punctuate_text(
     
     if not punctuate_model:
         punctuate_model = DEFAULT_PUNCTUATE_MODEL
-        
+    
+    if not punctuate_pattern:
+            punctuate_pattern = get_default_pattern(DEFAULT_PUNCTUATE_PATTERN)
+            
     punctuator = TextPunctuator(
         processor=OpenAIProcessor(punctuate_model),
         source_language=source_language,
         punctuate_pattern=punctuate_pattern,
-        punctuate_model=punctuate_model
         )
     
     return punctuator.punctuate_text(
         text, 
         source_language=source_language, 
-        punctuate_pattern=punctuate_pattern,
         template_dict=template_dict)
               
 class LineTranslator:
@@ -193,31 +267,31 @@ class LineTranslator:
     
     def __init__(
         self,
-        translator: TextProcessor,
-        translate_pattern: Pattern,
+        processor: TextProcessor,
+        pattern: Pattern,
         review_count: int = DEFAULT_REVIEW_COUNT,
         style: str = DEFAULT_TRANSLATE_STYLE,
-        context_lines: int = 3  # Number of context lines before/after
+        context_lines: int = DEFAULT_TRANSLATE_CONTEXT_LINES  # Number of context lines before/after
     ):
         """
         Initialize line translator.
         
         Args:
-            translator: Implementation of TextProcessor
-            translate_pattern: Pattern object containing translation instructions
+            processor: Implementation of TextProcessor
+            pattern: Pattern object containing translation instructions
             review_count: Number of review passes
             style: Translation style to apply
             context_lines: Number of context lines to include before/after
         """
-        self.translator = translator
-        self.translate_pattern = translate_pattern
+        self.processor = processor
+        self.pattern = pattern
         self.review_count = review_count
         self.style = style
         self.context_lines = context_lines
 
     def translate_segment(
         self,
-        text: str,
+        num_text: NumberedText,
         start_line: int,
         end_line: int,
         source_language: str = None,
@@ -238,28 +312,21 @@ class LineTranslator:
         Returns:
             Translated text segment with line numbers preserved
         """
-        # Auto-detect language if not specified
-        if not source_language:
-            source_language = get_language_name(text)
-
-        # Convert text to numbered lines if not already
-        if not text.startswith("<"):  # Simple check for bracketed format
-            text = bracket_lines(text, number=True)
 
         # Extract main segment and context
-        lines = text.splitlines()
+        lines = num_text.numbered_lines
 
         # Calculate context ranges
-        preceding_start = max(0, start_line - self.context_lines)
-        following_end = min(len(lines), end_line + self.context_lines)
+        preceding_start = max(1, start_line - self.context_lines)  # lines start on 1.
+        following_end = min(num_text.end + 1, end_line + self.context_lines)
 
         # Extract context and segment
-        preceding_context = "\n".join(lines[preceding_start:start_line])
-        transcript_segment = "\n".join(lines[start_line:end_line+1])
-        following_context = "\n".join(lines[following_end-1:following_end])
+        preceding_context = num_text.get_numbered_segment(preceding_start, start_line)
+        transcript_segment = num_text.get_numbered_segment(start_line, end_line)
+        following_context = num_text.get_numbered_segment(end_line, following_end)
 
         # build input text
-        transcript_input = self._build_translation_input(preceding_context, transcript_segment, following_context)
+        translation_input = self._build_translation_input(preceding_context, transcript_segment, following_context)
         
         # Prepare template values
         template_values = {
@@ -274,10 +341,15 @@ class LineTranslator:
 
         # Get and apply translation instructions
         logger.info(f"Translating segment (lines {start_line}-{end_line})")
-        translate_instructions = self.translate_pattern.apply_template(template_values)
+        translate_instructions = self.pattern.apply_template(template_values)
+        
+        if start_line <= 1:
+            logger.debug(f"translate_instructions:\n{translate_instructions}")
+        
+        logger.debug(f"Translation input:\n{translation_input}")
 
-        return self.translator.process_text(
-            transcript_input, translate_instructions
+        return self.processor.process_text(
+            translation_input, translate_instructions
         )
         
     def _build_translation_input(
@@ -302,24 +374,27 @@ class LineTranslator:
         # Add preceding context if exists
         if preceding_context:
             parts.extend([
-                "<preceding_context>",
+                PRECEDING_CONTEXT_MARKER,
                 preceding_context,
-                "</preceding_context>\n"
+                PRECEDING_CONTEXT_MARKER,
+                ""
             ])
-            
+        
         # Add main segment (always required)
         parts.extend([
-            "<transcript_segment>",
+            TRANSCRIPT_SEGMENT_MARKER,
             transcript_segment,
-            "</transcript_segment>\n"
+            TRANSCRIPT_SEGMENT_MARKER,
+            ""
         ])
         
         # Add following context if exists
         if following_context:
             parts.extend([
-                "<following_context>",
+                FOLLOWING_CONTEXT_MARKER,
                 following_context,
-                "</following_context>"
+                FOLLOWING_CONTEXT_MARKER,
+                ""
             ])
             
         return "\n".join(parts)
@@ -327,9 +402,9 @@ class LineTranslator:
     def translate_text(
         self,
         text: str,
-        segment_size: int = 50,  # Number of lines per segment
-        source_language: str = None,
-        target_language: str = "English",
+        segment_size: Optional[int] = None,  # Number of lines per segment
+        source_language: Optional[str] = None,
+        target_language: Optional[str] = "English",
         template_dict: Optional[Dict] = None
     ) -> str:
         """
@@ -345,20 +420,25 @@ class LineTranslator:
         Returns:
             Complete translated text with line numbers preserved
         """
-        # Convert text to numbered lines if needed
-        if not text.startswith("<"):
-            text = bracket_lines(text, number=True)
-
-        lines = text.splitlines()
-        total_lines = len(lines)
+        
+        # Auto-detect language if not specified
+        if not source_language:
+            source_language = get_language_name(text)
+            
+        # Convert text to numbered lines
+        num_text = NumberedText(text)
+        total_lines = num_text.size
+        
+        if not segment_size:
+            segment_size = self._calculate_segment_size(num_text, DEFAULT_TRANSLATION_TARGET_TOKENS)
+            
         translated_segments = []
 
-        # Process text in segments
-        for start_idx in range(0, total_lines, segment_size):
-            end_idx = min(start_idx + segment_size - 1, total_lines - 1)
-
+        logger.debug(f"Total lines to translate: {total_lines} | Translation segment size: {segment_size}.")
+        # Process text in segments using segment iteration
+        for start_idx, end_idx in num_text.iter_segments(segment_size, segment_size // 5): 
             translated_segment = self.translate_segment(
-                text,
+                num_text,
                 start_idx,
                 end_idx,
                 source_language,
@@ -367,60 +447,143 @@ class LineTranslator:
             )
             
             # validate the translated segment
-            self._validate_segment(translated_segment)
+            translated_content = self._extract_content(translated_segment)
+            self._validate_segment(translated_content, start_idx, end_idx)
 
-            translated_segments.append(translated_segment)
+            translated_segments.append(translated_content)
 
         return "\n".join(translated_segments)
     
-    
-    def _validate_segment(self, translated_segment: str) -> None:
+    def _calculate_segment_size(
+        self, 
+        num_text: NumberedText, 
+        target_segment_tokens: int, 
+        sample_size: int = DEFAULT_LINE_SAMPLE_SIZE) -> int:
         """
-        Validate translated segment format and content.
+        Calculate segment size (in number of lines) based on average tokens per line.
+        
+        Args:
+            num_text: Collection of numbered lines as NumberedText 
+            target_segment_tokens: Desired token count per segment
+            sample_size: Number of lines to sample for average calculation (default: 20)
+        
+        Returns:
+            int: Recommended number of lines per segment
+            
+        Example:
+            
+        """
+
+        # Handle case with fewer lines than sample size
+        actual_sample_size = min(num_text.size, sample_size)
+
+        # Take random sample of lines
+        sample_texts = sample(num_text.lines, actual_sample_size)
+        # Calculate average tokens per line
+        avg_tokens_per_line = average([token_count(text) for text in sample_texts])
+        logger.debug(f"Average tokens per line: {avg_tokens_per_line}")
+
+        return max(1, round(target_segment_tokens / avg_tokens_per_line))
+    
+    def _extract_content(self, segment):
+        segment = segment.strip() # remove any filling whitespace
+        if segment.startswith(TRANSCRIPT_SEGMENT_MARKER) and segment.endswith(TRANSCRIPT_SEGMENT_MARKER):
+            return segment[
+                len(TRANSCRIPT_SEGMENT_MARKER) : -len(TRANSCRIPT_SEGMENT_MARKER)
+            ].strip()
+        logger.warning("Translated segment missing transcript_segment tags")
+        return segment
+        
+    def _validate_segment(self, translated_content: str, start_index: int, end_index: int) -> None:
+        """
+        Validate translated segment format, content, and line number sequence.
+        Issues warnings for validation issues rather than raising errors.
         
         Args:
             translated_segment: Translated text to validate
-            
-        Raises:
-            ValueError: If validation fails
+            start_idx: the staring index of the range (inclusive) 
+            end_line: then ending index of the range (exclusive) 
+                
+        Returns:
+            str: Content with segment tags removed
         """
-        # Check basic format
-        if not (translated_segment.startswith("<transcript_segment>") and 
-                translated_segment.endswith("</transcript_segment>")):
-            raise ValueError("Translated segment must be wrapped in transcript_segment tags")
-            
-        # Extract content between tags
-        content = translated_segment.replace("<transcript_segment>", "").replace("</transcript_segment>", "").strip()
+
+        # Validate lines
         
-        # Validate line format and numbers
-        lines = content.splitlines()
+        
+
+        lines = translated_content.splitlines()
+        line_numbers = []
+        
+        start_line = start_index # inclusive start
+        end_line = end_index - 1 # exclusive end
+
         for line in lines:
             line = line.strip()
             if not line:
                 continue
-                
-            # Check line number format: <X: translation>
-            if not (line.startswith("<") and ":" in line and line.endswith(">")):
-                raise ValueError(f"Invalid line format: {line}")
-                
-            try:
-                # Extract and validate line number
-                line_num = int(line[1:line.index(":")])
-                if line_num < 0:
-                    raise ValueError(f"Invalid line number in: {line}")
-            except ValueError as e:
-                raise ValueError(f"Line number parsing failed: {line}") from e
-                
-        logger.debug(f"Validated translated segment: {len(lines)} lines")
 
-def translate_text(
+            if ":" not in line:
+                logger.warning(f"Invalid line format: {line}")
+                continue
+
+            try:
+                line_num = int(line[:line.index(":")])
+                if line_num < 0:
+                    logger.warning(f"Invalid line number: {line}")
+                    continue
+                line_numbers.append(line_num)
+            except ValueError:
+                logger.warning(f"Line number parsing failed: {line}")
+                continue
+
+        # Validate sequence
+        if not line_numbers:
+            logger.warning("No valid line numbers found")
+        else:
+            if line_numbers[0] != start_line:
+                logger.warning(f"First line number {line_numbers[0]} doesn't match expected {start_line}")
+
+            if line_numbers[-1] != end_line:
+                logger.warning(f"Last line number {line_numbers[-1]} doesn't match expected {end_line}")
+
+            expected = set(range(start_line, end_line + 1))
+            if missing := expected - set(line_numbers):
+                logger.warning(f"Missing line numbers in sequence: {missing}")
+
+        logger.debug(f"Validated {len(lines)} lines from {start_line} to {end_line}")
+    
+def translate_text_by_lines(
     text,
     source_language: Optional[str] = None,
     target_language: Optional[str] = None,
-    translation_pattern: Optional[str] = None,
-    translation_model: Optional[str] = None
+    pattern: Optional[Pattern] = None,
+    model: Optional[str] = None,
+    style: Optional[str] = None,
+    segment_size: Optional[int] = None,
+    context_lines: Optional[int] = None,
+    review_count: Optional[int] = None,
+    template_dict: Optional[Dict] = None
     )-> str:
-    pass
+    
+    if pattern is None:
+        pattern = get_default_pattern(DEFAULT_TRANSLATION_PATTERN)
+    
+    translator = LineTranslator(
+        processor=OpenAIProcessor(model),
+        pattern=pattern,
+        style=style or DEFAULT_TRANSLATE_STYLE,
+        context_lines=context_lines or DEFAULT_TRANSLATE_CONTEXT_LINES,
+        review_count=review_count or DEFAULT_REVIEW_COUNT
+    )
+    
+    return translator.translate_text(
+        text, 
+        source_language=source_language, 
+        target_language=target_language, 
+        segment_size=segment_size,
+        template_dict=template_dict 
+    )
 
 class SectionParser:
     """Generates structured section breakdowns of text content."""
@@ -476,7 +639,7 @@ class SectionParser:
             section_count = self._calculate_section_count(text)
             
         # Prepare numbered text, each line is numbered
-        bracketed_text = bracket_lines(text, number=True)
+        num_text = NumberedText(text)
 
         # Prepare template variables
         template_values = {
@@ -492,18 +655,18 @@ class SectionParser:
         instructions = self.section_pattern.apply_template(template_values)
 
         logger.info(f"Generating sections for {source_language} text "
-                   f"(target sections: {self.section_count})")
+                   f"(target sections: {section_count})")
 
         # Process text with structured output
         try:
             result = self.section_scanner.process_text(
-                bracketed_text,
+                num_text.numbered_lines,
                 instructions,
                 response_format=TextObject
             )
 
             # Validate section coverage
-            self._validate_sections(result.sections, bracketed_text)
+            self._validate_sections(result.sections, num_text.size)
 
             return result
 
@@ -518,7 +681,7 @@ class SectionParser:
         else:
             return total_tokens // DEFAULT_SECTION_TOKEN_SIZE + 1
              
-    def _validate_sections(self, sections: List[Section], text: str) -> None:
+    def _validate_sections(self, sections: List[Section], total_lines: int) -> None:
         """
         Validate section line coverage and ordering. Issues warnings for validation problems
         instead of raising errors.
@@ -527,8 +690,7 @@ class SectionParser:
             sections: List of generated sections
             text: Original text
         """
-        logger = logging.getLogger(__name__)
-        total_lines = len(text.splitlines())
+
         covered_lines = set()
         last_end = -1
         
@@ -566,7 +728,7 @@ def find_sections(
     source_language: str = None,
     section_pattern: Optional[Pattern] = None,
     section_model: Optional[str] = None,
-    max_tokens: int = DEFAULT_SECTION_TOKENS,
+    max_tokens: int = DEFAULT_SECTION_RESULT_MAX_SIZE,
     section_count: Optional[int] = None,
     review_count: int = DEFAULT_REVIEW_COUNT,
     template_dict: Optional[Dict] = None
@@ -591,19 +753,23 @@ def find_sections(
         section_pattern = get_default_pattern(DEFAULT_SECTION_PATTERN)
         
     if source_language is None:
-        source_language = get_language(text)
+        source_language = get_language_name(text)
         
     section_scanner = OpenAIProcessor(model=section_model, max_tokens=max_tokens)
     parser = SectionParser(
         section_scanner=section_scanner,
         section_pattern=section_pattern,
-        section_count=section_count,
         review_count=review_count
     )
     
-    return parser.find_sections(text, source_language, template_dict)
+    return parser.find_sections(
+        text, 
+        source_language=source_language, 
+        section_count=section_count,
+        template_dict=template_dict
+    )
 
-class XMLSectionProcessor:
+class SectionProcessor:
     """Handles section-based XML text processing with configurable output handling."""
     
     def __init__(
@@ -690,6 +856,38 @@ class XMLSectionProcessor:
                 processed_sections.append(processed_section)
 
         return processed_sections if output_mode == "list" else None
+    
+    def process_paragraphs(
+        self,
+        transcript: str,
+    ) -> Generator[str, None, None]:
+        """
+        Process transcript by paragraphs (as sections) where paragraphs are assumed to be given as newline separated.
+
+        Args:
+            transcript: Text to process
+  
+        Returns:
+            Generator of lines
+
+        Yields:
+            Processed lines as strings
+        """
+        numbered_transcript = NumberedText(transcript)
+
+        logger.info(f"Processing lines as paragraphs with pattern: {self.pattern.name}")
+
+        processed_paragraphs = []
+
+        for line in numbered_transcript:
+
+            # If line is empty or whitespace, continue
+            if not line.strip():
+                continue
+
+            # Otherwise get and apply processing instructions
+            instructions = self.pattern.apply_template(self.template_dict)
+            yield self.processor.process_text(line, instructions)
 
     def write_to_file(
         self,
@@ -744,7 +942,7 @@ def process_text_by_sections(
     if not pattern:
         pattern = get_default_pattern(DEFAULT_XML_FORMAT_PATTERN)
         
-    section_processor = XMLSectionProcessor(processor, pattern, template_dict)
+    section_processor = SectionProcessor(processor, pattern, template_dict)
     
     sections_output = section_processor.process_sections(
         transcript, 
@@ -763,7 +961,20 @@ def process_text_by_sections(
     
     return sections_output
 
-def get_default_pattern(name: str):
-    manager = PatternManager(PATTERN_REPO)
+def get_default_pattern(name: str) -> Any:
+    """
+    Get a pattern by name using the singleton PatternManager.
     
-    return manager.load_pattern(name)
+    This is a more efficient version that reuses a single PatternManager instance.
+    
+    Args:
+        name: Name of the pattern to load
+        
+    Returns:
+        The loaded pattern
+        
+    Raises:
+        ValueError: If pattern name is invalid
+        FileNotFoundError: If pattern file doesn't exist
+    """
+    return LocalPatternManager().pattern_manager.load_pattern(name)
