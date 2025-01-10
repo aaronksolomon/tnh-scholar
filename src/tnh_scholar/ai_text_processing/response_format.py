@@ -2,8 +2,8 @@
 from pydantic import BaseModel, Field
 from typing import List
 
-TALK_SECTIONS_DESCRIPTION = (
-    "Ordered list of sections for the talk. "
+TEXT_SECTIONS_DESCRIPTION = (
+    "Ordered list of sections for the text. "
     "The sequence of line ranges for the sections must cover every line "
     "from start to finish without any overlaps or gaps."
 )
@@ -21,11 +21,17 @@ class BaseSection(BaseModel):
         description="Ending line number of the section (inclusive)."
     )
 
-class SectionEn(BaseSection):
+
+class Section(BaseSection):
     """
-    Represents a section of a Dharma talk in English with a title and summary.
+    Represents a section of a text in any language with English translations.
+    For English sections, title_orig and title_en will be identical.
     """
-    title: str = Field(
+    title_orig: str = Field(
+        ..., 
+        description="Title of the section in original language."
+    )
+    title_en: str = Field(
         ..., 
         description="Title of the section in English."
     )
@@ -33,52 +39,96 @@ class SectionEn(BaseSection):
         ..., 
         description="Summary of the section content in English."
     )
-    
-class SectionVi(BaseSection):
-    """
-    Represents a section of a Dharma talk in Vietnamese, with a Vietnamese title, 
-    English translation of the title, and summary.
-    """
-    title_vi: str = Field(
-        ..., 
-        description="Title of the section in Vietnamese."
-    )
-    title_en: str = Field(
-        ..., 
-        description="Translated title of the section in English."
-    )
-    summary: str = Field(
-        ..., 
-        description="Summary of the section content in English."
-    )
 
-class DharmaTalkEn(BaseModel):
+class TextObject(BaseModel):
     """
-    Represents an English Dharma Talk, including a summary
-    and sections.
+    Represents a text in any language, with English translations
+    and section breakdowns.
     """
-    talk_summary: str = Field(
-        ..., 
-        description="Overall summary of the Dharma talk in English."
+    language: str = Field(
+        ...,
+        description="ISO 639-1 language code of the original text."
     )
-    sections: List[SectionEn] = Field(
+    text_summary: str = Field(
         ..., 
-        description=TALK_SECTIONS_DESCRIPTION
+        description="Overall summary of the Dharma text in English."
+    )
+    sections: List[Section] = Field(
+        ..., 
+        description=TEXT_SECTIONS_DESCRIPTION
     )
     
-class DharmaTalkVi(BaseModel):
-    """
-    Represents a Vietnamese Dharma Talk, including a summary in English 
-    and sections
-    """
-    talk_summary: str = Field(
-        ..., 
-        description="Overall summary of the Dharma talk in English."
-    )
-    sections: List[SectionVi] = Field(
-        ..., 
-        description=TALK_SECTIONS_DESCRIPTION
-    )
+# class BaseSection(BaseModel):
+#     """
+#     Base class for a section, containing shared attributes.
+#     """
+#     start_line: int = Field(
+#         ..., 
+#         description="Starting line number of the section (inclusive)."
+#     )
+#     end_line: int = Field(
+#         ..., 
+#         description="Ending line number of the section (inclusive)."
+#     )
+
+# class SectionEn(BaseSection):
+#     """
+#     Represents a section of a Dharma talk in English with a title and summary.
+#     """
+#     title: str = Field(
+#         ..., 
+#         description="Title of the section in English."
+#     )
+#     summary: str = Field(
+#         ..., 
+#         description="Summary of the section content in English."
+#     )
+    
+# class SectionVi(BaseSection):
+#     """
+#     Represents a section of a Dharma talk in a Language other than English. 
+#     English translation of the title, and summary.
+#     """
+#     title_vi: str = Field(
+#         ..., 
+#         description="Title of the section in Vietnamese."
+#     )
+#     title_en: str = Field(
+#         ..., 
+#         description="Translated title of the section in English."
+#     )
+#     summary: str = Field(
+#         ..., 
+#         description="Summary of the section content in English."
+#     )
+
+# class DharmaTalkEn(BaseModel):
+#     """
+#     Represents an English Dharma Talk, including a summary
+#     and sections.
+#     """
+#     talk_summary: str = Field(
+#         ..., 
+#         description="Overall summary of the Dharma talk in English."
+#     )
+#     sections: List[SectionEn] = Field(
+#         ..., 
+#         description=TALK_SECTIONS_DESCRIPTION
+#     )
+    
+# class DharmaTalkVi(BaseModel):
+#     """
+#     Represents a Vietnamese Dharma Talk, including a summary in English 
+#     and sections
+#     """
+#     talk_summary: str = Field(
+#         ..., 
+#         description="Overall summary of the Dharma talk in English."
+#     )
+#     sections: List[SectionVi] = Field(
+#         ..., 
+#         description=TALK_SECTIONS_DESCRIPTION
+#     )
     
 # class BaseSection(BaseModel):
 #     start_line: int = Field(..., description="Starting line number of the section (inclusive).")
@@ -89,7 +139,7 @@ class DharmaTalkVi(BaseModel):
 #     summary: str = Field(..., description="Summary of the section")
 
 # class SectionVi(BaseSection):
-#     title_vi: str = Field(..., description="Section title (Vienamese).")
+#     title_vi: str = Field(..., description="Section title (Vietnamese).")
 #     title_en: str = Field(..., description="Translated title (English).")
 #     summary: str = Field(..., description="Section summary (English).")
 
