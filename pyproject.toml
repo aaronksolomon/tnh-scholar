@@ -37,7 +37,7 @@ dependencies = [
 ]
 
 [project.scripts]
-audio-transcribe = "tnh_scholar.CLI_tools.audio_transcribe.audio_transcribe:main"
+audio-transcribe = "tnh_scholar.cli_tools.audio_transcribe.audio_transcribe:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
