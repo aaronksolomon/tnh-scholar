@@ -19,6 +19,8 @@ Usage Example:
 
 In a production environment, this CLI tool would be installed as part of the `tnh-scholar` package.
 """
+import os
+os.environ["KMP_WARNINGS"] = "0" # turn off known info message about nested levels for OMP that arises from torch.
 
 import sys
 from pathlib import Path
@@ -48,13 +50,14 @@ from tnh_scholar.audio_processing import (
 from tnh_scholar.utils import (
     ensure_directory_exists,
     get_user_confirmation
-    )
+)
 
 from .environment import check_env
 from .validate import validate_inputs
 
 # Settings
-DEFAULT_CHUNK_DURATION = 7 * 60 # 7 minutes
+DEFAULT_CHUNK_DURATION_MIN = 7
+DEFAULT_CHUNK_DURATION_SEC = DEFAULT_CHUNK_DURATION_MIN * 60 
 REQUIREMENTS_PATH = CLI_TOOLS_DIR / "audio_transcribe" / "environment" / "requirements.txt"
 RE_DOWNLOAD_CONFIRMATION_STR = "An mp3 file corresponding to {url} already exists in the output path:\n\t{output_dir}.\nSKIP download ([Y]/n)?"
 DEFAULT_OUTPUT_DIR = "./audio_transcriptions"
@@ -65,19 +68,20 @@ check_env(PROJECT_ROOT_DIR, REQUIREMENTS_PATH)
 @click.command()
 @click.option('-s', '--split', is_flag=True, help='Split downloaded/local audio into chunks.')
 @click.option('-t', '--transcribe', is_flag=True, help='Transcribe the audio chunks.')
-@click.option('--yt_url', type=str, help='Single YouTube URL to process.')
-@click.option('--yt_url_csv', type=click.Path(exists=True), help='A CSV File containing multiple YouTube URLs. The first column of the file must be the URL and Second column a start time (if specified).')
+@click.option('-y', '--yt_url', type=str, help='Single YouTube URL to process.')
+@click.option('-v', '--yt_url_csv', type=click.Path(exists=True), help='A CSV File containing multiple YouTube URLs. The first column of the file must be the URL and Second column a start time (if specified).')
 @click.option('-f', '--file', type=click.Path(exists=True), help='Path to a local audio file.')
-@click.option('--chunk_dir', type=click.Path(), help='Directory for pre-existing chunks or where to store new chunks.')
+@click.option('-c', '--chunk_dir', type=click.Path(), help='Directory for pre-existing chunks or where to store new chunks.')
 @click.option('-o', '--output_dir', type=click.Path(), default=DEFAULT_OUTPUT_DIR, help=f"Base output directory. DEFAULT: '{DEFAULT_OUTPUT_DIR}' ")
-@click.option('-d', '--chunk_duration', type=int, default=DEFAULT_CHUNK_DURATION, help='Max chunk duration in seconds (default: 10 minutes).')
+@click.option('-d', '--chunk_duration', type=int, default=DEFAULT_CHUNK_DURATION_SEC, help=f'Max chunk duration in seconds (default: {DEFAULT_CHUNK_DURATION_MIN} minutes).')
 @click.option('-x', '--no_chunks', is_flag=True, help='Run transcription directly on the audio files source(s). WARNING: for files > 10 minutes in Length, the Open AI transcription API may fail.')
-@click.option('--start', 'start_time', type=str, help='Start time offset for the input media (HH:MM:SS).')
-@click.option('--translate', is_flag=True, help='Include translation in the transcription if set.')
+@click.option('-b', '--start', 'start_time', type=str, help='Start time (beginning) offset for the input media (HH:MM:SS).')
+@click.option('-a', '--translate', is_flag=True, help='Include translation in the transcription if set.')
 @click.option('-p', '--prompt', type=str, default=DEFAULT_PROMPT, help='Prompt or keywords to guide the transcription.')
-@click.option('--silence_boundaries', is_flag=True, help='Use silence detection to split audio file(s)')
-@click.option('--whisper_boundaries', is_flag=True, help='(DEFAULT) Use a whisper based model to audio at sentence boundaries.')
+@click.option('-i', '--silence_boundaries', is_flag=True, help='Use silence detection to split audio file(s)')
+@click.option('-w', '--whisper_boundaries', is_flag=True, help='(DEFAULT) Use a whisper based model to audio at sentence boundaries.')
 @click.option('-l', '--language', type=str, help="The two letter language code. e.g. 'vi' for Vietnamese. Used for splitting only. DEFAULT: English ('en').")
+
 def main(
     split: bool,
     transcribe: bool,
