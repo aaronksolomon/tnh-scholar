@@ -8,9 +8,9 @@ TEXT_SECTIONS_DESCRIPTION = (
     "from start to finish without any overlaps or gaps."
 )
 
-class BaseSection(BaseModel):
+class LogicalSection(BaseModel):
     """
-    Base class for a section, containing shared attributes.
+    A logically coherent section of text. 
     """
     start_line: int = Field(
         ..., 
@@ -21,39 +21,15 @@ class BaseSection(BaseModel):
         description="Ending line number of the section (inclusive)."
     )
 
-
-class Section(BaseSection):
-    """
-    Represents a section of a text in any language with English translations.
-    For English sections, title_orig and title_en will be identical.
-    """
-    title_orig: str = Field(
-        ..., 
-        description="Title of the section in original language."
-    )
-    title_en: str = Field(
-        ..., 
-        description="Title of the section in English."
-    )
-    summary: str = Field(
-        ..., 
-        description="Summary of the section content in English."
-    )
-
 class TextObject(BaseModel):
     """
-    Represents a text in any language, with English translations
-    and section breakdowns.
+    Represents a text in any language broken into coherent logical sections.
     """
     language: str = Field(
         ...,
-        description="ISO 639-1 language code of the original text."
+        description="ISO 639-1 language code of the text."
     )
-    text_summary: str = Field(
-        ..., 
-        description="Overall summary of the Dharma text in English."
-    )
-    sections: List[Section] = Field(
+    sections: List[LogicalSection] = Field(
         ..., 
         description=TEXT_SECTIONS_DESCRIPTION
     )
@@ -209,4 +185,21 @@ class TextObject(BaseModel):
 #     sections: List[Section] = Field(
 #         ..., 
 #         description="An ordered list of sections with their titles and included start and end line numbers. The sequence of line ranges for the sections must cover every line from start to finish without any overlaps or gaps."
+#     )
+# class Section(BaseSection):
+#     """
+#     Represents a section of a text in any language with English translations.
+#     For English sections, title_orig and title_en will be identical.
+#     """
+#     title_orig: str = Field(
+#         ..., 
+#         description="Title of the section in original language."
+#     )
+#     title_en: str = Field(
+#         ..., 
+#         description="Title of the section in English."
+#     )
+#     summary: str = Field(
+#         ..., 
+#         description="Summary of the section content in English."
 #     )
