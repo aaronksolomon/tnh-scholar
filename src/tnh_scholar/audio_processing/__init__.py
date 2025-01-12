@@ -1,4 +1,4 @@
-from .audio_processing import (
+from .audio import (
     split_audio,
     detect_whisper_boundaries,
     detect_nonsilent,
