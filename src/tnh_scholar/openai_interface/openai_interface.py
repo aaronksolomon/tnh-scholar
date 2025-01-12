@@ -13,22 +13,30 @@ import time
 from math import floor
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.text_processing import get_text_from_file
+from torch import Value
 
 MAX_BATCH_LIST = 30
 OPEN_AI_DEFAULT_MODEL = "gpt-4o"
 DEFAULT_MAX_BATCH_RETRY = 60
+DEBUG_DISPLAY_BUFFER = 1000
 
 DEFAULT_MODEL_SETTINGS = {
     "gpt-4o": {
         "max_tokens": 16000,
-        "context_limit": 128000,  # Total context limit for the model
+        "context_limit": 128000,  
         "temperature": 1.0
     },
     "gpt-3.5-turbo": {
-        "max_tokens": 4096,  # Set conservatively to avoid errors
-        "context_limit": 16384  # Same as gpt-4o
-        }
+        "max_tokens": 4096,  
+        "context_limit": 16384,  
+        "temperature": 1.0
+        },
+    "gpt-4o-mini": {
+        "max_tokens": 16000,
+        "context_limit": 128000,
+        "temperature": 1.0
     }
+}
 
 # Dictionary of model configurations
 open_ai_model_settings = DEFAULT_MODEL_SETTINGS
@@ -36,7 +44,7 @@ open_ai_model_settings = DEFAULT_MODEL_SETTINGS
 open_ai_encoding = tiktoken.encoding_for_model(OPEN_AI_DEFAULT_MODEL)
 
 # logger for this module
-logger = get_child_logger("gpt_interface")
+logger = get_child_logger(__name__)
 
 class OpenAIClient:
     """Singleton class for managing the OpenAI client."""
@@ -58,13 +66,12 @@ class OpenAIClient:
             # Load the .env file
             load_dotenv()
 
-            # Retrieve the API key from the environment
-            api_key = os.getenv("OPENAI_API_KEY")
-            if not api_key:
+            if api_key := os.getenv("OPENAI_API_KEY"):
+                # Initialize the singleton instance
+                cls._instance = cls(api_key)
+            else:
                 raise ValueError("API key not found. Set it in the .env file with the key 'OPENAI_API_KEY'.")
 
-            # Initialize the singleton instance
-            cls._instance = cls(api_key)
         return cls._instance.client
     
 class ClientNotInitializedError(Exception):
@@ -79,8 +86,7 @@ def token_count_file(text_file: Path):
     return token_count(text)
 
 def get_api_client():
-    client = OpenAIClient.get_instance()
-    return client
+    return OpenAIClient.get_instance()
     
 def set_model_settings(model_settings_dict):
     global open_ai_model_settings
@@ -105,38 +111,52 @@ def generate_messages(system_message: str, user_message_wrapper: callable, data_
         messages.append(message_block)        
     return messages
 
-def run_immediate_chat_process(messages, max_tokens: int =  0, response_object=None, model=OPEN_AI_DEFAULT_MODEL):
+def run_immediate_chat_process(messages, max_tokens: int =  0, response_format=None, model=OPEN_AI_DEFAULT_MODEL):
     client = get_api_client()
 
+    max_model_tokens = open_ai_model_settings[model]['max_tokens']
     if max_tokens == 0:
-        max_tokens = open_ai_model_settings[model]['max_tokens']
+        max_tokens = max_model_tokens
+        
+    if max_tokens > max_model_tokens:
+        logger.error("Maximum token request exceeded: {max_tokens} for model: {model}")
+        raise ValueError(f"max_tokens: {max_tokens} > model maximum: {max_model_tokens}")
 
     try:
-        if response_object:
-            chat_completion = client.beta.chat.completions.parse(
+        return (
+            client.beta.chat.completions.parse(
                 messages=messages,
                 model=model,
-                response_format=response_object,
-                max_completion_tokens=max_tokens
+                response_format=response_format,
+                max_completion_tokens=max_tokens,
             )
-        else: 
-            chat_completion = client.chat.completions.create(
+            if response_format
+            else client.chat.completions.create(
                 messages=messages,
                 model=model,
-                max_completion_tokens=max_tokens
+                max_completion_tokens=max_tokens,
             )
-        return chat_completion
-    
+        )
     except Exception as e:
         logger.error(f"Error running immediate chat: {e}", exc_info=True)
         return None
 
-def run_immediate_completion_simple(system_message, user_message, model=OPEN_AI_DEFAULT_MODEL, max_tokens: int =  -1, response_object=None):
+def run_immediate_completion_simple(system_message: str, user_message: str, model=None, max_tokens: int =  0, response_format=None):
     client = get_api_client()
 
-    if max_tokens == -1:
-        max_tokens = open_ai_model_settings[model]['max_tokens']
+    if not model:
+        model = OPEN_AI_DEFAULT_MODEL
 
+    max_model_tokens = open_ai_model_settings[model]['max_tokens']
+    if max_tokens == 0:
+        max_tokens = max_model_tokens
+        
+    if max_tokens > max_model_tokens:
+        logger.error("Maximum token request exceeded: {max_tokens} for model: {model}")
+        logger.info(f"Setting max_tokens to model maximum: {max_model_tokens}")
+        max_tokens = max_model_tokens
+    
+    logger.debug(f"User message content:\n{user_message[:DEBUG_DISPLAY_BUFFER]} ...")
     message_block = [
                     {
                         "role": "system",
@@ -149,25 +169,24 @@ def run_immediate_completion_simple(system_message, user_message, model=OPEN_AI_
     ]
 
     try:
-        logger.debug(f"Starting chat completion with response_object={response_object} and max_tokens={max_tokens}...")
+        logger.debug(f"Starting chat completion with response_format={response_format} and max_tokens={max_tokens}...")
 
-        if response_object:
-            chat_completion = client.beta.chat.completions.parse(
-                messages=message_block,
+        return (
+            client.beta.chat.completions.parse(
+                messages=message_block, # type: ignore
                 model=model,
-                response_format=response_object,
-                max_completion_tokens=max_tokens
+                response_format=response_format,
+                max_completion_tokens=max_tokens,
             )
-        else: 
-            chat_completion = client.chat.completions.create(
-                messages=message_block,
+            if response_format
+            else client.chat.completions.create(
+                messages=message_block, # type: ignore
                 model=model,
-                max_completion_tokens=max_tokens
+                max_completion_tokens=max_tokens,
             )
-        return chat_completion
-    
-    except Exception as e:
-        logger.error(f"Error running immediate chat: {e}", exc_info=True)
+        )
+    except ValueError as e:
+        logger.error(f"Value Error running immediate chat: {e}", exc_info=True)
         return None
 
 def run_transcription_speech(audio_file: Path, 
@@ -244,28 +263,28 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, max_token_list=
     """
     global open_ai_model_settings
 
-    message_count = len(messages)
     total_tokens = 0
 
     if not max_token_list: 
         max_tokens = open_ai_model_settings[model]['max_tokens']
+        message_count = len(messages)
         max_token_list = [max_tokens] * message_count
-        
+
     temperature = open_ai_model_settings[model]['temperature']
     total_tokens = sum(max_token_list)
 
     if output_file_path is None:
         date_str = datetime.now().strftime("%m%d%Y")
         output_file_path = f"batch_requests_{date_str}.jsonl"
-    
+
     # Ensure the directory for the output file exists
     output_dir = Path(output_file_path).parent
     if not output_dir.exists():
         output_dir.mkdir(parents=True, exist_ok=True)
 
-    requests = []      
+    requests = []
     for i, message in enumerate(messages):
-        
+
         # get max_tokens
         max_tokens = max_token_list[i]
 
@@ -284,7 +303,7 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, max_token_list=
             request_obj["body"]["response_format"] = {"type": "json_object"}
         if tools:
             request_obj["body"]["tools"] = tools
-        
+
         if i==0:  # log first iteration only.
             _log_batch_creation_info(output_file_path, request_obj, total_tokens)
 
@@ -295,7 +314,7 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, max_token_list=
         for request in requests:
             json.dump(request, f)
             f.write("\n")
-    
+
     logger.info(f"JSONL file created at: {output_file_path}")
     return output_file_path
 
@@ -515,13 +534,11 @@ def start_batch_with_retries(
     
     return response_list
     
-def run_single_batch(
-    user_prompts: List,
-    system_message: str,
-    user_wrap_function: callable = None,
-    max_token_list: List[int] = [],
-    description= ""
-) -> List[str]:
+def run_single_batch(user_prompts: List, 
+                     system_message: str, 
+                     user_wrap_function: callable = None, 
+                     max_token_list: List[int] = None, 
+                     description= "") -> List[str]:
     """
     Generate a batch file for the OpenAI (OA) API and send it.
 
@@ -536,6 +553,8 @@ def run_single_batch(
         Exception: If an error occurs during file processing.
     """
 
+    if max_token_list is None:
+        max_token_list = []
     try:
         if not user_wrap_function:
             user_wrap_function = lambda x: x
@@ -558,7 +577,7 @@ def run_single_batch(
         if not description:
             description = f"Single batch process: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         response_list = start_batch_with_retries(batch_file, description=description)
-    
+
     except Exception as e:
         logger.error(f"Failed to complete batch process: {e}", exc_info=True)
         raise 
@@ -659,7 +678,7 @@ def get_batch_response(batch_id: str) -> List[str]:
     - If not completed: A string with the batch status.
     """
     client = get_api_client()
-    
+
     # Check the batch status
     batch_status = client.batches.retrieve(batch_id)
     if batch_status.status != 'completed':
@@ -674,8 +693,7 @@ def get_batch_response(batch_id: str) -> List[str]:
     results = []
     for line in file_response.text.splitlines():
         data = json.loads(line)  # Parse each line as JSON
-        response_body = data.get("response", {}).get("body", {})
-        if response_body:
+        if response_body := data.get("response", {}).get("body", {}):
             content = response_body["choices"][0]["message"]["content"]
             results.append(content)
 
