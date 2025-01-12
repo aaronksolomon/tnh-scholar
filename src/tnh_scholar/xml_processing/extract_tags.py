@@ -13,11 +13,9 @@ def extract_unique_tags(xml_file):
     """
     # Parse the XML file
     tree = etree.parse(xml_file)
-    
-    # Find all unique tags
-    unique_tags = {element.tag for element in tree.iter()}
-    
-    return unique_tags
+
+    # Find all unique tags and return
+    return {element.tag for element in tree.iter()}
 
 def main():
     # Create argument parser
