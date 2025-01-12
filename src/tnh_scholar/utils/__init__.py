@@ -18,3 +18,7 @@ from .progress_utils import (
     ExpectedTimeTQDM,
     TimeProgress
 )
+
+from .slugify import (
+    slugify
+)
