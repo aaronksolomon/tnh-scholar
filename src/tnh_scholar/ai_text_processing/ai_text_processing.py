@@ -16,15 +16,16 @@ from click import style
 from numpy import average
 from pydantic import BaseModel, Field
 from random import sample
+from regex import template
 
 # internal package imports
-from regex import template
+from tnh_scholar.ai_text_processing.typing import ResponseFormat
 from tnh_scholar.openai_interface import token_count
 from tnh_scholar.text_processing import bracket_lines, unbracket_lines, lines_from_bracketed_text, NumberedText
 from tnh_scholar.text_processing import get_text_from_file, write_text_to_file, normalize_newlines
 from tnh_scholar.utils import iterate_subdir, load_json_into_model, save_model_to_json
 from tnh_scholar.ai_text_processing.lang import get_language_code, get_language_name
-from tnh_scholar.ai_text_processing.response_format import TextObject, Section
+from tnh_scholar.ai_text_processing.response_format import TextObject, LogicalSection
 from tnh_scholar.ai_text_processing.patterns import Pattern, PatternManager
 
 
@@ -35,14 +36,16 @@ logger = get_child_logger(__name__)
 from tnh_scholar import PATTERN_REPO
 
 # Constants
-MIN_SECTION_COUNT = 3
+DEFAULT_MIN_SECTION_COUNT = 3
 DEFAULT_SECTION_TOKEN_SIZE = 650
 DEFAULT_SECTION_RESULT_MAX_SIZE = 4000
-DEFAULT_REVIEW_COUNT = 3
+SECTION_SEGMENT_SIZE_WARNING_LIMIT = 5
+DEFAULT_REVIEW_COUNT = 5
 DEFAULT_SECTION_PATTERN = "default_section"
 DEFAULT_PUNCTUATE_PATTERN = "default_punctuate"
 DEFAULT_PUNCTUATE_STYLE = "APA"
 DEFAULT_XML_FORMAT_PATTERN = "default_xml_format"
+DEFAULT_PARAGRAPH_FORMAT_PATTERN = "default_xml_paragraph_format"
 DEFAULT_PUNCTUATE_MODEL = "gpt-4o-mini"
 DEFAULT_OPENAI_MODEL = "gpt-4o"
 DEFAULT_TRANSLATE_SEGMENT_SIZE = 20
@@ -51,14 +54,11 @@ DEFAULT_TRANSLATION_PATTERN = "default_line_translation"
 DEFAULT_TRANSLATE_CONTEXT_LINES = 3
 DEFAULT_LINE_SAMPLE_SIZE = 70 # number of lines to sample for calculating average tokens per line.
 DEFAULT_TRANSLATION_TARGET_TOKENS = 650
+DEFAULT_TARGET_LANGUAGE = "English"
+DEFAULT_SECTION_RANGE_VAR = 2
 TRANSCRIPT_SEGMENT_MARKER = "TRANSCRIPT_SEGMENT"
 PRECEDING_CONTEXT_MARKER = "PRECEDING_CONTEXT"
 FOLLOWING_CONTEXT_MARKER = "FOLLOWING_CONTEXT"
-
-
-
-
-ResponseFormat = TypeVar('ResponseFormat', bound=BaseModel)
 
 from typing import Optional, Any
 from pathlib import Path
@@ -100,20 +100,19 @@ class LocalPatternManager:
         Raises:
             RuntimeError: If PATTERN_REPO is not properly configured
         """
-        if self._pattern_manager is None:
+        if self._pattern_manager is None: # type: ignore
             try:
                 self._pattern_manager = PatternManager(PATTERN_REPO)
-            except ImportError as e:
+            except ImportError as err:
                 raise RuntimeError(
                     "Failed to initialize PatternManager. Ensure pattern_manager "
-                    f"module and PATTERN_REPO are properly configured: {e}"
-                ) from e
+                    f"module and PATTERN_REPO are properly configured: {err}"
+                ) from err
         return self._pattern_manager
 
 @dataclass
 class ProcessedSection:
     """Represents a processed section of text with its metadata."""
-    title: str
     original_text: str
     processed_text: str
     start_line: int
@@ -180,7 +179,7 @@ class TextPunctuator:
     def __init__(
         self,
         processor: TextProcessor,
-        punctuate_pattern: Optional[Pattern] = None,
+        punctuate_pattern: Pattern,
         source_language: Optional[str] = None,
         review_count: int = DEFAULT_REVIEW_COUNT,
         style_convention = DEFAULT_PUNCTUATE_STYLE
@@ -204,7 +203,7 @@ class TextPunctuator:
     def punctuate_text(
         self,  
         text: str,
-        source_language: str = None,
+        source_language: Optional[str] = None,
         template_dict: Optional[Dict] = None
     ) -> str:
         """
@@ -294,8 +293,8 @@ class LineTranslator:
         num_text: NumberedText,
         start_line: int,
         end_line: int,
-        source_language: str = None,
-        target_language: str = "English",
+        source_language: Optional[str] = None,
+        target_language: Optional[str] = DEFAULT_TARGET_LANGUAGE,
         template_dict: Optional[Dict] = None
     ) -> str:
         """
@@ -344,7 +343,7 @@ class LineTranslator:
         translate_instructions = self.pattern.apply_template(template_values)
         
         if start_line <= 1:
-            logger.debug(f"translate_instructions:\n{translate_instructions}")
+            logger.debug(f"Translate instructions (first segment):\n{translate_instructions}")
         
         logger.debug(f"Translation input:\n{translation_input}")
 
@@ -404,7 +403,7 @@ class LineTranslator:
         text: str,
         segment_size: Optional[int] = None,  # Number of lines per segment
         source_language: Optional[str] = None,
-        target_language: Optional[str] = "English",
+        target_language: Optional[str] = None,
         template_dict: Optional[Dict] = None
     ) -> str:
         """
@@ -430,7 +429,7 @@ class LineTranslator:
         total_lines = num_text.size
         
         if not segment_size:
-            segment_size = self._calculate_segment_size(num_text, DEFAULT_TRANSLATION_TARGET_TOKENS)
+            segment_size = _calculate_segment_size(num_text, DEFAULT_TRANSLATION_TARGET_TOKENS)
             
         translated_segments = []
 
@@ -454,38 +453,7 @@ class LineTranslator:
 
         return "\n".join(translated_segments)
     
-    def _calculate_segment_size(
-        self, 
-        num_text: NumberedText, 
-        target_segment_tokens: int, 
-        sample_size: int = DEFAULT_LINE_SAMPLE_SIZE) -> int:
-        """
-        Calculate segment size (in number of lines) based on average tokens per line.
-        
-        Args:
-            num_text: Collection of numbered lines as NumberedText 
-            target_segment_tokens: Desired token count per segment
-            sample_size: Number of lines to sample for average calculation (default: 20)
-        
-        Returns:
-            int: Recommended number of lines per segment
-            
-        Example:
-            
-        """
-
-        # Handle case with fewer lines than sample size
-        actual_sample_size = min(num_text.size, sample_size)
-
-        # Take random sample of lines
-        sample_texts = sample(num_text.lines, actual_sample_size)
-        # Calculate average tokens per line
-        avg_tokens_per_line = average([token_count(text) for text in sample_texts])
-        logger.debug(f"Average tokens per line: {avg_tokens_per_line}")
-
-        return max(1, round(target_segment_tokens / avg_tokens_per_line))
-    
-    def _extract_content(self, segment):
+    def _extract_content(self, segment: str) -> str:
         segment = segment.strip() # remove any filling whitespace
         if segment.startswith(TRANSCRIPT_SEGMENT_MARKER) and segment.endswith(TRANSCRIPT_SEGMENT_MARKER):
             return segment[
@@ -510,8 +478,6 @@ class LineTranslator:
 
         # Validate lines
         
-        
-
         lines = translated_content.splitlines()
         line_numbers = []
         
@@ -552,7 +518,31 @@ class LineTranslator:
                 logger.warning(f"Missing line numbers in sequence: {missing}")
 
         logger.debug(f"Validated {len(lines)} lines from {start_line} to {end_line}")
-    
+
+def _calculate_segment_size(
+        num_text: NumberedText, 
+        target_segment_tokens: int) -> int:
+        """
+        Calculate segment size (in number of lines) based on average tokens per line 
+        to reach a total of target_segment_tokens for the segment.
+        
+        Args:
+            num_text: Collection of numbered lines as NumberedText 
+            target_segment_tokens: Desired token count per segment
+        
+        Returns:
+            int: Recommended number of lines per segment
+            
+        Example:          
+        """
+        text = num_text.content
+        tokens = token_count(text)
+        # Calculate average tokens per line
+        avg_tokens_per_line = tokens / num_text.size
+        logger.debug(f"Average tokens per line: {avg_tokens_per_line}")
+
+        return max(1, round(target_segment_tokens / avg_tokens_per_line))
+
 def translate_text_by_lines(
     text,
     source_language: Optional[str] = None,
@@ -611,9 +601,10 @@ class SectionParser:
     def find_sections(
         self,
         text: str,
-        source_language: str = None,
-        section_count: Optional[int] = None,
-        template_dict: Optional[Dict] = None
+        source_language: Optional[str] = None,
+        section_count_target: Optional[int] = None,
+        segment_size_target: Optional[int] = None,
+        template_dict: Optional[Dict[str, str]] = None
     ) -> TextObject:
         """
         Generate section breakdown of input text. The text must be split up by newlines.
@@ -621,6 +612,9 @@ class SectionParser:
         Args:
             text: Input text to process
             source_language: ISO 639-1 language code, or None for autodetection
+            section_count_target: the target for the number of sections to find
+            segment_size_target: the target for the number of lines per section 
+                (if section_count_target is specified, this value will be set to generate correct segments)
             template_dict: Optional additional template variables
             
         Returns:
@@ -629,22 +623,30 @@ class SectionParser:
         Raises:
             ValidationError: If response doesn't match TextObject schema
         """
-           
+        
+        # Prepare numbered text, each line is numbered
+        num_text = NumberedText(text)
+        
+        if num_text.size < SECTION_SEGMENT_SIZE_WARNING_LIMIT:
+            logger.warning(f"find_sections: Text has only {num_text.size} lines. This may lead to unexpected sectioning results.")
+         
         # Get language if not specified
         if not source_language:
             source_language = get_language_name(text)
             
         # determine section count if not specified
-        if not section_count:
-            section_count = self._calculate_section_count(text)
+        if not section_count_target:
+            segment_size_target, section_count_target = self._get_section_count_info(text)
+        elif not segment_size_target:
+            segment_size_target = round(num_text.size / section_count_target)
             
-        # Prepare numbered text, each line is numbered
-        num_text = NumberedText(text)
-
+        section_count_range = self._get_section_count_range(section_count_target)
+            
         # Prepare template variables
         template_values = {
             "source_language": source_language,
-            "section_count": section_count,
+            "section_count": section_count_range,
+            "line_count": segment_size_target,
             "review_count": self.review_count
         }
         
@@ -653,17 +655,18 @@ class SectionParser:
 
         # Get and apply processing instructions
         instructions = self.section_pattern.apply_template(template_values)
+        logger.debug(f"Finding sections with pattern instructions:\n {instructions}")
 
-        logger.info(f"Generating sections for {source_language} text "
-                   f"(target sections: {section_count})")
+        logger.info(f"Finding sections for {source_language} text "
+                   f"(target sections: {section_count_target})")
 
         # Process text with structured output
         try:
-            result = self.section_scanner.process_text(
-                num_text.numbered_lines,
+            result = (self.section_scanner.process_text(
+                str(num_text),
                 instructions,
                 response_format=TextObject
-            )
+            ))
 
             # Validate section coverage
             self._validate_sections(result.sections, num_text.size)
@@ -674,14 +677,18 @@ class SectionParser:
             logger.error(f"Section generation failed: {e}")
             raise
 
-    def _calculate_section_count(self, text: str):
-        total_tokens = token_count(text)
-        if total_tokens < MIN_SECTION_COUNT * DEFAULT_SECTION_TOKEN_SIZE:
-            return MIN_SECTION_COUNT
-        else:
-            return total_tokens // DEFAULT_SECTION_TOKEN_SIZE + 1
-             
-    def _validate_sections(self, sections: List[Section], total_lines: int) -> None:
+    def _get_section_count_info(self, text: str) -> Tuple[int, int]:
+        num_text = NumberedText(text)
+        segment_size = _calculate_segment_size(num_text, DEFAULT_SECTION_TOKEN_SIZE)
+        section_count_target = round(num_text.size / segment_size)
+        return segment_size, section_count_target
+
+    def _get_section_count_range(self, section_count_target: int, section_range_var: int = DEFAULT_SECTION_RANGE_VAR) -> str:
+        low = max(1, section_count_target - section_range_var)
+        high = section_count_target + section_range_var
+        return f"{low}-{high}"
+        
+    def _validate_sections(self, sections: List[LogicalSection], total_lines: int) -> None:
         """
         Validate section line coverage and ordering. Issues warnings for validation problems
         instead of raising errors.
@@ -725,13 +732,13 @@ class SectionParser:
 
 def find_sections(
     text: str,
-    source_language: str = None,
+    source_language: Optional[str] = None,
     section_pattern: Optional[Pattern] = None,
     section_model: Optional[str] = None,
     max_tokens: int = DEFAULT_SECTION_RESULT_MAX_SIZE,
     section_count: Optional[int] = None,
     review_count: int = DEFAULT_REVIEW_COUNT,
-    template_dict: Optional[Dict] = None
+    template_dict: Optional[Dict[str, str]] = None
     ) -> TextObject:
     """
     High-level function for generating text sections.
@@ -751,7 +758,8 @@ def find_sections(
     """
     if section_pattern is None:
         section_pattern = get_default_pattern(DEFAULT_SECTION_PATTERN)
-        
+        logger.debug(f"Using default section pattern: {DEFAULT_SECTION_PATTERN}.")
+                
     if source_language is None:
         source_language = get_language_name(text)
         
@@ -765,7 +773,7 @@ def find_sections(
     return parser.find_sections(
         text, 
         source_language=source_language, 
-        section_count=section_count,
+        section_count_target=section_count,
         template_dict=template_dict
     )
 
@@ -797,66 +805,49 @@ class SectionProcessor:
         self,
         transcript: str,
         text_object: TextObject,
-        output_mode: str = "generator"
-    ) -> Union[Generator[ProcessedSection, None, None], List[ProcessedSection], None]:
+    ) -> Generator[ProcessedSection, None, None]:
         """
-        Process transcript sections and handle output according to specified mode.
+        Process transcript sections and yield results one section at a time.
 
         Args:
             transcript: Text to process
-            section_object: Object containing section definitions
-            output_mode: One of "generator", "list", or "none"
-
-        Returns:
-            Generator, List of ProcessedSection objects, or None based on output_mode
+            text_object: Object containing section definitions
 
         Yields:
-            ProcessedSection objects if output_mode is "generator"
+            ProcessedSection: One processed section at a time, containing:
+                - title: Section title (English or original language)
+                - original_text: Raw text segment
+                - processed_text: Processed text content
+                - start_line: Starting line number
+                - end_line: Ending line number
         """
-        bracketed_transcript = bracket_lines(transcript, number=True)
+        numbered_transcript = NumberedText(transcript)
         sections = text_object.sections
 
         logger.info(f"Processing {len(sections)} sections with pattern: {self.pattern.name}")
 
-        processed_sections = []
-
         for i, section in enumerate(sections, 1):
-            
-            is_english = section.language == 'en'
-
-            if is_english:
-                logger.info(f"Processing section {i}: '{section.title_en}'")
-            else:
-                logger.info(f"Processing section {i}: '{section.title_orig} / {section.title_en}")
-
-            # Extract original text
-            original_text = lines_from_bracketed_text(
-                bracketed_transcript,
-                start=section.start_line,
-                end=section.end_line,
-                keep_brackets=False
+            logger.info(f"Processing section {i}:")
+        
+            # Get text segment for section
+            text_segment = numbered_transcript.get_segment(
+                section.start_line,
+                end=section.end_line
             )
 
             # Get and apply processing instructions
             instructions = self.pattern.apply_template(self.template_dict)
-            processed_text = self.processor.process_text(original_text, instructions)
-
-            # Create processed section object
-            processed_section = ProcessedSection(
-                title = section.title_en if is_english else section.title_orig,
-                original_text=original_text,
+            if i <= 1:
+                logger.debug(f"Process instructions (first section):\n{instructions}")
+            processed_text = self.processor.process_text(text_segment, instructions)
+            
+            yield ProcessedSection(
+                original_text=text_segment,
                 processed_text=processed_text,
                 start_line=section.start_line,
-                end_line=section.end_line
+                end_line=section.end_line,
             )
 
-            if output_mode == "generator":
-                yield processed_section
-            elif output_mode == "list":
-                processed_sections.append(processed_section)
-
-        return processed_sections if output_mode == "list" else None
-    
     def process_paragraphs(
         self,
         transcript: str,
@@ -877,9 +868,7 @@ class SectionProcessor:
 
         logger.info(f"Processing lines as paragraphs with pattern: {self.pattern.name}")
 
-        processed_paragraphs = []
-
-        for line in numbered_transcript:
+        for i, line in numbered_transcript:
 
             # If line is empty or whitespace, continue
             if not line.strip():
@@ -887,41 +876,15 @@ class SectionProcessor:
 
             # Otherwise get and apply processing instructions
             instructions = self.pattern.apply_template(self.template_dict)
-            yield self.processor.process_text(line, instructions)
-
-    def write_to_file(
-        self,
-        output_file: Path,
-        sections_generator: Generator[ProcessedSection, None, None]
-    ) -> None:
-        """
-        Write processed sections to XML file.
-
-        Args:
-            output_file: Path to output file
-            sections_generator: Generator of ProcessedSection objects
-        """
-        with open(output_file, 'w', encoding='utf-8') as file:
-            if self.wrap_in_document:
-                file.write("<document>\n")
-                
-            for section in sections_generator:
-                file.write(f"<section title='{section.title}'>\n")
-                file.write(section.processed_text)
-                file.write("</section>\n")
-                
-            if self.wrap_in_document:
-                file.write("</document>")
+            yield self.processor.process_text(line, instructions) 
     
 def process_text_by_sections(
     transcript: str,
     text_object: TextObject,
     template_dict: Dict,
     pattern: Optional[Pattern] = None,
-    output_file: Optional[Path] = None,
     model: Optional[str] = None,
-    output_mode: str = "generator"
-) -> Union[Generator[ProcessedSection, None, None], List[ProcessedSection], None]:
+) -> Generator[ProcessedSection, None, None]:
     """
     High-level function for processing text sections with configurable output handling.
 
@@ -930,38 +893,55 @@ def process_text_by_sections(
         text_object: Object containing section definitions
         pattern: Pattern object containing processing instructions
         template_dict: Dictionary for template substitution
-        output_file: Optional path to output file
         model: Optional model identifier for processor
-        output_mode: One of "generator", "list", or "none"
 
     Returns:
-        Builder, List of ProcessedSection objects, or None based on output_mode
+        Generator for ProcessedSections
     """
     processor = OpenAIProcessor(model)
-    
+
     if not pattern:
         pattern = get_default_pattern(DEFAULT_XML_FORMAT_PATTERN)
-        
+
     section_processor = SectionProcessor(processor, pattern, template_dict)
-    
-    sections_output = section_processor.process_sections(
-        transcript, 
+
+    return section_processor.process_sections(
+        transcript,
         text_object,
-        output_mode
+    )
+
+def process_text_by_paragraphs(
+    transcript: str,
+    template_dict: Dict[str, str],
+    pattern: Optional[Pattern] = None,
+    model: Optional[str] = None,
+) -> Generator[str, None, None]:
+    """
+    High-level function for processing text paragraphs. Assumes paragraphs are separated by newlines.
+    Uses DEFAULT_XML_FORMAT_PATTERN as default pattern for text processing.
+    
+    Args:
+        transcript: Text to process
+        pattern: Pattern object containing processing instructions
+        template_dict: Dictionary for template substitution
+        model: Optional model identifier for processor
+
+
+    Returns:
+        Generator for ProcessedSections
+    """
+    processor = OpenAIProcessor(model)
+
+    if not pattern:
+        pattern = get_default_pattern(DEFAULT_PARAGRAPH_FORMAT_PATTERN)
+
+    section_processor = SectionProcessor(processor, pattern, template_dict)
+
+    return section_processor.process_paragraphs(
+        transcript
     )
     
-    if output_file:
-        if output_mode != "generator":
-            sections_output = section_processor.process_sections(
-                transcript,
-                text_object,
-                output_mode="generator"
-            )
-        section_processor.write_to_file(output_file, sections_output)
-    
-    return sections_output
-
-def get_default_pattern(name: str) -> Any:
+def get_default_pattern(name: str) -> Pattern:
     """
     Get a pattern by name using the singleton PatternManager.
     
@@ -978,3 +958,27 @@ def get_default_pattern(name: str) -> Any:
         FileNotFoundError: If pattern file doesn't exist
     """
     return LocalPatternManager().pattern_manager.load_pattern(name)
+
+# def write_to_file(
+#     self,
+#     output_file: Path,
+#     sections_generator: Generator[ProcessedSection, None, None]
+# ) -> None:
+#     """
+#     Write processed sections to XML file.
+
+#     Args:
+#         output_file: Path to output file
+#         sections_generator: Generator of ProcessedSection objects
+#     """
+#     with open(output_file, 'w', encoding='utf-8') as file:
+#         if self.wrap_in_document:
+#             file.write("<document>\n")
+            
+#         for section in sections_generator:
+#             file.write(f"<section title='{section.title}'>\n")
+#             file.write(section.processed_text)
+#             file.write("</section>\n")
+            
+#         if self.wrap_in_document:
+#             file.write("</document>")
