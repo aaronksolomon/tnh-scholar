@@ -55,7 +55,7 @@ def save_pages_to_xml(
             for page_number, text in enumerate(text_pages, start=1):
                 if not isinstance(text, str):
                     raise ValueError(f"Invalid page content at index {page_number - 1}: expected a string.")
-                
+
                 content = text.strip()
                 escaped_text = escape(content)
                 xml_file.write(f"    {escaped_text}\n")
@@ -67,13 +67,17 @@ def save_pages_to_xml(
         print(f"XML file successfully saved at {output_xml_path}")
 
     except PermissionError as e:
-        raise PermissionError(f"Permission denied while writing to {output_xml_path}: {e}")
+        raise PermissionError(
+            f"Permission denied while writing to {output_xml_path}: {e}"
+        ) from e
 
     except OSError as e:
-        raise OSError(f"An OS-related error occurred while saving XML file at {output_xml_path}: {e}")
+        raise OSError(
+            f"An OS-related error occurred while saving XML file at {output_xml_path}: {e}"
+        ) from e
 
     except Exception as e:
-        raise RuntimeError(f"An unexpected error occurred: {e}")
+        raise RuntimeError(f"An unexpected error occurred: {e}") from e
 
 def join_xml_data_to_doc(
     file_path: Path, data: List[str], overwrite: bool = False
@@ -191,190 +195,69 @@ def split_xml_on_pagebreaks(
     if page_groups:
         grouped_pages = []
         for start, end in page_groups:
-            group_content = []
-            for i in range(start - 1, end):  # Page numbers are 1-based, so adjust to 0-based indexing
-                if 0 <= i < len(pages):  # Ensure the index is within bounds
-                    group_content.append(pages[i])
-            if group_content:
+            if group_content := [
+                pages[i] for i in range(start - 1, end) if 0 <= i < len(pages)
+            ]:
                 grouped_pages.append("\n".join(group_content).strip())
         return grouped_pages
 
     return pages
 
-# cleaning helper functions:
-def wrap_lines(text: str, number: bool = False) -> str:
-    """
-    Encloses each line of the input text with angle brackets.
-    If number is True, adds a line number followed by a colon `:` and then the line.
+# def split_xml_pages(text, page_groups=None):
+#     """
+#     DEPRECATED: use split_xml_on_pagebreaks
 
-    Args:
-        text (str): The input string containing lines separated by '\n'.
-        number (bool): Whether to prepend line numbers to each line.
+#     Splits an XML document into individual pages based on <page> tags.
+#     Optionally groups pages together based on page_groups.
 
-    Returns:
-        str: A string where each line is enclosed in angle brackets.
-    
-    Examples:
-        >>> wrap_lines("This is a string with\n   two lines.")
-        '<This is a string with>\n<   two lines.>'
+#     Parameters:
+#     - text (str): The XML document as a string.
+#     - page_groups (list of tuples, optional): A list of tuples defining page ranges to group together.
+#                                               Each tuple is of the form (start_page, end_page), inclusive.
 
-        >>> wrap_lines("This is a string with\n   two lines.", number=True)
-        '<1:This is a string with>\n<2:   two lines.>'
-    """
-    return '\n'.join(
-        f"<{f'{i+1}:{line}' if number else line}>"
-        for i, line in enumerate(text.split('\n'))
-    )
+#     Returns:
+#     - List[str]: A list of strings, where each element is a single page (if no groups) or a group of pages.
+#     """
+#     from lxml import etree
 
-def wrap_all_lines(pages):
-    return [wrap_lines(page) for page in pages]
+#     # Parse the XML text into an element tree
+#     try:
+#         root = etree.fromstring(text.encode("utf-8"))
+#     except etree.XMLSyntaxError as e:
+#         return _handle_parse_error(e, text)
+#     # Extract all pages as a list of strings
+#     pages = [
+#         (int(page.get("page")), etree.tostring(page, encoding="unicode"))
+#         for page in root.findall(".//page")
+#     ]
 
-def unwrap_lines(text: str, number: bool = False) -> str:
-    """
-    Removes angle brackets (< >) from encapsulated lines and optionally removes line numbers.
+#     # Sort pages by page number
+#     pages.sort(key=lambda x: x[0])
 
-    Args:
-        text (str): The input string with encapsulated lines.
-        number (bool): If True, removes line numbers in the format 'digit:'. 
-                       Raises a ValueError if `number=True` and a line does not start with a digit followed by a colon.
+#     # If no page_groups, return individual pages
+#     if not page_groups:
+#         return [content for _, content in pages]
 
-    Returns:
-        str: A newline-separated string with the encapsulation removed, and line numbers stripped if specified.
+#     # Group pages based on page_groups
+#     grouped_pages = []
+#     for start, end in page_groups:
+#         group_content = ""
+#         for page_num, content in pages:
+#             if start <= page_num <= end:
+#                 group_content += content
+#         if group_content:
+#             grouped_pages.append(group_content)
 
-    Examples:
-        >>> unwrap_lines("<1:Line 1>\n<2:Line 2>", number=True)
-        'Line 1\nLine 2'
+#     return grouped_pages
 
-        >>> unwrap_lines("<Line 1>\n<Line 2>")
-        'Line 1\nLine 2'
 
-        >>> unwrap_lines("<1Line 1>", number=True)
-        ValueError: Line does not start with a valid number: '1Line 1'
-    """
-    unwrapped_lines = []
-
-    for line in text.splitlines():
-        match = re.match(r"<(\d+):(.*?)>", line) if number else re.match(r"<(.*?)>", line)
-        if match:
-            content = match.group(2).strip() if number else match.group(1).strip()
-            unwrapped_lines.append(content)
-        else:
-            if number:
-                raise FormattingError(f"Line does not start with a valid number: '{line}'")
-            else:
-                raise FormattingError(f"Line does not follow the expected format: '{line}'")
-    
-    return "\n".join(unwrapped_lines)
-
-def unwrap_all_lines(pages):
-    result = []
-    for page in pages:
-        if page == "blank page":
-            result.append(page)
-        else:
-            result.append(unwrap_lines(page))
-    return result
-
-def lines_from_wrapped_text(text: str, start: int, end: int, keep_brackets=False) -> list[str]:
-    """
-    Extracts lines from wrapped text between the start and end indices, inclusive.
-    Handles both numbered and non-numbered cases.
-    
-    Args:
-        text (str): The input wrapped text containing lines like <...>.
-        start (int): The starting line number (1-based).
-        end (int): The ending line number (1-based).
-    
-    Returns:
-        list[str]: The lines from start to end inclusive, with angle brackets removed.
-    
-    Raises:
-        FormattingError: If the text contains improperly formatted lines (missing angle brackets).
-        ValueError: If start or end indices are invalid or out of bounds.
-    
-    Examples:
-        >>> text = "<1:Line 1>\n<2:Line 2>\n<3:Line 3>"
-        >>> lines_from_wrapped_text(text, 1, 2)
-        ['Line 1', 'Line 2']
-        
-        >>> text = "<Line 1>\n<Line 2>\n<Line 3>"
-        >>> lines_from_wrapped_text(text, 2, 3)
-        ['Line 2', 'Line 3']
-    """
-    # Split the text into lines
-    lines = text.splitlines()
-    
-    # Validate indices
-    if start < 1 or end < 1 or start > end or end > len(lines):
-        raise ValueError("Invalid start or end indices for the given text: start:{start}, end: {end}")
-
-    # Extract lines and validate formatting
-    result = []
-    for i, line in enumerate(lines, start=1):
-        if start <= i <= end:
-            # Check for proper wrapping and extract the content
-            match = re.match(r"<(\d+:)?(.*?)>", line)
-            if not match:
-                raise FormattingError(f"Invalid format for line {i}: '{line}'")
-            # Add the extracted content (group 2) to the result
-            if keep_brackets:
-                result.append(line)
-            else:
-                result.append(match.group(2).strip())
-    
-    return "\n".join(result)
-
-def split_xml_pages(text, page_groups=None):
-    """
-    DEPRICATED: use split_xml_on_pagebreaks
-
-    Splits an XML document into individual pages based on <page> tags.
-    Optionally groups pages together based on page_groups.
-
-    Parameters:
-    - text (str): The XML document as a string.
-    - page_groups (list of tuples, optional): A list of tuples defining page ranges to group together.
-                                              Each tuple is of the form (start_page, end_page), inclusive.
-
-    Returns:
-    - List[str]: A list of strings, where each element is a single page (if no groups) or a group of pages.
-    """
-    from lxml import etree
-
-    # Parse the XML text into an element tree
-    try:
-        root = etree.fromstring(text.encode("utf-8"))
-    except etree.XMLSyntaxError as e:
-        # Handle parsing errors with helpful debugging information
-        line_number = e.lineno
-        column_number = e.offset
-        lines = text.splitlines()
-        error_line = lines[line_number - 1] if line_number - 1 < len(lines) else "Unknown line"
-        print(f"XMLSyntaxError: {e}")
-        print(f"Offending line {line_number}, column {column_number}: {error_line}")
-        return []  # Return an empty list if parsing fails
-
-    # Extract all pages as a list of strings
-    pages = [
-        (int(page.get("page")), etree.tostring(page, encoding="unicode"))
-        for page in root.findall(".//page")
-    ]
-    
-    # Sort pages by page number
-    pages.sort(key=lambda x: x[0])
-
-    # If no page_groups, return individual pages
-    if not page_groups:
-        return [content for _, content in pages]
-
-    # Group pages based on page_groups
-    grouped_pages = []
-    for start, end in page_groups:
-        group_content = ""
-        for page_num, content in pages:
-            if start <= page_num <= end:
-                group_content += content
-        if group_content:
-            grouped_pages.append(group_content)
-
-    return grouped_pages
+# # TODO Rename this here and in `split_xml_pages`
+# def _handle_parse_error(e, text):
+#     # Handle parsing errors with helpful debugging information
+#     line_number = e.lineno
+#     column_number = e.offset
+#     lines = text.splitlines()
+#     error_line = lines[line_number - 1] if line_number - 1 < len(lines) else "Unknown line"
+#     print(f"XMLSyntaxError: {e}")
+#     print(f"Offending line {line_number}, column {column_number}: {error_line}")
+#     return []  # Return an empty list if parsing fails
