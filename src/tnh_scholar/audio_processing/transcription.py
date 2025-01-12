@@ -19,7 +19,7 @@ from tnh_scholar.text_processing import (
     write_text_to_file
 )
 
-logger = get_child_logger("audio_transcription")
+logger = get_child_logger(__name__)
 
 def custom_to_json(transcript: TranscriptionVerbose) -> str:
     """
@@ -43,7 +43,7 @@ def custom_to_json(transcript: TranscriptionVerbose) -> str:
                 if issubclass(warning.category, UserWarning):
                     warning_msg = str(warning.message)
                     if "Expected `str` but got `float`" in warning_msg:
-                        logger.warning("Known UserWarning in OPENAI .to_dict() float serialization caught and ignored.")
+                        logger.debug("Known UserWarning in OPENAI .to_dict() float serialization caught and ignored.")
                     else:
                         logger.warning(f"Unexpected warning during to_dict(): {warning_msg}")
     except Exception as e:
@@ -79,9 +79,8 @@ def get_text_from_transcript(transcript: TranscriptionVerbose) -> str:
         'Hello\nworld'
     """
     logger.debug(f"transcript is type: {type(transcript)}")
-    
-    text = "\n".join(segment.text.strip() for segment in transcript.segments)
-    return text
+
+    return "\n".join(segment.text.strip() for segment in transcript.segments)
 
 def get_transcription(file: Path, model: str, prompt: str, jsonl_out, mode="transcribe"):
     logger.info(f"Speech transcript parameters: file={file}, model={model}, response_format=verbose_json, mode={mode}\n\tprompt='{prompt}'")
@@ -92,18 +91,15 @@ def get_transcription(file: Path, model: str, prompt: str, jsonl_out, mode="tran
         prompt=prompt,
         mode=mode
     )
-      
+
     # Use the custom_to_json function
     json_output = custom_to_json(transcript)
     logger.debug(f"Serialized JSON output excerpt: {json_output[:1000]}...")
-    
+
     # Write the serialized JSON to the JSONL file
     jsonl_out.write(json_output + "\n")
-    
-    # Append the transcribed text to the stitched output
-    text = get_text_from_transcript(transcript)
-    
-    return text
+
+    return get_text_from_transcript(transcript)
 
 def process_audio_chunks(
     directory: Path, 
