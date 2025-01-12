@@ -106,7 +106,7 @@ class NumberedText:
     def _format_line(self, line_num: int, line: str) -> str:
         return f"{line_num}{self.separator}{line}"
 
-    def _to_internal_index(self, idx: int):
+    def _to_internal_index(self, idx: int) -> int:
         """return the index into the lines object in Python 0-based indexing."""
         if idx > 0:
             return(idx - self.start)
@@ -120,7 +120,7 @@ class NumberedText:
     def __str__(self) -> str:
         """Return the numbered text representation."""
         return "\n".join(self._format_line(i, line) 
-                        for i, line in enumerate(self.lines, self.start))
+                    for i, line in enumerate(self.lines, self.start))
 
     def __len__(self) -> int:
         """Return the number of lines."""
@@ -138,7 +138,7 @@ class NumberedText:
         """Get content of specified line number."""
         return self[line_num]
     
-    def _to_line_index(self, internal_index: int):
+    def _to_line_index(self, internal_index: int) -> int:
         return self.start + self._to_internal_index(internal_index)
             
     def get_numbered_line(self, line_num: int) -> str:
@@ -314,7 +314,7 @@ class SegmentIterator:
             current = segment_end
 
 # Add iterator methods to NumberedText class
-def iter_segments(self, segment_size: int, 
+def iter_segments(self: SegmentIterator, segment_size: int, 
                  min_segment_size: Optional[int] = None) -> Iterator[LineSegment]:
     """
     Iterate over segments of the text with specified size.
@@ -381,9 +381,9 @@ def get_numbered_format(text: str) -> Tuple[bool, Optional[str], Optional[int]]:
     except (ValueError, AttributeError):
         return False, None, None
 
-def _check_line_structure(first_match, lines):
-    start_num = int(first_match.group(1))
-    separator = first_match.group(2)
+def _check_line_structure(first_match: str, lines: List[str]) -> Tuple[bool, Optional[str], Optional[int]]:
+    start_num = int(first_match.group(1)) # type: ignore
+    separator = str(first_match.group(2)) # type: ignore
 
     # Don't treat numbered list format as line numbers
     if separator == '.':
