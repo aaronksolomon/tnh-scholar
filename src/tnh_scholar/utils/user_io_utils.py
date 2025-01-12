@@ -14,15 +14,14 @@ def get_single_char() -> str:
     """
     if os.name == 'nt':
         return msvcrt.getch().decode('utf-8')  # Windows
-    else:
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(fd)
-            char = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return char
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(fd)
+        char = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return char
 
 def get_user_confirmation(prompt: str, default: bool = True) -> bool:
     """
