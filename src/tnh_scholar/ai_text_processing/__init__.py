@@ -15,11 +15,12 @@ from .ai_text_processing import (
     find_sections,
     process_text_by_sections,
     punctuate_text,
-    translate_text_by_lines
+    translate_text_by_lines,
+    process_text_by_paragraphs
 )
 
 from .response_format import (
-    Section,
+    LogicalSection,
     TextObject
 )
 
