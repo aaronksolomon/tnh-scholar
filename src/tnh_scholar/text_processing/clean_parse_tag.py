@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 from bs4 import NavigableString, Tag
 from typing import Union
 import warnings
+from bs4 import BeautifulSoup
+import copy
 
 # Global variable for storing the working directory for input and output data in the TNH Scholar project
 tnh_scholar_working_dir = None
@@ -63,7 +65,7 @@ def get_working_directory():
         
     Returns:
     --------        
-    The path to thworking directory.
+    The path to the working directory.
     """
     global tnh_scholar_working_dir
 
@@ -122,7 +124,7 @@ def write_text_to_file(file_path: str, content: str, overwrite: bool = False, ap
 
     Parameters:
     ----------
-    file_path : str
+    file_path : Path
         The name or relative path of the text file to write.
     content : str
         The content to be written to the file.
@@ -281,7 +283,7 @@ def get_all_tag_names(soup: BeautifulSoup) -> list[str]:
     >>> get_all_tag_names(soup)
     ['p', 'div', 'span']
     """
-    return list(set([tag.name for tag in soup.find_all(True)]))
+    return list({tag.name for tag in soup.find_all(True)})
 
 def get_all_attribute_values(soup: BeautifulSoup, tag: str) -> dict[str, set[str]]:
     """
@@ -368,17 +370,14 @@ def remove_all_tags_with_attribute(soup: BeautifulSoup, attr_name: str, attr_val
     for element in soup.find_all(True):
         # If an attribute name is specified, filter tags by the attribute
         if attr_name in element.attrs:
-            attr_value = element[attr_name]
             if attr_value_pattern:
-                # If there's a pattern, check for a match
+                attr_value = element[attr_name]
                 if isinstance(attr_value, list):
                     # Check if any value in the list matches the pattern
                     if any(re.match(attr_value_pattern, val) for val in attr_value):
                         tags_to_remove.append(element)
-                else:
-                    # If it's a string, check the pattern directly
-                    if re.match(attr_value_pattern, attr_value):
-                        tags_to_remove.append(element)
+                elif re.match(attr_value_pattern, attr_value):
+                    tags_to_remove.append(element)
         elif not attr_name:
             # If no attribute is specified, remove the entire tag
             tags_to_remove.append(element)
@@ -399,7 +398,7 @@ def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: Union[list[str], s
     soup : BeautifulSoup
         The parsed HTML content to clean.
 
-    tag_list : the list of tags to remove if matchin attribute is found; if a single string, then this string is split into tags.
+    tag_list : the list of tags to remove if matching attribute is found; if a single string, then this string is split into tags.
     
     attr_name : str
         The attribute name to match (e.g., 'class', 'id'). If None, no attribute filtering is done.
@@ -430,17 +429,14 @@ def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: Union[list[str], s
     for element in soup.find_all(*tag_list):
         # If an attribute name is specified, filter tags by the attribute
         if attr_name in element.attrs:
-            attr_value = element[attr_name]
             if attr_value_pattern:
-                # If there's a pattern, check for a match
+                attr_value = element[attr_name]
                 if isinstance(attr_value, list):
                     # Check if any value in the list matches the pattern
                     if any(re.match(attr_value_pattern, val) for val in attr_value):
                         tags_to_remove.append(element)
-                else:
-                    # If it's a string, check the pattern directly
-                    if re.match(attr_value_pattern, attr_value):
-                        tags_to_remove.append(element)
+                elif re.match(attr_value_pattern, attr_value):
+                    tags_to_remove.append(element)
         elif not attr_name:
             # If no attribute is specified, remove the entire tag
             tags_to_remove.append(element)
@@ -492,7 +488,7 @@ def remove_attributes(soup: BeautifulSoup, attr_name: str, attr_value_pattern: s
         # Check if the tag has the specified attribute
         if attr_name in element.attrs:
             attr_value = element[attr_name]
-            
+
             # Check if we are matching the attribute value against a pattern
             if attr_value_pattern:
                 # If the attribute value is a list (e.g., for class attribute), handle that case
@@ -500,17 +496,12 @@ def remove_attributes(soup: BeautifulSoup, attr_name: str, attr_value_pattern: s
                     # Remove the attribute if any value in the list matches the pattern
                     if any(re.match(attr_value_pattern, val) for val in attr_value):
                         del element[attr_name]
-                else:
-                    # For single values, remove the attribute if it matches the pattern
-                    if re.match(attr_value_pattern, attr_value):
-                        del element[attr_name]
+                # For single values, remove the attribute if it matches the pattern
+                elif re.match(attr_value_pattern, attr_value):
+                    del element[attr_name]
             else:
                 # If no pattern is specified, remove the attribute unconditionally
                 del element[attr_name]
-
-from bs4 import BeautifulSoup
-from bs4.element import NavigableString
-import copy
 
 def generate_reduced_text_soup(soup: BeautifulSoup) -> BeautifulSoup:
     """
@@ -738,16 +729,22 @@ def unwrap_redundant_tags(soup: BeautifulSoup, tag_list) -> None:
     tags_to_unwrap = []
     for tag in soup.descendants:
         if tag.name in tag_list:
-            # Check if the tag has no attributes and exactly one child that is a tag
-            if not tag.attrs and len(tag.contents) == 1 and isinstance(tag.contents[0], Tag):
+            """
+            Determines if a tag is redundant by checking three conditions:
+            1. Has no attributes (preserves styled/classed tags)
+            2. Contains exactly one child element
+            3. Child is a Tag instance (not NavigableString/Comment)
+            """
+            is_redundant_wrapper = (
+                not tag.attrs 
+                and len(tag.contents) == 1 
+                and isinstance(tag.contents[0], Tag)
+            )
+            
+            if is_redundant_wrapper:
                 child = tag.contents[0]
-                # If tag adds no unique structure or information, mark it for unwrapping
                 if tag.get_text(strip=True) == child.get_text(strip=True):
                     tags_to_unwrap.append(tag)
-
-    # Step 2: Unwrap collected tags
-    for tag in tags_to_unwrap:
-        tag.unwrap()
 
 
 def remove_tag_whitespace(html_str: str) -> str:
@@ -785,11 +782,9 @@ def remove_tag_whitespace(html_str: str) -> str:
 
     # Use BeautifulSoup to parse and normalize the HTML structure
     soup = BeautifulSoup(html_str, 'html.parser')
-    
-    # Convert back to string, then use regex to remove whitespace between tags
-    cleaned_html = re.sub(r'>\s+<', '><', str(soup))
-    
-    return cleaned_html
+
+    # return after converting back to string and using regex to remove whitespace between tags.
+    return re.sub(r'>\s+<', '><', str(soup))
 
 def normalize_quotes(text: str) -> str:
     """
@@ -826,7 +821,4 @@ def normalize_quotes(text: str) -> str:
 
     """
     # Replace left and right double smart quotes with straight double quote
-    text = text.replace("\u201C", "\"").replace("\u201D", "\"")
-    # Replace left and right single smart quotes with straight single quote
-    text = text.replace("\u2018", "'").replace("\u2019", "'")
-    return text
+    return text.replace("\u201C", "\"").replace("\u201D", "\"").replace("\u2018", "'").replace("\u2019", "'")
