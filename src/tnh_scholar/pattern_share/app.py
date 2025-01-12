@@ -11,7 +11,7 @@ import git
 from dotenv import load_dotenv
 import os
 
-from tnh_scholar.openai_text_processing import Pattern
+from tnh_scholar.ai_text_processing import Pattern
 
 class ConfigurationError(Exception):
     """Custom exception for configuration-related errors."""
