@@ -113,6 +113,7 @@ class LocalPatternManager:
 @dataclass
 class ProcessedSection:
     """Represents a processed section of text with its metadata."""
+    title: str
     original_text: str
     processed_text: str
     start_line: int
@@ -662,11 +663,12 @@ class SectionParser:
 
         # Process text with structured output
         try:
-            result = (self.section_scanner.process_text(
+            result = self.section_scanner.process_text(
                 str(num_text),
                 instructions,
                 response_format=TextObject
-            ))
+                )
+            
 
             # Validate section coverage
             self._validate_sections(result.sections, num_text.size)
@@ -827,7 +829,7 @@ class SectionProcessor:
         logger.info(f"Processing {len(sections)} sections with pattern: {self.pattern.name}")
 
         for i, section in enumerate(sections, 1):
-            logger.info(f"Processing section {i}:")
+            logger.info(f"Processing section {i}, '{section.title}':")
         
             # Get text segment for section
             text_segment = numbered_transcript.get_segment(
@@ -835,13 +837,24 @@ class SectionProcessor:
                 end=section.end_line
             )
 
+            # Prepare template variables
+            template_values = {
+                "section_title": section.title,
+                "source_language": text_object.language,
+                "review_count": DEFAULT_REVIEW_COUNT
+            }
+        
+            if self.template_dict:
+                template_values |= self.template_dict
+                
             # Get and apply processing instructions
-            instructions = self.pattern.apply_template(self.template_dict)
+            instructions = self.pattern.apply_template(template_values)
             if i <= 1:
                 logger.debug(f"Process instructions (first section):\n{instructions}")
             processed_text = self.processor.process_text(text_segment, instructions)
             
             yield ProcessedSection(
+                title=section.title,
                 original_text=text_segment,
                 processed_text=processed_text,
                 start_line=section.start_line,
@@ -958,27 +971,3 @@ def get_default_pattern(name: str) -> Pattern:
         FileNotFoundError: If pattern file doesn't exist
     """
     return LocalPatternManager().pattern_manager.load_pattern(name)
-
-# def write_to_file(
-#     self,
-#     output_file: Path,
-#     sections_generator: Generator[ProcessedSection, None, None]
-# ) -> None:
-#     """
-#     Write processed sections to XML file.
-
-#     Args:
-#         output_file: Path to output file
-#         sections_generator: Generator of ProcessedSection objects
-#     """
-#     with open(output_file, 'w', encoding='utf-8') as file:
-#         if self.wrap_in_document:
-#             file.write("<document>\n")
-            
-#         for section in sections_generator:
-#             file.write(f"<section title='{section.title}'>\n")
-#             file.write(section.processed_text)
-#             file.write("</section>\n")
-            
-#         if self.wrap_in_document:
-#             file.write("</document>")
