@@ -14,9 +14,8 @@ from tnh_scholar.openai_interface import (
     run_transcription_speech
 )
 
-from tnh_scholar.text_processing import (
-    get_text_from_file, 
-    write_text_to_file
+from tnh_scholar.utils.file_utils import (
+    write_text_to_file, get_text_from_file
 )
 
 logger = get_child_logger(__name__)
