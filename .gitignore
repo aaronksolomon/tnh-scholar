@@ -25,6 +25,9 @@ sandbox/
 # temporary files:
 tmp/
 
+# patterns:
+patterns/
+
 # Big files
 *.pdf
 *.jpeg
