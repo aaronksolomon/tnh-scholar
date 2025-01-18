@@ -81,8 +81,7 @@ check_env(PROJECT_ROOT_DIR, REQUIREMENTS_PATH)
 @click.option('-i', '--silence_boundaries', is_flag=True, help='Use silence detection to split audio file(s)')
 @click.option('-w', '--whisper_boundaries', is_flag=True, help='(DEFAULT) Use a whisper based model to audio at sentence boundaries.')
 @click.option('-l', '--language', type=str, help="The two letter language code. e.g. 'vi' for Vietnamese. Used for splitting only. DEFAULT: English ('en').")
-
-def main(
+def audio_transcribe(
     split: bool,
     transcribe: bool,
     yt_url: str | None,
@@ -240,3 +239,10 @@ def main(
         logger.error(f"An error occurred: {e}")
         logger.debug("traceback info", exc_info=True)
         sys.exit(1)
+        
+def main():
+    """Entry point for AUDIO-TRANSCRIBE CLI tool."""
+    audio_transcribe()
+    
+if __name__ == '__main__':
+    main()
