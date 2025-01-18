@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from typing import List
 
 TEXT_SECTIONS_DESCRIPTION = (
-    "Ordered list of sections for the text. "
+    "Ordered list of logical sections for the text. "
     "The sequence of line ranges for the sections must cover every line "
     "from start to finish without any overlaps or gaps."
 )
@@ -12,6 +12,10 @@ class LogicalSection(BaseModel):
     """
     A logically coherent section of text. 
     """
+    title: str = Field(
+        ...,
+        description="Meaningful title for the section in the original language of the section."
+    )
     start_line: int = Field(
         ..., 
         description="Starting line number of the section (inclusive)."
