@@ -14,9 +14,11 @@ from .ai_text_processing import (
     SectionProcessor,
     find_sections,
     process_text_by_sections,
+    process_text_by_paragraphs,
+    process_text, 
     punctuate_text,
     translate_text_by_lines,
-    process_text_by_paragraphs
+   
 )
 
 from .response_format import (
