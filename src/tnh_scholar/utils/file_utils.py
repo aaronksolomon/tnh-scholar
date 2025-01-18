@@ -4,8 +4,12 @@ import tnh_scholar.logging_config as logging_config
 from typing import Generator
 import re
 import shutil
+import warnings
 
-def ensure_directory_exists(dir_path: Path) -> None:
+class FileExistsWarning(UserWarning):
+    pass
+
+def ensure_directory_exists(dir_path: Path) -> bool:
     """
     Create directory if it doesn't exist.
 
@@ -96,3 +100,42 @@ def copy_files_with_regex(
 
                         shutil.copy2(file_path, target_path)
                         print(f"Copied: {file_path} -> {target_path}")
+
+
+def get_text_from_file(file_path: Path) -> str:
+    """Reads the entire content of a text file.
+
+    Args:
+        file_path: The path to the text file.
+
+    Returns:
+        The content of the text file as a single string.
+    """
+
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return file.read()
+
+
+def write_text_to_file(file_path: Path, content: str, overwrite: bool = False, append: bool = False) -> None:
+    """Writes text content to a file, handling overwriting and appending.
+
+    Args:
+        file_path: The path to the file.
+        content: The text content to write.
+        overwrite: If True, overwrites the file if it exists.
+        append: If True, appends the content to the file if it exists.
+
+    Raises:
+        FileExistsWarning: If the file exists and neither overwrite nor append are True.
+    """
+
+    if file_path.exists():
+        if not overwrite and not append:
+            warnings.warn(f"File '{file_path}' already exists. Use overwrite or append.", FileExistsWarning)
+            return  # Do not write if neither flag is set
+        mode = 'a' if append else 'w' # Choose mode based on flags
+    else:
+        mode = 'w' # Default to write mode if file doesn't exist
+
+    with open(file_path, mode, encoding='utf-8') as file:
+        file.write(content)

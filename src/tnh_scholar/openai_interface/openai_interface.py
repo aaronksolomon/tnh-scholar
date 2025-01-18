@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import json
 from datetime import datetime
-from typing import List, Dict
+from typing import List, Dict, Optional
 from pathlib import Path
 import ast
 import logging
@@ -12,7 +12,7 @@ from logging.handlers import RotatingFileHandler
 import time
 from math import floor
 from tnh_scholar.logging_config import get_child_logger
-from tnh_scholar.text_processing import get_text_from_file
+from tnh_scholar.utils.file_utils import get_text_from_file
 from torch import Value
 
 MAX_BATCH_LIST = 30
@@ -142,6 +142,26 @@ def run_immediate_chat_process(messages, max_tokens: int =  0, response_format=N
         return None
 
 def run_immediate_completion_simple(system_message: str, user_message: str, model=None, max_tokens: int =  0, response_format=None):
+    """Runs a single chat completion with a system message and user message.
+
+    This function simplifies the process of running a single chat completion with the OpenAI API by handling
+    model selection, token limits, and logging. It allows for specifying a response format and handles potential
+    `ValueError` exceptions during the API call.
+
+    Args:
+        system_message (str): The system message to guide the conversation.
+        user_message (str): The user's message as input for the chat completion.
+        model (str, optional): The OpenAI model to use. Defaults to None, which uses the default model.
+        max_tokens (int, optional): The maximum number of tokens for the completion. Defaults to 0, which uses the model's maximum.
+        response_format (dict, optional): The desired response format. Defaults to None.
+
+    Returns:
+        OpenAIObject | None: The chat completion response if successful, or None if a `ValueError` occurs.
+
+    Raises:
+        ValueError: if max_tokens exceeds the model's maximum token limit.
+    """
+
     client = get_api_client()
 
     if not model:
@@ -247,7 +267,14 @@ def _log_batch_creation_info(batch_file_path: Path, request_obj: Dict, total_tok
     # Log the combined parameters
     logger.debug(f"Batch parameters:\n{batch_parameters}")
 
-def create_jsonl_file_for_batch(messages, output_file_path=None, max_token_list=[], model=OPEN_AI_DEFAULT_MODEL, tools=None, json_mode=False):
+def create_jsonl_file_for_batch(
+    messages: List[str], 
+    output_file_path: Optional[Path] = None, 
+    max_token_list: Optional[List[int]] = None, 
+    model: str = OPEN_AI_DEFAULT_MODEL, 
+    tools = None, 
+    json_mode: Optional[bool] = False
+    ):
     """
     Creates a JSONL file for batch processing, with each request using the same system message, user messages, 
     and optional function schema for function calling.
@@ -275,7 +302,7 @@ def create_jsonl_file_for_batch(messages, output_file_path=None, max_token_list=
 
     if output_file_path is None:
         date_str = datetime.now().strftime("%m%d%Y")
-        output_file_path = f"batch_requests_{date_str}.jsonl"
+        output_file_path = Path(f"batch_requests_{date_str}.jsonl")
 
     # Ensure the directory for the output file exists
     output_dir = Path(output_file_path).parent

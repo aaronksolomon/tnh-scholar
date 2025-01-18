@@ -3,15 +3,8 @@ import os
 from bs4 import BeautifulSoup
 from bs4 import NavigableString, Tag
 from typing import Union
-import warnings
 from bs4 import BeautifulSoup
 import copy
-
-# Global variable for storing the working directory for input and output data in the TNH Scholar project
-tnh_scholar_working_dir = None
-
-class FileExistsWarning(UserWarning):
-    pass
 
 def normalize_newlines(text: str, spacing: int = 2) -> str:
     """
@@ -39,132 +32,6 @@ def normalize_newlines(text: str, spacing: int = 2) -> str:
     # Replace two or more newlines with the desired number of newlines
     newlines = '\n' * spacing
     return re.sub(r'\n{2,}', newlines, text)
-
-def set_working_directory(directory: str) -> None:
-    """
-    Sets the global working directory to the specified path.
-
-    Parameters:
-    ----------
-    directory : str
-        The path to the directory to be set as the working directory.
-    """
-    global tnh_scholar_working_dir
-    if os.path.isdir(directory):
-        tnh_scholar_working_dir = directory
-    else:
-        raise ValueError(f"The directory '{directory}' does not exist or is not a valid directory.")
-    
-def get_working_directory():
-    """
-    Get the global working directory 
-
-    Parameters:
-    ----------
-    None
-        
-    Returns:
-    --------        
-    The path to the working directory.
-    """
-    global tnh_scholar_working_dir
-
-    return tnh_scholar_working_dir
-
-def get_text_from_file(file_path: str, search_path: str = None) -> str:
-    """
-    Reads the entire content of a text file, looking first in the specified directory 
-    if provided, then in the global working directory if set, otherwise in the current working directory.
-
-    Parameters:
-    ----------
-    file_path : str
-        The name or relative path to the text file.
-    search_path : str, optional
-        The directory path to look for the file. If specified, it overrides 
-        the global working directory and the current working directory.
-
-    Returns:
-    -------
-    str
-        The content of the text file as a single string.
-
-    Example:
-    --------
-    >>> set_working_directory("/path/to/directory")
-    >>> text = get_text_from_file("example.txt", dir="/another/path")
-    >>> print(text)
-    'This is the content of the file.'
-    """
-    global tnh_scholar_working_dir
-    
-    # Determine the directory to use
-    if search_path:
-        full_path = os.path.join(search_path, file_path)
-    elif tnh_scholar_working_dir:
-        full_path = os.path.join(tnh_scholar_working_dir, file_path)
-    else:
-        full_path = file_path
-
-    # Check if the file exists
-    if not os.path.exists(full_path):
-        raise FileNotFoundError(f"The file '{full_path}' does not exist.")
-    
-    # Read and return the content of the file
-    with open(full_path, 'r', encoding='utf-8') as file:
-        return file.read()
-    
-def write_text_to_file(file_path: str, content: str, overwrite: bool = False, append: bool = False) -> None:
-    """
-    Writes the given content to a text file. Saves the file in the global 
-    working directory if set, otherwise in the current working directory. 
-    Checks if the file already exists and raises a warning if it does, unless 
-    force=True is specified to overwrite. Alternatively, appends to the file
-    if append=True is specified.
-
-    Parameters:
-    ----------
-    file_path : Path
-        The name or relative path of the text file to write.
-    content : str
-        The content to be written to the file.
-    overwrite : bool, optional
-        If True, overwrite the file if it exists. Default is False.
-    append : bool, optional
-        If True, append to the file instead of overwriting. Default is False.
-
-    Raises:
-    ------
-    FileExistsWarning
-        If the file already exists and overwrite is set to False, and append is False.
-    OSError
-        If the file cannot be written due to I/O errors.
-
-    Example:
-    --------
-    >>> set_working_directory("/path/to/directory")
-    >>> write_text_to_file("example.txt", "This is some content.", overwrite=True)
-    >>> write_text_to_file("example.txt", "Appending this content.", append=True)
-    """
-    global tnh_scholar_working_dir
-
-    # Determine the full path based on the working directory
-    full_path = os.path.join(tnh_scholar_working_dir, file_path) if tnh_scholar_working_dir else file_path
-
-    # Check if the file exists and warn if not overwriting or appending
-    if os.path.exists(full_path) and not overwrite and not append:
-        warnings.warn(f"The file '{full_path}' already exists. Use overwrite=True to overwrite or append=True to append.", FileExistsWarning)
-        return
-
-    try:
-        # Determine the mode to open the file
-        mode = 'a' if append else 'w'
-        
-        # Write the content to the specified file
-        with open(full_path, mode, encoding='utf-8') as file:
-            file.write(content)
-    except OSError as e:
-        raise OSError(f"Failed to write to file '{full_path}'.") from e
 
 def clean_text(text, newline=False):
     """

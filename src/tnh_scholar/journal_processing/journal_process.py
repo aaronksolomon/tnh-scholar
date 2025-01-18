@@ -1,7 +1,7 @@
 
 from pathlib import Path
 import re
-from tnh_scholar.text_processing import get_text_from_file
+from tnh_scholar.utils.file_utils import get_text_from_file
 
 from tnh_scholar.openai_interface import(
     token_count, generate_messages, create_jsonl_file_for_batch,
