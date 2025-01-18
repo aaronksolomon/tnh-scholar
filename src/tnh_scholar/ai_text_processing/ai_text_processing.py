@@ -22,11 +22,12 @@ from regex import template
 from tnh_scholar.ai_text_processing.typing import ResponseFormat
 from tnh_scholar.openai_interface import token_count
 from tnh_scholar.text_processing import bracket_lines, unbracket_lines, lines_from_bracketed_text, NumberedText
-from tnh_scholar.text_processing import get_text_from_file, write_text_to_file, normalize_newlines
+from tnh_scholar.text_processing import normalize_newlines
 from tnh_scholar.utils import iterate_subdir, load_json_into_model, save_model_to_json
 from tnh_scholar.ai_text_processing.lang import get_language_code, get_language_name
 from tnh_scholar.ai_text_processing.response_format import TextObject, LogicalSection
 from tnh_scholar.ai_text_processing.patterns import Pattern, PatternManager
+from tnh_scholar.utils.file_utils import get_text_from_file, write_text_to_file
 
 
 from .openai_process_interface import openai_process_text
@@ -46,13 +47,12 @@ DEFAULT_PUNCTUATE_PATTERN = "default_punctuate"
 DEFAULT_PUNCTUATE_STYLE = "APA"
 DEFAULT_XML_FORMAT_PATTERN = "default_xml_format"
 DEFAULT_PARAGRAPH_FORMAT_PATTERN = "default_xml_paragraph_format"
-DEFAULT_PUNCTUATE_MODEL = "gpt-4o-mini"
+DEFAULT_PUNCTUATE_MODEL = "gpt-4o"
 DEFAULT_OPENAI_MODEL = "gpt-4o"
 DEFAULT_TRANSLATE_SEGMENT_SIZE = 20
 DEFAULT_TRANSLATE_STYLE = "'American Dharma Teaching'"
 DEFAULT_TRANSLATION_PATTERN = "default_line_translation"
 DEFAULT_TRANSLATE_CONTEXT_LINES = 3
-DEFAULT_LINE_SAMPLE_SIZE = 70 # number of lines to sample for calculating average tokens per line.
 DEFAULT_TRANSLATION_TARGET_TOKENS = 650
 DEFAULT_TARGET_LANGUAGE = "English"
 DEFAULT_SECTION_RANGE_VAR = 2
@@ -890,6 +890,86 @@ class SectionProcessor:
             # Otherwise get and apply processing instructions
             instructions = self.pattern.apply_template(self.template_dict)
             yield self.processor.process_text(line, instructions) 
+
+class GeneralProcessor:
+    def __init__(
+        self,
+        processor: TextProcessor,
+        pattern: Pattern,
+        source_language: Optional[str] = None,
+        review_count: int = DEFAULT_REVIEW_COUNT,
+    ):
+        """
+        Initialize punctuation generator.
+        
+        Args:
+            text_punctuator: Implementation of TextProcessor
+            punctuate_pattern: Pattern object containing punctuation instructions
+            section_count: Target number of sections
+            review_count: Number of review passes
+        """
+            
+        self.source_language = source_language
+        self.processor = processor
+        self.pattern = pattern
+        self.review_count = review_count
+        
+    def process_text(
+        self,  
+        text: str,
+        source_language: Optional[str] = None,
+        template_dict: Optional[Dict] = None
+    ) -> str:
+        """
+        punctuate a text based on a pattern and source language.
+        """
+        
+        if not source_language:
+            if self.source_language:
+                source_language = self.source_language
+            else:
+                source_language = get_language_name(text)
+                
+        template_values = {
+            "source_language": source_language,
+            "review_count": self.review_count,
+        }
+
+        if template_dict:
+            template_values |= template_dict
+            
+        logger.info("Processing text...")
+        punctuate_instructions = self.pattern.apply_template(template_values)
+        text = self.processor.process_text(
+            text,
+            punctuate_instructions
+        )
+        logger.info("Processing completed.")
+
+        # normalize newline spacing to 1 newline between lines and return
+        return normalize_newlines(text, spacing=1)    
+
+def process_text(
+    text: str, 
+    pattern: Pattern,
+    source_language: Optional[str] = None,
+    model: Optional[str] = None,
+    template_dict: Optional[Dict] = None
+    ) -> str:
+    
+    if not model:
+        model = DEFAULT_OPENAI_MODEL
+            
+    processor = GeneralProcessor(
+        processor=OpenAIProcessor(model),
+        source_language=source_language,
+        pattern=pattern,
+        )
+    
+    return processor.process_text(
+        text, 
+        source_language=source_language, 
+        template_dict=template_dict)
     
 def process_text_by_sections(
     transcript: str,
