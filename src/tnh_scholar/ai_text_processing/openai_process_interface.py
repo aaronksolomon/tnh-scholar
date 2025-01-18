@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 from tnh_scholar.ai_text_processing.typing import ResponseFormat
 from tnh_scholar.logging_config import get_child_logger
 
@@ -22,7 +22,7 @@ def openai_process_text(
     response_format: Optional[ResponseFormat] = None, 
     batch: bool = False, 
     max_tokens: int =0
-    ):
+    ) -> Union[ResponseFormat, str]:
     """postprocessing a transcription."""
 
     user_prompts = [text_input]
