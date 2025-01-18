@@ -725,7 +725,7 @@ class PatternManager:
             logger.debug(f"No pattern file found with ID: {pattern_name}")
             return None
 
-    def save_pattern(self, pattern: Pattern, subdir: Optional[Path] = None):
+    def save_pattern(self, pattern: Pattern, subdir: Optional[Path] = None) -> Path:
         
         pattern_name = pattern.name
         instructions = pattern.instructions
@@ -781,6 +781,8 @@ class PatternManager:
         # Acquire lock before reading
         with self.access_manager.file_lock(path):
             instructions = get_text_from_file(path)
+            
+        instructions = MarkdownStr(instructions)
 
         # Create the pattern from the raw .md text
         pattern = Pattern(name=pattern_name, instructions=instructions)
@@ -790,10 +792,12 @@ class PatternManager:
 
         return pattern
     
-    def show_pattern_history(self, pattern_name: str):
-        path = self.get_pattern_path(pattern_name)
-        
-        self.repo.display_history(path)
+    def show_pattern_history(self, pattern_name: str) -> None:
+        if path := self.get_pattern_path(pattern_name):
+            self.repo.display_history(path)
+        else:
+            logger.error(f"Path to {pattern_name} not found.")
+            return
     
     # def get_pattern_history_from_path(self, path: Path) -> List[Dict[str, Any]]:
     #     """
