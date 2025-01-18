@@ -69,8 +69,12 @@ sandbox/
 *.class
 *.jar
 
+.idea/
+
 # VS code
 .vscode
+
+*.swp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
