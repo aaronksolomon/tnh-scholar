@@ -11,15 +11,29 @@ This project leverages machine learning models, including fine-tuned BERT, GPT, 
 
 ### Current Goals
 - Start with a proof-of-concept implementation using a small dataset of English texts.
-- Evaluate model performance across querying, translation, transcritpion and simple interactive tasks.
+- Evaluate model performance across querying, translation, transcription and simple interactive tasks.
 - Gradually expand the dataset to include transcriptions of Dharma talks and interactive sessions, and support multiple languages.
 
+### Current Progress and Status
+- Version 0.1.0 'initial prototyping' is relatively stable with CLI tool: audio-transcribe being functional.
+- Text processing (primarily cleaning and sectioning) of sample ebooks (*Transformation and Healing* and *Love in Action*) completed as a test run of these processes. Proof of concept query-text pairs successfully generated via gpt-4o using the OpenAI API. **See notebooks/query_text_generation**.
+- OCR processing of Thay's old 1950's 'Phat Giao Viet Nam' journals was completed through jupyter notebook processing. **See notebooks/journal_processing**
+- A segment of Deer Park Dharma talks from youtube was downloaded, transcribed and processed/cleaned to xml using jupyter notebooks and audio-transcribe cli tool.
+- Baseline functionality for ai text processing through Jupyter notebooks using 'patterns' in the style of Daniel Messier's 'fabric' is functional with functions: **punctuate_text, find_sections, translate_text_by_lines, process_text_by_sections, process_text_by_paragraphs**.
+- Next steps are to implement a CLI tool: tnh-fab which will allow CLI access to these core functionalities for ai text processing through the command line. see 
+
 ### Notes and Configurations
-- Developed on MacOS. All filenames and directories should be in lowercase.
+- Developed on MacOS. All filenames and directories are in lowercase to accommodate non-case sensitive default of MacOS.
 
 ## Directory Structure
 
 The repository is organized as follows:
+
+/src
+  - The source code in python for the project
+
+/notebooks
+  - All jupyter notebooks used with the project
 
 /data_processing
   - Datasets and preprocessing scripts.
@@ -45,15 +59,15 @@ We are starting by evaluating the following models and tools:
 - **MarianMT** or **mBART** for multilingual translation tasks (starting with English, Vietnamese, and French).
   
 Additional tools:
-- **Google Cloud** for data storage, model training, and deployment.
-- **Hugging Face** for model hosting and fine-tuning frameworks.
+- **Google Cloud** Planned use for data storage and deployment. Current use: Google vision for OCR.
+- **Hugging Face** Potential use for model hosting and fine-tuning frameworks. Likely alternate is OpenAI API and Anthropic API. These professional level API's offering more robust support (however require cost of use, account creation).
 
 ## Setup Instructions
 
 ### Prerequisites
 - **Python 3.12+** with necessary packages (see `requirements.txt`).
 - **Hugging Face API** and **OpenAI API** access for model training and interaction.
-- **Google Cloud SDK** for cloud-based infrastructure.
+- **Google Cloud SDK** for cloud-based infrastructure; currently used for Google vision to process OCR data.
 
 ### Steps
 
