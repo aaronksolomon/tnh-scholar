@@ -3,10 +3,26 @@
 requires = ["setuptools>=42", "wheel", "build"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = { find = { include = ["tnh_scholar*"] } }
+
 [project]
 name = "tnh-scholar"
 version = "0.1.0"
-description = "A package for..."
+description = """
+TNH Scholar is an AI-driven project designed to explore, query, and translate 
+the teachings of Thich Nhat Hanh. The project aims to create a resource for 
+practitioners and scholars to deeply engage with mindfulness and spiritual 
+wisdom through natural language processing and machine learning models.
+"""
+requires-python = ">=3.12.4"  # Specify minimum Python version
+keywords = ["nlp", "buddhism", "translation", "ai"]  # Add relevant keywords
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.12",
+]
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [{ name = "Aaron K. Solomon", email = "aaron.kyle.solomon@gmail.com" }]
@@ -20,25 +36,81 @@ dependencies = [
     "lxml",
     "openai",
     "openai-whisper",
-    "google-cloud",
-    "google-cloud-vision",
-    "pdf2image",
-    "Pillow",
     "protobuf",
     "pydantic",
     "pydub",
     "python-dotenv",
     "setuptools",
-    "spacy",
-    "streamlit",
     "tiktoken",
     "transformers",
     "yt-dlp",
 ]
 
+[project.optional-dependencies]
+gui= [
+    "streamlit"
+]
+nlp = [
+    "spacy"
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "mypy>=1.0.0",
+    "flake8>=6.0.0",
+]
+ocr = [
+    "google-cloud",
+    "google-cloud-vision",
+    "Pillow",
+    "pdf2image",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/aaronksolomon/tnh-scholar"
+"Bug Tracker" = "https://github.com/aaronksolomon/tnh-scholar/issues"
+"Documentation" = "https://github.com/aaronksolomon/tnh-scholar/wiki"
+
 [project.scripts]
 audio-transcribe = "tnh_scholar.cli_tools.audio_transcribe.audio_transcribe:main"
+tnh-fab = "tnh_scholar.cli_tools.tnh_fab.tnh_fab:main"
+ytt-fetch = "tnh_scholar.cli_tools.ytt_fetch.ytt_fetch:main"
+nfmt = "tnh_scholar.cli_tools.nfmt.nfmt:main"
 
-[tool.setuptools]
-package-dir = {"" = "src"}
-packages = { find = { include = ["tnh_scholar*"] } }
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra -q"
+pythonpath = ["src"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+ignore_missing_imports = true  
+strict = true  
+plugins = ["pydantic.mypy"]  
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+
+[tool.coverage.run]
+source = ["tnh_scholar"]
+omit = ["tests/*", "**/__init__.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass"
+]
