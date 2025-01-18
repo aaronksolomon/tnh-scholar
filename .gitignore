@@ -22,6 +22,9 @@ gpt_batch_files/
 # sandbox for testing:
 sandbox/
 
+# temporary files:
+tmp/
+
 # Big files
 *.pdf
 *.jpeg
