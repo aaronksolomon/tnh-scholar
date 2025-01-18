@@ -1,8 +1,13 @@
-from typing import Iterator, List, Optional, Tuple
+from typing import Iterator, List, Optional, Tuple, NamedTuple
 from pathlib import Path
 import re
 from dataclasses import dataclass
 
+class NumberedFormat(NamedTuple):
+    is_numbered: bool
+    separator: Optional[str] = None
+    start_num: Optional[int] = None
+    
 class NumberedText:
     """
     Represents a text document with numbered lines for easy reference and manipulation.
@@ -30,7 +35,98 @@ class NumberedText:
         >>> for num, line in doc:
         ...     print(f"Line {num}: {len(line)} chars")
     """
-    
+    @dataclass
+    class LineSegment:
+        """
+        Represents a segment of lines with start and end indices in 1-based indexing.
+        
+        The segment follows Python range conventions where start is inclusive and
+        end is exclusive. However, indexing is 1-based to match NumberedText.
+        
+        Attributes:
+            start: Starting line number (inclusive, 1-based)
+            end: Ending line number (exclusive, 1-based)
+        """
+        start: int
+        end: int
+        
+        def __iter__(self):
+            """Allow unpacking into start, end pairs."""
+            yield self.start
+            yield self.end
+
+    class SegmentIterator:
+        """
+        Iterator for generating line segments of specified size.
+        
+        Produces segments of lines with start/end indices following 1-based indexing.
+        The final segment may be smaller than the specified segment size.
+        
+        Attributes:
+            total_lines: Total number of lines in text
+            segment_size: Number of lines per segment
+            start_line: Starting line number (1-based)
+            min_segment_size: Minimum size for the final segment
+        """
+        
+        def __init__(self, total_lines: int, segment_size: int, 
+                    start_line: int = 1, min_segment_size: Optional[int] = None):
+            """
+            Initialize the segment iterator.
+            
+            Args:
+                total_lines: Total number of lines to iterate over
+                segment_size: Desired size of each segment
+                start_line: First line number (default: 1)
+                min_segment_size: Minimum size for final segment (default: None)
+                    If specified, the last segment will be merged with the previous one
+                    if it would be smaller than this size.
+            
+            Raises:
+                ValueError: If segment_size < 1 or total_lines < 1
+                ValueError: If start_line < 1 (must use 1-based indexing)
+                ValueError: If min_segment_size >= segment_size
+            """
+            if segment_size < 1:
+                raise ValueError("Segment size must be at least 1")
+            if total_lines < 1:
+                raise ValueError("Total lines must be at least 1")
+            if start_line < 1:
+                raise ValueError("Start line must be at least 1 (1-based indexing)")
+            if min_segment_size is not None and min_segment_size >= segment_size:
+                raise ValueError("Minimum segment size must be less than segment size")
+                
+            self.total_lines = total_lines
+            self.segment_size = segment_size
+            self.start_line = start_line
+            self.min_segment_size = min_segment_size
+            
+            # Calculate number of segments
+            remaining_lines = total_lines - start_line + 1
+            self.num_segments = (remaining_lines + segment_size - 1) // segment_size
+
+        def __iter__(self) -> Iterator['NumberedText.LineSegment']:
+            """
+            Iterate over line segments.
+            
+            Yields:
+                LineSegment containing start (inclusive) and end (exclusive) indices
+            """
+            current = self.start_line
+            
+            for i in range(self.num_segments):
+                is_last_segment = (i == self.num_segments - 1)
+                segment_end = min(current + self.segment_size, self.total_lines + 1)
+                
+                # Handle minimum segment size for last segment
+                if (is_last_segment and self.min_segment_size is not None and 
+                    segment_end - current < self.min_segment_size and i > 0):
+                    # Merge with previous segment by not yielding
+                    break
+                    
+                yield NumberedText.LineSegment(current, segment_end)
+                current = segment_end
+            
     def __init__(self, 
                 content: Optional[str] = None, 
                 start: int = 1,
@@ -65,6 +161,10 @@ class NumberedText:
             ['1: 1. First item', '2: 2. Second item']
         """
         
+        self.lines: List[str] = []  # Declare lines here
+        self.start: int = start      # Declare start with its type
+        self.separator: str = separator # and separator
+        
         if not isinstance(content, str):
             raise ValueError("NumberedText requires string input.")
         
@@ -72,17 +172,16 @@ class NumberedText:
             raise IndexError("NumberedText: Numbered lines must begin on an integer great or equal to 1.")
         
         if not content:
-            self.lines = []
-            self.start = start
-            self.separator = separator
             return
 
         # Analyze the text format
         is_numbered, detected_sep, start_num = get_numbered_format(content)
         
-        if is_numbered:
-            self.start = start_num
-            self.separator = detected_sep
+        format_info = get_numbered_format(content)
+
+        if format_info.is_numbered:
+            self.start = format_info.start_num # type: ignore
+            self.separator = format_info.separator # type: ignore
             
             # Extract content by removing number and separator
             pattern = re.compile(fr'^\d+{re.escape(detected_sep)}')
@@ -163,6 +262,31 @@ class NumberedText:
             raise IndexError(f"Start index {start} must be less than end index {end}")
         return "\n".join(self.get_lines(start, end))
     
+    def iter_segments(self, segment_size: int, 
+                min_segment_size: Optional[int] = None) -> Iterator[LineSegment]:
+        """
+        Iterate over segments of the text with specified size.
+        
+        Args:
+            segment_size: Number of lines per segment
+            min_segment_size: Optional minimum size for final segment.
+                If specified, last segment will be merged with previous one
+                if it would be smaller than this size.
+        
+        Yields:
+            LineSegment objects containing start and end line numbers
+            
+        Example:
+            >>> text = NumberedText("line1\\nline2\\nline3\\nline4\\nline5")
+            >>> for segment in text.iter_segments(2):
+            ...     print(f"Lines {segment.start}-{segment.end}")
+            Lines 1-3
+            Lines 3-5
+            Lines 5-6
+        """
+        iterator = self.SegmentIterator(len(self), segment_size, self.start, min_segment_size)
+        return iter(iterator)        
+    
     def get_numbered_segment(self, start: int, end: int) -> str:
         return "\n".join(self.get_numbered_lines(start, end))
 
@@ -221,128 +345,7 @@ class NumberedText:
     def end(self) -> int:
         return self.start + len(self.lines) - 1
     
-@dataclass
-class LineSegment:
-    """
-    Represents a segment of lines with start and end indices in 1-based indexing.
-    
-    The segment follows Python range conventions where start is inclusive and
-    end is exclusive. However, indexing is 1-based to match NumberedText.
-    
-    Attributes:
-        start: Starting line number (inclusive, 1-based)
-        end: Ending line number (exclusive, 1-based)
-    """
-    start: int
-    end: int
-    
-    def __iter__(self):
-        """Allow unpacking into start, end pairs."""
-        yield self.start
-        yield self.end
-
-class SegmentIterator:
-    """
-    Iterator for generating line segments of specified size.
-    
-    Produces segments of lines with start/end indices following 1-based indexing.
-    The final segment may be smaller than the specified segment size.
-    
-    Attributes:
-        total_lines: Total number of lines in text
-        segment_size: Number of lines per segment
-        start_line: Starting line number (1-based)
-        min_segment_size: Minimum size for the final segment
-    """
-    
-    def __init__(self, total_lines: int, segment_size: int, 
-                 start_line: int = 1, min_segment_size: Optional[int] = None):
-        """
-        Initialize the segment iterator.
-        
-        Args:
-            total_lines: Total number of lines to iterate over
-            segment_size: Desired size of each segment
-            start_line: First line number (default: 1)
-            min_segment_size: Minimum size for final segment (default: None)
-                If specified, the last segment will be merged with the previous one
-                if it would be smaller than this size.
-        
-        Raises:
-            ValueError: If segment_size < 1 or total_lines < 1
-            ValueError: If start_line < 1 (must use 1-based indexing)
-            ValueError: If min_segment_size >= segment_size
-        """
-        if segment_size < 1:
-            raise ValueError("Segment size must be at least 1")
-        if total_lines < 1:
-            raise ValueError("Total lines must be at least 1")
-        if start_line < 1:
-            raise ValueError("Start line must be at least 1 (1-based indexing)")
-        if min_segment_size is not None and min_segment_size >= segment_size:
-            raise ValueError("Minimum segment size must be less than segment size")
-            
-        self.total_lines = total_lines
-        self.segment_size = segment_size
-        self.start_line = start_line
-        self.min_segment_size = min_segment_size
-        
-        # Calculate number of segments
-        remaining_lines = total_lines - start_line + 1
-        self.num_segments = (remaining_lines + segment_size - 1) // segment_size
-
-    def __iter__(self) -> Iterator[LineSegment]:
-        """
-        Iterate over line segments.
-        
-        Yields:
-            LineSegment containing start (inclusive) and end (exclusive) indices
-        """
-        current = self.start_line
-        
-        for i in range(self.num_segments):
-            is_last_segment = (i == self.num_segments - 1)
-            segment_end = min(current + self.segment_size, self.total_lines + 1)
-            
-            # Handle minimum segment size for last segment
-            if (is_last_segment and self.min_segment_size is not None and 
-                segment_end - current < self.min_segment_size and i > 0):
-                # Merge with previous segment by not yielding
-                break
-                
-            yield LineSegment(current, segment_end)
-            current = segment_end
-
-# Add iterator methods to NumberedText class
-def iter_segments(self: SegmentIterator, segment_size: int, 
-                 min_segment_size: Optional[int] = None) -> Iterator[LineSegment]:
-    """
-    Iterate over segments of the text with specified size.
-    
-    Args:
-        segment_size: Number of lines per segment
-        min_segment_size: Optional minimum size for final segment.
-            If specified, last segment will be merged with previous one
-            if it would be smaller than this size.
-    
-    Yields:
-        LineSegment objects containing start and end line numbers
-        
-    Example:
-        >>> text = NumberedText("line1\\nline2\\nline3\\nline4\\nline5")
-        >>> for segment in text.iter_segments(2):
-        ...     print(f"Lines {segment.start}-{segment.end}")
-        Lines 1-3
-        Lines 3-5
-        Lines 5-6
-    """
-    return iter(SegmentIterator(len(self), segment_size, 
-                              self.start, min_segment_size))
-
-# Add method to NumberedText class
-NumberedText.iter_segments = iter_segments
-
-def get_numbered_format(text: str) -> Tuple[bool, Optional[str], Optional[int]]:
+def get_numbered_format(text: str) -> NumberedFormat:
     """
     Analyze text to determine if it follows a consistent line numbering format.
     
@@ -366,11 +369,11 @@ def get_numbered_format(text: str) -> Tuple[bool, Optional[str], Optional[int]]:
         (True, "#", 5)
     """
     if not text.strip():
-        return False, None, None
+        return NumberedFormat(False)
 
     lines = [line for line in text.splitlines() if line.strip()]
     if not lines:
-        return False, None, None
+        return NumberedFormat(False)
 
     # Try to detect pattern from first line
     SEPARATOR_PATTERN = r'[^\w\s.]'  # not (word char or whitespace or period)
@@ -379,15 +382,15 @@ def get_numbered_format(text: str) -> Tuple[bool, Optional[str], Optional[int]]:
     try:
         return _check_line_structure(first_match, lines)
     except (ValueError, AttributeError):
-        return False, None, None
+        return NumberedFormat(False)
 
-def _check_line_structure(first_match: str, lines: List[str]) -> Tuple[bool, Optional[str], Optional[int]]:
+def _check_line_structure(first_match: str, lines: List[str]) -> NumberedFormat:
     start_num = int(first_match.group(1)) # type: ignore
     separator = str(first_match.group(2)) # type: ignore
 
     # Don't treat numbered list format as line numbers
     if separator == '.':
-        return False, None, None
+        return NumberedFormat(False)
 
     # Verify all lines follow the pattern with sequential numbers
     expected_pattern = re.compile(fr'^\d+{re.escape(separator)}')
@@ -397,6 +400,6 @@ def _check_line_structure(first_match: str, lines: List[str]) -> Tuple[bool, Opt
         expected_prefix = f"{expected_num}{separator}"
 
         if not line.startswith(expected_prefix):
-            return False, None, None
+            return NumberedFormat(False)
 
-    return True, separator, start_num
+    return NumberedFormat(True, separator, start_num)
