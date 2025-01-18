@@ -49,11 +49,11 @@ def transcribe_youtube_videos(urls: list[str], output_base_dir: Path, max_chunk_
         max_chunk_duration (int): Maximum duration for audio chunks in seconds (default is 10 minutes).
     """
     output_base_dir.mkdir(parents=True, exist_ok=True)
-    
+
     for url in urls:
         try:
             logger.info(f"Processing video: {url}") 
-        
+
             # Step 1: Download audio
             logger.info("Downloading audio...")
             tmp_audio_file = download_audio_yt(url, output_base_dir, start_time=start)
@@ -80,8 +80,8 @@ def transcribe_youtube_videos(urls: list[str], output_base_dir: Path, max_chunk_
             # Step 2: Detect boundaries
             logger.info("Detecting boundaries...")
             boundaries = detect_boundaries(audio_file)
-            logger.info(f"Boundaries generated.")
-            
+            logger.info("Boundaries generated.")
+
             # Step 3: Split audio into chunks
             logger.info("Splitting audio into chunks...")
             split_audio_at_boundaries(
@@ -91,7 +91,7 @@ def transcribe_youtube_videos(urls: list[str], output_base_dir: Path, max_chunk_
                 max_duration=max_chunk_duration
             )
             logger.info(f"Audio chunks saved to: {chunks_dir}")
-            
+
             # Step 4: Transcribe audio chunks
             logger.info("Transcribing audio chunks...")
             transcript_file = video_output_dir / f"{video_name}.txt"
@@ -106,7 +106,7 @@ def transcribe_youtube_videos(urls: list[str], output_base_dir: Path, max_chunk_
             logger.info(f"Transcription completed for {url}")
             logger.info(f"Transcript saved to: {transcript_file}")
             logger.info(f"Raw transcription data saved to: {jsonl_file}")
-        
+
         except Exception as e:
             logger.error(f"Failed to process video {url}: {e}")
 
