@@ -1,7 +1,7 @@
 # AI based text processing routines and classes
 
 # external package imports
-from ast import Num
+import os
 from pathlib import Path
 from typing import List, Dict
 import logging
@@ -17,6 +17,7 @@ from numpy import average
 from pydantic import BaseModel, Field
 from random import sample
 from regex import template
+from dotenv import load_dotenv
 
 # internal package imports
 from tnh_scholar.ai_text_processing.typing import ResponseFormat
@@ -34,7 +35,7 @@ from .openai_process_interface import openai_process_text
 from tnh_scholar.logging_config import get_child_logger
 logger = get_child_logger(__name__)
 
-from tnh_scholar import PATTERN_REPO
+from tnh_scholar import DEFAULT_PATTERN_DIR
 
 # Constants
 DEFAULT_MIN_SECTION_COUNT = 3
@@ -102,7 +103,13 @@ class LocalPatternManager:
         """
         if self._pattern_manager is None: # type: ignore
             try:
-                self._pattern_manager = PatternManager(PATTERN_REPO)
+                load_dotenv()
+                if pattern_path_name := os.getenv("TNH_FAB_PATTERN_DIR"):
+                    pattern_dir = Path(pattern_path_name)
+                    logger.debug(f"pattern dir: {pattern_path_name}")
+                else:
+                    pattern_dir = DEFAULT_PATTERN_DIR
+                self._pattern_manager = PatternManager(pattern_dir)
             except ImportError as err:
                 raise RuntimeError(
                     "Failed to initialize PatternManager. Ensure pattern_manager "
@@ -234,8 +241,10 @@ class TextPunctuator:
         )
         logger.info("Punctuation completed.")
 
-        # normalize newline spacing to 1 newline between lines and return
-        return normalize_newlines(text, spacing=1)    
+        # normalize newline spacing to two newline (default) between lines and return
+        # commented out to allow pattern to dictate newlines.
+        # return normalize_newlines(text)    
+        return text
 
 def punctuate_text(
     text, 
@@ -889,6 +898,9 @@ class SectionProcessor:
 
             # Otherwise get and apply processing instructions
             instructions = self.pattern.apply_template(self.template_dict)
+            
+            if i <= 1:
+                logger.debug(f"Process instructions (first paragraph):\n{instructions}")
             yield self.processor.process_text(line, instructions) 
 
 class GeneralProcessor:
@@ -921,7 +933,7 @@ class GeneralProcessor:
         template_dict: Optional[Dict] = None
     ) -> str:
         """
-        punctuate a text based on a pattern and source language.
+        process a text based on a pattern and source language.
         """
         
         if not source_language:
@@ -939,15 +951,20 @@ class GeneralProcessor:
             template_values |= template_dict
             
         logger.info("Processing text...")
-        punctuate_instructions = self.pattern.apply_template(template_values)
+        instructions = self.pattern.apply_template(template_values)
+        
+        logger.debug(f"Process instructions:\n{instructions}")
+        
         text = self.processor.process_text(
             text,
-            punctuate_instructions
+            instructions
         )
         logger.info("Processing completed.")
 
-        # normalize newline spacing to 1 newline between lines and return
-        return normalize_newlines(text, spacing=1)    
+        # normalize newline spacing to two newline between lines and return
+        # commented out to allow pattern to dictate newlines:
+        # return normalize_newlines(text)    
+        return text
 
 def process_text(
     text: str, 

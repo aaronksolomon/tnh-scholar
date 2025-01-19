@@ -119,8 +119,9 @@ def run_immediate_chat_process(messages, max_tokens: int =  0, response_format=N
         max_tokens = max_model_tokens
         
     if max_tokens > max_model_tokens:
-        logger.error("Maximum token request exceeded: {max_tokens} for model: {model}")
-        raise ValueError(f"max_tokens: {max_tokens} > model maximum: {max_model_tokens}")
+        logger.warning("Maximum token request exceeded: {max_tokens} for model: {model}")
+        logger.warning(f"Setting max_tokens to model maximum: {max_model_tokens}")
+        max_tokens = max_model_tokens
 
     try:
         return (
@@ -172,8 +173,8 @@ def run_immediate_completion_simple(system_message: str, user_message: str, mode
         max_tokens = max_model_tokens
         
     if max_tokens > max_model_tokens:
-        logger.error("Maximum token request exceeded: {max_tokens} for model: {model}")
-        logger.info(f"Setting max_tokens to model maximum: {max_model_tokens}")
+        logger.warning("Maximum token request exceeded: {max_tokens} for model: {model}")
+        logger.warning(f"Setting max_tokens to model maximum: {max_model_tokens}")
         max_tokens = max_model_tokens
     
     logger.debug(f"User message content:\n{user_message[:DEBUG_DISPLAY_BUFFER]} ...")

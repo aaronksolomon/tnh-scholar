@@ -3,7 +3,7 @@ from tnh_scholar.ai_text_processing.typing import ResponseFormat
 from tnh_scholar.logging_config import get_child_logger
 
 
-logger = get_child_logger("openai_text_processing")
+logger = get_child_logger(__name__)
 
 TOKEN_BUFFER = 500
 
@@ -28,13 +28,16 @@ def openai_process_text(
     user_prompts = [text_input]
     system_message = process_instructions
 
+    logger.debug(
+        f"OpenAI Process Text with process instructions:\n{system_message}"
+    )
     if max_tokens == 0:
         tokens = token_count(text_input)
         max_tokens = tokens + TOKEN_BUFFER
 
     model_name = model or "default"
-    
-    logger.info(f"Open AI Text Processing{' as batch process' if batch else ''} with model '{model_name}' started...")
+
+    logger.info(f"Open AI Text Processing{' as batch process' if batch else ''} with model '{model_name}' initiated. Requesting a maximum of {max_tokens} tokens.")
 
     if batch:
         return _run_batch_process_text(

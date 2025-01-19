@@ -29,12 +29,14 @@ from tnh_scholar.ai_text_processing import (
     PatternManager
 )
 
-setup_logging(log_level=logging.INFO)
+from tnh_scholar.ai_text_processing import TextObject
 
-get_child_logger(__name__)
+DEFAULT_SECTION_PATTERN = "default_section"
+
+logger = get_child_logger(__name__)
 
 # Default pattern directory as specified
-DEFAULT_PATTERN_DIR = Path.home() / ".config" / "tnh_scholar" / "patterns"
+from tnh_scholar import DEFAULT_PATTERN_DIR
 
 class TNHFabConfig:
     """Holds configuration for the TNH-FAB CLI tool."""
@@ -48,6 +50,7 @@ class TNHFabConfig:
 
         if pattern_path_name := os.getenv("TNH_FAB_PATTERN_DIR"):
             pattern_dir = Path(pattern_path_name)
+            logger.debug(f"pattern dir: {pattern_path_name}")
         else:
             pattern_dir = DEFAULT_PATTERN_DIR
             
@@ -82,7 +85,7 @@ def get_pattern(pattern_manager: PatternManager, pattern_name: str) -> Pattern:
         return pattern_manager.load_pattern(pattern_name)
     except FileNotFoundError as e:
         raise click.ClickException(
-            f"Pattern '{pattern_name}' not found in {DEFAULT_PATTERN_DIR}"
+            f"Pattern '{pattern_name}' not found in {pattern_manager.base_path}"
         ) from e
     except Exception as e:
         raise click.ClickException(f"Error loading pattern: {e}") from e
@@ -111,6 +114,14 @@ def tnh_fab(ctx: Context, verbose: bool, debug: bool, quiet: bool):
     config.verbose = verbose
     config.debug = debug
     config.quiet = quiet
+    
+    if not quiet:
+        if debug:
+            setup_logging(log_level=logging.DEBUG)
+        else:
+            setup_logging(log_level=logging.INFO)
+        
+    
 
 @tnh_fab.command()
 @click.argument('input_file', type=click.Path(exists=True, path_type=Path), required=False)
@@ -266,15 +277,15 @@ def translate(config: TNHFabConfig, input_file: Optional[Path], language: Option
 
 @tnh_fab.command()
 @click.argument('input_file', type=click.Path(exists=True, path_type=Path), required=False)
-@click.option('-p', '--pattern', required=True, help='Pattern name (required)')
-@click.option('-s', '--section',  is_flag=True, 
-              help='Auto-generate sections using default sectioning pattern. (Later will be extended to use specified sectioning pattern.)')
-@click.option('-g', '--paragraph', is_flag=True, help='Process text by paragraphs instead of sections')
+@click.option('-p', '--pattern', required=True, help='Pattern name for processing')
+@click.option('-s', '--section', type=click.Path(exists=True, path_type=Path), 
+              help='Process using sections from JSON file, or auto-generate if no file provided')
+@click.option('-g', '--paragraph', is_flag=True, help='Process text by paragraphs')
 @click.option('-t', '--template', type=click.Path(exists=True, path_type=Path),
               help='YAML file containing template values')
 @pass_config
 def process(config: TNHFabConfig, input_file: Optional[Path], pattern: str,
-            paragraph: bool, section: bool, template: Optional[Path]):
+           section: Optional[Path], paragraph: bool, template: Optional[Path]):
     """Apply custom pattern-based processing to text with flexible structuring options.
 
     This command provides flexible text processing using customizable patterns. It can
@@ -328,10 +339,9 @@ def process(config: TNHFabConfig, input_file: Optional[Path], pattern: str,
     """
     text = read_input(click, input_file) # type: ignore
     process_pattern = get_pattern(config.pattern_manager, pattern)
-    
-    # For prototype, use empty template dict
+
     template_dict: Dict[str, str] = {}
-    
+
     if paragraph:
         result = process_text_by_paragraphs(
             text,
@@ -340,10 +350,15 @@ def process(config: TNHFabConfig, input_file: Optional[Path], pattern: str,
         )
         for processed in result:
             click.echo(processed)
-    elif section:
-        # Stub: Would normally load sections from file
-        # For prototype, generate sections
-        text_obj = find_sections(text)
+    elif section is not None:  # Section mode (either file or auto-generate)
+        if isinstance(section, Path):  # Section file provided
+            sections_json = Path(section).read_text()
+            text_obj = TextObject.model_validate_json(sections_json)
+    
+        else:  # Auto-generate sections
+            default_section_pattern = get_pattern(config.pattern_manager, DEFAULT_SECTION_PATTERN)
+            text_obj = find_sections(text, section_pattern=default_section_pattern)
+
         result = process_text_by_sections(
             text,
             text_obj,
