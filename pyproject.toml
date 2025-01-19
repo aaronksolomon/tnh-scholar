@@ -77,6 +77,7 @@ audio-transcribe = "tnh_scholar.cli_tools.audio_transcribe.audio_transcribe:main
 tnh-fab = "tnh_scholar.cli_tools.tnh_fab.tnh_fab:main"
 ytt-fetch = "tnh_scholar.cli_tools.ytt_fetch.ytt_fetch:main"
 nfmt = "tnh_scholar.cli_tools.nfmt.nfmt:main"
+token-count = "tnh_scholar.cli_tools.token_count.token_count:main"
 
 [tool.black]
 line-length = 88
