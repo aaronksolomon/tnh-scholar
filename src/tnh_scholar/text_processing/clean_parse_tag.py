@@ -25,13 +25,13 @@ def normalize_newlines(text: str, spacing: int = 2) -> str:
 
     Example:
     --------
-    >>> raw_text = "Heading\n\n\nParagraph text 1\n\nParagraph text 2\n\n\n"
+    >>> raw_text = "Heading\n\n\nParagraph text 1\nParagraph text 2\n\n\n"
     >>> normalize_newlines(raw_text, spacing=2)
     'Heading\n\nParagraph text 1\n\nParagraph text 2\n\n'
     """
-    # Replace two or more newlines with the desired number of newlines
+    # Replace one or more newlines with the desired number of newlines
     newlines = '\n' * spacing
-    return re.sub(r'\n{2,}', newlines, text)
+    return re.sub(r'\n{1,}', newlines, text)
 
 def clean_text(text, newline=False):
     """
