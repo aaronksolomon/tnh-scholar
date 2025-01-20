@@ -1,28 +1,21 @@
-from pathlib import Path
-from typing import Optional, Dict, List, Any, Union, NamedTuple, Tuple, NewType, Literal
-from datetime import datetime
-import yaml
-from git import Repo, Actor, Commit
-from git.exc import GitCommandError, InvalidGitRepositoryError
-import logging
-from contextlib import contextmanager
-from dataclasses import dataclass, field
-from datetime import datetime
-from enum import Enum
-import hashlib
 import fcntl
-from datetime import datetime, timedelta
+import hashlib
 import os
 import re
-from difflib import unified_diff
-from jinja2 import Template, Environment, meta, TemplateError, StrictUndefined, Template
-from typing import Dict, Optional
-from jinja2.meta import find_undeclared_variables
+from contextlib import contextmanager
+from datetime import datetime, timedelta
 from functools import lru_cache
+from pathlib import Path
+from typing import Any, Dict, List, NewType, Optional, Tuple, Union
 
-from tnh_scholar.utils.file_utils import write_text_to_file, get_text_from_file
+import yaml
+from git import Actor, Commit, Repo
+from git.exc import GitCommandError, InvalidGitRepositoryError
+from jinja2 import Environment, StrictUndefined, Template, TemplateError
+from jinja2.meta import find_undeclared_variables
 
 from tnh_scholar.logging_config import get_child_logger
+from tnh_scholar.utils.file_utils import get_text_from_file, write_text_to_file
 
 # Custom type for markdown content
 MarkdownStr = NewType("MarkdownStr", str)
@@ -178,7 +171,6 @@ class Pattern:
         Note:
             Frontmatter must be at the very start of the file and properly formatted.
         """
-        import yaml
 
         # More precise pattern matching
         pattern = r"\A---\s*\n(.*?)\n---\s*\n"
@@ -211,7 +203,6 @@ class Pattern:
         Args:
             new_data: Dictionary of frontmatter fields to update
         """
-        import yaml
 
         current_frontmatter = self.extract_frontmatter() or {}
         updated_frontmatter = {**current_frontmatter, **new_data}

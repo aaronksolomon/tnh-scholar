@@ -1,7 +1,6 @@
+
 import streamlit as st
-from PIL import Image
 from lxml import etree
-import os
 
 
 # Load XML file

@@ -1,15 +1,15 @@
 # app.py
-import streamlit as st
-from supabase import create_client, Client
-from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import SupabaseVectorStore
-import yaml
-from pathlib import Path
-from typing import List, Dict, Optional
-import tempfile
-import git
-from dotenv import load_dotenv
 import os
+import tempfile
+from pathlib import Path
+from typing import Dict, List
+
+import git
+import streamlit as st
+from dotenv import load_dotenv
+from langchain_community.vectorstores import SupabaseVectorStore
+from langchain_openai import OpenAIEmbeddings
+from supabase import Client, create_client
 
 from tnh_scholar.ai_text_processing import Pattern
 

@@ -1,9 +1,8 @@
-from pathlib import Path
 import importlib.metadata
-import requests
-from packaging.version import Version, InvalidVersion
 from typing import Tuple
-import logging
+
+import requests
+from packaging.version import InvalidVersion, Version
 
 from tnh_scholar.logging_config import get_child_logger
 
@@ -47,7 +46,7 @@ class YTDVersionChecker:
                 raise InvalidVersion("yt-dlp version string is empty")
         except importlib.metadata.PackageNotFoundError as e:
             raise ImportError("yt-dlp is not installed") from e
-        except InvalidVersion as e:
+        except InvalidVersion:
             raise
 
     def _get_latest_version(self) -> Version:

@@ -108,7 +108,6 @@ class DocumentEditor:
         """
         Renders the Streamlit interface for the DocumentEditor.
         """
-        import streamlit as st
 
         # Display debug info
         if self.debug:
@@ -158,7 +157,6 @@ class DocumentEditor:
         Raises:
             RuntimeError: If called without an active page loaded.
         """
-        import streamlit as st
 
         # Ensure a valid current page
         if (

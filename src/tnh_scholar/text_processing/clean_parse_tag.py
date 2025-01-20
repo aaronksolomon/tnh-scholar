@@ -1,10 +1,8 @@
-import re
-import os
-from bs4 import BeautifulSoup
-from bs4 import NavigableString, Tag
-from typing import Union
-from bs4 import BeautifulSoup
 import copy
+import re
+from typing import Union
+
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 
 def normalize_newlines(text: str, spacing: int = 2) -> str:

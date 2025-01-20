@@ -1,7 +1,9 @@
 import contextlib
 from functools import partial
+from typing import Any, Generator
+
 import torch
-from typing import Optional, Any, Generator
+
 from tnh_scholar.logging_config import get_child_logger
 
 logger = get_child_logger(__name__)

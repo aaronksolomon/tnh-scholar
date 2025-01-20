@@ -7,29 +7,28 @@ A rapid prototype implementation of the TNH-FAB command-line tool for Open AI ba
 Provides core functionality for text punctuation, sectioning, translation, and processing.
 """
 
-import sys
+import logging
 import os
+import sys
 from pathlib import Path
-from typing import Optional, Dict
+from typing import Dict, Optional
+
 import click
 from click import Context
-import logging
 from dotenv import load_dotenv
 
-from tnh_scholar.logging_config import setup_logging, get_child_logger
-
 from tnh_scholar.ai_text_processing import (
-    punctuate_text,
-    find_sections,
-    translate_text_by_lines,
-    process_text_by_sections,
-    process_text_by_paragraphs,
-    process_text,
     Pattern,
     PatternManager,
+    TextObject,
+    find_sections,
+    process_text,
+    process_text_by_paragraphs,
+    process_text_by_sections,
+    punctuate_text,
+    translate_text_by_lines,
 )
-
-from tnh_scholar.ai_text_processing import TextObject
+from tnh_scholar.logging_config import get_child_logger, setup_logging
 
 DEFAULT_SECTION_PATTERN = "default_section"
 

@@ -1,30 +1,25 @@
-from pathlib import Path
-import re
-from tnh_scholar.utils.file_utils import get_text_from_file
-
-from tnh_scholar.openai_interface import (
-    token_count,
-    generate_messages,
-    create_jsonl_file_for_batch,
-    start_batch_with_retries,
-    run_immediate_chat_process,
-    get_completion_content,
-)
-
-from tnh_scholar.xml_processing import (
-    split_xml_on_pagebreaks,
-    join_xml_data_to_doc,
-    split_xml_pages,
-    save_pages_to_xml,
-)
-
+import json
 import logging
-
+import re
+from math import floor
+from pathlib import Path
 from types import SimpleNamespace
 from typing import List
-from math import floor
-from datetime import datetime
-import json
+
+from tnh_scholar.openai_interface import (
+    create_jsonl_file_for_batch,
+    generate_messages,
+    run_immediate_chat_process,
+    start_batch_with_retries,
+    token_count,
+)
+from tnh_scholar.utils.file_utils import get_text_from_file
+from tnh_scholar.xml_processing import (
+    join_xml_data_to_doc,
+    save_pages_to_xml,
+    split_xml_on_pagebreaks,
+    split_xml_pages,
+)
 
 # constants
 MAX_TOKEN_LIMIT = 60000
@@ -370,7 +365,7 @@ def generate_clean_batch(
         return output_file
 
     except FileNotFoundError:
-        logger.error(f"File not found.")
+        logger.error("File not found.")
         raise
     except ValueError as e:
         logger.error(f"Value error: {e}")
@@ -487,7 +482,7 @@ def batch_translate(
         if section_contents:
             logger.debug(f"section_contents[0]:\n{section_contents[0]}")
         else:
-            logger.error(f"No sectin contents.")
+            logger.error("No sectin contents.")
 
     except Exception as e:
         logger.error(

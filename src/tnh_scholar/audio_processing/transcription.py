@@ -1,17 +1,11 @@
-from pathlib import Path
-from openai import OpenAI
-from openai.types.audio.transcription_verbose import TranscriptionVerbose
-
-import whisper
-import logging
-from typing import List, Dict, Any
 import json
 import warnings
+from pathlib import Path
+
+from openai.types.audio.transcription_verbose import TranscriptionVerbose
+
 from tnh_scholar.logging_config import get_child_logger
-
 from tnh_scholar.openai_interface import run_transcription_speech
-
-from tnh_scholar.utils.file_utils import write_text_to_file, get_text_from_file
 
 logger = get_child_logger(__name__)
 

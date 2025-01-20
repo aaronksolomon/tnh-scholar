@@ -1,7 +1,8 @@
-import streamlit as st
-from PIL import Image
-from lxml import etree
 import os
+
+import streamlit as st
+from lxml import etree
+from PIL import Image
 
 # Initialize session state variables
 if "current_page_index" not in st.session_state:
@@ -136,7 +137,7 @@ with col2:
         # Ensure the current page's text is in session state
         current_text = pages[current_page_index]["text"]
         if st.session_state.current_text != current_text:
-            print(f"switched pages?")
+            print("switched pages?")
             st.session_state.current_text = current_text
 
         # Dynamically update the text area based on session state

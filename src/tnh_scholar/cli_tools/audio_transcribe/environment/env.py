@@ -1,6 +1,6 @@
-from pathlib import Path
 import shutil
-import tnh_scholar.logging_config
+from pathlib import Path
+
 from tnh_scholar.logging_config import get_child_logger
 
 logger = get_child_logger("environement_checking")

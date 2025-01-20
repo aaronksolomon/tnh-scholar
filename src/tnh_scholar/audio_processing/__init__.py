@@ -1,8 +1,7 @@
 from .audio import (
-    split_audio,
-    detect_whisper_boundaries,
     detect_nonsilent,
+    detect_whisper_boundaries,
+    split_audio,
     split_audio_at_boundaries,
 )
-
-from .transcription import process_audio_file, process_audio_chunks
+from .transcription import process_audio_chunks, process_audio_file

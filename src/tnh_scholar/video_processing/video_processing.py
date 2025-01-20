@@ -1,20 +1,18 @@
-import os
-import sys
-import io
-import yt_dlp
-from pathlib import Path
-from openai.types.audio.transcription_verbose import TranscriptionVerbose
-from typing import List, Dict, TypedDict, Any, Optional
-import xml.etree.ElementTree as ET
-from xml.etree.ElementTree import ParseError
 import csv
-import logging
+import io
+import os
+import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import Dict, List, TypedDict
+from xml.etree.ElementTree import ParseError
+
+import yt_dlp
+
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils.file_utils import get_text_from_file
 
 logger = get_child_logger(__name__)
 
-from tnh_scholar.utils import get_user_confirmation
 
 DEFAULT_TRANSCRIPT_DIR = Path.home() / ".yt_dlp_transcripts"
 

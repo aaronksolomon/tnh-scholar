@@ -2,42 +2,26 @@
 
 # external package imports
 import os
-from pathlib import Path
-from typing import List, Dict
-import logging
-import json
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, Generator, List, Optional, Pattern, Union
-import logging
-from abc import ABC, abstractmethod
-from typing import Optional, Dict, Type, TypeVar, List, Optional, Tuple
-from click import style
-from numpy import average
-from pydantic import BaseModel, Field
-from random import sample
-from regex import template
+from typing import Dict, Generator, List, Optional, Pattern, Tuple, Type, Union
+
 from dotenv import load_dotenv
+
+from tnh_scholar.ai_text_processing.lang import get_language_name
+from tnh_scholar.ai_text_processing.patterns import Pattern, PatternManager
+from tnh_scholar.ai_text_processing.response_format import LogicalSection, TextObject
 
 # internal package imports
 from tnh_scholar.ai_text_processing.typing import ResponseFormat
+from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.openai_interface import token_count
 from tnh_scholar.text_processing import (
-    bracket_lines,
-    unbracket_lines,
-    lines_from_bracketed_text,
     NumberedText,
 )
-from tnh_scholar.text_processing import normalize_newlines
-from tnh_scholar.utils import iterate_subdir, load_json_into_model, save_model_to_json
-from tnh_scholar.ai_text_processing.lang import get_language_code, get_language_name
-from tnh_scholar.ai_text_processing.response_format import TextObject, LogicalSection
-from tnh_scholar.ai_text_processing.patterns import Pattern, PatternManager
-from tnh_scholar.utils.file_utils import get_text_from_file, write_text_to_file
-
 
 from .openai_process_interface import openai_process_text
-from tnh_scholar.logging_config import get_child_logger
 
 logger = get_child_logger(__name__)
 
@@ -67,8 +51,6 @@ TRANSCRIPT_SEGMENT_MARKER = "TRANSCRIPT_SEGMENT"
 PRECEDING_CONTEXT_MARKER = "PRECEDING_CONTEXT"
 FOLLOWING_CONTEXT_MARKER = "FOLLOWING_CONTEXT"
 
-from typing import Optional, Any
-from pathlib import Path
 
 
 class LocalPatternManager:

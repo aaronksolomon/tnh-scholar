@@ -1,14 +1,10 @@
-from langdetect import detect, LangDetectException
 import pycountry
-
+from langdetect import LangDetectException, detect
 
 from tnh_scholar.logging_config import get_child_logger
 
 logger = get_child_logger(__name__)
 
-from typing import Literal
-from langdetect import detect, LangDetectException
-import pycountry
 from tnh_scholar.logging_config import get_child_logger
 
 logger = get_child_logger(__name__)

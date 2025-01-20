@@ -1,6 +1,6 @@
+import spacy
 from bs4 import BeautifulSoup
 from ebooklib import epub
-import spacy
 
 
 def extract_content(soup):

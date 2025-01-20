@@ -1,17 +1,15 @@
-import os
+import base64
 import io
-from typing import List, Tuple
-from PIL import Image, ImageDraw, ImageFont
+import json
+import logging
+import os
+from pathlib import Path
+from typing import Callable, List, Tuple
+
 import fitz  # PyMuPDF for PDF processing
 from google.cloud import vision
-from google.cloud.vision_v1.types import EntityAnnotation, BoundingPoly
-from google.auth.credentials import Credentials
-import json
-from pathlib import Path
-import base64
-import warnings
-from typing import Callable
-import logging
+from google.cloud.vision_v1.types import EntityAnnotation
+from PIL import Image, ImageDraw, ImageFont
 
 DEFAULT_ANNOTATION_FONT_PATH = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
 DEFAULT_ANNOTATION_FONT_SIZE = 12  # default annotation font size
@@ -19,7 +17,6 @@ DEFAULT_ANNOTATION_OFFSET = 2  # pixels to offset annotation labels in labeled i
 DEFAULT_ANNOTATION_LANGUAGE_HINTS = ["vi"]
 DEFAULT_ANNOTATION_METHOD = "DOCUMENT_TEXT_DETECTION"
 
-import warnings
 
 logger = logging.getLogger("ocr_processing")
 

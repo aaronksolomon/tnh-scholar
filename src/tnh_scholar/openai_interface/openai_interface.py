@@ -1,19 +1,17 @@
-import tiktoken
+import json
 import os
+import time
+from datetime import datetime
+from math import floor
+from pathlib import Path
+from typing import Dict, List, Optional
+
+import tiktoken
 from dotenv import load_dotenv
 from openai import OpenAI
-import json
-from datetime import datetime
-from typing import List, Dict, Optional
-from pathlib import Path
-import ast
-import logging
-from logging.handlers import RotatingFileHandler
-import time
-from math import floor
+
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils.file_utils import get_text_from_file
-from torch import Value
 
 MAX_BATCH_LIST = 30
 OPEN_AI_DEFAULT_MODEL = "gpt-4o"

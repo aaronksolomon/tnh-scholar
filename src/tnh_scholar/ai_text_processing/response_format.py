@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field
 from typing import List
+
+from pydantic import BaseModel, Field
 
 TEXT_SECTIONS_DESCRIPTION = (
     "Ordered list of logical sections for the text. "

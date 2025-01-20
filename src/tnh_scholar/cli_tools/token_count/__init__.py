@@ -1,1 +1,1 @@
-from .token_count import token_count_cli, main
+from .token_count import main, token_count_cli

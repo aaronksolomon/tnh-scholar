@@ -8,15 +8,13 @@ in specified languages. It uses yt-dlp for video info extraction.
 
 import sys
 from pathlib import Path
-import click
-from tnh_scholar.utils.file_utils import write_text_to_file
-import yt_dlp
 from typing import Optional
-import traceback
-import os
-import requests
 
-from tnh_scholar.video_processing import get_transcript, TranscriptNotFoundError
+import click
+import yt_dlp
+
+from tnh_scholar.utils.file_utils import write_text_to_file
+from tnh_scholar.video_processing import TranscriptNotFoundError, get_transcript
 
 
 @click.command()

@@ -25,13 +25,14 @@ os.environ["KMP_WARNINGS"] = (
     "0"  # turn off known info message about nested levels for OMP that arises from torch.
 )
 
+import logging
 import sys
 from pathlib import Path
+
 import click
-import logging
-import tnh_scholar.logging_config as logging_config
-from tnh_scholar.logging_config import setup_logging, get_child_logger
-from tnh_scholar import PROJECT_ROOT_DIR, CLI_TOOLS_DIR
+
+from tnh_scholar import CLI_TOOLS_DIR, PROJECT_ROOT_DIR
+from tnh_scholar.logging_config import get_child_logger, setup_logging
 
 # --- Setup logging early ---
 LOG_DIR = Path.cwd() / "logs"
@@ -40,17 +41,17 @@ logger = get_child_logger("audio_transcribe")
 
 # sys.stderr = StderrToLogger(logger, log_level=logging.WARNING)
 
-from tnh_scholar.video_processing import (
-    get_youtube_urls_from_csv,
-    download_audio_yt,
-    get_video_download_path_yt,
-)
 from tnh_scholar.audio_processing import (
-    split_audio,
     process_audio_chunks,
     process_audio_file,
+    split_audio,
 )
 from tnh_scholar.utils import ensure_directory_exists, get_user_confirmation
+from tnh_scholar.video_processing import (
+    download_audio_yt,
+    get_video_download_path_yt,
+    get_youtube_urls_from_csv,
+)
 
 from .environment import check_env
 from .validate import validate_inputs

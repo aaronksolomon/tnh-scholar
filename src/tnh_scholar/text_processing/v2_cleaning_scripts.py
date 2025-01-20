@@ -1,7 +1,6 @@
 # version 2 testing of clearning scripts
 
 import spacy
-from spacy import displacy
 
 # Load a pretrained model, e.g., for sentence and chapter recognition
 nlp = spacy.load("en_core_web_sm")

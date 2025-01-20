@@ -1,9 +1,7 @@
-import os
-from xml.sax.saxutils import escape
-from typing import List
 import re
 from pathlib import Path
 from typing import List, Optional, Tuple
+from xml.sax.saxutils import escape
 
 
 class FormattingError(Exception):
@@ -140,7 +138,7 @@ def remove_page_tags(text):
     return text
 
 
-from typing import List, Optional, Tuple
+from typing import List
 
 
 def split_xml_on_pagebreaks(

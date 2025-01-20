@@ -1,22 +1,15 @@
-import yt_dlp
+import os
+import warnings
+from dataclasses import dataclass
 from pathlib import Path
-from pydub import AudioSegment
-from openai import OpenAI
-from openai.types.audio.transcription_verbose import TranscriptionVerbose
+from typing import Any, Dict, List, Tuple
+
+import numpy as np
 from pydub import AudioSegment
 from pydub.silence import detect_nonsilent
-import whisper
-from typing import List, Dict, Tuple, Any, Union
-from dataclasses import dataclass
-import time
-import numpy as np
-from tnh_scholar.utils import ExpectedTimeTQDM, TimeProgress
-from tnh_scholar.openai_interface import token_count_file
-from tnh_scholar.logging_config import get_child_logger
-import warnings
-import os, io, sys
-from pydub.silence import detect_silence
+
 from tnh_scholar.audio_processing.whisper_security import load_whisper_model
+from tnh_scholar.logging_config import get_child_logger
 
 # Define constants
 MAX_INT16 = 32768.0  # Maximum absolute value for 16-bit signed integer audio

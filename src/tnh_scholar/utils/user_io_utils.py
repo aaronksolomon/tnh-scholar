@@ -1,11 +1,11 @@
-import sys
 import os
+import sys
 
 if os.name == "nt":  # Windows
     import msvcrt
 else:  # Unix-like (Linux, macOS)
-    import tty
     import termios
+    import tty
 
 
 def get_single_char() -> str:

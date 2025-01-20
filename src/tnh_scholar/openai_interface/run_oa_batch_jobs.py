@@ -1,16 +1,15 @@
 # NOT IN USE
 # this is  prototyping module: testing only.
 
-import os
-import re
 import json
+import re
 from pathlib import Path
-from typing import List, Dict
+from typing import Dict, List
+
 from tnh_scholar.openai_interface import (
+    set_api_client,
     start_batch,
     token_count,
-    get_api_client,
-    set_api_client,
 )
 
 # Constants
@@ -102,13 +101,9 @@ if __name__ == "__main__":
 ### ----
 
 
-import os
-import re
-import json
 import time
 from pathlib import Path
-from typing import List, Dict
-from tnh_scholar.openai_interface import start_batch, token_count, set_api_client
+from typing import Dict, List
 
 # Constants
 ENQUEUED_BATCH_TOKEN_LIMIT = 90000  # Adjust this based on your API rate limits

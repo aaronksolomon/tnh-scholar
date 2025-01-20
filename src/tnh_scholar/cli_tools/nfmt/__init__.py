@@ -1,1 +1,1 @@
-from .nfmt import nfmt, main
+from .nfmt import main, nfmt

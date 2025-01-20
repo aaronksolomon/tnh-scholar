@@ -1,4 +1,3 @@
-import re
 import click
 
 from tnh_scholar.text_processing import normalize_newlines

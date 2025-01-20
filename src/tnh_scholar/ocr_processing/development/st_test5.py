@@ -131,7 +131,7 @@ pages = get_all_pages()
 current_page = get_current_page()
 
 # Display current page details
-st.write(f"")
+st.write("")
 if current_page["modified"]:
     st.write(f"Page {current_page['number']} has been modified.")
 

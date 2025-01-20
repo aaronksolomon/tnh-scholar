@@ -1,10 +1,8 @@
-from pathlib import Path
-import logging
-import tnh_scholar.logging_config as logging_config
-from typing import Generator
 import re
 import shutil
 import warnings
+from pathlib import Path
+from typing import Generator
 
 
 class FileExistsWarning(UserWarning):

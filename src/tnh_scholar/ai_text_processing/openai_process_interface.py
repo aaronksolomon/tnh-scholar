@@ -1,18 +1,18 @@
 from typing import Optional, Union
+
 from tnh_scholar.ai_text_processing.typing import ResponseFormat
 from tnh_scholar.logging_config import get_child_logger
-
 
 logger = get_child_logger(__name__)
 
 TOKEN_BUFFER = 500
 
 from tnh_scholar.openai_interface import (
-    token_count,
-    run_single_batch,
-    run_immediate_completion_simple,
-    get_completion_object,
     get_completion_content,
+    get_completion_object,
+    run_immediate_completion_simple,
+    run_single_batch,
+    token_count,
 )
 
 

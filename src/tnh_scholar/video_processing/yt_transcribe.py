@@ -1,20 +1,19 @@
 #!/opt/anaconda3/envs/tnh-scholar/bin/python
 
-from pathlib import Path
 import argparse
 import os
 import sys
-import logging
-import src.tnh_scholar.logging_config as logging_config
-from src.tnh_scholar.logging_config import setup_logging, get_child_logger
+from pathlib import Path
+
 from video_processing import (
-    get_youtube_urls_from_csv,
-    download_audio_yt,
     detect_boundaries,
-    split_audio_at_boundaries,
-    split_audio_on_silence,
+    download_audio_yt,
+    get_youtube_urls_from_csv,
     process_audio_chunks,
+    split_audio_at_boundaries,
 )
+
+from src.tnh_scholar.logging_config import get_child_logger, setup_logging
 
 setup_logging(log_filepath="transcription.log")
 logger = get_child_logger("yt_transcribe")

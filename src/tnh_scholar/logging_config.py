@@ -1,6 +1,7 @@
 import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+
 import colorlog
 
 BASE_LOG_NAME = "tnh"  # tnh-scholar project

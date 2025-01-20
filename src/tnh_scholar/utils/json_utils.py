@@ -1,8 +1,8 @@
-from pathlib import Path
 import json
-from typing import Dict, List
+from pathlib import Path
+from typing import Dict, List, Union
+
 from pydantic import BaseModel, ValidationError
-from typing import Union
 
 
 def write_data_to_json_file(

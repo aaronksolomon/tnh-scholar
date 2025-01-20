@@ -1,8 +1,9 @@
-import time
-import threading
-from tqdm import tqdm
-from typing import Optional
 import sys
+import threading
+import time
+from typing import Optional
+
+from tqdm import tqdm
 
 BAR_FORMAT = (
     "{desc}: {percentage:3.0f}%|{bar}| " "Total: {total_fmt} sec. [elapsed: {elapsed}]"
@@ -82,7 +83,6 @@ class ExpectedTimeTQDM:
     import time
 
 
-import threading
 
 
 class TimeProgress:
