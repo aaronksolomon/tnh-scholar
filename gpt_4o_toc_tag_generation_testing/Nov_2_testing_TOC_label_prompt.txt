@@ -1,0 +1,171 @@
+# prompt 1
+
+Below is the opening text for a book. It includes a title and TOC. I'd like to generate metadata tags for each element in the TOC and also add supplemental metadata to the top of the file.
+
+In general tag structure for sections should be as follows:
+`<section level="n"><descriptor>item<\section><\descriptor>`
+
+Where level=0 is for general information, level 1 the level for highest level content, level 2 subsections and so on. The descriptors can be any meaningful descriptive word or words for the section. Some descriptor categories are provided below.
+
+Output should be 1) a text block with all metadata inserted, and 2) a code block which gives regexps for matching each type of section.
+
+Descriptor set (which may be enlarged as needed):
+`<note> <exercise> <exercise_group> <introduction> <principle> <principle_group>`
+
+Metadata to add:
+{'metadata': {'title': 'Transformation and Healing: Sutra on the Four Establishments of Mindfulness',
+  'author': 'Thich Nhat Hanh',
+  'language': 'en',
+  'publisher': 'Parallax Press',
+  'date': '2006-08-16T15:00:00+00:00'}
+
+Text:
+
+Transformation and Healing: Sutra on the Four Establishments of Mindfulness
+
+Table of Contents
+
+Title Page
+
+A NOTE ON THE TEXT
+
+Introduction
+
+Sutra on the Four Establishments of Mindfulness
+
+Summary of the Sutra
+
+Mindfulness Exercises
+
+EXERCISES FOR OBSERVING THE BODY
+
+REMARKS ON THE FIRST NINE EXERCISES
+
+EXERCISES FOR OBSERVING THE FEELINGS
+
+EXERCISES FOR OBSERVING THE MIND
+
+EXERCISES FOR OBSERVING THE OBJECTS OF MIND
+
+Principles for the Practice of Mindfulness
+
+DHARMAS ARE MIND
+
+BE ONE WITH THE OBJECT OF OBSERVATION
+
+TRUE MIND AND DELUDED MIND ARE ONE
+
+THE WAY OF NO-CONFLICT
+
+OBSERVATION IS NOT INDOCTRINATION
+
+Conclusion
+
+Appendix Three Versions of the Sutra
+
+Copyright Page
+
+# Output 1
+
+<metadata>
+    <section level="0"><note>metadata</note></section>
+    <title>Transformation and Healing: Sutra on the Four Establishments of Mindfulness</title>
+    <author>Thich Nhat Hanh</author>
+    <language>en</language>
+    <publisher>Parallax Press</publisher>
+    <date>2006-08-16T15:00:00+00:00</date>
+</metadata>
+
+<section level="1"><note>Title Page</note></section>
+
+<section level="1"><note>A NOTE ON THE TEXT</note></section>
+
+<section level="1"><introduction>Introduction</introduction></section>
+
+<section level="1"><principle>Sutra on the Four Establishments of Mindfulness</principle></section>
+
+<section level="1"><note>Summary of the Sutra</note></section>
+
+<section level="1"><exercise_group>Mindfulness Exercises</exercise_group></section>
+
+<section level="2"><exercise_group>EXERCISES FOR OBSERVING THE BODY</exercise_group></section>
+
+<section level="2"><note>REMARKS ON THE FIRST NINE EXERCISES</note></section>
+
+<section level="2"><exercise_group>EXERCISES FOR OBSERVING THE FEELINGS</exercise_group></section>
+
+<section level="2"><exercise_group>EXERCISES FOR OBSERVING THE MIND</exercise_group></section>
+
+<section level="2"><exercise_group>EXERCISES FOR OBSERVING THE OBJECTS OF MIND</exercise_group></section>
+
+<section level="1"><principle_group>Principles for the Practice of Mindfulness</principle_group></section>
+
+<section level="2"><principle>DHARMAS ARE MIND</principle></section>
+
+<section level="2"><principle>BE ONE WITH THE OBJECT OF OBSERVATION</principle></section>
+
+<section level="2"><principle>TRUE MIND AND DELUDED MIND ARE ONE</principle></section>
+
+<section level="2"><principle>THE WAY OF NO-CONFLICT</principle></section>
+
+<section level="2"><principle>OBSERVATION IS NOT INDOCTRINATION</principle></section>
+
+<section level="1"><note>Conclusion</note></section>
+
+<section level="1"><note>Appendix: Three Versions of the Sutra</note></section>
+
+<section level="1"><note>Copyright Page</note></section>
+
+# Prompt 2
+
+Below is the opening text for a book. It includes a title and TOC.  Please generate metadata tags for each element in the TOC and also add supplemental metadata to the top of the file.
+
+metadata should be in the form:
+<metadata>
+    <descriptor>info<\descriptor>
+    ...
+<\metadata>
+
+The tag structure for the TOC sections should be as follows:
+<section level="n"><descriptor>item<\section><\descriptor>
+
+Where level 1 the level for highest level content, level 2 subsections and so on. The descriptors can be any meaningful descriptive word or words for the section. 
+
+Output should be a text block with all metadata inserted.
+
+Metadata to add:
+{'metadata': {'title': 'Transformation and Healing: Sutra on the Four Establishments of Mindfulness',
+  'author': 'Thich Nhat Hanh',
+  'language': 'en',
+  'publisher': 'Parallax Press',
+  'date': '2006-08-16T15:00:00+00:00'}}
+
+# Prompt 3
+
+Below is the opening text for a book. It includes a title and TOC.  
+Please generate metadata tags for each element in the TOC and also add supplemental metadata to the top of the file.
+
+metadata should be in the form:
+<metadata>
+    <descriptor>info</descriptor>
+    ...
+</metadata>
+
+The tag structure for the TOC sections should be as follows:
+<section level="n"><descriptor>item</section></descriptor>
+
+Where level 1 the level for highest level content, level 2 subsections and so on. The descriptors can be any meaningful descriptive word or words for the section, 
+for example: <title>, <introduction>, <exercise>, <exercise_group>, <principle>, <poem>, <sutra>, <note> etc.
+
+Output should be a text block with all metadata inserted.
+
+Metadata to add:
+{'metadata': {'title': 'Transformation and Healing: Sutra on the Four Establishments of Mindfulness',
+  'author': 'Thich Nhat Hanh',
+  'language': 'en',
+  'publisher': 'Parallax Press',
+  'date': '2006-08-16T15:00:00+00:00'}}
+
+Text:
+
+

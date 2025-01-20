@@ -1,0 +1,1740 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../translation_research/">
+      
+      
+        <link rel="next" href="../ytt-fetch/ADRs/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Feasibility Study - TNH Scholar Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#preliminary-feasibility-study" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TNH Scholar Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Feasibility Study
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TNH Scholar Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/installation.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/getting-started.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/audio-transcribe.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/tnh-fab.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/ytt-fetch.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/design/documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Documentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Planning
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Planning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/planning/roadmap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/planning/maintenance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintenance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design_guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../translation_research/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation Research
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Feasibility Study
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Feasibility Study
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#an-interactive-study-and-translation-system-based-on-thich-nhat-hanhs-teachings" class="md-nav__link">
+    <span class="md-ellipsis">
+      An Interactive Study and Translation System Based on Thich Nhat Hanh’s Teachings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-project-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Project Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-scope-and-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Scope and Objectives
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Scope and Objectives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Objectives:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-research-component-model-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Research Component: Model Evaluation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Research Component: Model Evaluation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-model-research-for-text-query-and-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Model Research for Text Query and Search:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-model-research-for-interactive-dialogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Model Research for Interactive Dialogue:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-model-research-for-translation-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Model Research for Translation Engine:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-technical-feasibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Technical Feasibility
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Technical Feasibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-data-collection-and-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Data Collection and Preparation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-model-fine-tuning-and-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Model Fine-Tuning and Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-computational-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 Computational Resources
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cost-feasibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Cost Feasibility
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Cost Feasibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-initial-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Initial Costs:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-ongoing-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Ongoing Costs:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 Mitigation:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-operational-feasibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Operational Feasibility
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Operational Feasibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-user-interface-and-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 User Interface and Experience:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-testing-and-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 Testing and Feedback:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-future-scalability-and-expansion" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Future Scalability and Expansion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-ethical-and-legal-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Ethical and Legal Considerations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    ADRs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            ADRs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            YTT Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ytt-fetch/ADRs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ytt-fetch/ADR%20transcript%20source%20handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transcript Source
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ytt-fetch/ADR%20yt-dlp%20transcripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YT-DLP Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ytt-fetch/yt-dlp%20vs.%20Youtube%20API/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Comparison
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Testing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gpt_4o_search_query_text_pair_testing/testing_input_output/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gpt_4o_translations%20experiments/passage_test/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tnh-fab/text%20processing%20cli%20design_v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH-FAB v1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tnh-fab/text%20processing%20cli%20design_v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH-FAB v2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#an-interactive-study-and-translation-system-based-on-thich-nhat-hanhs-teachings" class="md-nav__link">
+    <span class="md-ellipsis">
+      An Interactive Study and Translation System Based on Thich Nhat Hanh’s Teachings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-project-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Project Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-scope-and-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Scope and Objectives
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Scope and Objectives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Objectives:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-research-component-model-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Research Component: Model Evaluation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Research Component: Model Evaluation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-model-research-for-text-query-and-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Model Research for Text Query and Search:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-model-research-for-interactive-dialogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Model Research for Interactive Dialogue:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-model-research-for-translation-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Model Research for Translation Engine:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-technical-feasibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Technical Feasibility
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Technical Feasibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-data-collection-and-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Data Collection and Preparation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-model-fine-tuning-and-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Model Fine-Tuning and Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-computational-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 Computational Resources
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cost-feasibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Cost Feasibility
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Cost Feasibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-initial-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Initial Costs:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-ongoing-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Ongoing Costs:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 Mitigation:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-operational-feasibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Operational Feasibility
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Operational Feasibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-user-interface-and-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 User Interface and Experience:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-testing-and-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 Testing and Feedback:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-future-scalability-and-expansion" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Future Scalability and Expansion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-ethical-and-legal-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Ethical and Legal Considerations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="preliminary-feasibility-study">Preliminary Feasibility Study</h1>
+<h3 id="an-interactive-study-and-translation-system-based-on-thich-nhat-hanhs-teachings"><em>An Interactive Study and Translation System Based on Thich Nhat Hanh’s Teachings</em></h3>
+<h2 id="1-project-overview">1. Project Overview</h2>
+<p>This project aims to create a multipart system using large language models (LLMs) trained on Thich Nhat Hanh’s Teachings. The system will serve primarily Plum Village monastics, and secondarily, mindfulness practitioners, providing:</p>
+<ul>
+<li>
+<p>A query-based text search system to retrieve relevant teachings.</p>
+</li>
+<li>
+<p>An interactive model for exploring Thich Nhat Hanh’s teachings through text-based dialogue.</p>
+</li>
+<li>
+<p>A multilingual translation engine, initially supporting English, Vietnamese, and French, with potential to expand to other languages such as Mandarin, Spanish, Japanese, etc.</p>
+</li>
+</ul>
+<p>This project is designed as a foundational system, which can be expanded in the future to handle deeper conversational tasks and additional languages as technological advancements and resources become available.</p>
+<h2 id="2-scope-and-objectives">2. Scope and Objectives</h2>
+<h3 id="primary-objectives">Primary Objectives:</h3>
+<ol>
+<li><strong>Text Query and Search (BERT-Based)</strong>:<ul>
+<li>A system where users can input queries on mindfulness topics (e.g., “mindfulness and compassion”) and receive relevant resources (text, video, or audio excerpts).</li>
+<li>Prioritize contextual understanding to ensure relevant and accurate search results from Thich Nhat Hanh’s teachings.</li>
+</ul>
+</li>
+<li><strong>Interactive Textual Exploration (GPT-3-Based)</strong>:<ul>
+<li>An exploratory interactive tool for users to engage with Thich Nhat Hanh’s teachings in a conversational format.</li>
+<li>GPT-3 will be fine-tuned to respond meaningfully to user input, guiding exploration of teachings.</li>
+</ul>
+</li>
+<li><strong>Multilingual Translation Engine (mBART-Based, Expanding to Multiple Languages)</strong>:<ul>
+<li>A translation tool focusing initially on English, Vietnamese, and French.</li>
+<li>Capacity to expand later into other languages such as Mandarin, Spanish, and others.</li>
+<li>Emphasis on nuanced, Plum Village style language to ensure accurate and meaningful translation, especially for complex content.</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-research-component-model-evaluation">3. Research Component: Model Evaluation</h2>
+<p>Given the rapid development of models in NLP, this project will include a research phase to evaluate and choose the most appropriate models for the three primary system components.</p>
+<h3 id="31-model-research-for-text-query-and-search">3.1 Model Research for Text Query and Search:</h3>
+<ul>
+<li><strong>BERT (Bidirectional Encoder Representations from Transformers)</strong>: BERT excels at understanding context within text, making it ideal for retrieving relevant passages based on search queries.</li>
+<li><strong>Evaluation</strong>: Review BERT variations, such as multilingual BERT, to assess their suitability for understanding context in a multilingual corpus of teachings.</li>
+<li><strong>Alternatives</strong>: Other Transformer-based models such as RoBERTa or Longformer will be evaluated for handling large datasets or longer documents.</li>
+</ul>
+<h3 id="32-model-research-for-interactive-dialogue">3.2 Model Research for Interactive Dialogue:</h3>
+<ul>
+<li><strong>GPT-3</strong>: The project will leverage GPT-3 for generating conversational responses based on user input. GPT-3 is powerful for generating coherent, meaningful interactions.</li>
+<li><strong>Evaluation</strong>: The research will assess DialoGPT (a dialogue-optimized version of GPT-2) as an alternative, especially for its focus on human-like conversations.</li>
+<li><strong>Factors to Consider</strong>: Trade-offs between response quality (GPT-3’s strength) and fine-tuning flexibility (DialoGPT’s ease of customization for dialogue).</li>
+</ul>
+<h3 id="33-model-research-for-translation-engine">3.3 Model Research for Translation Engine:</h3>
+<ul>
+<li><strong>mBART (Multilingual BART)</strong>: The research will focus on mBART due to its strength in handling complex contextual relationships, which is essential for translating spiritual texts.</li>
+<li><strong>Evaluation</strong>: Compare mBART with MarianMT, which offers efficiency and lower computational demands. mBART’s superior handling of nuanced language will be balanced against the resource-efficient MarianMT, which is specifically designed for translation tasks.</li>
+<li><strong>Initial Language Focus</strong>: Fine-tune the translation engine for English, Vietnamese, and French, with a plan to expand to other languages as needed.</li>
+</ul>
+<h2 id="4-technical-feasibility">4. Technical Feasibility</h2>
+<h3 id="41-data-collection-and-preparation">4.1 Data Collection and Preparation</h3>
+<ul>
+<li><strong>Text Corpus</strong>: Collect, preprocess, and check for accuracy, Thich Nhat Hanh’s writings (books, articles, Dharma talks, interviews) in English, Vietnamese, and French. The initial training set will be equivalent to approximately 100 books, sourced from talks, interviews, and books across the three languages, with the majority of the volume in Vietnamese. This dataset will serve as the foundation for query, translation, and interactive systems.</li>
+<li><strong>Audio/Visual Corpus</strong>: Include video/audio resources with transcriptions to support multimedia queries. Audio-to-text conversion models may be considered in the future.</li>
+<li><strong>Translation Data</strong>: Collect parallel texts for English-Vietnamese and English-French pairs to fine-tune the translation engine. This dataset will serve as the foundation for expanding into additional languages.</li>
+</ul>
+<h3 id="42-model-fine-tuning-and-deployment">4.2 Model Fine-Tuning and Deployment</h3>
+<ul>
+<li><strong>Cloud Infrastructure</strong>: Use cloud-based services like Google Cloud or AWS to fine-tune models and ensure scalability. The GPT-3 system can be trained through the Open AI API interface. Pre-trained models significantly reduce training time and resources, but fine-tuning will still require access to GPUs/TPUs.</li>
+<li><strong>Deployment</strong>: Hugging Face provides tools and APIs for easy model deployment. This infrastructure will be used for both training and serving models.</li>
+</ul>
+<h3 id="43-computational-resources">4.3 Computational Resources</h3>
+<ul>
+<li>Fine-tuning pre-trained models like BERT, and mBART will require significant computational resources, but this is mitigated by using pre-trained models as a foundation. GPT-3 can be trained entirely on the Open AI platform.</li>
+<li>Ongoing resource needs will depend on the scalability of translation tasks and the number of supported languages.</li>
+</ul>
+<h2 id="5-cost-feasibility">5. Cost Feasibility</h2>
+<h3 id="51-initial-costs">5.1 Initial Costs:</h3>
+<ul>
+<li>Fine-tuning pre-trained models and deploying them on cloud infrastructure.</li>
+<li>Data preprocessing, audio to text conversion, and cleaning of the text corpus.</li>
+<li>Training GPT-3 on the initial dataset (equivalent to 100 books) will cost approximately \$300. This does not include other Open AI platform costs, but provides a ballpark figure for the initial training phase.</li>
+<li>Translation engine setup for initial languages (English, Vietnamese, French).</li>
+</ul>
+<h3 id="52-ongoing-costs">5.2 Ongoing Costs:</h3>
+<ul>
+<li>Hosting the models, ongoing training as the dataset grows, and maintaining cloud infrastructure for serving requests.</li>
+<li>Expanding the translation system to include additional languages as needed.</li>
+</ul>
+<h3 id="53-mitigation">5.3 Mitigation:</h3>
+<ul>
+<li>Starting with smaller datasets and key languages (English, Vietnamese, French) reduces initial costs and allows for gradual scaling.</li>
+</ul>
+<h2 id="6-operational-feasibility">6. Operational Feasibility</h2>
+<h3 id="61-user-interface-and-experience">6.1 User Interface and Experience:</h3>
+<ul>
+<li>Develop a user-friendly interface allowing monastics and practitioners to search, interact, and request translations of texts.</li>
+<li>Ensure accessibility across various devices (web and mobile) to facilitate widespread use among the Plum Village community and beyond.</li>
+</ul>
+<h3 id="62-testing-and-feedback">6.2 Testing and Feedback:</h3>
+<ul>
+<li>Conduct pilot testing with a small group of Plum Village monastics to refine the system.</li>
+<li>Collect feedback to fine-tune the query system, conversational responses, and translation accuracy.</li>
+</ul>
+<h2 id="7-future-scalability-and-expansion">7. Future Scalability and Expansion</h2>
+<ol>
+<li><strong>Language Expansion</strong>: As new bilingual data becomes available, expand the translation system to support languages like Mandarin, Spanish, Japanese, and Korean.</li>
+<li><strong>Advanced Conversational Capabilities</strong>: Explore future opportunities to refine the interactive system, potentially scaling toward a more advanced conversational model that reflects deeper spiritual dialogues.</li>
+<li><strong>Multimedia Integration</strong>: Add real-time transcription of audio content and expand the multimedia query engine to handle video/audio teachings.</li>
+</ol>
+<h2 id="8-ethical-and-legal-considerations">8. Ethical and Legal Considerations</h2>
+<ol>
+<li><strong>Data Ownership</strong>: Ensure permissions are secured for digitizing and using Thich Nhat Hanh’s teachings.</li>
+<li><strong>Ethical AI</strong>: Implement guidelines to prevent misrepresentation or biased interpretations of the teachings. Ensure transparency in how models handle sensitive spiritual content.</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>The project is technically feasible using pre-trained models such as BERT, GPT-3, and mBART, with a strong focus on accuracy for translations and queries. It can scale over time to include additional languages and advanced functionalities. Starting with smaller, well-defined goals (English, Vietnamese, French translations; query and interactive systems) ensures cost-effective deployment and lays the groundwork for future expansion.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>
