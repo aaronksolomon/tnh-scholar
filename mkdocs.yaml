@@ -1,0 +1,21 @@
+site_name: TNH Scholar Documentation
+theme:
+  name: material
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
+            show_root_heading: true
+
+nav:
+  - Home: index.md
+  - User Guide:
+    - TNH-FAB Tool: user_guide/tnh_fab.md
+    - Pattern System: user_guide/patterns.md
+  - API Reference: api/index.md
+  - Contributing: contributing.md

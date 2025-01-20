@@ -54,6 +54,7 @@ from tnh_scholar.utils import (
 
 from .environment import check_env
 from .validate import validate_inputs
+from .version_check import check_ytd_version
 
 # Settings
 DEFAULT_CHUNK_DURATION_MIN = 7
@@ -111,6 +112,8 @@ def audio_transcribe(
 
     3. Transcribe (if requested)
     """
+    check_ytd_version() # Do a version check on startup. Version issues can cause yt-dlp to fail.
+    
     logger.info("Starting audio transcription pipeline...")
 
     # initial parameter processing
@@ -164,7 +167,7 @@ def audio_transcribe(
                         logger.info(f"Skipping download for {url}.")
                     else:
                         logger.info(f"Re-downloading {url}:")
-                        download_path = download_audio_yt(url, out_dir, start_time=start_time)
+                        download_path = download_audio_yt(url, out_dir, start_time=start_time) 
                         logger.info(f"Successfully downloaded {url} to {download_path}")
                 else:
                     logger.info(f"Downloading from YouTube: {url}")

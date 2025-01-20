@@ -13,3 +13,4 @@ if not CLI_TOOLS_DIR.exists():
     raise FileNotFoundError(f"CLI tools directory {CLI_TOOLS_DIR} does not exist.")
 
 __version__ = "0.1.0"
+

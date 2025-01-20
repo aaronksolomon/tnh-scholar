@@ -3,7 +3,7 @@
 TNH-FAB Command Line Interface
 
 Part of the THICH NHAT HANH SCHOLAR (TNH_SCHOLAR) project.
-A rapid prototype implementation of the TNH-FAB command-line tool for text processing.
+A rapid prototype implementation of the TNH-FAB command-line tool for Open AI based text processing.
 Provides core functionality for text punctuation, sectioning, translation, and processing.
 """
 
