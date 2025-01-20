@@ -6,9 +6,10 @@ from typing import Union
 from bs4 import BeautifulSoup
 import copy
 
+
 def normalize_newlines(text: str, spacing: int = 2) -> str:
     """
-    Normalize newline blocks in the input text by reducing consecutive newlines 
+    Normalize newline blocks in the input text by reducing consecutive newlines
     to the specified number of newlines for consistent readability and formatting.
 
     Parameters:
@@ -30,15 +31,16 @@ def normalize_newlines(text: str, spacing: int = 2) -> str:
     'Heading\n\nParagraph text 1\n\nParagraph text 2\n\n'
     """
     # Replace one or more newlines with the desired number of newlines
-    newlines = '\n' * spacing
-    return re.sub(r'\n{1,}', newlines, text)
+    newlines = "\n" * spacing
+    return re.sub(r"\n{1,}", newlines, text)
+
 
 def clean_text(text, newline=False):
     """
-    Cleans a given text by replacing specific unwanted characters such as 
+    Cleans a given text by replacing specific unwanted characters such as
     tab, and non-breaking spaces with regular spaces.
 
-    This function takes a string as input and applies replacements 
+    This function takes a string as input and applies replacements
     based on a predefined mapping of characters to replace.
 
     Args:
@@ -55,23 +57,27 @@ def clean_text(text, newline=False):
     """
     # Define a mapping of characters to replace
     replace_map = {
-        '\t': ' ',       # Replace tabs with space
-        '\xa0': ' ',     # Replace non-breaking space with regular space
+        "\t": " ",  # Replace tabs with space
+        "\xa0": " ",  # Replace non-breaking space with regular space
         # Add more replacements as needed
     }
 
     if newline:
-        replace_map['\n'] = '' # remove newlines
+        replace_map["\n"] = ""  # remove newlines
 
     # Loop through the replace map and replace each character
     for old_char, new_char in replace_map.items():
         text = text.replace(old_char, new_char)
-    
+
     return text.strip()  # Ensure any leading/trailing spaces are removed
+
 
 ## tag work
 
-def extract_tags_by_attributes(soup: BeautifulSoup, tags_with_attributes: dict[str, dict]) -> dict[tuple[str, tuple], list[BeautifulSoup]]:
+
+def extract_tags_by_attributes(
+    soup: BeautifulSoup, tags_with_attributes: dict[str, dict]
+) -> dict[tuple[str, tuple], list[BeautifulSoup]]:
     """
     Extract specified tags and their attributes from a BeautifulSoup object.
 
@@ -85,7 +91,7 @@ def extract_tags_by_attributes(soup: BeautifulSoup, tags_with_attributes: dict[s
     -----------
     soup : BeautifulSoup
         The parsed HTML content from which tags will be extracted.
-        
+
     tags_with_attributes : dict
         A dictionary where keys are the tag names (e.g., 'p', 'span') and values are
         attribute dictionaries that filter the tags. For example, {'p': {}, 'span': {'class': 'italic'}}.
@@ -107,28 +113,29 @@ def extract_tags_by_attributes(soup: BeautifulSoup, tags_with_attributes: dict[s
     >>> extracted = extract_tags_by_attributes(soup, tags_to_find)
     >>> for (tag, attributes), matches in extracted.items():
     >>>     print(f"Found {len(matches)} {tag} tags with attributes {attributes}.")
-    
+
     Example Output:
     ---------------
     Found 1 p tags with attributes ().
     Found 1 span tags with attributes (('class', 'italic'),).
     """
-    
+
     extracted_tags = {}
-    
+
     # Loop over each tag and attribute specification
     for tag, attributes in tags_with_attributes.items():
         # Use find_all to search for tags with the specified attributes
         matching_tags = soup.find_all(tag, attrs=attributes)
-        
+
         # Store results using (tag, attribute_values) as key
         if attributes:
             extracted_tags[(tag, tuple(attributes.items()))] = matching_tags
         else:
             # No attributes; use an empty tuple for the key
             extracted_tags[(tag, ())] = matching_tags
-    
+
     return extracted_tags
+
 
 def get_all_tag_names(soup: BeautifulSoup) -> list[str]:
     """
@@ -143,7 +150,7 @@ def get_all_tag_names(soup: BeautifulSoup) -> list[str]:
     --------
     list[str]
         A list of all unique tag names in the soup, without content.
-    
+
     Example:
     --------
     >>> soup = BeautifulSoup('<p>Paragraph</p><div><span>Text</span></div>', 'html.parser')
@@ -152,27 +159,28 @@ def get_all_tag_names(soup: BeautifulSoup) -> list[str]:
     """
     return list({tag.name for tag in soup.find_all(True)})
 
+
 def get_all_attribute_values(soup: BeautifulSoup, tag: str) -> dict[str, set[str]]:
     """
     Extract all unique attribute-value pairs for a given HTML tag across the soup.
-    
-    For each attribute of the specified tag, store a set of all unique values 
+
+    For each attribute of the specified tag, store a set of all unique values
     found across all occurrences of that tag in the soup.
 
     Parameters:
     -----------
     soup : BeautifulSoup
         The parsed HTML content.
-    
+
     tag : str
         The tag name to search for (e.g., 'span', 'div').
 
     Returns:
     --------
     dict[str, set[str]]
-        A dictionary where keys are attribute names and values are sets of 
+        A dictionary where keys are attribute names and values are sets of
         unique attribute values across all instances of the given tag.
-    
+
     Example:
     --------
     >>> soup = BeautifulSoup('''
@@ -193,31 +201,36 @@ def get_all_attribute_values(soup: BeautifulSoup, tag: str) -> dict[str, set[str
                 attributes_with_values[attr] = set()
             # Check if the value is a list (e.g., class="class1 class2") and handle accordingly
             if isinstance(value, list):
-                attributes_with_values[attr].update(value)  # Add all elements from the list
+                attributes_with_values[attr].update(
+                    value
+                )  # Add all elements from the list
             else:
                 attributes_with_values[attr].add(value)  # Add a single value
 
     return attributes_with_values
 
-def remove_all_tags_with_attribute(soup: BeautifulSoup, attr_name: str, attr_value_pattern: str = None) -> None:
+
+def remove_all_tags_with_attribute(
+    soup: BeautifulSoup, attr_name: str, attr_value_pattern: str = None
+) -> None:
     """
     Remove unwanted tags with specific attributes from a BeautifulSoup object.
-    
+
     This function removes tags with a specific attribute (e.g., 'class') that matches a regular expression pattern.
-    
+
 
     Parameters:
     -----------
     soup : BeautifulSoup
         The parsed HTML content to clean.
-    
+
     attr_name : str
         The attribute name to match (e.g., 'class', 'id'). If None, no attribute filtering is done.
-    
+
     attr_value_pattern : str, optional
-        A regular expression pattern to match attribute values. Only tags whose specified attribute 
+        A regular expression pattern to match attribute values. Only tags whose specified attribute
         matches this pattern will be removed. If None, the function removes all tags with the specified attribute.
-    
+
     Returns:
     --------
     None
@@ -230,7 +243,7 @@ def remove_all_tags_with_attribute(soup: BeautifulSoup, attr_name: str, attr_val
     >>> print(soup)
     <p class="keep">Keep me</p>
     """
-    
+
     tags_to_remove = []
 
     # Find all tags in the soup
@@ -253,12 +266,18 @@ def remove_all_tags_with_attribute(soup: BeautifulSoup, attr_name: str, attr_val
     for tag in tags_to_remove:
         tag.decompose()
 
-def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: Union[list[str], str], attr_name: str, attr_value_pattern: str = None) -> None:
+
+def remove_tags_with_attribute(
+    soup: BeautifulSoup,
+    tag_list: Union[list[str], str],
+    attr_name: str,
+    attr_value_pattern: str = None,
+) -> None:
     """
     Remove a specific tags with specific attributes from a BeautifulSoup object.
-    
+
     This function removes tags with a specific attribute (e.g., 'class') that matches a regular expression pattern.
-    
+
 
     Parameters:
     -----------
@@ -266,14 +285,14 @@ def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: Union[list[str], s
         The parsed HTML content to clean.
 
     tag_list : the list of tags to remove if matching attribute is found; if a single string, then this string is split into tags.
-    
+
     attr_name : str
         The attribute name to match (e.g., 'class', 'id'). If None, no attribute filtering is done.
-    
+
     attr_value_pattern : str, optional
-        A regular expression pattern to match attribute values. Only tags whose specified attribute 
+        A regular expression pattern to match attribute values. Only tags whose specified attribute
         matches this pattern will be removed. If None, the function removes all tags with the specified attribute.
-    
+
     Returns:
     --------
     None
@@ -312,7 +331,10 @@ def remove_tags_with_attribute(soup: BeautifulSoup, tag_list: Union[list[str], s
     for tag in tags_to_remove:
         tag.decompose()
 
-def remove_attributes(soup: BeautifulSoup, attr_name: str, attr_value_pattern: str = None, tag: str = None) -> None:
+
+def remove_attributes(
+    soup: BeautifulSoup, attr_name: str, attr_value_pattern: str = None, tag: str = None
+) -> None:
     """
     Remove unwanted attributes from a specific tag or all tags in a BeautifulSoup object.
 
@@ -325,16 +347,16 @@ def remove_attributes(soup: BeautifulSoup, attr_name: str, attr_value_pattern: s
     -----------
     soup : BeautifulSoup
         The parsed HTML content to clean.
-    
+
     attr_name : str
         The attribute name to remove (e.g., 'class', 'id').
-    
+
     attr_value_pattern : str, optional
         A regular expression pattern to match attribute values. Only attributes whose values
         match this pattern will be removed. If None, the attribute will be removed unconditionally.
 
     tag : str, optional
-        The tag name to filter by (e.g., 'div', 'span'). If None, the attribute will be removed 
+        The tag name to filter by (e.g., 'div', 'span'). If None, the attribute will be removed
         from all tags that have the specified attribute.
 
     Returns:
@@ -349,7 +371,7 @@ def remove_attributes(soup: BeautifulSoup, attr_name: str, attr_value_pattern: s
     >>> print(soup)
     <div>Text</div><p class="keep">Keep me</p>
     """
-    
+
     # Find all tags, filtered by tag name if provided
     for element in soup.find_all(tag or True):
         # Check if the tag has the specified attribute
@@ -370,11 +392,12 @@ def remove_attributes(soup: BeautifulSoup, attr_name: str, attr_value_pattern: s
                 # If no pattern is specified, remove the attribute unconditionally
                 del element[attr_name]
 
+
 def generate_reduced_text_soup(soup: BeautifulSoup) -> BeautifulSoup:
     """
-    Creates a copy of a BeautifulSoup object and truncates the text content of all NavigableString 
-    elements in the copied BeautifulSoup object to the first five words, appending ellipses ("...") 
-    if the text contains more than five words. The function returns a new BeautifulSoup object, 
+    Creates a copy of a BeautifulSoup object and truncates the text content of all NavigableString
+    elements in the copied BeautifulSoup object to the first five words, appending ellipses ("...")
+    if the text contains more than five words. The function returns a new BeautifulSoup object,
     leaving the original unmodified.
 
     Parameters:
@@ -406,23 +429,26 @@ def generate_reduced_text_soup(soup: BeautifulSoup) -> BeautifulSoup:
     new_soup = copy.deepcopy(soup)
 
     # Traverse through all elements in the copied soup, targeting text nodes
-    for element in new_soup.find_all(string=True):  # Find all NavigableString text nodes
+    for element in new_soup.find_all(
+        string=True
+    ):  # Find all NavigableString text nodes
         if isinstance(element, NavigableString):
             words = element.split()
             if len(words) > 5:
-                truncated_text = ' '.join(words[:5]) + " ..."
+                truncated_text = " ".join(words[:5]) + " ..."
                 # Replace the text with the truncated version in the copied soup
                 element.replace_with(truncated_text)
 
     return new_soup  # Return the modified copy of the soup object
 
+
 def tag_has_visible_text(tag) -> bool:
     """
-    Check if a BeautifulSoup tag has visible text content, meaning it contains text that is not 
+    Check if a BeautifulSoup tag has visible text content, meaning it contains text that is not
     solely whitespace.
 
-    This function is useful for determining whether a tag has meaningful text content, as opposed to 
-    being empty or containing only whitespace. 
+    This function is useful for determining whether a tag has meaningful text content, as opposed to
+    being empty or containing only whitespace.
 
     Parameters:
     -----------
@@ -454,12 +480,13 @@ def tag_has_visible_text(tag) -> bool:
     """
     return bool(tag.get_text(strip=True))
 
+
 def tag_has_descendants(tag) -> bool:
     """
-    Check if a BeautifulSoup tag has any descendants (nested elements), such as child tags 
+    Check if a BeautifulSoup tag has any descendants (nested elements), such as child tags
     or text nodes.
 
-    This function is useful for determining if a tag contains any nested structure, whether 
+    This function is useful for determining if a tag contains any nested structure, whether
     directly or indirectly, as opposed to being a standalone empty tag.
 
     Parameters:
@@ -480,7 +507,7 @@ def tag_has_descendants(tag) -> bool:
     >>> div_tag = soup.find('div')
     >>> tag_has_descendants(div_tag)
     True
-    
+
     >>> empty_tag = soup.new_tag('div')
     >>> tag_has_descendants(empty_tag)
     False
@@ -493,10 +520,11 @@ def tag_has_descendants(tag) -> bool:
     """
     return any(tag.descendants)
 
+
 def remove_empty_tags(soup: BeautifulSoup, tag_list) -> None:
     """
     Remove empty tags from a BeautifulSoup object based on a specified list or space-separated string of tag names.
-    
+
     This function examines each specified tag and checks if it is empty (contains no visible text).
     If a tag contains only nested elements (i.e., descendants) but no visible text, it will be unwrapped
     (preserving the nested content). Tags that contain neither text nor descendants are completely removed
@@ -506,11 +534,11 @@ def remove_empty_tags(soup: BeautifulSoup, tag_list) -> None:
     -----------
     soup : BeautifulSoup
         The parsed HTML or XML content to clean.
-    
+
     tag_list : list or str
         A list of tag names (e.g., ['div', 'a']) or a space-separated string (e.g., 'div a') specifying
         which tags should be checked and removed if empty. Only tags matching these names will be considered.
-    
+
     Returns:
     --------
     None
@@ -531,11 +559,11 @@ def remove_empty_tags(soup: BeautifulSoup, tag_list) -> None:
         - `tag_has_visible_text(tag)`: Returns True if the tag contains visible text (ignoring whitespace).
         - `tag_has_descendants(tag)`: Returns True if the tag has nested elements (descendants).
     - The function operates in place, meaning it directly modifies the `soup` object passed to it.
-    - Tags with descendants but no visible text are unwrapped rather than removed, ensuring that nested 
+    - Tags with descendants but no visible text are unwrapped rather than removed, ensuring that nested
       content remains intact.
     - Useful for cleaning up HTML or XML content by removing purely empty elements without affecting structure.
     """
-    
+
     # Ensure tag_list is a list, even if passed as a space-separated string
     if isinstance(tag_list, str):
         tag_list = tag_list.split()
@@ -552,16 +580,17 @@ def remove_empty_tags(soup: BeautifulSoup, tag_list) -> None:
                     # Tag is truly empty of meaningful content, so decompose it
                     tag.decompose()
 
+
 def unwrap_redundant_tags(soup: BeautifulSoup, tag_list) -> None:
     """
-    Unwrap tags that do not have any attributes and contain only a single child tag, 
+    Unwrap tags that do not have any attributes and contain only a single child tag,
     by first collecting tags to unwrap, then processing them in a separate loop.
 
     Parameters:
     -----------
     soup : BeautifulSoup
         The parsed HTML content to clean.
-    
+
     tag_list : list or str
         A list of tag names (e.g., ['span', 'a']) or a space-separated string (e.g., 'span a') specifying
         which tags should be checked and unwrapped if redundant.
@@ -603,11 +632,11 @@ def unwrap_redundant_tags(soup: BeautifulSoup, tag_list) -> None:
             3. Child is a Tag instance (not NavigableString/Comment)
             """
             is_redundant_wrapper = (
-                not tag.attrs 
-                and len(tag.contents) == 1 
+                not tag.attrs
+                and len(tag.contents) == 1
                 and isinstance(tag.contents[0], Tag)
             )
-            
+
             if is_redundant_wrapper:
                 child = tag.contents[0]
                 if tag.get_text(strip=True) == child.get_text(strip=True):
@@ -616,50 +645,51 @@ def unwrap_redundant_tags(soup: BeautifulSoup, tag_list) -> None:
 
 def remove_tag_whitespace(html_str: str) -> str:
     """
-    Removes any whitespace between adjacent HTML tags in an HTML string. This function is 
-    designed to clean up HTML content by minimizing unnecessary spacing between elements, 
+    Removes any whitespace between adjacent HTML tags in an HTML string. This function is
+    designed to clean up HTML content by minimizing unnecessary spacing between elements,
     which can improve readability in structured processing.
 
     Args:
         html_str (str): The HTML string to be processed. Must be well-formed for accurate parsing.
 
     Returns:
-        str: The cleaned HTML string with no whitespace between adjacent tags. Tags that 
+        str: The cleaned HTML string with no whitespace between adjacent tags. Tags that
              originally had whitespace between them will now be directly adjacent.
-    
+
     Example:
         >>> html_str = "<body> <p>This is some text.</p>   <br> </body>"
         >>> remove_tag_whitespace(html_str)
         '<body><p>This is some text.</p><br></body>'
-    
+
     Notes:
-        - This function uses BeautifulSoup to parse the HTML and then removes whitespace between 
+        - This function uses BeautifulSoup to parse the HTML and then removes whitespace between
           tags using a regular expression.
-        - The function assumes that `html_str` is a well-formed HTML string. Malformed HTML may 
+        - The function assumes that `html_str` is a well-formed HTML string. Malformed HTML may
           lead to unexpected behavior.
-        - BeautifulSoup automatically corrects certain HTML issues, so the output may differ 
+        - BeautifulSoup automatically corrects certain HTML issues, so the output may differ
           slightly in structure if the input was not well-formed.
-    
+
     Raises:
         ValueError: If the input is not a valid HTML string or is an empty string.
-    
+
     """
     if not html_str.strip():
         raise ValueError("Input HTML string cannot be empty or whitespace-only.")
 
     # Use BeautifulSoup to parse and normalize the HTML structure
-    soup = BeautifulSoup(html_str, 'html.parser')
+    soup = BeautifulSoup(html_str, "html.parser")
 
     # return after converting back to string and using regex to remove whitespace between tags.
-    return re.sub(r'>\s+<', '><', str(soup))
+    return re.sub(r">\s+<", "><", str(soup))
+
 
 def normalize_quotes(text: str) -> str:
     """
     Transforms all smart quotes in the input text to standard straight quotes.
-    
+
     This function replaces both single and double smart quotes (Unicode) with
     their standard straight quote counterparts. Specifically, it:
-    
+
     - Converts left and right single smart quotes (‘ and ’) to ASCII single quote (').
     - Converts left and right double smart quotes (“ and ”) to ASCII double quote (").
 
@@ -667,7 +697,7 @@ def normalize_quotes(text: str) -> str:
     ----------
     text : str
         The input text containing potential smart quotes.
-    
+
     Returns
     -------
     str
@@ -688,4 +718,9 @@ def normalize_quotes(text: str) -> str:
 
     """
     # Replace left and right double smart quotes with straight double quote
-    return text.replace("\u201C", "\"").replace("\u201D", "\"").replace("\u2018", "'").replace("\u2019", "'")
+    return (
+        text.replace("\u201C", '"')
+        .replace("\u201D", '"')
+        .replace("\u2018", "'")
+        .replace("\u2019", "'")
+    )

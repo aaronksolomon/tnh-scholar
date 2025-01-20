@@ -1,19 +1,20 @@
 import sys
 import os
 
-if os.name == 'nt':  # Windows
+if os.name == "nt":  # Windows
     import msvcrt
 else:  # Unix-like (Linux, macOS)
     import tty
     import termios
+
 
 def get_single_char() -> str:
     """
     Get a single character from standard input without requiring Enter.
     Cross-platform implementation for Windows and Unix-like systems.
     """
-    if os.name == 'nt':
-        return msvcrt.getch().decode('utf-8')  # Windows
+    if os.name == "nt":
+        return msvcrt.getch().decode("utf-8")  # Windows
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
     try:
@@ -22,6 +23,7 @@ def get_single_char() -> str:
     finally:
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
     return char
+
 
 def get_user_confirmation(prompt: str, default: bool = True) -> bool:
     """
@@ -39,15 +41,16 @@ def get_user_confirmation(prompt: str, default: bool = True) -> bool:
 
     while True:
         char = get_single_char().lower()
-        if char == 'y':
+        if char == "y":
             print(char)  # Echo the choice
             return True
-        elif char == 'n':
+        elif char == "n":
             print(char)
             return False
-        elif char in ('\r', '\n'):  # Enter key (use default)
+        elif char in ("\r", "\n"):  # Enter key (use default)
             print()  # Add a newline
             return default
         else:
-            print(f"\nInvalid input: {char}. Please type 'y' or 'n': ", end="", flush=True)
-
+            print(
+                f"\nInvalid input: {char}. Please type 'y' or 'n': ", end="", flush=True
+            )

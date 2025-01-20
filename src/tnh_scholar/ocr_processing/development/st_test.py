@@ -2,7 +2,8 @@ import streamlit as st
 from PIL import Image
 from lxml import etree
 import os
-    
+
+
 # Load XML file
 def load_xml(file_obj):
     """
@@ -15,6 +16,7 @@ def load_xml(file_obj):
         st.error(f"Error parsing XML file: {e}")
         return None
 
+
 # Save XML file
 def save_xml(tree, file_path):
     """
@@ -22,6 +24,7 @@ def save_xml(tree, file_path):
     """
     with open(file_path, "wb") as file:
         tree.write(file, pretty_print=True, encoding="utf-8", xml_declaration=True)
+
 
 # Extract page data from XML
 def extract_pages(tree):
@@ -41,6 +44,7 @@ def extract_pages(tree):
         xml_pages.append({"number": page_number, "text": ocr_text, "modified": False})
     return xml_pages
 
+
 def reset_text_file_state():
     """
     Reset session state variables related to the uploaded text file.
@@ -49,6 +53,7 @@ def reset_text_file_state():
     st.session_state.pages = []
     st.session_state.current_page_index = 0
     st.session_state.uploaded_xml_file_name = None
+
 
 def handle_uploaded_text_file(uploaded_file):
     """
@@ -66,9 +71,12 @@ def handle_uploaded_text_file(uploaded_file):
                 st.session_state.pages = extract_pages(st.session_state.tree)
                 st.session_state.current_page_index = 0  # Reset to the first page
                 st.session_state.uploaded_xml_file_name = uploaded_file.name
-                print(f"Uploaded XML file name: {st.session_state.uploaded_xml_file_name}")
+                print(
+                    f"Uploaded XML file name: {st.session_state.uploaded_xml_file_name}"
+                )
     else:
         print("Error: Unsupported file type.")
+
 
 def save_text_change_locally():
     new_text = st.session_state.new_text
@@ -76,21 +84,25 @@ def save_text_change_locally():
     st.session_state.pages[current_page_index]["text"] = new_text
     st.session_state.pages[current_page_index]["modified"] = True
     print(f"saved new text for page {current_page_index}.")
-    
+
+
 def handle_text_change(edited_text):
     st.session_state.text_change = True
     st.session_state.new_text = edited_text
 
+
 def reset_text_change_state():
     st.session_state.text_change = False
     st.session_state.new_text = ""
+
 
 def handle_prev_button():
     if st.session_state.text_change:
         save_text_change_locally()
     if st.session_state.current_page_index > 0:
         st.session_state.current_page_index -= 1
-    reset_text_change_state() # reset the text change state since moving to a new page
+    reset_text_change_state()  # reset the text change state since moving to a new page
+
 
 def handle_next_button():
     pages = st.session_state.pages
@@ -100,7 +112,8 @@ def handle_next_button():
         save_text_change_locally()
     if st.session_state.current_page_index < len(pages) - 1:
         st.session_state.current_page_index += 1
-    reset_text_change_state() # reset the text change state since moving to a new page
+    reset_text_change_state()  # reset the text change state since moving to a new page
+
 
 # Initialize session state variables
 if "current_page_index" not in st.session_state:
@@ -129,7 +142,9 @@ st.set_page_config(layout="wide")
 
 # Sidebar file upload
 st.sidebar.title("OCR Editor")
-uploaded_image_file = st.sidebar.file_uploader("Upload an Image", type=["jpg", "jpeg", "png", "pdf"])
+uploaded_image_file = st.sidebar.file_uploader(
+    "Upload an Image", type=["jpg", "jpeg", "png", "pdf"]
+)
 uploaded_text_file = st.sidebar.file_uploader("Upload OCR Text File", type=["xml"])
 
 # Directory paths (optional for advanced workflows)
@@ -178,7 +193,7 @@ with col2:
         with col_next:
             if st.button("Next Page ➡️"):
                 handle_next_button()
- 
+
         # Get current page index
         current_page_index = st.session_state.current_page_index
 
@@ -198,13 +213,21 @@ with col2:
         )
 
         unsaved_text_edit = False
-        if edited_text != pages[st.session_state.current_page_index]["text"]: # check for change in the text.
-            print("TEXT CHANGE:") #debug
-            print(f"---CURRENT---\n>{current_text}<\n---[end]\n\n---EDITED---\n>{edited_text}<\n---[end]\n\n")
+        if (
+            edited_text != pages[st.session_state.current_page_index]["text"]
+        ):  # check for change in the text.
+            print("TEXT CHANGE:")  # debug
+            print(
+                f"---CURRENT---\n>{current_text}<\n---[end]\n\n---EDITED---\n>{edited_text}<\n---[end]\n\n"
+            )
             handle_text_change(edited_text)
             unsaved_text_edit = True
-        modified =  unsaved_text_edit or pages[st.session_state.current_page_index]["modified"]
-        st.write(f"Page {st.session_state.current_page_index + 1} of {len(pages)} {'MODIFIED' if modified else ''}")
+        modified = (
+            unsaved_text_edit or pages[st.session_state.current_page_index]["modified"]
+        )
+        st.write(
+            f"Page {st.session_state.current_page_index + 1} of {len(pages)} {'MODIFIED' if modified else ''}"
+        )
 
     else:
         st.write("No page data loaded.")
@@ -212,7 +235,7 @@ with col2:
 # Debugging: Display session state
 st.write("Session State:", st.session_state)
 
-# else:   
+# else:
 #     pages = [
 #         {"number": 0, "text": "Page 0 content"},
 #         {"number": 1, "text": "Page 1 content"},

@@ -18,17 +18,17 @@ import requests
 
 from tnh_scholar.video_processing import get_transcript, TranscriptNotFoundError
 
+
 @click.command()
-@click.argument('url')
+@click.argument("url")
 @click.option(
-    '-l', '--lang',
-    default='en',
-    help='Language code for transcript (default: en)'
+    "-l", "--lang", default="en", help="Language code for transcript (default: en)"
 )
 @click.option(
-    '-o', '--output',
+    "-o",
+    "--output",
     type=click.Path(),
-    help='Save transcript text to file instead of printing'
+    help="Save transcript text to file instead of printing",
 )
 def ytt_fetch(url: str, lang: str, output: Optional[str]) -> None:
     """
@@ -51,7 +51,7 @@ def ytt_fetch(url: str, lang: str, output: Optional[str]) -> None:
             write_text_to_file(output_path, transcript_text, overwrite=True)
             click.echo(f"Transcript written to: {output_path}")
         else:
-            click.echo(transcript_text) 
+            click.echo(transcript_text)
 
     except FileNotFoundError as e:
         click.echo(f"File not found error: {e}", err=True)
@@ -59,13 +59,14 @@ def ytt_fetch(url: str, lang: str, output: Optional[str]) -> None:
     except (IOError, OSError) as e:
         click.echo(f"Error writing transcript to file: {e}", err=True)
         sys.exit(1)
-    except TypeError as e: 
+    except TypeError as e:
         click.echo(f"Unexpected type error: {e}", err=True)
         sys.exit(1)
 
 
 def main():
     ytt_fetch()
-    
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     main()

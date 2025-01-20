@@ -21,7 +21,8 @@ if "current_text" not in st.session_state:
 
 if "current_image" not in st.session_state:
     st.session_state.current_image = None
-    
+
+
 # Load XML file
 def load_xml(file_obj):
     """
@@ -34,6 +35,7 @@ def load_xml(file_obj):
         st.error(f"Error parsing XML file: {e}")
         return None
 
+
 # Save XML file
 def save_xml(tree, file_path):
     """
@@ -41,6 +43,7 @@ def save_xml(tree, file_path):
     """
     with open(file_path, "wb") as file:
         tree.write(file, pretty_print=True, encoding="utf-8", xml_declaration=True)
+
 
 # Extract page data from XML
 def extract_pages(tree):
@@ -60,6 +63,7 @@ def extract_pages(tree):
         pages.append({"number": page_number, "text": ocr_text})
     return pages
 
+
 # settings
 st.set_page_config(layout="wide")
 
@@ -68,7 +72,9 @@ st.write(st.session_state)
 
 # Sidebar file upload
 st.sidebar.title("OCR Editor")
-uploaded_image_file = st.sidebar.file_uploader("Upload an Image", type=["jpg", "jpeg", "png", "pdf"])
+uploaded_image_file = st.sidebar.file_uploader(
+    "Upload an Image", type=["jpg", "jpeg", "png", "pdf"]
+)
 uploaded_text_file = st.sidebar.file_uploader("Upload OCR Text File", type=["xml"])
 
 # Directory paths (optional for advanced workflows)
@@ -91,10 +97,12 @@ if uploaded_text_file:
                 st.session_state.current_page_index = 0  # Reset to the first page
                 st.session_state.uploaded_xml_file_name = uploaded_text_file.name
                 print(f"Session tree: {st.session_state.tree}")
-                print(f"Uploaded XML file name: {st.session_state.uploaded_xml_file_name}")
+                print(
+                    f"Uploaded XML file name: {st.session_state.uploaded_xml_file_name}"
+                )
     else:
         print("Error we should not reach: unsupported file type.")
-else: #there is no active xml file so reset related state:
+else:  # there is no active xml file so reset related state:
     st.session_state.tree = None
     st.session_state.pages = []
     st.session_state.current_page_index = 0
@@ -130,9 +138,14 @@ with col2:
         if st.session_state.current_text != current_text:
             print(f"switched pages?")
             st.session_state.current_text = current_text
-        
+
         # Dynamically update the text area based on session state
-        edited_text = st.text_area("Edit OCR Text", value=st.session_state.current_text, key=f"text_area_{st.session_state.current_page_index}", height=400)
+        edited_text = st.text_area(
+            "Edit OCR Text",
+            value=st.session_state.current_text,
+            key=f"text_area_{st.session_state.current_page_index}",
+            height=400,
+        )
 
         # Button row for navigation
         col_save, col_prev, col_next = st.columns([2, 1, 1])
@@ -161,28 +174,31 @@ with col2:
             if st.button("⬅️ Previous Page"):
                 # Save current page's edits to pages before navigating
                 if edited_text != st.session_state.current_text:
-                    st.session_state.pages[st.session_state.current_page_index]["text"] = edited_text
+                    st.session_state.pages[st.session_state.current_page_index][
+                        "text"
+                    ] = edited_text
                     st.session_state.current_text = edited_text
-
 
                 # Navigate to the previous page
                 if current_page_index > 0:
                     st.session_state.current_page_index -= 1
                     print(f"current page: {st.session_state.current_page_index}")
-                    #st.session_state.current_text = st.session_state.pages[st.session_state.current_page_index]["text"]
+                    # st.session_state.current_text = st.session_state.pages[st.session_state.current_page_index]["text"]
 
         # Right Arrow Button
         with col_next:
             # Save current page's edits to pages before navigating
             if st.button("Next Page ➡️"):
                 if edited_text != st.session_state.current_text:
-                    st.session_state.pages[st.session_state.current_page_index]["text"] = edited_text
+                    st.session_state.pages[st.session_state.current_page_index][
+                        "text"
+                    ] = edited_text
                     st.session_state.current_text = edited_text
 
                 if current_page_index < len(pages) - 1:
                     st.session_state.current_page_index += 1
                     print(f"current page: {st.session_state.current_page_index}")
-                    #st.session_state.current_text = st.session_state.pages[st.session_state.current_page_index]["text"]
+                    # st.session_state.current_text = st.session_state.pages[st.session_state.current_page_index]["text"]
 
         # Display the current page number
         st.write(f"Page {current_page_index + 1} of {len(pages)}")
@@ -190,4 +206,3 @@ with col2:
         st.write("Upload a text file to edit OCR text.")
 
 st.write(st.session_state)
-

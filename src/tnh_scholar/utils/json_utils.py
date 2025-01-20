@@ -4,7 +4,10 @@ from typing import Dict, List
 from pydantic import BaseModel, ValidationError
 from typing import Union
 
-def write_data_to_json_file(file: Path, data: Union[dict, list], indent: int = 4, ensure_ascii: bool = False) -> None:
+
+def write_data_to_json_file(
+    file: Path, data: Union[dict, list], indent: int = 4, ensure_ascii: bool = False
+) -> None:
     """
     Writes a dictionary or list as a JSON string to a file, ensuring the parent directory exists,
     and supports formatting with indentation and ASCII control.
@@ -39,11 +42,14 @@ def write_data_to_json_file(file: Path, data: Union[dict, list], indent: int = 4
             f.write(json_str)
     except IOError as e:
         raise IOError(f"Error writing JSON string to file '{file}': {e}")
-        
-def save_model_to_json(file: Path, model: BaseModel, indent: int = 4, ensure_ascii: bool = False) -> None:
+
+
+def save_model_to_json(
+    file: Path, model: BaseModel, indent: int = 4, ensure_ascii: bool = False
+) -> None:
     """
     Saves a Pydantic model to a JSON file, formatted with indentation for readability.
-    
+
     Args:
         file (Path): Path to the JSON file where the model will be saved.
         model (BaseModel): The Pydantic model instance to save.
@@ -77,16 +83,17 @@ def save_model_to_json(file: Path, model: BaseModel, indent: int = 4, ensure_asc
     # Write the JSON string to the file
     write_data_to_json_file(file, model_dict, indent=indent, ensure_ascii=ensure_ascii)
 
+
 def load_jsonl_to_dict(file_path: Path) -> List[Dict]:
     """
     Load a JSONL file into a list of dictionaries.
-    
+
     Args:
         file_path (Path): Path to the JSONL file.
 
     Returns:
         List[Dict]: A list of dictionaries, each representing a line in the JSONL file.
-    
+
     Example:
         >>> from pathlib import Path
         >>> file_path = Path("data.jsonl")
@@ -94,9 +101,10 @@ def load_jsonl_to_dict(file_path: Path) -> List[Dict]:
         >>> print(data)
         [{'key1': 'value1'}, {'key2': 'value2'}]
     """
-    with file_path.open('r', encoding='utf-8') as file:
+    with file_path.open("r", encoding="utf-8") as file:
         return [json.loads(line.strip()) for line in file if line.strip()]
-        
+
+
 def load_json_into_model(file: Path, model: type[BaseModel]) -> BaseModel:
     """
     Loads a JSON file and validates it against a Pydantic model.
@@ -131,20 +139,19 @@ def load_json_into_model(file: Path, model: type[BaseModel]) -> BaseModel:
     except (json.JSONDecodeError, ValidationError) as e:
         raise ValueError(f"Error loading or validating JSON file '{file}': {e}")
 
+
 def format_json(file: Path) -> None:
     """
     Formats a JSON file with line breaks and indentation for readability.
-    
+
     Args:
         file (Path): Path to the JSON file to be formatted.
-    
+
     Example:
         format_json(Path("data.json"))
     """
-    with file.open('r', encoding='utf-8') as f:
+    with file.open("r", encoding="utf-8") as f:
         data = json.load(f)
-    
-    with file.open('w', encoding='utf-8') as f:
+
+    with file.open("w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
-
-

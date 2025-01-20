@@ -1,3 +1,1 @@
-from .env import (
-    check_env
-)
+from .env import check_env

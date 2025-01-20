@@ -20,14 +20,15 @@ from tnh_scholar.audio_processing.whisper_security import load_whisper_model
 
 # Define constants
 MAX_INT16 = 32768.0  # Maximum absolute value for 16-bit signed integer audio
-MIN_SILENCE_LENGTH = 1000 # 1 second in ms, for splitting on silence
-SILENCE_DBFS_THRESHOLD = -30    # Silence threshold in dBFS
+MIN_SILENCE_LENGTH = 1000  # 1 second in ms, for splitting on silence
+SILENCE_DBFS_THRESHOLD = -30  # Silence threshold in dBFS
 MAX_DURATION_MS = 10 * 60 * 1000  # Max chunk length in milliseconds, 10m
-MAX_DURATION = 10 * 60 # Max chunk length in seconds, 10m
-SEEK_LENGTH = 50 # milliseconds. for silence detection, the scan interval
-EXPECTED_TIME_FACTOR = 0.45 # a heuristic to scale expected time
+MAX_DURATION = 10 * 60  # Max chunk length in seconds, 10m
+SEEK_LENGTH = 50  # milliseconds. for silence detection, the scan interval
+EXPECTED_TIME_FACTOR = 0.45  # a heuristic to scale expected time
 
 logger = get_child_logger("audio_processing")
+
 
 @dataclass
 class Boundary:
@@ -37,20 +38,20 @@ class Boundary:
         start (float): Start time of the segment in seconds.
         end (float): End time of the segment in seconds.
         text (str): Associated text (empty if silence-based).
-    
+
     Example:
         >>> b = Boundary(start=0.0, end=30.0, text="Hello world")
         >>> b.start, b.end, b.text
         (0.0, 30.0, 'Hello world')
     """
+
     start: float
     end: float
     text: str = ""
 
+
 def detect_whisper_boundaries(
-    audio_file: Path, 
-    model_size: str = 'tiny', 
-    language: str = None
+    audio_file: Path, model_size: str = "tiny", language: str = None
 ) -> List[Boundary]:
     """
     Detect sentence boundaries using a Whisper model.
@@ -62,15 +63,15 @@ def detect_whisper_boundaries(
 
     Returns:
         List[Boundary]: A list of sentence boundaries with text.
-    
+
     Example:
         >>> boundaries = detect_whisper_boundaries(Path("my_audio.mp3"), model_size="tiny")
         >>> for b in boundaries:
         ...     print(b.start, b.end, b.text)
     """
 
-    os.environ["KMP_WARNINGS"] = "0" # Turn of OMP warning message
-    
+    os.environ["KMP_WARNINGS"] = "0"  # Turn of OMP warning message
+
     # Load model
     logger.info("Loading Whisper model...")
     model = load_whisper_model(model_size)
@@ -82,21 +83,27 @@ def detect_whisper_boundaries(
         logger.info("Language not set. Autodetect will be used in Whisper model.")
 
     # with TimeProgress(expected_time=expected_time, desc="Generating transcription boundaries"):
-    boundary_transcription = whisper_model_transcribe(model, str(audio_file), task="transcribe", word_timestamps=True, language=language, verbose=False)
+    boundary_transcription = whisper_model_transcribe(
+        model,
+        str(audio_file),
+        task="transcribe",
+        word_timestamps=True,
+        language=language,
+        verbose=False,
+    )
 
     sentence_boundaries = [
-        Boundary(
-            start=segment['start'], end=segment['end'], text=segment['text']
-        )
-        for segment in boundary_transcription['segments']
+        Boundary(start=segment["start"], end=segment["end"], text=segment["text"])
+        for segment in boundary_transcription["segments"]
     ]
     return sentence_boundaries, boundary_transcription
+
 
 def detect_silence_boundaries(
     audio_file: Path,
     min_silence_len: int = MIN_SILENCE_LENGTH,
     silence_thresh: int = SILENCE_DBFS_THRESHOLD,
-    max_duration: int = MAX_DURATION_MS
+    max_duration: int = MAX_DURATION_MS,
 ) -> Tuple[List[Boundary], Dict]:
     """
     Detect boundaries (start/end times) based on silence detection.
@@ -109,19 +116,23 @@ def detect_silence_boundaries(
 
     Returns:
         List[Boundary]: A list of boundaries with empty text.
-    
+
     Example:
         >>> boundaries = detect_silence_boundaries(Path("my_audio.mp3"))
         >>> for b in boundaries:
         ...     print(b.start, b.end)
     """
-    logger.debug(f"Detecting silence boundaries with min_silence={min_silence_len}, silence_thresh={silence_thresh}")
+    logger.debug(
+        f"Detecting silence boundaries with min_silence={min_silence_len}, silence_thresh={silence_thresh}"
+    )
 
     audio = AudioSegment.from_file(audio_file)
-    nonsilent_ranges = detect_nonsilent(audio, 
-                                        min_silence_len=min_silence_len, 
-                                        silence_thresh=silence_thresh, 
-                                        seek_step=SEEK_LENGTH)
+    nonsilent_ranges = detect_nonsilent(
+        audio,
+        min_silence_len=min_silence_len,
+        silence_thresh=silence_thresh,
+        seek_step=SEEK_LENGTH,
+    )
 
     # Combine ranges to enforce max_duration
     if not nonsilent_ranges:
@@ -145,11 +156,12 @@ def detect_silence_boundaries(
         for start_ms, end_ms in combined_ranges
     ]
 
+
 def split_audio_at_boundaries(
     audio_file: Path,
     boundaries: List[Boundary],
     output_dir: Path = None,
-    max_duration: int = MAX_DURATION
+    max_duration: int = MAX_DURATION,
 ) -> Path:
     """
     Split the audio file into chunks based on provided boundaries, ensuring all audio is included
@@ -163,7 +175,7 @@ def split_audio_at_boundaries(
 
     Returns:
         Path: Directory containing the chunked audio files.
-    
+
     Example:
         >>> boundaries = [Boundary(34.02, 37.26, "..."), Boundary(38.0, 41.18, "...")]
         >>> out_dir = split_audio_at_boundaries(Path("my_audio.mp3"), boundaries)
@@ -191,7 +203,9 @@ def split_audio_at_boundaries(
     for idx, boundary in enumerate(boundaries):
         segment_start_ms = int(boundary.start * 1000)
         if idx + 1 < len(boundaries):
-            segment_end_ms = int(boundaries[idx + 1].start * 1000)  # Next boundary's start
+            segment_end_ms = int(
+                boundaries[idx + 1].start * 1000
+            )  # Next boundary's start
         else:
             segment_end_ms = len(audio)  # End of the audio for the last boundary
 
@@ -201,7 +215,9 @@ def split_audio_at_boundaries(
 
         segment = audio[segment_start_ms:segment_end_ms]
 
-        logger.debug(f"Boundary index: {idx}, segment_start: {segment_start_ms / 1000}, segment_end: {segment_end_ms / 1000}, duration: {segment.duration_seconds}")
+        logger.debug(
+            f"Boundary index: {idx}, segment_start: {segment_start_ms / 1000}, segment_end: {segment_end_ms / 1000}, duration: {segment.duration_seconds}"
+        )
         logger.debug(f"Current chunk Duration (s): {current_chunk.duration_seconds}")
 
         if len(current_chunk) + len(segment) <= max_duration * 1000:
@@ -225,15 +241,16 @@ def split_audio_at_boundaries(
 
     return output_dir
 
+
 def split_audio(
     audio_file: Path,
     method: str = "whisper",
     output_dir: Path = None,
-    model_size: str = 'tiny',
+    model_size: str = "tiny",
     language: str = None,
     min_silence_len: int = MIN_SILENCE_LENGTH,
     silence_thresh: int = SILENCE_DBFS_THRESHOLD,
-    max_duration: int = MAX_DURATION
+    max_duration: int = MAX_DURATION,
 ) -> Path:
     """
     High-level function to split an audio file into chunks based on a chosen method.
@@ -263,20 +280,29 @@ def split_audio(
     logger.info(f"Splitting audio with max_duration={max_duration} seconds")
 
     if method == "whisper":
-        boundaries, _ = detect_whisper_boundaries(audio_file, model_size=model_size, language=language)
+        boundaries, _ = detect_whisper_boundaries(
+            audio_file, model_size=model_size, language=language
+        )
 
     elif method == "silence":
-        max_duration_ms = max_duration * 1000 # convert duration in seconds to milliseconds
-        boundaries = detect_silence_boundaries(audio_file, 
-                                               min_silence_len=min_silence_len, 
-                                               silence_thresh=silence_thresh, 
-                                               max_duration=max_duration_ms)
+        max_duration_ms = (
+            max_duration * 1000
+        )  # convert duration in seconds to milliseconds
+        boundaries = detect_silence_boundaries(
+            audio_file,
+            min_silence_len=min_silence_len,
+            silence_thresh=silence_thresh,
+            max_duration=max_duration_ms,
+        )
     else:
         raise ValueError(f"Unknown method: {method}. Must be 'silence' or 'whisper'.")
-    
+
     # delete all files in the output_dir (this is useful for reprocessing)
 
-    return split_audio_at_boundaries(audio_file, boundaries, output_dir=output_dir, max_duration=max_duration)
+    return split_audio_at_boundaries(
+        audio_file, boundaries, output_dir=output_dir, max_duration=max_duration
+    )
+
 
 # def estimate_transcription_time(
 #     audio_file: Path,
@@ -294,7 +320,7 @@ def split_audio(
 #         model: The Whisper model.
 #         language (Optional[str]): If known, specify a language code to skip detection
 #                                   (e.g. "en", "vi"). Otherwise, None for auto-detect.
-#         sample_duration (int): Length of audio (in seconds) to sample and time 
+#         sample_duration (int): Length of audio (in seconds) to sample and time
 #                                for the estimate.
 
 #     Returns:
@@ -343,6 +369,7 @@ def split_audio(
 
 #     return elapsed_chunk_time * scale_factor
 
+
 def audio_to_numpy(audio_segment: AudioSegment) -> np.ndarray:
     """
     Convert an AudioSegment object to a NumPy array suitable for Whisper.
@@ -359,15 +386,16 @@ def audio_to_numpy(audio_segment: AudioSegment) -> np.ndarray:
     """
     # Convert the audio segment to raw sample data
     raw_data = np.array(audio_segment.get_array_of_samples()).astype(np.float32)
-    
+
     # Normalize data to the range [-1, 1]
     raw_data /= MAX_INT16
-    
+
     # Ensure mono-channel (use first channel if stereo)
     if audio_segment.channels > 1:
         raw_data = raw_data.reshape(-1, audio_segment.channels)[:, 0]
 
     return raw_data
+
 
 def whisper_model_transcribe(
     model: Any,
@@ -399,7 +427,7 @@ def whisper_model_transcribe(
         # Using an audio array
         result = whisper_model_transcribe(my_model, audio_array, language="en")
     """
-  
+
     # class StdoutFilter(io.StringIO):
     #     def __init__(self, original_stdout):
     #         super().__init__()

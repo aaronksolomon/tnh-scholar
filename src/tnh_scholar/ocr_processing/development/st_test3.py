@@ -20,6 +20,7 @@ st.session_state.counter += 1
 
 st.write(f"app execution number {st.session_state.counter}")
 
+
 # Callback functions
 def save_text():
     """
@@ -33,16 +34,20 @@ def save_text():
             st.session_state.pages[current_page_index]["text"] = new_text
             st.session_state.pages[current_page_index]["modified"] = True
 
+
 def navigate(direction):
     """
     Save the current page's text and navigate to the specified direction.
     """
     save_text()
-    if direction == "next" and st.session_state.current_page_index < len(st.session_state.pages) - 1:
+    if (
+        direction == "next"
+        and st.session_state.current_page_index < len(st.session_state.pages) - 1
+    ):
         st.session_state.current_page_index += 1
     elif direction == "previous" and st.session_state.current_page_index > 0:
         st.session_state.current_page_index -= 1
-    
+
 
 # Main Layout
 st.title("Dynamic Text Area Navigation with Callbacks")

@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 class Page:
     """
     Represents a single page in a document editor.
@@ -10,6 +11,7 @@ class Page:
         original (str): The original, unmodified content of the page.
         modified (bool): Indicates if the page has been modified.
     """
+
     def __init__(self, number: int, text: str):
         self.number = number
         self.text = text
@@ -44,7 +46,7 @@ class Page:
             bool: True if the page is modified, False otherwise.
         """
         return self.modified
-    
+
 
 class DocumentEditor:
     """
@@ -55,7 +57,13 @@ class DocumentEditor:
         current_page_index (int): The index of the currently displayed page.
         debug (bool): Enables debug output when set to True.
     """
-    def __init__(self, document_key, page_data: list, debug: bool = False, ):
+
+    def __init__(
+        self,
+        document_key,
+        page_data: list,
+        debug: bool = False,
+    ):
         """
         Initializes the DocumentEditor with pages.
 
@@ -69,7 +77,7 @@ class DocumentEditor:
             self.pages = [Page(number=i + 1, text=p) for i, p in enumerate(page_data)]
         else:
             raise ValueError("page_data must be a list of Page objects or strings.")
-        
+
         self.current_page_index = 0
         self.key = document_key
         self.debug = debug
@@ -110,7 +118,9 @@ class DocumentEditor:
         current_page = self.get_current_page()
 
         # Display current page details
-        st.write(f"Page {current_page.number} of {len(self.pages)}. {'MODIFIED' if current_page.is_modified() else ''}")
+        st.write(
+            f"Page {current_page.number} of {len(self.pages)}. {'MODIFIED' if current_page.is_modified() else ''}"
+        )
 
         # Text area for editing page content
         new_text = st.text_area(
@@ -151,7 +161,11 @@ class DocumentEditor:
         import streamlit as st
 
         # Ensure a valid current page
-        if not self.pages or self.current_page_index < 0 or self.current_page_index >= len(self.pages):
+        if (
+            not self.pages
+            or self.current_page_index < 0
+            or self.current_page_index >= len(self.pages)
+        ):
             raise RuntimeError("Invalid page state. No page to save.")
 
         # Retrieve current page and text from the text area

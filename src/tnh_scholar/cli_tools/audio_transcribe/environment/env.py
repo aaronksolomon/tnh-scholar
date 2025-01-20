@@ -5,6 +5,7 @@ from tnh_scholar.logging_config import get_child_logger
 
 logger = get_child_logger("environement_checking")
 
+
 def ensure_env_file_exists(root_dir: Path) -> None:
     """
     Ensure that a .env file exists at the root of the project.
@@ -42,7 +43,7 @@ def check_requirements(requirements_file: Path) -> None:
     name_map = {
         "python-dotenv": "dotenv",
         "openai_whisper": "whisper",
-        "protobuf": "google.protobuf"
+        "protobuf": "google.protobuf",
         # Add other mappings if needed
     }
 
@@ -63,7 +64,9 @@ def check_requirements(requirements_file: Path) -> None:
         try:
             __import__(mod_name)
         except ImportError:
-            print(f"WARNING: Could not import '{mod_name}' from '{pkg}'. Check that it is correctly installed.")
+            print(
+                f"WARNING: Could not import '{mod_name}' from '{pkg}'. Check that it is correctly installed."
+            )
 
 
 def check_env(root_dir: Path, requirements_file: Path) -> None:

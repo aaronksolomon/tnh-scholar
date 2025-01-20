@@ -4,17 +4,19 @@ from pathlib import Path
 import colorlog
 
 BASE_LOG_NAME = "tnh"  # tnh-scholar project
-BASE_LOG_DIR = Path("./logs") 
+BASE_LOG_DIR = Path("./logs")
 DEFAULT_LOG_FILEPATH = Path("main.log")
-MAX_FILE_SIZE = 10 * 1024 * 1024 # 10 mb
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 mb
 
 # Define custom log level: PRIORITY_INFO
 PRIORITY_INFO_LEVEL = 25
 logging.addLevelName(PRIORITY_INFO_LEVEL, "PRIORITY_INFO")
 
+
 def priority_info(self, message, *args, **kwargs):
     if self.isEnabledFor(PRIORITY_INFO_LEVEL):
         self._log(PRIORITY_INFO_LEVEL, message, args, **kwargs)
+
 
 # Add PRIORITY_INFO to the Logger class
 setattr(logging.Logger, "priority_info", priority_info)
@@ -30,13 +32,17 @@ LOG_COLORS = {
 }
 
 # Default format strings
-DEFAULT_CONSOLE_FORMAT_STRING = "%(asctime)s - %(name)s - %(log_color)s%(levelname)s%(reset)s - %(message)s"
+DEFAULT_CONSOLE_FORMAT_STRING = (
+    "%(asctime)s - %(name)s - %(log_color)s%(levelname)s%(reset)s - %(message)s"
+)
 DEFAULT_FILE_FORMAT_STRING = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
 
 class OMPFilter(logging.Filter):
     def filter(self, record):
         # Suppress messages containing "OMP:"
         return "OMP:" not in record.getMessage()
+
 
 def setup_logging(
     log_level=logging.INFO,
@@ -101,6 +107,7 @@ def setup_logging(
 
     return base_logger
 
+
 def get_child_logger(name: str, console: bool = None, separate_file: bool = False):
     """
     Get a child logger that writes logs to a console or a specified file.
@@ -109,7 +116,7 @@ def get_child_logger(name: str, console: bool = None, separate_file: bool = Fals
         name (str): The name of the child logger (e.g., module name).
         console (bool, optional): If True, log to the console. If False, do not log to the console.
                                   If None, inherit console behavior from the parent logger.
-        file (Path, optional): A string specifying a logfile to log to. will be placed under existing root logs directory. If provided, 
+        file (Path, optional): A string specifying a logfile to log to. will be placed under existing root logs directory. If provided,
                                a rotating file handler will be added.
 
     Returns:

@@ -1,16 +1,22 @@
 # NOT IN USE
-# this is  prototyping module: testing only. 
+# this is  prototyping module: testing only.
 
 import os
 import re
 import json
 from pathlib import Path
 from typing import List, Dict
-from tnh_scholar.openai_interface import start_batch, token_count, get_api_client, set_api_client
+from tnh_scholar.openai_interface import (
+    start_batch,
+    token_count,
+    get_api_client,
+    set_api_client,
+)
 
 # Constants
 ENQUEUED_BATCH_TOKEN_LIMIT = 90000  # Adjust this based on your API rate limits
 BATCH_JOB_PATH = Path("UNSET")
+
 
 def get_active_batches(client) -> List[Dict]:
     """
@@ -23,6 +29,7 @@ def get_active_batches(client) -> List[Dict]:
         print(f"Error fetching active batches: {e}")
         return []
 
+
 def calculate_enqueued_tokens(active_batches: List[Dict]) -> int:
     """
     Calculate the total number of enqueued tokens from active batches.
@@ -32,6 +39,7 @@ def calculate_enqueued_tokens(active_batches: List[Dict]) -> int:
         # Assuming batches have an attribute `input_tokens` or equivalent
         total_tokens += batch.get("input_tokens", 0)
     return total_tokens
+
 
 def process_batch_files(client, batch_file_directory, match_regexp=None):
     """
@@ -48,7 +56,7 @@ def process_batch_files(client, batch_file_directory, match_regexp=None):
         if path_obj.is_file() and regex.search(path_obj.name):
             batch_file = BATCH_JOB_PATH / path_obj.name
             print(f"Found batch file: {batch_file}")
-            
+
             # Calculate the token count for this batch
             try:
                 with open(batch_file, "r") as file:
@@ -57,7 +65,7 @@ def process_batch_files(client, batch_file_directory, match_regexp=None):
             except Exception as e:
                 print(f"Failed to calculate token count for {batch_file}: {e}")
                 continue
-            
+
             # Enqueue batch if there's space
             if batch_tokens <= remaining_tokens:
                 try:
@@ -70,6 +78,7 @@ def process_batch_files(client, batch_file_directory, match_regexp=None):
             else:
                 print(f"Insufficient token space for {batch_file}. Skipping.")
     return batch_info
+
 
 def main():
     """
@@ -84,6 +93,7 @@ def main():
     # Process batch files
     batch_info = process_batch_files(client)
     print(f"Batch processing completed. Enqueued batches: {len(batch_info)}")
+
 
 if __name__ == "__main__":
     main()
@@ -106,7 +116,10 @@ CHECK_INTERVAL_SECONDS = 60  # Time to wait between polling for batch status upd
 
 # Global Variables
 enqueued_tokens = 0
-sent_batches = {}  # Dictionary to track batches: {batch_id: {"batch": batch_obj, "token_size"}}
+sent_batches = (
+    {}
+)  # Dictionary to track batches: {batch_id: {"batch": batch_obj, "token_size"}}
+
 
 def calculate_enqueued_tokens(active_batches: List[Dict]) -> int:
     """
@@ -116,6 +129,7 @@ def calculate_enqueued_tokens(active_batches: List[Dict]) -> int:
     for batch in active_batches:
         total_tokens += batch.get("input_tokens", 0)
     return total_tokens
+
 
 def download_batch_result(client, batch_id):
     """
@@ -131,6 +145,7 @@ def download_batch_result(client, batch_id):
     except Exception as e:
         print(f"Error downloading result for batch {batch_id}: {e}")
 
+
 def process_batch_files(client, batch_file_directory, remaining_tokens):
     """
     Process batch files in the batch job directory, enqueue new batches if space permits.
@@ -143,7 +158,7 @@ def process_batch_files(client, batch_file_directory, remaining_tokens):
         if path_obj.is_file() and regex.search(path_obj.name):
             batch_file = Path(batch_file_directory) / path_obj.name
             print(f"Found batch file: {batch_file}")
-            
+
             # Calculate the token count for this batch
             try:
                 with open(batch_file, "r") as file:
@@ -152,12 +167,15 @@ def process_batch_files(client, batch_file_directory, remaining_tokens):
             except Exception as e:
                 print(f"Failed to calculate token count for {batch_file}: {e}")
                 continue
-            
+
             # Enqueue batch if there's space
             if batch_tokens <= remaining_tokens:
                 try:
                     batch = start_batch(client, batch_file)
-                    sent_batches[batch["id"]] = {"batch": batch, "token_size": batch_tokens}
+                    sent_batches[batch["id"]] = {
+                        "batch": batch,
+                        "token_size": batch_tokens,
+                    }
                     enqueued_tokens += batch_tokens
                     remaining_tokens -= batch_tokens
                     print(f"Batch enqueued: {batch['id']}")
@@ -166,6 +184,7 @@ def process_batch_files(client, batch_file_directory, remaining_tokens):
             else:
                 print(f"Insufficient token space for {batch_file}. Skipping.")
     return batch_info
+
 
 def poll_batches(client):
     """
@@ -189,10 +208,11 @@ def poll_batches(client):
                 completed_batches.append(batch_id)
         except Exception as e:
             print(f"Error checking status for batch {batch_id}: {e}")
-    
+
     # Remove completed batches from sent_batches
     for batch_id in completed_batches:
         del sent_batches[batch_id]
+
 
 def main():
     """
@@ -222,6 +242,7 @@ def main():
         # Wait for the next polling cycle
         print(f"Waiting for {CHECK_INTERVAL_SECONDS} seconds before next check...")
         time.sleep(CHECK_INTERVAL_SECONDS)
+
 
 if __name__ == "__main__":
     main()

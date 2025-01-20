@@ -5,9 +5,9 @@ from typing import Optional
 import sys
 
 BAR_FORMAT = (
-    "{desc}: {percentage:3.0f}%|{bar}| "
-    "Total: {total_fmt} sec. [elapsed: {elapsed}]"
+    "{desc}: {percentage:3.0f}%|{bar}| " "Total: {total_fmt} sec. [elapsed: {elapsed}]"
 )
+
 
 class ExpectedTimeTQDM:
     """
@@ -26,9 +26,9 @@ class ExpectedTimeTQDM:
         expected_time: float,
         display_interval: float = 0.5,
         desc: str = "Time-based Progress",
-        delay_start: float = 1.0
+        delay_start: float = 1.0,
     ) -> None:
-        self.expected_time = round(expected_time) # use nearest second.
+        self.expected_time = round(expected_time)  # use nearest second.
         self.display_interval = display_interval
         self.desc = desc
         self.delay_start = delay_start
@@ -54,10 +54,7 @@ class ExpectedTimeTQDM:
 
         # 2) Create the tqdm bar (only now does it appear)
         self._pbar = tqdm(
-            total=self.expected_time,
-            desc=self.desc,
-            unit="sec",
-            bar_format=BAR_FORMAT
+            total=self.expected_time, desc=self.desc, unit="sec", bar_format=BAR_FORMAT
         )
 
         # 3) Update until told to stop
@@ -83,6 +80,8 @@ class ExpectedTimeTQDM:
             self._pbar.close()
 
     import time
+
+
 import threading
 
 
@@ -93,22 +92,25 @@ class TimeProgress:
     The display updates once per second, printing a dot and showing:
     - Expected time (if provided)
     - Elapsed time (always displayed)
-    
+
     Example:
     >>> import time
     >>> with ExpectedTimeProgress(expected_time=60, desc="Transcribing..."):
     ...     time.sleep(5)  # Simulate work
-    [Expected Time: 1:00, Elapsed Time: 0:05] ..... 
+    [Expected Time: 1:00, Elapsed Time: 0:05] .....
 
     Args:
         expected_time (Optional[float]): Expected time in seconds. Optional.
         display_interval (float): How often to print a dot (seconds).
         desc (str): Description to display alongside the progress.
     """
-    def __init__(self, 
-                 expected_time: Optional[float] = None, 
-                 display_interval: float = 1.0,
-                 desc: str = ""):
+
+    def __init__(
+        self,
+        expected_time: Optional[float] = None,
+        display_interval: float = 1.0,
+        desc: str = "",
+    ):
         self.expected_time = expected_time
         self.display_interval = display_interval
         self._stop_event = threading.Event()

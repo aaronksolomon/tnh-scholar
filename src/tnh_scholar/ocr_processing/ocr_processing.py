@@ -14,14 +14,15 @@ from typing import Callable
 import logging
 
 DEFAULT_ANNOTATION_FONT_PATH = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
-DEFAULT_ANNOTATION_FONT_SIZE = 12 # default annotation font size
+DEFAULT_ANNOTATION_FONT_SIZE = 12  # default annotation font size
 DEFAULT_ANNOTATION_OFFSET = 2  # pixels to offset annotation labels in labeled images
-DEFAULT_ANNOTATION_LANGUAGE_HINTS = ['vi'] 
+DEFAULT_ANNOTATION_LANGUAGE_HINTS = ["vi"]
 DEFAULT_ANNOTATION_METHOD = "DOCUMENT_TEXT_DETECTION"
 
 import warnings
 
 logger = logging.getLogger("ocr_processing")
+
 
 class PDFParseWarning(Warning):
     """
@@ -40,6 +41,7 @@ class PDFParseWarning(Warning):
         formatted_message = f"\033[93mPDFParseWarning: {message}\033[0m"
         print(formatted_message)  # Simply prints the warning
 
+
 def pil_to_bytes(image: Image.Image, format: str = "PNG") -> bytes:
     """
     Converts a Pillow image to raw bytes.
@@ -54,12 +56,13 @@ def pil_to_bytes(image: Image.Image, format: str = "PNG") -> bytes:
     with io.BytesIO() as output:
         image.save(output, format=format)
         return output.getvalue()
-    
+
+
 def start_image_annotator_client(
     credentials_file: str = None,
     api_endpoint: str = "vision.googleapis.com",
     timeout: Tuple[int, int] = (10, 30),
-    enable_logging: bool = False
+    enable_logging: bool = False,
 ) -> vision.ImageAnnotatorClient:
     """
     Starts and returns a Google Vision API ImageAnnotatorClient with optional configuration.
@@ -90,7 +93,9 @@ def start_image_annotator_client(
         # Set up credentials
         if credentials_file:
             if not os.path.exists(credentials_file):
-                raise FileNotFoundError(f"Credentials file '{credentials_file}' not found.")
+                raise FileNotFoundError(
+                    f"Credentials file '{credentials_file}' not found."
+                )
             os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_file
 
         # Configure client options
@@ -106,7 +111,8 @@ def start_image_annotator_client(
 
     except Exception as e:
         raise Exception(f"Failed to initialize ImageAnnotatorClient: {e}")
-    
+
+
 def load_pdf_pages(pdf_path: Path) -> fitz.Document:
     """
     Opens the PDF document and returns the fitz Document object.
@@ -135,12 +141,15 @@ def load_pdf_pages(pdf_path: Path) -> fitz.Document:
         raise FileNotFoundError(f"The file '{pdf_path}' does not exist.")
 
     if not pdf_path.suffix.lower() == ".pdf":
-        raise ValueError(f"The file '{pdf_path}' is not a valid PDF document (expected '.pdf').")
+        raise ValueError(
+            f"The file '{pdf_path}' is not a valid PDF document (expected '.pdf')."
+        )
 
     try:
         return fitz.open(str(pdf_path))  # PyMuPDF expects a string path
     except Exception as e:
         raise Exception(f"An unexpected error occurred while opening the PDF: {e}")
+
 
 def get_page_dimensions(page: fitz.Page) -> dict:
     """
@@ -156,7 +165,7 @@ def get_page_dimensions(page: fitz.Page) -> dict:
     page_width_pts, page_height_pts = page.rect.width, page.rect.height
     page_width_in = page_width_pts / 72  # Convert points to inches
     page_height_in = page_height_pts / 72
-    
+
     # Extract the first image on the page (if any) to get pixel dimensions
     images = page.get_images(full=True)
     if images:
@@ -172,8 +181,9 @@ def get_page_dimensions(page: fitz.Page) -> dict:
         "width_in": page_width_in,
         "height_in": page_height_in,
         "width_px": width_px,
-        "height_px": height_px
+        "height_px": height_px,
     }
+
 
 def extract_image_from_page(page: fitz.Page) -> Image.Image:
     """
@@ -211,7 +221,11 @@ def extract_image_from_page(page: fitz.Page) -> Image.Image:
         base_image = page.parent.extract_image(xref)
 
         # Validate the extracted image data
-        if "image" not in base_image or "width" not in base_image or "height" not in base_image:
+        if (
+            "image" not in base_image
+            or "width" not in base_image
+            or "height" not in base_image
+        ):
             raise ValueError("The extracted image data is incomplete.")
 
         # Convert the raw image bytes into a Pillow image
@@ -225,11 +239,12 @@ def extract_image_from_page(page: fitz.Page) -> Image.Image:
     except Exception as e:
         raise Exception(f"An unexpected error occurred during image extraction: {e}")
 
+
 def annotate_image_with_text(
     image: Image.Image,
     text_annotations: List[EntityAnnotation],
     annotation_font_path: str,
-    font_size: int = 12
+    font_size: int = 12,
 ) -> Image.Image:
     """
     Annotates a PIL image with bounding boxes and text descriptions from OCR results.
@@ -260,8 +275,12 @@ def annotate_image_with_text(
 
     try:
         for i, text_obj in enumerate(text_annotations):
-            vertices = [(vertex.x, vertex.y) for vertex in text_obj.bounding_poly.vertices]
-            if len(vertices) == 4:  # Ensure there are exactly 4 vertices for a rectangle
+            vertices = [
+                (vertex.x, vertex.y) for vertex in text_obj.bounding_poly.vertices
+            ]
+            if (
+                len(vertices) == 4
+            ):  # Ensure there are exactly 4 vertices for a rectangle
                 # Draw the bounding box
                 draw.polygon(vertices, outline="red", width=2)
 
@@ -269,7 +288,9 @@ def annotate_image_with_text(
                 if i > 0:
                     # Offset the text position slightly for clarity
                     text_position = (vertices[0][0] + 2, vertices[0][1] + 2)
-                    draw.text(text_position, text_obj.description, fill="red", font=font)
+                    draw.text(
+                        text_position, text_obj.description, fill="red", font=font
+                    )
 
     except AttributeError as e:
         raise ValueError(f"Invalid text annotation structure: {e}")
@@ -278,7 +299,10 @@ def annotate_image_with_text(
 
     return image
 
-def make_image_preprocess_mask(mask_height: float) -> Callable[[Image.Image, int], Image.Image]:
+
+def make_image_preprocess_mask(
+    mask_height: float,
+) -> Callable[[Image.Image, int], Image.Image]:
     """
     Creates a preprocessing function that masks a specified height at the bottom of the image.
 
@@ -289,6 +313,7 @@ def make_image_preprocess_mask(mask_height: float) -> Callable[[Image.Image, int
         Callable[[Image.Image, int], Image.Image]: A preprocessing function that takes an image
         and page number as input and returns the processed image.
     """
+
     def pre_process_image(image: Image.Image, page_number: int) -> Image.Image:
         """
         Preprocesses the image by masking the bottom region or performing other preprocessing steps.
@@ -315,6 +340,7 @@ def make_image_preprocess_mask(mask_height: float) -> Callable[[Image.Image, int
         return image
 
     return pre_process_image
+
 
 def process_single_image(
     image: Image.Image,
@@ -346,7 +372,9 @@ def process_single_image(
         "DOCUMENT_TEXT_DETECTION": vision.Feature.Type.DOCUMENT_TEXT_DETECTION,
     }
     if feature_type not in feature_map:
-        raise ValueError(f"Invalid feature type '{feature_type}'. Use 'TEXT_DETECTION' or 'DOCUMENT_TEXT_DETECTION'.")
+        raise ValueError(
+            f"Invalid feature type '{feature_type}'. Use 'TEXT_DETECTION' or 'DOCUMENT_TEXT_DETECTION'."
+        )
 
     # Prepare Vision API request
     vision_image = vision.Image(content=image_bytes)
@@ -357,14 +385,15 @@ def process_single_image(
     response = client.annotate_image(
         {"image": vision_image, "features": features, "image_context": image_context}
     )
-    
+
     return response
+
 
 def process_page(
     page: fitz.Page,
     client: vision.ImageAnnotatorClient,
     annotation_font_path: str,
-    preprocessor: Callable[[Image.Image, int], Image.Image] = None
+    preprocessor: Callable[[Image.Image, int], Image.Image] = None,
 ) -> Tuple[str, List[vision.EntityAnnotation], Image.Image, Image.Image, dict]:
     """
     Processes a single PDF page, extracting text, word locations, and annotated images.
@@ -406,23 +435,36 @@ def process_page(
     else:
         # return empty data
         full_page_text = ""
-        word_locations = [EntityAnnotation()] 
-        text_annotations = [EntityAnnotation()]  # create empty data structures to allow storing to proceed.
+        word_locations = [EntityAnnotation()]
+        text_annotations = [
+            EntityAnnotation()
+        ]  # create empty data structures to allow storing to proceed.
 
     # Create an annotated image with bounding boxes and labels
-    annotated_image = annotate_image_with_text(processed_image, text_annotations, annotation_font_path)
+    annotated_image = annotate_image_with_text(
+        processed_image, text_annotations, annotation_font_path
+    )
 
     # Get page dimensions (from the original PDF page, not the image)
     page_dimensions = get_page_dimensions(page)
 
-    return full_page_text, word_locations, annotated_image, original_image, page_dimensions
+    return (
+        full_page_text,
+        word_locations,
+        annotated_image,
+        original_image,
+        page_dimensions,
+    )
+
 
 def build_processed_pdf(
     pdf_path: Path,
     client: vision.ImageAnnotatorClient,
-    preprocessor: Callable = None,    
-    annotation_font_path: Path = DEFAULT_ANNOTATION_FONT_PATH
- ) -> Tuple[List[str], List[List[vision.EntityAnnotation]], List[Image.Image], List[Image.Image]]:
+    preprocessor: Callable = None,
+    annotation_font_path: Path = DEFAULT_ANNOTATION_FONT_PATH,
+) -> Tuple[
+    List[str], List[List[vision.EntityAnnotation]], List[Image.Image], List[Image.Image]
+]:
     """
     Processes a PDF document, extracting text, word locations, annotated images, and unannotated images.
 
@@ -482,17 +524,25 @@ def build_processed_pdf(
 
         try:
             page = doc.load_page(page_num)
-            full_page_text, word_locations, annotated_image, unannotated_image, page_dimensions = process_page(page, client, annotation_font_path, preprocessor)
+            (
+                full_page_text,
+                word_locations,
+                annotated_image,
+                unannotated_image,
+                page_dimensions,
+            ) = process_page(page, client, annotation_font_path, preprocessor)
 
-            if full_page_text: # this is not an empty page
+            if full_page_text:  # this is not an empty page
 
-                if page_num == 0: #save first page info
+                if page_num == 0:  # save first page info
                     first_page_dimensions = page_dimensions
-                elif page_dimensions != first_page_dimensions: # verify page dimensions are consistent
+                elif (
+                    page_dimensions != first_page_dimensions
+                ):  # verify page dimensions are consistent
                     PDFParseWarning.warn(
-                    f"Page {page_num + 1} has different dimensions than page 1."
-                    f"({page_dimensions}) compared to the first page: ({first_page_dimensions})."
-                )
+                        f"Page {page_num + 1} has different dimensions than page 1."
+                        f"({page_dimensions}) compared to the first page: ({first_page_dimensions})."
+                    )
 
                 text_pages.append(full_page_text)
                 word_locations_list.append(word_locations)
@@ -514,7 +564,10 @@ def build_processed_pdf(
     print(f"page dimensions: {page_dimensions}")
     return text_pages, word_locations_list, annotated_images, unannotated_images
 
-def serialize_entity_annotations_to_json(annotations: List[List[EntityAnnotation]]) -> str:
+
+def serialize_entity_annotations_to_json(
+    annotations: List[List[EntityAnnotation]],
+) -> str:
     """
     Serializes a nested list of EntityAnnotation objects into a JSON-compatible format using Base64 encoding.
 
@@ -527,13 +580,14 @@ def serialize_entity_annotations_to_json(annotations: List[List[EntityAnnotation
     serialized_data = []
     for page_annotations in annotations:
         serialized_page = [
-            base64.b64encode(annotation.SerializeToString()).decode('utf-8')
+            base64.b64encode(annotation.SerializeToString()).decode("utf-8")
             for annotation in page_annotations
         ]
         serialized_data.append(serialized_page)
 
     # Convert to a JSON string
     return json.dumps(serialized_data, indent=4)
+
 
 def deserialize_entity_annotations_from_json(data: str) -> List[List[EntityAnnotation]]:
     """
@@ -557,10 +611,15 @@ def deserialize_entity_annotations_from_json(data: str) -> List[List[EntityAnnot
 
     return deserialized_data
 
-def save_processed_pdf_data(output_dir: Path, journal_name: str, text_pages: List[str], 
-                            word_locations: List[List[EntityAnnotation]], 
-                            annotated_images: List[Image.Image], 
-                            unannotated_images: List[Image.Image]):
+
+def save_processed_pdf_data(
+    output_dir: Path,
+    journal_name: str,
+    text_pages: List[str],
+    word_locations: List[List[EntityAnnotation]],
+    annotated_images: List[Image.Image],
+    unannotated_images: List[Image.Image],
+):
     """
     Saves processed PDF data to files for later reloading.
 
@@ -605,7 +664,9 @@ def save_processed_pdf_data(output_dir: Path, journal_name: str, text_pages: Lis
     metadata = {
         "source_pdf": journal_name,
         "page_count": len(text_pages),
-        "images_directory": str(images_dir),  # Convert Path to string for JSON serialization
+        "images_directory": str(
+            images_dir
+        ),  # Convert Path to string for JSON serialization
         "files": {
             "text_pages": "text_pages.json",
             "word_locations": "word_locations.json",
@@ -617,7 +678,12 @@ def save_processed_pdf_data(output_dir: Path, journal_name: str, text_pages: Lis
 
     print(f"Processed data saved in: {base_path}")
 
-def load_processed_PDF_data(base_path: Path) -> Tuple[List[str], List[List[EntityAnnotation]], List[Image.Image], List[Image.Image]]:
+
+def load_processed_PDF_data(
+    base_path: Path,
+) -> Tuple[
+    List[str], List[List[EntityAnnotation]], List[Image.Image], List[Image.Image]
+]:
     """
     Loads processed PDF data from files using metadata for file references.
 
@@ -648,15 +714,21 @@ def load_processed_PDF_data(base_path: Path) -> Tuple[List[str], List[List[Entit
         raise ValueError(f"Invalid metadata file format: {e}")
 
     # Extract file paths from metadata
-    text_pages_file = base_path / metadata.get("files", {}).get("text_pages", "text_pages.json")
-    word_locations_file = base_path / metadata.get("files", {}).get("word_locations", "word_locations.json")
+    text_pages_file = base_path / metadata.get("files", {}).get(
+        "text_pages", "text_pages.json"
+    )
+    word_locations_file = base_path / metadata.get("files", {}).get(
+        "word_locations", "word_locations.json"
+    )
     images_dir = Path(metadata.get("images_directory", base_path / "images"))
 
     # Validate file paths
     if not text_pages_file.exists():
         raise FileNotFoundError(f"Text pages file '{text_pages_file}' not found.")
     if not word_locations_file.exists():
-        raise FileNotFoundError(f"Word locations file '{word_locations_file}' not found.")
+        raise FileNotFoundError(
+            f"Word locations file '{word_locations_file}' not found."
+        )
     if not images_dir.exists() or not images_dir.is_dir():
         raise FileNotFoundError(f"Images directory '{images_dir}' not found.")
 
@@ -667,12 +739,16 @@ def load_processed_PDF_data(base_path: Path) -> Tuple[List[str], List[List[Entit
     # Load word locations
     with word_locations_file.open("r", encoding="utf-8") as f:
         serialized_word_locations = f.read()
-        word_locations = deserialize_entity_annotations_from_json(serialized_word_locations)
+        word_locations = deserialize_entity_annotations_from_json(
+            serialized_word_locations
+        )
 
     # Load images
     annotated_images = []
     unannotated_images = []
-    for file in sorted(images_dir.iterdir()):  # Iterate over files in the images directory
+    for file in sorted(
+        images_dir.iterdir()
+    ):  # Iterate over files in the images directory
         if file.name.startswith("annotated_page_") and file.suffix == ".png":
             annotated_images.append(Image.open(file))
         elif file.name.startswith("unannotated_page_") and file.suffix == ".png":

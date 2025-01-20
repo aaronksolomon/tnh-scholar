@@ -6,8 +6,10 @@ import re
 import shutil
 import warnings
 
+
 class FileExistsWarning(UserWarning):
     pass
+
 
 def ensure_directory_exists(dir_path: Path) -> bool:
     """
@@ -19,7 +21,10 @@ def ensure_directory_exists(dir_path: Path) -> bool:
     # Stub Implementation
     return dir_path.exists()
 
-def iterate_subdir(directory: Path, recursive: bool = False) -> Generator[Path, None, None]:
+
+def iterate_subdir(
+    directory: Path, recursive: bool = False
+) -> Generator[Path, None, None]:
     """
     Iterates through subdirectories in the given directory.
 
@@ -30,13 +35,13 @@ def iterate_subdir(directory: Path, recursive: bool = False) -> Generator[Path, 
 
     Yields:
         Path: Paths to each subdirectory.
-    
+
     Example:
         >>> for subdir in iterate_subdir(Path('/root'), recursive=False):
         ...     print(subdir)
     """
     if recursive:
-        for subdirectory in directory.rglob('*'):
+        for subdirectory in directory.rglob("*"):
             if subdirectory.is_dir():
                 yield subdirectory
     else:
@@ -44,11 +49,12 @@ def iterate_subdir(directory: Path, recursive: bool = False) -> Generator[Path, 
             if subdirectory.is_dir():
                 yield subdirectory
 
+
 def copy_files_with_regex(
     source_dir: Path,
     destination_dir: Path,
     regex_patterns: list[str],
-    preserve_structure: bool = True
+    preserve_structure: bool = True,
 ) -> None:
     """
     Copies files from subdirectories one level down in the source directory to the destination directory
@@ -72,7 +78,9 @@ def copy_files_with_regex(
         ... )
     """
     if not source_dir.is_dir():
-        raise ValueError(f"The source directory {source_dir} does not exist or is not a directory.")
+        raise ValueError(
+            f"The source directory {source_dir} does not exist or is not a directory."
+        )
 
     if not destination_dir.exists():
         destination_dir.mkdir(parents=True, exist_ok=True)
@@ -88,10 +96,14 @@ def copy_files_with_regex(
                 if file_path.is_file():
                     print(f"checking file: {file_path.name}")
                     # Check if the file matches any of the regex patterns
-                    if any(pattern.match(file_path.name) for pattern in compiled_patterns):
+                    if any(
+                        pattern.match(file_path.name) for pattern in compiled_patterns
+                    ):
                         if preserve_structure:
                             # Construct the target path, preserving relative structure
-                            relative_path = subdir.relative_to(source_dir) / file_path.name
+                            relative_path = (
+                                subdir.relative_to(source_dir) / file_path.name
+                            )
                             target_path = destination_dir / relative_path
                             target_path.parent.mkdir(parents=True, exist_ok=True)
                         else:
@@ -112,11 +124,13 @@ def get_text_from_file(file_path: Path) -> str:
         The content of the text file as a single string.
     """
 
-    with open(file_path, 'r', encoding='utf-8') as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         return file.read()
 
 
-def write_text_to_file(file_path: Path, content: str, overwrite: bool = False, append: bool = False) -> None:
+def write_text_to_file(
+    file_path: Path, content: str, overwrite: bool = False, append: bool = False
+) -> None:
     """Writes text content to a file, handling overwriting and appending.
 
     Args:
@@ -131,11 +145,14 @@ def write_text_to_file(file_path: Path, content: str, overwrite: bool = False, a
 
     if file_path.exists():
         if not overwrite and not append:
-            warnings.warn(f"File '{file_path}' already exists. Use overwrite or append.", FileExistsWarning)
+            warnings.warn(
+                f"File '{file_path}' already exists. Use overwrite or append.",
+                FileExistsWarning,
+            )
             return  # Do not write if neither flag is set
-        mode = 'a' if append else 'w' # Choose mode based on flags
+        mode = "a" if append else "w"  # Choose mode based on flags
     else:
-        mode = 'w' # Default to write mode if file doesn't exist
+        mode = "w"  # Default to write mode if file doesn't exist
 
-    with open(file_path, mode, encoding='utf-8') as file:
+    with open(file_path, mode, encoding="utf-8") as file:
         file.write(content)

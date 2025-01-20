@@ -1,14 +1,22 @@
-
 from pathlib import Path
 import re
 from tnh_scholar.utils.file_utils import get_text_from_file
 
-from tnh_scholar.openai_interface import(
-    token_count, generate_messages, create_jsonl_file_for_batch,
-    start_batch_with_retries, run_immediate_chat_process, get_completion_content
-) 
- 
-from tnh_scholar.xml_processing import split_xml_on_pagebreaks, join_xml_data_to_doc, split_xml_pages, save_pages_to_xml
+from tnh_scholar.openai_interface import (
+    token_count,
+    generate_messages,
+    create_jsonl_file_for_batch,
+    start_batch_with_retries,
+    run_immediate_chat_process,
+    get_completion_content,
+)
+
+from tnh_scholar.xml_processing import (
+    split_xml_on_pagebreaks,
+    join_xml_data_to_doc,
+    split_xml_pages,
+    save_pages_to_xml,
+)
 
 import logging
 
@@ -25,6 +33,7 @@ BATCH_RETRY_DELAY = 5  # seconds to wait before retry
 
 logger = logging.getLogger("journal_process")
 
+
 # logger setup function
 def setup_logger(log_file_path):
     """
@@ -40,8 +49,8 @@ def setup_logger(log_file_path):
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # Include logger name
         handlers=[
             logging.FileHandler(log_file_path, encoding="utf-8"),
-            logging.StreamHandler()  # Optional: to log to the console as well
-        ]
+            logging.StreamHandler(),  # Optional: to log to the console as well
+        ],
     )
 
     # Suppress DEBUG/INFO logs for specific noisy modules
@@ -62,6 +71,7 @@ def setup_logger(log_file_path):
 
     return logging.getLogger(__name__)
 
+
 # Journal schema for sectioning
 global journal_schema
 journal_schema = {
@@ -79,7 +89,7 @@ journal_schema = {
                     "summary": {"type": "string"},
                     "keywords": {"type": "array", "items": {"type": "string"}},
                     "start_page": {"type": "integer", "minimum": 1},
-                    "end_page": {"type": "integer", "minimum": 1}
+                    "end_page": {"type": "integer", "minimum": 1},
                 },
                 "required": [
                     "title_vi",
@@ -87,13 +97,14 @@ journal_schema = {
                     "summary",
                     "keywords",
                     "start_page",
-                    "end_page"
-                ]
-            }
-        }
+                    "end_page",
+                ],
+            },
+        },
     },
-    "required": ["journal_summary", "sections"]
+    "required": ["journal_summary", "sections"],
 }
+
 
 # cleaning helper functions:
 def wrap_lines(text: str) -> str:
@@ -105,19 +116,21 @@ def wrap_lines(text: str) -> str:
 
     Returns:
         str: A string where each line is enclosed in angle brackets.
-    
+
     Example:
         >>> enclose_lines("This is a string with   \n   two lines.")
         '<This is a string with  >\n<    two lines.>'
     """
-    return '\n'.join(f"<{line}>" for line in text.split('\n'))
+    return "\n".join(f"<{line}>" for line in text.split("\n"))
+
 
 def wrap_all_lines(pages):
     return [wrap_lines(page) for page in pages]
 
+
 def unwrap_lines(text: str) -> str:
     """
-    Removes angle brackets (< >) from encapsulated lines and merges them into 
+    Removes angle brackets (< >) from encapsulated lines and merges them into
     a newline-separated string.
 
     Parameters:
@@ -125,7 +138,7 @@ def unwrap_lines(text: str) -> str:
 
     Returns:
         str: A newline-separated string with the encapsulation removed.
-    
+
     Example:
         >>> merge_encapsulated_lines("<Line 1> <Line 2> <Line 3>")
         'Line 1\nLine 2\nLine 3'
@@ -135,7 +148,8 @@ def unwrap_lines(text: str) -> str:
     # Find all content between < and > using regex
     matches = re.findall(r"<(.*?)>", text)
     # Join the extracted content with newlines
-    return '\n'.join(matches)
+    return "\n".join(matches)
+
 
 def unwrap_all_lines(pages):
     result = []
@@ -145,6 +159,7 @@ def unwrap_all_lines(pages):
         else:
             result.append(unwrap_lines(page))
     return result
+
 
 # code to processs and validate journal sections
 def validate_and_clean_data(data, schema):
@@ -159,6 +174,7 @@ def validate_and_clean_data(data, schema):
     Returns:
         dict: The cleaned data adhering to the schema.
     """
+
     def clean_value(value, field_schema):
         """
         Clean a single value based on its schema, attempting type conversions where necessary.
@@ -214,7 +230,9 @@ def validate_and_clean_data(data, schema):
         Clean a dictionary object based on its schema.
         """
         if not isinstance(obj, dict):
-            print(f"Expected dict but got: \n{type(obj)}: {obj}\nResetting to empty dict.")
+            print(
+                f"Expected dict but got: \n{type(obj)}: {obj}\nResetting to empty dict."
+            )
             return {}
         cleaned = {}
         properties = obj_schema.get("properties", {})
@@ -230,7 +248,10 @@ def validate_and_clean_data(data, schema):
     else:
         raise ValueError("Top-level schema must be of type 'object'.")
 
-def validate_and_save_metadata(output_file_path: Path, json_metadata_serial: str, schema):
+
+def validate_and_save_metadata(
+    output_file_path: Path, json_metadata_serial: str, schema
+):
     """
     Validates and cleans journal data against the schema, then writes it to a JSON file.
 
@@ -250,11 +271,14 @@ def validate_and_save_metadata(output_file_path: Path, json_metadata_serial: str
         # Write the parsed data to the specified JSON file
         with open(output_file_path, "w", encoding="utf-8") as f:
             json.dump(cleaned_data, f, indent=4, ensure_ascii=False)
-        logger.info(f"Parsed and validated metadata successfully written to {output_file_path}")
+        logger.info(
+            f"Parsed and validated metadata successfully written to {output_file_path}"
+        )
         return True
     except Exception as e:
         logger.error(f"An error occurred during validation or writing: {e}")
-        raise 
+        raise
+
 
 def extract_page_groups_from_metadata(metadata):
     """
@@ -270,7 +294,9 @@ def extract_page_groups_from_metadata(metadata):
 
     # Ensure metadata contains sections
     if "sections" not in metadata or not isinstance(metadata["sections"], list):
-        raise ValueError("Metadata does not contain a valid 'sections' key with a list of sections.")
+        raise ValueError(
+            "Metadata does not contain a valid 'sections' key with a list of sections."
+        )
 
     for section in metadata["sections"]:
         try:
@@ -291,17 +317,16 @@ def extract_page_groups_from_metadata(metadata):
             print(f"Error processing section metadata: {e}")
 
     logger.debug(f"page groups found: {page_groups}")
-   
+
     return page_groups
 
-def _get_max_tokens_for_clean(data: str, factor: float=1, buffer: int=100):
+
+def _get_max_tokens_for_clean(data: str, factor: float = 1, buffer: int = 100):
     return floor(token_count(data) * factor) + buffer
 
+
 def generate_clean_batch(
-    input_xml_file: str,
-    output_file: str,
-    system_message: str,
-    user_wrap_function
+    input_xml_file: str, output_file: str, system_message: str, user_wrap_function
 ):
     """
     Generate a batch file for the OpenAI (OA) API using a single input XML file.
@@ -326,7 +351,7 @@ def generate_clean_batch(
 
         # Split the text into pages for processing
         pages = split_xml_on_pagebreaks(text)
-        pages =  wrap_all_lines(pages) # wrap lines with brackets.
+        pages = wrap_all_lines(pages)  # wrap lines with brackets.
         if not pages:
             raise ValueError(f"No pages found in XML file: {input_xml_file}")
         logger.info(f"Found {len(pages)} pages in {input_xml_file}.")
@@ -335,9 +360,11 @@ def generate_clean_batch(
 
         # Generate messages for the pages
         batch_message_seq = generate_messages(system_message, user_wrap_function, pages)
-        
+
         # Save the batch file
-        create_jsonl_file_for_batch(batch_message_seq, output_file, max_token_list=max_tokens)
+        create_jsonl_file_for_batch(
+            batch_message_seq, output_file, max_token_list=max_tokens
+        )
         logger.info(f"Batch file created successfully: {output_file}")
 
         return output_file
@@ -352,8 +379,11 @@ def generate_clean_batch(
         logger.error(f"Unexpected error while processing {input_xml_file}: {e}")
         raise
 
+
 # running batches
-def batch_section(input_xml_path: Path, batch_jsonl: Path, system_message, journal_name):
+def batch_section(
+    input_xml_path: Path, batch_jsonl: Path, system_message, journal_name
+):
     """
     Splits the journal content into sections using GPT, with retries for both starting and completing the batch.
 
@@ -366,16 +396,20 @@ def batch_section(input_xml_path: Path, batch_jsonl: Path, system_message, journ
         retry_delay (int): Delay in seconds between retries.
 
     Returns:
-        str: the result of the batch sectioning process as a serialized json object. 
+        str: the result of the batch sectioning process as a serialized json object.
     """
     try:
-        logger.info(f"Starting sectioning batch for {journal_name} with file:\n\t{input_xml_path}")
+        logger.info(
+            f"Starting sectioning batch for {journal_name} with file:\n\t{input_xml_path}"
+        )
         # Load journal content
         journal_pages = get_text_from_file(input_xml_path)
 
         # Create GPT messages for sectioning
         user_message_wrapper = lambda text: f"{text}"
-        messages = generate_messages(system_message, user_message_wrapper, [journal_pages])
+        messages = generate_messages(
+            system_message, user_message_wrapper, [journal_pages]
+        )
 
         # Create JSONL file for batch processing
         jsonl_file = create_jsonl_file_for_batch(messages, batch_jsonl, json_mode=True)
@@ -384,23 +418,39 @@ def batch_section(input_xml_path: Path, batch_jsonl: Path, system_message, journ
         logger.error(
             f"Failed to initialize batch sectioning data for journal '{journal_name}'.",
             extra={"input_xml_path": input_xml_path},
-            exc_info=True
+            exc_info=True,
         )
-        raise RuntimeError(f"Error initializing batch sectioning data for journal '{journal_name}'.") from e
+        raise RuntimeError(
+            f"Error initializing batch sectioning data for journal '{journal_name}'."
+        ) from e
 
-    response = start_batch_with_retries(jsonl_file, description=f"Batch for sectioning journal: {journal_name} | input file: {input_xml_path}")
-    
+    response = start_batch_with_retries(
+        jsonl_file,
+        description=f"Batch for sectioning journal: {journal_name} | input file: {input_xml_path}",
+    )
+
     if response:
-        json_result = response[0]  # should return json, just one batch so first response
+        json_result = response[
+            0
+        ]  # should return json, just one batch so first response
         # Log success and return output json
-        logger.info(f"Successfully batch sectioned journal '{journal_name}' with input file: {input_xml_path}.")
+        logger.info(
+            f"Successfully batch sectioned journal '{journal_name}' with input file: {input_xml_path}."
+        )
         return json_result
     else:
         logger.error("Section batch failed to get response.")
         return ""
-    
+
+
 # Step 2: Translation
-def batch_translate(input_xml_path: Path, batch_json_path: Path, metadata_path: Path, system_message, journal_name: str):
+def batch_translate(
+    input_xml_path: Path,
+    batch_json_path: Path,
+    metadata_path: Path,
+    system_message,
+    journal_name: str,
+):
     """
     Translates the journal sections using the GPT model.
     Saves the translated content back to XML.
@@ -416,8 +466,10 @@ def batch_translate(input_xml_path: Path, batch_json_path: Path, metadata_path: 
     Returns:
         bool: True if the process succeeds, False otherwise.
     """
-    logger.info(f"Starting translation batch for journal '{journal_name}':\n\twith file: {input_xml_path}\n\tmetadata: {metadata_path}")
-    
+    logger.info(
+        f"Starting translation batch for journal '{journal_name}':\n\twith file: {input_xml_path}\n\tmetadata: {metadata_path}"
+    )
+
     # Data initialization:
     try:
         # load metadata
@@ -436,23 +488,42 @@ def batch_translate(input_xml_path: Path, batch_json_path: Path, metadata_path: 
             logger.debug(f"section_contents[0]:\n{section_contents[0]}")
         else:
             logger.error(f"No sectin contents.")
-        
-    except Exception as e:
-        logger.error(f"Failed to initialize data for translation batching for journal '{journal_name}'.", exc_info=True)
-        raise RuntimeError(f"Error during data initialization for journal '{journal_name}'.") from e
-        
-    translation_data = translate_sections(batch_json_path, system_message, section_contents, section_metadata, journal_name)
-    return translation_data
-    
-def translate_sections(batch_jsonl_path: Path, system_message, section_contents, section_metadata, journal_name, immediate=False):        
-    """build up sections in batches to translate """
 
-    section_mdata = section_metadata['sections']
+    except Exception as e:
+        logger.error(
+            f"Failed to initialize data for translation batching for journal '{journal_name}'.",
+            exc_info=True,
+        )
+        raise RuntimeError(
+            f"Error during data initialization for journal '{journal_name}'."
+        ) from e
+
+    translation_data = translate_sections(
+        batch_json_path,
+        system_message,
+        section_contents,
+        section_metadata,
+        journal_name,
+    )
+    return translation_data
+
+
+def translate_sections(
+    batch_jsonl_path: Path,
+    system_message,
+    section_contents,
+    section_metadata,
+    journal_name,
+    immediate=False,
+):
+    """build up sections in batches to translate"""
+
+    section_mdata = section_metadata["sections"]
     if len(section_contents) != len(section_mdata):
-            raise RuntimeError("Section length mismatch.")
-    
-    #collate metadata and section content, calculate max_tokens per section:
-    section_data_to_send = []    
+        raise RuntimeError("Section length mismatch.")
+
+    # collate metadata and section content, calculate max_tokens per section:
+    section_data_to_send = []
     max_token_list = []
     current_token_count = 0
     collected_translations = []
@@ -464,31 +535,39 @@ def translate_sections(batch_jsonl_path: Path, system_message, section_contents,
         max_token_list.append(max_tokens)
         current_token_count += max_tokens
         section_data = SimpleNamespace(
-            title=section_info["title_en"], 
-            content=section_content
+            title=section_info["title_en"], content=section_content
         )
         section_data_to_send.append(section_data)
         logger.debug(f"section {i}: {section_data.title} added for batch processing.")
 
-        if current_token_count >= MAX_TOKEN_LIMIT or i == section_last_index:  
-             # send sections for batch processing since token limit reached.
-             batch_result = send_data_for_tx_batch(batch_jsonl_path, section_data_to_send, system_message, max_token_list, journal_name, immediate)
-             collected_translations.extend(batch_result)
+        if current_token_count >= MAX_TOKEN_LIMIT or i == section_last_index:
+            # send sections for batch processing since token limit reached.
+            batch_result = send_data_for_tx_batch(
+                batch_jsonl_path,
+                section_data_to_send,
+                system_message,
+                max_token_list,
+                journal_name,
+                immediate,
+            )
+            collected_translations.extend(batch_result)
 
             # reset containers to start building up next batch.
-             section_data_to_send = []
-             max_token_list = []
-             current_token_count = 0
-    
+            section_data_to_send = []
+            max_token_list = []
+            current_token_count = 0
+
     return collected_translations
 
+
 def send_data_for_tx_batch(
-        batch_jsonl_path: Path, 
-        section_data_to_send: List, 
-        system_message, 
-        max_token_list: List, 
-        journal_name, 
-        immediate=False):
+    batch_jsonl_path: Path,
+    section_data_to_send: List,
+    system_message,
+    max_token_list: List,
+    journal_name,
+    immediate=False,
+):
     """
     Sends data for translation batch or immediate processing.
 
@@ -505,9 +584,13 @@ def send_data_for_tx_batch(
     """
     try:
         # Generate all messages using the generate_messages function
-        user_message_wrapper = lambda section_info: f"Translate this section with title '{section_info.title}':\n{section_info.content}"
-        messages = generate_messages(system_message, user_message_wrapper, section_data_to_send)
-        
+        user_message_wrapper = (
+            lambda section_info: f"Translate this section with title '{section_info.title}':\n{section_info.content}"
+        )
+        messages = generate_messages(
+            system_message, user_message_wrapper, section_data_to_send
+        )
+
         if immediate:
             logger.info(f"Running immediate chat process for journal '{journal_name}'.")
             translated_data = []
@@ -515,26 +598,39 @@ def send_data_for_tx_batch(
                 max_tokens = max_token_list[i]
                 response = run_immediate_chat_process(message, max_tokens=max_tokens)
                 translated_data.append(response)
-            logger.info(f"Immediate translation completed for journal '{journal_name}'.")
+            logger.info(
+                f"Immediate translation completed for journal '{journal_name}'."
+            )
             return translated_data
         else:
             logger.info(f"Running batch processing for journal '{journal_name}'.")
             # Create batch file for batch processing
-            jsonl_file = create_jsonl_file_for_batch(messages, batch_jsonl_path, max_token_list=max_token_list)
+            jsonl_file = create_jsonl_file_for_batch(
+                messages, batch_jsonl_path, max_token_list=max_token_list
+            )
             if not jsonl_file:
                 raise RuntimeError("Failed to create JSONL file for translation batch.")
 
             # Process batch and return the result
-            translation_data = start_batch_with_retries(jsonl_file, description=f"Batch for translating journal '{journal_name}'")
+            translation_data = start_batch_with_retries(
+                jsonl_file,
+                description=f"Batch for translating journal '{journal_name}'",
+            )
             logger.info(f"Batch translation completed for journal '{journal_name}'.")
             return translation_data
 
     except Exception as e:
-        logger.error(f"Error during translation processing for journal '{journal_name}'.", exc_info=True)
+        logger.error(
+            f"Error during translation processing for journal '{journal_name}'.",
+            exc_info=True,
+        )
         raise RuntimeError("Error in translation process.") from e
 
+
 # Output
-def save_cleaned_data(cleaned_xml_path: Path, cleaned_wrapped_pages: List[str], journal_name):
+def save_cleaned_data(
+    cleaned_xml_path: Path, cleaned_wrapped_pages: List[str], journal_name
+):
     try:
         logger.info(f"Saving cleaned content to XML for journal '{journal_name}'.")
         cleaned_wrapped_pages = unwrap_all_lines(cleaned_wrapped_pages)
@@ -543,39 +639,51 @@ def save_cleaned_data(cleaned_xml_path: Path, cleaned_wrapped_pages: List[str], 
     except Exception as e:
         logger.error(
             f"Failed to save cleaned data for journal '{journal_name}'.",
-                extra={"cleaned_xml_path": cleaned_xml_path},
-                exc_info=True
+            extra={"cleaned_xml_path": cleaned_xml_path},
+            exc_info=True,
         )
-        raise RuntimeError(f"Failed to save cleaned data for journal '{journal_name}'.") from e
+        raise RuntimeError(
+            f"Failed to save cleaned data for journal '{journal_name}'."
+        ) from e
 
-def save_sectioning_data(output_json_path: Path, raw_output_path: Path, serial_json: str, journal_name):
+
+def save_sectioning_data(
+    output_json_path: Path, raw_output_path: Path, serial_json: str, journal_name
+):
     try:
         raw_output_path.write_text(serial_json, encoding="utf-8")
     except Exception as e:
         logger.error(
             f"Failed to write raw response file for journal '{journal_name}'.",
             extra={"raw_output_path": raw_output_path},
-            exc_info=True
+            exc_info=True,
         )
-        raise RuntimeError(f"Failed to write raw response file for journal '{journal_name}'.") from e
+        raise RuntimeError(
+            f"Failed to write raw response file for journal '{journal_name}'."
+        ) from e
 
     # Validate and save metadata
     try:
-        valid = validate_and_save_metadata(output_json_path, serial_json, journal_schema)
+        valid = validate_and_save_metadata(
+            output_json_path, serial_json, journal_schema
+        )
         if not valid:
-            raise RuntimeError(f"Validation failed for metadata of journal '{journal_name}'.")
+            raise RuntimeError(
+                f"Validation failed for metadata of journal '{journal_name}'."
+            )
     except Exception as e:
         logger.error(
             f"Error occurred while validating and saving metadata for journal '{journal_name}'.",
             extra={"output_json_path": output_json_path},
-            exc_info=True
+            exc_info=True,
         )
         raise RuntimeError(f"Validation error for journal '{journal_name}'.") from e
 
     return output_json_path
 
+
 def save_translation_data(xml_output_path: Path, translation_data, journal_name):
-# Save translated content back to XML
+    # Save translated content back to XML
     try:
         logger.info(f"Saving translated content to XML for journal '{journal_name}'.")
         join_xml_data_to_doc(xml_output_path, translation_data, overwrite=True)
@@ -585,9 +693,12 @@ def save_translation_data(xml_output_path: Path, translation_data, journal_name)
         logger.error(
             f"Failed to save translation data for journal '{journal_name}'.",
             extra={"xml_output_path": xml_output_path},
-            exc_info=True
+            exc_info=True,
         )
-        raise RuntimeError(f"Failed to save translation data for journal '{journal_name}'.") from e
+        raise RuntimeError(
+            f"Failed to save translation data for journal '{journal_name}'."
+        ) from e
+
 
 # JSON helpers
 def deserialize_json(serialized_data: str):
@@ -601,7 +712,9 @@ def deserialize_json(serialized_data: str):
         dict: The deserialized Python dictionary.
     """
     if not isinstance(serialized_data, str):
-        logger.error(f"String input required for deserialize_json. Received: {type(serialized_data)}")
+        logger.error(
+            f"String input required for deserialize_json. Received: {type(serialized_data)}"
+        )
         raise ValueError("String input required.")
 
     try:
@@ -610,6 +723,7 @@ def deserialize_json(serialized_data: str):
     except json.JSONDecodeError as e:
         logger.error(f"Failed to deserialize JSON: {e}")
         raise
+
 
 # generate a batch from xml page file
 # depricated
@@ -667,6 +781,7 @@ def generate_single_oa_batch_from_pages(
         logger.error(f"Unexpected error while processing {input_xml_file}: {e}")
         raise
 
+
 def generate_all_batches(
     processed_document_dir: str,
     system_message: str,
@@ -708,6 +823,3 @@ def generate_all_batches(
                 continue
 
     logger.info("Batch generation completed.")
-
-    
-    

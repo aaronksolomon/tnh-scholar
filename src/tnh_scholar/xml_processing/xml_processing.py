@@ -5,12 +5,15 @@ import re
 from pathlib import Path
 from typing import List, Optional, Tuple
 
+
 class FormattingError(Exception):
     """
     Custom exception raised for formatting-related errors.
     """
+
     def __init__(self, message="An error occurred due to invalid formatting."):
         super().__init__(message)
+
 
 def save_pages_to_xml(
     output_xml_path: Path,
@@ -19,15 +22,15 @@ def save_pages_to_xml(
 ) -> None:
     """
     Generates and saves an XML file containing text pages, with a <pagebreak> tag indicating the page ends.
-    
+
     Parameters:
         output_xml_path (Path): The Path object for the file where the XML file will be saved.
         text_pages (List[str]): A list of strings, each representing the text content of a page.
         overwrite (bool): If True, overwrites the file if it exists. Default is False.
-    
+
     Returns:
         None
-    
+
     Raises:
         ValueError: If the input list of text_pages is empty or contains invalid types.
         FileExistsError: If the file already exists and overwrite is False.
@@ -39,7 +42,9 @@ def save_pages_to_xml(
 
     # Check if the file exists and handle overwrite behavior
     if output_xml_path.exists() and not overwrite:
-        raise FileExistsError(f"The file '{output_xml_path}' already exists. Set overwrite=True to overwrite.")
+        raise FileExistsError(
+            f"The file '{output_xml_path}' already exists. Set overwrite=True to overwrite."
+        )
 
     try:
         # Ensure the output directory exists
@@ -54,7 +59,9 @@ def save_pages_to_xml(
             # Add each page with its content and <pagebreak> tag
             for page_number, text in enumerate(text_pages, start=1):
                 if not isinstance(text, str):
-                    raise ValueError(f"Invalid page content at index {page_number - 1}: expected a string.")
+                    raise ValueError(
+                        f"Invalid page content at index {page_number - 1}: expected a string."
+                    )
 
                 content = text.strip()
                 escaped_text = escape(content)
@@ -79,12 +86,13 @@ def save_pages_to_xml(
     except Exception as e:
         raise RuntimeError(f"An unexpected error occurred: {e}") from e
 
+
 def join_xml_data_to_doc(
     file_path: Path, data: List[str], overwrite: bool = False
 ) -> None:
     """
-    Joins a list of XML-tagged data with newlines, wraps it with <document> tags, 
-    and writes it to the specified file. Raises an exception if the file exists 
+    Joins a list of XML-tagged data with newlines, wraps it with <document> tags,
+    and writes it to the specified file. Raises an exception if the file exists
     and overwrite is not set.
 
     Args:
@@ -100,17 +108,20 @@ def join_xml_data_to_doc(
         >>> join_xml_data_to_doc(Path("output.xml"), ["<tag>Data</tag>"], overwrite=True)
     """
     if file_path.exists() and not overwrite:
-        raise FileExistsError(f"The file {file_path} already exists and overwrite is not set.")
-    
+        raise FileExistsError(
+            f"The file {file_path} already exists and overwrite is not set."
+        )
+
     if not data:
         raise ValueError("The data list cannot be empty.")
-    
+
     # Create the XML content
     joined_data = "\n".join(data)  # Joining data with newline
     xml_content = f"<document>\n{joined_data}\n</document>"
-    
+
     # Write to file
-    file_path.write_text(xml_content, encoding='utf-8')
+    file_path.write_text(xml_content, encoding="utf-8")
+
 
 def remove_page_tags(text):
     """
@@ -128,7 +139,9 @@ def remove_page_tags(text):
     text = re.sub(r"</page>", "", text)
     return text
 
+
 from typing import List, Optional, Tuple
+
 
 def split_xml_on_pagebreaks(
     text: str,
@@ -202,6 +215,7 @@ def split_xml_on_pagebreaks(
         return grouped_pages
 
     return pages
+
 
 # def split_xml_pages(text, page_groups=None):
 #     """
