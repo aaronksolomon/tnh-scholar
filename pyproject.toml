@@ -126,7 +126,7 @@ omit = ["tests/*", "**/__init__.py"]
 [tool.ruff]
 line-length = 88  # Match black
 target-version = "py312"
-select = [
+lint.select = [
     "E",  # pycodestyle errors
     "F",  # pyflakes
     "I",  # isort
