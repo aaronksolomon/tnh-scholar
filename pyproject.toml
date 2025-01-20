@@ -74,6 +74,8 @@ dev = [
     "mkdocstrings-python>=1.13.0",
     "pipreqs>=8.31.0",
     "pre-commit>=3.5.0"
+    "types-PyYAML",    
+    "types-requests"
 ]
 ocr = [
     "fitz==0.0.1.dev2",
@@ -108,16 +110,42 @@ pythonpath = ["src"]
 
 [tool.mypy]
 python_version = "3.12"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-check_untyped_defs = true
-ignore_missing_imports = true  
-strict = true  
-plugins = ["pydantic.mypy"]  
+# Disable strict mode during prototyping
+strict = false
+
+# Core type checking
+disallow_untyped_defs = false      # Allow functions without type annotations
+check_untyped_defs = false         # Don't type check functions without annotations
+ignore_missing_imports = true       # Ignore missing stubs for external packages
+
+# Disable stricter optional checks during development
+strict_optional = false            # More permissive handling of Optional types
+
+# Keep basic error reporting
+warn_return_any = true             # Still warn about returning Any
+warn_unused_configs = true         # Warn about unused mypy configs
+
+# Plugin support
+plugins = ["pydantic.mypy"]        # Keep pydantic plugin for model validation
+
 [[tool.mypy.overrides]]
 module = ["tests.*"]
-disallow_untyped_defs = false
+disallow_untyped_defs = false      # Keep tests relaxed
+
+# gradually enable these as codebase matures:
+#strict_optional = true
+#disallow_untyped_defs = true
+#check_untyped_defs = true
+#disallow_any_expr = true
+#disallow_any_decorated = true
+#disallow_any_explicit = true
+#disallow_subclassing_any = true
+#disallow_untyped_decorators = true
+#no_implicit_optional = true
+#warn_redundant_casts = true
+#warn_unused_ignores = true
+#warn_no_return = true
+#warn_unreachable = true
 
 [tool.coverage.run]
 source = ["tnh_scholar"]
