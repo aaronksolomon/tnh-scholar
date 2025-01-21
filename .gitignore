@@ -25,6 +25,9 @@ sandbox/
 # temporary files:
 tmp/
 
+# local notebooks:
+*_local.ipynb
+
 # patterns:
 patterns/
 
