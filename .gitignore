@@ -37,6 +37,10 @@ output_data/
 # patterns:
 patterns/
 
+# json files:
+*.json
+*.jsonl
+
 # Big files
 *.pdf
 *.jpeg
