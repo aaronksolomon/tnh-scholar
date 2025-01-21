@@ -9,6 +9,10 @@
       
       
       
+        <link rel="prev" href="../audio-transcribe/">
+      
+      
+        <link rel="next" href="../ytt-fetch/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -16,7 +20,7 @@
     
     
       
-        <title>TNH-FAB User Manual - TNH Scholar Documentation</title>
+        <title>tnh-fab - TNH Scholar Documentation</title>
       
     
     
@@ -96,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TNH-FAB User Manual
+              tnh-fab
             
           </span>
         </div>
@@ -268,7 +272,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user-guide/installation.md" class="md-nav__link">
+      <a href="../../user-guide/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -314,17 +318,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -338,7 +344,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             CLI Tools
@@ -352,7 +358,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/audio-transcribe.md" class="md-nav__link">
+      <a href="../audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -370,10 +376,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../cli/tnh-fab.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -382,6 +408,137 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-punctuate" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Punctuate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Section
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-translate" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Translate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Process
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-usage-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Usage Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Usage Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pipeline Processing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern System
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -394,7 +551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/ytt-fetch.md" class="md-nav__link">
+      <a href="../ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">

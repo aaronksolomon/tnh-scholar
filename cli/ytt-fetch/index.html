@@ -9,6 +9,10 @@
       
       
       
+        <link rel="prev" href="../tnh-fab/">
+      
+      
+        <link rel="next" href="../../docs/design/documentation/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -16,7 +20,7 @@
     
     
       
-        <title>TNH Scholar Pattern System - TNH Scholar Documentation</title>
+        <title>ytt-fetch - TNH Scholar Documentation</title>
       
     
     
@@ -60,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tnh-scholar-pattern-system" class="md-skip">
+        <a href="#ytt-fetch" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TNH Scholar Pattern System
+              ytt-fetch
             
           </span>
         </div>
@@ -268,7 +272,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user-guide/installation.md" class="md-nav__link">
+      <a href="../../user-guide/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -314,17 +318,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -338,7 +344,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             CLI Tools
@@ -352,7 +358,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/audio-transcribe.md" class="md-nav__link">
+      <a href="../audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -373,7 +379,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/tnh-fab.md" class="md-nav__link">
+      <a href="../tnh-fab/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -391,10 +397,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../cli/ytt-fetch.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -403,6 +429,77 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#download-english-transcript" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download English Transcript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#print-transcript-to-console" class="md-nav__link">
+    <span class="md-ellipsis">
+      Print Transcript to Console
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1051,28 +1148,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#core-components" class="md-nav__link">
+  <a href="#usage" class="md-nav__link">
     <span class="md-ellipsis">
-      Core Components
+      Usage
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Core Components">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pattern" class="md-nav__link">
+  <a href="#download-english-transcript" class="md-nav__link">
     <span class="md-ellipsis">
-      Pattern
+      Download English Transcript
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pattern-files" class="md-nav__link">
+  <a href="#print-transcript-to-console" class="md-nav__link">
     <span class="md-ellipsis">
-      Pattern Files
+      Print Transcript to Console
     </span>
   </a>
   
@@ -1080,219 +1195,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using Patterns
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Using Patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#through-tnh-fab-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      Through TNH-FAB CLI
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#programmatic-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Programmatic Usage
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pattern-location" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pattern Location
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pattern Location">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#default-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      Default Patterns
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pattern-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pattern Integration
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#template-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      Template Variables
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pattern-storage-and-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pattern Storage and Management
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pattern Storage and Management">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pattern-manager" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pattern Manager
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pattern-locations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pattern Locations
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#version-control" class="md-nav__link">
-    <span class="md-ellipsis">
-      Version Control
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#concurrent-access" class="md-nav__link">
-    <span class="md-ellipsis">
-      Concurrent Access
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#creating-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      Creating Patterns
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pattern-file-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pattern File Format
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#error-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      Error Handling
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#technical-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      Technical Details
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Technical Details">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#file-locking" class="md-nav__link">
-    <span class="md-ellipsis">
-      File Locking
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#version-control_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Version Control
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pattern-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pattern Validation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#limitations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Limitations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      Best Practices
-    </span>
-  </a>
   
 </li>
       
@@ -1314,220 +1216,22 @@
   
 
 
-<h1 id="tnh-scholar-pattern-system">TNH Scholar Pattern System</h1>
-<p>The TNH Scholar Pattern System is inspired by and builds upon concepts from Daniel Miessler's 'fabric' project (https://github.com/danielmiessler/fabric). Like fabric, it uses template-based prompting for AI interactions, but adds version control and concurrent access management.</p>
-<p>It is designed to interface with <strong>TNH-FAB</strong> a multi-command text processing tool. (See user guide.)</p>
-<p>Additional tools which use patterns may be developed for the project.</p>
-<p>The pattern system provides a version-controlled, concurrent-safe way to manage text processing templates. It is built around Jinja2 templates with Git-based versioning and file locking for safety.</p>
-<h2 id="core-components">Core Components</h2>
-<h3 id="pattern">Pattern</h3>
-<p>A Pattern represents a single text processing template with:</p>
-<ul>
-<li>Instructions (as a Jinja2 template)</li>
-<li>Default template values</li>
-<li>Metadata in YAML frontmatter (optional)</li>
-</ul>
-<p>Example pattern file:</p>
-<pre><code class="language-markdown">---
-description: Example pattern
-version: 1.0
----
-Process this text in {{ language }} using {{ style_convention }} formatting.
+<h1 id="ytt-fetch">ytt-fetch</h1>
+<p>YouTube transcript fetching utility.</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="language-bash">ytt-fetch [OPTIONS] URL
 </code></pre>
-<h3 id="pattern-files">Pattern Files</h3>
-<ul>
-<li>Stored as .md files</li>
-<li>Include optional YAML frontmatter</li>
-<li>Use Jinja2 template syntax</li>
-<li>Support template variables</li>
-</ul>
-<h2 id="using-patterns">Using Patterns</h2>
-<h3 id="through-tnh-fab-cli">Through TNH-FAB CLI</h3>
-<p>The most common way to use patterns is through the TNH-FAB command-line tool:</p>
-<pre><code class="language-bash"># Basic pattern processing
-tnh-fab process -p pattern_name input.txt
-
-# Process with sections
-tnh-fab process -p format_xml -s sections.json input.txt
-
-# Process by paragraphs
-tnh-fab process -p format_xml -g input.txt
-
-# Process with template values
-tnh-fab process -p format_xml -t template.yaml input.txt
+<h2 id="options">Options</h2>
+<pre><code>-l, --lang TEXT     Language code for transcript (default: en)
+-o, --output PATH   Save transcript text to file
 </code></pre>
-<p>Each TNH-FAB command (punctuate, section, translate, process) uses specific patterns:
-- punctuate: Uses punctuation patterns (default: 'default_punctuate')
-- section: Uses section analysis patterns (default: 'default_section')
-- translate: Uses translation patterns (default: 'default_line_translation')
-- process: Requires explicit pattern specification</p>
-<h3 id="programmatic-usage">Programmatic Usage</h3>
-<p>For developers building tools that use the pattern system:</p>
-<pre><code class="language-python">from tnh_scholar.ai_text_processing import Pattern, PatternManager
-
-# Initialize pattern manager
-pattern_manager = PatternManager(pattern_dir)
-
-# Load a pattern
-pattern = pattern_manager.load_pattern(&quot;my_pattern&quot;)
-
-# Apply template values
-result = pattern.apply_template({
-    &quot;language&quot;: &quot;English&quot;,
-    &quot;style_convention&quot;: &quot;APA&quot;
-})
+<h2 id="examples">Examples</h2>
+<h3 id="download-english-transcript">Download English Transcript</h3>
+<pre><code class="language-bash">ytt-fetch &quot;https://youtube.com/watch?v=example&quot; -l en -o transcript.txt
 </code></pre>
-<h2 id="pattern-location">Pattern Location</h2>
-<p>By default, patterns are stored in the user's home directory under:</p>
-<pre><code>~/.config/tnh-scholar/patterns/
+<h3 id="print-transcript-to-console">Print Transcript to Console</h3>
+<pre><code class="language-bash">ytt-fetch &quot;https://youtube.com/watch?v=example&quot;
 </code></pre>
-<p>This location can be customized by setting the <code>TNH_FAB_PATTERN_DIR</code> environment variable:</p>
-<pre><code class="language-bash"># In .bashrc, .zshrc, or similar:
-export TNH_FAB_PATTERN_DIR=/path/to/patterns
-</code></pre>
-<p>or loaded through a <code>.env</code> file.</p>
-<p>The pattern system will:</p>
-<ol>
-<li>First check for <code>TNH_FAB_PATTERN_DIR</code> environment variable</li>
-<li>If not set, use the default ~/.config/tnh-scholar/patterns</li>
-<li>Create the pattern directory if it doesn't exist</li>
-</ol>
-<p>When using a pattern name with TNH-FAB commands (e.g., <code>tnh-fab process -p my_pattern</code>), the system searches for a corresponding .md file (e.g., <code>my_pattern.md</code>) in the pattern directory and its subdirectories.</p>
-<h3 id="default-patterns">Default Patterns</h3>
-<p>The system comes with several default patterns installed in the pattern directory:</p>
-<ul>
-<li>default_punctuate.md - Default punctuation pattern</li>
-<li>default_section.md - Default section analysis pattern</li>
-<li>default_line_translation.md - Default translation pattern</li>
-</ul>
-<p>These provide basic functionality but can be customized or overridden by creating patterns with the same names in your pattern directory.</p>
-<h3 id="pattern-integration">Pattern Integration</h3>
-<p>The pattern system can be integrated into other tools and workflows:
-- Custom text processing applications
-- Web services
-- Analysis pipelines
-- Batch processing systems</p>
-<h3 id="template-variables">Template Variables</h3>
-<p>Templates support variables through Jinja2 syntax:
-- Use <code>{{ variable }}</code> for simple substitution
-- Values provided when applying template
-- Default values can be specified in Pattern</p>
-<h2 id="pattern-storage-and-management">Pattern Storage and Management</h2>
-<h3 id="pattern-manager">Pattern Manager</h3>
-<p>The PatternManager provides the main interface for:
-- Loading patterns by name
-- Saving new patterns
-- Version control integration
-- Concurrent access management</p>
-<h3 id="pattern-locations">Pattern Locations</h3>
-<p>Patterns are stored in a directory specified as either: </p>
-<ul>
-<li>
-<p><code>$HOME/.config/tnh-scholar/patterns</code> (default search location)</p>
-</li>
-<li>
-<p>A custom directory specified by TNH_FAB_PATTERN_DIR environment variable. (This can be configured in a .env file)</p>
-</li>
-</ul>
-<h3 id="version-control">Version Control</h3>
-<p>Patterns are automatically version controlled:
-- Git-backed storage
-- Automatic commits on changes
-- History tracking
-- Change validation</p>
-<h3 id="concurrent-access">Concurrent Access</h3>
-<p>The system provides safe concurrent access through:
-- File-level locking
-- Lock cleanup
-- Stale lock detection
-- Safe access patterns</p>
-<h2 id="creating-patterns">Creating Patterns</h2>
-<p>Patterns must have:
-1. Unique name
-2. Valid Jinja2 template content
-3. Optional default template values</p>
-<p>Example pattern creation:</p>
-<pre><code class="language-python">from tnh_scholar.ai_text_processing import Pattern
-
-pattern = Pattern(
-    name=&quot;example_pattern&quot;,
-    instructions=&quot;Process {{ text }} using {{ style }}&quot;,
-    default_template_fields={&quot;style&quot;: &quot;default&quot;}
-)
-</code></pre>
-<h2 id="pattern-file-format">Pattern File Format</h2>
-<p>A pattern file (<code>example.md</code>):</p>
-<pre><code class="language-markdown">---
-description: Example processing pattern
-version: 1.0
-author: TNH Scholar
----
-Please process this text according to these parameters:
-
-Language: {{ language }}
-Style: {{ style_convention }}
-Review Count: {{ review_count }}
-
-Apply standard formatting while maintaining original meaning.
-</code></pre>
-<h2 id="error-handling">Error Handling</h2>
-<p>The system handles common errors:
-- Missing patterns
-- Invalid template syntax
-- Concurrent access conflicts
-- Version control issues</p>
-<h2 id="technical-details">Technical Details</h2>
-<h3 id="file-locking">File Locking</h3>
-<ul>
-<li>Uses system-level file locking</li>
-<li>Automatic lock cleanup</li>
-<li>Timeout handling</li>
-<li>Safe concurrent access</li>
-</ul>
-<h3 id="version-control_1">Version Control</h3>
-<ul>
-<li>Git-based backend</li>
-<li>Automatic commit messages</li>
-<li>Change tracking</li>
-<li>History preservation</li>
-</ul>
-<h3 id="pattern-validation">Pattern Validation</h3>
-<p>All patterns are validated for:
-- Template syntax
-- Required variables
-- Unique naming
-- Content format</p>
-<h2 id="limitations">Limitations</h2>
-<p>Current implementation:
-- Single repository per PatternManager
-- File-based storage only
-- Local Git repository
-- Synchronous operations</p>
-<h2 id="best-practices">Best Practices</h2>
-<ol>
-<li>Pattern Naming:</li>
-<li>Use descriptive names</li>
-<li>Include purpose in name</li>
-<li>
-<p>Follow lowercase_with_underscores format</p>
-</li>
-<li>
-<p>Template Content:</p>
-</li>
-<li>Document required variables</li>
-<li>Include usage examples</li>
-<li>Provide default values</li>
-<li>
-<p>Use clear template syntax</p>
-</li>
-<li>
-<p>Pattern Management:</p>
-</li>
-<li>Regular pattern updates</li>
-<li>Version control usage</li>
-<li>Proper error handling</li>
-<li>Pattern testing</li>
-</ol>
 
 
 
