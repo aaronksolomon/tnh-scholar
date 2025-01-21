@@ -14297,45 +14297,64 @@
 the teachings of Thich Nhat Hanh and other Plum Village Dharma Teachers. The project aims 
 to create a resource for practitioners and scholars to deeply engage with mindfulness 
 and spiritual wisdom through natural language processing and machine learning models.</p>
-<p>Core Features:</p>
-<pre><code>- Audio transcription and processing
-- Multi-lingual text processing and translation
-- Pattern-based text analysis
-- OCR processing for historical documents
-- CLI tools for batch processing
-</code></pre>
-<p>Package Structure:</p>
-<pre><code>- tnh_scholar/
-   - CLI_tools/          - Command line interface tools
-   - audio_processing/   - Audio file handling and transcription
-   - journal_processing/ - Journal and publication processing
-   - ocr_processing/     - Optical character recognition tools
-   - openai_interface/   - OpenAI API integration
-   - text_processing/    - Core text processing utilities
-   - video_processing/   - Video file handling and transcription
-   - utils/             - Shared utility functions
-   - xml_processing/    - XML parsing and generation
-</code></pre>
-<p>Environment Configuration:</p>
-<pre><code>- The package uses environment variables for configuration, including:
-   - TNH_FAB_PATTERN_DIR - Directory for text processing patterns
-   - OPENAI_API_KEY     - OpenAI API authentication
-   - GOOGLE_VISION_KEY  - Google Cloud Vision API key for OCR
-</code></pre>
-<p>CLI Tools:</p>
-<pre><code>- audio-transcribe  - Audio file transcription utility
-- tnh-fab          - Text processing and analysis toolkit
-</code></pre>
-<p>For more information, see:</p>
-<pre><code>- Documentation: https://github.com/aaronksolomon/tnh-scholar/wiki
-- Source: https://github.com/aaronksolomon/tnh-scholar
-- Issues: https://github.com/aaronksolomon/tnh-scholar/issues
-</code></pre>
-<p>Dependencies:</p>
-<pre><code>- Core: click, pydantic, openai, yt-dlp
-- Optional: streamlit (GUI), spacy (NLP), google-cloud-vision (OCR)
-</code></pre>
 
+
+<details class="core-features" open>
+  <summary>Core Features</summary>
+  <ul>
+<li>Audio transcription and processing</li>
+<li>Multi-lingual text processing and translation</li>
+<li>Pattern-based text analysis</li>
+<li>OCR processing for historical documents</li>
+<li>CLI tools for batch processing</li>
+</ul>
+</details>
+
+<details class="package-structure" open>
+  <summary>Package Structure</summary>
+  <ul>
+<li>tnh_scholar/</li>
+<li>CLI_tools/          - Command line interface tools</li>
+<li>audio_processing/   - Audio file handling and transcription</li>
+<li>journal_processing/ - Journal and publication processing</li>
+<li>ocr_processing/     - Optical character recognition tools</li>
+<li>openai_interface/   - OpenAI API integration</li>
+<li>text_processing/    - Core text processing utilities</li>
+<li>video_processing/   - Video file handling and transcription</li>
+<li>utils/             - Shared utility functions</li>
+<li>xml_processing/    - XML parsing and generation</li>
+</ul>
+</details>
+
+<details class="environment-configuration" open>
+  <summary>Environment Configuration</summary>
+  <ul>
+<li>The package uses environment variables for configuration, including:</li>
+<li>TNH_FAB_PATTERN_DIR - Directory for text processing patterns</li>
+<li>OPENAI_API_KEY     - OpenAI API authentication</li>
+<li>GOOGLE_VISION_KEY  - Google Cloud Vision API key for OCR</li>
+</ul>
+</details>
+
+<details class="cli-tools" open>
+  <summary>CLI Tools</summary>
+  <ul>
+<li>audio-transcribe  - Audio file transcription utility</li>
+<li>tnh-fab          - Text processing and analysis toolkit</li>
+</ul>
+</details>        <p>For more information, see:
+    - Documentation: https://github.com/aaronksolomon/tnh-scholar/wiki
+    - Source: https://github.com/aaronksolomon/tnh-scholar
+    - Issues: https://github.com/aaronksolomon/tnh-scholar/issues</p>
+
+
+<details class="dependencies" open>
+  <summary>Dependencies</summary>
+  <ul>
+<li>Core: click, pydantic, openai, yt-dlp</li>
+<li>Optional: streamlit (GUI), spacy (NLP), google-cloud-vision (OCR)</li>
+</ul>
+</details>
 
 
 
