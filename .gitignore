@@ -31,6 +31,9 @@ tmp/
 # local notebooks:
 *_local.ipynb
 
+# output data:
+output_data/
+
 # patterns:
 patterns/
 
