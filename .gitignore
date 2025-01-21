@@ -7,6 +7,9 @@ private_*
 # streamlit secrets:
 secrets.toml
 
+# processed data:
+processed_data/
+
 # OCR processed output:
 ocr_processed_ouput/
 
