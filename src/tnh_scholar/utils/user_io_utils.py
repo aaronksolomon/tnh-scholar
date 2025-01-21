@@ -8,21 +8,55 @@ else:  # Unix-like (Linux, macOS)
     import tty
 
 
-def get_single_char() -> str:
+import os
+import sys
+from typing import Optional
+
+def get_single_char(prompt: Optional[str] = None) -> str:
     """
-    Get a single character from standard input without requiring Enter.
-    Cross-platform implementation for Windows and Unix-like systems.
+    Get a single character from input, adapting to the execution environment.
+    
+    Args:
+        prompt: Optional prompt to display before getting input
+        
+    Returns:
+        A single character string from user input
+        
+    Note:
+        - In terminal environments, uses raw input mode without requiring Enter
+        - In Jupyter/IPython, falls back to regular input with message about Enter
     """
-    if os.name == "nt":
-        return msvcrt.getch().decode("utf-8")  # Windows
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(fd)
-        char = sys.stdin.read(1)
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    return char
+    # Check if we're in IPython/Jupyter
+    is_notebook = hasattr(sys, 'ps1') or bool(sys.flags.interactive)
+
+    if prompt:
+        print(prompt, end='', flush=True)
+
+    if is_notebook:
+        # Jupyter/IPython environment - use regular input
+        entry = input("Single character input required ")
+        return entry[0] if entry else "\n" # Use newline if no entry
+    
+    # Terminal environment
+    if os.name == "nt":  # Windows
+        import msvcrt
+        return msvcrt.getch().decode("utf-8")
+    else:  # Unix-like
+        import termios
+        import tty
+
+        try:
+            fd = sys.stdin.fileno()
+            old_settings = termios.tcgetattr(fd)
+            try:
+                tty.setraw(fd)
+                char = sys.stdin.read(1)
+            finally:
+                termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            return char
+        except termios.error:
+            # Fallback if terminal handling fails
+            return input("Single character input required ")[0]
 
 
 def get_user_confirmation(prompt: str, default: bool = True) -> bool:
