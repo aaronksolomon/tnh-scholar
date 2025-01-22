@@ -6,9 +6,19 @@ TNH Scholar can be installed using pip:
 pip install tnh-scholar
 ```
 
+The project configuration can then setup using:
+```bash
+tnh-setup
+```
+
+`tnh-setup` prompts to download default patterns.
+
+NOTE: You must have OpenAI API credentials to use the AI tools.
+The environment variable OPENAI_API_KEY must be set to your API key.
+
 ## Prerequisites
 
-- Python 3.12.4 or higher
+- Python 3.12.4
 - pip package manager
 
 ## Development Installation

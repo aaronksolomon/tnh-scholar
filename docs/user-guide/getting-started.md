@@ -2,6 +2,14 @@
 
 This guide will help you get started with TNH Scholar's main features.
 
+
+## Setup
+
+In order to use OpenAI based tools you must have an OpenAI API key set in the environment variable: OPENAI_API_KEY.
+
+- `setup-tnh`: This setup tool TNH Scholar sets up the default director for the project: HOME/.config/tnh_scholar. 
+It also offers to download patterns from the default pattern repository on github.
+
 ## Basic Usage
 
 TNH Scholar provides several command-line tools:
@@ -9,6 +17,7 @@ TNH Scholar provides several command-line tools:
 - `audio-transcribe`: Process and transcribe audio files
 - `tnh-fab`: Text processing and formatting tool
 - `ytt-fetch`: YouTube transcript fetching utility
+- `nfmt`: A tool to formate newlines in a text file
 
 ## Quick Start Examples
 
