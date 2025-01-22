@@ -25,7 +25,7 @@ from .openai_process_interface import openai_process_text
 
 logger = get_child_logger(__name__)
 
-from tnh_scholar import DEFAULT_PATTERN_DIR
+from tnh_scholar import TNH_DEFAULT_PATTERN_DIR
 
 # Constants
 DEFAULT_MIN_SECTION_COUNT = 3
@@ -98,7 +98,7 @@ class LocalPatternManager:
                     pattern_dir = Path(pattern_path_name)
                     logger.debug(f"pattern dir: {pattern_path_name}")
                 else:
-                    pattern_dir = DEFAULT_PATTERN_DIR
+                    pattern_dir = TNH_DEFAULT_PATTERN_DIR
                 self._pattern_manager = PatternManager(pattern_dir)
             except ImportError as err:
                 raise RuntimeError(

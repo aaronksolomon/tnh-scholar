@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 def validate_inputs(
     is_download: bool,
     yt_url: str | None,
