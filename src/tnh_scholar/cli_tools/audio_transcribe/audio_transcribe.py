@@ -22,7 +22,8 @@ In a production environment, this CLI tool would be installed as part of the `tn
 import os
 
 os.environ["KMP_WARNINGS"] = (
-    "0"  # turn off known info message about nested levels for OMP that arises from torch.
+    "0"  # Turn off known info message about nested levels for OMP that arises from torch.
+         # Must turn this off before imports that use OMP in order to have effect.
 )
 
 import logging
@@ -31,15 +32,12 @@ from pathlib import Path
 
 import click
 
-from tnh_scholar import CLI_TOOLS_DIR, PROJECT_ROOT_DIR
+from tnh_scholar import TNH_CLI_TOOLS_DIR, TNH_PROJECT_ROOT_DIR, TNH_LOG_DIR
 from tnh_scholar.logging_config import get_child_logger, setup_logging
 
 # --- Setup logging early ---
-LOG_DIR = Path.cwd() / "logs"
-setup_logging(log_filepath=LOG_DIR / "audio_transcribe.log", log_level=logging.INFO)
+setup_logging(log_filepath=TNH_LOG_DIR / "audio_transcribe.log", log_level=logging.INFO)
 logger = get_child_logger("audio_transcribe")
-
-# sys.stderr = StderrToLogger(logger, log_level=logging.WARNING)
 
 from tnh_scholar.audio_processing import (
     process_audio_chunks,
@@ -61,7 +59,7 @@ from .version_check import check_ytd_version
 DEFAULT_CHUNK_DURATION_MIN = 7
 DEFAULT_CHUNK_DURATION_SEC = DEFAULT_CHUNK_DURATION_MIN * 60
 REQUIREMENTS_PATH = (
-    CLI_TOOLS_DIR / "audio_transcribe" / "environment" / "requirements.txt"
+    TNH_CLI_TOOLS_DIR / "audio_transcribe" / "environment" / "requirements.txt"
 )
 RE_DOWNLOAD_CONFIRMATION_STR = "An mp3 file corresponding to {url} already exists in the output path:\n\t{output_dir}.\nSKIP download ([Y]/n)?"
 DEFAULT_OUTPUT_DIR = "./audio_transcriptions"
@@ -69,7 +67,7 @@ DEFAULT_PROMPT = (
     "Dharma, Deer Park, Thay, Thich Nhat Hanh, Bodhicitta, Bodhisattva, Mahayana"
 )
 
-check_env(PROJECT_ROOT_DIR, REQUIREMENTS_PATH)
+check_env(TNH_PROJECT_ROOT_DIR, REQUIREMENTS_PATH)
 
 
 @click.command()
