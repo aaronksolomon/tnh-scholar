@@ -22,10 +22,10 @@ def get_env_message(missing_vars: List[str], feature: str = "this feature") -> s
     return "\n".join([
         f"\nEnvironment Error: Missing required variables for {feature}:",
         ", ".join(missing_vars),
-        "\nSet these variables in your shell:",
+        "\nSet variables in your shell:",
         f"export {export_cmds}",
         "\nSee documentation for details.",
-        "\nFor development: Add to .env file.\n"
+        "\nFor development: Add to .env file in project root.\n"
     ])
 
 def check_env(required_vars: Set[str], feature: str = "this feature") -> bool:

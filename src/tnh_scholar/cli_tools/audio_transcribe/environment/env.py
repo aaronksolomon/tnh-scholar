@@ -47,21 +47,23 @@ def check_requirements(requirements_file: Path) -> None:
                 f"WARNING: Could not import '{mod_name}' from '{pkg}'. Check that it is correctly installed."
             )
 
-def check_env(root_dir: Path, requirements_file: Path) -> None:
+def check_env() -> bool:
     """
     Check the environment for necessary conditions:
-    1. Verify that .env file exists or create it if not found.
+    1. Check OpenAI key is available.
     2. Check that all requirements from requirements.txt are importable.
 
-    Example:
-        >>> check_env(Path("/path/to/tnh-scholar"), Path("/path/to/tnh-scholar/requirements.txt"))
-        # Ensures .env, checks requirements.
+
     """
     logger.debug(f"root_dir: {root_dir}, requirements_file: {requirements_file}")
     
-    check_openai_env()
+    if not check_openai_env():
+        return False
     
     if shutil.which("ffmpeg") is None:
-        print("WARNING: ffmpeg not found in PATH. Please install ffmpeg.")
+        logger.error("ffmpeg not found in PATH. ffmpeg required for audio processing.")
+        return False
+    
+    return True
     
     # check_requirements(requirements_file)

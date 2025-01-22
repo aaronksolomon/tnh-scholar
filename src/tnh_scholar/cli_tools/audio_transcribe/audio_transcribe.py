@@ -66,10 +66,6 @@ DEFAULT_OUTPUT_DIR = "./audio_transcriptions"
 DEFAULT_PROMPT = (
     "Dharma, Deer Park, Thay, Thich Nhat Hanh, Bodhicitta, Bodhisattva, Mahayana"
 )
-
-check_env(TNH_PROJECT_ROOT_DIR, REQUIREMENTS_PATH)
-
-
 @click.command()
 @click.option(
     "-s", "--split", is_flag=True, help="Split downloaded/local audio into chunks."
@@ -179,6 +175,10 @@ def audio_transcribe(
 
     3. Transcribe (if requested)
     """
+    
+    if not check_env():
+        sys.exit(1)
+        
     check_ytd_version()  # Do a version check on startup. Version issues can cause yt-dlp to fail.
 
     logger.info("Starting audio transcription pipeline...")
