@@ -1,31 +1,10 @@
 import shutil
 from pathlib import Path
 
+from tnh_scholar.utils.validate import check_openai_env
 from tnh_scholar.logging_config import get_child_logger
 
-logger = get_child_logger("environement_checking")
-
-
-def ensure_env_file_exists(root_dir: Path) -> None:
-    """
-    Ensure that a .env file exists at the root of the project.
-    If it does not, prompt the user for an OPENAI_API_KEY and create the file.
-
-    Example:
-        >>> ensure_env_file_exists(Path("/path/to/tnh-scholar"))
-        # If .env doesn't exist, user is prompted for key, file created with OPENAI_API_KEY.
-    """
-    env_path = root_dir / ".env"
-    if not env_path.exists():
-        print("No .env file found at project root. Creating one:")
-        openai_key = input("Please enter your OPENAI_API_KEY: ").strip()
-        if not openai_key:
-            print("No key entered. Exiting without creating .env file.")
-            return
-        with env_path.open("w") as env_file:
-            env_file.write(f"OPENAI_API_KEY={openai_key}\n")
-        print(".env file created with your OPENAI_API_KEY.")
-
+logger = get_child_logger(__name__)
 
 def check_requirements(requirements_file: Path) -> None:
     """
@@ -68,7 +47,6 @@ def check_requirements(requirements_file: Path) -> None:
                 f"WARNING: Could not import '{mod_name}' from '{pkg}'. Check that it is correctly installed."
             )
 
-
 def check_env(root_dir: Path, requirements_file: Path) -> None:
     """
     Check the environment for necessary conditions:
@@ -80,7 +58,10 @@ def check_env(root_dir: Path, requirements_file: Path) -> None:
         # Ensures .env, checks requirements.
     """
     logger.debug(f"root_dir: {root_dir}, requirements_file: {requirements_file}")
-    ensure_env_file_exists(root_dir)
+    
+    check_openai_env()
+    
     if shutil.which("ffmpeg") is None:
         print("WARNING: ffmpeg not found in PATH. Please install ffmpeg.")
-    check_requirements(requirements_file)
+    
+    # check_requirements(requirements_file)
