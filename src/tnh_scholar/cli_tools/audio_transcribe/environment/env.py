@@ -52,18 +52,16 @@ def check_env() -> bool:
     Check the environment for necessary conditions:
     1. Check OpenAI key is available.
     2. Check that all requirements from requirements.txt are importable.
-
-
     """
-    logger.debug(f"root_dir: {root_dir}, requirements_file: {requirements_file}")
-    
+    logger.debug("checking environment.")
+
     if not check_openai_env():
         return False
-    
+
     if shutil.which("ffmpeg") is None:
         logger.error("ffmpeg not found in PATH. ffmpeg required for audio processing.")
         return False
-    
+
     return True
     
     # check_requirements(requirements_file)

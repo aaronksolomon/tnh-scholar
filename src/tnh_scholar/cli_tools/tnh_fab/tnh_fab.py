@@ -94,7 +94,7 @@ def get_pattern(pattern_manager: PatternManager, pattern_name: str) -> Pattern:
 
 
 @click.group()
-@click.option("-v", "--verbose", is_flag=True, help="Enable detailed logging")
+@click.option("-v", "--verbose", is_flag=True, help="Enable detailed logging. (NOT implemented)")
 @click.option("--debug", is_flag=True, help="Enable debug output")
 @click.option("--quiet", is_flag=True, help="Suppress all non-error output")
 @click.pass_context
@@ -112,11 +112,12 @@ def tnh_fab(ctx: Context, verbose: bool, debug: bool, quiet: bool):
     Offers functionalities for punctuation, sectioning, line-based translation,
     and general text processing based on predefined patterns.
     Input text can be provided either via a file or standard input.
-    """
+    """        
+    config = ctx.ensure_object(TNHFabConfig)
+    
     if not check_openai_env():
         ctx.fail("Missing OpenAI Credentials.")
         
-    config = ctx.ensure_object(TNHFabConfig)
     config.verbose = verbose
     config.debug = debug
     config.quiet = quiet

@@ -21,6 +21,8 @@ In a production environment, this CLI tool would be installed as part of the `tn
 """
 import os
 
+from dotenv import load_dotenv
+
 os.environ["KMP_WARNINGS"] = (
     "0"  # Turn off known info message about nested levels for OMP that arises from torch.
          # Must turn this off before imports that use OMP in order to have effect.
@@ -66,6 +68,12 @@ DEFAULT_OUTPUT_DIR = "./audio_transcriptions"
 DEFAULT_PROMPT = (
     "Dharma, Deer Park, Thay, Thich Nhat Hanh, Bodhicitta, Bodhisattva, Mahayana"
 )
+
+load_dotenv()
+if not check_env():
+    sys.exit(1)  # missing environment setting cause immediate failure (prototype stage)
+    
+        
 @click.command()
 @click.option(
     "-s", "--split", is_flag=True, help="Split downloaded/local audio into chunks."
@@ -175,9 +183,6 @@ def audio_transcribe(
 
     3. Transcribe (if requested)
     """
-    
-    if not check_env():
-        sys.exit(1)
         
     check_ytd_version()  # Do a version check on startup. Version issues can cause yt-dlp to fail.
 
