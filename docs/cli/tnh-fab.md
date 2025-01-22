@@ -199,6 +199,6 @@ tnh-fab process -p format_xml > final_output.xml
 
 ## Pattern System
 
-Patterns are stored in the pattern directory (default or specified by TNH_FAB_PATTERN_DIR environment variable). Each command uses specific default patterns that can be overridden using the -p option.
+Patterns are stored in the pattern directory (default or specified by TNH_PATTERN_DIR environment variable). Each command uses specific default patterns that can be overridden using the -p option.
 
 For information about creating custom patterns, please refer to the pattern documentation.

@@ -49,7 +49,7 @@ class TNHFabConfig:
 
         load_dotenv()
 
-        if pattern_path_name := os.getenv("TNH_FAB_PATTERN_DIR"):
+        if pattern_path_name := os.getenv("TNH_PATTERN_DIR"):
             pattern_dir = Path(pattern_path_name)
             logger.debug(f"pattern dir: {pattern_path_name}")
         else:

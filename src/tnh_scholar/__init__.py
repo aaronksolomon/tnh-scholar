@@ -26,7 +26,7 @@ Package Structure:
 
 Environment Configuration:
     - The package uses environment variables for configuration, including:
-       - TNH_FAB_PATTERN_DIR - Directory for text processing patterns
+       - TNH_PATTERN_DIR - Directory for text processing patterns
        - OPENAI_API_KEY     - OpenAI API authentication
        - GOOGLE_VISION_KEY  - Google Cloud Vision API key for OCR
 

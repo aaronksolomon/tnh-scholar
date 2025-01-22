@@ -83,16 +83,16 @@ By default, patterns are stored in the user's home directory under:
 ~/.config/tnh-scholar/patterns/
 ```
 
-This location can be customized by setting the `TNH_FAB_PATTERN_DIR` environment variable:
+This location can be customized by setting the `TNH_PATTERN_DIR` environment variable:
 ```bash
 # In .bashrc, .zshrc, or similar:
-export TNH_FAB_PATTERN_DIR=/path/to/patterns
+export TNH_PATTERN_DIR=/path/to/patterns
 ```
 or loaded through a `.env` file.
 
 The pattern system will:
 
-1. First check for `TNH_FAB_PATTERN_DIR` environment variable
+1. First check for `TNH_PATTERN_DIR` environment variable
 2. If not set, use the default ~/.config/tnh-scholar/patterns
 3. Create the pattern directory if it doesn't exist
 
@@ -135,7 +135,7 @@ Patterns are stored in a directory specified as either:
 
 - `$HOME/.config/tnh-scholar/patterns` (default search location)
 
-- A custom directory specified by TNH_FAB_PATTERN_DIR environment variable. (This can be configured in a .env file)
+- A custom directory specified by TNH_PATTERN_DIR environment variable. (This can be configured in a .env file)
 
 ### Version Control
 Patterns are automatically version controlled:
