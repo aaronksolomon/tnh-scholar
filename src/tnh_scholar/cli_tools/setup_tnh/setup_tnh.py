@@ -8,28 +8,22 @@ import zipfile
 import io
 from dotenv import load_dotenv, set_key
 
+from tnh_scholar.utils.validate import check_openai_env
+
 # Constants
-CONFIG_DIR = Path.home() / ".config" / "tnh_scholar"
-PATTERNS_DIR = CONFIG_DIR / "patterns"
-LOGS_DIR = CONFIG_DIR / "logs"
+from tnh_scholar import (
+    TNH_CONFIG_DIR,
+    TNH_DEFAULT_PATTERN_DIR,
+    TNH_LOG_DIR
+) 
+
 PATTERNS_URL = "https://github.com/aaronksolomon/patterns/archive/main.zip"
 
 def create_config_dirs():
     """Create required configuration directories."""
-    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
-    LOGS_DIR.mkdir(exist_ok=True)
-    PATTERNS_DIR.mkdir(exist_ok=True)
-
-def check_env():
-    """Check environment variables."""
-
-    load_dotenv()
-    
-    if not os.getenv("OPENAI_API_KEY"):
-        api_key = click.prompt("Enter your OpenAI API key", type=str)
-        click.echo("OpenAI API key not found in Environment.")
-        click.echo("Set your OPENAI_API_KEY in your shell environment variables.")
-        
+    TNH_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    TNH_LOG_DIR.mkdir(exist_ok=True)
+    TNH_DEFAULT_PATTERN_DIR.mkdir(exist_ok=True)
 
 def download_patterns() -> bool:
     """Download and extract pattern files from GitHub."""
@@ -43,7 +37,7 @@ def download_patterns() -> bool:
             for zip_info in zip_ref.filelist:
                 if zip_info.filename.endswith('.md'):
                     rel_path = Path(zip_info.filename).relative_to(root_dir)
-                    target_path = PATTERNS_DIR / rel_path
+                    target_path = TNH_DEFAULT_PATTERN_DIR / rel_path
                     
                     target_path.parent.mkdir(parents=True, exist_ok=True)
                     
@@ -64,25 +58,23 @@ def setup_tnh(skip_env: bool, skip_patterns: bool):
     
     # Create config directories
     create_config_dirs()
-    click.echo(f"Created config directory: {CONFIG_DIR}")
-    
-    # Environment setup
-    if not skip_env:
-        check_env()
+    click.echo(f"Created config directory: {TNH_CONFIG_DIR}")
     
     # Pattern download
     if not skip_patterns and click.confirm(
                 "\nDownload pattern (markdown text) files from GitHub?\n"
                 f"Source: {PATTERNS_URL}\n"
-                f"Target: {PATTERNS_DIR}"
+                f"Target: {TNH_DEFAULT_PATTERN_DIR}"
             ):
         if download_patterns():
             click.echo("Pattern files downloaded successfully")
         else:
             click.echo("Pattern download failed", err=True)
+            
+    # Environment setup
+    if not skip_env:
+        check_openai_env()
     
-    click.echo("\nSetup complete!")
-
 def main():
     """Entry point for setup CLI tool."""
     setup_tnh()

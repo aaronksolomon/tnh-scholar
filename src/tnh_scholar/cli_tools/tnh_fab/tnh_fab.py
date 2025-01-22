@@ -17,6 +17,7 @@ import click
 from click import Context
 from dotenv import load_dotenv
 
+from tnh_scholar.utils.validate import check_openai_env
 from tnh_scholar.ai_text_processing import (
     Pattern,
     PatternManager,
@@ -35,7 +36,7 @@ DEFAULT_SECTION_PATTERN = "default_section"
 logger = get_child_logger(__name__)
 
 # Default pattern directory as specified
-from tnh_scholar import DEFAULT_PATTERN_DIR
+from tnh_scholar import TNH_DEFAULT_PATTERN_DIR
 
 
 class TNHFabConfig:
@@ -48,19 +49,17 @@ class TNHFabConfig:
         # Initialize pattern manager with directory set in .env file or default.
 
         load_dotenv()
-
+        
         if pattern_path_name := os.getenv("TNH_PATTERN_DIR"):
             pattern_dir = Path(pattern_path_name)
             logger.debug(f"pattern dir: {pattern_path_name}")
         else:
-            pattern_dir = DEFAULT_PATTERN_DIR
+            pattern_dir = TNH_DEFAULT_PATTERN_DIR
 
         pattern_dir.mkdir(parents=True, exist_ok=True)
         self.pattern_manager = PatternManager(pattern_dir)
 
-
 pass_config = click.make_pass_decorator(TNHFabConfig, ensure=True)
-
 
 def read_input(ctx: Context, input_file: Optional[Path]) -> str:
     """Read input from file or stdin."""
@@ -69,7 +68,6 @@ def read_input(ctx: Context, input_file: Optional[Path]) -> str:
     if not sys.stdin.isatty():
         return sys.stdin.read()
     ctx.fail("No input provided")
-
 
 def get_pattern(pattern_manager: PatternManager, pattern_name: str) -> Pattern:
     """
@@ -115,6 +113,9 @@ def tnh_fab(ctx: Context, verbose: bool, debug: bool, quiet: bool):
     and general text processing based on predefined patterns.
     Input text can be provided either via a file or standard input.
     """
+    if not check_openai_env():
+        ctx.fail("Missing OpenAI Credentials.")
+        
     config = ctx.ensure_object(TNHFabConfig)
     config.verbose = verbose
     config.debug = debug
