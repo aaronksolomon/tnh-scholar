@@ -12,7 +12,6 @@ from dotenv import load_dotenv, set_key
 CONFIG_DIR = Path.home() / ".config" / "tnh_scholar"
 PATTERNS_DIR = CONFIG_DIR / "patterns"
 LOGS_DIR = CONFIG_DIR / "logs"
-ENV_FILE = CONFIG_DIR / ".env"
 PATTERNS_URL = "https://github.com/aaronksolomon/patterns/archive/main.zip"
 
 def create_config_dirs():
@@ -21,17 +20,16 @@ def create_config_dirs():
     LOGS_DIR.mkdir(exist_ok=True)
     PATTERNS_DIR.mkdir(exist_ok=True)
 
-def setup_env():
-    """Set up environment variables."""
-    if not ENV_FILE.exists():
-        ENV_FILE.touch()
-    
-    load_dotenv(ENV_FILE)
+def check_env():
+    """Check environment variables."""
+
+    load_dotenv()
     
     if not os.getenv("OPENAI_API_KEY"):
         api_key = click.prompt("Enter your OpenAI API key", type=str)
-        set_key(ENV_FILE, "OPENAI_API_KEY", api_key)
-        click.echo("API key saved to .env file")
+        click.echo("OpenAI API key not found in Environment.")
+        click.echo("Set your OPENAI_API_KEY in your shell environment variables.")
+        
 
 def download_patterns() -> bool:
     """Download and extract pattern files from GitHub."""
@@ -70,7 +68,7 @@ def setup_tnh(skip_env: bool, skip_patterns: bool):
     
     # Environment setup
     if not skip_env:
-        setup_env()
+        check_env()
     
     # Pattern download
     if not skip_patterns and click.confirm(
