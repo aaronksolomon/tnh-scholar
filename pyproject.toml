@@ -9,18 +9,13 @@ package-dir = {"" = "src"}
 [project]
 name = "tnh-scholar"
 version = "0.1.0"
-description = """
-TNH Scholar is an AI-driven project designed to explore, query, and translate 
-the teachings of Thich Nhat Hanh. The project aims to create a resource for 
-practitioners and scholars to deeply engage with mindfulness and spiritual 
-wisdom through natural language processing and machine learning models.
-"""
+description = "TNH Scholar is an AI-driven project designed to explore, query, and translate the teachings of Thich Nhat Hanh and Plum Village community."
 requires-python = "==3.12.4"  # Specify Python version
 keywords = ["nlp", "dharma", "processing", "text", "translation", "ai"]  # Add relevant keywords
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
-    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.12.4",
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -83,7 +78,6 @@ ocr = [
     "pdf2image==1.17.0"
 ]
 
-
 [project.urls]
 "Homepage" = "https://aaronksolomon.github.io/tnh-scholar/"
 "Bug Tracker" = "https://github.com/aaronksolomon/tnh-scholar/issues"
@@ -96,6 +90,7 @@ ytt-fetch = "tnh_scholar.cli_tools.ytt_fetch.ytt_fetch:main"
 nfmt = "tnh_scholar.cli_tools.nfmt.nfmt:main"
 token-count = "tnh_scholar.cli_tools.token_count.token_count:main"
 tnh-setup = "tnh_scholar.cli_tools.tnh_setup.tnh_setup:main"
+tnh-tree = "tnh_scholar.dev_tools.generate_tree:generate_tree"
 
 [tool.black]
 line-length = 88
