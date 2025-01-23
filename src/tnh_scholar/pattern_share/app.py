@@ -13,12 +13,10 @@ from supabase import Client, create_client
 
 from tnh_scholar.ai_text_processing import Pattern
 
-
 class ConfigurationError(Exception):
     """Custom exception for configuration-related errors."""
 
     pass
-
 
 class CredentialsManager:
     def __init__(self):
