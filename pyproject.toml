@@ -15,7 +15,7 @@ keywords = ["nlp", "dharma", "processing", "text", "translation", "ai"]  # Add r
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
-    "Programming Language :: Python :: 3.12.4",
+    "Programming Language :: Python :: 3.12",
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
