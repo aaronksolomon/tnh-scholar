@@ -8,7 +8,7 @@ package-dir = {"" = "src"}
 
 [project]
 name = "tnh-scholar"
-version = "0.1.0"
+version = "0.1.1"
 description = "TNH Scholar is an AI-driven project designed to explore, query, and translate the teachings of Thich Nhat Hanh and Plum Village community."
 requires-python = "==3.12.4"  # Specify Python version
 keywords = ["nlp", "dharma", "processing", "text", "translation", "ai"]  # Add relevant keywords
