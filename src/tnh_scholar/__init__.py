@@ -52,7 +52,7 @@ __version__ = "0.1.0"
 from pathlib import Path
 
 # Dynamically determine and set up paths for the project
-TNH_CONFIG_DIR = Path.home() / ".config" / "tnh_scholar"
+TNH_CONFIG_DIR = Path.home() / ".config" / "tnh-scholar"
 TNH_ROOT_SRC_DIR = Path(__file__).resolve().parent
 TNH_PROJECT_ROOT_DIR = (
     TNH_ROOT_SRC_DIR.resolve().parent.parent
