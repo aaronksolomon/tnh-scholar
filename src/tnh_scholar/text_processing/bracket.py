@@ -1,5 +1,6 @@
 import re
 
+#### NOTE THIS MODULE DEPRECATED available for reference and development purposes ####
 
 class FormattingError(Exception):
     """
@@ -11,7 +12,6 @@ class FormattingError(Exception):
 
 
 # functions to bracket and unbracket text with line numbers
-
 
 def bracket_lines(text: str, number: bool = False) -> str:
     """
