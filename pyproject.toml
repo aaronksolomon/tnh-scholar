@@ -95,7 +95,7 @@ tnh-fab = "tnh_scholar.cli_tools.tnh_fab.tnh_fab:main"
 ytt-fetch = "tnh_scholar.cli_tools.ytt_fetch.ytt_fetch:main"
 nfmt = "tnh_scholar.cli_tools.nfmt.nfmt:main"
 token-count = "tnh_scholar.cli_tools.token_count.token_count:main"
-tnh-setup = "tnh_scholar.cli_tools.tnh_setup.setup:setup"
+tnh-setup = "tnh_scholar.cli_tools.tnh_setup.tnh_setup:main"
 
 [tool.black]
 line-length = 88
