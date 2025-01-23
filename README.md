@@ -34,6 +34,7 @@ tnh-setup
 
 - Python 3.12.4
 - OpenAI API credentials (required for AI tools)
+- Google Vision credentials for OCR development and testing
 - pip package manager
 
 ### Optional Dependencies
@@ -41,13 +42,13 @@ tnh-setup
 TNH Scholar offers several optional dependency groups:
 
 ```bash
-# OCR functionality
+# OCR functionality (development only)
 pip install "tnh-scholar[ocr]"
 
-# GUI tools
+# GUI tools (development only)
 pip install "tnh-scholar[gui]"
 
-# Query capabilities
+# Query capabilities (development only)
 pip install "tnh-scholar[query]"
 
 # Development tools
