@@ -1,5 +1,4 @@
 # TNH-FAB Command Line Tool Specification
-Version: 1.0.0
 
 ## Overview
 
@@ -21,7 +20,7 @@ tnh-fab <command> [options] [input_file]
 
 ### Global Options
 
-```
+```plaintext
 Input/Output:
   [input_file]                Input file (optional, uses STDIN if not provided)
   -o, --output FILE          Output file (default: STDOUT)
@@ -48,26 +47,29 @@ Other:
 ### Commands
 
 #### punctuate
+
 Add punctuation and structure to text.
 
-```
+```plaintext
 Additional Options:
   -y, --style STYLE            Punctuation style (default: configuration file)
 ```
 
 #### section
+
 Create and manage text sections.
 
-```
+```plaintext
 Additional Options:
   -n, --num-sections NUM   Target number of sections (default: auto)
   --target-section-size NUM   Target section size in tokens (default: configuration file)
 ```
 
 #### translate
+
 Perform line-by-line or block translation.
 
-```
+```plaintext
 Additional Options:
   -r, --target LANG        Target language code (default: en)
   -y, --style STYLE            Translation style (default: configuration file)
@@ -76,9 +78,10 @@ Additional Options:
 ```
 
 #### process
+
 Execute pattern-based text processing. Can work on sections of data or on the whole input stream.
 
-```
+```plaintext
 Additional Options:
   -s, --sections FILE      JSON file containing section data
   -g, --paragraph         Use line-separated paragraphs as sections
