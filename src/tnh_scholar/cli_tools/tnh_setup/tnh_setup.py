@@ -17,6 +17,23 @@ from tnh_scholar import (
     TNH_LOG_DIR
 ) 
 
+
+OPENAI_ENV_HELP_MSG = """
+>>>>>>>>>> OpenAI API key not found in environment. <<<<<<<<<
+
+For AI processing with TNH-scholar:
+
+1. Get an API key from https://platform.openai.com/api-keys
+2. Set the OPENAI_API_KEY environment variable:
+
+   export OPENAI_API_KEY='your-api-key-here'  # Linux/Mac
+   set OPENAI_API_KEY=your-api-key-here       # Windows
+
+For OpenAI API access help: https://platform.openai.com/
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>> -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+"""
+
 PATTERNS_URL = "https://github.com/aaronksolomon/patterns/archive/main.zip"
 
 def create_config_dirs():
@@ -52,7 +69,7 @@ def download_patterns() -> bool:
 @click.command()
 @click.option('--skip-env', is_flag=True, help='Skip API key setup')
 @click.option('--skip-patterns', is_flag=True, help='Skip pattern download')
-def setup_tnh(skip_env: bool, skip_patterns: bool):
+def tnh_setup(skip_env: bool, skip_patterns: bool):
     """Set up TNH Scholar configuration."""
     click.echo("Setting up TNH Scholar...")
     
@@ -71,13 +88,15 @@ def setup_tnh(skip_env: bool, skip_patterns: bool):
         else:
             click.echo("Pattern download failed", err=True)
             
-    # Environment setup
+    # Environment test:
     if not skip_env:
-        check_openai_env()
+        load_dotenv()  # for development
+        if not check_openai_env(output=False):
+            print(OPENAI_ENV_HELP_MSG)
     
 def main():
     """Entry point for setup CLI tool."""
-    setup_tnh()
+    tnh_setup()
 
 if __name__ == "__main__":
     main()
