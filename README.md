@@ -108,7 +108,7 @@ This project is licensed under the [GPL-3.0 License](LICENSE).
 
 ## Development Status
 
-TNH Scholar is currently in alpha stage (v0.1.0). While the core functionality is stable, the API and features may change as we continue development.
+TNH Scholar is currently in alpha stage (v0.1.3). While the core functionality is stable, the API and features may change as we continue development.
 
 ## Support
 
