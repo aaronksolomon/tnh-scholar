@@ -47,7 +47,7 @@ Dependencies:
 from pathlib import Path
 
 # Package version
-__version__ = "0.1.0"
+__version__ = "0.1.3"
 
 from pathlib import Path
 
