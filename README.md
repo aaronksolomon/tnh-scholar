@@ -34,7 +34,7 @@ tnh-setup
 
 - Python 3.12.4
 - OpenAI API credentials (required for AI tools)
-- Google Vision credentials for OCR development and testing
+- Google Vision credentials (for OCR development and testing)
 - pip package manager
 
 ### Optional Dependencies
