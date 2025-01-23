@@ -49,7 +49,7 @@ dependencies = [
 
 [project.optional-dependencies]
 gui= [
-    "streamlit==1.41.1"
+    "streamlit==1.41.1",
     "langchain_community==0.3.13",
     "langchain_openai==0.2.14",
     "supabase==2.11.0",
@@ -75,7 +75,7 @@ ocr = [
     "Pillow==11.1.0",
     "google-cloud==0.34.0",
     "google-cloud-vision==3.9.0",
-    "pdf2image==1.17.0"
+    "pdf2image==1.17.0",
 ]
 
 [project.urls]
