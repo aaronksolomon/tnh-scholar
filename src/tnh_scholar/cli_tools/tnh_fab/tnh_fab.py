@@ -38,7 +38,6 @@ logger = get_child_logger(__name__)
 # Default pattern directory as specified
 from tnh_scholar import TNH_DEFAULT_PATTERN_DIR
 
-
 class TNHFabConfig:
     """Holds configuration for the TNH-FAB CLI tool."""
 
@@ -116,6 +115,7 @@ def tnh_fab(ctx: Context, verbose: bool, debug: bool, quiet: bool):
     config = ctx.ensure_object(TNHFabConfig)
     
     if not check_openai_env():
+        
         ctx.fail("Missing OpenAI Credentials.")
         
     config.verbose = verbose
