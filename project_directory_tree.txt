@@ -1,37 +1,360 @@
 .
-├── __pycache__
-├── build
-│   └── bdist.macosx-11.0-arm64
-├── data
-│   ├── PDF
-│   └── books
+├── CONTRIBUTING.md
+├── LICENSE
+├── README.md
+├── TODO.md
+├── current_pip_freeze.txt
 ├── data_processing
-├── dist
 ├── docs
+│   ├── api
+│   │   └── index.md
+│   ├── cli
+│   │   ├── audio-transcribe.md
+│   │   ├── tnh-fab.md
+│   │   └── ytt-fetch.md
+│   ├── contributing.md
+│   ├── design
+│   │   ├── setup-tnh
+│   │   │   └── setup_design.md
+│   │   ├── tnh-fab
+│   │   │   ├── text processing cli design_v1.md
+│   │   │   └── text processing cli design_v2.md
+│   │   └── ytt-fetch
+│   │       ├── ADR transcript source handling.md
+│   │       ├── ADR yt-dlp transcripts.md
+│   │       ├── ADRs.md
+│   │       └── yt-dlp vs. Youtube API.md
+│   ├── design_guide.md
+│   ├── docs-design
+│   │   ├── design
+│   │   │   └── documentation.md
+│   │   └── planning
+│   │       ├── maintenance.md
+│   │       └── roadmap.md
 │   ├── gpt_4o_search_query_text_pair_testing
+│   │   ├── sample_text.txt
+│   │   └── testing_input_output.md
 │   ├── gpt_4o_toc_tag_generation_testing
-│   └── gpt_4o_translations experiments
+│   │   └── Nov_2_testing_TOC_label_prompt.txt
+│   ├── gpt_4o_translations experiments
+│   │   └── passage_test.md
+│   ├── gpt_development_convos.md
+│   ├── index.md
+│   ├── metadata_report.md
+│   ├── preliminary_feasibility_study.md
+│   ├── translation_research.md
+│   └── user-guide
+│       ├── getting-started.md
+│       ├── installation.md
+│       └── patterns.md
 ├── evaluation
 ├── logs
+│   ├── audio_transcribe.log
+│   └── main.log
+├── mkdocs.yaml
 ├── models
+├── mypy_errors.txt
+├── nb_management.ipynb
 ├── notebooks
+│   ├── ai_text_processing
+│   │   ├── logs
+│   │   │   └── main.log
+│   │   ├── patterns.ipynb
+│   │   ├── patterns_local.ipynb
+│   │   ├── section_processing_tests.ipynb
+│   │   └── section_processing_tests_local.ipynb
+│   ├── audio_processing
+│   │   ├── pyannote_test.ipynb
+│   │   └── pyannote_test_local.ipynb
 │   ├── html_viewing
+│   │   ├── tx_journal_to_html.ipynb
+│   │   ├── tx_journal_to_html_local.ipynb
+│   │   └── tx_viewer.css
 │   ├── journal_processing
+│   │   ├── batch_start_error.py
+│   │   ├── full_journal_process.ipynb
+│   │   ├── full_journal_process_local.ipynb
+│   │   ├── full_journal_process_local_local.ipynb
+│   │   ├── gpt_interface_testing.ipynb
+│   │   ├── gpt_interface_testing_local.ipynb
+│   │   ├── gpt_interface_testing_local_local.ipynb
+│   │   ├── journal_cleaning1.ipynb
+│   │   ├── journal_cleaning1_local.ipynb
+│   │   ├── journal_cleaning1_local_local.ipynb
+│   │   ├── journal_cleaning2.ipynb
+│   │   ├── journal_cleaning2_local.ipynb
+│   │   ├── journal_cleaning2_local_local.ipynb
+│   │   ├── journal_flow_2_step.ipynb
+│   │   ├── journal_flow_2_step2.ipynb
+│   │   ├── journal_flow_2_step2_local.ipynb
+│   │   ├── journal_flow_2_step2_local_local.ipynb
+│   │   ├── journal_flow_2_step_local.ipynb
+│   │   ├── journal_flow_2_step_local_local.ipynb
+│   │   ├── journal_processing1.ipynb
+│   │   ├── journal_processing1_local.ipynb
+│   │   ├── journal_processing1_local_local.ipynb
+│   │   ├── journal_processing2.ipynb
+│   │   ├── journal_processing2_local.ipynb
+│   │   ├── journal_processing2_local_local.ipynb
+│   │   ├── journal_processing3.ipynb
+│   │   ├── journal_processing3_local.ipynb
+│   │   ├── journal_processing3_local_local.ipynb
+│   │   ├── journal_processing4.ipynb
+│   │   ├── journal_processing4_local.ipynb
+│   │   ├── journal_processing4_local_local.ipynb
+│   │   ├── journal_processing5.ipynb
+│   │   ├── journal_processing5_local.ipynb
+│   │   ├── journal_processing5_local_local.ipynb
+│   │   ├── journal_processing6.ipynb
+│   │   ├── journal_processing6_local.ipynb
+│   │   ├── journal_processing6_local_local.ipynb
+│   │   ├── journal_processing7.ipynb
+│   │   ├── journal_processing7_local.ipynb
+│   │   ├── journal_processing7_local_local.ipynb
+│   │   ├── journal_processing8.ipynb
+│   │   ├── journal_processing8_local.ipynb
+│   │   ├── journal_processing8_local_local.ipynb
+│   │   ├── processing_info.log
+│   │   ├── run_journal_batches.py
+│   │   ├── temp_batch_run.jsonl
+│   │   └── test.xml
 │   ├── ocr_processing
+│   │   ├── ocr_hand_checking.ipynb
+│   │   ├── ocr_hand_checking_local.ipynb
+│   │   ├── ocr_testing.ipynb
+│   │   ├── ocr_testing1.ipynb
+│   │   ├── ocr_testing1_local.ipynb
+│   │   ├── ocr_testing2.ipynb
+│   │   ├── ocr_testing2_local.ipynb
+│   │   ├── ocr_testing3.ipynb
+│   │   ├── ocr_testing3_local.ipynb
+│   │   ├── ocr_testing4.ipynb
+│   │   ├── ocr_testing4_local.ipynb
+│   │   ├── ocr_testing5.ipynb
+│   │   ├── ocr_testing5_local.ipynb
+│   │   ├── ocr_testing6.ipynb
+│   │   ├── ocr_testing6_local.ipynb
+│   │   ├── ocr_testing7.ipynb
+│   │   ├── ocr_testing7_local.ipynb
+│   │   ├── ocr_testing_asynch_batches.ipynb
+│   │   ├── ocr_testing_asynch_batches_local.ipynb
+│   │   └── ocr_testing_local.ipynb
 │   ├── query_text_generation
+│   │   ├── model_testing_prompt.txt
+│   │   ├── output_data
+│   │   │   ├── TH_broad_scope_query_text_data.jsonl
+│   │   │   ├── TH_fine_grain_query_text_data.jsonl
+│   │   │   ├── batch_requests_broad_scope.jsonl
+│   │   │   ├── batch_requests_fine_grained.jsonl
+│   │   │   ├── broad_scope_chunks_raw_output.jsonl
+│   │   │   ├── fine_grained_chunks_raw_output.jsonl
+│   │   │   └── test_batch.jsonl
+│   │   ├── prompt_sequence1.ipynb
+│   │   └── prompt_sequence1_local.ipynb
 │   ├── testing
+│   │   ├── CLI_test.ipynb
+│   │   ├── CLI_test_local.ipynb
+│   │   ├── github_dl_test.ipynb
+│   │   ├── github_dl_test_local.ipynb
+│   │   ├── logs
+│   │   │   ├── audio_transcribe.log
+│   │   │   └── main.log
+│   │   ├── logtesting.ipynb
+│   │   ├── logtesting_local.ipynb
+│   │   ├── package_contents_tests.ipynb
+│   │   ├── test_patterns
+│   │   │   ├── default_line_translation.md
+│   │   │   ├── default_punctuate.md
+│   │   │   ├── default_section.md
+│   │   │   ├── default_section_old.md
+│   │   │   ├── default_xml_format.md
+│   │   │   ├── default_xml_paragraph_format.md
+│   │   │   ├── extract_wisdom1.md
+│   │   │   ├── extract_wisdom2.md
+│   │   │   ├── extract_wisdom_section.md
+│   │   │   ├── generate_markdown.md
+│   │   │   ├── generate_sections_en.md
+│   │   │   ├── generate_sections_multi_lang.md
+│   │   │   ├── identify_speakers.md
+│   │   │   ├── repair_markdown.md
+│   │   │   ├── repair_markdown_strategy.md
+│   │   │   ├── simple_punctuate.md
+│   │   │   ├── simple_translate_paragraph_thay.md
+│   │   │   ├── special
+│   │   │   │   └── test_special_pattern.md
+│   │   │   ├── translate_lines_thay_audio.md
+│   │   │   ├── translate_section_thay_en.md
+│   │   │   └── xml_format_dt_section_en.md
+│   │   ├── test_urls.csv
+│   │   ├── yt_fetch_test.ipynb
+│   │   ├── yt_fetch_test_local.ipynb
+│   │   ├── ytdlp_version_test.ipynb
+│   │   └── ytdlp_version_test_local.ipynb
 │   ├── text_processing
+│   │   ├── epub_based_testing1.ipynb
+│   │   ├── epub_based_testing1_local.ipynb
+│   │   ├── epub_parsing_LiA.ipynb
+│   │   ├── epub_parsing_LiA_local.ipynb
+│   │   ├── epub_parsing_testing2.ipynb
+│   │   ├── epub_parsing_testing2_local.ipynb
+│   │   ├── old_clean_parse_testing.ipynb
+│   │   ├── old_clean_parse_testing_local.ipynb
+│   │   ├── text_metadata_tagging.ipynb
+│   │   ├── text_metadata_tagging_local.ipynb
+│   │   ├── text_tagging_formatting_xml_checks.ipynb
+│   │   ├── text_tagging_formatting_xml_checks_local.ipynb
+│   │   ├── textbased_script_testing1.ipynb
+│   │   ├── textbased_script_testing1_local.ipynb
+│   │   ├── textbased_testing2.ipynb
+│   │   ├── textbased_testing2_local.ipynb
+│   │   ├── xml_to_pdf_work.ipynb
+│   │   └── xml_to_pdf_work_local.ipynb
 │   └── video_processing
-├── processed_data
-│   ├── processed_journal_data
-│   └── processed_videos
-├── sandbox
-│   ├── audio_transcriptions
-│   ├── logs
-│   └── video_transcriptions
+│       ├── batch_recovery.ipynb
+│       ├── batch_recovery_local.ipynb
+│       ├── collating.ipynb
+│       ├── collating_local.ipynb
+│       ├── deer_park_video_metadata.jsonl
+│       ├── logs
+│       │   ├── postprocessing_english.log
+│       │   └── transcription_process_stepwise.log
+│       ├── master_url_list.csv
+│       ├── output_adjustment_system_messages.md
+│       ├── postprocessing_english.ipynb
+│       ├── postprocessing_english_local.ipynb
+│       ├── postprocessing_viet.ipynb
+│       ├── postprocessing_viet_local.ipynb
+│       ├── process_stepwise.ipynb
+│       ├── process_stepwise_local.ipynb
+│       ├── repair_process.ipynb
+│       ├── repair_process_local.ipynb
+│       ├── tests_and_prototypes
+│       │   ├── audio_extract_testing1.ipynb
+│       │   ├── audio_extract_testing1_local.ipynb
+│       │   ├── audio_extract_testing2.ipynb
+│       │   ├── audio_extract_testing2_local.ipynb
+│       │   ├── audio_extract_testing3.ipynb
+│       │   ├── audio_extract_testing3_local.ipynb
+│       │   ├── audio_extract_testing4.ipynb
+│       │   ├── audio_extract_testing4_local.ipynb
+│       │   ├── omp_fix.ipynb
+│       │   ├── omp_fix_local.ipynb
+│       │   ├── post_processing_tests.ipynb
+│       │   ├── post_processing_tests_local.ipynb
+│       │   ├── postprocessing_tests2.ipynb
+│       │   └── postprocessing_tests2_local.ipynb
+│       ├── youtube_playlist_process.ipynb
+│       └── youtube_playlist_process_local.ipynb
+├── project_directory_tree.txt
+├── pyproject.toml
+├── release_checklist.md
 ├── src
-│   ├── tnh_scholar
-│   └── tnh_scholar.egg-info
-├── tests
-│   └── openai_text_processing
-└── tnh_scholar.egg-info
+│   ├── __init__.py
+│   └── tnh_scholar
+│       ├── __init__.py
+│       ├── ai_text_processing
+│       │   ├── __init__.py
+│       │   ├── ai_text_processing.py
+│       │   ├── lang.py
+│       │   ├── openai_process_interface.py
+│       │   ├── patterns.py
+│       │   ├── response_format.py
+│       │   └── typing.py
+│       ├── audio_processing
+│       │   ├── __init__.py
+│       │   ├── audio.py
+│       │   ├── transcription.py
+│       │   └── whisper_security.py
+│       ├── cli_tools
+│       │   ├── __init__.py
+│       │   ├── audio_transcribe
+│       │   │   ├── __init__.py
+│       │   │   ├── audio_transcribe.py
+│       │   │   ├── environment
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── env.py
+│       │   │   │   └── requirements.txt
+│       │   │   ├── validate.py
+│       │   │   └── version_check.py
+│       │   ├── nfmt
+│       │   │   ├── __init__.py
+│       │   │   └── nfmt.py
+│       │   ├── tnh_fab
+│       │   │   ├── __init__.py
+│       │   │   └── tnh_fab.py
+│       │   ├── tnh_setup
+│       │   │   ├── __init__.py
+│       │   │   └── tnh_setup.py
+│       │   ├── token_count
+│       │   │   ├── __init__.py
+│       │   │   └── token_count.py
+│       │   └── ytt_fetch
+│       │       ├── __init__.py
+│       │       └── ytt_fetch.py
+│       ├── dev_tools
+│       │   ├── __init__.py
+│       │   └── generate_tree.py
+│       ├── journal_processing
+│       │   ├── __init__.py
+│       │   └── journal_process.py
+│       ├── logging_config.py
+│       ├── ocr_processing
+│       │   ├── __init__.py
+│       │   ├── development
+│       │   │   ├── st_test.py
+│       │   │   ├── st_test2.py
+│       │   │   ├── st_test3.py
+│       │   │   ├── st_test4.py
+│       │   │   ├── st_test5.py
+│       │   │   └── st_test6.py
+│       │   ├── ocr_editor.py
+│       │   └── ocr_processing.py
+│       ├── openai_interface
+│       │   ├── __init__.py
+│       │   ├── gpt_batch_files
+│       │   │   ├── batch_tests
+│       │   │   │   ├── TEST_clean_batch_phat-giao-viet-nam-1956-01.jsonl
+│       │   │   │   └── test_batch.jsonl
+│       │   │   ├── journal_cleaning_batches
+│       │   │   │   └── clean_batch_phat-giao-viet-nam-1956-01.jsonl
+│       │   │   └── journal_translate_batches
+│       │   │       ├── translate_base_batch_phat-giao-viet-nam-1956-01.jsonl
+│       │   │       └── translate_batch_phat-giao-viet-nam-1956-28.jsonl
+│       │   ├── openai_interface.py
+│       │   └── run_oa_batch_jobs.py
+│       ├── pattern_share
+│       │   ├── app.py
+│       │   └── requirements.txt
+│       ├── post_install_message.py
+│       ├── text_processing
+│       │   ├── __init__.py
+│       │   ├── bracket.py
+│       │   ├── clean_parse_tag.py
+│       │   ├── initial_cleaning_scripts.py
+│       │   ├── numbered_text.py
+│       │   └── v2_cleaning_scripts.py
+│       ├── utils
+│       │   ├── __init__.py
+│       │   ├── file_utils.py
+│       │   ├── json_utils.py
+│       │   ├── progress_utils.py
+│       │   ├── slugify.py
+│       │   ├── user_io_utils.py
+│       │   └── validate.py
+│       ├── video_processing
+│       │   ├── __init__.py
+│       │   ├── video_processing.py
+│       │   └── yt_transcribe.py
+│       └── xml_processing
+│           ├── __init__.py
+│           ├── extract_tags.py
+│           └── xml_processing.py
+├── src_directory_tree.txt
+└── tests
+    ├── openai_interface
+    │   └── test_openai_interface.py
+    ├── openai_text_processing
+    └── text_processing
+        └── test_numbered_text.py
+
+66 directories, 292 files
