@@ -1,0 +1,127 @@
+# TextObject Architecture Decision Records
+
+## ADR 001: Documentation of Existing and Alternative TextObject Designs
+
+### Status
+
+Accepted
+
+### Context
+
+During documentation efforts, we created a "greenfield" design document for TextObject without fully accounting for the existing implementation. This resulted in having both an as-built design and a potential alternative design that suggests simplifications.
+
+### Decision
+
+We will maintain three documents:
+
+1. TextObject_Original_Design.md - Documents the original implementation
+2. TextObject_New_Design.md - Records the simpler new design
+3. This ADR file - Explains the context and tracks future decisions
+
+### Consequences
+
+- Clear separation between actual and planned future designs
+- Preserved thinking about potential simplifications
+- Minimal documentation overhead by keeping related docs focused
+
+## ADR 002: Current TextObject Implementation Design
+
+### Status
+
+Accepted
+
+### Context
+
+The TextObject system was implemented to provide structured text handling with explicit section boundaries and metadata support.
+
+### Decision
+
+Key design points of current implementation:
+
+1. Sections have explicit start_line and end_line
+2. LogicalSection uses Pydantic BaseModel
+3. Metadata follows Dublin Core standards
+4. Strong integration with NumberedText for line management
+5. ISO 639-1 language codes used but not strictly validated
+
+### Consequences
+
+- More explicit section control but higher validation complexity
+- Clear contract through Pydantic models
+- Flexible metadata handling
+
+## ADR 003: New TextObject Design Consideration
+
+### Status
+
+Proposed
+
+### Context
+
+During documentation, a simpler design was conceived that would reduce complexity through implicit section boundaries. Additionally section metadata and contextual data could be added to convey/preserve important information for users and for AI assistants.
+
+### Decision
+
+Key points of alternative design:
+
+1. Sections defined only by start_line
+2. End lines implicit (next section's start - 1)
+3. Guaranteed contiguous coverage
+4. Simplified validation
+5. Addition of metadata and context fields
+6. Separation of concerns for a TextObject (general representation) and TextObjectFormat (for API use).
+
+This design is preserved for consideration in future refactoring.
+
+### Consequences
+
+- Would simplify section management
+- Would require migration effort
+- Trade-off between explicitness and simplicity
+
+## ADR 004: TextObject Re-Design Decisions
+
+### Status
+Accepted
+
+### Context
+The TextObject new design specification proposes some significant changes from existing implementations, particularly around section handling, while some aspects of metadata and language handling need clarification for the prototype phase.
+
+### Decisions
+
+#### 1. Language Code Handling
+- Language code validation (ISO 639-1 compliance) is deferred to production phase
+- Prototype accepts any string value for language codes
+
+#### 2. Metadata Requirements
+- No minimum required metadata fields for prototype phase
+- Will establish standard placeholder value for unset fields:
+  - None for optional fields
+  - Empty string for required strings
+  - Empty lists for collections
+- Metadata validation deferred to production phase
+
+#### 3. NumberedText Integration
+- TextObject maintains immutable reference to its NumberedText instance
+- No modifications to line numbers allowed after TextObject creation
+
+### Consequences
+
+#### Positive
+- Simpler section management through implicit end lines
+- Reduced validation complexity
+- Guaranteed contiguous sections by design
+- Clear separation from current implementation for migration planning
+
+#### Negative
+- Will require migration from current dual start_line/end_line model
+- Cannot explicitly represent gaps between sections (if that was ever needed)
+
+#### Neutral
+- Tools using TextObject will need to adapt to new section model
+- May need transition period supporting both models
+
+### Related
+- Original TextObject.md design specification
+- Current response_format.py implementation
+- tnh-fab implementation requirements
