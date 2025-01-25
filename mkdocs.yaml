@@ -1,15 +1,8 @@
-# mkdocs.yml
 site_name: TNH Scholar Documentation
 repo_url: https://github.com/aaronksolomon/tnh-scholar
 
 theme:
   name: material
-  features:
-    - navigation.tabs
-    - navigation.sections
-    - navigation.expand
-    - search.suggest
-    - search.highlight
 
 plugins:
   - search
@@ -45,24 +38,22 @@ nav:
     - Design:
       - Design Guide: development/design-guide.md
       - CLI Design:
-        - 'TNH-FAB':
-          - 'TNH-FAB v1': design/tnh_fab/text processing cli design_v1.md
-          - 'TNH-FAB v2': design/tnh_fab/text processing cli design_v2.md
-        - 'YTT-Fetch':
+        - TNH-FAB:
+          - 'v1': design/tnh_fab/text processing cli design_v1.md
+          - 'v2': design/tnh_fab/text processing cli design_v2.md
+        - YTT-Fetch:
           - Overview: ytt-fetch/ADRs.md
           - 'Transcript Source': design/ytt-fetch/ADR transcript source handling.md
           - 'YT-DLP Integration': design/ytt-fetch/ADR yt-dlp transcripts.md
           - 'API Comparison': design/ytt-fetch/yt-dlp vs. Youtube API.md
         - 'SETUP-TNH': design/setup-tnh/setup_design.md
-      - Docs Design and Plan: 
+    - Documentation:
       - Design: docs-design/design/documentation.md
       - Planning:
         - Roadmap: docs-design/planning/roadmap.md
         - Maintenance: docs-design/planning/maintenance.md
-    - Exploration Results:
-    - Query Generation: gpt_4o_search_query_text_pair_testing/testing_input_output.md
-    - Translation: gpt_4o_translations experiments/passage_test.md
-    - Translation Research: translation_research.md
-    - Feasibility Study: preliminary_feasibility_study.md
-  
-      
+    - Research:
+      - Query Generation: gpt_4o_search_query_text_pair_testing/testing_input_output.md
+      - Translation: gpt_4o_translations experiments/passage_test.md
+      - Translation Research: translation_research.md
+      - Feasibility Study: preliminary_feasibility_study.md
