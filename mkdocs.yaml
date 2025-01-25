@@ -4,54 +4,65 @@ repo_url: https://github.com/aaronksolomon/tnh-scholar
 
 theme:
   name: material
-
-# Add Python path configuration
-watch:
-  - src/tnh_scholar
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
 
 plugins:
   - search
   - mkdocstrings:
       handlers:
         python:
-          paths: [src]  # Add source directory to Python path
+          paths: [src]
           options:
             docstring_style: google
             show_source: true
             show_root_heading: true
 
-# Configure navigation
 nav:
   - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quick-start.md
+    - Configuration: getting-started/configuration.md
   - User Guide:
-    - Installation: user-guide/installation.md
-    - Getting Started: user-guide/getting-started.md
-    - Patterns: user-guide/patterns.md
+    - Overview: user-guide/overview.md
+    - Pattern System: user-guide/patterns.md
+    - Best Practices: user-guide/best-practices.md
   - CLI Tools:
-    - audio-transcribe: cli/audio-transcribe.md
+    - Overview: cli/overview.md
     - tnh-fab: cli/tnh-fab.md
+    - audio-transcribe: cli/audio-transcribe.md
     - ytt-fetch: cli/ytt-fetch.md
+    - nfmt: cli/nfmt.md
+    - tnh-setup: cli/tnh-setup.md
   - API Reference: api/index.md
   - Development:
-    - Design Guide: design_guide.md
-    - Translation Research: translation_research.md
-    - Feasibility Study: preliminary_feasibility_study.md
-  - Testing:
-    - Query Generation: gpt_4o_search_query_text_pair_testing/testing_input_output.md
-    - Translation: gpt_4o_translations experiments/passage_test.md
-  - Design:
-    - CLI Design:
-      - 'TNH-FAB':
-        - 'TNH-FAB v1': design/tnh-fab/text processing cli design_v1.md
-        - 'TNH-FAB v2': design/tnh-fab/text processing cli design_v2.md
-      - 'YTT-Fetch':
-        - Overview: ytt-fetch/ADRs.md
-        - 'Transcript Source': design/ytt-fetch/ADR transcript source handling.md
-        - 'YT-DLP Integration': design/ytt-fetch/ADR yt-dlp transcripts.md
-        - 'API Comparison': design/ytt-fetch/yt-dlp vs. Youtube API.md
-      - 'SETUP-TNH': design/setup-tnh/setup_design.md
-  - Docs Design and Plan: 
+    - Contributing: development/contributing.md
+    - Design:
+      - Design Guide: development/design-guide.md
+      - CLI Design:
+        - 'TNH-FAB':
+          - 'TNH-FAB v1': design/tnh_fab/text processing cli design_v1.md
+          - 'TNH-FAB v2': design/tnh_fab/text processing cli design_v2.md
+        - 'YTT-Fetch':
+          - Overview: ytt-fetch/ADRs.md
+          - 'Transcript Source': design/ytt-fetch/ADR transcript source handling.md
+          - 'YT-DLP Integration': design/ytt-fetch/ADR yt-dlp transcripts.md
+          - 'API Comparison': design/ytt-fetch/yt-dlp vs. Youtube API.md
+        - 'SETUP-TNH': design/setup-tnh/setup_design.md
+      - Docs Design and Plan: 
       - Design: docs-design/design/documentation.md
       - Planning:
         - Roadmap: docs-design/planning/roadmap.md
         - Maintenance: docs-design/planning/maintenance.md
+    - Exploration Results:
+    - Query Generation: gpt_4o_search_query_text_pair_testing/testing_input_output.md
+    - Translation: gpt_4o_translations experiments/passage_test.md
+    - Translation Research: translation_research.md
+    - Feasibility Study: preliminary_feasibility_study.md
+  
+      
