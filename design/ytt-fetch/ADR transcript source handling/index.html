@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../../../development/contributing/">
+        <link rel="prev" href="../ADRs/">
       
       
         <link rel="next" href="../ADR%20yt-dlp%20transcripts/">
@@ -751,7 +751,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/design-guide.md" class="md-nav__link">
+      <a href="../../../development/design-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -844,7 +844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tnh_fab/text processing cli design_v1.md" class="md-nav__link">
+      <a href="../../tnh-fab/text%20processing%20cli%20design_v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -865,7 +865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tnh_fab/text processing cli design_v2.md" class="md-nav__link">
+      <a href="../../tnh-fab/text%20processing%20cli%20design_v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -931,7 +931,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/ADRs.md" class="md-nav__link">
+      <a href="../ADRs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1141,7 +1141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../setup-tnh/setup_design/" class="md-nav__link">
+      <a href="../../setup-tnh/setup-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1192,7 +1192,7 @@
             
   
   <span class="md-ellipsis">
-    Documentation
+    Documentation Design and Process
   </span>
   
 
@@ -1202,7 +1202,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_3">
             <span class="md-nav__icon md-icon"></span>
-            Documentation
+            Documentation Design and Process
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1217,7 +1217,7 @@
         
   
   <span class="md-ellipsis">
-    Design
+    Docs-Design
   </span>
   
 
@@ -1248,7 +1248,7 @@
             
   
   <span class="md-ellipsis">
-    Planning
+    Docs-Planning
   </span>
   
 
@@ -1258,7 +1258,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_3_2">
             <span class="md-nav__icon md-icon"></span>
-            Planning
+            Docs-Planning
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1576,18 +1576,19 @@
   
 
 
-<p>I'll create a supplementary ADR that builds on our format decision to include this consideration about transcript sources:</p>
 <h1 id="adr-youtube-transcript-source-handling-in-yt-fetch-cli">ADR: YouTube Transcript Source Handling in yt-fetch CLI</h1>
 <h2 id="status">Status</h2>
 <p>Proposed (supplements ADR: YouTube Transcript Format Selection)</p>
 <h2 id="context">Context</h2>
-<p>When requesting transcripts from YouTube videos:
-- Videos may have manually uploaded subtitles
-- Videos may have auto-generated captions
-- Some videos may have both
-- Quality and accuracy can vary significantly between sources</p>
-<p>Currently yt-dlp options:
-```python
+<p>When requesting transcripts from YouTube videos:</p>
+<ul>
+<li>Videos may have manually uploaded subtitles</li>
+<li>Videos may have auto-generated captions</li>
+<li>Some videos may have both</li>
+<li>Quality and accuracy can vary significantly between sources</li>
+</ul>
+<p>Currently yt-dlp options:</p>
+<p>```python
 opts = {
     "writesubtitles": True,      # Get manual subtitles
     "writeautomaticsub": True,   # Get auto-generated captions

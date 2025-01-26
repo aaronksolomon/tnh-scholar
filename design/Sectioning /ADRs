@@ -82,18 +82,22 @@ This design is preserved for consideration in future refactoring.
 ## ADR 004: TextObject Re-Design Decisions
 
 ### Status
+
 Accepted
 
 ### Context
+
 The TextObject new design specification proposes some significant changes from existing implementations, particularly around section handling, while some aspects of metadata and language handling need clarification for the prototype phase.
 
 ### Decisions
 
 #### 1. Language Code Handling
+
 - Language code validation (ISO 639-1 compliance) is deferred to production phase
 - Prototype accepts any string value for language codes
 
 #### 2. Metadata Requirements
+
 - No minimum required metadata fields for prototype phase
 - Will establish standard placeholder value for unset fields:
   - None for optional fields
@@ -102,26 +106,31 @@ The TextObject new design specification proposes some significant changes from e
 - Metadata validation deferred to production phase
 
 #### 3. NumberedText Integration
+
 - TextObject maintains immutable reference to its NumberedText instance
 - No modifications to line numbers allowed after TextObject creation
 
 ### Consequences
 
 #### Positive
+
 - Simpler section management through implicit end lines
 - Reduced validation complexity
 - Guaranteed contiguous sections by design
 - Clear separation from current implementation for migration planning
 
 #### Negative
+
 - Will require migration from current dual start_line/end_line model
 - Cannot explicitly represent gaps between sections (if that was ever needed)
 
 #### Neutral
+
 - Tools using TextObject will need to adapt to new section model
 - May need transition period supporting both models
 
 ### Related
+
 - Original TextObject.md design specification
 - Current response_format.py implementation
 - tnh-fab implementation requirements

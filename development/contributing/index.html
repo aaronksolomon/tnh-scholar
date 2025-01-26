@@ -12,7 +12,7 @@
         <link rel="prev" href="../../api/">
       
       
-        <link rel="next" href="../../design/ytt-fetch/ADR%20transcript%20source%20handling/">
+        <link rel="next" href="../design-guide/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -764,6 +764,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-install-the-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Install the package
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-try-basic-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Try basic operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-report-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Report issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -858,7 +891,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../design-guide.md" class="md-nav__link">
+      <a href="../design-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -949,7 +982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/tnh_fab/text processing cli design_v1.md" class="md-nav__link">
+      <a href="../../design/tnh-fab/text%20processing%20cli%20design_v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -970,7 +1003,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/tnh_fab/text processing cli design_v2.md" class="md-nav__link">
+      <a href="../../design/tnh-fab/text%20processing%20cli%20design_v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1034,7 +1067,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ytt-fetch/ADRs.md" class="md-nav__link">
+      <a href="../../design/ytt-fetch/ADRs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1126,7 +1159,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/setup-tnh/setup_design/" class="md-nav__link">
+      <a href="../../design/setup-tnh/setup-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1177,7 +1210,7 @@
             
   
   <span class="md-ellipsis">
-    Documentation
+    Documentation Design and Process
   </span>
   
 
@@ -1187,7 +1220,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_3">
             <span class="md-nav__icon md-icon"></span>
-            Documentation
+            Documentation Design and Process
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1202,7 +1235,7 @@
         
   
   <span class="md-ellipsis">
-    Design
+    Docs-Design
   </span>
   
 
@@ -1233,7 +1266,7 @@
             
   
   <span class="md-ellipsis">
-    Planning
+    Docs-Planning
   </span>
   
 
@@ -1243,7 +1276,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_3_2">
             <span class="md-nav__icon md-icon"></span>
-            Planning
+            Docs-Planning
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1491,6 +1524,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-install-the-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Install the package
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-try-basic-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Try basic operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-report-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Report issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1584,14 +1650,10 @@
 </ol>
 <h2 id="how-to-help">How to Help</h2>
 <h3 id="testing">Testing</h3>
-<ol>
-<li>Install the package:</li>
-</ol>
+<h4 id="1-install-the-package">1. Install the package</h4>
 <pre><code class="language-bash">   pip install tnh-scholar
 </code></pre>
-<ol>
-<li>Try basic operations:</li>
-</ol>
+<h4 id="2-try-basic-operations">2. Try basic operations</h4>
 <pre><code class="language-bash">    # Test basic commands
     tnh-fab punctuate input.txt
     tnh-fab section input.txt
@@ -1601,13 +1663,13 @@
     # Test pipeline operations
     cat input.txt | tnh-fab punctuate | tnh-fab section
 </code></pre>
-<ol>
-<li>Report issues:</li>
+<h4 id="3-report-issues">3. Report issues</h4>
+<ul>
 <li>Use GitHub Issues</li>
 <li>Include command used</li>
 <li>Provide minimal example that reproduces the issue</li>
 <li>Note your environment (OS, Python version)</li>
-</ol>
+</ul>
 <h3 id="pattern-testing">Pattern Testing</h3>
 <ol>
 <li>Create test patterns in <code>~/.config/tnh-scholar/patterns/</code></li>
@@ -1625,10 +1687,11 @@
 <h2 id="code-contributions">Code Contributions</h2>
 <p>At this prototype stage:</p>
 <ul>
-<li>Focus on bug fixes</li>
-<li>Keep changes minimal</li>
+<li>Start with bug fixes</li>
+<li>Keep changes focused</li>
 <li>Include tests for new functionality</li>
 <li>Follow existing code style</li>
+<li>See <a href="/development/design-guide">design guide</a> for coding style and requirements.</li>
 </ul>
 <h2 id="questions-and-discussion">Questions and Discussion</h2>
 <ul>
@@ -1636,7 +1699,7 @@
 <li>Tag issues with 'question' or 'discussion'</li>
 <li>Focus on prototype phase functionality</li>
 </ul>
-<p>Remember this is a prototype - we're looking for practical feedback on core functionality rather than feature additions.</p>
+<p>This is a project in rapid prototype - we're looking for practical feedback on core functionality as well as possible new feature additions and new tools.</p>
 
 
 

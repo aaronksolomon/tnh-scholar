@@ -16,7 +16,7 @@
     
     
       
-        <title>TextObject Original Design - TNH Scholar Documentation</title>
+        <title>TextObject Current Design - TNH Scholar Documentation</title>
       
     
     
@@ -59,6 +59,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#textobject-current-design" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -91,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TextObject Original Design
+              TextObject Current Design
             
           </span>
         </div>
@@ -738,7 +743,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/design-guide.md" class="md-nav__link">
+      <a href="../../../development/design-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -829,7 +834,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tnh_fab/text processing cli design_v1.md" class="md-nav__link">
+      <a href="../../tnh-fab/text%20processing%20cli%20design_v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -850,7 +855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tnh_fab/text processing cli design_v2.md" class="md-nav__link">
+      <a href="../../tnh-fab/text%20processing%20cli%20design_v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -914,7 +919,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/ADRs.md" class="md-nav__link">
+      <a href="../../ytt-fetch/ADRs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1006,7 +1011,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../setup-tnh/setup_design/" class="md-nav__link">
+      <a href="../../setup-tnh/setup-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1057,7 +1062,7 @@
             
   
   <span class="md-ellipsis">
-    Documentation
+    Documentation Design and Process
   </span>
   
 
@@ -1067,7 +1072,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_3">
             <span class="md-nav__icon md-icon"></span>
-            Documentation
+            Documentation Design and Process
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1082,7 +1087,7 @@
         
   
   <span class="md-ellipsis">
-    Design
+    Docs-Design
   </span>
   
 
@@ -1113,7 +1118,7 @@
             
   
   <span class="md-ellipsis">
-    Planning
+    Docs-Planning
   </span>
   
 
@@ -1123,7 +1128,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_3_2">
             <span class="md-nav__icon md-icon"></span>
-            Planning
+            Docs-Planning
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1336,6 +1341,133 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logicalsection" class="md-nav__link">
+    <span class="md-ellipsis">
+      LogicalSection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#textobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      TextObject
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-design-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Design Points
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Design Points">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#section-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#content-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Content Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metadata
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Notes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validation-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validation Requirements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1353,9 +1485,57 @@
   
 
 
-  <h1>TextObject Original Design</h1>
-
-
+<h1 id="textobject-current-design">TextObject Current Design</h1>
+<h2 id="overview">Overview</h2>
+<p>TextObject provides structured text handling with explicit section boundaries and metadata support, built on Pydantic models for validation.</p>
+<h2 id="core-components">Core Components</h2>
+<h3 id="logicalsection">LogicalSection</h3>
+<pre><code class="language-python">class LogicalSection(BaseModel):
+    title: str
+    start_line: int
+    end_line: int
+</code></pre>
+<h3 id="textobject">TextObject</h3>
+<p>Primary container managing:</p>
+<ul>
+<li>Section boundaries</li>
+<li>Language information</li>
+<li>Dublin Core metadata</li>
+<li>NumberedText content</li>
+</ul>
+<h2 id="key-design-points">Key Design Points</h2>
+<h3 id="section-management">Section Management</h3>
+<ul>
+<li>Explicit start and end lines for sections</li>
+<li>Validation ensures no overlaps or gaps</li>
+<li>Ordered storage by line number</li>
+</ul>
+<h3 id="content-integration">Content Integration</h3>
+<ul>
+<li>Immutable NumberedText reference</li>
+<li>Line number integrity maintained</li>
+<li>Section boundaries must match content</li>
+</ul>
+<h3 id="metadata">Metadata</h3>
+<ul>
+<li>Dublin Core based structure</li>
+<li>Optional/required field handling</li>
+<li>Flexible additional metadata support</li>
+</ul>
+<h2 id="implementation-notes">Implementation Notes</h2>
+<h3 id="validation-requirements">Validation Requirements</h3>
+<ul>
+<li>Sections must not overlap</li>
+<li>No gaps between sections allowed</li>
+<li>Line numbers must exist in content</li>
+<li>Language codes accepted but not validated</li>
+</ul>
+<h3 id="api-considerations">API Considerations</h3>
+<ul>
+<li>Pydantic models ensure clean serialization</li>
+<li>Clear validation errors</li>
+<li>Type safety throughout</li>
+</ul>
 
 
 

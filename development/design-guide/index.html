@@ -9,6 +9,10 @@
       
       
       
+        <link rel="prev" href="../contributing/">
+      
+      
+        <link rel="next" href="../../design/tnh-fab/text%20processing%20cli%20design_v1/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -16,7 +20,7 @@
     
     
       
-        <title>Design guide - TNH Scholar Documentation</title>
+        <title>Design Guide - TNH Scholar Documentation</title>
       
     
     
@@ -60,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#style" class="md-skip">
+        <a href="#tnh-scholar-design-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Design guide
+              Design Guide
             
           </span>
         </div>
@@ -649,17 +653,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -673,7 +679,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Development
@@ -705,17 +711,19 @@
                 
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" checked>
         
           
           <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
@@ -729,7 +737,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6_2">
             <span class="md-nav__icon md-icon"></span>
             Design
@@ -740,10 +748,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../design-guide.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Design Guide
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -752,6 +780,341 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-style-and-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Style and Organization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code Style and Organization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Standards
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-and-directory-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      File and Directory Naming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Structure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#type-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type Handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Type Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-annotations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type Annotations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydantic-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pydantic Models
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prototyping-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prototyping Phase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Phase
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prototyping-phase_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prototyping Phase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-phase_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Phase
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Requirements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Documentation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Review
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-key-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Key Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Validation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Guidelines
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Guidelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Considerations
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -834,7 +1197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/tnh_fab/text processing cli design_v1.md" class="md-nav__link">
+      <a href="../../design/tnh-fab/text%20processing%20cli%20design_v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -855,7 +1218,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/tnh_fab/text processing cli design_v2.md" class="md-nav__link">
+      <a href="../../design/tnh-fab/text%20processing%20cli%20design_v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -919,7 +1282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ytt-fetch/ADRs.md" class="md-nav__link">
+      <a href="../../design/ytt-fetch/ADRs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1011,7 +1374,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/setup-tnh/setup_design/" class="md-nav__link">
+      <a href="../../design/setup-tnh/setup-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1062,7 +1425,7 @@
             
   
   <span class="md-ellipsis">
-    Documentation
+    Documentation Design and Process
   </span>
   
 
@@ -1072,7 +1435,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_3">
             <span class="md-nav__icon md-icon"></span>
-            Documentation
+            Documentation Design and Process
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1087,7 +1450,7 @@
         
   
   <span class="md-ellipsis">
-    Design
+    Docs-Design
   </span>
   
 
@@ -1118,7 +1481,7 @@
             
   
   <span class="md-ellipsis">
-    Planning
+    Docs-Planning
   </span>
   
 
@@ -1128,7 +1491,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_3_2">
             <span class="md-nav__icon md-icon"></span>
-            Planning
+            Docs-Planning
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1341,6 +1704,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1349,9 +1714,315 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#style" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Style
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-style-and-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Style and Organization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code Style and Organization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Standards
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-and-directory-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      File and Directory Naming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Structure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#type-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type Handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Type Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-annotations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type Annotations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydantic-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pydantic Models
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prototyping-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prototyping Phase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Phase
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prototyping-phase_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prototyping Phase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-phase_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Phase
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Requirements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Documentation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Review
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-key-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Key Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Validation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Guidelines
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Guidelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Considerations
     </span>
   </a>
   
@@ -1375,16 +2046,306 @@
   
 
 
-  <h1>Design guide</h1>
+<h1 id="tnh-scholar-design-guide">TNH Scholar Design Guide</h1>
+<h2 id="overview">Overview</h2>
+<p>This design guide establishes development standards for the TNH Scholar project. While the project is currently in a rapid prototyping phase, these guidelines aim to maintain code quality and consistency throughout development. The guide distinguishes between immediate prototyping requirements and standards for later production phases where appropriate.</p>
+<h2 id="code-style-and-organization">Code Style and Organization</h2>
+<h3 id="python-standards">Python Standards</h3>
+<p>The project follows PEP 8 with some specific adaptations. All Python code should adhere to these standards regardless of development phase:</p>
+<p>The project uses Python 3.12.4 exclusively, taking advantage of modern Python features including strict typing. This version requirement ensures consistency across all components and enables use of the latest language features.</p>
+<p>Import organization follows this pattern:</p>
+<ol>
+<li>Standard library imports</li>
+<li>External package imports</li>
+<li>Internal package imports</li>
+<li>Relative imports</li>
+</ol>
+<p>For example:</p>
+<pre><code class="language-python">from pathlib import Path
+from typing import Optional, Dict
 
-<h3 id="style">Style</h3>
+import click
+from pydantic import BaseModel
+
+from tnh_scholar.utils import ensure_directory_exists
+from .environment import check_env
+</code></pre>
+<h3 id="file-and-directory-naming">File and Directory Naming</h3>
+<p>File naming conventions apply across all project phases:</p>
+<p>All Python files use lowercase with underscores, for example: <code>audio_processing.py</code>.</p>
+<p>Directory names follow the same lowercase with underscores pattern: <code>text_processing/</code>.</p>
+<p>Exception cases follow traditional conventions:</p>
 <ul>
-<li>
-<p>Typically using <a href="https://peps.python.org/pep-0008/">PEP 8</a> as a Python Style guide.</p>
+<li>README.md</li>
+<li>LICENSE</li>
+<li>CONTRIBUTING.md</li>
+<li>Requirements files (requirements.txt, dev-requirements.txt)</li>
+</ul>
+<h3 id="module-structure">Module Structure</h3>
+<p>Each module should maintain this general structure:</p>
+<pre><code class="language-python">&quot;&quot;&quot;Module docstring providing overview and purpose.&quot;&quot;&quot;
+
+# Standard imports
+# External imports
+# Internal imports
+
+# Module-level constants
+DEFAULT_CHUNK_SIZE = 1024
+
+# Classes
+class ExampleClass:
+    &quot;&quot;&quot;Class docstring.&quot;&quot;&quot;
+
+# Functions
+def example_function():
+    &quot;&quot;&quot;Function docstring.&quot;&quot;&quot;
+</code></pre>
+<h2 id="type-handling">Type Handling</h2>
+<h3 id="type-annotations">Type Annotations</h3>
+<p>The project emphasizes strong typing throughout:</p>
+<p>Basic type annotations are required even during prototyping:</p>
+<pre><code class="language-python">def process_text(
+    text: str,
+    language: Optional[str] = None,
+    max_tokens: int = 0
+) -&gt; str:
+</code></pre>
+<p>Custom types should be defined for complex structures:</p>
+<pre><code class="language-python">from typing import NewType
+
+MarkdownStr = NewType('MarkdownStr', str)
+</code></pre>
+<h3 id="pydantic-models">Pydantic Models</h3>
+<p>Data models use Pydantic for validation:</p>
+<pre><code class="language-python">class TextObject(BaseModel):
+    &quot;&quot;&quot;Represents processed text with metadata.&quot;&quot;&quot;
+    language: str = Field(..., description=&quot;ISO 639-1 language code&quot;)
+    sections: List[LogicalSection]
+    metadata: Optional[Dict[str, Any]] = None
+</code></pre>
+<h2 id="error-handling">Error Handling</h2>
+<p>Error handling requirements differ between prototyping and production phases:</p>
+<h3 id="prototyping-phase">Prototyping Phase</h3>
+<p>During prototyping, error handling should prioritize visibility of failure cases over comprehensive handling. This approach helps identify and document necessary error cases early in development.</p>
+<p>Preferred approach - allow exceptions to propagate:</p>
+<pre><code class="language-python"># TODO: Add error handling for ValueError and PatternError
+result = process_text(input_text)
+</code></pre>
+<p>When try blocks are needed, use minimal handling to maintain visibility:</p>
+<pre><code class="language-python">try:
+    # TODO: Handle specific exceptions in production
+    result = process_text(input_text)
+except:
+    # Maintain stack trace while documenting intent
+    raise
+</code></pre>
+<p>This approach:</p>
+<ul>
+<li>Maintains clear visibility of failure modes</li>
+<li>Documents intended error handling through TODO comments</li>
+<li>Preserves full stack traces for debugging</li>
+<li>Avoids masking exceptions during development</li>
+</ul>
+<h3 id="production-phase">Production Phase</h3>
+<p>Production code requires comprehensive error handling:</p>
+<pre><code class="language-python">try:
+    result = process_text(input_text)
+except ValueError as e:
+    logger.error(f&quot;Invalid input format: {e}&quot;)
+    raise InvalidInputError(str(e)) from e
+except APIError as e:
+    logger.error(f&quot;API processing failed: {e}&quot;)
+    raise ProcessingError(str(e)) from e
+</code></pre>
+<p>Do <strong>NOT</strong> write catch-all exception handling such as in:</p>
+<pre><code class="language-python">except Exception as e:
+    logger.error(f&quot;Unexpected error: {e}&quot;)
+    raise SystemError(f&quot;unexpected error: {e}&quot;) from e
+</code></pre>
+<p>It is preferred to let unknown exceptions propagate.</p>
+<h2 id="logging">Logging</h2>
+<h3 id="prototyping-phase_1">Prototyping Phase</h3>
+<p>Basic logging configuration is acceptable during prototyping:</p>
+<pre><code class="language-python">logger = get_child_logger(__name__)
+logger.info(&quot;Processing started&quot;)
+logger.error(&quot;Processing failed&quot;)
+</code></pre>
+<p>Especially important is DEBUG level logging.</p>
+<h3 id="production-phase_1">Production Phase</h3>
+<p>Production logging should include:</p>
+<ul>
+<li>Log levels properly used</li>
+<li>Structured logging where appropriate</li>
+<li>Contextual information</li>
+<li>Error tracebacks</li>
+</ul>
+<h2 id="testing">Testing</h2>
+<h3 id="test-organization">Test Organization</h3>
+<p>Tests follow this structure even during prototyping:</p>
+<pre><code>tests/
+├── unit/
+│   ├── test_text_processing.py
+│   └── test_audio_processing.py
+├── integration/
+│   └── test_full_pipeline.py
+└── conftest.py
+</code></pre>
+<h3 id="test-requirements">Test Requirements</h3>
+<p>Prototyping Phase:</p>
+<ul>
+<li>Basic unit tests for core functionality</li>
+<li>Critical path testing</li>
+<li>Basic integration tests</li>
+</ul>
+<p>Production Phase:</p>
+<ul>
+<li>Comprehensive unit test coverage</li>
+<li>Full integration test suite</li>
+<li>Performance testing</li>
+<li>Edge case handling</li>
+<li>Mock external services</li>
+</ul>
+<h2 id="documentation">Documentation</h2>
+<h3 id="code-documentation">Code Documentation</h3>
+<p>The project follows Google's Python documentation style for all docstrings. This style provides clear structure while maintaining readability.</p>
+<p>Classes:</p>
+<pre><code class="language-python">class TextProcessor:
+    &quot;&quot;&quot;A class that processes text using configurable patterns.
+
+    Implements pattern-based text processing with configurable token limits
+    and language support. Designed for extensibility through the pattern system.
+
+    Attributes:
+        pattern: A Pattern instance defining processing instructions.
+        max_tokens: An integer specifying maximum tokens for processing.
+
+    Note:
+        Pattern instances should be initialized with proper template validation.
+    &quot;&quot;&quot;
+</code></pre>
+<p>Functions:</p>
+<pre><code class="language-python">def process_text(text: str, language: Optional[str] = None) -&gt; str:
+    &quot;&quot;&quot;Processes text according to pattern instructions.
+
+    Applies the configured pattern to input text, handling language-specific
+    requirements and token limitations.
+
+    Args:
+        text: Input text to process.
+        language: Optional ISO 639-1 language code. Defaults to None for
+            auto-detection.
+
+    Returns:
+        A string containing the processed text.
+
+    Raises:
+        ValueError: If text is empty or invalid.
+        PatternError: If pattern application fails.
+
+    Examples:
+        &gt;&gt;&gt; processor = TextProcessor(pattern)
+        &gt;&gt;&gt; result = process_text(&quot;Input text&quot;, language=&quot;en&quot;)
+        &gt;&gt;&gt; print(result)
+        Processed text output
+    &quot;&quot;&quot;
+</code></pre>
+<h3 id="api-documentation">API Documentation</h3>
+<p>API documentation requirements increase with development phase:</p>
+<p>Prototyping Phase:</p>
+<ul>
+<li>Basic function/class documentation</li>
+<li>Essential usage examples</li>
+<li>Known limitations noted</li>
+</ul>
+<p>Production Phase:</p>
+<ul>
+<li>Comprehensive API documentation</li>
+<li>Multiple usage examples</li>
+<li>Error handling documentation</li>
+<li>Performance considerations</li>
+<li>Security implications</li>
+</ul>
+<h2 id="development-workflow">Development Workflow</h2>
+<h3 id="version-control">Version Control</h3>
+<p>Git workflow standards apply across all phases:</p>
+<ul>
+<li>Feature branches for development</li>
+<li>Clear commit messages</li>
+<li>Regular main branch updates</li>
+<li>Version tags for releases</li>
+</ul>
+<h3 id="code-review">Code Review</h3>
+<p>Review requirements increase with development phase:</p>
+<p>Prototyping Phase:</p>
+<ul>
+<li>Basic functionality review</li>
+<li>Core design review</li>
+<li>Critical security review</li>
+</ul>
+<p>Production Phase:</p>
+<ul>
+<li>Comprehensive code review</li>
+<li>Performance review</li>
+<li>Security audit</li>
+<li>Documentation review</li>
+<li>Test coverage review</li>
+</ul>
+<h2 id="security-considerations">Security Considerations</h2>
+<h3 id="api-key-management">API Key Management</h3>
+<p>Consistent across all phases:</p>
+<ul>
+<li>No keys in code</li>
+<li>Environment variable usage</li>
+<li>Secure configuration loading</li>
+<li>Key rotation support</li>
+</ul>
+<h3 id="input-validation">Input Validation</h3>
+<p>Validation requirements increase with phase:</p>
+<p>Prototyping Phase:</p>
+<ul>
+<li>Basic input validation</li>
+<li>Type checking</li>
+<li>Simple sanitization</li>
+</ul>
+<p>Production Phase:</p>
+<ul>
+<li>Comprehensive validation</li>
+<li>Security scanning</li>
+<li>Input sanitization</li>
+<li>Output escaping</li>
+</ul>
+<h2 id="performance-guidelines">Performance Guidelines</h2>
+<h3 id="resource-management">Resource Management</h3>
+<p>Basic guidelines apply across phases:</p>
+<p>Memory Management:</p>
+<ul>
+<li>Stream large files</li>
+<li>Clean up temporary files</li>
+<li>Monitor memory usage</li>
+</ul>
+<p>Processing Optimization:</p>
+<ul>
+<li>Batch operations where possible</li>
+<li>Cache frequently used data</li>
+<li>Monitor API usage</li>
+</ul>
+<h2 id="future-considerations">Future Considerations</h2>
+<p>Areas marked for future development:</p>
+<ul>
+<li>Plugin system architecture</li>
+<li>Configuration handling</li>
+<li>Rebuild of ai_text_processing suite</li>
+<li>Extended API integration<ul>
+<li>Batch processing</li>
+<li>Alternate API model services</li>
+</ul>
 </li>
-<li>
-<p>Generally applying this style to all directories and data, where applicable except in traditional cases (e.g. README.md and such).</p>
-</li>
+<li>Enhanced security features</li>
+<li>Performance optimization</li>
+<li>Extended pattern capabilities</li>
+<li>Additional CLI processing tools</li>
+<li>Model training tools</li>
+<li>Natural language processing tools</li>
 </ul>
 
 
