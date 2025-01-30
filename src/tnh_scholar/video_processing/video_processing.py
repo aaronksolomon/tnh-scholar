@@ -1,22 +1,22 @@
-import csv
-import os
+"""
+video_processing.py
+"""
+
+import json
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, TypedDict
+from typing import Any, Dict, Optional
 from xml.etree.ElementTree import ParseError
 
 import yt_dlp
 
 from tnh_scholar.logging_config import get_child_logger
-from tnh_scholar.utils.file_utils import get_text_from_file
+from tnh_scholar.utils import sanitize_filename
 
 logger = get_child_logger(__name__)
 
-# Configuration Constants
-DEFAULT_TRANSCRIPT_DIR = Path.home() / ".yt_dlp_transcripts"
-
-# Core yt-dlp options
+# Core yt-dlp configuration constants
 BASE_YDL_OPTIONS = {
     "quiet": True,
     "no_warnings": True,
@@ -27,7 +27,7 @@ BASE_YDL_OPTIONS = {
     "logger": logger,
 }
 
-AUDIO_DOWNLOAD_OPTIONS = BASE_YDL_OPTIONS | {
+DEFAULT_AUDIO_OPTIONS = BASE_YDL_OPTIONS | {
     "format": "bestaudio/best",
     "postprocessors": [
         {
@@ -39,13 +39,17 @@ AUDIO_DOWNLOAD_OPTIONS = BASE_YDL_OPTIONS | {
     "noplaylist": True,
 }
 
-TRANSCRIPT_OPTIONS = BASE_YDL_OPTIONS | {
+DEFAULT_TRANSCRIPT_OPTIONS = BASE_YDL_OPTIONS | {
+    "skip_download": True,
     "writesubtitles": True,
     "writeautomaticsub": True,
     "subtitlesformat": "ttml",
 }
 
-# Default metadata fields to collect
+DEFAULT_METADATA_OPTIONS = BASE_YDL_OPTIONS | {
+    "skip_download": True,
+}
+
 DEFAULT_METADATA_FIELDS = [
     "id",
     "title",
@@ -62,177 +66,223 @@ DEFAULT_METADATA_FIELDS = [
     "tags",
 ]
 
-# Return Types
-@dataclass
-class VideoMetadata:
-    """Base class for video operations containing common metadata."""
+TEMP_FILENAME_FORMAT = "%(id)s"
+
+class VideoProcessingError(Exception):
+    """Base exception for video processing errors."""
+    pass
+
+class TranscriptError(VideoProcessingError):
+    """Raised for transcript-related errors."""
+    pass
+
+class DownloadError(VideoProcessingError):
+    """Raised for download-related errors."""
+    pass
+
+@dataclass 
+class VideoResource:
+    """Base class for all video resources."""
     metadata: Dict[str, Any]
-
-@dataclass
-class VideoTranscript(VideoMetadata):
-    """Result of transcript operations."""
-    content: str
-
-@dataclass
-class VideoDownload(VideoMetadata):
-    """Result of download operations."""
     filepath: Path
 
-class SubtitleTrack(TypedDict):
-    """Type definition for a subtitle track entry."""
-    url: str
-    ext: str
-    name: str
+class VideoTranscript(VideoResource): 
+    pass
 
-class VideoInfo(TypedDict):
-    """Type definition for relevant video info fields."""
-    subtitles: Dict[str, List[SubtitleTrack]]
-    automatic_captions: Dict[str, List[SubtitleTrack]]
+class VideoAudio(VideoResource): 
+    pass 
 
-class TranscriptNotFoundError(Exception):
-    """Raised when no transcript is available for the requested language."""
-    def __init__(self, video_url: str, language: str) -> None:
-        self.video_url = video_url
-        self.language = language
-        message = f"No transcript found for {self.video_url} \
-                    in language {self.language}."
-        super().__init__(message)
+class VideoMetadata(VideoResource): 
+    pass
 
-def get_youtube_urls_from_csv(file_path: Path) -> List[str]:
-    """Reads YouTube URLs from a CSV file containing URLs and titles."""
-    if not file_path.exists():
-        logger.error(f"File not found: {file_path}")
-        raise FileNotFoundError(f"File not found: {file_path}")
+class YTDownloader:
+    """Abstract base class for YouTube content retrieval."""
+    
+    def get_transcript(
+        self, 
+        url: str, 
+        lang: str = "en", 
+        output_path: Optional[Path] = None) -> VideoTranscript:
+        """Retrieve video transcript with associated metadata."""
+        raise NotImplementedError
+        
+    def get_audio(
+        self, 
+        url: str, 
+        output_path: Optional[Path]
+        ) -> VideoAudio:
+        """Extract audio with associated metadata."""
+        raise NotImplementedError
+        
+    def get_metadata(
+        self, 
+        url: str, 
+        output_path: Optional[Path] = None
+        ) -> VideoMetadata:
+        """Retrieve video metadata only."""
+        raise NotImplementedError
 
-    urls = []
-    try:
-        with file_path.open("r", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            if reader.fieldnames is None \
-                or "url" not in reader.fieldnames \
-                or "title" not in reader.fieldnames:
-                logger.error("CSV file must contain 'url' and 'title' columns.")
-                raise ValueError("CSV file must contain 'url' and 'title' columns.")
-
-            for row in reader:
-                urls.append(row["url"])
-                logger.info(f"Found video title: {row['title']}")
-    except Exception as e:
-        logger.exception(f"Error processing CSV file: {e}")
-        raise
-
-    return urls
-
-def get_video_download_path_yt(output_dir: Path, url: str) -> VideoDownload:
-    """Get video metadata and expected download path."""
-    options = AUDIO_DOWNLOAD_OPTIONS | {
-        "skip_download": True,
-        "outtmpl": str(output_dir / "%(title)s.%(ext)s"),
-    }
-
-    with yt_dlp.YoutubeDL(options) as ydl:
-        if info := ydl.extract_info(url, download=False):
-            filepath = Path(ydl.prepare_filename(info)).with_suffix(".mp3")
-            metadata = _extract_metadata(info)
-        else:
-            logger.error(f"YT video download: unable to extract info for {url}")
-            raise
-        return VideoDownload(metadata=metadata, filepath=filepath)
-
-def download_audio_yt(
-    url: str, 
-    output_dir: Path, 
-    start_time: Optional[str] = None
-) -> VideoDownload:
-    """Downloads audio from YouTube URL with optional start time."""
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    options = AUDIO_DOWNLOAD_OPTIONS | {
-        "outtmpl": str(output_dir / "%(title)s.%(ext)s"),
-    }
-
-    if start_time:
-        options["postprocessor_args"] = ["-ss", start_time]
-        logger.info(f"Postprocessor start time set to: {start_time}")
-
-    with yt_dlp.YoutubeDL(options) as ydl:
-        if info := ydl.extract_info(url, download=True):
-            filepath = Path(ydl.prepare_filename(info)).with_suffix(".mp3")
-            metadata = _extract_metadata(info)
-        else:
-            logger.error(f"YT audio download: Unable to get info for {url}.")
-            raise 
-        return VideoDownload(metadata=metadata, filepath=filepath)
-
-def get_transcript(
-    url: str,
-    lang: str = "en",
-    download_dir: Path = DEFAULT_TRANSCRIPT_DIR,
-    keep_transcript_file: bool = False,
-) -> VideoTranscript:
-    """Downloads and extracts transcript with metadata."""
-    transcript_file = _download_yt_ttml(download_dir, url=url, lang=lang)
-    text = get_text_from_file(transcript_file)
-
-    if not keep_transcript_file:
-        try:
-            os.remove(transcript_file)
-            logger.debug(f"Removed temporary transcript file: {transcript_file}")
-        except OSError as e:
-            logger.warning(
-                f"Failed to remove temporary transcript file {transcript_file}: {e}"
+class DLPDownloader(YTDownloader):
+    """yt-dlp based implementation of YouTube content retrieval."""
+    
+    def __init__(self, config: Optional[Dict] = None):
+        self.config = config or BASE_YDL_OPTIONS
+        
+    def get_metadata(
+        self,
+        url: str, 
+        output_path: Optional[Path] = None
+    ) -> VideoMetadata:
+        """Get metadata for a YouTube video and save to JSON file."""
+        temp_path = Path.cwd() / f"{TEMP_FILENAME_FORMAT}.info.json"
+        options = DEFAULT_METADATA_OPTIONS | self.config  | {
+            "outtmpl": str(temp_path),
+        }
+        with yt_dlp.YoutubeDL(options) as ydl:
+            if info := ydl.extract_info(url, download=False):
+                metadata = self._extract_metadata(info)
+                # Use prepare_filename but change extension to json
+                filepath = Path(ydl.prepare_filename(info))
+                
+                # Write metadata to file
+                filepath.write_text(json.dumps(metadata, indent=2))
+                
+                # convert filename
+                filepath = self._convert_filename(filepath, info, output_path)
+                return VideoMetadata(
+                    metadata=metadata,
+                    filepath=filepath
                 )
+                
+            else:
+                logger.error(f"Unable to download metadata for {url}.")
+                raise DownloadError("No info returned.")
+    
+    def get_transcript(
+        self,
+        url: str,
+        lang: str = "en",
+        output_path: Optional[Path] = None,
+    ) -> VideoTranscript:
+        """Downloads video transcript in TTML format.
 
-    content = _extract_ttml_text(text)
+        Args:
+            url: YouTube video URL
+            lang: Language code for transcript (default: "en")
+            output_path: Optional output directory (uses current dir if None)
+        
+        Returns:
+            TranscriptResource containing TTML file path and metadata
+            
+        Raises:
+            TranscriptError: If no transcript found for specified language
+        """
+        temp_path = Path.cwd() / TEMP_FILENAME_FORMAT
+        options = DEFAULT_TRANSCRIPT_OPTIONS | self.config |{
+            "skip_download": True,
+            "subtitleslangs": [lang],
+            "outtmpl": str(temp_path),
+        }
 
-    # Get metadata
-    options = BASE_YDL_OPTIONS | {"skip_download": True}
-    with yt_dlp.YoutubeDL(options) as ydl:
-        if info := ydl.extract_info(url, download=False):
-            metadata = _extract_metadata(info)
-        else:
-            logger.error(f"YT get transcript: unable to get info for {url}.")
-            raise
-    return VideoTranscript(metadata=metadata, content=content)
+        with yt_dlp.YoutubeDL(options) as ydl:
+            if info := ydl.extract_info(url):
+                metadata = self._extract_metadata(info)
+                filepath = Path(ydl.prepare_filename(info)).with_suffix(f".{lang}.ttml")
+                filepath = self._convert_filename(filepath, info, output_path)
+                return VideoTranscript(metadata=metadata, filepath=filepath)
+            else:
+                logger.error("Info not found.")
+                raise TranscriptError(f"Transcript not downloaded for {url} in {lang}")
+    
+    def get_audio(
+        self, 
+        url: str, 
+        output_path: Optional[Path] = None
+        ) -> VideoAudio:
+        """Download audio and get metadata for a YouTube video."""
+        temp_path = Path.cwd() / TEMP_FILENAME_FORMAT
+        options = DEFAULT_AUDIO_OPTIONS | self.config | {
+            "outtmpl": str(temp_path) 
+        }
 
-def _download_yt_ttml(temp_storage_path: Path, url: str, lang: str = "en") -> Path:
-    """Downloads video transcript in TTML format."""
-    logger.info(f"Downloading TTML transcript for {url} in language '{lang}'")
+        with yt_dlp.YoutubeDL(options) as ydl:
+            if info := ydl.extract_info(url, download=True):
+                metadata = self._extract_metadata(info)
+                filepath = Path(ydl.prepare_filename(info)).with_suffix(".mp3")
+                filepath = self._convert_filename(filepath, info, output_path)
+                return VideoAudio(metadata=metadata, filepath=filepath)
+            else:
+                logger.error("Info not found.")
+                raise DownloadError(f"Unable to download {url}.")
+            
+    def _extract_metadata(self, info: Dict[str, Any]) -> Dict[str, Any]:
+        """Extract standard metadata fields from yt-dlp info."""
+        return {k: info.get(k) for k in DEFAULT_METADATA_FIELDS if k in info}
+    
+    def _yt_filepath(self, filename: str, suffix: str) -> Path:
+        """
+        Sanitize YouTube download filename and change extension.
+        """
+        print("test")
+        path = Path(filename)
+        sanitized = sanitize_filename(path.stem)
+        return path.with_stem(sanitized).with_suffix(f"{suffix}")
+    
+    def _convert_filename(
+        self, 
+        temp_path: Path,
+        info: Dict[str, Any], 
+        output_path: Optional[Path]
+    ) -> Path:
+        """
+        Move/rename file from temp_path to output_path if specified.
+        If output_path is not provided, a sanitized title and video ID are 
+        used to create the new filename. This function is required because yt-dlp 
+        is not consistent in its output file naming (across subtitles, audio, metadata)
+        In this interface implementation we use a temp_path and TEMP_FILENAME_FORMAT to 
+        specify the the temporary output to be the video_id followed by the correct 
+        extension for all resources. This function then converts the temp_path
+        to the appropriately named resource, using output_path if specified,
+        or a default filename format ({sanitized_title}_{id}).
+        """
+        video_id = str(info.get('id'))
+        assert video_id in str(temp_path)  # Must have video_id in actual path.
+        assert temp_path.suffix  # Actual path must have suffix.
 
-    try:
-        temp_storage_path.mkdir(parents=True, exist_ok=True)
-    except OSError as e:
-        logger.error(f"Failed to create directory {temp_storage_path}: {e}")
-        raise
+        if not output_path:
+            sanitized_title = sanitize_filename(str(info.get('title')))
+            new_filename = f"{sanitized_title}_{video_id}"
+            new_path = Path(str(temp_path).replace(video_id, new_filename))
+            logger.debug(f"Renaming downloaded YT resource to: {new_path}")
+            return temp_path.rename(new_path)
+        if not output_path.suffix:
+            output_path = output_path.with_suffix(temp_path.suffix)
+            logger.info(f"Added extension {temp_path.suffix} to output path")
+        elif output_path.suffix != temp_path.suffix:
+            output_path = output_path.with_suffix(temp_path.suffix)
+            logger.warning(f"Replaced output extension with {temp_path.suffix}")
+        return temp_path.rename(output_path)
+       
+        
+def extract_text_from_ttml(ttml_path: Path) -> str:
+    """Extract plain text content from TTML file.
 
-    return _extract_ttml_from_youtube(url, lang, temp_storage_path)
+    Args:
+        ttml_path: Path to TTML transcript file
+        
+    Returns:
+        Plain text content with one sentence per line
+        
+    Raises:
+        ValueError: If file doesn't exist or has invalid content
+    """
+    if not ttml_path.exists():
+        raise ValueError(f"TTML file not found: {ttml_path}")
 
-def _extract_ttml_from_youtube(url: str, lang: str, temp_storage_path: Path) -> Path:
-    """Extracts TTML data from YouTube."""
-    options = TRANSCRIPT_OPTIONS | {
-        "subtitleslangs": [lang],
-        "outtmpl": str(temp_storage_path / "%(id)s.%(ext)s"),
-    }
-
-    with yt_dlp.YoutubeDL(options) as ydl:
-        info = ydl.extract_info(url)
-        if not info:
-            raise ValueError(f"Failed to retrieve video information for {url}")
-
-        video_id = info["id"]
-        if ttml_files := list(temp_storage_path.glob(f"{video_id}*.{lang}*.ttml")):
-            return ttml_files[0]
-
-        logger.error(f"Downloaded transcript file not found in {temp_storage_path}.")
-        raise TranscriptNotFoundError(video_url=url, language=lang)
-
-def _extract_ttml_text(ttml_str: str) -> str:
-    """Extract raw text content from TTML format string."""
-    if not isinstance(ttml_str, str):
-        raise ValueError("Input must be a string")
+    ttml_str = ttml_path.read_text()
 
     if not ttml_str.strip():
-        raise ValueError("Input string cannot be empty")
+        return ""
 
     namespaces = {
         "tt": "http://www.w3.org/ns/ttml",
@@ -256,37 +306,3 @@ def _extract_ttml_text(ttml_str: str) -> str:
         logger.error(f"Failed to parse XML content: {e}")
         raise
     
-def _extract_metadata(
-    info: Dict[str, Any], 
-    fields: Optional[List[str]] = None
-    ) -> Dict[str, Any]:
-    """Extract specified metadata fields from yt-dlp info dictionary.
-    
-    Args:
-        info: Raw info dictionary from yt-dlp
-        fields: List of fields to extract. If None, uses DEFAULT_METADATA_FIELDS
-        
-    Returns:
-        Dictionary containing only specified fields that exist in info
-    """
-    fields = fields or DEFAULT_METADATA_FIELDS
-    return {k: info.get(k) for k in fields if k in info}
-
-def get_video_metadata(url: str) -> VideoResult:
-    """Get metadata for a YouTube video without downloading content.
-    
-    Args:
-        url: YouTube video URL
-        
-    Returns:
-        VideoResult with only metadata field populated
-        
-    Raises:
-        yt_dlp.utils.DownloadError: If video info extraction fails
-    """
-    options = BASE_YDL_OPTIONS | {"skip_download": True}
-    
-    with yt_dlp.YoutubeDL(options) as ydl:
-        info = ydl.extract_info(url, download=False)
-        metadata = _extract_metadata(info)
-        return VideoResult(metadata=metadata)
