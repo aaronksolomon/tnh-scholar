@@ -13,6 +13,7 @@ import yt_dlp
 
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils import sanitize_filename
+from tnh_scholar.utils.file_utils import write_text_to_file
 
 logger = get_child_logger(__name__)
 
@@ -84,7 +85,7 @@ class DownloadError(VideoProcessingError):
 class VideoResource:
     """Base class for all video resources."""
     metadata: Dict[str, Any]
-    filepath: Path
+    filepath: Optional[Path] = None
 
 class VideoTranscript(VideoResource): 
     pass
@@ -109,6 +110,8 @@ class YTDownloader:
     def get_audio(
         self, 
         url: str, 
+        start: str,
+        end: str,
         output_path: Optional[Path]
         ) -> VideoAudio:
         """Extract audio with associated metadata."""
@@ -117,13 +120,24 @@ class YTDownloader:
     def get_metadata(
         self, 
         url: str, 
-        output_path: Optional[Path] = None
+        output_path: Optional[Path] = None,
+        write: bool = True,
         ) -> VideoMetadata:
         """Retrieve video metadata only."""
         raise NotImplementedError
 
 class DLPDownloader(YTDownloader):
-    """yt-dlp based implementation of YouTube content retrieval."""
+    """
+    yt-dlp based implementation of YouTube content retrieval.
+    
+    Assures temporary file export is in the form <ID>.<ext> 
+    where ID is the YouTube video id, and ext is the appropriate
+    extension.
+    
+    Renames the export file to be based on title and ID by
+    default, or moves the export file to the specified output
+    file with appropriate extension.
+    """
     
     def __init__(self, config: Optional[Dict] = None):
         self.config = config or BASE_YDL_OPTIONS
@@ -131,28 +145,35 @@ class DLPDownloader(YTDownloader):
     def get_metadata(
         self,
         url: str, 
-        output_path: Optional[Path] = None
+        output_path: Optional[Path] = None,
+        write: bool = True,
     ) -> VideoMetadata:
-        """Get metadata for a YouTube video and save to JSON file."""
+        """
+        Get metadata for a YouTube video. 
+        Save to JSON file if Write is specified.
+        """
         temp_path = Path.cwd() / f"{TEMP_FILENAME_FORMAT}.info.json"
         options = DEFAULT_METADATA_OPTIONS | self.config  | {
             "outtmpl": str(temp_path),
         }
         with yt_dlp.YoutubeDL(options) as ydl:
-            if info := ydl.extract_info(url, download=False):
+            if info := ydl.extract_info(url):
                 metadata = self._extract_metadata(info)
-                # Use prepare_filename but change extension to json
-                filepath = Path(ydl.prepare_filename(info))
                 
-                # Write metadata to file
-                filepath.write_text(json.dumps(metadata, indent=2))
+                filepath = None
                 
-                # convert filename
-                filepath = self._convert_filename(filepath, info, output_path)
+                if write:
+                    # Use prepare_filename to get yt-dlp filename.  
+                    # For info extraction only, without download
+                    # yt-dlp, uses full path with extension.
+                    filepath = Path(ydl.prepare_filename(info))
+                    write_text_to_file(filepath, json.dumps(metadata, indent=2)) 
+                    filepath = self._convert_filename(filepath, info, output_path)
+                
                 return VideoMetadata(
-                    metadata=metadata,
-                    filepath=filepath
-                )
+                        metadata=metadata,
+                        filepath=filepath,
+                    )
                 
             else:
                 logger.error(f"Unable to download metadata for {url}.")
@@ -197,6 +218,8 @@ class DLPDownloader(YTDownloader):
     def get_audio(
         self, 
         url: str, 
+        start: Optional[str] = None,
+        end: Optional[str] = None,
         output_path: Optional[Path] = None
         ) -> VideoAudio:
         """Download audio and get metadata for a YouTube video."""
@@ -204,6 +227,14 @@ class DLPDownloader(YTDownloader):
         options = DEFAULT_AUDIO_OPTIONS | self.config | {
             "outtmpl": str(temp_path) 
         }
+        
+        if start:
+            options["postprocessor_args"].extend(["-ss", start])
+            logger.debug(f"Postprocessor start time set to: {start}")
+            
+        if end:
+            options["postprocessor_args"].extend(["-to", end])
+            logger.debug(f"Postprocessor end time set to: {end}")
 
         with yt_dlp.YoutubeDL(options) as ydl:
             if info := ydl.extract_info(url, download=True):
@@ -219,15 +250,28 @@ class DLPDownloader(YTDownloader):
         """Extract standard metadata fields from yt-dlp info."""
         return {k: info.get(k) for k in DEFAULT_METADATA_FIELDS if k in info}
     
-    def _yt_filepath(self, filename: str, suffix: str) -> Path:
+    def _show_info(self, info: Dict[str, Any]) -> None:
+        """debug routine for displaying info."""
+        for k in info:
+            if data := str(info.get(k)):
+                if len(data) < 200:
+                    print(f"{k}: {data}")
+                else:
+                    print(f"{k}: {data[:200]} ...")
+                  
+    def _get_default_filename(self, info: Dict[str, Any]) -> str:
         """
-        Sanitize YouTube download filename and change extension.
+        Generate the object download filename
         """
-        print("test")
-        path = Path(filename)
-        sanitized = sanitize_filename(path.stem)
-        return path.with_stem(sanitized).with_suffix(f"{suffix}")
+        video_id = str(info.get('id'))
+        sanitized_title = sanitize_filename(str(info.get('title')))
+        return f"{sanitized_title}_{video_id}"
     
+    def get_default_export_name(self, url) -> str:
+        video_data = self.get_metadata(url, write=False)
+        info = video_data.metadata
+        return self._get_default_filename(info)
+        
     def _convert_filename(
         self, 
         temp_path: Path,
@@ -250,8 +294,7 @@ class DLPDownloader(YTDownloader):
         assert temp_path.suffix  # Actual path must have suffix.
 
         if not output_path:
-            sanitized_title = sanitize_filename(str(info.get('title')))
-            new_filename = f"{sanitized_title}_{video_id}"
+            new_filename = self._get_default_filename(info)
             new_path = Path(str(temp_path).replace(video_id, new_filename))
             logger.debug(f"Renaming downloaded YT resource to: {new_path}")
             return temp_path.rename(new_path)
