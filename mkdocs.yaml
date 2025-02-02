@@ -31,25 +31,27 @@ nav:
     - audio-transcribe: cli/audio-transcribe.md
     - ytt-fetch: cli/ytt-fetch.md
     - nfmt: cli/nfmt.md
+    - token-count: cli/token-count.md
     - tnh-setup: cli/tnh-setup.md
   - API Reference: api/index.md
   - Development:
+    - System Overview: development/system-design.md
     - Contributing: development/contributing.md
     - Design:
       - Design Guide: development/design-guide.md
       - CLI Design:
         - TNH-FAB:
-          - 'v1': design/tnh_fab/text processing cli design_v1.md
-          - 'v2': design/tnh_fab/text processing cli design_v2.md
+          - 'v1': design/tnh-fab/text processing cli design_v1.md
+          - 'v2': design/tnh-fab/text processing cli design_v2.md
         - YTT-Fetch:
-          - Overview: ytt-fetch/ADRs.md
+          - Overview: design/ytt-fetch/ADRs.md
           - 'Transcript Source': design/ytt-fetch/ADR transcript source handling.md
           - 'YT-DLP Integration': design/ytt-fetch/ADR yt-dlp transcripts.md
           - 'API Comparison': design/ytt-fetch/yt-dlp vs. Youtube API.md
-        - 'SETUP-TNH': design/setup-tnh/setup_design.md
+        - SETUP-TNH: design/setup-tnh/setup-design.md
     - Documentation:
-      - Design: docs-design/design/documentation.md
-      - Planning:
+      - Docs-Design: docs-design/design/documentation.md
+      - Docs-Planning:
         - Roadmap: docs-design/planning/roadmap.md
         - Maintenance: docs-design/planning/maintenance.md
     - Research:
