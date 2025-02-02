@@ -1,10 +1,10 @@
 # TNH Scholar
 
-TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and other Plum Village monastics. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models.
+TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models.
 
 ## Features
 
-TNH Scholar provides several command-line tools for text and audio processing, built around a flexible pattern-based approach to text processing. Patterns are customizable templates that guide AI-powered text operations, allowing for consistent and adaptable processing across different types of content.
+Currently TNH Scholar is in a rapid prototyping phase. It currently provides several utility-like command-line tools for text and audio processing, built around a flexible pattern-based approach to text processing. Patterns are customizable templates that guide AI-powered text operations, allowing for consistent and adaptable processing across different types of content.
 
 - **audio-transcribe**: Process and transcribe audio files, with support for YouTube downloads
 - **tnh-fab**: Text processing and formatting tool with capabilities for:
@@ -108,7 +108,7 @@ This project is licensed under the [GPL-3.0 License](LICENSE).
 
 ## Development Status
 
-TNH Scholar is currently in alpha stage (v0.1.3). While the core functionality is stable, the API and features may change as we continue development.
+TNH Scholar is currently in alpha stage (v0.1.3). While the core functionality is relatively stable, the API and features will change continuously with development.
 
 ## Support
 

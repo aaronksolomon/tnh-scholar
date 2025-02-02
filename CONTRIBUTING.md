@@ -1,48 +1,83 @@
-# Contributing to TNH Scholar
+# Contributing to TNH Scholar (Prototype Phase)
 
-We appreciate your interest in contributing to the **TNH Scholar** project! Whether it's reporting bugs, suggesting features, or submitting pull requests, your contributions are valuable to us. Please take a moment to read the following guidelines to help streamline the contribution process.
+TNH Scholar is currently in rapid prototype phase, focusing on core functionality and basic usability. We welcome contributions that help validate and improve the prototype implementation.
 
-## How to Contribute
+## Current Focus Areas
 
-### 1. Reporting Bugs
-If you find any issues or bugs, please report them in the **Issues** section of the repository. Make sure to include:
-  - A clear description of the problem.
-  - Steps to reproduce the issue.
-  - Any relevant logs or screenshots.
-  
-### 2. Suggesting Features
-We welcome new ideas and suggestions! If you have a feature in mind that would improve the project, please open an **Issue** labeled as a "Feature Request". Provide as much detail as possible about the feature, its potential benefits, and any possible implementation details.
+1. **TNH-FAB Command Line Tool**
+    - Basic functionality testing
+    - Error case identification
+    - Command pipeline testing
+    - Pattern system integration
 
-### 3. Submitting Pull Requests
-Before submitting a pull request:
-  - Make sure your changes align with the project goals.
-  - If you're introducing significant changes, please discuss them with the maintainers by opening an issue first.
-  
-To submit a pull request:
-  1. Fork the repository.
-  2. Create a new branch (`git checkout -b feature-branch`).
-  3. Make your changes and add tests if applicable.
-  4. Commit your changes (`git commit -m 'Add new feature'`).
-  5. Push to your fork (`git push origin feature-branch`).
-  6. Open a pull request in the main repository.
-  
-### 4. Coding Standards
-Please follow these general guidelines for contributing to the code:
-  - Follow Python PEP8 standards for formatting.
-  - Include clear and concise comments, especially for complex sections of code.
-  - Ensure that all new features or changes are covered by appropriate tests.
-  - Update documentation if your changes affect it (e.g., adding new models, changing the workflow).
+2. **Pattern System**
+    - Pattern usage testing
+    - Pattern creation testing
+    - Version control functionality
+    - Concurrent access testing
 
-### 5. Setting Up the Development Environment
-To set up a local copy of the project:
-  1. Fork and clone the repository.
-  2. Install dependencies with `pip install -r requirements.txt`.
-  3. Run any tests to ensure everything is working (`pytest` or other test frameworks in use).
+3. **AUDIO-TRANSCRIBE Command Line Tool**
+    - Basic functionality testing
+    - Error case identification
 
-### 6. Tests
-Make sure your changes are covered by tests. If you're adding a new feature, write tests that cover both typical and edge cases. If you're fixing a bug, add a test to ensure that the bug won't reoccur.
+## How to Help
 
-## License
-By contributing to this project, you agree that your contributions will be licensed under the [GPL-3.0 License](LICENSE).
+### Testing
 
-Thank you for contributing to **TNH Scholar**!
+#### 1. Install the package
+
+```bash
+   pip install tnh-scholar
+```
+
+#### 2. Try basic operations
+
+```bash
+    # Test basic commands
+    tnh-fab punctuate input.txt
+    tnh-fab section input.txt
+    tnh-fab translate input.txt
+    tnh-fab process -p pattern_name input.txt
+
+    # Test pipeline operations
+    cat input.txt | tnh-fab punctuate | tnh-fab section
+```
+
+#### 3. Report issues
+
+- Use GitHub Issues
+- Include command used
+- Provide minimal example that reproduces the issue
+- Note your environment (OS, Python version)
+
+### Pattern Testing
+
+1. Create test patterns in `~/.config/tnh-scholar/patterns/`
+2. Test pattern loading and application
+3. Report any issues with pattern system
+
+## Reporting Issues
+
+Create issues on GitHub with:
+
+- Clear description of the problem
+- Steps to reproduce
+- Expected vs actual behavior
+- Example files (if needed)
+
+## Code Contributions
+
+At this prototype stage:
+
+- Keep changes focused
+- Include tests for new functionality
+- Follow existing code style
+- See [design guide](/development/design-guide) for coding style and requirements.
+
+## Questions and Discussion
+
+- Use GitHub Issues for feature discussions
+- Tag issues with 'question' or 'discussion'
+- Focus on prototype phase functionality
+
+This is a project in rapid prototype - we're looking for practical feedback on core functionality as well as possible new feature additions and new tools.
