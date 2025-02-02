@@ -1,19 +1,20 @@
-I'll create a supplementary ADR that builds on our format decision to include this consideration about transcript sources:
-
-
 # ADR: YouTube Transcript Source Handling in yt-fetch CLI
 
 ## Status
+
 Proposed (supplements ADR: YouTube Transcript Format Selection)
 
 ## Context
+
 When requesting transcripts from YouTube videos:
+
 - Videos may have manually uploaded subtitles
 - Videos may have auto-generated captions
 - Some videos may have both
 - Quality and accuracy can vary significantly between sources
 
 Currently yt-dlp options:
+
 ```python
 opts = {
     "writesubtitles": True,      # Get manual subtitles

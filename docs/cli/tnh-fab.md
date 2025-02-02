@@ -1,10 +1,10 @@
-# TNH-FAB User Manual
+# tnh-fab
 
 ## Overview
 
-TNH-FAB is a specialized command-line tool, part of the Thich Nhat Hanh Scholar Project.
-TNH-FAB can process multilingual texts using AI 'patterns'.
-It was originally developed to work with processing Dharma-based materials such as talks by Thich Nhat Hanh.
+`tnh-fab` is a specialized command-line tool, part of the Thich Nhat Hanh Scholar Project.
+`tnh-fab` can process multilingual texts using AI 'patterns'.
+It is originally developed to work with processing Dharma-based materials such as talks by Thich Nhat Hanh.
 
 It provides functionality for:
 
@@ -28,6 +28,7 @@ tnh-fab [COMMAND] [OPTIONS] [INPUT_FILE]
 Input can be provided either as a file or through standard input (stdin).
 
 Global options:
+
 ```bash
 -v, --verbose        Enable detailed logging
 --debug             Enable debug output
@@ -41,12 +42,14 @@ Global options:
 Adds or corrects punctuation based on language-specific rules.
 
 Basic usage:
+
 ```bash
 tnh-fab punctuate [OPTIONS] [INPUT_FILE]
 ```
 
 Options:
-```
+
+```plaintext
 -l, --language      Source language code (auto-detected if not specified)
 -y, --style         Punctuation style (default: 'APA')
 -c, --review-count  Number of review passes (default: 3)
@@ -74,12 +77,14 @@ tnh-fab punctuate -p dharma_punctuation -l en text.txt
 Analyzes text and divides it into logical sections.
 
 Basic usage:
+
 ```bash
 tnh-fab section [OPTIONS] [INPUT_FILE]
 ```
 
 Options:
-```
+
+```plaintext
 -l, --language      Source language code (auto-detected if not specified)
 -n, --num-sections  Target number of sections (auto-calculated if not specified)
 -c, --review-count  Number of review passes (default: 3)
@@ -107,12 +112,14 @@ cat text.txt | tnh-fab section > sections.json
 Performs line-by-line translation while maintaining structure.
 
 Basic usage:
+
 ```bash
 tnh-fab translate [OPTIONS] [INPUT_FILE]
 ```
 
 Options:
-```
+
+```plaintext
 -l, --language       Source language code (auto-detected if not specified)
 -r, --target         Target language code (default: 'en')
 -y, --style          Translation style
@@ -142,12 +149,14 @@ tnh-fab translate --segment-size 20 -p custom_translation text.txt
 Applies custom pattern-based processing with flexible structuring.
 
 Basic usage:
+
 ```bash
 tnh-fab process -p PATTERN [OPTIONS] [INPUT_FILE]
 ```
 
 Options:
-```
+
+```plaintext
 -p, --pattern     Pattern name (required)
 -s, --section     Process using sections from JSON file
 -g, --paragraph   Process text by paragraphs
@@ -174,7 +183,8 @@ tnh-fab process -p format_xml -t template.yaml input.txt
 
 ### Pipeline Processing
 
-1. Punctuate, section, and process:
+#### 1. Punctuate, section, and process
+
 ```bash
 cat raw_text.txt | \
 tnh-fab punctuate -l vi | \
@@ -182,13 +192,15 @@ tnh-fab section -n 5 | \
 tnh-fab process -p format_xml > final_output.xml
 ```
 
-2. Section and translate:
+#### 2. Section and translate
+
 ```bash
 tnh-fab section input.txt > sections.json
 tnh-fab translate -l vi -s sections.json input.txt > translated.txt
 ```
 
-3. Complete processing pipeline:
+#### 3. Complete processing pipeline
+
 ```bash
 cat vietnamese_text.txt | \
 tnh-fab punctuate -l vi -y "Modern" | \

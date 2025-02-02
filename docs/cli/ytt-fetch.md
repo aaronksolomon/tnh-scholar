@@ -1,6 +1,6 @@
 # ytt-fetch
 
-(Y)ou(T)ube (T)ranscript-(Fetch)ing Utility.
+(Y)ou(T)ube (T)ranscript-(Fetch)ing utility.
 
 ## Usage
 
@@ -10,7 +10,7 @@ ytt-fetch [OPTIONS] URL
 
 ## Options
 
-```
+```plaintext
 -l, --lang TEXT     Language code for transcript (default: en)
 -o, --output PATH   Save transcript text to file
 ```
@@ -18,11 +18,13 @@ ytt-fetch [OPTIONS] URL
 ## Examples
 
 ### Download English Transcript
+
 ```bash
 ytt-fetch "https://youtube.com/watch?v=example" -l en -o transcript.txt
 ```
 
 ### Print Transcript to Console
+
 ```bash
 ytt-fetch "https://youtube.com/watch?v=example"
 ```

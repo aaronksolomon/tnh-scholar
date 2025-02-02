@@ -1,6 +1,7 @@
-# minimal but extensible setup tool for the prototyping phase.
+# minimal but extensible setup tool for the prototyping phase
 
 Core Requirements:
+
 1. Configuration directory setup (~/.config/tnh_scholar)
 2. Basic .env file for API keys
 3. Pattern directory preparation
@@ -39,11 +40,11 @@ Key Functions:
 ```
 
 For prototyping, suggested implementation these core functions:
+
 1. Directory creation
 2. Basic .env file with OpenAI key
 3. Pattern directory preparation
 4. Simple CLI interface
-
 
 ## high-level design structure (iteration 2)
 
