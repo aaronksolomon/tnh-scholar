@@ -6,18 +6,19 @@ import json
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Optional
 from xml.etree.ElementTree import ParseError
 
 import yt_dlp
 
 from tnh_scholar.logging_config import get_child_logger
+from tnh_scholar.metadata import Metadata
 from tnh_scholar.utils import sanitize_filename
 from tnh_scholar.utils.file_utils import write_text_to_file
 
 logger = get_child_logger(__name__)
 
-# Core yt-dlp configuration constants
+# Core yt-dlp configuration constants remain unchanged
 BASE_YDL_OPTIONS = {
     "quiet": True,
     "no_warnings": True,
@@ -84,7 +85,7 @@ class DownloadError(VideoProcessingError):
 @dataclass 
 class VideoResource:
     """Base class for all video resources."""
-    metadata: Dict[str, Any]
+    metadata: Metadata
     filepath: Optional[Path] = None
 
 class VideoTranscript(VideoResource): 
@@ -103,7 +104,8 @@ class YTDownloader:
         self, 
         url: str, 
         lang: str = "en", 
-        output_path: Optional[Path] = None) -> VideoTranscript:
+        output_path: Optional[Path] = None
+    ) -> VideoTranscript:
         """Retrieve video transcript with associated metadata."""
         raise NotImplementedError
         
@@ -113,7 +115,7 @@ class YTDownloader:
         start: str,
         end: str,
         output_path: Optional[Path]
-        ) -> VideoAudio:
+    ) -> VideoAudio:
         """Extract audio with associated metadata."""
         raise NotImplementedError
         
@@ -122,7 +124,7 @@ class YTDownloader:
         url: str, 
         output_path: Optional[Path] = None,
         write: bool = True,
-        ) -> VideoMetadata:
+    ) -> VideoMetadata:
         """Retrieve video metadata only."""
         raise NotImplementedError
 
@@ -139,21 +141,21 @@ class DLPDownloader(YTDownloader):
     file with appropriate extension.
     """
     
-    def __init__(self, config: Optional[Dict] = None):
+    def __init__(self, config: Optional[dict] = None):
         self.config = config or BASE_YDL_OPTIONS
         
     def get_metadata(
         self,
         url: str, 
         output_path: Optional[Path] = None,
-        write: bool = True,
+        write: bool = False,
     ) -> VideoMetadata:
         """
         Get metadata for a YouTube video. 
-        Save to JSON file if Write is specified.
+        Save to JSON file if write is specified.
         """
         temp_path = Path.cwd() / f"{TEMP_FILENAME_FORMAT}.info.json"
-        options = DEFAULT_METADATA_OPTIONS | self.config  | {
+        options = DEFAULT_METADATA_OPTIONS | self.config | {
             "outtmpl": str(temp_path),
         }
         with yt_dlp.YoutubeDL(options) as ydl:
@@ -164,17 +166,19 @@ class DLPDownloader(YTDownloader):
                 
                 if write:
                     # Use prepare_filename to get yt-dlp filename.  
-                    # For info extraction only, without download
-                    # yt-dlp, uses full path with extension.
+                    # For info extraction only, without download,
+                    # yt-dlp uses full path with extension.
                     filepath = Path(ydl.prepare_filename(info))
-                    write_text_to_file(filepath, json.dumps(metadata, indent=2)) 
-                    filepath = self._convert_filename(filepath, info, output_path)
+                    write_text_to_file(
+                        filepath, 
+                        json.dumps(metadata.to_dict(), indent=2)
+                        )
+                    filepath = self._convert_filename(filepath, metadata, output_path)
                 
                 return VideoMetadata(
-                        metadata=metadata,
-                        filepath=filepath,
-                    )
-                
+                    metadata=metadata,
+                    filepath=filepath,
+                )
             else:
                 logger.error(f"Unable to download metadata for {url}.")
                 raise DownloadError("No info returned.")
@@ -185,7 +189,8 @@ class DLPDownloader(YTDownloader):
         lang: str = "en",
         output_path: Optional[Path] = None,
     ) -> VideoTranscript:
-        """Downloads video transcript in TTML format.
+        """
+        Downloads video transcript in TTML format.
 
         Args:
             url: YouTube video URL
@@ -199,7 +204,7 @@ class DLPDownloader(YTDownloader):
             TranscriptError: If no transcript found for specified language
         """
         temp_path = Path.cwd() / TEMP_FILENAME_FORMAT
-        options = DEFAULT_TRANSCRIPT_OPTIONS | self.config |{
+        options = DEFAULT_TRANSCRIPT_OPTIONS | self.config | {
             "skip_download": True,
             "subtitleslangs": [lang],
             "outtmpl": str(temp_path),
@@ -209,7 +214,7 @@ class DLPDownloader(YTDownloader):
             if info := ydl.extract_info(url):
                 metadata = self._extract_metadata(info)
                 filepath = Path(ydl.prepare_filename(info)).with_suffix(f".{lang}.ttml")
-                filepath = self._convert_filename(filepath, info, output_path)
+                filepath = self._convert_filename(filepath, metadata, output_path)
                 return VideoTranscript(metadata=metadata, filepath=filepath)
             else:
                 logger.error("Info not found.")
@@ -221,7 +226,7 @@ class DLPDownloader(YTDownloader):
         start: Optional[str] = None,
         end: Optional[str] = None,
         output_path: Optional[Path] = None
-        ) -> VideoAudio:
+    ) -> VideoAudio:
         """Download audio and get metadata for a YouTube video."""
         temp_path = Path.cwd() / TEMP_FILENAME_FORMAT
         options = DEFAULT_AUDIO_OPTIONS | self.config | {
@@ -240,42 +245,43 @@ class DLPDownloader(YTDownloader):
             if info := ydl.extract_info(url, download=True):
                 metadata = self._extract_metadata(info)
                 filepath = Path(ydl.prepare_filename(info)).with_suffix(".mp3")
-                filepath = self._convert_filename(filepath, info, output_path)
+                filepath = self._convert_filename(filepath, metadata, output_path)
                 return VideoAudio(metadata=metadata, filepath=filepath)
             else:
                 logger.error("Info not found.")
                 raise DownloadError(f"Unable to download {url}.")
             
-    def _extract_metadata(self, info: Dict[str, Any]) -> Dict[str, Any]:
+    def _extract_metadata(self, info: dict) -> Metadata:
         """Extract standard metadata fields from yt-dlp info."""
-        return {k: info.get(k) for k in DEFAULT_METADATA_FIELDS if k in info}
+        return Metadata.from_fields(info, DEFAULT_METADATA_FIELDS)
     
-    def _show_info(self, info: Dict[str, Any]) -> None:
-        """debug routine for displaying info."""
+    def _show_info(self, info: Metadata) -> None:
+        """Debug routine for displaying info."""
         for k in info:
-            if data := str(info.get(k)):
+            if data := str(info[k]):
                 if len(data) < 200:
                     print(f"{k}: {data}")
                 else:
                     print(f"{k}: {data[:200]} ...")
                   
-    def _get_default_filename(self, info: Dict[str, Any]) -> str:
-        """
-        Generate the object download filename
-        """
-        video_id = str(info.get('id'))
-        sanitized_title = sanitize_filename(str(info.get('title')))
+    def get_default_filename(self, metadata: Metadata) -> str:
+        """Generate the object download filename."""
+        # Expect both id and title in Youtube metadata
+        assert metadata["id"]
+        assert metadata["title"] 
+        video_id = str(metadata["id"])
+        sanitized_title = sanitize_filename(str(metadata["title"]))
         return f"{sanitized_title}_{video_id}"
     
     def get_default_export_name(self, url) -> str:
-        video_data = self.get_metadata(url, write=False)
-        info = video_data.metadata
-        return self._get_default_filename(info)
+        """Get default export filename for a URL."""
+        video_data = self.get_metadata(url)
+        return self.get_default_filename(video_data.metadata)
         
     def _convert_filename(
         self, 
         temp_path: Path,
-        info: Dict[str, Any], 
+        metadata: Metadata, 
         output_path: Optional[Path]
     ) -> Path:
         """
@@ -289,15 +295,16 @@ class DLPDownloader(YTDownloader):
         to the appropriately named resource, using output_path if specified,
         or a default filename format ({sanitized_title}_{id}).
         """
-        video_id = str(info.get('id'))
+        video_id = str(metadata["id"])
         assert video_id in str(temp_path)  # Must have video_id in actual path.
         assert temp_path.suffix  # Actual path must have suffix.
 
         if not output_path:
-            new_filename = self._get_default_filename(info)
+            new_filename = self._get_default_filename(metadata)
             new_path = Path(str(temp_path).replace(video_id, new_filename))
             logger.debug(f"Renaming downloaded YT resource to: {new_path}")
             return temp_path.rename(new_path)
+
         if not output_path.suffix:
             output_path = output_path.with_suffix(temp_path.suffix)
             logger.info(f"Added extension {temp_path.suffix} to output path")
@@ -305,8 +312,7 @@ class DLPDownloader(YTDownloader):
             output_path = output_path.with_suffix(temp_path.suffix)
             logger.warning(f"Replaced output extension with {temp_path.suffix}")
         return temp_path.rename(output_path)
-       
-        
+
 def extract_text_from_ttml(ttml_path: Path) -> str:
     """Extract plain text content from TTML file.
 
@@ -323,7 +329,6 @@ def extract_text_from_ttml(ttml_path: Path) -> str:
         raise ValueError(f"TTML file not found: {ttml_path}")
 
     ttml_str = ttml_path.read_text()
-
     if not ttml_str.strip():
         return ""
 
@@ -348,4 +353,3 @@ def extract_text_from_ttml(ttml_path: Path) -> str:
     except ParseError as e:
         logger.error(f"Failed to parse XML content: {e}")
         raise
-    
