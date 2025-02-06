@@ -4,14 +4,13 @@ import os
 import re
 from contextlib import contextmanager
 from datetime import datetime, timedelta
-from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, NewType, Optional, Tuple, Union
 
 import yaml
 from git import Actor, Commit, Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError
-from jinja2 import Environment, StrictUndefined, Template, TemplateError
+from jinja2 import Environment, StrictUndefined, TemplateError
 from jinja2.meta import find_undeclared_variables
 
 from tnh_scholar.logging_config import get_child_logger
@@ -107,23 +106,18 @@ class Pattern:
                 f"Invalid template syntax in pattern '{self.name}': {str(e)}"
             ) from e
 
-    @lru_cache(maxsize=128)
-    def _get_template(self) -> Template:
-        """
-        Get or create a cached template instance.
-
-        Returns:
-            Template: Compiled Jinja2 template
-        """
-        return self._env.from_string(self.instructions)
-
     def apply_template(self, field_values: Optional[Dict[str, str]] = None) -> str:
         """
         Apply template values to pattern instructions using Jinja2.
 
+        Values precedence (highest to lowest):
+        1. field_values (explicitly passed)
+        2. frontmatter values (from pattern file)
+        3. default_template_fields (pattern defaults)
+
         Args:
             field_values: Values to substitute into the template.
-                        If None, default_template_fields are used.
+                        If None, uses frontmatter/defaults.
 
         Returns:
             str: Rendered instructions with template values applied.
@@ -132,35 +126,50 @@ class Pattern:
             TemplateError: If template rendering fails
             ValueError: If required template variables are missing
         """
-        # Combine default fields with provided fields, with provided taking precedence
-        template_values = {**self.default_template_fields, **(field_values or {})}
+        # Get frontmatter values
+        frontmatter = self.extract_frontmatter() or {}
+        
+        # Combine values with correct precedence using | operator
+        template_values = self.default_template_fields | frontmatter | (field_values or {})
 
         instructions = self.get_content_without_frontmatter()
+        logger.debug(f"instructions without frontmatter:\n{instructions}")
 
         try:
             return self._render_template_with_values(instructions, template_values)
         except TemplateError as e:
-            raise TemplateError(
-                f"Template rendering failed for pattern '{self.name}': {str(e)}"
-            ) from e
+            raise TemplateError(f"Template rendering failed for pattern '{self.name}': {str(e)}") from e
 
-    def _render_template_with_values(self, instructions, template_values):
-        # Parse template to find required variables
-
+    def _render_template_with_values(self, instructions: str, template_values: dict) -> str:
+        """
+        Validate and render template with provided values.
+        
+        Args:
+            instructions: Template content without frontmatter
+            template_values: Values to substitute into template
+            
+        Returns:
+            Rendered template string
+            
+        Raises:
+            ValueError: If required template variables are missing
+        """
+        # Parse for validation
         parsed_content = self._env.parse(instructions)
         required_vars = find_undeclared_variables(parsed_content)
-
-        # Validate all required variables are provided
+        
+        # Validate variables
         missing_vars = required_vars - set(template_values.keys())
         if missing_vars and not self._allow_empty_vars:
             raise ValueError(
                 f"Missing required template variables in pattern '{self.name}': "
                 f"{', '.join(sorted(missing_vars))}"
             )
-
-        template = self._get_template()
+        
+        # Create and render template
+        template = self._env.from_string(instructions)
         return template.render(**template_values)
-
+    
     def extract_frontmatter(self) -> Optional[Dict[str, Any]]:
         """
         Extract and validate YAML frontmatter from markdown instructions.
