@@ -32,7 +32,8 @@ tnh-setup
 
 ### Prerequisites
 
-- Python 3.12.4
+- Python 3.12.4 (can be set with pyenv or other environment manager)
+  - (Fixed version reduces overhead for deployment and dependency checking during prototype phase.) 
 - OpenAI API credentials (required for AI tools)
 - Google Vision credentials (for OCR development and testing)
 - pip package manager
