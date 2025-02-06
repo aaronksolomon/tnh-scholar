@@ -14,10 +14,11 @@ from pathlib import Path
 from typing import Dict, Optional
 
 import click
-from click import Context
+from click import Context, UsageError
 from dotenv import load_dotenv
 
-from tnh_scholar.utils.validate import check_openai_env
+# Default pattern directory as specified
+from tnh_scholar import TNH_DEFAULT_PATTERN_DIR
 from tnh_scholar.ai_text_processing import (
     Pattern,
     PatternManager,
@@ -30,13 +31,13 @@ from tnh_scholar.ai_text_processing import (
     translate_text_by_lines,
 )
 from tnh_scholar.logging_config import get_child_logger, setup_logging
+from tnh_scholar.text_processing.numbered_text import NumberedText
+from tnh_scholar.utils.validate import check_openai_env
 
 DEFAULT_SECTION_PATTERN = "default_section"
 
 logger = get_child_logger(__name__)
 
-# Default pattern directory as specified
-from tnh_scholar import TNH_DEFAULT_PATTERN_DIR
 
 class TNHFabConfig:
     """Holds configuration for the TNH-FAB CLI tool."""
@@ -66,7 +67,7 @@ def read_input(ctx: Context, input_file: Optional[Path]) -> str:
         return input_file.read_text()
     if not sys.stdin.isatty():
         return sys.stdin.read()
-    ctx.fail("No input provided")
+    raise UsageError("No input provided")
 
 def get_pattern(pattern_manager: PatternManager, pattern_name: str) -> Pattern:
     """
@@ -93,7 +94,8 @@ def get_pattern(pattern_manager: PatternManager, pattern_name: str) -> Pattern:
 
 
 @click.group()
-@click.option("-v", "--verbose", is_flag=True, help="Enable detailed logging. (NOT implemented)")
+@click.option("-v", "--verbose", is_flag=True, 
+              help="Enable detailed logging. (NOT implemented)")
 @click.option("--debug", is_flag=True, help="Enable debug output")
 @click.option("--quiet", is_flag=True, help="Suppress all non-error output")
 @click.pass_context
@@ -116,7 +118,7 @@ def tnh_fab(ctx: Context, verbose: bool, debug: bool, quiet: bool):
     
     if not check_openai_env():
         
-        ctx.fail("Missing OpenAI Credentials.")
+        raise click.ClickException("Missing OpenAI Credentials.")
         
     config.verbose = verbose
     config.debug = debug
@@ -269,7 +271,7 @@ def section(
     """
     text = read_input(click, input_file)  # type: ignore
     section_pattern = get_pattern(config.pattern_manager, pattern)
-    result = find_sections(
+    text_object = find_sections(
         text,
         source_language=language,
         section_pattern=section_pattern,
@@ -277,8 +279,8 @@ def section(
         review_count=review_count,
     )
     # For prototype, just output the JSON representation
-    click.echo(result.model_dump_json(indent=2))
-
+    info = text_object.export_info(input_file)
+    click.echo(info.model_dump_json(indent=2))
 
 @tnh_fab.command()
 @click.argument(
@@ -365,7 +367,6 @@ def translate(
     )
     click.echo(result)
 
-
 @tnh_fab.command()
 @click.argument(
     "input_file", type=click.Path(exists=True, path_type=Path), required=False
@@ -445,6 +446,7 @@ def process(
 
     """
     text = read_input(click, input_file)  # type: ignore
+    
     process_pattern = get_pattern(config.pattern_manager, pattern)
 
     template_dict: Dict[str, str] = {}
@@ -455,10 +457,11 @@ def process(
         )
         for processed in result:
             click.echo(processed)
+            click.echo("\n") # newline separated output. This could be an option?
+            
     elif section is not None:  # Section mode (either file or auto-generate)
         if isinstance(section, Path):  # Section file provided
-            sections_json = Path(section).read_text()
-            text_obj = TextObject.model_validate_json(sections_json)
+            text_obj = TextObject.from_section_file(section, text)
 
         else:  # Auto-generate sections
             default_section_pattern = get_pattern(
@@ -467,10 +470,12 @@ def process(
             text_obj = find_sections(text, section_pattern=default_section_pattern)
 
         result = process_text_by_sections(
-            text, text_obj, template_dict, pattern=process_pattern
+            text_obj, template_dict, pattern=process_pattern
         )
         for processed_section in result:
             click.echo(processed_section.processed_text)
+            click.echo("\n")  # newline separated output. This could be an option?
+            
     else:
         result = process_text(
             text, pattern=process_pattern, template_dict=template_dict
