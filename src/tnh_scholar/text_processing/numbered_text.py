@@ -198,7 +198,7 @@ class NumberedText:
             self.separator = format_info.separator  # type: ignore
 
             # Extract content by removing number and separator
-            pattern = re.compile(rf"^\d+{re.escape(detected_sep)}")
+            pattern = re.compile(rf"^\d+{re.escape(detected_sep)}") # type: ignore
             self.lines = []
 
             for line in content.splitlines():
@@ -269,8 +269,8 @@ class NumberedText:
             self._format_line(i + self._to_internal_index(start) + 1, line)
             for i, line in enumerate(self.get_lines(start, end))
         ]
-
     def get_segment(self, start: int, end: int) -> str:
+        """return the segment from start line (inclusive) up to end line (exclusive)"""
         if start < self.start:
             raise IndexError(f"Start index {start} is before first line {self.start}")
         if end > len(self) + 1:
@@ -335,6 +335,11 @@ class NumberedText:
     def content(self) -> str:
         """Get original text without line numbers."""
         return "\n".join(self.lines)
+    
+    @property
+    def numbered_content(self) -> str:
+        """Get text with line numbers as a string. Equivalent to str(self)"""
+        return str(self)
 
     @property
     def size(self) -> int:
@@ -418,8 +423,6 @@ def _check_line_structure(first_match: str, lines: List[str]) -> NumberedFormat:
         return NumberedFormat(False)
 
     # Verify all lines follow the pattern with sequential numbers
-    expected_pattern = re.compile(rf"^\d+{re.escape(separator)}")
-
     for i, line in enumerate(lines):
         expected_num = start_num + i
         expected_prefix = f"{expected_num}{separator}"
