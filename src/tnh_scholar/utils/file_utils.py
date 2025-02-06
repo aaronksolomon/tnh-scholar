@@ -1,10 +1,13 @@
+import fcntl
 import re
 import shutil
-import warnings
+import unicodedata
 from pathlib import Path
-from typing import Generator
+from typing import Generator, Union
 
+PathLike = Union[str, Path]
 
+DEFAULT_MAX_FILENAME_LENGTH = 25
 class FileExistsWarning(UserWarning):
     pass
 
@@ -15,10 +18,16 @@ def ensure_directory_exists(dir_path: Path) -> bool:
 
     Args:
         dir_path (Path): Directory path to ensure exists.
-    """
-    # Stub Implementation
-    return dir_path.exists()
 
+    Returns:
+        bool: True if the directory exists or was created successfully, False otherwise.
+    """
+    # No exception handling here. 
+    # If exceptions occur let them propagate. 
+    # Prototype code.
+    
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return True
 
 def iterate_subdir(
     directory: Path, recursive: bool = False
@@ -55,14 +64,17 @@ def copy_files_with_regex(
     preserve_structure: bool = True,
 ) -> None:
     """
-    Copies files from subdirectories one level down in the source directory to the destination directory
-    if they match any regex pattern. Optionally preserves the directory structure.
+    Copies files from subdirectories one level down in the source directory to 
+    the destination directory if they match any regex pattern. Optionally preserves the 
+    directory structure.
 
     Args:
         source_dir (Path): Path to the source directory to search files in.
-        destination_dir (Path): Path to the destination directory where files will be copied.
+        destination_dir (Path): Path to the destination directory where files will be 
+            copied.
         regex_patterns (list[str]): List of regex patterns to match file names.
-        preserve_structure (bool): Whether to preserve the directory structure. Defaults to True.
+        preserve_structure (bool): Whether to preserve the directory structure. 
+            Defaults to True.
 
     Raises:
         ValueError: If the source directory does not exist or is not a directory.
@@ -105,7 +117,7 @@ def copy_files_with_regex(
                             target_path = destination_dir / relative_path
                             target_path.parent.mkdir(parents=True, exist_ok=True)
                         else:
-                            # Place directly in destination without subdirectory structure
+                            # Put directly in destination without subdirectory structure
                             target_path = destination_dir / file_path.name
 
                         shutil.copy2(file_path, target_path)
@@ -125,32 +137,77 @@ def get_text_from_file(file_path: Path) -> str:
     with open(file_path, "r", encoding="utf-8") as file:
         return file.read()
 
-
-def write_text_to_file(
-    file_path: Path, content: str, overwrite: bool = False, append: bool = False
-) -> None:
-    """Writes text content to a file, handling overwriting and appending.
+def write_text_to_file(file_path: PathLike, text: str, overwrite: bool = False):
+    """Writes text to a file with file locking.
 
     Args:
-        file_path: The path to the file.
-        content: The text content to write.
-        overwrite: If True, overwrites the file if it exists.
-        append: If True, appends the content to the file if it exists.
+        file_path: The path to the file to write.
+        text: The text to write to the file.
+        overwrite: Whether to overwrite the file if it exists.
 
     Raises:
-        FileExistsWarning: If the file exists and neither overwrite nor append are True.
+        FileExistsError: If the file exists and overwrite is False.
+        OSError: If there's an issue with file locking or writing.
     """
+    file_path = Path(file_path)
 
-    if file_path.exists():
-        if not overwrite and not append:
-            warnings.warn(
-                f"File '{file_path}' already exists. Use overwrite or append.",
-                FileExistsWarning,
-            )
-            return  # Do not write if neither flag is set
-        mode = "a" if append else "w"  # Choose mode based on flags
-    else:
-        mode = "w"  # Default to write mode if file doesn't exist
+    if file_path.exists() and not overwrite:
+        raise FileExistsError(f"File already exists: {file_path}")
 
-    with open(file_path, mode, encoding="utf-8") as file:
-        file.write(content)
+    try:
+        with file_path.open("w", encoding="utf-8") as f:
+            fcntl.flock(f, fcntl.LOCK_EX)
+            f.write(text)
+            fcntl.flock(f, fcntl.LOCK_UN)  # Release lock
+    except OSError as e:
+        raise OSError(f"Error writing to or locking file {file_path}: {e}") from e
+    
+def sanitize_filename(
+    filename: str, 
+    max_length: int = DEFAULT_MAX_FILENAME_LENGTH
+    ) -> str:  
+    """Sanitize filename for use unix use."""
+    
+    # Normalize Unicode to remove accents and convert to ASCII
+    clean = (
+        unicodedata.normalize(
+            "NFKD", 
+            filename).encode(
+                "ascii", 
+                "ignore").decode("ascii")
+    )
+    
+    clean = re.sub(r"[^a-z0-9\s]", " ", clean.strip())
+    
+    clean = clean.strip()
+    
+    # shorten
+    clean = clean[:max_length].strip() 
+    
+    # convert spaces to _
+    clean = re.sub(r"\s+", "_", clean)
+        
+    return clean
+
+def to_slug(string: str) -> str:
+    """
+    Slugify a Unicode string.
+
+    Converts a string to a strict URL-friendly slug format,
+    allowing only lowercase letters, digits, and hyphens.
+
+    Example:
+        >>> slugify("Héllø_Wörld!")
+        'hello-world'
+    """
+    # Normalize Unicode to remove accents and convert to ASCII
+    string = (
+        unicodedata.normalize("NFKD", string).encode("ascii", "ignore").decode("ascii")
+    )
+
+    # Replace all non-alphanumeric characters with spaces (only keep a-z and 0-9)
+    string = re.sub(r"[^a-z0-9\s]", " ", string.lower().strip())
+
+    # Replace any sequence of spaces with a single hyphen
+    return re.sub(r"\s+", "-", string)
+
