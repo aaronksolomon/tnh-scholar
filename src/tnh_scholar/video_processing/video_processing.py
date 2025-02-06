@@ -2,11 +2,11 @@
 video_processing.py
 """
 
-import json
+import csv
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 from xml.etree.ElementTree import ParseError
 
 import yt_dlp
@@ -14,7 +14,8 @@ import yt_dlp
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.metadata import Metadata
 from tnh_scholar.utils import sanitize_filename
-from tnh_scholar.utils.file_utils import write_text_to_file
+
+# from tnh_scholar.utils.file_utils import write_text_to_file
 
 logger = get_child_logger(__name__)
 
@@ -94,8 +95,6 @@ class VideoTranscript(VideoResource):
 class VideoAudio(VideoResource): 
     pass 
 
-class VideoMetadata(VideoResource): 
-    pass
 
 class YTDownloader:
     """Abstract base class for YouTube content retrieval."""
@@ -122,9 +121,7 @@ class YTDownloader:
     def get_metadata(
         self, 
         url: str, 
-        output_path: Optional[Path] = None,
-        write: bool = True,
-    ) -> VideoMetadata:
+    ) -> Metadata:
         """Retrieve video metadata only."""
         raise NotImplementedError
 
@@ -146,42 +143,19 @@ class DLPDownloader(YTDownloader):
         
     def get_metadata(
         self,
-        url: str, 
-        output_path: Optional[Path] = None,
-        write: bool = False,
-    ) -> VideoMetadata:
+        url: str,
+    ) -> Metadata:
         """
         Get metadata for a YouTube video. 
-        Save to JSON file if write is specified.
         """
-        temp_path = Path.cwd() / f"{TEMP_FILENAME_FORMAT}.info.json"
-        options = DEFAULT_METADATA_OPTIONS | self.config | {
-            "outtmpl": str(temp_path),
-        }
+        # temp_path = Path.cwd() / f"{TEMP_FILENAME_FORMAT}.info.json"
+        options = DEFAULT_METADATA_OPTIONS | self.config
+        # | # { "outtmpl": str(temp_path), }
         with yt_dlp.YoutubeDL(options) as ydl:
             if info := ydl.extract_info(url):
-                metadata = self._extract_metadata(info)
-                
-                filepath = None
-                
-                if write:
-                    # Use prepare_filename to get yt-dlp filename.  
-                    # For info extraction only, without download,
-                    # yt-dlp uses full path with extension.
-                    filepath = Path(ydl.prepare_filename(info))
-                    write_text_to_file(
-                        filepath, 
-                        json.dumps(metadata.to_dict(), indent=2)
-                        )
-                    filepath = self._convert_filename(filepath, metadata, output_path)
-                
-                return VideoMetadata(
-                    metadata=metadata,
-                    filepath=filepath,
-                )
-            else:
-                logger.error(f"Unable to download metadata for {url}.")
-                raise DownloadError("No info returned.")
+                return self._extract_metadata(info)
+            logger.error(f"Unable to download metadata for {url}.")
+            raise DownloadError("No info returned.")
     
     def get_transcript(
         self,
@@ -275,8 +249,8 @@ class DLPDownloader(YTDownloader):
     
     def get_default_export_name(self, url) -> str:
         """Get default export filename for a URL."""
-        video_data = self.get_metadata(url)
-        return self.get_default_filename(video_data.metadata)
+        metadata = self.get_metadata(url)
+        return self.get_default_filename(metadata)
         
     def _convert_filename(
         self, 
@@ -300,7 +274,7 @@ class DLPDownloader(YTDownloader):
         assert temp_path.suffix  # Actual path must have suffix.
 
         if not output_path:
-            new_filename = self._get_default_filename(metadata)
+            new_filename = self.get_default_filename(metadata)
             new_path = Path(str(temp_path).replace(video_id, new_filename))
             logger.debug(f"Renaming downloaded YT resource to: {new_path}")
             return temp_path.rename(new_path)
@@ -353,3 +327,46 @@ def extract_text_from_ttml(ttml_path: Path) -> str:
     except ParseError as e:
         logger.error(f"Failed to parse XML content: {e}")
         raise
+    
+def get_youtube_urls_from_csv(file_path: Path) -> List[str]:
+    """
+    Reads a CSV file containing YouTube URLs and titles, logs the titles,
+    and returns a list of URLs.
+
+    Args:
+        file_path (Path): Path to the CSV file containing YouTube URLs and titles.
+
+    Returns:
+        List[str]: List of YouTube URLs.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        ValueError: If the CSV file is improperly formatted.
+    """
+    if not file_path.exists():
+        logger.error(f"File not found: {file_path}")
+        raise FileNotFoundError(f"File not found: {file_path}")
+
+    urls = []
+
+    try:
+        with file_path.open("r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+
+            if (reader.fieldnames is None 
+                or "url" not in reader.fieldnames 
+                or "title" not in reader.fieldnames
+            ):
+                logger.error("CSV file must contain 'url' and 'title' columns.")
+                raise ValueError("CSV file must contain 'url' and 'title' columns.")
+
+            for row in reader:
+                url = row["url"]
+                title = row["title"]
+                urls.append(url)
+                logger.info(f"Found video title: {title}")
+    except Exception as e:
+        logger.exception(f"Error processing CSV file: {e}")
+        raise
+
+    return urls

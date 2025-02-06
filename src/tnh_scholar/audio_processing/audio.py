@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 import numpy as np
+from git import Optional
 from pydub import AudioSegment
 from pydub.silence import detect_nonsilent
 
@@ -149,7 +150,6 @@ def detect_silence_boundaries(
         for start_ms, end_ms in combined_ranges
     ]
 
-
 def split_audio_at_boundaries(
     audio_file: Path,
     boundaries: List[Boundary],
@@ -238,7 +238,7 @@ def split_audio_at_boundaries(
 def split_audio(
     audio_file: Path,
     method: str = "whisper",
-    output_dir: Path = None,
+    output_dir: Optional[Path] = None,
     model_size: str = "tiny",
     language: str = None,
     min_silence_len: int = MIN_SILENCE_LENGTH,

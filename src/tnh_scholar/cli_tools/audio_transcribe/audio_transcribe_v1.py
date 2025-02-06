@@ -259,7 +259,7 @@ def handle_transcribe(
             audio_name = split_name(split)
             transcript_file = output_dir / audio_name / f"{audio_name}.txt"
             jsonl_file = output_dir / audio_name / f"{audio_name}.jsonl"
-            logger.info(f"Transcribing chunks to directory {output_dir.resolve()}")
+            logger.info(f"Transcribing chunk directory {split.file_path}")
             
             transcript = process_audio_chunks(
                 chunk_dir=split.file_path,
@@ -463,7 +463,10 @@ def generate_transcription(
     "--chunk_duration",
     type=int,
     default=DEFAULT_CHUNK_DURATION_SEC,
-    help="Max chunk duration in seconds.\ndefault: {DEFAULT_CHUNK_DURATION_MIN} minutes).",
+    help=(
+        f"Max chunk duration in seconds. \n"
+        f"(default: {DEFAULT_CHUNK_DURATION_MIN} minutes).",
+    )
 )
 @click.option(
     "-x",
