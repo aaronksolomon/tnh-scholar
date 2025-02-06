@@ -12,6 +12,7 @@ from pydantic import BaseModel, Field
 
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.text_processing import NumberedText
+from tnh_scholar.utils.file_utils import get_text_from_file
 
 logger = get_child_logger(__name__)
 
@@ -190,14 +191,14 @@ class TextObject:
     def from_section_file(
         cls, 
         section_file: Path, 
-        content: Optional[NumberedText] = None
+        content: Optional[str] = None
         ) -> 'TextObject':
         """
         Create TextObject from a section info file, loading content from source_file.
         
         Args:
             section_file: Path to JSON file containing TextObjectInfo
-            content: Optional content in case no content file is found.
+            content: Optional content string in case no content file is found.
             
         Returns:
             TextObject instance
@@ -211,7 +212,7 @@ class TextObject:
             raise FileNotFoundError(f"Section file not found: {section_file}")
             
         # Load and parse section info
-        info = TextObjectInfo.model_validate_json(section_file.read_text())
+        info = TextObjectInfo.model_validate_json(get_text_from_file(section_file))
         
         if not content:  # passed content always takes precedence over source_file
             # check if source file exists
@@ -226,10 +227,10 @@ class TextObject:
                     )
             
             # Load content into NumberedText
-            content = NumberedText(source_path.read_text())
+            content = get_text_from_file(source_path)
         
         # Create TextObject
-        return cls.from_info(info, content)
+        return cls.from_info(info, NumberedText(content))
     
     @property
     def metadata(self) -> Dict[str, Any]:
