@@ -58,9 +58,3 @@ This high-level view suggests some key improvements needed:
 - Standard communication formats
 - Simplified composition
 
-Would you like me to:
-
-1. Detail out any particular aspect of this design?
-2. Focus on how the YouTube tools fit into this framework?
-3. Explore a specific pipeline in more detail?
-4. Look at standardizing interfaces across tools?
