@@ -33,7 +33,7 @@ from tnh_scholar.audio_processing.transcription import get_transcription
 from tnh_scholar.logging_config import get_child_logger, setup_logging
 from tnh_scholar.metadata.metadata import Frontmatter, Metadata
 from tnh_scholar.utils import ensure_directory_exists, get_user_confirmation
-from tnh_scholar.utils.file_utils import write_text_to_file
+from tnh_scholar.utils.file_utils import write_str_to_file
 from tnh_scholar.video_processing import (
     DLPDownloader,
     get_youtube_urls_from_csv,
@@ -269,7 +269,7 @@ def handle_transcribe(
             )
             
             metadata_transcript = Frontmatter.embed(split.metadata, transcript)
-            write_text_to_file(transcript_file, metadata_transcript)
+            write_str_to_file(transcript_file, metadata_transcript)
             
         else:
             click.echo("Single file processing not implemented!")
@@ -463,7 +463,10 @@ def generate_transcription(
     "--chunk_duration",
     type=int,
     default=DEFAULT_CHUNK_DURATION_SEC,
-    help="Max chunk duration in seconds.\ndefault: {DEFAULT_CHUNK_DURATION_MIN} minutes).",
+    help=(
+        "Max chunk duration in seconds.\n"
+        f"default: {DEFAULT_CHUNK_DURATION_MIN} minutes)."
+    ),
 )
 @click.option(
     "-x",
