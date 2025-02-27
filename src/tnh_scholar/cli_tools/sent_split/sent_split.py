@@ -7,66 +7,116 @@ Uses NLTK for robust sentence tokenization. Reads from stdin and writes to stdou
 by default, with optional file input/output.
 """
 
+#!/usr/bin/env python
 import sys
 from pathlib import Path
-from typing import Optional, TextIO
+from typing import Any, Dict, Literal, Optional
 
 import click
 import nltk
+from attr import dataclass
 from nltk.tokenize import sent_tokenize
+from pydantic import BaseModel
 
-# Download required NLTK data on first run
-def ensure_nltk_data():
-    """Ensure NLTK punkt tokenizer is available."""
+from tnh_scholar.ai_text_processing import TextObject
+from tnh_scholar.metadata import ProcessMetadata
+from tnh_scholar.utils.file_utils import read_str_from_file, write_str_to_file
+
+
+class SplitConfig(BaseModel):
+    separator: Literal["space", "newline"] = "newline"
+    nltk_tokenizer: str = "punkt"
+
+@dataclass
+class SplitResult:
+    text_object: TextObject
+    stats: Dict[str, Any] = {}
+    
+class SplitIOData(BaseModel):
+    input_path: Optional[Path] = None
+    output_path: Optional[Path] = None
+    content: Optional[str] = None
+
+    @classmethod
+    def from_io(
+        cls, input_file: Optional[Path], output: Optional[Path]
+        ) -> "SplitIOData":
+        return cls(input_path=input_file, output_path=output)
+
+    def get_input_content(self) -> str:
+        if self.content is not None:
+            return self.content
+        return read_str_from_file(self.input_path) if self.input_path \
+            else sys.stdin.read()
+
+    def write_output(self, result: SplitResult) -> None:
+        text = result.text_object
+        output_str = str(text)
+        if self.output_path:
+            write_str_to_file(self.output_path, output_str)
+            click.echo(f"Output written to: {self.output_path.name}")
+            click.echo(f"Split into {result.stats['sentence_count']} sentences.")
+        else:
+            click.echo(output_str)
+
+def ensure_nltk_data(config: SplitConfig) -> None:
     try:
-        # Try to find the resource
-        nltk.data.find('tokenizers/punkt')
+        nltk.data.find(f'tokenizers/{config.nltk_tokenizer}')
     except LookupError:
-        # If not found, try downloading
         try:
-            nltk.download('punkt', quiet=True)
-            # Verify download
-            nltk.data.find('tokenizers/punkt')
+            nltk.download(config.nltk_tokenizer, quiet=True)
+            nltk.data.find(f'tokenizers/{config.nltk_tokenizer}')
         except Exception as e:
             raise RuntimeError(
-                "Failed to download required NLTK data. "
-                "Please run 'python -m nltk.downloader punkt' "
+                f"Failed to download required NLTK data. "
+                f"Please run 'python -m nltk.downloader {config.nltk_tokenizer}' "
                 f"to install manually. Error: {e}"
             ) from e
 
-def process_text(text: str, newline: bool = True) -> str:
-    """Split text into sentences using NLTK."""
-    ensure_nltk_data()
-    sentences = sent_tokenize(text)
-    return "\n".join(sentences) if newline else " ".join(sentences)
+def split_text(
+    text: TextObject, config: SplitConfig, io_data: SplitIOData
+    ) -> SplitResult:
+    ensure_nltk_data(config)
+    sentences = sent_tokenize(text.content)
+    
+    separator = "\n" if config.separator == "newline" else " "
+    new_content = separator.join(sentences)
+    
+    text.transform(
+        data_str=new_content,
+        process_metadata=ProcessMetadata(
+            step="split_text",
+            processor="NLTK",
+            tool="sent-split",
+            source_file=io_data.input_path or None,
+        )
+    )
+    
+    return SplitResult(
+        text_object=text,
+        stats={"sentence_count": len(sentences)}
+    )
 
 @click.command()
-@click.argument('input_file', type=click.File('r'), required=False)
-@click.option('-o', '--output', type=click.File('w'),
+@click.argument(
+    "input_file", type=click.Path(exists=True, path_type=Path), required=False
+    )
+@click.option('-o', '--output', type=click.Path(path_type=Path), required=False,
               help='Output file (default: stdout)')
 @click.option('-s', '--space', is_flag=True,
               help='Separate sentences with spaces instead of newlines')
-def sent_split(input_file: Optional[TextIO],
-               output: Optional[TextIO],
+def sent_split(input_file: Optional[Path],
+               output: Optional[Path],
                space: bool) -> None:
-    """Split text into sentences using NLTK's sentence tokenizer.
-    
-    Reads from stdin if no input file is specified.
-    Writes to stdout if no output file is specified.
-    """
     try:
-        # Read from file or stdin
-        input_text = input_file.read() if input_file else sys.stdin.read()
+        io_data = SplitIOData.from_io(input_file, output)
+        config = SplitConfig(separator="space" if space else "newline")
         
-        # Process the text
-        result = process_text(input_text, newline=not space)
-        
-        # Write to file or stdout
-        output_file = output or sys.stdout
-        output_file.write(result)
-        
-        if output:
-            click.echo(f"Output written to: {output.name}")
+        input_text = io_data.get_input_content()
+        text = TextObject.from_str(input_text)
+            
+        result = split_text(text, config, io_data)
+        io_data.write_output(result)
 
     except Exception as e:
         click.echo(f"Error processing text: {e}", err=True)
