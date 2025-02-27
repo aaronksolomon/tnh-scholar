@@ -8,7 +8,7 @@ from xml.etree.ElementTree import ParseError
 import yt_dlp
 
 from tnh_scholar.logging_config import get_child_logger
-from tnh_scholar.utils.file_utils import get_text_from_file
+from tnh_scholar.utils.file_utils import read_str_from_file
 
 logger = get_child_logger(__name__)
 
@@ -199,7 +199,7 @@ def get_transcript(
 
     transcript_file = _download_yt_ttml(download_dir, url=url, lang=lang)
 
-    text = get_text_from_file(transcript_file)
+    text = read_str_from_file(transcript_file)
 
     if not keep_transcript_file:
         try:
