@@ -1,9 +1,10 @@
 """TNH Scholar: Text Processing and Analysis Tools
 
 TNH Scholar is an AI-driven project designed to explore, query, process and translate
-the teachings of Thich Nhat Hanh and other Plum Village Dharma Teachers. The project aims 
-to create a resource for practitioners and scholars to deeply engage with mindfulness 
-and spiritual wisdom through natural language processing and machine learning models.
+the teachings of Thich Nhat Hanh and other Plum Village Dharma Teachers. The project  
+aims to create a resource for practitioners and scholars to deeply engage with  
+mindfulness and spiritual wisdom through natural language processing and machine  
+learning models.
 
 Core Features:
     - Audio transcription and processing
@@ -49,8 +50,6 @@ from pathlib import Path
 # Package version
 __version__ = "0.1.3"
 
-from pathlib import Path
-
 # Dynamically determine and set up paths for the project
 TNH_CONFIG_DIR = Path.home() / ".config" / "tnh-scholar"
 TNH_ROOT_SRC_DIR = Path(__file__).resolve().parent
@@ -60,6 +59,8 @@ TNH_PROJECT_ROOT_DIR = (
 TNH_CLI_TOOLS_DIR = TNH_ROOT_SRC_DIR / "cli_tools"
 TNH_DEFAULT_PATTERN_DIR = TNH_CONFIG_DIR / "patterns"
 TNH_LOG_DIR = TNH_CONFIG_DIR / "logs"
+
+TNH_METADATA_PROCESS_FIELD = "tnh_processing"
 
 if not TNH_ROOT_SRC_DIR.exists():
     raise FileNotFoundError(f"Base directory {TNH_ROOT_SRC_DIR} does not exist.")
