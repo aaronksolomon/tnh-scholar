@@ -4,14 +4,15 @@ import time
 from datetime import datetime
 from math import floor
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 import tiktoken
 from dotenv import load_dotenv
-from openai import OpenAI
+from openai import BaseModel, OpenAI
+from openai.types.chat import ChatCompletion
 
 from tnh_scholar.logging_config import get_child_logger
-from tnh_scholar.utils.file_utils import get_text_from_file
+from tnh_scholar.utils.file_utils import read_str_from_file
 
 MAX_BATCH_LIST = 30
 OPEN_AI_DEFAULT_MODEL = "gpt-4o"
@@ -76,7 +77,7 @@ def token_count(text):
 
 
 def token_count_file(text_file: Path):
-    text = get_text_from_file(text_file)
+    text = read_str_from_file(text_file)
     return token_count(text)
 
 
@@ -154,7 +155,7 @@ def run_immediate_completion_simple(
     model=None,
     max_tokens: int = 0,
     response_format=None,
-):
+)-> Union[BaseModel, str, None]:
     """Runs a single chat completion with a system message and user message.
 
     This function simplifies the process of running a single chat completion with the OpenAI API by handling
@@ -199,7 +200,8 @@ def run_immediate_completion_simple(
 
     try:
         logger.debug(
-            f"Starting chat completion with response_format={response_format} and max_tokens={max_tokens}..."
+            f"Starting chat completion with response_format={response_format}\n" 
+            f"and max_tokens={max_tokens}..."
         )
 
         return (
@@ -251,9 +253,8 @@ def get_completion_content(chat_completion):
     return chat_completion.choices[0].message.content
 
 
-def get_completion_object(chat_completion):
+def get_completion_object(chat_completion: ChatCompletion) -> BaseModel:
     return chat_completion.choices[0].message.parsed
-
 
 def _log_batch_creation_info(
     batch_file_path: Path, request_obj: Dict, total_tokens: int
