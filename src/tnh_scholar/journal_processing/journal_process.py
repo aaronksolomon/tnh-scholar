@@ -13,7 +13,7 @@ from tnh_scholar.openai_interface import (
     start_batch_with_retries,
     token_count,
 )
-from tnh_scholar.utils.file_utils import get_text_from_file
+from tnh_scholar.utils.file_utils import read_str_from_file
 from tnh_scholar.xml_processing import (
     join_xml_data_to_doc,
     save_pages_to_xml,
@@ -341,7 +341,7 @@ def generate_clean_batch(
 
     try:
         # Read the OCR text from the batch file
-        text = get_text_from_file(input_xml_file)
+        text = read_str_from_file(input_xml_file)
         logger.info(f"Processing file: {input_xml_file}")
 
         # Split the text into pages for processing
@@ -398,7 +398,7 @@ def batch_section(
             f"Starting sectioning batch for {journal_name} with file:\n\t{input_xml_path}"
         )
         # Load journal content
-        journal_pages = get_text_from_file(input_xml_path)
+        journal_pages = read_str_from_file(input_xml_path)
 
         # Create GPT messages for sectioning
         user_message_wrapper = lambda text: f"{text}"
@@ -468,7 +468,7 @@ def batch_translate(
     # Data initialization:
     try:
         # load metadata
-        serial_json = get_text_from_file(metadata_path)
+        serial_json = read_str_from_file(metadata_path)
 
         section_metadata = deserialize_json(serial_json)
         if not section_metadata:
@@ -476,7 +476,7 @@ def batch_translate(
 
         # Extract page groups and split XML content
         page_groups = extract_page_groups_from_metadata(section_metadata)
-        xml_content = get_text_from_file(input_xml_path)
+        xml_content = read_str_from_file(input_xml_path)
         section_contents = split_xml_on_pagebreaks(xml_content, page_groups)
 
         if section_contents:
@@ -748,7 +748,7 @@ def generate_single_oa_batch_from_pages(
 
     try:
         # Read the OCR text from the batch file
-        text = get_text_from_file(input_xml_file)
+        text = read_str_from_file(input_xml_file)
         logger.info(f"Processing file: {input_xml_file}")
 
         # Split the text into pages for processing
