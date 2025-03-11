@@ -6,20 +6,19 @@ from .ai_text_processing import (
     process_text,
     process_text_by_paragraphs,
     process_text_by_sections,
-    punctuate_text,
-    translate_text_by_lines,
 )
+from .line_translator import translate_text_by_lines
 from .openai_process_interface import openai_process_text
 from .patterns import (
     GitBackedRepository,
+    LocalPatternManager,
     Pattern,
     PatternManager,
 )
-
 from .text_object import (
-    TextObject, 
-    TextObjectInfo, 
-    TextObjectResponse, 
-    LogicalSection, 
-    SectionEntry
+    AIResponse,
+    LogicalSection,
+    SectionEntry,
+    TextObject,
+    TextObjectInfo,
 )
