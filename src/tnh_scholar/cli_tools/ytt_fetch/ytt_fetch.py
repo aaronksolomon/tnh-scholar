@@ -14,8 +14,9 @@ import click
 import yt_dlp
 
 from tnh_scholar.logging_config import get_child_logger
-from tnh_scholar.metadata import Frontmatter
-from tnh_scholar.utils.file_utils import write_text_to_file
+from tnh_scholar.metadata import Frontmatter, Metadata
+from tnh_scholar.metadata.metadata import ProcessMetadata
+from tnh_scholar.utils.file_utils import write_str_to_file
 from tnh_scholar.video_processing import (
     DLPDownloader,
     TranscriptError,
@@ -92,10 +93,25 @@ def generate_transcript(
     ) -> None:
     
     metadata, ttml_path = get_ttml_download(dl, url, lang, output_path)
+    
+    process_metadata = ProcessMetadata(
+            step="generate_transcript",
+            processor="DLPDownloader",
+            tool="ytt-fetch"
+            )
+    if output_path:
+        process_metadata.update(output_path=output_path)
+        
+    metadata.add_process_info(process_metadata)
+            
     export_ttml_data(metadata, ttml_path, no_embed, output_path, keep)
      
-     
-def export_ttml_data(metadata, ttml_path, no_embed, output_path, keep):
+def export_ttml_data(
+    metadata: Metadata, 
+    ttml_path: Optional[Path], 
+    no_embed: bool, 
+    output_path: Optional[Path], 
+    keep: bool):
     try:
         # export transcript as text 
         if ttml_path:
@@ -142,7 +158,7 @@ def cleanup_files(keep: bool, filepath: Path) -> None:
         
 def export_data(output_path, data):
     if output_path:
-            write_text_to_file(output_path, data, overwrite=True)
+            write_str_to_file(output_path, data, overwrite=True)
             click.echo(f"Data written to: {output_path}")
     else:
         click.echo(data)
