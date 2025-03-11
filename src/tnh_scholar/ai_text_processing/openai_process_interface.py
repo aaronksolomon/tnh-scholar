@@ -1,12 +1,8 @@
-from typing import Optional, Union
+from typing import Optional, Type, Union
 
-from tnh_scholar.ai_text_processing.typing import ResponseFormat
+from pydantic import BaseModel
+
 from tnh_scholar.logging_config import get_child_logger
-
-logger = get_child_logger(__name__)
-
-TOKEN_BUFFER = 500
-
 from tnh_scholar.openai_interface import (
     get_completion_content,
     get_completion_object,
@@ -15,15 +11,18 @@ from tnh_scholar.openai_interface import (
     token_count,
 )
 
+logger = get_child_logger(__name__)
+
+TOKEN_BUFFER = 500
 
 def openai_process_text(
     text_input: str,
     process_instructions: str,
     model: Optional[str] = None,
-    response_format: Optional[ResponseFormat] = None,
+    response_format: Optional[Type[BaseModel]] = None,
     batch: bool = False,
     max_tokens: int = 0,
-) -> Union[ResponseFormat, str]:
+) -> Union[BaseModel, str]:
     """postprocessing a transcription."""
 
     user_prompts = [text_input]
@@ -37,7 +36,9 @@ def openai_process_text(
     model_name = model or "default"
 
     logger.info(
-        f"Open AI Text Processing{' as batch process' if batch else ''} with model '{model_name}' initiated. Requesting a maximum of {max_tokens} tokens."
+        f"Open AI Text Processing{' as batch process' if batch else ''} "
+        f"with model '{model_name}' initiated.\n"
+        f"Requesting a maximum of {max_tokens} tokens."
     )
 
     if batch:
@@ -64,7 +65,8 @@ def openai_process_text(
 def _run_batch_process_text(response_format, user_prompts, system_message, max_tokens):
     if response_format:
         logger.warning(
-            f"Response object can't be processed in batch mode. Response format ignored:\n\t{response_format}"
+            f"Response object can't be processed in batch mode. "
+            f"Response format ignored:\n\t{response_format}"
         )
     description = "Processing batch: processing text."
 
