@@ -1,14 +1,15 @@
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator, List, NamedTuple, Optional
+from typing import Iterator, List, Match, NamedTuple, Optional
+
+from tnh_scholar.utils.file_utils import read_str_from_file, write_str_to_file
 
 
 class NumberedFormat(NamedTuple):
     is_numbered: bool
     separator: Optional[str] = None
     start_num: Optional[int] = None
-
 
 class NumberedText:
     """
@@ -144,7 +145,8 @@ class NumberedText:
         self, content: Optional[str] = None, start: int = 1, separator: str = ":"
     ) -> None:
         """
-        Initialize a numbered text document, detecting and preserving existing numbering.
+        Initialize a numbered text document, 
+        detecting and preserving existing numbering.
 
         Valid numbered text must have:
         - Sequential line numbers
@@ -154,7 +156,8 @@ class NumberedText:
         Args:
             content: Initial text content, if any
             start: Starting line number (used only if content isn't already numbered)
-            separator: Separator between line numbers and content (only if content isn't numbered)
+            separator: Separator between line numbers and content 
+            (only if content isn't numbered)
 
         Examples:
             >>> # Custom separators
@@ -182,7 +185,8 @@ class NumberedText:
 
         if start < 1:  # enforce 1 based indexing.
             raise IndexError(
-                "NumberedText: Numbered lines must begin on an integer great or equal to 1."
+                "NumberedText: Numbered lines must begin on "
+                "an integer great or equal to 1."
             )
 
         if not content:
@@ -214,7 +218,7 @@ class NumberedText:
     @classmethod
     def from_file(cls, path: Path, **kwargs) -> "NumberedText":
         """Create a NumberedText instance from a file."""
-        return cls(Path(path).read_text(), **kwargs)
+        return cls(read_str_from_file(Path(path)), **kwargs)
 
     def _format_line(self, line_num: int, line: str) -> str:
         return f"{line_num}{self.separator}{line}"
@@ -319,7 +323,7 @@ class NumberedText:
             numbered: Whether to save with line numbers (default: True)
         """
         content = str(self) if numbered else "\n".join(self.lines)
-        Path(path).write_text(content)
+        write_str_to_file(path, content)
 
     def append(self, text: str) -> None:
         """Append text, splitting into lines if needed."""
@@ -331,6 +335,13 @@ class NumberedText:
         internal_idx = self._to_internal_index(line_num)
         self.lines[internal_idx:internal_idx] = new_lines
 
+    def reset_numbering(self):
+        self.start = 1
+        
+    def remove_whitespace(self) -> None:
+        """Remove leading and trailing whitespace from all lines."""
+        self.lines = [line.strip() for line in self.lines]
+        
     @property
     def content(self) -> str:
         """Get original text without line numbers."""
@@ -408,13 +419,14 @@ def get_numbered_format(text: str) -> NumberedFormat:
     SEPARATOR_PATTERN = r"[^\w\s.]"  # not (word char or whitespace or period)
     first_match = re.match(rf"^(\d+)({SEPARATOR_PATTERN})(.*?)$", lines[0])
 
+    if not first_match:
+        return NumberedFormat(False)
     try:
         return _check_line_structure(first_match, lines)
     except (ValueError, AttributeError):
         return NumberedFormat(False)
 
-
-def _check_line_structure(first_match: str, lines: List[str]) -> NumberedFormat:
+def _check_line_structure(first_match: Match[str], lines: List[str]) -> NumberedFormat:
     start_num = int(first_match.group(1))  # type: ignore
     separator = str(first_match.group(2))  # type: ignore
 
@@ -431,3 +443,5 @@ def _check_line_structure(first_match: str, lines: List[str]) -> NumberedFormat:
             return NumberedFormat(False)
 
     return NumberedFormat(True, separator, start_num)
+
+
