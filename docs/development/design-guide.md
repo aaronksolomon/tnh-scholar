@@ -373,8 +373,8 @@ Areas marked for future development:
 - Configuration handling
 - Rebuild of ai_text_processing suite
 - Extended API integration
-    - Batch processing
-    - Alternate API model services
+  - Batch processing
+  - Alternate API model services
 - Enhanced security features
 - Performance optimization
 - Extended pattern capabilities
