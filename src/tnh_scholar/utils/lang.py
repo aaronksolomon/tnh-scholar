@@ -5,7 +5,7 @@ from tnh_scholar.logging_config import get_child_logger
 
 logger = get_child_logger(__name__)
 
-def get_language_code(text: str) -> str:
+def get_language_code_from_text(text: str) -> str:
     """
     Detect the language of the provided text using langdetect.
 
@@ -33,8 +33,8 @@ def get_language_code(text: str) -> str:
         return "un"
 
 
-def get_language_name(text: str) -> str:
-    return get_language_from_code(get_language_code(text))
+def get_language_name_from_text(text: str) -> str:
+    return get_language_from_code(get_language_code_from_text(text))
 
 
 def get_language_from_code(code: str):

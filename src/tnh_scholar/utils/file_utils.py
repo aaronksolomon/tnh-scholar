@@ -56,6 +56,8 @@ def iterate_subdir(
             if subdirectory.is_dir():
                 yield subdirectory
 
+def path_source_str(path: Path):
+    return str(path.resolve())
 
 def copy_files_with_regex(
     source_dir: Path,
@@ -124,7 +126,7 @@ def copy_files_with_regex(
                         print(f"Copied: {file_path} -> {target_path}")
 
 
-def get_text_from_file(file_path: Path) -> str:
+def read_str_from_file(file_path: Path) -> str:
     """Reads the entire content of a text file.
 
     Args:
@@ -137,7 +139,7 @@ def get_text_from_file(file_path: Path) -> str:
     with open(file_path, "r", encoding="utf-8") as file:
         return file.read()
 
-def write_text_to_file(file_path: PathLike, text: str, overwrite: bool = False):
+def write_str_to_file(file_path: PathLike, text: str, overwrite: bool = False):
     """Writes text to a file with file locking.
 
     Args:
@@ -211,3 +213,5 @@ def to_slug(string: str) -> str:
     # Replace any sequence of spaces with a single hyphen
     return re.sub(r"\s+", "-", string)
 
+def path_as_str(path: Path) -> str:
+    return str(path.resolve())
