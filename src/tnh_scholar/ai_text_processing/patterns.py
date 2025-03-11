@@ -8,13 +8,15 @@ from pathlib import Path
 from typing import Any, Dict, List, NewType, Optional, Tuple, Union
 
 import yaml
+from dotenv import load_dotenv
 from git import Actor, Commit, Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError
 from jinja2 import Environment, StrictUndefined, TemplateError
 from jinja2.meta import find_undeclared_variables
 
+from tnh_scholar import TNH_DEFAULT_PATTERN_DIR
 from tnh_scholar.logging_config import get_child_logger
-from tnh_scholar.utils.file_utils import get_text_from_file, write_text_to_file
+from tnh_scholar.utils.file_utils import read_str_from_file, write_str_to_file
 
 # Custom type for markdown content
 MarkdownStr = NewType("MarkdownStr", str)
@@ -22,7 +24,6 @@ MarkdownStr = NewType("MarkdownStr", str)
 logger = get_child_logger(__name__)
 
 SYSTEM_UPDATE_MESSAGE = "PatternManager System Update:"
-
 
 class Pattern:
     """
@@ -130,7 +131,8 @@ class Pattern:
         frontmatter = self.extract_frontmatter() or {}
         
         # Combine values with correct precedence using | operator
-        template_values = self.default_template_fields | frontmatter | (field_values or {})
+        template_values = self.default_template_fields | \
+            frontmatter | (field_values or {})
 
         instructions = self.get_content_without_frontmatter()
         logger.debug(f"instructions without frontmatter:\n{instructions}")
@@ -138,9 +140,15 @@ class Pattern:
         try:
             return self._render_template_with_values(instructions, template_values)
         except TemplateError as e:
-            raise TemplateError(f"Template rendering failed for pattern '{self.name}': {str(e)}") from e
+            raise TemplateError(
+                f"Template rendering failed for pattern '{self.name}': {str(e)}"
+                ) from e
 
-    def _render_template_with_values(self, instructions: str, template_values: dict) -> str:
+    def _render_template_with_values(
+        self, 
+        instructions: str, 
+        template_values: dict
+        ) -> str:
         """
         Validate and render template with provided values.
         
@@ -752,7 +760,7 @@ class PatternManager:
 
         try:
             with self.access_manager.file_lock(path):
-                write_text_to_file(path, instructions, overwrite=True)
+                write_str_to_file(path, instructions, overwrite=True)
                 self.repo.update_file(path)
                 logger.info(f"Pattern saved at {path}")
                 return path.relative_to(self.base_path)
@@ -781,7 +789,7 @@ class PatternManager:
 
         # Acquire lock before reading
         with self.access_manager.file_lock(path):
-            instructions = get_text_from_file(path)
+            instructions = read_str_from_file(path)
 
         instructions = MarkdownStr(instructions)
 
@@ -871,3 +879,63 @@ class PatternManager:
         except (InvalidGitRepositoryError, Exception) as e:
             logger.error(f"Repository verification failed: {e}")
             return False
+        
+class LocalPatternManager:
+    """
+    A simple singleton implementation of PatternManager that ensures only one instance
+    is created and reused throughout the application lifecycle.
+
+    This class wraps the PatternManager to provide efficient pattern loading by
+    maintaining a single reusable instance.
+
+    Attributes:
+        _instance (Optional[SingletonPatternManager]): The singleton instance
+        _pattern_manager (Optional[PatternManager]): The wrapped PatternManager instance
+    """
+
+    _instance: Optional["LocalPatternManager"] = None
+
+    def __new__(cls) -> "LocalPatternManager":
+        """
+        Create or return the singleton instance.
+
+        Returns:
+            SingletonPatternManager: The singleton instance
+        """
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._pattern_manager = None
+        return cls._instance
+
+    @property
+    def pattern_manager(self) -> "PatternManager":
+        """
+        Lazy initialization of the PatternManager instance.
+
+        Returns:
+            PatternManager: The wrapped PatternManager instance
+
+        Raises:
+            RuntimeError: If PATTERN_REPO is not properly configured
+        """
+        if self._pattern_manager is None:  # type: ignore
+            try:
+                load_dotenv()
+                if pattern_path_name := os.getenv("TNH_PATTERN_DIR"):
+                    pattern_dir = Path(pattern_path_name)
+                    logger.debug(f"pattern dir: {pattern_path_name}")
+                else:
+                    pattern_dir = TNH_DEFAULT_PATTERN_DIR
+                self._pattern_manager = PatternManager(pattern_dir)
+            except ImportError as err:
+                raise RuntimeError(
+                    "Failed to initialize PatternManager. Ensure pattern_manager "
+                    f"module and PATTERN_REPO are properly configured: {err}"
+                ) from err
+        return self._pattern_manager
+
+    def get_pattern(self, name: str) -> Pattern:
+        """Get a pattern by name."""
+        return self.pattern_manager.load_pattern(name)
+    
+    
