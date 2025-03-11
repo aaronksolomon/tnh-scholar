@@ -3,8 +3,10 @@
 TNH-FAB Command Line Interface
 
 Part of the THICH NHAT HANH SCHOLAR (TNH_SCHOLAR) project.
-A rapid prototype implementation of the TNH-FAB command-line tool for Open AI based text processing.
-Provides core functionality for text punctuation, sectioning, translation, and processing.
+A rapid prototype implementation of the TNH-FAB command-line tool 
+for Open AI based text processing.
+Provides core functionality for text punctuation, sectioning, 
+translation, and general processing.
 """
 
 import logging
@@ -27,14 +29,14 @@ from tnh_scholar.ai_text_processing import (
     process_text,
     process_text_by_paragraphs,
     process_text_by_sections,
-    punctuate_text,
     translate_text_by_lines,
 )
 from tnh_scholar.logging_config import get_child_logger, setup_logging
-from tnh_scholar.text_processing.numbered_text import NumberedText
+from tnh_scholar.metadata.metadata import Frontmatter
 from tnh_scholar.utils.validate import check_openai_env
 
 DEFAULT_SECTION_PATTERN = "default_section"
+DEFAULT_TRANSLATE_PATTERN = "default_line_translate"
 
 logger = get_child_logger(__name__)
 
@@ -61,12 +63,12 @@ class TNHFabConfig:
 
 pass_config = click.make_pass_decorator(TNHFabConfig, ensure=True)
 
-def read_input(ctx: Context, input_file: Optional[Path]) -> str:
+def gen_text_input(ctx: Context, input_file: Optional[Path]) -> TextObject:
     """Read input from file or stdin."""
     if input_file:
-        return input_file.read_text()
+        return TextObject.load(input_file)
     if not sys.stdin.isatty():
-        return sys.stdin.read()
+        return TextObject.from_str(sys.stdin.read())
     raise UsageError("No input provided")
 
 def get_pattern(pattern_manager: PatternManager, pattern_name: str) -> Pattern:
@@ -135,67 +137,26 @@ def tnh_fab(ctx: Context, verbose: bool, debug: bool, quiet: bool):
 @click.argument(
     "input_file", type=click.Path(exists=True, path_type=Path), required=False
 )
-@click.option(
-    "-l",
-    "--language",
-    help="Source language code (e.g., 'en', 'vi'). Auto-detected if not specified.",
-)
-@click.option(
-    "-y", "--style", default="APA", help="Punctuation style to apply (default: 'APA')"
-)
-@click.option(
-    "-c",
-    "--review-count",
-    type=int,
-    default=3,
-    help="Number of review passes (default: 3)",
-)
-@click.option(
-    "-p",
-    "--pattern",
-    default="default_punctuate",
-    help="Pattern name for punctuation rules (default: 'default_punctuate')",
-)
-@pass_config
+@click.option("-l", "--language", help="[DEPRECATED] Source language code")
+@click.option("-y", "--style", help="[DEPRECATED] Punctuation style")
+@click.option("-c", "--review-count", type=int, 
+              help="[DEPRECATED] Number of review passes")
+@click.option("-p", "--pattern", help="[DEPRECATED] Pattern name for punctuation")
 def punctuate(
-    config: TNHFabConfig,
     input_file: Optional[Path],
     language: Optional[str],
-    style: str,
-    review_count: int,
-    pattern: str,
+    style: Optional[str],
+    review_count: Optional[int], 
+    pattern: Optional[str],
 ):
-    """Add punctuation and structure to text based on language-specific rules.
-
-    This command processes input text to add or correct punctuation, spacing, and basic
-    structural elements. It is particularly useful for texts that lack proper punctuation
-    or need standardization.
-
-
-    Examples:
-
-        \b
-        # Process a file using default settings
-        $ tnh-fab punctuate input.txt
-
-        \b
-        # Process Vietnamese text with custom style
-        $ tnh-fab punctuate -l vi -y "Modern" input.txt
-
-        \b
-        # Process from stdin with increased review passes
-        $ cat input.txt | tnh-fab punctuate -c 5
-
-    """
-    text = read_input(click, input_file)  # type: ignore
-    punctuate_pattern = get_pattern(config.pattern_manager, pattern)
-    result = punctuate_text(
-        text,
-        source_language=language,
-        punctuate_pattern=punctuate_pattern,
-        template_dict={"style_convention": style, "review_count": review_count},
+    """[DEPRECATED] Punctuation command is deprecated."""
+    click.echo(
+        "\nDEPRECATED: The 'punctuate' command is deprecated.\n"
+        "Please use: tnh-fab process -p <punctuation_pattern>\n\n"
+        "Example:\n"
+        "  tnh-fab process -p default_punctuate input.txt\n"
     )
-    click.echo(result)
+    sys.exit(1)
 
 
 @tnh_fab.command()
@@ -223,8 +184,8 @@ def punctuate(
 @click.option(
     "-p",
     "--pattern",
-    default="default_section",
-    help="Pattern name for section analysis (default: 'default_section')",
+    default=DEFAULT_SECTION_PATTERN,
+    help=f"Pattern name for section analysis (default: '{DEFAULT_SECTION_PATTERN}')",
 )
 @pass_config
 def section(
@@ -269,11 +230,11 @@ def section(
             - start_line: Starting line number (inclusive)
             - end_line: Ending line number (inclusive)
     """
-    text = read_input(click, input_file)  # type: ignore
+    input_text = gen_text_input(click, input_file)  # type: ignore
     section_pattern = get_pattern(config.pattern_manager, pattern)
+    
     text_object = find_sections(
-        text,
-        source_language=language,
+        input_text,
         section_pattern=section_pattern,
         section_count=num_sections,
         review_count=review_count,
@@ -309,8 +270,8 @@ def section(
 @click.option(
     "-p",
     "--pattern",
-    default="default_line_translation",
-    help="Pattern name for translation (default: 'default_line_translation')",
+    default=DEFAULT_TRANSLATE_PATTERN,
+    help=f"Pattern name for translation (default: '{DEFAULT_TRANSLATE_PATTERN}')",
 )
 @pass_config
 def translate(
@@ -325,10 +286,11 @@ def translate(
 ):
     """Translate text while preserving line numbers and contextual understanding.
 
-    This command performs intelligent translation that maintains line number correspondence
-    between source and translated text. It uses surrounding context to improve translation
-    accuracy and consistency, particularly important for Buddhist texts where terminology
-    and context are crucial.
+    This command performs intelligent translation that maintains 
+    line number correspondence between source and translated text. 
+    It uses surrounding context to improve translation
+    accuracy and consistency, particularly important for texts 
+    where terminology and context are crucial.
 
     Examples:
 
@@ -354,10 +316,13 @@ def translate(
         - Context lines are used to improve translation accuracy
         - Segment size affects processing speed and memory usage
     """
-    text = read_input(click, input_file)  # type: ignore
+    text_obj = gen_text_input(click, input_file)  # type: ignore
     translation_pattern = get_pattern(config.pattern_manager, pattern)
-    result = translate_text_by_lines(
-        text,
+
+    text_obj.update_metadata(source_file=input_file)
+
+    text_obj = translate_text_by_lines(
+        text_obj,
         source_language=language,
         target_language=target,
         pattern=translation_pattern,
@@ -365,7 +330,7 @@ def translate(
         context_lines=context_lines,
         segment_size=segment_size,
     )
-    click.echo(result)
+    click.echo(text_obj)
 
 @tnh_fab.command()
 @click.argument(
@@ -376,7 +341,10 @@ def translate(
     "-s",
     "--section",
     type=click.Path(exists=True, path_type=Path),
-    help="Process using sections from JSON file, or auto-generate if no file provided",
+    help="Process using sections from JSON file.",
+)
+@click.option(
+    "-a", "--auto", is_flag=True, help="Automatically generate and process by sections."
 )
 @click.option("-g", "--paragraph", is_flag=True, help="Process text by paragraphs")
 @click.option(
@@ -391,6 +359,7 @@ def process(
     input_file: Optional[Path],
     pattern: str,
     section: Optional[Path],
+    auto: bool,
     paragraph: bool,
     template: Optional[Path],
 ):
@@ -429,8 +398,7 @@ def process(
 
         \b
         2. Section Mode (-s):
-            - Uses sections from JSON file if provided (-s)
-            - If no section file is provided, sections are auto-generated.
+            - Uses sections from a JSON file
             - Processes each section according to pattern
 
         \b
@@ -438,6 +406,11 @@ def process(
             - Treats each line/paragraph as a separate unit
             - Useful for simpler processing tasks
             - More memory efficient for large files
+        
+        \b
+        3. Auto Section Mode (-a):
+            - Automatically sections the input file 
+            - Processes by section
 
     \b
     Notes:
@@ -445,7 +418,7 @@ def process(
         - Template values can customize pattern behavior
 
     """
-    text = read_input(click, input_file)  # type: ignore
+    text_obj = gen_text_input(click, input_file)  # type: ignore
     
     process_pattern = get_pattern(config.pattern_manager, pattern)
 
@@ -453,40 +426,43 @@ def process(
 
     if paragraph:
         result = process_text_by_paragraphs(
-            text, template_dict, pattern=process_pattern
+            text_obj, template_dict, pattern=process_pattern
         )
-        for processed in result:
-            click.echo(processed)
-            click.echo("\n") # newline separated output. This could be an option?
-            
-    elif section is not None:  # Section mode (either file or auto-generate)
-        if isinstance(section, Path):  # Section file provided
-            text_obj = TextObject.from_section_file(section, text)
-
-        else:  # Auto-generate sections
-            default_section_pattern = get_pattern(
-                config.pattern_manager, DEFAULT_SECTION_PATTERN
-            )
-            text_obj = find_sections(text, section_pattern=default_section_pattern)
+        export_processed_sections(result, text_obj)        
+    elif section is not None:  # Section mode (either file or auto-generate)    
+        text_obj = TextObject.from_section_file(section, text_obj.content)
 
         result = process_text_by_sections(
             text_obj, template_dict, pattern=process_pattern
         )
-        for processed_section in result:
-            click.echo(processed_section.processed_text)
-            click.echo("\n")  # newline separated output. This could be an option?
+        export_processed_sections(result, text_obj)
+    elif auto:
+        # Auto-generate sections     
+        default_section_pattern = get_pattern(
+            config.pattern_manager, DEFAULT_SECTION_PATTERN
+        )
+        text_obj = find_sections(text_obj, section_pattern=default_section_pattern)
+        
+        result = process_text_by_sections(
+            text_obj, template_dict, pattern=process_pattern
+        )
+        export_processed_sections(result, text_obj)
             
     else:
         result = process_text(
-            text, pattern=process_pattern, template_dict=template_dict
+            text_obj, pattern=process_pattern, template_dict=template_dict
         )
         click.echo(result)
 
-
+def export_processed_sections(section_result, text_obj: TextObject):
+    click.echo(f"{Frontmatter.generate(text_obj.metadata)}")
+    for processed_section in section_result:
+        click.echo(processed_section.processed_text)
+        click.echo("\n")  # newline separated output. 
+            
 def main():
     """Entry point for TNH-FAB CLI tool."""
     tnh_fab()
-
 
 if __name__ == "__main__":
     main()
