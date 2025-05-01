@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import (
+    Any,
     Iterator,
     List,
     Literal,
@@ -144,6 +145,12 @@ class TextObjectInfo(BaseModel):
     sections: List[SectionObject]
     metadata: Metadata
     
+    def model_post_init(self, __context: Any) -> None:
+        """Ensure metadata is always a Metadata instance after initialization."""
+        if isinstance(self.metadata, dict):
+            self.metadata = Metadata(self.metadata)
+        elif not isinstance(self.metadata, Metadata):
+            raise ValueError(f"Unexpected type for metadata: {type(self.metadata)}")
 class TextObject:
     """
     Manages text content with section organization and metadata tracking.
@@ -396,15 +403,15 @@ class TextObject:
         num_text: 'NumberedText'
         ) -> 'TextObject':
         """Create TextObject from info and content."""
-        text = cls(
+        text_obj = cls(
             num_text=num_text, 
             language=info.language, 
             sections=info.sections, 
             metadata=info.metadata
             )
         
-        text.merge_metadata(metadata)
-        return text
+        text_obj.merge_metadata(metadata)
+        return text_obj
     
     @classmethod
     def from_text_file(
@@ -598,3 +605,7 @@ class TextObject:
     @property
     def metadata_str(self) -> str:
         return self.metadata.to_yaml()
+    
+    @property
+    def numbered_content(self) -> str:
+        return self.num_text.numbered_content

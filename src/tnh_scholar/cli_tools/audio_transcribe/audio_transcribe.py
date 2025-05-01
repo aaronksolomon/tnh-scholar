@@ -17,6 +17,14 @@ Usage:
 
 import logging
 import os
+
+os.environ["KMP_WARNINGS"] = (
+    "0"  # Turn off known info message about nested levels for OMP 
+         # that arises from torch.
+         # Must turn this off before imports that use OMP 
+         # in order to have effect.
+)
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
@@ -36,14 +44,12 @@ from tnh_scholar.utils import ensure_directory_exists, get_user_confirmation
 from tnh_scholar.utils.file_utils import write_str_to_file
 from tnh_scholar.video_processing import (
     DLPDownloader,
+    VideoAudio,
     get_youtube_urls_from_csv,
 )
-from tnh_scholar.video_processing.video_processing import VideoAudio
 
+from .convert_video import convert_video_to_audio
 from .version_check import check_ytd_version
-
-# Turn off certain warnings
-os.environ["KMP_WARNINGS"] = "0"
 
 # --- Basic setup ---
 load_dotenv()
@@ -53,10 +59,11 @@ logger = get_child_logger(__name__)
 DEFAULT_CHUNK_DURATION_MIN = 7
 DEFAULT_CHUNK_DURATION_SEC = DEFAULT_CHUNK_DURATION_MIN * 60
 DEFAULT_OUTPUT_DIR = "./audio_transcriptions"
-DEFAULT_PROMPT = "Dharma, Deer Park, Thay, Thich Nhat Hanh"
+DEFAULT_PROMPT = ""
 RE_DOWNLOAD_CONFIRMATION_STR = (
     "An mp3 file for {url} already exists in {output_dir}.\nSKIP download ([Y]/n)?"
 )
+VIDEO_EXTENSIONS = {".mp4", ".avi", ".mov", ".mkv", ".wmv"}
 
 @dataclass
 class AudioSource:
@@ -69,7 +76,9 @@ class AudioSource:
 
 @dataclass
 class SplitAudio:
-    file_path: Path
+    chunk_dir: Path
+    audio_output_dir: Path
+    audio_name: str
     metadata: Metadata
     is_chunked: bool = True    
     
@@ -130,8 +139,11 @@ def handle_audio_source(
     """
     is_download = bool(source.yt_url or source.yt_url_csv)
 
-    if is_download:
-        check_ytd_version()
+    if is_download and not check_ytd_version():
+        exit(1)
+        
+    # Ensure base output directory exists 
+    ensure_directory_exists(output_dir)
 
     # If CSV provided, gather multiple URLs
     if source.yt_url_csv and is_download:
@@ -143,17 +155,24 @@ def handle_audio_source(
 
     # Download if needed
     if urls:
-       return _download_urls(urls, source, output_dir)
+       return audio_data_from_urls(urls, source, output_dir)
         
     # If local file provided (and no YT download needed)
     if source.audio_file and not is_download:
-        # Use a VideoAudio object with empty metadata
-        return [VideoAudio(metadata=Metadata(), filepath=source.audio_file)]
-    
+        return audio_data_from_file(source.audio_file, output_dir)
+          
     logger.error("No audio input found.")
     exit(1)
 
-def _download_urls(urls, source, output_dir) -> List[VideoAudio]:
+def audio_data_from_file(audio_file: Path, output_dir: Path) -> List[VideoAudio]:
+    if audio_file.suffix.lower() in VIDEO_EXTENSIONS:
+            logger.info(f"Detected video file: {audio_file}. "
+                        "Auto-converting to mp3 ...")
+            audio_file = convert_video_to_audio(audio_file, output_dir)
+    return [VideoAudio(metadata=Metadata(), filepath=audio_file)]     
+    
+    
+def audio_data_from_urls(urls, source, output_dir) -> List[VideoAudio]:
     
     # Set the downloader object
     dl = DLPDownloader()
@@ -162,21 +181,22 @@ def _download_urls(urls, source, output_dir) -> List[VideoAudio]:
 
     for url in urls:
         url_metadata = dl.get_metadata(url)
-        default_name = dl.get_default_filename(url_metadata)
-        download_path = output_dir / default_name    
+        default_name = dl.get_default_filename_stem(url_metadata)
+        download_path = output_dir / default_name
+        # need correct extension for resource check
+        download_file = download_path.with_suffix(".mp3")    
     
-        if download_path.exists():
+        if download_file.exists():
             if get_user_confirmation(
                 RE_DOWNLOAD_CONFIRMATION_STR.format(url=url, output_dir=output_dir)
             ):
                 logger.info(f"Skipping download for {url}")
-                video_data = VideoAudio(url_metadata, download_path)
+                video_data = VideoAudio(url_metadata, download_file)
                 video_data_list.append(video_data)
                 continue
             else:
                 logger.info(f"Re-downloading {url}")
                 
-        ensure_directory_exists(output_dir)
         video_data = dl.get_audio(
             url,  
             start=source.start_time,
@@ -212,6 +232,7 @@ def handle_split(
         assert audio_file is not None # must have real audio_files
         audio_name = audio_file.stem
         audio_output_dir = output_dir / audio_name
+        logger.info(f"Audio output directory: {audio_output_dir}")
         chunk_output_dir = config.chunk_dir or (audio_output_dir / "chunks")
         ensure_directory_exists(audio_output_dir)
 
@@ -232,7 +253,9 @@ def handle_split(
         # Return a list of all the chunk directories.
         chunk_data.append(
             SplitAudio(
-                file_path=chunk_output_dir, 
+                chunk_dir=chunk_output_dir,
+                audio_output_dir=audio_output_dir,
+                audio_name=audio_name, 
                 metadata=audio_data.metadata,
                 is_chunked=True,
             )
@@ -256,44 +279,28 @@ def handle_transcribe(
         
         if split.is_chunked:
             # This is a directory with chunks
-            audio_name = split_name(split)
-            transcript_file = output_dir / audio_name / f"{audio_name}.txt"
-            jsonl_file = output_dir / audio_name / f"{audio_name}.jsonl"
+            audio_name = split.audio_name
+            audio_output_dir = split.audio_output_dir
+            transcript_file = audio_output_dir / f"{audio_name}.txt"
+            jsonl_file = audio_output_dir / f"{audio_name}.jsonl"
             logger.info(f"Transcribing chunks to directory {output_dir.resolve()}")
             
             transcript = process_audio_chunks(
-                chunk_dir=split.file_path,
+                chunk_dir=split.chunk_dir,
                 jsonl_file=jsonl_file,
                 prompt=config.prompt,
                 translate=config.translate,
             )
             
             metadata_transcript = Frontmatter.embed(split.metadata, transcript)
-            write_str_to_file(transcript_file, metadata_transcript)
+            write_str_to_file(transcript_file, metadata_transcript, overwrite=True)
             
         else:
             click.echo("Single file processing not implemented!")
             exit(1)
-            # This is a single audio file
-            # audio_file = split
-            # audio_name = audio_file.stem
-            # transcript_file = output_dir / audio_name / f"{audio_name}.txt"
-            # jsonl_file = output_dir / audio_name / f"{audio_name}.jsonl"
-            # ensure_directory_exists(output_dir / audio_name)
-            # logger.info(f"Transcribing audio file {audio_file}")
-            # process_audio_file(
-            #     audio_file=audio_file,
-            #     output_file=transcript_file,
-            #     jsonl_file=jsonl_file,
-            #     prompt=config.prompt,
-            #     translate=config.translate,
-            # )
 
     logger.info("Transcription complete.")
 
-
-def split_name(split):
-    return split.file_path.parent.stem
 
 def process_audio_file(
     audio_file: Path,

@@ -162,7 +162,7 @@ def _download_urls(urls, source, output_dir) -> List[VideoAudio]:
 
     for url in urls:
         url_metadata = dl.get_metadata(url)
-        default_name = dl.get_default_filename(url_metadata)
+        default_name = dl.get_default_filename_stem(url_metadata)
         download_path = output_dir / default_name    
     
         if download_path.exists():

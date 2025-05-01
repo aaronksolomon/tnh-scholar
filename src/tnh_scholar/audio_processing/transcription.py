@@ -89,7 +89,8 @@ def get_transcription(
         f"\tprompt='{prompt}'"
     )
     transcript = run_transcription_speech(
-        audio_file, model=model, response_format="verbose_json", prompt=prompt, mode=mode
+        audio_file, model=model, 
+        response_format="verbose_json", prompt=prompt, mode=mode
     )
 
     # Use the custom_to_json function
