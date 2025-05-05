@@ -9,7 +9,8 @@ def write_data_to_json_file(
     file: Path, data: Union[dict, list], indent: int = 4, ensure_ascii: bool = False
 ) -> None:
     """
-    Writes a dictionary or list as a JSON string to a file, ensuring the parent directory exists,
+    Writes a dictionary or list as a JSON string to a file, 
+    ensuring the parent directory exists,
     and supports formatting with indentation and ASCII control.
 
     Args:
@@ -31,7 +32,7 @@ def write_data_to_json_file(
         # Convert the data to a formatted JSON string
         json_str = json.dumps(data, indent=indent, ensure_ascii=ensure_ascii)
     except TypeError as e:
-        raise ValueError(f"Error serializing data to JSON: {e}")
+        raise ValueError(f"Error serializing data to JSON: {e}") from e
 
     try:
         # Ensure the parent directory exists
@@ -41,7 +42,7 @@ def write_data_to_json_file(
         with file.open("w", encoding="utf-8") as f:
             f.write(json_str)
     except IOError as e:
-        raise IOError(f"Error writing JSON string to file '{file}': {e}")
+        raise IOError(f"Error writing JSON string to file '{file}': {e}") from e
 
 
 def save_model_to_json(
@@ -78,7 +79,7 @@ def save_model_to_json(
         # Serialize model to JSON string
         model_dict = model.model_dump()
     except TypeError as e:
-        raise ValueError(f"Error serializing model to JSON: {e}")
+        raise ValueError(f"Error serializing model to JSON: {e}") from e
 
     # Write the JSON string to the file
     write_data_to_json_file(file, model_dict, indent=indent, ensure_ascii=ensure_ascii)
@@ -137,7 +138,7 @@ def load_json_into_model(file: Path, model: type[BaseModel]) -> BaseModel:
             data = json.load(f)
         return model(**data)
     except (json.JSONDecodeError, ValidationError) as e:
-        raise ValueError(f"Error loading or validating JSON file '{file}': {e}")
+        raise ValueError(f"Error loading or validating JSON file '{file}': {e}") from e
 
 
 def format_json(file: Path) -> None:
