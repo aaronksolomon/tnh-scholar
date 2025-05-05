@@ -7,6 +7,7 @@ from typing import Any, Callable, Dict, Iterator, List, Mapping, Optional, Union
 
 import yaml
 from pydantic_core import core_schema
+from yaml.scanner import ScannerError
 
 from tnh_scholar import TNH_METADATA_PROCESS_FIELD
 from tnh_scholar.logging_config import get_child_logger
@@ -15,6 +16,22 @@ from tnh_scholar.utils.file_utils import path_as_str, read_str_from_file
 JsonValue = Union[str, int, float, bool, list, dict, None]
 
 logger = get_child_logger(__name__)
+
+def safe_yaml_load(yaml_str: str, *, context: str = "unknown") -> dict:
+    try:
+        data = yaml.safe_load(yaml_str)
+        if not isinstance(data, dict):
+            logger.warning(
+                "YAML in [%s] is not a dict. Returning empty metadata.", context
+                )
+            return {}
+        return data
+    except ScannerError as e:
+        snippet = yaml_str.replace("\n", "\\n")
+        logger.error("YAML ScannerError in [%s]: %s\nSnippet:\n%s", context, e, snippet)
+    except yaml.YAMLError as e:
+        logger.error("General YAML error in [%s]: %s", context, e)
+    return {}
 
 class Metadata(MutableMapping):
     """
@@ -170,7 +187,7 @@ class Metadata(MutableMapping):
         if not yaml_str.strip():
             return cls()
 
-        data = yaml.safe_load(yaml_str)
+        data = safe_yaml_load(yaml_str, context="Metadata.from_yaml()")
         return cls(data) if isinstance(data, dict) else cls()
     
     def text_embed(self, content: str):
@@ -232,7 +249,7 @@ class Frontmatter:
         pattern = r'^---\s*\n(.*?)\n---\s*\n(.*)$'
         if match := re.match(pattern, content, re.DOTALL):
             try:
-                yaml_data = yaml.safe_load(match[1])
+                yaml_data = safe_yaml_load(match[1], context="Frontmatter.extract")
                 return Metadata(yaml_data or {}), match[2]
             except yaml.YAMLError:
                 logger.warning("YAML Error in Frontmatter extraction.")
