@@ -69,7 +69,8 @@ DEFAULT_METADATA_FIELDS = [
     "tags",
 ]
 
-TEMP_FILENAME_FORMAT = "%(id)s"
+TEMP_FILENAME_FORMAT = "temp_%(id)s"
+TEMP_FILENAME_STR = "temp_{id}"
 
 class VideoProcessingError(Exception):
     """Base exception for video processing errors."""
@@ -204,16 +205,10 @@ class DLPDownloader(YTDownloader):
         """Download audio and get metadata for a YouTube video."""
         temp_path = Path.cwd() / TEMP_FILENAME_FORMAT
         options = DEFAULT_AUDIO_OPTIONS | self.config | {
-            "outtmpl": str(temp_path) 
+            "outtmpl": str(temp_path)
         }
-        
-        if start:
-            options["postprocessor_args"].extend(["-ss", start])
-            logger.debug(f"Postprocessor start time set to: {start}")
-            
-        if end:
-            options["postprocessor_args"].extend(["-to", end])
-            logger.debug(f"Postprocessor end time set to: {end}")
+
+        self._add_start_stop_times(options, start, end)
 
         with yt_dlp.YoutubeDL(options) as ydl:
             if info := ydl.extract_info(url, download=True):
@@ -224,6 +219,31 @@ class DLPDownloader(YTDownloader):
             else:
                 logger.error("Info not found.")
                 raise DownloadError(f"Unable to download {url}.")
+    
+    #TODO this function is not affecting the start time of processing. 
+    # find a fix or new implementation 
+    # (pydub postprocessing after yt-dlp? keep yt-dlp minimal?)        
+    def _add_start_stop_times(
+        self, options: dict, start: Optional[str], end: Optional[str]) -> None:
+        """
+        Adds -ss and -to arguments for FFmpegExtractAudio via postprocessor_args dict.
+        Modifies options in place.
+        """
+        if start or end:
+            ppa_args = []
+            if start:
+                ppa_args.extend(["-ss", start])
+                logger.debug(f"Added start time to postprocessor args: {start}")
+            if end:
+                ppa_args.extend(["-to", end])
+                logger.debug(f"Added end time to postprocessor args: {end}")
+
+            postprocessor_args = options.setdefault("postprocessor_args", {})
+            
+            postprocessor_args.setdefault("ExtractAudio", []).extend(ppa_args)
+
+        logger.info(f"Updated options for postprocessor_args: "
+                    f"{options.get('postprocessor_args')}")
             
     def _extract_metadata(self, info: dict) -> Metadata:
         """Extract standard metadata fields from yt-dlp info."""
@@ -238,7 +258,7 @@ class DLPDownloader(YTDownloader):
                 else:
                     print(f"{k}: {data[:200]} ...")
                   
-    def get_default_filename(self, metadata: Metadata) -> str:
+    def get_default_filename_stem(self, metadata: Metadata) -> str:
         """Generate the object download filename."""
         # Expect both id and title in Youtube metadata
         assert metadata["id"]
@@ -250,7 +270,7 @@ class DLPDownloader(YTDownloader):
     def get_default_export_name(self, url) -> str:
         """Get default export filename for a URL."""
         metadata = self.get_metadata(url)
-        return self.get_default_filename(metadata)
+        return self.get_default_filename_stem(metadata)
         
     def _convert_filename(
         self, 
@@ -274,8 +294,11 @@ class DLPDownloader(YTDownloader):
         assert temp_path.suffix  # Actual path must have suffix.
 
         if not output_path:
-            new_filename = self.get_default_filename(metadata)
-            new_path = Path(str(temp_path).replace(video_id, new_filename))
+            new_filename = self.get_default_filename_stem(metadata)
+            new_path = Path(str(temp_path).replace(
+                TEMP_FILENAME_STR.format(id=video_id), new_filename
+                )
+            )
             logger.debug(f"Renaming downloaded YT resource to: {new_path}")
             return temp_path.rename(new_path)
 
