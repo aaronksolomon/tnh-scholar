@@ -72,6 +72,38 @@ def example_function():
 
 ## Type Handling
 
+### Best Practices for Data Models
+
+## Classes vs. Dictionaries
+
+- **Always prefer structured classes over plain dictionaries** for data that has consistent fields
+- **Use `.` attribute access instead of `['key']` dictionary lookups** for better readability and IDE support
+- **Leverage type hints** to catch errors at development time rather than runtime
+- **Encapsulate related logic** within the class that owns the data
+
+## Pydantic vs. Dataclasses
+
+- **Use Pydantic when data validation is important** (especially for external inputs)
+- **Choose dataclasses for simple internal data structures** with minimal validation needs
+- **Prefer Pydantic for API interfaces** where data needs parsing and validation
+- **Use dataclasses when serialization features aren't needed** or for improved performance
+
+## Pydantic Best Practices
+
+- **Use `@computed_field` for derived properties** that should be included in serialization
+- **Leverage field validation** with standard validators or custom methods
+- **Use `model_config` for class-level configuration** like allowing extra fields
+- **Take advantage of automatic type coercion** for cleaner interfaces
+- **Create factory methods** (like `from_dict`, `from_legacy_format`) for special parsing needs
+
+## General Design Guidelines
+
+- **Keep data models immutable** when possible for safer concurrent code
+- **Make validation errors descriptive** to simplify debugging
+- **Separate data representation from business logic** where appropriate
+- **Design for extensibility** by using inheritance or composition
+- **Document expected formats** in docstrings, especially for complex structures
+
 ### Type Annotations
 
 The project emphasizes strong typing throughout:
