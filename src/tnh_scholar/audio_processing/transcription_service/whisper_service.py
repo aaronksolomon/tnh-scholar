@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 from tnh_scholar.logging_config import get_child_logger
 
-from .format_converter import TranscriptionFormatConverter
+from .format_converter import FormatConverter
 from .transcription_service import TranscriptionService
 
 # Load environment variables
@@ -82,7 +82,6 @@ class WhisperConfig:
             self.response_format = "verbose_json"
 
 
-
 class WhisperTranscriptionService(TranscriptionService):
     """
     OpenAI Whisper implementation of the TranscriptionService interface.
@@ -110,7 +109,7 @@ class WhisperTranscriptionService(TranscriptionService):
         self.config.validate()
         
         # Initialize format converter
-        self.format_converter = TranscriptionFormatConverter()
+        self.format_converter = FormatConverter()
         
         # Set API key
         self.set_api_key(api_key)
@@ -315,55 +314,58 @@ class WhisperTranscriptionService(TranscriptionService):
         """
         return None if seconds is None else int(seconds * 1000)
     
-    def _process_whisper_response(
-        self, 
-        response: WhisperResponse
-        ) -> Dict[str, Any]:
-        """
-        Process response from Whisper API.
-        
-        Args:
-            response: Response from the API
-            
-        Returns:
-            Standardized result dictionary
-        """
-    
-        # Extract text
-        text = response["text"]
+    def _process_whisper_response(self, response: WhisperResponse) -> Dict[str, Any]:
+        """Process and validate response from Whisper API."""
 
-        # Extract words if available and convert timestamps to milliseconds
-        words = []
-        segments = []
-        
-        # Check for top-level words array first (API response for word level)
-        words_data = response.get("words")
-        if words_data is not None:
-            words.extend(
-                {
-                    "word": word.get("word", ""),
-                    "start_ms": self._seconds_to_ms(word.get("start")),
-                    "end_ms": self._seconds_to_ms(word.get("end")),
-                }
-                for word in words_data
-                if word.get("start") is not None and word.get("end") is not None
-            )
-        else:
-            segments = response.get("segments", [])
-        
-        # Convert audio duration to milliseconds
-        audio_duration_ms = self._seconds_to_ms(response.get("duration"))
-        
-        # Create standardized result
         return {
-            "text": text,
+            "text": response["text"],
             "language": response["language"],
-            "words": words,
-            "utterances": segments,  
-            "confidence": 0.0,  # Not directly provided
-            "audio_duration_ms": audio_duration_ms,
+            "words": self._extract_and_validate_words(response),
+            "utterances": response.get("segments", []),
+            "confidence": 0.0,  # Not directly provided by Whisper
+            "audio_duration_ms": self._seconds_to_ms(response.get("duration")),
             "raw_result": response,
         }
+
+    def _extract_and_validate_words(
+        self, 
+        response: WhisperResponse
+        ) -> List[Dict[str, Any]]:
+        """Extract, validate, and convert word data."""
+        words_data = response.get("words")
+        words = []
+        if words_data:
+            for word_entry in words_data:
+                word = word_entry.get("word")
+                start_ms = self._seconds_to_ms(word_entry.get("start"))
+                end_ms = self._seconds_to_ms(word_entry.get("end"))
+
+                if not isinstance(word, str) or not word:
+                    logger.warning(f"Invalid or missing word: {word_entry}")
+
+                if not isinstance(start_ms, int) or not isinstance(end_ms, int):
+                    logger.warning(f"Invalid timestamps for word: {word_entry}")
+                    continue
+
+                if start_ms > end_ms:
+                    logger.warning(
+                        f"Invalid timestamps: start ({start_ms}) > end "
+                        f"({end_ms}) for word: {word}.\n"
+                        f"Setting end = start + 1."
+                        )
+                    end_ms = start_ms + 1
+                    continue
+                
+                if start_ms == end_ms:
+                    # this is common in Whisper, so handle silently
+                    end_ms += 1
+
+                words.append({
+                    "word": word,
+                    "start_ms": start_ms,
+                    "end_ms": end_ms,
+                })
+        return words
 
     def transcribe(
         self,

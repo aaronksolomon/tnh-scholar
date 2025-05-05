@@ -12,7 +12,8 @@ logger = get_child_logger(__name__)
 @contextlib.contextmanager
 def safe_torch_load(weights_only: bool = True) -> Generator[None, None, None]:
     """
-    Context manager that temporarily modifies torch.load to use weights_only=True by default.
+    Context manager that temporarily modifies torch.load 
+    to use weights_only=True by default.
 
     This addresses the FutureWarning in PyTorch regarding pickle security:
     https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models

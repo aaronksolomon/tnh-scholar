@@ -6,12 +6,11 @@ from io import BytesIO
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from httpx import InvalidURL
 import matplotlib.pyplot as plt
+from httpx import InvalidURL
 from pydub import AudioSegment
 
 from tnh_scholar.audio_processing.transcription_service import (
-    TranscriptionFormatConverter,
     TranscriptionServiceFactory,
 )
 from tnh_scholar.audio_processing.transcription_service.diarization_chunker import Chunk
@@ -24,7 +23,7 @@ GAP_THRESHOLD = 2000
 SILENCE_SPACING = 1000
 
 # target duration for speaker chunks
-TARGET_DURATION = 5 * 60 * 1000 # 5 mins
+TARGET_DURATION = 2 * 60 * 1000 # 4 mins
 
 @dataclass
 class DiarizationSegment:
@@ -266,7 +265,8 @@ def extract_audio_segments(
             # Check for export threshold
             if current_export_pos >= TARGET_DURATION:
                 print(f"-> creating export audio file object at chunk: {i+1}\n"
-                      f"    -> current export position: {current_export_pos}, absolute export position: {abs_export_pos}")
+                      f"-> current export position: {current_export_pos}, absolute export position: {abs_export_pos}\n"
+                      f"-> audio duration: {speaker_audio.duration_seconds}")
                 speaker_audio_files[speaker].append(
                     _create_export_audio_file_obj(speaker, speaker_audio, audio_format)
                 )
@@ -298,6 +298,7 @@ def _create_export_audio_file_obj(speaker, speaker_audio, audio_format):
     speaker_file_obj = BytesIO()
     speaker_audio.export(speaker_file_obj, format=audio_format)
     speaker_file_obj.seek(0)  # Reset file pointer to beginning
+    print(f"Exported file size for {speaker}: {speaker_file_obj.getbuffer().nbytes} bytes")
     # Add a filename for whisper to recognize
     speaker_file_obj.name = f"{speaker}.{audio_format}"
     return speaker_file_obj
@@ -372,6 +373,7 @@ def transform_srt_by_best_overlap(srt_entries, speaker_blocks):
             # no overlap at all, optionally skip or map it in some default way
             transformed.append((index, start_str, end_str, text))
             print("Error: No best interval found.")
+            print(f"info: {index}, {srt_start}, {srt_end}, {text}")
             continue
 
         # We have an interval that matches best. 
@@ -380,7 +382,7 @@ def transform_srt_by_best_overlap(srt_entries, speaker_blocks):
 
         # Shift times from offset domain => original domain
         new_start_ms = i_orig_start + (srt_start - i_off_start)
-        new_end_ms   = i_orig_start + (srt_end   - i_off_start)
+        new_end_ms   = i_orig_start + (srt_end - i_off_start)
 
         # Re-format as SRT
         new_start_str = ms_to_srt_time(new_start_ms)

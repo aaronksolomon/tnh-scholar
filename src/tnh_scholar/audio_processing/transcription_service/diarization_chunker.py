@@ -1,6 +1,6 @@
 # tnh_scholar.audio_processing.transcription_service.diarization_chunker.py
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel
 
@@ -33,6 +33,7 @@ class Segment(BaseModel):
     speaker: str
     start: int  # Start time in milliseconds
     end: int    # End time in milliseconds
+    audio_map_time: Optional[int] # location in the audio output file
     
     @property
     def duration(self) -> int:
@@ -48,6 +49,7 @@ class Chunk(BaseModel):
     """Represents a chunk of segments to be processed together."""
     start_time: int  # Start time in milliseconds
     end_time: int    # End time in milliseconds
+    audio: Optional[AudioChunk]  
     segments: List[Segment]
     
     @property
@@ -100,33 +102,54 @@ class DiarizationChunker:
             segment = Segment(
                 speaker=speaker_label if single_speaker else entry['speaker'],
                 start=_convert_sec_to_ms(entry['start']),
-                end=_convert_sec_to_ms(entry['end'])
+                end=_convert_sec_to_ms(entry['end']),
+                audio_map_time=None
             )
             segments.append(segment)
         
         return segments
     
-    def extract_chunks(self, segments: List[Segment]) -> Dict[str, List[Chunk]]:
+    def extract_chunks_by_speaker(
+        self, segments: List[Segment]
+        ) -> Dict[str, List[Chunk]]:
         """
-        Split diarization segments into chunks of approximately target_duration.
+        Split diarization segments into chunks of approximately target_duration,
+        splitting at speaker changes.
 
         Args:
             segments: List of speaker segments from diarization
 
         Returns:
-            Dict[str, List[Chunk]]: Mapping from speaker label to the list
-            of chunks belonging to that speaker
+            Dict[str, List[Chunk]]: Mapping from speaker label to list of chunks
         """
         if not segments:
             return {}
 
-        extractor = self._ChunkExtractor(self.config)
+        extractor = self._ChunkExtractor(self.config, split_on_speaker_change=True)
         chunks = extractor.extract(segments)
         return self._group_chunks_by_speaker(chunks)
 
+    def extract_contiguous_chunks(self, segments: List[Segment]) -> List[Chunk]:
+        """
+        Split diarization segments into contiguous chunks of
+        approximately target_duration, without splitting on speaker changes.
+
+        Args:
+            segments: List of speaker segments from diarization
+
+        Returns:
+            List[Chunk]: Flat list of contiguous chunks
+        """
+        if not segments:
+            return []
+
+        extractor = self._ChunkExtractor(self.config, split_on_speaker_change=False)
+        return extractor.extract(segments)
+
     class _ChunkExtractor:
-        def __init__(self, config: ChunkerConfig):
+        def __init__(self, config: ChunkerConfig, split_on_speaker_change: bool = True):
             self.config = config
+            self.split_on_speaker_change = split_on_speaker_change
             self.chunks: List[Chunk] = []
             self.current_chunk_segments: List[Segment] = []
             self.chunk_start = 0
@@ -157,22 +180,25 @@ class DiarizationChunker:
 
         def _should_split(self, segment: Segment) -> bool:
             current_end = segment.end
-            return (
-                current_end - self.chunk_start >= self.config.target_duration or
-                self._speaker_change(segment)
-            )
+            duration = current_end - self.chunk_start
+            split_on_time = duration >= self.config.target_duration
+            split_on_speaker = self._speaker_change(segment) \
+                if self.split_on_speaker_change else False
+            return split_on_time or split_on_speaker
 
         def _finalize_current_chunk(self, next_segment: Segment):
             if self.current_chunk_segments:
                 self.chunks.append(
                     Chunk(
-                    start_time=self.chunk_start,
-                    end_time=self.current_chunk_segments[-1].end,
-                    segments=self.current_chunk_segments.copy()
+                        start_time=self.chunk_start,
+                        end_time=self.current_chunk_segments[-1].end,
+                        segments=self.current_chunk_segments.copy(),
+                        audio_map=None
                     )
                 )
                 self.current_chunk_segments = []
-                self.current_speaker = next_segment.speaker
+                if self.split_on_speaker_change:
+                    self.current_speaker = next_segment.speaker
 
         def _finalize_last_chunk(self):
             if self.current_chunk_segments:
@@ -199,7 +225,8 @@ class DiarizationChunker:
                 self.chunks.append(
                     Chunk(start_time=self.chunk_start, 
                           end_time=self.current_chunk_segments[-1].end, 
-                          segments=self.current_chunk_segments.copy())
+                          segments=self.current_chunk_segments.copy()),
+                        audio_
                     )              
                 
 
@@ -212,47 +239,13 @@ class DiarizationChunker:
         return chunks_by_speaker
     
     def _handle_config_options(self, config_options: Dict[str, Any]) -> None:
-        # Simply set any configuration options provided
-        # could check for unused parameters 
+        """
+        Handles additional configuration options, 
+        logging a warning for unrecognized keys.
+        """
         for key, value in config_options.items():
             if hasattr(self.config, key):
                 setattr(self.config, key, value)
-                    
-    # def _setup_chunking(
-    #     self, segments: List[Segment]
-    #     ) -> tuple[List[Chunk], List[Segment], int]:
-    #     """Initialize data structures for chunking process."""
-    #     return [], [], segments[0].start
-    
-    # def _is_chunk_complete(self, current_end: int, chunk_start: int) -> bool:
-    #     """Determine if current chunk has reached target duration."""
-    #     return current_end - chunk_start >= self.config.target_duration
-    
-    # def _create_chunk(
-    #     self, 
-    #     start_time: int, 
-    #     end_time: int, 
-    #     segments: List[Segment]
-    #     ) -> Chunk:
-    #     """Create a chunk from the accumulated segments."""
-    #     return Chunk(
-    #         start_time=start_time,
-    #         end_time=end_time,
-    #         segments=segments.copy()  # Create a copy to avoid reference issues
-    #     )
-    
-    # def _start_new_chunk(self, start_time: int) -> tuple[List[Segment], int]:
-    #     """Reset state for a new chunk."""
-    #     return [], start_time
-    
-    
-    
-    # def _validate_chunks(self, chunks: List[Chunk]) -> None:
-    #     """Validate generated chunks and issue warnings if needed."""
-    #     for chunk in chunks:
-    #         # Convert to seconds for human-readable warning (60s = 60000ms)
-    #         if chunk.duration > self.config.target_duration + 60_000:
-    #             logger.warning(f"Warning: Chunk duration exceeds target "
-    #                            f"by more than 1 minute: {chunk.duration_sec:.0f}s")
-                
+            else:
+                logger.warning(f"Unrecognized configuration option: {key}")
 
