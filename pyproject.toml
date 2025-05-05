@@ -25,6 +25,7 @@ authors = [{ name = "Aaron K. Solomon", email = "aaron.kyle.solomon@gmail.com" }
 dependencies = [
     "click==8.1.8",
     "colorlog==6.9.0",
+    "Flask==3.1.0",
     "GitPython==3.1.44",
     "Jinja2==3.1.5",
     "langdetect==1.0.9",
@@ -37,6 +38,7 @@ dependencies = [
     "pydantic==2.10.4",
     "pydub==0.25.1",
     "python-dotenv==1.0.1",
+    "pyngrok==7.2.3",
     "PyYAML==6.0.2",
     "regex==2024.11.6",
     "Requests==2.32.3",
@@ -96,6 +98,8 @@ token-count = "tnh_scholar.cli_tools.token_count.token_count:main"
 tnh-setup = "tnh_scholar.cli_tools.tnh_setup.tnh_setup:main"
 tnh-tree = "tnh_scholar.dev_tools.generate_tree:generate_tree"
 sent-split = "tnh_scholar.cli_tools.sent_split.sent_split:main"
+json-srt = "tnh_scholar.cli_tools.json_to_srt.json_to_srt:main"
+srt-translate = "tnh_scholar.cli_tools.srt_translate.srt_translate:main"
 
 [tool.black]
 line-length = 88
