@@ -13,7 +13,7 @@ import logging
 import os
 import sys
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, Generator, Optional
 
 import click
 from click import Context, UsageError
@@ -31,6 +31,7 @@ from tnh_scholar.ai_text_processing import (
     process_text_by_sections,
     translate_text_by_lines,
 )
+from tnh_scholar.ai_text_processing.ai_text_processing import ProcessedSection
 from tnh_scholar.logging_config import get_child_logger, setup_logging
 from tnh_scholar.metadata.metadata import Frontmatter
 from tnh_scholar.utils.validate import check_openai_env
@@ -454,10 +455,12 @@ def process(
         )
         click.echo(result)
 
-def export_processed_sections(section_result, text_obj: TextObject):
+def export_processed_sections(
+    section_result: Generator[ProcessedSection, None, None], 
+    text_obj: TextObject) -> None:
     click.echo(f"{Frontmatter.generate(text_obj.metadata)}")
     for processed_section in section_result:
-        click.echo(processed_section.processed_text)
+        click.echo(processed_section.processed_str)
         click.echo("\n")  # newline separated output. 
             
 def main():
