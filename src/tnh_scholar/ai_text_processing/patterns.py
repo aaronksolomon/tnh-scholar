@@ -84,7 +84,8 @@ class Pattern:
         Create and configure a Jinja2 environment with optimal settings.
 
         Returns:
-            Environment: Configured Jinja2 environment with security and formatting options
+            Environment: Configured Jinja2 environment 
+            with security and formatting options
         """
         return Environment(
             undefined=StrictUndefined,  # Raise errors for undefined variables
@@ -194,8 +195,11 @@ class Pattern:
         if match := re.match(pattern, self.instructions, re.DOTALL):
             try:
                 frontmatter = yaml.safe_load(match[1])
+                if frontmatter is None:
+                    return None
                 if not isinstance(frontmatter, dict):
-                    logger.warning("Frontmatter must be a YAML dictionary")
+                    logger.warning(f"Frontmatter must be a YAML dictionary: "
+                                   f"{frontmatter}")
                     return None
                 return frontmatter
             except yaml.YAMLError as e:
@@ -244,7 +248,10 @@ class Pattern:
         Returns:
             str: Hexadecimal string of the SHA-256 hash
         """
-        content = f"{self.name}{self.instructions}{sorted(self.default_template_fields.items())}"
+        content = (
+            f"{self.name}{self.instructions}"
+            f"{sorted(self.default_template_fields.items())}"
+            )
         return hashlib.sha256(content.encode("utf-8")).hexdigest()
 
     def to_dict(self) -> Dict[str, Any]:
@@ -457,7 +464,8 @@ class GitBackedRepository:
 
         Args:
             file_path: Path to file in repository
-            max_versions: Maximum number of versions to show, if zero, shows all revisions.
+            max_versions: Maximum number of versions to show, 
+            if zero, shows all revisions.
 
         Example:
             >>> repo.display_history(Path("patterns/format_dharma_talk.yaml"))
@@ -713,7 +721,8 @@ class PatternManager:
 
     def get_pattern_path(self, pattern_name: str) -> Optional[Path]:
         """
-        Recursively search for a pattern file with the given name in base_path and all subdirectories.
+        Recursively search for a pattern file with the 
+        given name in base_path and all subdirectories.
 
         Args:
             pattern_id: pattern identifier to search for
@@ -835,7 +844,8 @@ class PatternManager:
             base_path: Repository path to verify.
 
         Returns:
-            bool: True if the repository is valid and contains no duplicate pattern files.
+            bool: True if the repository is valid 
+            and contains no duplicate pattern files.
         """
         try:
             # Check if it's a valid Git repository
