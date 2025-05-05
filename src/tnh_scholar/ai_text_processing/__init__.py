@@ -3,6 +3,7 @@ from .ai_text_processing import (
     SectionParser,
     SectionProcessor,
     find_sections,
+    get_pattern,
     process_text,
     process_text_by_paragraphs,
     process_text_by_sections,
@@ -22,3 +23,25 @@ from .text_object import (
     TextObject,
     TextObjectInfo,
 )
+
+__all__ = [
+    "OpenAIProcessor",
+    "SectionParser",
+    "SectionProcessor",
+    "find_sections",
+    "process_text",
+    "process_text_by_paragraphs",
+    "process_text_by_sections",
+    "get_pattern",
+    "translate_text_by_lines",
+    "openai_process_text",
+    "GitBackedRepository",
+    "LocalPatternManager",
+    "Pattern",
+    "PatternManager",
+    "AIResponse",
+    "LogicalSection",
+    "SectionEntry",
+    "TextObject",
+    "TextObjectInfo",
+]

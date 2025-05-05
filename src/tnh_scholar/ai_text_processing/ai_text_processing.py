@@ -45,7 +45,7 @@ DEFAULT_SECTION_RANGE_VAR = 2
 class ProcessedSection:
     """Represents a processed section of text with its metadata."""
     title: str
-    original_text: str
+    original_str: str
     processed_str: str
     metadata: Dict = field(default_factory=dict)
 
@@ -270,7 +270,7 @@ def find_sections(
         TextObject containing section breakdown
     """
     if section_pattern is None:
-        section_pattern = get_default_pattern(DEFAULT_SECTION_PATTERN)
+        section_pattern = get_pattern(DEFAULT_SECTION_PATTERN)
         logger.debug(f"Using default section pattern: {DEFAULT_SECTION_PATTERN}.")
 
     section_scanner = OpenAIProcessor(model=section_model, max_tokens=max_tokens)
@@ -373,7 +373,7 @@ class SectionProcessor:
 
             yield ProcessedSection(
                 title=section_entry.title,
-                original_text=text_segment,
+                original_str=text_segment,
                 processed_str=processed_str,
             )
 
@@ -560,7 +560,7 @@ def process_text_by_paragraphs(
     processor = OpenAIProcessor(model)
 
     if not pattern:
-        pattern = get_default_pattern(DEFAULT_PARAGRAPH_FORMAT_PATTERN)
+        pattern = get_pattern(DEFAULT_PARAGRAPH_FORMAT_PATTERN)
 
     section_processor = SectionProcessor(processor, pattern, template_dict)
 
@@ -578,7 +578,7 @@ def process_text_by_paragraphs(
     
     return result
 
-def get_default_pattern(name: str) -> Pattern:
+def get_pattern(name: str) -> Pattern:
     """
     Get a pattern by name using the singleton PatternManager.
 
