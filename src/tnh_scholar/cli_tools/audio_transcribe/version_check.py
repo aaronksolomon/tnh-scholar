@@ -90,7 +90,7 @@ class YTDVersionChecker:
         return needs_update, installed_version, latest_version
 
 
-def check_ytd_version() -> None:
+def check_ytd_version() -> bool:
     """
     Check if yt-dlp needs updating and log appropriate messages.
 
@@ -108,6 +108,7 @@ def check_ytd_version() -> None:
             logger.info(f"Update available: {current} -> {latest}")
             logger.info("Please run the appropriate upgrade in your environment.")
             logger.info("   For example: pip install --upgrade yt-dlp ")
+            return False
         else:
             logger.info(f"yt-dlp is up to date (version {current})")
 
@@ -119,3 +120,5 @@ def check_ytd_version() -> None:
         logger.error(f"In yt-dlp version check: Version parsing error: {e}")
     except Exception as e:
         logger.error(f"In yt-dlp version check: Unexpected error: {e}")
+        
+    return True
