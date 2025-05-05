@@ -179,8 +179,8 @@ def sanitize_filename(
                 "ignore").decode("ascii")
     )
     
+    clean = clean.lower()
     clean = re.sub(r"[^a-z0-9\s]", " ", clean.strip())
-    
     clean = clean.strip()
     
     # shorten
