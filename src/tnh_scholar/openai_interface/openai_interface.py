@@ -236,12 +236,12 @@ def run_transcription_speech(
     with audio_file.open("rb") as file:
         if mode == "transcribe":
             transcript = client.audio.transcriptions.create(
-                model=model, response_format=response_format, prompt=prompt, file=file
-            )
+                model=model, response_format=response_format, prompt=prompt, file=file # type: ignore
+            ) # type: ignore
         elif mode == "translate":
             transcript = client.audio.translations.create(
-                model=model, response_format=response_format, prompt=prompt, file=file
-            )
+                model=model, response_format=response_format, prompt=prompt, file=file # type: ignore
+            ) # type: ignore
         else:
             logger.error(f"Invalid mode: {mode}, in speech transcription generation.")
             raise ValueError(f"'translate' or 'transcribe' expected, not {mode}.")
@@ -254,7 +254,7 @@ def get_completion_content(chat_completion):
 
 
 def get_completion_object(chat_completion: ChatCompletion) -> BaseModel:
-    return chat_completion.choices[0].message.parsed
+    return chat_completion.choices[0].message.parsed # type: ignore
 
 def _log_batch_creation_info(
     batch_file_path: Path, request_obj: Dict, total_tokens: int
