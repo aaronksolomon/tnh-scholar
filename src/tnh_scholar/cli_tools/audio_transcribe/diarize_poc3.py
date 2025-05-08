@@ -13,7 +13,7 @@ from pydub import AudioSegment
 from tnh_scholar.audio_processing.transcription_service import (
     TranscriptionServiceFactory,
 )
-from tnh_scholar.audio_processing.transcription_service.diarization_chunker import Chunk
+from tnh_scholar.audio_processing.transcription_service.diarization_chunker import DiarizationChunk
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils.file_utils import write_str_to_file
 
@@ -186,7 +186,7 @@ def merge_speaker_segments(
 
 def extract_audio_segments(
     original_audio_path: Path,
-    speaker_chunks: Dict[str, List[Chunk]],
+    speaker_chunks: Dict[str, List[DiarizationChunk]],
     add_padding: bool = True,
     padding_ms: int = SILENCE_SPACING
 ) -> Tuple[Dict[str, List[BytesIO]], Dict[str, List[List[Tuple[int, int, int]]]], Dict[str, List[int]]]:
