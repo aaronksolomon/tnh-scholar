@@ -26,39 +26,17 @@ from tnh_scholar.audio_processing.transcription_service import (
     TimedText,
     TimedTextUnit,
 )
-from tnh_scholar.audio_processing.transcription_service.srt_processor import (
+from tnh_scholar.logging_config import get_child_logger
+
+from .srt_processor import (
     SRTProcessor,
 )
-from tnh_scholar.logging_config import get_child_logger
+from .transcription_service import (
+    TranscriptionResult,
+)
 
 logger = get_child_logger(__name__)
 
-
-# --------------------------------------------------------------------------- #
-# Utility helpers
-# --------------------------------------------------------------------------- #
-def convert_sec_to_ms(
-    data: Dict[str, Any], source_field: str, target_field: str, label: str
-) -> None:
-    """
-    In-place helper - convert a timing value expressed in **seconds** into
-    milliseconds, storing it under ``target_field``.  Raises if value missing.
-
-    Parameters
-    ----------
-    data, source_field, target_field : see implementation
-    label : str
-        Label used in error messages (“Word”, “Segment”, ...).
-    """
-    if source_field in data and target_field not in data:
-        if data[source_field] is None:
-            raise ValueError(f"{label} missing {source_field} timing: {data}")
-        data[target_field] = int(data[source_field] * 1000)
-
-
-# --------------------------------------------------------------------------- #
-# Configuration dataclass
-# --------------------------------------------------------------------------- #
 class FormatConverterConfig(BaseModel):
     """
     User-tunable knobs for :class:`FormatConverter`.
@@ -72,17 +50,11 @@ class FormatConverterConfig(BaseModel):
     characters_per_entry: int = 42
     max_gap_duration_ms: int = 2_000
     
-
-
-
-# --------------------------------------------------------------------------- #
-# Main facade
-# --------------------------------------------------------------------------- #
 class FormatConverter:
     """
     Convert a raw transcription result to *text*, *SRT*, or (placeholder) *VTT*.
 
-    The *raw* result must follow the loose schema used by Whisper / OpenAI:
+    The *raw* result must follow the loose schema
     - ``{"utterances": [...]}`` → already speaker-segmented
     - ``{"words":       [...]}`` → word-level; we chunk via :class:`SegmentBuilder`
     - ``{"text": "...", "audio_duration_ms": 12345}`` → single blob fallback
@@ -98,10 +70,9 @@ class FormatConverter:
             max_gap_duration=self.config.max_gap_duration_ms
         )
 
-    # ...................................................... public API ...... #
     def convert(
         self,
-        result: Dict[str, Any],
+        result: TranscriptionResult,
         format_type: str = "srt",
         format_options: Optional[Dict[str, Any]] = None,
     ) -> str:
@@ -134,12 +105,11 @@ class FormatConverter:
 
         raise ValueError(f"Unsupported format_type: {format_type}")
 
-    # .................................................. internal helpers ... #
     def _to_plain_text(self, timed_text: TimedText) -> str:
         """Flatten ``TimedText`` into a newline-separated block of text."""
         return "\n".join(unit.text for unit in timed_text.segments if unit.text)
 
-    def _build_timed_text(self, result: Dict[str, Any]) -> TimedText:
+    def _build_timed_text(self, result: TranscriptionResult) -> TimedText:
         """
         Normalize *result* into :class:`TimedText`, handling three cases:
 
@@ -147,50 +117,39 @@ class FormatConverter:
         2. *word*-level input  - chunk via :class:`SegmentBuilder`
         3. plain *text* fallback
         """
-        # -- 1. U T T E R A N C E S ---------------------------------------- #
-        if utterances := result.get("utterances"):
+        
+        if utterances := result.utterances:
             units: List[TimedTextUnit] = []
             for u in utterances:
-                data = u.copy()
-                convert_sec_to_ms(data, "start", "start_ms", "Utterance")
-                convert_sec_to_ms(data, "end", "end_ms", "Utterance")
+                data = u.model_copy()
 
                 units.append(
                     TimedTextUnit(
                         granularity=Granularity.SEGMENT,
-                        text=data.get("text", ""),
-                        start_ms=data["start_ms"],
-                        end_ms=data["end_ms"],
-                        speaker=data.get("speaker"),
+                        text=data.text,
+                        start_ms=data.start_ms,
+                        end_ms=data.end_ms,
+                        speaker=data.speaker,
                         index=None,
-                        confidence=data.get("confidence"),
+                        confidence=data.confidence,
                     )
                 )
 
             return TimedText(segments=units)
 
-        # -- 2. W O R D S -------------------------------------------------- #
-        if words := result.get("words"):
-            # normalize timings to ms first
-            for w in words:
-                convert_sec_to_ms(w, "start", "start_ms", "Word")
-                convert_sec_to_ms(w, "end", "end_ms", "Word")
-
+        if words := result.words:
             # *SegmentBuilder* returns a list[TimedTextUnit]
             return self._segment_builder.create_segments(words)
 
+        if text := result.text:
+            duration_ms = result.audio_duration_ms
 
-        # -- 3. P L A I N   T E X T --------------------------------------- #
-        if text := result.get("text"):
-            duration_ms = result.get(
-                "audio_duration_ms", 0
-            )
             units = [
                 TimedTextUnit(
                     granularity=Granularity.SEGMENT,
                     text=text,
                     start_ms=0,
-                    end_ms=duration_ms,
+                    end_ms=duration_ms or 0,
                     speaker=None,
                     index=None,
                     confidence=None,
