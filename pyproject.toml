@@ -102,7 +102,7 @@ json-srt = "tnh_scholar.cli_tools.json_to_srt.json_to_srt:main"
 srt-translate = "tnh_scholar.cli_tools.srt_translate.srt_translate:main"
 
 [tool.black]
-line-length = 88
+line-length = 110
 target-version = ['py312']
 include = '\.pyi?$'
 
@@ -156,7 +156,7 @@ source = ["tnh_scholar"]
 omit = ["tests/*", "**/__init__.py"]
 
 [tool.ruff]
-line-length = 88  # Match black
+line-length = 110  # Match black
 target-version = "py312"
 lint.select = [
     "E",  # pycodestyle errors
