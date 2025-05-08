@@ -37,7 +37,7 @@ from tnh_scholar import TNH_LOG_DIR
 from tnh_scholar.audio_processing import (
     split_audio,
 )
-from tnh_scholar.audio_processing.transcription_service import get_transcription
+from tnh_scholar.audio_processing.transcription import get_transcription
 from tnh_scholar.logging_config import get_child_logger, setup_logging
 from tnh_scholar.metadata.metadata import Frontmatter, Metadata
 from tnh_scholar.utils import ensure_directory_exists, get_user_confirmation
