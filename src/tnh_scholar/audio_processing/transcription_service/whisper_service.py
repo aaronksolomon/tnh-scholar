@@ -10,13 +10,34 @@ from dotenv import load_dotenv
 from tnh_scholar.logging_config import get_child_logger
 
 from .format_converter import FormatConverter
-from .transcription_service import TranscriptionService
+from .transcription_service import (
+    TranscriptionResult,
+    TranscriptionService,
+    Utterance,
+    WordTiming,
+)
 
 # Load environment variables
 load_dotenv()
 
 logger = get_child_logger(__name__)
 
+
+def logprob_to_confidence(avg_logprob: Optional[float]) -> float:
+    """
+    Map avg_logprob to confidence [0,1] linearly.
+    
+    avg_logprob = 0 -> confidence = 1
+    avg_logprob = -1 -> confidence = 0
+    """
+    if avg_logprob is None:
+        return 0.0
+
+    confidence = avg_logprob + 1.0
+
+    # Clamp to [0,1]
+    confidence = max(0.0, min(1.0, confidence))
+    return confidence
 
 class WordEntry(TypedDict, total=False):
     word: str
@@ -314,24 +335,24 @@ class WhisperTranscriptionService(TranscriptionService):
         """
         return None if seconds is None else int(seconds * 1000)
     
-    def _process_whisper_response(self, response: WhisperResponse) -> Dict[str, Any]:
-        """Process and validate response from Whisper API."""
-
-        return {
-            "text": response["text"],
-            "language": response["language"],
-            "words": self._extract_and_validate_words(response),
-            "utterances": response.get("segments", []),
-            "confidence": 0.0,  # Not directly provided by Whisper
-            "audio_duration_ms": self._seconds_to_ms(response.get("duration")),
-            "raw_result": response,
-        }
-
+    def _export_response(self, response: WhisperResponse) -> TranscriptionResult:
+        """Process and validate WhisperResponse into TranscriptionResult."""       
+        return TranscriptionResult(
+            text=response["text"],
+            language=response["language"],
+            words=self._extract_and_validate_words(response),
+            utterances=self._extract_and_validate_utterances(response),
+            confidence=0.0,  # Whisper doesn't provide overall confidence
+            audio_duration_ms=self._seconds_to_ms(response.get("duration")),
+            transcript_id=None,  # No ID from Whisper
+            status="completed",  # You can set a static "completed" status
+            raw_result=dict(response),  # Store the original response for debugging
+        )
+        
     def _extract_and_validate_words(
-        self, 
-        response: WhisperResponse
-        ) -> List[Dict[str, Any]]:
-        """Extract, validate, and convert word data."""
+        self, response: WhisperResponse
+        ) -> List[WordTiming]:
+        """Extract, validate, and convert word data into WordTiming objects."""
         words_data = response.get("words")
         words = []
         if words_data:
@@ -342,6 +363,7 @@ class WhisperTranscriptionService(TranscriptionService):
 
                 if not isinstance(word, str) or not word:
                     logger.warning(f"Invalid or missing word: {word_entry}")
+                    continue
 
                 if not isinstance(start_ms, int) or not isinstance(end_ms, int):
                     logger.warning(f"Invalid timestamps for word: {word_entry}")
@@ -349,29 +371,66 @@ class WhisperTranscriptionService(TranscriptionService):
 
                 if start_ms > end_ms:
                     logger.warning(
-                        f"Invalid timestamps: start ({start_ms}) > end "
-                        f"({end_ms}) for word: {word}.\n"
-                        f"Setting end = start + 1."
-                        )
+                        f"Invalid timestamps: start ({start_ms}) > end ({end_ms}) "
+                        f"for word: {word}. Setting end = start + 1."
+                    )
                     end_ms = start_ms + 1
-                    continue
-                
+
                 if start_ms == end_ms:
-                    # this is common in Whisper, so handle silently
+                    # Silent handling for identical timestamps
                     end_ms += 1
 
-                words.append({
-                    "word": word,
-                    "start_ms": start_ms,
-                    "end_ms": end_ms,
-                })
+                words.append(
+                    WordTiming(
+                        word=word, 
+                        start_ms=start_ms, 
+                        end_ms=end_ms,
+                        confidence=0.0,
+                        )
+                    )
+        
         return words
+
+    def _extract_and_validate_utterances(
+        self, response: WhisperResponse
+        ) -> List[Utterance]:
+        """Extract and validate utterance segments into Utterance objects."""
+        segments = response.get("segments")
+        utterances = []
+        
+        if segments:
+            for segment in segments:
+                start_ms = self._seconds_to_ms(segment.get("start"))
+                end_ms = self._seconds_to_ms(segment.get("end"))
+                text = segment.get("text", "")
+
+                if not isinstance(start_ms, int) or not isinstance(end_ms, int):
+                    logger.warning(f"Invalid segment timestamps: {segment}")
+                    continue
+
+                if not isinstance(text, str) or not text.strip():
+                    logger.warning(f"Empty or invalid text for segment: {segment}")
+                    continue
+
+                utterances.append(
+                    Utterance(
+                        speaker=None,  # Whisper doesn't provide speaker ID
+                        start_ms=start_ms,
+                        end_ms=end_ms,
+                        text=text.strip(),
+                        confidence=logprob_to_confidence(
+                            segment.get('avg_logprob', 0.0)
+                            ),
+                    )
+                )
+        
+        return utterances
 
     def transcribe(
         self,
         audio_file: Union[Path, BinaryIO],
         options: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
+    ) -> TranscriptionResult:
         """
         Transcribe audio file to text using OpenAI Whisper API.
         
@@ -407,12 +466,12 @@ class WhisperTranscriptionService(TranscriptionService):
         raw_response = openai.audio.transcriptions.create(**api_params)
         response = self._to_whisper_response(raw_response)
 
-        result = self._process_whisper_response(response)
+        result = self._export_response(response)
             
         logger.info("Transcription completed successfully")
         return result
 
-    def get_result(self, job_id: str) -> Dict[str, Any]:
+    def get_result(self, job_id: str) -> TranscriptionResult:
         """
         Get results for an existing transcription job.
         
@@ -491,3 +550,4 @@ class WhisperTranscriptionService(TranscriptionService):
         return self.format_converter.convert(
             result, format_type, format_options or {}
         )
+

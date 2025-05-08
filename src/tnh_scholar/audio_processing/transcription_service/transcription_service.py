@@ -2,9 +2,35 @@
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, BinaryIO, Callable, Dict, Optional, Union
+from typing import Any, BinaryIO, Callable, Dict, List, Optional, Union
+
+from pydantic import BaseModel
 
 
+class WordTiming(BaseModel):
+    word: str
+    start_ms: int
+    end_ms: int
+    confidence: float
+
+class Utterance(BaseModel):
+    speaker: Optional[str]
+    start_ms: int
+    end_ms: int
+    text: str
+    confidence: float
+
+class TranscriptionResult(BaseModel):
+    text: str
+    language: str
+    words: Optional[List[WordTiming]] = None
+    utterances: Optional[List[Utterance]] = None
+    confidence: Optional[float] = None
+    audio_duration_ms: Optional[int] = None
+    transcript_id: Optional[str] = None
+    status: Optional[str] = None
+    raw_result: Optional[Dict[str, Any]] = None
+    
 class TranscriptionService(ABC):
     """
     Abstract base class defining the interface for transcription services.
@@ -18,7 +44,7 @@ class TranscriptionService(ABC):
         self,
         audio_file: Union[Path, BinaryIO],
         options: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
+    ) -> TranscriptionResult:
         """
         Transcribe audio file to text.
         
@@ -27,23 +53,13 @@ class TranscriptionService(ABC):
             options: Provider-specific options for transcription
             
         Returns:
-            Dictionary containing transcription results with standardized keys:
-                - text: Complete transcription text
-                - language: Detected or specified language code
-                - words: List of words with timing information 
-                   (timestamps in milliseconds)
-                - utterances: List of utterances by speaker 
-                   (timestamps in milliseconds)
-                - confidence: Overall confidence score (0.0-1.0)
-                - audio_duration_ms: Duration of audio in milliseconds
-                - transcript_id: id of the transcript
-                - status: status of transcription
-                - raw_result: Original provider-specific result
+            TranscriptionResult
+            
         """
         pass
     
     @abstractmethod
-    def get_result(self, job_id: str) -> Dict[str, Any]:
+    def get_result(self, job_id: str) -> TranscriptionResult:
         """
         Get results for an existing transcription job.
         

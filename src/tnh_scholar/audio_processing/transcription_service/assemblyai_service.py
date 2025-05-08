@@ -28,8 +28,8 @@ from dotenv import load_dotenv
 
 from tnh_scholar.logging_config import get_child_logger
 
-from .format_converter import TranscriptionFormatConverter
-from .transcription_service import TranscriptionService
+from .format_converter import FormatConverter
+from .transcription_service import TranscriptionResult, TranscriptionService
 
 # Load environment variables
 load_dotenv()
@@ -119,7 +119,7 @@ class AAITranscriptionService(TranscriptionService):
             config: Comprehensive configuration options
         """
         # Initialize format converter for fallback cases
-        self.format_converter = TranscriptionFormatConverter()
+        self.format_converter = FormatConverter()
         
         # Set and validate configuration
         self.config = AAIConfig()
@@ -409,7 +409,10 @@ class AAITranscriptionService(TranscriptionService):
 
         return intelligence
     
-    def standardize_result(self, transcript: aai.Transcript) -> Dict[str, Any]:
+    # TODO make this return a proper transcription result. 
+    # extract and validate words and utterances 
+    # convert Transcript object from AAI to a dict (?)
+    def standardize_result(self, transcript: aai.Transcript) -> TranscriptionResult:
         """
         Standardize AssemblyAI transcript to match common format.
         
@@ -424,40 +427,27 @@ class AAITranscriptionService(TranscriptionService):
 
         # Extract utterances by speaker
         utterances = self._extract_utterances(transcript)
-        
-        # Extract audio intelligence features
-        intelligence = self._extract_audio_intelligence(transcript)
-        
-        language = self.config.language_code or \
-            ("auto" if self.config.language_detection else "unknown")
 
-        # Build standardized result
-        standardized = {
-            "text": transcript.text,
-            "language": language,
-            "words": words,
-            "utterances": utterances,
-            "confidence": getattr(transcript, "confidence", 0.0),
-            "audio_duration_ms": getattr(transcript, "audio_duration", 0),
-            "transcript_id": transcript.id,
-            "status": transcript.status,
-            "raw_result": transcript,       
-        }
-        
-        # Add intelligence features if available
-        if intelligence:
-            standardized["intelligence"] = intelligence
-            
-        # Include raw transcript for reference
-        standardized["raw_result"] = transcript
-            
-        return standardized
+        language = self.config.language_code or \
+                ("auto" if self.config.language_detection else "unknown")
+
+        return TranscriptionResult(
+            text=transcript.text or "",
+            language=language,
+            words=words,
+            utterances=utterances,
+            confidence=getattr(transcript, "confidence", 0.0),
+            audio_duration_ms=getattr(transcript, "audio_duration", 0),
+            transcript_id=transcript.id,
+            status=transcript.status,
+            raw_result=transcript.json_response,
+        )
     
     def transcribe(
         self,
         audio_file: Union[Path, BinaryIO, str],
         options: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
+    ) -> TranscriptionResult:
         """
         Transcribe audio file to text using AssemblyAI's synchronous SDK approach.
         
@@ -523,7 +513,7 @@ class AAITranscriptionService(TranscriptionService):
             raise RuntimeError(f"AssemblyAI transcription submission failed: {e}") \
                 from e
     
-    def get_result(self, job_id: str) -> Dict[str, Any]:
+    def get_result(self, job_id: str) -> TranscriptionResult:
         """
         Get results for an existing transcription job.
         
