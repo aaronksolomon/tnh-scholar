@@ -69,6 +69,11 @@ class TimedTextUnit(BaseModel):
     def set_speaker(self, speaker: str) -> None:
         """Set the speaker label."""
         self.speaker = speaker
+        
+    def normalize(self) -> None:
+        """Normalize the duration of the segment to be nonzero"""
+        if self.start_ms == self.end_ms:
+            self.end_ms = self.start_ms + 1 # minimum duration 
 
     @field_validator("start_ms", "end_ms")
     @classmethod
@@ -112,10 +117,11 @@ class TimedText(BaseModel):
     """
 
     segments: List[TimedTextUnit] = Field(
-        ..., description="Phrase-level timed units"
+        default=[],
+        description="Phrase-level timed units"
     )
-    words: Optional[List[TimedTextUnit]] = Field(
-        default=None,
+    words: List[TimedTextUnit] = Field(
+        default=[],
         description="Optional list of word-level timed units"
     )
 
@@ -250,7 +256,9 @@ class TimedText(BaseModel):
         """
         raise NotImplementedError("build_segments is not yet implemented.")
     
-    
+# TODO move this to a separate file
+# take build_segments function out of TimedText model.
+
 """
 SegmentBuilder for creating phrase-level segments from word-level TimedText.
 
@@ -269,6 +277,7 @@ COMMON_ABBREVIATIONS = frozenset({
     "rev.", "rt.", "sen.", "sens.", "sep.", "sfc.", "sgt.", "sr.", "st.", "supt.",
     "surg.", "u.s.", "v.p.", "vs."
 })
+
 
 class SegmentBuilder:
     def __init__(

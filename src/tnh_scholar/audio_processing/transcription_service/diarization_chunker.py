@@ -5,6 +5,9 @@ from typing import Any, Dict, List, Optional
 from pydantic import BaseModel
 
 from tnh_scholar.logging_config import get_child_logger
+from tnh_scholar.utils import convert_ms_to_sec, convert_sec_to_ms
+
+from .audio_models import AudioChunk
 
 logger = get_child_logger(__name__)
 
@@ -23,12 +26,9 @@ class ChunkerConfig:
     default_speaker_label = "SPEAKER_00"
     
     # Potential future parameters:
-    # - prefer_speaker_boundaries: bool - Split at speaker changes
     # - gap_threshold_ms: int - Consider silence gaps as natural boundaries
-    # - split_long_segments: bool - Whether to split segments > than target duration
 
-
-class Segment(BaseModel):
+class DiarizationSegment(BaseModel):
     """Represents a speaker segment from diarization."""
     speaker: str
     start: int  # Start time in milliseconds
@@ -42,15 +42,30 @@ class Segment(BaseModel):
 
     @property
     def duration_sec(self) -> float:
-        return _convert_ms_to_sec(self.duration) 
+        return convert_ms_to_sec(self.duration)
+    
+    @property
+    def mapped_start(self):
+        return self.audio_map_time or self.start
+    
+    @property
+    def mapped_end(self):
+        return self.audio_map_time + self.duration if self.audio_map_time else self.end
+    
+    def normalize(self) -> None:
+        """Normalize the duration of the segment to be nonzero"""
+        if self.start == self.end:
+            self.end = self.start + 1 # minimum duration 
+            
+    
 
-        
-class Chunk(BaseModel):
+
+class DiarizationChunk(BaseModel):
     """Represents a chunk of segments to be processed together."""
     start_time: int  # Start time in milliseconds
     end_time: int    # End time in milliseconds
-    audio: Optional[AudioChunk]  
-    segments: List[Segment]
+    audio: Optional[AudioChunk] = None
+    segments: List[DiarizationSegment]
     
     @property
     def duration(self) -> int:
@@ -59,17 +74,7 @@ class Chunk(BaseModel):
     
     @property
     def duration_sec(self) -> float:
-        return _convert_ms_to_sec(self.duration) 
-
-
-def _convert_sec_to_ms(seconds: float) -> int:
-    """Convert time from seconds (float) to milliseconds (int)."""
-    return int(seconds * 1000)
-
-def _convert_ms_to_sec(seconds: int) -> float:
-    """Convert time from milliseconds (int) to seconds (float)."""
-    return float(seconds / 1000)
-
+        return convert_ms_to_sec(self.duration) 
 
 class DiarizationChunker:
     """
@@ -83,7 +88,7 @@ class DiarizationChunker:
         
         self._handle_config_options(config_options)
         
-    def to_segments(self, pyannote_data: Dict[str, Any]) -> List[Segment]:
+    def to_segments(self, pyannote_data: Dict[str, Any]) -> List[DiarizationSegment]:
         """
         Convert a pyannoteai diarization result dict to list of Segment objects.
         
@@ -99,19 +104,40 @@ class DiarizationChunker:
         
         segments = []
         for entry in pyannote_data.get('diarization', []):
-            segment = Segment(
+            segment = DiarizationSegment(
                 speaker=speaker_label if single_speaker else entry['speaker'],
-                start=_convert_sec_to_ms(entry['start']),
-                end=_convert_sec_to_ms(entry['end']),
+                start=convert_sec_to_ms(entry['start']),
+                end=convert_sec_to_ms(entry['end']),
                 audio_map_time=None
             )
             segments.append(segment)
+            
+        return self.sort_and_normalize_segments(segments)
         
+    def sort_and_normalize_segments(
+        self, segments: List[DiarizationSegment]
+        ) -> List[DiarizationSegment]:
+        """
+        Validate and normalize segments by sorting and ensuring nonzero duration.
+        
+        Args:
+            segments: List of diarization segments
+            
+        Returns:
+            List of sorted and normalized segments
+        """
+        segments.sort(key=lambda s: s.start)
+        for segment in segments:
+            segment.normalize()
         return segments
     
+    def sort_by_start(self, segments: List[DiarizationSegment]) -> None:
+        """Sort segments by start time."""
+        segments.sort(key=lambda segment: segment.start)
+    
     def extract_chunks_by_speaker(
-        self, segments: List[Segment]
-        ) -> Dict[str, List[Chunk]]:
+        self, segments: List[DiarizationSegment]
+        ) -> Dict[str, List[DiarizationChunk]]:
         """
         Split diarization segments into chunks of approximately target_duration,
         splitting at speaker changes.
@@ -129,7 +155,7 @@ class DiarizationChunker:
         chunks = extractor.extract(segments)
         return self._group_chunks_by_speaker(chunks)
 
-    def extract_contiguous_chunks(self, segments: List[Segment]) -> List[Chunk]:
+    def extract_contiguous_chunks(self, segments: List[DiarizationSegment]) -> List[DiarizationChunk]:
         """
         Split diarization segments into contiguous chunks of
         approximately target_duration, without splitting on speaker changes.
@@ -150,12 +176,12 @@ class DiarizationChunker:
         def __init__(self, config: ChunkerConfig, split_on_speaker_change: bool = True):
             self.config = config
             self.split_on_speaker_change = split_on_speaker_change
-            self.chunks: List[Chunk] = []
-            self.current_chunk_segments: List[Segment] = []
+            self.chunks: List[DiarizationChunk] = []
+            self.current_chunk_segments: List[DiarizationSegment] = []
             self.chunk_start = 0
             self.current_speaker = ""
 
-        def extract(self, segments: List[Segment]) -> List[Chunk]:
+        def extract(self, segments: List[DiarizationSegment]) -> List[DiarizationChunk]:
             if not segments:
                 return []
 
@@ -168,7 +194,7 @@ class DiarizationChunker:
             self._finalize_last_chunk()
             return self.chunks
 
-        def _process_segment(self, segment: Segment):
+        def _process_segment(self, segment: DiarizationSegment):
             if self._should_split(segment):
                 self._finalize_current_chunk(segment)
                 self.chunk_start = segment.start
@@ -176,9 +202,8 @@ class DiarizationChunker:
             
         def _speaker_change(self, segment):
             return segment.speaker != self.current_speaker
-                    
 
-        def _should_split(self, segment: Segment) -> bool:
+        def _should_split(self, segment: DiarizationSegment) -> bool:
             current_end = segment.end
             duration = current_end - self.chunk_start
             split_on_time = duration >= self.config.target_duration
@@ -186,14 +211,14 @@ class DiarizationChunker:
                 if self.split_on_speaker_change else False
             return split_on_time or split_on_speaker
 
-        def _finalize_current_chunk(self, next_segment: Segment):
+        def _finalize_current_chunk(self, next_segment: DiarizationSegment):
             if self.current_chunk_segments:
                 self.chunks.append(
-                    Chunk(
+                    DiarizationChunk(
                         start_time=self.chunk_start,
                         end_time=self.current_chunk_segments[-1].end,
                         segments=self.current_chunk_segments.copy(),
-                        audio_map=None
+                        audio=None,
                     )
                 )
                 self.current_chunk_segments = []
@@ -204,7 +229,7 @@ class DiarizationChunker:
             if self.current_chunk_segments:
                 self._handle_final_segments()
         
-        def _check_segment_duration(self, segment: Segment) -> None:
+        def _check_segment_duration(self, segment: DiarizationSegment) -> None:
             """Check if segment exceeds target duration and issue warning if needed."""
             if segment.duration > self.config.target_duration:
                 logger.warning(f"Found segment longer than "
@@ -223,15 +248,15 @@ class DiarizationChunker:
             else:
                 # Create standalone chunk
                 self.chunks.append(
-                    Chunk(start_time=self.chunk_start, 
+                    DiarizationChunk(start_time=self.chunk_start, 
                           end_time=self.current_chunk_segments[-1].end, 
-                          segments=self.current_chunk_segments.copy()),
-                        audio_
-                    )              
-                
-
-    def _group_chunks_by_speaker(self, chunks: List[Chunk]) -> Dict[str, List[Chunk]]:
-        chunks_by_speaker: Dict[str, List[Chunk]] = {}
+                          segments=self.current_chunk_segments.copy(),
+                          audio=None,
+                          )
+                )
+                    
+    def _group_chunks_by_speaker(self, chunks: List[DiarizationChunk]) -> Dict[str, List[DiarizationChunk]]:
+        chunks_by_speaker: Dict[str, List[DiarizationChunk]] = {}
         for chunk in chunks:
             speaker = chunk.segments[0].speaker \
                 if chunk.segments else self.config.default_speaker_label
@@ -248,4 +273,3 @@ class DiarizationChunker:
                 setattr(self.config, key, value)
             else:
                 logger.warning(f"Unrecognized configuration option: {key}")
-
