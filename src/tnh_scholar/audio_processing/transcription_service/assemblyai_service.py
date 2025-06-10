@@ -29,6 +29,7 @@ from dotenv import load_dotenv
 from tnh_scholar.logging_config import get_child_logger
 
 from .format_converter import FormatConverter
+from .timed_text import Granularity, TimedText, TimedTextUnit
 from .transcription_service import TranscriptionResult, TranscriptionService
 
 # Load environment variables
@@ -268,57 +269,63 @@ class AAITranscriptionService(TranscriptionService):
             
         raise TypeError(f"Unsupported audio file type: {type(audio_file)}")
     
-    def _extract_words(self, transcript: aai.Transcript) -> List[Dict[str, Any]]:
+    def _extract_words(self, transcript: aai.Transcript) -> TimedText:
         """
-        Extract words with timestamps from transcript.
-        
+        Extract words with timestamps from transcript and return a TimedText object.
+
         Args:
             transcript: AssemblyAI transcript object
-            
+
         Returns:
-            List of word objects with timing info
+            TimedText object containing word‑level units
         """
         if not transcript.words:
             raise ValueError(f"Transcript object has no words: {transcript}")
-        
-        words = []
-        words.extend(
-            {
-                "word": word.text,
-                "start_ms": word.start,
-                "end_ms": word.end,
-                "confidence": word.confidence,
-            }
+
+        units = [
+            TimedTextUnit(
+                index=None,
+                granularity=Granularity.WORD,
+                speaker=word.speaker,
+                text=word.text,
+                start_ms=word.start,
+                end_ms=word.end,
+                confidence=word.confidence,
+            )
             for word in transcript.words
-        )
-        return words
+        ]
+
+        # TimedText performs its own internal validation
+        return TimedText(words=units)
     
-    def _extract_utterances(self, transcript: aai.Transcript) -> List[Dict[str, Any]]:
+    def _extract_utterances(self, transcript: aai.Transcript) -> TimedText:
         """
-        Extract utterances by speaker from transcript.
-        
+        Extract utterances (speaker segments) from transcript and return a TimedText object.
+
         Args:
             transcript: AssemblyAI transcript object
-            
+
         Returns:
-            List of utterance objects
+            TimedText object containing utterance‑level units
         """
-        utterances = []
+        if not (utterances := getattr(transcript, "utterances", None)):
+            # Return an empty TimedText if diarization wasn't requested
+            return TimedText(segments=[])
 
-        # Check if transcript has utterances (speaker diarization enabled)
-        if not hasattr(transcript, "utterances") or not transcript.utterances:
-            return utterances
+        units = [
+            TimedTextUnit(
+                index=None,
+                granularity=Granularity.SEGMENT,
+                text=utterance.text,
+                start_ms=utterance.start,
+                end_ms=utterance.end,
+                speaker=utterance.speaker,
+                confidence=utterance.confidence,
+            )
+            for utterance in utterances
+        ]
 
-        utterances.extend(
-            {
-                "speaker": utterance.speaker,
-                "text": utterance.text,
-                "start_ms": utterance.start,
-                "end_ms": utterance.end,
-            }
-            for utterance in transcript.utterances
-        )
-        return utterances
+        return TimedText(segments=units)
     
     def _extract_audio_intelligence(self, transcript: aai.Transcript) -> Dict[str, Any]:
         """
@@ -409,23 +416,18 @@ class AAITranscriptionService(TranscriptionService):
 
         return intelligence
     
-    # TODO make this return a proper transcription result. 
-    # extract and validate words and utterances 
-    # convert Transcript object from AAI to a dict (?)
     def standardize_result(self, transcript: aai.Transcript) -> TranscriptionResult:
         """
         Standardize AssemblyAI transcript to match common format.
-        
+
         Args:
             transcript: AssemblyAI transcript object
-            
+
         Returns:
             Standardized result dictionary
         """
-        # Extract words with timestamps
+        # Extract words and utterances as TimedText
         words = self._extract_words(transcript)
-
-        # Extract utterances by speaker
         utterances = self._extract_utterances(transcript)
 
         language = self.config.language_code or \
@@ -434,8 +436,8 @@ class AAITranscriptionService(TranscriptionService):
         return TranscriptionResult(
             text=transcript.text or "",
             language=language,
-            words=words,
-            utterances=utterances,
+            word_timing=words,
+            utterance_timing=utterances,
             confidence=getattr(transcript, "confidence", 0.0),
             audio_duration_ms=getattr(transcript, "audio_duration", 0),
             transcript_id=transcript.id,

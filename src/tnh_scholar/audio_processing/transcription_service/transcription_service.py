@@ -2,9 +2,11 @@
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, BinaryIO, Callable, Dict, List, Optional, Union
+from typing import Any, BinaryIO, Callable, Dict, Optional, Union
 
 from pydantic import BaseModel
+
+from .timed_text import TimedText
 
 
 class WordTiming(BaseModel):
@@ -23,8 +25,8 @@ class Utterance(BaseModel):
 class TranscriptionResult(BaseModel):
     text: str
     language: str
-    words: Optional[List[WordTiming]] = None
-    utterances: Optional[List[Utterance]] = None
+    word_timing: Optional[TimedText] = None
+    utterance_timing: Optional[TimedText] = None
     confidence: Optional[float] = None
     audio_duration_ms: Optional[int] = None
     transcript_id: Optional[str] = None

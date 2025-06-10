@@ -55,19 +55,19 @@ class FormatConverter:
     Convert a raw transcription result to *text*, *SRT*, or (placeholder) *VTT*.
 
     The *raw* result must follow the loose schema
-    - ``{"utterances": [...]}`` → already speaker-segmented
-    - ``{"words":       [...]}`` → word-level; we chunk via :class:`SegmentBuilder`
-    - ``{"text": "...", "audio_duration_ms": 12345}`` → single blob fallback
+    - ``{"utterances": [...]}`` -> already speaker-segmented
+    - ``{"words":       [...]}`` -> word-level; we chunk via :class:`SegmentBuilder`
+    - ``{"text": "...", "audio_duration_ms": 12345}`` -> single blob fallback
     """
 
     def __init__(self, config: Optional[FormatConverterConfig] = None):
         self.config = config or FormatConverterConfig()
         self._segment_builder = SegmentBuilder(
-            max_duration=self.config.max_entry_duration_ms,
+            max_duration_ms=self.config.max_entry_duration_ms,
             target_characters=self.config.characters_per_entry,
             avoid_orphans=True,
             ignore_speaker=not self.config.include_speaker,  
-            max_gap_duration=self.config.max_gap_duration_ms
+            max_gap_duration_ms=self.config.max_gap_duration_ms
         )
 
     def convert(
@@ -118,10 +118,10 @@ class FormatConverter:
         3. plain *text* fallback
         """
         
-        if utterances := result.utterances:
+        if timed_text := result.utterance_timing:
             units: List[TimedTextUnit] = []
-            for u in utterances:
-                data = u.model_copy()
+            for i, unit in enumerate(timed_text.iter_segments(), start=1):
+                data = unit.model_copy()
 
                 units.append(
                     TimedTextUnit(
@@ -130,14 +130,14 @@ class FormatConverter:
                         start_ms=data.start_ms,
                         end_ms=data.end_ms,
                         speaker=data.speaker,
-                        index=None,
+                        index=i,
                         confidence=data.confidence,
                     )
                 )
 
             return TimedText(segments=units)
 
-        if words := result.words:
+        if words := result.word_timing:
             # *SegmentBuilder* returns a list[TimedTextUnit]
             return self._segment_builder.create_segments(words)
 

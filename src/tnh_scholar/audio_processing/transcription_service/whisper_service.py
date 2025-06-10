@@ -10,11 +10,10 @@ from dotenv import load_dotenv
 from tnh_scholar.logging_config import get_child_logger
 
 from .format_converter import FormatConverter
+from .timed_text import Granularity, TimedText, TimedTextUnit
 from .transcription_service import (
     TranscriptionResult,
     TranscriptionService,
-    Utterance,
-    WordTiming,
 )
 
 # Load environment variables
@@ -71,6 +70,7 @@ class WhisperConfig:
     timestamp_granularities: Optional[List[str]] = field(
         default_factory=lambda: ["word"]
         )
+    chunking_strategy: str = "auto" # currently not usable
     language: Optional[str] = None # language code
     temperature: Optional[float] = None
     prompt: Optional[str] = None
@@ -87,6 +87,12 @@ class WhisperConfig:
         "vtt": []
     }
     
+    # Basic parameters: always allowed
+    BASE_PARAMS = [
+            "model", "language", "temperature", "prompt", "response_format",
+        ]
+    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert configuration to dictionary for API call."""
         # Filter out None values to avoid sending unnecessary parameters
@@ -190,34 +196,38 @@ class WhisperTranscriptionService(TranscriptionService):
         ) -> Dict[str, Any]:
         """
         Prepare parameters for the Whisper API call.
-        
+
         Args:
             options: Additional options for this specific transcription
-            
+
         Returns:
             Dictionary of parameters for the API call
         """
         base_params = self.config.to_dict()
-    
+
+        # Defensive: ensure options is a dict
+        options = options or {}
+
         # Determine which response format we're using
-        if options:
-            response_format = options.get(
-                "response_format", self.config.response_format
-                )
-        else:
-            response_format = self.config.response_format
-        
-        # Remove parameters not allowed for the chosen format
-        allowed_params = self.config.FORMAT_PARAMS.get(response_format, []) + [
-            "model", "language", "temperature", "prompt", "response_format"
-        ]
-        
+        response_format = options.get(
+            "response_format", self.config.response_format
+        )
+
+        # Compute allowed parameters for the chosen format
+        allowed_params = (
+            set(self.config.FORMAT_PARAMS.get(response_format, []))
+            | 
+            set(self.config.BASE_PARAMS)
+        )
+
+        # Start with base params, filtered to allowed
         api_params = {k: v for k, v in base_params.items() if k in allowed_params}
-        
-        # Override with provided options   
-        if options:
-            api_params |= options
-        
+
+        # Overlay with options, but only allowed keys
+        for k, v in options.items():
+            if k in allowed_params:
+                api_params[k] = v
+
         # Validate response format
         if api_params.get("response_format") not in self.config.SUPPORTED_FORMATS:
             logger.warning(
@@ -225,7 +235,7 @@ class WhisperTranscriptionService(TranscriptionService):
                 f"defaulting to 'verbose_json'"
             )
             api_params["response_format"] = "verbose_json"
-        
+
         return api_params
     
     def _to_whisper_response(self, response: Any) -> WhisperResponse:
@@ -239,15 +249,6 @@ class WhisperTranscriptionService(TranscriptionService):
         Returns:
             A WhisperVerboseJson dictionary
         """
-        
-        # --- PATCH for OpenAI Whisper API inconsistency ---
-        # The OpenAI API incorrectly sends 'duration' as float, 
-        # but the OpenAPI schema defines it as str.
-        # Here it is patched to str temporarily for model_dump(), 
-        # then normalized back to float after.
-        # see API definition of Pydantic model: TranscriptionVerbose 
-        if hasattr(response, "duration") and isinstance(response.duration, float):
-            response.duration = str(response.duration)
             
         if hasattr(response, "model_dump"):
             logger.debug("model_dumping...")
@@ -260,7 +261,10 @@ class WhisperTranscriptionService(TranscriptionService):
         else:
             raise ValueError(f"OpenAI response does not have a method to extract data "
                              f"(missing 'model_dump' or 'to_dict'): {repr(response)}")
-
+        
+        # Required field: duration
+        duration = data.get("duration", 0.0)
+        
         # Required field: text 
         text = data.get("text")
         if not isinstance(text, str):
@@ -272,15 +276,6 @@ class WhisperTranscriptionService(TranscriptionService):
         if not isinstance(language, str):
             raise ValueError(f"Invalid response: 'language' must be a string, "
                              f"got {type(language)}")
-
-        duration_raw = data.get("duration", "0.0")
-        try:
-            logger.debug("converting duration...")
-            duration = float(duration_raw)
-            logger.debug("converted.")
-        except (TypeError, ValueError) as e:
-            raise ValueError(f"Invalid 'duration': expected number-like value, "
-                             f"got {repr(duration_raw)}") from e
 
         # Optional: words and segments (only present in verbose_json)
         words = data.get("words")
@@ -323,6 +318,7 @@ class WhisperTranscriptionService(TranscriptionService):
         openai.api_key = self.api_key
         logger.debug("API key updated")
     
+    # TODO remove this and use the utility sec_to_ms method
     def _seconds_to_ms(self, seconds: Optional[float]) -> Optional[int]:
         """
         Convert seconds to milliseconds.
@@ -340,8 +336,8 @@ class WhisperTranscriptionService(TranscriptionService):
         return TranscriptionResult(
             text=response["text"],
             language=response["language"],
-            words=self._extract_and_validate_words(response),
-            utterances=self._extract_and_validate_utterances(response),
+            word_timing=self._extract_and_validate_words(response),
+            utterance_timing=self._extract_and_validate_utterances(response),
             confidence=0.0,  # Whisper doesn't provide overall confidence
             audio_duration_ms=self._seconds_to_ms(response.get("duration")),
             transcript_id=None,  # No ID from Whisper
@@ -351,12 +347,13 @@ class WhisperTranscriptionService(TranscriptionService):
         
     def _extract_and_validate_words(
         self, response: WhisperResponse
-        ) -> List[WordTiming]:
+        ) -> TimedText:
         """Extract, validate, and convert word data into WordTiming objects."""
         words_data = response.get("words")
-        words = []
+        units: list[TimedTextUnit] = []
+
         if words_data:
-            for word_entry in words_data:
+            for i, word_entry in enumerate(words_data, start=1):
                 word = word_entry.get("word")
                 start_ms = self._seconds_to_ms(word_entry.get("start"))
                 end_ms = self._seconds_to_ms(word_entry.get("end"))
@@ -380,26 +377,29 @@ class WhisperTranscriptionService(TranscriptionService):
                     # Silent handling for identical timestamps
                     end_ms += 1
 
-                words.append(
-                    WordTiming(
-                        word=word, 
-                        start_ms=start_ms, 
+                units.append(
+                    TimedTextUnit(
+                        index=i,
+                        text=word,
+                        start_ms=start_ms,
                         end_ms=end_ms,
+                        speaker=None,
+                        granularity=Granularity.WORD,
                         confidence=0.0,
-                        )
                     )
+                )
         
-        return words
+        return TimedText(words=units)
 
     def _extract_and_validate_utterances(
         self, response: WhisperResponse
-        ) -> List[Utterance]:
+        ) -> TimedText:
         """Extract and validate utterance segments into Utterance objects."""
         segments = response.get("segments")
-        utterances = []
+        units: list[TimedTextUnit] = []
         
         if segments:
-            for segment in segments:
+            for i, segment in enumerate(segments, start=1):
                 start_ms = self._seconds_to_ms(segment.get("start"))
                 end_ms = self._seconds_to_ms(segment.get("end"))
                 text = segment.get("text", "")
@@ -412,19 +412,19 @@ class WhisperTranscriptionService(TranscriptionService):
                     logger.warning(f"Empty or invalid text for segment: {segment}")
                     continue
 
-                utterances.append(
-                    Utterance(
-                        speaker=None,  # Whisper doesn't provide speaker ID
+                units.append(
+                    TimedTextUnit(
+                        index=i,
+                        text=text,
                         start_ms=start_ms,
                         end_ms=end_ms,
-                        text=text.strip(),
-                        confidence=logprob_to_confidence(
-                            segment.get('avg_logprob', 0.0)
-                            ),
+                        speaker=None,
+                        granularity=Granularity.SEGMENT,
+                        confidence=logprob_to_confidence(segment.get("avg_logprob", 0.0)),
                     )
                 )
         
-        return utterances
+        return TimedText(segments=units)
 
     def transcribe(
         self,
