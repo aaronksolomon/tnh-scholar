@@ -13,6 +13,8 @@ from tnh_scholar import TNH_METADATA_PROCESS_FIELD
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils.file_utils import path_as_str, read_str_from_file
 
+# TODO fix all bug warnings from Sourcery in this file.
+
 JsonValue = Union[str, int, float, bool, list, dict, None]
 
 logger = get_child_logger(__name__)
