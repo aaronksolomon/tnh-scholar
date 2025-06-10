@@ -1,9 +1,11 @@
 # src/tnh_scholar/audio_processing/transcription_service/__init__.py
 
 from .diarization_chunker import DiarizationChunker
+from .segment_builder import (
+    SegmentBuilder,
+)
 from .timed_text import (
     Granularity,
-    SegmentBuilder,
     TimedText,
     TimedTextUnit,
 )

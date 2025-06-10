@@ -10,6 +10,9 @@ class AudioChunk(BaseModel):
     data: BytesIO
     start_ms: int
     end_ms: int
-    sample_rate: int = 16000
-    channels: int = 1
+    sample_rate: Optional[int] = None
+    channels: Optional[int] = None
     format: Optional[str] = None
+    
+    class Config:
+        arbitrary_types_allowed = True

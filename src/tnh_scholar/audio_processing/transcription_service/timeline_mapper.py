@@ -29,6 +29,11 @@ class TimelineMapperConfig(BaseModel):
         default=False,
         description="Enable detailed logging of mapping decisions"
     )
+    map_speakers: bool = Field(
+        default=True,
+        description="Assign speaker to mapped timings using diarization segment speaker."
+    )
+    
 
 class TimelineMapper:
     """Maps timestamps from chunk-relative coordinates to original audio coordinates."""
@@ -49,77 +54,82 @@ class TimelineMapper:
             New TimedText object with remapped timestamps
         """
         
-        if not timed_text.segments:
-            return timed_text
+        self._validate_diarize_segments(chunk)
+        mapper = self._TimeUnitMapper(chunk.segments, self.config)
+        self._validate_timed_text(timed_text)    
         
-        self._validate_segments(chunk)
-        self._validate_timed_text(timed_text)
+        if timed_text.segments:    
+            timed_text = mapper.map_timed_text(timed_text)
         
-        mapper = self._SegmentMapper(chunk.segments, self.config)
-        return mapper.map_timed_text(timed_text)
+        if timed_text.words:
+            timed_text = mapper.map_timed_text(timed_text)
+            
+        return timed_text
     
-    def _validate_segments(self, chunk: DiarizationChunk):
+    def _validate_diarize_segments(self, chunk: DiarizationChunk):
         if not (segments:=chunk.segments):
             logger.error("Empty segments.")
             raise ValueError("Cannot remap with empty chunk segments.")
         
         # Validate segments
         for segment in segments:
-            if segment.audio_map_time is None:
-                raise ValueError(f"Segment {segment} is missing audio_map_time")
+            if segment.audio_map_start is None:
+                raise ValueError(f"Remap not possible. Segment {segment} is missing audio_map_time.")
             segment.normalize() # normalize the duration of 
             
     def _validate_timed_text(self, timed_text: TimedText):
         timed_text.sort_by_start()
         for timed_unit in timed_text.iter_segments():
             timed_unit.normalize()
+        for timed_unit in timed_text.iter_words():
+            timed_unit.normalize()
         
+    class _TimeUnitMapper:
+        """Internal helper class for time-unit mapping."""
         
-    class _SegmentMapper:
-        """Internal helper class for segment mapping."""
-        
-        def __init__(self, segments: List[DiarizationSegment], config: TimelineMapperConfig):
-            self.segments = segments
+        def __init__(self, map_segments: List[DiarizationSegment], config: TimelineMapperConfig):
+            self.map_segments = map_segments
             self.config = config            
         
-        def map_timed_text(self, timed_text: TimedText) -> TimedText:
-            """Map all timestamps in a TimedText object."""
-            # Map segment timestamps if available
-            mapped_segments = []
-            mapped_segments = [
-                self._map_text_unit(unit) 
-                for unit in timed_text.segments
-            ]
-            
-            # Map word timestamps if available
-            mapped_words = []
-            if timed_text.words:
-                mapped_words = [
-                    self._map_text_unit(unit)
-                    for unit in timed_text.words
-                ]
-            
-            return TimedText(
-                segments=mapped_segments,
-                words=mapped_words
-            )
+        def map_timed_text(self, tt: TimedText) -> TimedText:
+            """Map timestamps in all TimedTextUnit collections contained in the TimedText object."""
+            new_tt = tt.model_copy(deep=True)
+
+            sources: List[Tuple[str, List[TimedTextUnit]]] = []
+            if tt.segments:
+                sources.append(("segments", tt.segments))
+            if tt.words:
+                sources.append(("words", tt.words))
+
+            for attr, units in sources:
+                mapped_units = [self._map_text_unit(u) for u in units]
+                setattr(new_tt, attr, mapped_units)
+
+            return new_tt
         
         def _map_text_unit(self, unit: TimedTextUnit) -> TimedTextUnit:
             """Map a single TimedTextUnit's timestamps."""
             # Find the best matching segment
             best_segment = self._find_best_segment(unit)
-            
-            # Apply mapping transformation
-            start_ms, end_ms = self._apply_mapping(
+
+            # Debug logging for mapping decision
+            if self.config.debug_logging:
+                self._log_mapping_choice(unit, best_segment)
+
+            # Apply mapping transformation and return new unit
+            return self._apply_mapping(
                 unit,
                 best_segment
             )
             
-            # Create a new unit with mapped timestamps
-            return unit.model_copy(
-                update={"start_ms": start_ms, "end_ms": end_ms}
-            )
         
+        def _log_mapping_choice(self, unit, segment):
+            logger.info(
+                    f"Mapping unit (start: {unit.start_ms}, end: {unit.end_ms}) "
+                    f"to segment (start: {segment.start}, end: {segment.end}, "
+                    f"mapped_start: {segment.mapped_start}, mapped_end: {segment.mapped_end})"
+                )
+            
         def _find_best_segment(self, unit: TimedTextUnit) -> DiarizationSegment:
             """
             Find the best segment to use for mapping a TimedTextUnit.
@@ -147,7 +157,7 @@ class TimelineMapper:
         def _find_overlapping_segments(self, unit: TimedTextUnit) -> List[DiarizationSegment]:
             """Find all segments that overlap with the given unit."""
             return [
-                segment for segment in self.segments
+                segment for segment in self.map_segments
                 if (segment.mapped_start <= unit.end_ms and
                     segment.mapped_end >= unit.start_ms)
             ]
@@ -155,13 +165,13 @@ class TimelineMapper:
         def _choose_best_overlap(
             self, 
             unit: TimedTextUnit, 
-            segments: List[DiarizationSegment]
+            candidates: List[DiarizationSegment]
         ) -> DiarizationSegment:
             """Choose the segment with the largest overlap with the unit."""
-            best_segment = segments[0]
+            best_segment = candidates[0]
             best_overlap = self._calculate_overlap(unit, best_segment)
             
-            for segment in segments[1:]:
+            for segment in candidates[1:]:
                 overlap = self._calculate_overlap(unit, segment)
                 if overlap > best_overlap:
                     best_overlap = overlap
@@ -190,7 +200,7 @@ class TimelineMapper:
             after = None
             after_start = float('inf')
             
-            for segment in self.segments:
+            for segment in self.map_segments:
                 # Check if segment ends before unit starts
                 if segment.mapped_end <= unit.start_ms and segment.mapped_end > before_end:
                     before = segment
@@ -226,7 +236,7 @@ class TimelineMapper:
             self, 
             unit: TimedTextUnit,
             segment: DiarizationSegment
-        ) -> Tuple[int, int]:
+        ) -> TimedTextUnit:
             """
             Apply the timeline mapping transformation.
             
@@ -243,4 +253,11 @@ class TimelineMapper:
             duration = unit.duration_ms
             new_unit_end = new_unit_start + duration
             
-            return new_unit_start, new_unit_end
+            unit = unit.model_copy(
+                update={"start_ms": new_unit_start, "end_ms": new_unit_end}
+            )
+            
+            if self.config.map_speakers:
+                unit.set_speaker(segment.speaker)
+                
+            return unit
