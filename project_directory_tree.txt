@@ -1,15 +1,11 @@
 /Users/phapman/Desktop/tnh-scholar
 ├── CONTRIBUTING.md
-├── LICENSE
-├── README.md
-├── README_old.md
-├── TODO.md
 ├── current_pip_freeze.txt
 ├── data
-│   ├── PDF
-│   │   └── Phat_Giao_journals
-│   └── books
-│       └── public_books
+│   ├── books
+│   │   └── public_books
+│   └── PDF
+│       └── Phat_Giao_journals
 ├── data_processing
 ├── docs
 │   ├── api
@@ -24,18 +20,43 @@
 │   │   └── ytt-fetch.md
 │   ├── design
 │   │   ├── ai-text-processing
+│   │   │   ├── AI-text-processing-ADRs.md
+│   │   │   ├── data-flow-through-pipeline.mermaid
+│   │   │   ├── sectioning and TextObject ADRs.md
 │   │   │   ├── TextObject New Design.md
-│   │   │   ├── TextObject Original Design.md
-│   │   │   └── sectioning and TextObject ADRs.md
+│   │   │   └── TextObject Original Design.md
 │   │   ├── configuration
 │   │   │   └── tnh-configuration.md
+│   │   ├── diarization-transcription
+│   │   │   ├── additional-design.md
+│   │   │   ├── chunking-strategies.md
+│   │   │   ├── chunking-strategies0.md
+│   │   │   ├── diarization-algorithms0.md
+│   │   │   ├── diarization-algorithms1.md
+│   │   │   ├── diarization-system0.md
+│   │   │   ├── diarization-system1.md
+│   │   │   ├── gpt-modular-pipeline.md
+│   │   │   ├── gpt-pipeline-overview.txt
+│   │   │   ├── language-chunking-algorithm.md
+│   │   │   ├── segment-match-algorithm.md
+│   │   │   └── timeline-mapping.md
 │   │   ├── metadata
 │   │   │   └── metadata ADRs.md
+│   │   ├── pattern
+│   │   │   └── pattern-ADRs.md
 │   │   ├── setup-tnh
 │   │   │   └── setup-design.md
 │   │   ├── tnh-fab
 │   │   │   ├── text processing cli design_v1.md
 │   │   │   └── text processing cli design_v2.md
+│   │   ├── transcription
+│   │   │   ├── adr-001-assemblyai-integration.md
+│   │   │   ├── adr-002-optomize-srt.md
+│   │   │   ├── adr-003-standard-timestamp.md
+│   │   │   ├── adr-004-assemblyai-improvements.md
+│   │   │   └── audio-chunk-splitting.md
+│   │   ├── utilities
+│   │   │   └── version-checking-design.md
 │   │   ├── video-processing
 │   │   │   └── video processing ADRs.md
 │   │   └── ytt-fetch
@@ -46,7 +67,9 @@
 │   ├── development
 │   │   ├── contributing.md
 │   │   ├── design-guide.md
-│   │   ├── improvements.md
+│   │   ├── fine-tuning-strategy.md
+│   │   ├── initial-improvements.md
+│   │   ├── pattern-core-design.md
 │   │   ├── system-design.md
 │   │   ├── tnh-scholar-flow-alt.mermaid
 │   │   ├── tnh-scholar-flow.mermaid
@@ -64,23 +87,27 @@
 │   │   ├── configuration.md
 │   │   ├── installation.md
 │   │   └── quick-start.md
-│   ├── gpt_4o_search_query_text_pair_testing
-│   │   ├── sample_text.txt
-│   │   └── testing_input_output.md
-│   ├── gpt_4o_toc_tag_generation_testing
-│   │   └── Nov_2_testing_TOC_label_prompt.txt
-│   ├── gpt_4o_translations experiments
-│   │   └── passage_test.md
-│   ├── gpt_development_convos.md
 │   ├── index.md
-│   ├── metadata_report.md
-│   ├── preliminary_feasibility_study.md
-│   ├── translation_research.md
+│   ├── research
+│   │   ├── gpt_4o_search_query_text_pair_testing
+│   │   │   ├── sample_text.txt
+│   │   │   └── testing_input_output.md
+│   │   ├── gpt_4o_toc_tag_generation_testing
+│   │   │   └── Nov_2_testing_TOC_label_prompt.txt
+│   │   ├── gpt_4o_translations experiments
+│   │   │   └── passage_test.md
+│   │   ├── gpt_development_convos.md
+│   │   ├── metadata_report.md
+│   │   ├── preliminary_feasibility_study.md
+│   │   ├── strategic-information-processing.md
+│   │   ├── tnh-scholar-knowledge-base.md
+│   │   └── translation_research.md
 │   └── user-guide
 │       ├── best-practices.md
 │       ├── overview.md
 │       └── patterns.md
 ├── evaluation
+├── LICENSE
 ├── logs
 ├── mkdocs.yaml
 ├── models
@@ -93,6 +120,20 @@
 │   │   └── section_processing_tests.ipynb
 │   ├── audio_processing
 │   │   └── pyannote_test.ipynb
+│   ├── diarization
+│   │   ├── audio_transcriptions
+│   │   │   └── SPEAKER_00
+│   │   ├── audio-speech-preprocess
+│   │   │   └── audio_enhance.ipynb
+│   │   ├── diarize_and_transcribe.ipynb
+│   │   ├── diarize_pyannote.ipynb
+│   │   ├── diarize_split0.ipynb
+│   │   ├── diarize_split1.ipynb
+│   │   ├── full_pipe0.ipynb
+│   │   ├── full_pipe1.ipynb
+│   │   ├── logs
+│   │   ├── speaker_segments
+│   │   └── speech_detect.ipynb
 │   ├── html_viewing
 │   │   ├── tx_journal_to_html.ipynb
 │   │   └── tx_viewer.css
@@ -118,6 +159,7 @@
 │   │   └── test_sentence_splitting.ipynb
 │   ├── ocr_processing
 │   │   ├── ocr_hand_checking.ipynb
+│   │   ├── ocr_testing_asynch_batches.ipynb
 │   │   ├── ocr_testing.ipynb
 │   │   ├── ocr_testing1.ipynb
 │   │   ├── ocr_testing2.ipynb
@@ -125,8 +167,7 @@
 │   │   ├── ocr_testing4.ipynb
 │   │   ├── ocr_testing5.ipynb
 │   │   ├── ocr_testing6.ipynb
-│   │   ├── ocr_testing7.ipynb
-│   │   └── ocr_testing_asynch_batches.ipynb
+│   │   └── ocr_testing7.ipynb
 │   ├── query_text_generation
 │   │   ├── model_testing_prompt.txt
 │   │   └── prompt_sequence1.ipynb
@@ -136,25 +177,25 @@
 │   │   ├── github_dl_test.ipynb
 │   │   ├── logs
 │   │   ├── logtesting.ipynb
-│   │   ├── metadata_explore.ipynb
 │   │   ├── package_contents_tests.ipynb
+│   │   ├── pydantic_text_obj_error.ipynb
 │   │   ├── sanitize_testing.ipynb
 │   │   ├── test_patterns
 │   │   │   ├── default_line_translation.md
 │   │   │   ├── default_punctuate.md
-│   │   │   ├── default_section.md
 │   │   │   ├── default_section_old.md
+│   │   │   ├── default_section.md
 │   │   │   ├── default_xml_format.md
 │   │   │   ├── default_xml_paragraph_format.md
+│   │   │   ├── extract_wisdom_section.md
 │   │   │   ├── extract_wisdom1.md
 │   │   │   ├── extract_wisdom2.md
-│   │   │   ├── extract_wisdom_section.md
 │   │   │   ├── generate_markdown.md
 │   │   │   ├── generate_sections_en.md
 │   │   │   ├── generate_sections_multi_lang.md
 │   │   │   ├── identify_speakers.md
-│   │   │   ├── repair_markdown.md
 │   │   │   ├── repair_markdown_strategy.md
+│   │   │   ├── repair_markdown.md
 │   │   │   ├── simple_punctuate.md
 │   │   │   ├── simple_translate_paragraph_thay.md
 │   │   │   ├── special
@@ -162,6 +203,11 @@
 │   │   │   ├── translate_lines_thay_audio.md
 │   │   │   ├── translate_section_thay_en.md
 │   │   │   └── xml_format_dt_section_en.md
+│   │   ├── transcription-engine
+│   │   │   ├── logs
+│   │   │   ├── transciption0.ipynb
+│   │   │   └── transciption1.ipynb
+│   │   ├── youtube_metadata_explore.ipynb
 │   │   ├── yt_fetch_test.ipynb
 │   │   └── ytdlp_version_test.ipynb
 │   ├── text_processing
@@ -197,6 +243,7 @@
 │       └── youtube_playlist_process.ipynb
 ├── project_directory_tree.txt
 ├── pyproject.toml
+├── README.md
 ├── release_checklist.md
 ├── src
 │   ├── __init__.py
@@ -205,35 +252,77 @@
 │       ├── ai_text_processing
 │       │   ├── __init__.py
 │       │   ├── ai_text_processing.py
+│       │   ├── general_processor.py
+│       │   ├── line_translator.py
 │       │   ├── openai_process_interface.py
 │       │   ├── patterns.py
 │       │   ├── response_format.py
+│       │   ├── section_processor.py
 │       │   ├── text_object.py
 │       │   └── typing.py
 │       ├── audio_processing
 │       │   ├── __init__.py
 │       │   ├── audio.py
+│       │   ├── diarization_service
+│       │   │   ├── __init__.py
+│       │   │   ├── diarize.py
+│       │   │   └── pyannote_client.py
+│       │   ├── transcription_service
+│       │   │   ├── __init__.py
+│       │   │   ├── assemblyai_service.py
+│       │   │   ├── assemblyai_service0.py
+│       │   │   ├── audio_handler.py
+│       │   │   ├── audio_models.py
+│       │   │   ├── diarization_chunker.py
+│       │   │   ├── diarization_chunker0.py
+│       │   │   ├── format_converter.py
+│       │   │   ├── format_converter0.py
+│       │   │   ├── format_converter1.py
+│       │   │   ├── segment_builder.py
+│       │   │   ├── speaker_block.py
+│       │   │   ├── srt_processor.py
+│       │   │   ├── timed_text.py
+│       │   │   ├── timeline_mapper.py
+│       │   │   ├── transcription_service.py
+│       │   │   ├── vtt_processor.py
+│       │   │   ├── whisper_service.py
+│       │   │   └── whisper_service0.py
 │       │   ├── transcription.py
 │       │   └── whisper_security.py
 │       ├── cli_tools
 │       │   ├── __init__.py
 │       │   ├── audio_transcribe
 │       │   │   ├── __init__.py
-│       │   │   ├── audio_transcribe.py
 │       │   │   ├── audio_transcribe_v0.py
 │       │   │   ├── audio_transcribe_v1.py
+│       │   │   ├── audio_transcribe.py
+│       │   │   ├── convert_video.py
+│       │   │   ├── diarize_poc0.py
+│       │   │   ├── diarize_poc1.py
+│       │   │   ├── diarize_poc3.py
+│       │   │   ├── diarize0.py
+│       │   │   ├── diarize1.py
+│       │   │   ├── diarize3.py
 │       │   │   ├── environment
 │       │   │   │   ├── __init__.py
 │       │   │   │   ├── env.py
 │       │   │   │   └── requirements.txt
 │       │   │   ├── validate.py
 │       │   │   └── version_check.py
+│       │   ├── json_to_srt
+│       │   │   ├── __init__.py
+│       │   │   ├── json_to_srt.py
+│       │   │   └── json_to_srt1.py
 │       │   ├── nfmt
 │       │   │   ├── __init__.py
 │       │   │   └── nfmt.py
 │       │   ├── sent_split
 │       │   │   ├── __init__.py
+│       │   │   ├── sent_split_bak.py
 │       │   │   └── sent_split.py
+│       │   ├── srt_translate
+│       │   │   ├── __init__.py
+│       │   │   └── srt_translate.py
 │       │   ├── tnh_fab
 │       │   │   ├── __init__.py
 │       │   │   └── tnh_fab.py
@@ -281,8 +370,8 @@
 │       ├── text_processing
 │       │   ├── __init__.py
 │       │   ├── bracket.py
+│       │   ├── match_section.py
 │       │   ├── numbered_text.py
-│       │   ├── section_match.py
 │       │   └── text_processing.py
 │       ├── utils
 │       │   ├── __init__.py
@@ -290,24 +379,36 @@
 │       │   ├── json_utils.py
 │       │   ├── lang.py
 │       │   ├── progress_utils.py
+│       │   ├── timing_utils.py
 │       │   ├── user_io_utils.py
-│       │   └── validate.py
+│       │   ├── validate.py
+│       │   ├── version_check
+│       │   │   ├── __init__.py
+│       │   │   ├── cache.py
+│       │   │   ├── checker.py
+│       │   │   ├── cli.py
+│       │   │   ├── config.py
+│       │   │   ├── models.py
+│       │   │   ├── providers.py
+│       │   │   └── strategies.py
+│       │   └── webhook_server.py
 │       ├── video_processing
 │       │   ├── __init__.py
-│       │   ├── video_processing.py
 │       │   ├── video_processing_old1.py
 │       │   ├── video_processing_old2.py
+│       │   ├── video_processing.py
 │       │   └── yt_transcribe.py
 │       └── xml_processing
 │           ├── __init__.py
 │           ├── extract_tags.py
 │           └── xml_processing.py
 ├── src_directory_tree.txt
-└── tests
-    ├── openai_interface
-    │   └── test_openai_interface.py
-    ├── openai_text_processing
-    └── text_processing
-        └── test_numbered_text.py
+├── tests
+│   ├── openai_interface
+│   │   └── test_openai_interface.py
+│   ├── openai_text_processing
+│   └── text_processing
+│       └── test_numbered_text.py
+└── TODO.md
 
-77 directories, 234 files
+95 directories, 317 files
