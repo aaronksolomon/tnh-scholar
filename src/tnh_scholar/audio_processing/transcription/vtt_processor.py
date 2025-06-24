@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 
-from tnh_scholar.audio_processing.transcription_service.timed_text import (
+from tnh_scholar.audio_processing.audio.timed_text import (
     TimedTextUnit,
 )
 

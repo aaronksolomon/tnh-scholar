@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils.file_utils import ensure_directory_exists, write_str_to_file
 
-from .pyannote_interface import PyannoteClient
+from .pyannote_client import DiarizationParams, PyannoteClient
 
 # Load environment variables
 load_dotenv()
@@ -15,9 +15,10 @@ load_dotenv()
 # Logger placeholder - will be replaced by your logger setup
 logger = get_child_logger(__name__)
 
-class ProcessingConfig:
+DEFAULT_OUTPUT_FILE_SUFFIX = "_diarization"
+class DiarizationConfig:
     """Configuration for audio processing."""
-        
+
 
 class DiarizationResult(BaseModel):
     """Raw diarization results from Pyannote API."""
@@ -36,7 +37,8 @@ class DiarizationResult(BaseModel):
         content = self.model_dump_json(indent=2)
         write_str_to_file(file_path, content, overwrite=True)
         logger.debug(f"Raw diarization results saved to {file_path}")
-        
+
+
 class DiarizationProcessor:
     """Process audio files for speaker diarization using pyannote.ai."""
     
@@ -44,8 +46,7 @@ class DiarizationProcessor:
                  audio_file_path: Path, 
                  output_dir: Optional[Path] = None,
                  api_key: Optional[str] = None,
-                 num_speakers: Optional[int] = None,
-                 confidence_limit: Optional[float] = None,
+                 diarization_params: Optional[DiarizationParams] = None,
                  ):
         
         """
@@ -59,6 +60,7 @@ class DiarizationProcessor:
         """
         self.pyannote = PyannoteClient(api_key)
         self.last_job_id = None  # Store the most recent job ID
+        self.params = diarization_params
         
         try:
             self.audio_file_path = audio_file_path.resolve()
@@ -71,7 +73,7 @@ class DiarizationProcessor:
         
         if output_dir is None:
             self.output_dir = audio_file_path.parent \
-                / f"{audio_file_path.stem}_segments"
+                / f"{audio_file_path.stem}{DEFAULT_OUTPUT_FILE_SUFFIX}"
         else:
             self.output_dir = output_dir.resolve()
             
@@ -111,7 +113,7 @@ class DiarizationProcessor:
             return None
             
         # Start diarization job
-        job_id = self.pyannote.start_diarization(media_id)
+        job_id = self.pyannote.start_diarization(media_id, params=self.params)
         if not job_id:
             logger.error("Failed to start diarization job")
             return None
@@ -200,10 +202,13 @@ class DiarizationProcessor:
             # Process results
             return self.save_and_export_diarization(results, extract_audio)
 
+
 def diarize(
     audio_file_path: Path, 
     output_dir: Optional[Path] = None,
     extract_audio: bool = False,
+    num_speakers: Optional[int] = None,
+    confidence_limit: Optional[float] = None,
 ) -> Optional[Dict[str, Any]]:
     """
     Convenient function to perform diarization without creating class instances.
@@ -220,7 +225,14 @@ def diarize(
         Optional[List[AudioSegmentInfo]]: 
             Information about the extracted segments or None if failed
     """
-    processor = DiarizationProcessor(audio_file_path, output_dir)
+    params = DiarizationParams(
+        num_speakers=num_speakers, 
+        confidence=confidence_limit,
+        )
+    processor = DiarizationProcessor(
+        audio_file_path, 
+        output_dir=output_dir, 
+        diarization_params=params)
     return processor.diarize( 
         extract_audio,
     )

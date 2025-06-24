@@ -14,11 +14,8 @@ from pydantic import BaseModel, Field
 
 from tnh_scholar.logging_config import get_child_logger
 
-from .diarization_chunker import (
-    DiarizationChunk,
-    DiarizationSegment,
-)
-from .timed_text import TimedText, TimedTextUnit
+from ..timed_object.timed_text import TimedText, TimedTextUnit
+from .models import DiarizationChunk, DiarizationSegment
 
 logger = get_child_logger(__name__)
 

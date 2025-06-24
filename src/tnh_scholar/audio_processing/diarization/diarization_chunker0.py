@@ -8,7 +8,7 @@ from pydantic_settings import BaseSettings
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils import convert_ms_to_sec, convert_sec_to_ms
 
-from .audio_models import AudioChunk
+from ..audio import AudioChunk
 
 logger = get_child_logger(__name__)
 

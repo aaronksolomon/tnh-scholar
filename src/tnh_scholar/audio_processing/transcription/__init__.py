@@ -1,13 +1,13 @@
 # src/tnh_scholar/audio_processing/transcription_service/__init__.py
 
-from .diarization_chunker import DiarizationChunker
-from .segment_builder import (
-    SegmentBuilder,
-)
-from .timed_text import (
+from ..diarization.chunker import DiarizationChunker
+from ..timed_object.timed_text import (
     Granularity,
     TimedText,
     TimedTextUnit,
+)
+from .text_segment_builder import (
+    TextSegmentBuilder,
 )
 from .transcription_service import (
     TranscriptionService,
@@ -17,7 +17,7 @@ from .transcription_service import (
 __all__ = [
     "DiarizationChunker",
     "TimedText",
-    "SegmentBuilder",
+    "TextSegmentBuilder",
     "TimedTextUnit",
     "Granularity",
     "TranscriptionService",

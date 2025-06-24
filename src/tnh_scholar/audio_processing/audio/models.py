@@ -1,5 +1,7 @@
 # audio_models.py
 
+from __future__ import annotations
+
 from io import BytesIO
 from typing import Optional
 
@@ -16,3 +18,5 @@ class AudioChunk(BaseModel):
     
     class Config:
         arbitrary_types_allowed = True
+
+

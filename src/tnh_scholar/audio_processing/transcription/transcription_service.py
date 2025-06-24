@@ -6,7 +6,7 @@ from typing import Any, BinaryIO, Callable, Dict, Optional, Union
 
 from pydantic import BaseModel
 
-from .timed_text import TimedText
+from ..audio.timed_text import TimedText
 
 
 class WordTiming(BaseModel):

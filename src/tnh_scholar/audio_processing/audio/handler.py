@@ -13,55 +13,23 @@ from io import BytesIO
 from pathlib import Path
 from typing import Optional
 
-from pydantic import Field
-from pydantic_settings import BaseSettings
 from pydub import AudioSegment
 
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.pattern_share.app import ConfigurationError
-
-from .audio_models import AudioChunk
 
 # TODO: Evaluate whether runtime type import isolation (using TYPE_CHECKING) is needed 
 # across the codebase. E.g.:
 # from typing import TYPE_CHECKING
 # if TYPE_CHECKING:
 #     from .diarization_chunker import Chunk, ChunkerConfig, Segment
-from .diarization_chunker import DiarizationChunk
+from ..diarization.chunker import DiarizationChunk
+from .config import AudioHandlerConfig
+from .models import AudioChunk
 
 logger = get_child_logger(__name__)
 
-class AudioHandlerConfig(BaseSettings):
-    """
-    Configuration settings for the AudioHandler.
-    All audio time units are milliseconds (int)
-    """
 
-    output_format: Optional[str] = Field(
-        default=None,
-        description=
-        "Audio output format used when exporting segments (e.g., 'wav', 'mp3')."
-    )
-    temp_storage_dir: Optional[Path] = Field(
-        default=None,
-        description=
-        "Optional directory path for storing temporary audio files (currently unused)."
-    )
-    max_segment_length: Optional[int] = Field(
-        default=None,
-        description="Maximum allowed segment length (in milliseconds)."
-    )
-    silence_all_intervals: bool = Field(
-        default=False,
-        description="If True, replace every non-zero interval between consecutive diarization segments " 
-        "with silence of length spacing_time."
-    )
-    SUPPORTED_FORMATS: frozenset = frozenset({"mp3", "wav", "flac", "ogg", "m4a", "mp4"})
-    class Config:
-        env_prefix = "AUDIO_HANDLER_"  # Optional: allow env vars like AUDIO_HANDLER_OUTPUT_FORMAT
-        
-    
-        
 class AudioHandler:
     """Isolates audio operations and external dependencies (pydub, ffmpeg)."""
 

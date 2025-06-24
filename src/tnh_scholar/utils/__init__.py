@@ -15,7 +15,7 @@ from .lang import (
     get_language_name_from_text,
 )
 from .progress_utils import ExpectedTimeTQDM, TimeProgress
-from .timing_utils import convert_ms_to_sec, convert_sec_to_ms
+from .timing_utils import TimeMs, convert_ms_to_sec, convert_sec_to_ms
 from .user_io_utils import get_user_confirmation
 from .validate import check_ocr_env, check_openai_env
 
@@ -36,6 +36,7 @@ __all__ = [
     "get_language_name_from_text",
     "ExpectedTimeTQDM",
     "TimeProgress",
+    "TimeMs",
     "convert_ms_to_sec",
     "convert_sec_to_ms",
     "get_user_confirmation",

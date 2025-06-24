@@ -4,7 +4,7 @@ from typing import List, Optional, Tuple
 
 import pysrt
 
-from tnh_scholar.audio_processing.transcription_service import (
+from tnh_scholar.audio_processing.transcription import (
     Granularity,
     TimedText,
     TimedTextUnit,

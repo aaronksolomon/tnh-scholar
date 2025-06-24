@@ -1,5 +1,20 @@
-#TODO move this file (also all related diarization modules) 
-# into the audio_processing folder
+"""
+pyannote_client.py
+
+Client interface for interacting with the pyannote.ai speaker diarization API.
+
+This module provides a robust, object-oriented client for uploading audio files,
+starting diarization jobs, polling for job completion, and retrieving results
+from the pyannote.ai API. It includes retry logic, configurable timeouts, and
+support for advanced diarization parameters.
+
+Typical usage:
+    client = PyannoteClient(api_key="your_api_key")
+    media_id = client.upload_audio(Path("audio.mp3"))
+    job_id = client.start_diarization(media_id)
+    result = client.poll_job_until_complete(job_id)
+"""
+
 
 import os
 import time
@@ -63,10 +78,7 @@ class DiarizationParams(BaseModel):
         le=1.0, 
         description="Confidence threshold for speaker segments"
     )
-    webhook: Optional[str] = Field(
-        None, 
-        description="Webhook URL for completion notification"
-    )
+    webhook: Optional[str] = None
 
     def to_api_dict(self) -> Dict[str, Any]:
         """Convert to API payload format."""
@@ -145,7 +157,7 @@ class PyannoteClient:
         self.polling_timeout = self.config.polling_timeout
         self.initial_poll_time = self.config.initial_poll_time
         
-        # Upload-specific timeouts (longer than general API calls)
+        # Upload-specific timeouts (longer than general calls)
         self.upload_timeout = self.config.upload_timeout  # 5 minutes for large files
         self.upload_max_retries = self.config.upload_max_retries
         self.network_timeout = self.config.network_timeout
@@ -322,6 +334,8 @@ class PyannoteClient:
         if params:
             payload |= params.to_api_dict()
             logger.info(f"Starting diarization with params: {params}")
+        
+        logger.debug(f"Full payload: {payload}")
 
         response = requests.post(
             self.config.diarize_endpoint,
@@ -421,7 +435,7 @@ class PyannoteClient:
 
             # Job still running - calculate next poll interval
             self.logger.info(
-                f"Job {self.job_id} status: {status} (elapsed: {elapsed:.1f}s, "
+                f"Job {self.job_id} status: {status} (elapsed: {elapsed:.1f}s) "
             )
             return "POLLING"
         

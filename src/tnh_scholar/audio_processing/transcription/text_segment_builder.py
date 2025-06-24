@@ -7,7 +7,7 @@ punctuation, pauses, and speaker changes.
 """
 from typing import List, Optional
 
-from .timed_text import Granularity, TimedText, TimedTextUnit
+from ..timed_object.timed_text import Granularity, TimedText, TimedTextUnit
 
 COMMON_ABBREVIATIONS = frozenset({
     "adj.", "adm.", "adv.", "al.", "anon.", "apr.", "arc.", "aug.", "ave.",
@@ -20,7 +20,7 @@ COMMON_ABBREVIATIONS = frozenset({
     "surg.", "u.s.", "v.p.", "vs."
 })
 
-class SegmentBuilder:
+class TextSegmentBuilder:
     def __init__(
         self,
         *,

@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 from tnh_scholar.logging_config import get_child_logger
 
 from .format_converter import FormatConverter
-from .timed_text import Granularity, TimedText, TimedTextUnit
+from ..audio.timed_text import Granularity, TimedText, TimedTextUnit
 from .transcription_service import (
     TranscriptionResult,
     TranscriptionService,
@@ -22,7 +22,7 @@ load_dotenv()
 logger = get_child_logger(__name__)
 
 
-def logprob_to_confidence(avg_logprob: Optional[float]) -> float:
+def _logprob_to_confidence(avg_logprob: Optional[float]) -> float:
     """
     Map avg_logprob to confidence [0,1] linearly.
     
@@ -251,9 +251,7 @@ class WhisperTranscriptionService(TranscriptionService):
         """
             
         if hasattr(response, "model_dump"):
-            logger.debug("model_dumping...")
             data = response.model_dump(exclude_unset=True)
-            logger.debug("Dumped.")
         elif hasattr(response, "to_dict"):
             data = response.to_dict()
         elif isinstance(response, dict):
@@ -420,7 +418,7 @@ class WhisperTranscriptionService(TranscriptionService):
                         end_ms=end_ms,
                         speaker=None,
                         granularity=Granularity.SEGMENT,
-                        confidence=logprob_to_confidence(segment.get("avg_logprob", 0.0)),
+                        confidence=_logprob_to_confidence(segment.get("avg_logprob", 0.0)),
                     )
                 )
         

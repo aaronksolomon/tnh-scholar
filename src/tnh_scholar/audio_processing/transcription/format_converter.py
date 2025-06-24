@@ -20,9 +20,9 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel
 
-from tnh_scholar.audio_processing.transcription_service import (
+from tnh_scholar.audio_processing.transcription import (
     Granularity,
-    SegmentBuilder,
+    TextSegmentBuilder,
     TimedText,
     TimedTextUnit,
 )
@@ -62,7 +62,7 @@ class FormatConverter:
 
     def __init__(self, config: Optional[FormatConverterConfig] = None):
         self.config = config or FormatConverterConfig()
-        self._segment_builder = SegmentBuilder(
+        self._segment_builder = TextSegmentBuilder(
             max_duration_ms=self.config.max_entry_duration_ms,
             target_characters=self.config.characters_per_entry,
             avoid_orphans=True,

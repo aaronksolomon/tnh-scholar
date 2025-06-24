@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 from httpx import InvalidURL
 from pydub import AudioSegment
 
-from tnh_scholar.audio_processing.transcription_service import (
+from tnh_scholar.audio_processing.transcription import (
     TranscriptionServiceFactory,
 )
-from tnh_scholar.audio_processing.transcription_service.diarization_chunker import DiarizationChunk
+from tnh_scholar.audio_processing.diarization.chunker import DiarizationChunk
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils.file_utils import write_str_to_file
 

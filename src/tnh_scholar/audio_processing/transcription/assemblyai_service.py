@@ -29,7 +29,7 @@ from dotenv import load_dotenv
 from tnh_scholar.logging_config import get_child_logger
 
 from .format_converter import FormatConverter
-from .timed_text import Granularity, TimedText, TimedTextUnit
+from ..audio.timed_text import Granularity, TimedText, TimedTextUnit
 from .transcription_service import TranscriptionResult, TranscriptionService
 
 # Load environment variables
