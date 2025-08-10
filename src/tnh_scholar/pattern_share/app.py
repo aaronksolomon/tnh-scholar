@@ -12,11 +12,8 @@ from langchain_openai import OpenAIEmbeddings
 from supabase import Client, create_client
 
 from tnh_scholar.ai_text_processing import Pattern
+from tnh_scholar.exceptions import ConfigurationError
 
-class ConfigurationError(Exception):
-    """Custom exception for configuration-related errors."""
-
-    pass
 
 class CredentialsManager:
     def __init__(self):
