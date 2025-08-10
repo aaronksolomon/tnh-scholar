@@ -21,7 +21,7 @@ logger = get_child_logger(__name__)
 
 # Core yt-dlp configuration constants remain unchanged
 BASE_YDL_OPTIONS = {
-    "quiet": True,
+    "quiet": False,
     "no_warnings": True,
     "extract_flat": True,
     "socket_timeout": 30,
@@ -51,6 +51,12 @@ DEFAULT_TRANSCRIPT_OPTIONS = BASE_YDL_OPTIONS | {
 
 DEFAULT_METADATA_OPTIONS = BASE_YDL_OPTIONS | {
     "skip_download": True,
+}
+
+DEFAULT_VIDEO_OPTIONS = BASE_YDL_OPTIONS | {
+    "format": "bestvideo+bestaudio/best",
+    "merge_output_format": "mp4",
+    "noplaylist": True,
 }
 
 DEFAULT_METADATA_FIELDS = [
@@ -84,6 +90,10 @@ class DownloadError(VideoProcessingError):
     """Raised for download-related errors."""
     pass
 
+class VideoDownloadError(VideoProcessingError):
+    """Raised for video download-related errors."""
+    pass
+
 @dataclass 
 class VideoResource:
     """Base class for all video resources."""
@@ -95,6 +105,10 @@ class VideoTranscript(VideoResource):
 
 class VideoAudio(VideoResource): 
     pass 
+
+class VideoFile(VideoResource):
+    """Represents a downloaded video file and its metadata."""
+    pass
 
 
 class YTDownloader:
@@ -126,6 +140,28 @@ class YTDownloader:
         """Retrieve video metadata only."""
         raise NotImplementedError
 
+    def get_video(
+        self,
+        url: str,
+        quality: Optional[str] = None,
+        output_path: Optional[Path] = None
+    ) -> VideoFile:
+        """
+        Download the full video with associated metadata.
+
+        Args:
+            url: YouTube video URL
+            quality: yt-dlp format string (default: highest available)
+            output_path: Optional output directory
+
+        Returns:
+            VideoFile containing video file path and metadata
+
+        Raises:
+            VideoDownloadError: If download fails
+        """
+        raise NotImplementedError
+
 class DLPDownloader(YTDownloader):
     """
     yt-dlp based implementation of YouTube content retrieval.
@@ -149,9 +185,7 @@ class DLPDownloader(YTDownloader):
         """
         Get metadata for a YouTube video. 
         """
-        # temp_path = Path.cwd() / f"{TEMP_FILENAME_FORMAT}.info.json"
         options = DEFAULT_METADATA_OPTIONS | self.config
-        # | # { "outtmpl": str(temp_path), }
         with yt_dlp.YoutubeDL(options) as ydl:
             if info := ydl.extract_info(url):
                 return self._extract_metadata(info)
@@ -219,6 +253,44 @@ class DLPDownloader(YTDownloader):
             else:
                 logger.error("Info not found.")
                 raise DownloadError(f"Unable to download {url}.")
+    
+    def get_video(
+        self,
+        url: str,
+        quality: Optional[str] = None,
+        output_path: Optional[Path] = None
+    ) -> VideoFile:
+        """
+        Download the full video with associated metadata.
+
+        Args:
+            url: YouTube video URL
+            quality: yt-dlp format string (default: highest available)
+            output_path: Optional output directory
+
+        Returns:
+            VideoFile containing video file path and metadata
+
+        Raises:
+            VideoDownloadError: If download fails
+        """
+        temp_path = Path.cwd() / TEMP_FILENAME_FORMAT
+        video_options = DEFAULT_VIDEO_OPTIONS | self.config | {
+            "outtmpl": str(temp_path)
+        }
+        if quality:
+            video_options["format"] = quality
+
+        with yt_dlp.YoutubeDL(video_options) as ydl:
+            if info := ydl.extract_info(url, download=True):
+                metadata = self._extract_metadata(info)
+                ext = info.get("ext", "mp4")
+                filepath = Path(ydl.prepare_filename(info)).with_suffix(f".{ext}")
+                filepath = self._convert_filename(filepath, metadata, output_path)
+                return VideoFile(metadata=metadata, filepath=filepath)
+            else:
+                logger.error("Info not found.")
+                raise VideoDownloadError(f"Unable to download video for {url}.")
     
     #TODO this function is not affecting the start time of processing. 
     # find a fix or new implementation 
@@ -290,8 +362,12 @@ class DLPDownloader(YTDownloader):
         or a default filename format ({sanitized_title}_{id}).
         """
         video_id = str(metadata["id"])
-        assert video_id in str(temp_path)  # Must have video_id in actual path.
-        assert temp_path.suffix  # Actual path must have suffix.
+        if video_id not in str(temp_path):
+            raise VideoProcessingError(f"Temporary path '{temp_path}' "
+                                       "does not contain video ID '{video_id}'.")
+        if not temp_path.suffix:
+            raise VideoProcessingError(f"Temporary path '{temp_path}' "
+                                       "does not have a file extension.")
 
         if not output_path:
             new_filename = self.get_default_filename_stem(metadata)
