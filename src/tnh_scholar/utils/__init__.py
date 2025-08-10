@@ -16,6 +16,7 @@ from .lang import (
 )
 from .progress_utils import ExpectedTimeTQDM, TimeProgress
 from .timing_utils import TimeMs, convert_ms_to_sec, convert_sec_to_ms
+from .tnh_audio_segment import TNHAudioSegment
 from .user_io_utils import get_user_confirmation
 from .validate import check_ocr_env, check_openai_env
 
@@ -37,6 +38,7 @@ __all__ = [
     "ExpectedTimeTQDM",
     "TimeProgress",
     "TimeMs",
+    "TNHAudioSegment",
     "convert_ms_to_sec",
     "convert_sec_to_ms",
     "get_user_confirmation",
