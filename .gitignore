@@ -1,6 +1,9 @@
 # Apple
 .DS_Store 
 
+# Audio transcription
+audio_transcriptions/
+
 # Private data (copyrighted or otherwise to be kept private)
 private_*
 
