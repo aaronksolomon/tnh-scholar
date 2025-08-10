@@ -9,10 +9,12 @@ The algorithm merges adjacent segments from the same speaker when they're close 
 ### 1.1 Inputs and Outputs
 
 **Inputs:**
+
 - List of speaker segments from diarization API
 - Gap threshold (maximum gap to consider segments contiguous)
 
 **Outputs:**
+
 - Dictionary mapping speaker IDs to lists of merged segments
 
 ### 1.2 Algorithm Flowchart
@@ -67,12 +69,14 @@ This algorithm extracts speaker segments from the original audio and creates spe
 ### 2.1 Inputs and Outputs
 
 **Inputs:**
+
 - Path to original audio file
 - Speaker blocks (dictionary mapping speakers to segments)
 - Output directory
 - Configuration for silence padding
 
 **Outputs:**
+
 - Dictionary of timeline mapping information for each speaker
 - Speaker-specific audio files on disk
 
@@ -129,11 +133,13 @@ This algorithm transforms SRT timestamps from speaker timeline to original audio
 ### 3.1 Inputs and Outputs
 
 **Inputs:**
+
 - Path to SRT file (with timestamps in speaker timeline)
 - Timeline mapping information
 - Output path for transformed SRT
 
 **Outputs:**
+
 - SRT file with timestamps mapped to original timeline
 
 ### 3.2 Algorithm Flowchart
@@ -179,10 +185,12 @@ A subcomponent of the SRT mapping algorithm that finds the most appropriate inte
 ### 4.1 Inputs and Outputs
 
 **Inputs:**
+
 - List of timeline intervals
 - Start and end time of subtitle (in speaker timeline)
 
 **Outputs:**
+
 - Interval with best overlap with the subtitle
 
 ### 4.2 Algorithm Flowchart
@@ -223,10 +231,12 @@ Maps time from speaker timeline to original timeline using interval information.
 ### 5.1 Inputs and Outputs
 
 **Inputs:**
+
 - Mapping interval (original and speaker timeline information)
 - Time to map (in speaker timeline)
 
 **Outputs:**
+
 - Corresponding time in original timeline
 
 ### 5.2 Algorithm Flowchart
