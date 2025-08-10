@@ -31,7 +31,7 @@ dependencies = [
     "langdetect==1.0.9",
     "lxml==5.3.0",
     "numpy==2.0.2",
-    "openai==1.78.1",
+    "openai==1.95.1",
     "openai_whisper==20240930",
     "packaging==24.2",
     "pycountry==24.6.1",
@@ -116,6 +116,9 @@ pythonpath = ["src"]
 python_version = "3.12"
 # Disable strict mode during prototyping
 strict = false
+
+# tell mypy where to look for custom stubs
+mypy_path = "typings"
 
 # Core type checking
 disallow_untyped_defs = false      # Allow functions without type annotations
