@@ -1,12 +1,13 @@
 # src/tnh_scholar/audio_processing/transcription_service/transcription_service.py
 
 from abc import ABC, abstractmethod
+from io import BytesIO
 from pathlib import Path
-from typing import Any, BinaryIO, Callable, Dict, Optional, Union
+from typing import Any, Callable, Dict, Optional, Union
 
 from pydantic import BaseModel
 
-from ..audio.timed_text import TimedText
+from ..timed_object.timed_text import TimedText
 
 
 class WordTiming(BaseModel):
@@ -44,7 +45,7 @@ class TranscriptionService(ABC):
     @abstractmethod
     def transcribe(
         self,
-        audio_file: Union[Path, BinaryIO],
+        audio_file: Union[Path, BytesIO],
         options: Optional[Dict[str, Any]] = None
     ) -> TranscriptionResult:
         """
@@ -77,7 +78,7 @@ class TranscriptionService(ABC):
     @abstractmethod
     def transcribe_to_format(
         self,
-        audio_file: Union[Path, BinaryIO, str],
+        audio_file: Union[Path, BytesIO],
         format_type: str = "srt",
         transcription_options: Optional[Dict[str, Any]] = None,
         format_options: Optional[Dict[str, Any]] = None
@@ -125,7 +126,7 @@ class TranscriptionServiceFactory:
         Example:
             >>> from my_module import MyTranscriptionService
             >>> TranscriptionServiceFactory.register_provider("my_provider", MyTranscriptionService)
-        """  # noqa: E501
+        """  
         cls._PROVIDER_MAP[name.lower()] = provider_class
     
     @classmethod

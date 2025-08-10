@@ -6,6 +6,7 @@ from ..timed_object.timed_text import (
     TimedText,
     TimedTextUnit,
 )
+from .patches import patch_whisper_options
 from .text_segment_builder import (
     TextSegmentBuilder,
 )
@@ -15,6 +16,7 @@ from .transcription_service import (
 )
 
 __all__ = [
+    "patch_whisper_options",
     "DiarizationChunker",
     "TimedText",
     "TextSegmentBuilder",

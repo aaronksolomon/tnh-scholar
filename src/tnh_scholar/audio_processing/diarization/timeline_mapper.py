@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field
 from tnh_scholar.logging_config import get_child_logger
 
 from ..timed_object.timed_text import TimedText, TimedTextUnit
-from .models import DiarizationChunk, DiarizationSegment
+from .models import DiarizationChunk, DiarizedSegment
 
 logger = get_child_logger(__name__)
 
@@ -72,19 +72,17 @@ class TimelineMapper:
         for segment in segments:
             if segment.audio_map_start is None:
                 raise ValueError(f"Remap not possible. Segment {segment} is missing audio_map_time.")
-            segment.normalize() # normalize the duration of 
+            segment.normalize() 
             
     def _validate_timed_text(self, timed_text: TimedText):
         timed_text.sort_by_start()
-        for timed_unit in timed_text.iter_segments():
-            timed_unit.normalize()
-        for timed_unit in timed_text.iter_words():
+        for timed_unit in timed_text.iter():
             timed_unit.normalize()
         
     class _TimeUnitMapper:
         """Internal helper class for time-unit mapping."""
         
-        def __init__(self, map_segments: List[DiarizationSegment], config: TimelineMapperConfig):
+        def __init__(self, map_segments: List[DiarizedSegment], config: TimelineMapperConfig):
             self.map_segments = map_segments
             self.config = config            
         
@@ -93,9 +91,9 @@ class TimelineMapper:
             new_tt = tt.model_copy(deep=True)
 
             sources: List[Tuple[str, List[TimedTextUnit]]] = []
-            if tt.segments:
+            if tt.is_segment_granularity():
                 sources.append(("segments", tt.segments))
-            if tt.words:
+            if tt.is_word_granularity():
                 sources.append(("words", tt.words))
 
             for attr, units in sources:
@@ -127,7 +125,7 @@ class TimelineMapper:
                     f"mapped_start: {segment.mapped_start}, mapped_end: {segment.mapped_end})"
                 )
             
-        def _find_best_segment(self, unit: TimedTextUnit) -> DiarizationSegment:
+        def _find_best_segment(self, unit: TimedTextUnit) -> DiarizedSegment:
             """
             Find the best segment to use for mapping a TimedTextUnit.
             
@@ -151,7 +149,7 @@ class TimelineMapper:
             # Choose closest proximal segment
             return self._choose_closest_proximal(unit, before, after)
             
-        def _find_overlapping_segments(self, unit: TimedTextUnit) -> List[DiarizationSegment]:
+        def _find_overlapping_segments(self, unit: TimedTextUnit) -> List[DiarizedSegment]:
             """Find all segments that overlap with the given unit."""
             return [
                 segment for segment in self.map_segments
@@ -162,8 +160,8 @@ class TimelineMapper:
         def _choose_best_overlap(
             self, 
             unit: TimedTextUnit, 
-            candidates: List[DiarizationSegment]
-        ) -> DiarizationSegment:
+            candidates: List[DiarizedSegment]
+        ) -> DiarizedSegment:
             """Choose the segment with the largest overlap with the unit."""
             best_segment = candidates[0]
             best_overlap = self._calculate_overlap(unit, best_segment)
@@ -179,7 +177,7 @@ class TimelineMapper:
         def _calculate_overlap(
             self, 
             unit: TimedTextUnit, 
-            segment: DiarizationSegment
+            segment: DiarizedSegment
         ) -> int:
             """Calculate the amount of overlap between a unit and a segment in milliseconds."""     
             overlap_start = max(unit.start_ms, segment.mapped_start)
@@ -190,7 +188,7 @@ class TimelineMapper:
         def _find_proximal_segments(
             self, 
             unit: TimedTextUnit
-        ) -> Tuple[Optional[DiarizationSegment], Optional[DiarizationSegment]]:
+        ) -> Tuple[Optional[DiarizedSegment], Optional[DiarizedSegment]]:
             """Find the nearest segments before and after the unit."""
             before = None
             before_end = float('-inf')
@@ -216,9 +214,9 @@ class TimelineMapper:
         def _choose_closest_proximal(
             self,
             unit: TimedTextUnit,
-            before: DiarizationSegment,
-            after: DiarizationSegment
-        ) -> DiarizationSegment:
+            before: DiarizedSegment,
+            after: DiarizedSegment
+        ) -> DiarizedSegment:
             """
             Choose the closest proximal segment based on gap distance.
             Requires both before and after segments (cannot be None)
@@ -232,7 +230,7 @@ class TimelineMapper:
         def _apply_mapping(
             self, 
             unit: TimedTextUnit,
-            segment: DiarizationSegment
+            segment: DiarizedSegment
         ) -> TimedTextUnit:
             """
             Apply the timeline mapping transformation.

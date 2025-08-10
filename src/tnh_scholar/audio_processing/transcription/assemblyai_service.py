@@ -28,8 +28,8 @@ from dotenv import load_dotenv
 
 from tnh_scholar.logging_config import get_child_logger
 
+from ..timed_object.timed_text import Granularity, TimedText, TimedTextUnit
 from .format_converter import FormatConverter
-from ..audio.timed_text import Granularity, TimedText, TimedTextUnit
 from .transcription_service import TranscriptionResult, TranscriptionService
 
 # Load environment variables
@@ -198,7 +198,7 @@ class AAITranscriptionService(TranscriptionService):
 
         # Add speaker options
         config_params["speaker_labels"] = self.config.speaker_labels
-        if self.config.speakers_expected:
+        if self.config.speakers_expected is not None:
             config_params["speakers_expected"] = self.config.speakers_expected
 
         # Add audio intelligence options
@@ -277,7 +277,7 @@ class AAITranscriptionService(TranscriptionService):
             transcript: AssemblyAI transcript object
 
         Returns:
-            TimedText object containing word‑level units
+            TimedText object containing word-level units
         """
         if not transcript.words:
             raise ValueError(f"Transcript object has no words: {transcript}")
@@ -296,7 +296,7 @@ class AAITranscriptionService(TranscriptionService):
         ]
 
         # TimedText performs its own internal validation
-        return TimedText(words=units)
+        return TimedText(words=units, granularity=Granularity.WORD)
     
     def _extract_utterances(self, transcript: aai.Transcript) -> TimedText:
         """
@@ -306,11 +306,11 @@ class AAITranscriptionService(TranscriptionService):
             transcript: AssemblyAI transcript object
 
         Returns:
-            TimedText object containing utterance‑level units
+            TimedText object containing utterance-level units
         """
         if not (utterances := getattr(transcript, "utterances", None)):
             # Return an empty TimedText if diarization wasn't requested
-            return TimedText(segments=[])
+            return TimedText(segments=[], granularity=Granularity.SEGMENT)
 
         units = [
             TimedTextUnit(
@@ -325,7 +325,7 @@ class AAITranscriptionService(TranscriptionService):
             for utterance in utterances
         ]
 
-        return TimedText(segments=units)
+        return TimedText(segments=units, granularity=Granularity.SEGMENT)
     
     def _extract_audio_intelligence(self, transcript: aai.Transcript) -> Dict[str, Any]:
         """

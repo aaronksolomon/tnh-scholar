@@ -20,17 +20,13 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel
 
-from tnh_scholar.audio_processing.transcription import (
-    Granularity,
-    TextSegmentBuilder,
-    TimedText,
-    TimedTextUnit,
-)
 from tnh_scholar.logging_config import get_child_logger
 
+from ..timed_object import Granularity, TimedText, TimedTextUnit
 from .srt_processor import (
     SRTProcessor,
 )
+from .text_segment_builder import TextSegmentBuilder
 from .transcription_service import (
     TranscriptionResult,
 )
@@ -135,7 +131,7 @@ class FormatConverter:
                     )
                 )
 
-            return TimedText(segments=units)
+            return TimedText(segments=units, granularity=Granularity.SEGMENT)
 
         if words := result.word_timing:
             # *SegmentBuilder* returns a list[TimedTextUnit]
@@ -155,7 +151,7 @@ class FormatConverter:
                     confidence=None,
                 )
             ]
-            return TimedText(segments=units)
+            return TimedText(segments=units, granularity=Granularity.SEGMENT)
 
         # If we arrived here – nothing to work with.
         raise ValueError(

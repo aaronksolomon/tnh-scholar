@@ -58,7 +58,7 @@ class TextSegmentBuilder:
             self._add_word(word)
 
         self._flush_current_words()  # Final flush
-        return TimedText(segments=self.segments)
+        return TimedText(segments=self.segments, granularity=Granularity.SEGMENT)
     
     def _add_word(self, word: TimedTextUnit):
         if self.current_words:

@@ -9,7 +9,7 @@ Pydantic for robust data validation and type safety.
 from enum import Enum
 from typing import Iterator, List, Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 # TODO convert this module to work not just on text but any object. 
 # Create a super class, TimedObject and TimedUnit.
@@ -89,12 +89,11 @@ class TimedTextUnit(BaseModel):
     @field_validator("end_ms")
     @classmethod
     def _validate_positive_duration(cls, end_ms: int, info) -> int:
-        """Ensure each TimedTextUnit has non-negative duration."""
         start_ms = info.data.get("start_ms")
         if start_ms is not None and end_ms < start_ms:
             raise ValueError(
                 f"end_ms ({end_ms}) must be greater than start_ms ({start_ms})."
-                )
+            )
         return end_ms
 
     @field_validator("text")
@@ -103,153 +102,288 @@ class TimedTextUnit(BaseModel):
         granularity = info.data.get("granularity", "segment")
         if granularity == "word" and (" " in v.strip()):
             raise ValueError(
-                "Text for a word-level TimedUnit cannot contain whitespace.")
+                "Text for a word-level TimedUnit cannot contain whitespace."
+            )
         return v
 
 
 class TimedText(BaseModel):
     """
-    Represents a collection of timed text units.
+    Represents a collection of timed text units of a single granularity.
+
+    Only one of `segments` or `words` is populated, determined by `granularity`.
+    All units must match the declared granularity.
 
     Notes:
-        - Start times must be non-decreasing 
-            overlaps allowed, e.g., for multiple speakers).
-            Use internal sort as post-init.
-        - Mixed granularity (WORD, SEGMENT) is allowed for now.
+        - Start times must be non-decreasing (overlaps allowed for multiple speakers).
         - Negative start_ms or end_ms values are not allowed.
         - Durations must be strictly positive (>0 ms).
+        - Mixed granularity is strictly prohibited.
     """
 
-    segments: List[TimedTextUnit] = Field(
-        default=[],
-        description="Phrase-level timed units"
-    )
-    words: List[TimedTextUnit] = Field(
-        default=[],
-        description="Optional list of word-level timed units"
-    )
+    granularity: Granularity = Field(..., description="Granularity type for all units.")
+    segments: List[TimedTextUnit] = Field(default_factory=list, description="Phrase-level timed units")
+    words: List[TimedTextUnit] = Field(default_factory=list, description="Word-level timed units")
 
-    @field_validator("segments")
-    @classmethod
-    def _validate_segments_granularity(cls, v):
-        for unit in v:
-            if unit.granularity != Granularity.SEGMENT:
-                raise ValueError("All segment units must have granularity SEGMENT.")
-        return v
+    def __init__(
+        self,
+        *,
+        granularity: Optional[Granularity] = None,
+        segments: Optional[List[TimedTextUnit]] = None,
+        words: Optional[List[TimedTextUnit]] = None,
+        units: Optional[List[TimedTextUnit]] = None,
+        **kwargs
+    ):
+        """
+        Custom initializer for TimedText.
+        If `units` is provided, granularity is inferred from the first unit unless explicitly set.
+        If only `segments` or `words` is provided, granularity is set accordingly.
+        If all are empty, granularity must be provided.
+        """
+        segments = segments or []
+        words = words or []
+        if units is not None:
+            if units:
+                inferred_granularity = units[0].granularity
+                granularity = granularity or inferred_granularity
+                if granularity == Granularity.SEGMENT:
+                    segments = units
+                    words = []
+                elif granularity == Granularity.WORD:
+                    words = units
+                    segments = []
+                else:
+                    raise ValueError("Invalid granularity inferred from units.")
+            else:
+                if granularity is None:
+                    raise ValueError("Must provide granularity for empty TimedText.")
+        elif segments:
+            granularity = granularity or Granularity.SEGMENT
+            words = []
+        elif words:
+            granularity = granularity or Granularity.WORD
+            segments = []
+        elif granularity is None:
+            raise ValueError("Must provide granularity for empty TimedText.")
 
-    @field_validator("words")
-    @classmethod
-    def _validate_words_granularity(cls, v):
-        for unit in v:
-            if unit.granularity != Granularity.WORD:
-                raise ValueError("All word units must have granularity WORD.")
-        return v
+        super().__init__(granularity=granularity, segments=segments, words=words, **kwargs)
+        
+    @model_validator(mode="after")
+    def _validate_exclusive_granularity(self):
+        """
+        Validate that TimedText contains only units matching its granularity.
+        Allows empty TimedText objects for prototyping and construction.
+        Modular logic for segments and words.
+        """
+        granularity = self.granularity
+        segments = self.segments
+        words = self.words
+
+        if granularity == Granularity.SEGMENT:
+            if words:
+                raise ValueError("TimedText with SEGMENT granularity must not have word units.")
+            for unit in segments:
+                if unit.granularity != Granularity.SEGMENT:
+                    raise ValueError("All segment units must have granularity SEGMENT.")
+        elif granularity == Granularity.WORD:
+            if segments:
+                raise ValueError("TimedText with WORD granularity must not have segment units.")
+            for unit in words:
+                if unit.granularity != Granularity.WORD:
+                    raise ValueError("All word units must have granularity WORD.")
+        else:
+            raise ValueError("Invalid granularity type.")
+        return self
 
     def model_post_init(self, __context) -> None:
         """
-        After initialization, sort segments by start time, 
-        and normalize so that durations are positive.
+        After initialization, sort units by start time and normalize durations.
         """
         self.sort_by_start()
-        for segment in self.iter_segments():
-            segment.normalize()
-            
+        for unit in self.units:
+            unit.normalize()
+
+    @property
+    def units(self) -> List[TimedTextUnit]:
+        """Return the list of units matching the granularity."""
+        return self.segments if self.granularity == Granularity.SEGMENT else self.words
+
+    def is_segment_granularity(self) -> bool:
+        """Return True if granularity is SEGMENT."""
+        return self.granularity == Granularity.SEGMENT
+
+    def is_word_granularity(self) -> bool:
+        """Return True if granularity is WORD."""
+        return self.granularity == Granularity.WORD
 
     @property
     def start_ms(self) -> int:
-        """Get the start time of the earliest segment."""
-        return min(segment.start_ms for segment in self.segments) \
-            if self.segments else 0
+        """Get the start time of the earliest unit."""
+        return min(unit.start_ms for unit in self.units) if self.units else 0
 
     @property
     def end_ms(self) -> int:
-        """Get the end time of the latest segment."""
-        return max(segment.end_ms for segment in self.segments) \
-            if self.segments else 0
+        """Get the end time of the latest unit."""
+        return max(unit.end_ms for unit in self.units) if self.units else 0
 
     @property
     def duration(self) -> int:
         """Get the total duration in milliseconds."""
         return self.end_ms - self.start_ms
 
-    def iter_segments(self) -> Iterator[TimedTextUnit]:
-        """Iterate over the segments of the TT"""
-        return iter(self.segments)
-    
-    def iter_words(self) -> Iterator[TimedTextUnit]:
-        """Iterate over the words of the TT"""
-        return iter(self.words)
-    
     def __len__(self) -> int:
-        """Return the number of segments."""
-        return len(self.segments)
+        """Return the number of units."""
+        return len(self.units)
 
-    def append(self, segment: TimedTextUnit):
-        """Add a segment to the end."""
-        self.segments.append(segment)
+    def append(self, unit: TimedTextUnit):
+        """Add a unit to the end."""
+        if unit.granularity != self.granularity:
+            raise ValueError(f"Cannot append unit with granularity {unit.granularity} "
+                             "to TimedText of granularity {self.granularity}.")
+        self.units.append(unit)
 
-    def extend(self, segments: List[TimedTextUnit]):
-        """Add multiple segments to the end."""
-        self.segments.extend(segments)
+    def extend(self, units: List[TimedTextUnit]):
+        """Add multiple units to the end."""
+        for unit in units:
+            self.append(unit)
 
     def clear(self):
-        """Remove all segments."""
-        self.segments.clear()
+        """Remove all units."""
+        self.units.clear()
 
     def set_speaker(self, index: int, speaker: str) -> None:
-        """Set speaker for a specific segment by index."""
-        if not (0 <= index < len(self.segments)):
-            raise IndexError(f"Index {index} out of range for segments.")
-        self.segments[index].set_speaker(speaker)
+        """Set speaker for a specific unit by index."""
+        if not (0 <= index < len(self.units)):
+            raise IndexError(f"Index {index} out of range for units.")
+        self.units[index].set_speaker(speaker)
 
     def set_all_speakers(self, speaker: str) -> None:
-        """Set the same speaker for all segments."""
-        for segment in self.segments:
-            segment.set_speaker(speaker)
-            
+        """Set the same speaker for all units."""
+        for unit in self.units:
+            unit.set_speaker(speaker)
+
     def shift(self, offset_ms: int) -> None:
-        """Shift all segments by a given offset in milliseconds."""
-        self.segments = [segment.shift_time(offset_ms) for segment in self.segments]
+        """Shift all units by a given offset in milliseconds."""
+        for i, unit in enumerate(self.units):
+            self.units[i] = unit.shift_time(offset_ms)
 
     def sort_by_start(self) -> None:
-        """Sort segments and words by start time."""
-        self.segments.sort(key=lambda segment: segment.start_ms)
-        self.words.sort(key=lambda word: word.start_ms)
+        """Sort units by start time."""
+        self.units.sort(key=lambda unit: unit.start_ms)
+
+            
+    @classmethod
+    def _new_with_units(
+        cls, units: List[TimedTextUnit], granularity: Optional[Granularity] = None
+    ) -> "TimedText":
+        """
+        Helper to create a new TimedText object with the given granularity and units.
+        If granularity is not provided, it is inferred from the first unit.
+        """
+        if units:
+            inferred_granularity = units[0].granularity
+            granularity = granularity or inferred_granularity
+            if granularity == Granularity.SEGMENT:
+                return cls(granularity=granularity, segments=units, words=[])
+            elif granularity == Granularity.WORD:
+                return cls(granularity=granularity, segments=[], words=units)
+            else:
+                raise ValueError("Invalid granularity inferred from units.")
+        else:
+            if granularity is None:
+                raise ValueError("Must provide granularity for empty TimedText.")
+            if granularity in [Granularity.SEGMENT, Granularity.WORD]:
+                return cls(granularity=granularity, segments=[], words=[])
+            else:
+                raise ValueError("Invalid granularity provided.")
 
     def slice(self, start_ms: int, end_ms: int) -> "TimedText":
         """
-        Return a new TimedText object containing only segments within 
-        [start_ms, end_ms].
-        
-        Segments must overlap with the interval to be included.
+        Return a new TimedText object containing only units within [start_ms, end_ms].
+        Units must overlap with the interval to be included.
         """
-        sliced_segments = [
-            segment for segment in self.segments
-            if segment.end_ms > start_ms and segment.start_ms < end_ms
+        sliced_units = [
+            unit for unit in self.units
+            if unit.end_ms > start_ms and unit.start_ms < end_ms
         ]
-        return TimedText(segments=sliced_segments)
+        return self._new_with_units(sliced_units, self.granularity)
 
     def filter_by_min_duration(self, min_duration_ms: int) -> "TimedText":
         """
-        Return a new TimedText object containing only segments with a minimum duration.
+        Return a new TimedText object containing only units with a minimum duration.
         """
-        filtered_segments = [
-            segment for segment in self.segments
-            if segment.duration_ms >= min_duration_ms
+        filtered_units = [
+            unit for unit in self.units
+            if unit.duration_ms >= min_duration_ms
         ]
-        return TimedText(segments=filtered_segments)
+        return self._new_with_units(filtered_units, self.granularity)
 
     @classmethod
     def merge(cls, items: List["TimedText"]) -> "TimedText":
         """
-        Merge a list of TimedText objects into a single TimedText object.
+        Merge a list of TimedText objects of the same granularity into a single TimedText object.
         """
-        all_segments: List[TimedTextUnit] = []
-        all_words: List[TimedTextUnit] = []
-
+        if not items:
+            raise ValueError("No TimedText objects to merge.")
+        granularity = items[0].granularity
         for item in items:
-            all_segments.extend(item.segments)
-            all_words.extend(item.words)
-
-        return cls(segments=all_segments, words=all_words)
+            if item.granularity != granularity:
+                raise ValueError("Cannot merge TimedText objects of different granularities.")
+        all_units: List[TimedTextUnit] = []
+        for item in items:
+            all_units.extend(item.units)
+            
+        # Use the classmethod to generate with units
+        return cls._new_with_units(all_units, granularity)
     
+    def iter(self) -> Iterator[TimedTextUnit]:
+        """
+        Unified iterator over the units of the correct granularity.
+        """
+        return iter(self.units)
+
+    def iter_segments(self) -> Iterator[TimedTextUnit]:
+        """
+        Iterate over segment-level units.
+
+        Raises:
+            ValueError: If granularity is not SEGMENT.
+        """
+        if not self.is_segment_granularity():
+            raise ValueError("Cannot call iter_segments() on TimedText with WORD granularity.")
+        return iter(self.segments)
+
+    def iter_words(self) -> Iterator[TimedTextUnit]:
+        """
+        Iterate over word-level units.
+
+        Raises:
+            ValueError: If granularity is not WORD.
+        """
+        if not self.is_word_granularity():
+            raise ValueError("Cannot call iter_words() on TimedText with SEGMENT granularity.")
+        return iter(self.words)
+    
+    def export_text(self, separator: str = "\n", skip_empty: bool = True, show_speaker=True) -> str:
+        """
+        Export the text content of all units as a single string.
+
+        Args:
+            separator: String used to separate units (default: newline).
+            skip_empty: If True, skip units with empty or whitespace-only text.
+            show_speaker: If True, add speaker info.
+
+        Returns:
+            Concatenated text of all units, separated by `separator`.
+        """
+        def _text_line(unit: TimedTextUnit) -> str:
+            if show_speaker and unit.speaker:
+                return f"[{unit.speaker}] {unit.text}"
+            return unit.text
+
+        texts = [
+            _text_line(unit) for unit in self.units
+            if not skip_empty or unit.text.strip()
+        ]
+        return separator.join(texts)
+

@@ -1,6 +1,26 @@
+"""
+TODO: MAJOR REFACTOR PLANNED
+-----------------------------------
+This module currently mixes persistent service configuration (WhisperConfig) with per-call runtime options,
+leading to complex validation and logic. Plan is to:
+
+  - Refactor so each WhisperTranscriptionService instance is configured once at construction, with all
+    relevant settings (including file-like/path-like mode, file extension, etc).
+  - Use Pydantic BaseSettings for configuration to normalize configuration and validation according to 
+        TNH Scholar style.
+  - Remove ad-hoc runtime options from the transcribe() entrypoint; all config should be set at init.
+  - If a different configuration is needed, instantiate a new service object.
+  - This will simplify validation, error handling, and code logic, and make the contract clear and robust.
+  - NOTE: This will change the TranscriptionService contract and will require similar changes in other
+    transcription system implementations.
+  - Update all dependent code and tests accordingly.
+-----------------------------------
+"""
+
 import json
 import os
 from dataclasses import dataclass, field
+from io import BytesIO
 from pathlib import Path
 from typing import Any, BinaryIO, Dict, List, Optional, TypedDict, Union
 
@@ -9,14 +29,14 @@ from dotenv import load_dotenv
 
 from tnh_scholar.logging_config import get_child_logger
 
+from ..timed_object.timed_text import Granularity, TimedText, TimedTextUnit
 from .format_converter import FormatConverter
-from ..audio.timed_text import Granularity, TimedText, TimedTextUnit
+from .patches import patch_file_with_name
 from .transcription_service import (
     TranscriptionResult,
     TranscriptionService,
 )
 
-# Load environment variables
 load_dotenv()
 
 logger = get_child_logger(__name__)
@@ -43,6 +63,7 @@ class WordEntry(TypedDict, total=False):
     start: Optional[float]
     end: Optional[float]
 
+
 class WhisperSegment(TypedDict, total=False):
     id: int
     start: float
@@ -52,16 +73,19 @@ class WhisperSegment(TypedDict, total=False):
     avg_logprob: float
     compression_ratio: float
     no_speech_prob: float
-    
+
+
 class WhisperBase(TypedDict):
     text: str
     language: str
     duration: float
 
+
 class WhisperResponse(WhisperBase, total=False):
     words: Optional[List[WordEntry]]
     segments: Optional[List[WhisperSegment]]
-    
+
+
 @dataclass
 class WhisperConfig:
     """Configuration for the Whisper transcription service."""
@@ -124,7 +148,7 @@ class WhisperTranscriptionService(TranscriptionService):
             api_key: OpenAI API key (defaults to OPENAI_API_KEY env var)
             **config_options: Additional configuration options
         """
-        # Create configuration from provided options
+        # Create configuration base
         self.config = WhisperConfig()
         
         # Set any configuration options provided
@@ -170,25 +194,40 @@ class WhisperTranscriptionService(TranscriptionService):
         return JsonlCapture()
     
     def _prepare_file_object(
-        self, 
-        audio_file: Union[Path, BinaryIO]
-        ) -> tuple[BinaryIO, bool]:
+        self,
+        audio_file: Union[Path, BytesIO],
+        options: Optional[Dict[str, Any]] = None
+    ) -> tuple[BinaryIO, bool]:
         """
-        Prepare file object for API call.
-        
+        Prepare file object for API call. PATCH: file-like objects require 'file_extension' in options.
+
         Args:
             audio_file: Path to audio file or file-like object
-            
+            options: Dict containing 'file_extension' if audio_file is file-like
+
         Returns:
             Tuple of (file_object, should_close_file)
+
+        Raises:
+            ValueError: If file-like object is provided without 'file_extension' in options
         """
         if isinstance(audio_file, Path):
-            file_obj = open(audio_file, "rb")
-            should_close = True
+            try:
+                file_obj = open(audio_file, "rb")
+                should_close = True
+            except (IOError, OSError) as e:
+                raise RuntimeError(f"Failed to open audio file '{audio_file}': {e}") from e
         else:
-            file_obj = audio_file
+            file_extension = options.get("file_extension", None) if options else None
+            if not file_extension:
+                logger.error(f"No file extension provided in options for file-like object: {audio_file}")
+                raise ValueError(
+                    "For file-like objects, options['file_extension'] "
+                    "must be provided. (PATCH for OpenAI API which requires)."
+                )
+            file_obj = patch_file_with_name(audio_file, file_extension)
             should_close = False
-            
+
         return file_obj, should_close
     
     def _prepare_api_params(
@@ -256,12 +295,14 @@ class WhisperTranscriptionService(TranscriptionService):
             data = response.to_dict()
         elif isinstance(response, dict):
             data = response
+        elif isinstance(response, str):
+            data = {"text": response} # mimic minimal data response format.
         else:
             raise ValueError(f"OpenAI response does not have a method to extract data "
                              f"(missing 'model_dump' or 'to_dict'): {repr(response)}")
         
         # Required field: duration
-        duration = data.get("duration", 0.0)
+        duration = float(data.get("duration", 0.0))
         
         # Required field: text 
         text = data.get("text")
@@ -272,7 +313,7 @@ class WhisperTranscriptionService(TranscriptionService):
         # Optional fields with normalization 
         language = data.get("language") or self.config.language or "unknown"
         if not isinstance(language, str):
-            raise ValueError(f"Invalid response: 'language' must be a string, "
+            raise ValueError(f"Unexpected OpenAI response: 'language' is not a string."
                              f"got {type(language)}")
 
         # Optional: words and segments (only present in verbose_json)
@@ -316,7 +357,6 @@ class WhisperTranscriptionService(TranscriptionService):
         openai.api_key = self.api_key
         logger.debug("API key updated")
     
-    # TODO remove this and use the utility sec_to_ms method
     def _seconds_to_ms(self, seconds: Optional[float]) -> Optional[int]:
         """
         Convert seconds to milliseconds.
@@ -372,7 +412,13 @@ class WhisperTranscriptionService(TranscriptionService):
                     end_ms = start_ms + 1
 
                 if start_ms == end_ms:
-                    # Silent handling for identical timestamps
+                    # Workaround for OpenAI Whisper API bug:
+                    # Sometimes start == end for word timestamps, which is invalid for downstream consumers.
+                    logger.debug(
+                        f"Whisper API returned identical start and end times "
+                        f"({start_ms} ms) for word '{word}'. "
+                        "Adjusting end_ms to start_ms + 1."
+                    )
                     end_ms += 1
 
                 units.append(
@@ -387,7 +433,7 @@ class WhisperTranscriptionService(TranscriptionService):
                     )
                 )
         
-        return TimedText(words=units)
+        return TimedText(words=units, granularity=Granularity.WORD)
 
     def _extract_and_validate_utterances(
         self, response: WhisperResponse
@@ -422,32 +468,37 @@ class WhisperTranscriptionService(TranscriptionService):
                     )
                 )
         
-        return TimedText(segments=units)
+        return TimedText(segments=units, granularity=Granularity.SEGMENT)
 
     def transcribe(
         self,
-        audio_file: Union[Path, BinaryIO],
-        options: Optional[Dict[str, Any]] = None
+        audio_file: Union[Path, BytesIO],
+        options: Optional[Dict[str, Any]] = None,
     ) -> TranscriptionResult:
         """
         Transcribe audio file to text using OpenAI Whisper API.
-        
+
+        PATCH: If audio_file is a file-like object, options['file_extension'] must be provided 
+        (OpenAI API quirk).
+
         Args:
             audio_file: Path to audio file or file-like object
-            options: Provider-specific options for transcription
-                
+            options: Provider-specific options for transcription. 
+                     If audio_file is file-like, must include 'file_extension'.
+
         Returns:
             Dictionary containing transcription results with standardized keys
+
+        Raises:
+            ValueError: If file-like object is provided without 'file_extension' in options
         """
         # Prepare file object
-        file_obj, should_close = self._prepare_file_object(audio_file)
-
+        file_obj, should_close = self._prepare_file_object(audio_file, options)
         try:
             return self._transcribe_execute(options, file_obj)
         except Exception as e:
             logger.error(f"Error during transcription: {e}")
             raise
-
         finally:
             # Clean up file object if we opened it
             if should_close:
@@ -493,30 +544,33 @@ class WhisperTranscriptionService(TranscriptionService):
         
     def transcribe_to_format(
         self,
-        audio_file: Union[Path, BinaryIO, str],
+        audio_file: Union[Path, BytesIO],
         format_type: str = "srt",
         transcription_options: Optional[Dict[str, Any]] = None,
-        format_options: Optional[Dict[str, Any]] = None
+        format_options: Optional[Dict[str, Any]] = None,
     ) -> str:
         """
         Transcribe audio and return result in specified format.
 
-        Takes advantage of the direct subtitle generation 
-        functionality when requesting SRT or VTT formats.
+        PATCH: If audio_file is a file-like object, transcription_options['file_extension'] must be provided 
+        (OpenAI API quirk).
+
+        Takes advantage of the direct subtitle generation functionality when requesting SRT or VTT formats.
 
         Args:
             audio_file: Path, file-like object, or URL of audio file
             format_type: Format type (e.g., "srt", "vtt", "text")
-            transcription_options: Options for transcription
+            transcription_options: Options for transcription. If audio_file is file-like, must include 
+                                   'file_extension'.
             format_options: Format-specific options
 
         Returns:
             String representation in the requested format
+
+        Raises:
+            ValueError: If file-like object is provided without 'file_extension' in transcription_options
         """
         format_type = format_type.lower()
-        
-        if isinstance(audio_file, str):
-                audio_file = Path(audio_file)
 
         # If requesting SRT or VTT directly, use native OpenAI capabilities
         if format_type in {"srt", "vtt"}:
@@ -525,7 +579,7 @@ class WhisperTranscriptionService(TranscriptionService):
             options["response_format"] = format_type
 
             # Prepare file object
-            file_obj, should_close = self._prepare_file_object(audio_file)
+            file_obj, should_close = self._prepare_file_object(audio_file, options)
 
             try:
                 # Prepare API parameters

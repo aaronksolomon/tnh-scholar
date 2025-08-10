@@ -26,7 +26,6 @@ from typing import Any, Dict, Optional, Union
 import requests
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
-from pydantic_settings import BaseSettings
 from tenacity import (
     RetryError,
     Retrying,
@@ -39,6 +38,8 @@ from tenacity import (
 )
 
 from tnh_scholar.logging_config import get_child_logger
+
+from .config import PyannoteConfig
 
 # Load environment variables
 load_dotenv()
@@ -97,43 +98,8 @@ class DiarizationParams(BaseModel):
 
     
 # Pyannote AI API Configuration
-class PyannoteConfig(BaseSettings):
-    """Configuration constants for Pyannote API."""
 
-    # API Endpoints
-    base_url: str = "https://api.pyannote.ai/v1"
 
-    @property
-    def media_input_endpoint(self) -> str:
-        return f"{self.base_url}/media/input"
-
-    @property
-    def diarize_endpoint(self) -> str:
-        return f"{self.base_url}/diarize"
-
-    @property
-    def job_status_endpoint(self) -> str:
-        return f"{self.base_url}/jobs"
-
-    # Parameters
-    polling_interval: int = 15  # Polling interval in seconds
-    polling_timeout: int = 180  # Polling timeout in seconds
-    initial_poll_time: int = 7 # First polling time in seconds (for short files)
-
-    # Media
-    media_prefix: str = "media://diarization-"
-    media_content_type: str = "audio/mpeg"
-    
-    # Upload-specific settings
-    upload_timeout: int = 300  # 5 minutes for large files
-    upload_max_retries: int = 3
-    
-    # Network specific settings
-    network_timeout: int = 3 # seconds
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
-        env_prefix = "PYANNOTE_"
 
 class PyannoteClient:
     """Client for interacting with the pyannote.ai speaker diarization API."""
