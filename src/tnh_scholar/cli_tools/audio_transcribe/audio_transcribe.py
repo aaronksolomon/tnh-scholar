@@ -1,597 +1,389 @@
 #!/usr/bin/env python
 # audio_transcribe.py
 """
-CLI tool for downloading audio (YouTube or local), 
-splitting into chunks, and transcribing.
+CLI tool for downloading audio (YouTube or local), and transcribing to text.
 
 Usage:
     audio-transcribe [OPTIONS]
 
     e.g. audio-transcribe \
         --yt_url https://www.youtube.com/watch?v=EXAMPLE \
-        --split \
-        --transcribe \
         --output_dir ./processed \
-        --prompt "Some prompt"
+        --service whisper \
+        --model whisper-1
 """
 
+# TODO for production-readiness:
+# - Check that all `assert` statements are failsafe only and explicit error handling with informative 
+#   exceptions has happened upstream.
+# - Add granular error handling and logging for file and network operations (YouTube download, file I/O).
+# - Implement retry logic for network-dependent steps (e.g., YouTube downloads).
+# - Ensure temporary files are cleaned up if the process fails midway.
+# - Add checks and error handling for disk space and file permissions when writing outputs.
+# - Log errors and print user-friendly messages to stderr in the CLI; consider returning appropriate exit 
+#   codes.
+# - Add input sanitization for file paths and URLs, especially before passing to subprocesses.
+# - Warn the user if multiple input sources (yt_url, yt_url_csv, file_) are provided simultaneously.
+# - Add progress reporting for long-running operations (downloads, transcriptions).
+# - Consider a plugin/registry pattern for supporting additional transcription services.
+# - Ensure all exceptions are logged with stack traces for debugging.
+# - Add unit tests for all major code paths.
+
+
+
 import logging
-import os
-
-os.environ["KMP_WARNINGS"] = (
-    "0"  # Turn off known info message about nested levels for OMP 
-         # that arises from torch.
-         # Must turn this off before imports that use OMP 
-         # in order to have effect.
-)
-
-from dataclasses import dataclass
+import tempfile
 from pathlib import Path
-from typing import List, Optional
 
 import click
 from dotenv import load_dotenv
+from pydantic import ValidationError
 
-# External modules from tnh_scholar
 from tnh_scholar import TNH_LOG_DIR
-from tnh_scholar.audio_processing import (
-    split_audio,
-)
-from tnh_scholar.audio_processing.transcription import get_transcription
+from tnh_scholar.audio_processing import DiarizationConfig
 from tnh_scholar.logging_config import get_child_logger, setup_logging
-from tnh_scholar.metadata.metadata import Frontmatter, Metadata
-from tnh_scholar.utils import ensure_directory_exists, get_user_confirmation
-from tnh_scholar.utils.file_utils import write_str_to_file
-from tnh_scholar.video_processing import (
-    DLPDownloader,
-    VideoAudio,
-    get_youtube_urls_from_csv,
-)
+from tnh_scholar.utils import TimeMs, ensure_directory_exists
+from tnh_scholar.video_processing import DLPDownloader, get_youtube_urls_from_csv
 
+from .config import AudioTranscribeConfig, MultipleAudioSourceError, NoAudioSourceError
 from .convert_video import convert_video_to_audio
+from .transcription_pipeline import TranscriptionPipeline
 from .version_check import check_ytd_version
 
-# --- Basic setup ---
 load_dotenv()
 setup_logging(log_filepath=TNH_LOG_DIR / "audio_transcribe.log", log_level=logging.INFO)
 logger = get_child_logger(__name__)
 
-DEFAULT_CHUNK_DURATION_MIN = 7
-DEFAULT_CHUNK_DURATION_SEC = DEFAULT_CHUNK_DURATION_MIN * 60
-DEFAULT_OUTPUT_DIR = "./audio_transcriptions"
-DEFAULT_PROMPT = ""
-RE_DOWNLOAD_CONFIRMATION_STR = (
-    "An mp3 file for {url} already exists in {output_dir}.\nSKIP download ([Y]/n)?"
-)
+DEFAULT_OUTPUT_PATH = "./audio_transcriptions/transcript.txt"
+DEFAULT_TEMP_DIR = tempfile.gettempdir()
+DEFAULT_SERVICE = "whisper"
+DEFAULT_MODEL = "whisper-1"
+DEFAULT_RESPONSE_FORMAT = "text"
+DEFAULT_CHUNK_DURATION = 120
+DEFAULT_MIN_CHUNK = 10
 VIDEO_EXTENSIONS = {".mp4", ".avi", ".mov", ".mkv", ".wmv"}
 
-@dataclass
-class AudioSource:
-    """Configuration for the audio source (YouTube or local)."""
-    yt_url: Optional[str] = None
-    yt_url_csv: Optional[Path] = None
-    audio_file: Optional[Path] = None
-    start_time: Optional[str] = None
-    end_time: Optional[str] = None
 
-@dataclass
-class SplitAudio:
-    chunk_dir: Path
-    audio_output_dir: Path
-    audio_name: str
-    metadata: Metadata
-    is_chunked: bool = True    
-    
-@dataclass
-class SplitConfig:
-    """Configuration for splitting audio."""
-    enabled: bool = True
-    chunk_dir: Optional[Path] = None
-    chunk_duration: int = DEFAULT_CHUNK_DURATION_SEC
-    no_chunks: bool = False
-    method: str = "whisper"  # or "silence"
-    language: str = "en"
 
-@dataclass
-class TranscribeConfig:
-    """Configuration for transcription."""
-    enabled: bool = True
-    translate: bool = False
-    prompt: str = DEFAULT_PROMPT
+class AudioTranscribeApp:
+    """
+    Main application class for audio transcription CLI.
 
-@dataclass 
-class AudioPipelineConfig:
-    """Umbrella configuration for entire pipeline"""
-    source: AudioSource
-    split: SplitConfig 
-    transcribe: TranscribeConfig
-    output_dir: Path
+    Organizes configuration, source resolution, and pipeline execution.
 
-class AudioPipeline:
-    """Core pipeline implementation"""
-    def __init__(self, config: AudioPipelineConfig):
+    Args:
+        yt_url: YouTube URL to download audio from.
+        yt_url_csv: CSV file containing YouTube URLs.
+        file_: Path to local audio file.
+        output_dir: Directory for output files.
+        service: Transcription service provider.
+        model: Transcription model name.
+        language: Language code for transcription.
+        response_format: Format of transcription response.
+        chunk_duration: Target chunk duration (seconds).
+        min_chunk: Minimum chunk duration (seconds).
+        start_time: Start time offset (HH:MM:SS).
+        end_time: End time offset (HH:MM:SS).
+        prompt: Prompt or keywords for transcription.
+    """
+    def __init__(self, config: AudioTranscribeConfig) -> None:
+        """
+        Args:
+            config: Validated AudioTranscribeConfig instance.
+        """
         self.config = config
-        
-    def run(self) -> None:
-        """Execute full pipeline"""
-        audio_data = handle_audio_source(
-            self.config.source, 
-            self.config.output_dir
-            )
-        split_results = handle_split(
-            audio_data, 
-            self.config.split, 
-            self.config.output_dir
-            )
-        handle_transcribe(
-            split_results, 
-            self.config.transcribe, 
-            self.config.output_dir
-            )
-
-def handle_audio_source(
-    source: AudioSource, 
-    output_dir: Path
-    ) -> List[VideoAudio]:
-    """
-    Gather or download audio files from YouTube or local source.
-    Returns a list of audio file paths.
-    """
-    is_download = bool(source.yt_url or source.yt_url_csv)
-
-    if is_download and not check_ytd_version():
-        exit(1)
-        
-    # Ensure base output directory exists 
-    ensure_directory_exists(output_dir)
-
-    # If CSV provided, gather multiple URLs
-    if source.yt_url_csv and is_download:
-        urls = get_youtube_urls_from_csv(source.yt_url_csv)
-    elif source.yt_url and is_download:
-        urls = [source.yt_url]
-    else:
-        urls = []
-
-    # Download if needed
-    if urls:
-       return audio_data_from_urls(urls, source, output_dir)
-        
-    # If local file provided (and no YT download needed)
-    if source.audio_file and not is_download:
-        return audio_data_from_file(source.audio_file, output_dir)
-          
-    logger.error("No audio input found.")
-    exit(1)
-
-def audio_data_from_file(audio_file: Path, output_dir: Path) -> List[VideoAudio]:
-    if audio_file.suffix.lower() in VIDEO_EXTENSIONS:
-            logger.info(f"Detected video file: {audio_file}. "
-                        "Auto-converting to mp3 ...")
-            audio_file = convert_video_to_audio(audio_file, output_dir)
-    return [VideoAudio(metadata=Metadata(), filepath=audio_file)]     
-    
-    
-def audio_data_from_urls(urls, source, output_dir) -> List[VideoAudio]:
-    
-    # Set the downloader object
-    dl = DLPDownloader()
-    
-    video_data_list: List[VideoAudio] = []
-
-    for url in urls:
-        url_metadata = dl.get_metadata(url)
-        default_name = dl.get_default_filename_stem(url_metadata)
-        download_path = output_dir / default_name
-        # need correct extension for resource check
-        download_file = download_path.with_suffix(".mp3")    
-    
-        if download_file.exists():
-            if get_user_confirmation(
-                RE_DOWNLOAD_CONFIRMATION_STR.format(url=url, output_dir=output_dir)
-            ):
-                logger.info(f"Skipping download for {url}")
-                video_data = VideoAudio(url_metadata, download_file)
-                video_data_list.append(video_data)
-                continue
-            else:
-                logger.info(f"Re-downloading {url}")
-                
-        video_data = dl.get_audio(
-            url,  
-            start=source.start_time,
-            output_path=download_path,
-            )
-        logger.info(f"Downloaded {url} to {download_path}")
-
-        video_data_list.append(video_data)
-        
-    return video_data_list
-
-def handle_split(
-    audio_list: List[VideoAudio], 
-    config: SplitConfig, 
-    output_dir: Path
-    ) -> List[SplitAudio]:
-    """
-    Split audio files into chunks if configured, returning a list of processed results.
-    """
-    if not config.enabled or config.no_chunks:
-        # need to implement
-        click.echo("not implemented!")
-        exit(1)
-        
-        # should:
-        # skip splitting if not configured or asked to avoid chunking
-        # return audio_list  
-
-    chunk_data: List[SplitAudio] = []
-
-    for audio_data in audio_list:
-        audio_file = audio_data.filepath
-        assert audio_file is not None # must have real audio_files
-        audio_name = audio_file.stem
-        audio_output_dir = output_dir / audio_name
-        logger.info(f"Audio output directory: {audio_output_dir}")
-        chunk_output_dir = config.chunk_dir or (audio_output_dir / "chunks")
-        ensure_directory_exists(audio_output_dir)
-
-        logger.info(f"Splitting {audio_file} into chunks "
-                    f"using '{config.method}' boundaries."
-                    )
-
-        split_audio(
-            audio_file=audio_file,
-            method=config.method,
-            output_dir=chunk_output_dir,
-            max_duration=config.chunk_duration,
-            language=config.language,
-        )
-
-        # The chunk files are discovered externally.
-        # Store the chunk dir for later use and
-        # Return a list of all the chunk directories.
-        chunk_data.append(
-            SplitAudio(
-                chunk_dir=chunk_output_dir,
-                audio_output_dir=audio_output_dir,
-                audio_name=audio_name, 
-                metadata=audio_data.metadata,
-                is_chunked=True,
-            )
-        )
-
-    return chunk_data
-
-def handle_transcribe(
-    audio_splits: List[SplitAudio], 
-    config: TranscribeConfig, 
-    output_dir: Path) -> None:
-    """
-    Transcribe audio directly (if no_chunks) or from chunk directories.
-    """
-    if not config.enabled:
-        return
-
-    # current implementation expects chunks
-    
-    for split in audio_splits:
-        
-        if split.is_chunked:
-            # This is a directory with chunks
-            audio_name = split.audio_name
-            audio_output_dir = split.audio_output_dir
-            transcript_file = audio_output_dir / f"{audio_name}.txt"
-            jsonl_file = audio_output_dir / f"{audio_name}.jsonl"
-            logger.info(f"Transcribing chunks to directory {output_dir.resolve()}")
-            
-            transcript = process_audio_chunks(
-                chunk_dir=split.chunk_dir,
-                jsonl_file=jsonl_file,
-                prompt=config.prompt,
-                translate=config.translate,
-            )
-            
-            metadata_transcript = Frontmatter.embed(split.metadata, transcript)
-            write_str_to_file(transcript_file, metadata_transcript, overwrite=True)
-            
+        self.yt_url = config.yt_url
+        self.yt_url_csv = config.yt_url_csv
+        self.file_ = config.file_
+        self.output_path = Path(config.output)
+        self.keep_artifacts = config.keep_artifacts
+        # Use output directory for all artifacts if keep_artifacts is True, else use system temp
+        if self.keep_artifacts:
+            self.temp_dir = self.output_path.parent
         else:
-            click.echo("Single file processing not implemented!")
-            exit(1)
+            self.temp_dir = Path(tempfile.mkdtemp(dir=DEFAULT_TEMP_DIR))
+        self.service = config.service
+        self.model = config.model
+        self.language = config.language
+        self.response_format = config.response_format
+        self.chunk_duration = TimeMs.from_seconds(config.chunk_duration)
+        self.min_chunk = TimeMs.from_seconds(config.min_chunk)
+        self.start_time = config.start_time
+        self.end_time = config.end_time
+        self.prompt = config.prompt
+        ensure_directory_exists(self.output_path.parent)
+        ensure_directory_exists(self.temp_dir)
+        self.audio_file: Path = self._resolve_audio_source()
+        self.transcription_options: dict = self._build_transcription_options()
+        self.diarization_config = self._build_diarization_config()
 
-    logger.info("Transcription complete.")
+    def run(self) -> None:
+        """
+        Run the transcription pipeline and print results, or just download audio if no_transcribe is set.
+        """
+        if self.config.no_transcribe:
+            self._echo_settings()
+            click.echo("\n[Download Only Mode]")
+            click.echo(f"Downloaded audio file: {self.audio_file}")
+            return
+        pipeline = TranscriptionPipeline(
+            audio_file=self.audio_file,
+            output_dir=self.temp_dir,
+            diarization_config=self.diarization_config,
+            transcriber=self.service,
+            transcription_options=self.transcription_options,
+        )
+        self._echo_settings()
+        transcripts: list[str] = pipeline.run()
+        self._write_transcript(transcripts)
+        self._print_transcripts(transcripts)
+        self._cleanup_temp_dir()
 
+    def _cleanup_temp_dir(self) -> None:
+        """
+        Remove temp directory if not keeping artifacts.
+        """
+        if not self.keep_artifacts and self.temp_dir and self.temp_dir.exists():
+            import shutil
+            try:
+                shutil.rmtree(self.temp_dir)
+            except Exception as e:
+                logger.warning(f"Failed to clean up temp directory: {self.temp_dir} ({e})")
 
-def process_audio_file(
-    audio_file: Path,
-    output_file: Path,
-    jsonl_file: Path,
-    model: str = "whisper-1",
-    prompt: str = "",
-    translate: bool = False,
-) -> None:
-    """
-    NEEDS REFACTOR!
-    Processes a single audio file using OpenAI's transcription API,
-    saves the transcription objects into a JSONL file.
+    def _write_transcript(self, transcripts: list[str]) -> None:
+        """
+        Write the full transcript to the output file.
 
-    Args:
-        audio_file (Path): Path to the the audio file for processing
-        output_file (Path): Path to the output file to save the stitched transcription.
-        jsonl_file (Path): Path to save the transcription objects as a JSONL file.
-        model (str): The transcription model to use (default is "whisper-1").
-        prompt (str): Optional prompt to provide context for better transcription.
-        translate (bool): Optional flag to translate speech to English 
-        (useful if the audio input is not English)
-    Raises:
-        FileNotFoundError: If no audio chunks are found in the directory.
-    """
+        Args:
+            transcripts: List of transcript strings.
+        """
+        with open(self.output_path, "w", encoding="utf-8") as f:
+            for chunk in transcripts:
+                f.write(chunk.strip() + "\n\n")
 
-    # Ensure the output directory exists
-    ensure_directory_exists(output_file.parent)
-    ensure_directory_exists(jsonl_file.parent)
+    def _echo_settings(self) -> None:
+        """
+        Display all runtime settings except transcription_options and diarization_config.
+        """
+        click.echo("\n[Settings]")
+        click.echo(f"  YouTube URL:         {self.yt_url}")
+        click.echo(f"  YouTube CSV:         {self.yt_url_csv}")
+        click.echo(f"  File:                {self.file_}")
+        click.echo(f"  Output Path:         {self.output_path}")
+        click.echo(f"  Temp Directory:      {self.temp_dir}")
+        click.echo(f"  Service:             {self.service}")
+        click.echo(f"  Model:               {self.model}")
+        click.echo(f"  Language:            {self.language}")
+        click.echo(f"  Response Format:     {self.response_format}")
+        click.echo(f"  Chunk Duration:      {self.chunk_duration.to_seconds()} sec")
+        click.echo(f"  Min Chunk:           {self.min_chunk.to_seconds()} sec")
+        click.echo(f"  Start Time:          {self.start_time}")
+        click.echo(f"  End Time:            {self.end_time}")
+        click.echo(f"  Audio File:          {self.audio_file}")
+        click.echo(f"  Prompt:              '{self.prompt}'")
+        
+     
+    def _resolve_audio_source(self) -> Path:
+        """
+        Resolve and return the audio file to transcribe.
 
-    if not audio_file.exists():
-        raise FileNotFoundError(f"Audio file {audio_file} not found.")
-    else:
-        logger.info(f"Audio file found: {audio_file}")
+        Returns:
+            Path: Path to the resolved audio file.
+        Raises:
+            FileNotFoundError: If no audio input is found.
+            RuntimeError: If youtube-dl version check fails.
+        """
+        click.echo("[Resolving/Downloading Audio Source ...]")
+        if self.yt_url_csv:
+            self._set_yt_url_from_csv()
+        if self.yt_url:
+            return self._get_audio_from_youtube()
+        if self.file_:
+            return self._get_audio_from_file()
+        logger.error("No audio input found.")
+        raise FileNotFoundError("No audio input found.")
 
-    # Open the JSONL file for writing
-    with jsonl_file.open("w", encoding="utf-8") as jsonl_out:
-        logger.info(f"Processing {audio_file.name}...")
-        try:
-            if translate:
-                text = get_transcription(
-                    audio_file, model, prompt, jsonl_out, mode="translate"
-                )
-            else:
-                text = get_transcription(
-                    audio_file, model, prompt, jsonl_out, mode="transcribe"
-                )
-        except Exception as e:
-            logger.error(f"Error processing {audio_file.name}: {e}", exc_info=True)
-            raise e
+    def _set_yt_url_from_csv(self) -> None:
+        """
+        Set the YouTube URL from the first entry in the CSV file.
+        """
+        assert self.yt_url_csv
+        urls: list[str] = get_youtube_urls_from_csv(Path(self.yt_url_csv))
+        self.yt_url = urls[0] if urls else None
 
-    # Write the stitched transcription to the output file
-    with output_file.open("w", encoding="utf-8") as out_file:
-        out_file.write(text)
+    def _get_audio_from_youtube(self) -> Path:
+        """
+        Download and return the audio file from YouTube.
+        """
+        if not check_ytd_version():
+            logger.error("youtube-dl version check failed.")
+            raise RuntimeError("youtube-dl version check failed.")
 
-    logger.info(f"Transcription saved to {output_file}")
-    logger.info(f"Full transcript objects saved to {jsonl_file}")
+        dl = DLPDownloader()
 
-def process_audio_chunks(
-    chunk_dir: Path,
-    jsonl_file: Path,
-    model: str = "whisper-1",
-    prompt: str = "",
-    translate: bool = False,
-) -> str:
-    """
-    Processes all audio chunks in a specified directory using OpenAI's transcription 
-    API, saves the transcription objects into a JSONL file, and stitches the 
-    transcriptions into a single text.
+        assert self.yt_url
+        url_metadata = dl.get_metadata(self.yt_url)
+        default_name = dl.get_default_filename_stem(url_metadata)
+        download_path: Path = self.temp_dir / default_name
+        download_file: Path = download_path.with_suffix(".mp3")
+        if not download_file.exists():
+            return self._extract_yt_audio(dl, download_path)
+        click.echo(f"Re-using existing downloaded audio file: {download_file}")
+        return download_file
 
-    Args:
-        directory (Path): Path to the directory containing audio chunks.
-        output_file (Path): Path to the output file to save the stitched transcription.
-        jsonl_file (Path): Path to save the transcription objects as a JSONL file.
-        model (str): The transcription model to use (default is "whisper-1").
-        prompt (str): Optional prompt to provide context for better transcription.
-        translate (bool): Optional flag to translate speech to English 
-        (useful if the audio input is not English)
-    Raises:
-        FileNotFoundError: If no audio chunks are found in the directory.
-    """
-
-    # Ensure the jsonl output directory exists
-    ensure_directory_exists(jsonl_file.parent)
-
-    # Collect all audio chunks in the directory, sorting numerically by chunk number
-    audio_files = sorted(
-        chunk_dir.glob("*.mp3"),
-        key=lambda f: int(f.stem.split("_")[1]),  # Extract the number from 'chunk_X'
-    )
-
-    if not audio_files:
-        raise FileNotFoundError(f"No audio files found in the directory: {chunk_dir}")
-
-    # log files to process:
-    audio_file_names = [file.name for file in audio_files]  # get strings for logging
-    audio_file_name_str = "\n\t".join(audio_file_names)
-    audio_file_count = len(audio_file_names)
-    logger.info(
-        f"{audio_file_count} audio files found in {chunk_dir}:\n\t{audio_file_name_str}"
-    )
-
-    return generate_transcription(
-        audio_files, jsonl_file, translate, model, prompt
-    )
+    def _extract_yt_audio(self, dl, download_path):
+        video_data = dl.get_audio(
+                self.yt_url,
+                start=self.start_time,
+                output_path=download_path,
+            )
+        if not video_data or not video_data.filepath:
+            raise FileNotFoundError("Failed to download or locate audio file.")
+        return Path(video_data.filepath)
     
+    def _get_audio_from_file(self) -> Path:
+        """
+        Return the audio file path, converting video if needed.
+        """
+        assert self.file_
+        audio_file: Path = Path(self.file_)
+        if audio_file.suffix.lower() in VIDEO_EXTENSIONS:
+            logger.info(f"Detected video file: {audio_file}. Auto-converting to mp3 ...")
+            return convert_video_to_audio(audio_file, self.temp_dir)
+        return audio_file
 
-def generate_transcription(
-    audio_files, 
-    jsonl_file, 
-    translate, 
-    model, 
-    prompt
-    ) -> str:
-    # save transcription data to JSONL file 
-    
-    stitched_transcription: List[str] = []
-    
-    with jsonl_file.open("w", encoding="utf-8") as jsonl_out:
-        # Process each audio chunk
-        for audio_file in audio_files:
-            logger.info(f"Processing {audio_file.name}...")
+    def _build_transcription_options(self) -> dict:
+        """
+        Build transcription options dictionary for the pipeline.
 
-            if translate:
-                text = get_transcription(
-                    audio_file, model, prompt, jsonl_out, mode="translate"
-                )
-            else:
-                text = get_transcription(
-                    audio_file, model, prompt, jsonl_out, mode="transcribe"
-                )
+        Returns:
+            dict: Transcription options for the pipeline.
+        """
+        options: dict = {
+            "model": self.model,
+            "language": self.language,
+            "response_format": self.response_format,
+            "prompt": self.prompt,
+        }
+        if self.service == "whisper" and self.response_format != "text":
+            options["timestamp_granularities"] = ["word"]
+        return options
 
-            stitched_transcription.append(text)
-    
-    logger.info(f"Full transcript objects saved to {jsonl_file}")
-    return "\n".join(stitched_transcription)
-            
+    def _build_diarization_config(self) -> DiarizationConfig:
+        """
+        Build DiarizationConfig for chunking and language settings.
+
+        Returns:
+            DiarizationConfig: Configuration for diarization and chunking.
+        """
+        from tnh_scholar.audio_processing.diarization.config import (
+            ChunkConfig,
+            DiarizationConfig,
+            LanguageConfig,
+            SpeakerConfig,
+        )
+        return DiarizationConfig(
+            chunk=ChunkConfig(
+                target_duration=self.chunk_duration,
+                min_duration=self.min_chunk,
+            ),
+            speaker=SpeakerConfig(single_speaker=True),
+            language=LanguageConfig(default_language=self.language),
+        )
+
+    def _print_transcripts(self, transcripts: list[str]) -> None:
+        """
+        Print each transcript chunk to stdout.
+
+        Args:
+            transcripts: List of transcript strings.
+        """
+        for i, text in enumerate(transcripts, 1):
+            print(f"\n--- Transcript chunk {i} ---\n{text}\n")
+
 @click.command()
-@click.option("-s", "--split", is_flag=True, help="Split audio into chunks.")
-@click.option("-t", "--transcribe", is_flag=True, help="Transcribe the audio.")
-@click.option("-y", "--yt_url", type=str, help="Single YouTube URL.")
 @click.option(
-    "-v",
-    "--yt_url_csv",
-    type=click.Path(exists=True),
-    help="CSV file with multiple YouTube URLs in first column.",
+    "-y", "--yt_url", type=str,
+    help="Single YouTube URL."
 )
 @click.option(
-    "-f", "--file", "file_", type=click.Path(exists=True), 
+    "-v", "--yt_url_csv", type=click.Path(exists=True),
+    help="CSV file with multiple YouTube URLs in first column."
+)
+@click.option(
+    "-f", "--file", "file_", type=click.Path(exists=True),
     help="Path to a local audio file."
 )
 @click.option(
-    "-c",
-    "--chunk_dir",
-    type=click.Path(),
-    help="Directory for new or existing audio chunks.",
+    "-o", "--output", type=click.Path(), default=DEFAULT_OUTPUT_PATH,
+    help="Path to the output transcript file."
+)
+    # Removed temp_dir option, now handled by keep_artifacts only
+@click.option(
+    "-s", "--service", type=click.Choice(["whisper", "assemblyai"]), default=DEFAULT_SERVICE,
+    help="Transcription service to use."
 )
 @click.option(
-    "-o",
-    "--output_dir",
-    type=click.Path(),
-    default=DEFAULT_OUTPUT_DIR,
-    help="Base output directory.",
+    "-m", "--model", type=str, default=DEFAULT_MODEL,
+    help="Model to use for transcription (for OpenAI only)."
 )
 @click.option(
-    "-d",
-    "--chunk_duration",
-    type=int,
-    default=DEFAULT_CHUNK_DURATION_SEC,
-    help=(
-        "Max chunk duration in seconds.\n"
-        f"default: {DEFAULT_CHUNK_DURATION_MIN} minutes)."
-    ),
+    "-l", "--language", type=str, default="en",
+    help="Language code (e.g., 'en', 'vi')."
 )
 @click.option(
-    "-x",
-    "--no_chunks",
-    is_flag=True,
-    help="Transcribe entire audio without splitting into chunks.",
+    "-r", "--response_format", type=str, default=DEFAULT_RESPONSE_FORMAT,
+    help="Response format for Whisper (default: text)."
 )
 @click.option(
-    "-b",
-    "--start_time",
-    type=str,
-    help="Start time offset for the input media (HH:MM:SS).",
+    "--chunk_duration", type=int, default=DEFAULT_CHUNK_DURATION,
+    help="Chunk duration in seconds (default: 7 minutes)."
 )
 @click.option(
-    "-a",
-    "--translate",
-    is_flag=True,
-    help="Enable translation in the transcription if set.",
+    "--min_chunk", type=int, default=DEFAULT_MIN_CHUNK,
+    help="Minimum chunk duration in seconds."
 )
 @click.option(
-    "-p",
-    "--prompt",
-    type=str,
-    default=DEFAULT_PROMPT,
-    help="Prompt or keywords to guide the transcription.",
+    "--start_time", type=str,
+    help="Start time offset for the input media (HH:MM:SS)."
 )
 @click.option(
-    "-i",
-    "--silence_boundaries",
-    is_flag=True,
-    help="Use silence detection to split audio file(s).",
+    "--end_time", type=str,
+    help="End time offset for the input media (HH:MM:SS)."
 )
 @click.option(
-    "-w",
-    "--whisper_boundaries",
-    is_flag=True,
-    help="(DEFAULT) Use a whisper-based model to split audio at sentence boundaries.",
+    "--prompt", type=str, default="",
+    help="Prompt or keywords to guide the transcription."
 )
 @click.option(
-    "-l",
-    "--language",
-    type=str,
-    default="en",
-    help="Two-letter language code (e.g., 'vi'). Used for splitting.",
+    "-n", "--no_transcribe", is_flag=True, default=False,
+    help="Download YouTube audio to mp3 only, do not transcribe. Requires --yt_url or --yt_url_csv."
 )
-def audio_transcribe(
-    split: bool,
-    transcribe: bool,
-    yt_url: Optional[str],
-    yt_url_csv: Optional[str],
-    file_: Optional[str],
-    chunk_dir: Optional[str],
-    output_dir: str,
-    chunk_duration: int,
-    no_chunks: bool,
-    start_time: Optional[str],
-    translate: bool,
-    prompt: str,
-    silence_boundaries: bool,
-    whisper_boundaries: bool,
-    language: str,
-) -> None:
+@click.option(
+    "-k", "--keep_artifacts", is_flag=True, default=False,
+    help="Keep all intermediate artifacts in the output directory instead of using a system temp directory."
+)
+def audio_transcribe(**kwargs):
     """
-    Main CLI entry point. Orchestrates the audio pipeline:
-    1) Download or locate audio source,
-    2) Split (optional),
-    3) Transcribe (optional).
+    CLI entry point for audio transcription.
     """
-    # If user didn't specify, default is do both
-    if not split and not transcribe:
-        split = True
-        transcribe = True
-
-    # Decide which method to use for splitting
-    # Default to whisper if not specified
-    method = "whisper"
-    if silence_boundaries and not whisper_boundaries:
-        method = "silence"
-
-    # Build configuration objects
-    source_config = AudioSource(
-        yt_url=yt_url,
-        yt_url_csv=Path(yt_url_csv) if yt_url_csv else None,
-        audio_file=Path(file_) if file_ else None,
-        start_time=start_time,
-    )
-
-    split_config = SplitConfig(
-        enabled=split,
-        chunk_dir=Path(chunk_dir) if chunk_dir else None,
-        chunk_duration=chunk_duration,
-        no_chunks=no_chunks,
-        method=method,
-        language=language,
-    )
-
-    transcribe_config = TranscribeConfig(
-        enabled=transcribe,
-        translate=translate,
-        prompt=prompt,
-    )
-
-    config = AudioPipelineConfig(
-        source=source_config,
-        split=split_config,
-        transcribe=transcribe_config,
-        output_dir=Path(output_dir)
-    )
-    
-    pipeline = AudioPipeline(config)
-    pipeline.run()
-    
-    logger.info("Audio transcription pipeline completed.")
+    try:
+        config = AudioTranscribeConfig(**kwargs)
+    except NoAudioSourceError as e:
+        print(f"\n[INPUT ERROR] {e}", flush=True)
+        raise SystemExit(1) from e
+    except MultipleAudioSourceError as e:
+        print(f"\n[INPUT ERROR] {e}", flush=True)
+        raise SystemExit(1) from e
+    except ValidationError as e:
+        print("\n[CONFIG VALIDATION ERROR]\n", e, flush=True)
+        raise SystemExit(1) from e
+    app = AudioTranscribeApp(config)
+    app.run()
 
 def main():
     audio_transcribe()
 
 if __name__ == "__main__":
     main()
-
-
+    

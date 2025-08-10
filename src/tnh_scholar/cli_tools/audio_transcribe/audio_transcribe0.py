@@ -23,7 +23,7 @@ import os
 
 from dotenv import load_dotenv
 
-from tnh_scholar.cli_tools.audio_transcribe.audio_transcribe_v1 import process_audio_chunks, process_audio_file
+from tnh_scholar.cli_tools.audio_transcribe.audio_transcribe1 import process_audio_chunks, process_audio_file
 
 os.environ["KMP_WARNINGS"] = (
     "0"  # Turn off known info message about nested levels for OMP 
