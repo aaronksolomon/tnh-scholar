@@ -380,36 +380,42 @@ class SectionProcessor:
     def process_paragraphs(
         self,
         text: TextObject,
-    ) -> Generator[str, None, None]:
+    ) -> Generator[ProcessedSection, None, None]:
         """
-        Process transcript by paragraphs (as sections) 
-        where paragraphs are assumed to be given as newline separated.
+        Process transcript by paragraphs (as sections), yielding ProcessedSection objects.
+        Paragraphs are assumed to be given as newline separated.
 
         Args:
-            transcript: Text to process
-
-        Returns:
-            Generator of lines
+            text: TextObject to process
 
         Yields:
-            Processed lines as strings
+            ProcessedSection: One processed paragraph at a time, containing:
+                - title: Paragraph number (e.g., 'Paragraph 1')
+                - original_str: Raw paragraph text
+                - processed_str: Processed paragraph text
+                - metadata: Optional metadata dict
         """
         num_text = text.num_text
 
         logger.info(f"Processing lines as paragraphs with pattern: {self.pattern.name}")
 
         for i, line in num_text:
-
             # If line is empty or whitespace, continue
             if not line.strip():
                 continue
 
-            # Otherwise get and apply processing instructions
             instructions = self.pattern.apply_template(self.template_dict)
 
             if i <= 1:
                 logger.debug(f"Process instructions (first paragraph):\n{instructions}")
-            yield self.processor.process_text(line, instructions)
+
+            processed_str = self.processor.process_text(line, instructions)
+            yield ProcessedSection(
+                title=f"Paragraph {i}",
+                original_str=line,
+                processed_str=processed_str,
+                metadata={"paragraph_number": i}
+            )
 
 
 class GeneralProcessor:
@@ -541,21 +547,20 @@ def process_text_by_paragraphs(
     template_dict: Dict[str, str],
     pattern: Optional[Pattern] = None,
     model: Optional[str] = None,
-) -> Generator[str, None, None]:
+) -> Generator[ProcessedSection, None, None]:
     """
-    High-level function for processing text paragraphs. 
+    High-level function for processing text paragraphs, yielding ProcessedSection objects.
     Assumes paragraphs are separated by newlines.
     Uses DEFAULT_XML_FORMAT_PATTERN as default pattern for text processing.
 
     Args:
-        transcript: Text to process
-        pattern: Pattern object containing processing instructions
+        text: TextObject to process
         template_dict: Dictionary for template substitution
+        pattern: Pattern object containing processing instructions
         model: Optional model identifier for processor
 
-
     Returns:
-        Generator for ProcessedSections
+        Generator for ProcessedSection objects (one per paragraph)
     """
     processor = OpenAIProcessor(model)
 
@@ -571,11 +576,11 @@ def process_text_by_paragraphs(
         model=model,
         template_dict=template_dict,
     )
-    
+
     result = section_processor.process_paragraphs(text)
-    
+
     text.transform(process_metadata=process_metadata)
-    
+
     return result
 
 def get_pattern(name: str) -> Pattern:
