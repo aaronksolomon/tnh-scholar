@@ -34,12 +34,14 @@ from tenacity import (
     retry_if_result,
     stop_after_attempt,
     stop_after_delay,
+    stop_never,
     wait_exponential_jitter,
 )
 
+from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.logging_config import get_child_logger
 
-from .config import PyannoteConfig
+from .config import PollingConfig, PyannoteConfig
 
 # Load environment variables
 load_dotenv()
@@ -96,10 +98,6 @@ class DiarizationParams(BaseModel):
 
         return payload
 
-    
-# Pyannote AI API Configuration
-
-
 
 class PyannoteClient:
     """Client for interacting with the pyannote.ai speaker diarization API."""
@@ -119,12 +117,10 @@ class PyannoteClient:
                 )
             
         self.config = config or PyannoteConfig()
-        self.polling_interval = self.config.polling_interval
-        self.polling_timeout = self.config.polling_timeout
-        self.initial_poll_time = self.config.initial_poll_time
+        self.polling_config = self.config.polling_config
         
         # Upload-specific timeouts (longer than general calls)
-        self.upload_timeout = self.config.upload_timeout  # 5 minutes for large files
+        self.upload_timeout = self.config.upload_timeout 
         self.upload_max_retries = self.config.upload_max_retries
         self.network_timeout = self.config.network_timeout
         
@@ -179,11 +175,20 @@ class PyannoteClient:
         Retries on network errors with exponential backoff.
         Fails fast on permanent errors (auth, file not found, etc.).
         """
-        if not file_path.exists() or not file_path.is_file():
-            logger.error(f"Audio file not found or is not a file: {file_path}")
+        try:
+            if not file_path.exists() or not file_path.is_file():
+                logger.error(f"Audio file not found or is not a file: {file_path}")
+                return None
+        except OSError as e:
+            logger.error(f"Error accessing audio file '{file_path}': {e}")
             return None
 
-        file_size_mb = file_path.stat().st_size / (1024 * 1024)
+        try:
+            file_size_mb = file_path.stat().st_size / (1024 * 1024)
+        except OSError as e:
+            logger.error(f"Error reading file size for '{file_path}': {e}")
+            return None
+
         logger.info(f"Starting upload of {file_path.name} ({file_size_mb:.1f}MB)")
 
         try:
@@ -203,7 +208,7 @@ class PyannoteClient:
             else:
                 logger.error(f"Upload failed for {file_path.name}")
                 return None
-                
+
         except Exception as e:
             # Log but don't retry - let tenacity handle retries
             logger.error(f"Upload attempt failed: {e}")
@@ -341,6 +346,7 @@ class PyannoteClient:
             requests.ConnectionError
         ))
     )
+    
     def _check_status_with_retry(self, job_id: str) -> Optional[Dict]:
         """
         Check job status with network error retry logic.
@@ -370,120 +376,133 @@ class PyannoteClient:
             return None  # Don't retry on unexpected errors
     
     class JobPoller:
-        def __init__(self, client, job_id: str, timeout: float, logger):
-            self.client = client
+        """
+        Generic job polling helper for long-running async jobs.
+
+        Args:
+            status_fn: Callable that returns job status dict.
+            job_id: The job ID to poll.
+            timeout: Max seconds to wait (None = forever).
+            initial_wait: Initial wait for exponential backoff.
+            logger: Logger instance (optional, defaults to client's logger).
+        """
+        def __init__(
+            self,
+            status_fn,
+            job_id: str,
+            polling_config: PollingConfig,
+        ):
+            self.status_fn = status_fn
             self.job_id = job_id
-            self.timeout = timeout
-            self.logger = logger
+            self.polling_config = polling_config
             self.poll_count = 0
             self.start_time = time.time()
 
+
         def _poll(self):
             self.poll_count += 1
-            status_response = self.client._check_status_with_retry(self.job_id)
+            status_response = self.status_fn(self.job_id)
             if not status_response:
-                self.logger.error(f"Failed to get status for job {self.job_id} after retries")
+                logger.error(f"Failed to get status for job {self.job_id} after retries")
                 return None
 
             status = status_response.get(STATUS_FIELD)
             elapsed = time.time() - self.start_time
 
             if status == JobStatus.SUCCEEDED:
-                self.logger.info(
-                    f"Job {self.job_id} completed successfully after {elapsed:.1f}s ({self.poll_count} polls)"
-                )
+                logger.info(
+                        f"Job {self.job_id} completed successfully after "
+                        "{elapsed:.1f}s ({self.poll_count} polls)"
+                    )
                 return status_response
 
             if status == JobStatus.FAILED:
                 error = status_response.get(ERROR_FIELD, "Unknown error")
-                self.logger.error(f"Job {self.job_id} failed: {error}")
+                logger.error(f"Job {self.job_id} failed: {error}")
                 return status_response
 
             # Job still running - calculate next poll interval
-            self.logger.info(
+            logger.info(
                 f"Job {self.job_id} status: {status} (elapsed: {elapsed:.1f}s) "
             )
             return "POLLING"
         
-        # Not used
-        # @staticmethod
-        # def _polling_stop_condition(retry_state) -> bool:
-        #     """Stop polling if elapsed time exceeds timeout."""
-        #     self_instance = retry_state.args[0]
-        #     return time.time() - self_instance.start_time > self_instance.timeout
-
         def run(self):
             try:
-                retrying = Retrying(
-                    retry=retry_if_result(lambda result: result == "POLLING"),
-                    stop=stop_after_delay(self.timeout),
-                    wait=wait_exponential_jitter(exp_base=2, initial=4, max=30),
-                    reraise=True
-                )
-                result = retrying(self._poll)
-                if isinstance(result, dict):
-                    return result
-                self.logger.info(f"Polling ended with result: {result}")
-                return None
+                return self._setup_and_run_poll()
             except RetryError:
                 elapsed = time.time() - self.start_time
-                self.logger.info(f"Polling timed out for job {self.job_id} after {elapsed:.1f}s")
+                logger.info(f"Polling timed out for job {self.job_id} after {elapsed:.1f}s")
                 return None
             except KeyboardInterrupt:
-                self.logger.info(f"Polling for job {self.job_id} interrupted by user. Exiting.")
+                logger.info(f"Polling for job {self.job_id} interrupted by user. Exiting.")
                 return None
             except Exception as e:
-                self.logger.error(f"Polling failed for job {self.job_id}: {e}")
+                logger.error(f"Polling failed for job {self.job_id}: {e}")
                 return None
+            
+        def _setup_and_run_poll(self):
+            cfg = self.polling_config
+            # Determine stop policy (None => wait indefinitely)
+            stop_policy = stop_never if cfg.polling_timeout is None else (
+                    stop_after_delay(cfg.polling_timeout)
+                )
+            retrying = Retrying(
+                retry=retry_if_result(lambda result: result == "POLLING"),
+                stop=stop_policy,
+                wait=wait_exponential_jitter(
+                    exp_base=cfg.exp_base,
+                    initial=cfg.initial_poll_time,
+                    max=cfg.max_interval
+                ),
+                reraise=True
+            )
+            result = retrying(self._poll)
+            if isinstance(result, dict):
+                return result
+            logger.info(f"Polling ended with result: {result}")
+            return None
 
     def poll_job_until_complete(
         self, 
         job_id: str,
-        estimated_duration: Optional[float] = None
+        estimated_duration: Optional[float] = None,
+        timeout: Optional[float] = None,
+        wait_until_complete: Optional[bool] = False,
     ) -> Optional[Dict]:
         """
+        Main entrypoint for PyannoteClient
         Poll job until completion using JobPoller helper class.
 
         Args:
             job_id: The job ID to poll
             estimated_duration: Future hook for duration-based polling optimization
+            timeout: Optional override for the polling timeout in seconds. 
+                     If not provided, uses self.polling_timeout.
+            wait_until_complete: Optional override of polling timeout. Wait indefinitely.
 
         Returns:
             Final job status or None if polling failed/timed out
         """
+        if timeout and wait_until_complete:
+            raise ConfigurationError("Timeout cannot be set with wait_until_complete")
+            
+        if wait_until_complete:
+            timeout = None
+        else:
+            timeout = timeout or self.polling_config.polling_timeout
+                        
+        timeout_str = "∞" if timeout is None else f"{timeout}s"
         logger.info(
-            f"Polling job {job_id} until completion (timeout: {self.polling_timeout}s)"
+            f"Polling job {job_id} until completion (timeout: {timeout_str})"
         )
 
         if estimated_duration:
             logger.debug(f"Estimated duration: {estimated_duration}s (not yet used for polling optimization)")
 
         poller = self.JobPoller(
-            client=self,
+            status_fn=self._check_status_with_retry,
             job_id=job_id,
-            timeout=self.polling_timeout,
-            logger=logger,
+            polling_config=self.polling_config
         )
         return poller.run()
-
-    # Currently not used. Here for reference
-    # def _calculate_poll_interval(self, poll_count: int) -> float:
-    #     """
-    #     Calculate next polling interval with progressive backoff and jitter.
-        
-    #     Progressive intervals: initial_poll_time -> 2x -> 3x -> 4x -> max 30s
-    #     With ±20% jitter to avoid API clustering.
-    #     """
-    #     base_interval = self.initial_poll_time
-
-    #     # Progressive backoff: 1x, 2x, 3x, 4x, then cap at 30s
-    #     if poll_count <= 1:
-    #         interval = base_interval
-    #     elif poll_count <= 4:
-    #         interval = base_interval * poll_count
-    #     else:
-    #         interval = min(30, base_interval * 4)
-
-    #     # Add ±20% jitter
-    #     jitter = interval * 0.2 * (random.random() * 2 - 1)  # ±20%
-    #     return max(1.0, interval + jitter)
