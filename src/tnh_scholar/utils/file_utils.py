@@ -1,6 +1,7 @@
 import fcntl
 import re
 import shutil
+import tempfile
 import unicodedata
 from pathlib import Path
 from typing import Generator, Union
@@ -29,6 +30,32 @@ def ensure_directory_exists(dir_path: Path) -> bool:
     dir_path.mkdir(parents=True, exist_ok=True)
     return True
 
+def ensure_directory_writable(dir_path: Path) -> None:
+    """
+    Ensure the directory exists and is writable.
+    Creates the directory if it does not exist.
+
+    Args:
+        dir_path (Path): Directory to verify or create.
+
+    Raises:
+        ValueError: If the directory cannot be created or is not writable.
+        TypeError: If the provided path is not a Path instance.
+    """
+    if not isinstance(dir_path, Path):
+        raise TypeError("dir_path must be a pathlib.Path instance")
+
+    # Ensure directory exists first
+    ensure_directory_exists(dir_path)
+
+    # Check writability safely using NamedTemporaryFile
+    try:
+        with tempfile.NamedTemporaryFile(dir=dir_path, prefix=".writability_check_", delete=True) as tmp:
+            tmp.write(b"test")
+            tmp.flush()
+    except Exception as e:
+        raise ValueError(f"Directory is not writable: {dir_path}") from e
+    
 def iterate_subdir(
     directory: Path, recursive: bool = False
 ) -> Generator[Path, None, None]:
@@ -215,3 +242,18 @@ def to_slug(string: str) -> str:
 
 def path_as_str(path: Path) -> str:
     return str(path.resolve())
+
+__all__ = [
+    "DEFAULT_MAX_FILENAME_LENGTH",
+    "FileExistsWarning",
+    "ensure_directory_exists",
+    "ensure_directory_writable",
+    "iterate_subdir",
+    "path_source_str",
+    "copy_files_with_regex",
+    "read_str_from_file",
+    "write_str_to_file",
+    "sanitize_filename",
+    "to_slug",
+    "path_as_str",
+]
