@@ -1,3 +1,160 @@
+"""TNH-Scholar Logging Utilities
+=================================
+
+A production-ready, environment-driven logging system for the TNH-Scholar project.
+It provides JSON logs in production, color/plain text in development, optional
+non-blocking queue logging, file rotation, noise suppression for chatty deps,
+and optional routing of Python warnings into the logging pipeline.
+
+This module is designed for *application layer* configuration and *library layer*
+usage:
+
+- **Applications** (CLI, Streamlit, FastAPI, notebooks) call :func:`setup_logging`.
+- **Libraries / services** (e.g., gen_ai_service, IssueHandler) only *acquire* a
+  logger via :func:`get_logger` (or legacy :func:`get_child_logger`) and never
+  configure global logging.
+
+-------------------------------------------------------------------------------
+Quick start
+-------------------------------------------------------------------------------
+Application entry point (recommended):
+
+    >>> from tnh_scholar.logging_config import setup_logging, get_logger
+    >>> setup_logging()  # reads env; see variables below
+    >>> log = get_logger(__name__)
+    >>> log.info("app started", extra={"service": "gen-ai"})
+
+Jupyter / dev (force color in non-TTY):
+
+    >>> import os
+    >>> os.environ["APP_ENV"] = "dev"
+    >>> os.environ["LOG_JSON"] = "false"
+    >>> os.environ["LOG_COLOR"] = "true"]  # Jupyter isn't a TTY; force color
+    >>> from tnh_scholar.logging_config import setup_logging, get_logger
+    >>> setup_logging()
+    >>> get_logger(__name__).info("hello, color")
+
+Library / service modules (do NOT configure logging):
+
+    >>> from tnh_scholar.logging_config import get_logger
+    >>> log = get_logger(__name__)
+    >>> log.info("library message")
+
+-------------------------------------------------------------------------------
+Behavior by environment
+-------------------------------------------------------------------------------
+- **dev** (default):
+    * Plain or color text to **stdout** by default.
+    * Queue logging **disabled** by default (synchronous).
+    * Color auto-detects TTY *and* Jupyter/IPython (can be forced).
+- **prod**:
+    * JSON logs to **stderr** by default (suitable for log shippers).
+    * Queue logging **enabled** by default (can be disabled).
+
+-------------------------------------------------------------------------------
+Environment variables
+-------------------------------------------------------------------------------
+Most behavior is controlled by environment variables (read when `setup_logging()`
+instantiates :class:`LogSettings`). Truthy values accept `true/1/yes/on`
+(case-insensitive).
+
+- ``APP_ENV``: ``dev`` | ``prod`` | ``test`` (default: ``dev``)
+- ``LOG_LEVEL``: Logging level for the base project logger (default: ``INFO``)
+- ``LOG_STDOUT``: Emit logs to stdout (default: ``true``)
+- ``LOG_FILE_ENABLE``: Emit logs to a file (default: ``false``)
+- ``LOG_FILE_PATH``: File path for logs (default: ``./logs/main.log``)
+- ``LOG_ROTATE_BYTES``: Rotate at N bytes (e.g., 10485760) (default: unset)
+- ``LOG_ROTATE_WHEN``: Timed rotation (e.g., ``midnight``) (default: unset)
+- ``LOG_BACKUPS``: Number of rotated file backups (default: ``5``)
+- ``LOG_JSON``: Use JSON formatter (recommended in prod) (default: ``true``)
+- ``LOG_COLOR``: ``true`` | ``false`` | ``auto`` (default: ``auto``)
+- ``LOG_STREAM``: ``stdout`` | ``stderr`` (default: ``stderr``; **dev** defaults to ``stdout``)
+- ``LOG_USE_QUEUE``: Use QueueHandler/QueueListener (default: ``true``; **dev** defaults to ``false``)
+- ``LOG_CAPTURE_WARNINGS``: Route Python warnings via logging (default: ``false``)
+- ``LOG_SUPPRESS``: Comma-separated list of noisy module names to set to WARNING
+                    (default includes ``urllib3``, ``httpx``, ``openai``, ``uvicorn.*``, etc.)
+
+-------------------------------------------------------------------------------
+Backward compatibility
+-------------------------------------------------------------------------------
+- **`get_child_logger(name, console=False, separate_file=False)`** remains available
+  and can attach ad-hoc console/file handlers without reconfiguring the project
+  base logger. When custom handlers are attached, the child’s propagation is turned
+  off to avoid duplicate messages.
+- **`setup_logging_legacy(...)`** forwards to :func:`setup_logging` and emits
+  a DeprecationWarning to help locate legacy call sites.
+- **Custom level `PRIORITY_INFO` (25)** and :meth:`logger.priority_info` still exist
+  but are **deprecated**. Prefer:
+
+    >>> log.info("message", extra={"priority": "high"})
+
+  This keeps level semantics standard and plays better with structured logging.
+
+-------------------------------------------------------------------------------
+Queue logging notes
+-------------------------------------------------------------------------------
+- When ``LOG_USE_QUEUE=true``, the base logger uses a :class:`QueueHandler`.
+  A :class:`QueueListener` is started with sinks mirroring your configured
+  stdout/file handlers. This decouples log emission from I/O to minimize latency.
+- In notebooks or during debugging, you may prefer synchronous logs:
+
+    >>> os.environ["LOG_USE_QUEUE"] = "false"
+
+-------------------------------------------------------------------------------
+Python warnings routing
+-------------------------------------------------------------------------------
+- When ``LOG_CAPTURE_WARNINGS=true``, Python warnings are captured and logged
+  through ``py.warnings``. This module attaches the base logger’s handlers to
+  that logger and disables propagation to avoid duplicate output.
+
+-------------------------------------------------------------------------------
+Mixing print() and logging
+-------------------------------------------------------------------------------
+- `print()` writes to **stdout**; the logger can write to **stdout** or **stderr**
+  depending on ``LOG_STREAM`` and environment. Ordering is not guaranteed,
+  especially with queue logging enabled. Prefer logging for consistent output.
+
+-------------------------------------------------------------------------------
+Minimal examples
+-------------------------------------------------------------------------------
+CLI / entrypoint:
+
+    >>> import os
+    >>> os.environ.setdefault("APP_ENV", "prod")
+    >>> os.environ.setdefault("LOG_JSON", "true")
+    >>> from tnh_scholar.logging_config import setup_logging, get_logger
+    >>> setup_logging()
+    >>> get_logger(__name__).info("ready")
+
+File logging with rotation:
+
+    >>> import os
+    >>> os.environ.update({
+    ...     "LOG_FILE_ENABLE": "true",
+    ...     "LOG_FILE_PATH": "./logs/app.log",
+    ...     "LOG_ROTATE_BYTES": "10485760",  # 10MB
+    ...     "LOG_BACKUPS": "7",
+    ... })
+    >>> setup_logging()
+    >>> get_logger("smoke").info("to file")
+
+Jupyter with color:
+
+    >>> import os
+    >>> os.environ.update({"APP_ENV": "dev", "LOG_JSON": "false", "LOG_COLOR": "true"})
+    >>> setup_logging()
+    >>> get_logger(__name__).info("color in notebook")
+
+-------------------------------------------------------------------------------
+Notes
+-------------------------------------------------------------------------------
+- JSON formatting requires ``python-json-logger``; without it, we fall back to
+  plain/color format automatically.
+- This module never configures the *root* logger; it configures the project
+  base logger (``tnh``) so your app can coexist with other libraries cleanly.
+"""
+
+
 import contextlib
 import logging
 import logging.config
@@ -98,7 +255,6 @@ def _env_int(key: str, default: int) -> int:
         return int(val) if val is not None and val.strip() != "" else default
     except Exception:
         return default
-
 
 def _is_tty(stream) -> bool:
     try:
@@ -320,8 +476,8 @@ class LoggingConfigurator:
                 "class": "logging.handlers.QueueHandler",
                 "queue": self._queue,
             }
-
         return handlers
+    
     # ----- Private helpers (queue sinks) -----
     def _make_stream_sink(self) -> logging.Handler:
         s = self.settings
