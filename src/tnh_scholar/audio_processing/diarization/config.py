@@ -3,6 +3,22 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from tnh_scholar.utils import TimeMs
 
 
+class PollingConfig(BaseSettings):
+    """Configuration constants for a generic polling class used to for Pyannote API polling."""
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive = False,
+        env_prefix = "PYANNOTE_POLL_",
+        extra="ignore",
+    )
+    
+    polling_interval: int = 15
+    polling_timeout: float | None = 300.0  # seconds. set to None for time unlimited
+    initial_poll_time: int = 7
+    exp_base: int = 2
+    max_interval: int = 30
+
 class PyannoteConfig(BaseSettings):
     """Configuration constants for Pyannote API."""
     model_config = SettingsConfigDict(
@@ -28,11 +44,6 @@ class PyannoteConfig(BaseSettings):
     def job_status_endpoint(self) -> str:
         return f"{self.base_url}/jobs"
 
-    # Parameters
-    polling_interval: int = 15  # Polling interval in seconds
-    polling_timeout: int = 180  # Polling timeout in seconds
-    initial_poll_time: int = 7 # First polling time in seconds (for short files)
-
     # Media
     media_prefix: str = "media://diarization-"
     media_content_type: str = "audio/mpeg"
@@ -43,6 +54,9 @@ class PyannoteConfig(BaseSettings):
     
     # Network specific settings
     network_timeout: int = 3 # seconds
+    
+    # Polling
+    polling_config: PollingConfig = PollingConfig()
 
 class SpeakerConfig(BaseSettings):
     """Configuration settings for speaker block generation."""
@@ -105,6 +119,32 @@ class LanguageConfig(BaseSettings):
     default_language: str = "en"
 
 
+# MappingPolicy for transport→domain shaping
+class MappingPolicy(BaseSettings):
+    """Mapping policy for transport→domain shaping.
+
+    TODO (future parameters to consider):
+    - min_segment_ms: int                # drop micro-segments below threshold
+    - merge_gap_ms: int                  # merge adjacent same-speaker if gap ≤ this
+    - round_ms_to: int                   # quantize boundaries (e.g., 10ms)
+    - confidence_floor: float | None     # filter out low-confidence segments
+    - suppress_unlabeled: bool           # drop segments missing speaker id
+    - attach_raw_payload: bool           # persist raw API payload in metadata
+    - version: int                       # policy versioning for reproducibility
+    """
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive = False,
+        env_prefix = "MAPPING_",
+        extra="ignore",
+    )
+
+    # Current, minimal policy (kept in sync with existing flags in use)
+    default_speaker_label: str = "SPEAKER_00"
+    single_speaker: bool = False
+
+
 class DiarizationConfig(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -116,6 +156,4 @@ class DiarizationConfig(BaseSettings):
     speaker: SpeakerConfig = SpeakerConfig()
     chunk: ChunkConfig = ChunkConfig()
     language: LanguageConfig = LanguageConfig()
-    
-    
-
+    mapping: MappingPolicy = MappingPolicy()

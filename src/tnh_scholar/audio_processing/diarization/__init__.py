@@ -5,16 +5,14 @@ from .pyannote_client import (
 )
 from .pyannote_diarize import (
     DiarizationProcessor,
-    check_job_status,
     diarize,
-    resume_diarization,
+    diarize_to_file,
 )
 
 __all__ = [
     "DiarizationProcessor",
-    "check_job_status",
     "diarize",
-    "resume_diarization",
+    "diarize_to_file",
     "DiarizationParams",
     "PyannoteClient",
     "PyannoteConfig",

@@ -242,13 +242,78 @@ class SpeakerBlock(BaseModel):
         return len(self.segments)
 
     def to_dict(self) -> dict:
-        """Custom serializer for SpeakerBlock."""
+        """custom serializer for SpeakerBlock with validation."""
+        # Validate speaker
+        if not isinstance(self.speaker, str) or not self.speaker:
+            logger.error("SpeakerBlock.to_dict: 'speaker' must be a non-empty string.")
+            raise ValueError("'speaker' must be a non-empty string.")
+
+        # Validate segments
+        if not isinstance(self.segments, list) or not self.segments:
+            logger.error("SpeakerBlock.to_dict: 'segments' must be a non-empty list.")
+            raise ValueError("'segments' must be a non-empty list of DiarizedSegment.")
+
+        for idx, segment in enumerate(self.segments):
+            if not isinstance(segment, DiarizedSegment):
+                logger.error(f"SpeakerBlock.to_dict: Segment at index {idx} is not a DiarizedSegment.")
+                raise TypeError(f"Segment at index {idx} is not a DiarizedSegment.")
+
+        # Validate start/end/duration
+        try:
+            start = int(self.start)
+            end = int(self.end)
+            duration = int(self.duration)
+            duration_sec = float(self.duration_sec)
+            segment_count = int(self.segment_count)
+        except Exception as e:
+            logger.error(f"SpeakerBlock.to_dict: Error computing time fields: {e}")
+            raise
+
         return {
             "speaker": self.speaker,
             "segments": [segment.model_dump() for segment in self.segments],
-            "start": int(self.start),
-            "end": int(self.end),
-            "duration": int(self.duration),
-            "duration_sec": float(self.duration_sec),
-            "segment_count": int(self.segment_count),
+            "start": start,
+            "end": end,
+            "duration": duration,
+            "duration_sec": duration_sec,
+            "segment_count": segment_count,
         }
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> "SpeakerBlock":
+        """
+        Create a SpeakerBlock from a dictionary (output of to_dict).
+        Args:
+            data (dict): Dictionary with keys matching SpeakerBlock fields.
+        Returns:
+            SpeakerBlock: Deserialized SpeakerBlock instance.
+        Raises:
+            ValueError, TypeError: If validation fails.
+        """
+        if not isinstance(data, dict):
+            logger.error("SpeakerBlock.from_dict: Input data must be a dictionary.")
+            raise TypeError("Input data must be a dictionary.")
+
+        if "speaker" not in data or not isinstance(data["speaker"], str) or not data["speaker"]:
+            logger.error("SpeakerBlock.from_dict: 'speaker' must be a non-empty string.")
+            raise ValueError("'speaker' must be a non-empty string.")
+
+        if "segments" not in data or not isinstance(data["segments"], list) or not data["segments"]:
+            logger.error("SpeakerBlock.from_dict: 'segments' must be a non-empty list.")
+            raise ValueError("'segments' must be a non-empty list.")
+
+        segments = []
+        for idx, seg in enumerate(data["segments"]):
+            if not isinstance(seg, dict):
+                logger.error(f"SpeakerBlock.from_dict: Segment at index {idx} is not a dict.")
+                raise TypeError(f"Segment at index {idx} is not a dict.")
+            try:
+                segment = DiarizedSegment(**seg)
+            except Exception as e:
+                logger.error(
+                    f"SpeakerBlock.from_dict: Failed to construct DiarizedSegment at index {idx}: {e}"
+                    )
+                raise
+            segments.append(segment)
+
+        return cls(speaker=data["speaker"], segments=segments)

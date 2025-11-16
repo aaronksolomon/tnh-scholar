@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>WaveSurfer Minimal Test</title>
+    <script src="https://unpkg.com/wavesurfer.js@7"></script>
+    <style>
+      body { font-family: sans-serif; margin: 40px; }
+      #waveform { width: 600px; height: 128px; }
+      #play { margin-top: 16px; }
+    </style>
+  </head>
+  <body>
+    <h2>WaveSurfer.js Minimal Test</h2>
+    <div id="waveform"></div>
+    <button id="play">Play/Pause</button>
+    <div id="status"></div>
+    <script>
+      const audioUrl = "test_audio.mp3";
+      document.getElementById("status").textContent = "Using local file: test_audio.mp3";
+
+      const wavesurfer = WaveSurfer.create({
+        container: "#waveform",
+        waveColor: "#9aa5b1",
+        progressColor: "#4c78dd",
+        url: audioUrl,
+        height: 128
+      });
+
+      document.getElementById("play").onclick = () => wavesurfer.playPause();
+    </script>
+  </body>
+</html>

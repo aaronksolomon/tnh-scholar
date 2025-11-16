@@ -17,7 +17,7 @@ import click
 
 from tnh_scholar.ai_text_processing import TextObject, get_pattern
 from tnh_scholar.ai_text_processing.line_translator import translate_text_by_lines
-from tnh_scholar.ai_text_processing.patterns import Pattern
+from tnh_scholar.ai_text_processing.prompts import Prompt
 from tnh_scholar.logging_config import get_child_logger, setup_logging
 from tnh_scholar.metadata.metadata import Frontmatter, Metadata
 from tnh_scholar.utils.file_utils import read_str_from_file, write_str_to_file
@@ -51,7 +51,7 @@ class SrtTranslator:
     def __init__(self, 
                  source_language: Optional[str] = None,
                  target_language: str = "en",
-                 pattern: Optional[Pattern] = None,
+                 pattern: Optional[Prompt] = None,
                  model: Optional[str] = None,
                  metadata: Optional[Metadata] = None):
         """Initialize translator with language, model settings, and metadata."""
