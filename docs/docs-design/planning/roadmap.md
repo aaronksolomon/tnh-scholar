@@ -1,10 +1,12 @@
 # TNH Scholar Documentation Development Plan
 
 ## Phase 1: Rapid Prototype (Current)
+
 Estimated effort: 1-2 coder-days
 
 **Focus**: Essential documentation for testers and early adopters
-```
+
+```plaintext
 docs/
 ├── index.md                 # (2 hours) Project overview, quick start
 ├── user_guide/
@@ -14,16 +16,19 @@ docs/
 ```
 
 **Key Deliverables**:
+
 - Basic MkDocs setup with minimal theme
 - Essential command documentation
 - Testing focus areas defined
 - Example patterns documented
 
 ## Phase 2: Full Development
+
 Estimated effort: 3-4 coder-days
 
 **Focus**: Comprehensive developer documentation and architecture
-```
+
+```plaintext
 docs/
 ├── architecture/
 │   ├── overview.md         # (4 hours) System architecture
@@ -38,6 +43,7 @@ docs/
 ```
 
 **Key Deliverables**:
+
 - Full architecture documentation
 - Development environment setup
 - Testing framework documentation
@@ -45,10 +51,12 @@ docs/
 - Pattern development guidelines
 
 ## Phase 3: Testing & Integration
+
 Estimated effort: 2-3 coder-days
 
 **Focus**: Testing documentation and integration guides
-```
+
+```plaintext
 docs/
 ├── testing/
 │   ├── test_suite.md      # (4 hours) Test suite documentation
@@ -63,16 +71,19 @@ docs/
 ```
 
 **Key Deliverables**:
+
 - Comprehensive test documentation
 - CI/CD pipeline documentation
 - Environment setup guides
 - Tutorial series
 
 ## Phase 4: Production Deployment
+
 Estimated effort: 4-5 coder-days
 
 **Focus**: Production-ready documentation and maintenance
-```
+
+```plaintext
 docs/
 ├── deployment/
 │   ├── production.md      # (8 hours) Production deployment
@@ -89,6 +100,7 @@ docs/
 ```
 
 **Key Deliverables**:
+
 - Production deployment guides
 - Monitoring and maintenance docs
 - Performance optimization guides
@@ -97,16 +109,19 @@ docs/
 ## General Guidelines Across Phases
 
 **Documentation Updates**:
+
 - Update with each significant feature addition (1-2 hours per feature)
 - Review and refresh documentation monthly (2-4 hours)
 - Address documentation issues from user feedback (1-2 hours per issue)
 
 **Quality Maintenance**:
+
 - Regular link checking (automated)
 - Example testing (2-4 hours per major version)
 - Documentation testing (2-4 hours per major version)
 
 **Each Phase Transition Checklist**:
+
 1. Review and update existing docs (4-8 hours)
 2. Plan new documentation needs (2-4 hours)
 3. Get user feedback on current docs (2-4 hours)
