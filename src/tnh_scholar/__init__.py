@@ -57,7 +57,7 @@ TNH_PROJECT_ROOT_DIR = (
     TNH_ROOT_SRC_DIR.resolve().parent.parent
 )  # always assume structure is: root_dir/src/TNH_BASE_DIR
 TNH_CLI_TOOLS_DIR = TNH_ROOT_SRC_DIR / "cli_tools"
-TNH_DEFAULT_PATTERN_DIR = TNH_CONFIG_DIR / "patterns"
+TNH_DEFAULT_PATTERN_DIR = TNH_PROJECT_ROOT_DIR / "patterns"
 TNH_LOG_DIR = TNH_CONFIG_DIR / "logs"
 
 TNH_METADATA_PROCESS_FIELD = "tnh_processing"
