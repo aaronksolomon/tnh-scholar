@@ -99,7 +99,7 @@ Vector embeddings convert text into high-dimensional numerical representations w
 
 **Example Flow**:
 
-```
+```plaintext
 Text: "The practice of mindful breathing"
 → Embedding Model → [0.016, -0.028, 0.044, ..., 0.037]
 ```
