@@ -12,7 +12,7 @@ pip install tnh-scholar
 
 - audio-transcribe: Convert dharma talk recordings to text with speaker detection
 - nfmt: Format and normalize transcribed text to TNH Scholar standards
-- tnh-fab: Process text files using customizable pattern templates 
+- tnh-fab: Process text files using customizable pattern templates
 - tnh-setup: Initialize project workspace with required configurations
 - token-count: Count tokens in a text file
 - ytt-fetch: Download and prepare YouTube transcripts for processing
