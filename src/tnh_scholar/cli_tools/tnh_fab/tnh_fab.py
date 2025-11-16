@@ -22,8 +22,8 @@ from dotenv import load_dotenv
 # Default pattern directory as specified
 from tnh_scholar import TNH_DEFAULT_PATTERN_DIR
 from tnh_scholar.ai_text_processing import (
-    Pattern,
-    PatternManager,
+    Prompt,
+    PromptCatalog,
     TextObject,
     find_sections,
     process_text,
@@ -60,7 +60,7 @@ class TNHFabConfig:
             pattern_dir = TNH_DEFAULT_PATTERN_DIR
 
         pattern_dir.mkdir(parents=True, exist_ok=True)
-        self.pattern_manager = PatternManager(pattern_dir)
+        self.pattern_manager = PromptCatalog(pattern_dir)
 
 pass_config = click.make_pass_decorator(TNHFabConfig, ensure=True)
 
@@ -72,7 +72,7 @@ def gen_text_input(ctx: Context, input_file: Optional[Path]) -> TextObject:
         return TextObject.from_str(sys.stdin.read())
     raise UsageError("No input provided")
 
-def get_pattern(pattern_manager: PatternManager, pattern_name: str) -> Pattern:
+def get_pattern(pattern_manager: PromptCatalog, pattern_name: str) -> Prompt:
     """
     Get pattern from the pattern manager.
 
