@@ -1,10 +1,9 @@
-import sys
-import logging
-from typing import Set, List
 import os
-from pathlib import Path
+import sys
+from typing import List, Set
 
 from tnh_scholar.logging_config import get_child_logger
+
 logger = get_child_logger(__name__)
 
 def get_env_message(missing_vars: List[str], feature: str = "this feature") -> str:
