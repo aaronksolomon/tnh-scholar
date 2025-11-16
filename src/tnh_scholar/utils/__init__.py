@@ -1,6 +1,7 @@
 from .file_utils import (
     copy_files_with_regex,
     ensure_directory_exists,
+    ensure_directory_writable,
     iterate_subdir,
     path_as_str,
     read_str_from_file,
@@ -23,6 +24,7 @@ from .validate import check_ocr_env, check_openai_env
 __all__ = [
     "copy_files_with_regex",
     "ensure_directory_exists",
+    "ensure_directory_writable",
     "iterate_subdir",
     "path_as_str",
     "read_str_from_file",
