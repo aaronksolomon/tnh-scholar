@@ -151,6 +151,7 @@ class TextObjectInfo(BaseModel):
             self.metadata = Metadata(self.metadata)
         elif not isinstance(self.metadata, Metadata):
             raise ValueError(f"Unexpected type for metadata: {type(self.metadata)}")
+
 class TextObject:
     """
     Manages text content with section organization and metadata tracking.

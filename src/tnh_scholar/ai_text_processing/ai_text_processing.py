@@ -18,7 +18,7 @@ from tnh_scholar.utils.lang import (
 )
 
 from .openai_process_interface import openai_process_text
-from .patterns import LocalPatternManager, Pattern
+from .prompts import LocalPromptManager, Prompt
 from .text_object import AIResponse, TextObject
 
 # internal package imports
@@ -132,7 +132,7 @@ class SectionParser:
     def __init__(
         self,
         section_scanner: TextProcessor,
-        section_pattern: Pattern,
+        section_pattern: Prompt,
         review_count: int = DEFAULT_REVIEW_COUNT,
     ):
         """
@@ -246,7 +246,7 @@ class SectionParser:
 def find_sections(
     text: TextObject,
     source_language: Optional[str] = None,
-    section_pattern: Optional[Pattern] = None,
+    section_pattern: Optional[Prompt] = None,
     section_model: Optional[str] = None,
     max_tokens: int = DEFAULT_SECTION_RESULT_MAX_SIZE,
     section_count: Optional[int] = None,
@@ -305,7 +305,7 @@ class SectionProcessor:
     def __init__(
         self,
         processor: TextProcessor,
-        pattern: Pattern,
+        pattern: Prompt,
         template_dict: Dict,
         wrap_in_document: bool = True,
     ):
@@ -422,7 +422,7 @@ class GeneralProcessor:
     def __init__(
         self,
         processor: TextProcessor,
-        pattern: Pattern,
+        pattern: Prompt,
         source_language: Optional[str] = None,
         review_count: int = DEFAULT_REVIEW_COUNT,
     ):
@@ -477,7 +477,7 @@ class GeneralProcessor:
 
 def process_text(
     text: TextObject,
-    pattern: Pattern,
+    pattern: Prompt,
     source_language: Optional[str] = None,
     model: Optional[str] = None,
     template_dict: Optional[Dict] = None,
@@ -509,7 +509,7 @@ def process_text(
 def process_text_by_sections(
     text_object: TextObject,
     template_dict: Dict,
-    pattern: Pattern,
+    pattern: Prompt,
     model: Optional[str] = None,
 ) -> Generator[ProcessedSection, None, None]:
     """
@@ -545,7 +545,7 @@ def process_text_by_sections(
 def process_text_by_paragraphs(
     text: TextObject,
     template_dict: Dict[str, str],
-    pattern: Optional[Pattern] = None,
+    pattern: Optional[Prompt] = None,
     model: Optional[str] = None,
 ) -> Generator[ProcessedSection, None, None]:
     """
@@ -583,7 +583,7 @@ def process_text_by_paragraphs(
 
     return result
 
-def get_pattern(name: str) -> Pattern:
+def get_pattern(name: str) -> Prompt:
     """
     Get a pattern by name using the singleton PatternManager.
 
@@ -599,4 +599,4 @@ def get_pattern(name: str) -> Pattern:
         ValueError: If pattern name is invalid
         FileNotFoundError: If pattern file doesn't exist
     """
-    return LocalPatternManager().get_pattern(name)
+    return LocalPromptManager().get_prompt(name)

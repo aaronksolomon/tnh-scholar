@@ -17,7 +17,7 @@ from .ai_text_processing import (
     _calculate_segment_size,
     get_pattern,
 )
-from .patterns import Pattern
+from .prompts import Prompt
 from .text_object import TextObject
 
 # internal package imports
@@ -40,7 +40,7 @@ class LineTranslator:
     def __init__(
         self,
         processor: TextProcessor,
-        pattern: Pattern,
+        pattern: Prompt,
         review_count: int = DEFAULT_REVIEW_COUNT,
         style: str = DEFAULT_TRANSLATE_STYLE,
         # Number of context lines before/after
@@ -383,7 +383,7 @@ def translate_text_by_lines(
     text: TextObject,
     source_language: Optional[str] = None,
     target_language: str = DEFAULT_TARGET_LANGUAGE,
-    pattern: Optional[Pattern] = None,
+    pattern: Optional[Prompt] = None,
     model: Optional[str] = None,
     style: Optional[str] = None,
     segment_size: Optional[int] = None,

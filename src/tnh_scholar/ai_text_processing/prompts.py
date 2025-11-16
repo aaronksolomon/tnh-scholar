@@ -2,7 +2,7 @@ import fcntl
 import hashlib
 import os
 import re
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, NewType, Optional, Tuple, Union
@@ -23,42 +23,52 @@ MarkdownStr = NewType("MarkdownStr", str)
 
 logger = get_child_logger(__name__)
 
-SYSTEM_UPDATE_MESSAGE = "PatternManager System Update:"
+MANAGER_UPDATE_MESSAGE = "PromptManager Update:"
 
-class Pattern:
+class Prompt:
     """
-    Base Pattern class for version-controlled template patterns.
+    Base Prompt class for version-controlled template prompts.
 
-    Patterns contain:
-    - Instructions: The main pattern instructions as a Jinja2 template.
+    Prompts contain:
+    - Instructions: The main prompt instructions as a Jinja2 template.
        Note: Instructions are intended to be saved in markdown format in a .md file.
     - Template fields: Default values for template variables
     - Metadata: Name and identifier information
 
-    Version control is handled externally through Git, not in the pattern itself.
-    Pattern identity is determined by the combination of identifiers.
+    Version control is handled externally through Git, not in the prompt itself.
+    Prompt identity is determined by the combination of identifiers.
 
     Attributes:
-        name (str): The name of the pattern
-        instructions (str): The Jinja2 template string for this pattern
+        name (str): The name of the prompt
+        instructions (str): The Jinja2 template string for this prompt
         default_template_fields (Dict[str, str]): Default values for template variables
         _allow_empty_vars (bool): Whether to allow undefined template variables
         _env (Environment): Configured Jinja2 environment instance
     """
 
+    @staticmethod
+    def _normalize_name(value: str) -> str:
+        """Canonicalize prompt names for case-insensitive handling.
+        
+        Currently: strip() + lower(). If future rules are needed (e.g.,
+        removing punctuation, limiting length), implement them here.
+        """
+        return value.strip().lower()
+
     def __init__(
         self,
         name: str,
         instructions: MarkdownStr,
+        path: Optional[Path] = None,
         default_template_fields: Optional[Dict[str, str]] = None,
-        allow_empty_vars: bool = False,
+        allow_empty_vars: bool = False,        
     ) -> None:
         """
-        Initialize a new Pattern instance.
+        Initialize a new Prompt instance.
 
         Args:
-            name: Unique name identifying the pattern
-            instructions: Jinja2 template string containing the pattern
+            name: Unique name identifying the prompt
+            instructions: Jinja2 template string containing the prompt
             default_template_fields: Optional default values for template variables
             allow_empty_vars: Whether to allow undefined template variables
 
@@ -69,8 +79,12 @@ class Pattern:
         if not name or not instructions:
             raise ValueError("Name and instructions must not be empty")
 
+        # Normalize prompt name to lowercase for case-insensitive handling
+        name = Prompt._normalize_name(name)
+
         self.name = name
         self.instructions = instructions
+        self.path = path
         self.default_template_fields = default_template_fields or {}
         self._allow_empty_vars = allow_empty_vars
         self._env = self._create_environment()
@@ -105,17 +119,17 @@ class Pattern:
             self._env.parse(self.instructions)
         except TemplateError as e:
             raise TemplateError(
-                f"Invalid template syntax in pattern '{self.name}': {str(e)}"
+                f"Invalid template syntax in prompt '{self.name}': {str(e)}"
             ) from e
 
     def apply_template(self, field_values: Optional[Dict[str, str]] = None) -> str:
         """
-        Apply template values to pattern instructions using Jinja2.
+        Apply template values to prompt instructions using Jinja2.
 
         Values precedence (highest to lowest):
         1. field_values (explicitly passed)
-        2. frontmatter values (from pattern file)
-        3. default_template_fields (pattern defaults)
+        2. frontmatter values (from prompt file)
+        3. default_template_fields (prompt defaults)
 
         Args:
             field_values: Values to substitute into the template.
@@ -142,7 +156,7 @@ class Pattern:
             return self._render_template_with_values(instructions, template_values)
         except TemplateError as e:
             raise TemplateError(
-                f"Template rendering failed for pattern '{self.name}': {str(e)}"
+                f"Template rendering failed for prompt '{self.name}': {str(e)}"
                 ) from e
 
     def _render_template_with_values(
@@ -171,7 +185,7 @@ class Pattern:
         missing_vars = required_vars - set(template_values.keys())
         if missing_vars and not self._allow_empty_vars:
             raise ValueError(
-                f"Missing required template variables in pattern '{self.name}': "
+                f"Missing required template variables in prompt '{self.name}': "
                 f"{', '.join(sorted(missing_vars))}"
             )
         
@@ -190,9 +204,8 @@ class Pattern:
             Frontmatter must be at the very start of the file and properly formatted.
         """
 
-        # More precise pattern matching
-        pattern = r"\A---\s*\n(.*?)\n---\s*\n"
-        if match := re.match(pattern, self.instructions, re.DOTALL):
+        prompt = r"\A---\s*\n(.*?)\n---\s*(?:\n|$)"
+        if match := re.match(prompt, self.instructions, re.DOTALL):
             try:
                 frontmatter = yaml.safe_load(match[1])
                 if frontmatter is None:
@@ -214,8 +227,8 @@ class Pattern:
         Returns:
             str: Markdown content without frontmatter
         """
-        pattern = r"\A---\s*\n.*?\n---\s*\n"
-        return re.sub(pattern, "", self.instructions, flags=re.DOTALL)
+        prompt = r"\A---\s*\n.*?\n---\s*\n"
+        return re.sub(prompt, "", self.instructions, flags=re.DOTALL)
 
     def update_frontmatter(self, new_data: Dict[str, Any]) -> None:
         """
@@ -238,10 +251,28 @@ class Pattern:
 
         # Combine new frontmatter with content
         self.instructions = f"---\n{yaml_str}---\n\n{content}"
+        
+        
+    def source_bytes(self) -> bytes:
+        """
+        Best-effort raw bytes for prompt hashing.
+
+        Prefers hashing exact on-disk bytes including front-matter.
+        We therefore first try to read from `prompt_path`. If that fails, we fall back
+        to hashing the concatenation of known templates. In V1, only
+        the instructions (system template) are used for rendering.
+        """
+        # Preferred path: use on-disk bytes when available.
+        if self.path is not None:
+            return self.path.read_bytes()
+
+        # Fallback: concatenate known templates deterministically
+        sys_part = self.instructions or ""
+        return sys_part.encode("utf-8")
 
     def content_hash(self) -> str:
         """
-        Generate a SHA-256 hash of the pattern content.
+        Generate a SHA-256 hash of the prompt content.
 
         Useful for quick content comparison and change detection.
 
@@ -256,10 +287,10 @@ class Pattern:
 
     def to_dict(self) -> Dict[str, Any]:
         """
-        Convert pattern to dictionary for serialization.
+        Convert prompt to dictionary for serialization.
 
         Returns:
-            Dict containing all pattern data in serializable format
+            Dict containing all prompt data in serializable format
         """
         return {
             "name": self.name,
@@ -268,15 +299,15 @@ class Pattern:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Pattern":
+    def from_dict(cls, data: Dict[str, Any]) -> "Prompt":
         """
-        Create pattern instance from dictionary data.
+        Create prompt instance from dictionary data.
 
         Args:
-            data: Dictionary containing pattern data
+            data: Dictionary containing prompt data
 
         Returns:
-            Pattern: New pattern instance
+            Prompt: New prompt instance
 
         Raises:
             ValueError: If required fields are missing
@@ -286,14 +317,15 @@ class Pattern:
             raise ValueError(f"Missing required fields: {', '.join(missing_fields)}")
 
         return cls(
-            name=data["name"],
+            name=Prompt._normalize_name(str(data["name"])),
             instructions=data["instructions"],
+            path=None,
             default_template_fields=data.get("default_template_fields", {}),
         )
 
     def __eq__(self, other: object) -> bool:
-        """Compare patterns based on their content."""
-        if not isinstance(other, Pattern):
+        """Compare prompts based on their content."""
+        if not isinstance(other, Prompt):
             return NotImplemented
         return self.content_hash() == other.content_hash()
 
@@ -304,7 +336,7 @@ class Pattern:
 
 class GitBackedRepository:
     """
-    Manages versioned storage of patterns using Git.
+    Manages versioned storage of prompts using Git.
 
     Provides basic Git operations while hiding complexity:
     - Automatic versioning of changes
@@ -384,8 +416,8 @@ class GitBackedRepository:
         logger.info(f"Detected changes in {rel_path}, updating version control.")
         self.repo.index.add([str(rel_path)])
         commit = self.repo.index.commit(
-            f"{SYSTEM_UPDATE_MESSAGE} {rel_path.stem}",
-            author=Actor("PatternManager", ""),
+            f"{MANAGER_UPDATE_MESSAGE} {rel_path.stem}",
+            author=Actor("PromptManager", ""),
         )
         logger.info(f"Committed changes to {file_path}: {commit.hexsha}")
         return commit.hexsha
@@ -468,11 +500,11 @@ class GitBackedRepository:
             if zero, shows all revisions.
 
         Example:
-            >>> repo.display_history(Path("patterns/format_dharma_talk.yaml"))
+            >>> repo.display_history(Path("prompts/format_dharma_talk.yaml"))
             Commit abc123def (2024-12-28 14:30:22):
             1 file changed, 5 insertions(+), 2 deletions(-)
 
-            diff --git a/patterns/format_dharma_talk.yaml ...
+            diff --git a/prompts/format_dharma_talk.yaml ...
             ...
         """
 
@@ -532,11 +564,11 @@ class GitBackedRepository:
 
 class ConcurrentAccessManager:
     """
-    Manages concurrent access to pattern files.
+    Manages concurrent access to prompt files.
 
     Provides:
     - File-level locking
-    - Safe concurrent access patterns
+    - Safe concurrent access prompts
     - Lock cleanup
     """
 
@@ -660,23 +692,24 @@ class ConcurrentAccessManager:
             return False
 
 
-class PatternManager:
+class PromptCatalog:
     """
-    Main interface for pattern management system.
+    Main interface for prompt management system.
 
     Provides high-level operations:
-    - Pattern creation and loading
+    - Prompt creation and loading
     - Automatic versioning
     - Safe concurrent access
     - Basic history tracking
+    - Case-insensitive prompt names (stored as lowercase)
     """
 
     def __init__(self, base_path: Path):
         """
-        Initialize pattern management system.
+        Initialize prompt management system.
 
         Args:
-            base_path: Base directory for pattern storage
+            base_path: Base directory for prompt storage
         """
         self.base_path = Path(base_path).resolve()
         self.base_path.mkdir(parents=True, exist_ok=True)
@@ -685,7 +718,7 @@ class PatternManager:
         self.repo = GitBackedRepository(self.base_path)
         self.access_manager = ConcurrentAccessManager(self.base_path / ".locks")
 
-        logger.info(f"Initialized pattern management system at {base_path}")
+        logger.info(f"Initialized prompt management system at {base_path}")
 
     def _normalize_path(self, path: Union[str, Path]) -> Path:
         """
@@ -706,95 +739,101 @@ class PatternManager:
         """
         path = Path(path)  # ensure we have a path
 
-        # Join with base_path as needed
+        # Join with base_path as needed: always interpret relative
+        # paths as relative to the repository base path. This avoids
+        # incorrectly handling nested relative paths like "a/b"
+        # which may not have the same parent as self.base_path.
         if not path.is_absolute():
-            path = path if path.parent == self.base_path else self.base_path / path
+            path = self.base_path / path
 
         # Safety check after resolution
         resolved = path.resolve()
-        if not resolved.is_relative_to(self.base_path):
+        try:
+            resolved.relative_to(self.base_path)
+        except ValueError as e:
             raise ValueError(
                 f"Path {path} resolves outside repository: {self.base_path}"
-            )
+            ) from e
 
         return resolved
 
-    def get_pattern_path(self, pattern_name: str) -> Optional[Path]:
+    def get_path(self, prompt_name: str) -> Optional[Path]:
         """
-        Recursively search for a pattern file with the 
-        given name in base_path and all subdirectories.
+        Recursively search for a prompt file with the given name (case-insensitive)
+        in base_path and all subdirectories.
 
         Args:
-            pattern_id: pattern identifier to search for
+            prompt_name: prompt name (without extension) to search for
 
         Returns:
-            Optional[Path]: Full path to the found pattern file, or None if not found
+            Optional[Path]: Full path to the found prompt file, or None if not found
         """
-        pattern = f"{pattern_name}.md"
+        target = Prompt._normalize_name(prompt_name)
+        with suppress(StopIteration):
+            for path in self.base_path.rglob("*.md"):
+                if path.is_file() and path.stem.lower() == target:
+                    logger.debug(
+                        f"Found prompt file for name {prompt_name} at: {path}"
+                    )
+                    return self._normalize_path(path)
+        logger.debug(f"No prompt file found with name: {prompt_name}")
+        return None
 
-        try:
-            pattern_path = next(
-                path for path in self.base_path.rglob(pattern) if path.is_file()
-            )
-            logger.debug(f"Found pattern file for ID {pattern_name} at: {pattern_path}")
-            return self._normalize_path(pattern_path)
-
-        except StopIteration:
-            logger.debug(f"No pattern file found with ID: {pattern_name}")
-            return None
-
-    def save_pattern(self, pattern: Pattern, subdir: Optional[Path] = None) -> Path:
-
-        pattern_name = pattern.name
-        instructions = pattern.instructions
+    def save(self, prompt: Prompt, subdir: Optional[Path] = None) -> Path:
+        prompt_name = Prompt._normalize_name(prompt.name)
+        instructions = prompt.instructions
 
         if subdir is None:
-            path = self.base_path / f"{pattern_name}.md"
+            path = self.base_path / f"{prompt_name}.md"
         else:
-            path = self.base_path / subdir / f"{pattern_name}.md"
+            path = self.base_path / subdir / f"{prompt_name}.md"
 
         path = self._normalize_path(path)
 
-        # Check for existing pattern with same ID
-        existing_path = self.get_pattern_path(pattern_name)
-
-        if existing_path is not None and path != existing_path:
-            error_msg = (
-                f"Existing pattern - {pattern_name} already exists at "
-                f"{existing_path.relative_to(self.base_path)}. "
-                f"Attempted to access at location: {path.relative_to(self.base_path)}"
-            )
-            logger.error(error_msg)
-            raise ValueError(error_msg)
+        # Check for existing prompt by case-insensitive match
+        existing_path = self.get_path(prompt_name)
 
         try:
+            # Lock on the destination path name (lowercase) to avoid races
             with self.access_manager.file_lock(path):
+                # If an existing file is present but at a different case/path, rename it
+                if existing_path is not None and existing_path != path:
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    logger.info(
+                        f"Renaming existing prompt file from {existing_path} to {path} "
+                        "to enforce lowercase naming."
+                    )
+                    existing_path.rename(path)
+
                 write_str_to_file(path, instructions, overwrite=True)
                 self.repo.update_file(path)
-                logger.info(f"Pattern saved at {path}")
+                logger.info(f"Prompt saved at {path}")
                 return path.relative_to(self.base_path)
 
         except Exception as e:
-            logger.error(f"Failed to save pattern {pattern.name}: {e}")
+            logger.error(f"Failed to save prompt {prompt_name}: {e}")
             raise
 
-    def load_pattern(self, pattern_name: str) -> Pattern:
+    def load(self, prompt_name: str) -> Prompt:
         """
-        Load the .md pattern file by name, extract placeholders, and
-        return a fully constructed Pattern object.
+        Load the .md prompt file by name, extract placeholders, and
+        return a fully constructed Prompt object.
 
         Args:
-            pattern_name: Name of the pattern (without .md extension).
+            prompt_name: Name of the prompt (without .md extension).
 
         Returns:
-            A new Pattern object whose 'instructions' is the file's text
+            A new Prompt object whose 'instructions' is the file's text
             and whose 'template_fields' are inferred from placeholders in
             those instructions.
         """
+        prompt_name = Prompt._normalize_name(prompt_name)
         # Locate the .md file; raise if missing
-        path = self.get_pattern_path(pattern_name)
+        path = self.get_path(prompt_name)
         if not path:
-            raise FileNotFoundError(f"No pattern file named {pattern_name}.md found.")
+            raise FileNotFoundError(f"No prompt file named {prompt_name}.md found in prompt catalog:\n"
+                                    f"{self.base_path}"
+                                    )
 
         # Acquire lock before reading
         with self.access_manager.file_lock(path):
@@ -802,27 +841,27 @@ class PatternManager:
 
         instructions = MarkdownStr(instructions)
 
-        # Create the pattern from the raw .md text
-        pattern = Pattern(name=pattern_name, instructions=instructions)
+        # Create the prompt from the raw .md text (name is already lowercase)
+        prompt = Prompt(name=prompt_name, instructions=instructions, path=path)
 
         # Check for local uncommitted changes, updating file:
         self.repo.update_file(path)
 
-        return pattern
+        return prompt
 
-    def show_pattern_history(self, pattern_name: str) -> None:
-        if path := self.get_pattern_path(pattern_name):
+    def show_history(self, prompt_name: str) -> None:
+        if path := self.get_path(prompt_name):
             self.repo.display_history(path)
         else:
-            logger.error(f"Path to {pattern_name} not found.")
+            logger.error(f"Path to {prompt_name} not found.")
             return
 
-    # def get_pattern_history_from_path(self, path: Path) -> List[Dict[str, Any]]:
+    # def get_prompt_history_from_path(self, path: Path) -> List[Dict[str, Any]]:
     #     """
-    #     Get version history for a pattern.
+    #     Get version history for a prompt.
 
     #     Args:
-    #         path: Path to pattern file
+    #         path: Path to prompt file
 
     #     Returns:
     #         List of version information
@@ -834,18 +873,18 @@ class PatternManager:
     @classmethod
     def verify_repository(cls, base_path: Path) -> bool:
         """
-        Verify repository integrity and uniqueness of pattern names.
+        Verify repository integrity and uniqueness of prompt names.
 
         Performs the following checks:
         1. Validates Git repository structure.
-        2. Ensures no duplicate pattern names exist.
+        2. Ensures no duplicate prompt names exist.
 
         Args:
             base_path: Repository path to verify.
 
         Returns:
             bool: True if the repository is valid 
-            and contains no duplicate pattern files.
+            and contains no duplicate prompt files.
         """
         try:
             # Check if it's a valid Git repository
@@ -862,27 +901,26 @@ class PatternManager:
             if not basic_valid:
                 return False
 
-            # Check for duplicate pattern names
-            pattern_files = list(base_path.rglob("*.md"))
-            seen_names = {}
+            prompt_files = list(base_path.rglob("*.md"))
+            seen_names: Dict[str, Path] = {}
 
-            for pattern_file in pattern_files:
+            for prompt_file in prompt_files:
                 # Skip files in .git directory
-                if ".git" in pattern_file.parts:
+                if ".git" in prompt_file.parts:
                     continue
 
-                # Get pattern name from the filename (without extension)
-                pattern_name = pattern_file.stem
+                # Case-insensitive key
+                key = Prompt._normalize_name(prompt_file.stem)
 
-                if pattern_name in seen_names:
+                if key in seen_names:
                     logger.error(
-                        f"Duplicate pattern file detected:\n"
-                        f"  First occurrence: {seen_names[pattern_name]}\n"
-                        f"  Second occurrence: {pattern_file}"
+                        f"Duplicate prompt file detected (case-insensitive):\n"
+                        f"  First occurrence: {seen_names[key]}\n"
+                        f"  Second occurrence: {prompt_file}"
                     )
                     return False
 
-                seen_names[pattern_name] = pattern_file
+                seen_names[key] = prompt_file
 
             return True
 
@@ -890,62 +928,62 @@ class PatternManager:
             logger.error(f"Repository verification failed: {e}")
             return False
         
-class LocalPatternManager:
+class LocalPromptManager:
     """
-    A simple singleton implementation of PatternManager that ensures only one instance
+    A simple singleton implementation of PromptManager that ensures only one instance
     is created and reused throughout the application lifecycle.
 
-    This class wraps the PatternManager to provide efficient pattern loading by
+    This class wraps the PromptManager to provide efficient prompt loading by
     maintaining a single reusable instance.
 
     Attributes:
-        _instance (Optional[SingletonPatternManager]): The singleton instance
-        _pattern_manager (Optional[PatternManager]): The wrapped PatternManager instance
+        _instance (Optional[SingletonPromptManager]): The singleton instance
+        _prompt_manager (Optional[PromptManager]): The wrapped PromptManager instance
     """
 
-    _instance: Optional["LocalPatternManager"] = None
+    _instance: Optional["LocalPromptManager"] = None
 
-    def __new__(cls) -> "LocalPatternManager":
+    def __new__(cls) -> "LocalPromptManager":
         """
         Create or return the singleton instance.
 
         Returns:
-            SingletonPatternManager: The singleton instance
+            SingletonPromptManager: The singleton instance
         """
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._instance._pattern_manager = None
+            cls._instance._prompt_manager = None
         return cls._instance
 
     @property
-    def pattern_manager(self) -> "PatternManager":
+    def prompt_manager(self) -> "PromptCatalog":
         """
-        Lazy initialization of the PatternManager instance.
+        Lazy initialization of the PromptManager instance.
 
         Returns:
-            PatternManager: The wrapped PatternManager instance
+            PromptManager: The wrapped PromptManager instance
 
         Raises:
             RuntimeError: If PATTERN_REPO is not properly configured
         """
-        if self._pattern_manager is None:  # type: ignore
+        if self._prompt_manager is None:  # type: ignore
             try:
                 load_dotenv()
-                if pattern_path_name := os.getenv("TNH_PATTERN_DIR"):
-                    pattern_dir = Path(pattern_path_name)
-                    logger.debug(f"pattern dir: {pattern_path_name}")
+                if prompt_path_name := os.getenv("TNH_PATTERN_DIR"):
+                    prompt_dir = Path(prompt_path_name)
+                    logger.debug(f"prompt dir: {prompt_path_name}")
                 else:
-                    pattern_dir = TNH_DEFAULT_PATTERN_DIR
-                self._pattern_manager = PatternManager(pattern_dir)
+                    prompt_dir = TNH_DEFAULT_PATTERN_DIR
+                self._prompt_manager = PromptCatalog(prompt_dir)
             except ImportError as err:
                 raise RuntimeError(
-                    "Failed to initialize PatternManager. Ensure pattern_manager "
+                    "Failed to initialize PromptManager. Ensure prompt_manager "
                     f"module and PATTERN_REPO are properly configured: {err}"
                 ) from err
-        return self._pattern_manager
+        return self._prompt_manager
 
-    def get_pattern(self, name: str) -> Pattern:
-        """Get a pattern by name."""
-        return self.pattern_manager.load_pattern(name)
+    def get_prompt(self, name: str) -> Prompt:
+        """Get a prompt by name."""
+        return self.prompt_manager.load(Prompt._normalize_name(name))
     
     
