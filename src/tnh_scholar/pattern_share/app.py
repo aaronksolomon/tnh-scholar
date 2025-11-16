@@ -11,7 +11,7 @@ from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_openai import OpenAIEmbeddings
 from supabase import Client, create_client
 
-from tnh_scholar.ai_text_processing import Pattern
+from tnh_scholar.ai_text_processing import Prompt
 from tnh_scholar.exceptions import ConfigurationError
 
 
@@ -133,7 +133,7 @@ class PatternRepository:
             query_name="match_patterns",
         )
 
-    def add_pattern(self, pattern: "Pattern") -> str:
+    def add_pattern(self, pattern: "Prompt") -> str:
         """Add pattern to database with embeddings."""
         # Extract frontmatter for metadata
         metadata = pattern.extract_frontmatter() or {}
@@ -204,7 +204,7 @@ def main():
         if upload_type == "Single Pattern":
             if uploaded_file := st.file_uploader("Upload Pattern (.md)", type=["md"]):
                 content = uploaded_file.read().decode()
-                pattern = Pattern(
+                pattern = Prompt(
                     name=Path(uploaded_file.name).stem, instructions=content
                 )
                 if st.button("Share Pattern"):
@@ -220,7 +220,7 @@ def main():
                         pattern_files = Path(tmpdir).glob("**/*.md")
 
                         for file in pattern_files:
-                            pattern = Pattern(
+                            pattern = Prompt(
                                 name=file.stem, instructions=file.read_text()
                             )
                             repo.add_pattern(pattern)
