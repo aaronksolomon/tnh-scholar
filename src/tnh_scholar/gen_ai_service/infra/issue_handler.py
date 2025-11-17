@@ -43,14 +43,15 @@ class IssueHandler:
     logger = get_logger("tnh_scholar.gen_ai_service")
 
     @staticmethod
-    def no_api_key(env_var: str, exit_on_fail: bool = True) -> None:
+    def no_api_key(env_var: str, exit_on_fail: bool = False) -> None:
         """
         Handles missing API key configuration.
 
         Args:
             env_var (str): The name of the environment variable expected.
             exit_on_fail (bool): Whether to terminate the program after handling.
-                                 Defaults to True.
+                                 Defaults to False (raises exception instead).
+                                 Only CLI entry points should pass True.
 
         Raises:
             ConfigurationError: When the required API key is missing and
@@ -64,7 +65,7 @@ class IssueHandler:
             sys.stderr.write(f"\n[CRITICAL] {message}\n")
             sys.exit(1)
 
-        # If not exiting, raise a structured exception
+        # Raise a structured exception (default behavior for library usage)
         raise ConfigurationError(message)
 
     @staticmethod
