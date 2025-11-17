@@ -4,6 +4,7 @@ from textwrap import dedent
 
 import pytest
 
+from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.gen_ai_service import service as service_module
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
 from tnh_scholar.gen_ai_service.config.settings import Settings
@@ -137,3 +138,16 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
     assert envelope.provenance.provider == provider_response.provider
     assert envelope.provenance.model == provider_response.model
     assert envelope.provenance.attempt_count == provider_response.attempts
+
+
+def test_missing_api_key_raises_configuration_error(tmp_path, monkeypatch: pytest.MonkeyPatch):
+    """Test that GenAIService raises ConfigurationError when API key is missing."""
+    prompt_dir = _write_prompt(tmp_path)
+
+    monkeypatch.setenv("TNH_PATTERN_DIR", str(prompt_dir))
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    settings = Settings()
+
+    with pytest.raises(ConfigurationError, match="Missing required API key: OPENAI_API_KEY"):
+        GenAIService(settings=settings)
