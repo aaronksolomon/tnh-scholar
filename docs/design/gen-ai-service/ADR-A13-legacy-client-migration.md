@@ -189,6 +189,7 @@ from tnh_scholar.openai_interface import (
 #### 2.2 Migrate audio_processing
 
 **Files to update**:
+***Removed***
 - `audio_processing/transcription_legacy.py`
 
 **Note**: This appears to be legacy code (filename suggests it). Evaluate if it should be deleted instead of migrated.
@@ -334,7 +335,7 @@ Ensure all are removed.
   - [ ] Verify ProcessedSection and related classes work
   - [ ] Run integration tests
 
-- [ ] Evaluate `audio_processing/transcription_legacy.py`
+    - [x] Evaluate `audio_processing/transcription_legacy.py` (deleted)
   - [ ] Decide: migrate or delete?
   - [ ] If migrate: update to use GenAIService
   - [ ] If delete: remove file and references

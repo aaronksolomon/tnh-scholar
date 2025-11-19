@@ -28,6 +28,7 @@ def provider_to_completion(
         usage=dom_usage,
         model=resp.model,
         provider=resp.provider,
+        parsed=resp.payload.parsed,
     )
 
     return CompletionEnvelope(

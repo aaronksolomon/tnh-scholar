@@ -226,3 +226,16 @@ def split_xml_on_pagebreaks(
     """
     parser = PagebreakXMLParser(text)
     return parser.parse(page_groups=page_groups, keep_pagebreaks=keep_pagebreaks)
+
+
+def split_xml_pages(text: str) -> List[str]:
+    """
+    Backwards-compatible helper that returns the page contents without pagebreak tags.
+
+    Args:
+        text: XML document string.
+
+    Returns:
+        List of page strings.
+    """
+    return split_xml_on_pagebreaks(text, keep_pagebreaks=False)

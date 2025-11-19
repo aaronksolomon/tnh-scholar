@@ -1,6 +1,6 @@
 import click
 
-from tnh_scholar.openai_interface import token_count
+from tnh_scholar.gen_ai_service.utils.token_utils import token_count
 
 
 @click.command()

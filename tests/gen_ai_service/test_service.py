@@ -86,7 +86,7 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("TNH_PATTERN_DIR", str(prompt_dir))
     monkeypatch.setenv("OPENAI_API_KEY", "unit-test-key")
 
-    settings = Settings()
+    settings = Settings(_env_file=None)
     service = GenAIService(settings=settings)
     dummy_client: DummyOpenAIClient = service.openai_client  # type: ignore[assignment]
     assert service.settings.prompt_dir == prompt_dir
@@ -119,6 +119,7 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
     assert provider_request.temperature == policy_params.temperature
     assert provider_request.max_output_tokens == policy_params.max_output_tokens
     assert provider_request.seed == policy_params.seed
+    assert provider_request.response_format is None
     assert provider_request.system == "# Daily Guidance\n\nOffer help to practitioners at Plum Village."
     assert provider_request.messages[0].content == render_request.user_input
 
@@ -147,7 +148,7 @@ def test_missing_api_key_raises_configuration_error(tmp_path, monkeypatch: pytes
     monkeypatch.setenv("TNH_PATTERN_DIR", str(prompt_dir))
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
 
-    settings = Settings()
+    settings = Settings(_env_file=None)
 
     with pytest.raises(ConfigurationError, match="Missing required API key: OPENAI_API_KEY"):
         GenAIService(settings=settings)

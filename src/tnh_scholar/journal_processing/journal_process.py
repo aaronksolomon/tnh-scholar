@@ -1,18 +1,14 @@
 import json
 import logging
 import re
+from datetime import datetime
 from math import floor
 from pathlib import Path
 from types import SimpleNamespace
-from typing import List
+from typing import Any, Callable, List, Sequence, TypedDict
 
-from tnh_scholar.openai_interface import (
-    create_jsonl_file_for_batch,
-    generate_messages,
-    run_immediate_chat_process,
-    start_batch_with_retries,
-    token_count,
-)
+from tnh_scholar.gen_ai_service.adapters.simple_completion import simple_completion
+from tnh_scholar.gen_ai_service.utils.token_utils import token_count
 from tnh_scholar.utils.file_utils import read_str_from_file
 from tnh_scholar.xml_processing import (
     join_xml_data_to_doc,
@@ -25,8 +21,198 @@ from tnh_scholar.xml_processing import (
 MAX_TOKEN_LIMIT = 60000
 MAX_BATCH_RETRIES = 40  # Number of retries
 BATCH_RETRY_DELAY = 5  # seconds to wait before retry
+DEFAULT_JOURNAL_MODEL = "gpt-4o"
+class ModelSettings(TypedDict):
+    max_tokens: int
+    temperature: float
+
+
+DEFAULT_MODEL_SETTINGS: dict[str, ModelSettings] = {
+    "gpt-4o": {"max_tokens": 16000, "temperature": 1.0},
+    "gpt-3.5-turbo": {"max_tokens": 4096, "temperature": 1.0},
+    "gpt-4o-mini": {"max_tokens": 16000, "temperature": 1.0},
+}
 
 logger = logging.getLogger("journal_process")
+
+
+def generate_messages(
+    system_message: str,
+    user_message_wrapper: Callable[[object], str],
+    data_list_to_process: Sequence[object],
+    log_system_message: bool = True,
+) -> list[list[dict[str, str]]]:
+    """Build OpenAI-style chat message payloads."""
+    if log_system_message:
+        logger.debug("System message:\n%s", system_message)
+
+    messages = []
+    for data_element in data_list_to_process:
+        message_block = [
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": user_message_wrapper(data_element)},
+        ]
+        messages.append(message_block)
+    return messages
+
+
+def _get_model_settings(model: str) -> ModelSettings:
+    return DEFAULT_MODEL_SETTINGS.get(
+        model,
+        DEFAULT_MODEL_SETTINGS[DEFAULT_JOURNAL_MODEL],
+    )
+
+
+def _extract_message_parts(messages: list[dict[str, str]]) -> tuple[str, str]:
+    """Split OpenAI-style message list into system/user strings."""
+    system_message = ""
+    user_messages: list[str] = []
+    for entry in messages:
+        role = entry.get("role")
+        content = entry.get("content") or ""
+        if role == "system":
+            system_message = content
+        elif role == "user":
+            user_messages.append(content)
+    return system_message, "\n".join(user_messages)
+
+
+def run_immediate_chat_process(
+    messages: list[dict[str, str]],
+    max_tokens: int = 0,
+    response_format=None,
+    model: str = DEFAULT_JOURNAL_MODEL,
+):
+    """Legacy-compatible immediate completion powered by GenAI simple_completion."""
+    system_message, user_message = _extract_message_parts(messages)
+    if not max_tokens:
+        max_tokens = _get_model_settings(model)["max_tokens"]
+
+    return simple_completion(
+        system_message=system_message,
+        user_message=user_message,
+        model=model,
+        max_tokens=max_tokens,
+    )
+
+
+def create_jsonl_file_for_batch(
+    messages: list[list[dict[str, str]]],
+    output_file_path: Path | str | None = None,
+    max_token_list: list[int] | None = None,
+    model: str = DEFAULT_JOURNAL_MODEL,
+    tools=None,
+    json_mode: bool | None = False,
+):
+    """Write a JSONL batch file mirroring the legacy OpenAI format."""
+    model_settings = _get_model_settings(model)
+    if not max_token_list:
+        max_tokens = model_settings["max_tokens"]
+        max_token_list = [max_tokens] * len(messages)
+
+    temperature = model_settings["temperature"]
+    total_tokens = sum(max_token_list)
+
+    if output_file_path is None:
+        date_str = datetime.now().strftime("%m%d%Y")
+        resolved_output = Path(f"batch_requests_{date_str}.jsonl")
+    else:
+        resolved_output = Path(output_file_path)
+
+    output_dir = resolved_output.parent
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    requests: list[dict[str, Any]] = []
+    for i, message in enumerate(messages):
+        max_tokens = max_token_list[i]
+        request_obj: dict[str, Any] = {
+            "custom_id": f"request-{i+1}",
+            "method": "POST",
+            "url": "/v1/chat/completions",
+            "body": {
+                "model": model,
+                "messages": message,
+                "max_tokens": max_tokens,
+                "temperature": temperature,
+            },
+        }
+        if json_mode:
+            request_obj["body"]["response_format"] = {"type": "json_object"}
+        if tools:
+            request_obj["body"]["tools"] = tools
+
+        requests.append(request_obj)
+
+    with resolved_output.open("w", encoding="utf-8") as handle:
+        for request in requests:
+            json.dump(request, handle)
+            handle.write("\n")
+
+    logger.info(
+        "JSONL batch file created at %s with ~%s requested tokens.",
+        resolved_output,
+        total_tokens,
+    )
+    return resolved_output
+
+
+def start_batch_with_retries(
+    jsonl_file: Path,
+    description: str = "",
+    max_retries: int = MAX_BATCH_RETRIES,
+    retry_delay: int = BATCH_RETRY_DELAY,
+    poll_interval: int = 10,
+    timeout: int = 3600,
+) -> list[str]:
+    """
+    Simulate the legacy batch runner using sequential simple_completion calls.
+
+    The parameters mirror the old interface so callers remain unchanged, but the
+    implementation now iterates through the JSONL requests locally.
+    """
+    logger.info(
+        "Running sequential batch for '%s' using %s",
+        description,
+        jsonl_file,
+    )
+    responses: list[str] = []
+    try:
+        with jsonl_file.open("r", encoding="utf-8") as handle:
+            for line_no, line in enumerate(handle, start=1):
+                if not line.strip():
+                    continue
+                payload = json.loads(line)
+                body = payload.get("body", {})
+                request_model = body.get("model", DEFAULT_JOURNAL_MODEL)
+                messages = body.get("messages", [])
+                max_tokens = body.get("max_tokens") or body.get("max_completion_tokens")
+                if not max_tokens:
+                    max_tokens = _get_model_settings(request_model)["max_tokens"]
+                system_message, user_message = _extract_message_parts(messages)
+                response = simple_completion(
+                    system_message=system_message,
+                    user_message=user_message,
+                    model=request_model,
+                    max_tokens=max_tokens,
+                )
+                responses.append(response)
+                logger.debug("Processed request %s from batch file", line_no)
+
+    except Exception as exc:
+        logger.error(
+            "Failed to process batch '%s' from %s",
+            description or jsonl_file,
+            jsonl_file,
+            exc_info=True,
+        )
+        raise RuntimeError("Failed to process batch sequentially") from exc
+
+    logger.info(
+        "Sequential batch for '%s' completed with %s responses.",
+        description or jsonl_file,
+        len(responses),
+    )
+    return responses
 
 
 # logger setup function

@@ -2,14 +2,9 @@ from typing import Optional, Type, Union
 
 from pydantic import BaseModel
 
+from tnh_scholar.gen_ai_service.adapters.simple_completion import simple_completion
+from tnh_scholar.gen_ai_service.utils.token_utils import token_count
 from tnh_scholar.logging_config import get_child_logger
-from tnh_scholar.openai_interface import (
-    get_completion_content,
-    get_completion_object,
-    run_immediate_completion_simple,
-    run_single_batch,
-    token_count,
-)
 
 logger = get_child_logger(__name__)
 
@@ -43,39 +38,39 @@ def openai_process_text(
 
     if batch:
         return _run_batch_process_text(
-            response_format, user_prompts, system_message, max_tokens
+            user_prompts, system_message, max_tokens, model_name, response_format
         )
-    completion = run_immediate_completion_simple(
-        system_message,
-        text_input,
+
+    completion_result = simple_completion(
+        system_message=system_message,
+        user_message=text_input,
+        model=model,
         max_tokens=max_tokens,
-        response_format=response_format,
+        response_model=response_format,
     )
-    logger.debug(f"Full completion:\n{completion}")
-    if response_format:
-        process_object = get_completion_object(completion)
-        logger.info("Processing completed.")
-        return process_object
-    else:
-        process_text = get_completion_content(completion)
-        logger.info("Processing completed.")
-        return process_text
+    logger.info("Processing completed.")
+    return completion_result
 
 
-def _run_batch_process_text(response_format, user_prompts, system_message, max_tokens):
+def _run_batch_process_text(user_prompts, system_message, max_tokens, model_name, response_format):
     if response_format:
         logger.warning(
             f"Response object can't be processed in batch mode. "
             f"Response format ignored:\n\t{response_format}"
         )
-    description = "Processing batch: processing text."
-
-    response_list = run_single_batch(
-        user_prompts,
-        system_message,
-        max_token_list=[max_tokens],
-        description=description,
+    logger.info(
+        "Processing batch sequentially via simple_completion (temporary migration fallback)."
     )
-    process_text = response_list[0]
+    responses = []
+    for idx, prompt in enumerate(user_prompts):
+        logger.debug("Processing batch item %s/%s", idx + 1, len(user_prompts))
+        response = simple_completion(
+            system_message=system_message,
+            user_message=prompt,
+            model=model_name,
+            max_tokens=max_tokens,
+        )
+        responses.append(response)
+
     logger.info("Processing completed.")
-    return process_text
+    return responses[0] if responses else ""

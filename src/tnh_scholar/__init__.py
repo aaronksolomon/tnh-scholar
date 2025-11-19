@@ -19,7 +19,6 @@ Package Structure:
        - audio_processing/   - Audio file handling and transcription
        - journal_processing/ - Journal and publication processing
        - ocr_processing/     - Optical character recognition tools
-       - openai_interface/   - OpenAI API integration
        - text_processing/    - Core text processing utilities
        - video_processing/   - Video file handling and transcription
        - utils/             - Shared utility functions
@@ -66,5 +65,4 @@ if not TNH_ROOT_SRC_DIR.exists():
     raise FileNotFoundError(f"Base directory {TNH_ROOT_SRC_DIR} does not exist.")
 if not TNH_CLI_TOOLS_DIR.exists():
     raise FileNotFoundError(f"CLI tools directory {TNH_CLI_TOOLS_DIR} does not exist.")
-
 

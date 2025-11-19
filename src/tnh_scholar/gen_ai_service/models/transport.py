@@ -10,7 +10,7 @@ Connected modules:
 """
 
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Type
 
 from pydantic import BaseModel
 
@@ -30,6 +30,7 @@ class ProviderRequest(BaseModel):
     temperature: float
     max_output_tokens: int
     seed: Optional[int] = None
+    response_format: Optional[Type[BaseModel]] = None
 
 class ProviderStatus(str, Enum):
     OK = "ok"
@@ -76,6 +77,7 @@ class ProviderUsage(BaseModel):
 class TextPayload(BaseModel):
     text: str
     finish_reason: Optional[FinishReason] = None
+    parsed: Optional[BaseModel] = None
 
 class ProviderResponse(BaseModel):
     """Normalized provider response.

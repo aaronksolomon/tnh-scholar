@@ -53,6 +53,7 @@ class OpenAIChatCompletionRequest(BaseModel):
     temperature: float
     max_completion_tokens: int
     seed: Optional[int] = None
+    response_format: Optional[type[BaseModel]] = None
 
 
 class OpenAIAdapter:
@@ -127,6 +128,7 @@ class OpenAIAdapter:
             temperature=req.temperature,
             max_completion_tokens=req.max_output_tokens,
             seed=req.seed,
+            response_format=req.response_format,
         )
 
     def from_openai_response(
@@ -204,7 +206,10 @@ class OpenAIAdapter:
         #   - ChatCompletion.choices is guaranteed non-empty for successful completions,
         #     per openai/types/chat/chat_completion.py (v2.5.0).
         #   - For safety, future hardening may add a guard for empty choices.
-        text = response.choices[0].message.content or ""
+        message = response.choices[0].message
+        text = message.content or ""
+        parsed_obj = getattr(message, "parsed", None)
+        parsed_value = parsed_obj if isinstance(parsed_obj, BaseModel) else None
 
         u = getattr(response, "usage", None)
         provider_usage = None
@@ -236,6 +241,7 @@ class OpenAIAdapter:
             payload=TextPayload(
                 text=text,
                 finish_reason=finish_reason,
+                parsed=parsed_value,
             ),
             usage=provider_usage,
             incomplete_reason=incomplete_reason,

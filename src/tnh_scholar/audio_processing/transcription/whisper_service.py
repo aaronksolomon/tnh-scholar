@@ -24,7 +24,7 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any, BinaryIO, Dict, List, Optional, TypedDict, Union
 
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 
 from tnh_scholar.logging_config import get_child_logger
@@ -602,4 +602,3 @@ class WhisperTranscriptionService(TranscriptionService):
         return self.format_converter.convert(
             result, format_type, format_options or {}
         )
-

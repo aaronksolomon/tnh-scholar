@@ -29,7 +29,7 @@ This section organizes work into three priority levels based on criticality for 
 - **Location**: [pyproject.toml](pyproject.toml)
 - **What**:
   - ✅ Runtime dependencies declared (pydantic-settings, python-json-logger, tenacity)
-  - ✅ Python version flexible (>=3.12,<3.13)
+  - ✅ Python version pinned to 3.12.4
   - ⚠️ Pattern directory import issue still pending (see Configuration & Data Layout below)
 
 #### 3. ✅ Remove Library sys.exit() Calls
@@ -59,16 +59,25 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 5. 🚧 Unify OpenAI Clients
 
-- **Status**: NOT STARTED
+- **Status**: PHASE 1 COMPLETE ✅ (5/6 phases remaining)
 - **Priority**: HIGH
-- **Problem**: Two implementations causing code divergence
+- **ADR**: [ADR-A13: Legacy Client Migration](docs/design/gen-ai-service/ADR-A13-legacy-client-migration.md)
+- **Plan**: [Migration Plan](docs/design/gen-ai-service/MIGRATION-PLAN.md)
+- **Problem**: Two implementations causing code divergence (legacy client now removed)
   - **Modern**: [gen_ai_service/providers/openai_client.py](src/tnh_scholar/gen_ai_service/providers/openai_client.py) - typed, retrying
-  - **Legacy**: [openai_interface/openai_interface.py](src/tnh_scholar/openai_interface/openai_interface.py) - singleton with global state
-- **Tasks**:
-  - [ ] Audit CLI tools using legacy client
-  - [ ] Migrate CLI tools to GenAIService/modern client
-  - [ ] Delete [openai_interface/](src/tnh_scholar/openai_interface/) module
-  - [ ] Update tests to use modern client only
+  - **Legacy**: `openai_interface/` – removed as of Phase 6
+- **Phase 1: Utilities & Adapters** ✅ COMPLETE
+  - [x] Create [token_utils.py](src/tnh_scholar/gen_ai_service/utils/token_utils.py) - token counting
+  - [x] Create [response_utils.py](src/tnh_scholar/gen_ai_service/utils/response_utils.py) - response extraction
+  - [x] Create [simple_completion.py](src/tnh_scholar/gen_ai_service/adapters/simple_completion.py) - migration adapter
+  - [x] Add comprehensive tests (33 new tests)
+  - [x] Fix hard-coded literals (use policy dataclass)
+- **Phase 2-6: Migration**
+  - [x] Phase 2: Migrate core modules (ai_text_processing, journal_processing)
+  - [x] Phase 3: Migrate CLI tools
+  - [x] Phase 4: Migrate tests
+  - [x] Phase 5: Update notebooks
+  - [x] Phase 6: Delete legacy code (openai_interface/)
 
 ---
 
@@ -92,7 +101,6 @@ This section organizes work into three priority levels based on criticality for 
 
 - **Status**: NOT STARTED
 - **Problem**: Multiple modules call `load_dotenv()` at import time
-  - [openai_interface/openai_interface.py](src/tnh_scholar/openai_interface/openai_interface.py)
   - [ai_text_processing/prompts.py](src/tnh_scholar/ai_text_processing/prompts.py)
   - [audio_processing/diarization/pyannote_client.py](src/tnh_scholar/audio_processing/diarization/pyannote_client.py)
 - **Tasks**:
@@ -106,10 +114,10 @@ This section organizes work into three priority levels based on criticality for 
 - **Status**: NOT STARTED
 - **Location**: [cli_tools/audio_transcribe/](src/tnh_scholar/cli_tools/audio_transcribe/)
 - **Tasks**:
-  - [ ] Remove [audio_transcribe0.py](src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe0.py)
-  - [ ] Remove audio_transcribe1.py
-  - [ ] Remove audio_transcribe2.py
-  - [ ] Keep only current version
+  - [x] Remove [audio_transcribe0.py](src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe0.py)
+  - [x] Remove audio_transcribe1.py
+  - [x] Remove audio_transcribe2.py
+  - [x] Keep only current version
   - [ ] Create shared utilities (argument parsing, environment validation, logging)
 
 #### 9. 🚧 Update Documentation

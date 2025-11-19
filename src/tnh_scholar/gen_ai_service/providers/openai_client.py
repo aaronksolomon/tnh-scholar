@@ -63,13 +63,21 @@ class OpenAIClient(ProviderClient):
         )
 
     def _chat_create(self, openai_request) -> ChatCompletion:
-        return self._client.chat.completions.create(
+        request_kwargs = dict(
             model=openai_request.model,
             messages=openai_request.messages,
             temperature=openai_request.temperature,
             max_completion_tokens=openai_request.max_completion_tokens,
             seed=openai_request.seed,
         )
+
+        if openai_request.response_format is not None:
+            return self._client.beta.chat.completions.parse(
+                response_format=openai_request.response_format,
+                **request_kwargs,
+            )
+
+        return self._client.chat.completions.create(**request_kwargs)
 
     def generate(self, request: ProviderRequest) -> ProviderResponse:
         """

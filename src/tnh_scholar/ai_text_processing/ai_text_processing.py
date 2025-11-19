@@ -7,9 +7,9 @@ from typing import Dict, Generator, Optional, Tuple, Type, cast
 
 from pydantic import BaseModel
 
+from tnh_scholar.gen_ai_service.utils.token_utils import token_count
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.metadata.metadata import ProcessMetadata
-from tnh_scholar.openai_interface import token_count
 from tnh_scholar.text_processing import (
     NumberedText,
 )

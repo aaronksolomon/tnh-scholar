@@ -64,6 +64,7 @@ class CompletionResult(BaseModel):
     usage: Usage | None
     model: str
     provider: str
+    parsed: BaseModel | None = None
     
 class Provenance(BaseModel):
     provider: str

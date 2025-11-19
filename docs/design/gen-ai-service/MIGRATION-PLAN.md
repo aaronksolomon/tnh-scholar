@@ -2,7 +2,7 @@
 
 > **Quick Reference** for migrating from legacy `openai_interface` to `GenAIService`
 
-**Status**: Planning Phase
+**Status**: Phase 1 Complete - Utilities Ready
 **ADR**: [ADR-A13: Legacy Client Migration](ADR-A13-legacy-client-migration.md)
 **Goal**: Delete `openai_interface/` module, use `GenAIService` exclusively
 
@@ -86,17 +86,11 @@ text = simple_completion(
 
 ## File Impact Analysis
 
-### Will Be Deleted ❌
+### Legacy Module (Removed) ✅
 
-```
-src/tnh_scholar/openai_interface/
-├── openai_interface.py          (27KB)
-├── run_oa_batch_jobs.py         (8KB)
-├── __init__.py
-└── gpt_batch_files/
-
-tests/openai_interface/
-└── test_openai_interface.py     (19 tests)
+```plaintext
+src/tnh_scholar/openai_interface/      ❌ removed
+tests/openai_interface/               ❌ removed
 ```
 
 ### Need Migration 🔄
@@ -111,9 +105,9 @@ tests/openai_interface/
 
 - `cli_tools/token_count/token_count.py` - Simple utility
 
-**Low Priority** (Consider deleting):
+**Low Priority**:
 
-- `audio_processing/transcription_legacy.py` - Already marked legacy
+- (Completed) Removed `audio_processing/transcription_legacy.py`
 
 **Documentation**:
 
