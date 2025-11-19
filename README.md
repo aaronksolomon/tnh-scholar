@@ -18,6 +18,8 @@ Currently TNH Scholar is in a rapid prototyping phase. It currently provides sev
 
 ## Installation
 
+### From PyPI (CLI usage)
+
 Install using pip:
 
 ```bash
@@ -54,6 +56,32 @@ pip install "tnh-scholar[query]"
 # Development tools
 pip install "tnh-scholar[dev]"
 ```
+
+### Development setup (from source)
+
+If you plan to contribute or run the full test suite, follow the pyenv + Poetry workflow described in [DEV_SETUP.md](DEV_SETUP.md).  
+The short version:
+
+1. Install `pyenv` and `Python 3.12.4`.
+2. Install Poetry and enable in-project virtual environments:  
+   `poetry config virtualenvs.in-project true`
+3. Clone this repository and run the provided Make targets:
+
+```bash
+make setup        # runtime dependencies only
+make setup-dev    # runtime + dev dependencies (recommended)
+```
+
+Common development commands (run from the repo root):
+
+```bash
+make test         # or: poetry run pytest
+make lint         # poetry run ruff check .
+make format       # poetry run ruff format .
+poetry run mypy src/
+```
+
+For step-by-step instructions, troubleshooting tips, and CI guidance, see [DEV_SETUP.md](DEV_SETUP.md).
 
 ## Quick Start
 
@@ -100,7 +128,7 @@ Comprehensive documentation is available at:
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to get involved.
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to set up the environment, run tests, and open pull requests.
 
 ## License
 

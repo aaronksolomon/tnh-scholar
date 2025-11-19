@@ -1,83 +1,61 @@
-# Contributing to TNH Scholar (Prototype Phase)
+# Contributing to TNH Scholar
 
-TNH Scholar is currently in rapid prototype phase, focusing on core functionality and basic usability. We welcome contributions that help validate and improve the prototype implementation.
+TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow.  
+This document summarizes how to get set up, what tools we use, and what we expect in pull requests.
 
-## Current Focus Areas
+## 1. Development environment
 
-1. **TNH-FAB Command Line Tool**
-    - Basic functionality testing
-    - Error case identification
-    - Command pipeline testing
-    - Pattern system integration
+TNH Scholar uses **pyenv** for Python version pinning and **Poetry** for dependency management.  
+Follow [DEV_SETUP.md](DEV_SETUP.md) for detailed instructions. The essentials are:
 
-2. **Pattern System**
-    - Pattern usage testing
-    - Pattern creation testing
-    - Version control functionality
-    - Concurrent access testing
+1. Install `pyenv` and `Python 3.12.4` (`pyenv install 3.12.4 --skip-existing`).
+2. Install Poetry and enable in-project environments: `poetry config virtualenvs.in-project true`.
+3. Clone the repo and run one of the Make targets:
 
-3. **AUDIO-TRANSCRIBE Command Line Tool**
-    - Basic functionality testing
-    - Error case identification
+   ```bash
+   make setup        # runtime dependencies only
+   make setup-dev    # runtime + dev dependencies (recommended for contributors)
+   ```
 
-## How to Help
+The Makefile mirrors our CI configuration, so using it locally guarantees parity.
 
-### Testing
+## 2. Day-to-day workflow
 
-#### 1. Install the package
+- Create a feature branch from `main` (or the branch requested in your issue).
+- Keep changes focused; open separate PRs for unrelated fixes.
+- Use Poetry to run tools so the correct virtualenv is used:
 
-```bash
-   pip install tnh-scholar
-```
+  ```bash
+  make lint         # poetry run ruff check .
+  make format       # poetry run ruff format .
+  poetry run mypy src/
+  make test         # poetry run pytest
+  ```
 
-#### 2. Try basic operations
+- Update documentation (README, DEV_SETUP, etc.) whenever behavior or commands change.
 
-```bash
-    # Test basic commands
-    tnh-fab punctuate input.txt
-    tnh-fab section input.txt
-    tnh-fab translate input.txt
-    tnh-fab process -p pattern_name input.txt
+## 3. Pull request checklist
 
-    # Test pipeline operations
-    cat input.txt | tnh-fab punctuate | tnh-fab section
-```
+- [ ] All tests pass locally (`make test`).
+- [ ] Linting and formatting pass (`make lint`, `make format`, `poetry run mypy src/`).
+- [ ] New functionality includes tests and, when relevant, documentation updates.
+- [ ] Commit messages and PR descriptions explain the motivation and approach.
+- [ ] CI is green — it runs the same Poetry-based workflow described above.
 
-#### 3. Report issues
+## 4. Reporting issues & proposing ideas
 
-- Use GitHub Issues
-- Include command used
-- Provide minimal example that reproduces the issue
-- Note your environment (OS, Python version)
+Use [GitHub Issues](https://github.com/aaronksolomon/tnh-scholar/issues) to report bugs or request features.  
+Please include:
 
-### Pattern Testing
+- Steps to reproduce (commands, inputs, expected vs. actual behavior).
+- Environment details (OS, Python version, whether you're using the Poetry env).
+- Relevant logs or stack traces.
 
-1. Create test patterns in `~/.config/tnh-scholar/patterns/`
-2. Test pattern loading and application
-3. Report any issues with pattern system
+For design discussions, open an issue and tag it with `discussion` so we can keep the history public.
 
-## Reporting Issues
+## 5. Need help?
 
-Create issues on GitHub with:
+If you get stuck during setup, consult [DEV_SETUP.md](DEV_SETUP.md) first — it is the canonical source for environment instructions.  
+If that doesn’t answer your question, open an issue describing the problem and what you have tried.
 
-- Clear description of the problem
-- Steps to reproduce
-- Expected vs actual behavior
-- Example files (if needed)
-
-## Code Contributions
-
-At this prototype stage:
-
-- Keep changes focused
-- Include tests for new functionality
-- Follow existing code style
-- See [design guide](/development/design-guide) for coding style and requirements.
-
-## Questions and Discussion
-
-- Use GitHub Issues for feature discussions
-- Tag issues with 'question' or 'discussion'
-- Focus on prototype phase functionality
-
-This is a project in rapid prototype - we're looking for practical feedback on core functionality as well as possible new feature additions and new tools.
+Thanks for helping make TNH Scholar better!
