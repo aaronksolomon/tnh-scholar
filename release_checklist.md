@@ -1,3 +1,10 @@
+---
+title: "Release Checklist"
+description: "- [ ] Update version in pyproject.toml"
+owner: ""
+status: processing
+created: "2025-01-22"
+---
 # Release Checklist
 
 - [ ] Update version in pyproject.toml

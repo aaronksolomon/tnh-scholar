@@ -1,3 +1,10 @@
+---
+title: "Quick Start Guide"
+description: "TNH Scholar provides powerful text processing capabilities through several command-line tools. This guide will help you get started with the basic workflows."
+owner: ""
+status: processing
+created: "2025-02-01"
+---
 # Quick Start Guide
 
 TNH Scholar provides powerful text processing capabilities through several command-line tools. This guide will help you get started with the basic workflows.

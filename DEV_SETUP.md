@@ -1,4 +1,10 @@
-
+---
+title: "TNH-Scholar — Development Setup Guide"
+description: "This document outlines the standard development environment for TNH‑Scholar."
+owner: ""
+status: processing
+created: "2025-11-19"
+---
 # TNH-Scholar — Development Setup Guide
 
 This document outlines the standard development environment for TNH‑Scholar.  

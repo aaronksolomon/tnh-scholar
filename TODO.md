@@ -1,3 +1,10 @@
+---
+title: "TNH Scholar TODO List"
+description: "> **Last Updated**: 2025-11-16"
+owner: ""
+status: processing
+created: "2025-01-20"
+---
 # TNH Scholar TODO List
 
 > **Last Updated**: 2025-11-16
@@ -61,8 +68,8 @@ This section organizes work into three priority levels based on criticality for 
 
 - **Status**: PHASE 1 COMPLETE ✅ (5/6 phases remaining)
 - **Priority**: HIGH
-- **ADR**: [ADR-A13: Legacy Client Migration](docs/design/gen-ai-service/ADR-A13-legacy-client-migration.md)
-- **Plan**: [Migration Plan](docs/design/gen-ai-service/MIGRATION-PLAN.md)
+- **ADR**: [ADR-A13: Legacy Client Migration](docs/architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md)
+- **Plan**: [Migration Plan](docs/architecture/gen-ai-service/design/migration-plan.md)
 - **Problem**: Two implementations causing code divergence (legacy client now removed)
   - **Modern**: [gen_ai_service/providers/openai_client.py](src/tnh_scholar/gen_ai_service/providers/openai_client.py) - typed, retrying
   - **Legacy**: `openai_interface/` – removed as of Phase 6
@@ -120,16 +127,43 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Keep only current version
   - [ ] Create shared utilities (argument parsing, environment validation, logging)
 
-#### 9. 🚧 Update Documentation
+#### 9. 🚧 Documentation Reorganization (ADR-DOC-001)
 
-- **Status**: NOT STARTED
-- **Tasks**:
-  - [ ] Update [README.md](README.md) to highlight Gen AI Service architecture
-  - [ ] Deprecate outdated CLI examples (punctuate command)
-  - [ ] Add practical user guides for new features
-  - [ ] Create architecture overview document
-  - [ ] Document pattern/prompt authoring schema
-  - [ ] Sync mkdocs.yaml with current implementation
+- **Status**: IN PROGRESS (Phase 1 inventory + reorg completed)
+- **Reference**: [ADR-DD01](docs/architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md)
+- **Goal**: Execute the phased documentation overhaul, keep README ≈ docs/index, and automate verification.
+- **Checkpoints / Tasks**:
+  1. **Inventory + Tagging**
+     - [x] Catalog every Markdown file (owner, status: current/needs-update/historical)
+     - [x] Add front matter metadata + PromptTemplate terminology notes
+     - [ ] Identify raw research assets to offload to external storage
+  2. **Filesystem Reorg**
+     - [x] Create the target hierarchy (overview, getting-started, user-guide, cli-reference, prompt-templates, api-reference, architecture/adr, development, research, docs-ops, archive)
+     - [x] Move existing docs into the new layout with stub `index.md` files
+     - [ ] Tag archival folders explicitly for mkdocs-literate-nav auto-generation
+  3. **Terminology + README Sweep**
+     - [ ] Expand and sync `README.md` + `docs/index.md` with persona routing
+     - [ ] Rename Pattern → PromptTemplate across docs (incl. CLI references)
+     - [ ] Add prompt authoring schema + catalog guidance
+  4. **MkDocs + Automation**
+     - [ ] Restructure `mkdocs.yaml` or adopt `mkdocs-literate-nav` to mirror filesystem
+     - [x] Add doc-index automation (`scripts/generate_doc_index.py`) and flag generated outputs
+     - [ ] Add remaining doc-generation scripts (`generate_cli_docs.py`, `generate_prompt_template_catalog.py`, `sync_readme.py`) and hook into `make docs`
+     - [ ] Wire CI to run `mkdocs build` + doc verification (fails on drift in major releases)
+     - [x] Add markdownlint to CI/CD (MD025/MD013 ignored via `.markdownlint.json`)
+  5. **Historical Archive + Discoverability**
+     - [ ] Move legacy ADRs/prototypes/research transcripts into `docs/archive/**`
+     - [ ] Create archive index + add summary links from primary sections
+     - [ ] Host raw transcripts externally (S3/KB) and link from summaries
+  6. **Backlog + Gap Filling**
+     - [ ] Populate `docs/docs-ops/roadmap.md` with missing topics (PromptTemplate catalog, workflow playbooks, evaluation guides, KB, deployment, research summaries, doc ops)
+     - [ ] Open GitHub issues per backlog item with owners/priorities
+  7. **Outstanding Standalone Tasks**
+     - [ ] Deprecate outdated CLI examples (e.g., `punctuate` usage) once cli-reference regenerates
+     - [ ] Add practical user guides for new features post-reorg
+     - [ ] Create refreshed architecture overview page within `architecture/`
+     - [ ] Finish Pattern → PromptTemplate rename across docs/CLI text
+     - [ ] Establish research artifact archival workflow (external storage + summary linking)
 
 #### 10. 🚧 Type System Improvements
 
@@ -168,7 +202,7 @@ This section organizes work into three priority levels based on criticality for 
 #### 13. 🚧 Knowledge Base Implementation
 
 - **Status**: DESIGN COMPLETE
-- **ADR**: [docs/design/knowledge-base/ADR-K01-preliminary-architectural-design.md](docs/design/knowledge-base/ADR-K01-preliminary-architectural-design.md)
+- **ADR**: [ADR-K01: Preliminary Architectural Strategy](docs/architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design.md)
 - **Tasks**:
   - [ ] Implement Supabase integration
   - [ ] Vector search functionality

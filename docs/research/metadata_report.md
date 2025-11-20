@@ -1,4 +1,10 @@
-
+---
+title: "**Summary Report on Metadata Extraction, Source Parsing, and Model Training for TNH-Scholar**"
+description: "## **Overview**"
+owner: ""
+status: processing
+created: "2024-10-24"
+---
 # **Summary Report on Metadata Extraction, Source Parsing, and Model Training for TNH-Scholar**
 
 ## **Overview**
@@ -124,4 +130,3 @@ We aim to create three primary models: **search**, **conversational**, and **tra
 - **Refining Extraction**: Further experiments with rule-based extraction or custom models for metadata will be essential.
 - **Model-Specific Training**: The distinction between training data for **search**, **conversation**, and **translation** must be carefully managed (e.g., include sutras for search, exclude for conversational training).
 - **Proof of Concept Focus**: While full automation is a long-term goal, manual handling will be required in the short term, especially for book-specific edge cases.
-

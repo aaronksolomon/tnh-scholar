@@ -1,0 +1,78 @@
+---
+title: "ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts"
+description: "Keeps the Pattern terminology while clarifying how PatternCatalog functions in TNH Scholar."
+owner: ""
+author: ""
+status: processing
+created: "2025-09-22"
+---
+# ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts
+
+Retains the Pattern nomenclature and codifies PatternCatalog responsibilities even as industry shifts to “prompt” language.
+
+- **Status:** Rejected  
+- **Date:** 2025-09-22  
+- **Context:** TNH Scholar — Pattern system design evolution
+
+---
+
+## Context
+
+In the current TNH Scholar system, **Patterns** are simple, Git-versioned text templates (rendered with Jinja2 into Markdown). They allow reproducible and transparent use of structured prompts. At present, the implementation is minimal but effective.
+
+Industry tooling (LangChain, Hugging Face, OpenAI examples) often uses the term **Prompt Catalog** to refer to a curated library of reusable prompt templates. Aligning with this convention helps external contributors and new users orient quickly.  
+
+At the same time, **Pattern** is a deliberate term within TNH Scholar’s ontology, reflecting both:
+
+- Its grounding in software design language (design patterns, architectural patterns).  
+- Its aspiration to be more than “just a prompt string”—a reusable, versioned artifact of practice.
+
+---
+
+## Decision
+
+1. **Terminology**  
+   - Retain **Pattern** as the core artifact type in TNH Scholar.  
+   - Introduce **PatternCatalog** as the managing service (lookup, versioning, fingerprinting, resolution).  
+   - In documentation, explicitly state: *“Patterns correspond to what the industry commonly calls prompt templates.”*
+
+2. **Structure**  
+   - **Pattern** = single artifact (template text + metadata).  
+   - **PatternCatalog** = collection + index + retrieval service.  
+
+3. **Fingerprinting**  
+   - Add a **PatternFingerprint**: a hash of the rendered output + metadata.  
+   - Use for reproducibility, caching, observability.  
+
+4. **Versioning**  
+   - Continue to store Patterns in Git for lineage and collaborative editing.  
+   - Treat Git commit hashes as part of the provenance chain for each Pattern.
+
+---
+
+## Consequences
+
+- Contributors will encounter **PatternCatalog**, which maps cleanly to the widely used “Prompt Catalog” concept, while retaining TNH Scholar’s distinctive ontology.  
+- Patterns gain stronger identity and reproducibility via **fingerprints**.  
+- This design creates a bridge: newcomers can orient with familiar terms, while the TNH Scholar system continues to evolve its unique conceptual architecture.  
+
+---
+
+## Future Work
+
+- Expand **PatternCatalog** into a **full service**, including:
+  - Template validation (required variables, length bounds).  
+  - Deterministic rendering and caching keyed by fingerprint.  
+  - Structured metadata (task type, model constraints, safety requirements).  
+  - Usage analytics (which Patterns are used, cost/latency tracking).  
+  - Integration with the forthcoming **OpenAIService** (so `CompletionRequest` can reference Patterns directly).  
+
+- Support **multi-modal Patterns** (templates that include references to image attachments or structured JSON scaffolds).  
+- Provide a lightweight **Pattern authoring workflow**: local editing + preview + fingerprint check + commit.  
+- Document conventions for external contributors who may wish to repurpose or extend the Pattern system.  
+
+---
+
+## Status
+
+This ADR is a **preliminary step** to prepare the Pattern system for integration with the upcoming **OpenAI Object Service** design. It formalizes naming and clarifies intentions, while leaving room for incremental improvements.

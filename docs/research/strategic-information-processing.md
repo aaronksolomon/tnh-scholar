@@ -1,3 +1,10 @@
+---
+title: "Structural-Informed Adaptive Processing (SIAP) Methodology"
+description: "## Core Philosophy"
+owner: ""
+status: processing
+created: "2025-06-24"
+---
 # Structural-Informed Adaptive Processing (SIAP) Methodology
 
 ## Core Philosophy

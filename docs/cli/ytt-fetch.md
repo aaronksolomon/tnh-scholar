@@ -1,3 +1,10 @@
+---
+title: "ytt-fetch"
+description: "(Y)ou(T)ube (T)ranscript-(Fetch)ing utility."
+owner: ""
+status: processing
+created: "2025-01-21"
+---
 # ytt-fetch
 
 (Y)ou(T)ube (T)ranscript-(Fetch)ing utility.

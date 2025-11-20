@@ -1,3 +1,10 @@
+---
+title: "Improvements / Initial structure"
+description: "Initial high-level view of the TNH Scholar ecosystem."
+owner: ""
+status: processing
+created: "2025-02-01"
+---
 # Improvements / Initial structure
 
 Initial high-level view of the TNH Scholar ecosystem.
@@ -57,4 +64,3 @@ This high-level view suggests some key improvements needed:
 - Clearer boundaries between tools
 - Standard communication formats
 - Simplified composition
-

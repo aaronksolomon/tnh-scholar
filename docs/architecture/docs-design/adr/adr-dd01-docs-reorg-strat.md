@@ -1,0 +1,153 @@
+---
+title: "ADR-DD01: Documentation System Reorganization Strategy"
+description: "Rebuilds the documentation architecture with new directories, automation, and PromptTemplate terminology."
+owner: ""
+author: "Codex (GPT-5)"
+status: accepted
+created: "2024-11-09"
+---
+# ADR-DD01: Documentation System Reorganization Strategy
+
+Defines the new documentation hierarchy, automation tooling, and naming standards for TNH Scholar.
+
+- **Status**: Accepted
+- **Date**: 2024-11-09
+- **Owner**: Documentation Working Group (initially Codex + maintainers)
+
+## Context
+
+The documentation footprint for TNH Scholar has grown organically:
+
+- `docs/index.md` and `README.md` describe the project at a high level but omit the current architecture, roadmap, or research context and still lean on the legacy "Pattern" terminology.
+- End-user docs (`docs/getting-started`, `docs/user-guide`, `docs/cli`, `docs/api`) only cover a subset of the available tools and do not reflect the latest CLI surface, PromptTemplate design, or evaluation workflows.
+- Developer and architecture materials are split between `docs/development`, a large unindexed `docs/design` tree containing numerous ADRs, and `docs/docs-design` (the original documentation plan). Most of this content never appears in `mkdocs.yaml`, so the published site hides the majority of design history.
+- Research work (`docs/research/**`) mixes current experiments with exploratory transcripts without indicating recency or ownership.
+- There is no standard place for "doc ops" guidance (style guide, review checklists, roadmap), and the README is not a comprehensive introduction to TNH Scholar’s goals, structure, design principles, or contribution opportunities.
+
+The current effort (TODO #9) should reorganize the documentation without losing information, surface up-to-date guidance, archive historical material appropriately, and ensure the MkDocs site mirrors the on-disk structure. It must also accommodate the ongoing rename from **Pattern** to **PromptTemplate** (e.g., `docs/user-guide/patterns.md`, `docs/design/pattern/*`, `docs/cli/tnh-fab.md`, etc.).
+
+## Decision
+
+Adopt a documentation architecture that is source-of-truth in the repository, entirely reflected in MkDocs navigation, and explicit about currency vs. history.
+
+1. **Unify the directory layout.**
+   - Replace the current mix of `design/`, `development/`, `docs-design/`, and `research/` subtrees with a single hierarchy:
+
+     ```plaintext
+     docs/
+       index.md                    # mirrors README, includes vision + orientation
+       overview/                   # mission, roadmap, release notes, glossary
+       getting-started/            # install, quick start, configuration
+       user-guide/                 # workflows, PromptTemplate usage, best practices
+       cli-reference/              # per-command auto-generated docs
+       prompt-templates/           # PromptTemplate catalog, conventions, metadata schema
+       api-reference/              # mkdocstrings output + integration guides
+       architecture/               # system design, component deep-dives, ADRs
+         adr/                      # numbered ADRs (inc. migrated legacy files)
+       development/                # contributing, dev setup, testing, coding standards
+       research/                   # active experiments + summaries
+       docs-ops/                   # documentation roadmap, maintenance plan, style guide
+       archive/                    # frozen historical docs (design prototypes, transcripts, etc.)
+     ```
+
+     Each folder gains an `index.md` that frames its content and links to authoritative children. Legacy directories (e.g., `docs/design/tnh-fab/...`) move into either `architecture/adr/` or `archive/design/tnh-fab/` depending on relevance.
+
+2. **Enforce README ↔ site parity.**
+   - Expand `README.md` into a full project introduction (vision, goals, architecture snapshot, CLI summary, development status, research focus, and where to contribute) and keep it synchronized with `docs/index.md`.
+   - Include the documentation map (nav overview + major directories) so newcomers know where to look.
+
+3. **Adopt PromptTemplate terminology.**
+   - Rename `docs/user-guide/patterns.md` to `user-guide/prompt-templates.md` (mirrored in MkDocs nav and CLI docs).
+   - Update all references in docs (and eventually CLI/API text) to use PromptTemplate nomenclature while acknowledging the historical Pattern term in the archive.
+
+4. **Surface everything through MkDocs.**
+   - Restructure `mkdocs.yaml` to follow the physical layout above, ensuring no Markdown lives outside the published nav.
+   - Use nested sections (Material tabs) to distinguish current vs. archival content, with clear "Historical" banners and metadata.
+
+5. **Introduce doc automation + QA.**
+   - Add a `scripts/docs/` toolkit with:
+     - `generate_cli_docs.py` – runs each Click/Typer command (`tnh-fab --help`, etc.) and produces Markdown in `docs/cli-reference`.
+     - `generate_prompt_template_catalog.py` – inspects `patterns/` (soon `prompt_templates/`) and builds a catalog page (name, intent, inputs, outputs, maturity).
+     - `sync_readme.py` – verifies that README sections map to `docs/index.md` and fails CI if they diverge.
+   - Extend MkDocs with `mkdocstrings` (already configured) for API coverage and consider `mkdocs-gen-files` + `mkdocs-literate-nav` (or Material `navigation.instant`) to keep nav synchronized automatically.
+   - Add CI jobs (`make docs-verify`) to run `mkdocs build`, automated link checking, and template generation.
+
+6. **Document gaps + backlog.**
+   - Produce a living checklist in `docs/docs-ops/roadmap.md` describing missing or stale topics (see below).
+   - Attach ownership metadata (module owner, last reviewed) at the top of each page.
+
+7. **Codify Markdown + indexing standards.**
+   - Generate `documentation_index.md` at the repo root (and mirrored at `docs/docs-ops/documentation_index.md`) from front matter metadata so contributors can quickly locate any doc without digging into directories. The document index is treated as a build artifact and regenerated whenever docs change (`scripts/generate_doc_index.py` handles this and marks the files with `auto_generated: true`).
+   - Publish `docs/docs-ops/markdown-standards.md` to define file naming (lowercase kebab-case, hyphen-separated, no spaces), required YAML front matter (now including an `author` provenance field), mandated `# Title` + single-paragraph description, link styles, and lint expectations. ADR filenames follow `adr-<modulecode><number>-<descriptor>.md` (e.g., `adr-dd01-docs-reorg.md`).
+   - Adopt `markdownlint` (GitHub: DavidAnson/markdownlint) in CI/Make targets to enforce the standard automatically. `.markdownlint.json` disables MD025/MD013 to account for YAML-title duplication and long architecture tables; CI now runs `npx markdownlint '**/*.md'`.
+   - Provide an ADR template (`docs/docs-ops/adr-template.md`) that applies the standard (front matter + `# Title` heading + one-sentence summary) while accommodating ADR metadata (Status, Date, Owner, Author). Also require module-specific storage: `docs/architecture/<module>/adr/ADR-<module-code><number>.md`, where the module code is one to four lowercase letters (e.g., `adr-a01`, `adr-kb02`, `ADR-dd01`) to keep the catalog navigable.
+   - Update existing ADRs/docs over time to conform to the standards; new docs must comply immediately.
+
+## Implementation Plan
+
+1. **Inventory and tagging (Week 1).**
+   - Tag each existing Markdown file as `current`, `needs-update`, or `historical`.
+   - Capture metadata (owner, last review date) in YAML front matter.
+   - Identify Pattern→PromptTemplate rename scope via `rg` (currently 300+ hits).
+
+2. **Filesystem reorganization (Week 1–2).**
+   - Create the target directory structure.
+   - Move files into their new homes, inserting shim `index.md` pages where necessary.
+   - Preserve original filenames in `archive/` for traceability and add cross-links from the new canonical documents.
+
+3. **Terminology + README sweep (Week 2).**
+   - Update README and `docs/index.md` with the comprehensive intro, project structure, research focus, and contribution pointers.
+   - Rename `Pattern` to `PromptTemplate` (docs + nav). Retain a glossary entry describing the rename.
+
+4. **MkDocs + automation (Week 2–3).**
+   - Rewrite `mkdocs.yaml` nav to mirror the new hierarchy.
+   - Add doc-generation scripts and hook them into `make docs`.
+   - Configure CI to run `mkdocs build` plus the generators (ensuring docs stay up to date).
+
+5. **Historical archiving + discoverability (Week 3).**
+   - Move legacy ADRs/prototypes into `docs/archive/**` with short summaries in their parent section pointing users to the archive.
+   - Build an archive index (chronological table with tags, e.g., `design`, `research`, `ops`).
+
+6. **Gap-filling sprint planning (Week 3+).**
+   - Use the backlog below to create GitHub issues and assign owners.
+   - Track documentation coverage in `docs/docs-ops/roadmap.md`.
+
+## Documentation Backlog (initial)
+
+1. **PromptTemplate Catalog + Standards.**
+   - Naming conventions, metadata schema, versioning, testing strategy, migration guide from Patterns.
+2. **Workflow Playbooks.**
+   - End-to-end tutorials for research tasks (e.g., transcription → translation → PromptTemplate evaluation).
+3. **Evaluation + Benchmarking.**
+   - How to run `evaluation/` scripts, metrics definitions, sample datasets.
+4. **Knowledge Infrastructure.**
+   - Vector store design, metadata extraction pipeline, ingestion policies.
+5. **Deployment / Operations.**
+   - Release checklist integration, environment promotion strategy, secrets management.
+6. **Research Summaries.**
+   - Digestible summaries of `docs/research/*` experiments with conclusions and follow-up work.
+7. **Documentation Ops.**
+   - Style guide, doc PR checklist, automation instructions, label taxonomy.
+
+## Consequences
+
+- **Positive**
+  - Every document has a clear home and appears in the published site.
+  - README + docs/index become authoritative onboarding material.
+  - Historical context remains accessible but separated from current guidance.
+  - Automation keeps CLI/API docs and template catalogs in sync with the codebase.
+  - Terminology alignment reduces confusion during the Pattern→PromptTemplate migration.
+
+- **Negative / Risks**
+  - Short-term churn as files move; open PRs may require rebase assistance.
+  - Automation scripts add maintenance burden and require CI resources.
+  - Contributors must learn the new structure; requires communication + contributor guide updates.
+
+## Open Questions & Decisions
+
+1. **Nav automation** – adopt `mkdocs-literate-nav` once directories encode archival status (e.g., `archive/`, `architecture/adr/`). We'll author explicit `index.md` files but let literate-nav derive most of the hierarchy to keep nav and filesystem in sync automatically.
+2. **Research storage** – keep curated summaries in `docs/research/` but move bulky/raw transcripts to external storage (S3 or knowledge base). Each summary page links to the raw artifacts so we avoid bloating Git while retaining traceability.
+3. **Single README** – maintain one `README.md` as the universal entry point with early persona routing (user/developer/researcher). Each docs section gets a robust `index.md` that continues the onboarding for that persona.
+4. **Review cadence** – tie required documentation reviews to the release/CI pipeline instead of calendar schedules. Major version bumps (e.g., `0.x → 1.0`, `1.15 → 2.0`) must run a docs verification job that fails if key sections lack updates/acknowledgement. Smaller releases can reuse the automation but only warn on drift.
+
+Approval of this ADR green-lights the restructuring work for TODO #9 and provides a concrete blueprint for subsequent documentation updates.

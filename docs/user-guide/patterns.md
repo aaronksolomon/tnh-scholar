@@ -1,3 +1,10 @@
+---
+title: "TNH Scholar Pattern System"
+description: "The TNH Scholar Pattern System is inspired by and builds upon concepts from Daniel Miessler's 'fabric' project (<https://github.com/danielmiessler/fabric>). Like fabric, it uses template-based prompting for AI interactions, but adds version control and concurrent access management."
+owner: ""
+status: processing
+created: "2025-01-19"
+---
 # TNH Scholar Pattern System
 
 The TNH Scholar Pattern System is inspired by and builds upon concepts from Daniel Miessler's 'fabric' project (<https://github.com/danielmiessler/fabric>). Like fabric, it uses template-based prompting for AI interactions, but adds version control and concurrent access management.

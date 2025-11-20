@@ -1,3 +1,10 @@
+---
+title: "1-3 word queries"
+description: "(\"mindfulness\", \"Further, the practitioner meditates on his very own body from\"),"
+owner: ""
+status: processing
+created: "2024-10-28"
+---
 ## Input test 1:
 Generate 30 query, text pairs for a project aimed at training a BERT-based search model on finding relevant passages in the works of Thich Nhat Hanh. The queries should be a mix of short (30%), medium (50%), and long lengths (20%):
 - 30% short queries (1-3 words)

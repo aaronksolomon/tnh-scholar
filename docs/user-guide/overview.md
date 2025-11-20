@@ -1,3 +1,10 @@
+---
+title: "User Guide Overview"
+description: "TNH Scholar is an AI-driven platform designed for text analysis, translation, and processing. The system provides a suite of tools for handling multilingual texts with a focus on wisdom and mindfulness content. This guide will help you understand and effectively use the TNH Scholar toolkit."
+owner: ""
+status: processing
+created: "2025-02-01"
+---
 # User Guide Overview
 
 TNH Scholar is an AI-driven platform designed for text analysis, translation, and processing. The system provides a suite of tools for handling multilingual texts with a focus on wisdom and mindfulness content. This guide will help you understand and effectively use the TNH Scholar toolkit.

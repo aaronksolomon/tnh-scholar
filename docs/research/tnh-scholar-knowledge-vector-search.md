@@ -1,3 +1,10 @@
+---
+title: "TNH Scholar Knowledge Base: Design Document"
+description: "## Project Overview"
+owner: ""
+status: processing
+created: "2025-06-10"
+---
 # TNH Scholar Knowledge Base: Design Document
 
 ## Project Overview

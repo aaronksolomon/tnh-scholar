@@ -1,3 +1,10 @@
+---
+title: "nfmt"
+description: "`nfmt`, a newline formatting utility, standardizes line endings and spacing in text files."
+owner: ""
+status: processing
+created: "2025-02-01"
+---
 # nfmt
 
 `nfmt`, a newline formatting utility, standardizes line endings and spacing in text files.

@@ -1,3 +1,10 @@
+---
+title: "Contributing to TNH Scholar (Prototype Phase)"
+description: "TNH Scholar is currently in rapid prototype phase, focusing on core functionality and basic usability. We welcome contributions that help validate and improve the prototype implementation."
+owner: ""
+status: processing
+created: "2025-01-19"
+---
 # Contributing to TNH Scholar (Prototype Phase)
 
 TNH Scholar is currently in rapid prototype phase, focusing on core functionality and basic usability. We welcome contributions that help validate and improve the prototype implementation.

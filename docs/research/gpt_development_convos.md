@@ -1,3 +1,10 @@
+---
+title: "gpt development convos"
+description: ""
+owner: ""
+status: processing
+created: "2024-10-23"
+---
 ### Design
 - [Augmented LLM for Thich Nhat Hanh](https://chatgpt.com/share/67190ad3-e42c-800b-be29-53a28c636190): Initial design and feasibility convo.
 - [Feasibility Study Outline](https://chatgpt.com/share/67190b88-a7e8-800b-92ae-5b5e6c47d396): Converting feasibility study to Markdown, other documentation considerations.

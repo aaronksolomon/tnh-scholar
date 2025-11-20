@@ -47,3 +47,5 @@ jobs:
 
       - name: Run tests
         run: poetry run pytest --maxfail=1 --cov=tnh_scholar --cov-report=term-missing
+      - name: Markdown lint
+        run: npx markdownlint '**/*.md'

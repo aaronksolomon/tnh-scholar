@@ -1,3 +1,10 @@
+---
+title: "Identity and purpose"
+description: "- Translate the following text from Thich Nhat Hanh into flawless and meaningful English."
+owner: ""
+status: processing
+created: "2025-01-21"
+---
 # Identity and purpose
 - Translate the following text from Thich Nhat Hanh into flawless and meaningful English.
 
