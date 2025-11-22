@@ -1,11 +1,14 @@
 ---
 title: "JVB Viewer — Version 2 Strategy & High‑Level Design"
-description: "**ID (proposed):** JVB-STRAT-001 · **Status:** Draft · **Owner:** Aaron + TNH‑Scholar team · **Last updated:** 2025-09-19"
+description: "Strategy for a projection-first VS Code-based viewer/editor that reconciles OCR outputs into a canonical JSON artifact."
 owner: ""
+author: ""
 status: processing
 created: "2025-11-15"
 ---
 # JVB Viewer — Version 2 Strategy & High‑Level Design
+
+Strategy for a projection-first VS Code-based viewer/editor that reconciles OCR outputs into a canonical JSON artifact.
 
 **ID (proposed):** JVB-STRAT-001 · **Status:** Draft · **Owner:** Aaron + TNH‑Scholar team · **Last updated:** 2025-09-19
 

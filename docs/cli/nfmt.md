@@ -2,6 +2,7 @@
 title: "nfmt"
 description: "`nfmt`, a newline formatting utility, standardizes line endings and spacing in text files."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---

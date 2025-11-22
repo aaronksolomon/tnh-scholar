@@ -1,11 +1,14 @@
 ---
 title: "YouTube API vs yt-dlp Evaluation"
-description: "## YouTube Data API (Google Cloud) Approach"
+description: "Comparison of using the YouTube Data API versus yt-dlp for fetching Plum Village media assets."
 owner: ""
+author: ""
 status: processing
 created: "2025-01-21"
 ---
 # YouTube API vs yt-dlp Evaluation
+
+Comparison of using the YouTube Data API versus yt-dlp for fetching Plum Village media assets.
 
 ## YouTube Data API (Google Cloud) Approach
 

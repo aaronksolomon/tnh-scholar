@@ -1,11 +1,14 @@
 ---
 title: "TNH Scholar TODO List"
-description: "> **Last Updated**: 2025-11-16"
+description: "Roadmap tracking the highest-priority TNH Scholar tasks and release blockers."
 owner: ""
+author: ""
 status: processing
 created: "2025-01-20"
 ---
 # TNH Scholar TODO List
+
+Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 > **Last Updated**: 2025-11-16
 > **Version**: 0.1.3 (Alpha)

@@ -1,11 +1,14 @@
 ---
 title: "Package Version Checker Design Document"
-description: "## Overview"
+description: "Specification for a reusable package version checking utility with flexible strategies and clear reporting."
 owner: ""
+author: ""
 status: processing
 created: "2025-06-10"
 ---
 # Package Version Checker Design Document
+
+Specification for a reusable package version checking utility with flexible strategies and clear reporting.
 
 ## Overview
 

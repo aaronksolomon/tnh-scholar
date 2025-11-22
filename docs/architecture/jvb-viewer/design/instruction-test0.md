@@ -1,11 +1,14 @@
 ---
 title: "Generate Markdown Translation JSON Pairs"
-description: "## Task"
+description: "Instructions for producing paired Vietnamese-English Markdown JSON lines from scanned journal pages with strict formatting."
 owner: ""
+author: ""
 status: processing
 created: "2025-11-15"
 ---
 # Generate Markdown Translation JSON Pairs
+
+Instructions for producing paired Vietnamese-English Markdown JSON lines from scanned journal pages with strict formatting.
 
 ## Task
 

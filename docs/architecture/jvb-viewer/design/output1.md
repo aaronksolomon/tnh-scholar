@@ -1,11 +1,14 @@
 ---
 title: "LUÂN-HỒI"
-description: "## MỘT THỰC-THỂ"
+description: "Transcribed Markdown sample of the 'Luân-Hồi Một Thực-Thể' article used to validate viewer output."
 owner: ""
+author: ""
 status: processing
 created: "2025-11-15"
 ---
 # LUÂN-HỒI
+
+Transcribed Markdown sample of the 'Luân-Hồi Một Thực-Thể' article used to validate viewer output.
 
 ## MỘT THỰC-THỂ
 

@@ -1,11 +1,14 @@
 ---
 title: "TextObject System Design Document"
-description: "## 1. Overview and Purpose"
+description: "Detailed blueprint for the modern TextObject pipeline, outlining segmentation models, metadata, and API surfaces."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---
 # TextObject System Design Document
+
+Detailed blueprint for the modern TextObject pipeline, outlining segmentation models, metadata, and API surfaces.
 
 ## 1. Overview and Purpose
 

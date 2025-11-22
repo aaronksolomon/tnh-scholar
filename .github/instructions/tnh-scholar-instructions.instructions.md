@@ -1,6 +1,14 @@
 ---
-applyTo: '**'
+title: "TNH Scholar Coding Instructions"
+description: "Guidance for AI coding agents working in the TNH Scholar repository."
+owner: ""
+author: ""
+status: processing
+created: "2025-08-10"
+applyTo: "**"
 ---
+# TNH Scholar Coding Instructions
+Guidance for AI coding agents working in the TNH Scholar repository.
 
 - Highly modular, clean and well documented code, generally preferring strong OO style using classes for most systems.
 - Code be easily readable, with excellent spacing and formatting, yet concise in terms of naming and logical construction. 

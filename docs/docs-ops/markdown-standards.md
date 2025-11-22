@@ -2,6 +2,7 @@
 title: "Markdown Standards"
 description: "House style, linting, and structure requirements for TNH Scholar documentation."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-27"
 ---
@@ -35,6 +36,7 @@ created: "YYYY-MM-DD"
 - `author` records provenance (person, tool, or AI agent responsible for the initial version of the document). Use a short identifier or comma-separated list when multiple authors collaborate.
 - `status` tracks lifecycle (`processing`, `draft`, `current`, `archived`, etc.).
 - `created` reflects the original commit date when possible (auto-filled by tooling).
+- **Prompt Template Exception**: files in `patterns/` (soon living under `docs/prompt-templates/`) use a prompt-specific front matter schema that includes runtime variables and other metadata. Continue using that specialized format until the Prompt Template standard is finalized (TBD); do **not** remodel those files to the generic doc front matter without an explicit migration plan.
 
 ## Heading & Summary Rules
 

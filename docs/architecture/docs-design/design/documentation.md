@@ -1,11 +1,14 @@
 ---
 title: "Documentation Design"
-description: "## Tools & Technology Choices"
+description: "Reference for the documentation stack, covering tooling choices, information architecture, and publishing workflow."
 owner: ""
+author: ""
 status: processing
 created: "2025-01-19"
 ---
 # Documentation Design
+
+Reference for the documentation stack, covering tooling choices, information architecture, and publishing workflow.
 
 ## Tools & Technology Choices
 

@@ -2,6 +2,7 @@
 title: "Command Line Tools Overview"
 description: "TNH Scholar provides a suite of command-line tools designed to work together for text processing. Each tool focuses on specific tasks while maintaining consistent interfaces and behavior. This overview introduces the available tools and their primary functions."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---

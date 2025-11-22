@@ -2,6 +2,7 @@
 title: "minimal but extensible setup tool for the prototyping phase"
 description: "Core Requirements:"
 owner: ""
+author: ""
 status: processing
 created: "2025-01-21"
 ---

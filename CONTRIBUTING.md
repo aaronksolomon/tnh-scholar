@@ -2,6 +2,7 @@
 title: "Contributing to TNH Scholar"
 description: "TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow."
 owner: ""
+author: ""
 status: processing
 created: "2024-10-21"
 ---

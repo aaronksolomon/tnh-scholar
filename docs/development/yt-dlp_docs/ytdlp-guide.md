@@ -1,11 +1,14 @@
 ---
 title: "yt-dlp Comprehensive Guide"
-description: "## Overview"
+description: "Comprehensive overview of yt-dlp internals, configuration patterns, and extension points."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---
 # yt-dlp Comprehensive Guide
+
+Comprehensive overview of yt-dlp internals, configuration patterns, and extension points.
 
 ## Overview
 

@@ -2,6 +2,7 @@
 title: "Installation"
 description: "TNH Scholar--Python package for text processing and analysis. Install it using pip:"
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---

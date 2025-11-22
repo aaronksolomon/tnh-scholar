@@ -1,11 +1,14 @@
 ---
 title: "Interval-to-Segment Mapping Algorithm"
-description: "## Terminology"
+description: "Algorithm for mapping chunk-relative transcription intervals back to diarization segments using overlap and proximity."
 owner: ""
+author: ""
 status: processing
 created: "2025-05-08"
 ---
 # Interval-to-Segment Mapping Algorithm
+
+Algorithm for mapping chunk-relative transcription intervals back to diarization segments using overlap and proximity.
 
 ## Terminology
 

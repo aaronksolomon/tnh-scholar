@@ -1,11 +1,14 @@
 ---
 title: "Generate Markdown Vietnamese"
-description: "## Task"
+description: "Guidelines for rewriting Vietnamese journal pages into structured Markdown with one sentence per line and preserved metadata."
 owner: ""
+author: ""
 status: processing
 created: "2025-11-15"
 ---
 # Generate Markdown Vietnamese
+
+Guidelines for rewriting Vietnamese journal pages into structured Markdown with one sentence per line and preserved metadata.
 
 ## Task
 

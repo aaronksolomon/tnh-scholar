@@ -1,11 +1,14 @@
 ---
 title: "yt-dlp Format Selection Guide"
-description: "## Basic Format Selection"
+description: "Quick-reference guide to yt-dlp format selectors, combinations, and filtering syntax."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---
 # yt-dlp Format Selection Guide
+
+Quick-reference guide to yt-dlp format selectors, combinations, and filtering syntax.
 
 ## Basic Format Selection
 

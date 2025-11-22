@@ -1,11 +1,14 @@
 ---
 title: "TNH FAB Design Document"
-description: "## Overview"
+description: "First-generation design of the `tnh-fab` CLI covering core commands, usage patterns, and processing goals."
 owner: ""
+author: ""
 status: processing
 created: "2025-01-21"
 ---
 # TNH FAB Design Document
+
+First-generation design of the `tnh-fab` CLI covering core commands, usage patterns, and processing goals.
 
 ## Overview
 `tnh-fab` is a command-line text processing tool that provides standalone but pipeable text processing operations, with a focus on simplicity and flexibility. It is part of the `tnh-scholar` suite of tools.

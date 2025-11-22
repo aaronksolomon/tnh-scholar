@@ -1,11 +1,13 @@
 ---
-title: "orchestrator"
-description: "chunker = DiarizationChunker("
+title: "Language-Aware Chunking Orchestrator Notes"
+description: "Working notes for extending the DiarizationChunker orchestrator with language-aware strategies."
 owner: ""
+author: ""
 status: processing
 created: "2025-06-24"
 ---
-⸻
+# Language-Aware Chunking Orchestrator Notes
+Working notes for extending the DiarizationChunker orchestrator with language-aware strategies.
 
 Design Proposal: Language-Aware Chunking Extension for diarization_chunker
 

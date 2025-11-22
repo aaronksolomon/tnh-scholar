@@ -1,11 +1,14 @@
 ---
 title: "TextObject Original Design"
-description: "## Overview"
+description: "Legacy TextObject design notes capturing the original sectioning models, metadata strategy, and validation approach."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---
 # TextObject Original Design
+
+Legacy TextObject design notes capturing the original sectioning models, metadata strategy, and validation approach.
 
 ## Overview
 

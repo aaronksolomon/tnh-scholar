@@ -1,11 +1,14 @@
 ---
 title: "GenAI Service — Design Strategy"
-description: "**Status:** Accepted"
+description: "Strategy for unifying GenAI Service capabilities, personas, and phased releases."
 owner: ""
+author: ""
 status: processing
 created: "2025-11-15"
 ---
 # GenAI Service — Design Strategy
+
+Strategy for unifying GenAI Service capabilities, personas, and phased releases.
 
 **Status:** Accepted
 **Date** 9-30-2025

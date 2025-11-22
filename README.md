@@ -2,6 +2,7 @@
 title: "TNH Scholar"
 description: "TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models."
 owner: ""
+author: ""
 status: processing
 created: "2024-10-21"
 ---

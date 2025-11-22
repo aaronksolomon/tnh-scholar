@@ -1,11 +1,14 @@
 ---
 title: "TNH Scholar Design Guide"
-description: "## Overview"
+description: "Coding and architecture standards for TNH Scholar that balance rapid prototyping with long-term maintainability."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---
 # TNH Scholar Design Guide
+
+Coding and architecture standards for TNH Scholar that balance rapid prototyping with long-term maintainability.
 
 ## Overview
 

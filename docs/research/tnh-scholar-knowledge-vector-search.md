@@ -1,11 +1,14 @@
 ---
 title: "TNH Scholar Knowledge Base: Design Document"
-description: "## Project Overview"
+description: "Design document for the TNH Scholar knowledge base and semantic search stack."
 owner: ""
+author: ""
 status: processing
 created: "2025-06-10"
 ---
 # TNH Scholar Knowledge Base: Design Document
+
+Design document for the TNH Scholar knowledge base and semantic search stack.
 
 ## Project Overview
 

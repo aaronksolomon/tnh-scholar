@@ -1,11 +1,14 @@
 ---
 title: "TNH Configuration Management"
-description: "## ADR 002: Overall Strategy"
+description: "Architecture decisions and a phased plan for consolidating TNH Scholar configuration across modules, CLIs, and environments."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---
 # TNH Configuration Management
+
+Architecture decisions and a phased plan for consolidating TNH Scholar configuration across modules, CLIs, and environments.
 
 ## ADR 002: Overall Strategy
 

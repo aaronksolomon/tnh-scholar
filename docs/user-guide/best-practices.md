@@ -2,6 +2,7 @@
 title: "Best Practices"
 description: "This guide outlines recommended practices for using TNH Scholar effectively."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---

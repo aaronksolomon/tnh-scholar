@@ -9,8 +9,13 @@ Uses the generic module generate_tree which has a basic function build_tree that
 Exposed as a script via pyproject.toml under the name 'tnh-tree'.
 """
 from tnh_scholar import TNH_PROJECT_ROOT_DIR
+from tnh_scholar.tools.tree_builder import build_tree
 
-from .generate_tree import build_tree
+
+def main() -> None:
+    """CLI entry point registered as ``tnh-tree``."""
+    build_tree(TNH_PROJECT_ROOT_DIR, TNH_PROJECT_ROOT_DIR / "src")
+
 
 if __name__ == "__main__":
-    build_tree(TNH_PROJECT_ROOT_DIR, TNH_PROJECT_ROOT_DIR / "src")
+    main()

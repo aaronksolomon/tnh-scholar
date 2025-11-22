@@ -2,6 +2,7 @@
 title: "audio-transcribe"
 description: "Command-line tool for audio transcription tasks."
 owner: ""
+author: ""
 status: processing
 created: "2025-01-21"
 ---

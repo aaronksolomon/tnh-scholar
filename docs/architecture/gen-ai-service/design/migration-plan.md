@@ -1,13 +1,14 @@
 ---
 title: "OpenAI Interface Migration Plan"
-description: "> **Quick Reference** for migrating from legacy `openai_interface` to `GenAIService`"
+description: "Step-by-step plan for migrating from the legacy `openai_interface` module to the typed GenAI Service."
 owner: ""
+author: ""
 status: processing
 created: "2025-11-17"
 ---
 # OpenAI Interface Migration Plan
 
-> **Quick Reference** for migrating from legacy `openai_interface` to `GenAIService`
+Step-by-step plan for migrating from the legacy `openai_interface` module to the typed GenAI Service.
 
 **Status**: Phase 1 Complete - Utilities Ready
 **ADR**: [ADR-A13: Legacy Client Migration](../../architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md)

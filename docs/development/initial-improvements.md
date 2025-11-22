@@ -2,6 +2,7 @@
 title: "Improvements / Initial structure"
 description: "Initial high-level view of the TNH Scholar ecosystem."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---

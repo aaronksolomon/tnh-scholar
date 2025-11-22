@@ -1,11 +1,14 @@
 ---
 title: "Fine Tuning Strategy"
-description: "## Initial Prompt"
+description: "Strategy outline and development plan for fine-tuning foundation models on Thich Nhat Hanh translations."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-26"
 ---
 # Fine Tuning Strategy
+
+Strategy outline and development plan for fine-tuning foundation models on Thich Nhat Hanh translations.
 
 ## Initial Prompt
 

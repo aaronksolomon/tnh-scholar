@@ -2,6 +2,7 @@
 title: "TNH Scholar"
 description: "Prototype implementation of Thich Nhat Hanh Scholar text processing and searching tools. Analyze, process and explore Dharma talks and teachings."
 owner: ""
+author: ""
 status: processing
 created: "2025-01-19"
 ---

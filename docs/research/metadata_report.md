@@ -1,11 +1,14 @@
 ---
 title: "**Summary Report on Metadata Extraction, Source Parsing, and Model Training for TNH-Scholar**"
-description: "## **Overview**"
+description: "Summary of metadata extraction lessons, tooling, and training implications across Thich Nhat Hanh sources."
 owner: ""
+author: ""
 status: processing
 created: "2024-10-24"
 ---
 # **Summary Report on Metadata Extraction, Source Parsing, and Model Training for TNH-Scholar**
+
+Summary of metadata extraction lessons, tooling, and training implications across Thich Nhat Hanh sources.
 
 ## **Overview**
 The process of extracting and handling metadata for training models from Thich Nhat Hanh’s works has proven to be a complex but feasible task. While initial expectations were that this would be straightforward, we’ve learned that every book and text source has its own formatting and structural peculiarities, requiring tailored approaches for each. As we move forward with building the three primary models (search, conversation, and translation), it’s clear that managing metadata correctly will be essential for effective training and retrieval.

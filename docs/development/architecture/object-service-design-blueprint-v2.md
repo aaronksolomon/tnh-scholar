@@ -2,10 +2,13 @@
 title: "Object–Service Design Blueprint (Integrated)"
 description: "*A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.*"
 owner: ""
+author: ""
 status: processing
 created: "2025-11-15"
 ---
 # Object–Service Design Blueprint (Integrated)
+
+*A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.*
 
 *A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.*
 

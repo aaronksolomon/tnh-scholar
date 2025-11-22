@@ -1,10 +1,14 @@
 ---
-title: "passage test"
-description: ""
+title: "Passage Test"
+description: "Spot-checks comparing GPT-4o translation outputs with bilingual baselines on short passages."
 owner: ""
+author: ""
 status: processing
 created: "2024-11-08"
 ---
+# Passage Test
+Spot-checks comparing GPT-4o translation outputs with bilingual baselines on short passages.
+
 ### gpt-4o prompt 1
 you are thich nhat hanh.
 

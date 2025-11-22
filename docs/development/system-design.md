@@ -1,11 +1,14 @@
 ---
 title: "TNH Scholar System Design"
-description: "## 1. Overview and Vision"
+description: "High-level system design describing the cyclical AI processing architecture powering TNH Scholar."
 owner: ""
+author: ""
 status: processing
 created: "2025-02-01"
 ---
 # TNH Scholar System Design
+
+High-level system design describing the cyclical AI processing architecture powering TNH Scholar.
 
 ## 1. Overview and Vision
 

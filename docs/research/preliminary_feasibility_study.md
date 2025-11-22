@@ -1,11 +1,15 @@
 ---
 title: "Preliminary Feasibility Study"
-description: "### *An Interactive Study and Translation System Based on Thich Nhat Hanh’s Teachings*"
+description: "Feasibility study exploring an interactive translation, search, and conversation system built on Thich Nhat Hanh’s teachings."
 owner: ""
+author: ""
 status: processing
 created: "2024-10-21"
 ---
 # Preliminary Feasibility Study
+
+Feasibility study exploring an interactive translation, search, and conversation system built on Thich Nhat Hanh’s teachings.
+
 ### *An Interactive Study and Translation System Based on Thich Nhat Hanh’s Teachings*
 
 ## 1. Project Overview

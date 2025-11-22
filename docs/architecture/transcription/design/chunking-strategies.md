@@ -1,11 +1,14 @@
 ---
 title: "Simplified Language-Aware Chunking Design"
-description: "## Core Problem"
+description: "Language-aware chunking strategy that augments diarization splits with practical language detection heuristics."
 owner: ""
+author: ""
 status: processing
 created: "2025-06-24"
 ---
 # Simplified Language-Aware Chunking Design
+
+Language-aware chunking strategy that augments diarization splits with practical language detection heuristics.
 
 ## Core Problem
 

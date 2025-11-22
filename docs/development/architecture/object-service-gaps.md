@@ -1,11 +1,14 @@
 ---
 title: "Object-Service Design Blueprint: Critical Gaps & Clarifications"
-description: "**Purpose:** Checklist of items needed to make the blueprint fully actionable for implementation"
+description: "Checklist of open design questions that must be resolved for the Object-Service blueprint to ship."
 owner: ""
+author: ""
 status: processing
 created: "2025-11-15"
 ---
 # Object-Service Design Blueprint: Critical Gaps & Clarifications
+
+Checklist of open design questions that must be resolved for the Object-Service blueprint to ship.
 
 **Purpose:** Checklist of items needed to make the blueprint fully actionable for implementation  
 **Status:** Work in Progress  

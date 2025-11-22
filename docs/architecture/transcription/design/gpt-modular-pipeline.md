@@ -2,6 +2,7 @@
 title: "Modular Pipeline Design: Best Practices for Audio Transcription and Diarization"
 description: "This document summarizes a detailed design and refactoring discussion on building a clean, modular, and production-ready audio transcription pipeline, with a focus on diarization chunking and robust system structure. It includes architectural patterns, file organization, and code hygiene practices."
 owner: ""
+author: ""
 status: processing
 created: "2025-06-10"
 ---

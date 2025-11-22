@@ -1,11 +1,14 @@
 ---
 title: "TimelineMapper Design Document"
-description: "## Purpose"
+description: "Design for the TimelineMapper component that reprojects chunk-level transcripts into the original audio timeline."
 owner: ""
+author: ""
 status: processing
 created: "2025-05-08"
 ---
 # TimelineMapper Design Document
+
+Design for the TimelineMapper component that reprojects chunk-level transcripts into the original audio timeline.
 
 ## Purpose
 

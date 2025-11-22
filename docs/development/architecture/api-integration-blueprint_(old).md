@@ -2,10 +2,13 @@
 title: "API Integration Blueprint (Generic)"
 description: "*A practical, layered blueprint for designing professional‑grade modules that talk to web APIs—cleanly, testably, and safely. Examples reference a \"diarizer\" service, but the patterns are generic.*"
 owner: ""
+author: ""
 status: processing
 created: "2025-11-15"
 ---
 # API Integration Blueprint (Generic)
+
+*A practical, layered blueprint for designing professional‑grade modules that talk to web APIs—cleanly, testably, and safely. Examples reference a "diarizer" service, but the patterns are generic.*
 
 *A practical, layered blueprint for designing professional‑grade modules that talk to web APIs—cleanly, testably, and safely. Examples reference a "diarizer" service, but the patterns are generic.*
 

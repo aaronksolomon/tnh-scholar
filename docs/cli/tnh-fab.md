@@ -1,11 +1,14 @@
 ---
 title: "tnh-fab"
-description: "## Overview"
+description: "User-facing reference for the `tnh-fab` CLI covering commands, options, and example workflows."
 owner: ""
+author: ""
 status: processing
 created: "2025-01-19"
 ---
 # tnh-fab
+
+User-facing reference for the `tnh-fab` CLI covering commands, options, and example workflows.
 
 ## Overview
 

@@ -2,9 +2,13 @@
 title: "kn | ran as full process"
 description: "You are the world's leading expert at formatting Dharma talk audio transcriptions into written text for native, and partly fluent English speakers."
 owner: ""
+author: ""
 status: processing
 created: "2024-12-18"
 ---
+# kn | ran as full process
+You are the world's leading expert at formatting Dharma talk audio transcriptions into written text for native, and partly fluent English speakers.
+
 run -> "Divide the following text into meaningful concise paragraphs. Make corrections to grammar as required to create a logical flow. Make no other changes; add no content. Output the final text only."
 
 Divide the following text into meaningful paragraphs. Make corrections to grammar as required to create a logical flow. Make no other changes; add no content. Output the final text only.

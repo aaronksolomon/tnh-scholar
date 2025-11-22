@@ -2,6 +2,7 @@
 title: "Speaker Diarization Algorithm Design"
 description: "This document details the key algorithms referenced in the main diarization system design. Each algorithm is presented with a clear breakdown of its inputs, outputs, and processing steps."
 owner: ""
+author: ""
 status: processing
 created: "2025-05-01"
 ---

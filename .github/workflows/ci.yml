@@ -36,6 +36,21 @@ jobs:
           poetry env use python
           poetry install --with dev -E gui -E query -E ocr --no-interaction --no-ansi --no-root
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tree
+
+      - name: Verify directory trees
+        run: |
+          poetry run python scripts/generate_tree.py
+          git diff --exit-code project_directory_tree.txt src_directory_tree.txt
+
+      - name: Verify notebook prep state
+        run: |
+          poetry run python scripts/prep_notebooks.py --directory notebooks
+          git diff --exit-code notebooks
+
       - name: Ruff lint
         run: poetry run ruff check .
 

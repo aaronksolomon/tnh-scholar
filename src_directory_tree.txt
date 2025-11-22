@@ -1,179 +1,235 @@
-/Users/phapman/Desktop/tnh-scholar/src
+/Users/phapman/Desktop/Projects/tnh-scholar/src
 ├── __init__.py
-├── tnh_scholar
-│   ├── __init__.py
-│   ├── ai_text_processing
-│   │   ├── __init__.py
-│   │   ├── ai_text_processing.py
-│   │   ├── general_processor.py
-│   │   ├── line_translator.py
-│   │   ├── openai_process_interface.py
-│   │   ├── patterns.py
-│   │   ├── response_format.py
-│   │   ├── section_processor.py
-│   │   ├── text_object.py
-│   │   └── typing.py
-│   ├── audio_processing
-│   │   ├── __init__.py
-│   │   ├── audio_legacy.py
-│   │   ├── diarization
-│   │   │   ├── __init__.py
-│   │   │   ├── _diarization_utils.py
-│   │   │   ├── audio
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── config.py
-│   │   │   │   └── handler.py
-│   │   │   ├── chunker.py
-│   │   │   ├── config.py
-│   │   │   ├── models.py
-│   │   │   ├── protocols.py
-│   │   │   ├── pyannote_adapter.py
-│   │   │   ├── pyannote_client.py
-│   │   │   ├── pyannote_diarize.py
-│   │   │   ├── strategies
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── language_based.py
-│   │   │   │   ├── language_probe.py
-│   │   │   │   ├── speaker_blocker.py
-│   │   │   │   └── time_gap.py
-│   │   │   ├── timeline_mapper.py
-│   │   │   └── types.py
-│   │   ├── timed_object
-│   │   │   ├── __init__.py
-│   │   │   └── timed_text.py
-│   │   ├── transcription
-│   │   │   ├── __init__.py
-│   │   │   ├── assemblyai_service.py
-│   │   │   ├── format_converter.py
-│   │   │   ├── patches.py
-│   │   │   ├── srt_processor.py
-│   │   │   ├── text_segment_builder.py
-│   │   │   ├── transcription_service.py
-│   │   │   ├── vtt_processor.py
-│   │   │   └── whisper_service.py
-│   │   ├── transcription_legacy.py
-│   │   ├── utils
-│   │   │   ├── __init__.py
-│   │   │   ├── audio_enhance.py
-│   │   │   └── playback.py
-│   │   └── whisper_security.py
-│   ├── cli_tools
-│   │   ├── __init__.py
-│   │   ├── audio_transcribe
-│   │   │   ├── __init__.py
-│   │   │   ├── audio_transcribe.py
-│   │   │   ├── audio_transcribe0.py
-│   │   │   ├── audio_transcribe1.py
-│   │   │   ├── audio_transcribe2.py
-│   │   │   ├── config.py
-│   │   │   ├── convert_video.py
-│   │   │   ├── environment
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── env.py
-│   │   │   │   └── requirements.txt
-│   │   │   ├── transcription_pipeline.py
-│   │   │   ├── validate.py
-│   │   │   └── version_check.py
-│   │   ├── json_to_srt
-│   │   │   ├── __init__.py
-│   │   │   ├── json_to_srt.py
-│   │   │   └── json_to_srt1.py
-│   │   ├── nfmt
-│   │   │   ├── __init__.py
-│   │   │   └── nfmt.py
-│   │   ├── sent_split
-│   │   │   ├── __init__.py
-│   │   │   ├── sent_split_bak.py
-│   │   │   └── sent_split.py
-│   │   ├── srt_translate
-│   │   │   ├── __init__.py
-│   │   │   └── srt_translate.py
-│   │   ├── tnh_fab
-│   │   │   ├── __init__.py
-│   │   │   └── tnh_fab.py
-│   │   ├── tnh_setup
-│   │   │   ├── __init__.py
-│   │   │   └── tnh_setup.py
-│   │   ├── token_count
-│   │   │   ├── __init__.py
-│   │   │   └── token_count.py
-│   │   └── ytt_fetch
-│   │       ├── __init__.py
-│   │       └── ytt_fetch.py
-│   ├── dev_tools
-│   │   ├── __init__.py
-│   │   └── generate_tree.py
-│   ├── exceptions.py
-│   ├── journal_processing
-│   │   ├── __init__.py
-│   │   └── journal_process.py
-│   ├── logging_config.py
-│   ├── metadata
-│   │   ├── __init__.py
-│   │   └── metadata.py
-│   ├── ocr_processing
-│   │   ├── __init__.py
-│   │   ├── development
-│   │   │   ├── st_test.py
-│   │   │   ├── st_test2.py
-│   │   │   ├── st_test3.py
-│   │   │   ├── st_test4.py
-│   │   │   ├── st_test5.py
-│   │   │   └── st_test6.py
-│   │   ├── ocr_editor.py
-│   │   └── ocr_processing.py
-│   ├── openai_interface
-│   │   ├── __init__.py
-│   │   ├── openai_interface.py
-│   │   └── run_oa_batch_jobs.py
-│   ├── pattern_share
-│   │   ├── app.py
-│   │   └── requirements.txt
-│   ├── query
-│   │   ├── initial_cleaning_scripts.py
-│   │   ├── parse_tag.py
-│   │   └── v2_cleaning_scripts.py
-│   ├── text_processing
-│   │   ├── __init__.py
-│   │   ├── bracket.py
-│   │   ├── match_section.py
-│   │   ├── numbered_text.py
-│   │   └── text_processing.py
-│   ├── utils
-│   │   ├── __init__.py
-│   │   ├── file_utils.py
-│   │   ├── json_utils.py
-│   │   ├── lang.py
-│   │   ├── progress_utils.py
-│   │   ├── pydub_test.py
-│   │   ├── timing_utils.py
-│   │   ├── tnh_audio_segment.py
-│   │   ├── user_io_utils.py
-│   │   ├── validate.py
-│   │   ├── version_check
-│   │   │   ├── __init__.py
-│   │   │   ├── cache.py
-│   │   │   ├── checker.py
-│   │   │   ├── cli.py
-│   │   │   ├── config.py
-│   │   │   ├── models.py
-│   │   │   ├── providers.py
-│   │   │   └── strategies.py
-│   │   └── webhook_server.py
-│   ├── video_processing
-│   │   ├── __init__.py
-│   │   ├── video_processing_old1.py
-│   │   ├── video_processing_old2.py
-│   │   ├── video_processing.py
-│   │   └── yt_transcribe.py
-│   └── xml_processing
-│       ├── __init__.py
-│       ├── extract_tags.py
-│       └── xml_processing.py
-└── typings
-    ├── __init__.pyi
-    └── pydub
-        ├── __init__.pyi
-        └── AudioSegment.pyi
+└── tnh_scholar
+    ├── __init__.py
+    ├── ai_text_processing
+    │   ├── __init__.py
+    │   ├── ai_text_processing.py
+    │   ├── general_processor.py
+    │   ├── line_translator.py
+    │   ├── openai_process_interface.py
+    │   ├── prompts.py
+    │   ├── response_format.py
+    │   ├── section_processor.py
+    │   ├── text_object.py
+    │   └── typing.py
+    ├── audio_processing
+    │   ├── __init__.py
+    │   ├── audio_legacy.py
+    │   ├── diarization
+    │   │   ├── __init__.py
+    │   │   ├── _diarization_utils.py
+    │   │   ├── audio
+    │   │   │   ├── __init__.py
+    │   │   │   ├── config.py
+    │   │   │   └── handler.py
+    │   │   ├── chunker.py
+    │   │   ├── config.py
+    │   │   ├── models.py
+    │   │   ├── protocols.py
+    │   │   ├── pyannote_adapter.py
+    │   │   ├── pyannote_client.py
+    │   │   ├── pyannote_diarize.py
+    │   │   ├── reaper
+    │   │   │   └── reaper_roundtrip_poc.py
+    │   │   ├── schemas.py
+    │   │   ├── strategies
+    │   │   │   ├── __init__.py
+    │   │   │   ├── language_based.py
+    │   │   │   ├── language_probe.py
+    │   │   │   ├── speaker_blocker.py
+    │   │   │   └── time_gap.py
+    │   │   ├── timeline_mapper.py
+    │   │   ├── types.py
+    │   │   └── viewer.py
+    │   ├── timed_object
+    │   │   ├── __init__.py
+    │   │   └── timed_text.py
+    │   ├── transcription
+    │   │   ├── __init__.py
+    │   │   ├── assemblyai_service.py
+    │   │   ├── format_converter.py
+    │   │   ├── patches.py
+    │   │   ├── srt_processor.py
+    │   │   ├── text_segment_builder.py
+    │   │   ├── transcription_service.py
+    │   │   ├── vtt_processor.py
+    │   │   └── whisper_service.py
+    │   ├── utils
+    │   │   ├── __init__.py
+    │   │   ├── audio_enhance.py
+    │   │   └── playback.py
+    │   └── whisper_security.py
+    ├── cli_tools
+    │   ├── __init__.py
+    │   ├── audio_transcribe
+    │   │   ├── __init__.py
+    │   │   ├── audio_transcribe.py
+    │   │   ├── config.py
+    │   │   ├── convert_video.py
+    │   │   ├── environment
+    │   │   │   ├── __init__.py
+    │   │   │   ├── env.py
+    │   │   │   └── requirements.txt
+    │   │   ├── transcription_pipeline.py
+    │   │   ├── validate.py
+    │   │   └── version_check.py
+    │   ├── json_to_srt
+    │   │   ├── __init__.py
+    │   │   ├── json_to_srt.py
+    │   │   └── json_to_srt1.py
+    │   ├── nfmt
+    │   │   ├── __init__.py
+    │   │   └── nfmt.py
+    │   ├── sent_split
+    │   │   ├── __init__.py
+    │   │   ├── sent_split.py
+    │   │   └── sent_split_bak.py
+    │   ├── srt_translate
+    │   │   ├── __init__.py
+    │   │   └── srt_translate.py
+    │   ├── tnh_fab
+    │   │   ├── __init__.py
+    │   │   └── tnh_fab.py
+    │   ├── tnh_setup
+    │   │   ├── __init__.py
+    │   │   └── tnh_setup.py
+    │   ├── tnh_tree.py
+    │   ├── token_count
+    │   │   ├── __init__.py
+    │   │   └── token_count.py
+    │   └── ytt_fetch
+    │       ├── __init__.py
+    │       └── ytt_fetch.py
+    ├── exceptions.py
+    ├── gen_ai_service
+    │   ├── adapters
+    │   │   ├── __init__.py
+    │   │   └── simple_completion.py
+    │   ├── config
+    │   │   ├── __init__.py
+    │   │   ├── params_policy.py
+    │   │   ├── schemas.py
+    │   │   └── settings.py
+    │   ├── infra
+    │   │   ├── __init__.py
+    │   │   ├── issue_handler.py
+    │   │   ├── metrics.py
+    │   │   ├── rate_limit.py
+    │   │   ├── retry_policy.py
+    │   │   ├── tracer.py
+    │   │   ├── tracking
+    │   │   │   ├── fingerprint.py
+    │   │   │   └── provenance.py
+    │   │   └── usage.py
+    │   ├── mappers
+    │   │   └── completion_mapper.py
+    │   ├── models
+    │   │   ├── __init__.py
+    │   │   ├── domain.py
+    │   │   ├── errors.py
+    │   │   └── transport.py
+    │   ├── pattern_catalog
+    │   │   ├── __init__.py
+    │   │   ├── adapters
+    │   │   │   ├── __init__.py
+    │   │   │   └── prompts_adapter.py
+    │   │   ├── catalog.py
+    │   │   └── render.py
+    │   ├── ports
+    │   │   ├── __init__.py
+    │   │   └── genai_port.py
+    │   ├── providers
+    │   │   ├── __init__.py
+    │   │   ├── anthropic_adapter.py
+    │   │   ├── base.py
+    │   │   ├── openai_adapter.py
+    │   │   └── openai_client.py
+    │   ├── routing
+    │   │   ├── __init__.py
+    │   │   ├── intents.py
+    │   │   └── model_router.py
+    │   ├── runtime_assets
+    │   │   └── policies
+    │   │       ├── params
+    │   │       │   └── config_params_policy.yaml
+    │   │       └── safety
+    │   │           ├── post_check.yaml
+    │   │           └── pre_check.yaml
+    │   ├── safety
+    │   │   ├── __init__.py
+    │   │   ├── rules.py
+    │   │   └── safety_gate.py
+    │   ├── service.py
+    │   └── utils
+    │       ├── __init__.py
+    │       ├── response_utils.py
+    │       └── token_utils.py
+    ├── journal_processing
+    │   ├── __init__.py
+    │   └── journal_process.py
+    ├── logging_config.py
+    ├── metadata
+    │   ├── __init__.py
+    │   └── metadata.py
+    ├── ocr_processing
+    │   ├── __init__.py
+    │   ├── development
+    │   │   ├── st_test.py
+    │   │   ├── st_test2.py
+    │   │   ├── st_test3.py
+    │   │   ├── st_test4.py
+    │   │   ├── st_test5.py
+    │   │   └── st_test6.py
+    │   ├── ocr_editor.py
+    │   └── ocr_processing.py
+    ├── openai_interface
+    ├── pattern_share
+    │   ├── app.py
+    │   └── requirements.txt
+    ├── query
+    │   ├── initial_cleaning_scripts.py
+    │   ├── parse_tag.py
+    │   └── v2_cleaning_scripts.py
+    ├── text_processing
+    │   ├── __init__.py
+    │   ├── bracket.py
+    │   ├── match_section.py
+    │   ├── numbered_text.py
+    │   └── text_processing.py
+    ├── tools
+    │   ├── __init__.py
+    │   ├── notebook_prep.py
+    │   └── tree_builder.py
+    ├── utils
+    │   ├── __init__.py
+    │   ├── file_utils.py
+    │   ├── json_utils.py
+    │   ├── lang.py
+    │   ├── progress_utils.py
+    │   ├── timing_utils.py
+    │   ├── tnh_audio_segment.py
+    │   ├── user_io_utils.py
+    │   ├── validate.py
+    │   ├── version_check
+    │   │   ├── __init__.py
+    │   │   ├── cache.py
+    │   │   ├── checker.py
+    │   │   ├── cli.py
+    │   │   ├── config.py
+    │   │   ├── models.py
+    │   │   ├── providers.py
+    │   │   └── strategies.py
+    │   └── webhook_server.py
+    ├── video_processing
+    │   ├── __init__.py
+    │   ├── video_processing.py
+    │   ├── video_processing_old1.py
+    │   ├── video_processing_old2.py
+    │   └── yt_transcribe.py
+    └── xml_processing
+        ├── __init__.py
+        ├── extract_tags.py
+        └── xml_processing.py
 
-36 directories, 141 files
+53 directories, 180 files
