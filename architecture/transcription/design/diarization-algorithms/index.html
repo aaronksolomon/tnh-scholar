@@ -1,0 +1,2264 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This document details the key algorithms in the diarization system, focusing on high-level design without implementation details. Each algorithm is presented with its inputs, outputs, and process flow.">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Diarization Algorithms - TNH Scholar Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#diarization-algorithms" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TNH Scholar Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Diarization Algorithms
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TNH Scholar Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pattern System
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Best Practices
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-fab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/audio-transcribe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/nfmt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nfmt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/token-count/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    token-count
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-setup
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/design-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2" id="__nav_6_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_1" id="__nav_6_3_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TNH-FAB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            TNH-FAB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v1
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v2
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_2" id="__nav_6_3_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT-Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            YTT-Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--historical"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transcript Source
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YT-DLP Integration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Comparison
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../setup-tnh/design/setup-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SETUP-TNH
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docs-design/design/documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docs-Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4_2" id="__nav_6_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs-Planning
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Docs-Planning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-design/planning/roadmap.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-design/planning/maintenance.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintenance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../gpt_4o_search_query_text_pair_testing/testing_input_output.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../gpt_4o_translations_experiments/passage_test.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../translation_research.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation Research
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../preliminary_feasibility_study.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Feasibility Study
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-speaker-segment-merging-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Speaker Segment Merging Algorithm
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Speaker Segment Merging Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-inputs-and-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Inputs and Outputs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-algorithm-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Algorithm Flowchart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-algorithm-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Algorithm Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-potential-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4 Potential Enhancements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-audio-extraction-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Audio Extraction Algorithm
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Audio Extraction Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-inputs-and-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Inputs and Outputs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-algorithm-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Algorithm Flowchart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-algorithm-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Algorithm Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-potential-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.4 Potential Enhancements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-srt-timeline-mapping-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. SRT Timeline Mapping Algorithm
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. SRT Timeline Mapping Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-inputs-and-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Inputs and Outputs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-algorithm-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Algorithm Flowchart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-algorithm-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Algorithm Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-potential-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 Potential Enhancements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-finding-best-interval-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Finding Best Interval Algorithm
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Finding Best Interval Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-inputs-and-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Inputs and Outputs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-algorithm-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Algorithm Flowchart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-algorithm-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 Algorithm Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-potential-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 Potential Enhancements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-timeline-mapping-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Timeline Mapping Function
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Timeline Mapping Function">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-inputs-and-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Inputs and Outputs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-algorithm-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Algorithm Flowchart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-algorithm-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 Algorithm Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-potential-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4 Potential Enhancements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-improvements-and-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Improvements and Extensions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Improvements and Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-enhanced-speaker-merging" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 Enhanced Speaker Merging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-advanced-timeline-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 Advanced Timeline Mapping
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-audio-processing-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Audio Processing Enhancements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-srt-processing-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 SRT Processing Extensions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-performance-optimizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.5 Performance Optimizations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-integration-with-audio-transcribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Integration with audio-transcribe
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Integration with audio-transcribe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-integration-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.1 Integration Points
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-workflow-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.2 Workflow Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="diarization-algorithms">Diarization Algorithms</h1>
+<p>This document details the key algorithms in the diarization system, focusing on high-level design without implementation details. Each algorithm is presented with its inputs, outputs, and process flow.</p>
+<h2 id="1-speaker-segment-merging-algorithm">1. Speaker Segment Merging Algorithm</h2>
+<p>The algorithm merges adjacent segments from the same speaker when they're close enough in time.</p>
+<h3 id="11-inputs-and-outputs">1.1 Inputs and Outputs</h3>
+<p><strong>Inputs:</strong></p>
+<ul>
+<li>List of speaker segments from diarization API</li>
+<li>Gap threshold (maximum gap to consider segments contiguous)</li>
+</ul>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li>Dictionary mapping speaker IDs to lists of merged segments</li>
+</ul>
+<h3 id="12-algorithm-flowchart">1.2 Algorithm Flowchart</h3>
+<pre><code class="language-mermaid">flowchart TD
+    A[Input: Segments + Threshold] --&gt; B[Sort segments by start time]
+    B --&gt; C[Initialize speaker blocks]
+    C --&gt; D[For each segment]
+    D --&gt; E{Is first segment?}
+    E --&gt;|Yes| F[Initialize current block]
+    E --&gt;|No| G{Same speaker as current?}
+    G --&gt;|Yes| H{Gap ≤ threshold?}
+    G --&gt;|No| I[Finalize current block]
+    I --&gt; J[Start new block with segment]
+    H --&gt;|Yes| K[Extend current block]
+    H --&gt;|No| L[Finalize current block]
+    L --&gt; M[Start new block with same speaker]
+    F --&gt; D
+    J --&gt; D
+    K --&gt; D
+    M --&gt; D
+    D --&gt; N{More segments?}
+    N --&gt;|Yes| D
+    N --&gt;|No| O[Finalize last block]
+    O --&gt; P[Return speaker blocks]
+</code></pre>
+<h3 id="13-algorithm-description">1.3 Algorithm Description</h3>
+<ol>
+<li><strong>Sort segments</strong>: Arrange all segments in chronological order by start time</li>
+<li><strong>Process sequentially</strong>: Examine each segment in order</li>
+<li><strong>Speaker change detection</strong>: Check if current segment has same speaker as previous</li>
+<li><strong>Gap analysis</strong>: For same speaker, check if gap between segments is below threshold</li>
+<li><strong>Block management</strong>:</li>
+<li>If same speaker and small gap: extend current block</li>
+<li>If same speaker but large gap: finalize current block and start new one</li>
+<li>If different speaker: finalize current block and start new one</li>
+<li><strong>Result generation</strong>: Return dictionary mapping speaker IDs to lists of merged segments</li>
+</ol>
+<h3 id="14-potential-enhancements">1.4 Potential Enhancements</h3>
+<ul>
+<li><strong>Adaptive gap thresholds</strong>: Adjust threshold based on speaker characteristics</li>
+<li><strong>Confidence-based merging</strong>: Incorporate confidence scores from API</li>
+<li><strong>Speech rate analysis</strong>: Consider speech rate in gap threshold determination</li>
+<li><strong>Overlapping segment handling</strong>: Intelligently resolve overlapping segments</li>
+</ul>
+<h2 id="2-audio-extraction-algorithm">2. Audio Extraction Algorithm</h2>
+<p>This algorithm extracts speaker segments from the original audio and creates speaker-specific tracks.</p>
+<h3 id="21-inputs-and-outputs">2.1 Inputs and Outputs</h3>
+<p><strong>Inputs:</strong></p>
+<ul>
+<li>Path to original audio file</li>
+<li>Speaker blocks (dictionary mapping speakers to segments)</li>
+<li>Output directory</li>
+<li>Configuration for silence padding</li>
+</ul>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li>Dictionary of timeline mapping information for each speaker</li>
+<li>Speaker-specific audio files on disk</li>
+</ul>
+<h3 id="22-algorithm-flowchart">2.2 Algorithm Flowchart</h3>
+<pre><code class="language-mermaid">flowchart TD
+    A[Input: Original Audio + Speaker Blocks] --&gt; B[Load original audio]
+    B --&gt; C[For each speaker]
+    C --&gt; D[Initialize empty audio track]
+    D --&gt; E[For each block]
+    E --&gt; F[Extract segment from original audio]
+    F --&gt; G{Add padding?}
+    G --&gt;|Yes| H[Add silence padding]
+    G --&gt;|No| I[Skip padding]
+    H --&gt; J[Add to speaker track]
+    I --&gt; J
+    J --&gt; K[Store mapping information]
+    K --&gt; L{More blocks?}
+    L --&gt;|Yes| E
+    L --&gt;|No| M[Export speaker track]
+    M --&gt; N{More speakers?}
+    N --&gt;|Yes| C
+    N --&gt;|No| O[Return mapping information]
+</code></pre>
+<h3 id="23-algorithm-description">2.3 Algorithm Description</h3>
+<ol>
+<li><strong>Load original audio</strong>: Read the complete audio file</li>
+<li><strong>Speaker iteration</strong>: Process each speaker independently</li>
+<li><strong>Track creation</strong>: For each speaker:</li>
+<li>Create an empty audio track</li>
+<li>Initialize timeline mapping information</li>
+<li><strong>Segment processing</strong>: For each segment:</li>
+<li>Extract audio from original file</li>
+<li>Add silence padding if configured</li>
+<li>Add to speaker track</li>
+<li>Record mapping information</li>
+<li><strong>Export</strong>: Save each speaker's audio to disk</li>
+<li><strong>Return mappings</strong>: Provide timeline mapping information for later use</li>
+</ol>
+<h3 id="24-potential-enhancements">2.4 Potential Enhancements</h3>
+<ul>
+<li><strong>Streaming processing</strong>: Handle large audio files without loading entirely</li>
+<li><strong>Parallel extraction</strong>: Process multiple speakers simultaneously</li>
+<li><strong>Audio enhancement</strong>: Apply noise reduction or normalization per speaker</li>
+<li><strong>Adaptive padding</strong>: Adjust silence duration based on context</li>
+<li><strong>Format optimization</strong>: Support different output formats with optimized settings</li>
+</ul>
+<h2 id="3-srt-timeline-mapping-algorithm">3. SRT Timeline Mapping Algorithm</h2>
+<p>This algorithm transforms SRT timestamps from speaker timeline to original audio timeline.</p>
+<h3 id="31-inputs-and-outputs">3.1 Inputs and Outputs</h3>
+<p><strong>Inputs:</strong></p>
+<ul>
+<li>Path to SRT file (with timestamps in speaker timeline)</li>
+<li>Timeline mapping information</li>
+<li>Output path for transformed SRT</li>
+</ul>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li>SRT file with timestamps mapped to original timeline</li>
+</ul>
+<h3 id="32-algorithm-flowchart">3.2 Algorithm Flowchart</h3>
+<pre><code class="language-mermaid">flowchart TD
+    A[Input: SRT + Timeline Map] --&gt; B[Parse SRT file]
+    B --&gt; C[Build interval mapping]
+    C --&gt; D[For each subtitle entry]
+    D --&gt; E[Get start/end times]
+    E --&gt; F[Find best matching interval]
+    F --&gt; G[Apply timeline mapping]
+    G --&gt; H[Create new subtitle entry]
+    H --&gt; I{More entries?}
+    I --&gt;|Yes| D
+    I --&gt;|No| J[Write SRT file]
+    J --&gt; K[Return mapped SRT]
+</code></pre>
+<h3 id="33-algorithm-description">3.3 Algorithm Description</h3>
+<ol>
+<li><strong>Parse SRT</strong>: Extract subtitle entries with timestamps and text</li>
+<li><strong>Build intervals</strong>: Create complete mapping intervals for timeline transformation</li>
+<li><strong>Entry processing</strong>: For each subtitle entry:</li>
+<li>Convert timestamps to seconds</li>
+<li>Find best matching mapping interval</li>
+<li>Apply timeline transformation</li>
+<li>Create new entry with mapped timestamps</li>
+<li><strong>Output generation</strong>: Write transformed entries to SRT file</li>
+</ol>
+<h3 id="34-potential-enhancements">3.4 Potential Enhancements</h3>
+<ul>
+<li><strong>Non-linear mapping</strong>: Support for variable-rate timeline transformations</li>
+<li><strong>Format preservation</strong>: Maintain formatting and styling in transformed SRT</li>
+<li><strong>Metadata enrichment</strong>: Add speaker information to subtitle entries</li>
+<li><strong>Multi-language support</strong>: Handle translated SRTs with correct timing</li>
+<li><strong>Overlap resolution</strong>: Intelligent handling of overlapping subtitle entries</li>
+</ul>
+<h2 id="4-finding-best-interval-algorithm">4. Finding Best Interval Algorithm</h2>
+<p>A subcomponent of the SRT mapping algorithm that finds the most appropriate interval for a subtitle.</p>
+<h3 id="41-inputs-and-outputs">4.1 Inputs and Outputs</h3>
+<p><strong>Inputs:</strong></p>
+<ul>
+<li>List of timeline intervals</li>
+<li>Start and end time of subtitle (in speaker timeline)</li>
+</ul>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li>Interval with best overlap with the subtitle</li>
+</ul>
+<h3 id="42-algorithm-flowchart">4.2 Algorithm Flowchart</h3>
+<pre><code class="language-mermaid">flowchart TD
+    A[Input: Intervals + Subtitle Time] --&gt; B[Initialize best overlap]
+    B --&gt; C[For each interval]
+    C --&gt; D[Calculate overlap]
+    D --&gt; E{Overlap &gt; best?}
+    E --&gt;|Yes| F[Update best interval]
+    E --&gt;|No| G[Continue]
+    F --&gt; G
+    G --&gt; H{More intervals?}
+    H --&gt;|Yes| C
+    H --&gt;|No| I[Return best interval]
+</code></pre>
+<h3 id="43-algorithm-description">4.3 Algorithm Description</h3>
+<ol>
+<li><strong>Initialization</strong>: Start with no overlap found</li>
+<li><strong>Interval iteration</strong>: Examine each potential mapping interval</li>
+<li><strong>Overlap calculation</strong>: Determine how much the subtitle overlaps with each interval</li>
+<li><strong>Best match selection</strong>: Choose interval with greatest overlap</li>
+<li><strong>Result return</strong>: Provide best interval for mapping, or None if no overlap</li>
+</ol>
+<h3 id="44-potential-enhancements">4.4 Potential Enhancements</h3>
+<ul>
+<li><strong>Weighted overlap</strong>: Consider duration and content in overlap importance</li>
+<li><strong>Context awareness</strong>: Consider surrounding subtitles in interval selection</li>
+<li><strong>Confidence scoring</strong>: Include confidence metrics in interval selection</li>
+<li><strong>Multiple interval mapping</strong>: Split subtitle across intervals when necessary</li>
+</ul>
+<h2 id="5-timeline-mapping-function">5. Timeline Mapping Function</h2>
+<p>Maps time from speaker timeline to original timeline using interval information.</p>
+<h3 id="51-inputs-and-outputs">5.1 Inputs and Outputs</h3>
+<p><strong>Inputs:</strong></p>
+<ul>
+<li>Mapping interval (original and speaker timeline information)</li>
+<li>Time to map (in speaker timeline)</li>
+</ul>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li>Corresponding time in original timeline</li>
+</ul>
+<h3 id="52-algorithm-flowchart">5.2 Algorithm Flowchart</h3>
+<pre><code class="language-mermaid">flowchart TD
+    A[Input: Interval + Time] --&gt; B[Extract interval parameters]
+    B --&gt; C[Calculate position in interval]
+    C --&gt; D[Map to original timeline]
+    D --&gt; E[Return mapped time]
+</code></pre>
+<h3 id="53-algorithm-description">5.3 Algorithm Description</h3>
+<ol>
+<li><strong>Parameter extraction</strong>: Get original and speaker timeline boundaries from interval</li>
+<li><strong>Position calculation</strong>: Determine relative position of time within speaker timeline range</li>
+<li><strong>Timeline mapping</strong>: Apply same relative position to original timeline range</li>
+<li><strong>Result return</strong>: Return the mapped time in original timeline</li>
+</ol>
+<h3 id="54-potential-enhancements">5.4 Potential Enhancements</h3>
+<ul>
+<li><strong>Non-linear mapping</strong>: Support for variable rates within intervals</li>
+<li><strong>Interpolation</strong>: Multi-point interpolation for improved accuracy</li>
+<li><strong>Boundary handling</strong>: Special cases for interval boundaries</li>
+<li><strong>Error estimation</strong>: Include confidence/error metrics with mapped times</li>
+</ul>
+<h2 id="6-improvements-and-extensions">6. Improvements and Extensions</h2>
+<h3 id="61-enhanced-speaker-merging">6.1 Enhanced Speaker Merging</h3>
+<ul>
+<li><strong>Speaker characteristics</strong>: Adapt merging based on speech patterns</li>
+<li><strong>Content awareness</strong>: Consider linguistic content in merging decisions</li>
+<li><strong>Machine learning</strong>: Train models to predict optimal merge points</li>
+<li><strong>Speaker identification</strong>: Incorporate voice recognition for improved accuracy</li>
+</ul>
+<h3 id="62-advanced-timeline-mapping">6.2 Advanced Timeline Mapping</h3>
+<ul>
+<li><strong>Content-aware stretching</strong>: Vary mapping based on speech content</li>
+<li><strong>Multi-point anchoring</strong>: Use multiple reference points for mapping</li>
+<li><strong>Adaptive resolution</strong>: Higher precision for critical segments</li>
+<li><strong>Bidirectional optimization</strong>: Ensure equal accuracy in both mapping directions</li>
+</ul>
+<h3 id="63-audio-processing-enhancements">6.3 Audio Processing Enhancements</h3>
+<ul>
+<li><strong>Noise profiling</strong>: Identify and remove background noise specific to each speaker</li>
+<li><strong>Volume normalization</strong>: Consistent loudness across all speakers</li>
+<li><strong>Voice enhancement</strong>: Improve clarity of speech for each speaker</li>
+<li><strong>Acoustic environment matching</strong>: Maintain consistent room acoustics</li>
+</ul>
+<h3 id="64-srt-processing-extensions">6.4 SRT Processing Extensions</h3>
+<ul>
+<li><strong>Formatting preservation</strong>: Maintain styling across timeline mapping</li>
+<li><strong>Speaker identification</strong>: Label subtitles with speaker information</li>
+<li><strong>Confidence indication</strong>: Include reliability markers for uncertain segments</li>
+<li><strong>Multi-language alignment</strong>: Coordinate timing across translated subtitles</li>
+</ul>
+<h3 id="65-performance-optimizations">6.5 Performance Optimizations</h3>
+<ul>
+<li><strong>Progressive processing</strong>: Begin processing before complete file download</li>
+<li><strong>Memory-efficient handling</strong>: Process large files without excessive memory use</li>
+<li><strong>Computation distribution</strong>: Distribute processing across multiple cores/machines</li>
+<li><strong>Caching strategies</strong>: Reuse intermediate results when appropriate</li>
+</ul>
+<h2 id="7-integration-with-audio-transcribe">7. Integration with audio-transcribe</h2>
+<h3 id="71-integration-points">7.1 Integration Points</h3>
+<ul>
+<li><strong>Command-line flags</strong>: Add diarization-specific options to CLI</li>
+<li><strong>Configuration file</strong>: Support for detailed diarization configuration</li>
+<li><strong>Pipeline integration</strong>: Use diarization in place of or alongside existing chunking</li>
+<li><strong>Output control</strong>: Options for organizing and formatting diarized output</li>
+</ul>
+<h3 id="72-workflow-integration">7.2 Workflow Integration</h3>
+<ul>
+<li><strong>Preprocessing</strong>: Use diarization to guide chunking strategy</li>
+<li><strong>Speaker-aware transcription</strong>: Optimize transcription for each speaker</li>
+<li><strong>Result combination</strong>: Merge speaker transcripts with proper attribution</li>
+<li><strong>Output generation</strong>: Create integrated output with speaker identification</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

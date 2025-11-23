@@ -1,0 +1,2073 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Refactors the AssemblyAI adapter to use the official SDK, richer options, and better error handling.">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>ADR-TR04: AssemblyAI Service Implementation Improvements - TNH Scholar Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adr-tr04-assemblyai-service-implementation-improvements" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TNH Scholar Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ADR-TR04: AssemblyAI Service Implementation Improvements
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TNH Scholar Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pattern System
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Best Practices
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-fab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/audio-transcribe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/nfmt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nfmt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/token-count/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    token-count
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-setup
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/design-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2" id="__nav_6_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_1" id="__nav_6_3_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TNH-FAB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            TNH-FAB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v1
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v2
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_2" id="__nav_6_3_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT-Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            YTT-Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--historical"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transcript Source
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YT-DLP Integration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Comparison
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../setup-tnh/design/setup-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SETUP-TNH
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docs-design/design/documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docs-Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4_2" id="__nav_6_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs-Planning
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Docs-Planning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-design/planning/roadmap.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-design/planning/maintenance.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintenance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../gpt_4o_search_query_text_pair_testing/testing_input_output.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../gpt_4o_translations_experiments/passage_test.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../translation_research.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation Research
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../preliminary_feasibility_study.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Feasibility Study
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-drivers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Drivers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proposed-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proposed Decision
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configuration-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Configuration Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-service-interface-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Service Interface Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-subtitle-generation-enhancement" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Subtitle Generation Enhancement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-audio-intelligence-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Audio Intelligence Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-region-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Region Support
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-webhook-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Webhook Support
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disadvantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantages
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Plan
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="adr-tr04-assemblyai-service-implementation-improvements">ADR-TR04: AssemblyAI Service Implementation Improvements</h1>
+<p>Modernizes the AssemblyAI integration by adopting the official SDK, exposing advanced options, and hardening error handling.</p>
+<ul>
+<li><strong>Status</strong>: Proposed</li>
+<li><strong>Date</strong>: 2025-05-01</li>
+</ul>
+<h2 id="context">Context</h2>
+<p>The current implementation of <code>assemblyai_service.py</code> provides basic functionality but fails to leverage many powerful features of the AssemblyAI API. After a thorough review of the API documentation and capabilities, we've identified several limitations in the current implementation:</p>
+<ol>
+<li><strong>Limited Configuration Options</strong>: The implementation hardcodes many options, including defaulting to English language.</li>
+<li><strong>Missing Advanced Features</strong>: No support for many audio intelligence features like sentiment analysis, entity detection, etc.</li>
+<li><strong>Inefficient Implementation</strong>: Current implementation doesn't use the official SDK and contains redundant code.</li>
+<li><strong>Lack of Error Handling</strong>: Minimal error handling for common failure scenarios.</li>
+<li><strong>Missing Regional Support</strong>: No support for EU region endpoints for data residency compliance.</li>
+<li><strong>Hardcoded Paths</strong>: API endpoints and configuration options are hardcoded.</li>
+<li><strong>Incomplete Documentation</strong>: Documentation doesn't cover all available options.</li>
+</ol>
+<h2 id="decision-drivers">Decision Drivers</h2>
+<ol>
+<li><strong>API Feature Coverage</strong>: Desire to expose as much of AssemblyAI's feature set as possible through our service layer.</li>
+<li><strong>Maintainability</strong>: Reduce code complexity and leverage the official SDK.</li>
+<li><strong>Type Safety</strong>: Improve type annotations for better IDE support and error checking.</li>
+<li><strong>Flexibility</strong>: Enable configuration of all major API parameters.</li>
+<li><strong>Error Recovery</strong>: Improve handling of common failure scenarios.</li>
+<li><strong>Performance</strong>: Optimize API interactions.</li>
+<li><strong>Developer Experience</strong>: Make the service intuitive and well-documented.</li>
+</ol>
+<h2 id="proposed-decision">Proposed Decision</h2>
+<p>We will significantly refactor the AssemblyAI service implementation to address these limitations using the following approaches:</p>
+<ol>
+<li><strong>Use Official SDK</strong>: Replace low-level HTTP calls with the official AssemblyAI Python SDK where appropriate.</li>
+<li><strong>Enhanced Configuration Model</strong>: Implement a comprehensive configuration model that exposes all major API options.</li>
+<li><strong>Complete Feature Coverage</strong>: Add support for all major AssemblyAI features.</li>
+<li><strong>Improved Error Handling</strong>: Implement better error handling with specific exception types.</li>
+<li><strong>Regional Support</strong>: Add EU region support with configuration options.</li>
+<li><strong>Callback Improvements</strong>: Add support for all callback patterns.</li>
+</ol>
+<h2 id="design-details">Design Details</h2>
+<h3 id="1-configuration-model">1. Configuration Model</h3>
+<p>Create a nested configuration model that exposes all major API options:</p>
+<pre><code class="language-python">@dataclass
+class AssemblyAIConfig:
+    &quot;&quot;&quot;Configuration for AssemblyAI service.&quot;&quot;&quot;
+
+    # Base configuration
+    api_key: Optional[str] = None
+    base_url: str = &quot;https://api.assemblyai.com/v2&quot;  # or EU endpoint
+
+    # Connection configuration
+    polling_interval: int = 3  # seconds
+    max_polling_time: int = 300  # seconds
+
+    # Core transcription configuration
+    model: Literal[&quot;best&quot;, &quot;nano&quot;] = &quot;best&quot;
+    language_code: Optional[str] = None
+    language_detection: bool = False
+    language_detection_confidence_threshold: float = 0.5
+
+    # Text formatting options
+    format_text: bool = True
+    punctuate: bool = True
+    disfluencies: bool = False
+    filter_profanity: bool = False
+
+    # Speaker options
+    speaker_labels: bool = False
+    speakers_expected: Optional[int] = None
+
+    # Audio channel options
+    multichannel: bool = False
+
+    # Accuracy enhancement options
+    word_boost: Optional[List[str]] = None
+    boost_param: Optional[Literal[&quot;low&quot;, &quot;default&quot;, &quot;high&quot;]] = None
+    custom_spelling: Optional[Dict[str, str]] = None
+
+    # Audio intelligence configuration
+    auto_chapters: bool = False
+    auto_highlights: bool = False
+    entity_detection: bool = False
+    iab_categories: bool = False
+    sentiment_analysis: bool = False
+    summarization: bool = False
+
+    # Callback options
+    webhook_url: Optional[str] = None
+    webhook_auth_header_name: Optional[str] = None
+    webhook_auth_header_value: Optional[str] = None
+</code></pre>
+<h3 id="2-service-interface-update">2. Service Interface Update</h3>
+<p>Update the service interface to use the configuration model and support all major features:</p>
+<pre><code class="language-python">class AssemblyAITranscriptionService(TranscriptionService):
+    &quot;&quot;&quot;Enhanced AssemblyAI implementation of the TranscriptionService interface.&quot;&quot;&quot;
+
+    def __init__(self, config: Optional[AssemblyAIConfig] = None):
+        &quot;&quot;&quot;Initialize with comprehensive configuration options.&quot;&quot;&quot;
+        self.config = config or AssemblyAIConfig()
+        self._initialize_sdk()
+
+    def _initialize_sdk(self) -&gt; None:
+        &quot;&quot;&quot;Initialize the AssemblyAI SDK with current configuration.&quot;&quot;&quot;
+        import assemblyai as aai
+
+        # Set API key and base URL
+        aai.settings.api_key = self.config.api_key or os.getenv(&quot;ASSEMBLYAI_API_KEY&quot;)
+        if not aai.settings.api_key:
+            raise ValueError(&quot;AssemblyAI API key is required&quot;)
+
+        # Set base URL for regional support
+        if &quot;eu&quot; in self.config.base_url:
+            aai.settings.base_url = &quot;https://api.eu.assemblyai.com/v2&quot;
+
+        # Initialize transcriber
+        self.transcriber = aai.Transcriber()
+
+    def transcribe(
+        self,
+        audio_file: Union[Path, BinaryIO],
+        options: Optional[Dict[str, Any]] = None
+    ) -&gt; Dict[str, Any]:
+        &quot;&quot;&quot;
+        Transcribe audio with full feature support.
+
+        Args:
+            audio_file: Path or file-like object
+            options: Override configuration options
+
+        Returns:
+            Standardized transcription result
+        &quot;&quot;&quot;
+        # Create transcription config by merging base config with options
+        import assemblyai as aai
+
+        # Prepare configuration
+        tx_config = self._prepare_transcription_config(options)
+
+        # Handle different input types
+        file_path = self._get_file_path(audio_file)
+
+        # Perform transcription
+        transcript = self.transcriber.transcribe(file_path, config=tx_config)
+
+        # Convert to standardized format
+        return self._standardize_result(transcript)
+</code></pre>
+<h3 id="3-subtitle-generation-enhancement">3. Subtitle Generation Enhancement</h3>
+<p>Improve subtitle generation capabilities:</p>
+<pre><code class="language-python">def get_subtitles(
+    self,
+    transcript_id: str,
+    format_type: str = &quot;srt&quot;,
+    chars_per_caption: int = 42,
+    speaker_labels: bool = False
+) -&gt; str:
+    &quot;&quot;&quot;
+    Get subtitles directly from AssemblyAI.
+
+    Args:
+        transcript_id: ID of completed transcript
+        format_type: Format type (&quot;srt&quot; or &quot;vtt&quot;)
+        chars_per_caption: Maximum characters per caption
+        speaker_labels: Include speaker labels in subtitle
+
+    Returns:
+        Formatted subtitle content
+    &quot;&quot;&quot;
+    # Direct SDK method if available
+    if hasattr(self.transcript, f&quot;export_subtitles_{format_type.lower()}&quot;):
+        method = getattr(self.transcript, f&quot;export_subtitles_{format_type.lower()}&quot;)
+        return method(chars_per_caption=chars_per_caption)
+
+    # Fallback to API call
+    params = {
+        &quot;chars_per_caption&quot;: chars_per_caption,
+        &quot;speaker_labels&quot;: speaker_labels
+    }
+
+    endpoint = f&quot;{self.config.base_url}/transcript/{transcript_id}/{format_type.lower()}&quot;
+    response = requests.get(
+        endpoint,
+        params=params,
+        headers={&quot;authorization&quot;: aai.settings.api_key}
+    )
+
+    response.raise_for_status()
+    return response.text
+</code></pre>
+<h3 id="4-audio-intelligence-methods">4. Audio Intelligence Methods</h3>
+<p>Add support for audio intelligence features:</p>
+<pre><code class="language-python">def get_intelligence_features(
+    self,
+    transcript: Any
+) -&gt; Dict[str, Any]:
+    &quot;&quot;&quot;
+    Extract intelligence features if enabled in configuration.
+
+    Args:
+        transcript: AssemblyAI transcript object
+
+    Returns:
+        Dictionary with available intelligence features
+    &quot;&quot;&quot;
+    features = {}
+
+    # Add sentiment analysis
+    if hasattr(transcript, &quot;sentiment_analysis&quot;) and transcript.sentiment_analysis:
+        features[&quot;sentiment_analysis&quot;] = transcript.sentiment_analysis
+
+    # Add auto chapters
+    if hasattr(transcript, &quot;chapters&quot;) and transcript.chapters:
+        features[&quot;chapters&quot;] = transcript.chapters
+
+    # Add entity detection
+    if hasattr(transcript, &quot;entities&quot;) and transcript.entities:
+        features[&quot;entities&quot;] = transcript.entities
+
+    # Add auto highlights
+    if hasattr(transcript, &quot;auto_highlights&quot;) and transcript.auto_highlights:
+        features[&quot;highlights&quot;] = transcript.auto_highlights
+
+    # Add topic classification
+    if hasattr(transcript, &quot;iab_categories&quot;) and transcript.iab_categories:
+        features[&quot;topics&quot;] = {
+            &quot;results&quot;: transcript.iab_categories.results,
+            &quot;summary&quot;: transcript.iab_categories.summary
+        }
+
+    return features
+</code></pre>
+<h3 id="5-region-support">5. Region Support</h3>
+<p>Add EU region support with configuration detection:</p>
+<pre><code class="language-python">def _is_eu_region(self) -&gt; bool:
+    &quot;&quot;&quot;Detect if service is configured for EU region.&quot;&quot;&quot;
+    return &quot;eu&quot; in self.config.base_url.lower()
+
+def _get_appropriate_base_url(self) -&gt; str:
+    &quot;&quot;&quot;Get the appropriate base URL based on configuration.&quot;&quot;&quot;
+    if self._is_eu_region():
+        return &quot;https://api.eu.assemblyai.com/v2&quot;
+    return &quot;https://api.assemblyai.com/v2&quot;
+</code></pre>
+<h3 id="6-webhook-support">6. Webhook Support</h3>
+<p>Add webhook support for asynchronous processing:</p>
+<pre><code class="language-python">def _configure_webhook(self, config: Dict[str, Any]) -&gt; Dict[str, Any]:
+    &quot;&quot;&quot;
+    Configure webhook parameters if enabled.
+
+    Args:
+        config: Current configuration dictionary
+
+    Returns:
+        Updated configuration with webhook parameters
+    &quot;&quot;&quot;
+    if self.config.webhook_url:
+        config[&quot;webhook_url&quot;] = self.config.webhook_url
+
+        if self.config.webhook_auth_header_name and self.config.webhook_auth_header_value:
+            config[&quot;webhook_auth_header_name&quot;] = self.config.webhook_auth_header_name
+            config[&quot;webhook_auth_header_value&quot;] = self.config.webhook_auth_header_value
+
+    return config
+</code></pre>
+<h2 id="consequences">Consequences</h2>
+<h3 id="advantages">Advantages</h3>
+<ol>
+<li><strong>Complete API Coverage</strong>: Access to all AssemblyAI features through our service layer.</li>
+<li><strong>Improved Maintainability</strong>: Less code through SDK usage and better organization.</li>
+<li><strong>Type Safety</strong>: Enhanced type annotations for better IDE support.</li>
+<li><strong>Configuration Flexibility</strong>: All API options available through configuration.</li>
+<li><strong>Better Error Handling</strong>: Specific exception types for common failures.</li>
+<li><strong>Regional Compliance</strong>: EU region support for data residency requirements.</li>
+</ol>
+<h3 id="disadvantages">Disadvantages</h3>
+<ol>
+<li><strong>Migration Effort</strong>: Existing code using the service will need updates.</li>
+<li><strong>SDK Dependency</strong>: Introduces dependency on the official SDK.</li>
+<li><strong>Complexity</strong>: More configuration options increase initial learning curve.</li>
+<li><strong>Version Tracking</strong>: Need to track SDK version compatibility.</li>
+</ol>
+<h2 id="implementation-plan">Implementation Plan</h2>
+<ol>
+<li><strong>Core Service Update</strong>: Replace HTTP calls with SDK usage.</li>
+<li><strong>Configuration Model</strong>: Implement comprehensive configuration model.</li>
+<li><strong>Feature Implementation</strong>: Add support for all major features.</li>
+<li><strong>Testing</strong>: Add tests for new functionality.</li>
+<li><strong>Documentation</strong>: Update documentation with new features and examples.</li>
+<li><strong>Migration Guide</strong>: Create guide for transitioning from old implementation.</li>
+</ol>
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://www.assemblyai.com/docs">AssemblyAI API Documentation</a></li>
+<li><a href="https://github.com/AssemblyAI/assemblyai-python-sdk">AssemblyAI Python SDK</a></li>
+<li><a href="./transcription_service.py">TranscriptionService Interface Design</a></li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

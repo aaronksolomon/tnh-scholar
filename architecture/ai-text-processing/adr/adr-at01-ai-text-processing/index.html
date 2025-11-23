@@ -1,0 +1,2944 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Defines the modular TextObject pipeline, metadata handling, and configuration strategy for AI processing.">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>ADR-AT01: AI Text Processing Pipeline Redesign - TNH Scholar Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adr-at01-ai-text-processing-pipeline-redesign" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TNH Scholar Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ADR-AT01: AI Text Processing Pipeline Redesign
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TNH Scholar Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pattern System
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Best Practices
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-fab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/audio-transcribe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/nfmt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nfmt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/token-count/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    token-count
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-setup
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/design-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2" id="__nav_6_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_1" id="__nav_6_3_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TNH-FAB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            TNH-FAB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v1
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v2
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_2" id="__nav_6_3_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT-Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            YTT-Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--historical"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transcript Source
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YT-DLP Integration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Comparison
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../setup-tnh/design/setup-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SETUP-TNH
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docs-design/design/documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docs-Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4_2" id="__nav_6_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs-Planning
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Docs-Planning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-design/planning/roadmap.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-design/planning/maintenance.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintenance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../gpt_4o_search_query_text_pair_testing/testing_input_output.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../gpt_4o_translations_experiments/passage_test.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../translation_research.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation Research
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../preliminary_feasibility_study.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Feasibility Study
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-drivers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Drivers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decisions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-core-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Core Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-base-processor-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Base Processor Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-type-safety-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Type Safety Approach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-configuration-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-state-preservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. State Preservation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Scope
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagrams" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagrams
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Diagrams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#text-processing-pipeline-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text Processing Pipeline Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-processing-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Processing Sequence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-flow-through-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Flow Through Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Issues
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Plan
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-002-pipeline-state-management-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR 002: Pipeline State Management Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ADR 002: Pipeline State Management Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-drivers_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Drivers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consequences_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-003-textobject-transform-method-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR 003: TextObject Transform Method Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ADR 003: TextObject Transform Method Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#status_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-drivers_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Drivers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consequences_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-notes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-004-flexible-function-parameters-in-processing-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR 004: Flexible Function Parameters in Processing Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ADR 004: Flexible Function Parameters in Processing Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#status_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-drivers_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Drivers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consequences_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-notes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Notes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#future-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Migration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="adr-at01-ai-text-processing-pipeline-redesign">ADR-AT01: AI Text Processing Pipeline Redesign</h1>
+<p>Establishes the TextProcessor abstraction, metadata strategy, and functional pipeline needed for AI text transformations.</p>
+<ul>
+<li><strong>Status</strong>: Proposed</li>
+<li><strong>Date</strong>: 2025-02-26</li>
+</ul>
+<h3 id="context">Context</h3>
+<p>The TNH Scholar system requires a flexible, maintainable architecture for AI-based text processing that can:</p>
+<ul>
+<li>Handle multiple processing stages (translation, sectioning, etc.)</li>
+<li>Maintain process history and state</li>
+<li>Track metadata through processing pipeline</li>
+<li>Support configuration of processing steps</li>
+<li>Enable recovery from processing failures</li>
+<li>Scale to handle large text processing tasks</li>
+</ul>
+<p>The system must balance the needs of rapid prototyping with foundational architecture that can evolve toward production use.</p>
+<h3 id="decision-drivers">Decision Drivers</h3>
+<ol>
+<li>AI Processing Characteristics:</li>
+<li>High computational cost</li>
+<li>Long processing times</li>
+<li>Significant latency</li>
+<li>
+<p>Processing costs (API usage)</p>
+</li>
+<li>
+<p>System Requirements:</p>
+</li>
+<li>Pipeline composability</li>
+<li>State recovery capabilities</li>
+<li>Configuration flexibility</li>
+<li>Type safety</li>
+<li>
+<p>Metadata tracking</p>
+</li>
+<li>
+<p>Development Phase:</p>
+</li>
+<li>Rapid prototyping priority</li>
+<li>Minimal error handling initially</li>
+<li>Focus on core functionality</li>
+<li>Clear path to production evolution</li>
+</ol>
+<h3 id="decisions">Decisions</h3>
+<h4 id="1-core-architecture">1. Core Architecture</h4>
+<h4 id="11-base-processor-architecture">1.1 Base Processor Architecture</h4>
+<p>Implement abstract base processor with metadata handling:</p>
+<pre><code class="language-python">class TextProcessor(ABC):
+    &quot;&quot;&quot;Abstract base class for text processors.&quot;&quot;&quot;
+
+    @abstractmethod
+    def process(
+        self,
+        text_object: TextObject,
+        config: ProcessConfig,
+        input_metadata: Optional[Metadata] = None
+    ) -&gt; ProcessResult:
+        &quot;&quot;&quot;
+        Process text and return result with metadata.
+
+        Args:
+            text_object: Input text with existing metadata
+            config: Process configuration
+            input_metadata: Optional additional metadata to merge
+
+        Returns:
+            ProcessResult containing new text object and metadata
+        &quot;&quot;&quot;
+        pass
+
+    @staticmethod 
+    def _prepare_metadata(
+        text_object: TextObject,
+        input_metadata: Optional[Metadata]
+    ) -&gt; Metadata:
+        &quot;&quot;&quot;
+        Merge input metadata with text object metadata.
+
+        Delegates actual merging to TextObject to maintain encapsulation
+        and consistent merge behavior.
+        &quot;&quot;&quot;
+        if input_metadata:
+            return text_object.merge_metadata(input_metadata)
+        return text_object.metadata
+
+</code></pre>
+<p>Adopt a functional pipeline architecture with explicit state tracking:</p>
+<pre><code class="language-python">@dataclass
+class ProcessState:
+    &quot;&quot;&quot;Complete state after a process.&quot;&quot;&quot;
+    text_object: TextObject
+    process_metadata: ProcessMetadata
+    generated_metadata: Metadata
+    config: ProcessConfig
+
+@dataclass
+class ProcessResult:
+    &quot;&quot;&quot;Result of a text processing operation.&quot;&quot;&quot;
+    text_object: TextObject
+    process_metadata: ProcessMetadata
+    generated_metadata: Metadata
+</code></pre>
+<p>Key aspects:</p>
+<ul>
+<li>Pure functional processor interface</li>
+<li>Complete state capture</li>
+<li>Separation of process and content metadata</li>
+<li>Clear data flow</li>
+</ul>
+<h4 id="2-type-safety-approach">2. Type Safety Approach</h4>
+<p>Extend existing Metadata class for type-safe containers:</p>
+<pre><code class="language-python">class ProcessMetadata(Metadata):
+    &quot;&quot;&quot;Records information about a specific processing operation.&quot;&quot;&quot;
+    def __init__(
+        self,
+        process_name: str,
+        parameters: Dict[str, JsonValue],
+        timestamp: Optional[datetime] = None
+    )
+</code></pre>
+<p>Key aspects:</p>
+<ul>
+<li>Built on existing Metadata foundation</li>
+<li>Enforces required process fields</li>
+<li>Maintains JSON serializability</li>
+<li>Type-safe parameter handling</li>
+</ul>
+<h4 id="3-configuration-management">3. Configuration Management</h4>
+<p>Implement hierarchical configuration system:</p>
+<pre><code class="language-python">class BaseProcessConfig:
+    &quot;&quot;&quot;Base configuration with common fields.&quot;&quot;&quot;
+    template: Optional[str]
+    source_language: Optional[str]
+    metadata: Optional[Metadata]
+
+class TranslationConfig(BaseProcessConfig):
+    &quot;&quot;&quot;Translation-specific configuration.&quot;&quot;&quot;
+    target_language: str
+    context_lines: int = 3
+    segment_size: Optional[int] = None
+</code></pre>
+<p>Key aspects:</p>
+<ul>
+<li>Common base configuration</li>
+<li>Process-specific extensions</li>
+<li>Type-safe parameter definitions</li>
+<li>Configuration inheritance</li>
+</ul>
+<h4 id="4-state-preservation">4. State Preservation</h4>
+<p>Implement full state preservation strategy:</p>
+<pre><code class="language-python">class Pipeline:
+    &quot;&quot;&quot;Maintains full process history.&quot;&quot;&quot;
+    def __init__(self, save_dir: Optional[Path] = None):
+        self.states: List[ProcessState] = []
+        self.save_dir = save_dir
+
+    def save_state(self, filepath: Optional[Path] = None) -&gt; None:
+        &quot;&quot;&quot;Save current pipeline state to disk.&quot;&quot;&quot;
+</code></pre>
+<p>Key aspects:</p>
+<ul>
+<li>Full in-memory state maintenance</li>
+<li>Simple disk persistence</li>
+<li>Manual and automatic save points</li>
+<li>State recovery capabilities</li>
+</ul>
+<h3 id="implementation-scope">Implementation Scope</h3>
+<p>This high-level design intentionally omits several implementation concerns that will be addressed in later phases:</p>
+<ol>
+<li>Validation</li>
+<li>Data validation</li>
+<li>State validation</li>
+<li>Configuration validation</li>
+<li>
+<p>Type constraints</p>
+</li>
+<li>
+<p>Error Handling</p>
+</li>
+<li>Process failures</li>
+<li>State recovery</li>
+<li>Configuration errors</li>
+<li>
+<p>Type errors</p>
+</li>
+<li>
+<p>Operational Concerns</p>
+</li>
+<li>Logging</li>
+<li>Monitoring</li>
+<li>Performance optimization</li>
+<li>Resource management</li>
+</ol>
+<p>These concerns, while critical for production deployment, are deferred to maintain focus on core architectural decisions and relationships. This allows the design to evolve naturally as implementation requirements become clearer through prototyping and initial development.</p>
+<h3 id="diagrams">Diagrams</h3>
+<h4 id="text-processing-pipeline-flow">Text Processing Pipeline Flow</h4>
+<pre><code class="language-mermaid">classDiagram
+    %% Core Abstract &amp; Interfaces
+    class TextProcessor {
+        &lt;&lt;abstract&gt;&gt;
+        +process(text_object: TextObject, config: ProcessConfig, input_metadata: Metadata) ProcessResult
+        #_prepare_metadata(text_object: TextObject, input_metadata: Metadata) Metadata
+    }
+
+    class ProcessConfig {
+        &lt;&lt;interface&gt;&gt;
+    }
+
+    %% Domain Objects
+    class ProcessResult {
+        +text_object: TextObject
+        +process_metadata: ProcessMetadata
+        +generated_metadata: Metadata
+    }
+
+    class TextObject {
+        +content: NumberedText
+        +language: str
+        +sections: Optional~List[SectionObject]~
+        +metadata: Metadata
+        +merge_metadata(input_metadata: Metadata) Metadata
+    }
+
+    class SectionObject {
+        +title: Optional~str~
+        +section_range: SectionRange
+        +metadata: Optional~Metadata~
+    }
+
+    class SectionRange {
+        +start: int
+        +end: int
+    }
+
+    class Pipeline {
+        +states: List~ProcessState~
+        +save_dir: Path
+        +save_state(filepath: Path)
+        +load_state(filepath: Path)
+        +get_current_state() ProcessState
+        +rollback_to(state_index: int)
+    }
+
+    class ProcessState {
+        +text_object: TextObject
+        +process_metadata: ProcessMetadata
+        +generated_metadata: Metadata
+        +config: ProcessConfig
+    }
+
+    class BaseProcessConfig {
+        +template: Optional~Template~
+        +source_language: Optional~str~
+        +metadata: Optional~Metadata~
+    }
+
+    class Template {
+        +data: Dict~str, str~
+    }
+
+    class Metadata {
+        +data: Dict~str, JsonValue~
+        +merge(other: Metadata) Metadata
+    }
+
+    class ProcessMetadata {
+        +process_name: str
+        +parameters: Dict~str, JsonValue~
+        +timestamp: datetime
+    }
+
+    %% Concrete Implementations
+    class TranslationProcessor
+    class SectionProcessor
+    class SectionGenerator
+    class GeneralProcessor
+    class TranslationConfig {
+        +target_language: str
+        +context_lines: int
+        +segment_size: Optional~int~
+    }
+    class SectionConfig {
+        +section_rules: List~Rule~
+        +min_section_length: int
+    }
+
+    %% Relationships
+    TextProcessor &lt;|-- TranslationProcessor : extends
+    TextProcessor &lt;|-- SectionProcessor : extends
+    TextProcessor &lt;|-- SectionGenerator : extends
+    TextProcessor &lt;|-- GeneralProcessor : extends
+
+    TextProcessor ..&gt; ProcessResult : creates
+    ProcessResult --* ProcessState : becomes
+    Pipeline o-- ProcessState : contains
+    ProcessState o-- TextObject : contains
+    ProcessState o-- ProcessMetadata : contains
+    ProcessState o-- Metadata : contains
+    ProcessState --&gt; ProcessConfig : references
+
+    ProcessConfig &lt;|.. BaseProcessConfig : implements
+    BaseProcessConfig &lt;|-- TranslationConfig : extends
+    BaseProcessConfig &lt;|-- SectionConfig : extends
+
+    TextObject o-- &quot;0..*&quot; SectionObject : contains
+    TextObject o-- Metadata : has
+    SectionObject *-- SectionRange : has
+    SectionObject o-- Metadata : has optional
+
+    ProcessMetadata --|&gt; Metadata : extends
+    BaseProcessConfig o-- Template : has optional
+    BaseProcessConfig o-- Metadata : has optional
+</code></pre>
+<h4 id="example-processing-sequence">Example Processing Sequence</h4>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant Client
+    participant Pipeline
+    participant SectionProcessor
+    participant TranslationProcessor
+    participant Storage
+
+    Client-&gt;&gt;Pipeline: create_pipeline()
+
+    Note over Pipeline: Initial State
+
+    Client-&gt;&gt;Pipeline: process_text(section_config)
+    Pipeline-&gt;&gt;SectionProcessor: process(text_object, config)
+    SectionProcessor--&gt;&gt;Pipeline: ProcessResult
+    Pipeline-&gt;&gt;Storage: save_state()
+
+    Note over Pipeline: State After Sectioning
+
+    Client-&gt;&gt;Pipeline: process_text(translation_config)
+    Pipeline-&gt;&gt;TranslationProcessor: process(text_object, config)
+    TranslationProcessor--&gt;&gt;Pipeline: ProcessResult
+    Pipeline-&gt;&gt;Storage: save_state()
+
+    Note over Pipeline: Final State
+
+    Client-&gt;&gt;Pipeline: get_final_result()
+    Pipeline--&gt;&gt;Client: ProcessResult
+</code></pre>
+<h4 id="data-flow-through-pipeline">Data Flow Through Pipeline</h4>
+<pre><code class="language-mermaid">flowchart TD
+    subgraph Input
+        A[Raw Text] --&gt; |frontmatter extraction| C1[Content]
+        A --&gt; |frontmatter extraction| M1[File Metadata]
+        C1 --&gt; T[TextObject Creation]
+        M1 --&gt; T
+        M2[Input Metadata] --&gt; T
+    end
+
+    subgraph Pipeline
+        T --&gt; P1{SectionProcessor}
+        P1 -- ProcessResult --&gt; S1[State 1]
+        S1 --&gt; P2{TranslationProcessor}
+        P2 -- ProcessResult --&gt; S2[State 2]
+    end
+
+    subgraph Metadata Flow
+        M1 --&gt; PMD[Process Metadata]
+        PMD --&gt; GM1[Generated Metadata 1]
+        GM1 --&gt; GM2[Generated Metadata 2]
+    end
+
+    subgraph Output
+        S2 --&gt; FT[Final TextObject]
+        GM2 --&gt; FT
+    end
+
+    classDef metadata fill:#a9f,stroke:#333,stroke-width:2px;
+    class M1,M2,PMD,GM1,GM2 metadata;
+</code></pre>
+<h3 id="consequences">Consequences</h3>
+<h4 id="positive">Positive</h4>
+<ol>
+<li>Clean, Functional Design</li>
+<li>Clear data flow</li>
+<li>Easy to reason about</li>
+<li>Simple to test</li>
+<li>
+<p>Straightforward recovery</p>
+</li>
+<li>
+<p>Type Safety</p>
+</li>
+<li>Early error detection</li>
+<li>Clear interfaces</li>
+<li>IDE support</li>
+<li>
+<p>Self-documenting code</p>
+</li>
+<li>
+<p>Flexible Configuration</p>
+</li>
+<li>Easy to extend</li>
+<li>Type-safe parameters</li>
+<li>Clear hierarchy</li>
+<li>
+<p>Process-specific options</p>
+</li>
+<li>
+<p>Complete State Tracking</p>
+</li>
+<li>Full recovery capability</li>
+<li>Clear process history</li>
+<li>Simple debugging</li>
+<li>Easy state inspection</li>
+</ol>
+<h4 id="negative">Negative</h4>
+<ol>
+<li>Memory Usage</li>
+<li>Full state history in memory</li>
+<li>Potential memory pressure</li>
+<li>May require paging</li>
+<li>
+<p>Duplicate state on disk</p>
+</li>
+<li>
+<p>Storage Overhead</p>
+</li>
+<li>Multiple state copies</li>
+<li>No automatic cleanup</li>
+<li>Growing disk usage</li>
+<li>
+<p>Basic save/load</p>
+</li>
+<li>
+<p>Implementation Complexity</p>
+</li>
+<li>Many classes to implement</li>
+<li>Configuration hierarchy</li>
+<li>State serialization</li>
+<li>Recovery logic</li>
+</ol>
+<h3 id="open-issues">Open Issues</h3>
+<ol>
+<li>State Management</li>
+<li>Cleanup strategy for saved states</li>
+<li>Memory pressure handling</li>
+<li>Recovery validation</li>
+<li>
+<p>State versioning</p>
+</li>
+<li>
+<p>Configuration</p>
+</li>
+<li>Parameter validation rules</li>
+<li>Configuration versioning</li>
+<li>Default value handling</li>
+<li>
+<p>Configuration persistence</p>
+</li>
+<li>
+<p>Process Flow</p>
+</li>
+<li>Error recovery strategy</li>
+<li>Process validation</li>
+<li>Pipeline branching</li>
+<li>
+<p>Parallel processing</p>
+</li>
+<li>
+<p>Type System</p>
+</li>
+<li>Parameter type constraints</li>
+<li>Custom type definitions</li>
+<li>Validation rules</li>
+<li>Type conversion</li>
+</ol>
+<h3 id="implementation-plan">Implementation Plan</h3>
+<ol>
+<li>Phase 1: Core Framework</li>
+<li>Basic Pipeline class</li>
+<li>ProcessState/Result</li>
+<li>Simple persistence</li>
+<li>
+<p>Type definitions</p>
+</li>
+<li>
+<p>Phase 2: Configuration</p>
+</li>
+<li>Base configuration</li>
+<li>Process configurations</li>
+<li>Configuration validation</li>
+<li>
+<p>Parameter typing</p>
+</li>
+<li>
+<p>Phase 3: State Management</p>
+</li>
+<li>State persistence</li>
+<li>Recovery mechanisms</li>
+<li>Cleanup utilities</li>
+<li>Validation tools</li>
+</ol>
+<h3 id="notes">Notes</h3>
+<p>This design prioritizes:</p>
+<ul>
+<li>Clarity over optimization</li>
+<li>Type safety over flexibility</li>
+<li>State tracking over memory efficiency</li>
+<li>Simple persistence over sophisticated storage</li>
+</ul>
+<p>The approach provides a clear path from prototype to production while maintaining core architectural principles. The functional design with complete state tracking trades memory efficiency for reliability and recoverability, acknowledging that AI processing times dominate system resource considerations.</p>
+<p>Implementation should proceed incrementally, focusing first on core functionality while maintaining awareness of future requirements. The design allows for evolution toward more sophisticated state management, configuration handling, and error recovery as the system matures.</p>
+<h2 id="adr-002-pipeline-state-management-strategy">ADR 002: Pipeline State Management Strategy</h2>
+<h3 id="status">Status</h3>
+<p>Proposed</p>
+<h3 id="context_1">Context</h3>
+<p>The text processing pipeline transforms content through multiple stages (sectioning, translation, etc.). Initially considered keeping full state history in memory by creating new TextObject instances at each stage. Shifted to an in-place modification approach with disk checkpointing.</p>
+<p>Original approach:</p>
+<pre><code class="language-python"># New object created at each stage
+section_result = section_processor.process(text_obj)
+translate_result = translation_processor.process(section_result)
+format_result = format_processor.process(translate_result)
+</code></pre>
+<p>New approach:</p>
+<pre><code class="language-python"># Single object transformed and checkpointed
+text_obj.transform(content=sectioned_text, process_tag=&quot;section&quot;)
+save_checkpoint(text_obj, &quot;after_section&quot;)
+text_obj.transform(content=translated_text, process_tag=&quot;translate&quot;)
+save_checkpoint(text_obj, &quot;after_translation&quot;)
+</code></pre>
+<h3 id="decision-drivers_1">Decision Drivers</h3>
+<ol>
+<li>Resource Management</li>
+<li>Long processing pipelines create many objects</li>
+<li>Large text content duplicated across objects</li>
+<li>Memory pressure with multiple TextObjects</li>
+<li>
+<p>Need for state recovery on failure</p>
+</li>
+<li>
+<p>Pipeline Requirements</p>
+</li>
+<li>Must track processing history</li>
+<li>Need ability to recover from failures</li>
+<li>State checkpointing essential</li>
+<li>Process history must be maintained</li>
+</ol>
+<h3 id="decision">Decision</h3>
+<p>Adopt in-place modification with disk checkpointing:
+- Single TextObject flows through pipeline
+- Object transformed in-place at each stage
+- Process history tracked in metadata
+- State checkpointed to disk after transforms</p>
+<h3 id="consequences_1">Consequences</h3>
+<h4 id="positive_1">Positive</h4>
+<ol>
+<li>Resource Efficiency</li>
+<li>Minimal memory usage</li>
+<li>No content duplication</li>
+<li>Clear cleanup points</li>
+<li>
+<p>Efficient state management</p>
+</li>
+<li>
+<p>Process Management</p>
+</li>
+<li>Simple state recovery</li>
+<li>Clear process tracking</li>
+<li>Explicit checkpoints</li>
+<li>Disk-based history</li>
+</ol>
+<h4 id="negative_1">Negative</h4>
+<ol>
+<li>Code Clarity</li>
+<li>In-place modifications less obvious</li>
+<li>State changes need clear documentation</li>
+<li>Checkpoint management required</li>
+<li>More complex testing</li>
+</ol>
+<h3 id="implementation-notes">Implementation Notes</h3>
+<ul>
+<li>Use <code>transform()</code> method for clear intent</li>
+<li>Document state modifications</li>
+<li>Implement robust checkpoint system</li>
+<li>Maintain comprehensive process history</li>
+</ul>
+<p>The tradeoff of code clarity for resource efficiency is mitigated through clear method naming and documentation.</p>
+<h2 id="adr-003-textobject-transform-method-design">ADR 003: TextObject Transform Method Design</h2>
+<h3 id="status_1">Status</h3>
+<p>Proposed</p>
+<h3 id="context_2">Context</h3>
+<p>The TextObject class requires a method for modifying its state during pipeline processing. Initially considered conventional update patterns, but the processing pipeline performs transformational operations like translation that fundamentally change both content and metadata.</p>
+<p>Two main approaches were considered:</p>
+<ol>
+<li>Conventional <code>update()</code> method</li>
+<li>Domain-specific <code>transform()</code> method</li>
+</ol>
+<h3 id="decision-drivers_2">Decision Drivers</h3>
+<ol>
+<li>Memory Efficiency</li>
+<li>Need to avoid creating multiple TextObject instances</li>
+<li>System performs disk-based checkpointing</li>
+<li>
+<p>In-place modification is acceptable</p>
+</li>
+<li>
+<p>Semantic Clarity</p>
+</li>
+<li>Operations fundamentally transform content</li>
+<li>Multiple aspects may change simultaneously (content, language, metadata)</li>
+<li>Changes are part of a processing pipeline</li>
+<li>
+<p>Need to track transformation history</p>
+</li>
+<li>
+<p>Processing Context</p>
+</li>
+<li>Translation changes both content and metadata language</li>
+<li>Sectioning modifies structure while preserving content</li>
+<li>Each step in pipeline represents a transformation</li>
+</ol>
+<h3 id="decision_1">Decision</h3>
+<p>Implement <code>transform()</code> method for in-place modification:</p>
+<pre><code class="language-python">def transform(
+    self,
+    content: str,
+    language: str, 
+    process_tag: str,
+    sections: Optional[List[SectionObject]] = None,
+    timestamp: Optional[datetime] = None
+) -&gt; None:
+    &quot;&quot;&quot;Transform TextObject by modifying content and metadata in-place.
+
+    Represents a fundamental transformation of the object's state as part
+    of a processing pipeline. Records transformation in process history.
+    &quot;&quot;&quot;
+</code></pre>
+<h3 id="consequences_2">Consequences</h3>
+<h4 id="positive_2">Positive</h4>
+<ol>
+<li>Better semantic alignment with operations</li>
+<li>Clearer expression of pipeline transformations</li>
+<li>Self-documenting code</li>
+<li>More accurate process history tracking</li>
+</ol>
+<h4 id="negative_2">Negative</h4>
+<ol>
+<li>Deviates from conventional update pattern</li>
+<li>In-place modification less obvious from method name</li>
+<li>Requires clear documentation about state modification</li>
+</ol>
+<h3 id="notes_1">Notes</h3>
+<p>Choose <code>transform</code> over <code>update</code> because:</p>
+<ul>
+<li>Better represents domain operations</li>
+<li>Clearer about fundamental state changes</li>
+<li>Aligns with pipeline architecture</li>
+<li>Supports tracking transformation chain</li>
+</ul>
+<p>Memory efficiency through in-place modification is maintained while improving semantic clarity of operations.</p>
+<h3 id="implementation-notes_1">Implementation Notes</h3>
+<ul>
+<li>Clear documentation about in-place modification</li>
+<li>Consistent usage across processors</li>
+<li>Robust process history tracking</li>
+<li>Proper logging of transformations</li>
+</ul>
+<h2 id="adr-004-flexible-function-parameters-in-processing-pipeline">ADR 004: Flexible Function Parameters in Processing Pipeline</h2>
+<h3 id="status_2">Status</h3>
+<p>Proposed (Prototype Phase)</p>
+<h3 id="context_3">Context</h3>
+<p>During rapid prototyping of the processing pipeline, we need to handle various processing configurations while maintaining code flexibility. The system frequently needs optional parameters with sensible defaults, especially in text processing methods.</p>
+<p>Current pattern uses Optional types with None defaults:</p>
+<pre><code class="language-python">def translate_text(
+    self,
+    text: TextObject,
+    segment_size: Optional[int] = None,
+    source_language: Optional[str] = None,
+    target_language: Optional[str] = None,
+    template_dict: Optional[Dict] = None,
+) -&gt; TextObject:
+</code></pre>
+<h3 id="decision-drivers_3">Decision Drivers</h3>
+<ol>
+<li>Prototype Phase Requirements</li>
+<li>Need for rapid iteration</li>
+<li>Flexibility in parameter combinations</li>
+<li>Easy testing with minimal parameters</li>
+<li>
+<p>Clear default behaviors</p>
+</li>
+<li>
+<p>Processing Context</p>
+</li>
+<li>Many parameters can be derived from context</li>
+<li>Sensible defaults exist for most parameters</li>
+<li>Some parameters depend on others</li>
+<li>
+<p>Parameters may be overridden by configuration</p>
+</li>
+<li>
+<p>Future Evolution</p>
+</li>
+<li>Will eventually move to configuration objects</li>
+<li>Need to maintain clear parameter relationships</li>
+<li>Must support transition to formal configuration</li>
+<li>Should document parameter dependencies</li>
+</ol>
+<h3 id="decision_2">Decision</h3>
+<p>Use Optional types with None defaults for processing parameters:</p>
+<pre><code class="language-python">def process_text(
+    self,
+    text: TextObject,
+    source_language: Optional[str] = None,  # Can be derived from text
+    segment_size: Optional[int] = None,     # Has calculable default
+    template_dict: Optional[Dict] = None,   # Optional customization
+) -&gt; TextObject:
+    &quot;&quot;&quot;Process text with flexible parameter configuration.&quot;&quot;&quot;
+    # Derive missing parameters
+    if not source_language:
+        source_language = text.language
+
+    # Calculate defaults when needed
+    if not segment_size:
+        segment_size = _calculate_segment_size(
+            text.content, DEFAULT_TARGET_TOKENS
+        )
+</code></pre>
+<h3 id="consequences_3">Consequences</h3>
+<h4 id="positive_3">Positive</h4>
+<ol>
+<li>Flexibility</li>
+<li>Easy to call with minimal parameters</li>
+<li>Clear default behaviors</li>
+<li>Simple parameter overriding</li>
+<li>
+<p>Supports rapid prototyping</p>
+</li>
+<li>
+<p>Clarity</p>
+</li>
+<li>Type hints maintain clarity</li>
+<li>Default values are explicit</li>
+<li>Parameter requirements are clear</li>
+<li>
+<p>Dependencies are visible</p>
+</li>
+<li>
+<p>Evolution Path</p>
+</li>
+<li>Easy transition to configuration objects</li>
+<li>Clear parameter relationships</li>
+<li>Documented default behaviors</li>
+<li>Maintains type safety</li>
+</ol>
+<h4 id="negative_3">Negative</h4>
+<ol>
+<li>Validation Overhead</li>
+<li>Need to check for None values</li>
+<li>Parameter dependency checking required</li>
+<li>Default calculations may be repeated</li>
+<li>
+<p>Validation spread across code</p>
+</li>
+<li>
+<p>Documentation Requirements</p>
+</li>
+<li>Need to document default behaviors</li>
+<li>Parameter dependencies must be clear</li>
+<li>Default calculations should be explained</li>
+<li>Configuration patterns need description</li>
+</ol>
+<h3 id="implementation-notes_2">Implementation Notes</h3>
+<ol>
+<li>Parameter Documentation</li>
+</ol>
+<pre><code class="language-python">def process_text(
+    text: TextObject,              # Required base content
+    source_language: Optional[str] = None,  # Derived from text if None
+    segment_size: Optional[int] = None,     # Calculated if None
+):
+    &quot;&quot;&quot;Process text with flexible configuration.
+
+    Args:
+        text: Base content to process
+        source_language: Override text's language if provided
+        segment_size: Custom segment size or None for automatic
+    &quot;&quot;&quot;
+</code></pre>
+<ol>
+<li>Default Handling Pattern</li>
+</ol>
+<pre><code class="language-python">def _resolve_parameters(
+    self,
+    text: TextObject,
+    source_language: Optional[str],
+    segment_size: Optional[int]
+) -&gt; tuple[str, int]:
+    &quot;&quot;&quot;Resolve processing parameters with defaults.&quot;&quot;&quot;
+    language = source_language or text.language
+    size = segment_size or _calculate_segment_size(text.content)
+    return language, size
+</code></pre>
+<h3 id="future-migration">Future Migration</h3>
+<p>This approach provides clear migration path to configuration objects:</p>
+<pre><code class="language-python"># Future configuration pattern
+class ProcessConfig:
+    source_language: Optional[str] = None
+    segment_size: Optional[int] = None
+
+    def resolve(self, text: TextObject) -&gt; ResolvedConfig:
+        &quot;&quot;&quot;Resolve configuration with defaults.&quot;&quot;&quot;
+</code></pre>
+<h3 id="notes_2">Notes</h3>
+<p>This flexible parameter pattern:</p>
+<ul>
+<li>Supports rapid prototyping needs</li>
+<li>Maintains type safety and clarity</li>
+<li>Documents parameter relationships</li>
+<li>Provides path to formal configuration</li>
+</ul>
+<p>The approach balances immediate flexibility needs with future evolution to more structured configuration handling.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

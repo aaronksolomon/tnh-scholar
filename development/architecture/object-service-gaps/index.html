@@ -1,0 +1,2422 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Checklist of open design questions that must be resolved for the Object-Service blueprint to ship.">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Object-Service Design Blueprint: Critical Gaps & Clarifications - TNH Scholar Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#object-service-design-blueprint-critical-gaps-clarifications" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TNH Scholar Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Object-Service Design Blueprint: Critical Gaps & Clarifications
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TNH Scholar Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pattern System
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Best Practices
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/tnh-fab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/audio-transcribe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/nfmt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nfmt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/token-count/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    token-count
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/tnh-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-setup
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2" id="__nav_6_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_1" id="__nav_6_3_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TNH-FAB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            TNH-FAB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v1
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v2
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_2" id="__nav_6_3_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT-Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            YTT-Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--historical"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transcript Source
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YT-DLP Integration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Comparison
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/setup-tnh/design/setup-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SETUP-TNH
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/docs-design/design/documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docs-Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4_2" id="__nav_6_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs-Planning
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Docs-Planning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docs-design/planning/roadmap.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docs-design/planning/maintenance.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintenance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gpt_4o_search_query_text_pair_testing/testing_input_output.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gpt_4o_translations_experiments/passage_test.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translation_research.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation Research
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../preliminary_feasibility_study.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Feasibility Study
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#priority-1-critical-gaps-must-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      Priority 1: Critical Gaps (Must Address)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Priority 1: Critical Gaps (Must Address)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-complete-runnable-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Complete Runnable Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dependency-management-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Dependency Management &amp; Environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-configuration-loading-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration Loading Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-error-handling-implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Error Handling Implementation Details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-asyncawait-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Async/Await Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Resource Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#priority-2-important-clarifications-should-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      Priority 2: Important Clarifications (Should Address)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Priority 2: Important Clarifications (Should Address)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7-logging-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Logging Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-testing-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Testing Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-type-checking-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Type Checking &amp; Validation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-serialization-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Serialization &amp; Persistence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-rate-limiting-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Rate Limiting Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-timeout-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Timeout Handling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#priority-3-nice-to-have-consider-adding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Priority 3: Nice to Have (Consider Adding)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Priority 3: Nice to Have (Consider Adding)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#13-performance-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Performance Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Security Considerations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-monitoring-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. Monitoring &amp; Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-documentation-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. Documentation Standards
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-development-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. Development Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19-migration-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. Migration Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-protocol-extension-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. Protocol Extension Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#specific-open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specific Open Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Specific Open Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mapper-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapper Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocol-vs-abc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protocol vs ABC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-granularity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Granularity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streaming-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      Streaming Support
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-mocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Mocks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-precedence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Policy Precedence
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#work-plan-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      Work Plan Template
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notes
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="object-service-design-blueprint-critical-gaps-clarifications">Object-Service Design Blueprint: Critical Gaps &amp; Clarifications</h1>
+<p>Checklist of open design questions that must be resolved for the Object-Service blueprint to ship.</p>
+<p><strong>Purpose:</strong> Checklist of items needed to make the blueprint fully actionable for implementation<br />
+<strong>Status:</strong> Work in Progress<br />
+<strong>Date:</strong> 2025-10-24</p>
+<hr />
+<h2 id="priority-1-critical-gaps-must-address">Priority 1: Critical Gaps (Must Address)</h2>
+<h3 id="1-complete-runnable-example">1. Complete Runnable Example</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>End-to-end working example showing all layers integrated</li>
+<li>Actual runnable file with imports, initialization, and execution</li>
+<li>Both sync (GenAI) and async (diarization) full implementations</li>
+<li>How to bootstrap the application from scratch</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li><code>examples/complete_genai_example.py</code> - Full working GenAI service</li>
+<li><code>examples/complete_diarization_example.py</code> - Full working async service</li>
+<li><code>examples/README.md</code> - How to run the examples</li>
+</ul>
+<hr />
+<h3 id="2-dependency-management-environment">2. Dependency Management &amp; Environment</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>No <code>pyproject.toml</code> or <code>requirements.txt</code> specification</li>
+<li>Which versions of libraries? (Pydantic v1 vs v2? OpenAI SDK version?)</li>
+<li>Python version requirements</li>
+<li>Development dependencies (pytest versions, type checkers)</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li><code>pyproject.toml</code> with all dependencies and versions</li>
+<li>Minimum Python version specified</li>
+<li>Dev dependencies section</li>
+<li>Optional dependencies per provider</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Use Poetry, pip-tools, or plain requirements.txt?</li>
+<li>Pydantic v2 only or support v1 compatibility?</li>
+<li>Pin exact versions or use ranges?</li>
+</ul>
+<hr />
+<h3 id="3-configuration-loading-flow">3. Configuration Loading Flow</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How Settings cascade: env vars → .env → defaults</li>
+<li>Validation errors: what happens when API keys missing?</li>
+<li>Multiple environment support (dev/staging/prod)</li>
+<li>Secrets management (vault, AWS Secrets Manager?)</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Complete Settings loading logic with error handling</li>
+<li>Example <code>.env.example</code> file</li>
+<li>Documentation on configuration precedence</li>
+<li>Error messages for misconfiguration</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Required vs optional API keys (fail fast or lazy validation)?</li>
+<li>Support for multiple .env files (.env.local, .env.production)?</li>
+<li>Config validation at startup or on first use?</li>
+</ul>
+<hr />
+<h3 id="4-error-handling-implementation-details">4. Error Handling Implementation Details</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Retry logic: exponential backoff with jitter concrete implementation</li>
+<li>Circuit breaker pattern for failing providers?</li>
+<li>Fallback strategies when primary provider fails?</li>
+<li>Error propagation through layers (when to catch, when to re-raise?)</li>
+<li>Logging of errors vs user-facing error messages</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Complete retry decorator or class</li>
+<li>Circuit breaker implementation</li>
+<li>Error handling examples for each layer</li>
+<li>Error message guidelines (internal vs external)</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Use tenacity library or custom retry logic?</li>
+<li>Circuit breaker per-provider or per-endpoint?</li>
+<li>How many retries before giving up?</li>
+<li>Should we expose provider errors to users?</li>
+</ul>
+<hr />
+<h3 id="5-asyncawait-patterns">5. Async/Await Patterns</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>When to use <code>async def</code> vs regular <code>def</code>?</li>
+<li>How to structure async adapters vs sync adapters?</li>
+<li>Event loop management</li>
+<li>Mixing sync and async code (running sync code in async context)</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Guidelines for async protocol design</li>
+<li>Example async adapter implementation</li>
+<li>Pattern for sync-to-async bridging</li>
+<li>Event loop best practices</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Support both sync and async variants of each protocol?</li>
+<li>Use asyncio.run() or manage loop explicitly?</li>
+<li>How to handle blocking SDK calls in async context?</li>
+</ul>
+<hr />
+<h3 id="6-resource-management">6. Resource Management</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Connection pooling for HTTP clients</li>
+<li>When to create/close clients (per-request vs singleton?)</li>
+<li>Resource limits (max concurrent requests)</li>
+<li>Memory management for large files/responses</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Client lifecycle management pattern</li>
+<li>Connection pool configuration</li>
+<li>Resource limit examples</li>
+<li>Memory-efficient file handling</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Use context managers for all clients?</li>
+<li>Share connection pools across services?</li>
+<li>Max concurrent requests per provider?</li>
+<li>Streaming vs buffering for large responses?</li>
+</ul>
+<hr />
+<h2 id="priority-2-important-clarifications-should-address">Priority 2: Important Clarifications (Should Address)</h2>
+<h3 id="7-logging-strategy">7. Logging Strategy</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Structured logging format</li>
+<li>What to log at each layer (domain vs transport)</li>
+<li>PII handling in logs</li>
+<li>Log levels for different scenarios</li>
+<li>Correlation IDs for tracing requests</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Logging configuration example</li>
+<li>Logger setup per module</li>
+<li>PII redaction utilities</li>
+<li>Correlation ID propagation pattern</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Use Python logging, structlog, or loguru?</li>
+<li>JSON logs in production?</li>
+<li>Log sampling for high-volume operations?</li>
+</ul>
+<hr />
+<h3 id="8-testing-infrastructure">8. Testing Infrastructure</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How to create test fixtures for each protocol</li>
+<li>Mock vs real API testing strategy</li>
+<li>VCR/cassette pattern for recording HTTP interactions</li>
+<li>How to test polling logic without waiting</li>
+<li>Coverage expectations</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Base test fixtures for each protocol type</li>
+<li>Mock provider implementations</li>
+<li>Example VCR tests (if using)</li>
+<li>Fast polling tests (time mocking)</li>
+<li>Coverage target (80%? 90%?)</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Use pytest-vcr or responses library?</li>
+<li>Run integration tests in CI?</li>
+<li>Separate unit/integration test commands?</li>
+</ul>
+<hr />
+<h3 id="9-type-checking-validation">9. Type Checking &amp; Validation</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>When to use <code>mypy --strict</code>?</li>
+<li>Runtime validation patterns with Pydantic</li>
+<li>Optional vs required fields strategy</li>
+<li>Custom validators examples</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>mypy configuration</li>
+<li>Type checking guidelines</li>
+<li>Pydantic validator examples</li>
+<li>Type stub handling for untyped libraries</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Require 100% type coverage?</li>
+<li>Use Pydantic v2 validators or v1 style?</li>
+<li>Type check tests as well?</li>
+</ul>
+<hr />
+<h3 id="10-serialization-persistence">10. Serialization &amp; Persistence</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How to serialize Envelopes for storage?</li>
+<li>JSON encoding of complex types (datetime, Path, etc.)</li>
+<li>Database schema if persisting results</li>
+<li>File format for storing provenance</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Envelope serialization utilities</li>
+<li>JSON encoder for custom types</li>
+<li>Example persistence layer</li>
+<li>Schema migration strategy</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Store as JSON, pickle, or other format?</li>
+<li>Database or filesystem storage?</li>
+<li>Compress large payloads?</li>
+<li>Retention policy for old results?</li>
+</ul>
+<hr />
+<h3 id="11-rate-limiting-implementation">11. Rate Limiting Implementation</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Config has <code>rate_limit_rps</code> but no implementation</li>
+<li>Token bucket vs leaky bucket algorithm?</li>
+<li>Per-provider limits vs global limits</li>
+<li>Queue management when rate limited</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Rate limiter implementation</li>
+<li>Configuration per provider</li>
+<li>Queue/backpressure handling</li>
+<li>Rate limit exceeded error handling</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Use existing library (aiolimiter, ratelimit) or custom?</li>
+<li>Client-side rate limiting only or server-enforced?</li>
+<li>How to handle burst traffic?</li>
+</ul>
+<hr />
+<h3 id="12-timeout-handling">12. Timeout Handling</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Connect timeout vs read timeout vs total timeout</li>
+<li>How timeouts propagate through layers</li>
+<li>Graceful degradation vs hard failure</li>
+<li>Deadline propagation in nested calls</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Timeout configuration examples</li>
+<li>Deadline propagation pattern</li>
+<li>Timeout error handling</li>
+<li>Partial result handling on timeout</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Default timeout values per operation type?</li>
+<li>User-configurable timeouts?</li>
+<li>What happens to in-flight requests on timeout?</li>
+</ul>
+<hr />
+<h2 id="priority-3-nice-to-have-consider-adding">Priority 3: Nice to Have (Consider Adding)</h2>
+<h3 id="13-performance-patterns">13. Performance Patterns</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Caching strategies (where, when, invalidation)</li>
+<li>Batch request optimization</li>
+<li>Streaming response handling</li>
+<li>Memory-efficient processing of large files</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Caching layer examples</li>
+<li>Batch processing utilities</li>
+<li>Streaming adapter pattern</li>
+<li>Large file handling guide</li>
+</ul>
+<hr />
+<h3 id="14-security-considerations">14. Security Considerations</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>API key rotation strategy</li>
+<li>Input sanitization</li>
+<li>Output validation (prevent injection)</li>
+<li>Rate limiting to prevent abuse</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Security checklist</li>
+<li>Input validation examples</li>
+<li>API key rotation procedure</li>
+<li>Abuse prevention guidelines</li>
+</ul>
+<hr />
+<h3 id="15-monitoring-metrics">15. Monitoring &amp; Metrics</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Which metrics to track (latency, cost, errors)</li>
+<li>Prometheus exposition format example</li>
+<li>Health check endpoints</li>
+<li>Alerting thresholds</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Metrics collection layer</li>
+<li>Prometheus exporter example</li>
+<li>Health check implementation</li>
+<li>Alerting rule examples</li>
+</ul>
+<hr />
+<h3 id="16-documentation-standards">16. Documentation Standards</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Docstring format (Google, NumPy, or reStructuredText?)</li>
+<li>Type annotation requirements</li>
+<li>README structure for each module</li>
+<li>API documentation generation (Sphinx?)</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Documentation style guide</li>
+<li>Example module documentation</li>
+<li>API doc generation setup</li>
+<li>Contribution guidelines</li>
+</ul>
+<hr />
+<h3 id="17-development-workflow">17. Development Workflow</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How to run locally for development</li>
+<li>Hot reload setup</li>
+<li>Debug configuration</li>
+<li>Pre-commit hooks (formatting, linting)</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Development setup guide</li>
+<li>IDE configuration examples</li>
+<li>Pre-commit hook configuration</li>
+<li>Debugging tips and tools</li>
+</ul>
+<hr />
+<h3 id="18-deployment">18. Deployment</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Docker container structure</li>
+<li>Environment variable injection</li>
+<li>Health checks and readiness probes</li>
+<li>Scaling considerations</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Dockerfile</li>
+<li>docker-compose.yml for local dev</li>
+<li>Kubernetes manifests (if applicable)</li>
+<li>Deployment checklist</li>
+</ul>
+<hr />
+<h3 id="19-migration-patterns">19. Migration Patterns</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How to handle schema changes</li>
+<li>Backward compatibility strategy</li>
+<li>Data migration scripts</li>
+<li>API versioning (if exposing HTTP API)</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Migration guide</li>
+<li>Schema versioning strategy</li>
+<li>Backward compatibility testing</li>
+<li>Breaking change protocol</li>
+</ul>
+<hr />
+<h3 id="20-protocol-extension-examples">20. Protocol Extension Examples</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How to add a new provider (step-by-step)</li>
+<li>How to add a new service following the pattern</li>
+<li>Common pitfalls and how to avoid them</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Provider implementation guide</li>
+<li>Service implementation guide</li>
+<li>Troubleshooting guide</li>
+<li>Checklist for new implementations</li>
+</ul>
+<hr />
+<h2 id="specific-open-questions">Specific Open Questions</h2>
+<h3 id="mapper-pattern">Mapper Pattern</h3>
+<ul>
+<li>Should mappers be stateless functions or stateful classes?</li>
+<li>When to choose each approach?</li>
+<li>Should mappers handle validation or just transformation?</li>
+</ul>
+<h3 id="protocol-vs-abc">Protocol vs ABC</h3>
+<ul>
+<li>Concrete guidance on when structural typing isn't enough</li>
+<li>When to use ABC for enforcement vs Protocol for flexibility</li>
+<li>How to document Protocol requirements?</li>
+</ul>
+<h3 id="error-granularity">Error Granularity</h3>
+<ul>
+<li>Should <code>ProviderError</code> have subclasses per error type or per provider?</li>
+<li>How fine-grained should error classification be?</li>
+<li>Standard error codes across providers?</li>
+</ul>
+<h3 id="streaming-support">Streaming Support</h3>
+<ul>
+<li>How to handle streaming responses in the protocol?</li>
+<li>Sync vs async streaming</li>
+<li>Backpressure handling</li>
+</ul>
+<h3 id="testing-mocks">Testing Mocks</h3>
+<ul>
+<li>Should mocks live in test files or reusable fixtures?</li>
+<li>Shared mock implementations across test suites?</li>
+<li>How to keep mocks in sync with real implementations?</li>
+</ul>
+<h3 id="policy-precedence">Policy Precedence</h3>
+<ul>
+<li>When policies conflict, exact resolution algorithm?</li>
+<li>How to detect and warn about conflicts?</li>
+<li>Should policy conflicts be errors or warnings?</li>
+</ul>
+<hr />
+<h2 id="work-plan-template">Work Plan Template</h2>
+<p>For each item above, the completion checklist should include:</p>
+<ul>
+<li>[ ] Design decision documented</li>
+<li>[ ] Implementation completed</li>
+<li>[ ] Example code provided</li>
+<li>[ ] Tests written</li>
+<li>[ ] Documentation updated</li>
+<li>[ ] Code review completed</li>
+<li>[ ] Merged to main branch</li>
+</ul>
+<hr />
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Items marked ❌ need to be addressed</li>
+<li>Items marked ✅ are complete</li>
+<li>Items marked ⚠️ are partially complete</li>
+<li>Priority 1 items should be completed before Priority 2</li>
+<li>Priority 2 items should be completed before Priority 3</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

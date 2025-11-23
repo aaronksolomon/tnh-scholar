@@ -1,0 +1,2615 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Strategy outline and development plan for fine-tuning foundation models on Thich Nhat Hanh translations.">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Fine Tuning Strategy - TNH Scholar Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fine-tuning-strategy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TNH Scholar Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fine Tuning Strategy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TNH Scholar Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pattern System
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Best Practices
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/tnh-fab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/audio-transcribe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/nfmt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nfmt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/token-count/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    token-count
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/tnh-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-setup
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2" id="__nav_6_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_1" id="__nav_6_3_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TNH-FAB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            TNH-FAB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v1
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v2
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_2" id="__nav_6_3_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT-Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            YTT-Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--historical"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transcript Source
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YT-DLP Integration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Comparison
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/setup-tnh/design/setup-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SETUP-TNH
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/docs-design/design/documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docs-Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4_2" id="__nav_6_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs-Planning
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Docs-Planning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docs-design/planning/roadmap.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docs-design/planning/maintenance.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintenance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gpt_4o_search_query_text_pair_testing/testing_input_output.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gpt_4o_translations_experiments/passage_test.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translation_research.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation Research
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../preliminary_feasibility_study.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Feasibility Study
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#initial-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initial Prompt
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#translation-project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Translation Project Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-implementation-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Implementation Classes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-level-implementation-plan-for-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Level Implementation Plan for Fine-Tuning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="High Level Implementation Plan for Fine-Tuning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-foundation-phase-2-3-weeks" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Foundation Phase (2-3 weeks)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rapid-prototype-phase-4-6-weeks" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Rapid Prototype Phase (4-6 weeks)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-enhancement-phase-ongoing" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Enhancement Phase (Ongoing)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intermediate-level-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intermediate Level Plan
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intermediate Level Plan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-foundation-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Foundation Phase
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Foundation Phase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-data-pipeline-week-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. Data Pipeline (Week 1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-model-integration-week-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. Model Integration (Week 2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-basic-infrastructure-week-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. Basic Infrastructure (Week 3)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rapid-prototype-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Rapid Prototype Phase
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Rapid Prototype Phase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-core-workflow-weeks-4-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. Core Workflow (Weeks 4-5)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-initial-testing-weeks-6-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. Initial Testing (Weeks 6-7)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-pipeline-integration-weeks-8-9" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. Pipeline Integration (Weeks 8-9)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-enhancement-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Enhancement Phase
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Enhancement Phase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-quality-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. Quality Improvements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-feature-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. Feature Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-implementation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detailed Implementation Plan
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Implementation Plan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-foundation-phase_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Foundation Phase
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Foundation Phase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#week-1-data-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Week 1: Data Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#week-2-model-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Week 2: Model Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#week-3-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Week 3: Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rapid-prototype-phase_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Rapid Prototype Phase
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Rapid Prototype Phase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#weeks-4-5-core-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weeks 4-5: Core Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weeks-6-7-testing-refinement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weeks 6-7: Testing &amp; Refinement
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#critical-implementation-priorities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Critical Implementation Priorities
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Critical Implementation Priorities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-data-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Data Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-model-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Model Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-evaluation-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Evaluation Framework
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extension-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extension Points
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extension Points">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-data-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Data Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-model-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Model Development
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="fine-tuning-strategy">Fine Tuning Strategy</h1>
+<p>Strategy outline and development plan for fine-tuning foundation models on Thich Nhat Hanh translations.</p>
+<h2 id="initial-prompt">Initial Prompt</h2>
+<p>hello claude,</p>
+<p>I'd like you to tell me how you would go about fine-tuning an openai gpt-4o model or an anthropic model to improve translations of thich nhat hanh's works between the languages he taught in: Vietnamese, English, French. This is a project initiated by the plum village community with full access to collected works and permission to develop this for internal use only (for translation purposes). It would be of secondary benefit if the model also learned something about thay's teachings and could reflect, answer questions and so on.</p>
+<p>give a high level design strategy and then a detailed plan, with initial skeleton development in python using stubs for functions and classes. be as thorough and complete as possible. Consider an arc of development from prototyping and testing phase through initial development to a final stage of full development.</p>
+<p>Outputs are</p>
+<p>1) design plan and overview with considerations.
+2) process sequence from prototyping and testing through full implementation
+3) initial skeleton structures: including file structure blueprint with all major modules, and all major classes and high level functions as stubs. For minor modules these can simply be listed in the file structure blueprint.</p>
+<h2 id="translation-project-structure">Translation Project Structure</h2>
+<pre><code class="language-plaintext"># Project Structure
+
+tnh_translation/
+│
+├── pyproject.toml
+├── setup.py
+├── README.md
+├── requirements.txt
+│
+├── config/
+│   ├── model_config.yaml
+│   ├── training_config.yaml
+│   └── evaluation_config.yaml
+│
+├── notebooks/
+│   ├── data_exploration.ipynb
+│   ├── model_experimentation.ipynb
+│   └── evaluation_analysis.ipynb
+│
+├── src/
+│   ├── data/
+│   │   ├── __init__.py
+│   │   ├── corpus.py
+│   │   ├── preprocessing.py
+│   │   ├── alignment.py
+│   │   └── validation.py
+│   │
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── base_model.py
+│   │   ├── fine_tuning.py
+│   │   └── serving.py
+│   │
+│   ├── training/
+│   │   ├── __init__.py
+│   │   ├── trainer.py
+│   │   ├── callbacks.py
+│   │   └── optimization.py
+│   │
+│   ├── evaluation/
+│   │   ├── __init__.py
+│   │   ├── metrics.py
+│   │   ├── analysis.py
+│   │   └── visualization.py
+│   │
+│   └── utils/
+│       ├── __init__.py
+│       ├── logging.py
+│       ├── config.py
+│       └── helpers.py
+│
+├── tests/
+│   ├── test_data/
+│   ├── test_models/
+│   ├── test_training/
+│   └── test_evaluation/
+│
+└── scripts/
+    ├── prepare_data.py
+    ├── train_model.py
+    └── evaluate_model.py
+</code></pre>
+<h2 id="core-implementation-classes">Core Implementation Classes</h2>
+<pre><code class="language-python"># src/data/corpus.py
+
+from pathlib import Path
+from typing import Dict, List, Optional, Union
+from dataclasses import dataclass
+import logging
+
+logger = logging.getLogger(__name__)
+
+@dataclass
+class TextUnit:
+    &quot;&quot;&quot;Represents a single unit of text (paragraph, sentence, etc.) in multiple languages&quot;&quot;&quot;
+    id: str
+    content: Dict[str, str]  # Language code -&gt; text
+    metadata: Dict[str, any]
+    source_file: Path
+    alignment_score: Optional[float] = None
+
+class ParallelCorpus:
+    &quot;&quot;&quot;Manages multilingual parallel text corpus for training&quot;&quot;&quot;
+
+    def __init__(self, base_path: Path):
+        self.base_path = Path(base_path)
+        self.texts: List[TextUnit] = []
+        self.language_pairs: List[tuple] = []
+
+    def load_texts(self, source_paths: Dict[str, Path]):
+        &quot;&quot;&quot;Load texts from multiple sources with language mapping&quot;&quot;&quot;
+        pass
+
+    def align_texts(self, method: str = &quot;sentence&quot;):
+        &quot;&quot;&quot;Align texts across languages using specified method&quot;&quot;&quot;
+        pass
+
+    def validate_alignment(self, threshold: float = 0.8):
+        &quot;&quot;&quot;Validate alignment quality&quot;&quot;&quot;
+        pass
+
+    def export_training_data(self, output_path: Path):
+        &quot;&quot;&quot;Export aligned texts in training format&quot;&quot;&quot;
+        pass
+
+# src/data/preprocessing.py
+
+class TextPreprocessor:
+    &quot;&quot;&quot;Handles text preprocessing for training data&quot;&quot;&quot;
+
+    def __init__(self, config: Dict):
+        self.config = config
+
+    def clean_text(self, text: str) -&gt; str:
+        &quot;&quot;&quot;Clean and normalize text&quot;&quot;&quot;
+        pass
+
+    def tokenize(self, text: str) -&gt; List[str]:
+        &quot;&quot;&quot;Tokenize text using appropriate method&quot;&quot;&quot;
+        pass
+
+    def handle_special_terms(self, text: str) -&gt; str:
+        &quot;&quot;&quot;Process domain-specific terminology&quot;&quot;&quot;
+        pass
+
+# src/models/base_model.py
+
+from abc import ABC, abstractmethod
+from typing import Optional, Dict, Any
+
+class BaseModel(ABC):
+    &quot;&quot;&quot;Abstract base class for model implementations&quot;&quot;&quot;
+
+    def __init__(self, model_name: str, config: Dict[str, Any]):
+        self.model_name = model_name
+        self.config = config
+
+    @abstractmethod
+    def load_model(self):
+        &quot;&quot;&quot;Load pre-trained model&quot;&quot;&quot;
+        pass
+
+    @abstractmethod
+    def prepare_inputs(self, texts: List[str]) -&gt; Dict:
+        &quot;&quot;&quot;Prepare inputs for model&quot;&quot;&quot;
+        pass
+
+    @abstractmethod
+    def train_step(self, batch: Dict) -&gt; Dict:
+        &quot;&quot;&quot;Perform single training step&quot;&quot;&quot;
+        pass
+
+class GPT4Model(BaseModel):
+    &quot;&quot;&quot;GPT-4 model implementation&quot;&quot;&quot;
+
+    def __init__(self, config: Dict[str, Any]):
+        super().__init__(&quot;gpt-4&quot;, config)
+
+    def load_model(self):
+        &quot;&quot;&quot;Load GPT-4 model&quot;&quot;&quot;
+        pass
+
+    def prepare_inputs(self, texts: List[str]) -&gt; Dict:
+        &quot;&quot;&quot;Prepare inputs for GPT-4&quot;&quot;&quot;
+        pass
+
+# src/training/trainer.py
+
+class ModelTrainer:
+    &quot;&quot;&quot;Handles model training and fine-tuning process&quot;&quot;&quot;
+
+    def __init__(
+        self,
+        model: BaseModel,
+        train_data: ParallelCorpus,
+        val_data: ParallelCorpus,
+        config: Dict[str, Any]
+    ):
+        self.model = model
+        self.train_data = train_data
+        self.val_data = val_data
+        self.config = config
+
+    def train(self):
+        &quot;&quot;&quot;Execute training loop&quot;&quot;&quot;
+        pass
+
+    def validate(self):
+        &quot;&quot;&quot;Run validation&quot;&quot;&quot;
+        pass
+
+    def save_checkpoint(self):
+        &quot;&quot;&quot;Save model checkpoint&quot;&quot;&quot;
+        pass
+
+# src/evaluation/metrics.py
+
+class TranslationEvaluator:
+    &quot;&quot;&quot;Evaluates translation quality using multiple metrics&quot;&quot;&quot;
+
+    def __init__(self, metrics: List[str]):
+        self.metrics = metrics
+
+    def evaluate(
+        self,
+        predictions: List[str],
+        references: List[str]
+    ) -&gt; Dict[str, float]:
+        &quot;&quot;&quot;Calculate evaluation metrics&quot;&quot;&quot;
+        pass
+
+    def analyze_errors(
+        self,
+        predictions: List[str],
+        references: List[str]
+    ) -&gt; Dict[str, Any]:
+        &quot;&quot;&quot;Perform error analysis&quot;&quot;&quot;
+        pass
+
+# src/evaluation/analysis.py
+
+class QualityAnalyzer:
+    &quot;&quot;&quot;Analyzes translation quality and provides detailed feedback&quot;&quot;&quot;
+
+    def __init__(self, config: Dict[str, Any]):
+        self.config = config
+
+    def analyze_terminology(self, text: str) -&gt; Dict[str, Any]:
+        &quot;&quot;&quot;Analyze terminology usage&quot;&quot;&quot;
+        pass
+
+    def check_doctrinal_accuracy(self, text: str) -&gt; Dict[str, Any]:
+        &quot;&quot;&quot;Verify doctrinal accuracy&quot;&quot;&quot;
+        pass
+
+    def generate_report(self, analysis_results: Dict[str, Any]) -&gt; str:
+        &quot;&quot;&quot;Generate detailed analysis report&quot;&quot;&quot;
+        pass
+
+# Configuration and setup
+
+def setup_logging():
+    &quot;&quot;&quot;Configure logging for the project&quot;&quot;&quot;
+    pass
+
+def load_config(config_path: Path) -&gt; Dict[str, Any]:
+    &quot;&quot;&quot;Load configuration from YAML file&quot;&quot;&quot;
+    pass
+
+def initialize_project(config: Dict[str, Any]):
+    &quot;&quot;&quot;Initialize project with configuration&quot;&quot;&quot;
+    pass
+</code></pre>
+<h2 id="training-configuration">Training Configuration</h2>
+<pre><code class="language-yaml"># Model Configuration
+model:
+  name: &quot;gpt-4&quot;
+  version: &quot;latest&quot;
+  max_sequence_length: 2048
+  batch_size: 16
+  learning_rate: 2e-5
+  warmup_steps: 1000
+  max_steps: 50000
+  save_steps: 1000
+  eval_steps: 500
+
+# Data Configuration
+data:
+  languages:
+    - &quot;vi&quot;
+    - &quot;en&quot;
+    - &quot;fr&quot;
+  text_units:
+    - &quot;sentence&quot;
+    - &quot;paragraph&quot;
+  alignment:
+    method: &quot;hybrid&quot;  # sentence + semantic
+    min_score: 0.8
+  preprocessing:
+    lowercase: false
+    normalize_unicode: true
+    special_tokens:
+      - &quot;&lt;&lt;dharma&gt;&gt;&quot;
+      - &quot;&lt;&lt;sangha&gt;&gt;&quot;
+      - &quot;&lt;&lt;buddha&gt;&gt;&quot;
+
+# Training Configuration
+training:
+  objectives:
+    - name: &quot;translation&quot;
+      weight: 1.0
+    - name: &quot;understanding&quot;
+      weight: 0.5
+  optimization:
+    optimizer: &quot;adamw&quot;
+    weight_decay: 0.01
+    gradient_clip: 1.0
+  scheduling:
+    type: &quot;linear&quot;
+    num_warmup_steps: 1000
+  validation:
+    frequency: 1000
+    metrics:
+      - &quot;bleu&quot;
+      - &quot;ter&quot;
+      - &quot;comet&quot;
+      - &quot;dharma_accuracy&quot;
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - name: &quot;bleu&quot;
+      weight: 0.3
+    - name: &quot;ter&quot;
+      weight: 0.2
+    - name: &quot;comet&quot;
+      weight: 0.3
+    - name: &quot;dharma_accuracy&quot;
+      weight: 0.2
+  human_evaluation:
+    sangha_review: true
+    expert_review: true
+    community_feedback: true
+  terminology:
+    check_consistency: true
+    verify_usage: true
+    maintain_register: true
+
+# Infrastructure Configuration
+infrastructure:
+  compute:
+    device: &quot;cuda&quot;
+    precision: &quot;mixed&quot;
+    distributed: true
+  logging:
+    level: &quot;INFO&quot;
+    save_path: &quot;logs/&quot;
+  monitoring:
+    tensorboard: true
+    wandb: true
+  checkpointing:
+    save_best: true
+    save_last: true
+    max_checkpoints: 5
+</code></pre>
+<h2 id="high-level-implementation-plan-for-fine-tuning">High Level Implementation Plan for Fine-Tuning</h2>
+<h3 id="1-foundation-phase-2-3-weeks">1. Foundation Phase (2-3 weeks)</h3>
+<ul>
+<li>Core data structures &amp; basic pipeline</li>
+<li>Minimal preprocessing</li>
+<li>Simple model integration</li>
+<li>Basic evaluation</li>
+</ul>
+<h3 id="2-rapid-prototype-phase-4-6-weeks">2. Rapid Prototype Phase (4-6 weeks)</h3>
+<ul>
+<li>End-to-end workflow</li>
+<li>Basic fine-tuning capability</li>
+<li>Simple translation testing</li>
+<li>Initial quality metrics</li>
+</ul>
+<h3 id="3-enhancement-phase-ongoing">3. Enhancement Phase (Ongoing)</h3>
+<ul>
+<li>Advanced features integration</li>
+<li>Quality improvements</li>
+<li>Specialized capabilities</li>
+<li>Production readiness</li>
+</ul>
+<h2 id="intermediate-level-plan">Intermediate Level Plan</h2>
+<h3 id="1-foundation-phase">1. Foundation Phase</h3>
+<h4 id="a-data-pipeline-week-1">a. Data Pipeline (Week 1)</h4>
+<ul>
+<li>Basic corpus loader</li>
+<li>Simple text alignment</li>
+<li>Minimal preprocessing</li>
+<li>Validation scaffolding</li>
+</ul>
+<h4 id="b-model-integration-week-2">b. Model Integration (Week 2)</h4>
+<ul>
+<li>OpenAI API integration</li>
+<li>Basic prompt engineering</li>
+<li>Simple fine-tuning setup</li>
+<li>Test harness creation</li>
+</ul>
+<h4 id="c-basic-infrastructure-week-3">c. Basic Infrastructure (Week 3)</h4>
+<ul>
+<li>Configuration management</li>
+<li>Logging setup</li>
+<li>Experiment tracking</li>
+<li>Initial testing framework</li>
+</ul>
+<h3 id="2-rapid-prototype-phase">2. Rapid Prototype Phase</h3>
+<h4 id="a-core-workflow-weeks-4-5">a. Core Workflow (Weeks 4-5)</h4>
+<ul>
+<li>Data loading pipeline</li>
+<li>Training loop implementation</li>
+<li>Basic evaluation metrics</li>
+<li>Result logging</li>
+</ul>
+<h4 id="b-initial-testing-weeks-6-7">b. Initial Testing (Weeks 6-7)</h4>
+<ul>
+<li>Small-scale fine-tuning</li>
+<li>Translation testing</li>
+<li>Quality assessment</li>
+<li>Performance analysis</li>
+</ul>
+<h4 id="c-pipeline-integration-weeks-8-9">c. Pipeline Integration (Weeks 8-9)</h4>
+<ul>
+<li>Workflow automation</li>
+<li>Error handling</li>
+<li>Basic monitoring</li>
+<li>Documentation</li>
+</ul>
+<h3 id="3-enhancement-phase">3. Enhancement Phase</h3>
+<h4 id="a-quality-improvements">a. Quality Improvements</h4>
+<ul>
+<li>Advanced preprocessing</li>
+<li>Better alignment methods</li>
+<li>Enhanced validation</li>
+<li>Extended metrics</li>
+</ul>
+<h4 id="b-feature-integration">b. Feature Integration</h4>
+<ul>
+<li>Terminology management</li>
+<li>Review system</li>
+<li>Quality analysis</li>
+<li>Advanced monitoring</li>
+</ul>
+<h2 id="detailed-implementation-plan">Detailed Implementation Plan</h2>
+<h3 id="1-foundation-phase_1">1. Foundation Phase</h3>
+<h4 id="week-1-data-pipeline">Week 1: Data Pipeline</h4>
+<pre><code class="language-plaintext">Day 1-2: Corpus Management
+- Implement basic ParallelCorpus class
+- Create TextUnit data structure
+- Build simple file loading
+- Set up basic validation
+
+Day 3-4: Text Alignment
+- Implement sentence splitting
+- Basic alignment matching
+- Simple alignment scoring
+- Basic quality checks
+
+Day 5: Preprocessing
+- Text cleaning functions
+- Basic tokenization
+- Language detection
+- Format standardization
+</code></pre>
+<h4 id="week-2-model-integration">Week 2: Model Integration</h4>
+<pre><code class="language-plaintext">Day 1-2: API Setup
+- OpenAI client setup
+- Authentication handling
+- Basic API wrapper
+- Error handling
+
+Day 3-4: Fine-tuning Basics
+- Data formatting
+- Basic training loop
+- Simple inference
+- Result handling
+
+Day 5: Test Framework
+- Unit test setup
+- Integration tests
+- Performance metrics
+- Basic logging
+</code></pre>
+<h4 id="week-3-infrastructure">Week 3: Infrastructure</h4>
+<pre><code>Day 1-2: Configuration
+- YAML config setup
+- Environment management
+- Parameter handling
+- Version control
+
+Day 3-4: Logging &amp; Monitoring
+- Logging implementation
+- Basic metrics tracking
+- Error reporting
+- Status monitoring
+
+Day 5: Integration
+- Pipeline assembly
+- Basic workflow
+- Documentation
+- Initial testing
+</code></pre>
+<h3 id="2-rapid-prototype-phase_1">2. Rapid Prototype Phase</h3>
+<h4 id="weeks-4-5-core-workflow">Weeks 4-5: Core Workflow</h4>
+<pre><code class="language-plaintext">Days 1-3: Pipeline Integration
+- Data loading workflow
+- Preprocessing pipeline
+- Model integration
+- Basic evaluation
+
+Days 4-7: Training Implementation
+- Fine-tuning loop
+- Batch processing
+- Checkpointing
+- Initial validation
+
+Days 8-10: Quality Control
+- Basic metrics
+- Result validation
+- Error analysis
+- Performance tracking
+</code></pre>
+<h4 id="weeks-6-7-testing-refinement">Weeks 6-7: Testing &amp; Refinement</h4>
+<pre><code class="language-plaintext">Days 1-5: Initial Testing
+- Small dataset testing
+- Performance evaluation
+- Error analysis
+- Pipeline validation
+
+Days 6-10: Refinement
+- Workflow optimization
+- Error handling
+- Performance tuning
+- Documentation
+</code></pre>
+<h2 id="critical-implementation-priorities">Critical Implementation Priorities</h2>
+<h3 id="1-data-management">1. Data Management</h3>
+<pre><code class="language-python"># Minimal ParallelCorpus implementation
+class ParallelCorpus:
+    def load_texts(self):
+        # Priority 1: Basic file loading
+        # Priority 2: Error handling
+        # Priority 3: Metadata handling
+        pass
+
+    def align_texts(self):
+        # Priority 1: Simple matching
+        # Priority 2: Quality scoring
+        # Priority 3: Advanced alignment
+        pass
+</code></pre>
+<h3 id="2-model-integration">2. Model Integration</h3>
+<pre><code class="language-python"># Basic model wrapper
+class ModelWrapper:
+    def prepare_fine_tuning(self):
+        # Priority 1: Data formatting
+        # Priority 2: Parameter setup
+        # Priority 3: Advanced options
+        pass
+
+    def train(self):
+        # Priority 1: Basic training loop
+        # Priority 2: Monitoring
+        # Priority 3: Optimization
+        pass
+</code></pre>
+<h3 id="3-evaluation-framework">3. Evaluation Framework</h3>
+<pre><code class="language-python"># Core evaluation
+class Evaluator:
+    def evaluate_translation(self):
+        # Priority 1: Basic metrics
+        # Priority 2: Quality analysis
+        # Priority 3: Advanced metrics
+        pass
+
+    def generate_report(self):
+        # Priority 1: Basic statistics
+        # Priority 2: Detailed analysis
+        # Priority 3: Advanced insights
+        pass
+</code></pre>
+<h2 id="extension-points">Extension Points</h2>
+<h3 id="1-data-pipeline">1. Data Pipeline</h3>
+<ul>
+<li>Advanced text alignment</li>
+<li>Enhanced preprocessing</li>
+<li>Quality validation</li>
+<li>Metadata handling</li>
+</ul>
+<h3 id="2-model-development">2. Model Development</h3>
+<ul>
+<li>Advanced fine-tuning</li>
+<li>Multiple model support</li>
+<li>Hyperparameter optimization</li>
+<li>Model ensembling</li>
+</ul>
+<h3 id="3-evaluation">3. Evaluation</h3>
+<ul>
+<li>Custom metrics</li>
+<li>Automated analysis</li>
+<li>Review integration</li>
+<li>Quality assurance</li>
+</ul>
+<p>Note: This implementation plan is intended to provide a path to a working prototype while maintaining extensibility for future enhancements.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2623 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="*A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.*">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>TNH Scholar Object & Service Design Blueprint - TNH Scholar Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tnh-scholar-object-service-design-blueprint" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TNH Scholar Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              TNH Scholar Object & Service Design Blueprint
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TNH Scholar Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pattern System
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Best Practices
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/tnh-fab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/audio-transcribe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/nfmt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nfmt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/token-count/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    token-count
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/tnh-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-setup
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2" id="__nav_6_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_1" id="__nav_6_3_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TNH-FAB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            TNH-FAB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v1
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v2
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_2" id="__nav_6_3_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT-Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            YTT-Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--historical"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transcript Source
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YT-DLP Integration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Comparison
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/setup-tnh/design/setup-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SETUP-TNH
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/docs-design/design/documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docs-Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4_2" id="__nav_6_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs-Planning
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Docs-Planning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docs-design/planning/roadmap.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docs-design/planning/maintenance.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintenance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gpt_4o_search_query_text_pair_testing/testing_input_output.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gpt_4o_translations_experiments/passage_test.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translation_research.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation Research
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../preliminary_feasibility_study.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Feasibility Study
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-big-picture-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      0. Big Picture (at a glance)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0. Big Picture (at a glance)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oneline-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      One‑line contracts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-core-concepts-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Core Concepts &amp; Naming
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-configuration-taxonomy-stubs" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Configuration Taxonomy (stubs)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-canonical-domain-envelope-generic" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Canonical Domain Envelope (generic)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Canonical Domain Envelope (generic)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#invariants" class="md-nav__link">
+    <span class="md-ellipsis">
+      Invariants
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-service-protocol-boilerplate" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Service Protocol &amp; Boilerplate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-transport-client-job-poller-skeleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Transport Client &amp; Job Poller (skeleton)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-adapter-transport-domain-boilerplate" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Adapter (transport → domain) Boilerplate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-concrete-service-composition-boilerplate" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Concrete Service (composition) Boilerplate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-processor-thin-orchestrator-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Processor (thin orchestrator) &amp; Ports
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-diagnostics-observability-curated" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Diagnostics &amp; Observability (curated)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-error-model-resilience" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Error Model &amp; Resilience
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-factory-helpers-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Factory Helpers &amp; Defaults
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-checklists" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Checklists
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Checklists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#design-kickoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Kickoff
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hardening
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#premerge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre‑merge
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-antipatterns-to-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Anti‑patterns to Avoid
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-example-applying-to-diarization-thumbnail" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Example: Applying to Diarization (thumbnail)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-evolution-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. Evolution &amp; Versioning
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. Glossary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-appendix-filemodule-scaffold-cookieready" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. Appendix: File/Module Scaffold (cookie‑ready)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-policy-evolution-strategy-robust-explicit" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. Policy Evolution Strategy (robust &amp; explicit)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. Policy Evolution Strategy (robust & explicit)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Principles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Versioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-governance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing &amp; governance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-interface-modalities-integration-patterns-beyond-polling-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. Interface Modalities &amp; Integration Patterns (beyond polling APIs)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19. Interface Modalities & Integration Patterns (beyond polling APIs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#191-synchronous-requestresponse-local-or-remote" class="md-nav__link">
+    <span class="md-ellipsis">
+      19.1 Synchronous request/response (local or remote)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#192-asynchronous-jobs-with-polling" class="md-nav__link">
+    <span class="md-ellipsis">
+      19.2 Asynchronous jobs with polling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#193-asynchronous-jobs-with-webhookscallbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      19.3 Asynchronous jobs with webhooks/callbacks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#194-streaming-serversent-events-websocket-grpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      19.4 Streaming (server‑sent events / WebSocket / gRPC)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#195-messagequeue-pubsub-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      19.5 Message‑queue / Pub‑Sub integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#196-batch-pipelines-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      19.6 Batch pipelines (orchestration)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#197-pure-data-processors-no-transport" class="md-nav__link">
+    <span class="md-ellipsis">
+      19.7 Pure data processors (no transport)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#198-decision-aid-which-modality" class="md-nav__link">
+    <span class="md-ellipsis">
+      19.8 Decision aid: which modality?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-templates-for-other-modalities" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. Templates for other modalities
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20. Templates for other modalities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#201-streaming-client-loop-sketch" class="md-nav__link">
+    <span class="md-ellipsis">
+      20.1 Streaming client loop (sketch)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#202-mq-consumer-sketch" class="md-nav__link">
+    <span class="md-ellipsis">
+      20.2 MQ consumer (sketch)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#203-webhook-verification-helper-sketch" class="md-nav__link">
+    <span class="md-ellipsis">
+      20.3 Webhook verification helper (sketch)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-provenance-integration-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      21. Provenance integration tips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-closing-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      22. Closing notes
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="tnh-scholar-object-service-design-blueprint">TNH Scholar Object &amp; Service Design Blueprint</h1>
+<p><em>A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.</em></p>
+<p><em>A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.</em></p>
+<hr />
+<h2 id="0-big-picture-at-a-glance">0. Big Picture (at a glance)</h2>
+<p><strong>Goal:</strong> ship reliable features fast by separating concerns and keeping boundaries explicit.</p>
+<pre><code class="language-text">Application Layer (CLI, notebooks, web)
+  └─ Orchestrators (thin): &lt;Feature&gt;Processor, ResultWriter
+        ▲           
+        │ domain objects / protocols
+        │
+Domain Service Layer
+  └─ &lt;Feature&gt;Service (Protocol)
+     └─ VendorService (impl)  ── uses ──&gt; VendorAdapter (transport → domain)
+                                       └─&gt; VendorClient (HTTP, polling)
+        ▲
+        │ transport models (anti‑corruption boundary)
+        │
+Transport Layer
+  └─ VendorClient  (upload/start/status/poll, retries, rate‑limit)
+     JobPoller     (backoff, jitter, deadline)
+</code></pre>
+<h3 id="oneline-contracts">One‑line contracts</h3>
+<ul>
+<li><strong>Config at init</strong>, <strong>Params per call</strong>, <strong>Response envelope</strong> always.</li>
+<li>Service protocol is tiny: <code>start()</code>, <code>get_response()</code>, <code>generate()</code>.</li>
+<li>Adapter maps API shapes → canonical domain shapes.</li>
+</ul>
+<hr />
+<h2 id="1-core-concepts-naming">1. Core Concepts &amp; Naming</h2>
+<ul>
+<li><strong>Config</strong> (<code>ThingConfig</code>): construction‑time settings; stable; immutable.</li>
+<li><strong>Params</strong> (<code>ThingParams</code>): per‑call inputs; vary run‑to‑run.</li>
+<li><strong>Policy</strong> (<code>DomainPolicy</code>, <code>ServicePolicy</code>): opinionated behavior toggles.</li>
+<li><strong>Context</strong> (<code>ExecutionContext</code>): ephemeral runtime state (optional, pipelines only).</li>
+<li><strong>Response</strong> (<code>ThingResponse</code>): discriminated union (status + diagnostics + provenance + <em>optional</em> Result).</li>
+<li><strong>Result</strong> (<code>ThingResult</code>): canonical success payload embedded in Response.</li>
+<li><strong>Client</strong>: pure transport/HTTP.</li>
+<li><strong>Adapter</strong>: transport → domain mapping.</li>
+<li><strong>Service</strong>: composes Client + Adapter; implements protocol.</li>
+<li><strong>Processor</strong>: thin façade for apps; wires persistence &amp; small conveniences.</li>
+</ul>
+<blockquote>
+<p><strong>Rule of thumb</strong><br />
+Wire behavior → Client.<br />
+Canonical data shape → Adapter/Service.<br />
+Usage intent → Params/Policy.<br />
+Long‑lived configuration → Config.</p>
+</blockquote>
+<hr />
+<h2 id="2-configuration-taxonomy-stubs">2. Configuration Taxonomy (stubs)</h2>
+<pre><code class="language-python"># config/policy.py
+from __future__ import annotations
+from typing import Literal, Optional
+from pydantic import BaseModel, Field
+
+class DomainPolicy(BaseModel):
+    &quot;&quot;&quot;Domain concerns about how the app wants to use the service.&quot;&quot;&quot;
+    completion_mode: Literal[&quot;snapshot&quot;, &quot;wait&quot;] = &quot;wait&quot;
+    deadline_s: Optional[float] = None
+    allow_partials: bool = True
+
+class ServicePolicy(BaseModel):
+    &quot;&quot;&quot;Adapter/service‑side normalization and mapping decisions.&quot;&quot;&quot;
+    default_label: str = &quot;DEFAULT&quot;
+    normalize_case: bool = True
+    min_unit_size: int = 0
+
+class TransportConfig(BaseModel):
+    &quot;&quot;&quot;Pure transport/HTTP configuration; only the client sees this.&quot;&quot;&quot;
+    base_url: str
+    api_key: str = Field(repr=False)
+    connect_timeout_s: float = 10
+    read_timeout_s: float = 30
+    max_retries: int = 5
+    backoff_base_s: float = 0.5
+    backoff_max_s: float = 8.0
+    rate_limit_rps: float = 5.0
+
+    @classmethod
+    def from_env(cls) -&gt; &quot;TransportConfig&quot;:
+        import os
+        return cls(
+            base_url=os.environ.get(&quot;VENDOR_BASE_URL&quot;, &quot;&quot;),
+            api_key=os.environ.get(&quot;VENDOR_API_KEY&quot;, &quot;&quot;),
+        )
+</code></pre>
+<hr />
+<h2 id="3-canonical-domain-envelope-generic">3. Canonical Domain Envelope (generic)</h2>
+<pre><code class="language-python"># domain/models.py
+from __future__ import annotations
+from typing import Any, Optional, Literal, List
+from pydantic import BaseModel
+
+class Provenance(BaseModel):
+    backend: str                    # e.g., &quot;pyannote&quot;, &quot;assemblyai&quot;, &quot;openai&quot;
+    model: Optional[str] = None
+    job_id: Optional[str] = None
+    started_at: Optional[str] = None
+    completed_at: Optional[str] = None
+    schema_version: str = &quot;1.0&quot;
+    params: dict = {}
+
+class Envelope(BaseModel):
+    status: Literal[&quot;pending&quot;, &quot;running&quot;, &quot;succeeded&quot;, &quot;failed&quot;, &quot;timeout&quot;]
+    result: Optional[Any] = None        # feature‑specific; present only on success
+    error: Optional[str] = None
+    diagnostics: dict = {}              # curated, not a dump
+    provenance: Provenance
+
+    def succeeded(self) -&gt; bool:
+        return self.status == &quot;succeeded&quot;
+</code></pre>
+<h3 id="invariants">Invariants</h3>
+<ul>
+<li><code>result</code> only when <code>status == "succeeded"</code>.</li>
+<li><code>error</code> only for <code>failed</code>.</li>
+<li><code>provenance.job_id</code> should be set when available (embed at transport boundary).</li>
+</ul>
+<hr />
+<h2 id="4-service-protocol-boilerplate">4. Service Protocol &amp; Boilerplate</h2>
+<pre><code class="language-python"># domain/service.py
+from __future__ import annotations
+from pathlib import Path
+from typing import Optional, Protocol
+from pydantic import BaseModel
+from .models import Envelope
+
+class FeatureParams(BaseModel):
+    &quot;&quot;&quot;API‑facing parameters (safe subset).&quot;&quot;&quot;
+    pass
+
+class FeatureService(Protocol):
+    def start(self, input_path: Path, params: Optional[FeatureParams] = None) -&gt; str: ...
+    def get_response(self, job_id: str, *, wait_until_complete: bool = False) -&gt; Envelope: ...
+    def generate(self, input_path: Path, params: Optional[FeatureParams] = None,
+                 *, wait_until_complete: bool = True) -&gt; Envelope: ...
+</code></pre>
+<hr />
+<h2 id="5-transport-client-job-poller-skeleton">5. Transport Client &amp; Job Poller (skeleton)</h2>
+<pre><code class="language-python"># transport/client.py
+from __future__ import annotations
+from pathlib import Path
+from typing import Optional
+from pydantic import BaseModel
+from ..config.policy import TransportConfig
+
+class JobStatusResponse(BaseModel):
+    status: str            # &quot;pending&quot; | &quot;running&quot; | &quot;succeeded&quot; | &quot;failed&quot;
+    job_id: str            # embed job_id for propagation
+    elapsed_s: float = 0.0
+    payload: dict = {}     # raw vendor payload (optional)
+    error: Optional[str] = None
+
+class VendorClient:
+    def __init__(self, cfg: TransportConfig):
+        self.cfg = cfg
+
+    def upload(self, path: Path) -&gt; str:
+        # TODO: implement
+        return &quot;media_123&quot;
+
+    def start(self, media_id: str, params: dict | None = None) -&gt; str:
+        # TODO: implement
+        return &quot;job_abc&quot;
+
+    def job_status(self, job_id: str) -&gt; JobStatusResponse:
+        # TODO: implement
+        return JobStatusResponse(status=&quot;running&quot;, job_id=job_id)
+
+    def poll_until_done(self, job_id: str, deadline_s: float | None = None) -&gt; JobStatusResponse:
+        import time
+        backoff = 0.5
+        start = time.time()
+        while True:
+            jsr = self.job_status(job_id)
+            if jsr.status in {&quot;succeeded&quot;, &quot;failed&quot;}:  # vendor may also return &quot;timeout&quot;
+                return jsr
+            if deadline_s and (time.time() - start) &gt; deadline_s:
+                return JobStatusResponse(status=&quot;timeout&quot;, job_id=job_id, elapsed_s=time.time()-start)
+            time.sleep(backoff)
+            backoff = min(backoff * 1.6, self.cfg.backoff_max_s)
+</code></pre>
+<hr />
+<h2 id="6-adapter-transport-domain-boilerplate">6. Adapter (transport → domain) Boilerplate</h2>
+<pre><code class="language-python"># mapping/adapter.py
+from __future__ import annotations
+from typing import Optional
+from ..domain.models import Envelope, Provenance
+from ..transport.client import JobStatusResponse
+
+class VendorAdapter:
+    def __init__(self, backend_name: str = &quot;vendor&quot;, model_name: Optional[str] = None):
+        self.backend = backend_name
+        self.model = model_name
+
+    def to_envelope(self, jsr: JobStatusResponse) -&gt; Envelope:
+        prov = Provenance(
+            backend=self.backend,
+            model=self.model,
+            job_id=jsr.job_id,
+            params={},
+        )
+        status = jsr.status
+        if status == &quot;succeeded&quot;:
+            return Envelope(status=&quot;succeeded&quot;, result=self._map_result(jsr), provenance=prov)
+        if status == &quot;failed&quot;:
+            return Envelope(status=&quot;failed&quot;, error=jsr.error or &quot;vendor failed&quot;, provenance=prov)
+        if status == &quot;timeout&quot;:
+            return Envelope(status=&quot;timeout&quot;, diagnostics={&quot;elapsed_s&quot;: jsr.elapsed_s}, provenance=prov)
+        # pending/running
+        return Envelope(status=status, diagnostics={&quot;elapsed_s&quot;: jsr.elapsed_s}, provenance=prov)
+
+    def _map_result(self, jsr: JobStatusResponse):
+        # TODO: convert payload → domain result for your feature
+        return jsr.payload
+</code></pre>
+<hr />
+<h2 id="7-concrete-service-composition-boilerplate">7. Concrete Service (composition) Boilerplate</h2>
+<pre><code class="language-python"># service/vendor_service.py
+from __future__ import annotations
+from pathlib import Path
+from typing import Optional
+from ..config.policy import DomainPolicy, TransportConfig
+from ..domain.models import Envelope
+from ..domain.service import FeatureParams, FeatureService
+from ..mapping.adapter import VendorAdapter
+from ..transport.client import VendorClient
+
+class VendorService(FeatureService):
+    def __init__(self, transport: TransportConfig, *, policy: DomainPolicy | None = None):
+        self.client = VendorClient(transport)
+        self.adapter = VendorAdapter(backend_name=&quot;vendor&quot;)
+        self.policy = policy or DomainPolicy()
+
+    def start(self, input_path: Path, params: Optional[FeatureParams] = None) -&gt; str:
+        media_id = self.client.upload(input_path)
+        return self.client.start(media_id, params.dict() if params else None)
+
+    def get_response(self, job_id: str, *, wait_until_complete: bool = False) -&gt; Envelope:
+        if wait_until_complete or self.policy.completion_mode == &quot;wait&quot;:
+            jsr = self.client.poll_until_done(job_id, deadline_s=self.policy.deadline_s)
+        else:
+            jsr = self.client.job_status(job_id)
+        return self.adapter.to_envelope(jsr)
+
+    def generate(self, input_path: Path, params: Optional[FeatureParams] = None, *, wait_until_complete: bool = True) -&gt; Envelope:
+        job_id = self.start(input_path, params)
+        return self.get_response(job_id, wait_until_complete=wait_until_complete)
+</code></pre>
+<hr />
+<h2 id="8-processor-thin-orchestrator-ports">8. Processor (thin orchestrator) &amp; Ports</h2>
+<pre><code class="language-python"># app/processor.py
+from __future__ import annotations
+from pathlib import Path
+from typing import Optional, Protocol
+from ..domain.models import Envelope
+
+class ResultWriter(Protocol):
+    def write(self, path: Path, response: Envelope) -&gt; Path: ...
+
+class FileResultWriter:
+    def write(self, path: Path, response: Envelope) -&gt; Path:
+        from tnh_scholar.utils.file_utils import ensure_directory_exists, write_str_to_file
+        ensure_directory_exists(path.parent)
+        write_str_to_file(path, response.model_dump_json(indent=2), overwrite=True)
+        return path
+
+class FeatureProcessor:
+    def __init__(self, service, output_path: Optional[Path] = None, writer: Optional[ResultWriter] = None):
+        self.service = service
+        self.output_path = output_path
+        self.writer = writer or FileResultWriter()
+        self._last: Optional[Envelope] = None
+        self._last_job_id: Optional[str] = None
+
+    def start(self, input_path: Path, params) -&gt; str:
+        job_id = self.service.start(input_path, params)
+        self._last_job_id = job_id
+        return job_id
+
+    def get_response(self, job_id: Optional[str] = None, *, wait_until_complete: bool = False) -&gt; Envelope:
+        jid = job_id or self._last_job_id
+        if not jid:
+            raise ValueError(&quot;No job_id available. Call start() first or pass a job_id.&quot;)
+        self._last = self.service.get_response(jid, wait_until_complete=wait_until_complete)
+        return self._last
+
+    def generate(self, input_path: Path, params, *, wait_until_complete: bool = True) -&gt; Envelope:
+        self._last = self.service.generate(input_path, params, wait_until_complete=wait_until_complete)
+        return self._last
+
+    def export(self, path: Path | None = None, response: Envelope | None = None) -&gt; Path:
+        resp = response or self._last
+        if resp is None:
+            raise ValueError(&quot;No response to export. Run generate() or get_response() first.&quot;)
+        out = path or self.output_path
+        if out is None:
+            raise ValueError(&quot;No output path provided.&quot;)
+        return self.writer.write(out, resp)
+</code></pre>
+<hr />
+<h2 id="9-diagnostics-observability-curated">9. Diagnostics &amp; Observability (curated)</h2>
+<ul>
+<li><strong>Structured logs</strong> with <code>job_id</code>, input hash, request_ids.</li>
+<li><strong>Metrics</strong>: latency p50/p95, error rate by class, retries, timeouts, queue vs run time.</li>
+<li><strong>Tracing</strong>: spans for upload/start/poll; propagate correlation IDs.</li>
+<li><strong>Provenance</strong>: always fill backend, model, params, timestamps; include <code>schema_version</code> for evolution.</li>
+<li><strong>Diagnostics</strong>: keep concise and purposeful (e.g., <code>{ "elapsed_s": 12.4, "retries": 1 }</code>).</li>
+</ul>
+<hr />
+<h2 id="10-error-model-resilience">10. Error Model &amp; Resilience</h2>
+<ul>
+<li>Map remote errors to <code>failed</code> envelopes (no catch‑all handlers in services).</li>
+<li><strong>Retries</strong>: idempotent calls only; exponential backoff + jitter; classify retryable errors.</li>
+<li><strong>Timeouts &amp; Deadlines</strong>: enforce at client (read/connect) and at poller (absolute deadline).</li>
+<li><strong>Rate limiting</strong>: client‑side token bucket; honor <code>Retry‑After</code>.</li>
+<li><strong>Circuit breaker</strong>: open after N consecutive failures; half‑open probes.</li>
+<li><strong>Idempotency keys</strong>: for start endpoints when supported.</li>
+</ul>
+<hr />
+<h2 id="11-factory-helpers-defaults">11. Factory Helpers &amp; Defaults</h2>
+<ul>
+<li><code>TransportConfig.from_env()</code> to bootstrap quickly.</li>
+<li><code>ServiceFactory.from_env()</code> (small helper) to wire a default client+adapter.</li>
+<li>Allow dict inputs in notebooks/CLI and coerce to Pydantic via <code>ThingParams(**d)</code>.</li>
+<li>Prefer immutable Configs (frozen models) and explicit per‑call Params.</li>
+</ul>
+<hr />
+<h2 id="12-checklists">12. Checklists</h2>
+<h3 id="design-kickoff">Design Kickoff</h3>
+<ul>
+<li>[ ] Identify domain Result shape and invariants.</li>
+<li>[ ] Define Response envelope (status, error, diagnostics, provenance).</li>
+<li>[ ] Split knobs into Config vs Params vs Policy.</li>
+<li>[ ] Decide success criteria, partials policy, and deadlines.</li>
+</ul>
+<h3 id="implementation">Implementation</h3>
+<ul>
+<li>[ ] Client happy path (upload/start/status) with timeouts.</li>
+<li>[ ] Adapter success mapping with golden fixture.</li>
+<li>[ ] Service <code>generate()</code> end‑to‑end (no retries yet).</li>
+<li>[ ] Processor + ResultWriter wired.</li>
+</ul>
+<h3 id="hardening">Hardening</h3>
+<ul>
+<li>[ ] Retries/backoff/jitter; classify retryable errors.</li>
+<li>[ ] Poller deadlines; snapshot vs wait flows.</li>
+<li>[ ] Observability: logs, metrics, traces, provenance.</li>
+<li>[ ] Contract tests against real API (skipped on PR, nightly allowed).</li>
+</ul>
+<h3 id="premerge">Pre‑merge</h3>
+<ul>
+<li>[ ] Unit tests: success, failure, timeout, retries, mapping.</li>
+<li>[ ] Docs updated (this blueprint + ADR if needed).</li>
+</ul>
+<hr />
+<h2 id="13-antipatterns-to-avoid">13. Anti‑patterns to Avoid</h2>
+<ul>
+<li><strong>Parameter soup</strong>: 12 kwargs on every call → use Params/Config objects.</li>
+<li><strong>Fat client returns domain</strong> (if you plan reuse elsewhere) → prefer Service + Adapter.</li>
+<li><strong>Orchestrators doing HTTP</strong> → violates separation; move to Client.</li>
+<li><strong>Mutable Config</strong> shared across threads → make Configs immutable and thread‑safe.</li>
+<li><strong>Diagnostics dumping</strong> raw payloads → curate; log correlation IDs instead.</li>
+</ul>
+<hr />
+<h2 id="14-example-applying-to-diarization-thumbnail">14. Example: Applying to Diarization (thumbnail)</h2>
+<pre><code class="language-python"># Diarization flavors
+class DiarizationParams(FeatureParams):
+    language: str | None = None
+    model_hint: str | None = None
+
+class DiarizationResult(BaseModel):
+    segments: list[dict]  # speaker, t0, t1 (use a typed model in real code)
+
+class DiarizationAdapter(VendorAdapter):
+    def _map_result(self, jsr: JobStatusResponse) -&gt; DiarizationResult:
+        # convert vendor payload → segments
+        return DiarizationResult(segments=jsr.payload.get(&quot;segments&quot;, []))
+</code></pre>
+<hr />
+<h2 id="15-evolution-versioning">15. Evolution &amp; Versioning</h2>
+<ul>
+<li>Version the envelope (<code>schema_version</code>) and keep changes additive where possible.</li>
+<li>Be adapter‑tolerant to unknown transport fields.</li>
+<li>For breaking API shifts, add a new adapter/service and migrate gradually.</li>
+</ul>
+<hr />
+<h2 id="16-glossary">16. Glossary</h2>
+<ul>
+<li><strong>Envelope</strong>: response wrapper containing status, diagnostics, provenance, and optional result.</li>
+<li><strong>Policy</strong>: opinionated settings that change behavior but not capability (e.g., wait vs snapshot).</li>
+<li><strong>Provenance</strong>: metadata about how/when/with what the result was produced.</li>
+<li><strong>Anti‑corruption layer</strong>: the adapter that converts vendor shapes to our domain shapes.</li>
+</ul>
+<hr />
+<h2 id="17-appendix-filemodule-scaffold-cookieready">17. Appendix: File/Module Scaffold (cookie‑ready)</h2>
+<pre><code class="language-text">&lt;feature&gt;/
+  config/
+    policy.py
+  domain/
+    models.py
+    service.py
+  transport/
+    client.py
+  mapping/
+    adapter.py
+  service/
+    vendor_service.py
+  app/
+    processor.py
+</code></pre>
+<blockquote>
+<p>Copy the stubs in this blueprint into the scaffold to start a new feature quickly.</p>
+</blockquote>
+<hr />
+<h2 id="18-policy-evolution-strategy-robust-explicit">18. Policy Evolution Strategy (robust &amp; explicit)</h2>
+<p><em>A potential strategy for evaluation.</em></p>
+<p><strong>Why this matters:</strong> policy is where we encode TNH Scholar’s domain choices. These choices evolve as we learn. Make evolution safe, explicit, and observable.</p>
+<h3 id="principles">Principles</h3>
+<ol>
+<li><strong>Policy ≠ Config:</strong> policies affect semantics; configs describe environment. Keep types separate.</li>
+<li><strong>Additive first:</strong> prefer adding new policy fields with sensible defaults over changing semantics of existing ones.</li>
+<li><strong>Version the policy surface:</strong> include <code>policy_version</code> in provenance (and optionally on the policy object itself).</li>
+<li><strong>Document intent:</strong> every policy field gets a one‑line rationale in code docstrings.</li>
+<li><strong>Record used policy:</strong> echo effective policy into <code>provenance.policy</code> on every response.</li>
+</ol>
+<h3 id="versioning">Versioning</h3>
+<ul>
+<li>Add <code>policy_version: str = "1.0"</code> to the policy model.</li>
+<li>Bump minor (<code>1.1</code>) for additive fields; bump major (<code>2.0</code>) for behavior changes.</li>
+<li>Store the version in <code>provenance.params["policy_version"]</code>.</li>
+</ul>
+<h3 id="migration-patterns">Migration patterns</h3>
+<ol>
+<li><strong>Expand → Contract</strong></li>
+<li>Ship new policy fields with defaults that preserve old behavior.</li>
+<li>Gather metrics; then flip defaults in a major version.</li>
+<li><strong>Feature flags</strong></li>
+<li>Use boolean or enum policy switches for new behaviors (e.g., <code>overlap_mode = "ignore|merge|separate"</code>).</li>
+<li><strong>Policy profiles</strong></li>
+<li>Provide named presets (e.g., <code>"dharma_talks"</code>, <code>"interviews"</code>) that resolve to concrete policy objects.</li>
+<li><strong>Deprecation path</strong></li>
+<li>Mark fields as deprecated in docstrings; log deprecation warnings in service when used; remove only after a major bump.</li>
+</ol>
+<h3 id="testing-governance">Testing &amp; governance</h3>
+<ul>
+<li><strong>Golden tests</strong> for policy variants: for each profile, snapshot the envelope shape.</li>
+<li><strong>Contract tests</strong> to verify provenance always includes the policy version and effective values.</li>
+<li><strong>Review checklist</strong> for policy PRs: rationale, defaults, migration notes, docstrings, provenance echo.</li>
+</ul>
+<hr />
+<h2 id="19-interface-modalities-integration-patterns-beyond-polling-apis">19. Interface Modalities &amp; Integration Patterns (beyond polling APIs)</h2>
+<p>Design for a range of service shapes. Choose the smallest that fits; keep the envelope consistent.</p>
+<h3 id="191-synchronous-requestresponse-local-or-remote">19.1 Synchronous request/response (local or remote)</h3>
+<p><strong>When to use:</strong> small/fast tasks; local libraries; remote endpoints with low latency.</p>
+<ul>
+<li><strong>Contract:</strong> <code>run(params) -&gt; Envelope</code> (no <code>start()</code>/<code>get_response()</code>).</li>
+<li><strong>Failure model:</strong> exceptions for programmer errors; <code>failed</code> envelope for domain/remote errors.</li>
+<li><strong>Examples:</strong> local Whisper inference; lightweight text cleaners.</li>
+</ul>
+<h3 id="192-asynchronous-jobs-with-polling">19.2 Asynchronous jobs with polling</h3>
+<p><strong>When to use:</strong> long‑running tasks without push callbacks.</p>
+<ul>
+<li><strong>Contract:</strong> <code>start() -&gt; job_id</code>, <code>get_response(job_id, wait|snapshot) -&gt; Envelope</code>.</li>
+<li><strong>Failure model:</strong> timeouts → <code>timeout</code> envelope (optionally partials); network errors retried.</li>
+<li><strong>Notes:</strong> your existing diarization flow fits here.</li>
+</ul>
+<h3 id="193-asynchronous-jobs-with-webhookscallbacks">19.3 Asynchronous jobs with webhooks/callbacks</h3>
+<p><strong>When to use:</strong> vendor can push results; you control an HTTP endpoint.</p>
+<ul>
+<li><strong>Contract:</strong> <code>start(callback_url) -&gt; job_id</code>; callback sends transport payload; adapter maps to envelope.</li>
+<li><strong>Failure model:</strong> at‑least‑once delivery; verify signatures; be idempotent.</li>
+<li><strong>Skeleton:</strong></li>
+</ul>
+<pre><code class="language-python"># app/webhooks.py
+from fastapi import FastAPI, Request, HTTPException
+app = FastAPI()
+
+@app.post(&quot;/callbacks/vendor&quot;)
+async def vendor_callback(req: Request):
+    sig = req.headers.get(&quot;X-Vendor-Signature&quot;)
+    body = await req.json()
+    if not verify(sig, body):
+        raise HTTPException(status_code=401)
+    jsr = JobStatusResponse.model_validate({**body, &quot;job_id&quot;: body.get(&quot;job_id&quot;)})
+    env = adapter.to_envelope(jsr)
+    save(env)  # persist; notify UI
+    return {&quot;ok&quot;: True}
+</code></pre>
+<h3 id="194-streaming-serversent-events-websocket-grpc">19.4 Streaming (server‑sent events / WebSocket / gRPC)</h3>
+<p><strong>When to use:</strong> incremental results (tokens, segments, progress).</p>
+<ul>
+<li><strong>Contract:</strong> open stream → receive <code>Envelope</code> deltas or <code>Progress</code> events; final <code>Envelope</code> closes stream.</li>
+<li><strong>Failure model:</strong> reconnect with resume tokens; dedupe by <code>event_id</code>.</li>
+<li><strong>Notes:</strong> wrap stream events into mini‑envelopes to keep a consistent shape.</li>
+</ul>
+<h3 id="195-messagequeue-pubsub-integration">19.5 Message‑queue / Pub‑Sub integration</h3>
+<p><strong>When to use:</strong> decouple producers/consumers; batch pipelines; fan‑out/fan‑in.</p>
+<ul>
+<li><strong>Contract:</strong> publish <code>Params</code> + correlation IDs; consumers emit <code>Envelope</code>s on a result topic.</li>
+<li><strong>Failure model:</strong> retries with DLQ; ensure idempotency via keys.</li>
+</ul>
+<h3 id="196-batch-pipelines-orchestration">19.6 Batch pipelines (orchestration)</h3>
+<p><strong>When to use:</strong> multi‑stage processing: diarize → chunk → transcribe → summarize.</p>
+<ul>
+<li><strong>Contract:</strong> each stage returns an <code>Envelope</code>; orchestrator composes; pass along <code>provenance</code> and <code>policy</code>.</li>
+<li><strong>Failure model:</strong> saga‑style compensation/skip policies; partial results acceptable per policy.</li>
+</ul>
+<h3 id="197-pure-data-processors-no-transport">19.7 Pure data processors (no transport)</h3>
+<p><strong>When to use:</strong> deterministic local transforms.</p>
+<ul>
+<li><strong>Contract:</strong> <code>run(params) -&gt; Envelope</code> or just <code>Result</code> + exceptions; envelopes still helpful for observability consistency.</li>
+</ul>
+<h3 id="198-decision-aid-which-modality">19.8 Decision aid: which modality?</h3>
+<ol>
+<li><strong>Is the task fast (&lt; 2s)?</strong> Use synchronous.</li>
+<li><strong>Long‑running and vendor can’t call back?</strong> Async + polling.</li>
+<li><strong>Vendor supports webhooks and you can host an endpoint?</strong> Async + webhook.</li>
+<li><strong>You need incremental UX?</strong> Streaming.</li>
+<li><strong>You need decoupling/scale?</strong> MQ / Pub‑Sub.</li>
+<li><strong>It’s a local library?</strong> Synchronous or streaming.</li>
+</ol>
+<hr />
+<h2 id="20-templates-for-other-modalities">20. Templates for other modalities</h2>
+<h3 id="201-streaming-client-loop-sketch">20.1 Streaming client loop (sketch)</h3>
+<pre><code class="language-python">async def consume_stream(uri: str):
+    async with websockets.connect(uri) as ws:
+        await ws.send(json.dumps({&quot;auth&quot;: token, &quot;params&quot;: {...}}))
+        async for msg in ws:
+            evt = json.loads(msg)
+            env = to_envelope(evt)  # mini‑envelopes or progress events
+            handle(env)
+</code></pre>
+<h3 id="202-mq-consumer-sketch">20.2 MQ consumer (sketch)</h3>
+<pre><code class="language-python">@mq.consume(&quot;transcribe.jobs&quot;)
+def worker(msg):
+    params = FeatureParams.model_validate(msg[&quot;params&quot;])  # typed
+    env = service.generate(Path(msg[&quot;input&quot;]), params)
+    mq.publish(&quot;transcribe.results&quot;, env.model_dump())
+</code></pre>
+<h3 id="203-webhook-verification-helper-sketch">20.3 Webhook verification helper (sketch)</h3>
+<pre><code class="language-python">import hmac, hashlib
+
+def verify(signature: str, body: dict) -&gt; bool:
+    mac = hmac.new(SECRET, json.dumps(body).encode(), hashlib.sha256).hexdigest()
+    return hmac.compare_digest(signature, mac)
+</code></pre>
+<hr />
+<h2 id="21-provenance-integration-tips">21. Provenance integration tips</h2>
+<ul>
+<li>Always record policy and policy version in <code>provenance.params</code>.</li>
+<li>Add <code>system_version</code> (git SHA/tag) for reproducibility.</li>
+<li>Store upstream IDs (job_id/request_id) and correlation IDs for cross‑system tracing.</li>
+<li>When combining stages, <strong>aggregate provenance</strong>: keep a list of stage‑level blocks.</li>
+</ul>
+<hr />
+<h2 id="22-closing-notes">22. Closing notes</h2>
+<p>This blueprint is <strong>modality‑agnostic</strong> and <strong>policy‑forward</strong>. Use the smallest viable integration pattern, keep envelopes consistent, and let policy express TNH Scholar’s domain decisions as they evolve. Persist provenance and you will be able to debug, reproduce, and explain results months or years later.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

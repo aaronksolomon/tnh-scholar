@@ -1,0 +1,2066 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Standardizes GenAI interactions with an Object-Service pattern that separates domain shapes from provider orchestration.">
+      
+      
+        <meta name="author" content="Aaron Solomon, GPT-5.0, Claude AI">
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>ADR-A01: Adopt Object-Service for GenAI Interactions - TNH Scholar Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adr-a01-adopt-object-service-for-genai-interactions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TNH Scholar Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ADR-A01: Adopt Object-Service for GenAI Interactions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TNH Scholar Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pattern System
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Best Practices
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-fab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/audio-transcribe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/nfmt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nfmt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/token-count/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    token-count
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-setup
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/design-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2" id="__nav_6_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_1" id="__nav_6_3_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TNH-FAB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            TNH-FAB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v1
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v2
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_2" id="__nav_6_3_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT-Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            YTT-Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--historical"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transcript Source
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YT-DLP Integration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Comparison
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../setup-tnh/design/setup-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SETUP-TNH
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docs-design/design/documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docs-Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4_2" id="__nav_6_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs-Planning
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Docs-Planning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-design/planning/roadmap.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-design/planning/maintenance.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintenance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../gpt_4o_search_query_text_pair_testing/testing_input_output.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../gpt_4o_translations_experiments/passage_test.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../translation_research.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation Research
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../preliminary_feasibility_study.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Feasibility Study
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Taxonomy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-and-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      Policy and Safety
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability-and-provenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Observability and Provenance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-data-structures-outline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Domain Data Structures (Outline)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-diagram-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Diagram (V1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference-code-skeletons-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference Code Skeletons (v1)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="adr-a01-adopt-object-service-for-genai-interactions">ADR-A01: Adopt Object-Service for GenAI Interactions</h1>
+<p>Adopts the Object-Service pattern so GenAI requests use consistent domain objects while provider adapters stay isolated.</p>
+<p><strong>Status:</strong> Accepted<br />
+<strong>Date:</strong> 2025-10-02<br />
+<strong>Author:</strong> Aaron Solomon with GPT-5.0, Claude AI</p>
+<p>See also: <a href="genai-service-strategy.md">GenAI Service Strategy</a></p>
+<h2 id="context">Context</h2>
+<p>As we integrate Generative AI (GenAI) capabilities into our platform, we need a clear architectural approach to manage interactions with various GenAI providers. The complexity and variability of provider 1APIs, request/response formats, and operational policies necessitate a structured pattern that promotes maintainability, extensibility, and observability.</p>
+<p>The Object-Service pattern offers a clean separation between domain data structures (Objects) and the business logic that operates on them (Services). This approach allows us to encapsulate GenAI interaction logic within dedicated service components while keeping domain shapes explicit and reusable.</p>
+<h2 id="decision">Decision</h2>
+<p>We will adopt the Object-Service pattern for GenAI interactions by defining a central <code>GenAIService</code> responsible for orchestrating requests and responses to multiple GenAI providers. The domain shapes will be clearly defined to represent the core data exchanged:</p>
+<ul>
+<li>
+<p><strong>CompletionRequest / CompletionResponse</strong>: Standardized domain objects representing the input prompt and the generated completion from a GenAI provider.</p>
+</li>
+<li>
+<p><strong>ProviderRequest / ProviderResponse</strong>: Provider-specific request and response objects that adapt the generic Completion shapes to the particular API requirements of each GenAI service.</p>
+</li>
+<li>
+<p><strong>PatternCatalog</strong>: A shared repository of prompt engineering patterns and templates that can be injected into requests to improve prompt quality and consistency.</p>
+</li>
+</ul>
+<h3 id="configuration-taxonomy">Configuration Taxonomy</h3>
+<p>To manage configuration complexity, we will organize configuration into three conceptual layers:</p>
+<ul>
+<li>
+<p><strong>Config</strong>: Static configuration parameters such as API keys, endpoint URLs, and default timeouts.</p>
+</li>
+<li>
+<p><strong>Params</strong>: Dynamic parameters that can be varied per request, such as prompt text, temperature, max tokens, etc.</p>
+</li>
+<li>
+<p><strong>Policy</strong>: Operational policies including rate limits, safety filters, and content moderation rules that govern how requests are processed and responses validated.</p>
+</li>
+</ul>
+<h3 id="policy-and-safety">Policy and Safety</h3>
+<p>Given the risks associated with generative AI outputs, we will embed safety policies within the GenAIService implementation. For v1, content filtering and moderation will be limited to stubs and placeholders for future enhancement. Rate and cost limiting are recognized as significant operational concerns but will be kept minimal at this stage to allow flexibility and iteration.</p>
+<h3 id="observability-and-provenance">Observability and Provenance</h3>
+<p>To maintain transparency and traceability of GenAI interactions, we will implement observability features as primarily hooks and stubs at this stage. However, the necessary data structures and logging frameworks will be in place to enable detailed tracing, correlation IDs, and metadata tagging as the system matures.</p>
+<p>Timing is captured by an injected Observer via context-managed spans; the service reads span.duration_ms rather than computing durations itself.</p>
+<h3 id="domain-data-structures-outline">Domain Data Structures (Outline)</h3>
+<ul>
+<li>
+<p><strong>CompletionRequest</strong>: Encapsulates the input prompt, parameters such as temperature, max tokens, and any contextual metadata.</p>
+</li>
+<li>
+<p><strong>CompletionResponse</strong>: Contains the generated text, usage statistics, and any relevant metadata or provenance information.</p>
+</li>
+<li>
+<p><strong>ProviderRequest</strong>: Adapts CompletionRequest into the specific request format required by a GenAI provider, including authentication and endpoint details.</p>
+</li>
+<li>
+<p><strong>ProviderResponse</strong>: Parses and normalizes the provider's raw response into a CompletionResponse format.</p>
+</li>
+<li>
+<p><strong>PatternRef, RenderedPattern, PatternCatalog</strong>: Structures to manage prompt engineering patterns; PatternRef identifies a pattern, RenderedPattern is the instantiated prompt text, and PatternCatalog holds reusable templates.</p>
+</li>
+<li>
+<p><strong>CompletionParams</strong>: Defines dynamic parameters influencing generation such as temperature, top-p, max tokens, stop sequences.</p>
+</li>
+<li>
+<p><strong>BudgetPolicy</strong>: Defines constraints related to cost, rate limits, and quotas.</p>
+</li>
+<li>
+<p><strong>MediaPolicy</strong>: Governs usage of media types, content restrictions, and safety filters.</p>
+</li>
+<li>
+<p><strong>SecurityConfig</strong>: Configuration for authentication, encryption, and access control.</p>
+</li>
+<li>
+<p><strong>Provenance</strong>: Tracks metadata about request origin, timestamps, applied policies, and audit trails. In v1, provenance may later include <code>provider_request_id</code>, <code>routing_reason</code>, <code>retry_count</code>, and <code>policy_version</code> for multi-provider debugging.</p>
+</li>
+</ul>
+<h3 id="architecture-diagram-v1">Architecture Diagram (V1)</h3>
+<pre><code class="language-mermaid">flowchart LR
+    subgraph PatternLibrary[&quot;Pattern Library&quot;]
+        PL[&quot;patterns.py&lt;br&gt;Pattern &amp; PatternManager&quot;]
+    end
+    subgraph GenAIService[&quot;GenAI Service&quot;]
+        GA[&quot;GenAIService&lt;br&gt;(domain and service layer)&quot;]
+        PA[&quot;PatternsAdapter&lt;br&gt;(pattern_catalog/adapters/patterns_adapter.py)&quot;]
+        PB[&quot;ProvenanceBuilder&lt;br&gt;(infra/tracking/provenance.py)&quot;]
+        FH[&quot;fingerprint.py&lt;br&gt;(infra/tracking/fingerprint.py)&quot;]
+    end
+    subgraph Provider[&quot;LLM Provider&quot;]
+        PC[&quot;ProviderClient&lt;br&gt;(OpenAI / Anthropic / ...)&quot;]
+    end
+    U[&quot;Caller / Client&quot;] --&gt;|&quot;RenderRequest&lt;br&gt;(pattern_key, user_prompt, variables, model)&quot;| GA
+    GA --&gt;|&quot;lookup pattern&lt;br&gt;via adapter&quot;| PA
+    PA --&gt;|&quot;load pattern&lt;br&gt;PatternManager.load_pattern(name)&quot;| PL
+    PA --&gt;|&quot;render system&lt;br&gt;Pattern.apply_template(field_values=variables)&quot;| PL
+    PA --&gt;|&quot;RenderedPrompt&lt;br&gt;(system and user message)&quot;| GA
+    GA --&gt;|&quot;ProviderRequest&lt;br&gt;(RenderedPrompt and params)&quot;| PC
+    PC --&gt;|&quot;ProviderResponse&lt;br&gt;(completion)&quot;| GA
+    GA --&gt;|&quot;hash inputs&lt;br&gt;(pattern bytes, vars, user)&quot;| FH
+    GA --&gt;|&quot;build provenance&lt;br&gt;pattern and hashes and model&quot;| PB
+    PB --&gt;|&quot;Provenance&quot;| GA
+    GA --&gt;|&quot;CompletionEnvelope&lt;br&gt;(prompt, response, provenance)&quot;| U
+</code></pre>
+<h3 id="reference-code-skeletons-v1">Reference Code Skeletons (v1)</h3>
+<p>Below are minimal, typed skeletons to anchor implementation; no error handling, aligned to v1 prototyping.</p>
+<p>```python title="ai_service/domain.py"
+from <strong>future</strong> import annotations
+from typing import Any, Optional, Literal, Protocol, Sequence
+from pathlib import Path
+from pydantic import BaseModel, Field</p>
+<p>Role = Literal["system", "user", "assistant"]
+OutputMode = Literal["text", "json"]</p>
+<p>class PatternRef(BaseModel):
+    id: str
+    version: Optional[str] = None  # git tag/commit or semantic version</p>
+<p>class RenderedPattern(BaseModel):
+    text: str
+    metadata_json: str
+    fingerprint: str  # sha256(text + metadata_json)</p>
+<p>class MediaAttachment(BaseModel):
+    path: Optional[Path] = None
+    bytes_: Optional[bytes] = None
+    mime: str
+    width: Optional[int] = None
+    height: Optional[int] = None</p>
+<p>class CompletionParams(BaseModel):
+    temperature: float = 0.2
+    top_p: float = 1.0
+    max_output_tokens: int = 1024
+    output_mode: OutputMode = "text"</p>
+<p>class BudgetPolicy(BaseModel):
+    max_dollars: float = 0.20
+    fail_on_budget_exceeded: bool = True</p>
+<p>class MediaPolicy(BaseModel):
+    allow_images: bool = True
+    max_image_count: int = 4
+    max_total_image_mb: float = 10.0</p>
+<p>class SecurityConfig(BaseModel):
+    redact_pii: bool = True
+    max_input_chars: int = 120_000</p>
+<p>class CompletionRequest(BaseModel):
+    pattern: PatternRef
+    variables: dict[str, Any] = Field(default_factory=dict)
+    images: list[MediaAttachment] = Field(default_factory=list)
+    params: CompletionParams = Field(default_factory=CompletionParams)
+    correlation_id: Optional[str] = None</p>
+<p>class UsageInfo(BaseModel):
+    prompt_tokens: int
+    completion_tokens: int
+    total_tokens: int
+    dollars: float</p>
+<p>class CompletionResult(BaseModel):
+    text: str
+    json_obj: Optional[dict[str, Any]] = None
+    model: str
+    usage: UsageInfo
+    latency_ms: int
+    warnings: list[str] = Field(default_factory=list)</p>
+<p>class Provenance(BaseModel):
+    backend: str
+    model: str
+    correlation_id: str
+    pattern_id: str
+    pattern_fingerprint: str
+    started_at: str
+    completed_at: str
+    schema_version: str = "1.0"</p>
+<p>class Envelope(BaseModel):
+    status: Literal["pending", "running", "succeeded", "failed", "timeout"]
+    error: Optional[str] = None
+    diagnostics: dict[str, Any] = Field(default_factory=dict)
+    provenance: Provenance</p>
+<p>class CompletionResponse(Envelope):
+    result: Optional[CompletionResult] = None  # present on success</p>
+<pre><code>
+```python
+from __future__ import annotations
+from typing import Protocol, Any
+
+class ObsSpan(Protocol):
+    def __enter__(self) -&gt; &quot;ObsSpan&quot;: ...
+    def __exit__(self, exc_type, exc, tb) -&gt; None: ...
+    @property
+    def duration_ms(self) -&gt; int: ...
+
+class Observer(Protocol):
+    def phase(self, name: str, **fields: Any) -&gt; ObsSpan: ...
+
+class NoOpObserver:
+    def phase(self, name: str, **fields: Any) -&gt; ObsSpan:
+        class _Span:
+            def __enter__(self): return self
+            def __exit__(self, exc_type, exc, tb): pass
+            @property
+            def duration_ms(self) -&gt; int: return 0
+        return _Span()
+</code></pre>
+<p>```python title="ai_service/providers/base.py"
+from <strong>future</strong> import annotations
+from typing import Optional, Literal, Protocol
+from pydantic import BaseModel
+from ..domain import MediaAttachment, UsageInfo</p>
+<p>OutputMode = Literal["text", "json"]</p>
+<p>class ProviderRequest(BaseModel):
+    input_text: str                  # Rendered prompt
+    images: list[MediaAttachment] = []
+    model: str
+    temperature: float
+    max_output_tokens: int
+    top_p: float
+    output_mode: OutputMode = "text"
+    correlation_id: str
+    system_text: Optional[str] = None  # for providers like Anthropic</p>
+<p>class ProviderResponse(BaseModel):
+    text: str
+    usage: UsageInfo
+    model: str
+    finish_reason: Optional[str] = None
+    raw_response: Optional[dict] = None</p>
+<p>class ProviderClient(Protocol):
+    def generate(self, request: ProviderRequest) -&gt; ProviderResponse: ...</p>
+<pre><code>
+```python title=&quot;ai_service/router.py (updated)&quot;
+from dataclasses import dataclass
+from .patterns import PatternMeta
+from .domain import CompletionParams
+
+@dataclass
+class RoutingDecision:
+    provider: str
+    model: str
+    reason: str
+
+class ModelRouter:
+    def select(self, pattern_meta: PatternMeta, params: CompletionParams, policy: &quot;CompletionPolicy&quot;) -&gt; RoutingDecision:
+        # Precedence: params.model_hint → pattern_meta.default_model_hint → config default
+        chosen = params.model_hint or pattern_meta.default_model_hint or &quot;gpt-4o-mini&quot;
+        return RoutingDecision(provider=&quot;openai&quot;, model=chosen, reason=&quot;precedence/model_hint→pattern_default→global_default&quot;)
+</code></pre>
+<p>```python title="ai_service/patterns.py"
+from <strong>future</strong> import annotations
+from typing import Any
+from pydantic import BaseModel
+from .domain import PatternRef, RenderedPattern</p>
+<p>class PatternMeta(BaseModel):
+    task_kind: str              # e.g., "translate", "summarize"
+    output_mode: str            # "text" | "json"
+    default_model_hint: str     # e.g., "gpt-4o-mini"</p>
+<p>class PatternCatalog(Protocol):
+    def render(self, ref: PatternRef, variables: dict[str, Any]) -&gt; RenderedPattern: ...
+    def introspect(self, ref: PatternRef) -&gt; PatternMeta: ...</p>
+<pre><code>
+```python title=&quot;ai_service/service.py (updated generate flow)&quot;
+from __future__ import annotations
+from typing import Any
+from pydantic import BaseModel
+from .domain import (
+    CompletionRequest, CompletionResponse, CompletionResult,
+    Envelope, Provenance, UsageInfo, RenderedPattern,
+)
+from .patterns import PatternCatalog
+from .providers.base import ProviderClient, ProviderRequest
+from .router import ModelRouter, RoutingDecision
+from .obs import Observer, NoOpObserver
+
+def generate_ulid() -&gt; str:
+    import uuid
+    return str(uuid.uuid4())
+
+class GenAIServiceConfig(BaseModel):
+    api_key: str
+    base_url: str | None = None
+    default_timeout_s: float = 60.0
+
+class GenAIService:
+    def __init__(self, config: GenAIServiceConfig, catalog: PatternCatalog, client: ProviderClient, policy: &quot;CompletionPolicy&quot;, *, observer: Observer | None = None):
+        self.config = config
+        self.catalog = catalog
+        self.client = client
+        self.policy = policy
+        self.router = ModelRouter()
+        self.obs: Observer = observer or NoOpObserver()
+
+    def _build_provider_request(self, req: CompletionRequest, rendered: RenderedPattern, routing: RoutingDecision) -&gt; ProviderRequest:
+        # v1 enforces a fixed temperature to improve determinism
+        return ProviderRequest(
+            input_text=rendered.text,
+            images=req.images,
+            model=routing.model,
+            temperature=0.2,
+            max_output_tokens=req.params.max_output_tokens,
+            top_p=req.params.top_p,
+            output_mode=req.params.output_mode,
+            correlation_id=req.correlation_id or generate_ulid(),
+        )
+
+    def generate(self, req: CompletionRequest) -&gt; CompletionResponse:
+        correlation_id = req.correlation_id or generate_ulid()
+
+        with self.obs.phase(&quot;introspect&quot;, correlation_id=correlation_id, pattern_id=req.pattern.id):
+            pattern_meta = self.catalog.introspect(req.pattern)
+
+        with self.obs.phase(&quot;render&quot;, correlation_id=correlation_id, pattern_id=req.pattern.id):
+            rendered = self.catalog.render(req.pattern, req.variables)
+
+        with self.obs.phase(&quot;route&quot;, correlation_id=correlation_id, pattern_id=req.pattern.id):
+            routing = self.router.select(pattern_meta, req.params, self.policy)
+
+        provider_request = self._build_provider_request(req, rendered, routing)
+
+        with self.obs.phase(&quot;provider_call&quot;, correlation_id=correlation_id, provider=&quot;openai&quot;, model=routing.model) as s_call:
+            pr = self.client.generate(provider_request)
+
+        latency_ms = getattr(s_call, &quot;duration_ms&quot;, 0)  # computed by observer span
+
+        result = CompletionResult(text=pr.text, json_obj=None, model=pr.model, usage=pr.usage, latency_ms=latency_ms)
+        prov = Provenance(
+            backend=&quot;openai&quot;,
+            model=pr.model,
+            correlation_id=provider_request.correlation_id,
+            pattern_id=req.pattern.id,
+            pattern_fingerprint=rendered.fingerprint,
+            started_at=&quot;&quot;,    # optional: observer can record wall/monotonic separately
+            completed_at=&quot;&quot;,
+            schema_version=&quot;1.0&quot;,
+        )
+        return CompletionResponse(status=&quot;succeeded&quot;, result=result, provenance=prov)
+</code></pre>
+<p>```python title="ai_service/errors.py"
+class GenAIServiceError(Exception):
+    pass</p>
+<p>class PolicyError(GenAIServiceError):
+    pass</p>
+<p>class TransportError(GenAIServiceError):
+    pass</p>
+<p>class ProviderError(GenAIServiceError):
+    pass</p>
+<p>class FormatError(GenAIServiceError):
+    pass
+```</p>
+<h2 id="consequences">Consequences</h2>
+<ul>
+<li>
+<p><strong>Pros</strong>: Clear separation of concerns, easier maintenance, and extensibility for adding new GenAI providers. Improved safety and compliance through embedded policies. Enhanced observability facilitates debugging and operational insights.</p>
+</li>
+<li>
+<p><strong>Cons</strong>: Additional complexity in defining and maintaining domain shapes and service layers. Potential overhead in adapting provider-specific requests/responses.</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

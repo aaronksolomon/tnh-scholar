@@ -1,0 +1,2244 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Describes the V1 contract for plugging the legacy PatternCatalog into GenAI Service via rendered system prompts.">
+      
+      
+        <meta name="author" content="Aaron Solomon, GPT-5.0">
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>ADR-A02: PatternCatalog Integration (V1) - TNH Scholar Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adr-a02-patterncatalog-integration-v1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TNH Scholar Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ADR-A02: PatternCatalog Integration (V1)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TNH Scholar Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pattern System
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Best Practices
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Tools
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Tools
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-fab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/audio-transcribe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/nfmt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nfmt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/token-count/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    token-count
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-setup
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/design-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2" id="__nav_6_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            CLI Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_1" id="__nav_6_3_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TNH-FAB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            TNH-FAB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v1
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    v2
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2_2" id="__nav_6_3_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT-Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_3_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            YTT-Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--historical"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transcript Source
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YT-DLP Integration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Comparison
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../setup-tnh/design/setup-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SETUP-TNH
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docs-design/design/documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docs-Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4_2" id="__nav_6_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs-Planning
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Docs-Planning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-design/planning/roadmap.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-design/planning/maintenance.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintenance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../gpt_4o_search_query_text_pair_testing/testing_input_output.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../gpt_4o_translations_experiments/passage_test.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../translation_research.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Translation Research
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../preliminary_feasibility_study.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Feasibility Study
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-v1-prompt-composition-semantics" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. V1 Prompt Composition (Semantics)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rendering-engine-canonical-seam" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rendering Engine (Canonical Seam)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-adapter-of-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Adapter of Record
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-front-matter-params-scoped" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Front-Matter → Params (Scoped)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-missing-variable-policy-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Missing-Variable Policy (V1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-discovery-namespacing" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Discovery &amp; Namespacing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-fingerprinting-provenance-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Fingerprinting &amp; Provenance (V1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-data-shapes-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Data Shapes (V1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-diagram-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Diagram (V1)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provenance-payload-v1-skeleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provenance Payload (V1 Skeleton)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-selection-precedence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Selection Precedence
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v1-clarifications-guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      V1 Clarifications &amp; Guarantees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="V1 Clarifications & Guarantees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#provenance-type-pydantic-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provenance type (Pydantic v2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hash-algorithm-collision-stance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hash algorithm &amp; collision stance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-canonicalization-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variable canonicalization (definition)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-variable-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Missing-variable policy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fingerprint-source-of-truth" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fingerprint source of truth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rendervars-evolution-promotion-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      RenderVars evolution (promotion criteria)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provenancebuilder-signature-mechanical-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProvenanceBuilder signature (mechanical contract)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deterministic-smoke-tests-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deterministic smoke tests (V1)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimal-implementation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minimal Implementation Plan
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Minimal Implementation Plan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Adapter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-render" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Render
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-fingerprint-provenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Fingerprint &amp; Provenance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-testing-smoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      D. Testing (Smoke)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions-deferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions (Deferred)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-path-post-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Path (Post-V1)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filemodule-placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      File/Module Placement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#type-alias-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type Alias Definition
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="adr-a02-patterncatalog-integration-v1">ADR-A02: PatternCatalog Integration (V1)</h1>
+<p>Locks the GenAI Service to the existing PatternCatalog by defining how rendered templates populate system prompts and messages.</p>
+<p><strong>Status:</strong>  Superseded by ADR-A12 Prompt System and FingerPrint Architecture (V1)
+<strong>Date:</strong> 2025-11-08<br />
+<strong>Author:</strong> Aaron Solomon, GPT 5.0
+<strong>Related:</strong> ADR-A01 (Object-Service blueprint), ADR-A11 (Model params), ADR-P02 (Pattern catalog, if any)</p>
+<hr />
+<h2 id="context">Context</h2>
+<ul>
+<li>A file-backed pattern library (patterns.py) provides single-template Jinja2 "system prompts" with optional front-matter (e.g., model_hint) and a PatternManager rooted at TNH_PATTERN_DIR. This library is first‑class, stable, and external to GenAI Service.</li>
+<li>The new <code>GenAIService</code> expects a <code>RenderedPrompt</code> with an optional system string and a list of messages, where the caller's freeform prompt is sent as a "user" message.</li>
+<li>We want a walking skeleton that fully reuses assets without content migration, while establishing durable provenance &amp; fingerprinting hooks.</li>
+</ul>
+<hr />
+<h2 id="decision">Decision</h2>
+<h3 id="1-v1-prompt-composition-semantics">1. V1 Prompt Composition (Semantics)</h3>
+<ul>
+<li><strong>system</strong> = rendered template (Jinja2) using caller-provided variables</li>
+<li><strong>messages</strong> = exactly one: <code>Message(role="user", content=&lt;verbatim user prompt&gt;)</code></li>
+<li>No user-message templating in V1</li>
+</ul>
+<h3 id="rendering-engine-canonical-seam">Rendering Engine (Canonical Seam)</h3>
+<p>V1 rendering is delegated entirely to the Pattern Library.<br />
+All system prompt rendering must occur via:</p>
+<pre><code class="language-python">Pattern.apply_template(field_values=variables)
+</code></pre>
+<p>This ensures:</p>
+<ul>
+<li>unified template semantics for all tooling consuming patterns,</li>
+<li>correct precedence ordering (default fields &lt; front‑matter &lt; caller variables),</li>
+<li>consistent behavior across the TNH‑Scholar ecosystem,</li>
+<li>and elimination of multiple Jinja engines with divergent policies.</li>
+</ul>
+<p>GenAI Service MUST NOT render templates with its own Jinja instance.
+The Pattern Library is the single source of truth for rendering semantics.</p>
+<h3 id="2-adapter-of-record">2. Adapter of Record</h3>
+<ul>
+<li><code>PatternsAdapter</code> wraps the PatternManager and exposes patterns to GenAI Service.</li>
+<li>The adapter accepts an optional base_path (Path). If provided, it uses this root; otherwise it uses the PatternManager default (TNH_PATTERN_DIR). This allows multiple catalog roots (fixtures, alternate repos).</li>
+</ul>
+<h3 id="3-front-matter-params-scoped">3. Front-Matter → Params (Scoped)</h3>
+<ul>
+<li>V1 only surfaces <code>model_hint</code> to suggest a provider/model</li>
+<li>No direct mapping of other front-matter keys (e.g., <code>temperature</code>, <code>top_p</code>) into <code>CompletionParams</code> in V1</li>
+<li>Structure for future mapping must be modular (e.g., a small "param mapping" strategy object) rather than inline</li>
+</ul>
+<h3 id="4-missing-variable-policy-v1">4. Missing-Variable Policy (V1)</h3>
+<ul>
+<li><strong>Dev/test:</strong> missing variables raise (strict)</li>
+<li><strong>Prod (later):</strong> a future toggle in Settings may allow safe rendering (empty on missing). Not implemented in V1.</li>
+</ul>
+<p><strong>Rendering strictness note:</strong><br />
+<code>Pattern.apply_template</code> may use a permissive undefined policy in its current implementation.<br />
+ADR‑A02 V1 accepts the Pattern Library’s strictness behavior as-is.<br />
+GenAI Service does not enforce its own strict/lenient Jinja policy; strictness will be governed by the Pattern Library or by a future ADR introducing global settings.</p>
+<h3 id="5-discovery-namespacing">5. Discovery &amp; Namespacing</h3>
+<ul>
+<li><strong>Primary:</strong> PatternManager using <code>TNH_PATTERN_DIR</code></li>
+<li><strong>Optional override:</strong> adapter-level <code>base_path</code> for alternative roots / fixtures</li>
+<li>Name resolution remains compatible; uniqueness is enforced per effective root</li>
+</ul>
+<p><strong>Pattern Library Boundary:</strong></p>
+<p>The pattern system is a first‑class shared utility within TNH‑Scholar. GenAI Service does not interpret pattern files directly; it consumes them through the PatternsAdapter. This ensures the Pattern Library can evolve independently and may later be extracted as a standalone package.</p>
+<p><strong>Rendering boundary guarantee:</strong><br />
+GenAI Service does not execute Jinja directly.<br />
+All rendering passes through <code>Pattern.apply_template</code>, which forms the canonical API seam.<br />
+This guarantees that future changes to template semantics, front‑matter behavior, or variable precedence occur in one place only: the Pattern Library.</p>
+<h3 id="6-fingerprinting-provenance-v1">6. Fingerprinting &amp; Provenance (V1)</h3>
+<ul>
+<li>Establish a dedicated <code>infra/tracking/fingerprint.py</code> module with pure functions for deterministic hashing:</li>
+<li><code>pattern_content_hash</code>: based on template file bytes (post front-matter combine as defined by pattern library)</li>
+<li><code>resolved_vars_hash</code>: SHA-256 of JSON-canonicalized variables</li>
+<li><code>user_prompt_hash</code>: SHA-256 of raw user prompt</li>
+<li>Introduce a <code>ProvenanceBuilder</code> (module: <code>infra/tracking/provenance.py</code>) responsible for constructing a <code>Provenance</code> payload from inputs (pattern id/path, hashes, provider, model)</li>
+<li>Service code should call the builder, not construct provenance ad hoc. For V1, keep the payload minimal but place it in the correct module.</li>
+</ul>
+<h3 id="7-data-shapes-v1">7. Data Shapes (V1)</h3>
+<ul>
+<li><code>RenderRequest.variables</code>: prefer a named type alias for readability:</li>
+</ul>
+<pre><code class="language-python">from typing import Any, Dict
+RenderVars = Dict[str, Any]
+</code></pre>
+<p>(A Pydantic model can be added later if schemas stabilize.)</p>
+<ul>
+<li><code>RenderedPrompt</code>: unchanged (<code>system: str|None</code>, <code>messages: list[Message]</code>)</li>
+<li><code>CompletionEnvelope.provenance</code>: produced by <code>ProvenanceBuilder</code> (see "Provenance Payload" below)</li>
+</ul>
+<h3 id="architecture-diagram-v1">Architecture Diagram (V1)</h3>
+<pre><code class="language-mermaid">flowchart LR
+    subgraph PatternLibrary[&quot;Pattern Library&quot;]
+        PL[&quot;patterns.py&lt;br&gt;Pattern &amp; PatternManager&quot;]
+    end
+    subgraph GenAIService[&quot;GenAI Service&quot;]
+        GA[&quot;GenAIService&lt;br&gt;(domain and service layer)&quot;]
+        PA[&quot;PatternsAdapter&lt;br&gt;(pattern_catalog/adapters/patterns_adapter.py)&quot;]
+        PB[&quot;ProvenanceBuilder&lt;br&gt;(infra/tracking/provenance.py)&quot;]
+        FH[&quot;fingerprint.py&lt;br&gt;(infra/tracking/fingerprint.py)&quot;]
+    end
+    subgraph Provider[&quot;LLM Provider&quot;]
+        PC[&quot;ProviderClient&lt;br&gt;(OpenAI / Anthropic / ...)&quot;]
+    end
+    U[&quot;Caller / Client&quot;] --&gt;|&quot;RenderRequest&lt;br&gt;(pattern_key, user_prompt, variables, model)&quot;| GA
+    GA --&gt;|&quot;lookup pattern&lt;br&gt;via adapter&quot;| PA
+    PA --&gt;|&quot;load pattern&lt;br&gt;PatternManager.load_pattern(name)&quot;| PL
+    PA --&gt;|&quot;render system&lt;br&gt;Pattern.apply_template(field_values=variables)&quot;| PL
+    PA --&gt;|&quot;RenderedPrompt&lt;br&gt;(system and user message)&quot;| GA
+    GA --&gt;|&quot;ProviderRequest&lt;br&gt;(RenderedPrompt and params)&quot;| PC
+    PC --&gt;|&quot;ProviderResponse&lt;br&gt;(completion)&quot;| GA
+    GA --&gt;|&quot;hash inputs&lt;br&gt;(pattern bytes, vars, user)&quot;| FH
+    GA --&gt;|&quot;build provenance&lt;br&gt;pattern and hashes and model&quot;| PB
+    PB --&gt;|&quot;Provenance&quot;| GA
+    GA --&gt;|&quot;CompletionEnvelope&lt;br&gt;(prompt, response, provenance)&quot;| U
+</code></pre>
+<hr />
+<h2 id="consequences">Consequences</h2>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Clear boundary between Pattern Library and GenAI Service</li>
+<li>Clear seam for future param mapping</li>
+<li>Early placement of provenance/fingerprinting in the infra layer</li>
+<li>Testable, swappable pattern roots</li>
+<li>Canonical rendering semantics centralized in the Pattern Library</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>No user-message templating and no rich multi-role patterns in V1</li>
+<li>Limited front-matter propagation</li>
+<li>Rendering strictness controlled by Pattern Library until stricter policy toggles are added</li>
+</ul>
+<p><strong>Risk Mitigation:</strong></p>
+<ul>
+<li>Clean seams (adapter + provenance builder) localize future changes</li>
+</ul>
+<hr />
+<h2 id="provenance-payload-v1-skeleton">Provenance Payload (V1 Skeleton)</h2>
+<p>Produced by <code>infra/tracking/provenance.py</code>:</p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;prov-1&quot;,
+  &quot;pattern&quot;: {
+    &quot;name&quot;: &quot;summarize_chapter&quot;,
+    &quot;base_path&quot;: &quot;/abs/path/to/patterns&quot;,
+    &quot;content_hash&quot;: &quot;sha256:…&quot;
+  },
+  &quot;variables&quot;: {
+    &quot;hash&quot;: &quot;sha256:…&quot;
+  },
+  &quot;user_prompt&quot;: {
+    &quot;hash&quot;: &quot;sha256:…&quot;
+  },
+  &quot;provider&quot;: &quot;openai&quot;,
+  &quot;model&quot;: &quot;gpt-4o-mini&quot;
+}
+</code></pre>
+<h2 id="model-selection-precedence">Model Selection Precedence</h2>
+<p>V1 (walking skeleton): When both an explicit model is provided and the pattern includes a model_hint, the adapter MUST select the explicit model. In other words, RenderRequest.model overrides the pattern’s model_hint.</p>
+<p>Future (policy-driven): This precedence MUST be governed by a configurable policy, not hard-coded in the adapter or domain models. Implement a ModelSelectionPolicy owned by the configuration layer (suggested path: src/tnh_scholar/config/render_policy.py) with an interface such as:</p>
+<pre><code class="language-python">class ModelSelectionPolicy:
+    def choose_model(self, explicit: str | None, hint: str | None) -&gt; str | None:
+        ...
+</code></pre>
+<p>The GenAIService delegates to this policy to determine the effective model, allowing precedence (and other constraints, e.g., per-intent or per-tenant rules) to be changed without code edits. ADR-A02 V1 keeps the simple override rule to minimize surface area while policy infrastructure is bootstrapped.</p>
+<h2 id="v1-clarifications-guarantees">V1 Clarifications &amp; Guarantees</h2>
+<h3 id="provenance-type-pydantic-v2">Provenance type (Pydantic v2)</h3>
+<p><code>ProvenanceBuilder</code> returns a <strong>Pydantic v2</strong> model named <code>Provenance</code> with <code>extra="forbid"</code> and <code>frozen=True</code> and the fixed <code>schema_version="prov-1"</code>.</p>
+<pre><code class="language-python"># src/tnh_scholar/gen_ai_service/infra/tracking/provenance.py
+from pathlib import Path
+from pydantic import BaseModel, Field, ConfigDict
+
+class Provenance(BaseModel):
+    model_config = ConfigDict(frozen=True, extra=&quot;forbid&quot;)
+
+    schema_version: str = Field(default=&quot;prov-1&quot;)
+    pattern_name: str
+    pattern_base_path: Path
+    pattern_content_hash: str  # &quot;sha256:&lt;hex&gt;&quot;
+    variables_hash: str        # &quot;sha256:&lt;hex&gt;&quot;
+    user_prompt_hash: str      # &quot;sha256:&lt;hex&gt;&quot;
+    provider: str              # e.g. &quot;openai&quot;
+    model: str                 # e.g. &quot;gpt-4o-mini&quot;
+</code></pre>
+<h3 id="hash-algorithm-collision-stance">Hash algorithm &amp; collision stance</h3>
+<p>All hashes are <strong>SHA-256</strong> of canonicalized bytes and are used for identity/fingerprints and cache keys. We prefix hex digests with the algorithm (e.g., <code>"sha256:&lt;hex&gt;"</code>). We <strong>accept the birthday-paradox collision risk</strong> for SHA-256 in V1 and do not apply salt/HMAC. If future requirements demand stronger guarantees, we will extend the schema to include <code>(algo, hex, length)</code> and/or add an HMAC.</p>
+<h3 id="variable-canonicalization-definition">Variable canonicalization (definition)</h3>
+<p>Variables are canonicalized prior to hashing as follows:</p>
+<ol>
+<li>Coerce values to JSON-encodable forms:</li>
+<li><code>Path</code> → <code>str(path)</code></li>
+<li><code>Enum</code> → <code>enum.value</code></li>
+<li><code>datetime/date/time</code> → ISO-8601 string (UTC if applicable)</li>
+<li><code>set</code> → sorted list</li>
+<li>custom objects → <code>str(obj)</code> <strong>in V1</strong></li>
+<li>Serialize with <code>json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)</code></li>
+<li>UTF-8 encode and hash with SHA-256; store as <code>"sha256:&lt;hex&gt;"</code>.</li>
+</ol>
+<h3 id="missing-variable-policy">Missing-variable policy</h3>
+<p>In V1 the Jinja2 environment uses <code>undefined=StrictUndefined</code>. Missing variables raise <code>PatternRenderError</code> (a <code>ValueError</code> subclass) naming the missing keys. A future settings flag may switch to <code>SilentUndefined</code> and substitute empty strings.</p>
+<h3 id="fingerprint-source-of-truth">Fingerprint source of truth</h3>
+<p><code>pattern_content_hash</code> is computed over <strong>the exact bytes of the template file on disk including front-matter</strong>, not the rendered output.</p>
+<h3 id="rendervars-evolution-promotion-criteria">RenderVars evolution (promotion criteria)</h3>
+<p><code>RenderVars = dict[str, Any]</code> in V1. A given pattern is upgraded to a typed <code>VariablesModel</code> (Pydantic v2) and validated <strong>before rendering</strong> when <strong>both</strong> hold:</p>
+<ol>
+<li>The pattern is used in ≥ 3 call sites or appears in a public API surface; and</li>
+<li>The pattern’s required variable fields are unchanged across <strong>two minor releases</strong>.</li>
+</ol>
+<p>When a <code>VariablesModel</code> exists, canonicalization MUST hash <code>model_dump()</code> of that model.</p>
+<h3 id="provenancebuilder-signature-mechanical-contract">ProvenanceBuilder signature (mechanical contract)</h3>
+<pre><code class="language-python">def build_provenance(
+    *,
+    pattern_name: str,
+    pattern_base_path: Path,
+    pattern_content_hash: str,
+    variables_hash: str,
+    user_prompt_hash: str,
+    provider: str,
+    model: str,
+) -&gt; Provenance:
+    ...
+</code></pre>
+<h3 id="deterministic-smoke-tests-v1">Deterministic smoke tests (V1)</h3>
+<ul>
+<li>Changing only the <strong>user prompt</strong> changes only <code>user_prompt_hash</code>.</li>
+<li>Changing only <strong>one variable</strong> changes only <code>variables_hash</code>.</li>
+<li>Changing only the <strong>template file bytes</strong> changes only <code>pattern_content_hash</code>.</li>
+</ul>
+<hr />
+<h2 id="minimal-implementation-plan">Minimal Implementation Plan</h2>
+<h3 id="a-adapter">A. Adapter</h3>
+<ul>
+<li>Update <code>PatternsAdapter</code> to accept <code>base_path: Path | None</code></li>
+<li>If <code>base_path</code> is provided, initialize a <code>PatternManager</code> instance rooted there; else use the PatternManager default (TNH_PATTERN_DIR). Adapter uses a provided PatternManager instance; GenAI Service constructs one at startup and reuses it for all requests.</li>
+<li><code>get(name)</code> returns a lightweight wrapper with <code>model_hint</code> and defaults from front-matter</li>
+</ul>
+<h3 id="b-render">B. Render</h3>
+<ul>
+<li>Merge variables per pattern library rules; render to system</li>
+<li>Build <code>messages = [Message(role="user", content=user_prompt)]</code></li>
+<li>Return <code>RenderedPrompt</code></li>
+</ul>
+<h3 id="c-fingerprint-provenance">C. Fingerprint &amp; Provenance</h3>
+<p><strong>New: <code>infra/tracking/fingerprint.py</code></strong></p>
+<ul>
+<li><code>sha256_bytes(b: bytes) -&gt; str</code>  # returns "sha256: -hex-"</li>
+<li><code>hash_user_prompt(s: str) -&gt; str</code></li>
+<li><code>hash_vars(d: RenderVars) -&gt; str</code>  # uses the canonicalization rules above</li>
+<li><code>hash_pattern_bytes(b: bytes) -&gt; str</code></li>
+</ul>
+<p><strong>New: <code>infra/tracking/provenance.py</code></strong></p>
+<ul>
+<li>Pydantic model <code>Provenance</code> (frozen, extra="forbid", <code>schema_version="prov-1"</code>)</li>
+<li><code>build_provenance(...) -&gt; Provenance</code> (see signature in Clarifications)</li>
+</ul>
+<p><strong>Jinja render policy:</strong></p>
+<ul>
+<li>Use <code>undefined=StrictUndefined</code> so missing variables raise <code>PatternRenderError</code> in dev/test.</li>
+</ul>
+<p><strong>Hash inputs:</strong></p>
+<ul>
+<li><code>pattern_content_hash</code> over exact on-disk template bytes (including front-matter)</li>
+<li><code>variables_hash</code> over canonicalized variables JSON</li>
+<li><code>user_prompt_hash</code> over raw user prompt (UTF-8)</li>
+</ul>
+<h3 id="d-testing-smoke">D. Testing (Smoke)</h3>
+<ul>
+<li>Dev strict mode: missing variable raises</li>
+<li>Content-stable fingerprint:</li>
+<li>Changing only user prompt changes only <code>user_prompt.hash</code></li>
+<li>Changing only a var changes only <code>variables.hash</code></li>
+<li>Changing only pattern file changes only <code>content_hash</code></li>
+</ul>
+<hr />
+<h2 id="open-questions-deferred">Open Questions (Deferred)</h2>
+<ul>
+<li>Global vs per-pattern toggle for safe rendering in prod</li>
+<li>Param mapping from front-matter beyond <code>model_hint</code> (e.g., <code>temperature</code>) via a pluggable strategy</li>
+</ul>
+<hr />
+<h2 id="migration-path-post-v1">Migration Path (Post-V1)</h2>
+<ul>
+<li>Introduce multi-part patterns (system/user/assistant blocks) in a new catalog format while retaining this adapter for backward compatibility</li>
+<li>Add optional user-message templating with opt-in flags</li>
+<li>Expand provenance with sequence numbers, latency, token counts, and cached-hit markers when the usage/accounting layer is in place</li>
+</ul>
+<hr />
+<h2 id="filemodule-placement">File/Module Placement</h2>
+<pre><code class="language-python">src/tnh_scholar/
+  gen_ai_service/
+    pattern_catalog/
+      adapters/
+        patterns_adapter.py      # wraps PatternManager
+    models/
+      domain.py                         # RenderRequest/RenderedPrompt/Message (existing)
+    infra/
+      tracking/
+        fingerprint.py                    # pure hashing helpers
+        provenance.py                     # ProvenanceBuilder
+</code></pre>
+<hr />
+<h2 id="type-alias-definition">Type Alias Definition</h2>
+<pre><code class="language-python"># somewhere shared, e.g., gen_ai_service/models/types.py
+from typing import Any, Dict
+
+RenderVars = Dict[str, Any]
+</code></pre>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

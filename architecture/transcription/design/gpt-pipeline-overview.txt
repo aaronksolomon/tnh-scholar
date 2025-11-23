@@ -1,0 +1,158 @@
+Below is a design review that stays at the architecture & OO-model level so you can keep iterating quickly; when the dust settles we can turn the conclusions into concrete refactors or patches.
+
+⸻
+
+1  Pipeline at a glance
+
+          diarization JSON
+                 ↓
+┌──────────┐   Segments   ┌────────────┐   Chunk(+AudioChunk)   ┌───────────────┐
+│ Chunker  │─────────────▶│ AudioHandler│───────────────────────▶│ Transcription │─▶ dict
+└──────────┘              └────────────┘                        └───────────────┘
+                                                                   ↓ TimedText
+                                                    ┌──────────────┴───────────────┐
+                                                    │   TimelineMapper             │
+                                                    └──────────────┬───────────────┘
+                                                                   ↓ TimedText
+                                                    ┌──────────────┴───────────────┐
+                                                    │      SRTProcessor            │
+                                                    └──────────────────────────────┘
+
+The flow is clean and reads like a data-oriented pipeline:
+	1.	Chunker — converts raw diarization into semantic units.
+	2.	AudioHandler — adds the binary payload.
+	3.	Transcriber — turns audio into words.
+	4.	TimedText layer — canonical time-text data structure.
+	5.	TimelineMapper — aligns text to original global timeline.
+	6.	Renderer (SRT/VTT/…​) — formats for humans / downstream tools.
+
+That ordering keeps pure-metadata stages (1, 5) separate from heavy-I/O stages (2, 3).  Good separation of concerns.
+
+Alternative?  “Thin-model / fat-pipeline”
+
+You could keep Segment lightweight (no audio pointer) and carry the linkage inside a message envelope that flows through the pipeline (à la Apache Beam / Ray “object ref” pattern).  For rapid prototyping, however, “state-rich models” often lead to less glue code.  Your decision to hoist audio_map_time into Segment is therefore sensible—just keep an eye on:
+	•	Single-responsibility drift – don’t let Segment pick up fields that only stage 2 or 3 understand.
+	•	Serialisation cost – if you start persisting Segment objects you’ll want the bytes pointer (BytesIO) in AudioChunk, not in every Segment.
+
+⸻
+
+2  Domain model suggestions
+
+Concept	Current	Comments / tweak ideas
+Segment	speaker, start, end, audio_map_time	Immutable dataclass (or BaseModel frozen). Add __hash__ → easier debug/testing. Consider storing time in a dedicated Timecode value object → always ms internally, but __str__ gives “HH:MM:SS,mmm”.
+Chunk	start_time, end_time, audio_map, segments	Let audio_map carry both the BytesIO and a descriptive AudioDescriptor (sample-rate, channels).  That prevents every later stage from reopening the file just to know its rate.
+AudioChunk	TBD	Pure data-carrier; avoid methods except bytes().  If you need operations (trim, resample) put them in AudioHandler or a CodecService; otherwise you’ll create “god objects”.
+TimedText / TimedTextUnit	already moving toward hierarchical container	✅  Continue to keep it agnostic of where the text came from—only timing + semantic unit.
+
+
+⸻
+
+3  OO & modular engineering patterns
+
+a. Explicit Ports & Adapters (a.k.a. hexagonal / onion)
+
+Define narrow interfaces for every arrow in the diagram.
+
+class ChunkExtractor(Protocol):
+    def to_chunks(self, diarization: dict) -> Iterable[Chunk]: ...
+
+class AudioProvider(Protocol):
+    def attach_audio(self, chunk: Chunk) -> Chunk: ...
+
+class TranscriptionProvider(Protocol):
+    def transcribe(self, chunk: Chunk) -> TranscriptionResult: ...
+
+	•	Why?  Each layer can be swapped (e.g. Whisper ↔ Nvidia Nemo) by DI or a factory without touching neighbours.
+	•	For fast experimentation put the concrete classes in the same module; when things stabilise split per package.
+
+b. Pipeline / Chain-of-Responsibility
+
+If you prefer the Unix-pipe feel, create a PipelineStage[T_in, T_out] ABC with:
+
+class PipelineStage(ABC, Generic[I, O]):
+    @abstractmethod
+    def __call__(self, item: I) -> O: ...
+
+Now you can build a composed pipeline once:
+
+pipeline = (
+    DiarizationChunker(cfg)
+    | AudioHandler(storage)
+    | TranscriptionService(model)
+    | TimelineMapper()
+    | SRTProcessor()
+)
+result = pipeline(diarization_json)
+
+Under the hood | builds a callable that threads items through; super easy to re-wire in notebooks.
+
+c. Strategy pattern for chunking
+
+Your _ChunkExtractor already encapsulates different rules (split_on_speaker_change). Expose that as a pluggable strategy instead of a bool flag:
+
+class ChunkingStrategy(Protocol):
+    def should_split(self, segment: Segment, chunk: Chunk) -> bool: ...
+
+Ship TimeBasedStrategy, SpeakerChangeStrategy, etc.  Users can mix & match or subclass.
+
+d. Event hooks / pub-sub for side effects
+
+Long-running audio + network calls benefit from progress hooks:
+
+class EventBus:
+    def emit(self, event: Event): ...
+
+bus.emit(ChunkCreated(chunk_id, duration_ms))
+
+During prototyping you can just print; later swap with proper logger or telemetry.
+
+⸻
+
+4  Granularity, mutability & performance
+
+Area	Advice
+Time units	Standardise on ms in the core model; convert only in I/O adapters. Saves rounding errors.
+Mutability	Keep domain objects immutable; pipeline returns new instances. Makes parallel processing & caching easier.
+Streaming vs. batch	Make each stage capable of Iterable input so you can lazily process huge files or run stages in parallel pools.
+Async	Only add async def when a stage is truly I/O-bound (e.g. network transcription).  Wrap sync transcribers with run_in_executor.
+
+
+⸻
+
+5  Testing & rapid-iteration ergonomics
+	•	Use fixture builders: segment(s=0, e=1000, spk="A") short-hands speed up test writing.
+	•	Provide a reference pipeline in tests/resources with a tiny WAV + toy diarization JSON so integration tests run in <1 s.
+	•	CI: lint (ruff), type-check (mypy), PyTest; later add property-based tests (Hypothesis) for segment overlap rules.
+
+⸻
+
+6  Suggested next small steps
+	1.	Define AudioChunk in audio_processing/audio_models.py:
+
+class AudioChunk(BaseModel):
+    data: BytesIO
+    start_ms: int
+    end_ms: int
+    sample_rate: int = 16000
+    channels: int = 1
+
+
+	2.	Refactor _ChunkExtractor → chunking.strategies to externalise strategy logic.
+	3.	Add Protocols described above and make existing classes conform.
+	4.	Write two green-path tests:
+	•	diarization → contiguous chunks
+	•	diarization → speaker-split chunks
+	5.	Only then wire AudioHandler into the pipeline—keep commits small.
+
+⸻
+
+TL;DR
+
+Your proposed architecture is sound and evolution-friendly.
+Strengthen it further by:
+	•	Narrow, explicit interfaces (Ports & Adapters).
+	•	Pluggable strategies for chunking & mapping.
+	•	Immutable, time-unit-canonical domain objects.
+	•	Lightweight pipeline combinators (operator | or simple function chaining).
+
+That balance will keep notebooks hackable today and give you confidence when you freeze APIs for production later. Happy refactoring!

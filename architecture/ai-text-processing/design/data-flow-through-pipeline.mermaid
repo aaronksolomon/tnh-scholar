@@ -1,0 +1,27 @@
+flowchart TD
+    subgraph Input
+        A[Raw Text] --> B[TextObject]
+        M1[Initial Metadata] --> B
+    end
+    
+    subgraph Pipeline
+        B --> C{SectionProcessor}
+        C -- ProcessResult --> D[State 1]
+        D --> E{TranslationProcessor}
+        E -- ProcessResult --> F[State 2]
+    end
+    
+    subgraph Metadata Flow
+        M1 --> PM1[Process Metadata 1]
+        PM1 --> GM1[Generated Metadata 1]
+        GM1 --> PM2[Process Metadata 2]
+        PM2 --> GM2[Generated Metadata 2]
+    end
+    
+    subgraph Output
+        F --> G[Final TextObject]
+        GM2 --> G
+    end
+
+    classDef metadata fill:#f9f,stroke:#333,stroke-width:2px;
+    class M1,PM1,GM1,PM2,GM2 metadata;
