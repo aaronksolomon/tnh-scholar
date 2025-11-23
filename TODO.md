@@ -130,11 +130,12 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Keep only current version
   - [ ] Create shared utilities (argument parsing, environment validation, logging)
 
-#### 9. 🚧 Documentation Reorganization (ADR-DOC-001)
+#### 9. 🚧 Documentation Reorganization (ADR-DD01)
 
-- **Status**: IN PROGRESS (Phase 1 inventory + reorg completed)
-- **Reference**: [ADR-DD01](docs/architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md)
-- **Goal**: Execute the phased documentation overhaul, keep README ≈ docs/index, and automate verification.
+- **Status**: IN PROGRESS (Parts 1–2 ✅, Part 4b ✅, Parts 3b/4c/4d next)
+- **Reference**: [ADR-DD01: Docs Reorganization Strategy](docs/architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md)
+- **Goal**: Execute the phased documentation overhaul for `docs/` tree, keep README ≈ docs/index, automate verification. **Note**: `patterns/` directory is managed separately (TODO #16).
+- **Next Sequence**: Part 3b → Part 4c → Part 4d → Part 5+
 - **Checkpoints / Tasks**:
   1. **Inventory + Tagging**
      - [x] Catalog every Markdown file (owner, status: current/needs-update/historical)
@@ -144,10 +145,10 @@ This section organizes work into three priority levels based on criticality for 
      - [x] Create the target hierarchy (overview, getting-started, user-guide, cli-reference, prompt-templates, api-reference, architecture/adr, development, research, docs-ops, archive)
      - [x] Move existing docs into the new layout with stub `index.md` files
      - [ ] Tag archival folders explicitly for mkdocs-literate-nav auto-generation
-  3. **Terminology + README Sweep**
-     - [ ] Expand and sync `README.md` + `docs/index.md` with persona routing
-     - [ ] Rename Pattern → PromptTemplate across docs (incl. CLI references)
-     - [ ] Add prompt authoring schema + catalog guidance
+  3. **Terminology + README Sweep** (Part 3b: next)
+     - [ ] **3b (NEXT)**: Expand and sync `README.md` + `docs/index.md` with persona routing (install, quick start, overview, docs map, contributing, development, research, license)
+     - [ ] Rename Pattern → PromptTemplate across docs text (incl. CLI references)
+     - [ ] Add prompt authoring schema guidance (deferred to Part 6)
   4. **MkDocs + Automation** (Part 4b: scripts ✅; Part 4c: CI; Part 4d: links)
      - [x] Restructure `mkdocs.yaml` to rely on filesystem-driven navigation
      - [x] Adopt `mkdocs-literate-nav` so nav order is preserved with filesystem sync
