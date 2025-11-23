@@ -30,7 +30,11 @@ def extract_frontmatter(path: Path) -> dict:
     if lines and lines[0].strip() == "---":
         for idx in range(1, len(lines)):
             if lines[idx].strip() == "---":
-                data = yaml.safe_load("\n".join(lines[1:idx])) or {}
+                try:
+                    data = yaml.safe_load("\n".join(lines[1:idx])) or {}
+                except yaml.YAMLError:
+                    # Skip files with invalid YAML in frontmatter (e.g., Jinja2 templates)
+                    data = {}
                 break
         else:
             data = {}
