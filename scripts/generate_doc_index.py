@@ -9,7 +9,7 @@ from typing import Iterable
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-INDEX_PATHS = [ROOT / "documentation_index.md", ROOT / "docs/docs-ops/documentation_index.md"]
+DOCS_INDEX_PATH = ROOT / "docs/documentation_index.md"
 
 # Exclude these directories from doc index
 EXCLUDED_DIRS = {".git", ".github", ".mypy_cache", ".pytest_cache", ".ruff_cache", "node_modules", "site", "build", "dist"}
@@ -54,10 +54,11 @@ def build_index_rows() -> list[tuple[str, str, str, str]]:
 
 
 def write_index(path: Path, rows: list[tuple[str, str, str, str]]) -> None:
+    """Generate documentation index with relative links (docs-only)."""
     header = [
         "---",
         'title: "Documentation Index"',
-        'description: "Inventory of Markdown sources"',
+        'description: "Complete index of TNH Scholar documentation"',
         'owner: ""',
         'author: ""',
         'status: processing',
@@ -70,15 +71,20 @@ def write_index(path: Path, rows: list[tuple[str, str, str, str]]) -> None:
         "| Path | Title | Description | Created |",
         "| --- | --- | --- | --- |",
     ]
-    body = [f"| [{rel}]({rel}) | {title} | {desc} | {created} |" for rel, title, desc, created in rows]
+    # Convert absolute paths to relative (strip "docs/" prefix)
+    body = []
+    for rel, title, desc, created in rows:
+        doc_path = rel[5:] if rel.startswith("docs/") else rel  # Remove "docs/" prefix
+        body.append(f"| [{rel}]({doc_path}) | {title} | {desc} | {created} |")
     path.write_text("\n".join(header + body) + "\n")
 
 
 def main() -> None:
-    rows = build_index_rows()
-    for index_path in INDEX_PATHS:
-        index_path.parent.mkdir(parents=True, exist_ok=True)
-        write_index(index_path, rows)
+    all_rows = build_index_rows()
+    # Filter to only docs/ files for documentation index
+    docs_rows = [r for r in all_rows if r[0].startswith("docs/")]
+    DOCS_INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
+    write_index(DOCS_INDEX_PATH, docs_rows)
 
 
 if __name__ == "__main__":

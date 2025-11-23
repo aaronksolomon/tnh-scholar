@@ -81,7 +81,7 @@ At this prototype stage:
 - Keep changes focused
 - Include tests for new functionality
 - Follow existing code style
-- See [design guide](/development/design-guide) for coding style and requirements.
+- See [design guide](design-guide.md) for coding style and requirements.
 
 ## Questions and Discussion
 

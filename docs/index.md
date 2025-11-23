@@ -40,7 +40,7 @@ TNH Scholar provides several utility-like command-line tools for text and audio 
 
 Patterns are customizable templates that guide AI-powered text operations, enabling consistent and adaptable processing across different types of content.
 
-See the [CLI Reference](/cli-reference/) for complete documentation of all tools.
+See the [CLI Reference](cli-reference/) for complete documentation of all tools.
 
 ## Quick Start
 
@@ -55,7 +55,7 @@ tnh-setup
 
 **From Source (Development):**
 
-See [Getting Started: Installation](/getting-started/installation/) for detailed instructions.
+See [Getting Started: Installation](getting-started/installation.md) for detailed instructions.
 
 ### Set Up Credentials
 
@@ -65,33 +65,33 @@ export OPENAI_API_KEY="your-api-key"
 
 ### First Steps
 
-1. Try [Getting Started: Quick Start](/getting-started/quick-start/) for example commands
-2. Explore [CLI Reference](/cli-reference/) for tool documentation
-3. Learn about [Patterns](/user-guide/patterns/) for advanced text processing
+1. Try [Getting Started: Quick Start](getting-started/quick-start.md) for example commands
+2. Explore [CLI Reference](cli-reference/) for tool documentation
+3. Learn about [Patterns](user-guide/patterns.md) for advanced text processing
 
 ## Documentation Overview
 
 TNH Scholar documentation is organized into these main sections:
 
-- **Getting Started** – [Installation](/getting-started/installation/), [Quick Start](/getting-started/quick-start/), [Configuration](/getting-started/configuration/)
-- **CLI Reference** – Complete reference for all [command-line tools](/cli-reference/)
-- **User Guide** – [Usage guides](/user-guide/), [patterns](/user-guide/patterns/), workflows
-- **API Reference** – [Python API](/api/) for programmatic use
-- **Architecture** – [System design](/architecture/), [design decisions](/architecture/adr/), [roadmap](/docs-ops/roadmap/)
-- **Development** – [Development setup](/development/setup/), [contributing guide](/development/contributing/)
-- **Research** – [Research notes](/research/), background, experiments
+- **Getting Started** – [Installation](getting-started/installation.md), [Quick Start](getting-started/quick-start.md), [Configuration](getting-started/configuration.md)
+- **CLI Reference** – Complete reference for all [command-line tools](cli-reference/)
+- **User Guide** – [Usage guides](user-guide/), [patterns](user-guide/patterns.md), workflows
+- **API Reference** – [Python API](api/) for programmatic use
+- **Architecture** – [System design](architecture/), [design decisions](architecture/), [roadmap](docs-ops/roadmap.md)
+- **Development** – [Development setup](development/setup.md), [contributing guide](development/contributing.md)
+- **Research** – [Research notes](research/), background, experiments
 
 ### By Role
 
-**I'm a User** → Start with [Installation](/getting-started/installation/) → [Quick Start](/getting-started/quick-start/) → [CLI Reference](/cli-reference/)
+**I'm a User** → Start with [Installation](getting-started/installation.md) → [Quick Start](getting-started/quick-start.md) → [CLI Reference](cli-reference/)
 
-**I'm a Developer** → [Development Setup](/development/setup/) → [API Reference](/api/) → [Contributing](/development/contributing/)
+**I'm a Developer** → [Development Setup](development/setup.md) → [API Reference](api/) → [Contributing](development/contributing.md)
 
-**I'm a Researcher** → [Research Notes](/research/) → [Architecture](/architecture/) → [Roadmap](/docs-ops/roadmap/)
+**I'm a Researcher** → [Research Notes](research/) → [Architecture](architecture/) → [Roadmap](docs-ops/roadmap.md)
 
 ## Contributing
 
-We welcome contributions from practitioners, developers, and scholars. See the [Contributing Guide](/development/contributing/) for details on:
+We welcome contributions from practitioners, developers, and scholars. See the [Contributing Guide](development/contributing.md) for details on:
 
 - Setting up your development environment
 - Running tests and quality checks
@@ -111,22 +111,22 @@ make format       # Format code
 make docs         # Build documentation
 ```
 
-See [Development Setup](/development/setup/) for full instructions.
+See [Development Setup](development/setup.md) for full instructions.
 
 ## Project Status
 
-TNH Scholar is in **alpha stage** (v0.1.3). The core functionality is relatively stable, but the API and features will change with development. See the [Roadmap](/docs-ops/roadmap/) for upcoming work.
+TNH Scholar is in **alpha stage** (v0.1.3). The core functionality is relatively stable, but the API and features will change with development. See the [Roadmap](docs-ops/roadmap.md) for upcoming work.
 
 ## Support & Community
 
-- **Questions**: Consult this [documentation](/), or use [GitHub Discussions](https://github.com/aaronksolomon/tnh-scholar/discussions)
+- **Questions**: Consult this [documentation](index.md), or use [GitHub Discussions](https://github.com/aaronksolomon/tnh-scholar/discussions)
 - **Bug Reports**: [GitHub Issue Tracker](https://github.com/aaronksolomon/tnh-scholar/issues)
-- **Contribute**: See [Contributing Guide](/development/contributing/)
+- **Contribute**: See [Contributing Guide](development/contributing.md)
 
 ## License
 
-This project is licensed under the [GPL-3.0 License](/license/).
+This project is licensed under the [GPL-3.0 License](license/).
 
 ---
 
-**Next Steps**: [Get Started](/getting-started/installation/) | [Explore Tools](/cli-reference/) | [Read More](https://github.com/aaronksolomon/tnh-scholar)
+**Next Steps**: [Get Started](getting-started/installation.md) | [Explore Tools](cli-reference/) | [Read More](https://github.com/aaronksolomon/tnh-scholar)

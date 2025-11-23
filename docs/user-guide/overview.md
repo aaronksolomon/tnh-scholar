@@ -68,10 +68,10 @@ Document your workflows and pattern modifications. This documentation helps main
 
 After reviewing this overview, explore the detailed sections of the user guide:
 
-The [Configuration guide](/getting-started/configuration) provides detailed information about setting up and customizing your TNH Scholar environment.
+The [Configuration guide](../getting-started/configuration.md) provides detailed information about setting up and customizing your TNH Scholar environment.
 
-[Best Practices](/user-guide/best-practices) offers guidance on effective system usage and workflow development.
+[Best Practices](best-practices.md) offers guidance on effective system usage and workflow development.
 
-The [Pattern System](/user-guide/patterns) documentation explains how to create, modify, and manage processing patterns.
+The [Pattern System](patterns.md) documentation explains how to create, modify, and manage processing patterns.
 
 Tool-specific guides provide detailed information about each command-line tool and its capabilities.
