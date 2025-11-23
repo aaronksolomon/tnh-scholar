@@ -148,12 +148,14 @@ This section organizes work into three priority levels based on criticality for 
      - [ ] Expand and sync `README.md` + `docs/index.md` with persona routing
      - [ ] Rename Pattern → PromptTemplate across docs (incl. CLI references)
      - [ ] Add prompt authoring schema + catalog guidance
-  4. **MkDocs + Automation**
-     - [ ] Restructure `mkdocs.yaml` or adopt `mkdocs-literate-nav` to mirror filesystem
+  4. **MkDocs + Automation** (Part 4b: scripts ✅; Part 4c: CI; Part 4d: links)
+     - [x] Restructure `mkdocs.yaml` to rely on filesystem-driven navigation
+     - [x] Adopt `mkdocs-literate-nav` so nav order is preserved with filesystem sync
      - [x] Add doc-index automation (`scripts/generate_doc_index.py`) and flag generated outputs
-     - [ ] Add remaining doc-generation scripts (`generate_cli_docs.py`, `generate_prompt_template_catalog.py`, `sync_readme.py`) and hook into `make docs`
-     - [ ] Wire CI to run `mkdocs build` + doc verification (fails on drift in major releases)
+     - [x] **4b (COMPLETED)**: Add doc-generation scripts (`generate_cli_docs.py`, `sync_readme.py`) and Makefile `docs` targets
+     - [ ] **4c (NEXT)**: Wire CI to run `mkdocs build` + doc verification
      - [x] Add markdownlint to CI/CD (MD025/MD013 ignored via `.markdownlint.json`)
+     - [ ] **4d**: Normalize internal documentation links so MkDocs builds without broken-link warnings
   5. **Historical Archive + Discoverability**
      - [ ] Move legacy ADRs/prototypes/research transcripts into `docs/archive/**`
      - [ ] Create archive index + add summary links from primary sections
