@@ -50,7 +50,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry env use python
-          poetry install --with dev --no-interaction --no-ansi --no-root
+          poetry install --with dev --no-interaction --no-ansi
 
       - name: Verify README ↔ docs/index.md sync
         run: poetry run python scripts/sync_readme.py
