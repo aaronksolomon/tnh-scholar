@@ -149,14 +149,17 @@ This section organizes work into three priority levels based on criticality for 
      - [x] **3b (COMPLETED)**: Expand and sync `README.md` + `docs/index.md` with persona routing (install, quick start, overview, docs map, contributing, development, research, license)
      - [ ] Rename Pattern → PromptTemplate across docs text (incl. CLI references)
      - [ ] Add prompt authoring schema guidance (deferred to Part 6)
-  4. **MkDocs + Automation** (Part 4b: scripts ✅; Part 4c: CI ✅; Part 4d: links ✅)
-     - [x] Restructure `mkdocs.yaml` to rely on filesystem-driven navigation
-     - [x] Adopt `mkdocs-literate-nav` so nav order is preserved with filesystem sync
+  4. **MkDocs + Automation** (Part 4b: scripts ✅; Part 4c: CI ✅; Part 4d: links ✅; Part 4e: literate-nav ✅)
+     - [x] Install `mkdocs-literate-nav` and `mkdocs-gen-files` to dev dependencies
+     - [x] Restructure `mkdocs.yaml` to remove hardcoded nav and use literate-nav plugin
+     - [x] Create `docs/nav.md` as the source-of-truth navigation hierarchy
+     - [x] Configure gen-files to auto-generate CLI docs and prompt template catalogs
      - [x] Add doc-index automation (`scripts/generate_doc_index.py`) and flag generated outputs
      - [x] **4b (COMPLETED)**: Add doc-generation scripts (`generate_cli_docs.py`, `sync_readme.py`) and Makefile `docs` targets
      - [x] **4c (COMPLETED)**: Wire CI to run `mkdocs build` + doc verification + GitHub Pages deployment
      - [x] Add markdownlint to CI/CD (MD025/MD013 ignored via `.markdownlint.json`)
      - [x] **4d (COMPLETED)**: Normalize internal documentation links; refactor doc-index generation to single `docs/documentation_index.md` with relative links
+     - [x] **4e (COMPLETED)**: Enable filesystem-driven nav with mkdocs-literate-nav
   5. **Historical Archive + Discoverability**
      - [ ] Move legacy ADRs/prototypes/research transcripts into `docs/archive/**`
      - [ ] Create archive index + add summary links from primary sections

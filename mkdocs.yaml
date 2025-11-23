@@ -6,6 +6,12 @@ theme:
 
 plugins:
   - search
+  - literate-nav:
+      nav_file: nav.md
+  - gen-files:
+      scripts:
+        - scripts/generate_cli_docs.py
+        - scripts/generate_prompt_template_catalog.py
   - mkdocstrings:
       handlers:
         python:
@@ -14,48 +20,3 @@ plugins:
             docstring_style: google
             show_source: true
             show_root_heading: true
-
-nav:
-  - Home: index.md
-  - Getting Started:
-    - Installation: getting-started/installation.md
-    - Quick Start: getting-started/quick-start.md
-    - Configuration: getting-started/configuration.md
-  - User Guide:
-    - Overview: user-guide/overview.md
-    - Pattern System: user-guide/patterns.md
-    - Best Practices: user-guide/best-practices.md
-  - CLI Tools:
-    - Overview: cli/overview.md
-    - tnh-fab: cli/tnh-fab.md
-    - audio-transcribe: cli/audio-transcribe.md
-    - ytt-fetch: cli/ytt-fetch.md
-    - nfmt: cli/nfmt.md
-    - token-count: cli/token-count.md
-    - tnh-setup: cli/tnh-setup.md
-  - API Reference: api/index.md
-  - Development:
-    - System Overview: development/system-design.md
-    - Contributing: development/contributing.md
-    - Design:
-      - Design Guide: development/design-guide.md
-      - CLI Design:
-        - TNH-FAB:
-          - 'v1': architecture/tnh-fab/design/text-processing-cli-design-v1.md
-          - 'v2': architecture/tnh-fab/design/text-processing-cli-design-v2.md
-        - YTT-Fetch:
-          - Overview: architecture/ytt-fetch/adr/adr-yf00-overview.md
-          - 'Transcript Source': architecture/ytt-fetch/adr/adr-yf01-transcript-source-handling.md
-          - 'YT-DLP Integration': architecture/ytt-fetch/adr/adr-yf02-yt-dlp-transcripts.md
-          - 'API Comparison': architecture/ytt-fetch/design/yt-dlp-vs-youtube-api.md
-        - SETUP-TNH: architecture/setup-tnh/design/setup-design.md
-    - Documentation:
-      - Docs-Design: architecture/docs-design/design/documentation.md
-      - Docs-Planning:
-        - Roadmap: docs-design/planning/roadmap.md
-        - Maintenance: docs-design/planning/maintenance.md
-    - Research:
-      - Query Generation: gpt_4o_search_query_text_pair_testing/testing_input_output.md
-      - Translation: gpt_4o_translations_experiments/passage_test.md
-      - Translation Research: translation_research.md
-      - Feasibility Study: preliminary_feasibility_study.md
