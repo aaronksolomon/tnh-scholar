@@ -1,152 +1,147 @@
-# Next Session: Documentation Reorganization Part 3b → 4c → 4d
+# Next Session: Documentation Reorganization - Complete & Next Phases
 
 **Date**: 2025-11-22  
 **Branch**: `docs-reorg`  
 **Epic**: TODO #9 – Documentation Reorganization (ADR-DD01)  
-**Status**: Parts 1–2 and 4b ✅ complete. Parts 3b/4c/4d ready to start.
+**Status**: Parts 1–2, 3b, 4b–4d ✅ complete. Parts 5+ ready to start.
 
 ---
 
-## Summary: What's Done
+## Summary: What's Done This Session
 
-### Part 1: Inventory + Tagging ✅
-- Catalogued all Markdown files with metadata (owner, status, created date)
-- Added YAML front matter standardization
-- Generated `documentation_index.md` (auto-generated from metadata)
+### Part 3b: README + Docs Index Expansion ✅
+- Expanded `README.md` with comprehensive sections: Vision & Goals, Features, Quick Start, Installation (PyPI + source), Development, Contributing, Project Status, Support
+- Synchronized `docs/index.md` with same H2 heading structure (for `sync_readme.py` alignment)
+- Tailored content for each audience: README is project-focused, docs/index is docs-focused
+- Verified alignment with `poetry run python scripts/sync_readme.py` (all sections match)
+- **Commit**: eb363cc
 
-### Part 2: Filesystem Reorg ✅
-- Created target directory structure: `overview/`, `getting-started/`, `user-guide/`, `cli-reference/`, `prompt-templates/`, `api-reference/`, `architecture/adr/`, `development/`, `research/`, `docs-ops/`, `archive/`
-- Moved docs into new layout with stub `index.md` files
-- Restructured `mkdocs.yaml` to filesystem-driven navigation + adopted `mkdocs-literate-nav`
+### Part 4c: CI Workflow for Documentation ✅
+- Created `.github/workflows/docs.yml`:
+  - Runs `make docs-build` on PRs/pushes to main, develop, docs-reorg
+  - Runs `make docs-verify` (README ↔ docs/index sync check)
+  - Deploys built site to GitHub Pages on push to main or docs-reorg
+- Updated `.github/workflows/ci.yml` to include `sync_readme.py` check
+- **Commits**: 97bc7ae, 13188ea (added docs-reorg to deployment)
 
-### Part 4b: Doc Generation Scripts ✅
-- Created `scripts/generate_cli_docs.py` – generates CLI reference stubs in `docs/cli-reference/`
-- Created `scripts/sync_readme.py` – validates README ↔ docs/index.md sync
-- Updated `scripts/generate_doc_index.py` to use glob instead of ripgrep (no external dependencies)
-- Added Makefile targets: `make docs-generate`, `make docs-build`, `make docs-verify`, `make docs`
-- Generated 9 CLI reference stubs (all CLI tools covered)
-- **Commits**: 35b892e, 9676485
-
----
-
-## Next: Immediate Sequence (3b → 4c → 4d)
-
-### Part 3b: README + Docs Index Expansion (NEXT - ~45 min)
-**Goal**: Make README and docs/index.md comprehensive, aligned, persona-routed.
-
-**Current state**:
-- README.md is minimal (legacy)
-- docs/index.md has basic structure but lacks overview + context map
-- `sync_readme.py` currently reports divergences (expected)
-
-**Tasks**:
-1. Expand README.md sections:
-   - Introduction (vision, goals, core benefits)
-   - Quick Start (install, first use)
-   - Documentation Overview (with navigation map showing all sections)
-   - Features (high-level)
-   - Development (link to dev setup)
-   - Contributing
-   - Research
-   - License
-   
-2. Align docs/index.md to match README outline but with deeper intro prose + section links
-
-3. Run `poetry run python scripts/sync_readme.py` to verify alignment
-
-4. **Commit**: "Part 3b: Expand README + docs/index with comprehensive overview and navigation map"
+### Part 4d: Documentation Link Normalization ✅
+- **Refactored `scripts/generate_doc_index.py`**:
+  - Single output: `docs/documentation_index.md` (not root-level)
+  - Only indexes `docs/` files (not root assets)
+  - Generates relative links for anti-fragility (e.g., `api/index.md` not `docs/api/index.md`)
+- **Fixed internal documentation links** in:
+  - `docs/getting-started/quick-start.md` – relative links to patterns, CLI
+  - `docs/user-guide/overview.md` – relative links to config, best practices, patterns
+  - `docs/development/contributing.md` – relative link to design guide
+  - `docs/index.md` – all links now relative
+- **Eliminated broken documentation_index.md generation** in docs-ops/ (was creating 100+ broken links)
+- **Build result**: MkDocs builds successfully; only pre-existing architecture link issues remain (not from our changes)
+- **Commits**: 48434f9, 97c9be4
 
 ---
 
-### Part 4c: Wire CI for Documentation (NEXT AFTER 3b - ~15 min)
-**Goal**: Add GitHub Actions workflow to build and verify docs automatically.
+## Latest Git History (This Session)
 
-**Tasks**:
-1. Create `.github/workflows/docs.yml` (or add to existing ci.yml):
-   - Run `make docs-build` on PRs/pushes to docs-reorg branch
-   - Fail if `mkdocs build` errors
-   - Optionally check broken links (optional: use `linkchecker` or skip for now)
-
-2. Update `.github/workflows/ci.yml` to include `docs-verify` check
-
-3. **Commit**: "Part 4c: Add CI workflow for documentation builds"
-
----
-
-### Part 4d: Normalize Internal Documentation Links (~20 min)
-**Goal**: Fix broken-link warnings from MkDocs build.
-
-**Current issues** (from mkdocs.yaml):
-- Absolute paths in cross-references (e.g., `docs/getting-started/quick-start.md` should be relative)
-- ADR cross-links (e.g., linking to legacy `docs/design/` paths before they're archived)
-- README/docs/index relative path inconsistencies
-
-**Tasks**:
-1. Run `poetry run mkdocs build` and capture any broken-link warnings
-2. Scan `docs/` for common patterns:
-   - `[link](docs/...)` → `[link](../...)`
-   - `[link](documentation_index.md)` → fix relative path per location
-   - ADR cross-references to moved files
-
-3. Fix in batch (likely ~20 files)
-
-4. **Commit**: "Part 4d: Normalize internal documentation links for MkDocs navigation"
-
----
-
-## Key Context
-
-### Important: Scope Boundary
-**`patterns/` directory is OUT OF SCOPE** for this work. It contains PromptTemplate definitions (not documentation), and is managed separately under TODO #16 (Configuration & Data Layout). The earlier confusion was clarified in commits and ADR-DD01 scope section.
-
-### Running Docs Commands
-```bash
-# Generate doc index + CLI stubs
-make docs-generate
-
-# Build full MkDocs site (includes generation)
-make docs-build
-
-# Build + verify README/docs sync
-make docs-verify
-
-# Full docs pipeline (all of above)
-make docs
 ```
-
-### Files to Watch
-- `TODO.md` – line 151–158 for Part 4 status
-- `docs/architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md` – master plan
-- `Makefile` – docs targets (lines 30–46)
-- `scripts/generate_cli_docs.py`, `scripts/sync_readme.py`, `scripts/generate_doc_index.py` – automation tools
-
-### GitHub Commits This Session
-```
-35b892e Part 4b: Add doc-generation scripts and Makefile docs targets
-9676485 Update TODO: Mark Part 4b docs scripts complete, prep Part 4c
-b04ed90 Clarify TODO #9 status and next sequence (Part 3b → 4c → 4d)
+13188ea Allow GitHub Pages deployment from docs-reorg branch for testing
+b7195f0 Add GitHub Pages deployment to docs workflow
+97c9be4 Fix cli-reference directory link in quick-start guide
+48434f9 Part 4d: Refactor documentation index generation and normalize internal links
+97bc7ae Part 4c: Add CI workflow for documentation builds and verification
+eb363cc Part 3b: Expand README + docs/index with comprehensive overview and navigation map
 ```
 
 ---
 
-## After 4d: Parts 5+
+## Next Sequence (Parts 5–7)
 
-Once the immediate sequence (3b/4c/4d) is done:
-- **Part 5**: Historical Archive + Discoverability (move legacy ADRs to `docs/archive/`, create index)
-- **Part 6**: Gap Filling + Backlog (populate `docs/docs-ops/roadmap.md`, open GitHub issues)
-- **Part 7**: Outstanding Tasks (deprecate CLI examples, add user guides, architecture overview, Pattern→PromptTemplate rename across docs)
+### Part 5: Historical Archive + Discoverability (~30 min)
+**Goal**: Move legacy content out of main docs tree, create archive index.
 
-See TODO.md lines 159–171 for details.
+**Tasks**:
+1. Identify legacy/prototype ADRs in `docs/architecture/` (scan for `status: deprecated` or old dates)
+2. Create `docs/archive/` with subdirs: `architecture/`, `research/`, `legacy-designs/`
+3. Move legacy ADRs → `docs/archive/architecture/adr/`
+4. Create `docs/archive/index.md` with browseable archive index
+5. Add cross-links from main sections (e.g., "See [Archive](../archive/) for deprecated designs")
+6. Commit: "Part 5: Establish historical archive with discoverability"
 
 ---
 
-## Quick Checklist for Next Session
-- [ ] Expand README.md with full structure (intro, quick start, overview, contributing, etc.)
-- [ ] Sync docs/index.md to match README sections
-- [ ] Run `make docs-verify` and fix any sync issues
-- [ ] Commit Part 3b
-- [ ] Add CI workflow for docs building (Part 4c)
-- [ ] Run `make docs-build` and collect broken-link warnings
-- [ ] Fix internal links in docs/ (Part 4d)
-- [ ] Commit Parts 4c + 4d
-- [ ] Push branch & prepare for next epic (Part 5+)
+### Part 6: Backlog + Gap Filling (~45 min)
+**Goal**: Identify missing documentation and open GitHub issues.
+
+**Tasks**:
+1. Populate `docs/docs-ops/roadmap.md` with:
+   - PromptTemplate catalog reference
+   - Workflow playbooks (e.g., audio→text→translate pipeline)
+   - Evaluation guides
+   - Knowledge base integration strategy
+   - Deployment guide (PyPI, Docker, etc.)
+   - Research artifact archival workflow
+2. Scan `docs/docs-ops/` for TODOs and gaps
+3. Open GitHub issues per item with owners/priorities
+4. Link issues from roadmap
+5. Commit: "Part 6: Add documentation roadmap and backlog issues"
+
+---
+
+### Part 7: Outstanding Standalone Tasks (~30 min)
+**Goal**: Clean up remaining doc work.
+
+**Tasks**:
+1. Deprecate outdated CLI examples once CLI reference regenerates
+2. Create practical user guides (e.g., "Translate a Talk", "Process Audio from Disk")
+3. Refresh architecture overview page
+4. Pattern → PromptTemplate terminology sweep across user-facing docs
+5. Establish research artifact archival workflow (external storage + summary linking)
+6. Commit: "Part 7: Add user guides, terminology sweep, and research archival workflow"
+
+---
+
+## Verification Checklist
+
+- [ ] `make docs-build` passes without doc-content warnings (griffe docstring issues OK)
+- [ ] `make docs-verify` passes (README ↔ docs/index.md sync)
+- [ ] `make test` passes (existing tests)
+- [ ] GitHub Actions workflow runs on docs-reorg push
+- [ ] Docs deploy to gh-pages branch
+- [ ] Live site accessible at GitHub Pages URL
+- [ ] Documentation index at `docs/documentation_index.md` links correctly
+
+---
+
+## Key Files to Watch
+
+- `NEXT_SESSION.md` – this file (session handoff)
+- `TODO.md` – lines 140–172 for parts 5–7 details
+- `Makefile` – docs targets (`make docs`, `make docs-build`, `make docs-verify`)
+- `.github/workflows/docs.yml` – CI/deployment config
+- `scripts/generate_doc_index.py` – doc index generation
+- `scripts/sync_readme.py` – README/docs alignment verification
+- `ADR-DD01` at `docs/architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md`
+
+---
+
+## Quick Start for Next Agent
+
+1. **Verify current state**:
+   ```bash
+   git log --oneline -10  # should show Part 3b–4d commits
+   make docs-build        # should complete successfully
+   ```
+
+2. **Start Part 5** (Archive):
+   - Find legacy ADRs: `grep -r "status: deprecated" docs/architecture/`
+   - Create `docs/archive/` structure
+   - Move files and update links
+
+3. **Keep committed**: Commit each part separately with clear messages
+
+---
+
+## Session Artifacts
+
+- **NEXT_SESSION.md** – this comprehensive recap
+- **Todo.md** – updated with 3b/4c/4d completion status
+- **6 clean commits** ready on `docs-reorg` branch

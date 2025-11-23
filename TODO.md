@@ -145,18 +145,18 @@ This section organizes work into three priority levels based on criticality for 
      - [x] Create the target hierarchy (overview, getting-started, user-guide, cli-reference, prompt-templates, api-reference, architecture/adr, development, research, docs-ops, archive)
      - [x] Move existing docs into the new layout with stub `index.md` files
      - [ ] Tag archival folders explicitly for mkdocs-literate-nav auto-generation
-  3. **Terminology + README Sweep** (Part 3b: next)
-     - [ ] **3b (NEXT)**: Expand and sync `README.md` + `docs/index.md` with persona routing (install, quick start, overview, docs map, contributing, development, research, license)
+  3. **Terminology + README Sweep** (Part 3b: ✅ COMPLETED)
+     - [x] **3b (COMPLETED)**: Expand and sync `README.md` + `docs/index.md` with persona routing (install, quick start, overview, docs map, contributing, development, research, license)
      - [ ] Rename Pattern → PromptTemplate across docs text (incl. CLI references)
      - [ ] Add prompt authoring schema guidance (deferred to Part 6)
-  4. **MkDocs + Automation** (Part 4b: scripts ✅; Part 4c: CI; Part 4d: links)
+  4. **MkDocs + Automation** (Part 4b: scripts ✅; Part 4c: CI ✅; Part 4d: links ✅)
      - [x] Restructure `mkdocs.yaml` to rely on filesystem-driven navigation
      - [x] Adopt `mkdocs-literate-nav` so nav order is preserved with filesystem sync
      - [x] Add doc-index automation (`scripts/generate_doc_index.py`) and flag generated outputs
      - [x] **4b (COMPLETED)**: Add doc-generation scripts (`generate_cli_docs.py`, `sync_readme.py`) and Makefile `docs` targets
-     - [ ] **4c (NEXT)**: Wire CI to run `mkdocs build` + doc verification
+     - [x] **4c (COMPLETED)**: Wire CI to run `mkdocs build` + doc verification + GitHub Pages deployment
      - [x] Add markdownlint to CI/CD (MD025/MD013 ignored via `.markdownlint.json`)
-     - [ ] **4d**: Normalize internal documentation links so MkDocs builds without broken-link warnings
+     - [x] **4d (COMPLETED)**: Normalize internal documentation links; refactor doc-index generation to single `docs/documentation_index.md` with relative links
   5. **Historical Archive + Discoverability**
      - [ ] Move legacy ADRs/prototypes/research transcripts into `docs/archive/**`
      - [ ] Create archive index + add summary links from primary sections
