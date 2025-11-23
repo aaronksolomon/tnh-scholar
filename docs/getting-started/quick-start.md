@@ -100,5 +100,5 @@ tnh-fab section > processed.txt
 ## Next Steps
 
 - Review the [Pattern System](../user-guide/patterns.md) documentation
-- Explore detailed [CLI documentation](../cli-reference/overview.md)
+- Explore detailed [CLI documentation](../cli-reference/) for all available tools
 - Check out example notebooks in the repository
