@@ -6,11 +6,12 @@ theme:
 
 plugins:
   - search
-  - literate-nav:
-      nav_file: nav.md
   - gen-files:
       scripts:
+        - scripts/generate_mkdocs_nav.py
         - scripts/generate_cli_docs.py
+  - literate-nav:
+      nav_file: docs-nav.md
   - mkdocstrings:
       handlers:
         python:

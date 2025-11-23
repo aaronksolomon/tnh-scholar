@@ -16,6 +16,7 @@ TOP_LEVEL_ORDER = [
     "getting-started",
     "user-guide",
     "cli",
+    "cli-reference",
     "api",
     "architecture",
     "development",

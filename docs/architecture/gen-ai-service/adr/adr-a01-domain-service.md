@@ -14,7 +14,7 @@ Adopts the Object-Service pattern so GenAI requests use consistent domain object
 **Date:** 2025-10-02  
 **Author:** Aaron Solomon with GPT-5.0, Claude AI
 
-See also: [GenAI Service Strategy](genai-service-strategy.md)
+See also: [GenAI Service Strategy](../design/genai-service-strategy.md)
 
 ## Context
 

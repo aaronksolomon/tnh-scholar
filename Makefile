@@ -31,6 +31,7 @@ kernel:
 # Documentation targets
 docs-generate:
 	@echo "Generating documentation artifacts..."
+	$(POETRY) run python scripts/generate_index_md.py
 	$(POETRY) run python scripts/generate_doc_index.py
 	$(POETRY) run python scripts/generate_cli_docs.py
 
