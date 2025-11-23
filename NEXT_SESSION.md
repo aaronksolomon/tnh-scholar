@@ -3,7 +3,7 @@
 **Date**: 2025-11-22  
 **Branch**: `docs-reorg`  
 **Epic**: TODO #9 – Documentation Reorganization (ADR-DD01)  
-**Status**: Parts 1–2, 3b, 4b–4d ✅ complete. Parts 5+ ready to start.
+**Status**: Parts 1–2, 3b, 4b–4d ✅ complete. Cleanup tasks ✅ complete. Parts 5+ ready to start.
 
 ---
 
@@ -41,11 +41,29 @@
 - **Build result**: MkDocs builds successfully; only pre-existing architecture link issues remain (not from our changes)
 - **Commits**: 48434f9, 97c9be4
 
+### Part 4e: Auto-generate docs/index.md + Fix ADR Links ✅
+
+- **Automation, not hand-coding**: Created `scripts/generate_index_md.py` to auto-generate `docs/index.md` from actual file structure
+  - This enforces ADR-DD01 design principle: "Surface everything through MkDocs" + keep nav and filesystem in sync
+  - Reads YAML front matter titles when available, falls back to humanized filenames
+  - Grouped into section categories (Architecture, CLI, Development, etc.)
+  - Marks generated file with `auto_generated: true` in front matter
+- **Deleted `docs/nav.md`**: Now obsolete (literate-nav reads auto-generated `docs-nav.md` instead)
+- **Fixed broken relative links in gen-ai-service ADRs**:
+  - `adr-a01-domain-service.md`: `genai-service-strategy.md` → `../design/genai-service-strategy.md`
+  - `adr-a09-v1-simplified.md`: same fix
+  - `migration-plan.md`: `../../architecture/...` paths → `../adr/` relative links (correct depth)
+  - Removed external TODO.md link (not in docs/)
+- **Integrated into Makefile**: `generate_index_md.py` runs first in `make docs-generate` target
+- **Build result**: No more docs/index.md or docs/nav.md warnings. All ADR links valid.
+- **Commits**: 422a62e
+
 ---
 
 ## Latest Git History (This Session)
 
 ```
+422a62e Automate docs/index.md generation and fix broken ADR links
 13188ea Allow GitHub Pages deployment from docs-reorg branch for testing
 b7195f0 Add GitHub Pages deployment to docs workflow
 97c9be4 Fix cli-reference directory link in quick-start guide
