@@ -10,6 +10,7 @@
 ## Summary: What's Done This Session
 
 ### Part 3b: README + Docs Index Expansion ✅
+
 - Expanded `README.md` with comprehensive sections: Vision & Goals, Features, Quick Start, Installation (PyPI + source), Development, Contributing, Project Status, Support
 - Synchronized `docs/index.md` with same H2 heading structure (for `sync_readme.py` alignment)
 - Tailored content for each audience: README is project-focused, docs/index is docs-focused
@@ -17,6 +18,7 @@
 - **Commit**: eb363cc
 
 ### Part 4c: CI Workflow for Documentation ✅
+
 - Created `.github/workflows/docs.yml`:
   - Runs `make docs-build` on PRs/pushes to main, develop, docs-reorg
   - Runs `make docs-verify` (README ↔ docs/index sync check)
@@ -25,6 +27,7 @@
 - **Commits**: 97bc7ae, 13188ea (added docs-reorg to deployment)
 
 ### Part 4d: Documentation Link Normalization ✅
+
 - **Refactored `scripts/generate_doc_index.py`**:
   - Single output: `docs/documentation_index.md` (not root-level)
   - Only indexes `docs/` files (not root assets)
@@ -56,9 +59,11 @@ eb363cc Part 3b: Expand README + docs/index with comprehensive overview and navi
 ## Next Sequence (Parts 5–7)
 
 ### Part 5: Historical Archive + Discoverability (~30 min)
+
 **Goal**: Move legacy content out of main docs tree, create archive index.
 
 **Tasks**:
+
 1. Identify legacy/prototype ADRs in `docs/architecture/` (scan for `status: deprecated` or old dates)
 2. Create `docs/archive/` with subdirs: `architecture/`, `research/`, `legacy-designs/`
 3. Move legacy ADRs → `docs/archive/architecture/adr/`
@@ -69,9 +74,11 @@ eb363cc Part 3b: Expand README + docs/index with comprehensive overview and navi
 ---
 
 ### Part 6: Backlog + Gap Filling (~45 min)
+
 **Goal**: Identify missing documentation and open GitHub issues.
 
 **Tasks**:
+
 1. Populate `docs/docs-ops/roadmap.md` with:
    - PromptTemplate catalog reference
    - Workflow playbooks (e.g., audio→text→translate pipeline)
@@ -87,9 +94,11 @@ eb363cc Part 3b: Expand README + docs/index with comprehensive overview and navi
 ---
 
 ### Part 7: Outstanding Standalone Tasks (~30 min)
+
 **Goal**: Clean up remaining doc work.
 
 **Tasks**:
+
 1. Deprecate outdated CLI examples once CLI reference regenerates
 2. Create practical user guides (e.g., "Translate a Talk", "Process Audio from Disk")
 3. Refresh architecture overview page
@@ -126,6 +135,7 @@ eb363cc Part 3b: Expand README + docs/index with comprehensive overview and navi
 ## Quick Start for Next Agent
 
 1. **Verify current state**:
+
    ```bash
    git log --oneline -10  # should show Part 3b–4d commits
    make docs-build        # should complete successfully
