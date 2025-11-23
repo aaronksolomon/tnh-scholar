@@ -64,3 +64,6 @@ jobs:
         run: poetry run pytest --maxfail=1 --cov=tnh_scholar --cov-report=term-missing
       - name: Markdown lint
         run: npx markdownlint '**/*.md'
+
+      - name: Verify README ↔ docs/index.md sync
+        run: poetry run python scripts/sync_readme.py
