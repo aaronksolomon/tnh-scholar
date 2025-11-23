@@ -1,7 +1,7 @@
 PYTHON_VERSION = 3.12.4
 POETRY        = poetry
 
-.PHONY: setup setup-dev test lint format kernel
+.PHONY: setup setup-dev test lint format kernel docs docs-generate docs-build docs-verify
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -27,3 +27,20 @@ format:
 
 kernel:
 	$(POETRY) run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
+
+# Documentation targets
+docs-generate:
+	@echo "Generating documentation artifacts..."
+	$(POETRY) run python scripts/generate_doc_index.py
+	$(POETRY) run python scripts/generate_cli_docs.py
+
+docs-build: docs-generate
+	@echo "Building MkDocs site..."
+	$(POETRY) run mkdocs build
+
+docs-verify: docs-build
+	@echo "Verifying documentation..."
+	$(POETRY) run python scripts/sync_readme.py
+
+docs: docs-verify
+	@echo "Documentation build complete: site/"
