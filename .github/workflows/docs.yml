@@ -25,6 +25,9 @@ on:
 jobs:
   docs-build-and-verify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
     env:
       POETRY_VIRTUALENVS_IN_PROJECT: "true"
 
