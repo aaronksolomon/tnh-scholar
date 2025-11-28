@@ -243,6 +243,9 @@ venv.bak/
 # mkdocs documentation
 /site
 
+# Documentation drift reports (local review only)
+docs_sync_report.txt
+
 # mypy
 .mypy_cache/
 .dmypy.json

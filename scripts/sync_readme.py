@@ -47,12 +47,11 @@ def main() -> None:
         print("\nDivergences found:")
         for w in warnings:
             print(w)
-        print("\nNote: Minor divergences are OK (intro material, examples).")
-        print("Major section outlines should align between README and docs/index.md.")
-        return 1
+        print("\nNote: This check is informational only (per ADR-DD02).")
+        print("Major section outlines should align where practical, but drift does not fail CI.")
     else:
         print("✓ README and docs/index.md sections are synchronized")
-        return 0
+    return 0
 
 
 if __name__ == "__main__":

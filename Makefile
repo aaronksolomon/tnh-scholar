@@ -1,7 +1,7 @@
 PYTHON_VERSION = 3.12.4
 POETRY        = poetry
 
-.PHONY: setup setup-dev test lint format kernel docs docs-generate docs-build docs-verify
+.PHONY: setup setup-dev test lint format kernel docs docs-generate docs-build docs-drift docs-verify
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -39,7 +39,11 @@ docs-build: docs-generate
 	@echo "Building MkDocs site..."
 	$(POETRY) run mkdocs build
 
-docs-verify: docs-build
+docs-drift:
+	@echo "Checking README ↔ docs/index.md drift..."
+	$(POETRY) run python scripts/check_readme_docs_drift.py
+
+docs-verify: docs-drift docs-build
 	@echo "Verifying documentation..."
 	$(POETRY) run python scripts/sync_readme.py
 

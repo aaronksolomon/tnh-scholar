@@ -4,7 +4,7 @@ description: "CLI reference for srt-translate"
 owner: ""
 author: ""
 status: auto_generated
-created: "2025-11-23"
+created: "2025-11-24"
 auto_generated: true
 ---
 

@@ -327,4 +327,4 @@ def _configure_webhook(self, config: Dict[str, Any]) -> Dict[str, Any]:
 
 1. [AssemblyAI API Documentation](https://www.assemblyai.com/docs)
 2. [AssemblyAI Python SDK](https://github.com/AssemblyAI/assemblyai-python-sdk)
-3. [TranscriptionService Interface Design](./transcription_service.py)
+3. [TranscriptionService Interface Design](https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/audio_processing/transcription/transcription_service.py)

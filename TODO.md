@@ -130,12 +130,14 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Keep only current version
   - [ ] Create shared utilities (argument parsing, environment validation, logging)
 
-#### 9. 🚧 Documentation Reorganization (ADR-DD01)
+#### 9. 🚧 Documentation Reorganization (ADR-DD01 & ADR-DD02)
 
-- **Status**: IN PROGRESS (Parts 1–2 ✅, Part 4b ✅, Parts 3b/4c/4d next)
-- **Reference**: [ADR-DD01: Docs Reorganization Strategy](docs/architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md)
-- **Goal**: Execute the phased documentation overhaul for `docs/` tree, keep README ≈ docs/index, automate verification. **Note**: `patterns/` directory is managed separately (TODO #16).
-- **Next Sequence**: Part 3b → Part 4c → Part 4d → Part 5+
+- **Status**: IN PROGRESS (Parts 1–4 ✅, Part 3b ✅ COMPLETE, Parts 5+ remaining)
+- **Reference**:
+  - [ADR-DD01: Docs Reorganization Strategy](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md)
+  - [ADR-DD02: Documentation Main Content and Navigation Strategy](docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md) ✅ APPROVED
+- **Goal**: Execute the phased documentation overhaul for `docs/` tree, keep README ≈ docs/index with drift monitoring, automate verification. **Note**: `patterns/` directory is managed separately (TODO #16).
+- **Next Sequence**: Part 5 (Archive) → Part 6 (Gap Filling) → Part 7 (Standalone Tasks)
 - **Checkpoints / Tasks**:
   1. **Inventory + Tagging**
      - [x] Catalog every Markdown file (owner, status: current/needs-update/historical)
@@ -145,11 +147,14 @@ This section organizes work into three priority levels based on criticality for 
      - [x] Create the target hierarchy (overview, getting-started, user-guide, cli-reference, prompt-templates, api-reference, architecture/adr, development, research, docs-ops, archive)
      - [x] Move existing docs into the new layout with stub `index.md` files
      - [ ] Tag archival folders explicitly for mkdocs-literate-nav auto-generation
-  3. **Terminology + README Sweep** (Part 3b: ✅ COMPLETED)
-     - [x] **3b (COMPLETED)**: Expand and sync `README.md` + `docs/index.md` with persona routing (install, quick start, overview, docs map, contributing, development, research, license)
+  3. **Terminology + README Sweep** (Part 3b: ✅ COMPLETED - ADR-DD02)
+     - [x] **3b (COMPLETED)**: Designed content architecture for README.md and docs/index.md (ADR-DD02)
+     - [x] Implemented drift reporting script (`check_readme_docs_drift.py`) for non-blocking sync monitoring
+     - [x] Established persona-based navigation strategy (Practitioners, Developers, Researchers)
+     - [x] Updated markdown standards to enforce exact YAML title ↔ heading match
      - [ ] Rename Pattern → PromptTemplate across docs text (incl. CLI references)
      - [ ] Add prompt authoring schema guidance (deferred to Part 6)
-  4. **MkDocs + Automation** (Part 4b: scripts ✅; Part 4c: CI ✅; Part 4d: links ✅; Part 4e: literate-nav ✅)
+  4. **MkDocs + Automation** (✅ ALL PARTS COMPLETE)
      - [x] Install `mkdocs-literate-nav` and `mkdocs-gen-files` to dev dependencies
      - [x] Restructure `mkdocs.yaml` to remove hardcoded nav and use literate-nav plugin
      - [x] Create `docs/nav.md` as the source-of-truth navigation hierarchy
@@ -160,6 +165,7 @@ This section organizes work into three priority levels based on criticality for 
      - [x] Add markdownlint to CI/CD (MD025/MD013 ignored via `.markdownlint.json`)
      - [x] **4d (COMPLETED)**: Normalize internal documentation links; refactor doc-index generation to single `docs/documentation_index.md` with relative links
      - [x] **4e (COMPLETED)**: Enable filesystem-driven nav with mkdocs-literate-nav
+     - [x] **4f (COMPLETED - ADR-DD02)**: Add drift reporting (`check_readme_docs_drift.py`) with Makefile target and CI integration
   5. **Historical Archive + Discoverability**
      - [ ] Move legacy ADRs/prototypes/research transcripts into `docs/archive/**`
      - [ ] Create archive index + add summary links from primary sections

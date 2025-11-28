@@ -23,78 +23,43 @@ TNH Scholar aims to make the profound teachings of Thich Nhat Hanh and the Plum 
 
 ## Features
 
-TNH Scholar is currently in active prototyping phase. It provides several utility-like command-line tools for text and audio processing, built around a flexible pattern-based approach to text processing:
+TNH Scholar is currently in active prototyping. Key capabilities:
 
-**Core Tools:**
-
-- **audio-transcribe**: Process and transcribe audio files with speaker detection, including support for YouTube downloads
-- **tnh-fab**: Text processing and formatting tool with capabilities for:
-  - Adding/correcting punctuation and formatting
-  - Identifying and organizing logical sections
-  - Performing line-based and full-text translation
-  - Applying custom text processing patterns
-- **ytt-fetch**: Utility for downloading and preparing YouTube video transcripts
-- **nfmt**: Tool for formatting and normalizing newlines in text files
-- **token-count**: Count tokens in text files for LLM planning
-- **tnh-setup**: Configuration and pattern setup utility for initializing projects
-
-**Pattern System:**
-
-Patterns are customizable templates that guide AI-powered text operations, allowing for consistent and adaptable processing across different types of content. Built-in patterns include:
-- Metadata extraction and tagging
-- Section marking and organization
-- Quote detection and formatting
-- Reference formatting and validation
+- **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
+- **Text formatting and translation**: `tnh-fab` for punctuation, translation, sectioning, and pattern-driven processing
+- **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
+- **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
+- **Pattern/PromptTemplate system**: See ADRs under [docs/architecture/pattern-system/](docs/architecture/pattern-system/) for decisions and roadmap
 
 ## Quick Start
 
-### Installation
-
-#### From PyPI (CLI usage)
-
-Install using pip:
+### Installation (PyPI)
 
 ```bash
 pip install tnh-scholar
-```
-
-After installation, run the setup tool:
-
-```bash
 tnh-setup
 ```
 
-#### Prerequisites
+Prerequisites: Python 3.12.4+, OpenAI API key (CLI tools), Google Vision (optional OCR), pip or Poetry.
 
-- Python 3.12.4+
-- OpenAI API credentials (required for AI tools)
-- Google Vision credentials (for OCR development and testing)
-- pip or Poetry package manager
+### Development setup (from source)
 
-#### Development setup (from source)
+Follow [DEV_SETUP.md](DEV_SETUP.md) for the full workflow. Short version:
 
-If you plan to contribute or run the full test suite, follow the pyenv + Poetry workflow described in [DEV_SETUP.md](DEV_SETUP.md).
+```bash
+pyenv install 3.12.4
+poetry config virtualenvs.in-project true
+make setup        # runtime deps
+make setup-dev    # runtime + dev deps (recommended)
+```
 
-The short version:
-
-1. Install `pyenv` and `Python 3.12.4`
-2. Install Poetry and enable in-project virtual environments:
-   ```bash
-   poetry config virtualenvs.in-project true
-   ```
-3. Clone this repository and run:
-   ```bash
-   make setup        # runtime dependencies only
-   make setup-dev    # runtime + dev dependencies (recommended)
-   ```
-
-### Set Up OpenAI Credentials
+### Set OpenAI credentials
 
 ```bash
 export OPENAI_API_KEY="your-api-key"
 ```
 
-### Example Usage
+### Example usage
 
 **Transcribe Audio from YouTube:**
 
@@ -124,6 +89,12 @@ tnh-fab section input.txt > sections.json
 ytt-fetch "https://youtube.com/watch?v=example" -l en -o transcript.txt
 ```
 
+## Getting Started (persona-based)
+
+- **Practitioners**: Install, configure credentials, and follow the [Quick Start Guide](docs/getting-started/quick-start.md); workflows live in the [User Guide](docs/user-guide/overview.md).
+- **Developers**: Set up via [DEV_SETUP.md](DEV_SETUP.md) and [Contributing](CONTRIBUTING.md); review [System Design](docs/development/system-design.md) and the [CLI Reference](docs/cli-reference/); run `make docs` to view locally.
+- **Researchers**: Explore [Research](docs/research/) for experiments and direction; see [Architecture](docs/architecture/) for pipelines/ADRs (e.g., [ADR-K01](docs/architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design.md)).
+
 ## Documentation Overview
 
 Comprehensive documentation is available in multiple formats:
@@ -142,57 +113,34 @@ Comprehensive documentation is available in multiple formats:
 - **[Research](docs/research/)** – Research notes, experiments, and background
 - **[Documentation Operations](docs/docs-ops/)** – Documentation roadmap and maintenance
 
+## Architecture Overview
+
+- Documentation strategy: [ADR-DD01](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md) and [ADR-DD02](docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md)
+- GenAI, transcription, and pattern system ADRs live under [Architecture](docs/architecture/) (see ADR-A*, ADR-TR*, ADR-PT*).
+- System design references: [Object–Service Design Blueprint](docs/development/architecture/object-service-design-blueprint.md) and [System Design](docs/development/system-design.md).
+
 ## Development
 
-### Common Development Commands
-
-Run from the repo root:
-
-```bash
-make test         # Run test suite (poetry run pytest)
-make lint         # Check code style (poetry run ruff check .)
-make format       # Format code (poetry run ruff format .)
-make docs         # Generate and build documentation
-poetry run mypy src/  # Run type checking
-```
-
-For detailed development instructions, troubleshooting, and CI guidance, see [DEV_SETUP.md](DEV_SETUP.md).
-
-### Optional Dependencies
-
-TNH Scholar offers several optional dependency groups:
-
-```bash
-# OCR functionality (development only)
-pip install "tnh-scholar[ocr]"
-
-# GUI tools (development only)
-pip install "tnh-scholar[gui]"
-
-# Query capabilities (development only)
-pip install "tnh-scholar[query]"
-
-# Development tools
-pip install "tnh-scholar[dev]"
-```
+- Common commands: `make test`, `make lint`, `make format`, `make docs`, `poetry run mypy src/`
+- Optional dependency groups (development only): `tnh-scholar[ocr]`, `tnh-scholar[gui]`, `tnh-scholar[query]`, `tnh-scholar[dev]`
+- Troubleshooting and workflows: [DEV_SETUP.md](DEV_SETUP.md)
 
 ## Contributing
 
-We welcome contributions from practitioners, developers, and scholars interested in making these teachings more accessible. Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on:
-
-- Setting up the development environment
-- Running tests and code quality checks
-- Opening pull requests
-- Code style and conventions
+See [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing expectations, and PR workflow. We welcome contributions from practitioners, developers, and scholars.
 
 ## Project Status
 
-TNH Scholar is currently in **alpha stage** (v0.1.3). While the core functionality is relatively stable, the API and features will change continuously with development.
+TNH Scholar is currently in **alpha stage** (v0.1.3). Expect ongoing API and workflow changes during active development.
 
 ## Support & Community
 
-- **Bug Reports & Feature Requests**: [GitHub Issue Tracker](https://github.com/aaronksolomon/tnh-scholar/issues)
-- **Questions & Discussions**: [GitHub Discussions](https://github.com/aaronksolomon/tnh-scholar/discussions) or consult our [documentation](https://aaronksolomon.github.io/tnh-scholar/)
+- Bug reports & feature requests: [GitHub Issues](https://github.com/aaronksolomon/tnh-scholar/issues)
+- Questions & discussions: [GitHub Discussions](https://github.com/aaronksolomon/tnh-scholar/discussions)
+
+## Documentation Map
+
+For an auto-generated list of every document (titles and metadata), see the [Documentation Index](docs/documentation_index.md).
 
 ## License
 

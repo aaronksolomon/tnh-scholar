@@ -4,7 +4,7 @@ description: "Complete index of TNH Scholar documentation"
 owner: ""
 author: ""
 status: processing
-created: "2025-11-23"
+created: "2025-11-24"
 auto_generated: true
 ---
 
@@ -18,8 +18,9 @@ auto_generated: true
 | [docs/architecture/ai-text-processing/design/textobject-new-design.md](architecture/ai-text-processing/design/textobject-new-design.md) | TextObject System Design Document | Detailed blueprint for the modern TextObject pipeline, outlining segmentation models, metadata, and API surfaces. | 2025-02-01 |
 | [docs/architecture/ai-text-processing/design/textobject-original-design.md](architecture/ai-text-processing/design/textobject-original-design.md) | TextObject Original Design | Legacy TextObject design notes capturing the original sectioning models, metadata strategy, and validation approach. | 2025-02-01 |
 | [docs/architecture/configuration/tnh-configuration.md](architecture/configuration/tnh-configuration.md) | TNH Configuration Management | Architecture decisions and a phased plan for consolidating TNH Scholar configuration across modules, CLIs, and environments. | 2025-02-01 |
-| [docs/architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md](architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md) | ADR-DD01: Documentation System Reorganization Strategy | Rebuilds the documentation architecture with new directories, automation, and PromptTemplate terminology. | 2024-11-09 |
-| [docs/architecture/docs-design/design/documentation.md](architecture/docs-design/design/documentation.md) | Documentation Design | Reference for the documentation stack, covering tooling choices, information architecture, and publishing workflow. | 2025-01-19 |
+| [docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md](architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md) | ADR-DD01: Documentation System Reorganization Strategy | Rebuilds the documentation architecture with new directories, automation, and PromptTemplate terminology. | 2024-11-09 |
+| [docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md](architecture/docs-system/adr/adr-dd02-docs-content-nav.md) | ADR-DD02: Documentation Main Content and Navigation Strategy | Defines content architecture, sync mechanisms, and navigation patterns for README.md, docs/index.md, and filesystem-driven documentation. | 2025-11-23 |
+| [docs/architecture/docs-system/design/documentation.md](architecture/docs-system/design/documentation.md) | Documentation Design | Reference for the documentation stack, covering tooling choices, information architecture, and publishing workflow. | 2025-01-19 |
 | [docs/architecture/gen-ai-service/adr/adr-a01-domain-service.md](architecture/gen-ai-service/adr/adr-a01-domain-service.md) | ADR-A01: Adopt Object-Service for GenAI Interactions | Standardizes GenAI interactions with an Object-Service pattern that separates domain shapes from provider orchestration. | 2025-11-15 |
 | [docs/architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1.md](architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1.md) | ADR-A02: PatternCatalog Integration (V1) | Describes the V1 contract for plugging the legacy PatternCatalog into GenAI Service via rendered system prompts. | 2025-11-15 |
 | [docs/architecture/gen-ai-service/adr/adr-a08-config-params-policy.md](architecture/gen-ai-service/adr/adr-a08-config-params-policy.md) | ADR-A08: Configuration / Parameters / Policy Taxonomy | Establishes the Config/Params/Policy taxonomy for GenAI Service to prevent parameter soup and clarify ownership. | 2025-11-15 |
@@ -71,15 +72,15 @@ auto_generated: true
 | [docs/cli/tnh-setup.md](cli/tnh-setup.md) | tnh-setup | The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns. | 2025-02-01 |
 | [docs/cli/token-count.md](cli/token-count.md) | token-count | The `token-count` command calculates the OpenAI API token count for text input. This is useful for ensuring that a text is within maximum token limits for the API model and also for estimating API costs. | 2025-02-01 |
 | [docs/cli/ytt-fetch.md](cli/ytt-fetch.md) | ytt-fetch | (Y)ou(T)ube (T)ranscript-(Fetch)ing utility. | 2025-01-21 |
-| [docs/cli-reference/audio-transcribe.md](cli-reference/audio-transcribe.md) | audio-transcribe | CLI reference for audio-transcribe | 2025-11-23 |
-| [docs/cli-reference/json-to-srt.md](cli-reference/json-to-srt.md) | json-to-srt | CLI reference for json-to-srt | 2025-11-23 |
-| [docs/cli-reference/nfmt.md](cli-reference/nfmt.md) | nfmt | CLI reference for nfmt | 2025-11-23 |
-| [docs/cli-reference/sent-split.md](cli-reference/sent-split.md) | sent-split | CLI reference for sent-split | 2025-11-23 |
-| [docs/cli-reference/srt-translate.md](cli-reference/srt-translate.md) | srt-translate | CLI reference for srt-translate | 2025-11-23 |
-| [docs/cli-reference/tnh-fab.md](cli-reference/tnh-fab.md) | tnh-fab | CLI reference for tnh-fab | 2025-11-23 |
-| [docs/cli-reference/tnh-setup.md](cli-reference/tnh-setup.md) | tnh-setup | CLI reference for tnh-setup | 2025-11-23 |
-| [docs/cli-reference/token-count.md](cli-reference/token-count.md) | token-count | CLI reference for token-count | 2025-11-23 |
-| [docs/cli-reference/ytt-fetch.md](cli-reference/ytt-fetch.md) | ytt-fetch | CLI reference for ytt-fetch | 2025-11-23 |
+| [docs/cli-reference/audio-transcribe.md](cli-reference/audio-transcribe.md) | audio-transcribe | CLI reference for audio-transcribe | 2025-11-24 |
+| [docs/cli-reference/json-to-srt.md](cli-reference/json-to-srt.md) | json-to-srt | CLI reference for json-to-srt | 2025-11-24 |
+| [docs/cli-reference/nfmt.md](cli-reference/nfmt.md) | nfmt | CLI reference for nfmt | 2025-11-24 |
+| [docs/cli-reference/sent-split.md](cli-reference/sent-split.md) | sent-split | CLI reference for sent-split | 2025-11-24 |
+| [docs/cli-reference/srt-translate.md](cli-reference/srt-translate.md) | srt-translate | CLI reference for srt-translate | 2025-11-24 |
+| [docs/cli-reference/tnh-fab.md](cli-reference/tnh-fab.md) | tnh-fab | CLI reference for tnh-fab | 2025-11-24 |
+| [docs/cli-reference/tnh-setup.md](cli-reference/tnh-setup.md) | tnh-setup | CLI reference for tnh-setup | 2025-11-24 |
+| [docs/cli-reference/token-count.md](cli-reference/token-count.md) | token-count | CLI reference for token-count | 2025-11-24 |
+| [docs/cli-reference/ytt-fetch.md](cli-reference/ytt-fetch.md) | ytt-fetch | CLI reference for ytt-fetch | 2025-11-24 |
 | [docs/development/architecture/api-integration-blueprint_(old).md](development/architecture/api-integration-blueprint_(old).md) | API Integration Blueprint (Generic) | *A practical, layered blueprint for designing professional‑grade modules that talk to web APIs—cleanly, testably, and safely. Examples reference a "diarizer" service, but the patterns are generic.* | 2025-11-15 |
 | [docs/development/architecture/object-service-design-blueprint-v2.md](development/architecture/object-service-design-blueprint-v2.md) | Object–Service Design Blueprint (Integrated) | *A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.* | 2025-11-15 |
 | [docs/development/architecture/object-service-design-blueprint.md](development/architecture/object-service-design-blueprint.md) | TNH Scholar Object & Service Design Blueprint | *A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.* | 2025-11-15 |
@@ -95,11 +96,11 @@ auto_generated: true
 | [docs/development/yt-dlp_docs/ytdlp-guide.md](development/yt-dlp_docs/ytdlp-guide.md) | yt-dlp Comprehensive Guide | Comprehensive overview of yt-dlp internals, configuration patterns, and extension points. | 2025-02-01 |
 | [docs/docs-ops/adr-template.md](docs-ops/adr-template.md) | ADR Template | Reusable template for TNH Scholar architecture decision records. | 2025-02-27 |
 | [docs/docs-ops/markdown-standards.md](docs-ops/markdown-standards.md) | Markdown Standards | House style, linting, and structure requirements for TNH Scholar documentation. | 2025-02-27 |
-| [docs/documentation_index.md](documentation_index.md) | Documentation Index | Complete index of TNH Scholar documentation | 2025-11-23 |
+| [docs/documentation_index.md](documentation_index.md) | Documentation Index | Complete index of TNH Scholar documentation | 2025-11-24 |
 | [docs/getting-started/configuration.md](getting-started/configuration.md) | Configuration | TNH Scholar requires some initial configuration to function properly. This guide covers the essential configuration steps and options. | 2025-02-01 |
 | [docs/getting-started/installation.md](getting-started/installation.md) | Installation | TNH Scholar--Python package for text processing and analysis. Install it using pip: | 2025-02-01 |
 | [docs/getting-started/quick-start.md](getting-started/quick-start.md) | Quick Start Guide | TNH Scholar provides powerful text processing capabilities through several command-line tools. This guide will help you get started with the basic workflows. | 2025-02-01 |
-| [docs/index.md](index.md) | TNH Scholar | Comprehensive documentation for TNH Scholar, an AI-driven project exploring and processing the teachings of Thich Nhat Hanh and the Plum Village community. | 2025-01-19 |
+| [docs/index.md](index.md) | TNH Scholar Documentation | Comprehensive documentation for TNH Scholar, an AI-driven project exploring, processing, and translating the teachings of Thich Nhat Hanh. |  |
 | [docs/research/gpt_4o_search_query_text_pair_testing/testing_input_output.md](research/gpt_4o_search_query_text_pair_testing/testing_input_output.md) | 1-3 Word Queries | Prompt experiments for generating search query and passage pairs used to train retrieval models. | 2024-10-28 |
 | [docs/research/gpt_4o_translations_experiments/passage_test.md](research/gpt_4o_translations_experiments/passage_test.md) | Passage Test | Spot-checks comparing GPT-4o translation outputs with bilingual baselines on short passages. | 2024-11-08 |
 | [docs/research/gpt_development_convos.md](research/gpt_development_convos.md) | GPT Development Convos | Link log of early GPT design, feasibility, and data processing conversations for the project. | 2024-10-23 |

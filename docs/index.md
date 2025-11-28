@@ -1,16 +1,91 @@
 ---
-title: "TNH Scholar Documentation"
-description: "Comprehensive documentation for TNH Scholar, an AI-driven project exploring the teachings of Thich Nhat Hanh."
-auto_generated: true
+title: TNH Scholar Documentation
+description: Comprehensive documentation for TNH Scholar, an AI-driven project exploring,
+  processing, and translating the teachings of Thich Nhat Hanh.
 ---
+
+
+
+
+
 # TNH Scholar Documentation
 
-Welcome to the TNH Scholar documentation. This page maps all available documentation organized by topic.
+TNH Scholar is an AI-driven project designed to explore, process, and translate the teachings of Thich Nhat Hanh and the Plum Village community. This page expands on the README with deeper onboarding, architecture context, and curated navigation for the published docs site.
 
-TNH Scholar is an AI-driven project exploring, processing, and translating the teachings of Thich Nhat Hanh and the Plum Village community through natural language processing and machine learning.
+## Vision & Goals
+
+- Make Plum Village teachings more accessible and discoverable through modern AI workflows
+- Translate with cultural sensitivity while keeping provenance clear
+- Turn audio/transcripts into structured, searchable formats
+- Provide reliable tools for practitioners, developers, and researchers
+
+## Features
+
+- **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
+- **Text formatting and translation**: `tnh-fab` for punctuation, translation, sectioning, and pattern-driven processing
+- **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
+- **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
+- **Pattern/PromptTemplate system**: See ADRs under [Pattern System](architecture/pattern-system/adr/adr-pt01-pattern-access-strategy.md) for decisions and roadmap
+
+## Quick Start
+
+- Install from PyPI and run the setup helper:
+  ```bash
+  pip install tnh-scholar
+  tnh-setup
+  ```
+- Configure credentials (OpenAI, optional Google Vision) per [Configuration](getting-started/configuration.md)
+- Run your first workflow via the [Quick Start Guide](getting-started/quick-start.md)
+
+## Getting Started (persona-based)
+
+- **Practitioners**: Follow [Installation](getting-started/installation.md), then the [Quick Start Guide](getting-started/quick-start.md); explore workflows in the [User Guide](user-guide/overview.md)
+- **Developers**: Set up via [DEV_SETUP.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md) and [Contributing](https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md); review [System Design](development/system-design.md) and [Design Guide](development/design-guide.md); see the [CLI Overview](cli/overview.md)
+- **Researchers**: Start with [Research](research/) for experiments and notes; for knowledge-base direction see [ADR-K01](architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design.md); review [Architecture](architecture/) for transcription/translation pipelines
+
+## Architecture Overview
+
+- **Docs strategy**: [ADR-DD01](architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md) and [ADR-DD02](architecture/docs-system/adr/adr-dd02-docs-content-nav.md)
+- **GenAI service layer**: See [GenAI Service Strategy](architecture/gen-ai-service/design/genai-service-strategy.md) and the ADR-A series.
+- **Transcription pipeline**: See [ADR-TR01](architecture/transcription/adr/adr-tr01-assemblyai-integration.md) and related ADR-TR docs (diarization, chunking, timing).
+- **Pattern/PromptTemplate design**: See [ADR-PT01](architecture/pattern-system/adr/adr-pt01-pattern-access-strategy.md) and ADR-PT02.
+- **System design references**: [Object–Service Design Blueprint](development/architecture/object-service-design-blueprint.md) and [System Design](development/system-design.md)
+
+## Development
+
+- Common commands: `make test`, `make lint`, `make format`, `make docs`, `poetry run mypy src/`
+- Optional dependency groups (development only): `tnh-scholar[ocr]`, `tnh-scholar[gui]`, `tnh-scholar[query]`, `tnh-scholar[dev]`
+- Troubleshooting and workflows: [DEV_SETUP.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md)
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md) for coding standards, testing expectations, and PR workflow. We welcome contributions from practitioners, developers, and scholars.
+
+## Documentation Overview
+
+- **Getting Started**: Installation, configuration, first-run guidance
+- **User Guide**: Task-oriented workflows and practical how-tos
+- **CLI Reference**: Auto-generated command documentation for every CLI entry point
+- **API**: Python API reference (mkdocstrings)
+- **Architecture**: ADRs, design docs, system diagrams by component
+- **Development**: Contributor guides, design principles, engineering practices
+- **Docs Ops**: Style guides, ADR template, documentation maintenance
+- **Research**: Experiments, evaluations, exploratory notes
+
+## Project Status
+
+TNH Scholar is currently in **alpha stage**. Expect ongoing API and workflow changes during active development.
+
+## Support & Community
+
+- Bug reports & feature requests: [GitHub Issues](https://github.com/aaronksolomon/tnh-scholar/issues)
+- Questions & discussions: [GitHub Discussions](https://github.com/aaronksolomon/tnh-scholar/discussions)
+
+## License
+
+This project is licensed under the [GPL-3.0 License](https://github.com/aaronksolomon/tnh-scholar/blob/main/LICENSE).
 
 ## Documentation Map
-
 
 ### Architecture
 
@@ -19,8 +94,9 @@ TNH Scholar is an AI-driven project exploring, processing, and translating the t
 - [TextObject System Design Document](architecture/ai-text-processing/design/textobject-new-design.md)
 - [TextObject Original Design](architecture/ai-text-processing/design/textobject-original-design.md)
 - [TNH Configuration Management](architecture/configuration/tnh-configuration.md)
-- [ADR-DD01: Documentation System Reorganization Strategy](architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md)
-- [Documentation Design](architecture/docs-design/design/documentation.md)
+- [ADR-DD01: Documentation System Reorganization Strategy](architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md)
+- [ADR-DD02: Documentation Main Content and Navigation Strategy](architecture/docs-system/adr/adr-dd02-docs-content-nav.md)
+- [Documentation Design](architecture/docs-system/design/documentation.md)
 - [ADR-A01: Adopt Object-Service for GenAI Interactions](architecture/gen-ai-service/adr/adr-a01-domain-service.md)
 - [ADR-A02: PatternCatalog Integration (V1)](architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1.md)
 - [ADR-A08: Configuration / Parameters / Policy Taxonomy](architecture/gen-ai-service/adr/adr-a08-config-params-policy.md)

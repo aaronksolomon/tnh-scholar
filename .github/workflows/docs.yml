@@ -9,7 +9,9 @@ on:
       - 'mkdocs.yaml'
       - 'scripts/generate_cli_docs.py'
       - 'scripts/generate_doc_index.py'
+      - 'scripts/generate_index_md.py'
       - 'scripts/sync_readme.py'
+      - 'scripts/check_readme_docs_drift.py'
       - '.github/workflows/docs.yml'
   pull_request:
     branches: [ main, develop, docs-reorg ]
@@ -19,7 +21,9 @@ on:
       - 'mkdocs.yaml'
       - 'scripts/generate_cli_docs.py'
       - 'scripts/generate_doc_index.py'
+      - 'scripts/generate_index_md.py'
       - 'scripts/sync_readme.py'
+      - 'scripts/check_readme_docs_drift.py'
       - '.github/workflows/docs.yml'
 
 jobs:
@@ -54,6 +58,12 @@ jobs:
         run: |
           poetry env use python
           poetry install --with dev --no-interaction --no-ansi
+
+      - name: Check documentation drift
+        run: |
+          poetry run python scripts/check_readme_docs_drift.py
+          cat docs_sync_report.txt
+        continue-on-error: true
 
       - name: Verify README ↔ docs/index.md sync
         run: poetry run python scripts/sync_readme.py

@@ -40,9 +40,10 @@ created: "YYYY-MM-DD"
 
 ## Heading & Summary Rules
 
-- Immediately after front matter, include a `# Title` heading that matches (or closely aligns with) the `title` field.
-- Follow the heading with a one-sentence or single-paragraph description that orients the reader. ADRs and reference docs must comply even if they also list metadata (Status, Date, Owner) right after the summary.
+- Immediately after front matter, include a `# Title` heading that **exactly matches** the YAML `title` field (character-for-character, including punctuation and capitalization).
+- Follow the heading with a one-sentence or single-paragraph description that orients the reader. This description should expand on or clarify the `description` field from front matter. ADRs and reference docs must comply even if they also list metadata (Status, Date, Owner) right after the summary.
 - Use hierarchical headings (`##`, `###`, etc.) without skipping levels. Avoid deep nesting beyond `####`.
+- **Validation**: A linting script (`scripts/validate_titles.py`) will verify YAML `title` matches `# Heading` exactly. CI will warn (but not fail) on mismatches until all legacy docs are updated.
 
 ## ADR Format
 
