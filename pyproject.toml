@@ -85,6 +85,8 @@ radon = "6.0.1"
 ruff = "0.9.2"
 types-PyYAML = "6.0.12.20241230"
 types-requests = "2.32.0.20241016"
+pre-commit = "^4.5.0"
+codespell = "2.3.0"
 
 [tool.poetry.scripts]
 audio-transcribe = "tnh_scholar.cli_tools.audio_transcribe.audio_transcribe:main"
