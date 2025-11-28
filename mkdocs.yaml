@@ -8,6 +8,7 @@ plugins:
   - search
   - gen-files:
       scripts:
+        - scripts/sync_root_docs.py
         - scripts/generate_mkdocs_nav.py
         - scripts/generate_cli_docs.py
   - literate-nav:

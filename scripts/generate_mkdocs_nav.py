@@ -2,11 +2,31 @@
 """Generate the literate navigation file consumed by mkdocs-literate-nav."""
 from __future__ import annotations
 
+import importlib.util
+import sys
 from pathlib import Path
 from typing import Iterable
 
 import yaml
 import mkdocs_gen_files
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+try:  # noqa: E402
+    from scripts.sync_root_docs import PROJECT_REPO_DIR, ROOT_DOCS, ROOT_DOC_DEST_MAP
+except ModuleNotFoundError:  # Fallback for mkdocs run_path isolation
+    sync_path = ROOT / "scripts" / "sync_root_docs.py"
+    spec = importlib.util.spec_from_file_location("sync_root_docs", sync_path)
+    if spec and spec.loader:
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        PROJECT_REPO_DIR = module.PROJECT_REPO_DIR
+        ROOT_DOCS = module.ROOT_DOCS
+        ROOT_DOC_DEST_MAP = module.ROOT_DOC_DEST_MAP
+    else:
+        raise
 
 DOCS_DIR = Path("docs")
 NAV_FILENAME = "docs-nav.md"
@@ -21,6 +41,7 @@ TOP_LEVEL_ORDER = [
     "architecture",
     "development",
     "docs-ops",
+    "project",
     "research",
 ]
 TITLE_OVERRIDES = {
@@ -37,10 +58,14 @@ DEFAULT_BUCKET = len(TOP_LEVEL_ORDER) + 1
 
 
 def iter_markdown_files() -> Iterable[Path]:
-    """Yield all Markdown files under docs/ ordered by the navigation rules."""
+    """Yield Markdown files under docs/ plus generated project docs."""
     if not DOCS_DIR.exists():
         return []
-    return sorted(DOCS_DIR.rglob("*.md"), key=nav_sort_key)
+    files = set(DOCS_DIR.rglob("*.md"))
+    project_paths = {DOCS_DIR / PROJECT_REPO_DIR / ROOT_DOC_DEST_MAP.get(name, name) for name in ROOT_DOCS}
+    project_paths.add(DOCS_DIR / PROJECT_REPO_DIR / "index.md")
+    files.update(project_paths)
+    return sorted(files, key=nav_sort_key)
 
 
 def nav_sort_key(path: Path) -> tuple:
@@ -65,8 +90,16 @@ def read_title(path: Path) -> str | None:
     """Extract the `title` field from YAML front matter if present."""
     try:
         text = path.read_text(encoding="utf-8")
-    except UnicodeDecodeError:
-        return None
+    except (UnicodeDecodeError, FileNotFoundError):
+        # Allow generated project docs to fall back to root source metadata.
+        if path.parts[: len(PROJECT_REPO_DIR.parts)] == PROJECT_REPO_DIR.parts:
+            source = Path(path.name)
+            try:
+                text = source.read_text(encoding="utf-8")
+            except (OSError, UnicodeDecodeError):
+                return None
+        else:
+            return None
     lines = text.splitlines()
     if not lines or lines[0].strip() != "---":
         return None
