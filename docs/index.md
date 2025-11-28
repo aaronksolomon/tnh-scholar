@@ -4,20 +4,26 @@ description: Comprehensive documentation for TNH Scholar, an AI-driven project e
   processing, and translating the teachings of Thich Nhat Hanh.
 ---
 
-
-
-
-
 # TNH Scholar Documentation
 
-TNH Scholar is an AI-driven project designed to explore, process, and translate the teachings of Thich Nhat Hanh and the Plum Village community. This page expands on the README with deeper onboarding, architecture context, and curated navigation for the published docs site.
+TNH Scholar is an AI-driven project designed to explore, process, and translate the teachings of Thich Nhat Hanh and the Plum Village community. For a more concise intro to the project, see the [README](project/repo-root/repo-readme.md). This document contains deeper onboarding and architectural context.
 
 ## Vision & Goals
 
-- Make Plum Village teachings more accessible and discoverable through modern AI workflows
-- Translate with cultural sensitivity while keeping provenance clear
-- Turn audio/transcripts into structured, searchable formats
-- Provide reliable tools for practitioners, developers, and researchers
+- **Make Plum Village teachings accessible, discoverable, and navigable** through modern AI workflows, multimodal interfaces, and structured corpora.  
+- **Translate teachings across languages with precision and cultural sensitivity**, while maintaining robust **provenance**, **version history**, and **source transparency**.  
+- **Convert audio, video, and archival transcripts into structured, searchable formats**, enabling deep research on dharma talks and historical materials.  
+- **Organize, index, and search key concepts, themes, and doctrinal insights** across Thich Nhat Hanh’s written works, talks, poems, letters, and journal materials.  
+- **Provide reliable, high-fidelity tools for practitioners, developers, historians, and researchers**, spanning everything from simple lookups to advanced analysis.  
+- **Support scholarly research for monastic and lay students** in the Plum Village tradition, encouraging rigorous engagement with texts, commentary, and historical context.  
+- **Discover subtle connections between teachings, topics, and practices** through embeddings, cross-lingual alignment, metadata, and semantic search.  
+- **Engage with the tradition through interactive and programmatic tools**, including APIs, conversational agents, structured datasets, translation assistants, and learning modules.  
+- **Build a canonical, clean, multi-lingual corpus** (Vietnamese, English, French, Chinese, Tibetan, etc.) with sentence-level alignment, footnotes, metadata, and context markers.  
+- **Preserve historical materials** (e.g., 1950s Vietnamese Buddhist journals, manuscripts, early Plum Village publications) with accurate OCR, restoration, and annotation.  
+- **Ensure long-term reproducibility, integrity, and openness** through consistent provenance tracking, fingerprinting, and transparent model-training workflows.  
+- **Enable deep comparative Buddhist studies** through cross-text indexing (Pali, Sanskrit, Chinese, Tibetan canons) and alignments of terminology, concepts, and doctrinal parallels.  
+- **Provide tools for teaching and learning**, including guided exploration, topic overviews, glossaries, bilingual reading tools, and structured learning pathways.  
+- **Serve as a foundation for future embodied or dialogical systems**, including guided practice companions, study assistants, and advanced interactive Dharma tools.
 
 ## Features
 
@@ -30,10 +36,12 @@ TNH Scholar is an AI-driven project designed to explore, process, and translate 
 ## Quick Start
 
 - Install from PyPI and run the setup helper:
+
   ```bash
   pip install tnh-scholar
   tnh-setup
   ```
+
 - Configure credentials (OpenAI, optional Google Vision) per [Configuration](getting-started/configuration.md)
 - Run your first workflow via the [Quick Start Guide](getting-started/quick-start.md)
 
