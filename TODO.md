@@ -69,7 +69,7 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 5. 🚧 Unify OpenAI Clients
 
-- **Status**: PHASE 1 COMPLETE ✅ (5/6 phases remaining)
+- **Status**: PHASE 1 COMPLETE ✅ 
 - **Priority**: HIGH
 - **ADR**: [ADR-A13: Legacy Client Migration](docs/architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md)
 - **Plan**: [Migration Plan](docs/architecture/gen-ai-service/design/migration-plan.md)
@@ -166,6 +166,21 @@ This section organizes work into three priority levels based on criticality for 
      - [x] **4d (COMPLETED)**: Normalize internal documentation links; refactor doc-index generation to single `docs/documentation_index.md` with relative links
      - [x] **4e (COMPLETED)**: Enable filesystem-driven nav with mkdocs-literate-nav
      - [x] **4f (COMPLETED - ADR-DD02)**: Add drift reporting (`check_readme_docs_drift.py`) with Makefile target and CI integration
+     - [ ] **4g (PLANNED)**: Documentation testing and validation workflow
+       - **Phase 1: Quick Wins** (CI now)
+         - [x] Enable `mkdocs build --strict` in `docs-verify` (fail on warnings)
+         - [x] Add link checking with `lychee` + `.lychee.toml` (ignore flaky/external as needed)
+         - [x] Add `codespell` with `.codespell-ignore.txt` (dharma terms/proper nouns); wire into pre-commit/CI
+         - [x] Create `docs-quickcheck` make target: sync_root_docs → mkdocs --strict → lychee → codespell
+       - **Phase 2: Metadata Validation** (Beta gate)
+         - [ ] Add `scripts/check_doc_metadata.py` to validate front matter (title/description/status) and warn on empty descriptions
+         - [ ] Detect orphaned docs not reachable from nav (using generated nav) and report missing descriptions
+         - [ ] Add metadata check to pre-commit and CI
+       - **Phase 3: Coverage & Structure** (Prod polish)
+         - [ ] Add `interrogate` for Python docstring coverage (threshold on `src/tnh_scholar`, skip tests/scripts)
+         - [ ] Validate ADRs follow template sections (Context/Decision/Consequences) + required front matter
+         - [ ] Run offline/internal link check on built site (`lychee --offline` on `site/`)
+         - [ ] Optional: add `vale` with a minimal style guide for docs tone/consistency
   5. **Historical Archive + Discoverability**
      - [ ] Move legacy ADRs/prototypes/research transcripts into `docs/archive/**`
      - [ ] Create archive index + add summary links from primary sections
@@ -179,6 +194,27 @@ This section organizes work into three priority levels based on criticality for 
      - [ ] Create refreshed architecture overview page within `architecture/`
      - [ ] Finish Pattern → PromptTemplate rename across docs/CLI text
      - [ ] Establish research artifact archival workflow (external storage + summary linking)
+  8. **Include Root Markdown Files in MkDocs Navigation**
+     - **Status**: NOT STARTED
+     - **Priority**: MEDIUM (Part of docs-reorg cleanup)
+     - **Goal**: Make root-level config/meta files (README, TODO, CHANGELOG, CONTRIBUTING, DEV_SETUP, release_checklist) discoverable in mkdocs navigation and documentation index
+     - **Approach**: Build-time copy with "DO NOT EDIT" warnings
+       - [ ] Create `docs/project/` directory for project meta-documentation
+       - [ ] Create `scripts/sync_root_docs.py` to copy root markdown files:
+         - [ ] Copy root `.md` files (README, TODO, CHANGELOG, CONTRIBUTING, DEV_SETUP, release_checklist) to `docs/project/`
+         - [ ] Prepend HTML comment warning to each copied file: `<!-- DO NOT EDIT: Auto-generated from /{filename}. Edit the root file instead. -->`
+         - [ ] Mark files with `auto_generated: true` in front matter or add to existing front matter
+       - [ ] Add `docs/project/*.md` to `.gitignore` (except `index.md` if hand-written)
+       - [ ] Update `scripts/generate_mkdocs_nav.py` or add to gen-files plugin to run sync script
+       - [ ] Update Makefile `docs` target to run sync script before mkdocs build
+       - [ ] Test documentation build: `make docs`
+       - [ ] Verify copied files appear in navigation and documentation index
+       - [ ] Update internal doc references from GitHub URLs to relative paths:
+         - [ ] Search: `https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md`
+         - [ ] Replace with: `project/CONTRIBUTING.md` (or appropriate relative path)
+       - [ ] Verify docs/index.md links resolve correctly
+       - [ ] Create `docs/project/index.md` with section overview explaining these are project meta-docs
+       - [ ] Add CI check to verify docs/project/ files are in sync (optional safety check)
 
 #### 10. 🚧 Type System Improvements
 
