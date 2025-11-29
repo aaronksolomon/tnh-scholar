@@ -6,7 +6,7 @@ This document provides a clear, non-technical introduction to the TNH‑Scholar 
 
 ---
 
-## 2. Short Project Description (For Quick Understanding)
+## 2. Short Project Description
 
 **TNH‑Scholar** is a long-term digital humanities and AI‑assisted research project dedicated to:
 
@@ -15,8 +15,8 @@ This document provides a clear, non-technical introduction to the TNH‑Scholar 
 - developing tools for practitioners, educators, editors, researchers, and archivists,
 - ensuring high accuracy, transparency, and lineage‑faithfulness through provenance tracking and human‑guided AI workflows.
 
-Though it has been joked about, this project is **not** aimed at creating a chatbot to imitate Thầy; though chat based features have the potential to be explored.
-It **is** a *scholarly infrastructure*, a set of tools that help people understand, translate, cross‑reference, and preserve the teachings with care.
+Though it has been joked about, this project is **not** aimed at creating a chatbot to imitate Thầy; chat based features certainly have the potential to be explored.
+It **is** aimed at creating a *scholarly infrastructure*, a set of tools that help people understand, translate, cross‑reference, and preserve the teachings with care.
 
 Core goals:
 
