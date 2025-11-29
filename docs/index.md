@@ -215,4 +215,4 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 
 - [Best Practices](user-guide/best-practices.md)
 - [User Guide Overview](user-guide/overview.md)
-- [TNH Scholar Pattern System](user-guide/patterns.md)
+- [TNH Scholar Prompt System](user-guide/prompts.md)
