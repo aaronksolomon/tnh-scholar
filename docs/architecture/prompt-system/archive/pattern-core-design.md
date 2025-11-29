@@ -8,7 +8,7 @@ created: "2025-02-26"
 ---
 # Core Pattern Architecture: Meta-patterns, Textual Expansion Processing
 
-> **Terminology Note**: This document uses historical "Pattern" terminology. In current TNH Scholar documentation, "Pattern" has been replaced with "Prompt" to align with industry standards. See [ADR-DD03](../architecture/docs-system/adr/adr-dd03-pattern-prompt-terminology.md) for details on the terminology standardization.
+> **Terminology Note**: This document uses historical "Pattern" terminology. In current TNH Scholar documentation, "Pattern" has been replaced with "Prompt" to align with industry standards. See [ADR-DD03](../../docs-system/adr/adr-dd03-pattern-prompt-terminology.md) for details on the terminology standardization.
 >
 > When reading this document:
 >

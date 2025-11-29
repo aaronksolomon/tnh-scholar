@@ -29,7 +29,7 @@ The TNH Scholar prompt system currently uses:
 
 - **Git-based Storage**: Prompts stored as versioned text files in `~/.config/tnh_scholar/patterns/` (directory name retained for backwards compatibility)
 - **Jinja2 Templates**: Prompts are Jinja2 templates rendered with context variables before AI processing
-- **LocalPatternManager**: Singleton pattern manager providing global access to prompts (prototype phase, see [ADR-PT01](archive/adr/adr-pt01-pattern-access-strategy.md))
+- **LocalPatternManager**: Singleton pattern manager providing global access to prompts (prototype phase, see [ADR-PT01](../archive/adr/adr-pt01-pattern-access-strategy.md))
 - **CLI Integration**: Command-line tools (`tnh-fab`) use prompts via `--pattern` flag
 
 ### Key Components
@@ -61,7 +61,7 @@ All user-facing documentation has been updated to use "Prompt" instead of "Patte
 **Scope**: Documentation only (code refactoring tracked separately)
 
 **Key Changes**:
-- Updated [docs/index.md](../../../index.md), [README.md](../../../../README.md), getting-started/, user-guide/
+- Updated docs/index.md, README.md, getting-started/, user-guide/
 - Renamed `docs/user-guide/patterns.md` → `prompts.md`
 - Renamed `docs/architecture/pattern-system/` → `prompt-system/`
 - Added historical terminology note to docs/index.md explaining Pattern→Prompt shift
@@ -72,8 +72,8 @@ All user-facing documentation has been updated to use "Prompt" instead of "Patte
 ### Historical Context
 
 Earlier architectural explorations (now archived):
-- [ADR-PT01](archive/adr/adr-pt01-pattern-access-strategy.md): Pattern Access Strategy (singleton → dependency injection transition plan)
-- [ADR-PT02](archive/adr/adr-pt02-pattern-catalog.md): Adopt Pattern and PatternCatalog (Rejected in favor of industry-standard "Prompt" terminology)
+- [ADR-PT01](../archive/adr/adr-pt01-pattern-access-strategy.md): Pattern Access Strategy (singleton → dependency injection transition plan)
+- [ADR-PT02](../archive/adr/adr-pt02-pattern-catalog.md): Adopt Pattern and PatternCatalog (Rejected in favor of industry-standard "Prompt" terminology)
 
 These ADRs document the evolution from prototype singleton architecture toward production dependency-injection patterns. See `archive/adr/` for historical context.
 
@@ -109,7 +109,7 @@ These ADRs document the evolution from prototype singleton architecture toward p
 
 **Status**: Design phase; awaiting gen-ai-service ADRs
 
-**Historical Reference**: [ADR-PT01 Phase 2](archive/adr/adr-pt01-pattern-access-strategy.md#phase-2-production) outlined dependency-injection transition path
+**Historical Reference**: [ADR-PT01 Phase 2](../archive/adr/adr-pt01-pattern-access-strategy.md#phase-2-production) outlined dependency-injection transition path
 
 ### 3. tnh-gen CLI Redesign
 
@@ -168,11 +168,11 @@ Future enhancements will preserve these principles while adding:
 ### Related ADRs
 - [ADR-DD03: Pattern to Prompt Terminology Standardization](../../docs-system/adr/adr-dd03-pattern-prompt-terminology.md) - Documentation terminology shift
 - [ADR-VSC01: VS Code Integration Strategy](../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat.md) - VS Code extension requirements
-- [Archive: ADR-PT01](archive/adr/adr-pt01-pattern-access-strategy.md) - Historical architecture decisions
-- [Archive: ADR-PT02](archive/adr/adr-pt02-pattern-catalog.md) - Historical terminology decision (rejected)
+- [Archive: ADR-PT01](../archive/adr/adr-pt01-pattern-access-strategy.md) - Historical architecture decisions
+- [Archive: ADR-PT02](../archive/adr/adr-pt02-pattern-catalog.md) - Historical terminology decision (rejected)
 
 ### Development Documentation
-- [Core Pattern Architecture](../../../development/pattern-core-design.md) - Detailed architectural concepts (uses legacy "Pattern" terminology)
+- [Core Pattern Architecture](../archive/pattern-core-design.md) - Detailed architectural concepts (uses legacy "Pattern" terminology)
 - [System Design](../../../development/system-design.md) - High-level system architecture
 
 ## Status

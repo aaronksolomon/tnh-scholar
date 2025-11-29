@@ -33,7 +33,7 @@ TNH Scholar is an AI-driven project designed to explore, process, and translate 
 - **Text formatting and translation**: `tnh-fab` for punctuation, translation, sectioning, and prompt-driven processing
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
-- **Prompt system**: See ADRs under [Prompt System](architecture/prompt-system/adr/adr-pt01-pattern-access-strategy.md) for decisions and roadmap
+- **Prompt system**: See [Prompt System Architecture](architecture/prompt-system/prompt-architecture.md) and [ADR-PT03](architecture/prompt-system/adr/adr-pt03-current-status-roadmap.md) for current status and roadmap
 
 ## Quick Start
 
@@ -50,7 +50,7 @@ TNH Scholar is an AI-driven project designed to explore, process, and translate 
 ## Getting Started (persona-based)
 
 - **Practitioners**: Follow [Installation](getting-started/installation.md), then the [Quick Start Guide](getting-started/quick-start.md); explore workflows in the [User Guide](user-guide/overview.md)
-- **Developers**: Set up via [DEV_SETUP.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md) and [Contributing](https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md); review [System Design](development/system-design.md) and [Design Guide](development/design-guide.md); see the [CLI Overview](cli/overview.md)
+- **Developers**: Set up via [DEV_SETUP.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md) and [Contributing](https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md); review [System Design](development/system-design.md), [Style Guide](development/style-guide.md), and [Design Principles](development/design-principles.md); see the [CLI Overview](cli/overview.md)
 - **Researchers**: Start with [Research](research/) for experiments and notes; for knowledge-base direction see [ADR-K01](architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design.md); review [Architecture](architecture/) for transcription/translation pipelines
 
 ## Architecture Overview
@@ -58,8 +58,8 @@ TNH Scholar is an AI-driven project designed to explore, process, and translate 
 - **Docs strategy**: [ADR-DD01](architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md) and [ADR-DD02](architecture/docs-system/adr/adr-dd02-docs-content-nav.md)
 - **GenAI service layer**: See [GenAI Service Strategy](architecture/gen-ai-service/design/genai-service-strategy.md) and the ADR-A series.
 - **Transcription pipeline**: See [ADR-TR01](architecture/transcription/adr/adr-tr01-assemblyai-integration.md) and related ADR-TR docs (diarization, chunking, timing).
-- **Prompt design**: See [ADR-PT01](architecture/prompt-system/adr/adr-pt01-pattern-access-strategy.md) and ADR-PT02.
-- **System design references**: [Object–Service Design Blueprint](development/architecture/object-service-design-blueprint.md) and [System Design](development/system-design.md)
+- **Prompt design**: See [Prompt Architecture](architecture/prompt-system/prompt-architecture.md) and [ADR-PT03](architecture/prompt-system/adr/adr-pt03-current-status-roadmap.md) for current status; archived ADRs in [archive/adr/](architecture/prompt-system/archive/adr/)
+- **System design references**: [Object-Service Design](architecture/object-service/design-overview.md) and [System Design](development/system-design.md)
 
 ## Development
 
@@ -122,8 +122,8 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [LUÂN-HỒI](architecture/jvb-viewer/design/output1.md)
 - [ADR-K01: Preliminary Architectural Strategy for TNH Scholar Knowledge Base](architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design.md)
 - [ADR-MD01: Adoption of JSON-LD for Metadata Management](architecture/metadata/adr/adr-md01-metadata-strategy.md)
-- [ADR-PT01: Pattern Access Strategy](architecture/prompt-system/adr/adr-pt01-pattern-access-strategy.md)
-- [ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts](architecture/prompt-system/adr/adr-pt02-pattern-catalog.md)
+- [ADR-PT03: Prompt System Current Status & Roadmap](architecture/prompt-system/adr/adr-pt03-current-status-roadmap.md)
+- [Prompt System Architecture](architecture/prompt-system/prompt-architecture.md)
 - [minimal but extensible setup tool for the prototyping phase](architecture/setup-tnh/design/setup-design.md)
 - [TNH FAB Design Document](architecture/tnh-fab/design/text-processing-cli-design-v1.md)
 - [TNH-FAB Command Line Tool Specification](architecture/tnh-fab/design/text-processing-cli-design-v2.md)
@@ -176,19 +176,16 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 
 ### Development
 
-- [API Integration Blueprint (Generic)](development/architecture/api-integration-blueprint_(old).md)
-- [Object–Service Design Blueprint (Integrated)](development/architecture/object-service-design-blueprint-v2.md)
-- [TNH Scholar Object & Service Design Blueprint](development/architecture/object-service-design-blueprint.md)
-- [Object-Service Design Blueprint: Critical Gaps & Clarifications](development/architecture/object-service-gaps.md)
+- [ADR-OS01: Object-Service Design Architecture V3](architecture/object-service/adr/adr-os01-design-v3.md)
+- [Object-Service Design Overview](architecture/object-service/design-overview.md)
+- [Object-Service Implementation Status](architecture/object-service/implementation-status.md)
 - [Contributing to TNH Scholar (Prototype Phase)](development/contributing.md)
-- [TNH Scholar Design Guide](development/design-guide.md)
+- [TNH Scholar Style Guide](development/style-guide.md)
+- [TNH Scholar Design Principles](development/design-principles.md)
 - [Fine Tuning Strategy](development/fine-tuning-strategy.md)
 - [Human-AI Software Engineering Principles](development/human-agent-coding-principles.md)
 - [Improvements / Initial structure](development/initial-improvements.md)
-- [Core Pattern Architecture: Meta-patterns, Textual Expansion Processing](development/pattern-core-design.md)
 - [TNH Scholar System Design](development/system-design.md)
-- [yt-dlp Format Selection Guide](development/yt-dlp_docs/ytdlp-formats.md)
-- [yt-dlp Comprehensive Guide](development/yt-dlp_docs/ytdlp-guide.md)
 
 ### Docs Ops
 
