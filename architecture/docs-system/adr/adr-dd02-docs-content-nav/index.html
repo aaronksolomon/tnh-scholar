@@ -1,0 +1,6730 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Defines content architecture, sync mechanisms, and navigation patterns for README.md, docs/index.md, and filesystem-driven documentation.">
+      
+      
+        <meta name="author" content="Claude (Sonnet 4.5)">
+      
+      
+      
+        <link rel="prev" href="../adr-dd01-docs-reorg-strat/">
+      
+      
+        <link rel="next" href="../adr-dd03-pattern-prompt-terminology/">
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>ADR-DD02: Documentation Main Content and Navigation Strategy - TNH Scholar Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adr-dd02-documentation-main-content-and-navigation-strategy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TNH Scholar Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ADR-DD02: Documentation Main Content and Navigation Strategy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TNH Scholar Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar Documentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Best Practices
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Guide Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../user-guide/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar Pattern System
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CLI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/audio-transcribe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/nfmt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nfmt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Line Tools Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-fab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/tnh-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-setup
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/token-count/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    token-count
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli/ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Cli Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Cli Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli-reference/audio-transcribe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    audio-transcribe
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--auto_generated"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli-reference/json-to-srt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    json-to-srt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--auto_generated"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli-reference/nfmt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nfmt
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--auto_generated"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli-reference/sent-split/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    sent-split
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--auto_generated"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli-reference/srt-translate/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    srt-translate
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--auto_generated"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli-reference/tnh-fab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-fab
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--auto_generated"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli-reference/tnh-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-setup
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--auto_generated"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli-reference/token-count/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    token-count
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--auto_generated"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli-reference/ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ytt-fetch
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--auto_generated"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AI Text Processing
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            AI Text Processing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1_1" id="__nav_7_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-AT01: AI Text Processing Pipeline Redesign
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-AT02: TextObject Architecture Decision Records
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--historical"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_1_2" id="__nav_7_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-text-processing/design/textobject-new-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TextObject System Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TextObject Original Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../configuration/tnh-configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Configuration Management
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs System
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            Docs System
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7_3_1" id="__nav_7_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-dd01-docs-reorg-strat/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-DD01: Documentation System Reorganization Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ADR-DD02: Documentation Main Content and Navigation Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--approved"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    ADR-DD02: Documentation Main Content and Navigation Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--approved"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Problems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Constraints
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-content-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Content Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Content Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#readmemd-concise-project-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      README.md: Concise Project Gateway
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docsindexmd-comprehensive-documentation-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      docs/index.md: Comprehensive Documentation Hub
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-content-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shared Content Strategy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-navigation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Navigation Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Navigation Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filesystem-driven-navigation-literate-nav" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filesystem-Driven Navigation (Literate-Nav)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#section-index-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section Index Pages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-map-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Map Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-content-drift-monitoring-phase-1-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Content Drift Monitoring (Phase 1 MVP)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Content Drift Monitoring (Phase 1 MVP)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lightweight-drift-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lightweight Drift Reporting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Points
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceptable-divergence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Acceptable Divergence
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-content-inclusion-patterns-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Content Inclusion Patterns (Future)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-maintenance-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Maintenance Workflows
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Maintenance Workflows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updating-readmemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating README.md
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-docsindexmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating docs/index.md
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-new-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding New Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reorganizing-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reorganizing Content
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-implementation-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Implementation Phases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Implementation Phases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-simple-independence-with-drift-reporting-current-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Simple Independence with Drift Reporting (Current Priority)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-content-inclusion-patterns-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Content Inclusion Patterns (Future)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-advanced-automation-future-if-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Advanced Automation (Future, If Needed)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative / Risks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mitigation-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mitigation Strategies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions-future-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions &amp; Future Decisions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#approval-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Approval &amp; Tracking
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-dd03-pattern-prompt-terminology/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-DD03: Pattern to Prompt Terminology Standardization
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3_2" id="__nav_7_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Documentation Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    GenAI Service
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4">
+            <span class="md-nav__icon md-icon"></span>
+            GenAI Service
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4_1" id="__nav_7_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/adr/adr-a01-domain-service/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-A01: Adopt Object-Service for GenAI Interactions
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/adr/adr-a02-pattern-catalog-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-A02: PatternCatalog Integration (V1)
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-A08: Configuration / Parameters / Policy Taxonomy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-A09: V1 Simplified Implementation Pathway
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-A11: Model Parameters and Strong Typing Fix
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-A12: Prompt System & Fingerprinting Architecture (V1)
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/adr/adr-a13-legacy-client-migration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-A13: Migrate All OpenAI Interactions to GenAIService
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4_2" id="__nav_7_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/design/genai-service-strategy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GenAI Service — Design Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/design/migration-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenAI Interface Migration Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Jvb Viewer
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5">
+            <span class="md-nav__icon md-icon"></span>
+            Jvb Viewer
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_5_1" id="__nav_7_5_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../jvb-viewer/design/instruction-test0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generate Markdown Translation JSON Pairs
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../jvb-viewer/design/instruction-test1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generate Markdown Vietnamese
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../jvb-viewer/design/jvb-strat-001/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JVB Viewer — Version 2 Strategy & High‑Level Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../jvb-viewer/design/output1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LUÂN-HỒI
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Knowledge Base
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_6">
+            <span class="md-nav__icon md-icon"></span>
+            Knowledge Base
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_6_1" id="__nav_7_6_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../knowledge-base/adr/adr-k01-preliminary-architectural-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-K01: Preliminary Architectural Strategy for TNH Scholar Knowledge Base
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_7" id="__nav_7_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Metadata
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_7">
+            <span class="md-nav__icon md-icon"></span>
+            Metadata
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_7_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_7_1" id="__nav_7_7_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_7_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../metadata/adr/adr-md01-metadata-strategy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-MD01: Adoption of JSON-LD for Metadata Management
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_8" id="__nav_7_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Pattern System
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_8">
+            <span class="md-nav__icon md-icon"></span>
+            Pattern System
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_8_1" id="__nav_7_8_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pattern-system/adr/adr-pt01-pattern-access-strategy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-PT01: Pattern Access Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pattern-system/adr/adr-pt02-pattern-catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_9" id="__nav_7_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Setup Tnh
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_9">
+            <span class="md-nav__icon md-icon"></span>
+            Setup Tnh
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_9_1" id="__nav_7_9_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_9_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_9_1">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../setup-tnh/design/setup-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    minimal but extensible setup tool for the prototyping phase
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_10" id="__nav_7_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tnh Fab
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_10">
+            <span class="md-nav__icon md-icon"></span>
+            Tnh Fab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_10_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_10_1" id="__nav_7_10_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_10_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_10_1">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH FAB Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH-FAB Command Line Tool Specification
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_11" id="__nav_7_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Transcription
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_11">
+            <span class="md-nav__icon md-icon"></span>
+            Transcription
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_11_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_11_1" id="__nav_7_11_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_11_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TR01: AssemblyAI Integration for Transcription Service
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/adr/adr-tr02-optimize-srt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TR02: Optimized SRT Generation Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/adr/adr-tr03-standard-timestamp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TR03: Standardizing Timestamps to Milliseconds
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TR04: AssemblyAI Service Implementation Improvements
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_11_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_11_2" id="__nav_7_11_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_11_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_11_2">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/additional-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diarization Chunker Module Design Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/audio-chunk-splitting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Chunking Algorithm Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/chunking-strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Simplified Language-Aware Chunking Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/chunking-strategies0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Language-Aware Chunking Orchestrator Notes
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/diarization-algorithms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diarization Algorithms
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/diarization-algorithms0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Speaker Diarization Algorithm Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/diarization-system0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Speaker Diarization and Time-Mapped Transcription System Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/diarization-system1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diarization System Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/gpt-modular-pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modular Pipeline Design: Best Practices for Audio Transcription and Diarization
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/language-chunking-algorithm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Practical Language-Aware Chunking Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/segment-match-algorithm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interval-to-Segment Mapping Algorithm
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/timeline-mapping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TimelineMapper Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_12" id="__nav_7_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Ui Ux
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_12">
+            <span class="md-nav__icon md-icon"></span>
+            Ui Ux
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_12_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_12_1" id="__nav_7_12_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_12_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_12_1">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ui-ux/design/ui-ux-strategy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Strategy: VS Code as UI/UX Platform for TNH Scholar
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_12_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_12_2" id="__nav_7_12_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Vs Code Integration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_12_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_12_2">
+            <span class="md-nav__icon md-icon"></span>
+            Vs Code Integration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adr Vsc01 Vscode Integration Strat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_13" id="__nav_7_13_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Utilities
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_13">
+            <span class="md-nav__icon md-icon"></span>
+            Utilities
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_13_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_13_1" id="__nav_7_13_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_13_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_13_1">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../utilities/design/utilities-catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH‑Scholar Utilities Catalog
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../utilities/design/version-checking-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Package Version Checker Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_14" id="__nav_7_14_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Video Processing
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_14">
+            <span class="md-nav__icon md-icon"></span>
+            Video Processing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_14_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_14_1" id="__nav_7_14_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_14_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_14_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-VP01: Video Processing Return Types and Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_15" id="__nav_7_15_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_15">
+            <span class="md-nav__icon md-icon"></span>
+            YTT Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_15_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_15_1" id="__nav_7_15_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_15_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_15_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-YF00: Early yt-fetch Transcript Decisions (Historical)
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--historical"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-YF01: YouTube Transcript Source Handling
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-YF02: YouTube Transcript Format Selection
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_15_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_15_2" id="__nav_7_15_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_15_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_15_2">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YouTube API vs yt-dlp Evaluation
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing to TNH Scholar (Prototype Phase)
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/design-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar Design Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/fine-tuning-strategy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine Tuning Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/human-agent-coding-principles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Human-AI Software Engineering Principles
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/initial-improvements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Improvements / Initial structure
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/pattern-core-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Core Pattern Architecture: Meta-patterns, Textual Expansion Processing
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar System Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_8" id="__nav_8_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_8">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/architecture/api-integration-blueprint_%28old%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Integration Blueprint (Generic)
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/architecture/object-service-design-blueprint-v2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object–Service Design Blueprint (Integrated)
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/architecture/object-service-design-blueprint/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar Object & Service Design Blueprint
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/architecture/object-service-gaps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object-Service Design Blueprint: Critical Gaps & Clarifications
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_9" id="__nav_8_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Yt Dlp Docs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_9">
+            <span class="md-nav__icon md-icon"></span>
+            Yt Dlp Docs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/yt-dlp_docs/ytdlp-formats/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    yt-dlp Format Selection Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/yt-dlp_docs/ytdlp-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    yt-dlp Comprehensive Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Docs Ops
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Docs Ops
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-ops/adr-template/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR Template
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-ops/markdown-standards/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Markdown Standards
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs-ops/mkdocs-warning-backlog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MkDocs Strict Warning Backlog
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Project
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Project
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/conceptual-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conceptual Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/future-directions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Future Directions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/philosophy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Philosophy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/principles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Principles
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/vision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/repo-root/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Project Docs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_10_7" id="__nav_10_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Repo Root
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_7">
+            <span class="md-nav__icon md-icon"></span>
+            Repo Root
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/repo-root/CHANGELOG/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/repo-root/CONTRIBUTING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing to TNH Scholar
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/repo-root/DEV_SETUP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH-Scholar — Development Setup Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/repo-root/TODO/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar TODO List
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/repo-root/release_checklist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release Checklist
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/repo-root/repo-readme/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../research/gpt_development_convos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPT Development Convos
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../research/metadata_report/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    *Summary Report on Metadata Extraction, Source Parsing, and Model Training for TNH-Scholar*
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../research/preliminary_feasibility_study/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Preliminary Feasibility Study
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../research/strategic-information-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Structural-Informed Adaptive Processing (SIAP) Methodology
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../research/tnh-scholar-knowledge-vector-search/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar Knowledge Base: Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_6" id="__nav_11_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Gpt 4O Search Query Text Pair Testing
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_6">
+            <span class="md-nav__icon md-icon"></span>
+            Gpt 4O Search Query Text Pair Testing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../research/gpt_4o_search_query_text_pair_testing/testing_input_output/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1-3 Word Queries
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_7" id="__nav_11_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Gpt 4O Translations Experiments
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_7">
+            <span class="md-nav__icon md-icon"></span>
+            Gpt 4O Translations Experiments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../research/gpt_4o_translations_experiments/passage_test/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Passage Test
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../documentation_index/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Documentation Index
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tnh_scholar_parallax_overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tnh Scholar Parallax Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Problems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Constraints
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-content-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Content Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Content Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#readmemd-concise-project-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      README.md: Concise Project Gateway
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docsindexmd-comprehensive-documentation-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      docs/index.md: Comprehensive Documentation Hub
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-content-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shared Content Strategy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-navigation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Navigation Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Navigation Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filesystem-driven-navigation-literate-nav" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filesystem-Driven Navigation (Literate-Nav)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#section-index-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section Index Pages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-map-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Map Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-content-drift-monitoring-phase-1-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Content Drift Monitoring (Phase 1 MVP)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Content Drift Monitoring (Phase 1 MVP)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lightweight-drift-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lightweight Drift Reporting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Points
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceptable-divergence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Acceptable Divergence
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-content-inclusion-patterns-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Content Inclusion Patterns (Future)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-maintenance-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Maintenance Workflows
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Maintenance Workflows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updating-readmemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating README.md
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-docsindexmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating docs/index.md
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-new-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding New Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reorganizing-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reorganizing Content
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-implementation-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Implementation Phases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Implementation Phases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-simple-independence-with-drift-reporting-current-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Simple Independence with Drift Reporting (Current Priority)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-content-inclusion-patterns-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Content Inclusion Patterns (Future)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-advanced-automation-future-if-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Advanced Automation (Future, If Needed)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative / Risks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mitigation-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mitigation Strategies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions-future-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions &amp; Future Decisions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#approval-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Approval &amp; Tracking
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="adr-dd02-documentation-main-content-and-navigation-strategy">ADR-DD02: Documentation Main Content and Navigation Strategy</h1>
+<p>Establishes how README.md and docs/index.md relate, defines content inclusion patterns, and specifies navigation automation with mkdocs-literate-nav.</p>
+<ul>
+<li><strong>Status</strong>: Proposed</li>
+<li><strong>Date</strong>: 2025-11-23</li>
+<li><strong>Owner</strong>: Documentation Working Group</li>
+<li><strong>Supersedes</strong>: None</li>
+<li><strong>Related</strong>: <a href="../adr-dd01-docs-reorg-strat/">ADR-DD01: Documentation System Reorganization Strategy</a></li>
+</ul>
+<h2 id="context">Context</h2>
+<p>Following ADR-DD01's filesystem reorganization and literate-nav adoption (TODO #9, Part 4e complete), we now have:</p>
+<ul>
+<li><strong>README.md</strong>: Rich user-facing content with Vision &amp; Goals, Features, Quick Start, Installation, and Documentation Structure overview</li>
+<li><strong>docs/index.md</strong>: Auto-generated sparse documentation map—just a flat list of all documents by section</li>
+<li><strong>Navigation</strong>: Filesystem-driven via <code>generate_mkdocs_nav.py</code> producing <code>docs-nav.md</code> for mkdocs-literate-nav</li>
+<li><strong>Build automation</strong>: Scripts for CLI docs generation, doc-index generation, and README sync verification</li>
+</ul>
+<h3 id="current-problems">Current Problems</h3>
+<ol>
+<li>
+<p><strong>Content Divergence</strong>: README.md has substantial onboarding content (vision, features, quick start) that doesn't appear in docs/index.md. Newcomers arriving at the published documentation site see only a file listing, not the compelling project introduction.</p>
+</li>
+<li>
+<p><strong>Document Purpose Confusion</strong>: Both documents serve entry points but target different contexts:</p>
+</li>
+<li>README.md: GitHub repository landing page, must be immediately actionable</li>
+<li>
+<p>docs/index.md: MkDocs site home, should orient users to the full documentation landscape</p>
+</li>
+<li>
+<p><strong>Maintenance Burden</strong>: No clear strategy for what content belongs where, when duplication is acceptable, or how to keep critical sections synchronized.</p>
+</li>
+<li>
+<p><strong>Navigation Clarity</strong>: Auto-generated <code>docs-nav.md</code> works well for filesystem traversal but lacks curation—no persona-based entry points, no workflow-oriented groupings, no "start here" guidance.</p>
+</li>
+<li>
+<p><strong>Content Reusability</strong>: Complex sections (installation steps, development setup, pattern system overview) appear in multiple places with manual duplication and drift risk.</p>
+</li>
+</ol>
+<h3 id="design-constraints">Design Constraints</h3>
+<ul>
+<li><strong>Filesystem-driven navigation is non-negotiable</strong> (ADR-DD01 decision): Documentation structure must mirror <code>docs/</code> tree with literate-nav auto-generation</li>
+<li><strong>README.md must remain editable</strong>: Cannot become a pure build artifact—GitHub display requires direct file readability</li>
+<li><strong>CI verification</strong>: Must detect when critical content drifts between README and documentation</li>
+<li><strong>Incremental adoption</strong>: Solution must work with current tooling (mkdocs-literate-nav, mkdocs-gen-files) without major architectural changes</li>
+<li><strong>Contributor accessibility</strong>: Documentation workflow should be obvious to new contributors without deep tooling knowledge</li>
+</ul>
+<h2 id="decision">Decision</h2>
+<p>Adopt a <strong>Progressive Enhancement</strong> content strategy with phase-based implementation:</p>
+<h3 id="1-content-architecture">1. Content Architecture</h3>
+<h4 id="readmemd-concise-project-gateway">README.md: Concise Project Gateway</h4>
+<p>README.md serves as the <strong>GitHub repository landing page</strong> and remains hand-maintained. It provides:</p>
+<ul>
+<li><strong>Project description</strong>: 2-3 sentence elevator pitch</li>
+<li><strong>Vision &amp; Goals</strong>: Why the project exists, what problems it solves (4-6 bullet points)</li>
+<li><strong>Features</strong>: High-level capabilities overview (Core Tools summary, Pattern System summary)</li>
+<li><strong>Quick Start</strong>: Minimal install + first command (PyPI install, tnh-setup, example usage)</li>
+<li><strong>Documentation Overview</strong>: Brief orientation + link to full docs site</li>
+<li><strong>Development</strong>: Pointer to <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md">DEV_SETUP.md</a> and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a></li>
+<li><strong>Project Status</strong>: Current version, alpha/beta/stable designation</li>
+<li><strong>Support &amp; Community</strong>: Links to issues, discussions, documentation</li>
+</ul>
+<p>README.md stays <strong>concise</strong> (target: readable in 2-3 scrolls, ~200-250 lines). Detailed content lives in the documentation site.</p>
+<h4 id="docsindexmd-comprehensive-documentation-hub">docs/index.md: Comprehensive Documentation Hub</h4>
+<p>docs/index.md serves as the <strong>MkDocs site landing page</strong> and becomes the primary onboarding experience. It provides:</p>
+<ul>
+<li><strong>Welcome Section</strong>: Same project description as README (synchronized manually or via drift reporting)</li>
+<li><strong>Getting Started (Persona-Based)</strong>: Curated entry points for different audiences:</li>
+<li><strong>Practitioners</strong>: Using the CLI tools for dharma talk processing and translation</li>
+<li><strong>Developers</strong>: Contributing code, running tests, understanding architecture</li>
+<li><strong>Researchers</strong>: Exploring the knowledge base, evaluation workflows, and experiments</li>
+<li><strong>Key Features</strong>: Expanded from README with links to deep-dive documentation</li>
+<li><strong>Installation</strong>: Embedded detailed steps (can reference <code>_includes/installation.md</code> in Phase 2)</li>
+<li><strong>Quick Reference</strong>: Common commands, pattern examples, troubleshooting links</li>
+<li><strong>Architecture Overview</strong>: High-level system design with links to ADRs</li>
+<li><strong>Contributing</strong>: How to participate, testing, documentation contributions</li>
+<li><strong>Documentation Map</strong>: Auto-generated section listing (repositioned to bottom, renamed "Complete Documentation Index")</li>
+</ul>
+<p>docs/index.md is <strong>comprehensive</strong> (target: complete orientation for all personas, ~400-500 lines). It's the definitive "start here" page.</p>
+<p><strong>Persona-based navigation is a key differentiator</strong> from README.md—it helps users self-identify their path and find relevant documentation quickly.</p>
+<h4 id="shared-content-strategy">Shared Content Strategy</h4>
+<p><strong>Phase 1 (Current - Simple Independence with Drift Reporting)</strong>:
+- Accept controlled duplication of introductory content (project description, vision, high-level features)
+- README and docs/index.md are independently maintained
+- Lightweight drift reporting script (<code>check_readme_docs_drift.py</code>) generates informational reports
+- Non-blocking: reports written to local log file (<code>docs_sync_report.txt</code>) for review
+- Manual sync decisions made during project check-ins based on drift reports</p>
+<p><strong>Phase 2 (Planned - Selective Inclusion)</strong>:
+- Extract complex, frequently reused content to <code>docs/_includes/</code>:
+  - <code>installation.md</code>: Detailed install steps (PyPI, prerequisites, dev setup)
+  - <code>development.md</code>: Development environment configuration
+  - <code>pattern-overview.md</code>: Pattern/PromptTemplate system introduction
+- Use mkdocs snippets plugin (<code>--8&lt;--</code> syntax) for transclusion
+- Keep README independent; include shared content in docs/index.md and other docs</p>
+<p><strong>Phase 3 (Future - Templated Assembly, if needed)</strong>:
+- If maintenance burden grows significantly, consider templating (Jinja2 via mkdocs-macros)
+- Would allow generating both README and docs/index.md from structured content
+- Defer this decision until Phase 2 proves insufficient</p>
+<h3 id="2-navigation-strategy">2. Navigation Strategy</h3>
+<h4 id="filesystem-driven-navigation-literate-nav">Filesystem-Driven Navigation (Literate-Nav)</h4>
+<p>Continue current approach with refinements:</p>
+<ul>
+<li><strong>Auto-generation</strong>: <code>generate_mkdocs_nav.py</code> produces <code>docs-nav.md</code> from <code>docs/</code> tree structure</li>
+<li><strong>Front matter titles</strong>: Prefer YAML <code>title:</code> field over filename humanization (must match exactly per markdown standards)</li>
+<li><strong>Sort order</strong>: Maintain curated top-level order in <code>TOP_LEVEL_ORDER</code> list</li>
+<li><strong>Index page handling</strong>: Directory <code>index.md</code> becomes section landing page with overview + persona-appropriate navigation aids</li>
+</ul>
+<p>Navigation file <code>docs-nav.md</code> is a <strong>build artifact</strong> (regenerated on every docs build).</p>
+<h4 id="section-index-pages">Section Index Pages</h4>
+<p>Every top-level directory must have an <code>index.md</code> that provides:</p>
+<ul>
+<li><strong>Section purpose</strong>: What this documentation covers</li>
+<li><strong>Target audience</strong>: Who should read this section</li>
+<li><strong>Navigation aids</strong>: Curated list of key documents (complement to auto-generated nav)</li>
+<li><strong>Prerequisites</strong>: What to read first (if applicable)</li>
+</ul>
+<p>Example structure for <code>docs/architecture/index.md</code>:</p>
+<pre><code class="language-markdown">---
+title: &quot;Architecture&quot;
+description: &quot;System design, ADRs, and component deep-dives for TNH Scholar.&quot;
+---
+# Architecture
+
+This section documents the design decisions, system architecture, and
+component implementations for TNH Scholar.
+
+## Getting Started
+- **New to the codebase?** Start with [System Overview](system-overview.md)
+- **Looking for decisions?** Browse [ADRs by topic](adr/index.md)
+- **Need component details?** See subsystem design documents below
+
+## Key Resources
+- [ADR Index](adr/index.md) - All architectural decision records
+- [GenAI Service](gen-ai-service/design/genai-service-strategy.md) - Core AI integration layer
+- [Pattern System](pattern-system/adr/adr-pt02-pattern-catalog.md) - Prompt management architecture
+- [Transcription Pipeline](transcription/design/diarization-system1.md) - Audio processing design
+
+## Subsystems
+- [AI Text Processing](ai-text-processing/) - Text transformation pipeline
+- [Knowledge Base](knowledge-base/) - Vector search and metadata
+- [Transcription](transcription/) - Audio-to-text with diarization
+- [Video Processing](video-processing/) - YouTube integration
+</code></pre>
+<h4 id="documentation-map-integration">Documentation Map Integration</h4>
+<p>The auto-generated "Documentation Map" in docs/index.md (current behavior) is <strong>retained</strong> but <strong>repositioned</strong>:</p>
+<ul>
+<li>Move to bottom of docs/index.md (after Welcome, Getting Started (Persona-Based), Features, Installation, Quick Reference, Architecture Overview, Contributing)</li>
+<li>Rename to "Complete Documentation Index"</li>
+<li>Add introductory text: "Browse all documentation organized by topic. For persona-based entry points, see Getting Started above."</li>
+</ul>
+<p>This ensures the landing page prioritizes <strong>human-oriented navigation</strong> (persona paths) over <strong>exhaustive file listings</strong> (auto-generated map).</p>
+<h3 id="3-content-drift-monitoring-phase-1-mvp">3. Content Drift Monitoring (Phase 1 MVP)</h3>
+<h4 id="lightweight-drift-reporting">Lightweight Drift Reporting</h4>
+<p>Instead of enforcing synchronization, Phase 1 uses <strong>informational drift reporting</strong>:</p>
+<p><strong>Script</strong>: <code>scripts/check_readme_docs_drift.py</code></p>
+<p>The script compares sections between README.md and docs/index.md by <strong>dynamic heading detection</strong>:</p>
+<p><strong>Approach</strong>:</p>
+<ul>
+<li>Extract <strong>all</strong> <code>## Section Name</code> headings from both files</li>
+<li>Compare sections with <strong>matching titles</strong> (case-sensitive)</li>
+<li>Warn on title mismatches (case, punctuation, spacing differences)</li>
+<li>Report sections that exist in one file but not the other</li>
+</ul>
+<p><strong>Behavior</strong>:</p>
+<ol>
+<li>Extract all <code>## Level 2</code> sections from both files</li>
+<li>Match sections by heading text (exact match)</li>
+<li>For matched sections: generate unified diff if content differs</li>
+<li>For unmatched sections: report "only in README" or "only in docs/index.md"</li>
+<li>Warn on near-matches (e.g., "Quick Start" vs "Quick start" - case mismatch)</li>
+<li>Write report to <code>docs_sync_report.txt</code> (gitignored)</li>
+<li>Print report to console for CI visibility</li>
+<li><strong>Always exit 0</strong> (non-blocking, informational only)</li>
+</ol>
+<p><strong>Report format</strong>:</p>
+<pre><code class="language-text">================================================================================
+README.md ↔ docs/index.md Drift Report
+Generated: 2025-11-23 10:15:32
+================================================================================
+
+Matched Sections (compared):
+✓ Vision &amp; Goals: IDENTICAL
+✗ Features: DIFFERS
+
+--- README.md::Features
++++ docs/index.md::Features
+@@ -1,5 +1,7 @@
+ TNH Scholar provides several CLI tools:
+ - audio-transcribe: Process audio files
++- tnh-fab: Text processing with patterns
+ - ytt-fetch: Download YouTube transcripts
+
+Sections only in README.md:
+- Example Usage
+- Development
+
+Sections only in docs/index.md:
+- Architecture Overview
+- Contributing
+- Complete Documentation Index
+
+Title Mismatches (possible typos):
+⚠ &quot;Quick Start&quot; (README) vs &quot;Quick start&quot; (docs/index.md) - case mismatch
+
+⚠ DRIFT DETECTED - Review differences above
+This is informational only - no action required unless intentional divergence.
+================================================================================
+</code></pre>
+<h4 id="integration-points">Integration Points</h4>
+<p><strong>Makefile target</strong>:</p>
+<pre><code class="language-makefile">.PHONY: docs-drift
+docs-drift:
+    @poetry run python scripts/check_readme_docs_drift.py
+
+.PHONY: docs-verify
+docs-verify: docs-drift
+    @poetry run mkdocs build --strict
+</code></pre>
+<p><strong>CI workflow</strong> (non-blocking):</p>
+<pre><code class="language-yaml">- name: Check documentation drift
+  run: |
+    python scripts/check_readme_docs_drift.py
+    cat docs_sync_report.txt
+  continue-on-error: true
+</code></pre>
+<p><strong>Gitignore</strong>:</p>
+<pre><code class="language-gitignore"># Documentation drift reports (local review only)
+docs_sync_report.txt
+</code></pre>
+<h4 id="usage-workflow">Usage Workflow</h4>
+<ol>
+<li><strong>During development</strong>: Run <code>make docs-drift</code> to see current drift status</li>
+<li><strong>Before commits</strong>: Review <code>docs_sync_report.txt</code> locally</li>
+<li><strong>In CI</strong>: Drift report printed in logs (visible but doesn't fail build)</li>
+<li><strong>At project check-ins</strong>: Review accumulated drift, decide if manual sync warranted</li>
+</ol>
+<h4 id="acceptable-divergence">Acceptable Divergence</h4>
+<p>The following divergences are <strong>expected and acceptable</strong>:</p>
+<ul>
+<li><strong>Depth</strong>: README gives high-level overview; docs/index.md provides detailed explanation</li>
+<li><strong>Audience</strong>: README targets newcomers; docs/index.md serves all personas</li>
+<li><strong>Navigation</strong>: README links to docs site; docs/index.md embeds navigation aids</li>
+<li><strong>Examples</strong>: README shows minimal quick-start; docs/index.md includes comprehensive examples</li>
+</ul>
+<p><strong>No sync enforcement</strong> - teams decide when alignment matters based on drift reports.</p>
+<h3 id="4-content-inclusion-patterns-future">4. Content Inclusion Patterns (Future)</h3>
+<p><strong>Status</strong>: Detailed design deferred to <strong>ADR-DD03: Content Reuse and Inclusion Strategies</strong></p>
+<p>Phase 1 accepts controlled duplication with drift monitoring. When duplication becomes burdensome, ADR-DD03 will define:</p>
+<ul>
+<li><strong>Inclusion hierarchy</strong>: Markdown snippets (<code>docs/_includes/</code>), macros (<code>docs/_templates/</code>), and generation scripts</li>
+<li><strong>Tooling choices</strong>: mkdocs snippets plugin, mkdocs-macros, mkdocs-gen-files integration</li>
+<li><strong>Naming conventions</strong>: Underscore-prefixed directories for non-user-facing content</li>
+<li><strong>Migration strategy</strong>: Moving duplicated content to shared locations</li>
+</ul>
+<p><strong>Current approach</strong> (Phase 1): Use generation scripts (Level 3) only for already-automated content (CLI docs, API reference, documentation index). No manual content inclusion yet.</p>
+<h3 id="5-maintenance-workflows">5. Maintenance Workflows</h3>
+<h4 id="updating-readmemd">Updating README.md</h4>
+<ol>
+<li>Edit README.md directly in repository root</li>
+<li>Run <code>make docs-drift</code> to see if changes affect monitored sections</li>
+<li>Review <code>docs_sync_report.txt</code> to assess drift</li>
+<li>Decide if docs/index.md should be updated (no enforcement)</li>
+</ol>
+<h4 id="updating-docsindexmd">Updating docs/index.md</h4>
+<ol>
+<li>Edit docs/index.md directly in <code>docs/</code></li>
+<li>Run <code>make docs-drift</code> to check for drift in monitored sections</li>
+<li>Review report and update README.md if appropriate</li>
+<li>CI runs drift check but doesn't fail on drift (informational only)</li>
+</ol>
+<h4 id="adding-new-documentation">Adding New Documentation</h4>
+<ol>
+<li>Create markdown file in appropriate <code>docs/</code> subdirectory</li>
+<li>Add YAML front matter (title, description, owner, author, status)</li>
+<li>Navigation updates <strong>automatically</strong> via literate-nav</li>
+<li>If creating new top-level section, add to <code>TOP_LEVEL_ORDER</code> in <code>generate_mkdocs_nav.py</code></li>
+<li>Create section <code>index.md</code> with overview and navigation aids</li>
+</ol>
+<h4 id="reorganizing-content">Reorganizing Content</h4>
+<ol>
+<li>Move files using <code>git mv</code> to preserve history</li>
+<li>Update internal links (CI link checker will catch broken references)</li>
+<li>Navigation regenerates automatically</li>
+<li>Update section index pages if section purpose changes</li>
+<li>Run <code>make docs</code> to rebuild and verify</li>
+</ol>
+<h3 id="6-implementation-phases">6. Implementation Phases</h3>
+<h4 id="phase-1-simple-independence-with-drift-reporting-current-priority">Phase 1: Simple Independence with Drift Reporting (Current Priority)</h4>
+<p><strong>Scope</strong>: Complete TODO #9, Part 3b</p>
+<ul>
+<li>[x] ~~Enhance docs/index.md with persona-based Getting Started~~</li>
+<li>[ ] Implement <code>check_readme_docs_drift.py</code> script</li>
+<li>[ ] Add <code>docs-drift</code> target to Makefile</li>
+<li>[ ] Add <code>docs_sync_report.txt</code> to <code>.gitignore</code></li>
+<li>[ ] Integrate drift reporting into CI (non-blocking)</li>
+<li>[ ] Create/update section index pages for all top-level directories</li>
+<li>[ ] Reposition auto-generated Documentation Map in docs/index.md</li>
+</ul>
+<p><strong>Success Criteria</strong>:
+- docs/index.md provides comprehensive onboarding (400-500 lines)
+- README.md stays concise (200-250 lines)
+- Drift reporting runs in CI and generates local reports
+- No CI failures from drift (informational only)
+- All top-level sections have index.md with navigation aids</p>
+<h4 id="phase-2-content-inclusion-patterns-future">Phase 2: Content Inclusion Patterns (Future)</h4>
+<p><strong>Status</strong>: Deferred to <strong>ADR-DD03: Content Reuse and Inclusion Strategies</strong></p>
+<p><strong>Trigger</strong>: When 10+ instances of duplicated complex content (installation steps, development setup, etc.) cause maintenance burden.</p>
+<p><strong>Approach Sketch</strong>:</p>
+<ul>
+<li>Use mkdocs snippets plugin (<code>--8&lt;--</code> syntax) for shared content in <code>docs/_includes/</code></li>
+<li>Keep README.md independent; include shared sections in docs/index.md and other docs</li>
+<li>Document inclusion patterns in markdown standards</li>
+</ul>
+<p><strong>Decision Point</strong>: Revisit 6 months post-beta or when drift reporting shows repeated manual syncs of identical content.</p>
+<h4 id="phase-3-advanced-automation-future-if-needed">Phase 3: Advanced Automation (Future, If Needed)</h4>
+<p><strong>Status</strong>: Deferred to <strong>ADR-DD04: Documentation Generation and Templating</strong> (if Phase 2 proves insufficient)</p>
+<p><strong>Trigger</strong>: High-churn content causing frequent drift despite inclusion patterns.</p>
+<p><strong>Approach Sketch</strong>:</p>
+<ul>
+<li>Templated assembly using Jinja2 via mkdocs-macros</li>
+<li>Structured content storage (YAML/JSON) for frequently changing sections</li>
+<li>Generate both README.md and docs/index.md from templates</li>
+</ul>
+<p><strong>Decision Point</strong>: Only proceed if clear ROI demonstrated (e.g., weekly README/docs updates causing sync overhead).</p>
+<h2 id="alternatives-considered">Alternatives Considered</h2>
+<ol>
+<li>
+<p><strong>Templated Assembly (Full Jinja2)</strong>: Rejected for Phase 1 due to build complexity and README becoming non-editable artifact. Deferred to Phase 3 if needed.</p>
+</li>
+<li>
+<p><strong>README as Build Artifact</strong>: Rejected because GitHub requires readable README in repository view. Generated files hurt discoverability.</p>
+</li>
+<li>
+<p><strong>Single Unified Document</strong>: Rejected because README and docs/index serve different contexts (GitHub vs. MkDocs site) and need different levels of detail.</p>
+</li>
+<li>
+<p><strong>Manual Duplication Without Any Monitoring</strong>: Rejected due to drift risk observed in current state (README and docs/index.md had diverged significantly). Lightweight drift reporting provides awareness without enforcement overhead.</p>
+</li>
+<li>
+<p><strong>Shared Content Directory (No Templating)</strong>: Considered for Phase 1 but deferred to Phase 2. Initial implementation keeps documents independent with drift reporting only.</p>
+</li>
+<li>
+<p><strong>Enforced Synchronization with Markers</strong>: Rejected for Phase 1 due to added complexity (marker management, CI failures on drift). Phase 1 prioritizes simplicity—drift reporting provides awareness without enforcement burden. Can revisit in Phase 2 if drift proves problematic.</p>
+</li>
+</ol>
+<h2 id="consequences">Consequences</h2>
+<h3 id="positive">Positive</h3>
+<ul>
+<li><strong>Clear ownership</strong>: README and docs/index.md have distinct purposes and audiences</li>
+<li><strong>Flexibility</strong>: Each document optimized for its context (GitHub vs. MkDocs site)</li>
+<li><strong>Safety net</strong>: Sync verification prevents critical content drift while allowing intentional divergence</li>
+<li><strong>Incremental adoption</strong>: Start simple (independent docs), add inclusion patterns only when needed</li>
+<li><strong>Contributor clarity</strong>: Obvious where content lives, when to update both files, how to verify</li>
+<li><strong>Navigation automation</strong>: Literate-nav keeps structure in sync with filesystem</li>
+<li><strong>Onboarding improvement</strong>: docs/index.md becomes comprehensive entry point (not just file list)</li>
+</ul>
+<h3 id="negative-risks">Negative / Risks</h3>
+<ul>
+<li><strong>Controlled duplication</strong>: Accept some redundancy between README intro and docs/index intro (mitigated by drift reporting for awareness)</li>
+<li><strong>Manual sync decisions</strong>: Teams must review drift reports and decide when to sync (no enforcement)</li>
+<li><strong>Drift accumulation</strong>: Without enforcement, documents could diverge significantly over time (mitigated by regular project check-in reviews)</li>
+<li><strong>Tooling dependency</strong>: Relies on mkdocs-literate-nav, mkdocs-gen-files, and custom scripts (acceptable given ADR-DD01 commitment)</li>
+<li><strong>Phase 2 transition</strong>: Moving to inclusion patterns requires coordination (defer until post-beta to minimize churn)</li>
+</ul>
+<h3 id="mitigation-strategies">Mitigation Strategies</h3>
+<ol>
+<li><strong>Document the workflow</strong>: Clear instructions in <code>docs/docs-ops/markdown-standards.md</code> and CONTRIBUTING.md</li>
+<li><strong>Regular reviews</strong>: Include drift report in project check-in process</li>
+<li><strong>Minimal monitoring surface</strong>: Only track high-level sections (Vision, Features, Quick Start, Installation)</li>
+<li><strong>Defer complexity</strong>: Don't adopt inclusion patterns or sync enforcement until duplication causes real pain</li>
+<li><strong>Template enforcement</strong>: ADR template and standards prevent structural inconsistency</li>
+</ol>
+<h2 id="open-questions-future-decisions">Open Questions &amp; Future Decisions</h2>
+<ol>
+<li>
+<p><strong>Sync enforcement</strong>: Should we enforce synchronization in CI or keep reporting-only? <strong>Decision</strong>: Start with reporting-only in Phase 1; add enforcement in Phase 2 only if drift becomes problematic.</p>
+</li>
+<li>
+<p><strong>Documentation Map position</strong>: Bottom of docs/index.md or separate page? <strong>Decision</strong>: Keep at bottom initially; move to dedicated <code>/documentation-index</code> page if docs/index.md exceeds 600 lines.</p>
+</li>
+<li>
+<p><strong>Persona-based navigation</strong>: Should literate-nav group docs by persona (User/Developer/Researcher) in addition to topic? <strong>Decision</strong>: Defer to Phase 2; current topic-based structure sufficient for ~100 docs.</p>
+</li>
+<li>
+<p><strong>Section index automation</strong>: Can section index pages be partially auto-generated? <strong>Decision</strong>: Keep hand-maintained for curation; auto-generation risks losing narrative flow.</p>
+</li>
+<li>
+<p><strong>Link checking</strong>: Should CI verify all internal markdown links? <strong>Decision</strong>: Yes, add to TODO #9, Part 4d (link normalization task).</p>
+</li>
+</ol>
+<h2 id="approval-tracking">Approval &amp; Tracking</h2>
+<ul>
+<li><strong>TODO Reference</strong>: TODO #9 (Documentation Reorganization, ADR-DD01), Part 3b</li>
+<li><strong>Implementation Tracking</strong>: GitHub issues tagged <code>docs</code> + <code>adr-dd02</code></li>
+<li><strong>Related ADRs</strong>:</li>
+<li><a href="../adr-dd01-docs-reorg-strat/">ADR-DD01</a>: Documentation System Reorganization Strategy (accepted)</li>
+<li><strong>ADR-DD03</strong>: Content Reuse and Inclusion Strategies (future - Phase 2)</li>
+<li><strong>ADR-DD04</strong>: Documentation Generation and Templating (future - Phase 3, if needed)</li>
+<li><strong>Review Cycle</strong>: Reassess Phase 2 transition 6 months post-beta or when 10+ instances of complex content duplication observed</li>
+</ul>
+<p>Approval of this ADR completes the content architecture design for TODO #9, Part 3b, and provides a roadmap for incremental documentation improvements through beta and beyond.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>
