@@ -256,3 +256,85 @@ Completing docs-reorg branch work (~80% complete) and preparing for merge. User 
 - Git stash: "VS Code integration ADRs - for vscode-integration branch"
 
 ---
+
+## [2025-11-28 17:00 PST] ADR-DD03 Pattern→Prompt Terminology Standardization
+
+**Agent**: Claude Sonnet 4.5 (claude-sonnet-4-5-20250929)
+**Chat Reference**: docs-reorg-terminology-shift
+**Human Collaborator**: phapman
+
+### Context
+
+Before merging docs-reorg branch, user identified need to standardize terminology from "Pattern" to "Prompt" across documentation. This aligns with industry standards, matches refactored gen-ai-service code (Prompt/PromptCatalog classes), and reduces confusion for external stakeholders (Parallax Press, new contributors). Timing is ideal: pre-merge ensures new ADR work (VS Code integration, gen-ai-service) uses consistent terminology from start.
+
+### Key Decisions
+
+- **Prompt as Primary Term**: Use "Prompt" for user-facing docs; "PromptTemplate" only in technical contexts for class names
+- **Historical Context Preserved**: Added concise note to docs/index.md explaining Pattern→Prompt shift for legacy doc readers
+- **Phased Execution**: Phase 1 (pre-merge): high-priority user docs + directory renaming; Phase 2 (post-merge): architecture/design docs; Phase 3: validation
+- **Legacy Compatibility Notes**: CLI flags (--pattern), config keys, env vars retain "pattern" names for code compatibility - documented in config guide
+- **Directory Renaming in Phase 1**: Moved from deferred to pre-merge to ensure consistent structure before merge
+
+### Work Completed
+
+- [x] Drafted ADR-DD03 with phased approach and resolved open questions (files: `docs/architecture/docs-system/adr/adr-dd03-pattern-prompt-terminology.md`)
+- [x] Created Phase 1 execution punch list (files: `docs/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md`)
+- [x] Added historical terminology note to `docs/index.md` (placed after Vision section for visibility)
+- [x] Updated README.md: pattern-driven → prompt-driven, Pattern System → Prompt System
+- [x] Updated `docs/getting-started/` (installation.md, configuration.md, quick-start.md)
+  - Pattern→Prompt in user-facing terminology
+  - Added compatibility notes for TNH_PATTERN_DIR, config keys
+- [x] Renamed `docs/user-guide/patterns.md` → `prompts.md` and updated all content
+- [x] Updated `docs/user-guide/best-practices.md`: Pattern→Prompt
+- [x] Renamed `docs/architecture/pattern-system/` → `prompt-system/` and updated all links
+- [x] Updated ADR-DD01 and ADR-DD02 with Prompt terminology
+- [x] Updated CHANGELOG.md and AGENTLOG.md
+- [x] Two commits: interim progress + Phase 1 completion
+
+### Discoveries & Insights
+
+- **Industry Alignment Critical**: External stakeholders (Parallax Press) expect "Prompt" terminology; "Pattern" creates confusion about whether it's design patterns or AI prompts
+- **Code vs Docs Divergence**: Legacy code uses "pattern" in paths/vars but docs can lead with modern terminology and note compatibility
+- **Timing Advantage**: Doing this pre-merge prevents VS Code ADRs from launching with inconsistent terminology, avoiding future cleanup
+- **Batch Replace Effective**: sed commands worked well for systematic replacements after manual review of context
+- **Auto-Generated Docs**: documentation_index.md auto-updates when files are renamed/moved
+
+### Files Modified/Created
+
+**Created:**
+- `docs/architecture/docs-system/adr/adr-dd03-pattern-prompt-terminology.md`: Comprehensive ADR with phased plan
+- `docs/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md`: Execution checklist
+
+**Modified:**
+- `docs/index.md`: Added historical note, updated Pattern→Prompt in features/architecture
+- `README.md`: Updated features, examples, architecture overview
+- `docs/getting-started/installation.md`, `configuration.md`, `quick-start.md`: Pattern→Prompt with compatibility notes
+- `docs/user-guide/prompts.md` (renamed from patterns.md): Full Pattern→Prompt update
+- `docs/user-guide/best-practices.md`: Pattern→Prompt
+- `docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md`: Pattern→Prompt references
+- `docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md`: Pattern→Prompt references
+- `CHANGELOG.md`: Added ADR-DD03 Phase 1 entry
+- `AGENTLOG.md`: This session entry
+
+**Renamed:**
+- `docs/user-guide/patterns.md` → `prompts.md`
+- `docs/architecture/pattern-system/` → `prompt-system/`
+
+### Next Steps
+
+- [ ] Phase 2 (post-merge): Update architecture/design docs, add historical callouts to archived docs
+- [ ] Phase 3 (post-merge): Final validation sweep with `rg -i "pattern" docs/`
+- [ ] Future: Consider renaming patterns/ directory to prompts/ when code refactoring occurs
+
+### Open Questions
+
+None - Phase 1 complete and ready for merge.
+
+### References
+
+- [ADR-DD03: Pattern to Prompt Terminology Standardization](docs/architecture/docs-system/adr/adr-dd03-pattern-prompt-terminology.md) ✅ APPROVED
+- [ADR-DD03 Phase 1 Punch List](docs/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md) ✅ COMPLETE
+- [TODO #9: Documentation Reorganization](TODO.md#L133)
+- Commits: 44e7331 (partial), e8647fc (completion)
+
+---

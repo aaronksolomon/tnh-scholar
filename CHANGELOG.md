@@ -26,6 +26,12 @@ created: "2025-02-28"
 - Updated README.md with refined vision statement and getting started section.
 - Updated docs/index.md with expanded vision and goals.
 - Updated TODO.md with Part 4g documentation testing workflow.
+- **Pattern→Prompt terminology standardization** (ADR-DD03 Phase 1): Updated all user-facing documentation to use "Prompt" instead of "Pattern" to align with industry standards and gen-ai-service refactoring.
+  - Added historical terminology note to docs/index.md
+  - Updated README, getting-started/, user-guide/ documentation
+  - Renamed docs/user-guide/patterns.md → prompts.md
+  - Renamed docs/architecture/pattern-system/ → prompt-system/
+  - Updated ADR-DD01 and ADR-DD02 references
 
 ### Developer Experience
 
