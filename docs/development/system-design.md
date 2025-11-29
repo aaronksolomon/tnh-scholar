@@ -10,6 +10,10 @@ created: "2025-02-01"
 
 High-level system design describing the cyclical AI processing architecture powering TNH Scholar.
 
+> **Terminology Note**: This document uses historical "Pattern" terminology. In current TNH Scholar documentation, "Pattern" has been replaced with "Prompt" to align with industry standards. See [ADR-DD03](../architecture/docs-system/adr/adr-dd03-pattern-prompt-terminology.md) for details.
+>
+> When reading this document: "Pattern-based processing" → "Prompt-based processing"
+
 ## 1. Overview and Vision
 
 TNH Scholar is an AI-enhanced content processing and transformation system designed to work with dharma materials. The system is distinguished by its cyclical learning architecture, where processing outputs can be used to generate training data for model improvement, creating a self-enhancing feedback loop.
