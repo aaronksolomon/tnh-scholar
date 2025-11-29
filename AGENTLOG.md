@@ -198,3 +198,61 @@ mkdocs was failing in strict mode with 136 warnings (nav, autorefs, mkdocstrings
 - `poetry run mkdocs build --strict` (now clean)
 
 ---
+
+## [2025-11-28 16:00 PST] Documentation Reorganization Cleanup & Merge Prep
+
+**Agent**: Claude Sonnet 4.5 (claude-sonnet-4-5-20250929)
+**Chat Reference**: docs-reorg-final-cleanup
+**Human Collaborator**: phapman
+
+### Context
+
+Completing docs-reorg branch work (~80% complete) and preparing for merge. User decided on "good enough for now" approach: merge completed work (Parts 1-4, 8), defer remaining work (Parts 5-7) to future iterations. Need to clean up CHANGELOG, TODO, and prepare branch for merge while stashing VS Code integration work for separate branch.
+
+### Key Decisions
+
+- **Merge at 80% Completion**: Ship substantial completed work rather than blocking on polish tasks
+- **Separate VS Code Work**: Stash ADR-VSC01/VSC02 changes for dedicated vscode-integration branch
+- **Clear Documentation of Remaining Work**: Updated TODO #9 to show what's complete vs deferred
+
+### Work Completed
+
+- [x] Updated CHANGELOG.md to remove VS Code ADR reference (will go in separate branch)
+- [x] Stashed VS Code integration ADR files for vscode-integration branch
+- [x] Updated TODO #9 status from "IN PROGRESS" to "~80% COMPLETE"
+- [x] Marked TODO #9 Part 8 (Root Docs Sync) as ✅ COMPLETE
+- [x] Marked TODO #9 Part 4g Phase 1 as ✅ COMPLETE (added MkDocs strict mode fix detail)
+- [x] Verified clean working tree (only CHANGELOG.md and TODO.md modified)
+- [x] Updated AGENTLOG.md with this session summary
+
+### Discoveries & Insights
+
+- **Documentation Status Drift**: TODO #9 Part 8 was marked "NOT STARTED" despite being fully implemented (sync_root_docs.py exists, wired into build)
+- **Part 4g Completion**: MkDocs strict mode cleanup (136 warnings → 0) completed Phase 1 testing workflow
+- **Deferred Work is Non-Blocking**: Parts 5-7 (archive, gap filling, standalone tasks) are polish/organizational improvements that don't block core functionality
+
+### Files Modified/Created
+
+- `TODO.md`: Updated TODO #9 status summary and completion markers for Parts 4g, 8
+- `CHANGELOG.md`: Removed ADR-VSC01 reference (moved to vscode-integration branch scope)
+- `AGENTLOG.md`: Added this session entry
+
+### Next Steps
+
+- [ ] Commit CHANGELOG.md and TODO.md updates
+- [ ] Final review of docs-reorg branch state
+- [ ] Merge docs-reorg into main branch
+- [ ] Create vscode-integration branch and apply stashed changes
+- [ ] Future: Address TODO #9 Parts 5-7 in subsequent doc improvement iterations
+
+### Open Questions
+
+- None - ready for merge
+
+### References
+
+- [TODO #9: Documentation Reorganization](TODO.md#L133)
+- [CHANGELOG.md Unreleased Section](CHANGELOG.md#L11)
+- Git stash: "VS Code integration ADRs - for vscode-integration branch"
+
+---

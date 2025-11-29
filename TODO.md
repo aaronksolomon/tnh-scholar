@@ -132,7 +132,7 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 9. 🚧 Documentation Reorganization (ADR-DD01 & ADR-DD02)
 
-- **Status**: IN PROGRESS (Parts 1–4 ✅, Part 3b ✅ COMPLETE, Parts 5+ remaining)
+- **Status**: ~80% COMPLETE (Parts 1–4 ✅ COMPLETE, Part 8 ✅ COMPLETE; Parts 5–7 deferred to future iterations)
 - **Reference**:
   - [ADR-DD01: Docs Reorganization Strategy](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md)
   - [ADR-DD02: Documentation Main Content and Navigation Strategy](docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md) ✅ APPROVED
@@ -166,12 +166,13 @@ This section organizes work into three priority levels based on criticality for 
      - [x] **4d (COMPLETED)**: Normalize internal documentation links; refactor doc-index generation to single `docs/documentation_index.md` with relative links
      - [x] **4e (COMPLETED)**: Enable filesystem-driven nav with mkdocs-literate-nav
      - [x] **4f (COMPLETED - ADR-DD02)**: Add drift reporting (`check_readme_docs_drift.py`) with Makefile target and CI integration
-     - [ ] **4g (PLANNED)**: Documentation testing and validation workflow
-       - **Phase 1: Quick Wins** (CI now)
+     - [x] **4g (PHASE 1 COMPLETE)**: Documentation testing and validation workflow
+       - **Phase 1: Quick Wins** ✅ COMPLETE
          - [x] Enable `mkdocs build --strict` in `docs-verify` (fail on warnings)
          - [x] Add link checking with `lychee` + `.lychee.toml` (ignore flaky/external as needed)
          - [x] Add `codespell` with `.codespell-ignore.txt` (dharma terms/proper nouns); wire into pre-commit/CI
          - [x] Create `docs-quickcheck` make target: sync_root_docs → mkdocs --strict → lychee → codespell
+         - [x] Fixed all 136 MkDocs strict mode warnings (autorefs, griffe type annotations)
        - **Phase 2: Metadata Validation** (Beta gate)
          - [ ] Add `scripts/check_doc_metadata.py` to validate front matter (title/description/status) and warn on empty descriptions
          - [ ] Detect orphaned docs not reachable from nav (using generated nav) and report missing descriptions
@@ -195,26 +196,19 @@ This section organizes work into three priority levels based on criticality for 
      - [ ] Finish Pattern → PromptTemplate rename across docs/CLI text
      - [ ] Establish research artifact archival workflow (external storage + summary linking)
   8. **Include Root Markdown Files in MkDocs Navigation**
-     - **Status**: NOT STARTED
+     - **Status**: ✅ COMPLETE
      - **Priority**: MEDIUM (Part of docs-reorg cleanup)
      - **Goal**: Make root-level config/meta files (README, TODO, CHANGELOG, CONTRIBUTING, DEV_SETUP, release_checklist) discoverable in mkdocs navigation and documentation index
      - **Approach**: Build-time copy with "DO NOT EDIT" warnings
-       - [ ] Create `docs/project/` directory for project meta-documentation
-       - [ ] Create `scripts/sync_root_docs.py` to copy root markdown files:
-         - [ ] Copy root `.md` files (README, TODO, CHANGELOG, CONTRIBUTING, DEV_SETUP, release_checklist) to `docs/project/`
-         - [ ] Prepend HTML comment warning to each copied file: `<!-- DO NOT EDIT: Auto-generated from /{filename}. Edit the root file instead. -->`
-         - [ ] Mark files with `auto_generated: true` in front matter or add to existing front matter
-       - [ ] Add `docs/project/*.md` to `.gitignore` (except `index.md` if hand-written)
-       - [ ] Update `scripts/generate_mkdocs_nav.py` or add to gen-files plugin to run sync script
-       - [ ] Update Makefile `docs` target to run sync script before mkdocs build
-       - [ ] Test documentation build: `make docs`
-       - [ ] Verify copied files appear in navigation and documentation index
-       - [ ] Update internal doc references from GitHub URLs to relative paths:
-         - [ ] Search: `https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md`
-         - [ ] Replace with: `project/CONTRIBUTING.md` (or appropriate relative path)
-       - [ ] Verify docs/index.md links resolve correctly
-       - [ ] Create `docs/project/index.md` with section overview explaining these are project meta-docs
-       - [ ] Add CI check to verify docs/project/ files are in sync (optional safety check)
+       - [x] Create `docs/project/repo-root/` directory for project meta-documentation
+       - [x] Create `scripts/sync_root_docs.py` to copy root markdown files
+       - [x] Copy root `.md` files (README, TODO, CHANGELOG, CONTRIBUTING, DEV_SETUP, release_checklist) to `docs/project/repo-root/`
+       - [x] Prepend HTML comment warning to each copied file
+       - [x] Update Makefile `docs` target to run sync script before mkdocs build
+       - [x] Test documentation build: `make docs`
+       - [x] Verify copied files appear in navigation and documentation index
+       - [x] Create `docs/project/index.md` with section overview
+       - [x] Wire into gen-files plugin for automatic sync on build
 
 #### 10. 🚧 Type System Improvements
 

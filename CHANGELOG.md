@@ -23,7 +23,6 @@ created: "2025-02-28"
 - Cleaned docstrings and type hints in the AI/text/audio/journal/ocr modules so MkDocs + Griffe stop emitting annotation warnings.
 - Added project philosophy and vision documentation in `docs/project/` (philosophy.md, vision.md, principles.md, conceptual-architecture.md, future-directions.md).
 - Added Parallax Press stakeholder overview document at `docs/tnh_scholar_parallax_overview.md`.
-- Added ADR-VSC01 documenting VS Code integration strategy.
 - Updated README.md with refined vision statement and getting started section.
 - Updated docs/index.md with expanded vision and goals.
 - Updated TODO.md with Part 4g documentation testing workflow.
