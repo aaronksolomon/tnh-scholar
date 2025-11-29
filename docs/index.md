@@ -22,16 +22,18 @@ TNH Scholar is an AI-driven project designed to explore, process, and translate 
 - **Preserve historical materials** (e.g., 1950s Vietnamese Buddhist journals, manuscripts, early Plum Village publications) with accurate OCR, restoration, and annotation.  
 - **Ensure long-term reproducibility, integrity, and openness** through consistent provenance tracking, fingerprinting, and transparent model-training workflows.  
 - **Enable deep comparative Buddhist studies** through cross-text indexing (Pali, Sanskrit, Chinese, Tibetan canons) and alignments of terminology, concepts, and doctrinal parallels.  
-- **Provide tools for teaching and learning**, including guided exploration, topic overviews, glossaries, bilingual reading tools, and structured learning pathways.  
+- **Provide tools for teaching and learning**, including guided exploration, topic overviews, glossaries, bilingual reading tools, and structured learning pathways.
 - **Serve as a foundation for future embodied or dialogical systems**, including guided practice companions, study assistants, and advanced interactive Dharma tools.
+
+> **Note on Terminology**: Earlier versions of TNH Scholar referred to engineered AI prompts as "Patterns" to emphasize their engineering pattern nature. Current documentation uses "Prompt" to align with industry standards. References to "Pattern" in legacy documentation should be read as "Prompt".
 
 ## Features
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
-- **Text formatting and translation**: `tnh-fab` for punctuation, translation, sectioning, and pattern-driven processing
+- **Text formatting and translation**: `tnh-fab` for punctuation, translation, sectioning, and prompt-driven processing
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
-- **Pattern/PromptTemplate system**: See ADRs under [Pattern System](architecture/pattern-system/adr/adr-pt01-pattern-access-strategy.md) for decisions and roadmap
+- **Prompt system**: See ADRs under [Prompt System](architecture/prompt-system/adr/adr-pt01-pattern-access-strategy.md) for decisions and roadmap
 
 ## Quick Start
 
@@ -56,7 +58,7 @@ TNH Scholar is an AI-driven project designed to explore, process, and translate 
 - **Docs strategy**: [ADR-DD01](architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md) and [ADR-DD02](architecture/docs-system/adr/adr-dd02-docs-content-nav.md)
 - **GenAI service layer**: See [GenAI Service Strategy](architecture/gen-ai-service/design/genai-service-strategy.md) and the ADR-A series.
 - **Transcription pipeline**: See [ADR-TR01](architecture/transcription/adr/adr-tr01-assemblyai-integration.md) and related ADR-TR docs (diarization, chunking, timing).
-- **Pattern/PromptTemplate design**: See [ADR-PT01](architecture/pattern-system/adr/adr-pt01-pattern-access-strategy.md) and ADR-PT02.
+- **Prompt design**: See [ADR-PT01](architecture/prompt-system/adr/adr-pt01-pattern-access-strategy.md) and ADR-PT02.
 - **System design references**: [Object–Service Design Blueprint](development/architecture/object-service-design-blueprint.md) and [System Design](development/system-design.md)
 
 ## Development

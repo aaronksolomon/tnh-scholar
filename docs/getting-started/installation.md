@@ -18,7 +18,7 @@ pip install tnh-scholar
 
 - Python 3.12.4
 - OpenAI API key for AI-powered features
-- Git (for pattern version control)
+- Git (for prompt version control)
 
 ## Installation Options
 
@@ -28,7 +28,7 @@ For basic usage:
 
 ```bash
 pip install tnh-scholar
-tnh-setup  # Configure default patterns and directories
+tnh-setup  # Configure default prompts and directories
 ```
 
 ### Feature-Specific Installation
@@ -58,7 +58,7 @@ Install optional components based on your needs:
 
    This will:
    - Create the configuration directory (~/.config/tnh-scholar)
-   - Download default patterns
+   - Download default prompts
    - Set up initial configuration
 
 ## Verification

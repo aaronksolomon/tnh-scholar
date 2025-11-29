@@ -27,10 +27,10 @@ TNH Scholar aims to make the teachings of Thich Nhat Hanh and the Plum Village t
 TNH Scholar is currently in active prototyping. Key capabilities:
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
-- **Text formatting and translation**: `tnh-fab` for punctuation, translation, sectioning, and pattern-driven processing
+- **Text formatting and translation**: `tnh-fab` for punctuation, translation, sectioning, and prompt-driven processing
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
-- **Pattern/PromptTemplate system**: See ADRs under [docs/architecture/pattern-system/](docs/architecture/pattern-system/) for decisions and roadmap
+- **Prompt system**: See ADRs under [docs/architecture/prompt-system/](docs/architecture/prompt-system/) for decisions and roadmap
 
 ## Quick Start
 
@@ -77,10 +77,10 @@ tnh-fab punctuate input.txt > punctuated.txt
 # Translate text
 tnh-fab translate -l vi input.txt > translated.txt
 
-# Process text using a specific pattern
+# Process text using a specific prompt
 tnh-fab process -p format_xml input.txt > formatted.xml
 
-# Create sections using default sectioning pattern
+# Create sections using default sectioning prompt
 tnh-fab section input.txt > sections.json
 ```
 
@@ -108,7 +108,7 @@ Comprehensive documentation is available in multiple formats:
 
 - **[Getting Started](docs/getting-started/)** – Installation, setup, and first steps
 - **[CLI Reference](docs/cli-reference/)** – Complete command-line tool documentation
-- **[User Guide](docs/user-guide/)** – Detailed usage guides, patterns, and workflows
+- **[User Guide](docs/user-guide/)** – Detailed usage guides, prompts, and workflows
 - **[API Reference](docs/api/)** – Python API documentation for programmatic use
 - **[Architecture](docs/architecture/)** – Design decisions, ADRs, and system overview
 - **[Development](docs/development/)** – Contributing guidelines and development setup
@@ -118,7 +118,7 @@ Comprehensive documentation is available in multiple formats:
 ## Architecture Overview
 
 - Documentation strategy: [ADR-DD01](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md) and [ADR-DD02](docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md)
-- GenAI, transcription, and pattern system ADRs live under [Architecture](docs/architecture/) (see ADR-A*, ADR-TR*, ADR-PT*).
+- GenAI, transcription, and prompt system ADRs live under [Architecture](docs/architecture/) (see ADR-A*, ADR-TR*, ADR-PT*).
 - System design references: [Object–Service Design Blueprint](docs/development/architecture/object-service-design-blueprint.md) and [System Design](docs/development/system-design.md).
 
 ## Development

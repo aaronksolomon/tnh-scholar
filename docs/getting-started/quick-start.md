@@ -18,7 +18,7 @@ After installation, run the setup tool:
 tnh-setup
 ```
 
-This creates necessary directories and downloads default patterns.
+This creates necessary directories and downloads default prompts.
 
 ## Core Tools
 
@@ -31,7 +31,7 @@ The main text processing tool, providing functions for:
 - Text punctuation and formatting
 - Section analysis
 - Translation
-- Pattern-based processing
+- Prompt-based processing
 
 Example usage:
 
@@ -99,6 +99,6 @@ tnh-fab section > processed.txt
 
 ## Next Steps
 
-- Review the [Pattern System](../user-guide/patterns.md) documentation
+- Review the [Prompt System](../user-guide/prompts.md) documentation
 - Explore detailed [CLI documentation](../cli-reference/) for all available tools
 - Check out example notebooks in the repository

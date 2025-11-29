@@ -1,63 +1,63 @@
 ---
-title: "TNH Scholar Pattern System"
-description: "The TNH Scholar Pattern System is inspired by and builds upon concepts from Daniel Miessler's 'fabric' project (<https://github.com/danielmiessler/fabric>). Like fabric, it uses template-based prompting for AI interactions, but adds version control and concurrent access management."
+title: "TNH Scholar Prompt System"
+description: "The TNH Scholar Prompt System is inspired by and builds upon concepts from Daniel Miessler's 'fabric' project (<https://github.com/danielmiessler/fabric>). Like fabric, it uses template-based prompting for AI interactions, but adds version control and concurrent access management."
 owner: ""
 author: ""
 status: processing
 created: "2025-01-19"
 ---
-# TNH Scholar Pattern System
+# TNH Scholar Prompt System
 
-The TNH Scholar Pattern System is inspired by and builds upon concepts from Daniel Miessler's 'fabric' project (<https://github.com/danielmiessler/fabric>). Like fabric, it uses template-based prompting for AI interactions, but adds version control and concurrent access management.
+The TNH Scholar Prompt System is inspired by and builds upon concepts from Daniel Miessler's 'fabric' project (<https://github.com/danielmiessler/fabric>). Like fabric, it uses template-based prompting for AI interactions, but adds version control and concurrent access management.
 
 It is designed to interface with **tnh-fab** a multi-command text processing tool.
 
-Additional tools which use patterns may be developed for the project.
+Additional tools which use prompts may be developed for the project.
 
-The pattern system provides a version-controlled, concurrent-safe way to manage text processing templates. It is built around Jinja2 templates with Git-based versioning and file locking for safety.
+The prompt system provides a version-controlled, concurrent-safe way to manage text processing templates. It is built around Jinja2 templates with Git-based versioning and file locking for safety.
 
 ## Core Components
 
-### Pattern
+### Prompt
 
-A Pattern represents a single text processing template with:
+A Prompt represents a single text processing template with:
 
 - Instructions (as a Jinja2 template)
 - Default template values
 - Metadata in YAML frontmatter (optional) which may include default template values
 
-Example pattern file:
+Example prompt file:
 
 ```markdown
 ---
-description: Example pattern
+description: Example prompt
 version: 1.0
 language: English
 ---
 Process this text in {{ language }} using {{ style_convention }} formatting.
 ```
 
-In this example pattern the default `language` template variable is specified as English.
+In this example prompt the default `language` template variable is specified as English.
 If not supplied through a template or other means, this default value will be used.
-Setting default values when possible in the frontmatter is a good practice and allows patterns to run
+Setting default values when possible in the frontmatter is a good practice and allows prompts to run
 with less specifications.
 
-### Pattern Files
+### Prompt Files
 
 - Stored as .md files
 - Include optional YAML frontmatter
 - Use Jinja2 template syntax
 - Support template variables
 
-## Using Patterns
+## Using Prompts
 
 ### Through TNH-FAB CLI
 
-The most common way to use patterns is through the TNH-FAB command-line tool:
+The most common way to use prompts is through the TNH-FAB command-line tool:
 
 ```bash
-# Basic pattern processing
-tnh-fab process -p pattern_name input.txt
+# Basic prompt processing
+tnh-fab process -p prompt_name input.txt
 
 # Process with sections
 tnh-fab process -p format_xml -s sections.json input.txt
@@ -69,16 +69,18 @@ tnh-fab process -p format_xml -g input.txt
 tnh-fab process -p format_xml -t template.yaml input.txt
 ```
 
-Each TNH-FAB command (punctuate, section, translate, process) uses specific patterns:
+Note: The `-p` flag uses legacy "pattern" terminology for backwards compatibility with existing code.
 
-- punctuate: Uses punctuation patterns (default: 'default_punctuate')
-- section: Uses section analysis patterns (default: 'default_section')
-- translate: Uses translation patterns (default: 'default_line_translation')
-- process: Requires explicit pattern specification
+Each TNH-FAB command (punctuate, section, translate, process) uses specific prompts:
+
+- punctuate: Uses punctuation prompts (default: 'default_punctuate')
+- section: Uses section analysis prompts (default: 'default_section')
+- translate: Uses translation prompts (default: 'default_line_translation')
+- process: Requires explicit prompt specification
 
 ### Programmatic Usage
 
-For developers building tools that use the pattern system:
+For developers building tools that use the prompt system:
 
 ```python
 from tnh_scholar.ai_text_processing import Pattern, PatternManager
@@ -113,7 +115,7 @@ export TNH_PATTERN_DIR=/path/to/patterns
 
 (or loaded through a `.env` file for development installations.)
 
-The pattern system will:
+The prompt system will:
 
 1. First check for `TNH_PATTERN_DIR` environment variable
 2. If not set, use the default ~/.config/tnh-scholar/patterns
@@ -135,7 +137,7 @@ These provide basic functionality but can be customized or overridden by creatin
 
 ### Pattern Integration
 
-The pattern system can be integrated into other tools and workflows:
+The prompt system can be integrated into other tools and workflows:
 
 - Custom text processing applications
 - Web services

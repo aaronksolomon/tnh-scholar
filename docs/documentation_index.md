@@ -4,7 +4,7 @@ description: "Complete index of TNH Scholar documentation"
 owner: ""
 author: ""
 status: processing
-created: "2025-11-24"
+created: "2025-11-29"
 auto_generated: true
 ---
 
@@ -20,6 +20,8 @@ auto_generated: true
 | [docs/architecture/configuration/tnh-configuration.md](architecture/configuration/tnh-configuration.md) | TNH Configuration Management | Architecture decisions and a phased plan for consolidating TNH Scholar configuration across modules, CLIs, and environments. | 2025-02-01 |
 | [docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md](architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md) | ADR-DD01: Documentation System Reorganization Strategy | Rebuilds the documentation architecture with new directories, automation, and PromptTemplate terminology. | 2024-11-09 |
 | [docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md](architecture/docs-system/adr/adr-dd02-docs-content-nav.md) | ADR-DD02: Documentation Main Content and Navigation Strategy | Defines content architecture, sync mechanisms, and navigation patterns for README.md, docs/index.md, and filesystem-driven documentation. | 2025-11-23 |
+| [docs/architecture/docs-system/adr/adr-dd03-pattern-prompt-terminology.md](architecture/docs-system/adr/adr-dd03-pattern-prompt-terminology.md) | ADR-DD03: Pattern to Prompt Terminology Standardization | Standardizes documentation terminology from 'Pattern' to 'Prompt' to align with industry conventions and gen-ai-service refactoring. | 2025-11-28 |
+| [docs/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md](architecture/docs-system/adr/adr-dd03-phase1-punchlist.md) | adr-dd03-phase1-punchlist |  |  |
 | [docs/architecture/docs-system/design/documentation.md](architecture/docs-system/design/documentation.md) | Documentation Design | Reference for the documentation stack, covering tooling choices, information architecture, and publishing workflow. | 2025-01-19 |
 | [docs/architecture/gen-ai-service/adr/adr-a01-domain-service.md](architecture/gen-ai-service/adr/adr-a01-domain-service.md) | ADR-A01: Adopt Object-Service for GenAI Interactions | Standardizes GenAI interactions with an Object-Service pattern that separates domain shapes from provider orchestration. | 2025-11-15 |
 | [docs/architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1.md](architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1.md) | ADR-A02: PatternCatalog Integration (V1) | Describes the V1 contract for plugging the legacy PatternCatalog into GenAI Service via rendered system prompts. | 2025-11-15 |
@@ -58,6 +60,7 @@ auto_generated: true
 | [docs/architecture/transcription/design/segment-match-algorithm.md](architecture/transcription/design/segment-match-algorithm.md) | Interval-to-Segment Mapping Algorithm | Algorithm for mapping chunk-relative transcription intervals back to diarization segments using overlap and proximity. | 2025-05-08 |
 | [docs/architecture/transcription/design/timeline-mapping.md](architecture/transcription/design/timeline-mapping.md) | TimelineMapper Design Document | Design for the TimelineMapper component that reprojects chunk-level transcripts into the original audio timeline. | 2025-05-08 |
 | [docs/architecture/ui-ux/design/ui-ux-strategy.md](architecture/ui-ux/design/ui-ux-strategy.md) | Design Strategy: VS Code as UI/UX Platform for TNH Scholar | --- | 2025-11-15 |
+| [docs/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat.md](architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat.md) | adr-vsc01-vscode-integration-strat |  |  |
 | [docs/architecture/utilities/design/utilities-catalog.md](architecture/utilities/design/utilities-catalog.md) | TNH‑Scholar Utilities Catalog | This catalog lists core utility modules used across the TNH‑Scholar codebase. It provides a quick reference for shared abstractions, their purpose, API highlights, and stability. All modules are currently in **Prototype** phase, with most stable in active use. | 2025-11-15 |
 | [docs/architecture/utilities/design/version-checking-design.md](architecture/utilities/design/version-checking-design.md) | Package Version Checker Design Document | Specification for a reusable package version checking utility with flexible strategies and clear reporting. | 2025-06-10 |
 | [docs/architecture/video-processing/adr/adr-vp01-video-processing.md](architecture/video-processing/adr/adr-vp01-video-processing.md) | ADR-VP01: Video Processing Return Types and Configuration | Centralizes yt-dlp configuration and return types so video tooling emits consistent metadata. | 2025-02-01 |
@@ -96,11 +99,24 @@ auto_generated: true
 | [docs/development/yt-dlp_docs/ytdlp-guide.md](development/yt-dlp_docs/ytdlp-guide.md) | yt-dlp Comprehensive Guide | Comprehensive overview of yt-dlp internals, configuration patterns, and extension points. | 2025-02-01 |
 | [docs/docs-ops/adr-template.md](docs-ops/adr-template.md) | ADR Template | Reusable template for TNH Scholar architecture decision records. | 2025-02-27 |
 | [docs/docs-ops/markdown-standards.md](docs-ops/markdown-standards.md) | Markdown Standards | House style, linting, and structure requirements for TNH Scholar documentation. | 2025-02-27 |
+| [docs/docs-ops/mkdocs-warning-backlog.md](docs-ops/mkdocs-warning-backlog.md) | MkDocs Strict Warning Backlog | Checklist to drive MkDocs builds to zero warnings in strict mode. | 2025-11-25 |
 | [docs/documentation_index.md](documentation_index.md) | Documentation Index | Complete index of TNH Scholar documentation | 2025-11-24 |
 | [docs/getting-started/configuration.md](getting-started/configuration.md) | Configuration | TNH Scholar requires some initial configuration to function properly. This guide covers the essential configuration steps and options. | 2025-02-01 |
 | [docs/getting-started/installation.md](getting-started/installation.md) | Installation | TNH Scholar--Python package for text processing and analysis. Install it using pip: | 2025-02-01 |
 | [docs/getting-started/quick-start.md](getting-started/quick-start.md) | Quick Start Guide | TNH Scholar provides powerful text processing capabilities through several command-line tools. This guide will help you get started with the basic workflows. | 2025-02-01 |
 | [docs/index.md](index.md) | TNH Scholar Documentation | Comprehensive documentation for TNH Scholar, an AI-driven project exploring, processing, and translating the teachings of Thich Nhat Hanh. |  |
+| [docs/project/conceptual-architecture.md](project/conceptual-architecture.md) | conceptual-architecture |  |  |
+| [docs/project/future-directions.md](project/future-directions.md) | future-directions |  |  |
+| [docs/project/philosophy.md](project/philosophy.md) | philosophy |  |  |
+| [docs/project/principles.md](project/principles.md) | principles |  |  |
+| [docs/project/repo-root/CHANGELOG.md](project/repo-root/CHANGELOG.md) | Changelog | Chronological log of notable TNH Scholar changes. | 2025-02-28 |
+| [docs/project/repo-root/CONTRIBUTING.md](project/repo-root/CONTRIBUTING.md) | Contributing to TNH Scholar | TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow. | 2024-10-21 |
+| [docs/project/repo-root/DEV_SETUP.md](project/repo-root/DEV_SETUP.md) | TNH-Scholar — Development Setup Guide | This document outlines the standard development environment for TNH‑Scholar. | 2025-11-19 |
+| [docs/project/repo-root/TODO.md](project/repo-root/TODO.md) | TNH Scholar TODO List | Roadmap tracking the highest-priority TNH Scholar tasks and release blockers. | 2025-01-20 |
+| [docs/project/repo-root/index.md](project/repo-root/index.md) | Project Docs | Repository root documentation surfaced in the MkDocs site. |  |
+| [docs/project/repo-root/release_checklist.md](project/repo-root/release_checklist.md) | Release Checklist | Checklist of tasks required before publishing a TNH Scholar release. | 2025-01-22 |
+| [docs/project/repo-root/repo-readme.md](project/repo-root/repo-readme.md) | TNH Scholar | TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models. | 2024-10-21 |
+| [docs/project/vision.md](project/vision.md) | vision |  |  |
 | [docs/research/gpt_4o_search_query_text_pair_testing/testing_input_output.md](research/gpt_4o_search_query_text_pair_testing/testing_input_output.md) | 1-3 Word Queries | Prompt experiments for generating search query and passage pairs used to train retrieval models. | 2024-10-28 |
 | [docs/research/gpt_4o_translations_experiments/passage_test.md](research/gpt_4o_translations_experiments/passage_test.md) | Passage Test | Spot-checks comparing GPT-4o translation outputs with bilingual baselines on short passages. | 2024-11-08 |
 | [docs/research/gpt_development_convos.md](research/gpt_development_convos.md) | GPT Development Convos | Link log of early GPT design, feasibility, and data processing conversations for the project. | 2024-10-23 |
@@ -108,6 +124,7 @@ auto_generated: true
 | [docs/research/preliminary_feasibility_study.md](research/preliminary_feasibility_study.md) | Preliminary Feasibility Study | Feasibility study exploring an interactive translation, search, and conversation system built on Thich Nhat Hanh’s teachings. | 2024-10-21 |
 | [docs/research/strategic-information-processing.md](research/strategic-information-processing.md) | Structural-Informed Adaptive Processing (SIAP) Methodology | Methodology for structure-aware adaptive processing that selects AI strategies based on content fingerprints. | 2025-06-24 |
 | [docs/research/tnh-scholar-knowledge-vector-search.md](research/tnh-scholar-knowledge-vector-search.md) | TNH Scholar Knowledge Base: Design Document | Design document for the TNH Scholar knowledge base and semantic search stack. | 2025-06-10 |
+| [docs/tnh_scholar_parallax_overview.md](tnh_scholar_parallax_overview.md) | tnh_scholar_parallax_overview |  |  |
 | [docs/user-guide/best-practices.md](user-guide/best-practices.md) | Best Practices | This guide outlines recommended practices for using TNH Scholar effectively. | 2025-02-01 |
 | [docs/user-guide/overview.md](user-guide/overview.md) | User Guide Overview | TNH Scholar is an AI-driven platform designed for text analysis, translation, and processing. The system provides a suite of tools for handling multilingual texts with a focus on wisdom and mindfulness content. This guide will help you understand and effectively use the TNH Scholar toolkit. | 2025-02-01 |
 | [docs/user-guide/patterns.md](user-guide/patterns.md) | TNH Scholar Pattern System | The TNH Scholar Pattern System is inspired by and builds upon concepts from Daniel Miessler's 'fabric' project (<https://github.com/danielmiessler/fabric>). Like fabric, it uses template-based prompting for AI interactions, but adds version control and concurrent access management. | 2025-01-19 |
