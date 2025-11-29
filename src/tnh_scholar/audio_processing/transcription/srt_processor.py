@@ -23,12 +23,12 @@ class SRTConfig:
     
     def __init__(
         self,
-        include_speaker=False,
-        speaker_format="[{speaker}] {text}",
-        reindex_entries=True,
-        timestamp_format="{:02d}:{:02d}:{:02d},{:03d}",
-        max_chars_per_line=42,
-        use_pysrt=False,
+        include_speaker: bool = False,
+        speaker_format: str = "[{speaker}] {text}",
+        reindex_entries: bool = True,
+        timestamp_format: str = "{:02d}:{:02d}:{:02d},{:03d}",
+        max_chars_per_line: int = 42,
+        use_pysrt: bool = False,
     ):
         """
         Initialize with default settings.
@@ -121,11 +121,11 @@ class SRTProcessor:
             Shift all timestamps by the given offset.
             
             Args:
-                timed_texts: List of TimedText objects
+                timed_text: TimedText to shift
                 offset_ms: Offset in milliseconds to apply
                 
             Returns:
-                New list of TimedText objects with adjusted timestamps
+                New TimedText object with adjusted timestamps
             """
             new_segments = [
                 segment.shift_time(offset_ms) 
@@ -138,10 +138,10 @@ class SRTProcessor:
         Combine multiple lists of TimedText into one, with proper indexing.
         
         Args:
-            timed_text_lists: List of TimedText lists to combine
+            timed_texts: List of TimedText to combine
             
         Returns:
-            Combined list of TimedText objects
+            Combined TimedText object
         """
         combined_segments = []
         for timed_text in timed_texts:

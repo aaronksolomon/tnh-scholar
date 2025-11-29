@@ -68,23 +68,8 @@ VIDEO_EXTENSIONS = {".mp4", ".avi", ".mov", ".mkv", ".wmv"}
 class AudioTranscribeApp:
     """
     Main application class for audio transcription CLI.
-
-    Organizes configuration, source resolution, and pipeline execution.
-
-    Args:
-        yt_url: YouTube URL to download audio from.
-        yt_url_csv: CSV file containing YouTube URLs.
-        file_: Path to local audio file.
-        output_dir: Directory for output files.
-        service: Transcription service provider.
-        model: Transcription model name.
-        language: Language code for transcription.
-        response_format: Format of transcription response.
-        chunk_duration: Target chunk duration (seconds).
-        min_chunk: Minimum chunk duration (seconds).
-        start_time: Start time offset (HH:MM:SS).
-        end_time: End time offset (HH:MM:SS).
-        prompt: Prompt or keywords for transcription.
+    Organizes configuration, source resolution, and pipeline execution. All
+    runtime options are supplied via a validated `AudioTranscribeConfig`.
     """
     def __init__(self, config: AudioTranscribeConfig) -> None:
         """

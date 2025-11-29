@@ -3,7 +3,7 @@
 # external package imports
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Dict, Generator, Optional, Tuple, Type, cast
+from typing import Any, Dict, Generator, Optional, Tuple, Type, cast
 
 from pydantic import BaseModel
 
@@ -57,15 +57,15 @@ class TextProcessor(ABC):
         input_str: str,
         instructions: str,
         response_format: Optional[Type[BaseModel]] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> ProcessorResult:
         """
         Process text according to instructions.
 
         Args:
-            text: Input text to process
+            input_str: Input text to process
             instructions: Processing instructions
-            response_object: Optional Pydantic class for structured output
+            response_format: Optional Pydantic class for structured output
             **kwargs: Additional processing parameters
 
         Returns:
@@ -87,7 +87,7 @@ class OpenAIProcessor(TextProcessor):
         instructions: str,
         response_format: Optional[Type[BaseModel]] = None,
         max_tokens: int = 0,
-        **kwargs,
+        **kwargs: Any,
     ) -> ProcessorResult:
         """Process text using OpenAI API with optional structured output."""
 
@@ -139,10 +139,8 @@ class SectionParser:
         Initialize section generator.
 
         Args:
-            processor: Implementation of TextProcessor
-            pattern: Pattern object containing section generation instructions
-            max_tokens: Maximum tokens for response
-            section_count: Target number of sections
+            section_scanner: Text processor used to extract sections
+            section_pattern: Pattern object containing section generation instructions
             review_count: Number of review passes
         """
         self.section_scanner = section_scanner
@@ -259,8 +257,8 @@ def find_sections(
     Args:
         text: Input text
         source_language: ISO 639-1 language code
-        pattern: Optional custom pattern (uses default if None)
-        model: Optional model identifier
+        section_pattern: Optional custom pattern (uses default if None)
+        section_model: Optional model identifier
         max_tokens: Maximum tokens for response
         section_count: Target number of sections
         review_count: Number of review passes
@@ -331,7 +329,6 @@ class SectionProcessor:
         Process transcript sections and yield results one section at a time.
 
         Args:
-            transcript: Text to process
             text_object: Object containing section definitions
 
         Yields:
@@ -430,9 +427,9 @@ class GeneralProcessor:
         Initialize general processor.
 
         Args:
-            text_punctuator: Implementation of TextProcessor
+            processor: Implementation of TextProcessor
             pattern: Pattern object containing processing instructions
-            section_count: Target number of sections
+            source_language: ISO code for the source language
             review_count: Number of review passes
         """
 
@@ -516,7 +513,6 @@ def process_text_by_sections(
     High-level function for processing text sections with configurable output handling.
 
     Args:
-        transcript: Text to process
         text_object: Object containing section definitions
         pattern: Pattern object containing processing instructions
         template_dict: Dictionary for template substitution

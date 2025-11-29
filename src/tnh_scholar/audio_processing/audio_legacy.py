@@ -256,8 +256,7 @@ def split_audio(
         language (str): Language for whisper transcription if method='whisper'.
         min_silence_len (int): For silence-based detection, min silence length in ms.
         silence_thresh (int): Silence threshold in dBFS.
-        max_duration_s (int): Max chunk length in seconds.
-        max_duration_ms (int): Max chunk length in ms (for silence detection combination).
+        max_duration (int): Max chunk length in seconds (also used to derive ms threshold).
 
     Returns:
         Path: Directory containing the resulting chunks.
@@ -393,8 +392,8 @@ def audio_to_numpy(audio_segment: AudioSegment) -> np.ndarray:
 def whisper_model_transcribe(
     model: Any,
     input_source: Any,
-    *args,
-    **kwargs,
+    *args: Any,
+    **kwargs: Any,
 ) -> Dict[str, Any]:
     """
     Wrapper around model.transcribe that suppresses the known

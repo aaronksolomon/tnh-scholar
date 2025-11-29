@@ -117,7 +117,7 @@ class AAITranscriptionService(TranscriptionService):
         
         Args:
             api_key: AssemblyAI API key (defaults to ASSEMBLYAI_API_KEY env var)
-            config: Comprehensive configuration options
+            options: Additional transcription configuration overrides
         """
         # Initialize format converter for fallback cases
         self.format_converter = FormatConverter()
@@ -550,7 +550,6 @@ class AAITranscriptionService(TranscriptionService):
         Args:
             transcript_id: ID of the transcription job
             format_type: Format type ("srt" or "vtt")
-            chars_per_caption: Maximum characters per caption
             
         Returns:
             String representation in the requested format

@@ -191,6 +191,7 @@ Aaron Solomon
 `aaron.kyle.solomon@gmail.com`
 (Deer Park Monastery)
 
-[Project Repository](https://github.com/aaronksolomon/tnh-scholar)
+[Project Repository (GitHub)](https://github.com/aaronksolomon/tnh-scholar)
+[Project Documentation](https://aaronksolomon.github.io/tnh-scholar/)
 
 This document may be shared within editorial leadership circles at Parallax Press, Plum Village, and related sangha communities.

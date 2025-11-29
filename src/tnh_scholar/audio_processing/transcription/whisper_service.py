@@ -140,7 +140,7 @@ class WhisperTranscriptionService(TranscriptionService):
     Provides transcription services using the OpenAI Whisper API.
     """
     
-    def __init__(self, api_key: Optional[str] = None, **config_options):
+    def __init__(self, api_key: Optional[str] = None, **config_options: Any):
         """
         Initialize the Whisper transcription service.
         

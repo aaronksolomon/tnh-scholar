@@ -76,7 +76,7 @@ class LineTranslator:
         Translate a segment of text with context.
 
         Args:
-            text: Full text to extract segment from
+            num_text: Numbered text to extract segment from
             start_line: Starting line number of segment
             end_line: Ending line number of segment
             metadata: metadata for text

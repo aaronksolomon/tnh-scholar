@@ -47,7 +47,7 @@ def save_xml(tree, file_path):
 
 
 # Extract page data from XML
-def extract_pages(tree):
+def extract_pages(tree) -> list:
     """
     Extract page data from the XML tree.
 

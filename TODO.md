@@ -54,16 +54,16 @@ This section organizes work into three priority levels based on criticality for 
 - **Status**: IN PROGRESS - Needs Implementation
 - **Priority**: HIGH
 - **Tasks**:
-  - [ ] [config/params_policy.py](src/tnh_scholar/gen_ai_service/config/params_policy.py): Implement actual policy logic (currently pass-through)
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/config/params_policy.py> — Implement actual policy logic (currently pass-through)
     - Policy precedence: call hint → prompt metadata → defaults
     - Cache Settings instead of re-instantiating per call
-  - [ ] [routing/model_router.py](src/tnh_scholar/gen_ai_service/routing/model_router.py): Implement model selection logic (currently echoes input)
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/routing/model_router.py> — Implement model selection logic (currently echoes input)
     - Intent-based routing
     - Provider capability mapping
-  - [ ] [safety/safety_gate.py](src/tnh_scholar/gen_ai_service/safety/safety_gate.py): Implement content safety (currently placeholder)
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/safety/safety_gate.py> — Implement content safety (currently placeholder)
     - Pre-submission content checks
     - Post-completion validation
-  - [ ] [mappers/completion_mapper.py](src/tnh_scholar/gen_ai_service/mappers/completion_mapper.py): Surface provider error bodies
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/mappers/completion_mapper.py> — Surface provider error bodies
     - Structured error propagation
     - Don't just raise ValueError on non-OK status
 
@@ -111,8 +111,8 @@ This section organizes work into three priority levels based on criticality for 
 
 - **Status**: NOT STARTED
 - **Problem**: Multiple modules call `load_dotenv()` at import time
-  - [ai_text_processing/prompts.py](src/tnh_scholar/ai_text_processing/prompts.py)
-  - [audio_processing/diarization/pyannote_client.py](src/tnh_scholar/audio_processing/diarization/pyannote_client.py)
+  - <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/ai_text_processing/prompts.py>
+  - <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/audio_processing/diarization/pyannote_client.py>
 - **Tasks**:
   - [ ] Create single startup hook for dotenv loading
   - [ ] Use Pydantic Settings consistently
@@ -232,11 +232,11 @@ This section organizes work into three priority levels based on criticality for 
 
 - **Status**: NOT STARTED
 - **Targets**:
-  - [ ] [ai_text_processing/prompts.py](src/tnh_scholar/ai_text_processing/prompts.py) (34KB)
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/ai_text_processing/prompts.py> (34KB)
     - Break into: prompt model, repository manager, git helpers, lock helpers
     - Add docstrings and tests for each unit
     - Document front-matter schema
-  - [ ] [journal_processing/journal_process.py](src/tnh_scholar/journal_processing/journal_process.py) (28KB)
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/journal_processing/journal_process.py> (28KB)
     - Identify focused units
     - Extract reusable components
 

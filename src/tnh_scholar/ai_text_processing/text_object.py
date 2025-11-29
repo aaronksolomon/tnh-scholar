@@ -485,7 +485,7 @@ class TextObject:
         
         Args:
             path: Output file path
-            format: "text" for full content+metadata or "json" for serialized state
+            output_format: "text" for full content+metadata or "json" for serialized state
             source_file: Optional source file to record in metadata
             pretty: For JSON output, whether to pretty print
         """
@@ -563,9 +563,11 @@ class TextObject:
         Process history is maintained in metadata.
         
         Args:
-            content: New text content
+            data_str: New text content
             language: New language code  
-            process_tag: Identifier for the process performed
+            metadata: Metadata to merge into the object
+            process_metadata: Identifier and details for the process performed
+            sections: Optional replacement list of sections
         """
         # Update potentially changed elements
         if data_str:

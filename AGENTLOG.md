@@ -140,3 +140,61 @@ Completed ADR-DD01 (filesystem reorganization + literate-nav). Need to define co
 - Future: ADR-DD03 (Content Reuse), ADR-DD04 (Templating)
 
 ---
+
+## [2025-11-27 21:15 PST] MkDocs Strict Cleanup & Autorefs Fixes
+
+**Agent**: GPT-5 (Codex Max)
+**Chat Reference**: mkdocs-strict-zero-warnings
+**Human Collaborator**: phapman
+
+### Context
+
+mkdocs was failing in strict mode with 136 warnings (nav, autorefs, mkdocstrings). Goal: fix warnings without suppression and leave a backlog for future doc additions.
+
+### Key Decisions
+
+- **Fix Over Suppress**: Convert broken references to valid targets and align docstrings/signatures instead of hiding warnings.
+- **Track Progress**: Created `docs/docs-ops/mkdocs-warning-backlog.md` to log categories and completion.
+- **Keep API Coverage**: Restored full mkdocstrings options to retain complete API surface.
+
+### Work Completed
+
+- [x] Added mkdocs warning backlog tracker (files: `docs/docs-ops/mkdocs-warning-backlog.md`)
+- [x] Fixed TODO autorefs and regenerated mirrored root docs (files: `TODO.md`, `docs/project/repo-root/TODO.md`)
+- [x] Aligned docstrings/signatures and annotations across AI/text/audio/journal/OCR/utils modules to satisfy griffe (files: `src/tnh_scholar/ai_text_processing/*`, `audio_processing/*`, `cli_tools/audio_transcribe/*`, `journal_processing/journal_process.py`, `ocr_processing/*`, `text_processing/text_processing.py`, `utils/tnh_audio_segment.py`, `video_processing/video_processing_old1.py`, `xml_processing/extract_tags.py`)
+- [x] Restored full mkdocstrings options in API page (files: `docs/api/index.md`)
+- [x] Verified `poetry run mkdocs build --strict` passes with zero warnings (only info-level link notices remain)
+
+### Discoveries & Insights
+
+- **Autorefs Sensitivity**: mkdocs-autorefs needs GitHub/absolute links for mirrored root docs; regenerate mirrors after root edits.
+- **Griffe Strictness**: Docstrings listing params not in signatures trigger warnings; quickest path is aligning docs or adding type hints.
+- **Link Notices**: Absolute link notices in README/docs index are informational and non-blocking; can be normalized later.
+
+### Files Modified/Created
+
+- `docs/docs-ops/mkdocs-warning-backlog.md`: Created warning checklist and progress tracker.
+- `docs/api/index.md`: Restored full mkdocstrings options.
+- `TODO.md`, `docs/project/repo-root/TODO.md`: Updated links to GitHub URLs; regenerated mirror.
+- `src/tnh_scholar/ai_text_processing/ai_text_processing.py`, `text_object.py`, `prompts.py`, `line_translator.py`: Docstring/signature alignment, type hints.
+- `src/tnh_scholar/audio_processing/*` (legacy, transcription, timed_text): Added/cleaned params and types to satisfy griffe.
+- `src/tnh_scholar/cli_tools/audio_transcribe/*`: Docstrings aligned with config-driven usage.
+- `src/tnh_scholar/journal_processing/journal_process.py`: Added return annotations, removed stale arg docs, adjusted helpers.
+- `src/tnh_scholar/ocr_processing/*`, `ocr_editor.py`: Param name fixes, return annotations.
+- `src/tnh_scholar/text_processing/text_processing.py`, `utils/tnh_audio_segment.py`, `video_processing/video_processing_old1.py`, `xml_processing/extract_tags.py`: Added typing/docstring fixes.
+
+### Next Steps
+
+- [ ] Optionally normalize remaining info-level absolute links in README/docs index.
+- [ ] Keep `docs/docs-ops/mkdocs-warning-backlog.md` updated for future doc additions.
+
+### Open Questions
+
+- Should we convert the info-level absolute links to site-relative now or keep them for external navigation?
+
+### References
+
+- `docs/docs-ops/mkdocs-warning-backlog.md`
+- `poetry run mkdocs build --strict` (now clean)
+
+---

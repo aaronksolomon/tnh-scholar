@@ -27,7 +27,7 @@ def normalize_newlines(text: str, spacing: int = 2) -> str:
     newlines = "\n" * spacing
     return re.sub(r"\n{1,}", newlines, text)
 
-def clean_text(text, newline=False):
+def clean_text(text: str, newline: bool = False) -> str:
     """
     Cleans a given text by replacing specific unwanted characters such as
     tab, and non-breaking spaces with regular spaces.

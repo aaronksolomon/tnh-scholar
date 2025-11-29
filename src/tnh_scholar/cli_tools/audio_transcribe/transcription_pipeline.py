@@ -41,7 +41,7 @@ class TranscriptionPipeline:
             transcriber (str): Transcription service provider.
             transcription_options (Optional[Dict[str, Any]]): Options for transcription.
             diarization_kwargs (Optional[Dict[str, Any]]): Additional diarization arguments.
-            save_diarization_json (bool): Whether to save raw diarization JSON results.
+            save_diarization (bool): Whether to save raw diarization JSON results.
             logger (Optional[logging.Logger]): Logger for pipeline events.
         """
         self.logger = logger or logging.getLogger(__name__)
