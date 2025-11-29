@@ -78,7 +78,7 @@ Standardize all documentation to use **"Prompt"** as the primary term, with the 
 - [ ] Update `docs/getting-started/*.md`
 - [ ] Update `docs/user-guide/patterns.md` → rename to `prompts.md`
 - [ ] Update current ADRs in `docs/architecture/*/adr/` that are still relevant
-- [ ] Rename `docs/architecture/pattern-system/` → `prompt-system/` and update nav
+- [ ] Rename `docs/architecture/prompt-system/` → `prompt-system/` and update nav
 
 **Phase 2: Architecture & Design Docs** (Begin before merge, complete post-merge)
 - [ ] Add historical callouts to archived/legacy design documents
@@ -124,7 +124,7 @@ docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md (update reference
 - **Historical Document Context Loss**: Archived docs may feel inconsistent unless callouts are added
 - **One-Time Effort**: Requires systematic search-replace and manual review across ~65 files
 - **CLI Flag Confusion**: Some CLI commands still use `--pattern` flags (legacy code); requires explanation in docs
-- **Link/Navigation Updates**: May need to rename files/directories (e.g., `patterns.md` → `prompts.md`, `architecture/pattern-system/` → `architecture/prompt-system/`)
+- **Link/Navigation Updates**: May need to rename files/directories (e.g., `patterns.md` → `prompts.md`, `architecture/prompt-system/` → `architecture/prompt-system/`)
 
 ### Mitigation
 
@@ -155,7 +155,7 @@ docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md (update reference
 
 ### Resolved During ADR Review
 
-1. **Directory Renaming**: Should `docs/architecture/pattern-system/` be renamed to `docs/architecture/prompt-system/`?
+1. **Directory Renaming**: Should `docs/architecture/prompt-system/` be renamed to `docs/architecture/prompt-system/`?
    - **Decision**: ✅ Yes, rename in Phase 1 (pre-merge) to ensure consistency
 
 2. **User Guide File Renaming**: Should `docs/user-guide/patterns.md` be renamed to `prompts.md`?

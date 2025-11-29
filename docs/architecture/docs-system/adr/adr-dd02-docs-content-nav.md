@@ -101,7 +101,7 @@ docs/index.md is **comprehensive** (target: complete orientation for all persona
 - Extract complex, frequently reused content to `docs/_includes/`:
   - `installation.md`: Detailed install steps (PyPI, prerequisites, dev setup)
   - `development.md`: Development environment configuration
-  - `pattern-overview.md`: Pattern/PromptTemplate system introduction
+  - `prompt-overview.md`: Prompt system introduction
 - Use mkdocs snippets plugin (`--8<--` syntax) for transclusion
 - Keep README independent; include shared content in docs/index.md and other docs
 

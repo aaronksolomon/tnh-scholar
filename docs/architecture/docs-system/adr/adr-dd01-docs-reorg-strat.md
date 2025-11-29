@@ -1,6 +1,6 @@
 ---
 title: "ADR-DD01: Documentation System Reorganization Strategy"
-description: "Rebuilds the documentation architecture with new directories, automation, and PromptTemplate terminology."
+description: "Rebuilds the documentation architecture with new directories, automation, and Prompt terminology."
 owner: ""
 author: "Codex (GPT-5)"
 status: accepted
@@ -19,12 +19,12 @@ Defines the new documentation hierarchy, automation tooling, and naming standard
 The documentation footprint for TNH Scholar has grown organically:
 
 - `docs/index.md` and `README.md` describe the project at a high level but omit the current architecture, roadmap, or research context and still lean on the legacy "Pattern" terminology.
-- End-user docs (`docs/getting-started`, `docs/user-guide`, `docs/cli`, `docs/api`) only cover a subset of the available tools and do not reflect the latest CLI surface, PromptTemplate design, or evaluation workflows.
+- End-user docs (`docs/getting-started`, `docs/user-guide`, `docs/cli`, `docs/api`) only cover a subset of the available tools and do not reflect the latest CLI surface, Prompt design, or evaluation workflows.
 - Developer and architecture materials are split between `docs/development`, a large unindexed `docs/design` tree containing numerous ADRs, and `docs/docs-design` (the original documentation plan). Most of this content never appears in `mkdocs.yaml`, so the published site hides the majority of design history.
 - Research work (`docs/research/**`) mixes current experiments with exploratory transcripts without indicating recency or ownership.
 - There is no standard place for "doc ops" guidance (style guide, review checklists, roadmap), and the README is not a comprehensive introduction to TNH Scholar’s goals, structure, design principles, or contribution opportunities.
 
-The current effort (TODO #9) should reorganize the documentation without losing information, surface up-to-date guidance, archive historical material appropriately, and ensure the MkDocs site mirrors the on-disk structure. It must also accommodate the ongoing rename from **Pattern** to **PromptTemplate** (e.g., `docs/user-guide/patterns.md`, `docs/design/pattern/*`, `docs/cli/tnh-fab.md`, etc.).
+The current effort (TODO #9) should reorganize the documentation without losing information, surface up-to-date guidance, archive historical material appropriately, and ensure the MkDocs site mirrors the on-disk structure. It must also accommodate the ongoing rename from **Pattern** to **Prompt** (e.g., `docs/user-guide/patterns.md`, `docs/design/pattern/*`, `docs/cli/tnh-fab.md`, etc.).
 
 ## Decision
 
@@ -38,9 +38,9 @@ Adopt a documentation architecture that is source-of-truth in the repository, en
        index.md                    # mirrors README, includes vision + orientation
        overview/                   # mission, roadmap, release notes, glossary
        getting-started/            # install, quick start, configuration
-       user-guide/                 # workflows, PromptTemplate usage, best practices
+       user-guide/                 # workflows, Prompt usage, best practices
        cli-reference/              # per-command auto-generated docs
-       prompt-templates/           # PromptTemplate catalog, conventions, metadata schema
+       prompt-templates/           # Prompt catalog, conventions, metadata schema
        api-reference/              # mkdocstrings output + integration guides
        architecture/               # system design, component deep-dives, ADRs
          adr/                      # numbered ADRs (inc. migrated legacy files)
@@ -56,9 +56,9 @@ Adopt a documentation architecture that is source-of-truth in the repository, en
    - Expand `README.md` into a full project introduction (vision, goals, architecture snapshot, CLI summary, development status, research focus, and where to contribute) and keep it synchronized with `docs/index.md`.
    - Include the documentation map (nav overview + major directories) so newcomers know where to look.
 
-3. **Adopt PromptTemplate terminology.**
+3. **Adopt Prompt terminology.**
    - Rename `docs/user-guide/patterns.md` to `user-guide/prompt-templates.md` (mirrored in MkDocs nav and CLI docs).
-   - Update all references in docs (and eventually CLI/API text) to use PromptTemplate nomenclature while acknowledging the historical Pattern term in the archive.
+   - Update all references in docs (and eventually CLI/API text) to use Prompt nomenclature while acknowledging the historical Pattern term in the archive.
 
 4. **Surface everything through MkDocs.**
    - Restructure `mkdocs.yaml` to follow the physical layout above, ensuring no Markdown lives outside the published nav.
@@ -88,7 +88,7 @@ Adopt a documentation architecture that is source-of-truth in the repository, en
 1. **Inventory and tagging (Week 1).**
    - Tag each existing Markdown file as `current`, `needs-update`, or `historical`.
    - Capture metadata (owner, last review date) in YAML front matter.
-   - Identify Pattern→PromptTemplate rename scope via `rg` (currently 300+ hits).
+   - Identify Pattern→Prompt rename scope via `rg` (currently 300+ hits).
 
 2. **Filesystem reorganization (Week 1–2).**
    - Create the target directory structure.
@@ -97,7 +97,7 @@ Adopt a documentation architecture that is source-of-truth in the repository, en
 
 3. **Terminology + README sweep (Week 2).**
    - Update README and `docs/index.md` with the comprehensive intro, project structure, research focus, and contribution pointers.
-   - Rename `Pattern` to `PromptTemplate` (docs + nav). Retain a glossary entry describing the rename.
+   - Rename `Pattern` to `Prompt` (docs + nav). Retain a glossary entry describing the rename.
 
 4. **MkDocs + automation (Week 2–3).**
    - Rewrite `mkdocs.yaml` nav to mirror the new hierarchy.
@@ -114,10 +114,10 @@ Adopt a documentation architecture that is source-of-truth in the repository, en
 
 ## Documentation Backlog (initial)
 
-1. **PromptTemplate Catalog + Standards.**
+1. **Prompt Catalog + Standards.**
    - Naming conventions, metadata schema, versioning, testing strategy, migration guide from Patterns.
 2. **Workflow Playbooks.**
-   - End-to-end tutorials for research tasks (e.g., transcription → translation → PromptTemplate evaluation).
+   - End-to-end tutorials for research tasks (e.g., transcription → translation → Prompt evaluation).
 3. **Evaluation + Benchmarking.**
    - How to run `evaluation/` scripts, metrics definitions, sample datasets.
 4. **Knowledge Infrastructure.**
@@ -136,7 +136,7 @@ Adopt a documentation architecture that is source-of-truth in the repository, en
   - README + docs/index become authoritative onboarding material.
   - Historical context remains accessible but separated from current guidance.
   - Automation keeps CLI/API docs and template catalogs in sync with the codebase.
-  - Terminology alignment reduces confusion during the Pattern→PromptTemplate migration.
+  - Terminology alignment reduces confusion during the Pattern→Prompt migration.
 
 - **Negative / Risks**
   - Short-term churn as files move; open PRs may require rebase assistance.

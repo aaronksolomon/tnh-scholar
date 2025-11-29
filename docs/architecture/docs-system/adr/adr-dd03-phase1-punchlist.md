@@ -37,7 +37,7 @@
 ### 3. Architecture Documentation
 
 #### Directory Renaming
-- [ ] Rename `docs/architecture/pattern-system/` → `prompt-system/`
+- [ ] Rename `docs/architecture/prompt-system/` → `prompt-system/`
 - [ ] Update all internal links pointing to pattern-system/
 - [ ] Update nav.md references
 
@@ -74,7 +74,7 @@ docs/getting-started/configuration.md
 docs/user-guide/patterns.md → prompts.md
 docs/user-guide/overview.md
 docs/user-guide/best-practices.md
-docs/architecture/pattern-system/ → prompt-system/
+docs/architecture/prompt-system/ → prompt-system/
 docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md
 docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md
 docs/nav.md
