@@ -2,7 +2,7 @@
 """Generate documentation_index.md files from Markdown front matter."""
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
@@ -12,16 +12,23 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCS_INDEX_PATH = ROOT / "docs/documentation_index.md"
 
 # Exclude these directories from doc index
-EXCLUDED_DIRS = {".git", ".github", ".mypy_cache", ".pytest_cache", ".ruff_cache", "node_modules", "site", "build", "dist"}
+EXCLUDED_DIRS = {".git", 
+                 ".github", 
+                 ".mypy_cache", 
+                 ".pytest_cache", 
+                 ".ruff_cache", 
+                 "node_modules", 
+                 "site", 
+                 "build", 
+                 "dist"}
 
 
 def iter_markdown_files() -> Iterable[Path]:
     """Iterate over all markdown files in repo, excluding common ignored directories."""
     for md_file in sorted(ROOT.rglob("*.md")):
         # Skip files in excluded directories
-        if any(excluded in md_file.parts for excluded in EXCLUDED_DIRS):
-            continue
-        yield md_file
+        if all(excluded not in md_file.parts for excluded in EXCLUDED_DIRS):
+            yield md_file
 
 
 def extract_frontmatter(path: Path) -> dict:
@@ -66,7 +73,7 @@ def write_index(path: Path, rows: list[tuple[str, str, str, str]]) -> None:
         'owner: ""',
         'author: ""',
         'status: processing',
-        f'created: "{datetime.utcnow().date()}"',
+        f'created: "{datetime.now(timezone.utc).date()}"',
         "auto_generated: true",
         "---",
         "",
