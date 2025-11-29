@@ -19,8 +19,6 @@ created: "2025-02-26"
 > This document preserves the original terminology for historical accuracy while serving as valuable architectural reference.
 
 ```mermaid
-
-```mermaid
 flowchart TD
     subgraph Input
         A[Raw Text/File] --> |"initialization"| B[TextObject]
@@ -808,8 +806,3 @@ Some key considerations:
 - Must handle dynamic response types
 - Must ensure consistent TextObject transformation
 
-Would you like me to explore any of these aspects in more detail? For example, we could look at:
-
-- Pattern markup for response generation
-- Response model validation requirements
-- Processor adaptation strategies

@@ -1,21 +1,21 @@
 ---
-title: "Object–Service Design Blueprint (Integrated)"
-description: "*A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.*"
+title: "ADR-OS01: Object-Service Design Architecture V3"
+description: "Establishes layered architecture for complex objects and API-backed services across TNH Scholar, defining clear boundaries between domain, service, and transport layers."
 owner: ""
-author: ""
-status: processing
-created: "2025-11-15"
+author: "Aaron Solomon, OpenAI GPT-5, Anthropic Claude Sonnet 4.5"
+status: accepted
+created: "2025-10-24"
 ---
-# Object–Service Design Blueprint (Integrated)
+# ADR-OS01: Object-Service Design Architecture V3
 
-*A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.*
+Practical, opinionated architecture for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite.
 
-*A practical, opinionated blueprint for the overall direction for design, implementation, and evolution of complex objects and API-backed services across the TNH Scholar suite. It presents the big picture first, then the fine details, and ends with boilerplate templates you can copy‑paste to sketch new systems.*
-
-**Version:** 3.0 (Integrated)  
-**Author(s):** Aaron Solomon, OpenAI GPT-5, Anthropic Claude Sonnet 4.5  
-**Date:** 2025-10-24  
-**Status:** Draft – for internal engineering alignment
+- **Filename**: `adr-os01-design-v3.md`
+- **Heading**: `# ADR-OS01: Object-Service Design Architecture V3`
+- **Status**: Accepted
+- **Date**: 2025-10-24
+- **Authors**: Aaron Solomon, OpenAI GPT-5, Anthropic Claude Sonnet 4.5
+- **Version**: 3.0 (Integrated)
 
 ---
 
