@@ -32,6 +32,14 @@ created: "2025-02-28"
   - Renamed docs/user-guide/patterns.md → prompts.md
   - Renamed docs/architecture/pattern-system/ → prompt-system/
   - Updated ADR-DD01 and ADR-DD02 references
+- **Documentation structure reorganization** (Python community standards):
+  - Split design-guide.md into style-guide.md (code formatting, PEP 8) and design-principles.md (architectural patterns)
+  - Moved object-service architecture to canonical location (development/architecture/ → architecture/object-service/)
+  - Converted object-service-design-blueprint-v2 to ADR-OS01 (adopted V3, deleted V1)
+  - Created design-overview.md and updated implementation-status.md with resolved items
+  - Created forward-looking prompt-architecture.md documenting current V1 and planned V2 (PromptCatalog, fingerprinting, VS Code integration)
+  - Moved pattern-core-design.md to archive/ with historical terminology note
+  - Fixed all 35 mkdocs build --strict warnings from reorganization (link updates, regenerated index)
 
 ### Developer Experience
 

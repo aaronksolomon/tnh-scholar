@@ -10,9 +10,9 @@ created: "2025-01-20"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2025-11-16
+> **Last Updated**: 2025-11-29
 > **Version**: 0.1.3 (Alpha)
-> **Status**: Active Development - Quick Wins Phase
+> **Status**: Active Development - Documentation Reorganization Phase
 
 ---
 
@@ -147,12 +147,18 @@ This section organizes work into three priority levels based on criticality for 
      - [x] Create the target hierarchy (overview, getting-started, user-guide, cli-reference, prompt-templates, api-reference, architecture/adr, development, research, docs-ops, archive)
      - [x] Move existing docs into the new layout with stub `index.md` files
      - [ ] Tag archival folders explicitly for mkdocs-literate-nav auto-generation
-  3. **Terminology + README Sweep** (Part 3b: ✅ COMPLETED - ADR-DD02)
+  3. **Terminology + README Sweep** (Part 3b: ✅ COMPLETED - ADR-DD02 + ADR-DD03)
      - [x] **3b (COMPLETED)**: Designed content architecture for README.md and docs/index.md (ADR-DD02)
      - [x] Implemented drift reporting script (`check_readme_docs_drift.py`) for non-blocking sync monitoring
      - [x] Established persona-based navigation strategy (Practitioners, Developers, Researchers)
      - [x] Updated markdown standards to enforce exact YAML title ↔ heading match
-     - [ ] Rename Pattern → PromptTemplate across docs text (incl. CLI references)
+     - [x] **Pattern → Prompt terminology standardization** (ADR-DD03 Phase 1 ✅ COMPLETE)
+       - [x] Updated all user-facing documentation (README, docs/index.md, getting-started/, user-guide/)
+       - [x] Renamed patterns.md → prompts.md; pattern-system/ → prompt-system/
+       - [x] Added historical terminology note to docs/index.md
+       - [x] Retained legacy compatibility: TNH_PATTERN_DIR, --pattern flags
+       - [ ] Phase 2: CLI documentation updates (deferred post-merge, many tools deprecated)
+       - [ ] Phase 3: Code refactoring (tracked separately, many modules scheduled for deletion)
      - [ ] Add prompt authoring schema guidance (deferred to Part 6)
   4. **MkDocs + Automation** (✅ ALL PARTS COMPLETE)
      - [x] Install `mkdocs-literate-nav` and `mkdocs-gen-files` to dev dependencies
@@ -189,13 +195,33 @@ This section organizes work into three priority levels based on criticality for 
   6. **Backlog + Gap Filling**
      - [ ] Populate `docs/docs-ops/roadmap.md` with missing topics (PromptTemplate catalog, workflow playbooks, evaluation guides, KB, deployment, research summaries, doc ops)
      - [ ] Open GitHub issues per backlog item with owners/priorities
-  7. **Outstanding Standalone Tasks**
+  7. **Documentation Structure Reorganization** (✅ COMPLETE - Python Community Standards)
+     - [x] **Split design-guide.md** into Python standard docs:
+       - [x] style-guide.md: Code formatting, naming, PEP 8, type annotations
+       - [x] design-principles.md: Architectural patterns, modularity, composition
+     - [x] **Move object-service architecture** to canonical location:
+       - [x] Moved from development/architecture/ to architecture/object-service/
+       - [x] Converted V2 blueprint to ADR-OS01 (adopted V3, deleted V1)
+       - [x] Created design-overview.md with high-level summary
+       - [x] Updated implementation-status.md with resolved items
+     - [x] **Create forward-looking prompt architecture**:
+       - [x] Created prompt-architecture.md (current + planned V2 with PromptCatalog)
+       - [x] Moved pattern-core-design.md to archive/ with terminology note
+       - [x] Documented VS Code integration requirements
+     - [x] **Fix all broken links** from reorganization:
+       - [x] Fixed 35 mkdocs build --strict warnings → 0 warnings ✅
+       - [x] Updated docs/index.md, contributing.md, ADR cross-references
+       - [x] Regenerated documentation_index.md
+     - [x] Established Python community standard structure:
+       - docs/architecture/ = ADRs, design decisions (the "why")
+       - docs/development/ = Developer guides (the "how")
+       - docs/project/ = Vision, philosophy (stakeholders)
+  8. **Outstanding Standalone Tasks**
      - [ ] Deprecate outdated CLI examples (e.g., `punctuate` usage) once cli-reference regenerates
      - [ ] Add practical user guides for new features post-reorg
      - [ ] Create refreshed architecture overview page within `architecture/`
-     - [ ] Finish Pattern → PromptTemplate rename across docs/CLI text
      - [ ] Establish research artifact archival workflow (external storage + summary linking)
-  8. **Include Root Markdown Files in MkDocs Navigation**
+  9. **Include Root Markdown Files in MkDocs Navigation**
      - **Status**: ✅ COMPLETE
      - **Priority**: MEDIUM (Part of docs-reorg cleanup)
      - **Goal**: Make root-level config/meta files (README, TODO, CHANGELOG, CONTRIBUTING, DEV_SETUP, release_checklist) discoverable in mkdocs navigation and documentation index
