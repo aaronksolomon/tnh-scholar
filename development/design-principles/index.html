@@ -6,27 +6,27 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Quick-reference guide to yt-dlp format selectors, combinations, and filtering syntax.">
+        <meta name="description" content="Architectural patterns, design philosophy, and system organization principles for TNH Scholar development.">
       
       
       
       
-        <link rel="prev" href="../../architecture/object-service-gaps/">
+        <link rel="prev" href="../contributing/">
       
       
-        <link rel="next" href="../ytdlp-guide/">
+        <link rel="next" href="../fine-tuning-strategy/">
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
     
     
       
-        <title>yt-dlp Format Selection Guide - TNH Scholar Documentation</title>
+        <title>TNH Scholar Design Principles - TNH Scholar Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.a40c8224.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
       
       
 
@@ -45,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#yt-dlp-format-selection-guide" class="md-skip">
+        <a href="#tnh-scholar-design-principles" class="md-skip">
           Skip to content
         </a>
       
@@ -82,7 +82,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              yt-dlp Format Selection Guide
+              TNH Scholar Design Principles
             
           </span>
         </div>
@@ -189,7 +189,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -219,7 +219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -274,7 +274,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../getting-started/configuration/" class="md-nav__link">
+      <a href="../../getting-started/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -302,7 +302,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../getting-started/installation/" class="md-nav__link">
+      <a href="../../getting-started/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -330,7 +330,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../getting-started/quick-start/" class="md-nav__link">
+      <a href="../../getting-started/quick-start/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -400,7 +400,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../user-guide/best-practices/" class="md-nav__link">
+      <a href="../../user-guide/best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -428,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../user-guide/overview/" class="md-nav__link">
+      <a href="../../user-guide/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -456,11 +456,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../user-guide/patterns/" class="md-nav__link">
+      <a href="../../user-guide/prompts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TNH Scholar Pattern System
+    TNH Scholar Prompt System
   </span>
   
     
@@ -526,7 +526,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli/audio-transcribe/" class="md-nav__link">
+      <a href="../../cli/audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -554,7 +554,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli/nfmt/" class="md-nav__link">
+      <a href="../../cli/nfmt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -582,7 +582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli/overview/" class="md-nav__link">
+      <a href="../../cli/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -610,7 +610,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli/tnh-fab/" class="md-nav__link">
+      <a href="../../cli/tnh-fab/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -638,7 +638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli/tnh-setup/" class="md-nav__link">
+      <a href="../../cli/tnh-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -666,7 +666,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli/token-count/" class="md-nav__link">
+      <a href="../../cli/token-count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -694,7 +694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli/ytt-fetch/" class="md-nav__link">
+      <a href="../../cli/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -764,7 +764,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/audio-transcribe/" class="md-nav__link">
+      <a href="../../cli-reference/audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -792,7 +792,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/json-to-srt/" class="md-nav__link">
+      <a href="../../cli-reference/json-to-srt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -820,7 +820,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/nfmt/" class="md-nav__link">
+      <a href="../../cli-reference/nfmt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -848,7 +848,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/sent-split/" class="md-nav__link">
+      <a href="../../cli-reference/sent-split/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -876,7 +876,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/srt-translate/" class="md-nav__link">
+      <a href="../../cli-reference/srt-translate/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -904,7 +904,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/tnh-fab/" class="md-nav__link">
+      <a href="../../cli-reference/tnh-fab/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -932,7 +932,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/tnh-setup/" class="md-nav__link">
+      <a href="../../cli-reference/tnh-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -960,7 +960,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/token-count/" class="md-nav__link">
+      <a href="../../cli-reference/token-count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -988,7 +988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/ytt-fetch/" class="md-nav__link">
+      <a href="../../cli-reference/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1023,7 +1023,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../api/" class="md-nav__link">
+      <a href="../../api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1155,7 +1155,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
+      <a href="../../architecture/ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1183,7 +1183,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
+      <a href="../../architecture/ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1254,7 +1254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/ai-text-processing/design/textobject-new-design/" class="md-nav__link">
+      <a href="../../architecture/ai-text-processing/design/textobject-new-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1282,7 +1282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/ai-text-processing/design/textobject-original-design/" class="md-nav__link">
+      <a href="../../architecture/ai-text-processing/design/textobject-original-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1361,7 +1361,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/configuration/tnh-configuration/" class="md-nav__link">
+      <a href="../../architecture/configuration/tnh-configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1467,7 +1467,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/docs-system/adr/adr-dd01-docs-reorg-strat/" class="md-nav__link">
+      <a href="../../architecture/docs-system/adr/adr-dd01-docs-reorg-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1495,7 +1495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/docs-system/adr/adr-dd02-docs-content-nav/" class="md-nav__link">
+      <a href="../../architecture/docs-system/adr/adr-dd02-docs-content-nav/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1523,7 +1523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/docs-system/adr/adr-dd03-pattern-prompt-terminology/" class="md-nav__link">
+      <a href="../../architecture/docs-system/adr/adr-dd03-pattern-prompt-terminology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1536,6 +1536,27 @@
     <span class="md-status md-status--proposed"></span>
   
 
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adr Dd03 Phase1 Punchlist
+  </span>
   
 
       </a>
@@ -1594,7 +1615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/docs-system/design/documentation/" class="md-nav__link">
+      <a href="../../architecture/docs-system/design/documentation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1708,7 +1729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/gen-ai-service/adr/adr-a01-domain-service/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a01-domain-service/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1736,7 +1757,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1764,7 +1785,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/gen-ai-service/adr/adr-a08-config-params-policy/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a08-config-params-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1792,7 +1813,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1820,7 +1841,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1848,7 +1869,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1876,7 +1897,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/gen-ai-service/adr/adr-a13-legacy-client-migration/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a13-legacy-client-migration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1947,7 +1968,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/gen-ai-service/design/genai-service-strategy/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/design/genai-service-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1975,7 +1996,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/gen-ai-service/design/migration-plan/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/design/migration-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2089,7 +2110,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/jvb-viewer/design/instruction-test0/" class="md-nav__link">
+      <a href="../../architecture/jvb-viewer/design/instruction-test0/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2117,7 +2138,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/jvb-viewer/design/instruction-test1/" class="md-nav__link">
+      <a href="../../architecture/jvb-viewer/design/instruction-test1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2145,7 +2166,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/jvb-viewer/design/jvb-strat-001/" class="md-nav__link">
+      <a href="../../architecture/jvb-viewer/design/jvb-strat-001/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2173,7 +2194,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/jvb-viewer/design/output1/" class="md-nav__link">
+      <a href="../../architecture/jvb-viewer/design/output1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2287,7 +2308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design/" class="md-nav__link">
+      <a href="../../architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2401,7 +2422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/metadata/adr/adr-md01-metadata-strategy/" class="md-nav__link">
+      <a href="../../architecture/metadata/adr/adr-md01-metadata-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2459,7 +2480,7 @@
             
   
   <span class="md-ellipsis">
-    Pattern System
+    Object Service
   </span>
   
 
@@ -2469,42 +2490,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_8">
             <span class="md-nav__icon md-icon"></span>
-            Pattern System
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_7_8_1" id="__nav_7_8_1_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Adr
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_8_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_8_1">
-            <span class="md-nav__icon md-icon"></span>
-            Adr
+            Object Service
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2515,11 +2501,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/pattern-system/adr/adr-pt01-pattern-access-strategy/" class="md-nav__link">
+      <a href="../../architecture/object-service/design-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    ADR-PT01: Pattern Access Strategy
+    Object-Service Design Overview
   </span>
   
     
@@ -2543,17 +2529,80 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/pattern-system/adr/adr-pt02-pattern-catalog/" class="md-nav__link">
+      <a href="../../architecture/object-service/implementation-status/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts
+    Object-Service Implementation Status
   </span>
   
     
   
   
     <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_8_3" id="__nav_7_8_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/object-service/adr/adr-os01-design-v3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OS01: Object-Service Design Architecture V3
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -2601,7 +2650,7 @@
             
   
   <span class="md-ellipsis">
-    Setup Tnh
+    Prompt System
   </span>
   
 
@@ -2611,9 +2660,37 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_9">
             <span class="md-nav__icon md-icon"></span>
-            Setup Tnh
+            Prompt System
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/prompt-system/prompt-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prompt System Architecture
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -2629,24 +2706,24 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_9_1" id="__nav_7_9_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_9_2" id="__nav_7_9_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    Design
+    Adr
   </span>
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_9_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_9_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_9_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_9_2">
             <span class="md-nav__icon md-icon"></span>
-            Design
+            Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2657,11 +2734,82 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/setup-tnh/design/setup-design/" class="md-nav__link">
+      <a href="../../architecture/prompt-system/adr/adr-pt03-current-status-roadmap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    minimal but extensible setup tool for the prototyping phase
+    ADR-PT03: Prompt System Current Status & Roadmap
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_9_3" id="__nav_7_9_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_9_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_9_3">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/prompt-system/archive/pattern-core-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Core Pattern Architecture: Meta-patterns, Textual Expansion Processing
   </span>
   
     
@@ -2673,6 +2821,105 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_9_3_2" id="__nav_7_9_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_9_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_9_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-PT01: Pattern Access Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/prompt-system/archive/adr/adr-pt02-pattern-catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2715,7 +2962,7 @@
             
   
   <span class="md-ellipsis">
-    Tnh Fab
+    Setup Tnh
   </span>
   
 
@@ -2725,7 +2972,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_10_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_10">
             <span class="md-nav__icon md-icon"></span>
-            Tnh Fab
+            Setup Tnh
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2771,39 +3018,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+      <a href="../../architecture/setup-tnh/design/setup-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TNH FAB Design Document
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TNH-FAB Command Line Tool Specification
+    minimal but extensible setup tool for the prototyping phase
   </span>
   
     
@@ -2857,7 +3076,7 @@
             
   
   <span class="md-ellipsis">
-    Transcription
+    Tnh Fab
   </span>
   
 
@@ -2867,7 +3086,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_11">
             <span class="md-nav__icon md-icon"></span>
-            Transcription
+            Tnh Fab
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2892,7 +3111,7 @@
             
   
   <span class="md-ellipsis">
-    Adr
+    Design
   </span>
   
 
@@ -2901,161 +3120,6 @@
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_11_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_11_1">
-            <span class="md-nav__icon md-icon"></span>
-            Adr
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ADR-TR01: AssemblyAI Integration for Transcription Service
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/adr/adr-tr02-optimize-srt/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ADR-TR02: Optimized SRT Generation Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/adr/adr-tr03-standard-timestamp/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ADR-TR03: Standardizing Timestamps to Milliseconds
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ADR-TR04: AssemblyAI Service Implementation Improvements
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_11_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_7_11_2" id="__nav_7_11_2_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Design
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_11_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_11_2">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
@@ -3068,11 +3132,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/additional-design/" class="md-nav__link">
+      <a href="../../architecture/tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Diarization Chunker Module Design Strategy
+    TNH FAB Design Document
   </span>
   
     
@@ -3096,291 +3160,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/audio-chunk-splitting/" class="md-nav__link">
+      <a href="../../architecture/tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Audio Chunking Algorithm Design Document
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/chunking-strategies/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Simplified Language-Aware Chunking Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/chunking-strategies0/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Language-Aware Chunking Orchestrator Notes
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/diarization-algorithms/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Diarization Algorithms
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/diarization-algorithms0/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Speaker Diarization Algorithm Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/diarization-system0/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Speaker Diarization and Time-Mapped Transcription System Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/diarization-system1/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Diarization System Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/gpt-modular-pipeline/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Modular Pipeline Design: Best Practices for Audio Transcription and Diarization
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/language-chunking-algorithm/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Practical Language-Aware Chunking Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/segment-match-algorithm/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Interval-to-Segment Mapping Algorithm
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../architecture/transcription/design/timeline-mapping/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TimelineMapper Design Document
+    TNH-FAB Command Line Tool Specification
   </span>
   
     
@@ -3434,7 +3218,7 @@
             
   
   <span class="md-ellipsis">
-    Ui Ux
+    Transcription
   </span>
   
 
@@ -3444,7 +3228,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_12_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_12">
             <span class="md-nav__icon md-icon"></span>
-            Ui Ux
+            Transcription
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3469,7 +3253,7 @@
             
   
   <span class="md-ellipsis">
-    Design
+    Adr
   </span>
   
 
@@ -3479,7 +3263,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_12_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_12_1">
             <span class="md-nav__icon md-icon"></span>
-            Design
+            Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3490,11 +3274,95 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/ui-ux/design/ui-ux-strategy/" class="md-nav__link">
+      <a href="../../architecture/transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Design Strategy: VS Code as UI/UX Platform for TNH Scholar
+    ADR-TR01: AssemblyAI Integration for Transcription Service
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/adr/adr-tr02-optimize-srt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TR02: Optimized SRT Generation Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/adr/adr-tr03-standard-timestamp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TR03: Standardizing Timestamps to Milliseconds
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TR04: AssemblyAI Service Implementation Improvements
   </span>
   
     
@@ -3540,7 +3408,7 @@
             
   
   <span class="md-ellipsis">
-    Vs Code Integration
+    Design
   </span>
   
 
@@ -3550,7 +3418,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_12_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_12_2">
             <span class="md-nav__icon md-icon"></span>
-            Vs Code Integration
+            Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3561,12 +3429,327 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/additional-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Adr Vsc01 Vscode Integration Strat
+    Diarization Chunker Module Design Strategy
   </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/audio-chunk-splitting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Chunking Algorithm Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/chunking-strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Simplified Language-Aware Chunking Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/chunking-strategies0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Language-Aware Chunking Orchestrator Notes
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/diarization-algorithms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diarization Algorithms
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/diarization-algorithms0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Speaker Diarization Algorithm Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/diarization-system0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Speaker Diarization and Time-Mapped Transcription System Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/diarization-system1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diarization System Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/gpt-modular-pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modular Pipeline Design: Best Practices for Audio Transcription and Diarization
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/language-chunking-algorithm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Practical Language-Aware Chunking Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/segment-match-algorithm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interval-to-Segment Mapping Algorithm
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/transcription/design/timeline-mapping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TimelineMapper Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
   
 
       </a>
@@ -3612,7 +3795,7 @@
             
   
   <span class="md-ellipsis">
-    Utilities
+    Ui Ux
   </span>
   
 
@@ -3622,7 +3805,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_13_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_13">
             <span class="md-nav__icon md-icon"></span>
-            Utilities
+            Ui Ux
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3668,11 +3851,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/utilities/design/utilities-catalog/" class="md-nav__link">
+      <a href="../../architecture/ui-ux/design/ui-ux-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TNH‑Scholar Utilities Catalog
+    Design Strategy: VS Code as UI/UX Platform for TNH Scholar
   </span>
   
     
@@ -3689,6 +3872,49 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_13_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_13_2" id="__nav_7_13_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Vs Code Integration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_13_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_13_2">
+            <span class="md-nav__icon md-icon"></span>
+            Vs Code Integration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
                 
   
@@ -3696,19 +3922,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/utilities/design/version-checking-design/" class="md-nav__link">
+      <a href="../../architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Package Version Checker Design Document
+    Adr Vsc01 Vscode Integration Strat
   </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
   
 
       </a>
@@ -3754,7 +3973,7 @@
             
   
   <span class="md-ellipsis">
-    Video Processing
+    Utilities
   </span>
   
 
@@ -3764,7 +3983,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_14_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_14">
             <span class="md-nav__icon md-icon"></span>
-            Video Processing
+            Utilities
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3789,7 +4008,7 @@
             
   
   <span class="md-ellipsis">
-    Adr
+    Design
   </span>
   
 
@@ -3799,7 +4018,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_14_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_14_1">
             <span class="md-nav__icon md-icon"></span>
-            Adr
+            Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3810,11 +4029,39 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+      <a href="../../architecture/utilities/design/utilities-catalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    ADR-VP01: Video Processing Return Types and Configuration
+    TNH‑Scholar Utilities Catalog
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/utilities/design/version-checking-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Package Version Checker Design Document
   </span>
   
     
@@ -3868,7 +4115,7 @@
             
   
   <span class="md-ellipsis">
-    YTT Fetch
+    Video Processing
   </span>
   
 
@@ -3878,7 +4125,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_15_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_15">
             <span class="md-nav__icon md-icon"></span>
-            YTT Fetch
+            Video Processing
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3924,7 +4171,121 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+      <a href="../../architecture/video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-VP01: Video Processing Return Types and Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_16" id="__nav_7_16_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_16">
+            <span class="md-nav__icon md-icon"></span>
+            YTT Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_16_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_16_1" id="__nav_7_16_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_16_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_16_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3952,7 +4313,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+      <a href="../../architecture/ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3980,7 +4341,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+      <a href="../../architecture/ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4023,10 +4384,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_15_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_16_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_15_2" id="__nav_7_15_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_16_2" id="__nav_7_16_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -4037,8 +4398,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_15_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_15_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_16_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_16_2">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
@@ -4051,7 +4412,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+      <a href="../../architecture/ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4139,7 +4500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/" class="md-nav__link">
+      <a href="../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4164,366 +4525,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../../design-guide/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TNH Scholar Design Guide
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../fine-tuning-strategy/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Fine Tuning Strategy
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../human-agent-coding-principles/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Human-AI Software Engineering Principles
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../initial-improvements/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Improvements / Initial structure
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../pattern-core-design/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Core Pattern Architecture: Meta-patterns, Textual Expansion Processing
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../system-design/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TNH Scholar System Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8_8" id="__nav_8_8_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Architecture
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_8">
-            <span class="md-nav__icon md-icon"></span>
-            Architecture
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/api-integration-blueprint_%28old%29/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    API Integration Blueprint (Generic)
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/object-service-design-blueprint-v2/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Object–Service Design Blueprint (Integrated)
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/object-service-design-blueprint/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TNH Scholar Object & Service Design Blueprint
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/object-service-gaps/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Object-Service Design Blueprint: Critical Gaps & Clarifications
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_9" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_8_9" id="__nav_8_9_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Yt Dlp Docs
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_9_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_8_9">
-            <span class="md-nav__icon md-icon"></span>
-            Yt Dlp Docs
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
     
   
   
@@ -4540,7 +4541,7 @@
           
   
   <span class="md-ellipsis">
-    yt-dlp Format Selection Guide
+    TNH Scholar Design Principles
   </span>
   
     
@@ -4558,7 +4559,7 @@
         
   
   <span class="md-ellipsis">
-    yt-dlp Format Selection Guide
+    TNH Scholar Design Principles
   </span>
   
     
@@ -4587,28 +4588,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#basic-format-selection" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Basic Format Selection
+      Overview
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Basic Format Selection">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-design-philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Design Philosophy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fundamental-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fundamental Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fundamental Principles">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#common-format-specifiers" class="md-nav__link">
+  <a href="#single-responsibility" class="md-nav__link">
     <span class="md-ellipsis">
-      Common Format Specifiers
+      Single Responsibility
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#format-combinations" class="md-nav__link">
+  <a href="#composition-over-inheritance" class="md-nav__link">
     <span class="md-ellipsis">
-      Format Combinations
+      Composition Over Inheritance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#separation-of-concerns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Separation of Concerns
     </span>
   </a>
   
@@ -4620,37 +4648,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#advanced-format-selection" class="md-nav__link">
+  <a href="#modularity-principles" class="md-nav__link">
     <span class="md-ellipsis">
-      Advanced Format Selection
+      Modularity Principles
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Advanced Format Selection">
+    <nav class="md-nav" aria-label="Modularity Principles">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#quality-modifiers" class="md-nav__link">
+  <a href="#design-for-modularity" class="md-nav__link">
     <span class="md-ellipsis">
-      Quality Modifiers
+      Design for Modularity
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#format-filters" class="md-nav__link">
+  <a href="#helpers-should-be-small-and-composable" class="md-nav__link">
     <span class="md-ellipsis">
-      Format Filters
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#complex-combinations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complex Combinations
+      Helpers Should Be Small and Composable
     </span>
   </a>
   
@@ -4662,28 +4681,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#format-sort-options" class="md-nav__link">
+  <a href="#interface-design" class="md-nav__link">
     <span class="md-ellipsis">
-      Format Sort Options
+      Interface Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#abstract-base-classes-and-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Base Classes and Protocols
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#practical-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      Practical Examples
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Practical Examples">
-      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#common-use-cases" class="md-nav__link">
+  <a href="#dependency-injection" class="md-nav__link">
     <span class="md-ellipsis">
-      Common Use Cases
+      Dependency Injection
     </span>
   </a>
   
@@ -4695,27 +4714,276 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#format-selection-algorithm" class="md-nav__link">
+  <a href="#data-architecture" class="md-nav__link">
     <span class="md-ellipsis">
-      Format Selection Algorithm
+      Data Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immutability-by-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      Immutability by Default
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strong-type-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strong Type Boundaries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#separation-of-data-and-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Separation of Data and Logic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling-philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling Philosophy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling Philosophy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explicit-over-implicit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicit Over Implicit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fail-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fail Fast
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processing-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Processing Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pipeline Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dispatch-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dispatch Patterns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-processing-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text Processing Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Text Processing Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explicit-text-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicit Text Handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-preservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metadata Preservation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-requirements-by-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Requirements by Phase
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lazy-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lazy Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refactoring-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refactoring Triggers
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#best-practices" class="md-nav__link">
+  <a href="#development-phase-considerations" class="md-nav__link">
     <span class="md-ellipsis">
-      Best Practices
+      Development Phase Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Phase Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prototyping-phase-priorities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prototyping Phase Priorities
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-phase-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Phase Requirements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-architecture-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Architecture Considerations
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#debugging-format-selection" class="md-nav__link">
+  <a href="#related-documentation" class="md-nav__link">
     <span class="md-ellipsis">
-      Debugging Format Selection
+      Related Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
     </span>
   </a>
   
@@ -4737,11 +5005,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../ytdlp-guide/" class="md-nav__link">
+      <a href="../fine-tuning-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    yt-dlp Comprehensive Guide
+    Fine Tuning Strategy
   </span>
   
     
@@ -4758,9 +5026,113 @@
 
               
             
-          </ul>
-        </nav>
-      
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../human-agent-coding-principles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Human-AI Software Engineering Principles
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../initial-improvements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Improvements / Initial structure
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../style-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar Style Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar System Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
     </li>
   
 
@@ -4815,7 +5187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-ops/adr-template/" class="md-nav__link">
+      <a href="../../docs-ops/adr-template/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4843,7 +5215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-ops/markdown-standards/" class="md-nav__link">
+      <a href="../../docs-ops/markdown-standards/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4871,7 +5243,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-ops/mkdocs-warning-backlog/" class="md-nav__link">
+      <a href="../../docs-ops/mkdocs-warning-backlog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4941,7 +5313,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/conceptual-architecture/" class="md-nav__link">
+      <a href="../../project/conceptual-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4962,7 +5334,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/future-directions/" class="md-nav__link">
+      <a href="../../project/future-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4983,7 +5355,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/philosophy/" class="md-nav__link">
+      <a href="../../project/philosophy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5004,7 +5376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/principles/" class="md-nav__link">
+      <a href="../../project/principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5025,7 +5397,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/vision/" class="md-nav__link">
+      <a href="../../project/vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5046,7 +5418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/" class="md-nav__link">
+      <a href="../../project/repo-root/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5102,7 +5474,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/CHANGELOG/" class="md-nav__link">
+      <a href="../../project/repo-root/CHANGELOG/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5130,7 +5502,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/CONTRIBUTING/" class="md-nav__link">
+      <a href="../../project/repo-root/CONTRIBUTING/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5158,7 +5530,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/DEV_SETUP/" class="md-nav__link">
+      <a href="../../project/repo-root/DEV_SETUP/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5186,7 +5558,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/TODO/" class="md-nav__link">
+      <a href="../../project/repo-root/TODO/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5214,7 +5586,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/release_checklist/" class="md-nav__link">
+      <a href="../../project/repo-root/release_checklist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5242,7 +5614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/repo-readme/" class="md-nav__link">
+      <a href="../../project/repo-root/repo-readme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5320,7 +5692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/gpt_development_convos/" class="md-nav__link">
+      <a href="../../research/gpt_development_convos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5348,7 +5720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/metadata_report/" class="md-nav__link">
+      <a href="../../research/metadata_report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5376,7 +5748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/preliminary_feasibility_study/" class="md-nav__link">
+      <a href="../../research/preliminary_feasibility_study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5404,7 +5776,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/strategic-information-processing/" class="md-nav__link">
+      <a href="../../research/strategic-information-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5432,7 +5804,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/tnh-scholar-knowledge-vector-search/" class="md-nav__link">
+      <a href="../../research/tnh-scholar-knowledge-vector-search/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5495,7 +5867,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/gpt_4o_search_query_text_pair_testing/testing_input_output/" class="md-nav__link">
+      <a href="../../research/gpt_4o_search_query_text_pair_testing/testing_input_output/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5566,7 +5938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/gpt_4o_translations_experiments/passage_test/" class="md-nav__link">
+      <a href="../../research/gpt_4o_translations_experiments/passage_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5609,7 +5981,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../documentation_index/" class="md-nav__link">
+      <a href="../../documentation_index/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5636,7 +6008,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh_scholar_parallax_overview/" class="md-nav__link">
+      <a href="../../tnh_scholar_parallax_overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5645,6 +6017,147 @@
   
 
       </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_14_1" id="__nav_14_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Yt Dlp Docs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_14_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14_1">
+            <span class="md-nav__icon md-icon"></span>
+            Yt Dlp Docs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yt-dlp_docs/ytdlp-formats/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    yt-dlp Format Selection Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/yt-dlp_docs/ytdlp-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    yt-dlp Comprehensive Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -5676,28 +6189,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#basic-format-selection" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Basic Format Selection
+      Overview
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Basic Format Selection">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-design-philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Design Philosophy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fundamental-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fundamental Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fundamental Principles">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#common-format-specifiers" class="md-nav__link">
+  <a href="#single-responsibility" class="md-nav__link">
     <span class="md-ellipsis">
-      Common Format Specifiers
+      Single Responsibility
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#format-combinations" class="md-nav__link">
+  <a href="#composition-over-inheritance" class="md-nav__link">
     <span class="md-ellipsis">
-      Format Combinations
+      Composition Over Inheritance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#separation-of-concerns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Separation of Concerns
     </span>
   </a>
   
@@ -5709,37 +6249,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#advanced-format-selection" class="md-nav__link">
+  <a href="#modularity-principles" class="md-nav__link">
     <span class="md-ellipsis">
-      Advanced Format Selection
+      Modularity Principles
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Advanced Format Selection">
+    <nav class="md-nav" aria-label="Modularity Principles">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#quality-modifiers" class="md-nav__link">
+  <a href="#design-for-modularity" class="md-nav__link">
     <span class="md-ellipsis">
-      Quality Modifiers
+      Design for Modularity
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#format-filters" class="md-nav__link">
+  <a href="#helpers-should-be-small-and-composable" class="md-nav__link">
     <span class="md-ellipsis">
-      Format Filters
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#complex-combinations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complex Combinations
+      Helpers Should Be Small and Composable
     </span>
   </a>
   
@@ -5751,28 +6282,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#format-sort-options" class="md-nav__link">
+  <a href="#interface-design" class="md-nav__link">
     <span class="md-ellipsis">
-      Format Sort Options
+      Interface Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#abstract-base-classes-and-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Base Classes and Protocols
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#practical-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      Practical Examples
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Practical Examples">
-      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#common-use-cases" class="md-nav__link">
+  <a href="#dependency-injection" class="md-nav__link">
     <span class="md-ellipsis">
-      Common Use Cases
+      Dependency Injection
     </span>
   </a>
   
@@ -5784,27 +6315,276 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#format-selection-algorithm" class="md-nav__link">
+  <a href="#data-architecture" class="md-nav__link">
     <span class="md-ellipsis">
-      Format Selection Algorithm
+      Data Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immutability-by-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      Immutability by Default
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strong-type-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strong Type Boundaries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#separation-of-data-and-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Separation of Data and Logic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling-philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling Philosophy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling Philosophy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explicit-over-implicit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicit Over Implicit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fail-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fail Fast
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processing-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Processing Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pipeline Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dispatch-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dispatch Patterns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-processing-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text Processing Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Text Processing Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explicit-text-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicit Text Handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-preservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metadata Preservation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-requirements-by-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Requirements by Phase
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lazy-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lazy Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refactoring-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refactoring Triggers
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#best-practices" class="md-nav__link">
+  <a href="#development-phase-considerations" class="md-nav__link">
     <span class="md-ellipsis">
-      Best Practices
+      Development Phase Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Phase Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prototyping-phase-priorities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prototyping Phase Priorities
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-phase-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Phase Requirements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-architecture-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Architecture Considerations
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#debugging-format-selection" class="md-nav__link">
+  <a href="#related-documentation" class="md-nav__link">
     <span class="md-ellipsis">
-      Debugging Format Selection
+      Related Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
     </span>
   </a>
   
@@ -5828,153 +6608,420 @@
   
 
 
-<h1 id="yt-dlp-format-selection-guide">yt-dlp Format Selection Guide</h1>
-<p>Quick-reference guide to yt-dlp format selectors, combinations, and filtering syntax.</p>
-<h2 id="basic-format-selection">Basic Format Selection</h2>
-<h3 id="common-format-specifiers">Common Format Specifiers</h3>
-<pre><code>best        # Best quality (video+audio usually)
-worst       # Worst quality (video+audio usually)
-bestvideo   # Best video only
-bestaudio   # Best audio only
-worstvideo  # Worst video only
-worstaudio  # Worst audio only
-</code></pre>
-<h3 id="format-combinations">Format Combinations</h3>
-<pre><code>bestvideo+bestaudio   # Best video and best audio merged
-worstvideo+bestaudio  # Worst video with best audio
-</code></pre>
-<h2 id="advanced-format-selection">Advanced Format Selection</h2>
-<h3 id="quality-modifiers">Quality Modifiers</h3>
-<p>You can specify maximum/minimum quality:</p>
-<pre><code>best[height&lt;=720]          # Best quality video at 720p or lower
-best[height&gt;=720]          # Best quality video at 720p or higher
-bestvideo[ext=mp4]         # Best mp4 video
-worst[filesize&lt;50M]        # Smallest file under 50MB
-bestaudio[ext=m4a]         # Best m4a audio
-</code></pre>
-<h3 id="format-filters">Format Filters</h3>
-<p>Filter by specific attributes:</p>
-<pre><code># Video codecs
-[vcodec=h264]             # H.264 video codec
-[vcodec^=avc]             # Video codec that starts with AVC
-[vcodec!=vp9]             # Exclude VP9 codec
+<h1 id="tnh-scholar-design-principles">TNH Scholar Design Principles</h1>
+<p>Architectural patterns, design philosophy, and system organization principles for TNH Scholar development.</p>
+<h2 id="overview">Overview</h2>
+<p>This document establishes design principles for the TNH Scholar project. While the project is currently in a rapid prototyping phase, these guidelines aim to maintain architectural quality and consistency throughout development. The guide distinguishes between immediate prototyping requirements and standards for later production phases where appropriate.</p>
+<p>For code formatting and naming conventions, see <a href="../style-guide/">Style Guide</a>. For high-level project philosophy and vision, see <a href="../../project/principles/">Project Principles</a> and <a href="../../project/conceptual-architecture/">Conceptual Architecture</a>.</p>
+<h2 id="core-design-philosophy">Core Design Philosophy</h2>
+<p>The TNH Scholar system embraces several key philosophical principles:</p>
+<ul>
+<li><strong>Evolutionary improvement</strong> through self-generated training data</li>
+<li><strong>Modular design</strong> enabling flexible pipeline construction</li>
+<li><strong>Balance of rapid prototyping with extensible architecture</strong></li>
+<li><strong>Focus on AI-enhanced content processing and transformation</strong></li>
+</ul>
+<p>See <a href="../../project/philosophy/">Project Philosophy</a> for deeper context.</p>
+<h2 id="fundamental-principles">Fundamental Principles</h2>
+<h3 id="single-responsibility">Single Responsibility</h3>
+<p>Code should adhere to the <strong>principle of single responsibility</strong>, with functions and classes focused on one clear task:</p>
+<ul>
+<li>Functions perform one logical operation</li>
+<li>Classes manage related state or behavior</li>
+<li>Modules encapsulate coherent functionality</li>
+<li>Services handle one domain concern</li>
+</ul>
+<h3 id="composition-over-inheritance">Composition Over Inheritance</h3>
+<p><strong>Favor composition over inheritance</strong> to build complex behavior from simple, reusable components:</p>
+<pre><code class="language-python"># ✅ Preferred: Composition
+class TextPipeline:
+    def __init__(
+        self,
+        punctuator: PunctuationService,
+        translator: TranslationService,
+        sectioner: SectioningService
+    ):
+        self.punctuator = punctuator
+        self.translator = translator
+        self.sectioner = sectioner
 
-# Audio codecs
-[acodec=mp4a]             # MP4A audio codec
-[acodec=none]             # No audio
-[acodec!=opus]            # Exclude Opus codec
+# 🚫 Avoid: Deep inheritance hierarchies
+class TranslatingPunctuatingSectioningProcessor(
+    PunctuationProcessor,
+    TranslationProcessor,
+    SectioningProcessor
+):
+    pass
+</code></pre>
+<h3 id="separation-of-concerns">Separation of Concerns</h3>
+<p><strong>Validation logic should be distinct from mutation or side effects</strong> to ensure maintainability:</p>
+<pre><code class="language-python"># ✅ Preferred: Separate concerns
+def validate_text_input(text: str) -&gt; None:
+    &quot;&quot;&quot;Validate input only.&quot;&quot;&quot;
+    if not text or not text.strip():
+        raise ValueError(&quot;Text cannot be empty&quot;)
 
-# Container formats
-[ext=mp4]                 # MP4 container
-[ext=webm]                # WebM container
-[container=m4a]           # M4A container
+def process_text(text: str) -&gt; ProcessedText:
+    &quot;&quot;&quot;Process after validation.&quot;&quot;&quot;
+    validate_text_input(text)
+    return apply_processing(text)
 
-# Resolution
-[height=1080]             # Exactly 1080p
-[width&gt;=1920]             # At least 1920 pixels wide
-[res=720p]                # 720p resolution
+# 🚫 Avoid: Mixed concerns
+def process_text(text: str) -&gt; ProcessedText:
+    &quot;&quot;&quot;Validation, mutation, and I/O all mixed.&quot;&quot;&quot;
+    if not text:
+        raise ValueError(&quot;Empty&quot;)
+    result = apply_processing(text)
+    save_to_database(result)  # Side effect mixed with processing
+    return result
+</code></pre>
+<h2 id="modularity-principles">Modularity Principles</h2>
+<h3 id="design-for-modularity">Design for Modularity</h3>
+<p>Each module, class, and function should have a <strong>single, well-defined responsibility</strong>.</p>
+<p><strong>Guidelines:</strong></p>
+<ul>
+<li><strong>Encapsulate related functionality</strong>: Group related functions and classes into modules and packages to promote reuse and clarity</li>
+<li><strong>Minimize coupling</strong>: Modules should interact through well-defined interfaces, minimizing dependencies and side effects</li>
+<li><strong>Limit module size</strong>: Aim for modules that are small enough to be easily understood (generally &lt; 300 lines), but large enough to encapsulate a coherent set of functionality</li>
+<li><strong>Explicit module exports</strong>: Use <code>__all__</code> to define public API of modules where appropriate</li>
+</ul>
+<h3 id="helpers-should-be-small-and-composable">Helpers Should Be Small and Composable</h3>
+<p>Helpers should be small (target <strong>10 lines</strong>) and composable, enabling reuse and clarity:</p>
+<pre><code class="language-python"># ✅ Preferred: Small, composable helpers
+def extract_language_code(text_object: TextObject) -&gt; str:
+    &quot;&quot;&quot;Extract language code from text object.&quot;&quot;&quot;
+    return text_object.metadata.get(&quot;language&quot;, &quot;en&quot;)
 
-# File size
-[filesize&lt;100M]           # Less than 100 MB
-[filesize&gt;50M]            # More than 50 MB
-</code></pre>
-<h3 id="complex-combinations">Complex Combinations</h3>
-<p>You can combine multiple criteria:</p>
-<pre><code># Best mp4 video with height no more than 720p
-bestvideo[ext=mp4][height&lt;=720]+bestaudio[ext=m4a]
+def validate_language_code(code: str) -&gt; None:
+    &quot;&quot;&quot;Validate ISO 639-1 language code.&quot;&quot;&quot;
+    if len(code) != 2 or not code.isalpha():
+        raise ValueError(f&quot;Invalid language code: {code}&quot;)
 
-# Best video that's either mp4 or webm
-bestvideo[ext=mp4]/bestvideo[ext=webm]+bestaudio
+def get_validated_language(text_object: TextObject) -&gt; str:
+    &quot;&quot;&quot;Get and validate language code.&quot;&quot;&quot;
+    code = extract_language_code(text_object)
+    validate_language_code(code)
+    return code
 
-# Best video under 50MB or else best video under 100MB
-bestvideo[filesize&lt;50M]/bestvideo[filesize&lt;100M]
+# 🚫 Avoid: Large, monolithic helpers
+def process_and_validate_language_with_fallback_and_logging(
+    text_object: TextObject,
+    default: str = &quot;en&quot;
+) -&gt; str:
+    &quot;&quot;&quot;Do everything in one place (50+ lines).&quot;&quot;&quot;
+    # ... lots of mixed logic
 </code></pre>
-<h2 id="format-sort-options">Format Sort Options</h2>
-<p>You can specify how formats should be sorted:</p>
-<pre><code class="language-python">&quot;format_sort&quot;: [
-    &quot;res&quot;,            # Resolution
-    &quot;fps&quot;,            # Frame rate
-    &quot;codec:h264&quot;,     # Prefer h264 codec
-    &quot;size&quot;,           # File size
-    &quot;br&quot;,             # Bit rate
-    &quot;asr&quot;,            # Audio sample rate
-    &quot;proto:https&quot;     # Prefer HTTPS protocol
-]
+<h2 id="interface-design">Interface Design</h2>
+<h3 id="abstract-base-classes-and-protocols">Abstract Base Classes and Protocols</h3>
+<p><strong>All system interfaces must be defined via abstract base classes:</strong></p>
+<ul>
+<li>Use <strong><code>Protocol</code></strong> for structural typing and interface contracts (no inheritance required)</li>
+<li>Use <strong><code>ABC</code></strong> only when enforcing init-time invariants or providing shared mixin behavior</li>
+</ul>
+<p><strong>Example with Protocol:</strong></p>
+<pre><code class="language-python">from typing import Protocol
+
+class PromptProvider(Protocol):
+    &quot;&quot;&quot;Protocol for prompt providers.&quot;&quot;&quot;
+
+    def get_prompt(self, name: str) -&gt; Prompt:
+        &quot;&quot;&quot;Retrieve prompt by name.&quot;&quot;&quot;
+        ...
+
+    def list_prompts(self) -&gt; list[str]:
+        &quot;&quot;&quot;List available prompt names.&quot;&quot;&quot;
+        ...
 </code></pre>
-<h2 id="practical-examples">Practical Examples</h2>
-<h3 id="common-use-cases">Common Use Cases</h3>
-<ol>
-<li><strong>High Quality Video Download</strong></li>
-</ol>
-<pre><code>format=&quot;bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best&quot;
+<p><strong>Example with ABC:</strong></p>
+<pre><code class="language-python">from abc import ABC, abstractmethod
+
+class BaseProcessor(ABC):
+    &quot;&quot;&quot;Base processor with shared initialization.&quot;&quot;&quot;
+
+    def __init__(self, config: ProcessorConfig):
+        self.config = config
+        self._validate_config()
+
+    @abstractmethod
+    def _validate_config(self) -&gt; None:
+        &quot;&quot;&quot;Validate configuration at init time.&quot;&quot;&quot;
+        pass
+
+    @abstractmethod
+    def process(self, input_data: Any) -&gt; Any:
+        &quot;&quot;&quot;Process input data.&quot;&quot;&quot;
+        pass
 </code></pre>
-<p>This tries to:
-- Get best MP4 video and M4A audio
-- If not available, get best MP4
-- If not available, get best format</p>
-<ol>
-<li><strong>Efficient Mobile Quality</strong></li>
-</ol>
-<pre><code>format=&quot;bestvideo[height&lt;=720][ext=mp4]+bestaudio[ext=m4a]/best[height&lt;=720][ext=mp4]/best[height&lt;=720]&quot;
+<h3 id="dependency-injection">Dependency Injection</h3>
+<p><strong>Prefer dependency injection over global state:</strong></p>
+<pre><code class="language-python"># ✅ Preferred: Dependency injection
+class TextProcessor:
+    def __init__(
+        self,
+        prompt_catalog: PromptCatalog,
+        ai_service: GenAIService
+    ):
+        self.prompt_catalog = prompt_catalog
+        self.ai_service = ai_service
+
+# 🚫 Avoid: Global singleton access
+class TextProcessor:
+    def process(self, text: str) -&gt; str:
+        prompt = LocalPromptManager().get_prompt(&quot;default&quot;)  # Global access
+        return global_ai_service.process(text, prompt)  # Global access
 </code></pre>
-<p>This gets:
-- 720p or lower MP4 video with M4A audio
-- Fallback to combined format if separate streams aren't available</p>
-<ol>
-<li><strong>Audio-Only Download</strong></li>
-</ol>
-<pre><code>format=&quot;bestaudio[ext=m4a]/bestaudio[ext=mp3]/bestaudio&quot;
+<p><strong>Note</strong>: During prototyping, singleton access (like <code>LocalPromptManager</code>) is acceptable for rapid development. Plan transition to dependency injection for production (see <a href="../../architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy/">ADR-PT01</a>).</p>
+<h2 id="data-architecture">Data Architecture</h2>
+<h3 id="immutability-by-default">Immutability by Default</h3>
+<p><strong>Keep data models immutable</strong> when possible for safer concurrent code:</p>
+<pre><code class="language-python">from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class ProcessingResult:
+    &quot;&quot;&quot;Immutable processing result.&quot;&quot;&quot;
+    content: str
+    metadata: Dict[str, Any]
+    timestamp: datetime
 </code></pre>
-<p>This tries to:
-- Get best M4A audio
-- Fallback to MP3
-- Fallback to any audio</p>
-<ol>
-<li><strong>Size-Constrained Download</strong></li>
-</ol>
-<pre><code>format=&quot;best[filesize&lt;50M]/best[filesize&lt;100M][height&lt;=480]&quot;
+<h3 id="strong-type-boundaries">Strong Type Boundaries</h3>
+<p><strong>Critical</strong>: No literals or untyped structures in application logic:</p>
+<ul>
+<li>Configuration values come from <code>Settings</code> (pydantic BaseSettings)</li>
+<li><strong>Dicts are not used in app layers</strong>; prefer Pydantic models or dataclasses</li>
+<li>Enums replace string literals for identifiers</li>
+<li>Adapters handle dict conversions <strong>only at API transport boundaries</strong></li>
+</ul>
+<p>See <a href="../style-guide/#strong-typing-standards">Style Guide: Strong Typing Standards</a> for details.</p>
+<h3 id="separation-of-data-and-logic">Separation of Data and Logic</h3>
+<p><strong>Separate data representation from business logic</strong> where appropriate:</p>
+<pre><code class="language-python"># ✅ Preferred: Data models separate from services
+@dataclass
+class PromptMetadata:
+    &quot;&quot;&quot;Data model.&quot;&quot;&quot;
+    name: str
+    version: str
+    variables: list[str]
+
+class PromptService:
+    &quot;&quot;&quot;Business logic.&quot;&quot;&quot;
+    def render_prompt(self, metadata: PromptMetadata, context: Dict) -&gt; str:
+        ...
+
+# 🚫 Avoid: Mixed data and complex logic
+class Prompt:
+    def __init__(self, name: str):
+        self.name = name
+        # ... lots of fields
+
+    def render_with_ai_fallback_and_caching(self, context: Dict) -&gt; str:
+        # ... 100 lines of business logic in data class
 </code></pre>
-<p>This tries to:
-- Get best format under 50MB
-- Fallback to 480p or lower if needed to stay under 100MB</p>
-<h2 id="format-selection-algorithm">Format Selection Algorithm</h2>
-<p>yt-dlp uses this process to select formats:</p>
-<ol>
-<li>Filter formats based on criteria</li>
-<li>Sort remaining formats by quality</li>
-<li>Select best matching format</li>
-<li>Apply any post-processing</li>
-</ol>
-<h2 id="best-practices">Best Practices</h2>
-<ol>
-<li>
-<p><strong>Always provide fallbacks</strong>
-   <code>format="bestvideo+bestaudio/best"  # Good
-   format="bestvideo+bestaudio"       # May fail if separated streams unavailable</code></p>
-</li>
-<li>
-<p><strong>Be specific about containers</strong>
-   <code>format="bestvideo[ext=mp4]+bestaudio[ext=m4a]"  # Good
-   format="bestvideo+bestaudio"                     # May get incompatible formats</code></p>
-</li>
-<li>
-<p><strong>Consider bandwidth and storage</strong>
-   <code>format="best[height&lt;=720]"  # Reasonable quality cap
-   format="best"              # May get unnecessarily large files</code></p>
-</li>
-<li>
-<p><strong>Use appropriate quality metrics</strong>
-   <code>format="bestvideo[vcodec^=avc][height&gt;=720]"  # Good
-   format="best[height&gt;=720]"                     # May get inefficient codecs</code></p>
-</li>
-</ol>
-<h2 id="debugging-format-selection">Debugging Format Selection</h2>
-<p>To see available formats:</p>
-<pre><code class="language-python">with YoutubeDL() as ydl:
-    info = ydl.extract_info(url, download=False)
-    ydl.list_formats(info)
+<h2 id="error-handling-philosophy">Error Handling Philosophy</h2>
+<h3 id="explicit-over-implicit">Explicit Over Implicit</h3>
+<p><strong>Handle warnings and errors thoughtfully</strong>, distinguishing recoverable conditions from critical failures:</p>
+<ul>
+<li>Use specific exception types (not <code>Exception</code>)</li>
+<li>Let unknown exceptions propagate</li>
+<li>Document expected exceptions in docstrings</li>
+<li>Use custom exceptions for domain-specific errors</li>
+</ul>
+<h3 id="fail-fast">Fail Fast</h3>
+<p>During prototyping, <strong>fail fast</strong> to identify issues early:</p>
+<ul>
+<li>Don't mask exceptions with catch-all handlers</li>
+<li>Let stack traces propagate for debugging</li>
+<li>Add TODO comments for future error handling</li>
+</ul>
+<p>See <a href="../style-guide/#error-handling">Style Guide: Error Handling</a> for implementation details.</p>
+<h2 id="processing-architecture">Processing Architecture</h2>
+<h3 id="pipeline-design">Pipeline Design</h3>
+<p><strong>Pipelines compose processors into workflows:</strong></p>
+<ul>
+<li>Each processor has a single, well-defined transformation</li>
+<li>Processors are independent and reusable</li>
+<li>Pipeline orchestration is separate from processing logic</li>
+<li>Results flow through immutable data structures</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="language-python">class ProcessingPipeline:
+    &quot;&quot;&quot;Orchestrates content processing workflow.&quot;&quot;&quot;
+
+    def __init__(
+        self,
+        processors: list[ContentProcessor],
+        training_collector: Optional[TrainingCollector] = None
+    ):
+        self.processors = processors
+        self.collector = training_collector
+
+    def execute(
+        self,
+        source: ContentSource
+    ) -&gt; tuple[ProcessedContent, Optional[TrainingData]]:
+        &quot;&quot;&quot;Execute pipeline with optional training data collection.&quot;&quot;&quot;
+        content = source.load()
+
+        for processor in self.processors:
+            content = processor.process(content)
+
+            if self.collector:
+                self.collector.collect(processor, content)
+
+        training_data = self.collector.finalize() if self.collector else None
+        return content, training_data
 </code></pre>
-<p>This will show all available formats with their IDs, codecs, and other properties to help you refine your format selection.</p>
+<h3 id="dispatch-patterns">Dispatch Patterns</h3>
+<p><strong>Employ dispatch patterns</strong> (prefer <code>match</code>/<code>case</code> when possible) to cleanly separate concerns and improve extensibility:</p>
+<pre><code class="language-python"># ✅ Preferred: Pattern matching for dispatch
+def route_processing(task: ProcessingTask) -&gt; ProcessedContent:
+    match task.type:
+        case TaskType.PUNCTUATE:
+            return punctuate_processor.process(task.content)
+        case TaskType.TRANSLATE:
+            return translation_processor.process(task.content)
+        case TaskType.SECTION:
+            return sectioning_processor.process(task.content)
+        case _:
+            raise ValueError(f&quot;Unknown task type: {task.type}&quot;)
+</code></pre>
+<h2 id="text-processing-principles">Text Processing Principles</h2>
+<h3 id="explicit-text-handling">Explicit Text Handling</h3>
+<p><strong>Text handling should be explicit and consistent</strong>, favoring clarity in encoding and processing:</p>
+<ul>
+<li>Always specify encoding (UTF-8 default)</li>
+<li>Handle normalization explicitly (NFC, NFKC, etc.)</li>
+<li>Document text format assumptions</li>
+<li>Preserve provenance and metadata</li>
+</ul>
+<h3 id="metadata-preservation">Metadata Preservation</h3>
+<p>Throughout processing pipelines:</p>
+<ul>
+<li>Maintain document structure</li>
+<li>Preserve metadata across transformations</li>
+<li>Track provenance and processing history</li>
+<li>Support metadata enrichment</li>
+</ul>
+<h2 id="testing-architecture">Testing Architecture</h2>
+<h3 id="test-organization">Test Organization</h3>
+<p>Tests follow this structure even during prototyping:</p>
+<pre><code class="language-plaintext">tests/
+├── unit/              # Fast, isolated tests
+│   ├── test_text_processing.py
+│   └── test_prompt_catalog.py
+├── integration/       # Multi-component tests
+│   └── test_full_pipeline.py
+└── conftest.py        # Shared fixtures
+</code></pre>
+<h3 id="test-requirements-by-phase">Test Requirements by Phase</h3>
+<p><strong>Prototyping Phase:</strong></p>
+<ul>
+<li>Basic unit tests for core functionality</li>
+<li>Critical path testing</li>
+<li>Basic integration tests</li>
+</ul>
+<p><strong>Production Phase:</strong></p>
+<ul>
+<li>Comprehensive unit test coverage (&gt;80%)</li>
+<li>Full integration test suite</li>
+<li>Performance testing</li>
+<li>Edge case handling</li>
+<li>Mock external services</li>
+</ul>
+<h2 id="performance-principles">Performance Principles</h2>
+<h3 id="resource-management">Resource Management</h3>
+<p>Basic guidelines apply across phases:</p>
+<p><strong>Memory Management:</strong></p>
+<ul>
+<li>Stream large files (don't load entirely into memory)</li>
+<li>Clean up temporary files</li>
+<li>Monitor memory usage in processing pipelines</li>
+</ul>
+<p><strong>Processing Optimization:</strong></p>
+<ul>
+<li>Batch operations where possible</li>
+<li>Cache frequently used data (prompts, configurations)</li>
+<li>Monitor API usage and costs</li>
+<li>Use async/await for I/O-bound operations</li>
+</ul>
+<h3 id="lazy-evaluation">Lazy Evaluation</h3>
+<p>Defer expensive computations until needed:</p>
+<pre><code class="language-python"># ✅ Preferred: Lazy evaluation
+class PromptCatalog:
+    def __init__(self, directory: Path):
+        self.directory = directory
+        self._cache: Dict[str, Prompt] = {}
+
+    def get_prompt(self, name: str) -&gt; Prompt:
+        &quot;&quot;&quot;Load prompt on demand.&quot;&quot;&quot;
+        if name not in self._cache:
+            self._cache[name] = self._load_prompt(name)
+        return self._cache[name]
+
+# 🚫 Avoid: Eager loading of everything
+class PromptCatalog:
+    def __init__(self, directory: Path):
+        self.prompts = {
+            p.name: p for p in self._load_all_prompts(directory)
+        }  # Loads hundreds of prompts at startup
+</code></pre>
+<h2 id="refactoring-triggers">Refactoring Triggers</h2>
+<p><strong>Refactor when:</strong></p>
+<ul>
+<li>Code becomes difficult to follow</li>
+<li>Duplication arises (DRY principle)</li>
+<li>New requirements suggest clearer abstractions</li>
+<li>Function/module exceeds complexity limits</li>
+<li>Tests become difficult to write or maintain</li>
+</ul>
+<h2 id="development-phase-considerations">Development Phase Considerations</h2>
+<h3 id="prototyping-phase-priorities">Prototyping Phase Priorities</h3>
+<p>During prototyping, prioritize:</p>
+<ul>
+<li>Rapid iteration and experimentation</li>
+<li>Core functionality over comprehensive error handling</li>
+<li>Simple pipeline construction</li>
+<li>Clear component boundaries</li>
+<li>Basic testing and documentation</li>
+</ul>
+<h3 id="production-phase-requirements">Production Phase Requirements</h3>
+<p>For production, add:</p>
+<ul>
+<li>Comprehensive error handling</li>
+<li>Performance optimization</li>
+<li>Security hardening</li>
+<li>Full test coverage</li>
+<li>Complete documentation</li>
+<li>Monitoring and observability</li>
+</ul>
+<h2 id="future-architecture-considerations">Future Architecture Considerations</h2>
+<p>Areas marked for future development:</p>
+<ul>
+<li>Plugin system architecture</li>
+<li>Enhanced configuration management</li>
+<li>Rebuild of <code>ai_text_processing</code> suite with modern patterns</li>
+<li>Extended API integration (batch processing, alternate model services)</li>
+<li>Enhanced security features</li>
+<li>Performance optimization and async processing</li>
+<li>Extended prompt capabilities</li>
+<li>Model training and fine-tuning tools</li>
+</ul>
+<p>See <a href="../../project/future-directions/">Future Directions</a> for long-term vision.</p>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="../style-guide/">Style Guide</a> - Code formatting and naming conventions</li>
+<li><a href="../../architecture/object-service/design-overview/">Object-Service Design Blueprint</a> - Detailed architecture patterns</li>
+<li><a href="../system-design/">System Design</a> - High-level system architecture</li>
+<li><a href="../../project/principles/">Project Principles</a> - High-level project principles</li>
+<li><a href="../../project/conceptual-architecture/">Conceptual Architecture</a> - Conceptual system model</li>
+<li><a href="../contributing/">Contributing Guide</a> - Contribution workflow</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="../../architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy/">ADR-PT01: Prompt Access Strategy</a> - Singleton to dependency injection transition</li>
+<li><a href="../architecture/object-service/">Object-Service Design Blueprint</a> - Layer architecture and design patterns</li>
+<li><a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">Clean Architecture</a> - Robert C. Martin</li>
+<li><a href="https://martinfowler.com/bliki/DomainDrivenDesign.html">Domain-Driven Design</a> - Eric Evans via Martin Fowler</li>
+</ul>
 
 
 
@@ -6024,10 +7071,10 @@ bestvideo[filesize&lt;50M]/bestvideo[filesize&lt;100M]
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
       
     
   </body>

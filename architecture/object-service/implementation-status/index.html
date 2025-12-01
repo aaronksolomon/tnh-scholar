@@ -6,27 +6,27 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Coding and architecture standards for TNH Scholar that balance rapid prototyping with long-term maintainability.">
+        <meta name="description" content="Implementation status, resolved gaps, and outstanding work for the Object-Service design architecture.">
       
       
       
       
-        <link rel="prev" href="../contributing/">
+        <link rel="prev" href="../design-overview/">
       
       
-        <link rel="next" href="../fine-tuning-strategy/">
+        <link rel="next" href="../adr/adr-os01-design-v3/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
     
     
       
-        <title>TNH Scholar Design Guide - TNH Scholar Documentation</title>
+        <title>Object-Service Implementation Status - TNH Scholar Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.a40c8224.min.css">
       
       
 
@@ -45,9 +45,9 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tnh-scholar-design-guide" class="md-skip">
+        <a href="#object-service-implementation-status" class="md-skip">
           Skip to content
         </a>
       
@@ -82,7 +82,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TNH Scholar Design Guide
+              Object-Service Implementation Status
             
           </span>
         </div>
@@ -189,7 +189,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -219,7 +219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -274,7 +274,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/configuration/" class="md-nav__link">
+      <a href="../../../getting-started/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -302,7 +302,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/installation/" class="md-nav__link">
+      <a href="../../../getting-started/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -330,7 +330,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/quick-start/" class="md-nav__link">
+      <a href="../../../getting-started/quick-start/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -400,7 +400,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user-guide/best-practices/" class="md-nav__link">
+      <a href="../../../user-guide/best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -428,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user-guide/overview/" class="md-nav__link">
+      <a href="../../../user-guide/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -456,11 +456,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user-guide/patterns/" class="md-nav__link">
+      <a href="../../../user-guide/prompts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TNH Scholar Pattern System
+    TNH Scholar Prompt System
   </span>
   
     
@@ -526,7 +526,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/audio-transcribe/" class="md-nav__link">
+      <a href="../../../cli/audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -554,7 +554,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/nfmt/" class="md-nav__link">
+      <a href="../../../cli/nfmt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -582,7 +582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/overview/" class="md-nav__link">
+      <a href="../../../cli/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -610,7 +610,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/tnh-fab/" class="md-nav__link">
+      <a href="../../../cli/tnh-fab/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -638,7 +638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/tnh-setup/" class="md-nav__link">
+      <a href="../../../cli/tnh-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -666,7 +666,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/token-count/" class="md-nav__link">
+      <a href="../../../cli/token-count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -694,7 +694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/ytt-fetch/" class="md-nav__link">
+      <a href="../../../cli/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -764,7 +764,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/audio-transcribe/" class="md-nav__link">
+      <a href="../../../cli-reference/audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -792,7 +792,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/json-to-srt/" class="md-nav__link">
+      <a href="../../../cli-reference/json-to-srt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -820,7 +820,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/nfmt/" class="md-nav__link">
+      <a href="../../../cli-reference/nfmt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -848,7 +848,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/sent-split/" class="md-nav__link">
+      <a href="../../../cli-reference/sent-split/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -876,7 +876,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/srt-translate/" class="md-nav__link">
+      <a href="../../../cli-reference/srt-translate/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -904,7 +904,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/tnh-fab/" class="md-nav__link">
+      <a href="../../../cli-reference/tnh-fab/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -932,7 +932,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/tnh-setup/" class="md-nav__link">
+      <a href="../../../cli-reference/tnh-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -960,7 +960,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/token-count/" class="md-nav__link">
+      <a href="../../../cli-reference/token-count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -988,7 +988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/ytt-fetch/" class="md-nav__link">
+      <a href="../../../cli-reference/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1023,7 +1023,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/" class="md-nav__link">
+      <a href="../../../api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1047,17 +1047,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
@@ -1071,7 +1073,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Architecture
@@ -1155,7 +1157,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
+      <a href="../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1183,7 +1185,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
+      <a href="../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1254,7 +1256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/design/textobject-new-design/" class="md-nav__link">
+      <a href="../../ai-text-processing/design/textobject-new-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1282,7 +1284,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/design/textobject-original-design/" class="md-nav__link">
+      <a href="../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1361,7 +1363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/configuration/tnh-configuration/" class="md-nav__link">
+      <a href="../../configuration/tnh-configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1467,7 +1469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/docs-system/adr/adr-dd01-docs-reorg-strat/" class="md-nav__link">
+      <a href="../../docs-system/adr/adr-dd01-docs-reorg-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1495,7 +1497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/docs-system/adr/adr-dd02-docs-content-nav/" class="md-nav__link">
+      <a href="../../docs-system/adr/adr-dd02-docs-content-nav/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1523,7 +1525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/docs-system/adr/adr-dd03-pattern-prompt-terminology/" class="md-nav__link">
+      <a href="../../docs-system/adr/adr-dd03-pattern-prompt-terminology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1536,6 +1538,27 @@
     <span class="md-status md-status--proposed"></span>
   
 
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adr Dd03 Phase1 Punchlist
+  </span>
   
 
       </a>
@@ -1594,7 +1617,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/docs-system/design/documentation/" class="md-nav__link">
+      <a href="../../docs-system/design/documentation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1708,7 +1731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a01-domain-service/" class="md-nav__link">
+      <a href="../../gen-ai-service/adr/adr-a01-domain-service/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1736,7 +1759,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1/" class="md-nav__link">
+      <a href="../../gen-ai-service/adr/adr-a02-pattern-catalog-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1764,7 +1787,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a08-config-params-policy/" class="md-nav__link">
+      <a href="../../gen-ai-service/adr/adr-a08-config-params-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1792,7 +1815,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
+      <a href="../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1820,7 +1843,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+      <a href="../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1848,7 +1871,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+      <a href="../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1876,7 +1899,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a13-legacy-client-migration/" class="md-nav__link">
+      <a href="../../gen-ai-service/adr/adr-a13-legacy-client-migration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1947,7 +1970,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/design/genai-service-strategy/" class="md-nav__link">
+      <a href="../../gen-ai-service/design/genai-service-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1975,7 +1998,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/design/migration-plan/" class="md-nav__link">
+      <a href="../../gen-ai-service/design/migration-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2089,7 +2112,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/jvb-viewer/design/instruction-test0/" class="md-nav__link">
+      <a href="../../jvb-viewer/design/instruction-test0/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2117,7 +2140,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/jvb-viewer/design/instruction-test1/" class="md-nav__link">
+      <a href="../../jvb-viewer/design/instruction-test1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2145,7 +2168,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/jvb-viewer/design/jvb-strat-001/" class="md-nav__link">
+      <a href="../../jvb-viewer/design/jvb-strat-001/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2173,7 +2196,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/jvb-viewer/design/output1/" class="md-nav__link">
+      <a href="../../jvb-viewer/design/output1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2287,7 +2310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design/" class="md-nav__link">
+      <a href="../../knowledge-base/adr/adr-k01-preliminary-architectural-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2401,7 +2424,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/metadata/adr/adr-md01-metadata-strategy/" class="md-nav__link">
+      <a href="../../metadata/adr/adr-md01-metadata-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2442,69 +2465,36 @@
                 
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8" checked>
         
           
           <label class="md-nav__link" for="__nav_7_8" id="__nav_7_8_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    Pattern System
+    Object Service
   </span>
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_8_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7_8">
             <span class="md-nav__icon md-icon"></span>
-            Pattern System
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_7_8_1" id="__nav_7_8_1_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Adr
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_8_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_8_1">
-            <span class="md-nav__icon md-icon"></span>
-            Adr
+            Object Service
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2515,11 +2505,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/pattern-system/adr/adr-pt01-pattern-access-strategy/" class="md-nav__link">
+      <a href="../design-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    ADR-PT01: Pattern Access Strategy
+    Object-Service Design Overview
   </span>
   
     
@@ -2540,20 +2530,475 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../architecture/pattern-system/adr/adr-pt02-pattern-catalog/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
         
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
   
   <span class="md-ellipsis">
-    ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts
+    Object-Service Implementation Status
   </span>
   
     
   
   
     <span class="md-status md-status--processing"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Object-Service Implementation Status
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#resolved-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Resolved Items
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ Resolved Items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dependency-management-environment-resolved" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dependency Management &amp; Environment (Resolved)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-style-and-design-standards-resolved" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Style and Design Standards (Resolved)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#priority-1-critical-gaps-must-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      Priority 1: Critical Gaps (Must Address)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Priority 1: Critical Gaps (Must Address)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-complete-runnable-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Complete Runnable Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dependency-management-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Dependency Management &amp; Environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-configuration-loading-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration Loading Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-error-handling-implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Error Handling Implementation Details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-asyncawait-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Async/Await Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Resource Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#priority-2-important-clarifications-should-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      Priority 2: Important Clarifications (Should Address)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Priority 2: Important Clarifications (Should Address)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7-logging-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Logging Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-testing-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Testing Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-type-checking-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Type Checking &amp; Validation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-serialization-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Serialization &amp; Persistence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-rate-limiting-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Rate Limiting Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-timeout-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Timeout Handling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#priority-3-nice-to-have-consider-adding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Priority 3: Nice to Have (Consider Adding)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Priority 3: Nice to Have (Consider Adding)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#13-performance-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Performance Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Security Considerations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-monitoring-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. Monitoring &amp; Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-documentation-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. Documentation Standards
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-development-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. Development Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19-migration-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. Migration Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-protocol-extension-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. Protocol Extension Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#specific-open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specific Open Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Specific Open Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mapper-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapper Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocol-vs-abc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protocol vs ABC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-granularity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Granularity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streaming-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      Streaming Support
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-mocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Mocks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-precedence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Policy Precedence
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#work-plan-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      Work Plan Template
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notes
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_8_3" id="__nav_7_8_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/adr-os01-design-v3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OS01: Object-Service Design Architecture V3
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -2601,7 +3046,7 @@
             
   
   <span class="md-ellipsis">
-    Setup Tnh
+    Prompt System
   </span>
   
 
@@ -2611,9 +3056,37 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_9">
             <span class="md-nav__icon md-icon"></span>
-            Setup Tnh
+            Prompt System
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prompt-system/prompt-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prompt System Architecture
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -2629,24 +3102,24 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_9_1" id="__nav_7_9_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_9_2" id="__nav_7_9_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    Design
+    Adr
   </span>
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_9_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_9_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_9_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_9_2">
             <span class="md-nav__icon md-icon"></span>
-            Design
+            Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2657,11 +3130,82 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/setup-tnh/design/setup-design/" class="md-nav__link">
+      <a href="../../prompt-system/adr/adr-pt03-current-status-roadmap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    minimal but extensible setup tool for the prototyping phase
+    ADR-PT03: Prompt System Current Status & Roadmap
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_9_3" id="__nav_7_9_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_9_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_9_3">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prompt-system/archive/pattern-core-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Core Pattern Architecture: Meta-patterns, Textual Expansion Processing
   </span>
   
     
@@ -2673,6 +3217,105 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_9_3_2" id="__nav_7_9_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_9_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_9_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prompt-system/archive/adr/adr-pt01-pattern-access-strategy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-PT01: Pattern Access Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prompt-system/archive/adr/adr-pt02-pattern-catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2715,7 +3358,7 @@
             
   
   <span class="md-ellipsis">
-    Tnh Fab
+    Setup Tnh
   </span>
   
 
@@ -2725,7 +3368,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_10_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_10">
             <span class="md-nav__icon md-icon"></span>
-            Tnh Fab
+            Setup Tnh
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2771,39 +3414,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
+      <a href="../../setup-tnh/design/setup-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TNH FAB Design Document
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TNH-FAB Command Line Tool Specification
+    minimal but extensible setup tool for the prototyping phase
   </span>
   
     
@@ -2857,7 +3472,7 @@
             
   
   <span class="md-ellipsis">
-    Transcription
+    Tnh Fab
   </span>
   
 
@@ -2867,7 +3482,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_11">
             <span class="md-nav__icon md-icon"></span>
-            Transcription
+            Tnh Fab
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2892,7 +3507,7 @@
             
   
   <span class="md-ellipsis">
-    Adr
+    Design
   </span>
   
 
@@ -2901,161 +3516,6 @@
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_11_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_11_1">
-            <span class="md-nav__icon md-icon"></span>
-            Adr
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ADR-TR01: AssemblyAI Integration for Transcription Service
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr02-optimize-srt/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ADR-TR02: Optimized SRT Generation Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr03-standard-timestamp/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ADR-TR03: Standardizing Timestamps to Milliseconds
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ADR-TR04: AssemblyAI Service Implementation Improvements
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_11_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_7_11_2" id="__nav_7_11_2_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Design
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_11_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_11_2">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
@@ -3068,11 +3528,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/additional-design/" class="md-nav__link">
+      <a href="../../tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Diarization Chunker Module Design Strategy
+    TNH FAB Design Document
   </span>
   
     
@@ -3096,291 +3556,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/audio-chunk-splitting/" class="md-nav__link">
+      <a href="../../tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Audio Chunking Algorithm Design Document
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/chunking-strategies/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Simplified Language-Aware Chunking Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/chunking-strategies0/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Language-Aware Chunking Orchestrator Notes
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/diarization-algorithms/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Diarization Algorithms
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/diarization-algorithms0/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Speaker Diarization Algorithm Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/diarization-system0/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Speaker Diarization and Time-Mapped Transcription System Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/diarization-system1/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Diarization System Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/gpt-modular-pipeline/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Modular Pipeline Design: Best Practices for Audio Transcription and Diarization
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/language-chunking-algorithm/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Practical Language-Aware Chunking Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/segment-match-algorithm/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Interval-to-Segment Mapping Algorithm
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/timeline-mapping/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TimelineMapper Design Document
+    TNH-FAB Command Line Tool Specification
   </span>
   
     
@@ -3434,7 +3614,7 @@
             
   
   <span class="md-ellipsis">
-    Ui Ux
+    Transcription
   </span>
   
 
@@ -3444,7 +3624,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_12_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_12">
             <span class="md-nav__icon md-icon"></span>
-            Ui Ux
+            Transcription
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3469,7 +3649,7 @@
             
   
   <span class="md-ellipsis">
-    Design
+    Adr
   </span>
   
 
@@ -3479,7 +3659,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_12_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_12_1">
             <span class="md-nav__icon md-icon"></span>
-            Design
+            Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3490,11 +3670,95 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ui-ux/design/ui-ux-strategy/" class="md-nav__link">
+      <a href="../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Design Strategy: VS Code as UI/UX Platform for TNH Scholar
+    ADR-TR01: AssemblyAI Integration for Transcription Service
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/adr/adr-tr02-optimize-srt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TR02: Optimized SRT Generation Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/adr/adr-tr03-standard-timestamp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TR03: Standardizing Timestamps to Milliseconds
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TR04: AssemblyAI Service Implementation Improvements
   </span>
   
     
@@ -3540,7 +3804,7 @@
             
   
   <span class="md-ellipsis">
-    Vs Code Integration
+    Design
   </span>
   
 
@@ -3550,7 +3814,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_12_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_12_2">
             <span class="md-nav__icon md-icon"></span>
-            Vs Code Integration
+            Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3561,12 +3825,327 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat/" class="md-nav__link">
+      <a href="../../transcription/design/additional-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Adr Vsc01 Vscode Integration Strat
+    Diarization Chunker Module Design Strategy
   </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/audio-chunk-splitting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Audio Chunking Algorithm Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/chunking-strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Simplified Language-Aware Chunking Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/chunking-strategies0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Language-Aware Chunking Orchestrator Notes
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/diarization-algorithms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diarization Algorithms
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/diarization-algorithms0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Speaker Diarization Algorithm Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/diarization-system0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Speaker Diarization and Time-Mapped Transcription System Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/diarization-system1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diarization System Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/gpt-modular-pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modular Pipeline Design: Best Practices for Audio Transcription and Diarization
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/language-chunking-algorithm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Practical Language-Aware Chunking Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/segment-match-algorithm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interval-to-Segment Mapping Algorithm
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/design/timeline-mapping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TimelineMapper Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
   
 
       </a>
@@ -3612,7 +4191,7 @@
             
   
   <span class="md-ellipsis">
-    Utilities
+    Ui Ux
   </span>
   
 
@@ -3622,7 +4201,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_13_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_13">
             <span class="md-nav__icon md-icon"></span>
-            Utilities
+            Ui Ux
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3668,11 +4247,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/utilities/design/utilities-catalog/" class="md-nav__link">
+      <a href="../../ui-ux/design/ui-ux-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TNH‑Scholar Utilities Catalog
+    Design Strategy: VS Code as UI/UX Platform for TNH Scholar
   </span>
   
     
@@ -3689,6 +4268,49 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_13_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_13_2" id="__nav_7_13_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Vs Code Integration
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_13_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_13_2">
+            <span class="md-nav__icon md-icon"></span>
+            Vs Code Integration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
                 
   
@@ -3696,19 +4318,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/utilities/design/version-checking-design/" class="md-nav__link">
+      <a href="../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Package Version Checker Design Document
+    Adr Vsc01 Vscode Integration Strat
   </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
   
 
       </a>
@@ -3754,7 +4369,7 @@
             
   
   <span class="md-ellipsis">
-    Video Processing
+    Utilities
   </span>
   
 
@@ -3764,7 +4379,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_14_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_14">
             <span class="md-nav__icon md-icon"></span>
-            Video Processing
+            Utilities
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3789,7 +4404,7 @@
             
   
   <span class="md-ellipsis">
-    Adr
+    Design
   </span>
   
 
@@ -3799,7 +4414,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_14_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_14_1">
             <span class="md-nav__icon md-icon"></span>
-            Adr
+            Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3810,11 +4425,39 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+      <a href="../../utilities/design/utilities-catalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    ADR-VP01: Video Processing Return Types and Configuration
+    TNH‑Scholar Utilities Catalog
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utilities/design/version-checking-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Package Version Checker Design Document
   </span>
   
     
@@ -3868,7 +4511,7 @@
             
   
   <span class="md-ellipsis">
-    YTT Fetch
+    Video Processing
   </span>
   
 
@@ -3878,7 +4521,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_15_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_15">
             <span class="md-nav__icon md-icon"></span>
-            YTT Fetch
+            Video Processing
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3924,7 +4567,121 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+      <a href="../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-VP01: Video Processing Return Types and Configuration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_16" id="__nav_7_16_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    YTT Fetch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_16">
+            <span class="md-nav__icon md-icon"></span>
+            YTT Fetch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_16_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_16_1" id="__nav_7_16_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_16_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_16_1">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3952,7 +4709,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+      <a href="../../ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3980,7 +4737,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+      <a href="../../ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4023,10 +4780,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_15_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_16_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_15_2" id="__nav_7_15_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_16_2" id="__nav_7_16_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -4037,8 +4794,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_15_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_15_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_16_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_16_2">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
@@ -4051,7 +4808,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+      <a href="../../ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4099,19 +4856,17 @@
       
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
           
           <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
@@ -4125,7 +4880,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Development
@@ -4139,7 +4894,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/" class="md-nav__link">
+      <a href="../../../development/contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4164,41 +4919,14 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    TNH Scholar Design Guide
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../development/design-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TNH Scholar Design Guide
+    TNH Scholar Design Principles
   </span>
   
     
@@ -4210,452 +4938,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-style-and-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      Code Style and Organization
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Code Style and Organization">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#general-coding-principles" class="md-nav__link">
-    <span class="md-ellipsis">
-      General Coding Principles
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#modularity" class="md-nav__link">
-    <span class="md-ellipsis">
-      Modularity
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#python-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      Python Standards
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Python Standards">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#import-conventions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Import Conventions
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#strong-typing-and-abstraction-preferences" class="md-nav__link">
-    <span class="md-ellipsis">
-      Strong Typing and Abstraction Preferences
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#file-and-directory-naming" class="md-nav__link">
-    <span class="md-ellipsis">
-      File and Directory Naming
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#module-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Module Structure
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-and-method-complexity" class="md-nav__link">
-    <span class="md-ellipsis">
-      Function and Method Complexity
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#type-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      Type Handling
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Type Handling">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#best-practices-for-data-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      Best Practices for Data Models
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#classes-vs-dictionaries" class="md-nav__link">
-    <span class="md-ellipsis">
-      Classes vs. Dictionaries
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pydantic-vs-dataclasses" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pydantic vs. Dataclasses
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pydantic-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pydantic Best Practices
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#general-design-guidelines" class="md-nav__link">
-    <span class="md-ellipsis">
-      General Design Guidelines
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="General Design Guidelines">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#type-annotations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Type Annotations
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pydantic-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pydantic Models
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#error-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      Error Handling
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Error Handling">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#errors-prototyping-phase" class="md-nav__link">
-    <span class="md-ellipsis">
-      Errors - Prototyping Phase
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#errors-production-phase" class="md-nav__link">
-    <span class="md-ellipsis">
-      Errors - Production Phase
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logging" class="md-nav__link">
-    <span class="md-ellipsis">
-      Logging
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Logging">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#logging-prototyping-phase" class="md-nav__link">
-    <span class="md-ellipsis">
-      Logging - Prototyping Phase
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#logging-production-phase" class="md-nav__link">
-    <span class="md-ellipsis">
-      Logging - Production Phase
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Testing
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Testing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#test-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test Organization
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test Requirements
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#code-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Code Documentation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#api-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      API Documentation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#development-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      Development Workflow
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Development Workflow">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#version-control" class="md-nav__link">
-    <span class="md-ellipsis">
-      Version Control
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tooling" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tooling
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#code-review" class="md-nav__link">
-    <span class="md-ellipsis">
-      Code Review
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#security-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Security Considerations
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Security Considerations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#api-key-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      API Key Management
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#input-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Input Validation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#performance-guidelines" class="md-nav__link">
-    <span class="md-ellipsis">
-      Performance Guidelines
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Performance Guidelines">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#resource-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      Resource Management
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#future-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Future Considerations
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -4668,7 +4950,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../fine-tuning-strategy/" class="md-nav__link">
+      <a href="../../../development/fine-tuning-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4696,7 +4978,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../human-agent-coding-principles/" class="md-nav__link">
+      <a href="../../../development/human-agent-coding-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4724,7 +5006,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../initial-improvements/" class="md-nav__link">
+      <a href="../../../development/initial-improvements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4752,11 +5034,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../pattern-core-design/" class="md-nav__link">
+      <a href="../../../development/style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Core Pattern Architecture: Meta-patterns, Textual Expansion Processing
+    TNH Scholar Style Guide
   </span>
   
     
@@ -4780,7 +5062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../system-design/" class="md-nav__link">
+      <a href="../../../development/system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4796,260 +5078,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8_8" id="__nav_8_8_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Architecture
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_8">
-            <span class="md-nav__icon md-icon"></span>
-            Architecture
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../architecture/api-integration-blueprint_%28old%29/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    API Integration Blueprint (Generic)
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../architecture/object-service-design-blueprint-v2/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Object–Service Design Blueprint (Integrated)
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../architecture/object-service-design-blueprint/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TNH Scholar Object & Service Design Blueprint
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../architecture/object-service-gaps/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Object-Service Design Blueprint: Critical Gaps & Clarifications
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_9" >
-        
-          
-          <label class="md-nav__link" for="__nav_8_9" id="__nav_8_9_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Yt Dlp Docs
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8_9">
-            <span class="md-nav__icon md-icon"></span>
-            Yt Dlp Docs
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../yt-dlp_docs/ytdlp-formats/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    yt-dlp Format Selection Guide
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../yt-dlp_docs/ytdlp-guide/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    yt-dlp Comprehensive Guide
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -5104,7 +5132,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-ops/adr-template/" class="md-nav__link">
+      <a href="../../../docs-ops/adr-template/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5132,7 +5160,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-ops/markdown-standards/" class="md-nav__link">
+      <a href="../../../docs-ops/markdown-standards/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5160,7 +5188,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-ops/mkdocs-warning-backlog/" class="md-nav__link">
+      <a href="../../../docs-ops/mkdocs-warning-backlog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5230,7 +5258,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/conceptual-architecture/" class="md-nav__link">
+      <a href="../../../project/conceptual-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5251,7 +5279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/future-directions/" class="md-nav__link">
+      <a href="../../../project/future-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5272,7 +5300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/philosophy/" class="md-nav__link">
+      <a href="../../../project/philosophy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5293,7 +5321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/principles/" class="md-nav__link">
+      <a href="../../../project/principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5314,7 +5342,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/vision/" class="md-nav__link">
+      <a href="../../../project/vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5335,7 +5363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/" class="md-nav__link">
+      <a href="../../../project/repo-root/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5391,7 +5419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/CHANGELOG/" class="md-nav__link">
+      <a href="../../../project/repo-root/CHANGELOG/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5419,7 +5447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/CONTRIBUTING/" class="md-nav__link">
+      <a href="../../../project/repo-root/CONTRIBUTING/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5447,7 +5475,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/DEV_SETUP/" class="md-nav__link">
+      <a href="../../../project/repo-root/DEV_SETUP/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5475,7 +5503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/TODO/" class="md-nav__link">
+      <a href="../../../project/repo-root/TODO/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5503,7 +5531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/release_checklist/" class="md-nav__link">
+      <a href="../../../project/repo-root/release_checklist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5531,7 +5559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/repo-readme/" class="md-nav__link">
+      <a href="../../../project/repo-root/repo-readme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5609,7 +5637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/gpt_development_convos/" class="md-nav__link">
+      <a href="../../../research/gpt_development_convos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5637,7 +5665,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/metadata_report/" class="md-nav__link">
+      <a href="../../../research/metadata_report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5665,7 +5693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/preliminary_feasibility_study/" class="md-nav__link">
+      <a href="../../../research/preliminary_feasibility_study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5693,7 +5721,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/strategic-information-processing/" class="md-nav__link">
+      <a href="../../../research/strategic-information-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5721,7 +5749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/tnh-scholar-knowledge-vector-search/" class="md-nav__link">
+      <a href="../../../research/tnh-scholar-knowledge-vector-search/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5784,7 +5812,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/gpt_4o_search_query_text_pair_testing/testing_input_output/" class="md-nav__link">
+      <a href="../../../research/gpt_4o_search_query_text_pair_testing/testing_input_output/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5855,7 +5883,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/gpt_4o_translations_experiments/passage_test/" class="md-nav__link">
+      <a href="../../../research/gpt_4o_translations_experiments/passage_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5898,7 +5926,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../documentation_index/" class="md-nav__link">
+      <a href="../../../documentation_index/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5925,7 +5953,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tnh_scholar_parallax_overview/" class="md-nav__link">
+      <a href="../../../tnh_scholar_parallax_overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5934,6 +5962,147 @@
   
 
       </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_14_1" id="__nav_14_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Yt Dlp Docs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_14_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14_1">
+            <span class="md-nav__icon md-icon"></span>
+            Yt Dlp Docs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/yt-dlp_docs/ytdlp-formats/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    yt-dlp Format Selection Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/yt-dlp_docs/ytdlp-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    yt-dlp Comprehensive Guide
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -5965,97 +6134,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#resolved-items" class="md-nav__link">
     <span class="md-ellipsis">
-      Overview
+      ✅ Resolved Items
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-style-and-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      Code Style and Organization
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Code Style and Organization">
+    <nav class="md-nav" aria-label="✅ Resolved Items">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#general-coding-principles" class="md-nav__link">
+  <a href="#dependency-management-environment-resolved" class="md-nav__link">
     <span class="md-ellipsis">
-      General Coding Principles
+      Dependency Management &amp; Environment (Resolved)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#modularity" class="md-nav__link">
+  <a href="#code-style-and-design-standards-resolved" class="md-nav__link">
     <span class="md-ellipsis">
-      Modularity
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#python-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      Python Standards
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Python Standards">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#import-conventions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Import Conventions
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#strong-typing-and-abstraction-preferences" class="md-nav__link">
-    <span class="md-ellipsis">
-      Strong Typing and Abstraction Preferences
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#file-and-directory-naming" class="md-nav__link">
-    <span class="md-ellipsis">
-      File and Directory Naming
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#module-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Module Structure
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#function-and-method-complexity" class="md-nav__link">
-    <span class="md-ellipsis">
-      Function and Method Complexity
+      Code Style and Design Standards (Resolved)
     </span>
   </a>
   
@@ -6067,19 +6167,64 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#type-handling" class="md-nav__link">
+  <a href="#priority-1-critical-gaps-must-address" class="md-nav__link">
     <span class="md-ellipsis">
-      Type Handling
+      Priority 1: Critical Gaps (Must Address)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Type Handling">
+    <nav class="md-nav" aria-label="Priority 1: Critical Gaps (Must Address)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#best-practices-for-data-models" class="md-nav__link">
+  <a href="#1-complete-runnable-example" class="md-nav__link">
     <span class="md-ellipsis">
-      Best Practices for Data Models
+      1. Complete Runnable Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dependency-management-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Dependency Management &amp; Environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-configuration-loading-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration Loading Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-error-handling-implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Error Handling Implementation Details
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-asyncawait-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Async/Await Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Resource Management
     </span>
   </a>
   
@@ -6091,55 +6236,64 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#classes-vs-dictionaries" class="md-nav__link">
+  <a href="#priority-2-important-clarifications-should-address" class="md-nav__link">
     <span class="md-ellipsis">
-      Classes vs. Dictionaries
+      Priority 2: Important Clarifications (Should Address)
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pydantic-vs-dataclasses" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pydantic vs. Dataclasses
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pydantic-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pydantic Best Practices
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#general-design-guidelines" class="md-nav__link">
-    <span class="md-ellipsis">
-      General Design Guidelines
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="General Design Guidelines">
+    <nav class="md-nav" aria-label="Priority 2: Important Clarifications (Should Address)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#type-annotations" class="md-nav__link">
+  <a href="#7-logging-strategy" class="md-nav__link">
     <span class="md-ellipsis">
-      Type Annotations
+      7. Logging Strategy
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pydantic-models" class="md-nav__link">
+  <a href="#8-testing-infrastructure" class="md-nav__link">
     <span class="md-ellipsis">
-      Pydantic Models
+      8. Testing Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-type-checking-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Type Checking &amp; Validation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-serialization-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Serialization &amp; Persistence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-rate-limiting-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Rate Limiting Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-timeout-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Timeout Handling
     </span>
   </a>
   
@@ -6151,28 +6305,82 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#error-handling" class="md-nav__link">
+  <a href="#priority-3-nice-to-have-consider-adding" class="md-nav__link">
     <span class="md-ellipsis">
-      Error Handling
+      Priority 3: Nice to Have (Consider Adding)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Error Handling">
+    <nav class="md-nav" aria-label="Priority 3: Nice to Have (Consider Adding)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#errors-prototyping-phase" class="md-nav__link">
+  <a href="#13-performance-patterns" class="md-nav__link">
     <span class="md-ellipsis">
-      Errors - Prototyping Phase
+      13. Performance Patterns
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#errors-production-phase" class="md-nav__link">
+  <a href="#14-security-considerations" class="md-nav__link">
     <span class="md-ellipsis">
-      Errors - Production Phase
+      14. Security Considerations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-monitoring-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. Monitoring &amp; Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-documentation-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. Documentation Standards
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-development-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      17. Development Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19-migration-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      19. Migration Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-protocol-extension-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      20. Protocol Extension Examples
     </span>
   </a>
   
@@ -6184,28 +6392,64 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#logging" class="md-nav__link">
+  <a href="#specific-open-questions" class="md-nav__link">
     <span class="md-ellipsis">
-      Logging
+      Specific Open Questions
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Logging">
+    <nav class="md-nav" aria-label="Specific Open Questions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#logging-prototyping-phase" class="md-nav__link">
+  <a href="#mapper-pattern" class="md-nav__link">
     <span class="md-ellipsis">
-      Logging - Prototyping Phase
+      Mapper Pattern
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#logging-production-phase" class="md-nav__link">
+  <a href="#protocol-vs-abc" class="md-nav__link">
     <span class="md-ellipsis">
-      Logging - Production Phase
+      Protocol vs ABC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-granularity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Granularity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streaming-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      Streaming Support
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-mocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Mocks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#policy-precedence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Policy Precedence
     </span>
   </a>
   
@@ -6217,174 +6461,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
+  <a href="#work-plan-template" class="md-nav__link">
     <span class="md-ellipsis">
-      Testing
+      Work Plan Template
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Testing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#test-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test Organization
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#test-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      Test Requirements
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
+  <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#code-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Code Documentation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#api-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      API Documentation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#development-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      Development Workflow
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Development Workflow">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#version-control" class="md-nav__link">
-    <span class="md-ellipsis">
-      Version Control
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tooling" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tooling
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#code-review" class="md-nav__link">
-    <span class="md-ellipsis">
-      Code Review
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#security-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Security Considerations
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Security Considerations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#api-key-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      API Key Management
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#input-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Input Validation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#performance-guidelines" class="md-nav__link">
-    <span class="md-ellipsis">
-      Performance Guidelines
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Performance Guidelines">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#resource-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      Resource Management
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#future-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Future Considerations
+      Notes
     </span>
   </a>
   
@@ -6408,399 +6496,507 @@
   
 
 
-<h1 id="tnh-scholar-design-guide">TNH Scholar Design Guide</h1>
-<p>Coding and architecture standards for TNH Scholar that balance rapid prototyping with long-term maintainability.</p>
-<h2 id="overview">Overview</h2>
-<p>This design guide establishes development standards for the TNH Scholar project. While the project is currently in a rapid prototyping phase, these guidelines aim to maintain code quality and consistency throughout development. The guide distinguishes between immediate prototyping requirements and standards for later production phases where appropriate.</p>
-<h2 id="code-style-and-organization">Code Style and Organization</h2>
-<h3 id="general-coding-principles">General Coding Principles</h3>
-<p>Code should adhere to the principle of single responsibility, with functions and classes focused on one clear task. Helpers should be small (target 10 lines) and composable, enabling reuse and clarity. Method names must be descriptive and scoped appropriately, reflecting their purpose without ambiguity. Use classes when managing related state or behavior, keeping them cohesive and avoiding unnecessary complexity. Employ dispatch patterns (prefer match/case when possible) to cleanly separate concerns and improve extensibility. Validation logic should be distinct from mutation or side effects to ensure maintainability. Handle warnings and errors thoughtfully, distinguishing recoverable conditions from critical failures. Text handling should be explicit and consistent, favoring clarity in encoding and processing. Prioritize naming and readability to make code self-explanatory and accessible. Logging should be purposeful, balancing informational messages with error reporting. Refactor when code becomes difficult to follow, when duplication arises, or when new requirements suggest clearer abstractions.</p>
-<h3 id="modularity">Modularity</h3>
+<h1 id="object-service-implementation-status">Object-Service Implementation Status</h1>
+<p>Implementation status, resolved gaps, and outstanding work for the Object-Service design architecture.</p>
+<p><strong>Purpose</strong>: Track progress on implementing <a href="../adr/adr-os01-design-v3/">ADR-OS01: Object-Service Design Architecture V3</a>
+<strong>Status</strong>: In Progress
+<strong>Last Updated</strong>: 2025-11-29</p>
+<hr />
+<h2 id="resolved-items">✅ Resolved Items</h2>
+<h3 id="dependency-management-environment-resolved">Dependency Management &amp; Environment (Resolved)</h3>
+<p><strong>Status</strong>: ✅ <strong>RESOLVED</strong></p>
+<p><strong>Resolution</strong>:</p>
 <ul>
-<li><strong>Design for modularity:</strong> Each module, class, and function should have a single, well-defined responsibility.</li>
-<li><strong>Encapsulate related functionality:</strong> Group related functions and classes into modules and packages to promote reuse and clarity.</li>
-<li><strong>Minimize coupling:</strong> Modules should interact through well-defined interfaces, minimizing dependencies and side effects.</li>
-<li><strong>Favor composition over inheritance:</strong> Use composition to build complex behavior from simple, reusable components.</li>
-<li><strong>Limit module size:</strong> Aim for modules that are small enough to be easily understood (generally &lt; 300 lines), but large enough to encapsulate a coherent set of functionality.</li>
-<li><strong>Explicit module exports:</strong> Use <code>__all__</code> to define public API of modules where appropriate.</li>
+<li><code>pyproject.toml</code> exists with full dependency specifications</li>
+<li>Python 3.12.4 requirement established</li>
+<li>Pydantic V2 adopted throughout project</li>
+<li>Poetry used for dependency management</li>
+<li>Dev dependencies clearly separated</li>
 </ul>
-<h3 id="python-standards">Python Standards</h3>
-<p>The project follows PEP 8 with some specific adaptations. All Python code should adhere to these standards regardless of development phase:</p>
-<p>The project uses Python 3.12.4 exclusively, taking advantage of modern Python features including strict typing. This version requirement ensures consistency across all components and enables use of the latest language features.</p>
-<h4 id="import-conventions">Import Conventions</h4>
-<p>Import organization follows this pattern:</p>
-<ol>
-<li>Standard library imports</li>
-<li>External package imports</li>
-<li>Internal package imports</li>
-<li>Relative imports</li>
-</ol>
-<p>For example:</p>
-<pre><code class="language-python">from pathlib import Path
-from typing import Optional, Dict
-
-import click
-from pydantic import BaseModel
-
-from tnh_scholar.utils import ensure_directory_exists
-from .environment import check_env
-</code></pre>
-<p>Use absolute imports from the top-level package (tnh_scholar.) for all intra-project references.</p>
-<p>Rationale: Maintains explicit architectural boundaries, avoids ambiguity in layered modules, and ensures IDE/refactor tooling compatibility.</p>
-<p>Example:</p>
-<pre><code class="language-python"># ✅ Preferred
-from tnh_scholar.gen_ai_service.models.domain import Message
-
-# 🚫 Avoid
-from ..models.domain import Message
-</code></pre>
-<p>Exception:</p>
-<p>Relative imports may be used only for very local module groups (e.g., sibling adapters or mappers within the same provider directory) when the reference is clearly confined to that module cluster and no cross-layer boundary is crossed.</p>
-<h3 id="strong-typing-and-abstraction-preferences">Strong Typing and Abstraction Preferences</h3>
+<p><strong>Reference</strong>: See project <code>pyproject.toml</code> for complete configuration.</p>
+<hr />
+<h3 id="code-style-and-design-standards-resolved">Code Style and Design Standards (Resolved)</h3>
+<p><strong>Status</strong>: ✅ <strong>RESOLVED</strong></p>
+<p><strong>Resolution</strong>:</p>
 <ul>
-<li>Always use typed classes, enums, and dataclasses; avoid literal strings and numbers in app logic.  </li>
-<li>Configuration values come from <code>Settings</code> (pydantic BaseSettings), policies, or pattern metadata — never hardcoded.  </li>
-<li>Dicts are not used in app layers; prefer Pydantic models or dataclasses for structured data.  </li>
-<li>Enums replace string literals for identifiers (e.g., provider names, roles, intent types).  </li>
-<li>Adapters may handle dict conversions only at API transport boundaries.  </li>
-<li>Abstract base classes (<code>Protocol</code> or ABC) define all system interfaces; adapters implement them.  </li>
-<li>Use Protocol for structural typing and interface contracts (no inheritance required).</li>
-<li>Use ABC only when enforcing init-time invariants or providing shared mixin behavior that all implementers should inherit.</li>
-<li>Settings and policy modules hold all runtime defaults; code must read from them instead of embedding constants.  </li>
-<li>Favor immutability and declarative structure — objects represent data, services perform work.  </li>
-<li>Typed objects are preferred even during prototyping for consistency and clarity.  </li>
-<li>The goal: zero literals, zero dicts, clear typing, explicit configuration — ensuring predictable behavior and strong IDE/type support.</li>
+<li>Style guide established: <a href="../../../development/style-guide/">docs/development/style-guide.md</a></li>
+<li>Design principles documented: <a href="../../../development/design-principles/">docs/development/design-principles.md</a></li>
+<li>Strong typing standards enforced (no dicts in app layer, Protocol/ABC usage)</li>
+<li>Google-style docstrings adopted</li>
 </ul>
-<h3 id="file-and-directory-naming">File and Directory Naming</h3>
-<p>File naming conventions apply across all project phases:</p>
-<p>All Python files use lowercase with underscores, for example: <code>audio_processing.py</code>.</p>
-<p>Directory names follow the same lowercase with underscores pattern: <code>text_processing/</code>.</p>
-<p>Exception cases follow traditional conventions:</p>
+<p><strong>Reference</strong>: <a href="../../../development/style-guide/">Style Guide</a>, <a href="../../../development/design-principles/">Design Principles</a></p>
+<hr />
+<h2 id="priority-1-critical-gaps-must-address">Priority 1: Critical Gaps (Must Address)</h2>
+<h3 id="1-complete-runnable-example">1. Complete Runnable Example</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
 <ul>
-<li>README.md</li>
-<li>LICENSE</li>
-<li>CONTRIBUTING.md</li>
-<li>Requirements files (requirements.txt, dev-requirements.txt)</li>
+<li>End-to-end working example showing all layers integrated</li>
+<li>Actual runnable file with imports, initialization, and execution</li>
+<li>Both sync (GenAI) and async (diarization) full implementations</li>
+<li>How to bootstrap the application from scratch</li>
 </ul>
-<h3 id="module-structure">Module Structure</h3>
-<p>Each module should maintain this general structure:</p>
-<pre><code class="language-python">&quot;&quot;&quot;Module docstring providing overview and purpose.&quot;&quot;&quot;
-
-# Standard imports
-# External imports
-# Internal imports
-
-# Module-level constants
-DEFAULT_CHUNK_SIZE = 1024
-
-# Classes
-class ExampleClass:
-    &quot;&quot;&quot;Class docstring.&quot;&quot;&quot;
-
-# Functions
-def example_function():
-    &quot;&quot;&quot;Function docstring.&quot;&quot;&quot;
-</code></pre>
-<h3 id="function-and-method-complexity">Function and Method Complexity</h3>
+<p><strong>Required Deliverable:</strong></p>
 <ul>
-<li><strong>Limit function/method length:</strong> Target functions and methods to be no longer than 15-20 lines of code (excluding docstring). If a function grows beyond this, consider refactoring into smaller helpers.</li>
-<li><strong>Limit cyclomatic complexity:</strong> Functions should have a cyclomatic complexity of 7 or less. Use tools like <code>radon</code> or <code>flake8-cognitive-complexity</code> to monitor.</li>
-<li><strong>Single responsibility:</strong> Each function or method should perform one logical task. Avoid mixing concerns (e.g., validation, mutation, and I/O in a single function).</li>
-<li><strong>Early returns:</strong> Use early returns to reduce nesting and improve readability.</li>
-<li><strong>Descriptive naming:</strong> Function and method names should clearly describe their purpose and side effects.</li>
-<li><strong>Use <code>match</code> / <code>case</code> statements for multi-condition branching:</strong><br />
-  When branching logic involves three or more conditions, prefer <code>match</code> / <code>case</code> over chained <code>if</code> / <code>elif</code> blocks for readability and maintainability.<br />
-  This is especially required when branching on a single variable (e.g., a mode, type, or enum value).<br />
-  Match-case may also be used for more complex branching scenarios where patterns can simplify logic or make case distinctions explicit.</li>
-<li><strong>Document edge cases:</strong> Clearly document any non-obvious logic or edge cases in the function docstring.</li>
+<li><code>examples/complete_genai_example.py</code> - Full working GenAI service</li>
+<li><code>examples/complete_diarization_example.py</code> - Full working async service</li>
+<li><code>examples/README.md</code> - How to run the examples</li>
 </ul>
-<h2 id="type-handling">Type Handling</h2>
-<h3 id="best-practices-for-data-models">Best Practices for Data Models</h3>
-<h2 id="classes-vs-dictionaries">Classes vs. Dictionaries</h2>
+<hr />
+<h3 id="2-dependency-management-environment">2. Dependency Management &amp; Environment</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
 <ul>
-<li><strong>Always prefer structured classes over plain dictionaries</strong> for data that has consistent fields</li>
-<li><strong>Use <code>.</code> attribute access instead of <code>['key']</code> dictionary lookups</strong> for better readability and IDE support</li>
-<li><strong>Leverage type hints</strong> to catch errors at development time rather than runtime</li>
-<li><strong>Encapsulate related logic</strong> within the class that owns the data</li>
+<li>No <code>pyproject.toml</code> or <code>requirements.txt</code> specification</li>
+<li>Which versions of libraries? (Pydantic v1 vs v2? OpenAI SDK version?)</li>
+<li>Python version requirements</li>
+<li>Development dependencies (pytest versions, type checkers)</li>
 </ul>
-<h2 id="pydantic-vs-dataclasses">Pydantic vs. Dataclasses</h2>
+<p><strong>Required Deliverable:</strong></p>
 <ul>
-<li><strong>Use Pydantic V2 when data validation is important</strong> (especially for external inputs)</li>
-<li><strong>Choose dataclasses for simple internal data structures</strong> with minimal validation needs</li>
-<li><strong>Prefer Pydantic for API interfaces</strong> where data needs parsing and validation</li>
-<li><strong>Use dataclasses when serialization features aren't needed</strong> or for improved performance</li>
+<li><code>pyproject.toml</code> with all dependencies and versions</li>
+<li>Minimum Python version specified</li>
+<li>Dev dependencies section</li>
+<li>Optional dependencies per provider</li>
 </ul>
-<h2 id="pydantic-best-practices">Pydantic Best Practices</h2>
+<p><strong>Questions to Resolve:</strong></p>
 <ul>
-<li><strong>Use <code>@computed_field</code> for derived properties</strong> that should be included in serialization</li>
-<li><strong>Leverage field validation</strong> with standard validators or custom methods</li>
-<li><strong>Use <code>model_config</code> for class-level configuration</strong> like allowing extra fields</li>
-<li><strong>Take advantage of automatic type coercion</strong> for cleaner interfaces</li>
-<li><strong>Create factory methods</strong> (like <code>from_dict</code>, <code>from_legacy_format</code>) for special parsing needs</li>
+<li>Use Poetry, pip-tools, or plain requirements.txt?</li>
+<li>Pydantic v2 only or support v1 compatibility?</li>
+<li>Pin exact versions or use ranges?</li>
 </ul>
-<h2 id="general-design-guidelines">General Design Guidelines</h2>
+<hr />
+<h3 id="3-configuration-loading-flow">3. Configuration Loading Flow</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
 <ul>
-<li><strong>Keep data models immutable</strong> when possible for safer concurrent code</li>
-<li><strong>Make validation errors descriptive</strong> to simplify debugging</li>
-<li><strong>Separate data representation from business logic</strong> where appropriate</li>
-<li><strong>Design for extensibility</strong> by using inheritance or composition</li>
-<li><strong>Document expected formats</strong> in docstrings, especially for complex structures</li>
+<li>How Settings cascade: env vars → .env → defaults</li>
+<li>Validation errors: what happens when API keys missing?</li>
+<li>Multiple environment support (dev/staging/prod)</li>
+<li>Secrets management (vault, AWS Secrets Manager?)</li>
 </ul>
-<h3 id="type-annotations">Type Annotations</h3>
-<p>The project emphasizes strong typing throughout:</p>
-<p>Basic type annotations are required even during prototyping:</p>
-<pre><code class="language-python">def process_text(
-    text: str,
-    language: Optional[str] = None,
-    max_tokens: int = 0
-) -&gt; str:
-</code></pre>
-<p>Custom types should be defined for complex structures:</p>
-<pre><code class="language-python">from typing import NewType
-
-MarkdownStr = NewType('MarkdownStr', str)
-</code></pre>
-<h3 id="pydantic-models">Pydantic Models</h3>
-<p>Data models use Pydantic for validation:</p>
-<pre><code class="language-python">class TextObject(BaseModel):
-    &quot;&quot;&quot;Represents processed text with metadata.&quot;&quot;&quot;
-    language: str = Field(..., description=&quot;ISO 639-1 language code&quot;)
-    sections: List[LogicalSection]
-    metadata: Optional[Dict[str, Any]] = None
-</code></pre>
-<h2 id="error-handling">Error Handling</h2>
-<p>Error handling requirements differ between prototyping and production phases:</p>
-<h3 id="errors-prototyping-phase">Errors - Prototyping Phase</h3>
-<p>During prototyping, error handling should prioritize visibility of failure cases over comprehensive handling. This approach helps identify and document necessary error cases early in development.</p>
-<p>Preferred approach - allow exceptions to propagate:</p>
-<pre><code class="language-python"># TODO: Add error handling for ValueError and PatternError
-result = process_text(input_text)
-</code></pre>
-<p>When try blocks are needed, use minimal handling to maintain visibility:</p>
-<pre><code class="language-python">try:
-    # TODO: Handle specific exceptions in production
-    result = process_text(input_text)
-except:
-    # Maintain stack trace while documenting intent
-    raise
-</code></pre>
-<p>This approach:</p>
+<p><strong>Required Deliverable:</strong></p>
 <ul>
-<li>Maintains clear visibility of failure modes</li>
-<li>Documents intended error handling through TODO comments</li>
-<li>Preserves full stack traces for debugging</li>
-<li>Avoids masking exceptions during development</li>
+<li>Complete Settings loading logic with error handling</li>
+<li>Example <code>.env.example</code> file</li>
+<li>Documentation on configuration precedence</li>
+<li>Error messages for misconfiguration</li>
 </ul>
-<h3 id="errors-production-phase">Errors - Production Phase</h3>
-<p>Production code requires comprehensive error handling:</p>
-<pre><code class="language-python">try:
-    result = process_text(input_text)
-except ValueError as e:
-    logger.error(f&quot;Invalid input format: {e}&quot;)
-    raise InvalidInputError(str(e)) from e
-except APIError as e:
-    logger.error(f&quot;API processing failed: {e}&quot;)
-    raise ProcessingError(str(e)) from e
-</code></pre>
-<p>Do <strong>NOT</strong> write catch-all exception handling such as in:</p>
-<pre><code class="language-python">except Exception as e:
-    logger.error(f&quot;Unexpected error: {e}&quot;)
-    raise SystemError(f&quot;unexpected error: {e}&quot;) from e
-</code></pre>
-<p>It is preferred to let unknown exceptions propagate.</p>
-<h2 id="logging">Logging</h2>
-<h3 id="logging-prototyping-phase">Logging - Prototyping Phase</h3>
-<p>Basic logging configuration is acceptable during prototyping:</p>
-<pre><code class="language-python">logger = get_logger(__name__)
-logger.info(&quot;Processing started&quot;)
-logger.error(&quot;Processing failed&quot;)
-</code></pre>
-<p>Especially important is DEBUG level logging.</p>
-<h3 id="logging-production-phase">Logging - Production Phase</h3>
-<p>Production logging should include:</p>
+<p><strong>Questions to Resolve:</strong></p>
 <ul>
-<li>Log levels properly used</li>
-<li>Structured logging where appropriate</li>
-<li>Contextual information</li>
-<li>Error tracebacks</li>
-<li>Provenance and fingerprinting if required</li>
+<li>Required vs optional API keys (fail fast or lazy validation)?</li>
+<li>Support for multiple .env files (.env.local, .env.production)?</li>
+<li>Config validation at startup or on first use?</li>
 </ul>
-<h2 id="testing">Testing</h2>
-<h3 id="test-organization">Test Organization</h3>
-<p>Tests follow this structure even during prototyping:</p>
-<pre><code class="language-plaintext">tests/
-├── unit/
-│   ├── test_text_processing.py
-│   └── test_audio_processing.py
-├── integration/
-│   └── test_full_pipeline.py
-└── conftest.py
-</code></pre>
-<h3 id="test-requirements">Test Requirements</h3>
-<p>Prototyping Phase:</p>
+<hr />
+<h3 id="4-error-handling-implementation-details">4. Error Handling Implementation Details</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
 <ul>
-<li>Basic unit tests for core functionality</li>
-<li>Critical path testing</li>
-<li>Basic integration tests</li>
+<li>Retry logic: exponential backoff with jitter concrete implementation</li>
+<li>Circuit breaker pattern for failing providers?</li>
+<li>Fallback strategies when primary provider fails?</li>
+<li>Error propagation through layers (when to catch, when to re-raise?)</li>
+<li>Logging of errors vs user-facing error messages</li>
 </ul>
-<p>Production Phase:</p>
+<p><strong>Required Deliverable:</strong></p>
 <ul>
-<li>Comprehensive unit test coverage</li>
-<li>Full integration test suite</li>
-<li>Performance testing</li>
-<li>Edge case handling</li>
-<li>Mock external services</li>
+<li>Complete retry decorator or class</li>
+<li>Circuit breaker implementation</li>
+<li>Error handling examples for each layer</li>
+<li>Error message guidelines (internal vs external)</li>
 </ul>
-<h2 id="documentation">Documentation</h2>
-<h3 id="code-documentation">Code Documentation</h3>
-<p>The project follows Google's Python documentation style for all docstrings. This style provides clear structure while maintaining readability.</p>
-<p>Classes:</p>
-<pre><code class="language-python">class TextProcessor:
-    &quot;&quot;&quot;A class that processes text using configurable patterns.
-
-    Implements pattern-based text processing with configurable token limits
-    and language support. Designed for extensibility through the pattern system.
-
-    Attributes:
-        pattern: A Pattern instance defining processing instructions.
-        max_tokens: An integer specifying maximum tokens for processing.
-
-    Note:
-        Pattern instances should be initialized with proper template validation.
-    &quot;&quot;&quot;
-</code></pre>
-<p>Functions:</p>
-<pre><code class="language-python">def process_text(text: str, language: Optional[str] = None) -&gt; str:
-    &quot;&quot;&quot;Processes text according to pattern instructions.
-
-    Applies the configured pattern to input text, handling language-specific
-    requirements and token limitations.
-
-    Args:
-        text: Input text to process.
-        language: Optional ISO 639-1 language code. Defaults to None for
-            auto-detection.
-
-    Returns:
-        A string containing the processed text.
-
-    Raises:
-        ValueError: If text is empty or invalid.
-        PatternError: If pattern application fails.
-
-    Examples:
-        &gt;&gt;&gt; processor = TextProcessor(pattern)
-        &gt;&gt;&gt; result = process_text(&quot;Input text&quot;, language=&quot;en&quot;)
-        &gt;&gt;&gt; print(result)
-        Processed text output
-    &quot;&quot;&quot;
-</code></pre>
-<h3 id="api-documentation">API Documentation</h3>
-<p>API documentation requirements increase with development phase:</p>
-<p>Prototyping Phase:</p>
+<p><strong>Questions to Resolve:</strong></p>
 <ul>
-<li>Basic function/class documentation</li>
-<li>Essential usage examples</li>
-<li>Known limitations noted</li>
+<li>Use tenacity library or custom retry logic?</li>
+<li>Circuit breaker per-provider or per-endpoint?</li>
+<li>How many retries before giving up?</li>
+<li>Should we expose provider errors to users?</li>
 </ul>
-<p>Production Phase:</p>
+<hr />
+<h3 id="5-asyncawait-patterns">5. Async/Await Patterns</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
 <ul>
-<li>Comprehensive API documentation</li>
-<li>Multiple usage examples</li>
-<li>Error handling documentation</li>
-<li>Performance considerations</li>
-<li>Security implications</li>
+<li>When to use <code>async def</code> vs regular <code>def</code>?</li>
+<li>How to structure async adapters vs sync adapters?</li>
+<li>Event loop management</li>
+<li>Mixing sync and async code (running sync code in async context)</li>
 </ul>
-<h2 id="development-workflow">Development Workflow</h2>
-<h3 id="version-control">Version Control</h3>
-<p>Git workflow standards apply across all phases:</p>
+<p><strong>Required Deliverable:</strong></p>
 <ul>
-<li>Feature branches for development</li>
-<li>Clear commit messages</li>
-<li>Regular main branch updates</li>
-<li>Version tags for releases</li>
+<li>Guidelines for async protocol design</li>
+<li>Example async adapter implementation</li>
+<li>Pattern for sync-to-async bridging</li>
+<li>Event loop best practices</li>
 </ul>
-<h3 id="tooling">Tooling</h3>
+<p><strong>Questions to Resolve:</strong></p>
 <ul>
-<li><strong>Code formatting:</strong> Use <code>black</code> for automatic code formatting.</li>
-<li><strong>Linting:</strong> Use <code>ruff</code> to enforce style and complexity limits.</li>
-<li><strong>Type checking:</strong> Use <code>mypy</code> to enforce type annotations.</li>
-<li><strong>Complexity analysis:</strong> Use Sourcery monitor function complexity.</li>
-<li><strong>Pre-commit hooks:</strong> Configure pre-commit hooks to automate code quality checks.</li>
-<li><strong>Optional:</strong> For stricter cyclomatic complexity enforcement, consider <code>radon</code> or <code>flake8-cognitive-complexity</code>.</li>
+<li>Support both sync and async variants of each protocol?</li>
+<li>Use asyncio.run() or manage loop explicitly?</li>
+<li>How to handle blocking SDK calls in async context?</li>
 </ul>
-<h3 id="code-review">Code Review</h3>
-<p>Review requirements increase with development phase:</p>
-<p>Prototyping Phase:</p>
+<hr />
+<h3 id="6-resource-management">6. Resource Management</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
 <ul>
-<li>Basic functionality review</li>
-<li>Core design review</li>
-<li>Critical security review</li>
-<li>Basic Sourcery review</li>
+<li>Connection pooling for HTTP clients</li>
+<li>When to create/close clients (per-request vs singleton?)</li>
+<li>Resource limits (max concurrent requests)</li>
+<li>Memory management for large files/responses</li>
 </ul>
-<p>Production Phase:</p>
+<p><strong>Required Deliverable:</strong></p>
 <ul>
-<li>Comprehensive code review</li>
-<li>Performance review</li>
-<li>Security audit</li>
-<li>Documentation review</li>
-<li>Test coverage review</li>
-<li>All files should pass Sourcery review with no un-resolved issues. All functions should have a quality score of 60% or better. Any functions with a lower score must be clearly documented with rationale (legacy code, necessary complexity for algorithmic or performance reasons)</li>
+<li>Client lifecycle management pattern</li>
+<li>Connection pool configuration</li>
+<li>Resource limit examples</li>
+<li>Memory-efficient file handling</li>
 </ul>
-<h2 id="security-considerations">Security Considerations</h2>
-<h3 id="api-key-management">API Key Management</h3>
-<p>Consistent across all phases:</p>
+<p><strong>Questions to Resolve:</strong></p>
 <ul>
-<li>No keys in code</li>
-<li>Environment variable usage</li>
-<li>Secure configuration loading</li>
-<li>Key rotation support</li>
+<li>Use context managers for all clients?</li>
+<li>Share connection pools across services?</li>
+<li>Max concurrent requests per provider?</li>
+<li>Streaming vs buffering for large responses?</li>
 </ul>
-<h3 id="input-validation">Input Validation</h3>
-<p>Validation requirements increase with phase:</p>
-<p>Prototyping Phase:</p>
+<hr />
+<h2 id="priority-2-important-clarifications-should-address">Priority 2: Important Clarifications (Should Address)</h2>
+<h3 id="7-logging-strategy">7. Logging Strategy</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
 <ul>
-<li>Basic input validation</li>
-<li>Type checking</li>
-<li>Simple sanitization</li>
+<li>Structured logging format</li>
+<li>What to log at each layer (domain vs transport)</li>
+<li>PII handling in logs</li>
+<li>Log levels for different scenarios</li>
+<li>Correlation IDs for tracing requests</li>
 </ul>
-<p>Production Phase:</p>
+<p><strong>Required Deliverable:</strong></p>
 <ul>
-<li>Comprehensive validation</li>
-<li>Security scanning</li>
+<li>Logging configuration example</li>
+<li>Logger setup per module</li>
+<li>PII redaction utilities</li>
+<li>Correlation ID propagation pattern</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Use Python logging, structlog, or loguru?</li>
+<li>JSON logs in production?</li>
+<li>Log sampling for high-volume operations?</li>
+</ul>
+<hr />
+<h3 id="8-testing-infrastructure">8. Testing Infrastructure</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How to create test fixtures for each protocol</li>
+<li>Mock vs real API testing strategy</li>
+<li>VCR/cassette pattern for recording HTTP interactions</li>
+<li>How to test polling logic without waiting</li>
+<li>Coverage expectations</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Base test fixtures for each protocol type</li>
+<li>Mock provider implementations</li>
+<li>Example VCR tests (if using)</li>
+<li>Fast polling tests (time mocking)</li>
+<li>Coverage target (80%? 90%?)</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Use pytest-vcr or responses library?</li>
+<li>Run integration tests in CI?</li>
+<li>Separate unit/integration test commands?</li>
+</ul>
+<hr />
+<h3 id="9-type-checking-validation">9. Type Checking &amp; Validation</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>When to use <code>mypy --strict</code>?</li>
+<li>Runtime validation patterns with Pydantic</li>
+<li>Optional vs required fields strategy</li>
+<li>Custom validators examples</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>mypy configuration</li>
+<li>Type checking guidelines</li>
+<li>Pydantic validator examples</li>
+<li>Type stub handling for untyped libraries</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Require 100% type coverage?</li>
+<li>Use Pydantic v2 validators or v1 style?</li>
+<li>Type check tests as well?</li>
+</ul>
+<hr />
+<h3 id="10-serialization-persistence">10. Serialization &amp; Persistence</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How to serialize Envelopes for storage?</li>
+<li>JSON encoding of complex types (datetime, Path, etc.)</li>
+<li>Database schema if persisting results</li>
+<li>File format for storing provenance</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Envelope serialization utilities</li>
+<li>JSON encoder for custom types</li>
+<li>Example persistence layer</li>
+<li>Schema migration strategy</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Store as JSON, pickle, or other format?</li>
+<li>Database or filesystem storage?</li>
+<li>Compress large payloads?</li>
+<li>Retention policy for old results?</li>
+</ul>
+<hr />
+<h3 id="11-rate-limiting-implementation">11. Rate Limiting Implementation</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Config has <code>rate_limit_rps</code> but no implementation</li>
+<li>Token bucket vs leaky bucket algorithm?</li>
+<li>Per-provider limits vs global limits</li>
+<li>Queue management when rate limited</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Rate limiter implementation</li>
+<li>Configuration per provider</li>
+<li>Queue/backpressure handling</li>
+<li>Rate limit exceeded error handling</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Use existing library (aiolimiter, ratelimit) or custom?</li>
+<li>Client-side rate limiting only or server-enforced?</li>
+<li>How to handle burst traffic?</li>
+</ul>
+<hr />
+<h3 id="12-timeout-handling">12. Timeout Handling</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Connect timeout vs read timeout vs total timeout</li>
+<li>How timeouts propagate through layers</li>
+<li>Graceful degradation vs hard failure</li>
+<li>Deadline propagation in nested calls</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Timeout configuration examples</li>
+<li>Deadline propagation pattern</li>
+<li>Timeout error handling</li>
+<li>Partial result handling on timeout</li>
+</ul>
+<p><strong>Questions to Resolve:</strong></p>
+<ul>
+<li>Default timeout values per operation type?</li>
+<li>User-configurable timeouts?</li>
+<li>What happens to in-flight requests on timeout?</li>
+</ul>
+<hr />
+<h2 id="priority-3-nice-to-have-consider-adding">Priority 3: Nice to Have (Consider Adding)</h2>
+<h3 id="13-performance-patterns">13. Performance Patterns</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Caching strategies (where, when, invalidation)</li>
+<li>Batch request optimization</li>
+<li>Streaming response handling</li>
+<li>Memory-efficient processing of large files</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Caching layer examples</li>
+<li>Batch processing utilities</li>
+<li>Streaming adapter pattern</li>
+<li>Large file handling guide</li>
+</ul>
+<hr />
+<h3 id="14-security-considerations">14. Security Considerations</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>API key rotation strategy</li>
 <li>Input sanitization</li>
-<li>Output escaping</li>
+<li>Output validation (prevent injection)</li>
+<li>Rate limiting to prevent abuse</li>
 </ul>
-<h2 id="performance-guidelines">Performance Guidelines</h2>
-<h3 id="resource-management">Resource Management</h3>
-<p>Basic guidelines apply across phases:</p>
-<p>Memory Management:</p>
+<p><strong>Required Deliverable:</strong></p>
 <ul>
-<li>Stream large files</li>
-<li>Clean up temporary files</li>
-<li>Monitor memory usage</li>
+<li>Security checklist</li>
+<li>Input validation examples</li>
+<li>API key rotation procedure</li>
+<li>Abuse prevention guidelines</li>
 </ul>
-<p>Processing Optimization:</p>
+<hr />
+<h3 id="15-monitoring-metrics">15. Monitoring &amp; Metrics</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
 <ul>
-<li>Batch operations where possible</li>
-<li>Cache frequently used data</li>
-<li>Monitor API usage</li>
+<li>Which metrics to track (latency, cost, errors)</li>
+<li>Prometheus exposition format example</li>
+<li>Health check endpoints</li>
+<li>Alerting thresholds</li>
 </ul>
-<h2 id="future-considerations">Future Considerations</h2>
-<p>Areas marked for future development:</p>
+<p><strong>Required Deliverable:</strong></p>
 <ul>
-<li>Plugin system architecture</li>
-<li>Configuration handling</li>
-<li>Rebuild of ai_text_processing suite</li>
-<li>Extended API integration</li>
-<li>Batch processing</li>
-<li>Alternate API model services</li>
-<li>Enhanced security features</li>
-<li>Performance optimization</li>
-<li>Extended pattern capabilities</li>
-<li>Additional CLI processing tools</li>
-<li>Model training tools</li>
-<li>Natural language processing tools</li>
+<li>Metrics collection layer</li>
+<li>Prometheus exporter example</li>
+<li>Health check implementation</li>
+<li>Alerting rule examples</li>
+</ul>
+<hr />
+<h3 id="16-documentation-standards">16. Documentation Standards</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Docstring format (Google, NumPy, or reStructuredText?)</li>
+<li>Type annotation requirements</li>
+<li>README structure for each module</li>
+<li>API documentation generation (Sphinx?)</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Documentation style guide</li>
+<li>Example module documentation</li>
+<li>API doc generation setup</li>
+<li>Contribution guidelines</li>
+</ul>
+<hr />
+<h3 id="17-development-workflow">17. Development Workflow</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How to run locally for development</li>
+<li>Hot reload setup</li>
+<li>Debug configuration</li>
+<li>Pre-commit hooks (formatting, linting)</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Development setup guide</li>
+<li>IDE configuration examples</li>
+<li>Pre-commit hook configuration</li>
+<li>Debugging tips and tools</li>
+</ul>
+<hr />
+<h3 id="18-deployment">18. Deployment</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>Docker container structure</li>
+<li>Environment variable injection</li>
+<li>Health checks and readiness probes</li>
+<li>Scaling considerations</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Dockerfile</li>
+<li>docker-compose.yml for local dev</li>
+<li>Kubernetes manifests (if applicable)</li>
+<li>Deployment checklist</li>
+</ul>
+<hr />
+<h3 id="19-migration-patterns">19. Migration Patterns</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How to handle schema changes</li>
+<li>Backward compatibility strategy</li>
+<li>Data migration scripts</li>
+<li>API versioning (if exposing HTTP API)</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Migration guide</li>
+<li>Schema versioning strategy</li>
+<li>Backward compatibility testing</li>
+<li>Breaking change protocol</li>
+</ul>
+<hr />
+<h3 id="20-protocol-extension-examples">20. Protocol Extension Examples</h3>
+<p><strong>Status:</strong> ❌ Not Addressed</p>
+<p><strong>What's Missing:</strong></p>
+<ul>
+<li>How to add a new provider (step-by-step)</li>
+<li>How to add a new service following the pattern</li>
+<li>Common pitfalls and how to avoid them</li>
+</ul>
+<p><strong>Required Deliverable:</strong></p>
+<ul>
+<li>Provider implementation guide</li>
+<li>Service implementation guide</li>
+<li>Troubleshooting guide</li>
+<li>Checklist for new implementations</li>
+</ul>
+<hr />
+<h2 id="specific-open-questions">Specific Open Questions</h2>
+<h3 id="mapper-pattern">Mapper Pattern</h3>
+<ul>
+<li>Should mappers be stateless functions or stateful classes?</li>
+<li>When to choose each approach?</li>
+<li>Should mappers handle validation or just transformation?</li>
+</ul>
+<h3 id="protocol-vs-abc">Protocol vs ABC</h3>
+<ul>
+<li>Concrete guidance on when structural typing isn't enough</li>
+<li>When to use ABC for enforcement vs Protocol for flexibility</li>
+<li>How to document Protocol requirements?</li>
+</ul>
+<h3 id="error-granularity">Error Granularity</h3>
+<ul>
+<li>Should <code>ProviderError</code> have subclasses per error type or per provider?</li>
+<li>How fine-grained should error classification be?</li>
+<li>Standard error codes across providers?</li>
+</ul>
+<h3 id="streaming-support">Streaming Support</h3>
+<ul>
+<li>How to handle streaming responses in the protocol?</li>
+<li>Sync vs async streaming</li>
+<li>Backpressure handling</li>
+</ul>
+<h3 id="testing-mocks">Testing Mocks</h3>
+<ul>
+<li>Should mocks live in test files or reusable fixtures?</li>
+<li>Shared mock implementations across test suites?</li>
+<li>How to keep mocks in sync with real implementations?</li>
+</ul>
+<h3 id="policy-precedence">Policy Precedence</h3>
+<ul>
+<li>When policies conflict, exact resolution algorithm?</li>
+<li>How to detect and warn about conflicts?</li>
+<li>Should policy conflicts be errors or warnings?</li>
+</ul>
+<hr />
+<h2 id="work-plan-template">Work Plan Template</h2>
+<p>For each item above, the completion checklist should include:</p>
+<ul>
+<li>[ ] Design decision documented</li>
+<li>[ ] Implementation completed</li>
+<li>[ ] Example code provided</li>
+<li>[ ] Tests written</li>
+<li>[ ] Documentation updated</li>
+<li>[ ] Code review completed</li>
+<li>[ ] Merged to main branch</li>
+</ul>
+<hr />
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Items marked ❌ need to be addressed</li>
+<li>Items marked ✅ are complete</li>
+<li>Items marked ⚠️ are partially complete</li>
+<li>Priority 1 items should be completed before Priority 2</li>
+<li>Priority 2 items should be completed before Priority 3</li>
 </ul>
 
 
@@ -6851,10 +7047,10 @@ logger.error(&quot;Processing failed&quot;)
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.60a45f97.min.js"></script>
       
     
   </body>
