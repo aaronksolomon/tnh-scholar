@@ -119,7 +119,7 @@ Comprehensive documentation is available in multiple formats:
 
 - Documentation strategy: [ADR-DD01](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md) and [ADR-DD02](docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md)
 - GenAI, transcription, and prompt system ADRs live under [Architecture](docs/architecture/) (see ADR-A*, ADR-TR*, ADR-PT*).
-- System design references: [Object–Service Design Blueprint](docs/development/architecture/object-service-design-blueprint.md) and [System Design](docs/development/system-design.md).
+- System design references: [Object–Service Design](docs/architecture/object-service/design-overview.md) and [System Design](docs/development/system-design.md).
 
 ## Development
 
