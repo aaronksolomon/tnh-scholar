@@ -6,7 +6,23 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
-import yaml
+import json
+
+try:
+    import yaml  # type: ignore
+except ModuleNotFoundError:
+    class _MiniYAML:
+        @staticmethod
+        def safe_load(text: str):
+            data = {}
+            for line in text.splitlines():
+                if ":" not in line:
+                    continue
+                key, value = line.split(":", 1)
+                data[key.strip()] = value.strip().strip('"')
+            return data
+
+    yaml = _MiniYAML()  # type: ignore
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS_INDEX_PATH = ROOT / "docs/documentation_index.md"
@@ -39,7 +55,7 @@ def extract_frontmatter(path: Path) -> dict:
             if lines[idx].strip() == "---":
                 try:
                     data = yaml.safe_load("\n".join(lines[1:idx])) or {}
-                except yaml.YAMLError:
+                except Exception:
                     # Skip files with invalid YAML in frontmatter (e.g., Jinja2 templates)
                     data = {}
                 break

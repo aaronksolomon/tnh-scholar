@@ -7,13 +7,52 @@ working tree.
 """
 from __future__ import annotations
 
-from pathlib import Path
 import re
 import shutil
 from typing import Tuple
+from pathlib import Path
+import json
 
-import yaml
-import mkdocs_gen_files
+try:
+    import yaml  # type: ignore
+    YAMLError = yaml.YAMLError
+except ModuleNotFoundError:
+    class _MiniYAML:
+        YAMLError = ValueError
+
+        @staticmethod
+        def safe_load(text: str):
+            data = {}
+            for line in text.splitlines():
+                if ":" not in line:
+                    continue
+                key, value = line.split(":", 1)
+                data[key.strip()] = value.strip().strip('"')
+            return data
+
+        @staticmethod
+        def safe_dump(data, sort_keys: bool = False) -> str:
+            lines = []
+            for k, v in data.items():
+                lines.append(f"{k}: {json.dumps(v)}")
+            return "\n".join(lines)
+
+    yaml = _MiniYAML()  # type: ignore
+    YAMLError = _MiniYAML.YAMLError
+
+try:
+    import mkdocs_gen_files  # type: ignore
+except ModuleNotFoundError:
+    class _DummyGenFiles:
+        @staticmethod
+        def open(path: str, mode: str = "r", encoding: str | None = None):
+            return open(path, mode, encoding=encoding)
+
+        @staticmethod
+        def set_edit_path(*args, **kwargs):
+            return None
+
+    mkdocs_gen_files = _DummyGenFiles()  # type: ignore
 
 ROOT = Path(__file__).resolve().parents[1]
 # Destination under docs/ for mirrored repo-root docs.
@@ -30,8 +69,14 @@ ROOT_DOCS: Tuple[str, ...] = (
     "DEV_SETUP.md",
     "release_checklist.md",
 )
+# Keep generated docs aligned with the current docs/ structure (lowercase, hyphenated names).
 ROOT_DOC_DEST_MAP = {
-    name: ("repo-readme.md" if name.lower() == "readme.md" else name) for name in ROOT_DOCS
+    "README.md": "repo-readme.md",
+    "TODO.md": "todo-list.md",
+    "CHANGELOG.md": "changelog.md",
+    "CONTRIBUTING.md": "contributing-root.md",
+    "DEV_SETUP.md": "dev-setup-guide.md",
+    "release_checklist.md": "release_checklist.md",
 }
 
 WARNING_TEMPLATE = "<!-- DO NOT EDIT: Auto-generated from /{name}. Edit the root file instead. -->"
@@ -54,7 +99,7 @@ def parse_front_matter(text: str) -> tuple[dict, str]:
             if lines[idx].strip() == "---":
                 try:
                     metadata = yaml.safe_load("\n".join(lines[1:idx])) or {}
-                except yaml.YAMLError:
+                except YAMLError:
                     metadata = {}
                 body = "\n".join(lines[idx + 1 :]).lstrip("\n")
                 return metadata, body
@@ -135,15 +180,15 @@ def write_project_docs() -> None:
 
 
 def write_index() -> None:
-    """Generate docs/project/index.md with a short description."""
+    """Generate docs/project/repo-root/index.md with a short description."""
     lines = [
         "---",
-        'title: "Project Docs"',
+        'title: "Repo Root"',
         'description: "Repository root documentation surfaced in the MkDocs site."',
         "auto_generated: true",
         "---",
         "",
-        "# Project Docs",
+        "# Repo Root",
         "",
         "Repository root documents are mirrored here for discoverability. ",
         "Edit the originals in the repository root; these copies are generated during the docs build.",

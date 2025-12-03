@@ -58,14 +58,10 @@ DEFAULT_BUCKET = len(TOP_LEVEL_ORDER) + 1
 
 
 def iter_markdown_files() -> Iterable[Path]:
-    """Yield Markdown files under docs/ plus generated project docs."""
+    """Yield Markdown files under docs/, including mirrored repo-root copies."""
     if not DOCS_DIR.exists():
         return []
-    files = set(DOCS_DIR.rglob("*.md"))
-    project_paths = {DOCS_DIR / PROJECT_REPO_DIR / ROOT_DOC_DEST_MAP.get(name, name) for name in ROOT_DOCS}
-    project_paths.add(DOCS_DIR / PROJECT_REPO_DIR / "index.md")
-    files.update(project_paths)
-    return sorted(files, key=nav_sort_key)
+    return sorted(DOCS_DIR.rglob("*.md"), key=nav_sort_key)
 
 
 def nav_sort_key(path: Path) -> tuple:
@@ -117,6 +113,19 @@ def build_nav_path(path: Path) -> tuple[str, ...]:
     parts = list(relative.with_suffix("").parts)
     if not parts:
         return (ROOT_TITLE,)
+
+    # Special-case mirrored repo-root docs so they appear as "Repo Root/**".
+    if parts[: len(PROJECT_REPO_DIR.parts)] == list(PROJECT_REPO_DIR.parts):
+        remaining = parts[len(PROJECT_REPO_DIR.parts) :]
+        is_index = remaining and remaining[-1] == "index"
+        labels = ["Repo Root"] + [format_name(part) for part in remaining]
+        title = read_title(path) or (labels[-2] if is_index and len(labels) > 1 else labels[-1])
+        if is_index:
+            # Avoid "Repo Root" nesting; expose index as an overview child.
+            return ("Repo Root", "Overview")
+        labels[-1] = title
+        return tuple(labels)
+
     is_index = parts[-1] == "index"
     labels = [format_name(part) for part in parts]
     title = read_title(path) or labels[-1]
