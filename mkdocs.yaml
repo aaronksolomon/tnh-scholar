@@ -14,8 +14,8 @@ theme:
   features:
     - navigation.instant      # Smooth, mindful transitions
     - navigation.tracking     # Present awareness of location
-    - navigation.tabs         # Clear, organized structure
     - navigation.sections     # Structured clarity
+    - navigation.expand       # Show all sections
     - navigation.top          # Easy return to beginning
     - search.suggest          # Gentle guidance
     - search.highlight        # Clear findings

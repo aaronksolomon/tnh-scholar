@@ -44,6 +44,7 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--tnh-bg-primary);
   color: var(--tnh-text-primary);
+  font-size: 0.9rem; /* Reduced by ~10% from default 1rem */
   line-height: 1.8; /* Spacious, easy reading */
 }
 
@@ -58,7 +59,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2.25rem;  /* Reduced from 2.5rem (~10%) */
   font-weight: 200;
   border-bottom: 1px solid var(--tnh-bamboo-green);
   padding-bottom: var(--tnh-space-moment);
@@ -66,13 +67,25 @@ h1 {
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 1.8rem;  /* Reduced from 2rem (~10%) */
   margin-top: var(--tnh-space-breath);
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: 1.35rem;  /* Reduced from 1.5rem (~10%) */
   color: var(--tnh-bamboo-green);
+}
+
+h4 {
+  font-size: 1.15rem;  /* Added for completeness */
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.9rem;
 }
 
 /* Links - Like brushed ink */
@@ -95,7 +108,7 @@ code {
   padding: 0.2em 0.4em;
   border-radius: 3px;
   font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  font-size: 0.9em;
+  font-size: 0.85em;  /* Reduced from 0.9em */
 }
 
 pre {
@@ -156,7 +169,7 @@ tr:hover {
 
 /* Navigation - Gentle guidance */
 .md-nav {
-  font-size: 0.9rem;
+  font-size: 0.8rem;  /* Reduced from 0.9rem for more compact nav */
 }
 
 .md-nav__link {
@@ -239,7 +252,7 @@ tr:hover {
 }
 
 .md-content__inner {
-  max-width: 48rem; /* Comfortable reading width */
+  max-width: 50rem; /* Slightly increased for better use of space */
   margin: 0 auto;
 }
 
