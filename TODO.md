@@ -71,8 +71,8 @@ This section organizes work into three priority levels based on criticality for 
 
 - **Status**: PHASE 1 COMPLETE ✅ 
 - **Priority**: HIGH
-- **ADR**: [ADR-A13: Legacy Client Migration](docs/architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md)
-- **Plan**: [Migration Plan](docs/architecture/gen-ai-service/design/migration-plan.md)
+- **ADR**: [ADR-A13: Legacy Client Migration](docs/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md)
+- **Plan**: [Migration Plan](docs/architecture/gen-ai-service/design/openai-interface-migration-plan.md)
 - **Problem**: Two implementations causing code divergence (legacy client now removed)
   - **Modern**: [gen_ai_service/providers/openai_client.py](src/tnh_scholar/gen_ai_service/providers/openai_client.py) - typed, retrying
   - **Legacy**: `openai_interface/` – removed as of Phase 6
@@ -130,12 +130,12 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Keep only current version
   - [ ] Create shared utilities (argument parsing, environment validation, logging)
 
-#### 9. 🚧 Documentation Reorganization (ADR-DD01 & ADR-DD02)
+#### 9. ✅ Documentation Reorganization (ADR-DD01 & ADR-DD02)
 
-- **Status**: ~80% COMPLETE (Parts 1–4 ✅ COMPLETE, Part 8 ✅ COMPLETE; Parts 5–7 deferred to future iterations)
+- **Status**: PHASE 1 COMPLETE ✅ (Parts 1–4 ✅ COMPLETE, Part 8 ✅ COMPLETE, File Reorganization ✅ COMPLETE; Parts 5–7 deferred to Phase 2)
 - **Reference**:
-  - [ADR-DD01: Docs Reorganization Strategy](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md)
-  - [ADR-DD02: Documentation Main Content and Navigation Strategy](docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md) ✅ APPROVED
+  - [ADR-DD01: Docs Reorganization Strategy](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
+  - [ADR-DD02: Documentation Main Content and Navigation Strategy](docs/architecture/docs-system/adr/adr-dd02-main-content-nav.md) ✅ APPROVED
 - **Goal**: Execute the phased documentation overhaul for `docs/` tree, keep README ≈ docs/index with drift monitoring, automate verification. **Note**: `patterns/` directory is managed separately (TODO #16).
 - **Next Sequence**: Part 5 (Archive) → Part 6 (Gap Filling) → Part 7 (Standalone Tasks)
 - **Checkpoints / Tasks**:
@@ -143,10 +143,14 @@ This section organizes work into three priority levels based on criticality for 
      - [x] Catalog every Markdown file (owner, status: current/needs-update/historical)
      - [x] Add front matter metadata + PromptTemplate terminology notes
      - [ ] Identify raw research assets to offload to external storage
-  2. **Filesystem Reorg**
+  2. **Filesystem Reorg** (✅ COMPLETE)
      - [x] Create the target hierarchy (overview, getting-started, user-guide, cli-reference, prompt-templates, api-reference, architecture/adr, development, research, docs-ops, archive)
      - [x] Move existing docs into the new layout with stub `index.md` files
-     - [ ] Tag archival folders explicitly for mkdocs-literate-nav auto-generation
+     - [x] Rename all architecture documents for clarity and consistency (ADR naming, design doc naming)
+     - [x] Create README.md files for major sections (architecture/, cli/, development/, getting-started/)
+     - [x] Remove obsolete CLI reference stubs (auto-generation pending)
+     - [x] Reorganize reference materials into categorized subdirectories
+     - [ ] Tag archival folders explicitly for mkdocs-literate-nav auto-generation (deferred to Phase 2)
   3. **Terminology + README Sweep** (Part 3b: ✅ COMPLETED - ADR-DD02 + ADR-DD03)
      - [x] **3b (COMPLETED)**: Designed content architecture for README.md and docs/index.md (ADR-DD02)
      - [x] Implemented drift reporting script (`check_readme_docs_drift.py`) for non-blocking sync monitoring
@@ -188,9 +192,10 @@ This section organizes work into three priority levels based on criticality for 
          - [ ] Validate ADRs follow template sections (Context/Decision/Consequences) + required front matter
          - [ ] Run offline/internal link check on built site (`lychee --offline` on `site/`)
          - [ ] Optional: add `vale` with a minimal style guide for docs tone/consistency
-  5. **Historical Archive + Discoverability**
-     - [ ] Move legacy ADRs/prototypes/research transcripts into `docs/archive/**`
-     - [ ] Create archive index + add summary links from primary sections
+  5. **Historical Archive + Discoverability** (Phase 2)
+     - [x] Archived historical research artifacts and experiment files
+     - [ ] Move additional legacy ADRs/prototypes into `docs/archive/**`
+     - [ ] Create comprehensive archive index + add summary links from primary sections
      - [ ] Host raw transcripts externally (S3/KB) and link from summaries
   6. **Backlog + Gap Filling**
      - [ ] Populate `docs/docs-ops/roadmap.md` with missing topics (PromptTemplate catalog, workflow playbooks, evaluation guides, KB, deployment, research summaries, doc ops)
@@ -216,10 +221,11 @@ This section organizes work into three priority levels based on criticality for 
        - docs/architecture/ = ADRs, design decisions (the "why")
        - docs/development/ = Developer guides (the "how")
        - docs/project/ = Vision, philosophy (stakeholders)
-  8. **Outstanding Standalone Tasks**
+  8. **Outstanding Standalone Tasks** (Phase 2 - Future Work)
+     - [x] Created architecture/README.md overview
      - [ ] Deprecate outdated CLI examples (e.g., `punctuate` usage) once cli-reference regenerates
      - [ ] Add practical user guides for new features post-reorg
-     - [ ] Create refreshed architecture overview page within `architecture/`
+     - [ ] Expand architecture overview with component diagrams
      - [ ] Establish research artifact archival workflow (external storage + summary linking)
   9. **Include Root Markdown Files in MkDocs Navigation**
      - **Status**: ✅ COMPLETE
@@ -273,7 +279,7 @@ This section organizes work into three priority levels based on criticality for 
 #### 13. 🚧 Knowledge Base Implementation
 
 - **Status**: DESIGN COMPLETE
-- **ADR**: [ADR-K01: Preliminary Architectural Strategy](docs/architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design.md)
+- **ADR**: [ADR-K01: Preliminary Architectural Strategy](docs/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
 - **Tasks**:
   - [ ] Implement Supabase integration
   - [ ] Vector search functionality

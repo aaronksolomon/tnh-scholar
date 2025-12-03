@@ -1,16 +1,31 @@
 ---
-title: "Changelog"
+title: "TNH Scholar CHANGELOG"
 description: "Chronological log of notable TNH Scholar changes."
 owner: ""
 author: ""
 status: current
 created: "2025-02-28"
 ---
-# Changelog
+# TNH Scholar CHANGELOG
+
+All notable changes to TNH Scholar will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
 ### Documentation
+
+- **Phase 2 Documentation Reorganization** (ADR-DD01/ADR-DD02 completion):
+  - Completed comprehensive file reorganization: renamed 75+ architecture documents for clarity and consistency
+  - Established canonical naming patterns: `adr-XX-descriptive-name.md` for ADRs, `system-design.md` for design docs
+  - Created README.md files for major sections (architecture/, cli/, development/, getting-started/)
+  - Removed obsolete CLI reference stubs (pending auto-generation)
+  - Archived historical research artifacts and experiment files
+  - Reorganized reference materials (yt-dlp docs, GPT-4 experiments) into categorized subdirectories
+  - Updated all cross-references and internal links for reorganized structure
+  - Achieved zero mkdocs build warnings after reorganization
 
 - Standardized Markdown front matter, titles, and summary paragraphs across the docs tree (prompt-pattern files excluded pending dedicated schema).
 - Updated `docs/docs-ops/markdown-standards.md` to spell out the Prompt Template front matter exception.
@@ -40,6 +55,7 @@ created: "2025-02-28"
   - Created forward-looking prompt-architecture.md documenting current V1 and planned V2 (PromptCatalog, fingerprinting, VS Code integration)
   - Moved pattern-core-design.md to archive/ with historical terminology note
   - Fixed all 35 mkdocs build --strict warnings from reorganization (link updates, regenerated index)
+ - Navigation cleanup: removed the mirrored “Project Docs” (repo-root copies) from MkDocs navigation to avoid confusing duplication with `docs/project`.
 
 ### Developer Experience
 
