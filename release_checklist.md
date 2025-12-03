@@ -1,12 +1,12 @@
 ---
-title: "Release Checklist"
+title: "TNH Scholar Release Checklist"
 description: "Checklist of tasks required before publishing a TNH Scholar release."
 owner: ""
 author: ""
 status: processing
 created: "2025-01-22"
 ---
-# Release Checklist
+# TNH Scholar Release Checklist
 
 Checklist of tasks required before publishing a TNH Scholar release.
 

@@ -1,33 +1,26 @@
 ---
-title: "TNH Scholar"
+title: "TNH Scholar README"
 description: "TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models."
 owner: ""
 author: ""
-status: processing
+status: continuous update
 created: "2024-10-21"
 ---
 
-# TNH Scholar
+# TNH Scholar README
 
 TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models.
 
 ## Vision & Goals
 
-TNH Scholar aims to make the teachings of Thich Nhat Hanh and the Plum Village tradition more accessible and discoverable through modern AI techniques. By combining natural language processing, machine learning, and careful curation, we create pathways for practitioners and scholars to:
-
-- Organize and search for key concepts and insights from dharma talks and written teachings
-- Support the advanced research of monastic and lay students and scholars of Thich Nhat Hanh and the Plum Village tradition. 
-- Translate teachings across languages with cultural sensitivity
-- Discover connections between topics and teachings
-- Process audio/video recordings and transcripts into structured, searchable formats
-- Engage with the tradition through both programmatic and interactive tools
+TNH Scholar aims to make the teachings of Thich Nhat Hanh and the Plum Village tradition more accessible and discoverable through modern AI techniques. By combining natural language processing, machine learning, and careful curation, we create pathways for practitioners and scholars to translate, search, organize, process and otherwise find meaningful connections among the body of teachings.
 
 ## Features
 
 TNH Scholar is currently in active prototyping. Key capabilities:
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
-- **Text formatting and translation**: `tnh-fab` for punctuation, translation, sectioning, and prompt-driven processing
+- **Text formatting and translation**: `tnh-gen` CLI (rename in flight; see [ADR-VSC01](docs/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md) and [ADR-VSC02](docs/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)) for punctuation, translation, sectioning, and prompt-driven processing
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See ADRs under [docs/architecture/prompt-system/](docs/architecture/prompt-system/) for decisions and roadmap
@@ -68,21 +61,7 @@ export OPENAI_API_KEY="your-api-key"
 audio-transcribe --yt_url "https://youtube.com/watch?v=example" --split --transcribe
 ```
 
-**Process Text with TNH-FAB:**
-
-```bash
-# Add punctuation
-tnh-fab punctuate input.txt > punctuated.txt
-
-# Translate text
-tnh-fab translate -l vi input.txt > translated.txt
-
-# Process text using a specific prompt
-tnh-fab process -p format_xml input.txt > formatted.xml
-
-# Create sections using default sectioning prompt
-tnh-fab section input.txt > sections.json
-```
+**Process Text with TNH-GEN (was previously tnh-fab: CLI refactor and rename in progress; see ADR-VSC01/VSC02):**
 
 **Download Video Transcripts:**
 
@@ -92,10 +71,10 @@ ytt-fetch "https://youtube.com/watch?v=example" -l en -o transcript.txt
 
 ## Getting Started
 
-- **Practitioners**: Install, configure credentials, and follow the [Quick Start Guide](docs/getting-started/quick-start.md); workflows live in the [User Guide](docs/user-guide/overview.md).
-- **Developers**: Set up via [DEV_SETUP.md](DEV_SETUP.md) and [Contributing](CONTRIBUTING.md); review [System Design](docs/development/system-design.md) and the [CLI Reference](docs/cli-reference/); run `make docs` to view locally.
+- **Practitioners**: Install, configure credentials, and follow the [Quick Start Guide](docs/getting-started/quick-start-guide.md); workflows live in the [User Guide](docs/user-guide/overview.md).
+- **Developers**: Set up via [DEV_SETUP.md](DEV_SETUP.md) and [Contributing](CONTRIBUTING.md); review [System Design](docs/development/system-design.md) and the [CLI docs](docs/cli/); run `make docs` to view locally.
   - **Project Philosophy & Vision**: Developers and researchers should review the conceptual foundations in `docs/project/vision.md`, `docs/project/philosophy.md`, `docs/project/principles.md`, and `docs/project/conceptual-architecture.md` to understand the system’s long-term direction and design intent.
-- **Researchers**: Explore [Research](docs/research/) for experiments and direction; see [Architecture](docs/architecture/) for pipelines/ADRs (e.g., [ADR-K01](docs/architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design.md)).
+- **Researchers**: Explore [Research](docs/research/) for experiments and direction; see [Architecture](docs/architecture/) for pipelines/ADRs (e.g., [ADR-K01](docs/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)).
 
 ## Documentation Overview
 
@@ -107,7 +86,7 @@ Comprehensive documentation is available in multiple formats:
 ### Documentation Structure
 
 - **[Getting Started](docs/getting-started/)** – Installation, setup, and first steps
-- **[CLI Reference](docs/cli-reference/)** – Complete command-line tool documentation
+- **[CLI Docs](docs/cli/)** – Command-line tool documentation
 - **[User Guide](docs/user-guide/)** – Detailed usage guides, prompts, and workflows
 - **[API Reference](docs/api/)** – Python API documentation for programmatic use
 - **[Architecture](docs/architecture/)** – Design decisions, ADRs, and system overview
@@ -117,9 +96,9 @@ Comprehensive documentation is available in multiple formats:
 
 ## Architecture Overview
 
-- Documentation strategy: [ADR-DD01](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md) and [ADR-DD02](docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md)
+- Documentation strategy: [ADR-DD01](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md) and [ADR-DD02](docs/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
 - GenAI, transcription, and prompt system ADRs live under [Architecture](docs/architecture/) (see ADR-A*, ADR-TR*, ADR-PT*).
-- System design references: [Object–Service Design](docs/architecture/object-service/design-overview.md) and [System Design](docs/development/system-design.md).
+- System design references: [Object–Service Design](docs/architecture/object-service/object-service-design-overview.md) and [System Design](docs/development/system-design.md).
 
 ## Development
 
