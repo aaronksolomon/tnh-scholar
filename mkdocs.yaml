@@ -22,7 +22,6 @@ theme:
     - content.code.copy       # Practical sharing
     - content.tabs.link       # Connected understanding
     - toc.follow              # TOC follows scroll position
-    - toc.integrate           # Integrate TOC into navigation
   icon:
     repo: fontawesome/brands/github
   custom_dir: docs/overrides

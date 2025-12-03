@@ -219,6 +219,39 @@ tr:hover {
   transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
+/* Right sidebar - Table of Contents */
+.md-sidebar--secondary {
+  border-left: 1px solid var(--tnh-slate);
+}
+
+.md-sidebar--secondary .md-nav__title {
+  color: var(--tnh-bamboo-green);
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.6rem;
+}
+
+.md-sidebar--secondary .md-nav__link {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  color: var(--tnh-text-secondary);
+  border-left: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.md-sidebar--secondary .md-nav__link:hover {
+  color: var(--tnh-bamboo-green);
+  border-left-color: var(--tnh-bamboo-green);
+}
+
+.md-sidebar--secondary .md-nav__link--active {
+  color: var(--tnh-bamboo-green);
+  border-left-color: var(--tnh-bamboo-green);
+  font-weight: 500;
+}
+
 /* Admonitions - Mindful notices */
 .admonition {
   border-left: 4px solid var(--tnh-meditation-blue);
