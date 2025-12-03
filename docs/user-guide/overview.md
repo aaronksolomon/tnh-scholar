@@ -1,77 +1,168 @@
 ---
 title: "User Guide Overview"
-description: "TNH Scholar is an AI-driven platform designed for text analysis, translation, and processing. The system provides a suite of tools for handling multilingual texts with a focus on wisdom and mindfulness content. This guide will help you understand and effectively use the TNH Scholar toolkit."
+description: "Practical guide for using TNH Scholar as a tool user or workflow designer, covering main workflows and how the pieces fit together."
 owner: ""
 author: ""
 status: processing
-created: "2025-02-01"
+created: "2025-12-02"
 ---
 # User Guide Overview
 
-TNH Scholar is an AI-driven platform designed for text analysis, translation, and processing. The system provides a suite of tools for handling multilingual texts with a focus on wisdom and mindfulness content. This guide will help you understand and effectively use the TNH Scholar toolkit.
+This User Guide describes how to use TNH Scholar as a **tool user** or **workflow designer**. It focuses on practical flows, concrete decisions, and how the pieces fit together, without requiring you to understand every internal design document.
 
-## Core Components
+If you are new to the project, you may want to read the [TNH Scholar index](../index.md) first, then return here when you are ready to dive into concrete workflows.
 
-The TNH Scholar system consists of several integrated components working together. At its foundation, the system uses AI services for text processing while providing robust tools for managing and manipulating text content.
+---
 
-The prompt system forms the backbone of text processing operations. Prompts are template-based instructions that guide AI interactions, ensuring consistent and customizable text processing. These prompts can be versioned, shared, and modified to suit specific needs.
+## Roles and Typical Usage
 
-The system includes several command-line tools that work together, each specializing in specific aspects of text processing. These tools can be used independently or combined into powerful processing pipelines.
+Most people who interact with TNH Scholar do so in one of these roles:
 
-## Key Features
+- **Tool user**  
+  Runs the CLI commands to process specific audio, text, or video inputs, and reviews the outputs.
 
-TNH Scholar provides text processing capabilities through its main features:
+- **Workflow designer**  
+  Chains together multiple tools (and sometimes GenAIService calls) into repeatable flows for a community or project.
 
-Audio transcription enables the processing of audio content into text format. The system can handle various audio sources, including YouTube videos, and supports multiple languages.
+- **Developer or maintainer**  
+  Extends the codebase, adds new tools, or modifies existing ones.
 
-Text processing forms the core functionality, offering capabilities for punctuation, sectioning, and translation. The system maintains document structure and metadata throughout the processing pipeline.
+This guide is aimed primarily at **tool users** and **workflow designers**. Developers should also see the [development](../development/contributing-prototype-phase.md) docs.
 
-Translation services support line-by-line translation while preserving context and document structure. The system is particularly attuned to handling mindfulness and wisdom content.
+---
 
-Prompt-based processing allows for customizable text transformations. The prompt system provides a flexible way to define and apply processing instructions across different types of content.
+## The Main Workflows
 
-## Getting Started
+The current CLI and service layer support three broad types of workflows.
 
-To begin using TNH Scholar, you'll need to complete a few initial steps:
+### 1. Audio and Video to Clean Text
 
-First, install the package using pip and run the setup tool to configure your environment. This process includes setting up necessary directories and downloading default prompts.
+**Goal:** Start from a recorded Dharma talk or teaching session and end with a clean, reviewable transcript.
 
-After installation, familiarize yourself with the basic commands and their operations. The system is designed to be used incrementally, allowing you to build complexity as needed.
+Typical steps:
 
-Remember to configure your OpenAI API key, as many functions rely on AI services for processing. The setup tool will guide you through this process.
+1. **Transcribe audio** with `audio-transcribe`  
+   - Input: audio or video file (for example, `.wav`, `.mp3`, `.mp4`).  
+   - Output: timestamped transcript (often JSON and/or text).
 
-## System Organization
+2. **Normalize formatting** with `nfmt`  
+   - Input: transcript text.  
+   - Output: normalized plain text, with consistent line wrapping, spacing, and punctuation.
 
-TNH Scholar organizes its functionality into distinct areas:
+3. **Optional: apply structure or tagging** with `tnh-fab` or GenAIService-based flows  
+   - Add markers for paragraphs, headings, quotes, or exercises.  
+   - Prepare the text for metadata or translation workflows.
 
-The command-line interface provides direct access to all major functions through several specialized tools. Each tool focuses on specific tasks while maintaining consistent interfaces and behavior.
+Relevant documentation:
 
-The prompt system manages processing templates and instructions. It includes version control and concurrent access management, ensuring safe and consistent prompt usage.
+- [CLI Overview](../cli/overview.md)
+- [audio-transcribe](../cli/audio-transcribe.md) and [nfmt](../cli/nfmt.md) CLI guides
 
-Configuration management handles system settings, API keys, and processing options. The system supports both global and project-specific configurations.
+---
 
-Directory management maintains organized storage of prompts, logs, and processing results. The system creates and manages necessary directories automatically.
+### 2. Existing Text to Structured, Metadata-Rich Text
 
-## Best Practices
+**Goal:** Take texts that already exist (OCR, EPUB, PDF-derived, or plain text) and make them **structured, tagged, and ready** for search, translation, or archival use.
 
-Developing effective workflows with TNH Scholar involves understanding some key practices:
+Typical steps:
 
-Start with small, focused tasks and gradually build more complex pipelines. This approach helps ensure reliability and makes troubleshooting easier.
+1. **Normalize and clean**  
+   - Use `nfmt` or equivalent preprocessing to remove obvious noise and enforce consistent formatting.
 
-Use appropriate prompts for specific tasks, and consider creating custom prompts for specialized needs. The prompt system is designed to be extensible and adaptable.
+2. **Apply patterns and prompts** with `tnh-fab`  
+   - Use domain-specific patterns or prompts to:  
+     - Identify headings and sections,  
+     - Tag poems, plays, quotes, exercises, or notes,  
+     - Insert metadata or footnote markers.
 
-Maintain organized directory structures and consistent file naming conventions. This organization becomes particularly important when working with multiple files and processing stages.
+3. **Review and refine**  
+   - Humans review the output, correct tagging, and adjust patterns as needed.  
+   - The corrected text becomes a better training or reference dataset for future workflows.
 
-Document your workflows and prompt modifications. This documentation helps maintain consistency and allows for effective collaboration.
+Relevant documentation:
 
-## Next Steps
+- [Prompt System Architecture](../architecture/prompt-system/prompt-system-architecture.md)
+- Pattern and prompt design docs under [architecture/prompt-system/](../architecture/prompt-system/)
+- [tnh-fab](../cli/tnh-fab.md) CLI guide
 
-After reviewing this overview, explore the detailed sections of the user guide:
+---
 
-The [Configuration guide](../getting-started/configuration.md) provides detailed information about setting up and customizing your TNH Scholar environment.
+### 3. Prepared Text to Model-Ready Chunks
 
-[Best Practices](best-practices.md) offers guidance on effective system usage and workflow development.
+**Goal:** Convert cleaned and structured text into units suitable for:
 
-The [Prompt System](prompts.md) documentation explains how to create, modify, and manage processing prompts.
+- Vector embedding and semantic search,
+- Translation via GenAIService or other models,
+- Evaluation and QA workflows.
 
-Tool-specific guides provide detailed information about each command-line tool and its capabilities.
+Typical steps:
+
+1. **Segment text into chunks**  
+   - Apply rules based on token length, semantic boundaries, or structural markers (for example, sections, paragraphs, stanzas).
+
+2. **Estimate token usage** with `token-count`  
+   - Check that individual chunks fit model limits.  
+   - Plan batch sizes and costs for large-scale processing.
+
+3. **Run AI workflows** via GenAIService or other orchestration tools  
+   - For example, translation, query-text pair generation, or similarity search indexing.
+
+Relevant documentation:
+
+- Chunking and diarization design docs under [architecture/transcription/](../architecture/transcription/)
+- [GenAI Service design documents](../architecture/gen-ai-service/design/genai-service-design-strategy.md)
+- [token-count](../cli/token-count.md) CLI guide
+
+---
+
+## Choosing the Right Tool
+
+When deciding which tool or workflow to use, consider:
+
+- **Type of input**  
+  - Audio or video → start with `audio-transcribe`.  
+  - Text or OCR output → start with `nfmt` and/or `tnh-fab`.
+
+- **Target output**  
+  - Human-readable transcript → focus on `audio-transcribe` + `nfmt`.  
+  - Machine-usable chunks for search or translation → include chunking logic and `token-count`.  
+  - Rich, tagged editions → lean on `tnh-fab` and relevant prompt patterns.
+
+- **Review requirements**  
+  - For archival or publication-ready materials, assume **human review is mandatory**.  
+  - For internal experimentation, you may tolerate more automation, but provenance still matters.
+
+The [CLI Overview](../cli/overview.md) includes a quick decision table for common scenarios.
+
+---
+
+## Provenance and Human Oversight
+
+A central principle of TNH Scholar is that **all AI-assisted outputs must be traceable and reviewable**. In practice this means:
+
+- Keeping original sources (audio, scans, raw text) accessible and referenced.  
+- Recording which tools, prompts, and models were used to generate any derived artifact.  
+- Encouraging review workflows where humans accept, modify, or reject AI-suggested changes.
+
+The internal GenAIService and prompt system are designed to support these requirements. See:
+
+- [Prompt System Architecture](../architecture/prompt-system/prompt-system-architecture.md)
+- [Prompt Fingerprints and Provenance](../architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
+
+---
+
+## Where to Go Next
+
+Suggested next readings:
+
+- For **concrete commands and options**:
+  - [CLI Overview](../cli/overview.md)
+  - CLI guides under [cli/](../cli/)
+
+- For **design and architecture background**:
+  - [Architecture Overview](../architecture/overview.md)
+  - GenAIService ADRs under [architecture/gen-ai-service/adr/](../architecture/gen-ai-service/adr/)
+
+- For **contributing and development**:  
+  - [Contributing to TNH Scholar (Prototype Phase)](../development/contributing-prototype-phase.md)  
+  - [Human–AI Software Engineering Principles](../development/human-ai-software-engineering-principles.md)

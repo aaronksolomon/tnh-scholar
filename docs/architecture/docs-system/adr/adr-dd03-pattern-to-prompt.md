@@ -105,8 +105,8 @@ docs/user-guide/overview.md
 docs/user-guide/best-practices.md
 docs/cli/overview.md
 docs/cli/tnh-fab.md
-docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md (update references)
-docs/architecture/docs-system/adr/adr-dd02-docs-content-nav.md (update references)
+docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md (update references)
+docs/architecture/docs-system/adr/adr-dd02-main-content-nav.md (update references)
 ```
 
 ## Consequences
@@ -173,7 +173,7 @@ None - all decisions resolved during review.
 
 ## References
 
-- [ADR-DD01: Documentation System Reorganization Strategy](adr-dd01-docs-reorg-strat.md) - References Pattern→PromptTemplate rename
-- [ADR-DD02: Documentation Main Content and Navigation Strategy](adr-dd02-docs-content-nav.md)
+- [ADR-DD01: Documentation System Reorganization Strategy](adr-dd01-docs-reorg-strategy.md) - References Pattern→PromptTemplate rename
+- [ADR-DD02: Documentation Main Content and Navigation Strategy](adr-dd02-main-content-nav.md)
 - [gen-ai-service Refactoring ADRs](../../gen-ai-service/adr/) - Modern Prompt/PromptCatalog architecture
 - TODO #9: Documentation Reorganization - Part 3b includes Pattern→PromptTemplate rename task

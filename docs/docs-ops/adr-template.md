@@ -10,7 +10,7 @@ created: "2025-02-27"
 
 One-sentence or short paragraph summarizing the decision.
 
-- **Filename**: `adr-<modulecode><number>-<descriptor>.md` (e.g., `adr-dd01-docs-reorg.md`). Append `-strat` for strategy ADRs.
+- **Filename**: `adr-<modulecode><number>-<descriptor>.md` (e.g., `adr-dd01-docs-reorg.md`). Append `-strategy` for strategy ADRs.
 - **Heading**: `# ADR-<MODULECODE><NUMBER>: Title` (uppercase module code for readability).
 - **Status**: Proposed
 - **Date**: YYYY-MM-DD

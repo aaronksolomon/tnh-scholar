@@ -490,15 +490,15 @@ See [Future Directions](../project/future-directions.md) for long-term vision.
 ## Related Documentation
 
 - [Style Guide](style-guide.md) - Code formatting and naming conventions
-- [Object-Service Design Blueprint](../architecture/object-service/design-overview.md) - Detailed architecture patterns
+- [Object-Service Design Blueprint](../architecture/object-service/object-service-design-overview.md) - Detailed architecture patterns
 - [System Design](system-design.md) - High-level system architecture
 - [Project Principles](../project/principles.md) - High-level project principles
 - [Conceptual Architecture](../project/conceptual-architecture.md) - Conceptual system model
-- [Contributing Guide](contributing.md) - Contribution workflow
+- [Contributing Guide](contributing-prototype-phase.md) - Contribution workflow
 
 ## References
 
-- [ADR-PT01: Prompt Access Strategy](../architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy.md) - Singleton to dependency injection transition
+- [Core Pattern Architecture](../architecture/prompt-system/archive/core-pattern-architecture.md) - Legacy prompt/pattern design notes
 - [Object-Service Design Blueprint](../architecture/object-service/) - Layer architecture and design patterns
 - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) - Robert C. Martin
 - [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html) - Eric Evans via Martin Fowler

@@ -503,9 +503,9 @@ Can be done incrementally while maintaining working system.
 
 ## Related ADRs
 
-- [ADR-A01: Object-Service Pattern](adr-a01-domain-service.md) - Architectural foundation
-- [ADR-A02: Pattern Catalog V1](adr-a02-pattern-catalog-v1.md) - Prompt management
-- [ADR-A08: Config Params Policy](adr-a08-config-params-policy.md) - Configuration approach
+- [ADR-A01: Object-Service Pattern](adr-a01-object-service-genai.md) - Architectural foundation
+- [ADR-A02: Pattern Catalog V1](adr-a02-patterncatalog-integration-v1.md) - Prompt management
+- [ADR-A08: Config Params Policy](adr-a08-config-params-policy-taxonomy.md) - Configuration approach
 - [ADR-A09: V1 Simplified](adr-a09-v1-simplified.md) - Current implementation
 
 ## References

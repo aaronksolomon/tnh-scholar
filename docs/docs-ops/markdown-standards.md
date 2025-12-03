@@ -68,7 +68,7 @@ created: "YYYY-MM-DD"
 ## Content Guidelines
 
 - Use fenced code blocks with language hints (\```bash, \```python, \```yaml, etc.).
-- Prefer relative links (`[Getting Started](docs/getting-started/installation.md)`) over absolute URLs inside the repo.
+- Prefer relative links (`[Getting Started](../getting-started/installation.md)`) over absolute URLs inside the repo.
 - Tables should include header separators (`| --- |`) so markdownlint can validate alignment.
 - When embedding lists, keep them short and use parallel grammar. Use numbered lists only when order matters.
 - Reference other documents via their kebab-case paths (matching the naming rule).

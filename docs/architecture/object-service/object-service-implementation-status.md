@@ -11,7 +11,7 @@ updated: "2025-11-29"
 
 Implementation status, resolved gaps, and outstanding work for the Object-Service design architecture.
 
-**Purpose**: Track progress on implementing [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-design-v3.md)
+**Purpose**: Track progress on implementing [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-object-service-architecture-v3.md)
 **Status**: In Progress
 **Last Updated**: 2025-11-29
 

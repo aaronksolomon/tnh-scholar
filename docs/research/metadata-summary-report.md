@@ -6,7 +6,7 @@ author: ""
 status: processing
 created: "2024-10-24"
 ---
-# **Summary Report on Metadata Extraction, Source Parsing, and Model Training for TNH-Scholar**
+# Summary Report on Metadata Extraction, Source Parsing, and Model Training for TNH-Scholar
 
 Summary of metadata extraction lessons, tooling, and training implications across Thich Nhat Hanh sources.
 

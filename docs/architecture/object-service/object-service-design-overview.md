@@ -12,7 +12,7 @@ High-level overview of TNH Scholar's layered architecture for complex objects an
 
 ## Purpose
 
-This document provides a high-level introduction to the Object-Service design pattern used throughout TNH Scholar. For complete architectural details, see [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-design-v3.md).
+This document provides a high-level introduction to the Object-Service design pattern used throughout TNH Scholar. For complete architectural details, see [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-object-service-architecture-v3.md).
 
 ## Core Principle
 
@@ -71,12 +71,12 @@ Future services planned:
 
 ## Implementation Status
 
-See [implementation-status.md](implementation-status.md) for current gaps, resolved items, and planned work.
+See [object-service-implementation-status.md](object-service-implementation-status.md) for current gaps, resolved items, and planned work.
 
 ## Related Documentation
 
-- [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-design-v3.md) - Complete architectural specification
-- [Implementation Status](implementation-status.md) - Gaps analysis and progress
+- [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-object-service-architecture-v3.md) - Complete architectural specification
+- [Implementation Status](object-service-implementation-status.md) - Gaps analysis and progress
 - [Design Principles](../../development/design-principles.md) - General design philosophy
 - [Conceptual Architecture](../../project/conceptual-architecture.md) - High-level system model
 
@@ -119,4 +119,4 @@ class OpenAIAdapter:
         ...
 ```
 
-For complete examples, templates, and detailed patterns, see [ADR-OS01](adr/adr-os01-design-v3.md).
+For complete examples, templates, and detailed patterns, see [ADR-OS01](adr/adr-os01-object-service-architecture-v3.md).

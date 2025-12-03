@@ -14,9 +14,9 @@ Current and planned architecture for the TNH Scholar prompt system, including VS
 
 The TNH Scholar prompt system provides engineered text inputs (prompts) for AI models, enabling consistent, reproducible, and customizable text processing. This document describes the current implementation and planned enhancements.
 
-**Current Status**: See [ADR-PT03: Current Status & Roadmap](adr/adr-pt03-current-status-roadmap.md) for implementation details.
+**Current Status**: See [ADR-PT03: Current Status & Roadmap](adr/adr-pt03-prompt-system-status-roadmap.md) for implementation details.
 
-**Historical Context**: See [archive/pattern-core-design.md](archive/pattern-core-design.md) for earlier architectural explorations (uses legacy "Pattern" terminology).
+**Historical Context**: See [Core Pattern Architecture](archive/core-pattern-architecture.md) for earlier architectural explorations (uses legacy "Pattern" terminology).
 
 ## Design Goals
 
@@ -32,11 +32,13 @@ The TNH Scholar prompt system provides engineered text inputs (prompts) for AI m
 ### Storage and Versioning
 
 **Implementation**:
+
 - Prompts stored as Jinja2 `.md` files in `~/.config/tnh_scholar/patterns/`
 - Git version control for prompt history
 - Simple file-based discovery
 
 **Access Pattern**:
+
 ```python
 from tnh_scholar.ai_text_processing.patterns import LocalPatternManager
 
@@ -61,6 +63,7 @@ graph TD
 ```
 
 **Key Classes**:
+
 - `LocalPatternManager`: Singleton wrapper for global access
 - `PatternManager`: Core prompt loading and rendering
 - Jinja2 templates: Prompt files with variable substitution
@@ -77,7 +80,7 @@ graph TD
 
 ### PromptCatalog Service
 
-Following the [Object-Service Design](../object-service/design-overview.md) pattern:
+Following the [Object-Service Design](../object-service/object-service-design-overview.md) pattern:
 
 ```mermaid
 graph TD
@@ -95,6 +98,7 @@ graph TD
 ```
 
 **Service Protocol**:
+
 ```python
 from typing import Protocol
 
@@ -216,11 +220,12 @@ response_cache.set(fingerprint.full_hash, response)
 
 ## VS Code Integration Requirements
 
-See [ADR-VSC01](../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat.md) and ADR-VSC02 (pending) for full context.
+See [ADR-VSC01](../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md) and ADR-VSC02 (pending) for full context.
 
 ### Interactive Prompt Selection
 
 **Command Palette Integration**:
+
 ```typescript
 // VS Code command: "TNH Scholar: Select Prompt"
 const prompts = await promptCatalog.listPrompts({
@@ -240,12 +245,14 @@ const selected = await vscode.window.showQuickPick(
 ### Prompt Preview and Editing
 
 **Requirements**:
+
 - Real-time rendering with sample context
 - Syntax highlighting for Jinja2 templates
 - Variable validation and autocomplete
 - Git diff view for prompt versions
 
 **Preview Workflow**:
+
 1. User selects prompt in VS Code
 2. Extension loads prompt metadata
 3. User provides context variables (or uses defaults)
@@ -255,6 +262,7 @@ const selected = await vscode.window.showQuickPick(
 ### Prompt Authoring Workflow
 
 **Create New Prompt**:
+
 1. User runs command: "TNH Scholar: Create Prompt"
 2. VS Code prompts for metadata (name, task type, description)
 3. Extension generates scaffold with metadata frontmatter:
@@ -423,11 +431,11 @@ response_cache.set(rendered.fingerprint.full_hash, result)
 
 ## Related Documentation
 
-- [ADR-PT03: Current Status & Roadmap](adr/adr-pt03-current-status-roadmap.md) - Current implementation
-- [ADR-DD03: Terminology Standardization](../docs-system/adr/adr-dd03-pattern-prompt-terminology.md) - Pattern→Prompt shift
-- [ADR-VSC01: VS Code Integration Strategy](../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat.md)
-- [Object-Service Design](../object-service/design-overview.md) - Architecture pattern
-- [Archive: Pattern Core Design](archive/pattern-core-design.md) - Historical architecture (legacy terminology)
+- [ADR-PT03: Current Status & Roadmap](adr/adr-pt03-prompt-system-status-roadmap.md) - Current implementation
+- [ADR-DD03: Terminology Standardization](../docs-system/adr/adr-dd03-pattern-to-prompt.md) - Pattern→Prompt shift
+- [ADR-VSC01: VS Code Integration Strategy](../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
+- [Object-Service Design](../object-service/object-service-design-overview.md) - Architecture pattern
+- [Archive: Pattern Core Design](archive/core-pattern-architecture.md) - Historical architecture (legacy terminology)
 
 ## References
 

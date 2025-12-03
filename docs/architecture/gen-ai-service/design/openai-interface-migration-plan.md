@@ -11,7 +11,7 @@ created: "2025-11-17"
 Step-by-step plan for migrating from the legacy `openai_interface` module to the typed GenAI Service.
 
 **Status**: Phase 1 Complete - Utilities Ready
-**ADR**: [ADR-A13: Legacy Client Migration](../adr/adr-a13-legacy-client-migration.md)
+**ADR**: [ADR-A13: Legacy Client Migration](../adr/adr-a13-migrate-openai-to-genaiservice.md)
 **Goal**: Delete `openai_interface/` module, use `GenAIService` exclusively
 
 ---
@@ -426,9 +426,9 @@ A: Use git tags to roll back to last working phase. Report issues immediately.
 
 ## Resources
 
-- **Full ADR**: [ADR-A13-legacy-client-migration.md](../adr/adr-a13-legacy-client-migration.md)
-- **GenAIService docs**: [ADR-A01-domain-service.md](../adr/adr-a01-domain-service.md)
-- **Pattern Catalog**: [ADR-A02-pattern-catalog-v1.md](../adr/adr-a02-pattern-catalog-v1.md)
+- **Full ADR**: [ADR-A13-legacy-client-migration.md](../adr/adr-a13-migrate-openai-to-genaiservice.md)
+- **GenAIService docs**: [ADR-A01-domain-service.md](../adr/adr-a01-object-service-genai.md)
+- **Pattern Catalog**: [ADR-A02-pattern-catalog-v1.md](../adr/adr-a02-patterncatalog-integration-v1.md)
 - **Example usage**: `tests/gen_ai_service/test_service.py`
 
 ---

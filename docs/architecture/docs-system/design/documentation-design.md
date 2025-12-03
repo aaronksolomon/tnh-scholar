@@ -13,14 +13,16 @@ Reference for the documentation stack, covering tooling choices, information arc
 ## Tools & Technology Choices
 
 ### Static Site Generator
+
 - **Choice**: MkDocs with Material theme
-- **Rationale**: 
+- **Rationale**:
   - Markdown-based for ease of writing
   - Good integration with Python tooling
   - Modern, responsive design
   - Active community support
 
 ### API Documentation
+
 - **Choice**: MkDocstrings
 - **Rationale**:
   - Native MkDocs integration
@@ -29,6 +31,7 @@ Reference for the documentation stack, covering tooling choices, information arc
   - Good code navigation features
 
 ### Version Control
+
 - **Choice**: Git + GitHub Pages
 - **Rationale**:
   - Free hosting
@@ -39,6 +42,7 @@ Reference for the documentation stack, covering tooling choices, information arc
 ## Structure Decisions
 
 ### Documentation Types
+
 1. User Documentation (Markdown)
    - Installation guides
    - User manuals
@@ -55,7 +59,7 @@ Reference for the documentation stack, covering tooling choices, information arc
    - Development setup
 
 ### File Organization
+
 - User-facing content in /user_guide
 - API reference in /api
 - Development docs in /development
-

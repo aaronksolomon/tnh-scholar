@@ -204,4 +204,4 @@ The AssemblyAI implementation will use the AssemblyAI REST API with the followin
 
 1. [AssemblyAI API Documentation](https://www.assemblyai.com/docs/api-reference/overview)
 2. [Current OpenAI Whisper Integration Code](https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/audio_processing/transcription/transcription_service.py)
-3. [Diarization System Design](../design/diarization-system1.md)
+3. [Diarization System Design](../design/diarization-system-design.md)

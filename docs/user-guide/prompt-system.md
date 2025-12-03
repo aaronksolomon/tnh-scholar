@@ -8,7 +8,7 @@ created: "2025-01-19"
 ---
 # TNH Scholar Prompt System
 
-The TNH Scholar Prompt System is inspired by and builds upon concepts from Daniel Miessler's 'fabric' project (<https://github.com/danielmiessler/fabric>). Like fabric, it uses template-based prompting for AI interactions, but adds version control and concurrent access management.
+The TNH Scholar uses a Prompt System (formerly called patterns) with template-based prompting for AI interactions, with version control and concurrent access management.
 
 It is designed to interface with **tnh-fab** a multi-command text processing tool.
 
@@ -98,13 +98,15 @@ result = pattern.apply_template({
 })
 ```
 
-## Pattern Location
+## Prompt Location
 
-By default, patterns are stored in the user's home directory under:
+By default, prompts are stored in the user's home directory under:
 
 ```bash
 ~/.config/tnh-scholar/patterns/
 ```
+
+(Pattern is the legacy name that will be moved soon).
 
 This location can be customized by setting the `TNH_PATTERN_DIR` environment variable:
 
@@ -121,9 +123,9 @@ The prompt system will:
 2. If not set, use the default ~/.config/tnh-scholar/patterns
 3. Create the pattern directory if it doesn't exist
 
-When using a pattern name with tnh-fab commands (e.g., `tnh-fab process -p my_pattern`), the system searches for a corresponding .md file (e.g., `my_pattern.md`) in the pattern directory and its subdirectories.
+When using a prompt/pattern name with tnh-fab commands (e.g., `tnh-fab process -p my_pattern`), the system searches for a corresponding .md file (e.g., `my_pattern.md`) in the pattern directory and its subdirectories.
 
-### Default Patterns
+### Default Prompt/Patterns
 
 Through the setup utility, tnh-setup, the user has the option to download and install several default and example patterns.
 

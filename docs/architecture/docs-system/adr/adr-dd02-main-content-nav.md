@@ -14,7 +14,7 @@ Establishes how README.md and docs/index.md relate, defines content inclusion pa
 - **Date**: 2025-11-23
 - **Owner**: Documentation Working Group
 - **Supersedes**: None
-- **Related**: [ADR-DD01: Documentation System Reorganization Strategy](adr-dd01-docs-reorg-strat.md)
+- **Related**: [ADR-DD01: Documentation System Reorganization Strategy](adr-dd01-docs-reorg-strategy.md)
 
 ## Context
 
@@ -145,21 +145,20 @@ This section documents the design decisions, system architecture, and
 component implementations for TNH Scholar.
 
 ## Getting Started
-- **New to the codebase?** Start with [System Overview](system-overview.md)
-- **Looking for decisions?** Browse [ADRs by topic](adr/index.md)
+- **New to the codebase?** Start with [System Overview](../../overview.md)
+- **Looking for decisions?** Browse [architecture docs](../../../architecture/)
 - **Need component details?** See subsystem design documents below
 
 ## Key Resources
-- [ADR Index](adr/index.md) - All architectural decision records
-- [GenAI Service](gen-ai-service/design/genai-service-strategy.md) - Core AI integration layer
-- [Pattern System](pattern-system/adr/adr-pt02-pattern-catalog.md) - Prompt management architecture
-- [Transcription Pipeline](transcription/design/diarization-system1.md) - Audio processing design
+- [GenAI Service](../../gen-ai-service/design/genai-service-design-strategy.md) - Core AI integration layer
+- [Prompt System](../../prompt-system/prompt-system-architecture.md) - Prompt management architecture
+- [Transcription Pipeline](../../transcription/design/diarization-system-design.md) - Audio processing design
 
 ## Subsystems
-- [AI Text Processing](ai-text-processing/) - Text transformation pipeline
-- [Knowledge Base](knowledge-base/) - Vector search and metadata
-- [Transcription](transcription/) - Audio-to-text with diarization
-- [Video Processing](video-processing/) - YouTube integration
+- [AI Text Processing](../../ai-text-processing/) - Text transformation pipeline
+- [Knowledge Base](../../knowledge-base/) - Vector search and metadata
+- [Transcription](../../transcription/) - Audio-to-text with diarization
+- [Video Processing](../../video-processing/) - YouTube integration
 ```
 
 #### Documentation Map Integration
@@ -439,7 +438,7 @@ Phase 1 accepts controlled duplication with drift monitoring. When duplication b
 - **TODO Reference**: TODO #9 (Documentation Reorganization, ADR-DD01), Part 3b
 - **Implementation Tracking**: GitHub issues tagged `docs` + `adr-dd02`
 - **Related ADRs**:
-  - [ADR-DD01](adr-dd01-docs-reorg-strat.md): Documentation System Reorganization Strategy (accepted)
+- [ADR-DD01](adr-dd01-docs-reorg-strategy.md): Documentation System Reorganization Strategy (accepted)
   - **ADR-DD03**: Content Reuse and Inclusion Strategies (future - Phase 2)
   - **ADR-DD04**: Documentation Generation and Templating (future - Phase 3, if needed)
 - **Review Cycle**: Reassess Phase 2 transition 6 months post-beta or when 10+ instances of complex content duplication observed
