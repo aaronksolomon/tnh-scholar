@@ -15,12 +15,14 @@ theme:
     - navigation.instant      # Smooth, mindful transitions
     - navigation.tracking     # Present awareness of location
     - navigation.sections     # Structured clarity
-    - navigation.expand       # Show all sections
+    - navigation.indexes      # Section index pages
     - navigation.top          # Easy return to beginning
     - search.suggest          # Gentle guidance
     - search.highlight        # Clear findings
     - content.code.copy       # Practical sharing
     - content.tabs.link       # Connected understanding
+    - toc.follow              # TOC follows scroll position
+    - toc.integrate           # Integrate TOC into navigation
   icon:
     repo: fontawesome/brands/github
   custom_dir: docs/overrides
