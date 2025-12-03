@@ -3,9 +3,83 @@ repo_url: https://github.com/aaronksolomon/tnh-scholar
 
 theme:
   name: material
+  palette:
+    # Zen dark mode - sumi ink on rice paper (inverted)
+    scheme: slate
+    primary: custom
+    accent: custom
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.instant      # Smooth, mindful transitions
+    - navigation.tracking     # Present awareness of location
+    - navigation.tabs         # Clear, organized structure
+    - navigation.sections     # Structured clarity
+    - navigation.top          # Easy return to beginning
+    - search.suggest          # Gentle guidance
+    - search.highlight        # Clear findings
+    - content.code.copy       # Practical sharing
+    - content.tabs.link       # Connected understanding
+  icon:
+    repo: fontawesome/brands/github
+  custom_dir: docs/overrides
+
+extra_css:
+  - stylesheets/tnh-zen.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/aaronksolomon/tnh-scholar
+      name: TNH Scholar on GitHub
+  generator: false  # Minimal footer
+
+markdown_extensions:
+  # Python Markdown extensions
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      permalink_title: Link to this section
+
+  # PyMdown Extensions - for enhanced markdown
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
 
 plugins:
-  - search
+  - search:
+      separator: '[\s\-\.]+'  # Better search for compound terms
   - gen-files:
       scripts:
         - scripts/sync_root_docs.py
