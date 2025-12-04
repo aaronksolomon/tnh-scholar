@@ -15,6 +15,7 @@ A consistent Markdown style keeps the documentation easy to navigate, parse, and
 - Use **lowercase kebab-case** (`example-file-name.md`) for all filenames and directories. Avoid spaces and CamelCase.
 - Prefer descriptive names that communicate the document scope (e.g., `architecture-system-overview.md`, not `overview.md`).
 - Historical files that still use legacy names may remain until the archive migration, but new or renamed files must conform.
+- Subdirectory landings: use `index.md` as the folder entry page; use `overview.md` for curated summaries within that folder. Avoid `README.md` in subdirectories (MkDocs doesn’t treat it as an entry page).
 
 ## Required Front Matter
 
@@ -72,6 +73,10 @@ created: "YYYY-MM-DD"
 - Tables should include header separators (`| --- |`) so markdownlint can validate alignment.
 - When embedding lists, keep them short and use parallel grammar. Use numbered lists only when order matters.
 - Reference other documents via their kebab-case paths (matching the naming rule).
+- **Directory links**: MkDocs resolves pages, not bare folders. Do not link to a directory path (`[Architecture](architecture/)`). Instead:
+  - Link to a specific page (e.g., `[Architecture Overview](architecture/overview.md)`), or
+  - Add an `index.md` in that directory and link to it (`architecture/index.md`).
+  - `README.md` inside a folder is *not* treated as a landing page by MkDocs; prefer `index.md` for folder entry points.
 
 ## Linting & Automation
 

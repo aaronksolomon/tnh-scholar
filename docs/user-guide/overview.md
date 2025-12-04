@@ -55,8 +55,8 @@ Typical steps:
 
 Relevant documentation:
 
-- [CLI Overview](../cli/overview.md)
-- [audio-transcribe](../cli/audio-transcribe.md) and [nfmt](../cli/nfmt.md) CLI guides
+- [CLI Overview](../cli-reference/overview.md)
+- [audio-transcribe](../cli-reference/audio-transcribe.md) and [nfmt](../cli-reference/nfmt.md) CLI guides
 
 ---
 
@@ -82,8 +82,8 @@ Typical steps:
 Relevant documentation:
 
 - [Prompt System Architecture](../architecture/prompt-system/prompt-system-architecture.md)
-- Pattern and prompt design docs under [architecture/prompt-system/](../architecture/prompt-system/)
-- [tnh-fab](../cli/tnh-fab.md) CLI guide
+- Additional prompt design docs: [ADR-PT03](../architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
+- [tnh-fab](../cli-reference/tnh-fab.md) CLI guide
 
 ---
 
@@ -109,9 +109,9 @@ Typical steps:
 
 Relevant documentation:
 
-- Chunking and diarization design docs under [architecture/transcription/](../architecture/transcription/)
+- Chunking and diarization design docs: [Diarization System Design](../architecture/transcription/design/diarization-system-design.md)
 - [GenAI Service design documents](../architecture/gen-ai-service/design/genai-service-design-strategy.md)
-- [token-count](../cli/token-count.md) CLI guide
+- [token-count](../cli-reference/token-count.md) CLI guide
 
 ---
 
@@ -132,7 +132,7 @@ When deciding which tool or workflow to use, consider:
   - For archival or publication-ready materials, assume **human review is mandatory**.  
   - For internal experimentation, you may tolerate more automation, but provenance still matters.
 
-The [CLI Overview](../cli/overview.md) includes a quick decision table for common scenarios.
+The [CLI Overview](../cli-reference/overview.md) includes a quick decision table for common scenarios.
 
 ---
 
@@ -156,12 +156,12 @@ The internal GenAIService and prompt system are designed to support these requir
 Suggested next readings:
 
 - For **concrete commands and options**:
-  - [CLI Overview](../cli/overview.md)
-  - CLI guides under [cli/](../cli/)
+  - [CLI Overview](../cli-reference/overview.md)
+  - CLI guides under [cli](../cli-reference/overview.md)
 
 - For **design and architecture background**:
   - [Architecture Overview](../architecture/overview.md)
-  - GenAIService ADRs under [architecture/gen-ai-service/adr/](../architecture/gen-ai-service/adr/)
+  - GenAIService ADRs such as [ADR-A12](../architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
 
 - For **contributing and development**:  
   - [Contributing to TNH Scholar (Prototype Phase)](../development/contributing-prototype-phase.md)  

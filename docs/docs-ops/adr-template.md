@@ -14,8 +14,8 @@ One-sentence or short paragraph summarizing the decision.
 - **Heading**: `# ADR-<MODULECODE><NUMBER>: Title` (uppercase module code for readability).
 - **Status**: Proposed
 - **Date**: YYYY-MM-DD
-- **Author**: Initial creator of ADR (typically an AI agent or system)
-- **Owner**: Person or group responsible
+- **Authors**: Initial creator of ADR (typically an AI agent or system, plus human initiator/reviewer)
+- **Owner**: Person or group responsible (typically aaronksolomon (git name), current repo maintainer/builder)
 
 ## Context
 
@@ -37,3 +37,21 @@ Summarize other options that were evaluated and why they were rejected (optional
 ## Open Questions
 
 Document any follow-up work, unresolved issues, or validation steps to revisit later.
+
+---
+
+## As-Built Notes & Addendums
+
+*Optional section for post-decision updates. Never edit the original Context/Decision/Consequences sections - always append addendums here to preserve historical decision-making context.*
+
+### Addendum YYYY-MM-DD: Brief Title
+
+**Context**: Describe what changed or was discovered during implementation.
+
+**Decision**: Document the actual implementation decision or deviation from the original plan.
+
+**Rationale**: Explain why the change was necessary.
+
+**Implementation Changes**: List specific code/config changes.
+
+**References**: Link to related TODOs, issues, or ADRs.

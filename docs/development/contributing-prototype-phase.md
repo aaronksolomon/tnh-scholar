@@ -10,6 +10,17 @@ created: "2025-01-19"
 
 TNH Scholar is currently in rapid prototype phase, focusing on core functionality and basic usability. We welcome contributions that help validate and improve the prototype implementation.
 
+## We Need Testers and Experimenters
+
+**You don't need coding experience to contribute meaningfully!** The TNH Scholar project is actively seeking community members to:
+
+- **Explore the software** - Try the CLI tools with real dharma talk content and see what works (and what doesn't)
+- **Report your experience** - Share what you discover: pain points, confusing behavior, missing features, or delightful surprises
+- **Experiment with workflows** - Test different command pipelines and patterns to process your materials
+- **Identify needs** - Help us understand what practitioners and scholars actually need from these tools
+
+Your perspective as a practitioner, translator, or researcher using the tools is invaluable during this prototype phase.
+
 ## Current Focus Areas
 
 1. **TNH-FAB Command Line Tool**
@@ -30,48 +41,47 @@ TNH Scholar is currently in rapid prototype phase, focusing on core functionalit
 
 ## How to Help
 
-### Testing
+### Getting Started as a Tester
 
-#### 1. Install the package
+1. **Install TNH Scholar**
 
-```bash
+   ```bash
    pip install tnh-scholar
-```
+   ```
 
-#### 2. Try basic operations
+2. **Try the Quick Start Guide**
 
-```bash
-    # Test basic commands
-    tnh-fab punctuate input.txt
-    tnh-fab section input.txt
-    tnh-fab translate input.txt
-    tnh-fab process -p pattern_name input.txt
+   Follow the [Quick Start Guide](../getting-started/quick-start-guide.md) to get familiar with basic operations
 
-    # Test pipeline operations
-    cat input.txt | tnh-fab punctuate | tnh-fab section
-```
+3. **Test with Your Own Materials**
 
-#### 3. Report issues
+   Experiment with real dharma talk content using commands like:
 
-- Use GitHub Issues
-- Include command used
-- Provide minimal example that reproduces the issue
-- Note your environment (OS, Python version)
+   ```bash
+   # Test basic commands
+   tnh-fab punctuate input.txt
+   tnh-fab section input.txt
+   tnh-fab translate input.txt
+   tnh-fab process -p pattern_name input.txt
 
-### Pattern Testing
+   # Test pipeline operations
+   cat input.txt | tnh-fab punctuate | tnh-fab section
+   ```
 
-1. Create test patterns in `~/.config/tnh-scholar/patterns/`
-2. Test pattern loading and application
-3. Report any issues with pattern system
+4. **Explore the Pattern System**
 
-## Reporting Issues
+   - Create test patterns in `~/.config/tnh-scholar/patterns/`
+   - Test pattern loading and application
+   - Try custom workflow combinations
 
-Create issues on GitHub with:
+5. **Report What You Find**
 
-- Clear description of the problem
-- Steps to reproduce
-- Expected vs actual behavior
-- Example files (if needed)
+   Share your discoveries via [GitHub Issues](https://github.com/aaronksolomon/tnh-scholar/issues):
+   - Clear description of the problem or observation
+   - Steps to reproduce (include the command used)
+   - Expected vs actual behavior
+   - Your environment (OS, Python version)
+   - Example files (if helpful)
 
 ## Code Contributions
 

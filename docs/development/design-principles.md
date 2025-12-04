@@ -499,6 +499,6 @@ See [Future Directions](../project/future-directions.md) for long-term vision.
 ## References
 
 - [Core Pattern Architecture](../architecture/prompt-system/archive/core-pattern-architecture.md) - Legacy prompt/pattern design notes
-- [Object-Service Design Blueprint](../architecture/object-service/) - Layer architecture and design patterns
+- [Object-Service Design Blueprint](../architecture/object-service/object-service-design-overview.md) - Layer architecture and design patterns
 - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) - Robert C. Martin
 - [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html) - Eric Evans via Martin Fowler

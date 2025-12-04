@@ -17,6 +17,25 @@ TNH Scholar is built around a **layered, object-service oriented architecture**.
 - A family of **processing pipelines** (audio, text, metadata),
 - A **knowledge and metadata layer** for long-term corpus management.
 
+### Subsystem directory map
+
+- **[AI Text Processing](ai-text-processing/design/textobject-system-design.md)** — Text object system and AI text processing
+- **[Configuration](configuration/tnh-configuration-management.md)** — Configuration management system
+- **[Docs System](docs-system/design/documentation-design.md)** — Documentation system architecture
+- **[GenAI Service](gen-ai-service/design/genai-service-design-strategy.md)** — GenAI service architecture and interfaces
+- **[JVB Viewer](jvb-viewer/design/jvb-viewer-v2-strategy.md)** — JVB viewer
+- **[Knowledge Base](knowledge-base/adr/adr-k01-kb-architecture-strategy.md)** — Knowledge base architecture
+- **[Metadata](metadata/adr/adr-md01-json-ld-metadata.md)** — Metadata systems and JSON-LD
+- **[Object Service](object-service/object-service-design-overview.md)** — Core object service architecture
+- **[Prompt System](prompt-system/prompt-system-architecture.md)** — Prompt system and pattern catalog
+- **[Setup TNH](setup-tnh/design/setup-tnh-minimal-extensible-tool.md)** — Setup tool architecture
+- **[TNH-FAB](tnh-fab/design/tnh-fab-design-document.md)** — TNH Fabrication tool design
+- **[Transcription](transcription/design/diarization-system-design.md)** — Audio transcription and diarization
+- **[UI/UX](ui-ux/design/vs-code-as-ui-platform.md)** — User interface and experience design
+- **[Utilities](utilities/design/utilities-catalog.md)** — Utility functions and tools
+- **[Video Processing](video-processing/adr/adr-vp01-video-processing.md)** — Video processing pipeline
+- **[ytt-fetch](ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)** — YouTube transcript fetching
+
 ---
 
 ## Architectural diagrams
@@ -87,8 +106,8 @@ These tools are small, composable, and focused on a single responsibility. They 
 
 More details:
 
-- [CLI Overview](../cli/overview.md)
-- CLI guides under [cli/](../cli/)
+- [CLI Overview](../cli-reference/overview.md)
+- CLI guides: [Command Line Tools Overview](../cli-reference/overview.md)
 
 ---
 

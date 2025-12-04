@@ -151,3 +151,53 @@ Adopt a documentation architecture that is source-of-truth in the repository, en
 4. **Review cadence** – tie required documentation reviews to the release/CI pipeline instead of calendar schedules. Major version bumps (e.g., `0.x → 1.0`, `1.15 → 2.0`) must run a docs verification job that fails if key sections lack updates/acknowledgement. Smaller releases can reuse the automation but only warn on drift.
 
 Approval of this ADR green-lights the restructuring work for TODO #9 and provides a concrete blueprint for subsequent documentation updates.
+
+---
+
+## As-Built Notes & Addendums
+
+### Addendum 2025-12-03: CLI Documentation Consolidation
+
+**Context**: During implementation, the planned separation of `docs/cli/` (guide material) and `docs/cli-reference/` (auto-generated reference docs) proved confusing and redundant. The existing content was already reference documentation (per-command pages like `tnh-fab.md`, `audio-transcribe.md`), not guide material.
+
+**Decision**:
+
+1. **Consolidated all CLI documentation** into single `docs/cli-reference/` directory containing:
+   - Overview and guide material ([overview.md](/cli-reference/overview.md))
+   - Per-command reference documentation (individual command pages)
+2. **Removed** auto-generated CLI reference stubs and generation infrastructure
+3. **Deferred** comprehensive CLI reference generation (TODO #17) until after CLI refactor (blocked by TODO #8)
+4. **Renamed** `docs/cli/` to `docs/cli-reference/` to accurately reflect content type
+
+**Rationale**:
+
+- The CLI structure is scheduled for overhaul, making current auto-generated stubs low-value
+- Placeholder documentation with minimal content ("run --help for help") doesn't serve users
+- Directory name `cli-reference` accurately describes the reference-style content
+- Single location reduces navigation complexity and maintenance burden
+- Aligns with actual as-built directory structure
+
+**Implementation Changes**:
+
+- Removed auto-generated `docs/cli-reference/` stub files (2025-12-03)
+- Removed `scripts/generate_cli_docs.py` from MkDocs build pipeline
+- Renamed `docs/cli/` to `docs/cli-reference/`
+- Updated navigation scripts with consolidated `cli-reference` directory:
+  - `scripts/generate_mkdocs_nav.py`
+  - `scripts/generate_subdir_indexes.py`
+- Created TODO #17 to track comprehensive CLI reference generation post-refactor
+
+**Updated Directory Structure**:
+
+```plaintext
+docs/
+  cli-reference/              # CLI overview + per-command reference (consolidated)
+  api/                        # API reference
+  project/                    # Project meta-docs
+  community/                  # Community resources
+```
+
+**References**:
+
+- TODO #17: Comprehensive CLI Reference Documentation
+- TODO #8: Clean Up CLI Tool Versions (blocks CLI reference work)

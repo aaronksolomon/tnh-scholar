@@ -175,5 +175,5 @@ None - all decisions resolved during review.
 
 - [ADR-DD01: Documentation System Reorganization Strategy](adr-dd01-docs-reorg-strategy.md) - References Pattern→PromptTemplate rename
 - [ADR-DD02: Documentation Main Content and Navigation Strategy](adr-dd02-main-content-nav.md)
-- [gen-ai-service Refactoring ADRs](../../gen-ai-service/adr/) - Modern Prompt/PromptCatalog architecture
+- [gen-ai-service Refactoring ADRs](../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md) - Modern Prompt/PromptCatalog architecture
 - TODO #9: Documentation Reorganization - Part 3b includes Pattern→PromptTemplate rename task

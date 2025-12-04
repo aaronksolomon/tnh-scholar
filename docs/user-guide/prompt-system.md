@@ -1,6 +1,6 @@
 ---
 title: "TNH Scholar Prompt System"
-description: "The TNH Scholar Prompt System is inspired by and builds upon concepts from Daniel Miessler's 'fabric' project (<https://github.com/danielmiessler/fabric>). Like fabric, it uses template-based prompting for AI interactions, but adds version control and concurrent access management."
+description: "This document describes the TNH Scholar Prompt System (formerly called patterns). The system allows for template-based prompting of AI interactions, with version control and concurrent access management."
 owner: ""
 author: ""
 status: processing
@@ -8,7 +8,7 @@ created: "2025-01-19"
 ---
 # TNH Scholar Prompt System
 
-The TNH Scholar uses a Prompt System (formerly called patterns) with template-based prompting for AI interactions, with version control and concurrent access management.
+This document describes the TNH Scholar Prompt System (formerly called patterns). The system allows for template-based prompting of AI interactions, with version control and concurrent access management.
 
 It is designed to interface with **tnh-fab** a multi-command text processing tool.
 
