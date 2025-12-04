@@ -163,7 +163,7 @@ Approval of this ADR green-lights the restructuring work for TODO #9 and provide
 **Decision**:
 
 1. **Consolidated all CLI documentation** into single `docs/cli-reference/` directory containing:
-   - Overview and guide material ([overview.md](/cli-reference/overview.md))
+   - Overview and guide material ([overview.md](../../../cli-reference/overview.md))
    - Per-command reference documentation (individual command pages)
 2. **Removed** auto-generated CLI reference stubs and generation infrastructure
 3. **Deferred** comprehensive CLI reference generation (TODO #17) until after CLI refactor (blocked by TODO #8)
