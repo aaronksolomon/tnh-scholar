@@ -10,6 +10,15 @@ created: "2025-02-01"
 
 TNH Scholar provides a suite of command-line tools designed to work together for text processing. Each tool focuses on specific tasks while maintaining consistent interfaces and behavior. This overview introduces the available tools and their primary functions. 
 
+## Available tools
+
+- **[audio-transcribe](audio-transcribe.md)** – Transcribe audio files with diarization
+- **[nfmt](nfmt.md)** – Normalize and format text files
+- **[tnh-fab](tnh-fab.md)** – Pattern-driven text processing and translation
+- **[tnh-setup](tnh-setup.md)** – Environment setup helper
+- **[token-count](token-count.md)** – Token estimation utility
+- **[ytt-fetch](ytt-fetch.md)** – YouTube transcript fetcher
+
 ## TNH-FAB
 
 The primary text processing tool, TNH-FAB ('fab' short for 'fabric'), provides core functionality for text manipulation and analysis. This versatile tool includes several subcommands:

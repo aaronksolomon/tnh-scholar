@@ -1,3 +1,11 @@
+---
+title: "Development Documentation"
+description: "Landing page for contributor guides, design principles, and engineering practices for TNH Scholar."
+owner: ""
+author: ""
+status: processing
+created: "2025-12-03"
+---
 # Development Documentation
 
 This directory contains documentation for developers contributing to TNH Scholar.
@@ -24,6 +32,6 @@ TNH Scholar embraces human-AI collaborative development. See [human-ai-software-
 
 ## Related Documentation
 
-- [Project Vision & Philosophy](../project/) - Project goals and philosophy
-- [Architecture](../architecture/) - Technical architecture documentation
-- [Docs Operations](../docs-ops/) - Documentation standards and templates
+- [Project Vision & Philosophy](../project/vision.md) - Project goals and philosophy
+- [Architecture](../architecture/overview.md) - Technical architecture documentation
+- [Docs Operations](../docs-ops/markdown-standards.md) - Documentation standards and templates
