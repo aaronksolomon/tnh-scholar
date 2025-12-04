@@ -44,7 +44,7 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--tnh-bg-primary);
   color: var(--tnh-text-primary);
-  font-size: 0.9rem; /* Reduced by ~10% from default 1rem */
+  font-size: 0.86rem; /* Slightly reduced for overall compactness */
   line-height: 1.8; /* Spacious, easy reading */
 }
 
@@ -59,7 +59,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 2.25rem;  /* Reduced from 2.5rem (~10%) */
+  font-size: 2.15rem;  /* Slight reduction for overall scale */
   font-weight: 200;
   border-bottom: 1px solid var(--tnh-bamboo-green);
   padding-bottom: var(--tnh-space-moment);
@@ -67,17 +67,17 @@ h1 {
 }
 
 h2 {
-  font-size: 1.8rem;  /* Reduced from 2rem (~10%) */
+  font-size: 1.72rem;  /* Slight reduction for overall scale */
   margin-top: var(--tnh-space-breath);
 }
 
 h3 {
-  font-size: 1.35rem;  /* Reduced from 1.5rem (~10%) */
+  font-size: 1.3rem;  /* Slight reduction for overall scale */
   color: var(--tnh-bamboo-green);
 }
 
 h4 {
-  font-size: 1.15rem;  /* Added for completeness */
+  font-size: 1.1rem;  /* Slight reduction for overall scale */
 }
 
 h5 {
@@ -167,56 +167,19 @@ tr:hover {
   background-color: rgba(122, 155, 118, 0.05);
 }
 
-/* Navigation - Gentle guidance */
+/* Navigation - fall back to Material defaults; only tweak size/color */
 .md-nav {
-  font-size: 0.8rem;  /* Reduced from 0.9rem for more compact nav */
+  font-size: 0.8rem;
 }
 
 .md-nav__link {
   color: var(--tnh-text-secondary);
-  transition: color 0.2s ease;
-  padding: 0.4rem 0.6rem;  /* More comfortable click targets */
 }
 
 .md-nav__link:hover,
-.md-nav__link--active {
-  color: var(--tnh-bamboo-green);
-}
-
-/* Collapsible navigation sections */
-.md-nav__item--nested > .md-nav__link {
-  font-weight: 500;
-  color: var(--tnh-text-primary);
-}
-
-.md-nav__item--nested > .md-nav__link:hover {
-  color: var(--tnh-bamboo-green);
-}
-
-/* Toggle icons for expandable sections */
-.md-nav__toggle ~ .md-nav__link::after {
-  color: var(--tnh-text-secondary);
-  transition: transform 0.25s ease, color 0.2s ease;
-}
-
-.md-nav__toggle:checked ~ .md-nav__link::after {
-  color: var(--tnh-bamboo-green);
-}
-
-/* Nested navigation indentation */
-.md-nav__item .md-nav__item {
-  padding-left: 0.6rem;
-}
-
-/* Active section highlighting */
+.md-nav__link--active,
 .md-nav__item--active > .md-nav__link {
   color: var(--tnh-bamboo-green);
-  font-weight: 500;
-}
-
-/* Smooth expand/collapse animation */
-.md-nav__list {
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 /* Right sidebar - Table of Contents */
@@ -227,14 +190,14 @@ tr:hover {
 .md-sidebar--secondary .md-nav__title {
   color: var(--tnh-bamboo-green);
   font-weight: 500;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 0.6rem;
 }
 
 .md-sidebar--secondary .md-nav__link {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   padding: 0.3rem 0.6rem;
   color: var(--tnh-text-secondary);
   border-left: 2px solid transparent;
@@ -322,7 +285,7 @@ tr:hover {
 }
 
 .md-content__inner {
-  max-width: 50rem; /* Slightly increased for better use of space */
+  max-width: 60rem; /* Allow wider layouts to reduce wrapping/overflow */
   margin: 0 auto;
 }
 
@@ -415,6 +378,22 @@ html {
   color: var(--tnh-bamboo-green);
   border-left: 2px solid var(--tnh-bamboo-green);
   padding-left: calc(var(--tnh-space-moment) - 2px);
+}
+
+/* Documentation Index table: wrap long paths without horizontal scroll */
+.md-typeset h1#documentation-index + table {
+  table-layout: fixed;
+}
+
+.md-typeset h1#documentation-index + table th:first-child,
+.md-typeset h1#documentation-index + table td:first-child {
+  width: 36%;
+}
+
+.md-typeset h1#documentation-index + table td:first-child a {
+  display: inline-block;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* Logo area - Peaceful identity */

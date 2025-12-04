@@ -7,15 +7,15 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
-import yaml
 import mkdocs_gen_files
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 try:  # noqa: E402
-    from scripts.sync_root_docs import PROJECT_REPO_DIR, ROOT_DOCS, ROOT_DOC_DEST_MAP
+    from scripts.sync_root_docs import PROJECT_REPO_DIR, ROOT_DOC_DEST_MAP, ROOT_DOCS
 except ModuleNotFoundError:  # Fallback for mkdocs run_path isolation
     sync_path = ROOT / "scripts" / "sync_root_docs.py"
     spec = importlib.util.spec_from_file_location("sync_root_docs", sync_path)
@@ -35,18 +35,19 @@ TOP_LEVEL_ORDER = [
     "index.md",
     "getting-started",
     "user-guide",
-    "cli",
+    "project",
+    "community",
+    "repo-root",
     "cli-reference",
     "api",
     "architecture",
     "development",
     "docs-ops",
-    "project",
     "research",
 ]
 TITLE_OVERRIDES = {
     "api": "API",
-    "cli": "CLI",
+    "cli-reference": "CLI Reference",
     "docs-ops": "Docs Ops",
     "gen-ai-service": "GenAI Service",
     "ai-text-processing": "AI Text Processing",
@@ -69,7 +70,9 @@ def nav_sort_key(path: Path) -> tuple:
     relative = path.relative_to(DOCS_DIR)
     parts = relative.parts
     first = parts[0]
-    if len(parts) == 1 and parts[0] == "index.md":
+    if parts[: len(PROJECT_REPO_DIR.parts)] == PROJECT_REPO_DIR.parts:
+        bucket = TOP_LEVEL_INDEX.get("repo-root", DEFAULT_BUCKET)
+    elif len(parts) == 1 and first == "index.md":
         bucket = -1
     else:
         bucket = TOP_LEVEL_INDEX.get(first, DEFAULT_BUCKET)
@@ -87,14 +90,12 @@ def read_title(path: Path) -> str | None:
     try:
         text = path.read_text(encoding="utf-8")
     except (UnicodeDecodeError, FileNotFoundError):
-        # Allow generated project docs to fall back to root source metadata.
-        if path.parts[: len(PROJECT_REPO_DIR.parts)] == PROJECT_REPO_DIR.parts:
-            source = Path(path.name)
-            try:
-                text = source.read_text(encoding="utf-8")
-            except (OSError, UnicodeDecodeError):
-                return None
-        else:
+        if path.parts[: len(PROJECT_REPO_DIR.parts)] != PROJECT_REPO_DIR.parts:
+            return None
+        source = Path(path.name)
+        try:
+            text = source.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
             return None
     lines = text.splitlines()
     if not lines or lines[0].strip() != "---":
@@ -116,18 +117,16 @@ def build_nav_path(path: Path) -> tuple[str, ...]:
 
     # Special-case mirrored repo-root docs so they appear as "Repo Root/**".
     if parts[: len(PROJECT_REPO_DIR.parts)] == list(PROJECT_REPO_DIR.parts):
-        remaining = parts[len(PROJECT_REPO_DIR.parts) :]
-        is_index = remaining and remaining[-1] == "index"
-        labels = ["Repo Root"] + [format_name(part) for part in remaining]
-        title = read_title(path) or (labels[-2] if is_index and len(labels) > 1 else labels[-1])
-        if is_index:
-            # Avoid "Repo Root" nesting; expose index as an overview child.
-            return ("Repo Root", "Overview")
-        labels[-1] = title
-        return tuple(labels)
-
+        return _extracted_from_build_nav_path_10(parts, path)
     is_index = parts[-1] == "index"
     labels = [format_name(part) for part in parts]
+    # If a parent directory has an index with a custom title, reuse it so
+    # children stay nested under the same label as the overview page.
+    if not is_index and len(parts) > 1:
+        parent_index = DOCS_DIR.joinpath(*parts[:-1], "index.md")
+        parent_title = read_title(parent_index) if parent_index.exists() else None
+        if parent_title:
+            labels[-2] = parent_title
     title = read_title(path) or labels[-1]
     if is_index:
         labels = labels[:-1]
@@ -135,6 +134,19 @@ def build_nav_path(path: Path) -> tuple[str, ...]:
             return (title or ROOT_TITLE,)
         labels[-1] = title
         return tuple(labels)
+    labels[-1] = title
+    return tuple(labels)
+
+
+# TODO Rename this here and in `build_nav_path`
+def _extracted_from_build_nav_path_10(parts, path):
+    remaining = parts[len(PROJECT_REPO_DIR.parts) :]
+    is_index = remaining and remaining[-1] == "index"
+    labels = ["Repo Root"] + [format_name(part) for part in remaining]
+    title = read_title(path) or (labels[-2] if is_index and len(labels) > 1 else labels[-1])
+    if is_index:
+        # Avoid "Repo Root" nesting; expose index as an overview child.
+        return ("Repo Root", "Overview")
     labels[-1] = title
     return tuple(labels)
 

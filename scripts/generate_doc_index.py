@@ -42,6 +42,8 @@ EXCLUDED_DIRS = {".git",
 def iter_markdown_files() -> Iterable[Path]:
     """Iterate over all markdown files in repo, excluding common ignored directories."""
     for md_file in sorted(ROOT.rglob("*.md")):
+        if not md_file.is_file():
+            continue
         # Skip files in excluded directories
         if all(excluded not in md_file.parts for excluded in EXCLUDED_DIRS):
             yield md_file
@@ -95,14 +97,17 @@ def write_index(path: Path, rows: list[tuple[str, str, str, str]]) -> None:
         "",
         "# Documentation Index",
         "",
-        "| Path | Title | Description | Created |",
+        "| Title | Description | Created | Path |",
         "| --- | --- | --- | --- |",
     ]
     # Convert absolute paths to relative (strip "docs/" prefix)
     body = []
     for rel, title, desc, created in rows:
         doc_path = rel[5:] if rel.startswith("docs/") else rel  # Remove "docs/" prefix
-        body.append(f"| [{rel}]({doc_path}) | {title} | {desc} | {created} |")
+        # Clickable title, short doc link target, and full repo-relative path last
+        body.append(
+            f"| [{title}]({doc_path}) | {desc} | {created} | `{rel}` |"
+        )
     path.write_text("\n".join(header + body) + "\n")
 
 
