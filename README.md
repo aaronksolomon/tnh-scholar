@@ -23,7 +23,7 @@ TNH Scholar is currently in active prototyping. Key capabilities:
 - **Text formatting and translation**: `tnh-gen` CLI (rename in flight; see [ADR-VSC01](docs/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md) and [ADR-VSC02](docs/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)) for punctuation, translation, sectioning, and prompt-driven processing
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
-- **Prompt system**: See ADRs under [docs/architecture/prompt-system/](docs/architecture/prompt-system/) for decisions and roadmap
+- **Prompt system**: See ADRs under [docs/architecture/prompt-system/index.md](docs/architecture/prompt-system/index.md) for decisions and roadmap
 
 ## Quick Start
 
@@ -72,9 +72,9 @@ ytt-fetch "https://youtube.com/watch?v=example" -l en -o transcript.txt
 ## Getting Started
 
 - **Practitioners**: Install, configure credentials, and follow the [Quick Start Guide](docs/getting-started/quick-start-guide.md); workflows live in the [User Guide](docs/user-guide/overview.md).
-- **Developers**: Set up via [DEV_SETUP.md](DEV_SETUP.md) and [Contributing](CONTRIBUTING.md); review [System Design](docs/development/system-design.md) and the [CLI docs](docs/cli/); run `make docs` to view locally.
+- **Developers**: Set up via [DEV_SETUP.md](DEV_SETUP.md) and [Contributing](CONTRIBUTING.md); review [System Design](docs/development/system-design.md) and the [CLI docs](docs/cli-reference/index.md); run `make docs` to view locally.
   - **Project Philosophy & Vision**: Developers and researchers should review the conceptual foundations in `docs/project/vision.md`, `docs/project/philosophy.md`, `docs/project/principles.md`, and `docs/project/conceptual-architecture.md` to understand the system’s long-term direction and design intent.
-- **Researchers**: Explore [Research](docs/research/) for experiments and direction; see [Architecture](docs/architecture/) for pipelines/ADRs (e.g., [ADR-K01](docs/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)).
+- **Researchers**: Explore [Research](docs/research/index.md) for experiments and direction; see [Architecture](docs/architecture/index.md) for pipelines/ADRs (e.g., [ADR-K01](docs/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)).
 
 ## Documentation Overview
 
@@ -85,19 +85,19 @@ Comprehensive documentation is available in multiple formats:
 
 ### Documentation Structure
 
-- **[Getting Started](docs/getting-started/)** – Installation, setup, and first steps
-- **[CLI Docs](docs/cli/)** – Command-line tool documentation
-- **[User Guide](docs/user-guide/)** – Detailed usage guides, prompts, and workflows
-- **[API Reference](docs/api/)** – Python API documentation for programmatic use
-- **[Architecture](docs/architecture/)** – Design decisions, ADRs, and system overview
-- **[Development](docs/development/)** – Contributing guidelines and development setup
-- **[Research](docs/research/)** – Research notes, experiments, and background
-- **[Documentation Operations](docs/docs-ops/)** – Documentation roadmap and maintenance
+- **[Getting Started](docs/getting-started/index.md)** – Installation, setup, and first steps
+- **[CLI Docs](docs/cli-reference/index.md)** – Command-line tool documentation
+- **[User Guide](docs/user-guide/index.md)** – Detailed usage guides, prompts, and workflows
+- **[API Reference](docs/api/index.md)** – Python API documentation for programmatic use
+- **[Architecture](docs/architecture/index.md)** – Design decisions, ADRs, and system overview
+- **[Development](docs/development/index.md)** – Contributing guidelines and development setup
+- **[Research](docs/research/index.md)** – Research notes, experiments, and background
+- **[Documentation Operations](docs/docs-ops/index.md)** – Documentation roadmap and maintenance
 
 ## Architecture Overview
 
 - Documentation strategy: [ADR-DD01](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md) and [ADR-DD02](docs/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
-- GenAI, transcription, and prompt system ADRs live under [Architecture](docs/architecture/) (see ADR-A*, ADR-TR*, ADR-PT*).
+- GenAI, transcription, and prompt system ADRs live under [Architecture](docs/architecture/index.md) (see ADR-A*, ADR-TR*, ADR-PT*).
 - System design references: [Object–Service Design](docs/architecture/object-service/object-service-design-overview.md) and [System Design](docs/development/system-design.md).
 
 ## Development

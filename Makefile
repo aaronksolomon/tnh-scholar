@@ -2,7 +2,7 @@ PYTHON_VERSION = 3.12.4
 POETRY        = poetry
 LYCHEE        = lychee
 
-.PHONY: setup setup-dev test lint format kernel docs docs-generate docs-build docs-drift docs-verify codespell link-check docs-quickcheck
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell link-check docs-quickcheck
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -30,7 +30,11 @@ kernel:
 	$(POETRY) run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
 
 # Documentation targets
-docs-generate:
+docs-validate:
+	@echo "Validating markdown documentation..."
+	@$(POETRY) run python scripts/validate_markdown.py || echo "⚠️  Validation warnings found (non-fatal)"
+
+docs-generate: docs-validate
 	@echo "Generating documentation artifacts..."
 	$(POETRY) run python scripts/sync_root_docs.py
 	$(POETRY) run python scripts/generate_index_md.py

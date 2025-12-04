@@ -148,7 +148,7 @@ This section organizes work into three priority levels based on criticality for 
      - [x] Move existing docs into the new layout with stub `index.md` files
      - [x] Rename all architecture documents for clarity and consistency (ADR naming, design doc naming)
      - [x] Create README.md files for major sections (architecture/, cli/, development/, getting-started/)
-     - [x] Remove obsolete CLI reference stubs (auto-generation pending)
+     - [x] Remove obsolete CLI reference stubs (auto-generation removed, see TODO #17)
      - [x] Reorganize reference materials into categorized subdirectories
      - [ ] Tag archival folders explicitly for mkdocs-literate-nav auto-generation (deferred to Phase 2)
   3. **Terminology + README Sweep** (Part 3b: ✅ COMPLETED - ADR-DD02 + ADR-DD03)
@@ -223,7 +223,7 @@ This section organizes work into three priority levels based on criticality for 
        - docs/project/ = Vision, philosophy (stakeholders)
   8. **Outstanding Standalone Tasks** (Phase 2 - Future Work)
      - [x] Created architecture/README.md overview
-     - [ ] Deprecate outdated CLI examples (e.g., `punctuate` usage) once cli-reference regenerates
+     - [ ] Deprecate outdated CLI examples (deferred post-CLI-refactor, see TODO #17)
      - [ ] Add practical user guides for new features post-reorg
      - [ ] Expand architecture overview with component diagrams
      - [ ] Establish research artifact archival workflow (external storage + summary linking)
@@ -468,6 +468,29 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Keep reproducible notebooks in notebooks/experiments
   - [ ] Publish vetted analyses to docs/research via nbconvert
   - [ ] Archive obsolete notebooks
+
+#### 17. 🚧 Comprehensive CLI Reference Documentation
+
+- **Status**: NOT STARTED (deferred post-CLI-refactor)
+- **Priority**: MEDIUM
+- **Context**: Removed auto-generated CLI reference stubs (2025-12-03). Renamed `docs/cli/` to `docs/cli-reference/` to reflect reference-style content. CLI structure scheduled for overhaul.
+- **Blocked By**: CLI tool consolidation (TODO #8)
+- **Tasks**:
+  - [ ] Review final CLI structure after refactor
+  - [ ] Create comprehensive CLI reference using actual `--help` output at all command levels
+  - [ ] Generate structured documentation for each command:
+    - Command purpose and use cases
+    - Full option/argument reference
+    - Usage examples
+    - Common workflows
+  - [ ] Automate CLI reference generation in `scripts/generate_cli_docs.py`
+  - [ ] Integrate with MkDocs build process
+  - [ ] Enhance existing `docs/cli-reference/` structure with comprehensive reference material
+- **Notes**:
+  - Previously had placeholder stubs with minimal content
+  - Current `docs/cli-reference/` contains hand-written per-command reference pages
+  - Requires examining actual CLI code structure for comprehensive coverage
+  - Should align with user guide examples
 
 ---
 
