@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../chunking-strategies0/">
+        <link rel="prev" href="../audio-chunking-design/">
       
       
-        <link rel="next" href="../diarization-algorithms0/">
+        <link rel="next" href="../diarization-chunker-design/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -28,6 +28,9 @@
     
       <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
       
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -40,12 +43,14 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
     
       <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/tnh-zen.css">
     
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -54,10 +59,59 @@
     
     
     
+  <!-- Google Fonts - Zen typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Source+Serif+4:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Custom meta for mindful documentation -->
+  <meta name="description" content="TNH Scholar - AI-powered tools for studying and translating Thich Nhat Hanh's teachings">
+  <meta name="keywords" content="Thich Nhat Hanh, Buddhism, mindfulness, AI, translation, Vietnamese, Plum Village">
+
+  
+  <style>
+    /* Material theme color overrides for zen aesthetic */
+    :root,
+    [data-md-color-scheme="slate"] {
+      /* Override Material's slate colors with our zen palette */
+      --md-primary-fg-color: #2d2d2d;
+      --md-primary-fg-color--light: #3d3d3d;
+      --md-primary-fg-color--dark: #1a1a1a;
+      --md-accent-fg-color: #7a9b76;
+      --md-accent-fg-color--transparent: rgba(122, 155, 118, 0.1);
+
+      /* Background colors */
+      --md-default-bg-color: #1a1a1a;
+      --md-default-fg-color: #e8e4d8;
+      --md-default-fg-color--light: #b8b4a8;
+      --md-default-fg-color--lighter: #8a8680;
+      --md-default-fg-color--lightest: #5a5650;
+
+      /* Code colors */
+      --md-code-bg-color: #252525;
+      --md-code-fg-color: #c9a961;
+
+      /* Typography */
+      --md-typeset-color: #e8e4d8;
+      --md-typeset-a-color: #6b8e9e;
+
+      /* Shadows - subtle and organic */
+      --md-shadow-z1: 0 2px 4px rgba(0, 0, 0, 0.3);
+      --md-shadow-z2: 0 4px 8px rgba(0, 0, 0, 0.4);
+      --md-shadow-z3: 0 8px 16px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+  
+
   </head>
   
   
-    <body dir="ltr">
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -72,6 +126,26 @@
       
     </div>
     <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+  <!-- Optional: Mindful announcement banner -->
+  <!--
+  <div style="background: linear-gradient(90deg, rgba(122,155,118,0.1) 0%, rgba(107,142,158,0.1) 100%);
+              padding: 0.75rem;
+              text-align: center;
+              font-size: 0.9rem;
+              color: #b8b4a8;
+              border-bottom: 1px solid #3d3d3d;">
+    🌿 Walking mindfully through documentation
+  </div>
+  -->
+
+          </div>
+          
+        </aside>
       
     </div>
     
@@ -109,8 +183,8 @@
       </div>
     </div>
     
+      
     
-      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
     
@@ -137,6 +211,8 @@
         </button>
       </nav>
       
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
@@ -156,7 +232,7 @@
         <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -202,7 +278,7 @@
       <a href="https://github.com/aaronksolomon/tnh-scholar" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -223,7 +299,7 @@
         
   
   <span class="md-ellipsis">
-    TNH Scholar Documentation
+    TNH Scholar
   </span>
   
 
@@ -240,6 +316,18 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -249,16 +337,31 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../getting-started/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Getting Started
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
@@ -266,6 +369,8 @@
             Getting Started
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -330,7 +435,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/quick-start/" class="md-nav__link">
+      <a href="../../../../getting-started/quick-start-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -366,6 +471,18 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -375,16 +492,31 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../user-guide/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     User Guide
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
@@ -392,6 +524,8 @@
             User Guide
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -456,7 +590,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/prompts/" class="md-nav__link">
+      <a href="../../../../user-guide/prompt-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -492,6 +626,22 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -501,36 +651,337 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../project/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    CLI
+    Project
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            CLI
+            Project
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
                 
   
   
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli/audio-transcribe/" class="md-nav__link">
+      <a href="../../../../project/conceptual-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    audio-transcribe
+    Conceptual Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/future-directions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Future Directions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/philosophy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Philosophy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/principles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Principles
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/vision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../community/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Community & Outreach
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Community & Outreach
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../community/parallax-overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parallax Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../project/repo-root/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Repo Root
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Repo Root
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/repo-root/changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar CHANGELOG
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../project/repo-root/contributing-root/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH Scholar CONTRIBUTING
   </span>
   
     
@@ -554,11 +1005,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli/nfmt/" class="md-nav__link">
+      <a href="../../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    nfmt
+    TNH-Scholar DEV_SETUP
   </span>
   
     
@@ -582,11 +1033,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli/overview/" class="md-nav__link">
+      <a href="../../../../project/repo-root/release_checklist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Command Line Tools Overview
+    TNH Scholar Release Checklist
   </span>
   
     
@@ -610,17 +1061,17 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli/tnh-fab/" class="md-nav__link">
+      <a href="../../../../project/repo-root/repo-readme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    tnh-fab
+    TNH Scholar README
   </span>
   
     
   
   
-    <span class="md-status md-status--processing"></span>
+    <span class="md-status md-status--continuous update"></span>
   
 
   
@@ -638,67 +1089,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli/tnh-setup/" class="md-nav__link">
+      <a href="../../../../project/repo-root/todo-list/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    tnh-setup
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../cli/token-count/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    token-count
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../cli/ytt-fetch/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ytt-fetch
+    TNH Scholar TODO List
   </span>
   
     
@@ -730,32 +1125,75 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../cli-reference/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    Cli Reference
+    CLI Reference
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
-            Cli Reference
+            CLI Reference
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -831,6 +1269,34 @@
   
   
     <span class="md-status md-status--auto_generated"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../cli-reference/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Line Tools Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
   
 
   
@@ -1053,32 +1519,157 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Architecture
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             Architecture
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-text-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ai Text Processing
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -1088,16 +1679,22 @@
   
     
     
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4" >
         
           
-          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9_4" id="__nav_9_4_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1108,8 +1705,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4">
             <span class="md-nav__icon md-icon"></span>
             AI Text Processing
           </label>
@@ -1123,32 +1720,59 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4_1" >
         
           
-          <label class="md-nav__link" for="__nav_7_1_1" id="__nav_7_1_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../ai-text-processing/adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_4_1" id="__nav_9_4_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_1_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -1222,45 +1846,32 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_4_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_1_2" id="__nav_7_1_2_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../ai-text-processing/design/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_1_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_1_2">
-            <span class="md-nav__icon md-icon"></span>
-            Design
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../ai-text-processing/design/textobject-new-design/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TextObject System Design Document
   </span>
   
     
@@ -1271,10 +1882,22 @@
 
   
 
-      </a>
-    </li>
-  
-
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_4_2" id="__nav_9_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
             
               
@@ -1305,6 +1928,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TextObject System Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1329,32 +1980,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5" >
         
           
-          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../configuration/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Configuration
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_5" id="__nav_9_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_5">
             <span class="md-nav__icon md-icon"></span>
             Configuration
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -1363,7 +2039,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../configuration/tnh-configuration/" class="md-nav__link">
+      <a href="../../../configuration/tnh-configuration-management/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1400,32 +2076,59 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_6" >
         
           
-          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../docs-system/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Docs System
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_6" id="__nav_9_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6">
             <span class="md-nav__icon md-icon"></span>
             Docs System
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -1435,32 +2138,63 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_6_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_3_1" id="__nav_7_3_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../docs-system/adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_6_2" id="__nav_9_6_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_3_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_3_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6_2">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -1469,7 +2203,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd01-docs-reorg-strat/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1497,7 +2231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd02-docs-content-nav/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1525,7 +2259,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd03-pattern-prompt-terminology/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1583,32 +2317,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_6_3" >
         
           
-          <label class="md-nav__link" for="__nav_7_3_2" id="__nav_7_3_2_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../docs-system/design/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_6_3" id="__nav_9_6_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_3_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_6_3">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -1617,7 +2376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/design/documentation/" class="md-nav__link">
+      <a href="../../../docs-system/design/documentation-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1660,7 +2419,41 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gen Ai Service
+  </span>
+  
     
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
     
     
     
@@ -1668,10 +2461,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_8" >
         
           
-          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9_8" id="__nav_9_8_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1682,8 +2475,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_8">
             <span class="md-nav__icon md-icon"></span>
             GenAI Service
           </label>
@@ -1697,32 +2490,69 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_8_1" >
         
           
-          <label class="md-nav__link" for="__nav_7_4_1" id="__nav_7_4_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../gen-ai-service/adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_8_1" id="__nav_9_8_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_4_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_8_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -1731,7 +2561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a01-domain-service/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1759,7 +2589,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a02-pattern-catalog-v1/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1787,7 +2617,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1899,7 +2729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a13-legacy-client-migration/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1936,32 +2766,59 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_8_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_4_2" id="__nav_7_4_2_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../gen-ai-service/design/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_8_2" id="__nav_9_8_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_4_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_8_2">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -1970,7 +2827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/design/genai-service-strategy/" class="md-nav__link">
+      <a href="../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1998,7 +2855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/design/migration-plan/" class="md-nav__link">
+      <a href="../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2043,32 +2900,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_9" >
         
           
-          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../jvb-viewer/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Jvb Viewer
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_9" id="__nav_9_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_9">
             <span class="md-nav__icon md-icon"></span>
             Jvb Viewer
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2078,32 +2960,63 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_9_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_5_1" id="__nav_7_5_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../jvb-viewer/design/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_9_2" id="__nav_9_9_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_5_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_5_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_9_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_9_2">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2112,7 +3025,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/instruction-test0/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2140,7 +3053,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/instruction-test1/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2168,7 +3081,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/jvb-strat-001/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2196,7 +3109,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/output1/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2241,32 +3154,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_10" >
         
           
-          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../knowledge-base/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Knowledge Base
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_10" id="__nav_9_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_10">
             <span class="md-nav__icon md-icon"></span>
             Knowledge Base
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2276,32 +3214,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_10_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_6_1" id="__nav_7_6_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../knowledge-base/adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_10_2" id="__nav_9_10_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_6_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_6_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_10_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_10_2">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2310,7 +3273,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../knowledge-base/adr/adr-k01-preliminary-architectural-design/" class="md-nav__link">
+      <a href="../../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2355,32 +3318,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_11" >
         
           
-          <label class="md-nav__link" for="__nav_7_7" id="__nav_7_7_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../metadata/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Metadata
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_11" id="__nav_9_11_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_11">
             <span class="md-nav__icon md-icon"></span>
             Metadata
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2390,32 +3378,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_7_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_11_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_7_1" id="__nav_7_7_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../metadata/adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_11_2" id="__nav_9_11_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_7_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_7_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_11_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_11_2">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2424,7 +3437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metadata/adr/adr-md01-metadata-strategy/" class="md-nav__link">
+      <a href="../../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2469,32 +3482,61 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_12" >
         
           
-          <label class="md-nav__link" for="__nav_7_8" id="__nav_7_8_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../object-service/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Object Service
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_12" id="__nav_9_12_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_12">
             <span class="md-nav__icon md-icon"></span>
             Object Service
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2503,7 +3545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/design-overview/" class="md-nav__link">
+      <a href="../../../object-service/object-service-design-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2531,7 +3573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/implementation-status/" class="md-nav__link">
+      <a href="../../../object-service/object-service-implementation-status/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2560,32 +3602,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_12_4" >
         
           
-          <label class="md-nav__link" for="__nav_7_8_3" id="__nav_7_8_3_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../object-service/adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_12_4" id="__nav_9_12_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_8_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_8_3">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_12_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_12_4">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2594,7 +3661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/adr/adr-os01-design-v3/" class="md-nav__link">
+      <a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2639,32 +3706,61 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_13" >
         
           
-          <label class="md-nav__link" for="__nav_7_9" id="__nav_7_9_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../prompt-system/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Prompt System
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_13" id="__nav_9_13_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_9">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_13">
             <span class="md-nav__icon md-icon"></span>
             Prompt System
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2673,7 +3769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/prompt-architecture/" class="md-nav__link">
+      <a href="../../../prompt-system/prompt-system-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2702,32 +3798,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_13_3" >
         
           
-          <label class="md-nav__link" for="__nav_7_9_2" id="__nav_7_9_2_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../prompt-system/adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_13_3" id="__nav_9_13_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_9_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_9_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_13_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_13_3">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2736,7 +3857,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/adr/adr-pt03-current-status-roadmap/" class="md-nav__link">
+      <a href="../../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2773,32 +3894,59 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_13_4" >
         
           
-          <label class="md-nav__link" for="__nav_7_9_3" id="__nav_7_9_3_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../prompt-system/archive/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Archive
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_13_4" id="__nav_9_13_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_9_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_9_3">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_13_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_13_4">
             <span class="md-nav__icon md-icon"></span>
             Archive
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2807,7 +3955,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/archive/pattern-core-design/" class="md-nav__link">
+      <a href="../../../prompt-system/archive/core-pattern-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2836,32 +3984,59 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9_3_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_13_4_3" >
         
           
-          <label class="md-nav__link" for="__nav_7_9_3_2" id="__nav_7_9_3_2_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../prompt-system/archive/adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_13_4_3" id="__nav_9_13_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_7_9_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_9_3_2">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_13_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_13_4_3">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2898,7 +4073,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/archive/adr/adr-pt02-pattern-catalog/" class="md-nav__link">
+      <a href="../../../prompt-system/archive/adr/adr-pt02-adopt-pattern-and-patterncatalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2951,32 +4126,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_14" >
         
           
-          <label class="md-nav__link" for="__nav_7_10" id="__nav_7_10_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../setup-tnh/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Setup Tnh
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_14" id="__nav_9_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_10">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_14">
             <span class="md-nav__icon md-icon"></span>
             Setup Tnh
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2986,32 +4186,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_10_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_14_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_10_1" id="__nav_7_10_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../setup-tnh/design/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_14_2" id="__nav_9_14_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_10_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_10_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_14_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_14_2">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -3020,7 +4245,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../setup-tnh/design/setup-design/" class="md-nav__link">
+      <a href="../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3065,80 +4290,30 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_15" >
         
           
-          <label class="md-nav__link" for="__nav_7_11" id="__nav_7_11_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../tnh-fab/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Tnh Fab
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_11">
-            <span class="md-nav__icon md-icon"></span>
-            Tnh Fab
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_11_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_7_11_1" id="__nav_7_11_1_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Design
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_11_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_11_1">
-            <span class="md-nav__icon md-icon"></span>
-            Design
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../tnh-fab/design/text-processing-cli-design-v1/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TNH FAB Design Document
   </span>
   
     
@@ -3149,10 +4324,84 @@
 
   
 
-      </a>
-    </li>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_15" id="__nav_9_15_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_15">
+            <span class="md-nav__icon md-icon"></span>
+            Tnh Fab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_15_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../tnh-fab/design/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
   
 
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_15_2" id="__nav_9_15_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_15_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_15_2">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
             
               
@@ -3162,7 +4411,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-fab/design/text-processing-cli-design-v2/" class="md-nav__link">
+      <a href="../../../tnh-fab/design/tnh-fab-cli-spec/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3183,6 +4432,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tnh-fab/design/tnh-fab-design-document/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TNH FAB Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3208,6 +4485,16 @@
   
   
     
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
     
     
     
@@ -3215,26 +4502,43 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_12" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16" checked>
         
           
-          <label class="md-nav__link" for="__nav_7_12" id="__nav_7_12_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Transcription
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_16" id="__nav_9_16_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_12_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7_12">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_16_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9_16">
             <span class="md-nav__icon md-icon"></span>
             Transcription
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -3244,32 +4548,63 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_12_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_12_1" id="__nav_7_12_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_16_2" id="__nav_9_16_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_12_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_12_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_16_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_16_2">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -3306,7 +4641,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-tr02-optimize-srt/" class="md-nav__link">
+      <a href="../../adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3334,7 +4669,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-tr03-standard-timestamp/" class="md-nav__link">
+      <a href="../../adr/adr-tr03-ms-timestamps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3401,60 +4736,79 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_12_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_7_12_2" id="__nav_7_12_2_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_16_3" id="__nav_9_16_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_12_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7_12_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_16_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9_16_3">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../additional-design/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Diarization Chunker Module Design Strategy
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -3463,67 +4817,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../audio-chunk-splitting/" class="md-nav__link">
+      <a href="../audio-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Audio Chunking Algorithm Design Document
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../chunking-strategies/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Simplified Language-Aware Chunking Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../chunking-strategies0/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Language-Aware Chunking Orchestrator Notes
   </span>
   
     
@@ -3970,11 +5268,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../diarization-algorithms0/" class="md-nav__link">
+      <a href="../diarization-chunker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Speaker Diarization Algorithm Design
+    Diarization Chunker Module Design Strategy
   </span>
   
     
@@ -3998,35 +5296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../diarization-system0/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Speaker Diarization and Time-Mapped Transcription System Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../diarization-system1/" class="md-nav__link">
+      <a href="../diarization-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4054,63 +5324,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gpt-modular-pipeline/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Modular Pipeline Design: Best Practices for Audio Transcription and Diarization
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../language-chunking-algorithm/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Practical Language-Aware Chunking Design
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../segment-match-algorithm/" class="md-nav__link">
+      <a href="../interval-to-segment-mapping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4138,7 +5352,175 @@
   
   
     <li class="md-nav__item">
-      <a href="../timeline-mapping/" class="md-nav__link">
+      <a href="../language-aware-chunking-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Simplified Language-Aware Chunking Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../language-aware-chunking-orchestrator-notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Language-Aware Chunking Orchestrator Notes
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modular-pipeline-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modular Pipeline Design: Best Practices for Audio Transcription and Diarization
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../practical-language-aware-chunking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Practical Language-Aware Chunking Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../speaker-diarization-algorithm-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Speaker Diarization Algorithm Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../speaker-diarization-time-mapped-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Speaker Diarization and Time-Mapped Transcription System Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../timelinemapper-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4183,32 +5565,59 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_17" >
         
           
-          <label class="md-nav__link" for="__nav_7_13" id="__nav_7_13_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../ui-ux/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Ui Ux
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_17" id="__nav_9_17_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_13">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_17">
             <span class="md-nav__icon md-icon"></span>
             Ui Ux
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -4218,32 +5627,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_13_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_17_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_13_1" id="__nav_7_13_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../ui-ux/design/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_17_2" id="__nav_9_17_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_13_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_13_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_17_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_17_2">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -4252,7 +5686,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/design/ui-ux-strategy/" class="md-nav__link">
+      <a href="../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4289,32 +5723,59 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_13_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_17_3" >
         
           
-          <label class="md-nav__link" for="__nav_7_13_2" id="__nav_7_13_2_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../ui-ux/vs-code-integration/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Vs Code Integration
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_17_3" id="__nav_9_17_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_13_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_13_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_17_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_17_3">
             <span class="md-nav__icon md-icon"></span>
             Vs Code Integration
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -4323,11 +5784,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strat/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Adr Vsc01 Vscode Integration Strat
+    Adr Vsc01 Vscode Integration Strategy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adr Vsc02 Tnh Gen Cli Implementation
   </span>
   
 
@@ -4361,32 +5843,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_14" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_18" >
         
           
-          <label class="md-nav__link" for="__nav_7_14" id="__nav_7_14_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../utilities/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Utilities
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_18" id="__nav_9_18_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_14_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_14">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_18">
             <span class="md-nav__icon md-icon"></span>
             Utilities
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -4396,32 +5903,87 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_14_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_18_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_14_1" id="__nav_7_14_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../utilities/design/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_18_2" id="__nav_9_18_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_14_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_14_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_18_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_18_2">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../utilities/design/package-version-checker-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Package Version Checker Design Document
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -4451,18 +6013,54 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
               
                 
   
   
   
   
-    <li class="md-nav__item">
-      <a href="../../../utilities/design/version-checking-design/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../video-processing/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    Package Version Checker Design Document
+    Video Processing
   </span>
   
     
@@ -4473,64 +6071,25 @@
 
   
 
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
+            </a>
             
               
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_15" >
-        
-          
-          <label class="md-nav__link" for="__nav_7_15" id="__nav_7_15_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_9_19" id="__nav_9_19_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
             
-  
-  <span class="md-ellipsis">
-    Video Processing
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_15_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_15">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_19">
             <span class="md-nav__icon md-icon"></span>
             Video Processing
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
                 
   
   
@@ -4538,32 +6097,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_15_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_15_1" id="__nav_7_15_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../video-processing/adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_19_2" id="__nav_9_19_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_15_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_15_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_19_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_19_2">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -4615,7 +6199,41 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../../ytt-fetch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ytt Fetch
+  </span>
+  
     
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
     
     
     
@@ -4623,10 +6241,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_16" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_21" >
         
           
-          <label class="md-nav__link" for="__nav_7_16" id="__nav_7_16_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9_21" id="__nav_9_21_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -4637,8 +6255,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_21">
             <span class="md-nav__icon md-icon"></span>
             YTT Fetch
           </label>
@@ -4652,32 +6270,61 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_16_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_21_1" >
         
           
-          <label class="md-nav__link" for="__nav_7_16_1" id="__nav_7_16_1_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../ytt-fetch/adr/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Adr
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_21_1" id="__nav_9_21_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_16_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_16_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_21_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_21_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -4686,7 +6333,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf00-overview/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4714,7 +6361,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf01-transcript-source-handling/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4742,7 +6389,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf02-yt-dlp-transcripts/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4779,32 +6426,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_16_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_21_2" >
         
           
-          <label class="md-nav__link" for="__nav_7_16_2" id="__nav_7_16_2_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../ytt-fetch/design/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Design
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_21_2" id="__nav_9_21_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_16_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_16_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_21_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_21_2">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -4813,7 +6485,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/design/yt-dlp-vs-youtube-api/" class="md-nav__link">
+      <a href="../../../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4865,32 +6537,71 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../development/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Development
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             Development
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -4899,7 +6610,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/contributing/" class="md-nav__link">
+      <a href="../../../../development/contributing-prototype-phase/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4983,7 +6694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/human-agent-coding-principles/" class="md-nav__link">
+      <a href="../../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5011,11 +6722,39 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/initial-improvements/" class="md-nav__link">
+      <a href="../../../../development/improvements-initial-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Improvements / Initial structure
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../development/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development Documentation
   </span>
   
     
@@ -5103,32 +6842,65 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
         
           
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../docs-ops/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Docs Ops
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
             <span class="md-nav__icon md-icon"></span>
             Docs Ops
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -5193,7 +6965,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/mkdocs-warning-backlog/" class="md-nav__link">
+      <a href="../../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5214,48 +6986,6 @@
 
               
             
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
-        
-          
-          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Project
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
-            <span class="md-nav__icon md-icon"></span>
-            Project
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
               
                 
   
@@ -5263,172 +6993,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/conceptual-architecture/" class="md-nav__link">
+      <a href="../../../../docs-ops/preview-theme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Conceptual Architecture
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../project/future-directions/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Future Directions
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../project/philosophy/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Philosophy
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../project/principles/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Principles
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../project/vision/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Vision
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../project/repo-root/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Project Docs
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_7" >
-        
-          
-          <label class="md-nav__link" for="__nav_10_7" id="__nav_10_7_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Repo Root
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_7">
-            <span class="md-nav__icon md-icon"></span>
-            Repo Root
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../project/repo-root/CHANGELOG/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Changelog
+    Preview TNH Scholar Theme
   </span>
   
     
@@ -5452,129 +7021,17 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/CONTRIBUTING/" class="md-nav__link">
+      <a href="../../../../docs-ops/theme-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Contributing to TNH Scholar
+    TNH Scholar Theme Design
   </span>
   
     
   
   
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../project/repo-root/DEV_SETUP/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TNH-Scholar — Development Setup Guide
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../project/repo-root/TODO/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TNH Scholar TODO List
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../project/repo-root/release_checklist/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Release Checklist
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../project/repo-root/repo-readme/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TNH Scholar
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
+    <span class="md-status md-status--current"></span>
   
 
   
@@ -5591,14 +7048,6 @@
     </li>
   
 
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
     
       
       
@@ -5607,6 +7056,26 @@
   
   
     
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -5614,26 +7083,36 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../research/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Research
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_12" id="__nav_12_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
             <span class="md-nav__icon md-icon"></span>
             Research
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -5670,11 +7149,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/metadata_report/" class="md-nav__link">
+      <a href="../../../../research/kb-design-document/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    *Summary Report on Metadata Extraction, Source Parsing, and Model Training for TNH-Scholar*
+    TNH Scholar Knowledge Base: Design Document
   </span>
   
     
@@ -5698,7 +7177,35 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/preliminary_feasibility_study/" class="md-nav__link">
+      <a href="../../../../research/metadata-summary-report/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary Report on Metadata Extraction, Source Parsing, and Model Training for TNH-Scholar
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../research/preliminary-feasibility-study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5726,7 +7233,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/strategic-information-processing/" class="md-nav__link">
+      <a href="../../../../research/siap-methodology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5753,12 +7260,32 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../../../research/tnh-scholar-knowledge-vector-search/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_7" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    TNH Scholar Knowledge Base: Design Document
+    Gpt4O Search Query Testing
   </span>
   
     
@@ -5769,46 +7296,23 @@
 
   
 
-      </a>
-    </li>
-  
-
-              
+            </a>
             
               
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_11_6" id="__nav_11_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_12_7" id="__nav_12_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
             
-  
-  <span class="md-ellipsis">
-    Gpt 4O Search Query Text Pair Testing
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_7">
             <span class="md-nav__icon md-icon"></span>
-            Gpt 4O Search Query Text Pair Testing
+            Gpt4O Search Query Testing
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -5817,7 +7321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt_4o_search_query_text_pair_testing/testing_input_output/" class="md-nav__link">
+      <a href="../../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5854,32 +7358,57 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_8" >
         
           
-          <label class="md-nav__link" for="__nav_11_7" id="__nav_11_7_label" tabindex="0">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    Gpt 4O Translations Experiments
+    Gpt4O Translation Experiments
   </span>
   
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_12_8" id="__nav_12_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_8">
             <span class="md-nav__icon md-icon"></span>
-            Gpt 4O Translations Experiments
+            Gpt4O Translation Experiments
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -5888,7 +7417,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt_4o_translations_experiments/passage_test/" class="md-nav__link">
+      <a href="../../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5947,167 +7476,6 @@
   
 
       </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../tnh_scholar_parallax_overview/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Tnh Scholar Parallax Overview
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
-        
-          
-          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Reference
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_14">
-            <span class="md-nav__icon md-icon"></span>
-            Reference
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_14_1" id="__nav_14_1_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Yt Dlp Docs
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_14_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_14_1">
-            <span class="md-nav__icon md-icon"></span>
-            Yt Dlp Docs
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../reference/yt-dlp_docs/ytdlp-formats/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    yt-dlp Format Selection Guide
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../reference/yt-dlp_docs/ytdlp-guide/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    yt-dlp Comprehensive Guide
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -6504,11 +7872,11 @@
   
 
 
-<h1 id="diarization-algorithms">Diarization Algorithms</h1>
+<h1 id="diarization-algorithms">Diarization Algorithms<a class="headerlink" href="#diarization-algorithms" title="Link to this section">&para;</a></h1>
 <p>This document details the key algorithms in the diarization system, focusing on high-level design without implementation details. Each algorithm is presented with its inputs, outputs, and process flow.</p>
-<h2 id="1-speaker-segment-merging-algorithm">1. Speaker Segment Merging Algorithm</h2>
+<h2 id="1-speaker-segment-merging-algorithm">1. Speaker Segment Merging Algorithm<a class="headerlink" href="#1-speaker-segment-merging-algorithm" title="Link to this section">&para;</a></h2>
 <p>The algorithm merges adjacent segments from the same speaker when they're close enough in time.</p>
-<h3 id="11-inputs-and-outputs">1.1 Inputs and Outputs</h3>
+<h3 id="11-inputs-and-outputs">1.1 Inputs and Outputs<a class="headerlink" href="#11-inputs-and-outputs" title="Link to this section">&para;</a></h3>
 <p><strong>Inputs:</strong></p>
 <ul>
 <li>List of speaker segments from diarization API</li>
@@ -6518,8 +7886,8 @@
 <ul>
 <li>Dictionary mapping speaker IDs to lists of merged segments</li>
 </ul>
-<h3 id="12-algorithm-flowchart">1.2 Algorithm Flowchart</h3>
-<pre><code class="language-mermaid">flowchart TD
+<h3 id="12-algorithm-flowchart">1.2 Algorithm Flowchart<a class="headerlink" href="#12-algorithm-flowchart" title="Link to this section">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
     A[Input: Segments + Threshold] --&gt; B[Sort segments by start time]
     B --&gt; C[Initialize speaker blocks]
     C --&gt; D[For each segment]
@@ -6539,9 +7907,8 @@
     D --&gt; N{More segments?}
     N --&gt;|Yes| D
     N --&gt;|No| O[Finalize last block]
-    O --&gt; P[Return speaker blocks]
-</code></pre>
-<h3 id="13-algorithm-description">1.3 Algorithm Description</h3>
+    O --&gt; P[Return speaker blocks]</code></pre>
+<h3 id="13-algorithm-description">1.3 Algorithm Description<a class="headerlink" href="#13-algorithm-description" title="Link to this section">&para;</a></h3>
 <ol>
 <li><strong>Sort segments</strong>: Arrange all segments in chronological order by start time</li>
 <li><strong>Process sequentially</strong>: Examine each segment in order</li>
@@ -6553,16 +7920,16 @@
 <li>If different speaker: finalize current block and start new one</li>
 <li><strong>Result generation</strong>: Return dictionary mapping speaker IDs to lists of merged segments</li>
 </ol>
-<h3 id="14-potential-enhancements">1.4 Potential Enhancements</h3>
+<h3 id="14-potential-enhancements">1.4 Potential Enhancements<a class="headerlink" href="#14-potential-enhancements" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Adaptive gap thresholds</strong>: Adjust threshold based on speaker characteristics</li>
 <li><strong>Confidence-based merging</strong>: Incorporate confidence scores from API</li>
 <li><strong>Speech rate analysis</strong>: Consider speech rate in gap threshold determination</li>
 <li><strong>Overlapping segment handling</strong>: Intelligently resolve overlapping segments</li>
 </ul>
-<h2 id="2-audio-extraction-algorithm">2. Audio Extraction Algorithm</h2>
+<h2 id="2-audio-extraction-algorithm">2. Audio Extraction Algorithm<a class="headerlink" href="#2-audio-extraction-algorithm" title="Link to this section">&para;</a></h2>
 <p>This algorithm extracts speaker segments from the original audio and creates speaker-specific tracks.</p>
-<h3 id="21-inputs-and-outputs">2.1 Inputs and Outputs</h3>
+<h3 id="21-inputs-and-outputs">2.1 Inputs and Outputs<a class="headerlink" href="#21-inputs-and-outputs" title="Link to this section">&para;</a></h3>
 <p><strong>Inputs:</strong></p>
 <ul>
 <li>Path to original audio file</li>
@@ -6575,8 +7942,8 @@
 <li>Dictionary of timeline mapping information for each speaker</li>
 <li>Speaker-specific audio files on disk</li>
 </ul>
-<h3 id="22-algorithm-flowchart">2.2 Algorithm Flowchart</h3>
-<pre><code class="language-mermaid">flowchart TD
+<h3 id="22-algorithm-flowchart">2.2 Algorithm Flowchart<a class="headerlink" href="#22-algorithm-flowchart" title="Link to this section">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
     A[Input: Original Audio + Speaker Blocks] --&gt; B[Load original audio]
     B --&gt; C[For each speaker]
     C --&gt; D[Initialize empty audio track]
@@ -6593,9 +7960,8 @@
     L --&gt;|No| M[Export speaker track]
     M --&gt; N{More speakers?}
     N --&gt;|Yes| C
-    N --&gt;|No| O[Return mapping information]
-</code></pre>
-<h3 id="23-algorithm-description">2.3 Algorithm Description</h3>
+    N --&gt;|No| O[Return mapping information]</code></pre>
+<h3 id="23-algorithm-description">2.3 Algorithm Description<a class="headerlink" href="#23-algorithm-description" title="Link to this section">&para;</a></h3>
 <ol>
 <li><strong>Load original audio</strong>: Read the complete audio file</li>
 <li><strong>Speaker iteration</strong>: Process each speaker independently</li>
@@ -6610,7 +7976,7 @@
 <li><strong>Export</strong>: Save each speaker's audio to disk</li>
 <li><strong>Return mappings</strong>: Provide timeline mapping information for later use</li>
 </ol>
-<h3 id="24-potential-enhancements">2.4 Potential Enhancements</h3>
+<h3 id="24-potential-enhancements">2.4 Potential Enhancements<a class="headerlink" href="#24-potential-enhancements" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Streaming processing</strong>: Handle large audio files without loading entirely</li>
 <li><strong>Parallel extraction</strong>: Process multiple speakers simultaneously</li>
@@ -6618,9 +7984,9 @@
 <li><strong>Adaptive padding</strong>: Adjust silence duration based on context</li>
 <li><strong>Format optimization</strong>: Support different output formats with optimized settings</li>
 </ul>
-<h2 id="3-srt-timeline-mapping-algorithm">3. SRT Timeline Mapping Algorithm</h2>
+<h2 id="3-srt-timeline-mapping-algorithm">3. SRT Timeline Mapping Algorithm<a class="headerlink" href="#3-srt-timeline-mapping-algorithm" title="Link to this section">&para;</a></h2>
 <p>This algorithm transforms SRT timestamps from speaker timeline to original audio timeline.</p>
-<h3 id="31-inputs-and-outputs">3.1 Inputs and Outputs</h3>
+<h3 id="31-inputs-and-outputs">3.1 Inputs and Outputs<a class="headerlink" href="#31-inputs-and-outputs" title="Link to this section">&para;</a></h3>
 <p><strong>Inputs:</strong></p>
 <ul>
 <li>Path to SRT file (with timestamps in speaker timeline)</li>
@@ -6631,8 +7997,8 @@
 <ul>
 <li>SRT file with timestamps mapped to original timeline</li>
 </ul>
-<h3 id="32-algorithm-flowchart">3.2 Algorithm Flowchart</h3>
-<pre><code class="language-mermaid">flowchart TD
+<h3 id="32-algorithm-flowchart">3.2 Algorithm Flowchart<a class="headerlink" href="#32-algorithm-flowchart" title="Link to this section">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
     A[Input: SRT + Timeline Map] --&gt; B[Parse SRT file]
     B --&gt; C[Build interval mapping]
     C --&gt; D[For each subtitle entry]
@@ -6643,9 +8009,8 @@
     H --&gt; I{More entries?}
     I --&gt;|Yes| D
     I --&gt;|No| J[Write SRT file]
-    J --&gt; K[Return mapped SRT]
-</code></pre>
-<h3 id="33-algorithm-description">3.3 Algorithm Description</h3>
+    J --&gt; K[Return mapped SRT]</code></pre>
+<h3 id="33-algorithm-description">3.3 Algorithm Description<a class="headerlink" href="#33-algorithm-description" title="Link to this section">&para;</a></h3>
 <ol>
 <li><strong>Parse SRT</strong>: Extract subtitle entries with timestamps and text</li>
 <li><strong>Build intervals</strong>: Create complete mapping intervals for timeline transformation</li>
@@ -6656,7 +8021,7 @@
 <li>Create new entry with mapped timestamps</li>
 <li><strong>Output generation</strong>: Write transformed entries to SRT file</li>
 </ol>
-<h3 id="34-potential-enhancements">3.4 Potential Enhancements</h3>
+<h3 id="34-potential-enhancements">3.4 Potential Enhancements<a class="headerlink" href="#34-potential-enhancements" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Non-linear mapping</strong>: Support for variable-rate timeline transformations</li>
 <li><strong>Format preservation</strong>: Maintain formatting and styling in transformed SRT</li>
@@ -6664,9 +8029,9 @@
 <li><strong>Multi-language support</strong>: Handle translated SRTs with correct timing</li>
 <li><strong>Overlap resolution</strong>: Intelligent handling of overlapping subtitle entries</li>
 </ul>
-<h2 id="4-finding-best-interval-algorithm">4. Finding Best Interval Algorithm</h2>
+<h2 id="4-finding-best-interval-algorithm">4. Finding Best Interval Algorithm<a class="headerlink" href="#4-finding-best-interval-algorithm" title="Link to this section">&para;</a></h2>
 <p>A subcomponent of the SRT mapping algorithm that finds the most appropriate interval for a subtitle.</p>
-<h3 id="41-inputs-and-outputs">4.1 Inputs and Outputs</h3>
+<h3 id="41-inputs-and-outputs">4.1 Inputs and Outputs<a class="headerlink" href="#41-inputs-and-outputs" title="Link to this section">&para;</a></h3>
 <p><strong>Inputs:</strong></p>
 <ul>
 <li>List of timeline intervals</li>
@@ -6676,8 +8041,8 @@
 <ul>
 <li>Interval with best overlap with the subtitle</li>
 </ul>
-<h3 id="42-algorithm-flowchart">4.2 Algorithm Flowchart</h3>
-<pre><code class="language-mermaid">flowchart TD
+<h3 id="42-algorithm-flowchart">4.2 Algorithm Flowchart<a class="headerlink" href="#42-algorithm-flowchart" title="Link to this section">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
     A[Input: Intervals + Subtitle Time] --&gt; B[Initialize best overlap]
     B --&gt; C[For each interval]
     C --&gt; D[Calculate overlap]
@@ -6687,9 +8052,8 @@
     F --&gt; G
     G --&gt; H{More intervals?}
     H --&gt;|Yes| C
-    H --&gt;|No| I[Return best interval]
-</code></pre>
-<h3 id="43-algorithm-description">4.3 Algorithm Description</h3>
+    H --&gt;|No| I[Return best interval]</code></pre>
+<h3 id="43-algorithm-description">4.3 Algorithm Description<a class="headerlink" href="#43-algorithm-description" title="Link to this section">&para;</a></h3>
 <ol>
 <li><strong>Initialization</strong>: Start with no overlap found</li>
 <li><strong>Interval iteration</strong>: Examine each potential mapping interval</li>
@@ -6697,16 +8061,16 @@
 <li><strong>Best match selection</strong>: Choose interval with greatest overlap</li>
 <li><strong>Result return</strong>: Provide best interval for mapping, or None if no overlap</li>
 </ol>
-<h3 id="44-potential-enhancements">4.4 Potential Enhancements</h3>
+<h3 id="44-potential-enhancements">4.4 Potential Enhancements<a class="headerlink" href="#44-potential-enhancements" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Weighted overlap</strong>: Consider duration and content in overlap importance</li>
 <li><strong>Context awareness</strong>: Consider surrounding subtitles in interval selection</li>
 <li><strong>Confidence scoring</strong>: Include confidence metrics in interval selection</li>
 <li><strong>Multiple interval mapping</strong>: Split subtitle across intervals when necessary</li>
 </ul>
-<h2 id="5-timeline-mapping-function">5. Timeline Mapping Function</h2>
+<h2 id="5-timeline-mapping-function">5. Timeline Mapping Function<a class="headerlink" href="#5-timeline-mapping-function" title="Link to this section">&para;</a></h2>
 <p>Maps time from speaker timeline to original timeline using interval information.</p>
-<h3 id="51-inputs-and-outputs">5.1 Inputs and Outputs</h3>
+<h3 id="51-inputs-and-outputs">5.1 Inputs and Outputs<a class="headerlink" href="#51-inputs-and-outputs" title="Link to this section">&para;</a></h3>
 <p><strong>Inputs:</strong></p>
 <ul>
 <li>Mapping interval (original and speaker timeline information)</li>
@@ -6716,72 +8080,71 @@
 <ul>
 <li>Corresponding time in original timeline</li>
 </ul>
-<h3 id="52-algorithm-flowchart">5.2 Algorithm Flowchart</h3>
-<pre><code class="language-mermaid">flowchart TD
+<h3 id="52-algorithm-flowchart">5.2 Algorithm Flowchart<a class="headerlink" href="#52-algorithm-flowchart" title="Link to this section">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
     A[Input: Interval + Time] --&gt; B[Extract interval parameters]
     B --&gt; C[Calculate position in interval]
     C --&gt; D[Map to original timeline]
-    D --&gt; E[Return mapped time]
-</code></pre>
-<h3 id="53-algorithm-description">5.3 Algorithm Description</h3>
+    D --&gt; E[Return mapped time]</code></pre>
+<h3 id="53-algorithm-description">5.3 Algorithm Description<a class="headerlink" href="#53-algorithm-description" title="Link to this section">&para;</a></h3>
 <ol>
 <li><strong>Parameter extraction</strong>: Get original and speaker timeline boundaries from interval</li>
 <li><strong>Position calculation</strong>: Determine relative position of time within speaker timeline range</li>
 <li><strong>Timeline mapping</strong>: Apply same relative position to original timeline range</li>
 <li><strong>Result return</strong>: Return the mapped time in original timeline</li>
 </ol>
-<h3 id="54-potential-enhancements">5.4 Potential Enhancements</h3>
+<h3 id="54-potential-enhancements">5.4 Potential Enhancements<a class="headerlink" href="#54-potential-enhancements" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Non-linear mapping</strong>: Support for variable rates within intervals</li>
 <li><strong>Interpolation</strong>: Multi-point interpolation for improved accuracy</li>
 <li><strong>Boundary handling</strong>: Special cases for interval boundaries</li>
 <li><strong>Error estimation</strong>: Include confidence/error metrics with mapped times</li>
 </ul>
-<h2 id="6-improvements-and-extensions">6. Improvements and Extensions</h2>
-<h3 id="61-enhanced-speaker-merging">6.1 Enhanced Speaker Merging</h3>
+<h2 id="6-improvements-and-extensions">6. Improvements and Extensions<a class="headerlink" href="#6-improvements-and-extensions" title="Link to this section">&para;</a></h2>
+<h3 id="61-enhanced-speaker-merging">6.1 Enhanced Speaker Merging<a class="headerlink" href="#61-enhanced-speaker-merging" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Speaker characteristics</strong>: Adapt merging based on speech patterns</li>
 <li><strong>Content awareness</strong>: Consider linguistic content in merging decisions</li>
 <li><strong>Machine learning</strong>: Train models to predict optimal merge points</li>
 <li><strong>Speaker identification</strong>: Incorporate voice recognition for improved accuracy</li>
 </ul>
-<h3 id="62-advanced-timeline-mapping">6.2 Advanced Timeline Mapping</h3>
+<h3 id="62-advanced-timeline-mapping">6.2 Advanced Timeline Mapping<a class="headerlink" href="#62-advanced-timeline-mapping" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Content-aware stretching</strong>: Vary mapping based on speech content</li>
 <li><strong>Multi-point anchoring</strong>: Use multiple reference points for mapping</li>
 <li><strong>Adaptive resolution</strong>: Higher precision for critical segments</li>
 <li><strong>Bidirectional optimization</strong>: Ensure equal accuracy in both mapping directions</li>
 </ul>
-<h3 id="63-audio-processing-enhancements">6.3 Audio Processing Enhancements</h3>
+<h3 id="63-audio-processing-enhancements">6.3 Audio Processing Enhancements<a class="headerlink" href="#63-audio-processing-enhancements" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Noise profiling</strong>: Identify and remove background noise specific to each speaker</li>
 <li><strong>Volume normalization</strong>: Consistent loudness across all speakers</li>
 <li><strong>Voice enhancement</strong>: Improve clarity of speech for each speaker</li>
 <li><strong>Acoustic environment matching</strong>: Maintain consistent room acoustics</li>
 </ul>
-<h3 id="64-srt-processing-extensions">6.4 SRT Processing Extensions</h3>
+<h3 id="64-srt-processing-extensions">6.4 SRT Processing Extensions<a class="headerlink" href="#64-srt-processing-extensions" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Formatting preservation</strong>: Maintain styling across timeline mapping</li>
 <li><strong>Speaker identification</strong>: Label subtitles with speaker information</li>
 <li><strong>Confidence indication</strong>: Include reliability markers for uncertain segments</li>
 <li><strong>Multi-language alignment</strong>: Coordinate timing across translated subtitles</li>
 </ul>
-<h3 id="65-performance-optimizations">6.5 Performance Optimizations</h3>
+<h3 id="65-performance-optimizations">6.5 Performance Optimizations<a class="headerlink" href="#65-performance-optimizations" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Progressive processing</strong>: Begin processing before complete file download</li>
 <li><strong>Memory-efficient handling</strong>: Process large files without excessive memory use</li>
 <li><strong>Computation distribution</strong>: Distribute processing across multiple cores/machines</li>
 <li><strong>Caching strategies</strong>: Reuse intermediate results when appropriate</li>
 </ul>
-<h2 id="7-integration-with-audio-transcribe">7. Integration with audio-transcribe</h2>
-<h3 id="71-integration-points">7.1 Integration Points</h3>
+<h2 id="7-integration-with-audio-transcribe">7. Integration with audio-transcribe<a class="headerlink" href="#7-integration-with-audio-transcribe" title="Link to this section">&para;</a></h2>
+<h3 id="71-integration-points">7.1 Integration Points<a class="headerlink" href="#71-integration-points" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Command-line flags</strong>: Add diarization-specific options to CLI</li>
 <li><strong>Configuration file</strong>: Support for detailed diarization configuration</li>
 <li><strong>Pipeline integration</strong>: Use diarization in place of or alongside existing chunking</li>
 <li><strong>Output control</strong>: Options for organizing and formatting diarized output</li>
 </ul>
-<h3 id="72-workflow-integration">7.2 Workflow Integration</h3>
+<h3 id="72-workflow-integration">7.2 Workflow Integration<a class="headerlink" href="#72-workflow-integration" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Preprocessing</strong>: Use diarization to guide chunking strategy</li>
 <li><strong>Speaker-aware transcription</strong>: Optimize transcription for each speaker</li>
@@ -6808,11 +8171,20 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
       </main>
       
+  
         <footer class="md-footer">
   
   <div class="md-footer-meta md-typeset">
@@ -6820,9 +8192,16 @@
       <div class="md-copyright">
   
   
-    Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/aaronksolomon/tnh-scholar" target="_blank" rel="noopener" title="TNH Scholar on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
     </a>
   
 </div>
@@ -6831,13 +8210,44 @@
   </div>
 </footer>
       
+  <script>
+    // Mindful interactions - add subtle breathing animation to focus
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add gentle breathing effect to the logo on hover
+      const logo = document.querySelector('.md-header__button.md-logo');
+      if (logo) {
+        logo.addEventListener('mouseenter', function() {
+          this.style.transition = 'transform 0.6s ease-in-out';
+          this.style.transform = 'scale(1.05)';
+        });
+        logo.addEventListener('mouseleave', function() {
+          this.style.transform = 'scale(1)';
+        });
+      }
+
+      // Smooth scroll for anchor links - mindful navigation
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    });
+  </script>
+
     </div>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
