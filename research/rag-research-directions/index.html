@@ -6,30 +6,32 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Documents how yt-fetch prioritizes manual subtitles while accepting auto captions for maximum coverage.">
+        <meta name="description" content="Exploratory roadmap for retrieval-augmented generation (RAG) within the TNH Scholar project, with emphasis on multilingual Buddhist corpora and Plum Village practice contexts.">
+      
+      
+        <meta name="author" content="Aaron Solomon (with GPT-5.1 Thinking as research assistant)">
       
       
       
-      
-        <link rel="prev" href="../adr-yf00-early-decisions/">
-      
-      
-        <link rel="next" href="../adr-yf02-yt-transcript-format-selection/">
+        <link rel="prev" href="../preliminary-feasibility-study/">
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+        <link rel="next" href="../siap-methodology/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
     
     
       
-        <title>ADR-YF01: YouTube Transcript Source Handling - TNH Scholar Documentation</title>
+        <title>RAG Research Directions for TNH Scholar - TNH Scholar Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,11 +50,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../stylesheets/tnh-zen.css">
+      <link rel="stylesheet" href="../../stylesheets/tnh-zen.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -120,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-yf01-youtube-transcript-source-handling" class="md-skip">
+        <a href="#rag-research-directions-for-tnh-scholar" class="md-skip">
           Skip to content
         </a>
       
@@ -156,7 +158,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -176,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-YF01: YouTube Transcript Source Handling
+              RAG Research Directions for TNH Scholar
             
           </span>
         </div>
@@ -265,7 +267,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -295,7 +297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -339,7 +341,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../getting-started/" class="md-nav__link ">
+            <a href="../../getting-started/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -379,7 +381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/configuration/" class="md-nav__link">
+      <a href="../../getting-started/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -407,7 +409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/installation/" class="md-nav__link">
+      <a href="../../getting-started/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -435,7 +437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/quick-start-guide/" class="md-nav__link">
+      <a href="../../getting-started/quick-start-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -494,7 +496,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../user-guide/" class="md-nav__link ">
+            <a href="../../user-guide/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -534,7 +536,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
+      <a href="../../user-guide/best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -562,7 +564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/overview/" class="md-nav__link">
+      <a href="../../user-guide/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -590,7 +592,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/prompt-system/" class="md-nav__link">
+      <a href="../../user-guide/prompt-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -653,7 +655,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../project/" class="md-nav__link ">
+            <a href="../../project/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -693,7 +695,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/conceptual-architecture/" class="md-nav__link">
+      <a href="../../project/conceptual-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -714,7 +716,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/future-directions/" class="md-nav__link">
+      <a href="../../project/future-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -735,7 +737,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/philosophy/" class="md-nav__link">
+      <a href="../../project/philosophy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -756,7 +758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/principles/" class="md-nav__link">
+      <a href="../../project/principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -777,7 +779,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/vision/" class="md-nav__link">
+      <a href="../../project/vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -825,7 +827,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../community/" class="md-nav__link ">
+            <a href="../../community/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -858,7 +860,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../community/parallax-overview/" class="md-nav__link">
+      <a href="../../community/parallax-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -916,7 +918,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../project/repo-root/" class="md-nav__link ">
+            <a href="../../project/repo-root/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -949,7 +951,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/changelog/" class="md-nav__link">
+      <a href="../../project/repo-root/changelog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -977,7 +979,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/contributing-root/" class="md-nav__link">
+      <a href="../../project/repo-root/contributing-root/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1005,7 +1007,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
+      <a href="../../project/repo-root/dev-setup-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1033,7 +1035,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/release_checklist/" class="md-nav__link">
+      <a href="../../project/repo-root/release_checklist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1061,7 +1063,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/repo-readme/" class="md-nav__link">
+      <a href="../../project/repo-root/repo-readme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1089,7 +1091,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/todo-list/" class="md-nav__link">
+      <a href="../../project/repo-root/todo-list/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1162,7 +1164,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../cli-reference/" class="md-nav__link ">
+            <a href="../../cli-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1202,7 +1204,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/audio-transcribe/" class="md-nav__link">
+      <a href="../../cli-reference/audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1230,7 +1232,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/json-to-srt/" class="md-nav__link">
+      <a href="../../cli-reference/json-to-srt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1258,7 +1260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/nfmt/" class="md-nav__link">
+      <a href="../../cli-reference/nfmt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1286,7 +1288,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/overview/" class="md-nav__link">
+      <a href="../../cli-reference/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1314,7 +1316,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/sent-split/" class="md-nav__link">
+      <a href="../../cli-reference/sent-split/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1342,7 +1344,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/srt-translate/" class="md-nav__link">
+      <a href="../../cli-reference/srt-translate/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1370,7 +1372,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/tnh-fab/" class="md-nav__link">
+      <a href="../../cli-reference/tnh-fab/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1398,7 +1400,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/tnh-setup/" class="md-nav__link">
+      <a href="../../cli-reference/tnh-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1426,7 +1428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/token-count/" class="md-nav__link">
+      <a href="../../cli-reference/token-count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1454,7 +1456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/ytt-fetch/" class="md-nav__link">
+      <a href="../../cli-reference/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1489,7 +1491,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../api/" class="md-nav__link">
+      <a href="../../api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1513,10 +1515,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -1573,16 +1573,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../" class="md-nav__link ">
+            <a href="../../architecture/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1606,7 +1606,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             Architecture
@@ -1622,7 +1622,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../overview/" class="md-nav__link">
+      <a href="../../architecture/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1650,7 +1650,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/" class="md-nav__link">
+      <a href="../../architecture/ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1741,7 +1741,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ai-text-processing/adr/" class="md-nav__link ">
+            <a href="../../architecture/ai-text-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1781,7 +1781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
+      <a href="../../architecture/ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1809,7 +1809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
+      <a href="../../architecture/ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1867,7 +1867,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ai-text-processing/design/" class="md-nav__link ">
+            <a href="../../architecture/ai-text-processing/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1907,7 +1907,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
+      <a href="../../architecture/ai-text-processing/design/textobject-original-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1935,7 +1935,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
+      <a href="../../architecture/ai-text-processing/design/textobject-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1999,7 +1999,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../configuration/" class="md-nav__link ">
+            <a href="../../architecture/configuration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2039,7 +2039,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../configuration/tnh-configuration-management/" class="md-nav__link">
+      <a href="../../architecture/configuration/tnh-configuration-management/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2097,7 +2097,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/" class="md-nav__link ">
+            <a href="../../architecture/docs-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2163,7 +2163,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/adr/" class="md-nav__link ">
+            <a href="../../architecture/docs-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2203,7 +2203,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
+      <a href="../../architecture/docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2231,7 +2231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
+      <a href="../../architecture/docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2259,7 +2259,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
+      <a href="../../architecture/docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2287,7 +2287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
+      <a href="../../architecture/docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2336,7 +2336,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/design/" class="md-nav__link ">
+            <a href="../../architecture/docs-system/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2376,7 +2376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/design/documentation-design/" class="md-nav__link">
+      <a href="../../architecture/docs-system/design/documentation-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2420,7 +2420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2521,7 +2521,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../gen-ai-service/adr/" class="md-nav__link ">
+            <a href="../../architecture/gen-ai-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2561,7 +2561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2589,7 +2589,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2617,7 +2617,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2645,7 +2645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2673,7 +2673,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2701,7 +2701,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2729,7 +2729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2787,7 +2787,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../gen-ai-service/design/" class="md-nav__link ">
+            <a href="../../architecture/gen-ai-service/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2827,7 +2827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2855,7 +2855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
+      <a href="../../architecture/gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2919,7 +2919,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../jvb-viewer/" class="md-nav__link ">
+            <a href="../../architecture/jvb-viewer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2985,7 +2985,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../jvb-viewer/design/" class="md-nav__link ">
+            <a href="../../architecture/jvb-viewer/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3025,7 +3025,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
+      <a href="../../architecture/jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3053,7 +3053,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
+      <a href="../../architecture/jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3081,7 +3081,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
+      <a href="../../architecture/jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3109,7 +3109,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
+      <a href="../../architecture/jvb-viewer/design/luan-hoi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3173,7 +3173,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../knowledge-base/" class="md-nav__link ">
+            <a href="../../architecture/knowledge-base/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3233,7 +3233,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../knowledge-base/adr/" class="md-nav__link ">
+            <a href="../../architecture/knowledge-base/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3273,7 +3273,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
+      <a href="../../architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3337,7 +3337,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metadata/" class="md-nav__link ">
+            <a href="../../architecture/metadata/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3397,7 +3397,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metadata/adr/" class="md-nav__link ">
+            <a href="../../architecture/metadata/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3437,7 +3437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
+      <a href="../../architecture/metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3505,7 +3505,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../object-service/" class="md-nav__link ">
+            <a href="../../architecture/object-service/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3545,7 +3545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-design-overview/" class="md-nav__link">
+      <a href="../../architecture/object-service/object-service-design-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3573,7 +3573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-implementation-status/" class="md-nav__link">
+      <a href="../../architecture/object-service/object-service-implementation-status/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3621,7 +3621,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../object-service/adr/" class="md-nav__link ">
+            <a href="../../architecture/object-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3661,7 +3661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
+      <a href="../../architecture/object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3729,7 +3729,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../prompt-system/" class="md-nav__link ">
+            <a href="../../architecture/prompt-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3769,7 +3769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/prompt-system-architecture/" class="md-nav__link">
+      <a href="../../architecture/prompt-system/prompt-system-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3817,7 +3817,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../prompt-system/adr/" class="md-nav__link ">
+            <a href="../../architecture/prompt-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3857,7 +3857,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
+      <a href="../../architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3915,7 +3915,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../prompt-system/archive/" class="md-nav__link ">
+            <a href="../../architecture/prompt-system/archive/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3955,7 +3955,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/archive/core-pattern-architecture/" class="md-nav__link">
+      <a href="../../architecture/prompt-system/archive/core-pattern-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4005,7 +4005,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../prompt-system/archive/adr/" class="md-nav__link ">
+            <a href="../../architecture/prompt-system/archive/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4045,7 +4045,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/archive/adr/adr-pt01-pattern-access-strategy/" class="md-nav__link">
+      <a href="../../architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4073,7 +4073,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/archive/adr/adr-pt02-adopt-pattern-and-patterncatalog/" class="md-nav__link">
+      <a href="../../architecture/prompt-system/archive/adr/adr-pt02-adopt-pattern-and-patterncatalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4145,7 +4145,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../setup-tnh/" class="md-nav__link ">
+            <a href="../../architecture/setup-tnh/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4205,7 +4205,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../setup-tnh/design/" class="md-nav__link ">
+            <a href="../../architecture/setup-tnh/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4245,7 +4245,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
+      <a href="../../architecture/setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4309,7 +4309,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../tnh-fab/" class="md-nav__link ">
+            <a href="../../architecture/tnh-fab/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4371,7 +4371,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../tnh-fab/design/" class="md-nav__link ">
+            <a href="../../architecture/tnh-fab/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4411,7 +4411,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-fab/design/tnh-fab-cli-spec/" class="md-nav__link">
+      <a href="../../architecture/tnh-fab/design/tnh-fab-cli-spec/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4439,7 +4439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-fab/design/tnh-fab-design-document/" class="md-nav__link">
+      <a href="../../architecture/tnh-fab/design/tnh-fab-design-document/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4505,7 +4505,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../transcription/" class="md-nav__link ">
+            <a href="../../architecture/transcription/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4571,7 +4571,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../transcription/adr/" class="md-nav__link ">
+            <a href="../../architecture/transcription/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4611,7 +4611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
+      <a href="../../architecture/transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4639,7 +4639,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
+      <a href="../../architecture/transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4667,7 +4667,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
+      <a href="../../architecture/transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4695,7 +4695,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+      <a href="../../architecture/transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4773,7 +4773,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../transcription/design/" class="md-nav__link ">
+            <a href="../../architecture/transcription/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4813,7 +4813,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/audio-chunking-design/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/audio-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4841,7 +4841,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/diarization-algorithms/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/diarization-algorithms/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4869,7 +4869,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/diarization-chunker-design/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/diarization-chunker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4897,7 +4897,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/diarization-system-design/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/diarization-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4925,7 +4925,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/interval-to-segment-mapping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4953,7 +4953,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/language-aware-chunking-design/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/language-aware-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4981,7 +4981,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5009,7 +5009,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5037,7 +5037,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/practical-language-aware-chunking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5065,7 +5065,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5093,7 +5093,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5121,7 +5121,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/timelinemapper-design/" class="md-nav__link">
+      <a href="../../architecture/transcription/design/timelinemapper-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5187,7 +5187,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/" class="md-nav__link ">
+            <a href="../../architecture/ui-ux/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5247,7 +5247,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/design/" class="md-nav__link ">
+            <a href="../../architecture/ui-ux/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5287,7 +5287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
+      <a href="../../architecture/ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5345,7 +5345,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/vs-code-integration/" class="md-nav__link ">
+            <a href="../../architecture/ui-ux/vs-code-integration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5385,7 +5385,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
+      <a href="../../architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5406,7 +5406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
+      <a href="../../architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5463,7 +5463,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../utilities/" class="md-nav__link ">
+            <a href="../../architecture/utilities/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5525,7 +5525,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../utilities/design/" class="md-nav__link ">
+            <a href="../../architecture/utilities/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5565,7 +5565,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../utilities/design/package-version-checker-design/" class="md-nav__link">
+      <a href="../../architecture/utilities/design/package-version-checker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5593,7 +5593,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../utilities/design/utilities-catalog/" class="md-nav__link">
+      <a href="../../architecture/utilities/design/utilities-catalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5657,7 +5657,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../video-processing/" class="md-nav__link ">
+            <a href="../../architecture/video-processing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5717,7 +5717,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../video-processing/adr/" class="md-nav__link ">
+            <a href="../../architecture/video-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5757,7 +5757,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+      <a href="../../architecture/video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5801,7 +5801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../../architecture/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5826,10 +5826,8 @@
                 
   
   
-    
   
   
-  
     
     
       
@@ -5840,11 +5838,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_21" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_21" >
         
           
           <label class="md-nav__link" for="__nav_9_21" id="__nav_9_21_label" tabindex="0">
@@ -5858,7 +5856,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_21_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_21_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_21">
             <span class="md-nav__icon md-icon"></span>
             YTT Fetch
@@ -5869,8 +5867,6 @@
                 
   
   
-    
-  
   
   
     
@@ -5889,16 +5885,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_21_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_21_1" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../architecture/ytt-fetch/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5922,7 +5918,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_21_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_21_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_21_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -5938,7 +5934,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-yf00-early-decisions/" class="md-nav__link">
+      <a href="../../architecture/ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5963,37 +5959,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    ADR-YF01: YouTube Transcript Source Handling
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6009,95 +5978,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#future-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Future Considerations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#consequences" class="md-nav__link">
-    <span class="md-ellipsis">
-      Consequences
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Consequences">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#positive" class="md-nav__link">
-    <span class="md-ellipsis">
-      Positive
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#negative" class="md-nav__link">
-    <span class="md-ellipsis">
-      Negative
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#notes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Notes
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -6110,7 +5990,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
+      <a href="../../architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6166,7 +6046,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../design/" class="md-nav__link ">
+            <a href="../../architecture/ytt-fetch/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6206,7 +6086,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
+      <a href="../../architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6291,7 +6171,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../development/" class="md-nav__link ">
+            <a href="../../development/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6331,7 +6211,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/contributing-prototype-phase/" class="md-nav__link">
+      <a href="../../development/contributing-prototype-phase/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6359,7 +6239,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/design-principles/" class="md-nav__link">
+      <a href="../../development/design-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6387,7 +6267,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/fine-tuning-strategy/" class="md-nav__link">
+      <a href="../../development/fine-tuning-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6415,7 +6295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
+      <a href="../../development/human-ai-software-engineering-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6443,7 +6323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/improvements-initial-structure/" class="md-nav__link">
+      <a href="../../development/improvements-initial-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6471,7 +6351,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/overview/" class="md-nav__link">
+      <a href="../../development/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6499,7 +6379,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/style-guide/" class="md-nav__link">
+      <a href="../../development/style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6527,7 +6407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/system-design/" class="md-nav__link">
+      <a href="../../development/system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6590,7 +6470,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../docs-ops/" class="md-nav__link ">
+            <a href="../../docs-ops/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6630,7 +6510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/adr-template/" class="md-nav__link">
+      <a href="../../docs-ops/adr-template/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6658,7 +6538,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/markdown-standards/" class="md-nav__link">
+      <a href="../../docs-ops/markdown-standards/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6686,7 +6566,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
+      <a href="../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6714,7 +6594,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/preview-theme/" class="md-nav__link">
+      <a href="../../docs-ops/preview-theme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6742,7 +6622,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/theme-design/" class="md-nav__link">
+      <a href="../../docs-ops/theme-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6774,6 +6654,8 @@
       
   
   
+    
+  
   
   
     
@@ -6802,16 +6684,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6828,7 +6710,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_12">
             <span class="md-nav__icon md-icon"></span>
             Research
@@ -6844,7 +6726,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt_development_convos/" class="md-nav__link">
+      <a href="../gpt_development_convos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6872,7 +6754,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/kb-design-document/" class="md-nav__link">
+      <a href="../kb-design-document/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6900,7 +6782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/metadata-summary-report/" class="md-nav__link">
+      <a href="../metadata-summary-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6928,7 +6810,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/preliminary-feasibility-study/" class="md-nav__link">
+      <a href="../preliminary-feasibility-study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6953,10 +6835,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../../research/rag-research-directions/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    RAG Research Directions for TNH Scholar
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -6972,6 +6881,266 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-background-why-rag-for-tnh-scholar" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Background: Why RAG for TNH Scholar?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-rag-building-blocks-in-the-tnh-scholar-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. RAG Building Blocks in the TNH Scholar Context
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. RAG Building Blocks in the TNH Scholar Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-retrieval-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Retrieval layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-generation-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Generation layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-orchestration-and-reasoning-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Orchestration and reasoning layer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-priority-research-directions" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Priority Research Directions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Priority Research Directions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-multilingual-canon-aware-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Multilingual, Canon-Aware Embeddings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-self-querying-and-metadata-aware-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Self-Querying and Metadata-Aware Retrieval
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-agentic-rag-react-style-reasoning-and-tool-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Agentic RAG: ReAct-Style Reasoning and Tool Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-self-reflective-rag-and-faithfulness" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 Self-Reflective RAG and Faithfulness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-evaluation-frameworks-for-dharma-oriented-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.5 Evaluation Frameworks for Dharma-Oriented RAG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-data-and-annotation-programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.6 Data and Annotation Programs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-walking-skeleton-plan-high-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Walking Skeleton Plan (High-Level)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Walking Skeleton Plan (High-Level)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-poc-search-current" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 0: PoC Search (Current)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-baseline-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Baseline RAG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-metadata-self-querying" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Metadata &amp; Self-Querying
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-agentic-rag-react-style-walking-skeleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Agentic RAG (ReAct-Style Walking Skeleton)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-self-reflective-evaluated-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Self-Reflective &amp; Evaluated RAG
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-bibliography-and-external-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Bibliography and External Resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Bibliography and External Resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-primary-rag-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Primary RAG Research
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-self-reflective-and-faithfulness-oriented-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Self-Reflective and Faithfulness-Oriented RAG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-agentic-patterns-and-tool-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 Agentic Patterns and Tool Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-metadata-aware-and-self-querying-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4 Metadata-Aware and Self-Querying Retrieval
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-practitioner-overviews-and-emerging-tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5 Practitioner Overviews and Emerging Tooling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -6984,7 +7153,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/siap-methodology/" class="md-nav__link">
+      <a href="../siap-methodology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7032,7 +7201,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
+            <a href="../gpt4o-search-query-testing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7072,7 +7241,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
+      <a href="../gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7128,7 +7297,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
+            <a href="../gpt4o-translation-experiments/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7168,7 +7337,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
+      <a href="../gpt4o-translation-experiments/passage_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7211,7 +7380,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../documentation_index/" class="md-nav__link">
+      <a href="../../documentation_index/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7258,55 +7427,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
+  <a href="#1-background-why-rag-for-tnh-scholar" class="md-nav__link">
     <span class="md-ellipsis">
-      Context
+      1. Background: Why RAG for TNH Scholar?
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
+  <a href="#2-rag-building-blocks-in-the-tnh-scholar-context" class="md-nav__link">
     <span class="md-ellipsis">
-      Decision
+      2. RAG Building Blocks in the TNH Scholar Context
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#future-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Future Considerations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#consequences" class="md-nav__link">
-    <span class="md-ellipsis">
-      Consequences
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Consequences">
+    <nav class="md-nav" aria-label="2. RAG Building Blocks in the TNH Scholar Context">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#positive" class="md-nav__link">
+  <a href="#21-retrieval-layer" class="md-nav__link">
     <span class="md-ellipsis">
-      Positive
+      2.1 Retrieval layer
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#negative" class="md-nav__link">
+  <a href="#22-generation-layer" class="md-nav__link">
     <span class="md-ellipsis">
-      Negative
+      2.2 Generation layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-orchestration-and-reasoning-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Orchestration and reasoning layer
     </span>
   </a>
   
@@ -7318,11 +7478,191 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#notes" class="md-nav__link">
+  <a href="#3-priority-research-directions" class="md-nav__link">
     <span class="md-ellipsis">
-      Notes
+      3. Priority Research Directions
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="3. Priority Research Directions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-multilingual-canon-aware-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Multilingual, Canon-Aware Embeddings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-self-querying-and-metadata-aware-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Self-Querying and Metadata-Aware Retrieval
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-agentic-rag-react-style-reasoning-and-tool-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Agentic RAG: ReAct-Style Reasoning and Tool Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-self-reflective-rag-and-faithfulness" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 Self-Reflective RAG and Faithfulness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-evaluation-frameworks-for-dharma-oriented-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.5 Evaluation Frameworks for Dharma-Oriented RAG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-data-and-annotation-programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.6 Data and Annotation Programs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-walking-skeleton-plan-high-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Walking Skeleton Plan (High-Level)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Walking Skeleton Plan (High-Level)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-poc-search-current" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 0: PoC Search (Current)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-baseline-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Baseline RAG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-metadata-self-querying" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Metadata &amp; Self-Querying
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-agentic-rag-react-style-walking-skeleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Agentic RAG (ReAct-Style Walking Skeleton)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-self-reflective-evaluated-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Self-Reflective &amp; Evaluated RAG
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-bibliography-and-external-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Bibliography and External Resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Bibliography and External Resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-primary-rag-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Primary RAG Research
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-self-reflective-and-faithfulness-oriented-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Self-Reflective and Faithfulness-Oriented RAG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-agentic-patterns-and-tool-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 Agentic Patterns and Tool Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-metadata-aware-and-self-querying-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4 Metadata-Aware and Self-Querying Retrieval
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-practitioner-overviews-and-emerging-tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5 Practitioner Overviews and Emerging Tooling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -7344,65 +7684,305 @@
   
 
 
-<h1 id="adr-yf01-youtube-transcript-source-handling">ADR-YF01: YouTube Transcript Source Handling<a class="headerlink" href="#adr-yf01-youtube-transcript-source-handling" title="Link to this section">&para;</a></h1>
-<p>Keeps both manual and auto-generated transcripts available while acknowledging source ambiguity in early yt-fetch releases.</p>
+<h1 id="rag-research-directions-for-tnh-scholar">RAG Research Directions for TNH Scholar<a class="headerlink" href="#rag-research-directions-for-tnh-scholar" title="Link to this section">&para;</a></h1>
+<p>This document sketches medium–term research directions for <strong>retrieval-augmented generation (RAG)</strong> inside the TNH Scholar project. It assumes:</p>
 <ul>
-<li><strong>Status</strong>: Proposed</li>
-<li><strong>Date</strong>: 2025-01-15</li>
+<li>A growing corpus of text from <em>Thich Nhat Hanh</em> (TNH), Plum Village, and related Buddhist canons (e.g., CBETA, Taishō).</li>
+<li>A layered architecture in which <strong>LLMs act as reasoning and explanation engines</strong>, while <strong>retrievers and indexes act as external memory</strong>.</li>
+<li>A long-term goal of <strong>grounded, citation-rich Dharma assistance</strong>, not purely conversational or speculative answers.</li>
 </ul>
-<h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
-<p>When requesting transcripts from YouTube videos:</p>
+<p>The aim here is not to specify implementation details, but to identify <strong>research themes</strong>, <strong>walking-skeleton experiments</strong>, and <strong>relevant external work</strong> that can inform TNH Scholar’s roadmap.</p>
+<h2 id="1-background-why-rag-for-tnh-scholar">1. Background: Why RAG for TNH Scholar?<a class="headerlink" href="#1-background-why-rag-for-tnh-scholar" title="Link to this section">&para;</a></h2>
+<p>TNH Scholar’s domain is:</p>
 <ul>
-<li>Videos may have manually uploaded subtitles</li>
-<li>Videos may have auto-generated captions</li>
-<li>Some videos may have both</li>
-<li>Quality and accuracy can vary significantly between sources</li>
+<li><strong>Knowledge-intensive</strong>: thousands of pages of canonical and commentarial material; fine-grained doctrinal distinctions; multiple schools and historical layers.</li>
+<li><strong>Multilingual and multi-era</strong>: classical Chinese, Vietnamese, Pāli/Sanskrit, French, English, and modern commentary across decades.</li>
+<li><strong>High-stakes conceptually</strong>: misquoting or hallucinating scriptures, mis-attributing teachings, or collapsing doctrinal nuance is not acceptable.</li>
 </ul>
-<p>Currently yt-dlp options:</p>
-<p>```python
-opts = {
-    "writesubtitles": True,      # Get manual subtitles
-    "writeautomaticsub": True,   # Get auto-generated captions
-    "subtitleslangs": ["en"]     # Language selection
-}</p>
-<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
+<p>Vanilla LLMs are powerful but limited for this domain:</p>
+<ul>
+<li>Their <strong>internal “parametric” memory</strong> is opaque and not easily updated; it may or may not contain accurate Buddhist sources.</li>
+<li>They may <strong>hallucinate sutra passages, attributions, and historical details</strong> without clear references.</li>
+<li>They struggle to provide <strong>verifiable links back</strong> into a specific TNH / CBETA / PV corpus under version control.</li>
+</ul>
+<p>RAG directly addresses this by combining:</p>
+<ul>
+<li>A <strong>retriever + index</strong> over the curated Buddhist corpora (TNH books, CBETA, etc.), and</li>
+<li>A <strong>generator (LLM)</strong> that uses retrieved passages as grounding context, with explicit citations and provenance.</li>
+</ul>
+<p>In this framing, RAG is not an add-on; it is the <strong>primary way TNH Scholar connects “intelligence” (LLM) with “memory” (canon + metadata)</strong>.</p>
+<h2 id="2-rag-building-blocks-in-the-tnh-scholar-context">2. RAG Building Blocks in the TNH Scholar Context<a class="headerlink" href="#2-rag-building-blocks-in-the-tnh-scholar-context" title="Link to this section">&para;</a></h2>
+<p>At a high level, most RAG systems have three components. TNH Scholar can use the same decomposition but with domain-specific constraints.</p>
+<h3 id="21-retrieval-layer">2.1 Retrieval layer<a class="headerlink" href="#21-retrieval-layer" title="Link to this section">&para;</a></h3>
+<p>Core responsibilities:</p>
+<ul>
+<li>Encode text (sentences, paragraphs, sections) into <strong>dense vectors</strong>, ideally with <strong>domain-tuned multilingual embeddings</strong>.</li>
+<li>Support <strong>semantic search</strong> across multiple corpora and languages.</li>
+<li>Respect <strong>rich metadata filters</strong>:</li>
+<li>Canon / collection (e.g., CBETA X, Taishō, TNH books, PV talks).</li>
+<li>Language and translation alignment.</li>
+<li>Genre (sutra, commentary, letter, Dharma talk, journal, etc.).</li>
+<li>Time period and location when available.</li>
+</ul>
+<p>Medium-term research leverages bi-encoders and domain fine-tuning, but the PoC can rely on <strong>pre-trained multilingual models</strong> (e.g., MPNet, E5) plus careful chunking and metadata design.</p>
+<h3 id="22-generation-layer">2.2 Generation layer<a class="headerlink" href="#22-generation-layer" title="Link to this section">&para;</a></h3>
+<p>Core responsibilities:</p>
+<ul>
+<li>Take <strong>user queries + retrieved passages</strong> and produce:</li>
+<li>Clear, accessible explanations.</li>
+<li>Short comparisons (e.g., “Lotus Sutra vs TNH on compassion”).</li>
+<li>Citations into the TNH Scholar corpus.</li>
+<li>Respect <strong>stylistic and ethical constraints</strong>:</li>
+<li>No fabricated citations or sutra names.</li>
+<li>Clear separation between “what the texts say” and “interpretive framing.”</li>
+<li>Capacity to answer at multiple levels (beginner, experienced practitioner, academic).</li>
+</ul>
+<p>This layer will increasingly be <strong>instruction-tuned and/or fine-tuned</strong> to TNH Scholar’s norms, but early prototypes can use off-the-shelf high-quality LLMs with strong prompt design.</p>
+<h3 id="23-orchestration-and-reasoning-layer">2.3 Orchestration and reasoning layer<a class="headerlink" href="#23-orchestration-and-reasoning-layer" title="Link to this section">&para;</a></h3>
+<p>Core responsibilities:</p>
+<ul>
+<li>Decide <strong>when</strong> to retrieve (not every question needs a heavy RAG pipeline).</li>
+<li>Decide <strong>what</strong> to retrieve:</li>
+<li>Which corpus? Which language? What level of detail?</li>
+<li>Should we prefer TNH’s own explanations, classical sources, or both?</li>
+<li>Support <strong>multi-step tasks</strong>:</li>
+<li>First retrieve background on “mindfulness of breathing,”</li>
+<li>then retrieve TNH’s own commentary,</li>
+<li>then synthesize and compare.</li>
+</ul>
+<p>Research here connects to <strong>agentic patterns</strong> (e.g., ReAct) and <strong>self-reflective RAG</strong> (e.g., Self-RAG).</p>
+<h2 id="3-priority-research-directions">3. Priority Research Directions<a class="headerlink" href="#3-priority-research-directions" title="Link to this section">&para;</a></h2>
+<p>This section outlines concrete directions that are both <strong>scientifically interesting</strong> and <strong>directly applicable</strong> to TNH Scholar.</p>
+<h3 id="31-multilingual-canon-aware-embeddings">3.1 Multilingual, Canon-Aware Embeddings<a class="headerlink" href="#31-multilingual-canon-aware-embeddings" title="Link to this section">&para;</a></h3>
+<p><strong>Goal:</strong> Build embedding spaces that respect both <strong>semantic content</strong> and <strong>canonical structure</strong> across languages.</p>
+<p>Key questions:</p>
+<ul>
+<li>How well do off-the-shelf multilingual models (e.g., MPNet, E5) capture:</li>
+<li>Buddhist terms of art (e.g., śūnyatā, interbeing, bodhicitta),</li>
+<li>doctrinal categories (Four Noble Truths, dependent origination, etc.),</li>
+<li>cross-lingual parity between Chinese / Vietnamese / English?</li>
+<li>What is the benefit of <strong>fine-tuning bi-encoders</strong> on:</li>
+<li>Manually curated query–passage pairs (e.g., TNH Scholar training data).</li>
+<li>Parallel corpora (Chinese ↔ Vietnamese ↔ English sutra translations).</li>
+<li>TNH-specific writings with aligned translations.</li>
+</ul>
+<p>Possible experiments:</p>
+<ul>
+<li>Start with <strong>generic multilingual embeddings</strong> and measure retrieval quality on hand-crafted evaluation sets (e.g., “mindfulness of breathing passages across languages”).</li>
+<li>Introduce <strong>contrastive fine-tuning</strong> using query–passage pairs and evaluate improvement in:</li>
+<li>Top-k recall for doctrinal questions.</li>
+<li>Cross-lingual retrieval accuracy (e.g., English query → Chinese or Vietnamese source).</li>
+</ul>
+<h3 id="32-self-querying-and-metadata-aware-retrieval">3.2 Self-Querying and Metadata-Aware Retrieval<a class="headerlink" href="#32-self-querying-and-metadata-aware-retrieval" title="Link to this section">&para;</a></h3>
+<p><strong>Goal:</strong> Allow the LLM to <strong>co-design the retrieval query</strong>, including semantic intent and metadata filters.</p>
+<p>External work on <strong>self-query retrievers</strong> shows that LLMs can:</p>
+<ul>
+<li>Parse a natural-language query into:</li>
+<li>A semantic search vector.</li>
+<li>A structured metadata filter (e.g., <code>author = TNH</code>, <code>language = EN</code>, <code>year &gt; 1990</code>). </li>
+<li>Improve retrieval quality when document metadata is rich.</li>
+</ul>
+<p>TNH Scholar is a natural fit because its documents have (or will have):</p>
+<ul>
+<li>Per-text and per-section metadata: author, era, collection, language, genre.</li>
+<li>Cross-references between canonical sources and TNH commentary.</li>
+</ul>
+<p>Possible experiments:</p>
+<ul>
+<li>Build a <strong>minimal self-querying retriever</strong> that:</li>
+<li>Uses an LLM to propose a metadata filter from the user question.</li>
+<li>Combines this with vector search in the TNH / CBETA index.</li>
+<li>Evaluate whether self-querying improves:</li>
+<li>Precision of citations for targeted questions (“Where does Thay discuss climate and interbeing?”).</li>
+<li>User satisfaction for queries that implicitly assume a particular corpus or timeframe.</li>
+</ul>
+<h3 id="33-agentic-rag-react-style-reasoning-and-tool-use">3.3 Agentic RAG: ReAct-Style Reasoning and Tool Use<a class="headerlink" href="#33-agentic-rag-react-style-reasoning-and-tool-use" title="Link to this section">&para;</a></h3>
+<p><strong>Goal:</strong> Equip TNH Scholar with a light-weight <strong>reason–act loop</strong>, so that it can break down complex queries and call tools (retrievers, databases) step by step.</p>
+<p>The <strong>ReAct</strong> pattern (Reason + Act) prompts an LLM to:</p>
+<ul>
+<li>Interleave <strong>“thought” steps</strong> (natural-language reasoning) with</li>
+<li><strong>“action” steps</strong> (tool calls, e.g., search, metadata lookup).</li>
+</ul>
+<p>For TNH Scholar, this could look like:</p>
 <ol>
-<li>
-<p>Initially accept both sources (manual and auto-generated) with preference given to manual subtitles when available (yt-dlp's default behavior)</p>
-</li>
-<li>
-<p>Flag this as a known limitation/consideration:</p>
-</li>
-<li>Source of transcript (manual vs auto) may affect quality</li>
-<li>No current mechanism to force selection of specific source</li>
-<li>Transcript source not clearly indicated in output</li>
+<li>User asks: “Compare how the Lotus Sutra and Thich Nhat Hanh describe compassionate action.”</li>
+<li>Agent reasoning:</li>
+<li>Identify: need passages from <strong>Lotus Sutra</strong> and <strong>TNH’s writings</strong> on compassion in action.</li>
+<li>Issue two searches: one over CBETA/Taishō, one over TNH books.</li>
+<li>Retrieve top passages, maybe in different languages.</li>
+<li>Agent then synthesizes similarities and differences, with citations.</li>
 </ol>
-<h2 id="future-considerations">Future Considerations<a class="headerlink" href="#future-considerations" title="Link to this section">&para;</a></h2>
-<p>Future versions should consider:
-- Adding transcript source metadata
-- Option to specify preferred source
-- Quality indicators in output
-- Logging which source was used</p>
-<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
-<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
+<p>Possible experiments:</p>
 <ul>
-<li>Simple initial implementation</li>
-<li>Works with all video types</li>
-<li>Maximum transcript availability</li>
+<li>Implement a <strong>walking-skeleton ReAct agent</strong> with a small set of tools:</li>
+<li><code>search_cbeta</code>, <code>search_tnh</code>, <code>fetch_metadata</code>.</li>
+<li>Constrain its output to <strong>always include citations</strong> and a short explanation of its reasoning steps (for internal debugging and evaluation).</li>
+<li>Compare ReAct-style answers with single-shot RAG answers on multi-hop questions (e.g., “compare,” “trace evolution of an idea,” “relate canonical verse to modern commentary”).</li>
 </ul>
-<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
+<h3 id="34-self-reflective-rag-and-faithfulness">3.4 Self-Reflective RAG and Faithfulness<a class="headerlink" href="#34-self-reflective-rag-and-faithfulness" title="Link to this section">&para;</a></h3>
+<p><strong>Goal:</strong> Reduce hallucinations and ensure that generated answers are <strong>faithful to retrieved sources</strong>.</p>
+<p><strong>Self-RAG</strong> proposes training a model that can:</p>
 <ul>
-<li>Uncertain transcript source</li>
-<li>No quality indicators</li>
-<li>May get auto-generated when manual exists</li>
-<li>May get manual when auto-generated preferred</li>
+<li>Decide <strong>when to retrieve</strong>, and when parametric knowledge is enough.</li>
+<li>Insert <strong>special reflection tokens</strong> to:</li>
+<li>Check whether retrieved passages are relevant.</li>
+<li>Critique its own draft answer against the evidence. </li>
 </ul>
-<h2 id="notes">Notes<a class="headerlink" href="#notes" title="Link to this section">&para;</a></h2>
-<p>This limitation is acceptable for prototyping but should be revisited when:
-- Transcript quality becomes critical
-- Source attribution needed
-- Specific use cases require specific transcript types</p>
-<p>Would you like me to explore any specific aspect of this further, or shall we move on to implementation?</p>
+<p>TNH Scholar can adapt these ideas without necessarily re-training large models from scratch:</p>
+<ul>
+<li>Define a prompt schema where the LLM:</li>
+<li>First writes a draft answer.</li>
+<li>Then explicitly <strong>checks each key claim</strong> against retrieved passages.</li>
+<li>Marks claims as “directly supported,” “interpretive but consistent,” or “not supported.”</li>
+<li>Optionally, enforce a <strong>“no unsupported claim” mode</strong> where the assistant must either:</li>
+<li>Provide a citation, or</li>
+<li>Clearly label content as opinion or extrapolation.</li>
+</ul>
+<p>Possible experiments:</p>
+<ul>
+<li>Develop a small suite of “gotcha” questions (e.g., tempt the model to fabricate a sutra name or misattribute a quote), and see how a self-reflective RAG prompt mitigates these errors.</li>
+<li>Explore whether <strong>lightweight fine-tuning</strong> on TNH Scholar reflection tasks improves faithfulness metrics.</li>
+</ul>
+<h3 id="35-evaluation-frameworks-for-dharma-oriented-rag">3.5 Evaluation Frameworks for Dharma-Oriented RAG<a class="headerlink" href="#35-evaluation-frameworks-for-dharma-oriented-rag" title="Link to this section">&para;</a></h3>
+<p><strong>Goal:</strong> Move beyond generic QA metrics and evaluate TNH Scholar along <strong>Dharma-appropriate dimensions</strong>.</p>
+<p>Inspired by RAG evaluation work in knowledge-intensive domains (e.g., scientific QA, healthcare), TNH Scholar can define:</p>
+<ul>
+<li><strong>Faithfulness:</strong> Are claims supported by cited passages? Are citations correct and non-fabricated?</li>
+<li><strong>Coverage:</strong> Does the system surface a reasonable sample of relevant sources (not just one favorite passage)?</li>
+<li><strong>Doctrinal accuracy:</strong> For monastic/teacher evaluators, does the answer respect traditional interpretations and avoid serious doctrinal mistakes?</li>
+<li><strong>Pedagogical suitability:</strong> Is the explanation appropriate for the requested audience (beginner / practitioner / researcher)?</li>
+</ul>
+<p>Possible components:</p>
+<ul>
+<li>A <strong>small gold-standard evaluation set</strong> curated by practitioners:</li>
+<li>Questions, ideal answer sketches, and illustrative source passages.</li>
+<li>A <strong>citation correctness checker</strong>:</li>
+<li>Human-in-the-loop at first; later possibly supported by automated overlap metrics (e.g., answer-text vs evidence-text similarity).</li>
+<li>Periodic <strong>“Dharma review” sessions</strong> where monastics or senior practitioners score system outputs and feed back into model alignment and retrieval tuning.</li>
+</ul>
+<h3 id="36-data-and-annotation-programs">3.6 Data and Annotation Programs<a class="headerlink" href="#36-data-and-annotation-programs" title="Link to this section">&para;</a></h3>
+<p><strong>Goal:</strong> Create reusable supervision signals to improve retrieval and generation over time.</p>
+<p>Key data types:</p>
+<ul>
+<li><strong>Query–passage pairs</strong> for retriever fine-tuning:</li>
+<li>Human-generated queries for important passages.</li>
+<li>GPT-assisted synthetic queries filtered and curated by humans.</li>
+<li><strong>Parallel corpora</strong> for multilingual alignment:</li>
+<li>Sutra passages across Chinese/Vietnamese/English.</li>
+<li>TNH works where multiple translations exist.</li>
+<li><strong>Explanatory pairs</strong> for generation tuning:</li>
+<li>Short explanations or commentaries linked to source text.</li>
+<li>Structured responses (e.g., “context,” “key teaching,” “application to daily life”).</li>
+</ul>
+<p>Possible experiments:</p>
+<ul>
+<li>Integrate existing TNH Scholar pipelines (e.g., GPT-based query generation) into a <strong>formal dataset</strong> for retriever training.</li>
+<li>Explore <strong>curriculum-style training</strong>:</li>
+<li>Start with simple factual questions.</li>
+<li>Progress to conceptual and comparative questions.</li>
+<li>Eventually move to multi-hop questions involving multiple sources and eras.</li>
+</ul>
+<h2 id="4-walking-skeleton-plan-high-level">4. Walking Skeleton Plan (High-Level)<a class="headerlink" href="#4-walking-skeleton-plan-high-level" title="Link to this section">&para;</a></h2>
+<p>This section sketches a phased approach that stays faithful to the “walking skeleton” philosophy: minimal viable functionality first, with clear anchors for future complexity.</p>
+<h3 id="phase-0-poc-search-current">Phase 0: PoC Search (Current)<a class="headerlink" href="#phase-0-poc-search-current" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>Status:</strong> In progress.</li>
+<li>Components:</li>
+<li>Basic vector index over a small CBETA subset and/or TNH texts.</li>
+<li>Off-the-shelf multilingual model (e.g., MPNet) for embeddings.</li>
+<li>Simple similarity search and ranking.</li>
+<li>Goal:</li>
+<li>Verify that cross-lingual search already surfaces meaningful passages for queries like “compassionate action,” “interbeing,” or “mindfulness of breathing.”</li>
+</ul>
+<h3 id="phase-1-baseline-rag">Phase 1: Baseline RAG<a class="headerlink" href="#phase-1-baseline-rag" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Add a <strong>generation step</strong> on top of retrieval:</li>
+<li>Retrieve top-k passages.</li>
+<li>Feed them into an LLM with a structured prompt to produce:<ul>
+<li>A short explanation.</li>
+<li>A list of citations.</li>
+</ul>
+</li>
+<li>Keep the orchestration logic simple:</li>
+<li>Always retrieve for now.</li>
+<li>Single corpus (e.g., TNH English texts or a curated CBETA subset).</li>
+</ul>
+<h3 id="phase-2-metadata-self-querying">Phase 2: Metadata &amp; Self-Querying<a class="headerlink" href="#phase-2-metadata-self-querying" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Introduce <strong>metadata-rich indexing</strong>:</li>
+<li>Author, language, genre, canonical collection.</li>
+<li>Implement a <strong>self-querying retriever</strong>:</li>
+<li>LLM proposes semantic query + metadata filters.</li>
+<li>Use this to improve retrieval for focused questions (e.g., “TNH on climate and interbeing,” “Lotus Sutra references only”).</li>
+</ul>
+<h3 id="phase-3-agentic-rag-react-style-walking-skeleton">Phase 3: Agentic RAG (ReAct-Style Walking Skeleton)<a class="headerlink" href="#phase-3-agentic-rag-react-style-walking-skeleton" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Add a lightweight <strong>ReAct-style agent</strong> with 2–3 tools:</li>
+<li><code>search_cbeta</code>, <code>search_tnh</code>, <code>lookup_metadata</code>.</li>
+<li>Teach the agent (via prompting) to:</li>
+<li>Break down complex questions.</li>
+<li>Call tools in a small number of steps.</li>
+<li>Produce answers with explicit citations and a short “reasoning summary” (for debugging and evaluation).</li>
+</ul>
+<h3 id="phase-4-self-reflective-evaluated-rag">Phase 4: Self-Reflective &amp; Evaluated RAG<a class="headerlink" href="#phase-4-self-reflective-evaluated-rag" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Experiment with <strong>self-reflective prompts</strong> inspired by Self-RAG:</li>
+<li>Draft answer → retrieve/reflect → revise answer with evidence labels.</li>
+<li>Define and implement an <strong>evaluation harness</strong>:</li>
+<li>Faithfulness and citation correctness metrics.</li>
+<li>Human evaluation protocol with monastics / experienced practitioners.</li>
+<li>Consider <strong>small-scale fine-tuning</strong> on TNH Scholar-specific reflection tasks if early experiments are promising.</li>
+</ul>
+<h2 id="5-bibliography-and-external-resources">5. Bibliography and External Resources<a class="headerlink" href="#5-bibliography-and-external-resources" title="Link to this section">&para;</a></h2>
+<p>This section lists selected external work that is especially relevant to TNH Scholar’s RAG roadmap. It is intentionally opinionated and incomplete; the goal is to anchor future deep dives, not to be exhaustive.</p>
+<h3 id="51-primary-rag-research">5.1 Primary RAG Research<a class="headerlink" href="#51-primary-rag-research" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Lewis et al., 2020 – Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</strong><br />
+   The original RAG paper, introducing a framework that combines a dense retriever with a sequence-to-sequence generator over a Wikipedia index. Useful as a conceptual baseline and for understanding early design trade-offs.  </li>
+<li><a href="https://arxiv.org/abs/2005.11401">ArXiv abstract</a> </li>
+<li><strong>Gao et al., 2023/2024 – Retrieval-Augmented Generation for Large Language Models: A Survey</strong><br />
+   A comprehensive survey of RAG for LLMs, organizing the field into Naive, Advanced, and Modular RAG, and discussing retrieval, generation, and augmentation techniques as separate modules. Highly relevant for TNH Scholar’s architectural planning and evaluation design.  </li>
+<li><a href="https://arxiv.org/abs/2312.10997">ArXiv survey</a>  </li>
+<li><a href="https://arxiv.org/pdf/2312.10997">PDF</a> </li>
+</ol>
+<h3 id="52-self-reflective-and-faithfulness-oriented-rag">5.2 Self-Reflective and Faithfulness-Oriented RAG<a class="headerlink" href="#52-self-reflective-and-faithfulness-oriented-rag" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Asai et al., 2023 – Self-RAG: Learning to Retrieve, Generate, and Critique</strong><br />
+   Proposes a framework where a single LM learns to decide when to retrieve, how to use retrieved passages, and how to critique its own generations using reflection tokens. Important for TNH Scholar’s goals around reducing hallucinations and explicitly grounding answers in Dharma sources.  </li>
+<li><a href="https://selfrag.github.io/">Project page</a>  </li>
+<li><a href="https://arxiv.org/abs/2310.11511">ArXiv / OpenReview entry</a>  </li>
+<li><a href="https://openreview.net/forum?id=hSyW5go0v8">OpenReview page</a> </li>
+</ol>
+<h3 id="53-agentic-patterns-and-tool-use">5.3 Agentic Patterns and Tool Use<a class="headerlink" href="#53-agentic-patterns-and-tool-use" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Yao et al., 2022/2023 – ReAct: Synergizing Reasoning and Acting in Language Models</strong><br />
+   Introduces the ReAct pattern, where LLMs interleave natural-language reasoning with tool calls. Provides a template for TNH Scholar to build agents that can search multiple corpora, inspect metadata, and iteratively refine their answers.  </li>
+<li><a href="https://arxiv.org/abs/2210.03629">ArXiv paper</a>  </li>
+<li><a href="https://arxiv.org/pdf/2210.03629">PDF</a>  </li>
+<li><a href="https://react-lm.github.io/">Project page</a>  </li>
+<li><a href="https://research.google/blog/react-synergizing-reasoning-and-acting-in-language-models/">Google AI blog summary</a> </li>
+</ol>
+<h3 id="54-metadata-aware-and-self-querying-retrieval">5.4 Metadata-Aware and Self-Querying Retrieval<a class="headerlink" href="#54-metadata-aware-and-self-querying-retrieval" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Self-Query Retriever (various implementations and guides)</strong><br />
+   Practical articles describing how to use LLMs to generate structured queries (including metadata filters) for vector stores. While implementation details vary (LangChain, custom frameworks, etc.), the core idea—LLM-driven metadata-aware retrieval—is directly applicable to TNH Scholar’s canonical corpora.  </li>
+<li><a href="https://medium.com/%40lorevanoudenhove/enhancing-rag-performance-with-metadata-the-power-of-self-query-retrievers-e29d4eecdb73">Enhancing RAG Performance with Metadata: The Power of Self-Query Retrievers</a>  </li>
+<li><a href="https://ai.plainenglish.io/rag-x-self-query-retriever-952dd55c68ed">RAG X — Self Query Retriever</a>  </li>
+<li><a href="https://falkordb.com/blog/advanced-rag/">Advanced RAG Techniques: What They Are &amp; How to Use Them</a> </li>
+</ol>
+<h3 id="55-practitioner-overviews-and-emerging-tooling">5.5 Practitioner Overviews and Emerging Tooling<a class="headerlink" href="#55-practitioner-overviews-and-emerging-tooling" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Advanced RAG Engineering Guides and Blogs</strong><br />
+   A growing ecosystem of practitioner-focused articles and frameworks (e.g., Haystack, LlamaIndex, LangChain, vendor-specific stacks) is exploring: multi-hop RAG, hybrid dense+sparse retrieval, re-ranking, and evaluation tooling. These are not Dharma-specific, but they provide implementation patterns and pitfalls that can inform TNH Scholar’s engineering phase.  </li>
+<li>Example: <a href="https://falkordb.com/blog/advanced-rag/">Advanced RAG Techniques: What They Are &amp; How to Use Them</a> (already listed above).</li>
+</ol>
+<hr />
+<p>This document is intentionally high-level and research-oriented. As TNH Scholar matures, each subsection can be expanded into:</p>
+<ul>
+<li>A design document (for a specific RAG component or experiment).</li>
+<li>An ADR (capturing specific architectural and tooling decisions).</li>
+<li>A set of notebooks or scripts in the <code>research/</code> or <code>experiments/</code> tree, linked back here for provenance.</li>
+</ul>
 
 
 
@@ -7499,10 +8079,10 @@ opts = {
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
       
     
   </body>

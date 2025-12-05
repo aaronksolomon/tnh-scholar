@@ -1599,6 +1599,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#18-convert-documentation-links-to-absolute-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. 🚧 Convert Documentation Links to Absolute Paths
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7234,6 +7243,8 @@
       
         
       
+        
+      
     
     
     
@@ -7391,6 +7402,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../research/rag-research-directions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RAG Research Directions for TNH Scholar
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../research/siap-methodology/" class="md-nav__link">
         
   
@@ -7434,7 +7473,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_8" >
         
           
           
@@ -7457,14 +7496,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_12_7" id="__nav_12_7_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_12_8" id="__nav_12_8_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_12_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_8">
             <span class="md-nav__icon md-icon"></span>
             Gpt4O Search Query Testing
           </label>
@@ -7530,7 +7569,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_9" >
         
           
           
@@ -7553,14 +7592,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_12_8" id="__nav_12_8_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_12_9" id="__nav_12_9_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_12_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_9">
             <span class="md-nav__icon md-icon"></span>
             Gpt4O Translation Experiments
           </label>
@@ -8108,6 +8147,15 @@
   <a href="#17-comprehensive-cli-reference-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       17. 🚧 Comprehensive CLI Reference Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-convert-documentation-links-to-absolute-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      18. 🚧 Convert Documentation Links to Absolute Paths
     </span>
   </a>
   
@@ -8693,6 +8741,24 @@
 <li>Current <code>docs/cli-reference/</code> contains hand-written per-command reference pages</li>
 <li>Requires examining actual CLI code structure for comprehensive coverage</li>
 <li>Should align with user guide examples</li>
+</ul>
+<h4 id="18-convert-documentation-links-to-absolute-paths">18. 🚧 Convert Documentation Links to Absolute Paths<a class="headerlink" href="#18-convert-documentation-links-to-absolute-paths" title="Link to this section">&para;</a></h4>
+<ul class="task-list">
+<li><strong>Status</strong>: NOT STARTED</li>
+<li><strong>Priority</strong>: MEDIUM</li>
+<li><strong>Context</strong>: Enabled MkDocs 1.6+ absolute link validation (2025-12-04). Absolute links (<code>/path/to/file.md</code>) are clearer, easier to maintain, and automation-friendly compared to relative links (<code>../../../path/to/file.md</code>).</li>
+<li><strong>Reference</strong>: <a href="../../../architecture/docs-system/adr/adr-dd01-docs-reorg-strategy/">ADR-DD01 Addendum 2025-12-04: Absolute Link Strategy</a></li>
+<li><strong>Tasks</strong>:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Audit all Markdown files for relative internal links</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Convert relative links to absolute paths (e.g., <code>../../../cli-reference/overview.md</code> → <code>/cli-reference/overview.md</code>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update documentation generation scripts to emit absolute links</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Verify all links resolve correctly with <code>mkdocs build --strict</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run link checker to validate changes</li>
+<li><strong>Benefits</strong>:</li>
+<li>Clearer intent: immediately obvious where links point</li>
+<li>Easier refactoring: search/replace when moving files</li>
+<li>Automation friendly: scripts can construct absolute paths easily</li>
+<li>Less error-prone: no counting <code>../</code> levels in deep hierarchies</li>
 </ul>
 <hr />
 <h2 id="progress-summary">Progress Summary<a class="headerlink" href="#progress-summary" title="Link to this section">&para;</a></h2>

@@ -2341,6 +2341,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#addendum-2025-12-04-absolute-link-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2025-12-04: Absolute Link Strategy
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -6808,6 +6817,8 @@
       
         
       
+        
+      
     
     
     
@@ -6965,6 +6976,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../../research/rag-research-directions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RAG Research Directions for TNH Scholar
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../../research/siap-methodology/" class="md-nav__link">
         
   
@@ -7008,7 +7047,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_8" >
         
           
           
@@ -7031,14 +7070,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_12_7" id="__nav_12_7_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_12_8" id="__nav_12_8_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_12_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_8">
             <span class="md-nav__icon md-icon"></span>
             Gpt4O Search Query Testing
           </label>
@@ -7104,7 +7143,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_9" >
         
           
           
@@ -7127,14 +7166,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_12_8" id="__nav_12_8_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_12_9" id="__nav_12_9_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_12_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_9">
             <span class="md-nav__icon md-icon"></span>
             Gpt4O Translation Experiments
           </label>
@@ -7306,6 +7345,15 @@
   <a href="#addendum-2025-12-03-cli-documentation-consolidation" class="md-nav__link">
     <span class="md-ellipsis">
       Addendum 2025-12-03: CLI Documentation Consolidation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#addendum-2025-12-04-absolute-link-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2025-12-04: Absolute Link Strategy
     </span>
   </a>
   
@@ -7517,7 +7565,7 @@
 <p><strong>Decision</strong>:</p>
 <ol>
 <li><strong>Consolidated all CLI documentation</strong> into single <code>docs/cli-reference/</code> directory containing:</li>
-<li>Overview and guide material (<a href="/cli-reference/overview.md">overview.md</a>)</li>
+<li>Overview and guide material (<a href="../../../../cli-reference/overview/">overview.md</a>)</li>
 <li>Per-command reference documentation (individual command pages)</li>
 <li><strong>Removed</strong> auto-generated CLI reference stubs and generation infrastructure</li>
 <li><strong>Deferred</strong> comprehensive CLI reference generation (TODO #17) until after CLI refactor (blocked by TODO #8)</li>
@@ -7552,6 +7600,54 @@
 <ul>
 <li>TODO #17: Comprehensive CLI Reference Documentation</li>
 <li>TODO #8: Clean Up CLI Tool Versions (blocks CLI reference work)</li>
+</ul>
+<hr />
+<h3 id="addendum-2025-12-04-absolute-link-strategy">Addendum 2025-12-04: Absolute Link Strategy<a class="headerlink" href="#addendum-2025-12-04-absolute-link-strategy" title="Link to this section">&para;</a></h3>
+<p><strong>Context</strong>: During documentation reorganization, the team initially used relative links (e.g., <code>../../../cli-reference/overview.md</code>). With the deep hierarchical structure (<code>docs/architecture/*/adr/</code>, <code>docs/architecture/*/design/</code>), relative links became unwieldy, error-prone, and generated MkDocs warnings about absolute paths.</p>
+<p><strong>Decision</strong>:</p>
+<ol>
+<li><strong>Enable MkDocs 1.6+ absolute link validation</strong> in <code>mkdocs.yaml</code>:</li>
+</ol>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">validation</span><span class="p">:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">links</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">absolute_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">relative_to_docs</span>
+</span></code></pre></div>
+<ol>
+<li><strong>Standardize on absolute links</strong> for all internal documentation cross-references:</li>
+<li>Use <code>/cli-reference/overview.md</code> instead of <code>../../../cli-reference/overview.md</code></li>
+<li>Links starting with <code>/</code> are interpreted relative to <code>docs/</code> directory</li>
+<li>
+<p>MkDocs validates absolute links and converts them to proper relative links in HTML output</p>
+</li>
+<li>
+<p><strong>Convert all existing relative links to absolute format</strong> (TODO #18)</p>
+</li>
+</ol>
+<p><strong>Rationale</strong>:</p>
+<ul>
+<li><strong>Clearer intent</strong>: <code>/architecture/docs-system/adr/...</code> immediately shows destination vs calculating <code>../../../</code> depth</li>
+<li><strong>Easier refactoring</strong>: Search/replace <code>/old/path/file.md</code> → <code>/new/path/file.md</code> works across all docs; relative links require different updates per source location</li>
+<li><strong>Automation friendly</strong>: Doc generation scripts construct absolute paths easily without calculating relative paths from each source file</li>
+<li><strong>Less error-prone</strong>: No manual counting of <code>../</code> levels in deep hierarchies</li>
+<li><strong>Better for complex structures</strong>: Multi-level architecture organization makes relative links unreadable</li>
+</ul>
+<p><strong>Implementation</strong>:</p>
+<ul>
+<li>Added <code>validation.links.absolute_links: relative_to_docs</code> to mkdocs.yaml (2025-12-04)</li>
+<li>Converted links in this ADR to absolute format</li>
+<li>Created TODO #18 for systematic conversion across all documentation</li>
+</ul>
+<p><strong>Impact</strong>:</p>
+<ul>
+<li>Eliminates MkDocs warnings about absolute links</li>
+<li>Improves documentation maintainability for future reorganizations</li>
+<li>Makes link targets immediately clear to readers and automation</li>
+<li>No functional change: MkDocs converts absolute links to relative in HTML output</li>
+</ul>
+<p><strong>References</strong>:</p>
+<ul>
+<li>TODO #18: Convert Documentation Links to Absolute Paths</li>
+<li><a href="https://www.mkdocs.org/about/release-notes/#version-16-2024-06-10">MkDocs 1.6 Release Notes</a></li>
 </ul>
 
 
