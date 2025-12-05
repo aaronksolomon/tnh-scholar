@@ -167,9 +167,15 @@ def build_file_data() -> list[dict]:
 
 def write_documentation_map(path: Path, files: list[dict]) -> None:
     """Generate hierarchical documentation map (for appending to index.md)."""
+    # Filter out index.md files (navigation landing pages) except root-level
+    filtered_files = [
+        f for f in files
+        if not (f["path"].endswith("/index.md") or f["path"] == "index.md")
+    ]
+
     # Group by category
     by_category = defaultdict(list)
-    for file in files:
+    for file in filtered_files:
         by_category[file["category"]].append(file)
 
     # Sort categories by CATEGORY_ORDER, then alphabetically
