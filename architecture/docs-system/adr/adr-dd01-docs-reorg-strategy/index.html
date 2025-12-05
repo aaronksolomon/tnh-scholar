@@ -7687,6 +7687,7 @@
 <li>Added both scripts to mkdocs.yaml gen-files plugin</li>
 <li>Excluded <code>documentation_map.md</code> from navigation (mkdocs.yaml exclude_docs) since it's embedded in index.md</li>
 <li>Respects existing EXCLUDE_PATTERNS to avoid indexing draft/archived files</li>
+<li>Filters out subdirectory <code>index.md</code> files from documentation_map.md (navigation landing pages that clutter the browsable list)</li>
 </ul>
 <p><strong>Benefits</strong>:</p>
 <ul>
