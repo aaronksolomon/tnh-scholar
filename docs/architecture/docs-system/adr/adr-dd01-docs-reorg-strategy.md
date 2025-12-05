@@ -163,7 +163,7 @@ Approval of this ADR green-lights the restructuring work for TODO #9 and provide
 **Decision**:
 
 1. **Consolidated all CLI documentation** into single `docs/cli-reference/` directory containing:
-   - Overview and guide material ([overview.md](../../../cli-reference/overview.md))
+   - Overview and guide material ([overview.md](/cli-reference/overview.md))
    - Per-command reference documentation (individual command pages)
 2. **Removed** auto-generated CLI reference stubs and generation infrastructure
 3. **Deferred** comprehensive CLI reference generation (TODO #17) until after CLI refactor (blocked by TODO #8)
@@ -201,3 +201,52 @@ docs/
 
 - TODO #17: Comprehensive CLI Reference Documentation
 - TODO #8: Clean Up CLI Tool Versions (blocks CLI reference work)
+
+---
+
+### Addendum 2025-12-04: Absolute Link Strategy
+
+**Context**: During documentation reorganization, the team initially used relative links (e.g., `../../../cli-reference/overview.md`). With the deep hierarchical structure (`docs/architecture/*/adr/`, `docs/architecture/*/design/`), relative links became unwieldy, error-prone, and generated MkDocs warnings about absolute paths.
+
+**Decision**:
+
+1. **Enable MkDocs 1.6+ absolute link validation** in `mkdocs.yaml`:
+
+   ```yaml
+   validation:
+     links:
+       absolute_links: relative_to_docs
+   ```
+
+2. **Standardize on absolute links** for all internal documentation cross-references:
+   - Use `/cli-reference/overview.md` instead of `../../../cli-reference/overview.md`
+   - Links starting with `/` are interpreted relative to `docs/` directory
+   - MkDocs validates absolute links and converts them to proper relative links in HTML output
+
+3. **Convert all existing relative links to absolute format** (TODO #18)
+
+**Rationale**:
+
+- **Clearer intent**: `/architecture/docs-system/adr/...` immediately shows destination vs calculating `../../../` depth
+- **Easier refactoring**: Search/replace `/old/path/file.md` → `/new/path/file.md` works across all docs; relative links require different updates per source location
+- **Automation friendly**: Doc generation scripts construct absolute paths easily without calculating relative paths from each source file
+- **Less error-prone**: No manual counting of `../` levels in deep hierarchies
+- **Better for complex structures**: Multi-level architecture organization makes relative links unreadable
+
+**Implementation**:
+
+- Added `validation.links.absolute_links: relative_to_docs` to mkdocs.yaml (2025-12-04)
+- Converted links in this ADR to absolute format
+- Created TODO #18 for systematic conversion across all documentation
+
+**Impact**:
+
+- Eliminates MkDocs warnings about absolute links
+- Improves documentation maintainability for future reorganizations
+- Makes link targets immediately clear to readers and automation
+- No functional change: MkDocs converts absolute links to relative in HTML output
+
+**References**:
+
+- TODO #18: Convert Documentation Links to Absolute Paths
+- [MkDocs 1.6 Release Notes](https://www.mkdocs.org/about/release-notes/#version-16-2024-06-10)

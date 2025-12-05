@@ -106,8 +106,8 @@ These tools are small, composable, and focused on a single responsibility. They 
 
 More details:
 
-- [CLI Overview](../cli-reference/overview.md)
-- CLI guides: [Command Line Tools Overview](../cli-reference/overview.md)
+- [CLI Overview](/cli-reference/overview.md)
+- CLI guides: [Command Line Tools Overview](/cli-reference/overview.md)
 
 ---
 
@@ -187,5 +187,5 @@ Some guiding principles that shape the architecture:
 
 For a more detailed discussion of design principles and patterns, see:
 
-- [System Design](../development/system-design.md)
-- [Human–AI Software Engineering Principles](../development/human-ai-software-engineering-principles.md)
+- [System Design](/development/system-design.md)
+- [Human–AI Software Engineering Principles](/development/human-ai-software-engineering-principles.md)

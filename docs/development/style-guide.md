@@ -513,7 +513,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 - [Design Principles](design-principles.md) - Architectural patterns and design philosophy
 - [Contributing Guide](contributing-prototype-phase.md) - Contribution workflow and standards
-- [Project Principles](../project/principles.md) - High-level project principles
+- [Project Principles](/project/principles.md) - High-level project principles
 - [System Design](system-design.md) - Overall system architecture
 
 ## References

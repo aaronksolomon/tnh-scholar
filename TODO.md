@@ -492,6 +492,24 @@ This section organizes work into three priority levels based on criticality for 
   - Requires examining actual CLI code structure for comprehensive coverage
   - Should align with user guide examples
 
+#### 18. 🚧 Convert Documentation Links to Absolute Paths
+
+- **Status**: NOT STARTED
+- **Priority**: MEDIUM
+- **Context**: Enabled MkDocs 1.6+ absolute link validation (2025-12-04). Absolute links (`/path/to/file.md`) are clearer, easier to maintain, and automation-friendly compared to relative links (`../../../path/to/file.md`).
+- **Reference**: [ADR-DD01 Addendum 2025-12-04: Absolute Link Strategy](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
+- **Tasks**:
+  - [ ] Audit all Markdown files for relative internal links
+  - [ ] Convert relative links to absolute paths (e.g., `../../../cli-reference/overview.md` → `/cli-reference/overview.md`)
+  - [ ] Update documentation generation scripts to emit absolute links
+  - [ ] Verify all links resolve correctly with `mkdocs build --strict`
+  - [ ] Run link checker to validate changes
+- **Benefits**:
+  - Clearer intent: immediately obvious where links point
+  - Easier refactoring: search/replace when moving files
+  - Automation friendly: scripts can construct absolute paths easily
+  - Less error-prone: no counting `../` levels in deep hierarchies
+
 ---
 
 ## Progress Summary

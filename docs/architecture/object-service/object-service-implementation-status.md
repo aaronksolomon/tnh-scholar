@@ -41,12 +41,12 @@ Implementation status, resolved gaps, and outstanding work for the Object-Servic
 
 **Resolution**:
 
-- Style guide established: [docs/development/style-guide.md](../../development/style-guide.md)
-- Design principles documented: [docs/development/design-principles.md](../../development/design-principles.md)
+- Style guide established: [docs/development/style-guide.md](/development/style-guide.md)
+- Design principles documented: [docs/development/design-principles.md](/development/design-principles.md)
 - Strong typing standards enforced (no dicts in app layer, Protocol/ABC usage)
 - Google-style docstrings adopted
 
-**Reference**: [Style Guide](../../development/style-guide.md), [Design Principles](../../development/design-principles.md)
+**Reference**: [Style Guide](/development/style-guide.md), [Design Principles](/development/design-principles.md)
 
 ---
 

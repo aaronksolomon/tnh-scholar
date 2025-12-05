@@ -77,6 +77,10 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
 
+validation:
+  links:
+    absolute_links: relative_to_docs  # Enable absolute links starting with /
+
 plugins:
   - search:
       separator: '[\s\-\.]+'  # Better search for compound terms

@@ -51,7 +51,7 @@ Your perspective as a practitioner, translator, or researcher using the tools is
 
 2. **Try the Quick Start Guide**
 
-   Follow the [Quick Start Guide](../getting-started/quick-start-guide.md) to get familiar with basic operations
+   Follow the [Quick Start Guide](/getting-started/quick-start-guide.md) to get familiar with basic operations
 
 3. **Test with Your Own Materials**
 

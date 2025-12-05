@@ -14,7 +14,7 @@ Architectural patterns, design philosophy, and system organization principles fo
 
 This document establishes design principles for the TNH Scholar project. While the project is currently in a rapid prototyping phase, these guidelines aim to maintain architectural quality and consistency throughout development. The guide distinguishes between immediate prototyping requirements and standards for later production phases where appropriate.
 
-For code formatting and naming conventions, see [Style Guide](style-guide.md). For high-level project philosophy and vision, see [Project Principles](../project/principles.md) and [Conceptual Architecture](../project/conceptual-architecture.md).
+For code formatting and naming conventions, see [Style Guide](style-guide.md). For high-level project philosophy and vision, see [Project Principles](/project/principles.md) and [Conceptual Architecture](/project/conceptual-architecture.md).
 
 ## Core Design Philosophy
 
@@ -25,7 +25,7 @@ The TNH Scholar system embraces several key philosophical principles:
 - **Balance of rapid prototyping with extensible architecture**
 - **Focus on AI-enhanced content processing and transformation**
 
-See [Project Philosophy](../project/philosophy.md) for deeper context.
+See [Project Philosophy](/project/philosophy.md) for deeper context.
 
 ## Fundamental Principles
 
@@ -204,7 +204,7 @@ class TextProcessor:
         return global_ai_service.process(text, prompt)  # Global access
 ```
 
-**Note**: During prototyping, singleton access (like `LocalPromptManager`) is acceptable for rapid development. Plan transition to dependency injection for production (see [ADR-PT01](../architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy.md)).
+**Note**: During prototyping, singleton access (like `LocalPromptManager`) is acceptable for rapid development. Plan transition to dependency injection for production (see [ADR-PT01](/architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy.md)).
 
 ## Data Architecture
 
@@ -485,20 +485,20 @@ Areas marked for future development:
 - Extended prompt capabilities
 - Model training and fine-tuning tools
 
-See [Future Directions](../project/future-directions.md) for long-term vision.
+See [Future Directions](/project/future-directions.md) for long-term vision.
 
 ## Related Documentation
 
 - [Style Guide](style-guide.md) - Code formatting and naming conventions
-- [Object-Service Design Blueprint](../architecture/object-service/object-service-design-overview.md) - Detailed architecture patterns
+- [Object-Service Design Blueprint](/architecture/object-service/object-service-design-overview.md) - Detailed architecture patterns
 - [System Design](system-design.md) - High-level system architecture
-- [Project Principles](../project/principles.md) - High-level project principles
-- [Conceptual Architecture](../project/conceptual-architecture.md) - Conceptual system model
+- [Project Principles](/project/principles.md) - High-level project principles
+- [Conceptual Architecture](/project/conceptual-architecture.md) - Conceptual system model
 - [Contributing Guide](contributing-prototype-phase.md) - Contribution workflow
 
 ## References
 
-- [Core Pattern Architecture](../architecture/prompt-system/archive/core-pattern-architecture.md) - Legacy prompt/pattern design notes
-- [Object-Service Design Blueprint](../architecture/object-service/object-service-design-overview.md) - Layer architecture and design patterns
+- [Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md) - Legacy prompt/pattern design notes
+- [Object-Service Design Blueprint](/architecture/object-service/object-service-design-overview.md) - Layer architecture and design patterns
 - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) - Robert C. Martin
 - [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html) - Eric Evans via Martin Fowler

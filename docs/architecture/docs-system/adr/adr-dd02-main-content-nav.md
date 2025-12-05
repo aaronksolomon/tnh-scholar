@@ -145,20 +145,20 @@ This section documents the design decisions, system architecture, and
 component implementations for TNH Scholar.
 
 ## Getting Started
-- **New to the codebase?** Start with [System Overview](../../overview.md)
-- **Looking for decisions?** Browse [architecture docs](../../../architecture/overview.md)
+- **New to the codebase?** Start with [System Overview](/architecture/overview.md)
+- **Looking for decisions?** Browse [architecture docs](/architecture/overview.md)
 - **Need component details?** See subsystem design documents below
 
 ## Key Resources
-- [GenAI Service](../../gen-ai-service/design/genai-service-design-strategy.md) - Core AI integration layer
-- [Prompt System](../../prompt-system/prompt-system-architecture.md) - Prompt management architecture
-- [Transcription Pipeline](../../transcription/design/diarization-system-design.md) - Audio processing design
+- [GenAI Service](/architecture/gen-ai-service/design/genai-service-design-strategy.md) - Core AI integration layer
+- [Prompt System](/architecture/prompt-system/prompt-system-architecture.md) - Prompt management architecture
+- [Transcription Pipeline](/architecture/transcription/design/diarization-system-design.md) - Audio processing design
 
 ## Subsystems
-- [AI Text Processing](../../ai-text-processing/design/textobject-system-design.md) - Text transformation pipeline
-- [Knowledge Base](../../knowledge-base/adr/adr-k01-kb-architecture-strategy.md) - Vector search and metadata
-- [Transcription](../../transcription/design/diarization-system-design.md) - Audio-to-text with diarization
-- [Video Processing](../../video-processing/adr/adr-vp01-video-processing.md) - YouTube integration
+- [AI Text Processing](/architecture/ai-text-processing/design/textobject-system-design.md) - Text transformation pipeline
+- [Knowledge Base](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md) - Vector search and metadata
+- [Transcription](/architecture/transcription/design/diarization-system-design.md) - Audio-to-text with diarization
+- [Video Processing](/architecture/video-processing/adr/adr-vp01-video-processing.md) - YouTube integration
 ```
 
 #### Documentation Map Integration

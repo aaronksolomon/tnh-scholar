@@ -10,7 +10,7 @@ created: "2025-12-02"
 
 This User Guide describes how to use TNH Scholar as a **tool user** or **workflow designer**. It focuses on practical flows, concrete decisions, and how the pieces fit together, without requiring you to understand every internal design document.
 
-If you are new to the project, you may want to read the [TNH Scholar index](../index.md) first, then return here when you are ready to dive into concrete workflows.
+If you are new to the project, you may want to read the [TNH Scholar index](/index.md) first, then return here when you are ready to dive into concrete workflows.
 
 ---
 
@@ -27,7 +27,7 @@ Most people who interact with TNH Scholar do so in one of these roles:
 - **Developer or maintainer**  
   Extends the codebase, adds new tools, or modifies existing ones.
 
-This guide is aimed primarily at **tool users** and **workflow designers**. Developers should also see the [development](../development/contributing-prototype-phase.md) docs.
+This guide is aimed primarily at **tool users** and **workflow designers**. Developers should also see the [development](/development/contributing-prototype-phase.md) docs.
 
 ---
 
@@ -55,8 +55,8 @@ Typical steps:
 
 Relevant documentation:
 
-- [CLI Overview](../cli-reference/overview.md)
-- [audio-transcribe](../cli-reference/audio-transcribe.md) and [nfmt](../cli-reference/nfmt.md) CLI guides
+- [CLI Overview](/cli-reference/overview.md)
+- [audio-transcribe](/cli-reference/audio-transcribe.md) and [nfmt](/cli-reference/nfmt.md) CLI guides
 
 ---
 
@@ -81,9 +81,9 @@ Typical steps:
 
 Relevant documentation:
 
-- [Prompt System Architecture](../architecture/prompt-system/prompt-system-architecture.md)
-- Additional prompt design docs: [ADR-PT03](../architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
-- [tnh-fab](../cli-reference/tnh-fab.md) CLI guide
+- [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)
+- Additional prompt design docs: [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
+- [tnh-fab](/cli-reference/tnh-fab.md) CLI guide
 
 ---
 
@@ -109,9 +109,9 @@ Typical steps:
 
 Relevant documentation:
 
-- Chunking and diarization design docs: [Diarization System Design](../architecture/transcription/design/diarization-system-design.md)
-- [GenAI Service design documents](../architecture/gen-ai-service/design/genai-service-design-strategy.md)
-- [token-count](../cli-reference/token-count.md) CLI guide
+- Chunking and diarization design docs: [Diarization System Design](/architecture/transcription/design/diarization-system-design.md)
+- [GenAI Service design documents](/architecture/gen-ai-service/design/genai-service-design-strategy.md)
+- [token-count](/cli-reference/token-count.md) CLI guide
 
 ---
 
@@ -132,7 +132,7 @@ When deciding which tool or workflow to use, consider:
   - For archival or publication-ready materials, assume **human review is mandatory**.  
   - For internal experimentation, you may tolerate more automation, but provenance still matters.
 
-The [CLI Overview](../cli-reference/overview.md) includes a quick decision table for common scenarios.
+The [CLI Overview](/cli-reference/overview.md) includes a quick decision table for common scenarios.
 
 ---
 
@@ -146,8 +146,8 @@ A central principle of TNH Scholar is that **all AI-assisted outputs must be tra
 
 The internal GenAIService and prompt system are designed to support these requirements. See:
 
-- [Prompt System Architecture](../architecture/prompt-system/prompt-system-architecture.md)
-- [Prompt Fingerprints and Provenance](../architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
+- [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)
+- [Prompt Fingerprints and Provenance](/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
 
 ---
 
@@ -156,13 +156,13 @@ The internal GenAIService and prompt system are designed to support these requir
 Suggested next readings:
 
 - For **concrete commands and options**:
-  - [CLI Overview](../cli-reference/overview.md)
-  - CLI guides under [cli](../cli-reference/overview.md)
+  - [CLI Overview](/cli-reference/overview.md)
+  - CLI guides under [cli](/cli-reference/overview.md)
 
 - For **design and architecture background**:
-  - [Architecture Overview](../architecture/overview.md)
-  - GenAIService ADRs such as [ADR-A12](../architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
+  - [Architecture Overview](/architecture/overview.md)
+  - GenAIService ADRs such as [ADR-A12](/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
 
 - For **contributing and development**:  
-  - [Contributing to TNH Scholar (Prototype Phase)](../development/contributing-prototype-phase.md)  
-  - [Human–AI Software Engineering Principles](../development/human-ai-software-engineering-principles.md)
+  - [Contributing to TNH Scholar (Prototype Phase)](/development/contributing-prototype-phase.md)  
+  - [Human–AI Software Engineering Principles](/development/human-ai-software-engineering-principles.md)

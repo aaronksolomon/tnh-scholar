@@ -99,6 +99,6 @@ tnh-fab section > processed.txt
 
 ## Next Steps
 
-- Review the [Prompt System](../user-guide/prompt-system.md) documentation
-- Explore detailed [CLI documentation](../cli-reference/overview.md) for all available tools
+- Review the [Prompt System](/user-guide/prompt-system.md) documentation
+- Explore detailed [CLI documentation](/cli-reference/overview.md) for all available tools
 - Check out example notebooks in the repository

@@ -77,8 +77,8 @@ See [object-service-implementation-status.md](object-service-implementation-stat
 
 - [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-object-service-architecture-v3.md) - Complete architectural specification
 - [Implementation Status](object-service-implementation-status.md) - Gaps analysis and progress
-- [Design Principles](../../development/design-principles.md) - General design philosophy
-- [Conceptual Architecture](../../project/conceptual-architecture.md) - High-level system model
+- [Design Principles](/development/design-principles.md) - General design philosophy
+- [Conceptual Architecture](/project/conceptual-architecture.md) - High-level system model
 
 ## Quick Reference
 

@@ -80,7 +80,7 @@ graph TD
 
 ### PromptCatalog Service
 
-Following the [Object-Service Design](../object-service/object-service-design-overview.md) pattern:
+Following the [Object-Service Design](/architecture/object-service/object-service-design-overview.md) pattern:
 
 ```mermaid
 graph TD
@@ -220,7 +220,7 @@ response_cache.set(fingerprint.full_hash, response)
 
 ## VS Code Integration Requirements
 
-See [ADR-VSC01](../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md) and ADR-VSC02 (pending) for full context.
+See [ADR-VSC01](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md) and ADR-VSC02 (pending) for full context.
 
 ### Interactive Prompt Selection
 
@@ -432,9 +432,9 @@ response_cache.set(rendered.fingerprint.full_hash, result)
 ## Related Documentation
 
 - [ADR-PT03: Current Status & Roadmap](adr/adr-pt03-prompt-system-status-roadmap.md) - Current implementation
-- [ADR-DD03: Terminology Standardization](../docs-system/adr/adr-dd03-pattern-to-prompt.md) - Pattern→Prompt shift
-- [ADR-VSC01: VS Code Integration Strategy](../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
-- [Object-Service Design](../object-service/object-service-design-overview.md) - Architecture pattern
+- [ADR-DD03: Terminology Standardization](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md) - Pattern→Prompt shift
+- [ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
+- [Object-Service Design](/architecture/object-service/object-service-design-overview.md) - Architecture pattern
 - [Archive: Pattern Core Design](archive/core-pattern-architecture.md) - Historical architecture (legacy terminology)
 
 ## References
