@@ -280,6 +280,7 @@ Implemented a dual-format auto-generated documentation index system:
 - Added both scripts to mkdocs.yaml gen-files plugin
 - Excluded `documentation_map.md` from navigation (mkdocs.yaml exclude_docs) since it's embedded in index.md
 - Respects existing EXCLUDE_PATTERNS to avoid indexing draft/archived files
+- Filters out subdirectory `index.md` files from documentation_map.md (navigation landing pages that clutter the browsable list)
 
 **Benefits**:
 
