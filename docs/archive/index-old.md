@@ -4,11 +4,10 @@ description: Comprehensive documentation for TNH Scholar, an AI-driven project e
   processing, and translating the teachings of Thich Nhat Hanh.
 ---
 
+
 # TNH Scholar
 
-**TNH Scholar is a long-term, community-aligned initiative to build a trusted multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
-
-This document contains deeper onboarding and architectural context. For a more concise intro to the project, see the [README](project/repo-root/repo-readme.md).
+TNH Scholar is an AI-driven project designed to explore, process, and translate the teachings of Thich Nhat Hanh and the Plum Village community. For a more concise intro to the project, see the [README](project/repo-root/repo-readme.md). This document contains deeper onboarding and architectural context.
 
 ## Vision & Aspirations
 
@@ -22,27 +21,13 @@ TNH Scholar is a long-term effort to support the **living Plum Village tradition
 
 This work is envisioned on a **multi-year to multi-decade timescale**. The CLI tools and GenAI Service in this repository are the **early infrastructure** for that larger arc.
 
-For the full vision, including scope, non-scope, relationship to spin-offs, and time horizon, see:
+For the full description, including scope, non-scope, relationship to spin-offs, and time horizon, see:
 
 - [TNH Scholar Project Vision (in project/vision)](project/vision.md)
 
 ---
 
 > **Note on Terminology**: Earlier versions of TNH Scholar referred to engineered AI prompts as "Patterns" to emphasize their engineering pattern nature. Current documentation uses "Prompt" to align with industry standards. References to "Pattern" in legacy documentation should be read as "Prompt".
-
----
-
-## What TNH Scholar Makes Possible
-
-TNH Scholar aims to support the community in:
-
-- Exploring teachings with bilingual text and translation side-by-side
-- Searching themes and teachings across languages and periods
-- Reviewing and refining translations collaboratively with transparent history
-- Connecting practitioners, researchers, and teachers with reliable digital resources
-- Preserving teaching materials for future generations with clarity and care
-
-These are aspirational but active development goals aligned with the needs of the Plum Village community.
 
 ---
 
@@ -54,48 +39,41 @@ These are aspirational but active development goals aligned with the needs of th
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See [Prompt System Architecture](architecture/prompt-system/prompt-system-architecture.md) and [ADR-PT03](architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) for current status and roadmap
 
----
+## Quick Start (for those wishing to use the tools)
 
-## Getting Started
+- Install from PyPI and run the setup helper:
 
-Choose your path based on your primary interest:
+  ```bash
+  pip install tnh-scholar
+  tnh-setup
+  ```
 
-### Path 1: Use the Tools
+- Configure credentials (OpenAI, optional Google Vision) per [Configuration](getting-started/configuration.md)
+- Run your first workflow via the [Quick Start Guide](getting-started/quick-start-guide.md)
 
-**For practitioners, translators, and researchers ready to work with TNH Scholar:**
+## Getting Started (persona-based)
 
-Get up and running with TNH Scholar's CLI tools for transcription, translation, and text processing:
+- **Practitioners**: Follow [Installation](getting-started/installation.md), then the [Quick Start Guide](getting-started/quick-start-guide.md); explore workflows in the [User Guide](user-guide/overview.md)
+- **Developers**: Set up via [DEV_SETUP.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md) and [Contributing](https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md); review [System Design](development/system-design.md), [Style Guide](development/style-guide.md), and [Design Principles](development/design-principles.md); see the [CLI Overview](cli-reference/overview.md)
+- **Researchers**: Start with [Research](research/index.md) for experiments and notes; for knowledge-base direction see [ADR-K01](architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md); review [Architecture](architecture/overview.md) for transcription/translation pipelines
 
-- Install from PyPI: `pip install tnh-scholar && tnh-setup`
-- Configure credentials per [Configuration](getting-started/configuration.md)
-- Follow the [Quick Start Guide](getting-started/quick-start-guide.md) for your first workflow
-- Explore task-oriented workflows in the [User Guide](user-guide/overview.md)
+## Architecture Overview
 
-### Path 2: Understand the Vision & Principles
+- **Docs strategy**: [ADR-DD01](architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md) and [ADR-DD02](architecture/docs-system/adr/adr-dd02-main-content-nav.md)
+- **GenAI service layer**: See [GenAI Service Strategy](architecture/gen-ai-service/design/genai-service-design-strategy.md) and the ADR-A series.
+- **Transcription pipeline**: See [ADR-TR01](architecture/transcription/adr/adr-tr01-assemblyai-integration.md) and related ADR-TR docs (diarization, chunking, timing).
+- **Prompt design**: See [Prompt Architecture](architecture/prompt-system/prompt-system-architecture.md) and [ADR-PT03](architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) for current status.
+- **System design references**: [Object-Service Design](architecture/object-service/object-service-design-overview.md) and [System Design](development/system-design.md)
 
-**For community members, stakeholders, and and those exploring how this project fits within Plum Village initiatives:**
+## Development
 
-Explore the project's foundation, values, and long-term direction:
+- Common commands: `make test`, `make lint`, `make format`, `make docs`, `poetry run mypy src/`
+- Optional dependency groups (development only): `tnh-scholar[ocr]`, `tnh-scholar[gui]`, `tnh-scholar[query]`, `tnh-scholar[dev]`
+- Troubleshooting and workflows: [DEV_SETUP.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md)
 
-- **Vision & Scope**: [Project Vision](project/vision.md) – multi-year aspirations, community alignment, and what's in/out of scope
-- **Philosophy**: [Philosophy](project/philosophy.md) – ethical foundations and mindful technology principles
-- **Principles**: [Design Principles](development/design-principles.md) – transparency, human judgment, and architectural values
-- **Community Context**: [Parallax Overview](community/parallax-overview.md) – relationship to broader Plum Village digital initiatives
+## Contributing
 
-### Path 3: Contribute to Development
-
-**For developers, architects, and contributors:**
-
-Understand the technical foundation and start contributing:
-
-- **Setup**: [DEV_SETUP.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md) – development environment and workflows
-- **Architecture**: [System Design](development/system-design.md) and [Architecture Overview](architecture/overview.md) – core patterns and technical decisions
-- **Standards**: [Style Guide](development/style-guide.md) and [Contributing](https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md) – code quality and PR workflow
-- **Key ADRs**: Start with [GenAI Service Strategy](architecture/gen-ai-service/design/genai-service-design-strategy.md) and [Prompt System Status](architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
-- **Research**: [Research Index](research/index.md) – experiments, evaluations, and exploratory work
-- **Common commands**: `make test`, `make lint`, `make format`, `make docs`, `poetry run mypy src/`
-
----
+See [CONTRIBUTING.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md) for coding standards, testing expectations, and PR workflow. We welcome contributions from practitioners, developers, and scholars.
 
 ## Documentation Overview
 
@@ -122,8 +100,6 @@ TNH Scholar is currently in **alpha stage**. Expect ongoing API and workflow cha
 This project is licensed under the [GPL-3.0 License](https://github.com/aaronksolomon/tnh-scholar/blob/main/LICENSE).
 
 ## Documentation Map
-
-For a complete, searchable index of all documentation with descriptions and metadata, see the [Documentation Index](documentation_index.md).
 
 ### Architecture
 

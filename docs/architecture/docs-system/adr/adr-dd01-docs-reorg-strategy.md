@@ -250,3 +250,56 @@ docs/
 
 - TODO #18: Convert Documentation Links to Absolute Paths
 - [MkDocs 1.6 Release Notes](https://www.mkdocs.org/about/release-notes/#version-16-2024-06-10)
+
+---
+
+## Addendum 3: Auto-Generated Documentation Index System (2025-12-05)
+
+**Context**:
+
+The original ADR specified a manually-maintained Documentation Map section in `/docs/index.md`. As the documentation grew, maintaining this static list became error-prone and duplicated information available from filesystem scanning.
+
+**Decision**:
+
+Implemented a dual-format auto-generated documentation index system:
+
+1. **`documentation_index.md`** (comprehensive reference):
+   - Searchable table format with Title, Description, Created date, and Path
+   - Organized by category sections (Getting Started, Architecture, CLI Reference, etc.)
+   - Generated from frontmatter metadata via `scripts/generate_doc_index.py`
+
+2. **`documentation_map.md`** (browsable navigation):
+   - Clean hierarchical list format matching the original static Documentation Map
+   - Same category organization as documentation_index.md
+   - Auto-appended to `/docs/index.md` during build via `scripts/append_doc_map_to_index.py`
+
+**Implementation**:
+
+- Created `scripts/generate_doc_index.py` - scans docs/ directory, extracts frontmatter, generates both files
+- Created `scripts/append_doc_map_to_index.py` - injects documentation_map.md content into index.md at build time
+- Added both scripts to mkdocs.yaml gen-files plugin
+- Excluded `documentation_map.md` from navigation (mkdocs.yaml exclude_docs) since it's embedded in index.md
+- Respects existing EXCLUDE_PATTERNS to avoid indexing draft/archived files
+
+**Benefits**:
+
+- **Single source of truth**: Documentation structure derived from filesystem and frontmatter
+- **Always in sync**: Regenerated on every `mkdocs build` or `mkdocs serve`
+- **Two complementary formats**:
+  - Browsable map for quick navigation on landing page
+  - Comprehensive searchable index with metadata for reference
+- **Zero maintenance**: No manual updates needed when adding/removing docs
+- **Landing page friendly**: Documentation Map visible on index.md without clicking
+
+**Migration from original ADR**:
+
+- Original: Manually-maintained static Documentation Map in index.md
+- Now: Auto-generated from filesystem, appended at build time
+- Static map in source index.md remains as fallback but is replaced in built site
+
+**References**:
+
+- `/scripts/generate_doc_index.py` - Main index generation script
+- `/scripts/append_doc_map_to_index.py` - Build-time index.md augmentation
+- `/docs/documentation_index.md` - Auto-generated comprehensive reference
+- `/docs/documentation_map.md` - Auto-generated hierarchical navigation (excluded from site nav)

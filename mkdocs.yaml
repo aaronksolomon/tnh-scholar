@@ -81,6 +81,11 @@ validation:
   links:
     absolute_links: relative_to_docs  # Enable absolute links starting with /
 
+exclude_docs: |
+  archive/index-old.md
+  tnh-index-updated.md
+  documentation_map.md
+
 plugins:
   - search:
       separator: '[\s\-\.]+'  # Better search for compound terms
@@ -89,6 +94,8 @@ plugins:
         - scripts/sync_root_docs.py
         - scripts/generate_mkdocs_nav.py
         - scripts/generate_subdir_indexes.py
+        - scripts/generate_doc_index.py
+        - scripts/append_doc_map_to_index.py
   - literate-nav:
       nav_file: docs-nav.md
   - mkdocstrings:

@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- **Auto-generated Documentation Index System** (2025-12-05):
+  - Implemented dual-format auto-generated documentation indexing (ADR-DD01 Addendum 3)
+  - Created `scripts/generate_doc_index.py` to generate both `documentation_index.md` (comprehensive searchable table) and `documentation_map.md` (hierarchical navigation)
+  - Created `scripts/append_doc_map_to_index.py` to inject documentation map into index.md at build time
+  - Documentation Map now auto-generated from filesystem and frontmatter metadata, eliminating manual maintenance
+  - Both formats always in sync with actual documentation structure
+
 - **Phase 2 Documentation Reorganization** (ADR-DD01/ADR-DD02 completion):
   - Completed comprehensive file reorganization: renamed 75+ architecture documents for clarity and consistency
   - Established canonical naming patterns: `adr-XX-descriptive-name.md` for ADRs, `system-design.md` for design docs

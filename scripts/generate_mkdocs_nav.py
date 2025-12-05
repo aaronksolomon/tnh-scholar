@@ -31,6 +31,14 @@ except ModuleNotFoundError:  # Fallback for mkdocs run_path isolation
 DOCS_DIR = Path("docs")
 NAV_FILENAME = "docs-nav.md"
 ROOT_TITLE = "TNH Scholar"
+
+# Files to exclude from navigation (should match mkdocs.yaml exclude_docs)
+EXCLUDE_PATTERNS = [
+    "archive/index-old.md",
+    "tnh-index-updated.md",
+    "documentation_map.md",  # Auto-generated, appended to index.md
+]
+
 TOP_LEVEL_ORDER = [
     "index.md",
     "getting-started",
@@ -59,10 +67,21 @@ DEFAULT_BUCKET = len(TOP_LEVEL_ORDER) + 1
 
 
 def iter_markdown_files() -> Iterable[Path]:
-    """Yield Markdown files under docs/, including mirrored repo-root copies."""
+    """Yield Markdown files under docs/, excluding files matching EXCLUDE_PATTERNS."""
     if not DOCS_DIR.exists():
         return []
-    return sorted(DOCS_DIR.rglob("*.md"), key=nav_sort_key)
+
+    all_files = DOCS_DIR.rglob("*.md")
+
+    # Filter out excluded files
+    filtered_files = []
+    for path in all_files:
+        relative = path.relative_to(DOCS_DIR).as_posix()
+        if not any(relative == pattern or relative.startswith(pattern.rstrip('/') + '/')
+                   for pattern in EXCLUDE_PATTERNS):
+            filtered_files.append(path)
+
+    return sorted(filtered_files, key=nav_sort_key)
 
 
 def nav_sort_key(path: Path) -> tuple:

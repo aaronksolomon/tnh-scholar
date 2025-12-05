@@ -65,6 +65,61 @@ Brief description of what prompted this session and relevant background.
 
 ---
 
+## [2025-12-05 19:45 PST] Auto-Generated Documentation Index System
+
+**Agent**: Claude Sonnet 4.5 (claude-sonnet-4-5-20250929)
+**Chat Reference**: docs-index-automation
+**Human Collaborator**: phapman
+
+### Context
+
+Replaced manually-maintained static Documentation Map in index.md with auto-generated dual-format system. Static map was becoming stale and error-prone as documentation grew.
+
+### Key Decisions
+
+- **Dual-Format Approach**: Generate both comprehensive searchable index (table) and hierarchical browsable map (lists) from same data source
+- **Build-Time Injection**: Use mkdocs gen-files to append documentation_map.md content to index.md during build, keeping landing page complete without extra clicks
+- **Filename Scheme**: `documentation_index.md` for comprehensive reference, `documentation_map.md` for hierarchical navigation (excludes from nav since embedded in index)
+
+### Work Completed
+
+- [x] Created `scripts/generate_doc_index.py` - generates both documentation_index.md and documentation_map.md from filesystem + frontmatter
+- [x] Created `scripts/append_doc_map_to_index.py` - injects map into index.md at build time via mkdocs gen-files
+- [x] Updated mkdocs.yaml: added both scripts to gen-files plugin, excluded documentation_map.md from nav
+- [x] Updated `scripts/generate_mkdocs_nav.py`: added documentation_map.md to EXCLUDE_PATTERNS
+- [x] Documented in ADR-DD01 Addendum 3
+- [x] Updated CHANGELOG.md with implementation details
+
+### Discoveries & Insights
+
+- **mkdocs gen-files order matters**: Scripts run sequentially, so append_doc_map_to_index.py must run after generate_doc_index.py
+- **Exclusion coordination**: Must sync EXCLUDE_PATTERNS across generate_doc_index.py, generate_mkdocs_nav.py, and mkdocs.yaml exclude_docs
+- **Category ordering**: Reused TOP_LEVEL_ORDER from generate_mkdocs_nav.py for consistent category sequencing
+
+### Files Modified/Created
+
+- `scripts/generate_doc_index.py`: Rewrote to generate dual-format output with category grouping
+- `scripts/append_doc_map_to_index.py`: Created - build-time index.md augmentation
+- `scripts/generate_mkdocs_nav.py`: Added documentation_map.md to exclusions
+- `mkdocs.yaml`: Added gen-files scripts, excluded documentation_map.md
+- `docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md`: Added Addendum 3
+- `CHANGELOG.md`: Documented auto-generated index system
+- `docs/documentation_index.md`: Auto-generated (comprehensive table format)
+- `docs/documentation_map.md`: Auto-generated (hierarchical list format)
+
+### Next Steps
+
+- [ ] Optional: Clean up static Documentation Map from source docs/index.md (currently replaced at build time)
+- [ ] Monitor for any broken links in generated documentation_index.md
+
+### References
+
+- ADR-DD01 Addendum 3: Auto-Generated Documentation Index System
+- `/scripts/generate_doc_index.py`
+- `/scripts/append_doc_map_to_index.py`
+
+---
+
 ## [2025-11-23 16:30 PST] ADR-DD02: Documentation Content Architecture & Drift Reporting
 
 **Agent**: Claude Sonnet 4.5 (claude-sonnet-4-5-20250929)
