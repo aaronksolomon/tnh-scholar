@@ -2355,6 +2355,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-3-auto-generated-documentation-index-system-2025-12-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 3: Auto-Generated Documentation Index System (2025-12-05)
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7238,13 +7247,6 @@
     Documentation Index
   </span>
   
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
 
       </a>
     </li>
@@ -7361,6 +7363,15 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-3-auto-generated-documentation-index-system-2025-12-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 3: Auto-Generated Documentation Index System (2025-12-05)
+    </span>
+  </a>
   
 </li>
       
@@ -7648,6 +7659,57 @@
 <ul>
 <li>TODO #18: Convert Documentation Links to Absolute Paths</li>
 <li><a href="https://www.mkdocs.org/about/release-notes/#version-16-2024-06-10">MkDocs 1.6 Release Notes</a></li>
+</ul>
+<hr />
+<h2 id="addendum-3-auto-generated-documentation-index-system-2025-12-05">Addendum 3: Auto-Generated Documentation Index System (2025-12-05)<a class="headerlink" href="#addendum-3-auto-generated-documentation-index-system-2025-12-05" title="Link to this section">&para;</a></h2>
+<p><strong>Context</strong>:</p>
+<p>The original ADR specified a manually-maintained Documentation Map section in <code>/docs/index.md</code>. As the documentation grew, maintaining this static list became error-prone and duplicated information available from filesystem scanning.</p>
+<p><strong>Decision</strong>:</p>
+<p>Implemented a dual-format auto-generated documentation index system:</p>
+<ol>
+<li><strong><code>documentation_index.md</code></strong> (comprehensive reference):</li>
+<li>Searchable table format with Title, Description, Created date, and Path</li>
+<li>Organized by category sections (Getting Started, Architecture, CLI Reference, etc.)</li>
+<li>
+<p>Generated from frontmatter metadata via <code>scripts/generate_doc_index.py</code></p>
+</li>
+<li>
+<p><strong><code>documentation_map.md</code></strong> (browsable navigation):</p>
+</li>
+<li>Clean hierarchical list format matching the original static Documentation Map</li>
+<li>Same category organization as documentation_index.md</li>
+<li>Auto-appended to <code>/docs/index.md</code> during build via <code>scripts/append_doc_map_to_index.py</code></li>
+</ol>
+<p><strong>Implementation</strong>:</p>
+<ul>
+<li>Created <code>scripts/generate_doc_index.py</code> - scans docs/ directory, extracts frontmatter, generates both files</li>
+<li>Created <code>scripts/append_doc_map_to_index.py</code> - injects documentation_map.md content into index.md at build time</li>
+<li>Added both scripts to mkdocs.yaml gen-files plugin</li>
+<li>Excluded <code>documentation_map.md</code> from navigation (mkdocs.yaml exclude_docs) since it's embedded in index.md</li>
+<li>Respects existing EXCLUDE_PATTERNS to avoid indexing draft/archived files</li>
+</ul>
+<p><strong>Benefits</strong>:</p>
+<ul>
+<li><strong>Single source of truth</strong>: Documentation structure derived from filesystem and frontmatter</li>
+<li><strong>Always in sync</strong>: Regenerated on every <code>mkdocs build</code> or <code>mkdocs serve</code></li>
+<li><strong>Two complementary formats</strong>:</li>
+<li>Browsable map for quick navigation on landing page</li>
+<li>Comprehensive searchable index with metadata for reference</li>
+<li><strong>Zero maintenance</strong>: No manual updates needed when adding/removing docs</li>
+<li><strong>Landing page friendly</strong>: Documentation Map visible on index.md without clicking</li>
+</ul>
+<p><strong>Migration from original ADR</strong>:</p>
+<ul>
+<li>Original: Manually-maintained static Documentation Map in index.md</li>
+<li>Now: Auto-generated from filesystem, appended at build time</li>
+<li>Static map in source index.md remains as fallback but is replaced in built site</li>
+</ul>
+<p><strong>References</strong>:</p>
+<ul>
+<li><code>/scripts/generate_doc_index.py</code> - Main index generation script</li>
+<li><code>/scripts/append_doc_map_to_index.py</code> - Build-time index.md augmentation</li>
+<li><code>/docs/documentation_index.md</code> - Auto-generated comprehensive reference</li>
+<li><code>/docs/documentation_map.md</code> - Auto-generated hierarchical navigation (excluded from site nav)</li>
 </ul>
 
 

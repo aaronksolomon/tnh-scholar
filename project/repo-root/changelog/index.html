@@ -7178,13 +7178,6 @@
     Documentation Index
   </span>
   
-    
-  
-  
-    <span class="md-status md-status--processing"></span>
-  
-
-  
 
       </a>
     </li>
@@ -7277,7 +7270,17 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">Unreleased<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Phase 2 Documentation Reorganization</strong> (ADR-DD01/ADR-DD02 completion):</li>
+<li><strong>Auto-generated Documentation Index System</strong> (2025-12-05):</li>
+<li>Implemented dual-format auto-generated documentation indexing (ADR-DD01 Addendum 3)</li>
+<li>Created <code>scripts/generate_doc_index.py</code> to generate both <code>documentation_index.md</code> (comprehensive searchable table) and <code>documentation_map.md</code> (hierarchical navigation)</li>
+<li>Created <code>scripts/append_doc_map_to_index.py</code> to inject documentation map into index.md at build time</li>
+<li>Documentation Map now auto-generated from filesystem and frontmatter metadata, eliminating manual maintenance</li>
+<li>
+<p>Both formats always in sync with actual documentation structure</p>
+</li>
+<li>
+<p><strong>Phase 2 Documentation Reorganization</strong> (ADR-DD01/ADR-DD02 completion):</p>
+</li>
 <li>Completed comprehensive file reorganization: renamed 75+ architecture documents for clarity and consistency</li>
 <li>Established canonical naming patterns: <code>adr-XX-descriptive-name.md</code> for ADRs, <code>system-design.md</code> for design docs</li>
 <li>Created README.md files for major sections (architecture/, cli/, development/, getting-started/)</li>
