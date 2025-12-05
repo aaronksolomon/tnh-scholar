@@ -1,3 +1,11 @@
+---
+title: "API Reference"
+description: "::: tnh_scholar"
+owner: ""
+author: ""
+status: processing
+created: "2025-01-19"
+---
 # API Reference
 
 ::: tnh_scholar
@@ -10,4 +18,3 @@
         recursive: true
         nested_objects: true
         show_submodules: true
-

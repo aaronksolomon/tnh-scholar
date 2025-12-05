@@ -134,7 +134,7 @@ class TranscriptionServiceFactory:
         cls,
         provider: str = "assemblyai",
         api_key: Optional[str] = None,
-        **kwargs
+        **kwargs: Any
     ) -> TranscriptionService:
         """
         Create a transcription service instance.

@@ -1,24 +1,108 @@
-/Users/phapman/Desktop/tnh-scholar
-├── audio_transcriptions
-│   ├── ai_take_over.txt
-│   ├── logs
-│   ├── peaks
-│   │   └── sr_bamboo_test.wav.reapeaks
-│   ├── processed_sr_bamboo_test_srt_out_en.srt
-│   ├── processed_sr_bamboo_test_srt_out.srt
-│   ├── pttt_12_11_2023_phap_th_yU-wfQuHzqw_diarization
-│   └── sr_bamboo_metadata.txt
+/Users/phapman/Desktop/Projects/tnh-scholar
 ├── CONTRIBUTING.md
-├── current_pip_freeze.txt
+├── DEV_SETUP.md
+├── LICENSE
+├── Makefile
+├── README.md
+├── TODO.md
+├── configs
 ├── data
-│   ├── books
-│   │   └── public_books
-│   └── PDF
-│       └── Phat_Giao_journals
-├── data_processing
+│   ├── PDF
+│   │   └── Phat_Giao_journals
+│   └── books
+│       └── public_books
 ├── docs
 │   ├── api
 │   │   └── index.md
+│   ├── architecture
+│   │   ├── ai-text-processing
+│   │   │   ├── adr
+│   │   │   │   ├── adr-at01-ai-text-processing.md
+│   │   │   │   └── adr-at02-sectioning-textobject.md
+│   │   │   └── design
+│   │   │       ├── data-flow-through-pipeline.mermaid
+│   │   │       ├── textobject-new-design.md
+│   │   │       └── textobject-original-design.md
+│   │   ├── configuration
+│   │   │   ├── design
+│   │   │   └── tnh-configuration.md
+│   │   ├── docs-design
+│   │   │   ├── adr
+│   │   │   │   └── adr-dd01-docs-reorg-strat.md
+│   │   │   └── design
+│   │   │       └── documentation.md
+│   │   ├── gen-ai-service
+│   │   │   ├── adr
+│   │   │   │   ├── adr-a01-domain-service.md
+│   │   │   │   ├── adr-a02-pattern-catalog-v1.md
+│   │   │   │   ├── adr-a08-config-params-policy.md
+│   │   │   │   ├── adr-a09-v1-simplified.md
+│   │   │   │   ├── adr-a11-model-parameters-fix.md
+│   │   │   │   ├── adr-a12-prompt-system-fingerprinting-v1.md
+│   │   │   │   └── adr-a13-legacy-client-migration.md
+│   │   │   └── design
+│   │   │       ├── genai-service-strategy.md
+│   │   │       └── migration-plan.md
+│   │   ├── jvb-viewer
+│   │   │   └── design
+│   │   │       ├── instruction-test0.md
+│   │   │       ├── instruction-test1.md
+│   │   │       ├── jvb-strat-001.md
+│   │   │       └── output1.md
+│   │   ├── knowledge-base
+│   │   │   └── adr
+│   │   │       └── adr-k01-preliminary-architectural-design.md
+│   │   ├── metadata
+│   │   │   └── adr
+│   │   │       └── adr-md01-metadata-strategy.md
+│   │   ├── pattern-system
+│   │   │   └── adr
+│   │   │       ├── adr-pt01-pattern-access-strategy.md
+│   │   │       └── adr-pt02-pattern-catalog.md
+│   │   ├── setup-tnh
+│   │   │   └── design
+│   │   │       └── setup-design.md
+│   │   ├── tnh-fab
+│   │   │   └── design
+│   │   │       ├── text-processing-cli-design-v1.md
+│   │   │       └── text-processing-cli-design-v2.md
+│   │   ├── transcription
+│   │   │   ├── adr
+│   │   │   │   ├── adr-tr01-assemblyai-integration.md
+│   │   │   │   ├── adr-tr02-optimize-srt.md
+│   │   │   │   ├── adr-tr03-standard-timestamp.md
+│   │   │   │   └── adr-tr04-assemblyai-improvements.md
+│   │   │   └── design
+│   │   │       ├── additional-design.md
+│   │   │       ├── audio-chunk-splitting.md
+│   │   │       ├── chunking-strategies.md
+│   │   │       ├── chunking-strategies0.md
+│   │   │       ├── diarization-algorithms.md
+│   │   │       ├── diarization-algorithms0.md
+│   │   │       ├── diarization-system0.md
+│   │   │       ├── diarization-system1.md
+│   │   │       ├── gpt-modular-pipeline.md
+│   │   │       ├── gpt-pipeline-overview.txt
+│   │   │       ├── language-chunking-algorithm.md
+│   │   │       ├── segment-match-algorithm.md
+│   │   │       └── timeline-mapping.md
+│   │   ├── ui-ux
+│   │   │   └── design
+│   │   │       └── ui-ux-strategy.md
+│   │   ├── utilities
+│   │   │   └── design
+│   │   │       ├── utilities-catalog.md
+│   │   │       └── version-checking-design.md
+│   │   ├── video-processing
+│   │   │   └── adr
+│   │   │       └── adr-vp01-video-processing.md
+│   │   └── ytt-fetch
+│   │       ├── adr
+│   │       │   ├── adr-yf00-overview.md
+│   │       │   ├── adr-yf01-transcript-source-handling.md
+│   │       │   └── adr-yf02-yt-dlp-transcripts.md
+│   │       └── design
+│   │           └── yt-dlp-vs-youtube-api.md
 │   ├── cli
 │   │   ├── audio-transcribe.md
 │   │   ├── nfmt.md
@@ -27,71 +111,27 @@
 │   │   ├── tnh-setup.md
 │   │   ├── token-count.md
 │   │   └── ytt-fetch.md
-│   ├── design
-│   │   ├── ai-text-processing
-│   │   │   ├── AI-text-processing-ADRs.md
-│   │   │   ├── data-flow-through-pipeline.mermaid
-│   │   │   ├── sectioning and TextObject ADRs.md
-│   │   │   ├── TextObject New Design.md
-│   │   │   └── TextObject Original Design.md
-│   │   ├── configuration
-│   │   │   └── tnh-configuration.md
-│   │   ├── diarization-transcription
-│   │   │   ├── additional-design.md
-│   │   │   ├── chunking-strategies.md
-│   │   │   ├── chunking-strategies0.md
-│   │   │   ├── diarization-algorithms.md
-│   │   │   ├── diarization-algorithms0.md
-│   │   │   ├── diarization-system0.md
-│   │   │   ├── diarization-system1.md
-│   │   │   ├── gpt-modular-pipeline.md
-│   │   │   ├── gpt-pipeline-overview.txt
-│   │   │   ├── language-chunking-algorithm.md
-│   │   │   ├── segment-match-algorithm.md
-│   │   │   └── timeline-mapping.md
-│   │   ├── metadata
-│   │   │   └── metadata ADRs.md
-│   │   ├── pattern
-│   │   │   └── pattern-ADRs.md
-│   │   ├── setup-tnh
-│   │   │   └── setup-design.md
-│   │   ├── tnh-fab
-│   │   │   ├── text processing cli design_v1.md
-│   │   │   └── text processing cli design_v2.md
-│   │   ├── transcription
-│   │   │   ├── adr-001-assemblyai-integration.md
-│   │   │   ├── adr-002-optomize-srt.md
-│   │   │   ├── adr-003-standard-timestamp.md
-│   │   │   ├── adr-004-assemblyai-improvements.md
-│   │   │   └── audio-chunk-splitting.md
-│   │   ├── utilities
-│   │   │   └── version-checking-design.md
-│   │   ├── video-processing
-│   │   │   └── video processing ADRs.md
-│   │   └── ytt-fetch
-│   │       ├── ADR transcript source handling.md
-│   │       ├── ADR yt-dlp transcripts.md
-│   │       ├── ADRs.md
-│   │       └── yt-dlp vs. Youtube API.md
 │   ├── development
+│   │   ├── architecture
+│   │   │   ├── api-integration-blueprint_(old).md
+│   │   │   ├── object-service-design-blueprint-v2.md
+│   │   │   ├── object-service-design-blueprint.md
+│   │   │   └── object-service-gaps.md
 │   │   ├── contributing.md
 │   │   ├── design-guide.md
 │   │   ├── fine-tuning-strategy.md
+│   │   ├── human-agent-coding-principles.md
 │   │   ├── initial-improvements.md
 │   │   ├── pattern-core-design.md
 │   │   ├── system-design.md
-│   │   ├── tnh-scholar-flow-alt.mermaid
-│   │   ├── tnh-scholar-flow.mermaid
-│   │   └── yt-dlp docs
+│   │   └── yt-dlp_docs
 │   │       ├── yt_dlp_help_output.txt
 │   │       ├── ytdlp-formats.md
 │   │       └── ytdlp-guide.md
-│   ├── docs-design
-│   │   ├── design
-│   │   │   └── documentation.md
-│   │   └── planning
-│   │       ├── maintenance.md
-│   │       └── roadmap.md
+│   ├── docs-ops
+│   │   ├── adr-template.md
+│   │   ├── documentation_index.md
+│   │   └── markdown-standards.md
 │   ├── getting-started
 │   │   ├── configuration.md
 │   │   ├── installation.md
@@ -103,20 +143,19 @@
 │   │   │   └── testing_input_output.md
 │   │   ├── gpt_4o_toc_tag_generation_testing
 │   │   │   └── Nov_2_testing_TOC_label_prompt.txt
-│   │   ├── gpt_4o_translations experiments
+│   │   ├── gpt_4o_translations_experiments
 │   │   │   └── passage_test.md
 │   │   ├── gpt_development_convos.md
 │   │   ├── metadata_report.md
 │   │   ├── preliminary_feasibility_study.md
 │   │   ├── strategic-information-processing.md
-│   │   ├── tnh-scholar-knowledge-base.md
-│   │   └── translation_research.md
+│   │   └── tnh-scholar-knowledge-vector-search.md
 │   └── user-guide
 │       ├── best-practices.md
 │       ├── overview.md
 │       └── patterns.md
+├── documentation_index.md
 ├── evaluation
-├── LICENSE
 ├── logs
 ├── mkdocs.yaml
 ├── mypy_errors.txt
@@ -129,8 +168,6 @@
 │   ├── audio_processing
 │   │   └── pyannote_test.ipynb
 │   ├── diarization
-│   │   ├── audio_transcriptions
-│   │   │   └── SPEAKER_00
 │   │   ├── audio-speech-preprocess
 │   │   │   └── audio_enhance.ipynb
 │   │   ├── diarize_and_transcribe.ipynb
@@ -140,6 +177,7 @@
 │   │   ├── full_pipe0.ipynb
 │   │   ├── full_pipe1.ipynb
 │   │   ├── full_pipe2.ipynb
+│   │   ├── full_pipe3.ipynb
 │   │   ├── logs
 │   │   ├── speaker_segments
 │   │   └── speech_detect.ipynb
@@ -168,7 +206,6 @@
 │   │   └── test_sentence_splitting.ipynb
 │   ├── ocr_processing
 │   │   ├── ocr_hand_checking.ipynb
-│   │   ├── ocr_testing_asynch_batches.ipynb
 │   │   ├── ocr_testing.ipynb
 │   │   ├── ocr_testing1.ipynb
 │   │   ├── ocr_testing2.ipynb
@@ -176,14 +213,19 @@
 │   │   ├── ocr_testing4.ipynb
 │   │   ├── ocr_testing5.ipynb
 │   │   ├── ocr_testing6.ipynb
-│   │   └── ocr_testing7.ipynb
+│   │   ├── ocr_testing7.ipynb
+│   │   └── ocr_testing_asynch_batches.ipynb
 │   ├── query_text_generation
 │   │   ├── model_testing_prompt.txt
 │   │   └── prompt_sequence1.ipynb
 │   ├── testing
 │   │   ├── CLI_test.ipynb
+│   │   ├── gen_ai_service
+│   │   │   └── service_test.ipynb
 │   │   ├── get_ytdlp_help.ipynb
 │   │   ├── github_dl_test.ipynb
+│   │   ├── logging_config
+│   │   │   └── logging_config_test.ipynb
 │   │   ├── logs
 │   │   ├── logtesting.ipynb
 │   │   ├── package_contents_tests.ipynb
@@ -192,19 +234,19 @@
 │   │   ├── test_patterns
 │   │   │   ├── default_line_translation.md
 │   │   │   ├── default_punctuate.md
-│   │   │   ├── default_section_old.md
 │   │   │   ├── default_section.md
+│   │   │   ├── default_section_old.md
 │   │   │   ├── default_xml_format.md
 │   │   │   ├── default_xml_paragraph_format.md
-│   │   │   ├── extract_wisdom_section.md
 │   │   │   ├── extract_wisdom1.md
 │   │   │   ├── extract_wisdom2.md
+│   │   │   ├── extract_wisdom_section.md
 │   │   │   ├── generate_markdown.md
 │   │   │   ├── generate_sections_en.md
 │   │   │   ├── generate_sections_multi_lang.md
 │   │   │   ├── identify_speakers.md
-│   │   │   ├── repair_markdown_strategy.md
 │   │   │   ├── repair_markdown.md
+│   │   │   ├── repair_markdown_strategy.md
 │   │   │   ├── simple_punctuate.md
 │   │   │   ├── simple_translate_paragraph_thay.md
 │   │   │   ├── special
@@ -216,6 +258,10 @@
 │   │   │   ├── logs
 │   │   │   ├── transciption0.ipynb
 │   │   │   └── transciption1.ipynb
+│   │   ├── waveform-diarization
+│   │   │   ├── app1.py
+│   │   │   ├── app2.py
+│   │   │   └── wavesurf_test.html
 │   │   ├── youtube_metadata_explore.ipynb
 │   │   ├── yt_fetch_test.ipynb
 │   │   └── ytdlp_version_test.ipynb
@@ -251,194 +297,264 @@
 │       │   └── video_processing_refactor_test.ipynb
 │       ├── video_download.ipynb
 │       └── youtube_playlist_process.ipynb
+├── poetry.lock
 ├── project_directory_tree.txt
 ├── pyproject.toml
-├── README.md
 ├── release_checklist.md
+├── scripts
+│   ├── generate_doc_index.py
+│   ├── generate_tree.py
+│   └── prep_notebooks.py
 ├── src
 │   ├── __init__.py
-│   ├── tnh_scholar
-│   │   ├── __init__.py
-│   │   ├── ai_text_processing
-│   │   │   ├── __init__.py
-│   │   │   ├── ai_text_processing.py
-│   │   │   ├── general_processor.py
-│   │   │   ├── line_translator.py
-│   │   │   ├── openai_process_interface.py
-│   │   │   ├── patterns.py
-│   │   │   ├── response_format.py
-│   │   │   ├── section_processor.py
-│   │   │   ├── text_object.py
-│   │   │   └── typing.py
-│   │   ├── audio_processing
-│   │   │   ├── __init__.py
-│   │   │   ├── audio_legacy.py
-│   │   │   ├── diarization
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── _diarization_utils.py
-│   │   │   │   ├── audio
-│   │   │   │   │   ├── __init__.py
-│   │   │   │   │   ├── config.py
-│   │   │   │   │   └── handler.py
-│   │   │   │   ├── chunker.py
-│   │   │   │   ├── config.py
-│   │   │   │   ├── models.py
-│   │   │   │   ├── protocols.py
-│   │   │   │   ├── pyannote_adapter.py
-│   │   │   │   ├── pyannote_client.py
-│   │   │   │   ├── pyannote_diarize.py
-│   │   │   │   ├── strategies
-│   │   │   │   │   ├── __init__.py
-│   │   │   │   │   ├── language_based.py
-│   │   │   │   │   ├── language_probe.py
-│   │   │   │   │   ├── speaker_blocker.py
-│   │   │   │   │   └── time_gap.py
-│   │   │   │   ├── timeline_mapper.py
-│   │   │   │   └── types.py
-│   │   │   ├── timed_object
-│   │   │   │   ├── __init__.py
-│   │   │   │   └── timed_text.py
-│   │   │   ├── transcription
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── assemblyai_service.py
-│   │   │   │   ├── format_converter.py
-│   │   │   │   ├── patches.py
-│   │   │   │   ├── srt_processor.py
-│   │   │   │   ├── text_segment_builder.py
-│   │   │   │   ├── transcription_service.py
-│   │   │   │   ├── vtt_processor.py
-│   │   │   │   └── whisper_service.py
-│   │   │   ├── transcription_legacy.py
-│   │   │   ├── utils
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── audio_enhance.py
-│   │   │   │   └── playback.py
-│   │   │   └── whisper_security.py
-│   │   ├── cli_tools
-│   │   │   ├── __init__.py
-│   │   │   ├── audio_transcribe
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── audio_transcribe.py
-│   │   │   │   ├── audio_transcribe0.py
-│   │   │   │   ├── audio_transcribe1.py
-│   │   │   │   ├── audio_transcribe2.py
-│   │   │   │   ├── config.py
-│   │   │   │   ├── convert_video.py
-│   │   │   │   ├── environment
-│   │   │   │   │   ├── __init__.py
-│   │   │   │   │   ├── env.py
-│   │   │   │   │   └── requirements.txt
-│   │   │   │   ├── transcription_pipeline.py
-│   │   │   │   ├── validate.py
-│   │   │   │   └── version_check.py
-│   │   │   ├── json_to_srt
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── json_to_srt.py
-│   │   │   │   └── json_to_srt1.py
-│   │   │   ├── nfmt
-│   │   │   │   ├── __init__.py
-│   │   │   │   └── nfmt.py
-│   │   │   ├── sent_split
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── sent_split_bak.py
-│   │   │   │   └── sent_split.py
-│   │   │   ├── srt_translate
-│   │   │   │   ├── __init__.py
-│   │   │   │   └── srt_translate.py
-│   │   │   ├── tnh_fab
-│   │   │   │   ├── __init__.py
-│   │   │   │   └── tnh_fab.py
-│   │   │   ├── tnh_setup
-│   │   │   │   ├── __init__.py
-│   │   │   │   └── tnh_setup.py
-│   │   │   ├── token_count
-│   │   │   │   ├── __init__.py
-│   │   │   │   └── token_count.py
-│   │   │   └── ytt_fetch
-│   │   │       ├── __init__.py
-│   │   │       └── ytt_fetch.py
-│   │   ├── dev_tools
-│   │   │   ├── __init__.py
-│   │   │   └── generate_tree.py
-│   │   ├── exceptions.py
-│   │   ├── journal_processing
-│   │   │   ├── __init__.py
-│   │   │   └── journal_process.py
-│   │   ├── logging_config.py
-│   │   ├── metadata
-│   │   │   ├── __init__.py
-│   │   │   └── metadata.py
-│   │   ├── ocr_processing
-│   │   │   ├── __init__.py
-│   │   │   ├── development
-│   │   │   │   ├── st_test.py
-│   │   │   │   ├── st_test2.py
-│   │   │   │   ├── st_test3.py
-│   │   │   │   ├── st_test4.py
-│   │   │   │   ├── st_test5.py
-│   │   │   │   └── st_test6.py
-│   │   │   ├── ocr_editor.py
-│   │   │   └── ocr_processing.py
-│   │   ├── openai_interface
-│   │   │   ├── __init__.py
-│   │   │   ├── openai_interface.py
-│   │   │   └── run_oa_batch_jobs.py
-│   │   ├── pattern_share
-│   │   │   ├── app.py
-│   │   │   └── requirements.txt
-│   │   ├── query
-│   │   │   ├── initial_cleaning_scripts.py
-│   │   │   ├── parse_tag.py
-│   │   │   └── v2_cleaning_scripts.py
-│   │   ├── text_processing
-│   │   │   ├── __init__.py
-│   │   │   ├── bracket.py
-│   │   │   ├── match_section.py
-│   │   │   ├── numbered_text.py
-│   │   │   └── text_processing.py
-│   │   ├── utils
-│   │   │   ├── __init__.py
-│   │   │   ├── file_utils.py
-│   │   │   ├── json_utils.py
-│   │   │   ├── lang.py
-│   │   │   ├── progress_utils.py
-│   │   │   ├── pydub_test.py
-│   │   │   ├── timing_utils.py
-│   │   │   ├── tnh_audio_segment.py
-│   │   │   ├── user_io_utils.py
-│   │   │   ├── validate.py
-│   │   │   ├── version_check
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── cache.py
-│   │   │   │   ├── checker.py
-│   │   │   │   ├── cli.py
-│   │   │   │   ├── config.py
-│   │   │   │   ├── models.py
-│   │   │   │   ├── providers.py
-│   │   │   │   └── strategies.py
-│   │   │   └── webhook_server.py
-│   │   ├── video_processing
-│   │   │   ├── __init__.py
-│   │   │   ├── video_processing_old1.py
-│   │   │   ├── video_processing_old2.py
-│   │   │   ├── video_processing.py
-│   │   │   └── yt_transcribe.py
-│   │   └── xml_processing
-│   │       ├── __init__.py
-│   │       ├── extract_tags.py
-│   │       └── xml_processing.py
-│   └── typings
-│       ├── __init__.pyi
-│       └── pydub
-│           ├── __init__.pyi
-│           └── AudioSegment.pyi
+│   └── tnh_scholar
+│       ├── __init__.py
+│       ├── ai_text_processing
+│       │   ├── __init__.py
+│       │   ├── ai_text_processing.py
+│       │   ├── general_processor.py
+│       │   ├── line_translator.py
+│       │   ├── openai_process_interface.py
+│       │   ├── prompts.py
+│       │   ├── response_format.py
+│       │   ├── section_processor.py
+│       │   ├── text_object.py
+│       │   └── typing.py
+│       ├── audio_processing
+│       │   ├── __init__.py
+│       │   ├── audio_legacy.py
+│       │   ├── diarization
+│       │   │   ├── __init__.py
+│       │   │   ├── _diarization_utils.py
+│       │   │   ├── audio
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── config.py
+│       │   │   │   └── handler.py
+│       │   │   ├── chunker.py
+│       │   │   ├── config.py
+│       │   │   ├── models.py
+│       │   │   ├── protocols.py
+│       │   │   ├── pyannote_adapter.py
+│       │   │   ├── pyannote_client.py
+│       │   │   ├── pyannote_diarize.py
+│       │   │   ├── reaper
+│       │   │   │   └── reaper_roundtrip_poc.py
+│       │   │   ├── schemas.py
+│       │   │   ├── strategies
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── language_based.py
+│       │   │   │   ├── language_probe.py
+│       │   │   │   ├── speaker_blocker.py
+│       │   │   │   └── time_gap.py
+│       │   │   ├── timeline_mapper.py
+│       │   │   ├── types.py
+│       │   │   └── viewer.py
+│       │   ├── timed_object
+│       │   │   ├── __init__.py
+│       │   │   └── timed_text.py
+│       │   ├── transcription
+│       │   │   ├── __init__.py
+│       │   │   ├── assemblyai_service.py
+│       │   │   ├── format_converter.py
+│       │   │   ├── patches.py
+│       │   │   ├── srt_processor.py
+│       │   │   ├── text_segment_builder.py
+│       │   │   ├── transcription_service.py
+│       │   │   ├── vtt_processor.py
+│       │   │   └── whisper_service.py
+│       │   ├── utils
+│       │   │   ├── __init__.py
+│       │   │   ├── audio_enhance.py
+│       │   │   └── playback.py
+│       │   └── whisper_security.py
+│       ├── cli_tools
+│       │   ├── __init__.py
+│       │   ├── audio_transcribe
+│       │   │   ├── __init__.py
+│       │   │   ├── audio_transcribe.py
+│       │   │   ├── config.py
+│       │   │   ├── convert_video.py
+│       │   │   ├── environment
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── env.py
+│       │   │   │   └── requirements.txt
+│       │   │   ├── transcription_pipeline.py
+│       │   │   ├── validate.py
+│       │   │   └── version_check.py
+│       │   ├── json_to_srt
+│       │   │   ├── __init__.py
+│       │   │   ├── json_to_srt.py
+│       │   │   └── json_to_srt1.py
+│       │   ├── nfmt
+│       │   │   ├── __init__.py
+│       │   │   └── nfmt.py
+│       │   ├── sent_split
+│       │   │   ├── __init__.py
+│       │   │   ├── sent_split.py
+│       │   │   └── sent_split_bak.py
+│       │   ├── srt_translate
+│       │   │   ├── __init__.py
+│       │   │   └── srt_translate.py
+│       │   ├── tnh_fab
+│       │   │   ├── __init__.py
+│       │   │   └── tnh_fab.py
+│       │   ├── tnh_setup
+│       │   │   ├── __init__.py
+│       │   │   └── tnh_setup.py
+│       │   ├── tnh_tree.py
+│       │   ├── token_count
+│       │   │   ├── __init__.py
+│       │   │   └── token_count.py
+│       │   └── ytt_fetch
+│       │       ├── __init__.py
+│       │       └── ytt_fetch.py
+│       ├── exceptions.py
+│       ├── gen_ai_service
+│       │   ├── adapters
+│       │   │   ├── __init__.py
+│       │   │   └── simple_completion.py
+│       │   ├── config
+│       │   │   ├── __init__.py
+│       │   │   ├── params_policy.py
+│       │   │   ├── schemas.py
+│       │   │   └── settings.py
+│       │   ├── infra
+│       │   │   ├── __init__.py
+│       │   │   ├── issue_handler.py
+│       │   │   ├── metrics.py
+│       │   │   ├── rate_limit.py
+│       │   │   ├── retry_policy.py
+│       │   │   ├── tracer.py
+│       │   │   ├── tracking
+│       │   │   │   ├── fingerprint.py
+│       │   │   │   └── provenance.py
+│       │   │   └── usage.py
+│       │   ├── mappers
+│       │   │   └── completion_mapper.py
+│       │   ├── models
+│       │   │   ├── __init__.py
+│       │   │   ├── domain.py
+│       │   │   ├── errors.py
+│       │   │   └── transport.py
+│       │   ├── pattern_catalog
+│       │   │   ├── __init__.py
+│       │   │   ├── adapters
+│       │   │   │   ├── __init__.py
+│       │   │   │   └── prompts_adapter.py
+│       │   │   ├── catalog.py
+│       │   │   └── render.py
+│       │   ├── ports
+│       │   │   ├── __init__.py
+│       │   │   └── genai_port.py
+│       │   ├── providers
+│       │   │   ├── __init__.py
+│       │   │   ├── anthropic_adapter.py
+│       │   │   ├── base.py
+│       │   │   ├── openai_adapter.py
+│       │   │   └── openai_client.py
+│       │   ├── routing
+│       │   │   ├── __init__.py
+│       │   │   ├── intents.py
+│       │   │   └── model_router.py
+│       │   ├── runtime_assets
+│       │   │   └── policies
+│       │   │       ├── params
+│       │   │       │   └── config_params_policy.yaml
+│       │   │       └── safety
+│       │   │           ├── post_check.yaml
+│       │   │           └── pre_check.yaml
+│       │   ├── safety
+│       │   │   ├── __init__.py
+│       │   │   ├── rules.py
+│       │   │   └── safety_gate.py
+│       │   ├── service.py
+│       │   └── utils
+│       │       ├── __init__.py
+│       │       ├── response_utils.py
+│       │       └── token_utils.py
+│       ├── journal_processing
+│       │   ├── __init__.py
+│       │   └── journal_process.py
+│       ├── logging_config.py
+│       ├── metadata
+│       │   ├── __init__.py
+│       │   └── metadata.py
+│       ├── ocr_processing
+│       │   ├── __init__.py
+│       │   ├── development
+│       │   │   ├── st_test.py
+│       │   │   ├── st_test2.py
+│       │   │   ├── st_test3.py
+│       │   │   ├── st_test4.py
+│       │   │   ├── st_test5.py
+│       │   │   └── st_test6.py
+│       │   ├── ocr_editor.py
+│       │   └── ocr_processing.py
+│       ├── openai_interface
+│       ├── pattern_share
+│       │   ├── app.py
+│       │   └── requirements.txt
+│       ├── query
+│       │   ├── initial_cleaning_scripts.py
+│       │   ├── parse_tag.py
+│       │   └── v2_cleaning_scripts.py
+│       ├── text_processing
+│       │   ├── __init__.py
+│       │   ├── bracket.py
+│       │   ├── match_section.py
+│       │   ├── numbered_text.py
+│       │   └── text_processing.py
+│       ├── tools
+│       │   ├── __init__.py
+│       │   ├── notebook_prep.py
+│       │   └── tree_builder.py
+│       ├── utils
+│       │   ├── __init__.py
+│       │   ├── file_utils.py
+│       │   ├── json_utils.py
+│       │   ├── lang.py
+│       │   ├── progress_utils.py
+│       │   ├── timing_utils.py
+│       │   ├── tnh_audio_segment.py
+│       │   ├── user_io_utils.py
+│       │   ├── validate.py
+│       │   ├── version_check
+│       │   │   ├── __init__.py
+│       │   │   ├── cache.py
+│       │   │   ├── checker.py
+│       │   │   ├── cli.py
+│       │   │   ├── config.py
+│       │   │   ├── models.py
+│       │   │   ├── providers.py
+│       │   │   └── strategies.py
+│       │   └── webhook_server.py
+│       ├── video_processing
+│       │   ├── __init__.py
+│       │   ├── video_processing.py
+│       │   ├── video_processing_old1.py
+│       │   ├── video_processing_old2.py
+│       │   └── yt_transcribe.py
+│       └── xml_processing
+│           ├── __init__.py
+│           ├── extract_tags.py
+│           └── xml_processing.py
 ├── src_directory_tree.txt
-├── tests
-│   ├── openai_interface
-│   │   └── test_openai_interface.py
-│   ├── openai_text_processing
-│   └── text_processing
-│       └── test_numbered_text.py
-└── TODO.md
+└── tests
+    ├── cli_tools
+    │   └── test_token_count.py
+    ├── gen_ai_service
+    │   ├── test_service.py
+    │   ├── test_settings.py
+    │   ├── test_simple_completion.py
+    │   └── utils
+    │       ├── __init__.py
+    │       ├── test_response_utils.py
+    │       └── test_token_utils.py
+    ├── journal_processing
+    │   └── test_journal_process_batch.py
+    ├── openai_interface
+    ├── openai_text_processing
+    └── text_processing
+        └── test_numbered_text.py
 
-104 directories, 338 files
+146 directories, 412 files

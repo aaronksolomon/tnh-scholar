@@ -364,7 +364,7 @@ class TimedText(BaseModel):
             raise ValueError("Cannot call iter_words() on TimedText with SEGMENT granularity.")
         return iter(self.words)
     
-    def export_text(self, separator: str = "\n", skip_empty: bool = True, show_speaker=True) -> str:
+    def export_text(self, separator: str = "\n", skip_empty: bool = True, show_speaker: bool = True) -> str:
         """
         Export the text content of all units as a single string.
 
@@ -386,4 +386,3 @@ class TimedText(BaseModel):
             if not skip_empty or unit.text.strip()
         ]
         return separator.join(texts)
-

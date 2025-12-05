@@ -1,4 +1,18 @@
+---
+title: "TNH Scholar System Design"
+description: "High-level system design describing the cyclical AI processing architecture powering TNH Scholar."
+owner: ""
+author: ""
+status: processing
+created: "2025-02-01"
+---
 # TNH Scholar System Design
+
+High-level system design describing the cyclical AI processing architecture powering TNH Scholar.
+
+> **Terminology Note**: This document uses historical "Pattern" terminology. In current TNH Scholar documentation, "Pattern" has been replaced with "Prompt" to align with industry standards. See [ADR-DD03](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md) for details.
+>
+> When reading this document: "Pattern-based processing" → "Prompt-based processing"
 
 ## 1. Overview and Vision
 

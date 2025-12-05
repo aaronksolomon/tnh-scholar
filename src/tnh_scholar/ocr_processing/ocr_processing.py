@@ -247,7 +247,7 @@ def annotate_image_with_text(
     Annotates a PIL image with bounding boxes and text descriptions from OCR results.
 
     Parameters:
-        pil_image (Image.Image): The input PIL image to annotate.
+        image (Image.Image): The input PIL image to annotate.
         text_annotations (List[EntityAnnotation]): OCR results containing bounding boxes and text.
         annotation_font_path (str): Path to the font file for text annotations.
         font_size (int): Font size for text annotations.
@@ -398,7 +398,7 @@ def process_page(
     Parameters:
         page (fitz.Page): The PDF page object.
         client (vision.ImageAnnotatorClient): Google Vision API client for text detection.
-        pre_processor (Callable[[Image.Image, int], Image.Image]): Preprocessing function for the image.
+        preprocessor (Callable[[Image.Image, int], Image.Image]): Preprocessing function for the image.
         annotation_font_path (str): Path to the font file for annotations.
 
     Returns:
@@ -616,13 +616,13 @@ def save_processed_pdf_data(
     word_locations: List[List[EntityAnnotation]],
     annotated_images: List[Image.Image],
     unannotated_images: List[Image.Image],
-):
+) -> None:
     """
     Saves processed PDF data to files for later reloading.
 
     Parameters:
         output_dir (Path): Directory to save the data (as a Path object).
-        base_name (str): Base name for the output directory (usually the PDF name without extension).
+        journal_name (str): Name for the output directory (usually the PDF name without extension).
         text_pages (List[str]): Extracted full-page text.
         word_locations (List[List[EntityAnnotation]]): Word locations and annotations from Vision API.
         annotated_images (List[PIL.Image.Image]): Annotated images with bounding boxes.
@@ -685,8 +685,7 @@ def load_processed_PDF_data(
     Loads processed PDF data from files using metadata for file references.
 
     Parameters:
-        output_dir (Path): Directory where the data is stored (as a Path object).
-        base_name (str): Base name of the processed directory.
+        base_path (Path): Base path where processed assets are stored.
 
     Returns:
         Tuple[List[str], List[List[EntityAnnotation]], List[Image.Image], List[Image.Image]]:

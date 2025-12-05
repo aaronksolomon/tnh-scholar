@@ -5,7 +5,7 @@ import re
 from contextlib import contextmanager, suppress
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, NewType, Optional, Tuple, Union
+from typing import Any, Dict, Iterator, List, NewType, Optional, Tuple, Union
 
 import yaml
 from dotenv import load_dotenv
@@ -496,8 +496,7 @@ class GitBackedRepository:
 
         Args:
             file_path: Path to file in repository
-            max_versions: Maximum number of versions to show, 
-            if zero, shows all revisions.
+            max_versions: Maximum number of versions to show; zero shows all revisions.
 
         Example:
             >>> repo.display_history(Path("prompts/format_dharma_talk.yaml"))
@@ -608,7 +607,7 @@ class ConcurrentAccessManager:
                 logger.error(f"Error cleaning up lock file {lock_file}: {e}")
 
     @contextmanager
-    def file_lock(self, file_path: Path):
+    def file_lock(self, file_path: Path) -> Iterator[None]:
         """
         Context manager for safely accessing files.
 

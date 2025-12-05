@@ -1,0 +1,478 @@
+Generating documentation artifacts...
+poetry run python scripts/generate_doc_index.py
+/Users/phapman/Desktop/Projects/tnh-scholar/scripts/generate_doc_index.py:64: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  f'created: "{datetime.utcnow().date()}"',
+poetry run python scripts/generate_cli_docs.py
+/Users/phapman/Desktop/Projects/tnh-scholar/scripts/generate_cli_docs.py:46: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  created: "{datetime.utcnow().date()}"
+Generating CLI reference documentation...
+Processing audio-transcribe...
+  ✓ docs/cli-reference/audio-transcribe.md
+Processing json-to-srt...
+  ✓ docs/cli-reference/json-to-srt.md
+Processing nfmt...
+  ✓ docs/cli-reference/nfmt.md
+Processing sent-split...
+  ✓ docs/cli-reference/sent-split.md
+Processing srt-translate...
+  ✓ docs/cli-reference/srt-translate.md
+Processing tnh-fab...
+  ✓ docs/cli-reference/tnh-fab.md
+Processing tnh-setup...
+  ✓ docs/cli-reference/tnh-setup.md
+Processing token-count...
+  ✓ docs/cli-reference/token-count.md
+Processing ytt-fetch...
+  ✓ docs/cli-reference/ytt-fetch.md
+
+Generated 9 CLI reference docs in docs/cli-reference
+Building MkDocs site...
+poetry run mkdocs build
+INFO    -  Cleaning site directory
+INFO    -  Building documentation to directory: /Users/phapman/Desktop/Projects/tnh-scholar/site
+INFO    -  The following pages exist in the docs directory, but are not included in the "nav" configuration:
+  - architecture/ai-text-processing/adr/adr-at01-ai-text-processing.md
+  - architecture/ai-text-processing/adr/adr-at02-sectioning-textobject.md
+  - architecture/ai-text-processing/design/textobject-new-design.md
+  - architecture/ai-text-processing/design/textobject-original-design.md
+  - architecture/configuration/tnh-configuration.md
+  - architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md
+  - architecture/gen-ai-service/adr/adr-a01-domain-service.md
+  - architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1.md
+  - architecture/gen-ai-service/adr/adr-a08-config-params-policy.md
+  - architecture/gen-ai-service/adr/adr-a09-v1-simplified.md
+  - architecture/gen-ai-service/adr/adr-a11-model-parameters-fix.md
+  - architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md
+  - architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md
+  - architecture/gen-ai-service/design/genai-service-strategy.md
+  - architecture/gen-ai-service/design/migration-plan.md
+  - architecture/jvb-viewer/design/instruction-test0.md
+  - architecture/jvb-viewer/design/instruction-test1.md
+  - architecture/jvb-viewer/design/jvb-strat-001.md
+  - architecture/jvb-viewer/design/output1.md
+  - architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design.md
+  - architecture/metadata/adr/adr-md01-metadata-strategy.md
+  - architecture/pattern-system/adr/adr-pt01-pattern-access-strategy.md
+  - architecture/pattern-system/adr/adr-pt02-pattern-catalog.md
+  - architecture/transcription/adr/adr-tr01-assemblyai-integration.md
+  - architecture/transcription/adr/adr-tr02-optimize-srt.md
+  - architecture/transcription/adr/adr-tr03-standard-timestamp.md
+  - architecture/transcription/adr/adr-tr04-assemblyai-improvements.md
+  - architecture/transcription/design/additional-design.md
+  - architecture/transcription/design/audio-chunk-splitting.md
+  - architecture/transcription/design/chunking-strategies.md
+  - architecture/transcription/design/chunking-strategies0.md
+  - architecture/transcription/design/diarization-algorithms.md
+  - architecture/transcription/design/diarization-algorithms0.md
+  - architecture/transcription/design/diarization-system0.md
+  - architecture/transcription/design/diarization-system1.md
+  - architecture/transcription/design/gpt-modular-pipeline.md
+  - architecture/transcription/design/language-chunking-algorithm.md
+  - architecture/transcription/design/segment-match-algorithm.md
+  - architecture/transcription/design/timeline-mapping.md
+  - architecture/ui-ux/design/ui-ux-strategy.md
+  - architecture/utilities/design/utilities-catalog.md
+  - architecture/utilities/design/version-checking-design.md
+  - architecture/video-processing/adr/adr-vp01-video-processing.md
+  - cli-reference/audio-transcribe.md
+  - cli-reference/json-to-srt.md
+  - cli-reference/nfmt.md
+  - cli-reference/sent-split.md
+  - cli-reference/srt-translate.md
+  - cli-reference/tnh-fab.md
+  - cli-reference/tnh-setup.md
+  - cli-reference/token-count.md
+  - cli-reference/ytt-fetch.md
+  - development/fine-tuning-strategy.md
+  - development/human-agent-coding-principles.md
+  - development/initial-improvements.md
+  - development/pattern-core-design.md
+  - development/architecture/api-integration-blueprint_(old).md
+  - development/architecture/object-service-design-blueprint-v2.md
+  - development/architecture/object-service-design-blueprint.md
+  - development/architecture/object-service-gaps.md
+  - development/yt-dlp_docs/ytdlp-formats.md
+  - development/yt-dlp_docs/ytdlp-guide.md
+  - docs-ops/adr-template.md
+  - docs-ops/documentation_index.md
+  - docs-ops/markdown-standards.md
+  - research/gpt_development_convos.md
+  - research/metadata_report.md
+  - research/preliminary_feasibility_study.md
+  - research/strategic-information-processing.md
+  - research/tnh-scholar-knowledge-vector-search.md
+  - research/gpt_4o_search_query_text_pair_testing/testing_input_output.md
+  - research/gpt_4o_translations_experiments/passage_test.md
+WARNING -  A reference to 'docs-design/planning/roadmap.md' is included in the 'nav' configuration, which is not found in the documentation files.
+WARNING -  A reference to 'docs-design/planning/maintenance.md' is included in the 'nav' configuration, which is not found in the documentation files.
+WARNING -  A reference to 'gpt_4o_search_query_text_pair_testing/testing_input_output.md' is included in the 'nav' configuration, which is not found in the documentation files.
+WARNING -  A reference to 'gpt_4o_translations_experiments/passage_test.md' is included in the 'nav' configuration, which is not found in the documentation files.
+WARNING -  A reference to 'translation_research.md' is included in the 'nav' configuration, which is not found in the documentation files.
+WARNING -  A reference to 'preliminary_feasibility_study.md' is included in the 'nav' configuration, which is not found in the documentation files.
+INFO    -  Doc file 'index.md' contains an absolute link '/cli-reference/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/getting-started/installation/', it was left as is. Did you mean 'getting-started/installation.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/getting-started/quick-start/', it was left as is. Did you mean 'getting-started/quick-start.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/cli-reference/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/user-guide/patterns/', it was left as is. Did you mean 'user-guide/patterns.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/getting-started/installation/', it was left as is. Did you mean 'getting-started/installation.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/getting-started/quick-start/', it was left as is. Did you mean 'getting-started/quick-start.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/getting-started/configuration/', it was left as is. Did you mean 'getting-started/configuration.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/cli-reference/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/user-guide/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/user-guide/patterns/', it was left as is. Did you mean 'user-guide/patterns.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/api/', it was left as is. Did you mean 'api/index.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/architecture/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/architecture/adr/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/docs-ops/roadmap/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/development/setup/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/development/contributing/', it was left as is. Did you mean 'development/contributing.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/research/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/getting-started/installation/', it was left as is. Did you mean 'getting-started/installation.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/getting-started/quick-start/', it was left as is. Did you mean 'getting-started/quick-start.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/cli-reference/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/development/setup/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/api/', it was left as is. Did you mean 'api/index.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/development/contributing/', it was left as is. Did you mean 'development/contributing.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/research/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/architecture/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/docs-ops/roadmap/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/development/contributing/', it was left as is. Did you mean 'development/contributing.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/development/setup/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/docs-ops/roadmap/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/', it was left as is. Did you mean 'index.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/development/contributing/', it was left as is. Did you mean 'development/contributing.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/license/', it was left as is.
+INFO    -  Doc file 'index.md' contains an absolute link '/getting-started/installation/', it was left as is. Did you mean 'getting-started/installation.md'?
+INFO    -  Doc file 'index.md' contains an absolute link '/cli-reference/', it was left as is.
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/prompts.py:499: Failed to get 'name: description' pair from 'if zero, shows all revisions.'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:141: No type or annotation for parameter 'processor'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:141: Parameter 'processor' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:142: No type or annotation for parameter 'pattern'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:142: Parameter 'pattern' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:143: No type or annotation for parameter 'max_tokens'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:143: Parameter 'max_tokens' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:144: No type or annotation for parameter 'section_count'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:144: Parameter 'section_count' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:333: No type or annotation for parameter 'transcript'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:333: Parameter 'transcript' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/text_object.py:487: No type or annotation for parameter 'format'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/text_object.py:487: Parameter 'format' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/text_object.py:566: No type or annotation for parameter 'content'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/text_object.py:566: Parameter 'content' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/text_object.py:568: No type or annotation for parameter 'process_tag'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/text_object.py:568: Parameter 'process_tag' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:261: No type or annotation for parameter 'pattern'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:261: Parameter 'pattern' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:262: No type or annotation for parameter 'model'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:262: Parameter 'model' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:518: No type or annotation for parameter 'transcript'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:518: Parameter 'transcript' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:432: No type or annotation for parameter 'text_punctuator'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:432: Parameter 'text_punctuator' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:434: No type or annotation for parameter 'section_count'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:434: Parameter 'section_count' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:65: No type or annotation for parameter 'text'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:65: Parameter 'text' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:67: No type or annotation for parameter 'response_object'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:67: Parameter 'response_object' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/ai_text_processing.py:68: No type or annotation for parameter '**kwargs'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/line_translator.py:78: No type or annotation for parameter 'text'
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/line_translator.py:78: Parameter 'text' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ai_text_processing/prompts.py:618: No type or annotation for yielded value 1
+WARNING -  griffe: src/tnh_scholar/audio_processing/audio_legacy.py:258: Parameter 'max_duration_s' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/audio_processing/audio_legacy.py:259: Parameter 'max_duration_ms' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/audio_processing/audio_legacy.py:409: No type or annotation for parameter '*args'
+WARNING -  griffe: src/tnh_scholar/audio_processing/audio_legacy.py:410: No type or annotation for parameter '**kwargs'
+WARNING -  griffe: src/tnh_scholar/audio_processing/timed_object/timed_text.py:373: No type or annotation for parameter 'show_speaker'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/text_segment_builder.py:155: No type or annotation for parameter 'speaker_split'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/text_segment_builder.py:155: Parameter 'speaker_split' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/transcription_service.py:144: No type or annotation for parameter '**kwargs'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/assemblyai_service.py:119: No type or annotation for parameter 'config'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/assemblyai_service.py:119: Parameter 'config' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/assemblyai_service.py:552: No type or annotation for parameter 'chars_per_caption'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/assemblyai_service.py:552: Parameter 'chars_per_caption' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/srt_processor.py:36: No type or annotation for parameter 'include_speaker'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/srt_processor.py:37: No type or annotation for parameter 'speaker_format'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/srt_processor.py:38: No type or annotation for parameter 'reindex_entries'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/srt_processor.py:39: No type or annotation for parameter 'timestamp_format'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/srt_processor.py:40: No type or annotation for parameter 'max_chars_per_line'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/srt_processor.py:140: No type or annotation for parameter 'timed_text_lists'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/srt_processor.py:140: Parameter 'timed_text_lists' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/srt_processor.py:123: No type or annotation for parameter 'timed_texts'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/srt_processor.py:123: Parameter 'timed_texts' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/vtt_processor.py:24: No type or annotation for parameter 'include_speaker'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/vtt_processor.py:25: No type or annotation for parameter 'speaker_format'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/vtt_processor.py:26: No type or annotation for parameter 'reindex_entries'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/vtt_processor.py:27: No type or annotation for parameter 'timestamp_format'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/vtt_processor.py:28: No type or annotation for parameter 'max_chars_per_line'
+WARNING -  griffe: src/tnh_scholar/audio_processing/transcription/whisper_service.py:148: No type or annotation for parameter '**config_options'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:74: No type or annotation for parameter 'yt_url'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:74: Parameter 'yt_url' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:75: No type or annotation for parameter 'yt_url_csv'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:75: Parameter 'yt_url_csv' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:76: No type or annotation for parameter 'file_'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:76: Parameter 'file_' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:77: No type or annotation for parameter 'output_dir'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:77: Parameter 'output_dir' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:78: No type or annotation for parameter 'service'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:78: Parameter 'service' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:79: No type or annotation for parameter 'model'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:79: Parameter 'model' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:80: No type or annotation for parameter 'language'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:80: Parameter 'language' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:81: No type or annotation for parameter 'response_format'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:81: Parameter 'response_format' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:82: No type or annotation for parameter 'chunk_duration'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:82: Parameter 'chunk_duration' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:83: No type or annotation for parameter 'min_chunk'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:83: Parameter 'min_chunk' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:84: No type or annotation for parameter 'start_time'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:84: Parameter 'start_time' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:85: No type or annotation for parameter 'end_time'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:85: Parameter 'end_time' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:86: No type or annotation for parameter 'prompt'
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py:86: Parameter 'prompt' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/cli_tools/audio_transcribe/transcription_pipeline.py:43: Parameter 'save_diarization_json' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:572: Parameter 'output_json_path' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:573: Parameter 'raw_output_path' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:575: Parameter 'max_retries' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:576: Parameter 'retry_delay' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:579: No type or annotation for returned value 'str'
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:642: Parameter 'xml_output_path' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:643: Parameter 'max_retries' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:644: Parameter 'retry_delay' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:647: No type or annotation for returned value 'bool'
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:892: No type or annotation for returned value 'dict'
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:471: No type or annotation for returned value 1
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:975: Parameter 'processed_journals_dir' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:981: No type or annotation for returned value 1
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:515: Parameter 'batch_file' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:521: No type or annotation for returned value 'str'
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:921: Parameter 'batch_file' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:927: No type or annotation for returned value 'str'
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:763: No type or annotation for returned value 'List'
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:355: No type or annotation for returned value 'dict'
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:439: Parameter 'data' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/journal_processing/journal_process.py:444: No type or annotation for returned value 'bool'
+WARNING -  griffe: src/tnh_scholar/logging_config.py:667: Parameter 'file' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/logging_config.py:668: Failed to get 'name: description' pair from 'under existing root logs directory. If provided,a rotating file handler will be added.'
+WARNING -  griffe: src/tnh_scholar/logging_config.py:671: No type or annotation for returned value 1
+WARNING -  griffe: src/tnh_scholar/ocr_processing/ocr_processing.py:249: Parameter 'pil_image' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ocr_processing/ocr_processing.py:687: Parameter 'output_dir' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ocr_processing/ocr_processing.py:688: Parameter 'base_name' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ocr_processing/ocr_processing.py:400: Parameter 'pre_processor' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ocr_processing/ocr_processing.py:624: Parameter 'base_name' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/ocr_processing/ocr_processing.py:631: No type or annotation for returned value 1
+WARNING -  griffe: src/tnh_scholar/ocr_processing/ocr_editor.py:57: No type or annotation for returned value 'list'
+WARNING -  griffe: src/tnh_scholar/text_processing/numbered_text.py:159: Failed to get 'name: description' pair from '(only if content isn't numbered)'
+WARNING -  griffe: src/tnh_scholar/text_processing/text_processing.py:41: No type or annotation for returned value 'str'
+WARNING -  griffe: src/tnh_scholar/utils/tnh_audio_segment.py:50: No type or annotation for parameter '**kwargs'
+WARNING -  griffe: src/tnh_scholar/utils/tnh_audio_segment.py:36: No type or annotation for parameter '**kwargs'
+WARNING -  griffe: src/tnh_scholar/video_processing/video_processing_old1.py:42: No type or annotation for parameter 'available_manual'
+WARNING -  griffe: src/tnh_scholar/video_processing/video_processing_old1.py:42: Parameter 'available_manual' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/video_processing/video_processing_old1.py:43: No type or annotation for parameter 'available_auto'
+WARNING -  griffe: src/tnh_scholar/video_processing/video_processing_old1.py:43: Parameter 'available_auto' does not appear in the function signature
+WARNING -  griffe: src/tnh_scholar/video_processing/video_processing_old1.py:326: No type or annotation for returned value 1
+WARNING -  griffe: src/tnh_scholar/xml_processing/extract_tags.py:13: No type or annotation for returned value 'set'
+WARNING -  Doc file 'architecture/gen-ai-service/adr/adr-a01-domain-service.md' contains a link 'genai-service-strategy.md', but the target 'architecture/gen-ai-service/adr/genai-service-strategy.md' is not found among documentation files.
+WARNING -  Doc file 'architecture/gen-ai-service/adr/adr-a09-v1-simplified.md' contains a link 'genai-service-strategy.md', but the target 'architecture/gen-ai-service/adr/genai-service-strategy.md' is not found among documentation files.
+WARNING -  Doc file 'architecture/gen-ai-service/design/migration-plan.md' contains a link '../../architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md', but the target 'architecture/architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md' is not found among documentation files.
+WARNING -  Doc file 'architecture/gen-ai-service/design/migration-plan.md' contains a link '../../architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md', but the target 'architecture/architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md' is not found among documentation files.
+WARNING -  Doc file 'architecture/gen-ai-service/design/migration-plan.md' contains a link '../../architecture/gen-ai-service/adr/adr-a01-domain-service.md', but the target 'architecture/architecture/gen-ai-service/adr/adr-a01-domain-service.md' is not found among documentation files.
+WARNING -  Doc file 'architecture/gen-ai-service/design/migration-plan.md' contains a link '../../architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1.md', but the target 'architecture/architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1.md' is not found among documentation files.
+WARNING -  Doc file 'architecture/gen-ai-service/design/migration-plan.md' contains a link '../../TODO.md#5--unify-openai-clients', but the target 'architecture/TODO.md' is not found among documentation files.
+WARNING -  Doc file 'architecture/transcription/adr/adr-tr01-assemblyai-integration.md' contains a link 'src/tnh_scholar/audio_processing/transcription.py', but the target 'architecture/transcription/adr/src/tnh_scholar/audio_processing/transcription.py' is not found among documentation files.
+WARNING -  Doc file 'architecture/transcription/adr/adr-tr04-assemblyai-improvements.md' contains a link './transcription_service.py', but the target 'architecture/transcription/adr/transcription_service.py' is not found among documentation files.
+INFO    -  Doc file 'development/contributing.md' contains an absolute link '/development/design-guide', it was left as is. Did you mean 'design-guide.md'?
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link '.amp/next-session-prompt.md', but the target 'docs-ops/.amp/next-session-prompt.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'CHANGELOG.md', but the target 'docs-ops/CHANGELOG.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'CONTRIBUTING.md', but the target 'docs-ops/CONTRIBUTING.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'DEV_SETUP.md', but the target 'docs-ops/DEV_SETUP.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'NEXT_SESSION.md', but the target 'docs-ops/NEXT_SESSION.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'README.md', but the target 'docs-ops/README.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'TODO.md', but the target 'docs-ops/TODO.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'data/books/private_books/L_in_A_test.md', but the target 'docs-ops/data/books/private_books/L_in_A_test.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'data/books/private_books/Love_in_Action_html/test.md', but the target 'docs-ops/data/books/private_books/Love_in_Action_html/test.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'data/books/private_books/full_md_Lia_test_output.md', but the target 'docs-ops/data/books/private_books/full_md_Lia_test_output.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'data/books/private_books/full_tag_txt_Lia_test_output.md', but the target 'docs-ops/data/books/private_books/full_tag_txt_Lia_test_output.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/api/index.md', but the target 'docs-ops/docs/api/index.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/ai-text-processing/adr/adr-at01-ai-text-processing.md', but the target 'docs-ops/docs/architecture/ai-text-processing/adr/adr-at01-ai-text-processing.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/ai-text-processing/adr/adr-at02-sectioning-textobject.md', but the target 'docs-ops/docs/architecture/ai-text-processing/adr/adr-at02-sectioning-textobject.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/ai-text-processing/design/textobject-new-design.md', but the target 'docs-ops/docs/architecture/ai-text-processing/design/textobject-new-design.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/ai-text-processing/design/textobject-original-design.md', but the target 'docs-ops/docs/architecture/ai-text-processing/design/textobject-original-design.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/configuration/tnh-configuration.md', but the target 'docs-ops/docs/architecture/configuration/tnh-configuration.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md', but the target 'docs-ops/docs/architecture/docs-design/adr/adr-dd01-docs-reorg-strat.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/docs-design/design/documentation.md', but the target 'docs-ops/docs/architecture/docs-design/design/documentation.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/gen-ai-service/adr/adr-a01-domain-service.md', but the target 'docs-ops/docs/architecture/gen-ai-service/adr/adr-a01-domain-service.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1.md', but the target 'docs-ops/docs/architecture/gen-ai-service/adr/adr-a02-pattern-catalog-v1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/gen-ai-service/adr/adr-a08-config-params-policy.md', but the target 'docs-ops/docs/architecture/gen-ai-service/adr/adr-a08-config-params-policy.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/gen-ai-service/adr/adr-a09-v1-simplified.md', but the target 'docs-ops/docs/architecture/gen-ai-service/adr/adr-a09-v1-simplified.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/gen-ai-service/adr/adr-a11-model-parameters-fix.md', but the target 'docs-ops/docs/architecture/gen-ai-service/adr/adr-a11-model-parameters-fix.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md', but the target 'docs-ops/docs/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md', but the target 'docs-ops/docs/architecture/gen-ai-service/adr/adr-a13-legacy-client-migration.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/gen-ai-service/design/genai-service-strategy.md', but the target 'docs-ops/docs/architecture/gen-ai-service/design/genai-service-strategy.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/gen-ai-service/design/migration-plan.md', but the target 'docs-ops/docs/architecture/gen-ai-service/design/migration-plan.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/jvb-viewer/design/instruction-test0.md', but the target 'docs-ops/docs/architecture/jvb-viewer/design/instruction-test0.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/jvb-viewer/design/instruction-test1.md', but the target 'docs-ops/docs/architecture/jvb-viewer/design/instruction-test1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/jvb-viewer/design/jvb-strat-001.md', but the target 'docs-ops/docs/architecture/jvb-viewer/design/jvb-strat-001.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/jvb-viewer/design/output1.md', but the target 'docs-ops/docs/architecture/jvb-viewer/design/output1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design.md', but the target 'docs-ops/docs/architecture/knowledge-base/adr/adr-k01-preliminary-architectural-design.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/metadata/adr/adr-md01-metadata-strategy.md', but the target 'docs-ops/docs/architecture/metadata/adr/adr-md01-metadata-strategy.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/pattern-system/adr/adr-pt01-pattern-access-strategy.md', but the target 'docs-ops/docs/architecture/pattern-system/adr/adr-pt01-pattern-access-strategy.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/pattern-system/adr/adr-pt02-pattern-catalog.md', but the target 'docs-ops/docs/architecture/pattern-system/adr/adr-pt02-pattern-catalog.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/setup-tnh/design/setup-design.md', but the target 'docs-ops/docs/architecture/setup-tnh/design/setup-design.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/tnh-fab/design/text-processing-cli-design-v1.md', but the target 'docs-ops/docs/architecture/tnh-fab/design/text-processing-cli-design-v1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/tnh-fab/design/text-processing-cli-design-v2.md', but the target 'docs-ops/docs/architecture/tnh-fab/design/text-processing-cli-design-v2.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/adr/adr-tr01-assemblyai-integration.md', but the target 'docs-ops/docs/architecture/transcription/adr/adr-tr01-assemblyai-integration.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/adr/adr-tr02-optimize-srt.md', but the target 'docs-ops/docs/architecture/transcription/adr/adr-tr02-optimize-srt.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/adr/adr-tr03-standard-timestamp.md', but the target 'docs-ops/docs/architecture/transcription/adr/adr-tr03-standard-timestamp.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/adr/adr-tr04-assemblyai-improvements.md', but the target 'docs-ops/docs/architecture/transcription/adr/adr-tr04-assemblyai-improvements.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/additional-design.md', but the target 'docs-ops/docs/architecture/transcription/design/additional-design.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/audio-chunk-splitting.md', but the target 'docs-ops/docs/architecture/transcription/design/audio-chunk-splitting.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/chunking-strategies.md', but the target 'docs-ops/docs/architecture/transcription/design/chunking-strategies.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/chunking-strategies0.md', but the target 'docs-ops/docs/architecture/transcription/design/chunking-strategies0.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/diarization-algorithms.md', but the target 'docs-ops/docs/architecture/transcription/design/diarization-algorithms.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/diarization-algorithms0.md', but the target 'docs-ops/docs/architecture/transcription/design/diarization-algorithms0.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/diarization-system0.md', but the target 'docs-ops/docs/architecture/transcription/design/diarization-system0.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/diarization-system1.md', but the target 'docs-ops/docs/architecture/transcription/design/diarization-system1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/gpt-modular-pipeline.md', but the target 'docs-ops/docs/architecture/transcription/design/gpt-modular-pipeline.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/language-chunking-algorithm.md', but the target 'docs-ops/docs/architecture/transcription/design/language-chunking-algorithm.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/segment-match-algorithm.md', but the target 'docs-ops/docs/architecture/transcription/design/segment-match-algorithm.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/transcription/design/timeline-mapping.md', but the target 'docs-ops/docs/architecture/transcription/design/timeline-mapping.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/ui-ux/design/ui-ux-strategy.md', but the target 'docs-ops/docs/architecture/ui-ux/design/ui-ux-strategy.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/utilities/design/utilities-catalog.md', but the target 'docs-ops/docs/architecture/utilities/design/utilities-catalog.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/utilities/design/version-checking-design.md', but the target 'docs-ops/docs/architecture/utilities/design/version-checking-design.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/video-processing/adr/adr-vp01-video-processing.md', but the target 'docs-ops/docs/architecture/video-processing/adr/adr-vp01-video-processing.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/ytt-fetch/adr/adr-yf00-overview.md', but the target 'docs-ops/docs/architecture/ytt-fetch/adr/adr-yf00-overview.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/ytt-fetch/adr/adr-yf01-transcript-source-handling.md', but the target 'docs-ops/docs/architecture/ytt-fetch/adr/adr-yf01-transcript-source-handling.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/ytt-fetch/adr/adr-yf02-yt-dlp-transcripts.md', but the target 'docs-ops/docs/architecture/ytt-fetch/adr/adr-yf02-yt-dlp-transcripts.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/architecture/ytt-fetch/design/yt-dlp-vs-youtube-api.md', but the target 'docs-ops/docs/architecture/ytt-fetch/design/yt-dlp-vs-youtube-api.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli/audio-transcribe.md', but the target 'docs-ops/docs/cli/audio-transcribe.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli/nfmt.md', but the target 'docs-ops/docs/cli/nfmt.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli/overview.md', but the target 'docs-ops/docs/cli/overview.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli/tnh-fab.md', but the target 'docs-ops/docs/cli/tnh-fab.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli/tnh-setup.md', but the target 'docs-ops/docs/cli/tnh-setup.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli/token-count.md', but the target 'docs-ops/docs/cli/token-count.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli/ytt-fetch.md', but the target 'docs-ops/docs/cli/ytt-fetch.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli-reference/audio-transcribe.md', but the target 'docs-ops/docs/cli-reference/audio-transcribe.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli-reference/json-to-srt.md', but the target 'docs-ops/docs/cli-reference/json-to-srt.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli-reference/nfmt.md', but the target 'docs-ops/docs/cli-reference/nfmt.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli-reference/sent-split.md', but the target 'docs-ops/docs/cli-reference/sent-split.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli-reference/srt-translate.md', but the target 'docs-ops/docs/cli-reference/srt-translate.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli-reference/tnh-fab.md', but the target 'docs-ops/docs/cli-reference/tnh-fab.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli-reference/tnh-setup.md', but the target 'docs-ops/docs/cli-reference/tnh-setup.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli-reference/token-count.md', but the target 'docs-ops/docs/cli-reference/token-count.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/cli-reference/ytt-fetch.md', but the target 'docs-ops/docs/cli-reference/ytt-fetch.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/architecture/api-integration-blueprint_(old).md', but the target 'docs-ops/docs/development/architecture/api-integration-blueprint_(old).md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/architecture/object-service-design-blueprint-v2.md', but the target 'docs-ops/docs/development/architecture/object-service-design-blueprint-v2.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/architecture/object-service-design-blueprint.md', but the target 'docs-ops/docs/development/architecture/object-service-design-blueprint.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/architecture/object-service-gaps.md', but the target 'docs-ops/docs/development/architecture/object-service-gaps.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/contributing.md', but the target 'docs-ops/docs/development/contributing.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/design-guide.md', but the target 'docs-ops/docs/development/design-guide.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/fine-tuning-strategy.md', but the target 'docs-ops/docs/development/fine-tuning-strategy.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/human-agent-coding-principles.md', but the target 'docs-ops/docs/development/human-agent-coding-principles.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/initial-improvements.md', but the target 'docs-ops/docs/development/initial-improvements.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/pattern-core-design.md', but the target 'docs-ops/docs/development/pattern-core-design.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/system-design.md', but the target 'docs-ops/docs/development/system-design.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/yt-dlp_docs/ytdlp-formats.md', but the target 'docs-ops/docs/development/yt-dlp_docs/ytdlp-formats.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/development/yt-dlp_docs/ytdlp-guide.md', but the target 'docs-ops/docs/development/yt-dlp_docs/ytdlp-guide.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/docs-ops/adr-template.md', but the target 'docs-ops/docs/docs-ops/adr-template.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/docs-ops/documentation_index.md', but the target 'docs-ops/docs/docs-ops/documentation_index.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/docs-ops/markdown-standards.md', but the target 'docs-ops/docs/docs-ops/markdown-standards.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/getting-started/configuration.md', but the target 'docs-ops/docs/getting-started/configuration.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/getting-started/installation.md', but the target 'docs-ops/docs/getting-started/installation.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/getting-started/quick-start.md', but the target 'docs-ops/docs/getting-started/quick-start.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/index.md', but the target 'docs-ops/docs/index.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/research/gpt_4o_search_query_text_pair_testing/testing_input_output.md', but the target 'docs-ops/docs/research/gpt_4o_search_query_text_pair_testing/testing_input_output.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/research/gpt_4o_translations_experiments/passage_test.md', but the target 'docs-ops/docs/research/gpt_4o_translations_experiments/passage_test.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/research/gpt_development_convos.md', but the target 'docs-ops/docs/research/gpt_development_convos.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/research/metadata_report.md', but the target 'docs-ops/docs/research/metadata_report.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/research/preliminary_feasibility_study.md', but the target 'docs-ops/docs/research/preliminary_feasibility_study.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/research/strategic-information-processing.md', but the target 'docs-ops/docs/research/strategic-information-processing.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/research/tnh-scholar-knowledge-vector-search.md', but the target 'docs-ops/docs/research/tnh-scholar-knowledge-vector-search.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/user-guide/best-practices.md', but the target 'docs-ops/docs/user-guide/best-practices.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/user-guide/overview.md', but the target 'docs-ops/docs/user-guide/overview.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'docs/user-guide/patterns.md', but the target 'docs-ops/docs/user-guide/patterns.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/default_line_translation.md', but the target 'docs-ops/notebooks/testing/test_patterns/default_line_translation.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/default_punctuate.md', but the target 'docs-ops/notebooks/testing/test_patterns/default_punctuate.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/default_section.md', but the target 'docs-ops/notebooks/testing/test_patterns/default_section.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/default_section_old.md', but the target 'docs-ops/notebooks/testing/test_patterns/default_section_old.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/default_xml_format.md', but the target 'docs-ops/notebooks/testing/test_patterns/default_xml_format.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/default_xml_paragraph_format.md', but the target 'docs-ops/notebooks/testing/test_patterns/default_xml_paragraph_format.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/extract_wisdom1.md', but the target 'docs-ops/notebooks/testing/test_patterns/extract_wisdom1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/extract_wisdom2.md', but the target 'docs-ops/notebooks/testing/test_patterns/extract_wisdom2.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/extract_wisdom_section.md', but the target 'docs-ops/notebooks/testing/test_patterns/extract_wisdom_section.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/generate_markdown.md', but the target 'docs-ops/notebooks/testing/test_patterns/generate_markdown.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/generate_sections_en.md', but the target 'docs-ops/notebooks/testing/test_patterns/generate_sections_en.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/generate_sections_multi_lang.md', but the target 'docs-ops/notebooks/testing/test_patterns/generate_sections_multi_lang.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/identify_speakers.md', but the target 'docs-ops/notebooks/testing/test_patterns/identify_speakers.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/repair_markdown.md', but the target 'docs-ops/notebooks/testing/test_patterns/repair_markdown.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/repair_markdown_strategy.md', but the target 'docs-ops/notebooks/testing/test_patterns/repair_markdown_strategy.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/simple_punctuate.md', but the target 'docs-ops/notebooks/testing/test_patterns/simple_punctuate.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/simple_translate_paragraph_thay.md', but the target 'docs-ops/notebooks/testing/test_patterns/simple_translate_paragraph_thay.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/special/test_special_pattern.md', but the target 'docs-ops/notebooks/testing/test_patterns/special/test_special_pattern.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/translate_lines_thay_audio.md', but the target 'docs-ops/notebooks/testing/test_patterns/translate_lines_thay_audio.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/translate_section_thay_en.md', but the target 'docs-ops/notebooks/testing/test_patterns/translate_section_thay_en.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/testing/test_patterns/xml_format_dt_section_en.md', but the target 'docs-ops/notebooks/testing/test_patterns/xml_format_dt_section_en.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/video_processing/output_adjustment_system_messages.md', but the target 'docs-ops/notebooks/video_processing/output_adjustment_system_messages.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'notebooks/video_processing/results-archive/output_adjustment_system_messages.md', but the target 'docs-ops/notebooks/video_processing/results-archive/output_adjustment_system_messages.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/default_line_translate.md', but the target 'docs-ops/patterns/default_line_translate.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/default_punctuate.md', but the target 'docs-ops/patterns/default_punctuate.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/default_section.md', but the target 'docs-ops/patterns/default_section.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/default_section_old.md', but the target 'docs-ops/patterns/default_section_old.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/default_xml_format.md', but the target 'docs-ops/patterns/default_xml_format.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/default_xml_paragraph_format.md', but the target 'docs-ops/patterns/default_xml_paragraph_format.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/extract_wisdom1.md', but the target 'docs-ops/patterns/extract_wisdom1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/extract_wisdom2.md', but the target 'docs-ops/patterns/extract_wisdom2.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/extract_wisdom_mini.md', but the target 'docs-ops/patterns/extract_wisdom_mini.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/extract_wisdom_section.md', but the target 'docs-ops/patterns/extract_wisdom_section.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/format_markdown_math.md', but the target 'docs-ops/patterns/format_markdown_math.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/generate_markdown.md', but the target 'docs-ops/patterns/generate_markdown.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/generate_sections_en.md', but the target 'docs-ops/patterns/generate_sections_en.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/generate_sections_multi_lang.md', but the target 'docs-ops/patterns/generate_sections_multi_lang.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/identify_speakers.md', but the target 'docs-ops/patterns/identify_speakers.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/make_text_concise.md', but the target 'docs-ops/patterns/make_text_concise.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/organize_collate_translation.md', but the target 'docs-ops/patterns/organize_collate_translation.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/punctuate_dharma_talk.md', but the target 'docs-ops/patterns/punctuate_dharma_talk.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/repair_markdown.md', but the target 'docs-ops/patterns/repair_markdown.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/repair_markdown_simple.md', but the target 'docs-ops/patterns/repair_markdown_simple.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/repair_markdown_strategy.md', but the target 'docs-ops/patterns/repair_markdown_strategy.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/section_by_break.md', but the target 'docs-ops/patterns/section_by_break.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/simple_punctuate.md', but the target 'docs-ops/patterns/simple_punctuate.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/simple_translate_paragraph_thay.md', but the target 'docs-ops/patterns/simple_translate_paragraph_thay.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/test.md', but the target 'docs-ops/patterns/test.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/translate_json.md', but the target 'docs-ops/patterns/translate_json.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/translate_lines_thay_audio.md', but the target 'docs-ops/patterns/translate_lines_thay_audio.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/translate_metadata.md', but the target 'docs-ops/patterns/translate_metadata.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/translate_section_dt_en.md', but the target 'docs-ops/patterns/translate_section_dt_en.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/translate_section_thay_en.md', but the target 'docs-ops/patterns/translate_section_thay_en.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'patterns/xml_format_dt_section_en.md', but the target 'docs-ops/patterns/xml_format_dt_section_en.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'release_checklist.md', but the target 'docs-ops/release_checklist.md' is not found among documentation files.
+INFO    -  Doc file 'docs-ops/documentation_index.md' contains an unrecognized relative link 'sandbox/Thiền Là Gì？-> What is Meditation? [TTSĐCTTĐB 02] TS Thích Nhất Hạnh (24-11-1994, Xóm Thượng, Làng Mai).md', it was left as is.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/app_explore/wis_galt.md', but the target 'docs-ops/sandbox/app_explore/wis_galt.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/audio_transcriptions/Kinh Văn Căn Bản của Thiền Tập 01 [TTSĐCTTĐB 03] ｜ TS Thích Nhất Hạnh(27-11-1994, Làng Mai)/collate_trans_split_kvc1.md', but the target 'docs-ops/sandbox/audio_transcriptions/Kinh Văn Căn Bản của Thiền Tập 01 [TTSĐCTTĐB 03] ｜ TS Thích Nhất Hạnh(27-11-1994, Làng Mai)/collate_trans_split_kvc1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/audio_transcriptions/Kinh Văn Căn Bản của Thiền Tập 01 [TTSĐCTTĐB 03] ｜ TS Thích Nhất Hạnh(27-11-1994, Làng Mai)/eng_sect_trans_kvc1.md', but the target 'docs-ops/sandbox/audio_transcriptions/Kinh Văn Căn Bản của Thiền Tập 01 [TTSĐCTTĐB 03] ｜ TS Thích Nhất Hạnh(27-11-1994, Làng Mai)/eng_sect_trans_kvc1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/ch1-all-rep_wisdom2.md', but the target 'docs-ops/sandbox/ch1-all-rep_wisdom2.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/ch1-p1-rep_wisdom2.md', but the target 'docs-ops/sandbox/ch1-p1-rep_wisdom2.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/ch1_collective_power_wisdom.md', but the target 'docs-ops/sandbox/ch1_collective_power_wisdom.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/collective-power-ch1-part1.md', but the target 'docs-ops/sandbox/collective-power-ch1-part1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/collective-power-ch1-part2.md', but the target 'docs-ops/sandbox/collective-power-ch1-part2.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/collective-power-intro+ch1.md', but the target 'docs-ops/sandbox/collective-power-intro+ch1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/collective-power_patterns-for-a-self-organized-future_with-cover.md', but the target 'docs-ops/sandbox/collective-power_patterns-for-a-self-organized-future_with-cover.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/condensed_collective-power-intro+ch1.md', but the target 'docs-ops/sandbox/condensed_collective-power-intro+ch1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/cp_section1.md', but the target 'docs-ops/sandbox/cp_section1.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/harari.md', but the target 'docs-ops/sandbox/harari.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/repair_collective-power-ch1-all.md', but the target 'docs-ops/sandbox/repair_collective-power-ch1-all.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/repair_collective-power-ch1-part2.md', but the target 'docs-ops/sandbox/repair_collective-power-ch1-part2.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/sanders_iowa.md', but the target 'docs-ops/sandbox/sanders_iowa.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/test.md', but the target 'docs-ops/sandbox/test.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/wis_sanders_iowa.md', but the target 'docs-ops/sandbox/wis_sanders_iowa.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'sandbox/wisdom.md', but the target 'docs-ops/sandbox/wisdom.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'tmp/ai setup design.md', but the target 'docs-ops/tmp/ai setup design.md' is not found among documentation files.
+WARNING -  Doc file 'docs-ops/documentation_index.md' contains a link 'tmp/ai_instructions.md', but the target 'docs-ops/tmp/ai_instructions.md' is not found among documentation files.
+INFO    -  Doc file 'getting-started/quick-start.md' contains an absolute link '/user-guide/patterns', it was left as is. Did you mean '../user-guide/patterns.md'?
+INFO    -  Doc file 'getting-started/quick-start.md' contains an absolute link '/cli/overview', it was left as is. Did you mean '../cli/overview.md'?
+INFO    -  Doc file 'user-guide/overview.md' contains an absolute link '/getting-started/configuration', it was left as is. Did you mean '../getting-started/configuration.md'?
+INFO    -  Doc file 'user-guide/overview.md' contains an absolute link '/user-guide/best-practices', it was left as is. Did you mean 'best-practices.md'?
+INFO    -  Doc file 'user-guide/overview.md' contains an absolute link '/user-guide/patterns', it was left as is. Did you mean 'patterns.md'?
+INFO    -  Documentation built in 15.12 seconds

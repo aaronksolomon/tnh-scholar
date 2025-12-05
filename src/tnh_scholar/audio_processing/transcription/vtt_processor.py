@@ -12,11 +12,11 @@ class VTTConfig:
     
     def __init__(
         self,
-        include_speaker=False,
-        speaker_format="<v {speaker}>{text}",
-        reindex_entries=False,
-        timestamp_format="{:02d}:{:02d}:{:02d}.{:03d}",
-        max_chars_per_line=42
+        include_speaker: bool = False,
+        speaker_format: str = "<v {speaker}>{text}",
+        reindex_entries: bool = False,
+        timestamp_format: str = "{:02d}:{:02d}:{:02d}.{:03d}",
+        max_chars_per_line: int = 42
     ):
         """
         Initialize with default settings.

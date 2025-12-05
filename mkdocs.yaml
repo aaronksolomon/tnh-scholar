@@ -3,9 +3,101 @@ repo_url: https://github.com/aaronksolomon/tnh-scholar
 
 theme:
   name: material
+  palette:
+    # Zen dark mode - sumi ink on rice paper (inverted)
+    scheme: slate
+    primary: custom
+    accent: custom
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.instant      # Smooth, mindful transitions
+    - navigation.tracking     # Present awareness of location
+    - navigation.indexes      # Section index pages
+    - navigation.top          # Easy return to beginning
+    - search.suggest          # Gentle guidance
+    - search.highlight        # Clear findings
+    - content.code.copy       # Practical sharing
+    - content.tabs.link       # Connected understanding
+    - toc.follow              # TOC follows scroll position
+  icon:
+    repo: fontawesome/brands/github
+  custom_dir: docs/overrides
+
+extra_css:
+  - stylesheets/tnh-zen.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/aaronksolomon/tnh-scholar
+      name: TNH Scholar on GitHub
+  generator: false  # Minimal footer
+
+markdown_extensions:
+  # Python Markdown extensions
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      permalink_title: Link to this section
+
+  # PyMdown Extensions - for enhanced markdown
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+validation:
+  links:
+    absolute_links: relative_to_docs  # Enable absolute links starting with /
+
+exclude_docs: |
+  archive/index-old.md
+  tnh-index-updated.md
+  documentation_map.md
 
 plugins:
-  - search
+  - search:
+      separator: '[\s\-\.]+'  # Better search for compound terms
+  - gen-files:
+      scripts:
+        - scripts/sync_root_docs.py
+        - scripts/generate_mkdocs_nav.py
+        - scripts/generate_subdir_indexes.py
+        - scripts/generate_doc_index.py
+        - scripts/append_doc_map_to_index.py
+  - literate-nav:
+      nav_file: docs-nav.md
   - mkdocstrings:
       handlers:
         python:
@@ -14,48 +106,3 @@ plugins:
             docstring_style: google
             show_source: true
             show_root_heading: true
-
-nav:
-  - Home: index.md
-  - Getting Started:
-    - Installation: getting-started/installation.md
-    - Quick Start: getting-started/quick-start.md
-    - Configuration: getting-started/configuration.md
-  - User Guide:
-    - Overview: user-guide/overview.md
-    - Pattern System: user-guide/patterns.md
-    - Best Practices: user-guide/best-practices.md
-  - CLI Tools:
-    - Overview: cli/overview.md
-    - tnh-fab: cli/tnh-fab.md
-    - audio-transcribe: cli/audio-transcribe.md
-    - ytt-fetch: cli/ytt-fetch.md
-    - nfmt: cli/nfmt.md
-    - token-count: cli/token-count.md
-    - tnh-setup: cli/tnh-setup.md
-  - API Reference: api/index.md
-  - Development:
-    - System Overview: development/system-design.md
-    - Contributing: development/contributing.md
-    - Design:
-      - Design Guide: development/design-guide.md
-      - CLI Design:
-        - TNH-FAB:
-          - 'v1': design/tnh-fab/text processing cli design_v1.md
-          - 'v2': design/tnh-fab/text processing cli design_v2.md
-        - YTT-Fetch:
-          - Overview: design/ytt-fetch/ADRs.md
-          - 'Transcript Source': design/ytt-fetch/ADR transcript source handling.md
-          - 'YT-DLP Integration': design/ytt-fetch/ADR yt-dlp transcripts.md
-          - 'API Comparison': design/ytt-fetch/yt-dlp vs. Youtube API.md
-        - SETUP-TNH: design/setup-tnh/setup-design.md
-    - Documentation:
-      - Docs-Design: docs-design/design/documentation.md
-      - Docs-Planning:
-        - Roadmap: docs-design/planning/roadmap.md
-        - Maintenance: docs-design/planning/maintenance.md
-    - Research:
-      - Query Generation: gpt_4o_search_query_text_pair_testing/testing_input_output.md
-      - Translation: gpt_4o_translations experiments/passage_test.md
-      - Translation Research: translation_research.md
-      - Feasibility Study: preliminary_feasibility_study.md

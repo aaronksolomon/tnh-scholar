@@ -1,5 +1,12 @@
-
-# TNH-Scholar — Development Setup Guide
+---
+title: "TNH-Scholar DEV_SETUP"
+description: "This document outlines the standard development environment for TNH‑Scholar."
+owner: ""
+author: ""
+status: processing
+created: "2025-11-19"
+---
+# TNH-Scholar DEV_SETUP
 
 This document outlines the standard development environment for TNH‑Scholar.  
 The goals are: clarity, reproducibility, stability, and low onboarding friction.

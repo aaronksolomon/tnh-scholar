@@ -1,0 +1,12 @@
+# lychee link checker configuration
+exclude_path = ["site/**", "docs/build/**"]
+max_cache_age = "1d"
+retry_wait_time = "2s"
+timeout = 10
+user_agent = "tnh-scholar-link-check"
+insecure = false
+exclude = [
+  "mailto:*",
+  "https://github.com/aaronksolomon/tnh-scholar/issues",
+  "https://github.com/aaronksolomon/tnh-scholar/discussions",
+]

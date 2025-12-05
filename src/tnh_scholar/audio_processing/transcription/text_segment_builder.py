@@ -153,7 +153,7 @@ class TextSegmentBuilder:
         Args:
             target_duration: Maximum desired segment duration in milliseconds.
             target_characters: Maximum desired character length of a segment.
-            speaker_split: Whether to start a new segment when the speaker changes.
+            avoid_orphans: If True, prevent extremely short trailing segments.
 
         Note:
             This is a stub.  Concrete algorithms will be implemented later.

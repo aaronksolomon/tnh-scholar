@@ -1,7 +1,14 @@
-# Contributing to TNH Scholar
+---
+title: "TNH Scholar CONTRIBUTING"
+description: "TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow."
+owner: ""
+author: ""
+status: processing
+created: "2024-10-21"
+---
+# TNH Scholar CONTRIBUTING
 
-TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow.  
-This document summarizes how to get set up, what tools we use, and what we expect in pull requests.
+Guidance on contributing to the TNH Scholar Project. TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow.  This document summarizes how to get set up, what tools we use, and what we expect in pull requests.
 
 ## 1. Development environment
 

@@ -1,0 +1,409 @@
+/**
+ * TNH Scholar - Zen Mindfulness Theme
+ *
+ * Inspired by Thich Nhat Hanh's calligraphic style:
+ * - Dark backgrounds like sumi ink on rice paper (inverted)
+ * - Warm earth tones from Buddhist tradition
+ * - Organic spacing and breathing room
+ * - Minimal, intentional design
+ */
+
+:root {
+  /* Primary palette - Sumi ink and rice paper (inverted for dark mode) */
+  --tnh-ink-black: #1a1a1a;           /* Deep sumi ink */
+  --tnh-charcoal: #2d2d2d;            /* Brush charcoal */
+  --tnh-slate: #3d3d3d;               /* Stone slate */
+  --tnh-rice-paper: #f5f1e8;          /* Warm cream paper */
+  --tnh-soft-white: #e8e4d8;          /* Aged paper */
+
+  /* Accent colors - Buddhist tradition */
+  --tnh-lotus-pink: #d4a5a5;          /* Lotus flower at dawn */
+  --tnh-bamboo-green: #7a9b76;        /* Bamboo leaves */
+  --tnh-zen-gold: #c9a961;            /* Temple gold */
+  --tnh-plum-purple: #9d8ba6;         /* Plum blossom */
+  --tnh-meditation-blue: #6b8e9e;     /* Still water */
+
+  /* Semantic colors */
+  --tnh-text-primary: var(--tnh-soft-white);
+  --tnh-text-secondary: #b8b4a8;
+  --tnh-bg-primary: var(--tnh-ink-black);
+  --tnh-bg-secondary: var(--tnh-charcoal);
+  --tnh-bg-elevated: var(--tnh-slate);
+  --tnh-accent: var(--tnh-bamboo-green);
+  --tnh-link: var(--tnh-meditation-blue);
+  --tnh-code-bg: #252525;
+
+  /* Spacing - mindful breathing room */
+  --tnh-space-breath: 2rem;
+  --tnh-space-pause: 1.5rem;
+  --tnh-space-moment: 1rem;
+}
+
+/* Base - Calm foundation */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--tnh-bg-primary);
+  color: var(--tnh-text-primary);
+  font-size: 0.86rem; /* Slightly reduced for overall compactness */
+  line-height: 1.8; /* Spacious, easy reading */
+}
+
+/* Headers - Brush stroke inspired */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: var(--tnh-rice-paper);
+  margin-top: var(--tnh-space-breath);
+  margin-bottom: var(--tnh-space-moment);
+}
+
+h1 {
+  font-size: 2.15rem;  /* Slight reduction for overall scale */
+  font-weight: 200;
+  border-bottom: 1px solid var(--tnh-bamboo-green);
+  padding-bottom: var(--tnh-space-moment);
+  margin-bottom: var(--tnh-space-breath);
+}
+
+h2 {
+  font-size: 1.72rem;  /* Slight reduction for overall scale */
+  margin-top: var(--tnh-space-breath);
+}
+
+h3 {
+  font-size: 1.3rem;  /* Slight reduction for overall scale */
+  color: var(--tnh-bamboo-green);
+}
+
+h4 {
+  font-size: 1.1rem;  /* Slight reduction for overall scale */
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.9rem;
+}
+
+/* Links - Like brushed ink */
+a {
+  color: var(--tnh-link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+a:hover {
+  color: var(--tnh-bamboo-green);
+  border-bottom-color: var(--tnh-bamboo-green);
+}
+
+/* Code - Technical mindfulness */
+code {
+  background-color: var(--tnh-code-bg);
+  color: var(--tnh-zen-gold);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.85em;  /* Reduced from 0.9em */
+}
+
+pre {
+  background-color: var(--tnh-code-bg);
+  border-left: 3px solid var(--tnh-bamboo-green);
+  padding: var(--tnh-space-moment);
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+/* Blockquotes - Wisdom and teachings */
+blockquote {
+  border-left: 4px solid var(--tnh-lotus-pink);
+  margin: var(--tnh-space-pause) 0;
+  padding: var(--tnh-space-moment) var(--tnh-space-pause);
+  background-color: rgba(212, 165, 165, 0.05);
+  font-style: italic;
+  color: var(--tnh-text-secondary);
+}
+
+blockquote p:first-child {
+  margin-top: 0;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Tables - Structured clarity */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: var(--tnh-space-pause) 0;
+}
+
+th {
+  background-color: var(--tnh-bg-secondary);
+  color: var(--tnh-bamboo-green);
+  font-weight: 500;
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 2px solid var(--tnh-bamboo-green);
+}
+
+td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--tnh-slate);
+}
+
+tr:hover {
+  background-color: rgba(122, 155, 118, 0.05);
+}
+
+/* Navigation - fall back to Material defaults; only tweak size/color */
+.md-nav {
+  font-size: 0.8rem;
+}
+
+.md-nav__link {
+  color: var(--tnh-text-secondary);
+}
+
+.md-nav__link:hover,
+.md-nav__link--active,
+.md-nav__item--active > .md-nav__link {
+  color: var(--tnh-bamboo-green);
+}
+
+/* Right sidebar - Table of Contents */
+.md-sidebar--secondary {
+  border-left: 1px solid var(--tnh-slate);
+}
+
+.md-sidebar--secondary .md-nav__title {
+  color: var(--tnh-bamboo-green);
+  font-weight: 500;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.6rem;
+}
+
+.md-sidebar--secondary .md-nav__link {
+  font-size: 0.72rem;
+  padding: 0.3rem 0.6rem;
+  color: var(--tnh-text-secondary);
+  border-left: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.md-sidebar--secondary .md-nav__link:hover {
+  color: var(--tnh-bamboo-green);
+  border-left-color: var(--tnh-bamboo-green);
+}
+
+.md-sidebar--secondary .md-nav__link--active {
+  color: var(--tnh-bamboo-green);
+  border-left-color: var(--tnh-bamboo-green);
+  font-weight: 500;
+}
+
+/* Admonitions - Mindful notices */
+.admonition {
+  border-left: 4px solid var(--tnh-meditation-blue);
+  margin: var(--tnh-space-pause) 0;
+  padding: var(--tnh-space-moment);
+  background-color: rgba(107, 142, 158, 0.05);
+  border-radius: 0 4px 4px 0;
+}
+
+.admonition.note {
+  border-left-color: var(--tnh-meditation-blue);
+}
+
+.admonition.tip {
+  border-left-color: var(--tnh-bamboo-green);
+}
+
+.admonition.warning {
+  border-left-color: var(--tnh-zen-gold);
+}
+
+.admonition.danger {
+  border-left-color: var(--tnh-lotus-pink);
+}
+
+/* Header - Peaceful presence */
+.md-header {
+  background-color: var(--tnh-bg-secondary);
+  color: var(--tnh-text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.md-header__title {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+/* Footer - Grounded and stable */
+.md-footer {
+  background-color: var(--tnh-bg-secondary);
+  color: var(--tnh-text-secondary);
+}
+
+/* Search - Clear intention */
+.md-search__input {
+  background-color: var(--tnh-bg-elevated);
+  color: var(--tnh-text-primary);
+  border-radius: 4px;
+}
+
+.md-search__input::placeholder {
+  color: var(--tnh-text-secondary);
+}
+
+/* Sidebar - Calm navigation */
+.md-sidebar {
+  background-color: var(--tnh-bg-primary);
+}
+
+.md-sidebar__scrollwrap {
+  scrollbar-color: var(--tnh-slate) var(--tnh-bg-primary);
+}
+
+/* Content area - Spacious reading */
+.md-content {
+  padding: var(--tnh-space-breath);
+}
+
+.md-content__inner {
+  max-width: 60rem; /* Allow wider layouts to reduce wrapping/overflow */
+  margin: 0 auto;
+}
+
+/* Buttons - Gentle interactions */
+.md-button {
+  background-color: var(--tnh-bamboo-green);
+  color: var(--tnh-bg-primary);
+  border-radius: 4px;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.md-button:hover {
+  background-color: var(--tnh-zen-gold);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Inline code in headings */
+h1 code, h2 code, h3 code {
+  font-size: 0.85em;
+  color: var(--tnh-zen-gold);
+}
+
+/* Lists - Organized thoughts */
+ul, ol {
+  line-height: 2;
+  margin: var(--tnh-space-moment) 0;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+
+/* Horizontal rules - Mindful pauses */
+hr {
+  border: none;
+  border-top: 1px solid var(--tnh-slate);
+  margin: var(--tnh-space-breath) 0;
+}
+
+/* Task lists - Intentional action */
+.task-list-item input[type="checkbox"] {
+  margin-right: 0.5rem;
+  accent-color: var(--tnh-bamboo-green);
+}
+
+/* Definition lists - Clear understanding */
+dt {
+  font-weight: 500;
+  color: var(--tnh-bamboo-green);
+  margin-top: var(--tnh-space-moment);
+}
+
+dd {
+  margin-left: var(--tnh-space-pause);
+  margin-bottom: var(--tnh-space-moment);
+  color: var(--tnh-text-secondary);
+}
+
+/* Smooth scrolling - Mindful movement */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection - Gentle highlight */
+::selection {
+  background-color: var(--tnh-bamboo-green);
+  color: var(--tnh-bg-primary);
+}
+
+/* Focus states - Present awareness */
+:focus-visible {
+  outline: 2px solid var(--tnh-bamboo-green);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Version selector - Clear choices */
+.md-version {
+  color: var(--tnh-text-secondary);
+}
+
+.md-version__current {
+  color: var(--tnh-bamboo-green);
+}
+
+/* TOC - Clear structure */
+.md-nav--secondary .md-nav__link--active {
+  color: var(--tnh-bamboo-green);
+  border-left: 2px solid var(--tnh-bamboo-green);
+  padding-left: calc(var(--tnh-space-moment) - 2px);
+}
+
+/* Documentation Index table: wrap long paths without horizontal scroll */
+.md-typeset h1#documentation-index + table {
+  table-layout: fixed;
+}
+
+.md-typeset h1#documentation-index + table th:first-child,
+.md-typeset h1#documentation-index + table td:first-child {
+  width: 36%;
+}
+
+.md-typeset h1#documentation-index + table td:first-child a {
+  display: inline-block;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Logo area - Peaceful identity */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  filter: brightness(0.9);
+  transition: filter 0.3s ease;
+}
+
+.md-header__button.md-logo:hover img,
+.md-header__button.md-logo:hover svg {
+  filter: brightness(1.1);
+}

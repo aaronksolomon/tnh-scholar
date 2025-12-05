@@ -40,8 +40,6 @@ class TranscriptNotFoundError(Exception):
         Args:
             video_url: URL of the video where transcript was not found
             language: Language code that was requested
-            available_manual: List of available manual transcript languages
-            available_auto: List of available auto-generated transcript languages
         """
         self.video_url = video_url
         self.language = language
@@ -315,7 +313,7 @@ def _extract_ttml_text(ttml_str: str) -> str:
         logger.error(f"Failed to parse XML content: {e}")
         raise
 
-def get_transcript_info(video_url: str, lang: str = "en"):
+def get_transcript_info(video_url: str, lang: str = "en") -> str:
     """
     Retrieves the transcript URL for a video in the specified language.
 
@@ -356,5 +354,3 @@ def get_transcript_info(video_url: str, lang: str = "en"):
             return auto_subtitles[lang][0]["url"]
 
         raise TranscriptNotFoundError(video_url=video_url, language=lang)
-
-

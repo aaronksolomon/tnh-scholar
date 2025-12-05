@@ -657,7 +657,7 @@ class OMPFilter(logging.Filter):
         return "OMP:" not in record.getMessage()
 
 
-def get_child_logger(name: str, console: bool = False, separate_file: bool = False):
+def get_child_logger(name: str, console: bool = False, separate_file: bool = False) -> logging.Logger:
     """
     Get a child logger that writes logs to a console or a specified file.
 
@@ -665,8 +665,6 @@ def get_child_logger(name: str, console: bool = False, separate_file: bool = Fal
         name (str): The name of the child logger (e.g., module name).
         console (bool, optional): If True, log to the console. If False, do not log to the console.
                                   If None, inherit console behavior from the parent logger.
-        file (Path, optional): A string specifying a logfile to log to. will be placed 
-        under existing root logs directory. If provided,a rotating file handler will be added.
 
     Returns:
         logging.Logger: Configured child logger.

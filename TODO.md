@@ -1,8 +1,18 @@
+---
+title: "TNH Scholar TODO List"
+description: "Roadmap tracking the highest-priority TNH Scholar tasks and release blockers."
+owner: ""
+author: ""
+status: processing
+created: "2025-01-20"
+---
 # TNH Scholar TODO List
 
-> **Last Updated**: 2025-11-16
+Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
+
+> **Last Updated**: 2025-11-29
 > **Version**: 0.1.3 (Alpha)
-> **Status**: Active Development - Quick Wins Phase
+> **Status**: Active Development - Documentation Reorganization Phase
 
 ---
 
@@ -44,25 +54,25 @@ This section organizes work into three priority levels based on criticality for 
 - **Status**: IN PROGRESS - Needs Implementation
 - **Priority**: HIGH
 - **Tasks**:
-  - [ ] [config/params_policy.py](src/tnh_scholar/gen_ai_service/config/params_policy.py): Implement actual policy logic (currently pass-through)
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/config/params_policy.py> — Implement actual policy logic (currently pass-through)
     - Policy precedence: call hint → prompt metadata → defaults
     - Cache Settings instead of re-instantiating per call
-  - [ ] [routing/model_router.py](src/tnh_scholar/gen_ai_service/routing/model_router.py): Implement model selection logic (currently echoes input)
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/routing/model_router.py> — Implement model selection logic (currently echoes input)
     - Intent-based routing
     - Provider capability mapping
-  - [ ] [safety/safety_gate.py](src/tnh_scholar/gen_ai_service/safety/safety_gate.py): Implement content safety (currently placeholder)
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/safety/safety_gate.py> — Implement content safety (currently placeholder)
     - Pre-submission content checks
     - Post-completion validation
-  - [ ] [mappers/completion_mapper.py](src/tnh_scholar/gen_ai_service/mappers/completion_mapper.py): Surface provider error bodies
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/mappers/completion_mapper.py> — Surface provider error bodies
     - Structured error propagation
     - Don't just raise ValueError on non-OK status
 
 #### 5. 🚧 Unify OpenAI Clients
 
-- **Status**: PHASE 1 COMPLETE ✅ (5/6 phases remaining)
+- **Status**: PHASE 1 COMPLETE ✅ 
 - **Priority**: HIGH
-- **ADR**: [ADR-A13: Legacy Client Migration](docs/design/gen-ai-service/ADR-A13-legacy-client-migration.md)
-- **Plan**: [Migration Plan](docs/design/gen-ai-service/MIGRATION-PLAN.md)
+- **ADR**: [ADR-A13: Legacy Client Migration](docs/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md)
+- **Plan**: [Migration Plan](docs/architecture/gen-ai-service/design/openai-interface-migration-plan.md)
 - **Problem**: Two implementations causing code divergence (legacy client now removed)
   - **Modern**: [gen_ai_service/providers/openai_client.py](src/tnh_scholar/gen_ai_service/providers/openai_client.py) - typed, retrying
   - **Legacy**: `openai_interface/` – removed as of Phase 6
@@ -101,8 +111,8 @@ This section organizes work into three priority levels based on criticality for 
 
 - **Status**: NOT STARTED
 - **Problem**: Multiple modules call `load_dotenv()` at import time
-  - [ai_text_processing/prompts.py](src/tnh_scholar/ai_text_processing/prompts.py)
-  - [audio_processing/diarization/pyannote_client.py](src/tnh_scholar/audio_processing/diarization/pyannote_client.py)
+  - <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/ai_text_processing/prompts.py>
+  - <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/audio_processing/diarization/pyannote_client.py>
 - **Tasks**:
   - [ ] Create single startup hook for dotenv loading
   - [ ] Use Pydantic Settings consistently
@@ -120,16 +130,117 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Keep only current version
   - [ ] Create shared utilities (argument parsing, environment validation, logging)
 
-#### 9. 🚧 Update Documentation
+#### 9. ✅ Documentation Reorganization (ADR-DD01 & ADR-DD02)
 
-- **Status**: NOT STARTED
-- **Tasks**:
-  - [ ] Update [README.md](README.md) to highlight Gen AI Service architecture
-  - [ ] Deprecate outdated CLI examples (punctuate command)
-  - [ ] Add practical user guides for new features
-  - [ ] Create architecture overview document
-  - [ ] Document pattern/prompt authoring schema
-  - [ ] Sync mkdocs.yaml with current implementation
+- **Status**: PHASE 1 COMPLETE ✅ (Parts 1–4 ✅ COMPLETE, Part 8 ✅ COMPLETE, File Reorganization ✅ COMPLETE; Parts 5–7 deferred to Phase 2)
+- **Reference**:
+  - [ADR-DD01: Docs Reorganization Strategy](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
+  - [ADR-DD02: Documentation Main Content and Navigation Strategy](docs/architecture/docs-system/adr/adr-dd02-main-content-nav.md) ✅ APPROVED
+- **Goal**: Execute the phased documentation overhaul for `docs/` tree, keep README ≈ docs/index with drift monitoring, automate verification. **Note**: `patterns/` directory is managed separately (TODO #16).
+- **Next Sequence**: Part 5 (Archive) → Part 6 (Gap Filling) → Part 7 (Standalone Tasks)
+- **Checkpoints / Tasks**:
+  1. **Inventory + Tagging**
+     - [x] Catalog every Markdown file (owner, status: current/needs-update/historical)
+     - [x] Add front matter metadata + PromptTemplate terminology notes
+     - [ ] Identify raw research assets to offload to external storage
+  2. **Filesystem Reorg** (✅ COMPLETE)
+     - [x] Create the target hierarchy (overview, getting-started, user-guide, cli-reference, prompt-templates, api-reference, architecture/adr, development, research, docs-ops, archive)
+     - [x] Move existing docs into the new layout with stub `index.md` files
+     - [x] Rename all architecture documents for clarity and consistency (ADR naming, design doc naming)
+     - [x] Create README.md files for major sections (architecture/, cli/, development/, getting-started/)
+     - [x] Remove obsolete CLI reference stubs (auto-generation removed, see TODO #17)
+     - [x] Reorganize reference materials into categorized subdirectories
+     - [ ] Tag archival folders explicitly for mkdocs-literate-nav auto-generation (deferred to Phase 2)
+  3. **Terminology + README Sweep** (Part 3b: ✅ COMPLETED - ADR-DD02 + ADR-DD03)
+     - [x] **3b (COMPLETED)**: Designed content architecture for README.md and docs/index.md (ADR-DD02)
+     - [x] Implemented drift reporting script (`check_readme_docs_drift.py`) for non-blocking sync monitoring
+     - [x] Established persona-based navigation strategy (Practitioners, Developers, Researchers)
+     - [x] Updated markdown standards to enforce exact YAML title ↔ heading match
+     - [x] **Pattern → Prompt terminology standardization** (ADR-DD03 Phase 1 ✅ COMPLETE)
+       - [x] Updated all user-facing documentation (README, docs/index.md, getting-started/, user-guide/)
+       - [x] Renamed patterns.md → prompts.md; pattern-system/ → prompt-system/
+       - [x] Added historical terminology note to docs/index.md
+       - [x] Retained legacy compatibility: TNH_PATTERN_DIR, --pattern flags
+       - [ ] Phase 2: CLI documentation updates (deferred post-merge, many tools deprecated)
+       - [ ] Phase 3: Code refactoring (tracked separately, many modules scheduled for deletion)
+     - [ ] Add prompt authoring schema guidance (deferred to Part 6)
+  4. **MkDocs + Automation** (✅ ALL PARTS COMPLETE)
+     - [x] Install `mkdocs-literate-nav` and `mkdocs-gen-files` to dev dependencies
+     - [x] Restructure `mkdocs.yaml` to remove hardcoded nav and use literate-nav plugin
+     - [x] Create `docs/nav.md` as the source-of-truth navigation hierarchy
+     - [x] Configure gen-files to auto-generate CLI docs and prompt template catalogs
+     - [x] Add doc-index automation (`scripts/generate_doc_index.py`) and flag generated outputs
+     - [x] **4b (COMPLETED)**: Add doc-generation scripts (`generate_cli_docs.py`, `sync_readme.py`) and Makefile `docs` targets
+     - [x] **4c (COMPLETED)**: Wire CI to run `mkdocs build` + doc verification + GitHub Pages deployment
+     - [x] Add markdownlint to CI/CD (MD025/MD013 ignored via `.markdownlint.json`)
+     - [x] **4d (COMPLETED)**: Normalize internal documentation links; refactor doc-index generation to single `docs/documentation_index.md` with relative links
+     - [x] **4e (COMPLETED)**: Enable filesystem-driven nav with mkdocs-literate-nav
+     - [x] **4f (COMPLETED - ADR-DD02)**: Add drift reporting (`check_readme_docs_drift.py`) with Makefile target and CI integration
+     - [x] **4g (PHASE 1 COMPLETE)**: Documentation testing and validation workflow
+       - **Phase 1: Quick Wins** ✅ COMPLETE
+         - [x] Enable `mkdocs build --strict` in `docs-verify` (fail on warnings)
+         - [x] Add link checking with `lychee` + `.lychee.toml` (ignore flaky/external as needed)
+         - [x] Add `codespell` with `.codespell-ignore.txt` (dharma terms/proper nouns); wire into pre-commit/CI
+         - [x] Create `docs-quickcheck` make target: sync_root_docs → mkdocs --strict → lychee → codespell
+         - [x] Fixed all 136 MkDocs strict mode warnings (autorefs, griffe type annotations)
+       - **Phase 2: Metadata Validation** (Beta gate)
+         - [ ] Add `scripts/check_doc_metadata.py` to validate front matter (title/description/status) and warn on empty descriptions
+         - [ ] Detect orphaned docs not reachable from nav (using generated nav) and report missing descriptions
+         - [ ] Add metadata check to pre-commit and CI
+       - **Phase 3: Coverage & Structure** (Prod polish)
+         - [ ] Add `interrogate` for Python docstring coverage (threshold on `src/tnh_scholar`, skip tests/scripts)
+         - [ ] Validate ADRs follow template sections (Context/Decision/Consequences) + required front matter
+         - [ ] Run offline/internal link check on built site (`lychee --offline` on `site/`)
+         - [ ] Optional: add `vale` with a minimal style guide for docs tone/consistency
+  5. **Historical Archive + Discoverability** (Phase 2)
+     - [x] Archived historical research artifacts and experiment files
+     - [ ] Move additional legacy ADRs/prototypes into `docs/archive/**`
+     - [ ] Create comprehensive archive index + add summary links from primary sections
+     - [ ] Host raw transcripts externally (S3/KB) and link from summaries
+  6. **Backlog + Gap Filling**
+     - [ ] Populate `docs/docs-ops/roadmap.md` with missing topics (PromptTemplate catalog, workflow playbooks, evaluation guides, KB, deployment, research summaries, doc ops)
+     - [ ] Open GitHub issues per backlog item with owners/priorities
+  7. **Documentation Structure Reorganization** (✅ COMPLETE - Python Community Standards)
+     - [x] **Split design-guide.md** into Python standard docs:
+       - [x] style-guide.md: Code formatting, naming, PEP 8, type annotations
+       - [x] design-principles.md: Architectural patterns, modularity, composition
+     - [x] **Move object-service architecture** to canonical location:
+       - [x] Moved from development/architecture/ to architecture/object-service/
+       - [x] Converted V2 blueprint to ADR-OS01 (adopted V3, deleted V1)
+       - [x] Created design-overview.md with high-level summary
+       - [x] Updated implementation-status.md with resolved items
+     - [x] **Create forward-looking prompt architecture**:
+       - [x] Created prompt-architecture.md (current + planned V2 with PromptCatalog)
+       - [x] Moved pattern-core-design.md to archive/ with terminology note
+       - [x] Documented VS Code integration requirements
+     - [x] **Fix all broken links** from reorganization:
+       - [x] Fixed 35 mkdocs build --strict warnings → 0 warnings ✅
+       - [x] Updated docs/index.md, contributing.md, ADR cross-references
+       - [x] Regenerated documentation_index.md
+     - [x] Established Python community standard structure:
+       - docs/architecture/ = ADRs, design decisions (the "why")
+       - docs/development/ = Developer guides (the "how")
+       - docs/project/ = Vision, philosophy (stakeholders)
+  8. **Outstanding Standalone Tasks** (Phase 2 - Future Work)
+     - [x] Created architecture/README.md overview
+     - [ ] Deprecate outdated CLI examples (deferred post-CLI-refactor, see TODO #17)
+     - [ ] Add practical user guides for new features post-reorg
+     - [ ] Expand architecture overview with component diagrams
+     - [ ] Establish research artifact archival workflow (external storage + summary linking)
+  9. **Include Root Markdown Files in MkDocs Navigation**
+     - **Status**: ✅ COMPLETE
+     - **Priority**: MEDIUM (Part of docs-reorg cleanup)
+     - **Goal**: Make root-level config/meta files (README, TODO, CHANGELOG, CONTRIBUTING, DEV_SETUP, release_checklist) discoverable in mkdocs navigation and documentation index
+     - **Approach**: Build-time copy with "DO NOT EDIT" warnings
+       - [x] Create `docs/project/repo-root/` directory for project meta-documentation
+       - [x] Create `scripts/sync_root_docs.py` to copy root markdown files
+       - [x] Copy root `.md` files (README, TODO, CHANGELOG, CONTRIBUTING, DEV_SETUP, release_checklist) to `docs/project/repo-root/`
+       - [x] Prepend HTML comment warning to each copied file
+       - [x] Update Makefile `docs` target to run sync script before mkdocs build
+       - [x] Test documentation build: `make docs`
+       - [x] Verify copied files appear in navigation and documentation index
+       - [x] Create `docs/project/index.md` with section overview
+       - [x] Wire into gen-files plugin for automatic sync on build
 
 #### 10. 🚧 Type System Improvements
 
@@ -147,11 +258,11 @@ This section organizes work into three priority levels based on criticality for 
 
 - **Status**: NOT STARTED
 - **Targets**:
-  - [ ] [ai_text_processing/prompts.py](src/tnh_scholar/ai_text_processing/prompts.py) (34KB)
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/ai_text_processing/prompts.py> (34KB)
     - Break into: prompt model, repository manager, git helpers, lock helpers
     - Add docstrings and tests for each unit
     - Document front-matter schema
-  - [ ] [journal_processing/journal_process.py](src/tnh_scholar/journal_processing/journal_process.py) (28KB)
+  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/journal_processing/journal_process.py> (28KB)
     - Identify focused units
     - Extract reusable components
 
@@ -168,7 +279,7 @@ This section organizes work into three priority levels based on criticality for 
 #### 13. 🚧 Knowledge Base Implementation
 
 - **Status**: DESIGN COMPLETE
-- **ADR**: [docs/design/knowledge-base/ADR-K01-preliminary-architectural-design.md](docs/design/knowledge-base/ADR-K01-preliminary-architectural-design.md)
+- **ADR**: [ADR-K01: Preliminary Architectural Strategy](docs/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
 - **Tasks**:
   - [ ] Implement Supabase integration
   - [ ] Vector search functionality
@@ -357,6 +468,47 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Keep reproducible notebooks in notebooks/experiments
   - [ ] Publish vetted analyses to docs/research via nbconvert
   - [ ] Archive obsolete notebooks
+
+#### 17. 🚧 Comprehensive CLI Reference Documentation
+
+- **Status**: NOT STARTED (deferred post-CLI-refactor)
+- **Priority**: MEDIUM
+- **Context**: Removed auto-generated CLI reference stubs (2025-12-03). Renamed `docs/cli/` to `docs/cli-reference/` to reflect reference-style content. CLI structure scheduled for overhaul.
+- **Blocked By**: CLI tool consolidation (TODO #8)
+- **Tasks**:
+  - [ ] Review final CLI structure after refactor
+  - [ ] Create comprehensive CLI reference using actual `--help` output at all command levels
+  - [ ] Generate structured documentation for each command:
+    - Command purpose and use cases
+    - Full option/argument reference
+    - Usage examples
+    - Common workflows
+  - [ ] Automate CLI reference generation in `scripts/generate_cli_docs.py`
+  - [ ] Integrate with MkDocs build process
+  - [ ] Enhance existing `docs/cli-reference/` structure with comprehensive reference material
+- **Notes**:
+  - Previously had placeholder stubs with minimal content
+  - Current `docs/cli-reference/` contains hand-written per-command reference pages
+  - Requires examining actual CLI code structure for comprehensive coverage
+  - Should align with user guide examples
+
+#### 18. 🚧 Convert Documentation Links to Absolute Paths
+
+- **Status**: NOT STARTED
+- **Priority**: MEDIUM
+- **Context**: Enabled MkDocs 1.6+ absolute link validation (2025-12-04). Absolute links (`/path/to/file.md`) are clearer, easier to maintain, and automation-friendly compared to relative links (`../../../path/to/file.md`).
+- **Reference**: [ADR-DD01 Addendum 2025-12-04: Absolute Link Strategy](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
+- **Tasks**:
+  - [ ] Audit all Markdown files for relative internal links
+  - [ ] Convert relative links to absolute paths (e.g., `../../../cli-reference/overview.md` → `/cli-reference/overview.md`)
+  - [ ] Update documentation generation scripts to emit absolute links
+  - [ ] Verify all links resolve correctly with `mkdocs build --strict`
+  - [ ] Run link checker to validate changes
+- **Benefits**:
+  - Clearer intent: immediately obvious where links point
+  - Easier refactoring: search/replace when moving files
+  - Automation friendly: scripts can construct absolute paths easily
+  - Less error-prone: no counting `../` levels in deep hierarchies
 
 ---
 

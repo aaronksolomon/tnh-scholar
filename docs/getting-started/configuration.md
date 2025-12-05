@@ -1,3 +1,11 @@
+---
+title: "Configuration"
+description: "TNH Scholar requires some initial configuration to function properly. This guide covers the essential configuration steps and options."
+owner: ""
+author: ""
+status: processing
+created: "2025-02-01"
+---
 # Configuration
 
 TNH Scholar requires some initial configuration to function properly. This guide covers the essential configuration steps and options.
@@ -31,28 +39,28 @@ TNH Scholar creates and uses the following directory structure:
 
 ```plaintext
 ~/.config/tnh_scholar/
-├── patterns/         # Pattern storage
+├── patterns/         # Prompt storage
 └── logs/            # Log files
 ```
 
-## Pattern Configuration
+## Prompt Configuration
 
-### Pattern Directory
+### Prompt Directory
 
-Patterns can be stored in:
+Prompts can be stored in:
 
 1. Default location: `~/.config/tnh_scholar/patterns/`
-2. Custom location specified by `TNH_PATTERN_DIR` environment variable
+2. Custom location specified by `TNH_PATTERN_DIR` environment variable (note: uses legacy "PATTERN" name for backwards compatibility)
 
-To use a custom pattern directory:
+To use a custom prompt directory:
 
 ```bash
-export TNH_PATTERN_DIR=/path/to/patterns
+export TNH_PATTERN_DIR=/path/to/prompts  # Variable name retained for compatibility
 ```
 
-### Default Patterns
+### Default Prompts
 
-The system includes several default patterns:
+The system includes several default prompts:
 
 - default_punctuate.md
 - default_section.md
@@ -79,25 +87,25 @@ defaults:
   output_format: txt
   
 punctuate:
-  pattern: default_punctuate
+  pattern: default_punctuate  # Config key name retained for compatibility
   style: APA
   review_count: 3
-  
+
 section:
-  pattern: default_section
+  pattern: default_section  # Config key name retained for compatibility
   review_count: 3
-  
+
 translate:
-  pattern: default_line_translation
+  pattern: default_line_translation  # Config key name retained for compatibility
   target_language: en
   style: "American Dharma Teaching"
   context_lines: 3
   review_count: 3
-  
+
 process:
   wrap_document: true
-  
-patterns:
+
+patterns:  # Config section name retained for compatibility
   path: ~/.config/tnh_scholar/patterns
   
 logging:
@@ -115,12 +123,12 @@ tnh-setup
 
 # Skip specific steps
 tnh-setup --skip-env        # Skip API key check
-tnh-setup --skip-patterns   # Skip pattern download
+tnh-setup --skip-patterns   # Skip prompt download
 ```
 
 This will:
 
 1. Create necessary directories
-2. Offer to download default patterns
+2. Offer to download default prompts
 3. Check for OpenAI API key
 4. Set up basic configuration

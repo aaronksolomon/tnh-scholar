@@ -156,8 +156,7 @@ class NumberedText:
         Args:
             content: Initial text content, if any
             start: Starting line number (used only if content isn't already numbered)
-            separator: Separator between line numbers and content 
-            (only if content isn't numbered)
+            separator: Separator between line numbers and content (only if content isn't numbered)
 
         Examples:
             >>> # Custom separators
@@ -443,5 +442,4 @@ def _check_line_structure(first_match: Match[str], lines: List[str]) -> Numbered
             return NumberedFormat(False)
 
     return NumberedFormat(True, separator, start_num)
-
 

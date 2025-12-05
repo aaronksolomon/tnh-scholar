@@ -1,0 +1,90 @@
+name: Documentation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, develop, docs-reorg ]
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - 'mkdocs.yaml'
+      - 'scripts/generate_cli_docs.py'
+      - 'scripts/generate_doc_index.py'
+      - 'scripts/generate_index_md.py'
+      - 'scripts/sync_readme.py'
+      - 'scripts/check_readme_docs_drift.py'
+      - '.github/workflows/docs.yml'
+  pull_request:
+    branches: [ main, develop, docs-reorg ]
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - 'mkdocs.yaml'
+      - 'scripts/generate_cli_docs.py'
+      - 'scripts/generate_doc_index.py'
+      - 'scripts/generate_index_md.py'
+      - 'scripts/sync_readme.py'
+      - 'scripts/check_readme_docs_drift.py'
+      - '.github/workflows/docs.yml'
+
+jobs:
+  docs-build-and-verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+    env:
+      POETRY_VIRTUALENVS_IN_PROJECT: "true"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.4"
+
+      - name: Install Poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+
+      - name: Cache Poetry virtualenv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+
+      - name: Install dependencies
+        run: |
+          poetry env use python
+          poetry install --with dev --no-interaction --no-ansi
+
+      - name: Check documentation drift
+        run: |
+          poetry run python scripts/check_readme_docs_drift.py
+          cat docs_sync_report.txt
+        continue-on-error: true
+
+      - name: Verify README ↔ docs/index.md sync
+        run: poetry run python scripts/sync_readme.py
+
+      - name: Generate documentation
+        run: make docs-generate
+
+      - name: Build MkDocs site
+        run: make docs-build
+
+      - name: Upload docs artifact (main branch only)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mkdocs-site
+          path: site/
+
+      - name: Deploy to GitHub Pages
+        if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/docs-reorg') && github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

@@ -17,7 +17,7 @@ Extend this class with additional methods as needed for your audio processing wo
 
 from io import BytesIO
 from pathlib import Path
-from typing import BinaryIO
+from typing import Any, BinaryIO
 
 from pydub import AudioSegment as _AudioSegment
 
@@ -27,7 +27,11 @@ class TNHAudioSegment:
         self._segment = segment
 
     @staticmethod
-    def from_file(file: str | Path | BytesIO, format: str | None = None, **kwargs) -> "TNHAudioSegment":
+    def from_file(
+        file: str | Path | BytesIO,
+        format: str | None = None,
+        **kwargs: Any,
+    ) -> "TNHAudioSegment":
         """
         Wrapper: Load an audio file into a TNHAudioSegment.
 
@@ -41,7 +45,7 @@ class TNHAudioSegment:
         """
         return TNHAudioSegment(_AudioSegment.from_file(file, format=format, **kwargs))
     
-    def export(self, out_f: str | BinaryIO, format: str, **kwargs) -> None:
+    def export(self, out_f: str | BinaryIO, format: str, **kwargs: Any) -> None:
         """
         Wrapper: Export the audio segment to a file-like object or file path.
 
@@ -79,4 +83,3 @@ class TNHAudioSegment:
     def raw(self) -> _AudioSegment:
         """Access the underlying pydub.AudioSegment if needed."""
         return self._segment
-

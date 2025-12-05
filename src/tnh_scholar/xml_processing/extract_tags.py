@@ -1,9 +1,11 @@
 import argparse
+from pathlib import Path
+from typing import Set
 
 from lxml import etree
 
 
-def extract_unique_tags(xml_file):
+def extract_unique_tags(xml_file: str | Path) -> Set[str]:
     """
     Extract all unique tags from an XML file using lxml.
 
@@ -11,7 +13,7 @@ def extract_unique_tags(xml_file):
         xml_file (str): Path to the XML file.
 
     Returns:
-        set: A set of unique tags in the XML document.
+        Set[str]: A set of unique tags in the XML document.
     """
     # Parse the XML file
     tree = etree.parse(xml_file)

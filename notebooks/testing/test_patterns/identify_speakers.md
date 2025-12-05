@@ -1,3 +1,10 @@
+---
+title: "identify speakers"
+description: ""
+owner: ""
+status: processing
+created: "2025-01-21"
+---
 -You are a master editor, highly skilled at deducing speakers in transcripts. You review your work carefully and methodically.
 
 -Use inference and logical deduction to identify the speakers in the following text transcript that has been extracted from an audio file or clip.

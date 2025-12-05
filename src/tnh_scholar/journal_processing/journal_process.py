@@ -342,8 +342,8 @@ def unwrap_all_lines(pages):
     return result
 
 
-# code to processs and validate journal sections
-def validate_and_clean_data(data, schema):
+# code to process and validate journal sections
+def validate_and_clean_data(data, schema) -> dict:
     """
     Recursively validate and clean AI-generated data to fit the given schema.
     Any missing fields are filled with defaults, and extra fields are ignored.
@@ -432,14 +432,9 @@ def validate_and_clean_data(data, schema):
 
 def validate_and_save_metadata(
     output_file_path: Path, json_metadata_serial: str, schema
-):
+) -> bool:
     """
     Validates and cleans journal data against the schema, then writes it to a JSON file.
-
-    Args:
-        data (str): The journal data as a serialized JSON string to validate and clean.
-        schema (dict): The schema defining the required structure.
-        output_file_path (str): Path to the output JSON file.
 
     Returns:
         bool: True if successfully written to the file, False otherwise.
@@ -461,7 +456,7 @@ def validate_and_save_metadata(
         raise
 
 
-def extract_page_groups_from_metadata(metadata):
+def extract_page_groups_from_metadata(metadata) -> list:
     """
     Extracts page groups from the section metadata for use with `split_xml_pages`.
 
@@ -508,21 +503,9 @@ def _get_max_tokens_for_clean(data: str, factor: float = 1, buffer: int = 100):
 
 def generate_clean_batch(
     input_xml_file: str, output_file: str, system_message: str, user_wrap_function
-):
+) -> str:
     """
     Generate a batch file for the OpenAI (OA) API using a single input XML file.
-
-    Parameters:
-        batch_file (str): Full path to the input XML file to process.
-        output_file (str): Full path to the output batch JSONL file.
-        system_message (str): System message template for batch processing.
-        user_wrap_function (callable): Function to wrap user input for processing pages.
-
-    Returns:
-        str: Path to the created batch file.
-
-    Raises:
-        Exception: If an error occurs during file processing.
     """
 
     try:
@@ -564,20 +547,9 @@ def generate_clean_batch(
 # running batches
 def batch_section(
     input_xml_path: Path, batch_jsonl: Path, system_message, journal_name
-):
+) -> str:
     """
     Splits the journal content into sections using GPT, with retries for both starting and completing the batch.
-
-    Args:
-        input_xml_path (str): Path to the input XML file.
-        output_json_path (str): Path to save validated metadata JSON.
-        raw_output_path (str): Path to save the raw batch results.
-        journal_name (str): Name of the journal being processed.
-        max_retries (int): Maximum number of retries for batch processing.
-        retry_delay (int): Delay in seconds between retries.
-
-    Returns:
-        str: the result of the batch sectioning process as a serialized json object.
     """
     try:
         logger.info(
@@ -631,21 +603,10 @@ def batch_translate(
     metadata_path: Path,
     system_message,
     journal_name: str,
-):
+) -> list:
     """
     Translates the journal sections using the GPT model.
     Saves the translated content back to XML.
-
-    Args:
-        input_xml_path (str): Path to the input XML file.
-        metadata_path (str): Path to the metadata JSON file.
-        journal_name (str): Name of the journal.
-        xml_output_path (str): Path to save the translated XML.
-        max_retries (int): Maximum number of retries for batch operations.
-        retry_delay (int): Delay in seconds between retries.
-
-    Returns:
-        bool: True if the process succeeds, False otherwise.
     """
     logger.info(
         f"Starting translation batch for journal '{journal_name}':\n\twith file: {input_xml_path}\n\tmetadata: {metadata_path}"
@@ -668,7 +629,7 @@ def batch_translate(
         if section_contents:
             logger.debug(f"section_contents[0]:\n{section_contents[0]}")
         else:
-            logger.error("No sectin contents.")
+            logger.error("No section contents.")
 
     except Exception as e:
         logger.error(
@@ -696,7 +657,7 @@ def translate_sections(
     section_metadata,
     journal_name,
     immediate=False,
-):
+) -> list:
     """build up sections in batches to translate"""
 
     section_mdata = section_metadata["sections"]
@@ -748,7 +709,7 @@ def send_data_for_tx_batch(
     max_token_list: List,
     journal_name,
     immediate=False,
-):
+) -> list:
     """
     Sends data for translation batch or immediate processing.
 
@@ -882,7 +843,7 @@ def save_translation_data(xml_output_path: Path, translation_data, journal_name)
 
 
 # JSON helpers
-def deserialize_json(serialized_data: str):
+def deserialize_json(serialized_data: str) -> dict:
     """
     Converts a serialized JSON string into a Python dictionary.
 
@@ -907,7 +868,7 @@ def deserialize_json(serialized_data: str):
 
 
 # generate a batch from xml page file
-# depricated
+# deprecated
 def generate_single_oa_batch_from_pages(
     input_xml_file: str,
     output_file: str,
@@ -915,20 +876,8 @@ def generate_single_oa_batch_from_pages(
     user_wrap_function,
 ):
     """
-    *** Depricated ***
+    *** Deprecated ***
     Generate a batch file for the OpenAI (OA) API using a single input XML file.
-
-    Parameters:
-        batch_file (str): Full path to the input XML file to process.
-        output_file (str): Full path to the output batch JSONL file.
-        system_message (str): System message template for batch processing.
-        user_wrap_function (callable): Function to wrap user input for processing pages.
-
-    Returns:
-        str: Path to the created batch file.
-
-    Raises:
-        Exception: If an error occurs during file processing.
     """
     logger = logging.getLogger(__name__)
 
@@ -968,18 +917,15 @@ def generate_all_batches(
     system_message: str,
     user_wrap_function,
     file_regex: str = r".*\.xml",
-):
+) -> None:
     """
     Generate cleaning batches for all journals in the specified directory.
 
     Parameters:
-        processed_journals_dir (str): Path to the directory containing processed journal data.
+        processed_document_dir (str): Path to the directory containing processed journal data.
         system_message (str): System message template for batch processing.
         user_wrap_function (callable): Function to wrap user input for processing pages.
         file_regex (str): Regex pattern to identify target files (default: ".*\\.xml").
-
-    Returns:
-        None
     """
     logger = logging.getLogger(__name__)
     document_dir = Path(processed_document_dir)
