@@ -2,7 +2,7 @@ PYTHON_VERSION = 3.12.4
 POETRY        = poetry
 LYCHEE        = lychee
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell link-check docs-quickcheck
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell link-check docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -70,3 +70,99 @@ docs-quickcheck: docs-generate
 	$(POETRY) run mkdocs build --strict
 	$(MAKE) link-check
 	$(MAKE) codespell
+
+# Type checking
+type-check:
+	@echo "Running type checks..."
+	$(POETRY) run mypy src/
+
+# Release management targets
+release-check: test type-check lint docs-verify
+	@echo "✅ All quality checks passed - ready to release"
+
+changelog-draft:
+	@echo "📝 Generating CHANGELOG entry from git history..."
+	@$(POETRY) run python scripts/generate_changelog_entry.py || echo "\n⚠️  Could not generate changelog (no previous tag?)\n   You'll need to write it manually."
+	@echo "\n👆 Copy this to CHANGELOG.md and edit as needed"
+
+release-patch:
+	@echo "🚀 Bumping patch version (0.x.Y -> 0.x.Y+1)..."
+	$(POETRY) version patch
+	@$(MAKE) _release-update-files
+
+release-minor:
+	@echo "🚀 Bumping minor version (0.X.y -> 0.X+1.0)..."
+	$(POETRY) version minor
+	@$(MAKE) _release-update-files
+
+release-major:
+	@echo "🚀 Bumping major version (X.y.z -> X+1.0.0)..."
+	$(POETRY) version major
+	@$(MAKE) _release-update-files
+
+_release-update-files:
+	@VERSION=$$($(POETRY) version -s); \
+	echo "📝 Updating version to $$VERSION in TODO.md..."; \
+	if grep -q "> \*\*Version\*\*:" TODO.md; then \
+		sed -i.bak "s/> \*\*Version\*\*:.*/> **Version**: $$VERSION (Alpha)/" TODO.md && rm -f TODO.md.bak; \
+	else \
+		echo "⚠️  Version marker not found in TODO.md"; \
+	fi; \
+	echo "✅ Version updated to $$VERSION"; \
+	echo ""; \
+	echo "Next steps:"; \
+	echo "  1. Run 'make changelog-draft' to generate CHANGELOG entry"; \
+	echo "  2. Edit CHANGELOG.md with the generated content"; \
+	echo "  3. Run 'make release-commit' to commit changes"; \
+	echo "  4. Run 'make release-tag' to tag and push"; \
+	echo "  5. Run 'make release-publish' to publish to PyPI"
+
+release-commit:
+	@VERSION=$$($(POETRY) version -s); \
+	echo "📝 Committing version $$VERSION..."; \
+	git add pyproject.toml TODO.md CHANGELOG.md poetry.lock; \
+	git commit -m "chore: Bump version to $$VERSION" \
+		-m "" \
+		-m "- Update version in pyproject.toml" \
+		-m "- Update TODO.md version header" \
+		-m "- Add $$VERSION release notes to CHANGELOG.md" \
+		-m "" \
+		-m "🤖 Generated with Claude Code" \
+		-m "" \
+		-m "Co-Authored-By: Claude <noreply@anthropic.com>"; \
+	echo "✅ Release committed"; \
+	echo ""; \
+	echo "Next: Run 'make release-tag' to tag and push"
+
+release-tag:
+	@VERSION=$$($(POETRY) version -s); \
+	BRANCH=$$(git branch --show-current); \
+	echo "🏷️  Tagging version v$$VERSION..."; \
+	git tag -a "v$$VERSION" -m "Release v$$VERSION" \
+		-m "" \
+		-m "See CHANGELOG.md for full details." \
+		-m "" \
+		-m "🤖 Generated with Claude Code" \
+		-m "" \
+		-m "Co-Authored-By: Claude <noreply@anthropic.com>"; \
+	echo "📤 Pushing branch and tag..."; \
+	git push origin $$BRANCH; \
+	git push origin "v$$VERSION"; \
+	echo "✅ Tagged and pushed v$$VERSION"; \
+	echo ""; \
+	echo "Next: Run 'make release-publish' to publish to PyPI"
+
+release-publish:
+	@VERSION=$$($(POETRY) version -s); \
+	echo "📦 Building package..."; \
+	$(POETRY) build; \
+	echo "📤 Publishing to PyPI..."; \
+	$(POETRY) publish; \
+	echo "✅ Published v$$VERSION to PyPI"; \
+	echo ""; \
+	echo "🎉 Release complete! Check https://pypi.org/project/tnh-scholar/"
+
+release-full: release-commit release-tag release-publish
+	@VERSION=$$($(POETRY) version -s); \
+	echo ""; \
+	echo "🎉 Full release workflow complete for v$$VERSION!"
