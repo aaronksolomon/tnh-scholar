@@ -251,8 +251,10 @@ release-publish:
 		echo "📦 Would build and publish package v$$VERSION to PyPI"; \
 		echo ""; \
 		echo "Commands that would run:"; \
+		echo "  python scripts/prepare_pypi_readme.py  # Strip YAML frontmatter"; \
 		echo "  poetry build"; \
 		echo "  poetry publish"; \
+		echo "  python scripts/prepare_pypi_readme.py --restore  # Restore original"; \
 		echo ""; \
 		echo "Files that would be created:"; \
 		echo "  - dist/tnh_scholar-$$VERSION-py3-none-any.whl"; \
@@ -260,10 +262,18 @@ release-publish:
 		echo ""; \
 		echo "To execute: make release-publish"; \
 	else \
+		echo "📝 Preparing README for PyPI (stripping YAML frontmatter)..."; \
+		$(POETRY) run python scripts/prepare_pypi_readme.py; \
+		echo ""; \
 		echo "📦 Building package..."; \
 		$(POETRY) build; \
+		echo ""; \
 		echo "📤 Publishing to PyPI..."; \
 		$(POETRY) publish; \
+		echo ""; \
+		echo "📝 Restoring original README..."; \
+		$(POETRY) run python scripts/prepare_pypi_readme.py --restore; \
+		echo ""; \
 		echo "✅ Published v$$VERSION to PyPI"; \
 		echo ""; \
 		echo "🎉 Release complete! Check https://pypi.org/project/tnh-scholar/"; \

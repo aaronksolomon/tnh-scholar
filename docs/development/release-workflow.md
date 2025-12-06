@@ -20,7 +20,7 @@ make changelog-draft     # Generate CHANGELOG entry
 # Edit CHANGELOG.md with generated content
 make release-commit      # Commit version changes
 make release-tag         # Tag and push to remote
-make release-publish     # Build and publish to PyPI
+make release-publish     # Strip frontmatter, build, publish to PyPI, restore README (automated)
 ```
 
 **Dry-run mode**: Add `DRY_RUN=1` to any command to preview without making changes:
@@ -315,15 +315,30 @@ Next: Run 'make release-publish' to publish to PyPI
 make release-publish
 ```
 
-**What happens**:
+**What happens** (all automated):
 
-- Builds wheel and source distribution using Poetry
-- Publishes both distributions to PyPI
-- Confirms successful upload
+1. **Prepares README for PyPI**: Strips YAML frontmatter to ensure clean rendering
+   - Creates backup at `README.md.bak`
+   - Removes frontmatter that would display as plain text on PyPI
+
+2. **Builds distributions**: Creates wheel and source distribution using Poetry
+
+3. **Publishes to PyPI**: Uploads both distributions
+
+4. **Restores README**: Automatically restores original README with frontmatter
+
+**Why frontmatter stripping is needed**: PyPI doesn't process YAML frontmatter and will display it as plain text, making your project description look unprofessional. The automation handles this for you.
 
 **Example output**:
 
 ```
+📝 Preparing README for PyPI (stripping YAML frontmatter)...
+✓ Backed up README.md to /path/to/README.md.bak
+✓ Stripped 443 bytes of frontmatter from README.md
+
+📦 README.md is ready for PyPI build
+💡 Run 'python scripts/prepare_pypi_readme.py --restore' to restore original
+
 📦 Building package...
 Building tnh-scholar (0.1.5)
   - Building sdist
@@ -336,18 +351,22 @@ Publishing tnh-scholar (0.1.5) to PyPI
  - Uploading tnh_scholar-0.1.5-py3-none-any.whl 100%
  - Uploading tnh_scholar-0.1.5.tar.gz 100%
 
+📝 Restoring original README...
+✓ Restored README.md from backup
+
 ✅ Published v0.1.5 to PyPI
 
 🎉 Release complete! Check https://pypi.org/project/tnh-scholar/
 ```
 
-### Step 7: Verify Release (Optional)
+### Step 7: Verify Release
 
 After publishing, verify the release was successful:
 
 1. **Check PyPI**: Visit [https://pypi.org/project/tnh-scholar/](https://pypi.org/project/tnh-scholar/)
    - Verify the new version is listed
-   - Check that README renders correctly
+   - **Important**: Check that README renders correctly without YAML frontmatter
+   - Confirm the project description starts with "# TNH Scholar README" and not with "---"
 
 2. **Test Installation**:
 
@@ -656,11 +675,11 @@ Use this checklist to ensure complete releases:
 - [ ] CHANGELOG.md updated with clear, user-friendly descriptions
 - [ ] Version changes committed (`make release-commit`)
 - [ ] Tag created and pushed (`make release-tag`)
-- [ ] Package published to PyPI (`make release-publish`)
+- [ ] Package published to PyPI (`make release-publish` - automatically strips/restores README frontmatter)
 - [ ] PyPI listing verified at [https://pypi.org/project/tnh-scholar/](https://pypi.org/project/tnh-scholar/)
 - [ ] Installation test from PyPI successful (`pip install tnh-scholar==X.Y.Z`)
 - [ ] GitHub tag appears in [repository tags](https://github.com/aaronksolomon/tnh-scholar/tags)
-- [ ] (Optional) GitHub Release created with release notes
+- [ ] GitHub Release created with release notes
 
 ## Related Documentation
 
