@@ -4,7 +4,6 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 # Import from tnh_scholar for TextObject compatibility
-from tnh_scholar.ai_text_processing import LogicalSection, TextObject
 
 
 class MatchObject(BaseModel):
@@ -106,4 +105,4 @@ def find_section_boundaries(text: str, config: SectionConfig) -> List[int]:
 #     return TextObject(
 #         language="en",  # Default to English for PoC
 #         sections=sections
-    )
+#     )

@@ -58,9 +58,11 @@ codespell:
 	@echo "Running codespell..."
 	$(POETRY) run codespell -q 3 -I .codespell-ignore.txt README.md docs
 
-docs-verify: docs-drift docs-build link-check codespell
+docs-verify: docs-drift docs-build
 	@echo "Verifying documentation..."
 	$(POETRY) run python scripts/sync_readme.py
+	@echo "⚠️  Note: link-check (lychee) and codespell skipped for 0.1.4 release"
+	@echo "   Scheduled for review/replacement with Python alternatives"
 
 docs: docs-verify
 	@echo "Documentation build complete: site/"

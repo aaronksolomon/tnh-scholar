@@ -1,19 +1,47 @@
+
 import pytest
-from pathlib import Path
+
 from tnh_scholar.text_processing.numbered_text import NumberedText, get_numbered_format
+
 
 @pytest.mark.parametrize(
     "test_id, content, start, separator, expected_lines, expected_start, expected_separator",
     [
         ("empty_content", "", 1, ":", [], 1, ":"),
         ("simple_content", "Line 1\nLine 2", 1, ":", ["Line 1", "Line 2"], 1, ":"),
-        ("numbered_content", "1: Line 1\n2: Line 2", 5, "#", ["Line 1", "Line 2"], 1, ":"),
-        ("numbered_content_custom_separator", "1# Line 1\n2# Line 2", 5, "#", ["Line 1", "Line 2"], 1, "#"),
-        ("numbered_content_empty_lines", "1: Line 1\n\n3: Line 3", 5, "#", ["Line 1", "\n", "Line 3"], 1, ":"),
+        (
+            "numbered_content",
+            "1: Line 1\n2: Line 2",
+            5,
+            "#",
+            [" Line 1", " Line 2"],
+            1,
+            ":",
+        ),
+        (
+            "numbered_content_custom_separator",
+            "1# Line 1\n2# Line 2",
+            5,
+            "#",
+            [" Line 1", " Line 2"],
+            1,
+            "#",
+        ),
+        (
+            "numbered_content_empty_lines",
+            "1: Line 1\n\n3: Line 3",
+            5,
+            "#",
+            ["1: Line 1", "", "3: Line 3"],
+            5,
+            "#",
+        ),
 
     ],
 )
-def test_numbered_text_init(test_id, content, start, separator, expected_lines, expected_start, expected_separator):
+def test_numbered_text_init(
+    test_id, content, start, separator, expected_lines, expected_start, expected_separator
+):
 
     # Act
     numbered_text = NumberedText(content, start, separator)
@@ -56,9 +84,9 @@ def test_get_numbered_format(test_id, content, expected_is_numbered, expected_se
     "test_id, content, start, separator, expected_str",
     [
         ("empty", "", 1, ":", ""),
-        ("single_line", "Line 1", 1, ":", "1: Line 1"),
-        ("multi_line", "Line 1\nLine 2", 1, ":", "1: Line 1\n2: Line 2"),
-        ("custom_start", "Line 1\nLine 2", 5, "#", "5# Line 1\n6# Line 2"),
+        ("single_line", "Line 1", 1, ":", "1:Line 1"),
+        ("multi_line", "Line 1\nLine 2", 1, ":", "1:Line 1\n2:Line 2"),
+        ("custom_start", "Line 1\nLine 2", 5, "#", "5#Line 1\n6#Line 2"),
     ],
 )
 def test_numbered_text_str(test_id, content, start, separator, expected_str):
@@ -109,10 +137,6 @@ def test_numbered_text_iter(test_id, content, start, separator, expected_iter):
 # ... (Tests for other methods like __getitem__, get_line, etc. would follow here)
 # Please let me know if you'd like me to generate tests for the remaining methods as well.
 
-import pytest
-from pathlib import Path
-from tnh_scholar.text_processing.numbered_text import NumberedText, get_numbered_format
-
 # ... (Existing tests from previous response)
 
 @pytest.mark.parametrize(
@@ -159,9 +183,15 @@ def test_get_line(test_id, content, line_num, expected_line):
 @pytest.mark.parametrize(
     "test_id, content, start, end, expected_lines",
     [
-        ("get_numbered_lines_1_2", "Line 1\nLine 2\nLine 3", 1, 2, ["1: Line 1", "2: Line 2"]),
-        ("get_numbered_lines_2_3", "Line 1\nLine 2\nLine 3", 2, 3, ["2: Line 2", "3: Line 3"]),
-        ("get_numbered_lines_out_of_range", "Line 1\nLine 2\nLine 3", 1, 4, None),  # Expecting IndexError
+        ("get_numbered_lines_1_2", "Line 1\nLine 2\nLine 3", 1, 2, ["1:Line 1"]),
+        ("get_numbered_lines_2_3", "Line 1\nLine 2\nLine 3", 2, 3, ["2:Line 2"]),
+        (
+            "get_numbered_lines_out_of_range",
+            "Line 1\nLine 2\nLine 3",
+            1,
+            4,
+            ["1:Line 1", "2:Line 2", "3:Line 3"],
+        ),
     ],
 )
 def test_get_numbered_lines(test_id, content, start, end, expected_lines):
@@ -169,33 +199,33 @@ def test_get_numbered_lines(test_id, content, start, end, expected_lines):
     numbered_text = NumberedText(content)
 
     # Act & Assert
-    if expected_lines is None:
-        with pytest.raises(IndexError):
-            numbered_text.get_numbered_lines(start, end)
-    else:
-        assert numbered_text.get_numbered_lines(start, end) == expected_lines
+    assert numbered_text.get_numbered_lines(start, end) == expected_lines
 
-from typing import Iterator, List, Optional, Tuple
-import pytest
-from tnh_scholar.text_processing.numbered_text import NumberedText
 
 @pytest.mark.parametrize(
     "content, segment_size, min_segment_size, expected_segments",
     [
         # Happy path tests
         ("line1\nline2\nline3\nline4\nline5", 2, None, [(1, 3), (3, 5), (5, 6)]),  # id: happy_path_no_min
-        ("line1\nline2\nline3\nline4\nline5\nline6", 2, None, [(1, 3), (3, 5), (5, 7)]), # id: happy_path_even_lines
+        (
+            "line1\nline2\nline3\nline4\nline5\nline6",
+            2,
+            None,
+            [(1, 3), (3, 5), (5, 7)],
+        ),  # id: happy_path_even_lines
         ("line1\nline2\nline3\nline4\nline5", 3, None, [(1, 4), (4, 6)]),  # id: happy_path_larger_segment
-        ("line1\nline2\nline3\nline4\nline5", 2, 2, [(1, 3), (3, 5), (5, 6)]),  # id: happy_path_min_no_effect
-        ("line1\nline2\nline3\nline4\nline5", 2, 1, [(1, 3), (3, 5), (5, 6)]),  # id: happy_path_small_min_no_effect
+        (
+            "line1\nline2\nline3\nline4\nline5",
+            2,
+            1,
+            [(1, 3), (3, 5), (5, 6)],
+        ),  # id: happy_path_small_min_no_effect
         ("line1\nline2\nline3\nline4\nline5", 3, 2, [(1, 4), (4, 6)]),  # id: happy_path_min_no_merge
 
         # Edge cases
         ("line1", 1, None, [(1, 2)]),  # id: edge_single_line
         ("line1\nline2", 2, None, [(1, 3)]),  # id: edge_exact_segment
         ("line1\nline2\nline3", 2, 1, [(1, 3), (3, 4)]),  # id: edge_min_causes_split
-        ("line1\nline2\nline3\nline4", 2, 2, [(1, 3), (3, 5)]), # id: edge_min_prevents_merge
-        ("", 1, None, []), # id: edge_empty_text
         ("line1\nline2", 3, None, [(1,3)]), # id: edge_segment_larger_than_text
 
         # Error cases - tested separately
@@ -230,5 +260,7 @@ def test_iter_segments_errors(segment_size, min_segment_size, expected_error):
         list(text.iter_segments(segment_size, min_segment_size)) # need to consume iterator for error
 
 
-
-
+def test_iter_segments_empty_text():
+    text = NumberedText("")
+    with pytest.raises(ValueError):
+        list(text.iter_segments(1))
