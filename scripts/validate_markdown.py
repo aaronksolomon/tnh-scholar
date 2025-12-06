@@ -136,6 +136,30 @@ def is_special_frontmatter_file(path: Path) -> bool:
     return any(part in SPECIAL_FRONTMATTER_DIRS for part in parts)
 
 
+def check_relative_links(path: Path, lines: List[str]) -> List[ValidationIssue]:
+    """Check for relative links (../) which violate absolute link standard."""
+    issues = []
+    rel_path = path.relative_to(DOCS_ROOT)
+
+    import re
+    # Match markdown links: [text](url)
+    link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
+
+    for line_num, line in enumerate(lines, 1):
+        matches = link_pattern.findall(line)
+        for link_text, link_url in matches:
+            # Check for relative parent directory references
+            if '../' in link_url and not link_url.startswith('http'):
+                issues.append(ValidationIssue(
+                    rel_path,
+                    "relative_link",
+                    f"Line {line_num}: Relative link '{link_url}' should use "
+                    f"absolute path from /docs/ root (e.g., /path/to/file.md)"
+                ))
+
+    return issues
+
+
 def validate_file(path: Path) -> List[ValidationIssue]:
     """Validate a single markdown file against standards."""
     issues = []
@@ -179,6 +203,9 @@ def validate_file(path: Path) -> List[ValidationIssue]:
 
     # Get content lines (after frontmatter)
     content_lines = lines[content_start:] if content_start else lines
+
+    # Check for relative links in the entire file
+    issues.extend(check_relative_links(path, lines))
 
     # Check for first heading
     heading_info = get_first_heading(content_lines)

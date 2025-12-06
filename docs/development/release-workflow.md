@@ -202,7 +202,7 @@ Based on 8 commits since v0.1.4
 
 ### Step 3: Edit CHANGELOG.md
 
-1. Open [CHANGELOG.md](../../CHANGELOG.md) in your editor
+1. Open `CHANGELOG.md` (in project root) in your editor
 2. Copy the generated entry from your terminal
 3. Paste at the top of the file (after the header, before previous versions)
 4. Edit the entry for clarity and completeness:
@@ -664,7 +664,7 @@ Use this checklist to ensure complete releases:
 
 ## Related Documentation
 
-- [Makefile](../../Makefile) - Release automation implementation
-- [CHANGELOG.md](../../CHANGELOG.md) - Version history
-- [Contributing Guide](contributing-prototype-phase.md) - Contribution guidelines
-- [Markdown Standards](../docs-ops/markdown-standards.md) - Documentation standards
+- `Makefile` (project root) - Release automation implementation
+- `CHANGELOG.md` (project root) - Version history
+- [Contributing Guide](/development/contributing-prototype-phase.md) - Contribution guidelines
+- [Markdown Standards](/docs-ops/markdown-standards.md) - Documentation standards

@@ -41,7 +41,10 @@ auto_generated: true
 
 - [audio-transcribe](cli-reference/audio-transcribe.md)
 - [Command Line Tools Overview](cli-reference/overview.md)
+- [json-to-srt](cli-reference/json-to-srt.md)
 - [nfmt](cli-reference/nfmt.md)
+- [sent-split](cli-reference/sent-split.md)
+- [srt-translate](cli-reference/srt-translate.md)
 - [tnh-fab](cli-reference/tnh-fab.md)
 - [tnh-setup](cli-reference/tnh-setup.md)
 - [token-count](cli-reference/token-count.md)

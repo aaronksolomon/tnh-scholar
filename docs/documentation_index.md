@@ -58,14 +58,17 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 
 | Title | Description | Created | Path |
 | --- | --- | --- | --- |
-| [audio-transcribe](cli-reference/audio-transcribe.md) | Command-line tool for audio transcription tasks. | 2025-01-21 | `docs/cli-reference/audio-transcribe.md` |
+| [audio-transcribe](cli-reference/audio-transcribe.md) | CLI reference for audio-transcribe | 2025-12-06 | `docs/cli-reference/audio-transcribe.md` |
 | [CLI Reference](cli-reference/index.md) | Table of contents for cli-reference | 2025-12-04 | `docs/cli-reference/index.md` |
 | [Command Line Tools Overview](cli-reference/overview.md) | TNH Scholar provides a suite of command-line tools designed to work together for text processing. Each tool focuses on specific tasks while maintaining consistent interfaces and behavior. This overview introduces the available tools and their primary functions. | 2025-02-01 | `docs/cli-reference/overview.md` |
-| [nfmt](cli-reference/nfmt.md) | `nfmt`, a newline formatting utility, standardizes line endings and spacing in text files. | 2025-02-01 | `docs/cli-reference/nfmt.md` |
-| [tnh-fab](cli-reference/tnh-fab.md) | User-facing reference for the `tnh-fab` CLI covering commands, options, and example workflows. | 2025-01-19 | `docs/cli-reference/tnh-fab.md` |
-| [tnh-setup](cli-reference/tnh-setup.md) | The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns. | 2025-02-01 | `docs/cli-reference/tnh-setup.md` |
-| [token-count](cli-reference/token-count.md) | The `token-count` command calculates the OpenAI API token count for text input. This is useful for ensuring that a text is within maximum token limits for the API model and also for estimating API costs. | 2025-02-01 | `docs/cli-reference/token-count.md` |
-| [ytt-fetch](cli-reference/ytt-fetch.md) | (Y)ou(T)ube (T)ranscript-(Fetch)ing utility. | 2025-01-21 | `docs/cli-reference/ytt-fetch.md` |
+| [json-to-srt](cli-reference/json-to-srt.md) | CLI reference for json-to-srt | 2025-12-06 | `docs/cli-reference/json-to-srt.md` |
+| [nfmt](cli-reference/nfmt.md) | CLI reference for nfmt | 2025-12-06 | `docs/cli-reference/nfmt.md` |
+| [sent-split](cli-reference/sent-split.md) | CLI reference for sent-split | 2025-12-06 | `docs/cli-reference/sent-split.md` |
+| [srt-translate](cli-reference/srt-translate.md) | CLI reference for srt-translate | 2025-12-06 | `docs/cli-reference/srt-translate.md` |
+| [tnh-fab](cli-reference/tnh-fab.md) | CLI reference for tnh-fab | 2025-12-06 | `docs/cli-reference/tnh-fab.md` |
+| [tnh-setup](cli-reference/tnh-setup.md) | CLI reference for tnh-setup | 2025-12-06 | `docs/cli-reference/tnh-setup.md` |
+| [token-count](cli-reference/token-count.md) | CLI reference for token-count | 2025-12-06 | `docs/cli-reference/token-count.md` |
+| [ytt-fetch](cli-reference/ytt-fetch.md) | CLI reference for ytt-fetch | 2025-12-06 | `docs/cli-reference/ytt-fetch.md` |
 
 ## API
 

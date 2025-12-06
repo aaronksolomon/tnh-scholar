@@ -69,13 +69,18 @@ created: "YYYY-MM-DD"
 ## Content Guidelines
 
 - Use fenced code blocks with language hints (\```bash, \```python, \```yaml, etc.).
-- Prefer relative links (`[Getting Started](/getting-started/installation.md)`) over absolute URLs inside the repo.
+- **Link Format**: Use absolute paths from the docs root (`/path/to/file.md`), **not** relative paths with `../`.
+  - ✅ Correct: `[Architecture Overview](/architecture/overview.md)`
+  - ✅ Correct: `[Release Workflow](/development/release-workflow.md)`
+  - ❌ Wrong: `[Overview](../architecture/overview.md)` - relative parent references not allowed
+  - ❌ Wrong: `[Workflow](../../development/release-workflow.md)` - relative parent references not allowed
+  - Note: External URLs (`https://...`) are fine for external references
 - Tables should include header separators (`| --- |`) so markdownlint can validate alignment.
 - When embedding lists, keep them short and use parallel grammar. Use numbered lists only when order matters.
 - Reference other documents via their kebab-case paths (matching the naming rule).
 - **Directory links**: MkDocs resolves pages, not bare folders. Do not link to a directory path (`[Architecture](architecture/)`). Instead:
-  - Link to a specific page (e.g., `[Architecture Overview](architecture/overview.md)`), or
-  - Add an `index.md` in that directory and link to it (`architecture/index.md`).
+  - Link to a specific page (e.g., `[Architecture Overview](/architecture/overview.md)`), or
+  - Add an `index.md` in that directory and link to it (`/architecture/index.md`).
   - `README.md` inside a folder is *not* treated as a landing page by MkDocs; prefer `index.md` for folder entry points.
 
 ## Linting & Automation

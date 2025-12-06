@@ -5,6 +5,9 @@ description: Comprehensive documentation for TNH Scholar, an AI-driven project e
 ---
 
 
+
+
+
 # TNH Scholar
 
 **TNH Scholar is a long-term, community-aligned initiative to build a trusted multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
@@ -197,8 +200,11 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 ### Cli Reference
 
 - [audio-transcribe](cli-reference/audio-transcribe.md)
+- [json-to-srt](cli-reference/json-to-srt.md)
 - [nfmt](cli-reference/nfmt.md)
 - [Command Line Tools Overview](cli-reference/overview.md)
+- [sent-split](cli-reference/sent-split.md)
+- [srt-translate](cli-reference/srt-translate.md)
 - [tnh-fab](cli-reference/tnh-fab.md)
 - [tnh-setup](cli-reference/tnh-setup.md)
 - [token-count](cli-reference/token-count.md)

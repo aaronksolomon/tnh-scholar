@@ -1,6 +1,6 @@
 ---
-title: "tnh-setup"
-description: "CLI reference for tnh-setup"
+title: "json-to-srt"
+description: "CLI reference for json-to-srt"
 owner: ""
 author: ""
 status: auto_generated
@@ -8,14 +8,14 @@ created: "2025-12-06"
 auto_generated: true
 ---
 
-# tnh-setup
+# json-to-srt
 
 For full command-line help, run:
 
 ```bash
-poetry run tnh-setup --help
+poetry run json-to-srt --help
 ```
 
 ## Location
 
-`src/tnh_scholar/cli_tools/tnh_setup/`
+`src/tnh_scholar/cli_tools/json_to_srt/`

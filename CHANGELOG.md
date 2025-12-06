@@ -13,6 +13,76 @@ All notable changes to TNH Scholar will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2025-12-06
+
+### Major Infrastructure Improvements
+
+This release represents a significant maturation of project infrastructure, building on the documentation reorganization from v0.1.4. Combined, these releases deliver comprehensive documentation tooling and streamlined release automation.
+
+**Versioning Note**: The v0.1.3 → v0.1.4 transition should have been v0.1.3 → v0.2.0 given the scope of documentation system changes. This release (v0.2.0) acknowledges both the documentation infrastructure (v0.1.4) and release automation improvements as a cohesive minor release milestone.
+
+### Added
+
+- **Comprehensive Dry-Run Mode for Release Workflow**
+  - Preview all release commands before execution (`DRY_RUN=1` parameter)
+  - Shows exact commands, commit messages, and tag messages before creating them
+  - Prevents costly mistakes (git tags, PyPI publishes)
+  - Supports all release targets: version bump, commit, tag, publish
+  - Clear visual feedback with "🔍 DRY RUN MODE" indicator
+
+- **Version Sync Pre-commit Hook**
+  - Automatically validates `pyproject.toml` and `TODO.md` versions match
+  - Prevents version drift bugs before commit
+  - Clear error messages with fix instructions
+  - Runs on every commit via pre-commit framework
+
+- **Python-Native Link Checker**
+  - Replaced lychee (Rust tool) with md-dead-link-check (Python package)
+  - Pure Python toolchain, no external dependencies required
+  - Configured to check external links only (MkDocs validates internal links)
+  - Better Poetry integration and developer onboarding
+
+- **Comprehensive Release Workflow Documentation**
+  - Production-ready documentation at `docs/development/release-workflow.md`
+  - Complete guide covering prerequisites, step-by-step workflow, troubleshooting
+  - Conforms to ADR-DD01 markdown standards
+  - Documents dry-run mode, automation features, and best practices
+  - Examples, tips for efficient releases, and conventional commit guidance
+
+- **Markdown Link Standard Enforcement**
+  - Added validation to detect relative links (`../`) in documentation
+  - Enforces absolute path links from `/docs/` root
+  - Updated markdown standards with clear examples and guidelines
+  - Prevents MkDocs strict mode issues
+
+### Changed
+
+- **Simplified Developer Setup**
+  - Removed non-Python tooling hard requirements (lychee now optional)
+  - All documentation tools managed by Poetry
+  - Improved new contributor onboarding experience
+
+- **Code Quality Improvements**
+  - Applied ruff auto-fixes to 21 files (28 automatic style fixes)
+  - Import organization and sorting
+  - Removed unused imports and trailing whitespace
+  - All tests passing after cleanup (94/94)
+
+### Infrastructure
+
+- **Release Automation Phase 2**
+  - Restored full `docs-verify` pipeline with Python-native tools
+  - Enhanced Makefile with dry-run support for all release targets
+  - Version sync validation integrated into git workflow
+  - Reduced external tool dependencies
+
+### Notes
+
+- No code functionality changes - purely tooling, automation, and documentation infrastructure
+- This release focuses on making the development and release process "feel very smooth"
+- External link checking now uses pure Python stack
+- All 94 tests passing with 1 deprecation warning (audioop in pydub, Python 3.13)
+
 ## [0.1.4] - 2025-12-05
 
 ### Added
