@@ -5,6 +5,10 @@ from typing import Iterator, List, Match, NamedTuple, Optional
 
 from tnh_scholar.utils.file_utils import read_str_from_file, write_str_to_file
 
+# TODO: Revisit whitespace stripping, blank-line handling in numbered inputs, bounds checks
+# in get_numbered_lines, and empty-text behavior in iter_segments; keep compatibility until
+# a deliberate rewrite is planned.
+
 
 class NumberedFormat(NamedTuple):
     is_numbered: bool
@@ -442,4 +446,3 @@ def _check_line_structure(first_match: Match[str], lines: List[str]) -> Numbered
             return NumberedFormat(False)
 
     return NumberedFormat(True, separator, start_num)
-

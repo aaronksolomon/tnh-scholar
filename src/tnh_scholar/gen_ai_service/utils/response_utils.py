@@ -84,7 +84,7 @@ def extract_object(envelope: CompletionEnvelope, model_class: Optional[type[T]] 
     parsed_obj = envelope.result.parsed
     if parsed_obj is None:
         raise ValueError(
-            "Completion result has no structured object. Ensure response_format is enabled "
+            "Structured outputs are not yet supported. Ensure response_format is enabled "
             "and the provider returned a parsed object."
         )
 
