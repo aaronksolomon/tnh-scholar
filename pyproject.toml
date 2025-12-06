@@ -87,6 +87,7 @@ types-PyYAML = "6.0.12.20241230"
 types-requests = "2.32.0.20241016"
 pre-commit = "^4.5.0"
 codespell = "2.3.0"
+md-dead-link-check = "^1.2.0"
 
 [tool.poetry.scripts]
 audio-transcribe = "tnh_scholar.cli_tools.audio_transcribe.audio_transcribe:main"
@@ -161,6 +162,28 @@ disable = ["missing-docstring", "invalid-name", "too-few-public-methods"]
 good-names = ["i", "j", "k", "ex", "Run", "_"]
 
 [tool.radon]
+
+[tool.md_dead_link_check]
+# External link checking configuration
+timeout = 10
+check_web_links = true
+validate_ssl = true
+catch_response_codes = [404, 410, 500, 502, 503]
+
+# Exclude internal/relative links (MkDocs validates these)
+exclude_links = [
+    "./*",           # Relative links
+    "../*",          # Parent relative links
+    "/*",            # Absolute internal paths
+    "#*",            # Anchor-only links
+    "mailto:*",      # Email links
+]
+
+# Exclude files/directories
+exclude_files = [
+    "*/archive/*",
+    "*/tmp/*",
+]
 
 [build-system]
 requires = ["poetry-core>=1.9.0"]

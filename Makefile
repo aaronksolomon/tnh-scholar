@@ -50,19 +50,16 @@ docs-drift:
 	$(POETRY) run python scripts/check_readme_docs_drift.py
 
 link-check:
-	@echo "Running link check with lychee..."
-	@command -v $(LYCHEE) >/dev/null 2>&1 || { echo >&2 "lychee not found. Install from https://github.com/lycheeverse/lychee/releases or set LYCHEE=<path>."; exit 1; }
-	$(LYCHEE) --config .lychee.toml README.md docs
+	@echo "Running external link check..."
+	$(POETRY) run md-dead-link-check
 
 codespell:
 	@echo "Running codespell..."
 	$(POETRY) run codespell -q 3 -I .codespell-ignore.txt README.md docs
 
-docs-verify: docs-drift docs-build
+docs-verify: docs-drift docs-build link-check codespell
 	@echo "Verifying documentation..."
 	$(POETRY) run python scripts/sync_readme.py
-	@echo "⚠️  Note: link-check (lychee) and codespell skipped for 0.1.4 release"
-	@echo "   Scheduled for review/replacement with Python alternatives"
 
 docs: docs-verify
 	@echo "Documentation build complete: site/"
