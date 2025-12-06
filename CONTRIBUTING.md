@@ -26,7 +26,18 @@ Follow [DEV_SETUP.md](DEV_SETUP.md) for detailed instructions. The essentials ar
 
 The Makefile mirrors our CI configuration, so using it locally guarantees parity.
 
-## 2. Day-to-day workflow
+## 2. Versioning & Breaking Changes
+
+**TNH Scholar follows rapid prototype versioning during 0.x releases:**
+
+- **Breaking changes are expected and acceptable** in any 0.x release
+- **No backward compatibility guarantees** during rapid prototype phase
+- When making breaking changes, update affected dependents immediately
+- See [VERSIONING.md](VERSIONING.md) for complete policy
+
+This approach prioritizes architectural consistency and fast iteration over stability during prototyping.
+
+## 3. Day-to-day workflow
 
 - Create a feature branch from `main` (or the branch requested in your issue).
 - Keep changes focused; open separate PRs for unrelated fixes.
@@ -41,7 +52,7 @@ The Makefile mirrors our CI configuration, so using it locally guarantees parity
 
 - Update documentation (README, DEV_SETUP, etc.) whenever behavior or commands change.
 
-## 3. Pull request checklist
+## 4. Pull request checklist
 
 - [ ] All tests pass locally (`make test`).
 - [ ] Linting and formatting pass (`make lint`, `make format`, `poetry run mypy src/`).
@@ -49,7 +60,7 @@ The Makefile mirrors our CI configuration, so using it locally guarantees parity
 - [ ] Commit messages and PR descriptions explain the motivation and approach.
 - [ ] CI is green — it runs the same Poetry-based workflow described above.
 
-## 4. Reporting issues & proposing ideas
+## 5. Reporting issues & proposing ideas
 
 Use [GitHub Issues](https://github.com/aaronksolomon/tnh-scholar/issues) to report bugs or request features.  
 Please include:
@@ -60,7 +71,7 @@ Please include:
 
 For design discussions, open an issue and tag it with `discussion` so we can keep the history public.
 
-## 5. Need help?
+## 6. Need help?
 
 If you get stuck during setup, consult [DEV_SETUP.md](DEV_SETUP.md) first — it is the canonical source for environment instructions.  
 If that doesn’t answer your question, open an issue describing the problem and what you have tried.

@@ -5,10 +5,22 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-19"
+updated: "2025-12-06"
 ---
 # Contributing to TNH Scholar (Prototype Phase)
 
 TNH Scholar is currently in rapid prototype phase, focusing on core functionality and basic usability. We welcome contributions that help validate and improve the prototype implementation.
+
+## Rapid Prototype Versioning Policy
+
+**IMPORTANT**: During the 0.x release series, TNH Scholar follows **rapid prototype versioning**:
+
+- **Breaking changes are acceptable in ANY 0.x release** (including patch versions)
+- **No backward compatibility guarantees** during rapid prototype phase
+- **Immediate deprecation and removal** of legacy APIs when replaced
+- **All dependents must be updated** when core systems change
+
+See [VERSIONING.md](/VERSIONING.md) for complete policy. This approach enables fast iteration and architectural improvements during prototyping.
 
 ## We Need Testers and Experimenters
 
