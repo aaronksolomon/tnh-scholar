@@ -1,7 +1,7 @@
 ---
 title: "Documentation Index"
 description: "Complete searchable index of TNH Scholar documentation with metadata"
-created: "2025-12-05"
+created: "2025-12-06"
 auto_generated: true
 ---
 
@@ -38,7 +38,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [philosophy](project/philosophy.md) |  |  | `docs/project/philosophy.md` |
 | [principles](project/principles.md) |  |  | `docs/project/principles.md` |
 | [Project](project/index.md) | Table of contents for project | 2025-12-04 | `docs/project/index.md` |
-| [Repo Root](project/repo-root/index.md) | Table of contents for project/repo-root | 2025-12-04 | `docs/project/repo-root/index.md` |
+| [Repo Root](project/repo-root/index.md) | Repository root documentation surfaced in the MkDocs site. |  | `docs/project/repo-root/index.md` |
 | [TNH Scholar CHANGELOG](project/repo-root/changelog.md) | Chronological log of notable TNH Scholar changes. | 2025-02-28 | `docs/project/repo-root/changelog.md` |
 | [TNH Scholar CONTRIBUTING](project/repo-root/contributing-root.md) | TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow. | 2024-10-21 | `docs/project/repo-root/contributing-root.md` |
 | [TNH Scholar README](project/repo-root/repo-readme.md) | TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models. | 2024-10-21 | `docs/project/repo-root/repo-readme.md` |
@@ -191,6 +191,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [Fine Tuning Strategy](development/fine-tuning-strategy.md) | Strategy outline and development plan for fine-tuning foundation models on Thich Nhat Hanh translations. | 2025-02-26 | `docs/development/fine-tuning-strategy.md` |
 | [Human-AI Software Engineering Principles](development/human-ai-software-engineering-principles.md) | This document presents the **Human-AI Software Engineering Principles**, a comprehensive framework that builds upon established **software engineering, architecture, and design principles** from human-only teams and extends them to optimize collaboration between humans and AI agents. Central to this framework is the clear distinction between the **Design Phase** and the **Coding Phase**, each with distinct goals, modes, and workflows. It also addresses challenges such as **context window limitations** and maintaining alignment despite session resets. In addition to general principles, this framework incorporates concrete documentation and planning strategies designed to support long-term, sustainable human-AI collaboration. | 2025-11-15 | `docs/development/human-ai-software-engineering-principles.md` |
 | [Improvements / Initial structure](development/improvements-initial-structure.md) | Initial high-level view of the TNH Scholar ecosystem. | 2025-02-01 | `docs/development/improvements-initial-structure.md` |
+| [Release Workflow](development/release-workflow.md) | Automated release process for TNH Scholar with biweekly cadence during rapid prototyping. | 2025-12-06 | `docs/development/release-workflow.md` |
 | [TNH Scholar Design Principles](development/design-principles.md) | Architectural patterns, design philosophy, and system organization principles for TNH Scholar development. | 2025-11-29 | `docs/development/design-principles.md` |
 | [TNH Scholar Style Guide](development/style-guide.md) | Code formatting, naming conventions, and Python standards for TNH Scholar development. | 2025-11-29 | `docs/development/style-guide.md` |
 | [TNH Scholar System Design](development/system-design.md) | High-level system design describing the cyclical AI processing architecture powering TNH Scholar. | 2025-02-01 | `docs/development/system-design.md` |

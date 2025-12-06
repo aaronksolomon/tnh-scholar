@@ -1,7 +1,7 @@
 ---
 title: "Documentation Map"
 description: "Hierarchical navigation of TNH Scholar documentation"
-created: "2025-12-05"
+created: "2025-12-06"
 auto_generated: true
 ---
 
@@ -120,6 +120,7 @@ auto_generated: true
 - [Fine Tuning Strategy](development/fine-tuning-strategy.md)
 - [Human-AI Software Engineering Principles](development/human-ai-software-engineering-principles.md)
 - [Improvements / Initial structure](development/improvements-initial-structure.md)
+- [Release Workflow](development/release-workflow.md)
 - [TNH Scholar Design Principles](development/design-principles.md)
 - [TNH Scholar Style Guide](development/style-guide.md)
 - [TNH Scholar System Design](development/system-design.md)

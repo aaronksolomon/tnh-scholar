@@ -4,6 +4,7 @@ description: Comprehensive documentation for TNH Scholar, an AI-driven project e
   processing, and translating the teachings of Thich Nhat Hanh.
 ---
 
+
 # TNH Scholar
 
 **TNH Scholar is a long-term, community-aligned initiative to build a trusted multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
@@ -123,8 +124,6 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 
 ## Documentation Map
 
-For a complete, searchable index of all documentation with descriptions and metadata, see the [Documentation Index](documentation_index.md).
-
 ### Architecture
 
 - [ADR-AT01: AI Text Processing Pipeline Redesign](architecture/ai-text-processing/adr/adr-at01-ai-text-processing.md)
@@ -191,7 +190,11 @@ For a complete, searchable index of all documentation with descriptions and meta
 - [ADR-YF02: YouTube Transcript Format Selection](architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)
 - [YouTube API vs yt-dlp Evaluation](architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval.md)
 
-### Cli
+### Archive
+
+- [TNH Scholar](archive/index-old.md)
+
+### Cli Reference
 
 - [audio-transcribe](cli-reference/audio-transcribe.md)
 - [nfmt](cli-reference/nfmt.md)
@@ -213,6 +216,7 @@ For a complete, searchable index of all documentation with descriptions and meta
 - [Human-AI Software Engineering Principles](development/human-ai-software-engineering-principles.md)
 - [Improvements / Initial structure](development/improvements-initial-structure.md)
 - [Development Documentation](development/overview.md)
+- [Release Workflow](development/release-workflow.md)
 - [TNH Scholar Style Guide](development/style-guide.md)
 - [TNH Scholar System Design](development/system-design.md)
 
@@ -252,6 +256,7 @@ For a complete, searchable index of all documentation with descriptions and meta
 - [TNH Scholar Knowledge Base: Design Document](research/kb-design-document.md)
 - [Summary Report on Metadata Extraction, Source Parsing, and Model Training for TNH-Scholar](research/metadata-summary-report.md)
 - [Preliminary Feasibility Study](research/preliminary-feasibility-study.md)
+- [RAG Research Directions for TNH Scholar](research/rag-research-directions.md)
 - [Structural-Informed Adaptive Processing (SIAP) Methodology](research/siap-methodology.md)
 
 ### User Guide
