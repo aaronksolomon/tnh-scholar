@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tnh-scholar"
-version = "0.1.3"
+version = "0.1.4"
 description = "TNH Scholar is an AI-driven project designed to explore, query, and translate the teachings of Thich Nhat Hanh and Plum Village community."
 authors = ["Aaron K. Solomon <aaron.kyle.solomon@gmail.com>"]
 license = "GPL-3.0-only"
