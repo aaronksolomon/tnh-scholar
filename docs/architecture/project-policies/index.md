@@ -38,7 +38,7 @@ This directory contains Architecture Decision Records (ADRs) and policy document
 **Status**: Active (0.x phase)
 **Key Principle**: Breaking changes acceptable in ANY 0.x release to prioritize architectural consistency
 
-See [VERSIONING.md](/VERSIONING.md) for user-facing policy documentation.
+See [VERSIONING.md](/project/repo-root/versioning.md) for user-facing policy documentation.
 
 ## Future Policies (Planned)
 
@@ -64,8 +64,8 @@ See [VERSIONING.md](/VERSIONING.md) for user-facing policy documentation.
 
 ## Related Documentation
 
-- [VERSIONING.md](/VERSIONING.md) - User-facing versioning policy
-- [CONTRIBUTING.md](/CONTRIBUTING.md) - Contribution guidelines
+- [VERSIONING.md](/project/repo-root/versioning.md) - User-facing versioning policy
+- [CONTRIBUTING.md](/project/repo-root/contributing-root.md) - Contribution guidelines
 - [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md) - Object-service architecture (cross-cutting pattern)
 - [Architecture Overview](/architecture/overview.md) - High-level architecture
 

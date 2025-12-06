@@ -20,7 +20,7 @@ TNH Scholar is currently in rapid prototype phase, focusing on core functionalit
 - **Immediate deprecation and removal** of legacy APIs when replaced
 - **All dependents must be updated** when core systems change
 
-See [VERSIONING.md](/VERSIONING.md) for complete policy. This approach enables fast iteration and architectural improvements during prototyping.
+See [VERSIONING.md](/project/repo-root/versioning.md) for complete policy. This approach enables fast iteration and architectural improvements during prototyping.
 
 ## We Need Testers and Experimenters
 

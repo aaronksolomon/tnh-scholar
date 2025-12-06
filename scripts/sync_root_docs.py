@@ -7,11 +7,11 @@ working tree.
 """
 from __future__ import annotations
 
+import json
 import re
 import shutil
-from typing import Tuple
 from pathlib import Path
-import json
+from typing import Tuple
 
 try:
     import yaml  # type: ignore
@@ -67,6 +67,7 @@ ROOT_DOCS: Tuple[str, ...] = (
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "DEV_SETUP.md",
+    "VERSIONING.md",
     "release_checklist.md",
 )
 # Keep generated docs aligned with the current docs/ structure (lowercase, hyphenated names).
@@ -76,6 +77,7 @@ ROOT_DOC_DEST_MAP = {
     "CHANGELOG.md": "changelog.md",
     "CONTRIBUTING.md": "contributing-root.md",
     "DEV_SETUP.md": "dev-setup-guide.md",
+    "VERSIONING.md": "versioning.md",
     "release_checklist.md": "release_checklist.md",
 }
 

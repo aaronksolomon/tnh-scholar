@@ -16,7 +16,7 @@ This deviates from typical semver expectations where 0.x patch bumps avoid break
 
 ## Files Updated
 
-### 1. [README.md](/README.md)
+### 1. [README.md](/project/repo-root/repo-readme.md)
 
 **Section**: Project Status
 
@@ -28,7 +28,7 @@ This deviates from typical semver expectations where 0.x patch bumps avoid break
 
 **Impact**: First point of contact for all users and contributors
 
-### 2. [CONTRIBUTING.md](/CONTRIBUTING.md)
+### 2. [CONTRIBUTING.md](/project/repo-root/contributing-root.md)
 
 **Section**: New section "Versioning & Breaking Changes" (§2)
 
@@ -41,7 +41,7 @@ This deviates from typical semver expectations where 0.x patch bumps avoid break
 
 **Impact**: Sets expectations for contributors making breaking changes
 
-### 3. [VERSIONING.md](/VERSIONING.md) - NEW FILE
+### 3. [VERSIONING.md](/project/repo-root/versioning.md) - NEW FILE
 
 **Created**: Comprehensive versioning policy document
 
@@ -61,7 +61,7 @@ This deviates from typical semver expectations where 0.x patch bumps avoid break
 
 **Impact**: Canonical reference for versioning policy
 
-### 4. [release_checklist.md](/release_checklist.md)
+### 4. [release_checklist.md](/project/repo-root/release_checklist.md)
 
 **Added**:
 
@@ -74,7 +74,7 @@ This deviates from typical semver expectations where 0.x patch bumps avoid break
 
 **Impact**: Ensures breaking changes are properly documented in releases
 
-### 5. [docs/development/contributing-prototype-phase.md](/docs/development/contributing-prototype-phase.md)
+### 5. [contributing-prototype-phase.md](/development/contributing-prototype-phase.md)
 
 **Section**: New section "Rapid Prototype Versioning Policy" (at top)
 

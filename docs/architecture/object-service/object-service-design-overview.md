@@ -14,6 +14,12 @@ High-level overview of TNH Scholar's layered architecture for complex objects an
 
 This document provides a high-level introduction to the Object-Service design pattern used throughout TNH Scholar. For complete architectural details, see [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-object-service-architecture-v3.md).
 
+## Blueprint Usage (Read Me First)
+
+- **Contract of record**: ADR-OS01 defines the object-service contract; all services (GenAI, Transcription, PromptCatalog, etc.) must align to its layers and type boundaries.
+- **Layer names are fixed**: Application → Domain Service → Adapter → Transport. Keep responsibilities in their layer; no transport models in the application layer.
+- **Strong typing required**: Domain/service/adapters use Pydantic/dataclass models and Protocols—no ad hoc dicts or literal payloads in business logic.
+
 ## Core Principle
 
 **Goal**: Ship reliable, composable features fast by separating concerns and keeping boundaries explicit.
@@ -71,12 +77,12 @@ Future services planned:
 
 ## Implementation Status
 
-See [object-service-implementation-status.md](object-service-implementation-status.md) for current gaps, resolved items, and planned work.
+See [object-service-design-gaps.md](object-service-design-gaps.md) for current gaps, resolved items, and planned work.
 
 ## Related Documentation
 
 - [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-object-service-architecture-v3.md) - Complete architectural specification
-- [Implementation Status](object-service-implementation-status.md) - Gaps analysis and progress
+- [Design Gaps](object-service-design-gaps.md) - Gaps analysis and progress
 - [Design Principles](/development/design-principles.md) - General design philosophy
 - [Conceptual Architecture](/project/conceptual-architecture.md) - High-level system model
 
@@ -117,6 +123,15 @@ class OpenAIAdapter:
     ) -> ProcessingResponse:
         """Map OpenAI response to domain format."""
         ...
+
+## Appendix: Object-Service Readiness Checklist
+
+- Service exposes a protocol at the domain layer and hides transport clients behind adapters.
+- Requests/responses are typed models; no raw dicts cross the domain boundary.
+- Transport models are contained inside the adapter/transport layer and never leaked upward.
+- Configuration is injected at construction; per-call params are passed explicitly.
+- Error handling and retries live in the adapter/transport layer; domain logic remains free of vendor concerns.
+- Telemetry/provenance is constructed in the domain/service layer, not in adapters.
 ```
 
 For complete examples, templates, and detailed patterns, see [ADR-OS01](adr/adr-os01-object-service-architecture-v3.md).

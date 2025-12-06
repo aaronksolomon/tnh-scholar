@@ -14,7 +14,7 @@ Establish versioning policy for TNH Scholar during rapid prototype phase (0.x) t
 - **Date**: 2025-12-06
 - **Owner**: TNH Scholar Architecture Working Group
 - **Authors**: Aaron Solomon, Claude Sonnet 4.5
-- **Related**: [ADR-PT04](../../prompt-system/adr/adr-pt04-prompt-system-refactor.md), [ADR-OS01](../../object-service/adr/adr-os01-object-service-architecture-v3.md), [VERSIONING.md](/VERSIONING.md)
+- **Related**: [ADR-PT04](../../prompt-system/adr/adr-pt04-prompt-system-refactor.md), [ADR-OS01](../../object-service/adr/adr-os01-object-service-architecture-v3.md), [VERSIONING.md](/project/repo-root/versioning.md)
 
 ---
 
@@ -123,11 +123,11 @@ When releasing 1.0.0 (post-prototype):
 ### Documentation Updates
 
 Created/updated the following files:
-1. ✅ [VERSIONING.md](/VERSIONING.md) - Comprehensive policy document (single source of truth)
-2. ✅ [README.md](/README.md) - Project Status section with versioning notice
-3. ✅ [CONTRIBUTING.md](/CONTRIBUTING.md) - New section "Versioning & Breaking Changes"
-4. ✅ [release_checklist.md](/release_checklist.md) - Breaking change documentation reminders
-5. ✅ [docs/development/contributing-prototype-phase.md](/docs/development/contributing-prototype-phase.md) - Policy callout
+1. ✅ [VERSIONING.md](/project/repo-root/versioning.md) - Comprehensive policy document (single source of truth)
+2. ✅ [README.md](/project/repo-root/repo-readme.md) - Project Status section with versioning notice
+3. ✅ [CONTRIBUTING.md](/project/repo-root/contributing-root.md) - New section "Versioning & Breaking Changes"
+4. ✅ [release_checklist.md](/project/repo-root/release_checklist.md) - Breaking change documentation reminders
+5. ✅ [contributing-prototype-phase.md](/development/contributing-prototype-phase.md) - Policy callout
 
 See [implementation summary](../versioning-policy-implementation-summary.md) for details.
 
@@ -251,7 +251,7 @@ See [implementation summary](../versioning-policy-implementation-summary.md) for
 
 ## Related Documentation
 
-- [VERSIONING.md](/VERSIONING.md) - Complete versioning policy
+- [VERSIONING.md](/project/repo-root/versioning.md) - Complete versioning policy
 - [ADR-PT04](../../prompt-system/adr/adr-pt04-prompt-system-refactor.md) - Example breaking change (prompt system)
 - [ADR-OS01](../../object-service/adr/adr-os01-object-service-architecture-v3.md) - Architecture requiring breaking refactors
 - [Implementation Summary](../versioning-policy-implementation-summary.md) - Documentation updates
