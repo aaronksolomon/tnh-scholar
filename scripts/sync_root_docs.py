@@ -7,11 +7,11 @@ working tree.
 """
 from __future__ import annotations
 
+import json
 import re
 import shutil
-from typing import Tuple
 from pathlib import Path
-import json
+from typing import Tuple
 
 try:
     import yaml  # type: ignore

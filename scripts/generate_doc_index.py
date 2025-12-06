@@ -2,10 +2,10 @@
 """Generate documentation_index.md and documentation_map.md from Markdown front matter."""
 from __future__ import annotations
 
+from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
-from collections import defaultdict
 
 try:
     import yaml  # type: ignore

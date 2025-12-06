@@ -23,7 +23,6 @@ Exit code 1 indicates validation issues, but this is treated as a warning
 """
 from __future__ import annotations
 
-import re
 import sys
 from pathlib import Path
 from typing import Dict, List, NamedTuple
