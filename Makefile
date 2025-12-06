@@ -76,6 +76,9 @@ type-check:
 	$(POETRY) run mypy src/
 
 # Release management targets
+# Set DRY_RUN=1 to preview commands without executing (e.g., make release-patch DRY_RUN=1)
+DRY_RUN ?= 0
+
 release-check: test type-check lint docs-verify
 	@echo "✅ All quality checks passed - ready to release"
 
@@ -85,19 +88,61 @@ changelog-draft:
 	@echo "\n👆 Copy this to CHANGELOG.md and edit as needed"
 
 release-patch:
-	@echo "🚀 Bumping patch version (0.x.Y -> 0.x.Y+1)..."
-	$(POETRY) version patch
-	@$(MAKE) _release-update-files
+	@if [ "$(DRY_RUN)" = "1" ]; then \
+		echo "🔍 DRY RUN MODE - No changes will be made"; \
+		echo ""; \
+		CURRENT=$$($(POETRY) version -s); \
+		NEW=$$($(POETRY) version --dry-run patch 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | tail -1); \
+		echo "🚀 Would bump patch version: $$CURRENT → $$NEW"; \
+		echo ""; \
+		echo "Commands that would run:"; \
+		echo "  poetry version patch"; \
+		echo "  sed -i.bak 's/> \*\*Version\*\*:.*/> **Version**: $$NEW (Alpha)/' TODO.md"; \
+		echo ""; \
+		echo "To execute: make release-patch"; \
+	else \
+		echo "🚀 Bumping patch version (0.x.Y -> 0.x.Y+1)..."; \
+		$(POETRY) version patch; \
+		$(MAKE) _release-update-files; \
+	fi
 
 release-minor:
-	@echo "🚀 Bumping minor version (0.X.y -> 0.X+1.0)..."
-	$(POETRY) version minor
-	@$(MAKE) _release-update-files
+	@if [ "$(DRY_RUN)" = "1" ]; then \
+		echo "🔍 DRY RUN MODE - No changes will be made"; \
+		echo ""; \
+		CURRENT=$$($(POETRY) version -s); \
+		NEW=$$($(POETRY) version --dry-run minor 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | tail -1); \
+		echo "🚀 Would bump minor version: $$CURRENT → $$NEW"; \
+		echo ""; \
+		echo "Commands that would run:"; \
+		echo "  poetry version minor"; \
+		echo "  sed -i.bak 's/> \*\*Version\*\*:.*/> **Version**: $$NEW (Alpha)/' TODO.md"; \
+		echo ""; \
+		echo "To execute: make release-minor"; \
+	else \
+		echo "🚀 Bumping minor version (0.X.y -> 0.X+1.0)..."; \
+		$(POETRY) version minor; \
+		$(MAKE) _release-update-files; \
+	fi
 
 release-major:
-	@echo "🚀 Bumping major version (X.y.z -> X+1.0.0)..."
-	$(POETRY) version major
-	@$(MAKE) _release-update-files
+	@if [ "$(DRY_RUN)" = "1" ]; then \
+		echo "🔍 DRY RUN MODE - No changes will be made"; \
+		echo ""; \
+		CURRENT=$$($(POETRY) version -s); \
+		NEW=$$($(POETRY) version --dry-run major 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | tail -1); \
+		echo "🚀 Would bump major version: $$CURRENT → $$NEW"; \
+		echo ""; \
+		echo "Commands that would run:"; \
+		echo "  poetry version major"; \
+		echo "  sed -i.bak 's/> \*\*Version\*\*:.*/> **Version**: $$NEW (Alpha)/' TODO.md"; \
+		echo ""; \
+		echo "To execute: make release-major"; \
+	else \
+		echo "🚀 Bumping major version (X.y.z -> X+1.0.0)..."; \
+		$(POETRY) version major; \
+		$(MAKE) _release-update-files; \
+	fi
 
 _release-update-files:
 	@VERSION=$$($(POETRY) version -s); \
@@ -118,48 +163,111 @@ _release-update-files:
 
 release-commit:
 	@VERSION=$$($(POETRY) version -s); \
-	echo "📝 Committing version $$VERSION..."; \
-	git add pyproject.toml TODO.md CHANGELOG.md poetry.lock; \
-	git commit -m "chore: Bump version to $$VERSION" \
-		-m "" \
-		-m "- Update version in pyproject.toml" \
-		-m "- Update TODO.md version header" \
-		-m "- Add $$VERSION release notes to CHANGELOG.md" \
-		-m "" \
-		-m "🤖 Generated with Claude Code" \
-		-m "" \
-		-m "Co-Authored-By: Claude <noreply@anthropic.com>"; \
-	echo "✅ Release committed"; \
-	echo ""; \
-	echo "Next: Run 'make release-tag' to tag and push"
+	if [ "$(DRY_RUN)" = "1" ]; then \
+		echo "🔍 DRY RUN MODE - No changes will be made"; \
+		echo ""; \
+		echo "📝 Would commit version $$VERSION"; \
+		echo ""; \
+		echo "Files that would be staged:"; \
+		echo "  - pyproject.toml"; \
+		echo "  - TODO.md"; \
+		echo "  - CHANGELOG.md"; \
+		echo "  - poetry.lock"; \
+		echo ""; \
+		echo "Commit message:"; \
+		echo "  chore: Bump version to $$VERSION"; \
+		echo ""; \
+		echo "  - Update version in pyproject.toml"; \
+		echo "  - Update TODO.md version header"; \
+		echo "  - Add $$VERSION release notes to CHANGELOG.md"; \
+		echo ""; \
+		echo "  🤖 Generated with Claude Code"; \
+		echo ""; \
+		echo "  Co-Authored-By: Claude <noreply@anthropic.com>"; \
+		echo ""; \
+		echo "To execute: make release-commit"; \
+	else \
+		echo "📝 Committing version $$VERSION..."; \
+		git add pyproject.toml TODO.md CHANGELOG.md poetry.lock; \
+		git commit -m "chore: Bump version to $$VERSION" \
+			-m "" \
+			-m "- Update version in pyproject.toml" \
+			-m "- Update TODO.md version header" \
+			-m "- Add $$VERSION release notes to CHANGELOG.md" \
+			-m "" \
+			-m "🤖 Generated with Claude Code" \
+			-m "" \
+			-m "Co-Authored-By: Claude <noreply@anthropic.com>"; \
+		echo "✅ Release committed"; \
+		echo ""; \
+		echo "Next: Run 'make release-tag' to tag and push"; \
+	fi
 
 release-tag:
 	@VERSION=$$($(POETRY) version -s); \
 	BRANCH=$$(git branch --show-current); \
-	echo "🏷️  Tagging version v$$VERSION..."; \
-	git tag -a "v$$VERSION" -m "Release v$$VERSION" \
-		-m "" \
-		-m "See CHANGELOG.md for full details." \
-		-m "" \
-		-m "🤖 Generated with Claude Code" \
-		-m "" \
-		-m "Co-Authored-By: Claude <noreply@anthropic.com>"; \
-	echo "📤 Pushing branch and tag..."; \
-	git push origin $$BRANCH; \
-	git push origin "v$$VERSION"; \
-	echo "✅ Tagged and pushed v$$VERSION"; \
-	echo ""; \
-	echo "Next: Run 'make release-publish' to publish to PyPI"
+	if [ "$(DRY_RUN)" = "1" ]; then \
+		echo "🔍 DRY RUN MODE - No changes will be made"; \
+		echo ""; \
+		echo "🏷️  Would create and push tag v$$VERSION"; \
+		echo ""; \
+		echo "Commands that would run:"; \
+		echo "  git tag -a v$$VERSION -m 'Release v$$VERSION...'"; \
+		echo "  git push origin $$BRANCH"; \
+		echo "  git push origin v$$VERSION"; \
+		echo ""; \
+		echo "Tag message:"; \
+		echo "  Release v$$VERSION"; \
+		echo ""; \
+		echo "  See CHANGELOG.md for full details."; \
+		echo ""; \
+		echo "  🤖 Generated with Claude Code"; \
+		echo ""; \
+		echo "  Co-Authored-By: Claude <noreply@anthropic.com>"; \
+		echo ""; \
+		echo "To execute: make release-tag"; \
+	else \
+		echo "🏷️  Tagging version v$$VERSION..."; \
+		git tag -a "v$$VERSION" -m "Release v$$VERSION" \
+			-m "" \
+			-m "See CHANGELOG.md for full details." \
+			-m "" \
+			-m "🤖 Generated with Claude Code" \
+			-m "" \
+			-m "Co-Authored-By: Claude <noreply@anthropic.com>"; \
+		echo "📤 Pushing branch and tag..."; \
+		git push origin $$BRANCH; \
+		git push origin "v$$VERSION"; \
+		echo "✅ Tagged and pushed v$$VERSION"; \
+		echo ""; \
+		echo "Next: Run 'make release-publish' to publish to PyPI"; \
+	fi
 
 release-publish:
 	@VERSION=$$($(POETRY) version -s); \
-	echo "📦 Building package..."; \
-	$(POETRY) build; \
-	echo "📤 Publishing to PyPI..."; \
-	$(POETRY) publish; \
-	echo "✅ Published v$$VERSION to PyPI"; \
-	echo ""; \
-	echo "🎉 Release complete! Check https://pypi.org/project/tnh-scholar/"
+	if [ "$(DRY_RUN)" = "1" ]; then \
+		echo "🔍 DRY RUN MODE - No changes will be made"; \
+		echo ""; \
+		echo "📦 Would build and publish package v$$VERSION to PyPI"; \
+		echo ""; \
+		echo "Commands that would run:"; \
+		echo "  poetry build"; \
+		echo "  poetry publish"; \
+		echo ""; \
+		echo "Files that would be created:"; \
+		echo "  - dist/tnh_scholar-$$VERSION-py3-none-any.whl"; \
+		echo "  - dist/tnh_scholar-$$VERSION.tar.gz"; \
+		echo ""; \
+		echo "To execute: make release-publish"; \
+	else \
+		echo "📦 Building package..."; \
+		$(POETRY) build; \
+		echo "📤 Publishing to PyPI..."; \
+		$(POETRY) publish; \
+		echo "✅ Published v$$VERSION to PyPI"; \
+		echo ""; \
+		echo "🎉 Release complete! Check https://pypi.org/project/tnh-scholar/"; \
+	fi
 
 release-full: release-commit release-tag release-publish
 	@VERSION=$$($(POETRY) version -s); \

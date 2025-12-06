@@ -2,7 +2,7 @@
 title: "Release Workflow"
 description: "Automated release process for TNH Scholar with biweekly cadence during rapid prototyping."
 owner: ""
-author: "Claude (Sonnet 4.5)"
+author: "Claude (Sonnet 4.5) with Aaron Solomon"
 status: current
 created: "2025-12-06"
 ---
@@ -12,7 +12,7 @@ This document describes the automated release process for TNH Scholar, designed 
 
 ## Quick Reference
 
-Standard patch release workflow (e.g., 0.1.4 → 0.1.5):
+Standard patch release workflow (e.g., x.x.y → 0.x.y+1):
 
 ```bash
 make release-patch       # Bump version + update TODO.md
@@ -23,15 +23,23 @@ make release-tag         # Tag and push to remote
 make release-publish     # Build and publish to PyPI
 ```
 
-**Typical completion time**: 10-15 minutes (down from 2+ hours manual process)
+**Dry-run mode**: Add `DRY_RUN=1` to any command to preview without making changes:
+
+```bash
+make release-patch DRY_RUN=1    # Preview version bump
+make release-commit DRY_RUN=1   # Preview commit
+make release-tag DRY_RUN=1      # Preview tag and push
+make release-publish DRY_RUN=1  # Preview PyPI publish
+```
 
 ## Prerequisites
 
 ### One-Time Setup
 
-Before your first release, complete these configuration steps:
+Before first release, complete these configuration steps:
 
 1. **PyPI API Token**: Configure Poetry with your PyPI credentials
+
    ```bash
    poetry config pypi-token.pypi <your-api-token>
    ```
@@ -39,12 +47,14 @@ Before your first release, complete these configuration steps:
    Get a token from: [https://pypi.org/manage/account/token/](https://pypi.org/manage/account/token/)
 
 2. **Git Configuration**: Ensure git is configured with your name and email
+
    ```bash
    git config user.name "Your Name"
    git config user.email "your.email@example.com"
    ```
 
 3. **Quality Checks Pass**: Verify the project builds cleanly
+
    ```bash
    make release-check  # Runs: test, type-check, lint, docs-verify
    ```
@@ -58,6 +68,7 @@ make release-check
 ```
 
 This runs:
+
 - `make test` - Full test suite with pytest
 - `make type-check` - MyPy type checking
 - `make lint` - Ruff linting
@@ -78,6 +89,7 @@ make release-patch
 ```
 
 **Use for**:
+
 - Bug fixes
 - Documentation improvements
 - Minor refactoring without API changes
@@ -91,6 +103,7 @@ make release-minor
 ```
 
 **Use for**:
+
 - New features that maintain backward compatibility
 - Significant documentation reorganization
 - New CLI commands or subcommands
@@ -103,6 +116,7 @@ make release-major
 ```
 
 **Use for**:
+
 - Breaking API changes
 - Incompatible CLI changes
 - Major architectural shifts
@@ -124,12 +138,14 @@ make release-major   # For 0.1.4 → 1.0.0
 ```
 
 **What happens**:
+
 - Updates `pyproject.toml` version field
 - Updates `TODO.md` version header to match
 - Displays next steps
 
 **Example output**:
-```
+
+```plaintext
 🚀 Bumping patch version (0.x.Y -> 0.x.Y+1)...
 Bumping version from 0.1.4 to 0.1.5
 📝 Updating version to 0.1.5 in TODO.md...
@@ -150,11 +166,13 @@ make changelog-draft
 ```
 
 **What happens**:
+
 - Analyzes git commits since the last tag
 - Categorizes commits by type (Added, Changed, Fixed, Documentation, etc.)
 - Generates a formatted CHANGELOG entry
 
 **Example output**:
+
 ```
 📝 Generating CHANGELOG entry from git history...
 
@@ -202,6 +220,9 @@ Based on 8 commits since v0.1.4
 
 All notable changes to TNH Scholar will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+
 ## [0.1.5] - 2025-12-06
 
 ### Added
@@ -235,12 +256,14 @@ make release-commit
 ```
 
 **What happens**:
+
 - Stages `pyproject.toml`, `TODO.md`, `CHANGELOG.md`, and `poetry.lock`
 - Creates a formatted commit with a standard message
 - Shows next steps
 
 **Commit message format**:
-```
+
+```plaintext
 chore: Bump version to 0.1.5
 
 - Update version in pyproject.toml
@@ -259,12 +282,14 @@ make release-tag
 ```
 
 **What happens**:
+
 - Creates an annotated git tag (e.g., `v0.1.5`)
 - Pushes the current branch to the remote
 - Pushes the tag to the remote
 
 **Tag message format**:
-```
+
+```plaintext
 Release v0.1.5
 
 See CHANGELOG.md for full details.
@@ -275,7 +300,8 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 **Example output**:
-```
+
+```plaintext
 🏷️  Tagging version v0.1.5...
 📤 Pushing branch and tag...
 ✅ Tagged and pushed v0.1.5
@@ -290,11 +316,13 @@ make release-publish
 ```
 
 **What happens**:
+
 - Builds wheel and source distribution using Poetry
 - Publishes both distributions to PyPI
 - Confirms successful upload
 
 **Example output**:
+
 ```
 📦 Building package...
 Building tnh-scholar (0.1.5)
@@ -322,6 +350,7 @@ After publishing, verify the release was successful:
    - Check that README renders correctly
 
 2. **Test Installation**:
+
    ```bash
    pip install --upgrade tnh-scholar==0.1.5
    python -c "import tnh_scholar; print(tnh_scholar.__version__)"
@@ -347,15 +376,61 @@ This runs: `release-commit` → `release-tag` → `release-publish` in sequence.
 
 **⚠️ Use with caution**: This skips intermediate verification steps. Only use this after you've verified CHANGELOG.md is correct.
 
-### Dry Run / Testing
+### Dry Run Mode
 
-Test version bumps without modifying files:
+Preview any release command without making changes by adding `DRY_RUN=1`:
+
+```bash
+# Preview version bump
+make release-patch DRY_RUN=1
+
+# Preview commit
+make release-commit DRY_RUN=1
+
+# Preview tag and push
+make release-tag DRY_RUN=1
+
+# Preview PyPI publish
+make release-publish DRY_RUN=1
+```
+
+**Example dry-run output for version bump**:
+
+```plaintext
+🔍 DRY RUN MODE - No changes will be made
+
+🚀 Would bump patch version: 0.1.4 → 0.1.5
+
+Commands that would run:
+  poetry version patch
+  sed -i.bak 's/> \*\*Version\*\*:.*/> **Version**: 0.1.5 (Alpha)/' TODO.md
+
+To execute: make release-patch
+```
+
+**Benefits**:
+
+- See exact commands that will run
+- Verify commit messages and tag messages before creating them
+- Catch errors early (wrong version bump, missing files, etc.)
+- Safe way to learn the release workflow
+- Useful for documenting the process
+
+**When to use dry-run**:
+
+- First time using a release target
+- Testing a new release workflow
+- Verifying what will be committed/tagged/published
+- Training new contributors
+- Before major releases
+
+**Test version bumps without dry-run**:
 
 ```bash
 # Check current version
 poetry version -s
 
-# Test version bumps (doesn't modify files)
+# Test version bump calculation (doesn't modify files)
 poetry version --dry-run patch   # Shows: 0.1.4 → 0.1.5
 poetry version --dry-run minor   # Shows: 0.1.4 → 0.2.0
 
@@ -391,11 +466,13 @@ make release-publish
 A pre-commit hook validates that `pyproject.toml` and `TODO.md` versions match before allowing commits. This prevents version drift bugs.
 
 **What it checks**:
+
 - Reads version from `pyproject.toml` via `poetry version -s`
 - Extracts version from `TODO.md` using pattern matching
 - Fails commit if versions don't match
 
 **How to fix a mismatch**:
+
 ```bash
 # Use one of the release targets to sync versions
 make release-patch   # Bump patch version
@@ -433,6 +510,7 @@ All documentation tools are Python-based and managed by Poetry for consistent de
 **Problem**: TODO.md version marker not found or malformed.
 
 **Solution**: Ensure TODO.md contains a line matching the pattern:
+
 ```markdown
 > **Version**: 0.1.4 (Alpha)
 ```
@@ -444,6 +522,7 @@ The version sync hook validates this format.
 **Problem**: No PyPI API token configured.
 
 **Solution**:
+
 ```bash
 poetry config pypi-token.pypi <your-token>
 ```
@@ -455,6 +534,7 @@ Get a token from: [https://pypi.org/manage/account/token/](https://pypi.org/mana
 **Problem**: Code has failing tests, type errors, or lint violations.
 
 **Solution**: Fix issues before releasing:
+
 ```bash
 make test           # Run pytest test suite
 make type-check     # Run mypy type checks
@@ -469,6 +549,7 @@ Address all failures before proceeding with the release.
 **Problem**: Remote has changes you don't have locally.
 
 **Solution**:
+
 ```bash
 git pull --rebase origin $(git branch --show-current)
 # Resolve conflicts if any
@@ -480,10 +561,12 @@ make release-tag  # Try again
 **Problem**: External links are broken or timing out.
 
 **Solution**:
+
 1. Review the failing links in the output
 2. Update or remove broken links
 3. For transient failures, retry after a few minutes
 4. For sites that block automated requests, add to the exclude list in `pyproject.toml`:
+
    ```toml
    [tool.md_dead_link_check]
    exclude_links = [
@@ -505,6 +588,7 @@ git commit -m "chore: bump dependencies"
 ```
 
 **Commit prefixes**:
+
 - `feat:` → Added section
 - `fix:` → Fixed section
 - `docs:` → Documentation section
