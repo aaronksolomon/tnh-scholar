@@ -65,6 +65,70 @@ Brief description of what prompted this session and relevant background.
 
 ---
 
+## [2025-12-07 17:00 PST] Metadata Infrastructure Integration and Architecture Documentation
+
+**Agent**: Claude Sonnet 4.5 (claude-sonnet-4-5-20250929)
+**Chat Reference**: metadata-architecture-discovery
+**Human Collaborator**: phapman
+
+### Context
+
+During ADR-PT04 (Prompt System Refactor) implementation, discovered that `PromptMapper` was already using `tnh_scholar.metadata.Frontmatter` infrastructure. This revealed metadata as a foundational cross-cutting layer, not service-specific. ALL .md files in TNH Scholar (prompts, corpus, derivatives, docs) use metadata frontmatter, making the system self-reflexive.
+
+### Key Decisions
+
+- **Metadata is Foundational Infrastructure**: Not a service with ports/adapters; pure utility classes available to all layers
+- **Always Reuse Frontmatter**: Mappers must use `Frontmatter.extract()`, never reimplement YAML parsing
+- **Two-Step Validation Pattern**: Infrastructure parsing (Frontmatter) → domain schema validation (Pydantic)
+- **Defer Strict Compliance**: Keep `extract_from_file()` I/O and logging side effects for rapid prototype; clean up in 0.2.0
+
+### Work Completed
+
+- [x] Updated ADR-PT04 with "As-Built Implementation Notes" addendum (files: `docs/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md`)
+- [x] Added Section 3.3 "Foundational Infrastructure: Metadata" to ADR-OS01 (files: `docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md`)
+- [x] Updated object-service overview with metadata in architecture diagram (files: `docs/architecture/object-service/object-service-design-overview.md`)
+- [x] Created ADR-MD02: Metadata Object-Service Integration (files: `docs/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md`)
+- [x] Established cross-references between ADR-PT04, ADR-MD02, ADR-OS01, ADR-MD01
+
+### Discoveries & Insights
+
+- **Self-Reflexive Design**: TNH Scholar operates on its own metadata-bearing artifacts (.md files with frontmatter)
+- **Horizontal Infrastructure**: Metadata is cross-cutting (available to all layers), unlike services (vertical: App → Service → Adapter → Transport)
+- **Compliance Issues**: `Frontmatter.extract_from_file()` mixes I/O with domain logic; `safe_yaml_load()` logs instead of raising typed exceptions
+- **Integration Patterns**: Documented 4 patterns: (1) Mappers use Frontmatter, (2) Domain models use Metadata, (3) Services use ProcessMetadata, (4) Infrastructure/domain separation
+
+### Files Modified/Created
+
+- `docs/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md`: Added addendum documenting as-built metadata integration
+- `docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md`: Added Section 3.3 on metadata infrastructure; updated glossary
+- `docs/architecture/object-service/object-service-design-overview.md`: Added metadata to layer diagram and usage patterns section
+- `docs/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md`: Created - establishes 4 integration patterns, compliance improvements, implementation plan
+
+### Next Steps
+
+- [ ] Add usage examples to metadata module docstrings (Phase 1 - 0.1.4)
+- [ ] Refactor `safe_yaml_load()` to raise typed exceptions (Phase 2 - 0.2.0)
+- [ ] Create `metadata/errors.py` with `MetadataError` hierarchy (Phase 2 - 0.2.0)
+- [ ] Document `Frontmatter.extract_from_file()` as adapter-level helper (Phase 2 - 0.2.0)
+- [ ] Audit codebase for `Dict[str, Any]` → `Metadata` replacements (Phase 3 - 0.3.0+)
+- [ ] Add `ProcessMetadata` to translation/transcription pipelines (Phase 3 - 0.3.0+)
+
+### Open Questions
+
+- Should `Metadata` support nested validation? (Currently shallow; consider recursive validation for nested dicts/lists)
+- When to fully enable JSON-LD semantic queries? (Deferred to knowledge base implementation)
+- Should `Metadata` track schema versions for migrations?
+
+### References
+
+- [ADR-MD01: JSON-LD Metadata Strategy](/architecture/metadata/adr/adr-md01-json-ld-metadata.md)
+- [ADR-MD02: Metadata Object-Service Integration](/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md)
+- [ADR-OS01: Object-Service Architecture V3](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
+- [ADR-PT04: Prompt System Refactor](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- [src/tnh_scholar/metadata/metadata.py](src/tnh_scholar/metadata/metadata.py)
+
+---
+
 ## [2025-12-05 19:45 PST] Auto-Generated Documentation Index System
 
 **Agent**: Claude Sonnet 4.5 (claude-sonnet-4-5-20250929)
