@@ -1,11 +1,13 @@
-/Users/phapman/Desktop/Projects/tnh-scholar
+.
+├── AGENTLOG.md
+├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── DEV_SETUP.md
 ├── LICENSE
 ├── Makefile
 ├── README.md
 ├── TODO.md
-├── configs
+├── VERSIONING.md
 ├── data
 │   ├── PDF
 │   │   └── Phat_Giao_journals
@@ -18,143 +20,233 @@
 │   │   ├── ai-text-processing
 │   │   │   ├── adr
 │   │   │   │   ├── adr-at01-ai-text-processing.md
-│   │   │   │   └── adr-at02-sectioning-textobject.md
-│   │   │   └── design
-│   │   │       ├── data-flow-through-pipeline.mermaid
-│   │   │       ├── textobject-new-design.md
-│   │   │       └── textobject-original-design.md
-│   │   ├── configuration
+│   │   │   │   ├── adr-at02-sectioning-textobject.md
+│   │   │   │   └── index.md
 │   │   │   ├── design
-│   │   │   └── tnh-configuration.md
-│   │   ├── docs-design
+│   │   │   │   ├── data-flow-through-pipeline.mermaid
+│   │   │   │   ├── index.md
+│   │   │   │   ├── textobject-original-design.md
+│   │   │   │   └── textobject-system-design.md
+│   │   │   └── index.md
+│   │   ├── configuration
+│   │   │   ├── index.md
+│   │   │   └── tnh-configuration-management.md
+│   │   ├── docs-system
 │   │   │   ├── adr
-│   │   │   │   └── adr-dd01-docs-reorg-strat.md
-│   │   │   └── design
-│   │   │       └── documentation.md
+│   │   │   │   ├── adr-dd01-docs-reorg-strategy.md
+│   │   │   │   ├── adr-dd02-main-content-nav.md
+│   │   │   │   ├── adr-dd03-pattern-to-prompt.md
+│   │   │   │   ├── adr-dd03-phase1-punchlist.md
+│   │   │   │   └── index.md
+│   │   │   ├── design
+│   │   │   │   ├── documentation-design.md
+│   │   │   │   └── index.md
+│   │   │   └── index.md
 │   │   ├── gen-ai-service
 │   │   │   ├── adr
-│   │   │   │   ├── adr-a01-domain-service.md
-│   │   │   │   ├── adr-a02-pattern-catalog-v1.md
-│   │   │   │   ├── adr-a08-config-params-policy.md
+│   │   │   │   ├── adr-a01-object-service-genai.md
+│   │   │   │   ├── adr-a02-patterncatalog-integration-v1.md
+│   │   │   │   ├── adr-a08-config-params-policy-taxonomy.md
 │   │   │   │   ├── adr-a09-v1-simplified.md
 │   │   │   │   ├── adr-a11-model-parameters-fix.md
 │   │   │   │   ├── adr-a12-prompt-system-fingerprinting-v1.md
-│   │   │   │   └── adr-a13-legacy-client-migration.md
-│   │   │   └── design
-│   │   │       ├── genai-service-strategy.md
-│   │   │       └── migration-plan.md
+│   │   │   │   ├── adr-a13-migrate-openai-to-genaiservice.md
+│   │   │   │   └── index.md
+│   │   │   ├── design
+│   │   │   │   ├── genai-service-design-strategy.md
+│   │   │   │   ├── index.md
+│   │   │   │   └── openai-interface-migration-plan.md
+│   │   │   └── index.md
+│   │   ├── index.md
 │   │   ├── jvb-viewer
-│   │   │   └── design
-│   │   │       ├── instruction-test0.md
-│   │   │       ├── instruction-test1.md
-│   │   │       ├── jvb-strat-001.md
-│   │   │       └── output1.md
+│   │   │   ├── design
+│   │   │   │   ├── generate-md-translation-json-pairs.md
+│   │   │   │   ├── generate-md-vietnamese.md
+│   │   │   │   ├── index.md
+│   │   │   │   ├── jvb-viewer-v2-strategy.md
+│   │   │   │   └── luan-hoi.md
+│   │   │   └── index.md
 │   │   ├── knowledge-base
-│   │   │   └── adr
-│   │   │       └── adr-k01-preliminary-architectural-design.md
+│   │   │   ├── adr
+│   │   │   │   ├── adr-k01-kb-architecture-strategy.md
+│   │   │   │   └── index.md
+│   │   │   └── index.md
 │   │   ├── metadata
-│   │   │   └── adr
-│   │   │       └── adr-md01-metadata-strategy.md
-│   │   ├── pattern-system
-│   │   │   └── adr
-│   │   │       ├── adr-pt01-pattern-access-strategy.md
-│   │   │       └── adr-pt02-pattern-catalog.md
+│   │   │   ├── adr
+│   │   │   │   ├── adr-md01-json-ld-metadata.md
+│   │   │   │   ├── adr-md02-metadata-object-service-integration.md
+│   │   │   │   └── index.md
+│   │   │   └── index.md
+│   │   ├── object-service
+│   │   │   ├── adr
+│   │   │   │   ├── adr-os01-object-service-architecture-v3.md
+│   │   │   │   └── index.md
+│   │   │   ├── index.md
+│   │   │   ├── object-service-design-gaps.md
+│   │   │   ├── object-service-design-overview.md
+│   │   │   └── object-service-implementation-status.md
+│   │   ├── overview.md
+│   │   ├── project-policies
+│   │   │   ├── adr
+│   │   │   │   └── adr-pp01-rapid-prototype-versioning.md
+│   │   │   ├── index.md
+│   │   │   └── versioning-policy-implementation-summary.md
+│   │   ├── prompt-system
+│   │   │   ├── adr
+│   │   │   │   ├── adr-pt03-prompt-system-status-roadmap.md
+│   │   │   │   ├── adr-pt04-prompt-system-refactor.md
+│   │   │   │   └── index.md
+│   │   │   ├── archive
+│   │   │   │   ├── adr
+│   │   │   │   │   ├── adr-pt01-pattern-access-strategy.md
+│   │   │   │   │   ├── adr-pt02-adopt-pattern-and-patterncatalog.md
+│   │   │   │   │   └── index.md
+│   │   │   │   ├── core-pattern-architecture.md
+│   │   │   │   └── index.md
+│   │   │   ├── index.md
+│   │   │   └── prompt-system-architecture.md
 │   │   ├── setup-tnh
-│   │   │   └── design
-│   │   │       └── setup-design.md
+│   │   │   ├── design
+│   │   │   │   ├── index.md
+│   │   │   │   └── setup-tnh-minimal-extensible-tool.md
+│   │   │   └── index.md
 │   │   ├── tnh-fab
-│   │   │   └── design
-│   │   │       ├── text-processing-cli-design-v1.md
-│   │   │       └── text-processing-cli-design-v2.md
+│   │   │   ├── design
+│   │   │   │   ├── index.md
+│   │   │   │   ├── tnh-fab-cli-spec.md
+│   │   │   │   └── tnh-fab-design-document.md
+│   │   │   └── index.md
 │   │   ├── transcription
 │   │   │   ├── adr
 │   │   │   │   ├── adr-tr01-assemblyai-integration.md
-│   │   │   │   ├── adr-tr02-optimize-srt.md
-│   │   │   │   ├── adr-tr03-standard-timestamp.md
-│   │   │   │   └── adr-tr04-assemblyai-improvements.md
-│   │   │   └── design
-│   │   │       ├── additional-design.md
-│   │   │       ├── audio-chunk-splitting.md
-│   │   │       ├── chunking-strategies.md
-│   │   │       ├── chunking-strategies0.md
-│   │   │       ├── diarization-algorithms.md
-│   │   │       ├── diarization-algorithms0.md
-│   │   │       ├── diarization-system0.md
-│   │   │       ├── diarization-system1.md
-│   │   │       ├── gpt-modular-pipeline.md
-│   │   │       ├── gpt-pipeline-overview.txt
-│   │   │       ├── language-chunking-algorithm.md
-│   │   │       ├── segment-match-algorithm.md
-│   │   │       └── timeline-mapping.md
+│   │   │   │   ├── adr-tr02-optimized-srt-design.md
+│   │   │   │   ├── adr-tr03-ms-timestamps.md
+│   │   │   │   ├── adr-tr04-assemblyai-improvements.md
+│   │   │   │   └── index.md
+│   │   │   ├── design
+│   │   │   │   ├── audio-chunking-design.md
+│   │   │   │   ├── diarization-algorithms.md
+│   │   │   │   ├── diarization-chunker-design.md
+│   │   │   │   ├── diarization-system-design.md
+│   │   │   │   ├── gpt-pipeline-overview.txt
+│   │   │   │   ├── index.md
+│   │   │   │   ├── interval-to-segment-mapping.md
+│   │   │   │   ├── language-aware-chunking-design.md
+│   │   │   │   ├── language-aware-chunking-orchestrator-notes.md
+│   │   │   │   ├── modular-pipeline-best-practices.md
+│   │   │   │   ├── practical-language-aware-chunking.md
+│   │   │   │   ├── speaker-diarization-algorithm-design.md
+│   │   │   │   ├── speaker-diarization-time-mapped-design.md
+│   │   │   │   └── timelinemapper-design.md
+│   │   │   └── index.md
 │   │   ├── ui-ux
-│   │   │   └── design
-│   │   │       └── ui-ux-strategy.md
+│   │   │   ├── design
+│   │   │   │   ├── index.md
+│   │   │   │   └── vs-code-as-ui-platform.md
+│   │   │   ├── index.md
+│   │   │   └── vs-code-integration
+│   │   │       ├── adr-vsc01-vscode-integration-strategy.md
+│   │   │       ├── adr-vsc02-tnh-gen-cli-implementation.md
+│   │   │       └── index.md
 │   │   ├── utilities
-│   │   │   └── design
-│   │   │       ├── utilities-catalog.md
-│   │   │       └── version-checking-design.md
+│   │   │   ├── design
+│   │   │   │   ├── index.md
+│   │   │   │   ├── package-version-checker-design.md
+│   │   │   │   └── utilities-catalog.md
+│   │   │   └── index.md
 │   │   ├── video-processing
-│   │   │   └── adr
-│   │   │       └── adr-vp01-video-processing.md
+│   │   │   ├── adr
+│   │   │   │   ├── adr-vp01-video-processing.md
+│   │   │   │   └── index.md
+│   │   │   └── index.md
 │   │   └── ytt-fetch
 │   │       ├── adr
-│   │       │   ├── adr-yf00-overview.md
-│   │       │   ├── adr-yf01-transcript-source-handling.md
-│   │       │   └── adr-yf02-yt-dlp-transcripts.md
-│   │       └── design
-│   │           └── yt-dlp-vs-youtube-api.md
-│   ├── cli
+│   │       │   ├── adr-yf00-early-decisions.md
+│   │       │   ├── adr-yf01-yt-transcript-source-handling.md
+│   │       │   ├── adr-yf02-yt-transcript-format-selection.md
+│   │       │   └── index.md
+│   │       ├── design
+│   │       │   ├── index.md
+│   │       │   └── youtube-api-vs-yt-dlp-eval.md
+│   │       └── index.md
+│   ├── archive
+│   │   └── index-old.md
+│   ├── cli-reference
 │   │   ├── audio-transcribe.md
+│   │   ├── index.md
+│   │   ├── json-to-srt.md
 │   │   ├── nfmt.md
 │   │   ├── overview.md
+│   │   ├── sent-split.md
+│   │   ├── srt-translate.md
 │   │   ├── tnh-fab.md
 │   │   ├── tnh-setup.md
 │   │   ├── token-count.md
 │   │   └── ytt-fetch.md
+│   ├── community
+│   │   ├── index.md
+│   │   └── parallax-overview.md
 │   ├── development
-│   │   ├── architecture
-│   │   │   ├── api-integration-blueprint_(old).md
-│   │   │   ├── object-service-design-blueprint-v2.md
-│   │   │   ├── object-service-design-blueprint.md
-│   │   │   └── object-service-gaps.md
-│   │   ├── contributing.md
-│   │   ├── design-guide.md
+│   │   ├── contributing-prototype-phase.md
+│   │   ├── design-principles.md
 │   │   ├── fine-tuning-strategy.md
-│   │   ├── human-agent-coding-principles.md
-│   │   ├── initial-improvements.md
-│   │   ├── pattern-core-design.md
-│   │   ├── system-design.md
-│   │   └── yt-dlp_docs
-│   │       ├── yt_dlp_help_output.txt
-│   │       ├── ytdlp-formats.md
-│   │       └── ytdlp-guide.md
+│   │   ├── git-workflow.md
+│   │   ├── human-ai-software-engineering-principles.md
+│   │   ├── improvements-initial-structure.md
+│   │   ├── index.md
+│   │   ├── overview.md
+│   │   ├── release-workflow.md
+│   │   ├── style-guide.md
+│   │   └── system-design.md
 │   ├── docs-ops
 │   │   ├── adr-template.md
-│   │   ├── documentation_index.md
-│   │   └── markdown-standards.md
+│   │   ├── index.md
+│   │   ├── markdown-standards.md
+│   │   ├── mkdocs-strict-warning-backlog.md
+│   │   ├── preview-theme.md
+│   │   └── theme-design.md
+│   ├── documentation_index.md
+│   ├── documentation_map.md
 │   ├── getting-started
 │   │   ├── configuration.md
+│   │   ├── index.md
 │   │   ├── installation.md
-│   │   └── quick-start.md
+│   │   └── quick-start-guide.md
 │   ├── index.md
+│   ├── overrides
+│   │   └── main.html
+│   ├── project
+│   │   ├── conceptual-architecture.md
+│   │   ├── future-directions.md
+│   │   ├── index.md
+│   │   ├── philosophy.md
+│   │   ├── principles.md
+│   │   └── vision.md
 │   ├── research
-│   │   ├── gpt_4o_search_query_text_pair_testing
-│   │   │   ├── sample_text.txt
-│   │   │   └── testing_input_output.md
+│   │   ├── gpt4o-search-query-testing
+│   │   │   ├── index.md
+│   │   │   ├── queries-1-3-words.md
+│   │   │   └── sample_text.txt
+│   │   ├── gpt4o-translation-experiments
+│   │   │   ├── index.md
+│   │   │   └── passage_test.md
 │   │   ├── gpt_4o_toc_tag_generation_testing
 │   │   │   └── Nov_2_testing_TOC_label_prompt.txt
-│   │   ├── gpt_4o_translations_experiments
-│   │   │   └── passage_test.md
 │   │   ├── gpt_development_convos.md
-│   │   ├── metadata_report.md
-│   │   ├── preliminary_feasibility_study.md
-│   │   ├── strategic-information-processing.md
-│   │   └── tnh-scholar-knowledge-vector-search.md
+│   │   ├── index.md
+│   │   ├── kb-design-document.md
+│   │   ├── metadata-summary-report.md
+│   │   ├── preliminary-feasibility-study.md
+│   │   ├── rag-research-directions.md
+│   │   └── siap-methodology.md
+│   ├── stylesheets
+│   │   └── tnh-zen.css
 │   └── user-guide
 │       ├── best-practices.md
+│       ├── index.md
 │       ├── overview.md
-│       └── patterns.md
-├── documentation_index.md
+│       └── prompt-system.md
+├── docs_build_output.txt
 ├── evaluation
 ├── logs
 ├── mkdocs.yaml
@@ -179,7 +271,6 @@
 │   │   ├── full_pipe2.ipynb
 │   │   ├── full_pipe3.ipynb
 │   │   ├── logs
-│   │   ├── speaker_segments
 │   │   └── speech_detect.ipynb
 │   ├── html_viewing
 │   │   ├── tx_journal_to_html.ipynb
@@ -286,6 +377,8 @@
 │       ├── postprocessing_viet.ipynb
 │       ├── process_stepwise.ipynb
 │       ├── repair_process.ipynb
+│       ├── results-archive
+│       │   └── output_adjustment_system_messages.md
 │       ├── tests_and_prototypes
 │       │   ├── audio_extract_testing1.ipynb
 │       │   ├── audio_extract_testing2.ipynb
@@ -302,11 +395,24 @@
 ├── pyproject.toml
 ├── release_checklist.md
 ├── scripts
+│   ├── append_doc_map_to_index.py
+│   ├── check_readme_docs_drift.py
+│   ├── convert_relative_links.py
+│   ├── generate_changelog_entry.py
+│   ├── generate_cli_docs.py
 │   ├── generate_doc_index.py
+│   ├── generate_index_md.py
+│   ├── generate_mkdocs_nav.py
+│   ├── generate_subdir_indexes.py
 │   ├── generate_tree.py
-│   └── prep_notebooks.py
+│   ├── prep_notebooks.py
+│   ├── prepare_pypi_readme.py
+│   ├── sync_readme.py
+│   ├── sync_root_docs.py
+│   └── validate_markdown.py
 ├── src
 │   ├── __init__.py
+│   ├── sitecustomize.py
 │   └── tnh_scholar
 │       ├── __init__.py
 │       ├── ai_text_processing
@@ -494,6 +600,35 @@
 │       ├── pattern_share
 │       │   ├── app.py
 │       │   └── requirements.txt
+│       ├── prompt_system
+│       │   ├── __init__.py
+│       │   ├── adapters
+│       │   │   ├── __init__.py
+│       │   │   ├── filesystem_catalog_adapter.py
+│       │   │   └── git_catalog_adapter.py
+│       │   ├── config
+│       │   │   ├── __init__.py
+│       │   │   ├── policy.py
+│       │   │   ├── prompt_catalog_config.py
+│       │   │   └── settings.py
+│       │   ├── domain
+│       │   │   ├── __init__.py
+│       │   │   ├── models.py
+│       │   │   └── protocols.py
+│       │   ├── mappers
+│       │   │   ├── __init__.py
+│       │   │   └── prompt_mapper.py
+│       │   ├── service
+│       │   │   ├── __init__.py
+│       │   │   ├── loader.py
+│       │   │   ├── renderer.py
+│       │   │   └── validator.py
+│       │   └── transport
+│       │       ├── __init__.py
+│       │       ├── cache.py
+│       │       ├── filesystem.py
+│       │       ├── git_client.py
+│       │       └── models.py
 │       ├── query
 │       │   ├── initial_cleaning_scripts.py
 │       │   ├── parse_tag.py
@@ -554,7 +689,14 @@
     │   └── test_journal_process_batch.py
     ├── openai_interface
     ├── openai_text_processing
+    ├── prompt_system
+    │   ├── test_catalog_adapters.py
+    │   ├── test_git_catalog.py
+    │   ├── test_loader.py
+    │   ├── test_models.py
+    │   ├── test_renderer.py
+    │   └── test_validator.py
     └── text_processing
         └── test_numbered_text.py
 
-146 directories, 412 files
+162 directories, 538 files

@@ -18,8 +18,10 @@ def build_tree(root_dir: Path, src_dir: Optional[Path] = None) -> None:
         )
 
     project_tree_output = root_dir / "project_directory_tree.txt"
+    # Run from the root so the tree uses relative paths (stable across environments).
     subprocess.run(
-        ["tree", "--gitignore", str(root_dir), "-o", str(project_tree_output)],
+        ["tree", "--gitignore", ".", "-o", str(project_tree_output)],
+        cwd=root_dir,
         check=True,
     )
 
@@ -30,6 +32,7 @@ def build_tree(root_dir: Path, src_dir: Optional[Path] = None) -> None:
             )
         src_tree_output = root_dir / "src_directory_tree.txt"
         subprocess.run(
-            ["tree", "--gitignore", str(src_dir), "-o", str(src_tree_output)],
+            ["tree", "--gitignore", ".", "-o", str(src_tree_output)],
+            cwd=src_dir,
             check=True,
         )

@@ -1,5 +1,6 @@
-/Users/phapman/Desktop/Projects/tnh-scholar/src
+.
 ├── __init__.py
+├── sitecustomize.py
 └── tnh_scholar
     ├── __init__.py
     ├── ai_text_processing
@@ -187,6 +188,35 @@
     ├── pattern_share
     │   ├── app.py
     │   └── requirements.txt
+    ├── prompt_system
+    │   ├── __init__.py
+    │   ├── adapters
+    │   │   ├── __init__.py
+    │   │   ├── filesystem_catalog_adapter.py
+    │   │   └── git_catalog_adapter.py
+    │   ├── config
+    │   │   ├── __init__.py
+    │   │   ├── policy.py
+    │   │   ├── prompt_catalog_config.py
+    │   │   └── settings.py
+    │   ├── domain
+    │   │   ├── __init__.py
+    │   │   ├── models.py
+    │   │   └── protocols.py
+    │   ├── mappers
+    │   │   ├── __init__.py
+    │   │   └── prompt_mapper.py
+    │   ├── service
+    │   │   ├── __init__.py
+    │   │   ├── loader.py
+    │   │   ├── renderer.py
+    │   │   └── validator.py
+    │   └── transport
+    │       ├── __init__.py
+    │       ├── cache.py
+    │       ├── filesystem.py
+    │       ├── git_client.py
+    │       └── models.py
     ├── query
     │   ├── initial_cleaning_scripts.py
     │   ├── parse_tag.py
@@ -232,4 +262,4 @@
         ├── extract_tags.py
         └── xml_processing.py
 
-53 directories, 180 files
+60 directories, 203 files
