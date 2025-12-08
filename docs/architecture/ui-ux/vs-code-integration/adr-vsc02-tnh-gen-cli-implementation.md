@@ -4,7 +4,7 @@
 **Author:** Aaron Solomon
 **Date:** 2025-01-28
 **Tags:** implementation, cli, genai, architecture
-**Related ADRs:** ADR-VSC01 (VS Code Integration Strategy), GenAI Service Strategy, UI/UX Strategy
+**Related ADRs:** ADR-VSC01 (VS Code Integration Strategy), ADR-PT04 (Prompt System Refactor), GenAI Service Strategy, UI/UX Strategy
 
 ---
 
@@ -22,6 +22,7 @@ The CLI must:
 4. **Output structured data**: JSON-formatted responses for programmatic consumption
 5. **Handle errors gracefully**: Clear exit codes and error messages
 6. **Replace `tnh-fab`**: Consolidate scattered CLI tools into unified interface
+7. **Depend on PromptCatalog**: CLI uses `prompt_system` package (ADR-PT04) for all prompt operations
 
 ### **1.2 Design Principles**
 
@@ -130,6 +131,8 @@ tnh-gen list [OPTIONS]
 }
 ```
 
+**Schema Alignment Note**: This metadata schema is implemented by `PromptMetadata` in `tnh_scholar.prompt_system.domain.models` (ADR-PT04). The CLI accesses this schema via `PromptsAdapter.list_all()` and `PromptsAdapter.introspect()` methods, maintaining clean separation between CLI and prompt system internals.
+
 ### **4.4 Output Format (Table)**
 
 ```text
@@ -156,9 +159,10 @@ tnh-gen list --keys-only
 
 ### **4.6 Implementation Notes**
 
-- Calls `PromptsAdapter.list_all()` to get all prompts
-- For each prompt, calls `PromptsAdapter.introspect(prompt_ref)` to get metadata
-- Requires ADR-VSC03 (PromptCatalog Metadata Schema) to be implemented first
+- Calls `PromptsAdapter.list_all()` to get all prompts (implemented in ADR-PT04)
+- For detailed metadata, calls `PromptsAdapter.introspect(prompt_key)` (implemented in ADR-PT04)
+- Metadata schema is `PromptMetadata` from `tnh_scholar.prompt_system.domain.models` (ADR-PT04)
+- Requires ADR-PT04 (Prompt System Refactor) to be implemented first
 
 ---
 
@@ -509,7 +513,7 @@ Display version information.
 
 ### **9.1 Module Structure**
 
-```
+```plaintext
 src/tnh_scholar/cli_tools/tnh_gen/
 ├── __init__.py
 ├── tnh_gen.py           # Main entry point, CLI argument parsing
@@ -557,11 +561,14 @@ def main():
     cli(obj={})
 ```
 
-### **9.3 Integration with GenAI Service**
+### **9.3 Integration with GenAI Service and Prompt System**
+
+The CLI integrates with the prompt system (ADR-PT04) via `PromptsAdapter`, which bridges to the GenAI service:
 
 ```python
 # commands/run.py
 from tnh_scholar.gen_ai_service import GenAIService, RenderRequest
+from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import PromptsAdapter
 from tnh_scholar.cli_tools.tnh_gen.errors import map_error_to_exit_code
 
 def run_prompt(ctx, prompt, input_file, vars, var, model, output_file, **kwargs):
@@ -569,22 +576,24 @@ def run_prompt(ctx, prompt, input_file, vars, var, model, output_file, **kwargs)
         # Load configuration
         config = load_config(ctx.obj['config_path'])
 
-        # Initialize GenAI Service
+        # Initialize GenAI Service (which provides PromptsAdapter)
         service = GenAIService(settings=config)
+        prompts_adapter = service.prompts_adapter  # PromptsAdapter instance
 
-        # Build variable dict
+        # Build variable dict with CLI precedence (inline > file > input)
         variables = build_variables(input_file, vars, var)
 
-        # Create request
+        # Create request (PromptsAdapter handles rendering via prompt_system)
         request = RenderRequest(
-            prompt_key=prompt,
+            instruction_key=prompt,  # Maps to prompt_key in prompt_system
             variables=variables,
+            user_input=variables.get("input_text", ""),
             model=model,
             intent=kwargs.get('intent'),
             # ... other params
         )
 
-        # Execute
+        # Execute (internally calls prompts_adapter.render())
         result = service.generate(request)
 
         # Handle output
@@ -600,7 +609,36 @@ def run_prompt(ctx, prompt, input_file, vars, var, model, output_file, **kwargs)
         error_response = format_error(e)
         print_json(error_response)
         sys.exit(map_error_to_exit_code(e))
+
+def build_variables(input_file, vars_file, var_list):
+    """Build variables dict with CLI precedence."""
+    variables = {}
+
+    # Lowest: input file content
+    if input_file:
+        variables["input_text"] = Path(input_file).read_text()
+
+    # Medium: JSON vars file
+    if vars_file:
+        variables.update(json.loads(Path(vars_file).read_text()))
+
+    # Highest: inline --var parameters
+    for v in var_list:
+        k, val = v.split('=', 1)
+        variables[k] = val
+
+    return variables
 ```
+
+**Architecture Flow**:
+
+1. CLI builds `variables` dict with precedence
+2. CLI calls `service.generate(RenderRequest(...))`
+3. GenAI service calls `prompts_adapter.render(request)`
+4. PromptsAdapter uses prompt_system (catalog, renderer, validator)
+5. Rendered prompt + fingerprint returned to GenAI service
+6. GenAI service executes against provider
+7. Result returned to CLI for output formatting
 
 ---
 
@@ -742,4 +780,4 @@ tnh-gen --help > docs/cli/tnh-gen.md
 - ADR-VSC03: PromptCatalog Metadata Schema
 - ADR-VSC04: Configuration Discovery & Management
 - GenAI Service Strategy
-- Click Documentation: https://click.palletsprojects.com/
+- Click Documentation: <https://click.palletsprojects.com/>

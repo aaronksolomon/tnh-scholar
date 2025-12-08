@@ -10,7 +10,7 @@ created: "2025-01-20"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2025-11-29
+> **Last Updated**: 2025-12-06
 > **Version**: 0.2.0 (Alpha)
 > **Status**: Active Development - Documentation Reorganization Phase
 
@@ -88,6 +88,19 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Phase 4: Migrate tests
   - [x] Phase 5: Update notebooks
   - [x] Phase 6: Delete legacy code (openai_interface/)
+
+#### 19. 🚧 Prompt System Refactor (ADR-PT04)
+
+- **Status**: IN PROGRESS
+- **Priority**: HIGH (Priority 1 — critical path for GenAI service + CLI)
+- **ADR**: [ADR-PT04](docs/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md), [ADR-A12](/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md), [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md), [ADR-VSC02](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
+- **Goal**: Replace legacy pattern-era prompt module with modular `prompt_system` package (object-service compliant), enforce `TNH_PROMPT_DIR` (retire `TNH_PATTERN_DIR`), and wire into GenAI + CLI without shims.
+- **Sequence**:
+  1. **Foundation — prompt_system package**: Scaffold `src/tnh_scholar/prompt_system/` (config/settings/policy, domain models/protocols, renderer/validator/loader, mappers); add unit tests for pure components. **(COMPLETE)**
+  2. **Transport & catalog adapters**: Implement git/filesystem transports + cache; map files via `PromptMapper`; add integration test with fixture repo; cache invalidation on git refresh. **(COMPLETE for filesystem/cache; git transport stubbed, no integration test yet)**
+  3. **GenAI service integration**: Refactor `prompts_adapter.py` to use new ports; inject catalog/renderer/validator via DI; align fingerprint contract; remove `ai_text_processing.prompts` usage in service layer; fix broken tests. **(IN PROGRESS — adapter switched to prompt_system; legacy imports still exist elsewhere)**
+  4. **CLI + VS Code integration**: Update `tnh-gen` commands to new API; rename flags `--pattern` → `--prompt`; enforce `TNH_PROMPT_DIR` env; expose `list`/`introspect` via adapter; ensure variable precedence matches ADR-VSC02. **(NOT STARTED)**
+  5. **Legacy removal + docs/validation**: Delete `ai_text_processing/prompts.py` and legacy fixtures; update mkdocs nav + prompt architecture docs; replace remaining `TNH_PATTERN_DIR` references; run docs/test/linters (mkdocs strict, drift checks) to verify clean state. **(NOT STARTED)**
 
 ---
 
@@ -440,6 +453,16 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Document logger acquisition pattern (get_logger only)
   - [ ] Create shared CLI bootstrap helper
 
+#### Metadata Error Handling (ADR-MD02 follow-up)
+
+- **Location**: [metadata/metadata.py](src/tnh_scholar/metadata/metadata.py)
+- **Problem**: `safe_yaml_load` logs and swallows errors; no typed exceptions; frontmatter file helper mixes I/O with parsing.
+- **Tasks**:
+  - [ ] Add typed exceptions (`MetadataError`, `FrontmatterParseError`, `InvalidMetadataError`)
+  - [ ] Refactor `safe_yaml_load` to raise typed errors; move logging to callers
+  - [ ] Update callers to handle/propagate errors appropriately
+  - [ ] Decide whether to split file I/O helper into adapter or keep documented adapter-level method
+
 ### Low Priority
 
 #### Package API Definition
@@ -525,6 +548,7 @@ This section organizes work into three priority levels based on criticality for 
 - 🎯 Implement core stubs (policy, routing, safety)
 - 🎯 Unify OpenAI clients
 - 🎯 Expand test coverage to 50%+
+- 🎯 Kick off prompt system refactor (ADR-PT04 sequence #19)
 
 **Beta Blockers**:
 

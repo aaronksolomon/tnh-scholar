@@ -1,0 +1,2 @@
+"""Prompt catalog adapters."""
+

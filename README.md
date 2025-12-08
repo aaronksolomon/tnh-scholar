@@ -112,7 +112,16 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing expectation
 
 ## Project Status
 
-TNH Scholar is currently in **alpha stage** (v0.1.3). Expect ongoing API and workflow changes during active development.
+TNH Scholar is currently in **rapid prototype phase** (v0.1.4 - alpha).
+
+**Important Versioning Notice**: During the 0.x release series, we follow **rapid prototype versioning** rather than strict semantic versioning:
+
+- **Breaking changes can occur in any 0.x release** (0.1.x → 0.1.y, 0.1.x → 0.2.0)
+- **No backward compatibility guarantees** during 0.x
+- **Migration guides provided** for major breaking changes
+- **Stable API expected at 1.0.0**
+
+See [VERSIONING.md](VERSIONING.md) for complete policy. This approach enables fast iteration and architectural improvements during prototyping.
 
 ## Support & Community
 
