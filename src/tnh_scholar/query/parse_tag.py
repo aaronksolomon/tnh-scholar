@@ -4,6 +4,7 @@ from typing import Union
 
 from bs4 import BeautifulSoup, NavigableString, Tag
 
+
 def extract_tags_by_attributes(
     soup: BeautifulSoup, tags_with_attributes: dict[str, dict]
 ) -> dict[tuple[str, tuple], list[BeautifulSoup]]:

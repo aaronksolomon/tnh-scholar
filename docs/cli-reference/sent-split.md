@@ -1,6 +1,6 @@
 ---
-title: "tnh-setup"
-description: "CLI reference for tnh-setup"
+title: "sent-split"
+description: "CLI reference for sent-split"
 owner: ""
 author: ""
 status: auto_generated
@@ -8,14 +8,14 @@ created: "2025-12-06"
 auto_generated: true
 ---
 
-# tnh-setup
+# sent-split
 
 For full command-line help, run:
 
 ```bash
-poetry run tnh-setup --help
+poetry run sent-split --help
 ```
 
 ## Location
 
-`src/tnh_scholar/cli_tools/tnh_setup/`
+`src/tnh_scholar/cli_tools/sent_split/`

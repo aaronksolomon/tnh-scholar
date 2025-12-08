@@ -1,5 +1,6 @@
 import re
 
+
 def normalize_newlines(text: str, spacing: int = 2) -> str:
     """
     Normalize newline blocks in the input text by reducing consecutive newlines

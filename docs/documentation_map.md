@@ -1,7 +1,7 @@
 ---
 title: "Documentation Map"
 description: "Hierarchical navigation of TNH Scholar documentation"
-created: "2025-12-05"
+created: "2025-12-06"
 auto_generated: true
 ---
 
@@ -41,7 +41,10 @@ auto_generated: true
 
 - [audio-transcribe](cli-reference/audio-transcribe.md)
 - [Command Line Tools Overview](cli-reference/overview.md)
+- [json-to-srt](cli-reference/json-to-srt.md)
 - [nfmt](cli-reference/nfmt.md)
+- [sent-split](cli-reference/sent-split.md)
+- [srt-translate](cli-reference/srt-translate.md)
 - [tnh-fab](cli-reference/tnh-fab.md)
 - [tnh-setup](cli-reference/tnh-setup.md)
 - [token-count](cli-reference/token-count.md)
@@ -120,6 +123,7 @@ auto_generated: true
 - [Fine Tuning Strategy](development/fine-tuning-strategy.md)
 - [Human-AI Software Engineering Principles](development/human-ai-software-engineering-principles.md)
 - [Improvements / Initial structure](development/improvements-initial-structure.md)
+- [Release Workflow](development/release-workflow.md)
 - [TNH Scholar Design Principles](development/design-principles.md)
 - [TNH Scholar Style Guide](development/style-guide.md)
 - [TNH Scholar System Design](development/system-design.md)

@@ -1,8 +1,8 @@
 import shutil
 from pathlib import Path
 
-from tnh_scholar.utils.validate import check_openai_env
 from tnh_scholar.logging_config import get_child_logger
+from tnh_scholar.utils.validate import check_openai_env
 
 logger = get_child_logger(__name__)
 

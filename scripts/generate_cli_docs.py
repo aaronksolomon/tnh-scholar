@@ -6,8 +6,8 @@ Full introspection of CLI modules is deferred to a future enhancement.
 """
 from __future__ import annotations
 
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CLI_REFERENCE_DIR = ROOT / "docs/cli-reference"

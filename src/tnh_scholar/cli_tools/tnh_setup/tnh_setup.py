@@ -1,22 +1,16 @@
 # setup.py
 
-import os
+import io
+import zipfile
 from pathlib import Path
+
 import click
 import requests
-import zipfile
-import io
-from dotenv import load_dotenv, set_key
-
-from tnh_scholar.utils.validate import check_openai_env
+from dotenv import load_dotenv
 
 # Constants
-from tnh_scholar import (
-    TNH_CONFIG_DIR,
-    TNH_DEFAULT_PATTERN_DIR,
-    TNH_LOG_DIR
-) 
-
+from tnh_scholar import TNH_CONFIG_DIR, TNH_DEFAULT_PATTERN_DIR, TNH_LOG_DIR
+from tnh_scholar.utils.validate import check_openai_env
 
 OPENAI_ENV_HELP_MSG = """
 >>>>>>>>>> OpenAI API key not found in environment. <<<<<<<<<

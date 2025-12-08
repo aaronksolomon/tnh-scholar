@@ -2,6 +2,7 @@ import click
 
 from tnh_scholar.text_processing import normalize_newlines
 
+
 @click.command()
 @click.argument("input_file", type=click.File("r"), default="-")
 @click.option(

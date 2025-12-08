@@ -8,7 +8,7 @@ This script converts patterns like `[text](../foo/bar.md)` to `[text](/foo/bar.m
 
 import re
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 
 def find_relative_links(content: str) -> List[Tuple[str, str]]:

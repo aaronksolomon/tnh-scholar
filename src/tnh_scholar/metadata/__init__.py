@@ -1,1 +1,1 @@
-from .metadata import Metadata, Frontmatter, ProcessMetadata
+from .metadata import Frontmatter, Metadata, ProcessMetadata

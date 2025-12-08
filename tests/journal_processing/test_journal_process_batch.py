@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 from tnh_scholar.journal_processing import journal_process as jp
 

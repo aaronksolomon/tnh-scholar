@@ -6,10 +6,10 @@ Outputs to docs_sync_report.txt for manual review during project check-ins.
 """
 from __future__ import annotations
 
-from pathlib import Path
-from difflib import unified_diff
-from datetime import datetime
 import re
+from datetime import datetime
+from difflib import unified_diff
+from pathlib import Path
 
 README = Path("README.md")
 DOCS_INDEX = Path("docs/index.md")

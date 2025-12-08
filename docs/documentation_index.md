@@ -1,7 +1,7 @@
 ---
 title: "Documentation Index"
 description: "Complete searchable index of TNH Scholar documentation with metadata"
-created: "2025-12-05"
+created: "2025-12-06"
 auto_generated: true
 ---
 
@@ -38,7 +38,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [philosophy](project/philosophy.md) |  |  | `docs/project/philosophy.md` |
 | [principles](project/principles.md) |  |  | `docs/project/principles.md` |
 | [Project](project/index.md) | Table of contents for project | 2025-12-04 | `docs/project/index.md` |
-| [Repo Root](project/repo-root/index.md) | Table of contents for project/repo-root | 2025-12-04 | `docs/project/repo-root/index.md` |
+| [Repo Root](project/repo-root/index.md) | Repository root documentation surfaced in the MkDocs site. |  | `docs/project/repo-root/index.md` |
 | [TNH Scholar CHANGELOG](project/repo-root/changelog.md) | Chronological log of notable TNH Scholar changes. | 2025-02-28 | `docs/project/repo-root/changelog.md` |
 | [TNH Scholar CONTRIBUTING](project/repo-root/contributing-root.md) | TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow. | 2024-10-21 | `docs/project/repo-root/contributing-root.md` |
 | [TNH Scholar README](project/repo-root/repo-readme.md) | TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models. | 2024-10-21 | `docs/project/repo-root/repo-readme.md` |
@@ -58,14 +58,17 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 
 | Title | Description | Created | Path |
 | --- | --- | --- | --- |
-| [audio-transcribe](cli-reference/audio-transcribe.md) | Command-line tool for audio transcription tasks. | 2025-01-21 | `docs/cli-reference/audio-transcribe.md` |
+| [audio-transcribe](cli-reference/audio-transcribe.md) | CLI reference for audio-transcribe | 2025-12-06 | `docs/cli-reference/audio-transcribe.md` |
 | [CLI Reference](cli-reference/index.md) | Table of contents for cli-reference | 2025-12-04 | `docs/cli-reference/index.md` |
 | [Command Line Tools Overview](cli-reference/overview.md) | TNH Scholar provides a suite of command-line tools designed to work together for text processing. Each tool focuses on specific tasks while maintaining consistent interfaces and behavior. This overview introduces the available tools and their primary functions. | 2025-02-01 | `docs/cli-reference/overview.md` |
-| [nfmt](cli-reference/nfmt.md) | `nfmt`, a newline formatting utility, standardizes line endings and spacing in text files. | 2025-02-01 | `docs/cli-reference/nfmt.md` |
-| [tnh-fab](cli-reference/tnh-fab.md) | User-facing reference for the `tnh-fab` CLI covering commands, options, and example workflows. | 2025-01-19 | `docs/cli-reference/tnh-fab.md` |
-| [tnh-setup](cli-reference/tnh-setup.md) | The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns. | 2025-02-01 | `docs/cli-reference/tnh-setup.md` |
-| [token-count](cli-reference/token-count.md) | The `token-count` command calculates the OpenAI API token count for text input. This is useful for ensuring that a text is within maximum token limits for the API model and also for estimating API costs. | 2025-02-01 | `docs/cli-reference/token-count.md` |
-| [ytt-fetch](cli-reference/ytt-fetch.md) | (Y)ou(T)ube (T)ranscript-(Fetch)ing utility. | 2025-01-21 | `docs/cli-reference/ytt-fetch.md` |
+| [json-to-srt](cli-reference/json-to-srt.md) | CLI reference for json-to-srt | 2025-12-06 | `docs/cli-reference/json-to-srt.md` |
+| [nfmt](cli-reference/nfmt.md) | CLI reference for nfmt | 2025-12-06 | `docs/cli-reference/nfmt.md` |
+| [sent-split](cli-reference/sent-split.md) | CLI reference for sent-split | 2025-12-06 | `docs/cli-reference/sent-split.md` |
+| [srt-translate](cli-reference/srt-translate.md) | CLI reference for srt-translate | 2025-12-06 | `docs/cli-reference/srt-translate.md` |
+| [tnh-fab](cli-reference/tnh-fab.md) | CLI reference for tnh-fab | 2025-12-06 | `docs/cli-reference/tnh-fab.md` |
+| [tnh-setup](cli-reference/tnh-setup.md) | CLI reference for tnh-setup | 2025-12-06 | `docs/cli-reference/tnh-setup.md` |
+| [token-count](cli-reference/token-count.md) | CLI reference for token-count | 2025-12-06 | `docs/cli-reference/token-count.md` |
+| [ytt-fetch](cli-reference/ytt-fetch.md) | CLI reference for ytt-fetch | 2025-12-06 | `docs/cli-reference/ytt-fetch.md` |
 
 ## API
 
@@ -191,6 +194,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [Fine Tuning Strategy](development/fine-tuning-strategy.md) | Strategy outline and development plan for fine-tuning foundation models on Thich Nhat Hanh translations. | 2025-02-26 | `docs/development/fine-tuning-strategy.md` |
 | [Human-AI Software Engineering Principles](development/human-ai-software-engineering-principles.md) | This document presents the **Human-AI Software Engineering Principles**, a comprehensive framework that builds upon established **software engineering, architecture, and design principles** from human-only teams and extends them to optimize collaboration between humans and AI agents. Central to this framework is the clear distinction between the **Design Phase** and the **Coding Phase**, each with distinct goals, modes, and workflows. It also addresses challenges such as **context window limitations** and maintaining alignment despite session resets. In addition to general principles, this framework incorporates concrete documentation and planning strategies designed to support long-term, sustainable human-AI collaboration. | 2025-11-15 | `docs/development/human-ai-software-engineering-principles.md` |
 | [Improvements / Initial structure](development/improvements-initial-structure.md) | Initial high-level view of the TNH Scholar ecosystem. | 2025-02-01 | `docs/development/improvements-initial-structure.md` |
+| [Release Workflow](development/release-workflow.md) | Automated release process for TNH Scholar with biweekly cadence during rapid prototyping. | 2025-12-06 | `docs/development/release-workflow.md` |
 | [TNH Scholar Design Principles](development/design-principles.md) | Architectural patterns, design philosophy, and system organization principles for TNH Scholar development. | 2025-11-29 | `docs/development/design-principles.md` |
 | [TNH Scholar Style Guide](development/style-guide.md) | Code formatting, naming conventions, and Python standards for TNH Scholar development. | 2025-11-29 | `docs/development/style-guide.md` |
 | [TNH Scholar System Design](development/system-design.md) | High-level system design describing the cyclical AI processing architecture powering TNH Scholar. | 2025-02-01 | `docs/development/system-design.md` |

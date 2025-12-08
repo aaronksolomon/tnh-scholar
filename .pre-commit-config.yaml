@@ -16,3 +16,11 @@ repos:
           - ".codespell-ignore.txt"
           - "README.md"
           - "docs"
+  - repo: local
+    hooks:
+      - id: version-sync
+        name: Version sync check
+        entry: .pre-commit-hooks/version-sync.sh
+        language: script
+        pass_filenames: false
+        stages: [commit]

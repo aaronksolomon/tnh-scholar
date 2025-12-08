@@ -11,7 +11,7 @@ created: "2025-01-20"
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 > **Last Updated**: 2025-12-06
-> **Version**: 0.1.4 (Alpha)
+> **Version**: 0.2.0 (Alpha)
 > **Status**: Active Development - Documentation Reorganization Phase
 
 ---

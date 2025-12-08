@@ -2,15 +2,14 @@ import os
 import sys
 
 if os.name == "nt":  # Windows
-    import msvcrt
+    pass
 else:  # Unix-like (Linux, macOS)
-    import termios
-    import tty
+    pass
 
 
 import os
-import sys
 from typing import Optional
+
 
 def get_single_char(prompt: Optional[str] = None) -> str:
     """

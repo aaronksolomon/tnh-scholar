@@ -24,7 +24,6 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any, BinaryIO, Dict, List, Optional, TypedDict, Union
 
-from openai import OpenAI
 from dotenv import load_dotenv
 
 from tnh_scholar.logging_config import get_child_logger

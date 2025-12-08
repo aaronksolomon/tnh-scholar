@@ -10,7 +10,6 @@ from typing import List
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils import TimeMs
 
-from .._diarization_utils import walk_segments
 from ..config import ChunkConfig
 from ..models import DiarizationChunk, DiarizedSegment
 from ..protocols import ChunkingStrategy
