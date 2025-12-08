@@ -1,0 +1,304 @@
+This session is being continued from a previous conversation that ran out of context. The conversation is summarized below:
+Analysis:
+Let me chronologically analyze this conversation to create a comprehensive summary:
+
+1. **Initial Context**: User noticed during ADR-PT04 implementation that they were building a custom frontmatter parser, then remembered the existing metadata module. This led to a realization that metadata is foundational infrastructure in TNH Scholar.
+
+2. **Big Picture Discussion**: User requested a 10,000 ft view of metadata in the codebase and how to incorporate it, specifically regarding ADR-PT04 and ADR-VSC02.
+
+3. **Metadata Architecture Discovery**: I provided comprehensive analysis showing:
+   - Metadata exists as `tnh_scholar.metadata` with Frontmatter, Metadata, ProcessMetadata
+   - ALL .md files in TNH Scholar use metadata (prompts, corpus, derivatives, docs)
+   - This makes the system "self-reflexive" - it operates on its own metadata-bearing artifacts
+   - Metadata should be horizontal infrastructure, not a service
+
+4. **Documentation Updates**: User requested documentation updates:
+   - ADR-PT04 addendum documenting as-built metadata integration
+   - ADR-OS01 update to include metadata in object-service architecture
+   - New ADR-MD02 for metadata object-service integration patterns
+   - Update object-service overview with metadata
+
+5. **AGENTLOG Entry**: User requested summary go in AGENTLOG instead of random summary file
+
+6. **Code Review Request**: User wanted to merge ADR-PT04 work to release/0.1.5, requested comprehensive code review including:
+   - Code implementation completeness
+   - Documentation status
+   - Testing
+   - Ruff/mypy checks
+   - PR readiness
+
+7. **Blocking Issue Found**: Review found missing CLI methods (`list_all()`, `introspect()`) in PromptsAdapter required for ADR-VSC02
+
+8. **Fix Applied**: Added the two missing methods with proper typing
+
+9. **PR Creation**: Created PR #11 initially targeting `main`, but user corrected that it should target `version-0.1.4`
+
+10. **Branching Strategy Discussion**: User revealed `main` is 266 commits behind, leading to discussion about:
+    - Tags vs release branches
+    - Post-merge cleanup strategy
+    - Establishing `main` as latest working code going forward
+
+11. **Safety First**: User requested dry-run before destructive git operations, then asked to update backup-main as safety measure
+
+**Key Files Modified**:
+- ADR-PT04: Added as-built addendum
+- ADR-OS01: Added Section 3.3 on metadata
+- ADR-MD02: New ADR created
+- object-service-design-overview.md: Updated layer diagram
+- PromptsAdapter: Added list_all() and introspect() methods
+- AGENTLOG.md: Added session entry
+- metadata.py: Minor docstring updates
+
+**Current State**: 
+- PR #11 created and retargeted to version-0.1.4
+- backup-main updated to current main as safety measure
+- Ready to proceed with post-merge cleanup once PR merges
+
+<summary>
+
+## 1. Primary Request and Intent
+
+**Initial Discovery Request**: User noticed while working on ADR-PT04 (TODO 19) that they were building a custom frontmatter parser, then realized the metadata module already exists. This led to a request for a "10k ft view on the codebase from the consideration of metadata and how to incorporate," specifically regarding ADR-PT04 and ADR-VSC02.
+
+**Documentation Request**: User wanted to:
+- Add metadata infrastructure documentation to object-service architecture (ADR-OS01)
+- Create new ADR-MD02 for metadata object-service integration
+- Update ADR-PT04 with as-built addendum
+- Update object-service overview document
+- Add entry to AGENTLOG (not random summary file)
+
+**Code Review & Merge Request**: User requested comprehensive code review of ADR-PT04 implementation for merge to release/0.1.5, including checking implementation completeness, documentation, tests, and code quality (ruff, mypy).
+
+**Git Workflow Clarification**: User wanted to establish proper branching strategy using tags instead of release branches, with safety measures before destructive git operations.
+
+## 2. Key Technical Concepts
+
+- **Metadata as Foundational Infrastructure**: Cross-cutting horizontal layer available to all object-service layers
+- **Self-Reflexive Design**: TNH Scholar operates on its own metadata-bearing .md files
+- **ADR-PT04 (Prompt System Refactor)**: Modular prompt_system package with object-service architecture
+- **ADR-OS01 (Object-Service Architecture V3)**: Layered architecture (domain/service/adapter/transport)
+- **ADR-MD02 (Metadata Object-Service Integration)**: Integration patterns for metadata usage
+- **Protocol-based design**: Using Python Protocols for clean contracts
+- **Mapper purity**: Pure functions with no I/O, reusing Frontmatter.extract()
+- **Two-step validation**: Infrastructure parsing (Frontmatter) → domain schema validation (Pydantic)
+- **Git workflow**: Tags for releases, temporary release branches, main as latest stable
+
+## 3. Files and Code Sections
+
+### `/Users/phapman/Desktop/Projects/tnh-scholar/src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`
+**Importance**: Core mapper implementation that demonstrates metadata infrastructure integration
+**Changes**: Uses existing `Frontmatter.extract()` instead of custom parsing
+```python
+from tnh_scholar.metadata.metadata import Frontmatter
+
+class PromptMapper:
+    def _split_frontmatter(self, content: str) -> tuple[dict[str, Any], str]:
+        """Split YAML front matter from markdown content using shared Frontmatter helper."""
+        cleaned = content.lstrip("\ufeff")  # Strip BOM if present
+        metadata_obj, body = Frontmatter.extract(cleaned)
+        metadata_raw = metadata_obj.to_dict() if metadata_obj else {}
+        if not metadata_raw:
+            raise ValueError("Prompt file missing or invalid YAML front matter.")
+        return metadata_raw, body.lstrip()
+```
+
+### `/Users/phapman/Desktop/Projects/tnh-scholar/src/tnh_scholar/gen_ai_service/pattern_catalog/adapters/prompts_adapter.py`
+**Importance**: Bridges GenAI service to new prompt_system, required CLI methods for ADR-VSC02
+**Changes**: Added `list_all()` and `introspect()` methods
+```python
+from tnh_scholar.prompt_system.domain.models import Prompt, PromptMetadata, RenderParams
+
+def list_all(self) -> list[PromptMetadata]:
+    """List all available prompts (ADR-VSC02 requirement for CLI/VS Code)."""
+    return list(self._catalog.list())
+
+def introspect(self, prompt_key: str) -> PromptMetadata:
+    """Get detailed metadata for a prompt (ADR-VSC02 requirement for CLI/VS Code)."""
+    prompt = self._catalog.get(prompt_key)
+    return prompt.metadata
+```
+
+### `/Users/phapman/Desktop/Projects/tnh-scholar/docs/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md`
+**Importance**: Main ADR documenting prompt system refactor
+**Changes**: Added "Addendum: As-Built Implementation Notes" section
+```markdown
+### 2025-12-07: Metadata Infrastructure Integration
+
+**Decision**: Rather than implementing custom frontmatter parsing in `PromptMapper`, we reused the existing metadata infrastructure.
+
+**Benefits Realized**:
+1. **No duplication**: Avoided reimplementing YAML frontmatter parsing logic
+2. **Consistent behavior**: All .md files in TNH Scholar (prompts, corpus, derivatives) use same parsing
+3. **Future-ready**: JSON-LD support available when needed for semantic prompt relationships
+4. **Provenance support**: `ProcessMetadata` ready for multi-stage prompt transformation tracking
+
+**Architectural Insight**: This implementation revealed that **metadata is foundational infrastructure** in TNH Scholar, not a service-specific concern.
+```
+
+### `/Users/phapman/Desktop/Projects/tnh-scholar/docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md`
+**Importance**: Core object-service architecture blueprint
+**Changes**: Added Section 3.3 "Foundational Infrastructure: Metadata"
+```markdown
+### 3.3 Foundational Infrastructure: Metadata
+
+**Note**: The metadata system (`tnh_scholar.metadata`) is a **cross-cutting foundational layer** that sits outside the standard service architecture but is available to all layers.
+
+#### Design Principles
+1. **Use Metadata, not dicts**: Replace `Dict[str, Any]` with `Metadata` for type safety and JSON guarantees
+2. **Reuse Frontmatter**: Never reimplement YAML frontmatter parsing; use `Frontmatter.extract()`
+3. **Track provenance**: Use `ProcessMetadata` for transformation chains
+4. **Domain validation**: Mappers use `Frontmatter.extract()`, then validate with domain schemas
+```
+
+### `/Users/phapman/Desktop/Projects/tnh-scholar/docs/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md`
+**Importance**: New ADR establishing metadata integration patterns
+**Created**: Complete new ADR with 4 integration patterns, compliance improvements, implementation plan
+
+### `/Users/phapman/Desktop/Projects/tnh-scholar/docs/architecture/object-service/object-service-design-overview.md`
+**Importance**: High-level architecture overview
+**Changes**: Updated layer diagram to show metadata as foundational infrastructure
+```text
+┌─────────────────────────────────────────────────────┐
+│  Foundational Infrastructure (Cross-Cutting)        │
+│  • tnh_scholar.metadata (Metadata, Frontmatter)     │
+│  • Available to ALL layers                          │
+└─────────────────────────────────────────────────────┘
+```
+
+### `/Users/phapman/Desktop/Projects/tnh-scholar/AGENTLOG.md`
+**Importance**: Session history tracking
+**Changes**: Added comprehensive session entry for 2025-12-07 metadata infrastructure work
+
+### `/Users/phapman/Desktop/Projects/tnh-scholar/src/tnh_scholar/metadata/metadata.py`
+**Importance**: Core metadata infrastructure
+**Changes**: Minor - added docstring clarifications for adapter-level helpers
+
+## 4. Errors and Fixes
+
+### Error 1: Ruff linting failures
+**Description**: Import ordering issues and unused imports
+```
+src/tnh_scholar/gen_ai_service/pattern_catalog/adapters/prompts_adapter.py:11:20: F401 [*] `typing.Any` imported but unused
+src/tnh_scholar/gen_ai_service/pattern_catalog/adapters/prompts_adapter.py:11:25: F401 [*] `typing.Dict` imported but unused
+```
+**Fix**: Applied `ruff check --fix` to auto-fix import issues
+**Outcome**: All ruff checks passing
+
+### Error 2: Mypy type checking error
+**Description**: `list_all()` returning Any type
+```
+src/tnh_scholar/gen_ai_service/pattern_catalog/adapters/prompts_adapter.py:113: error: Returning Any from function declared to return "list[Any]"  [no-any-return]
+```
+**Fix**: Changed `return self._catalog.list()` to `return list(self._catalog.list())`
+**Outcome**: Mypy type checking clean
+
+### Error 3: PR targeted wrong branch
+**Description**: Initial PR #11 created targeting `main`, but user's workflow uses `version-0.1.4` branch
+**User Feedback**: "whoops, that's merging to main; I have only been merging to the version branch version-0.1.4"
+**Fix**: Used `gh pr edit 11 --base version-0.1.4` to retarget PR
+**Outcome**: PR now correctly targets version-0.1.4 branch
+
+### Error 4: Bash command syntax errors with pipes
+**Description**: Multiple bash commands failed with grep/wc errors when using pipes in echo statements
+**Fix**: Simplified commands to use printf instead of complex echo | pipe chains
+**Outcome**: Commands executed successfully
+
+## 5. Problem Solving
+
+### Problem 1: Metadata Duplication Discovery
+**Issue**: During ADR-PT04 implementation, discovered code was reimplementing YAML frontmatter parsing that already exists in metadata module
+**Solution**: Refactored `PromptMapper` to use `Frontmatter.extract()` from existing infrastructure
+**Impact**: Led to broader architectural insight about metadata as foundational infrastructure
+
+### Problem 2: Missing CLI Integration Methods
+**Issue**: Code review revealed `PromptsAdapter` missing `list_all()` and `introspect()` methods required by ADR-VSC02
+**Solution**: Added both methods as simple delegations to catalog:
+```python
+def list_all(self) -> list[PromptMetadata]:
+    return list(self._catalog.list())
+
+def introspect(self, prompt_key: str) -> PromptMetadata:
+    prompt = self._catalog.get(prompt_key)
+    return prompt.metadata
+```
+**Impact**: Unblocked PR for merge
+
+### Problem 3: Git Workflow Confusion
+**Issue**: User had been using `version-0.1.4` as working branch, but `main` was 229 commits behind
+**Solution**: Established new workflow:
+- Tags (`v0.1.5`) preserve release points
+- Release branches (`version-0.1.4`) are temporary, deleted after merge + tag
+- `main` becomes latest stable going forward
+**Impact**: Clearer git workflow for future development
+
+## 6. All User Messages
+
+1. "noticing another 'hmmm interesting' moment while working on adr-pt04 (TODO 19). We were building our own frontmatter parser, then I remembered the metadata module that's already been written..."
+
+2. "ok, we refactored development code for adr-pt04 to use metadata frontmatter (check that pls). we can update the adr-pt04 with an addendum as-built discussing this change. let's also add the new section to object-service..."
+
+3. "oh, that's just a summary doc; instead of creating that somewhat random file, let's add the info to the AGENTLOG."
+
+4. "ok, this is where i'm at: the main push for adr-pt04 has been implemented... my thought: check in and merge adr-pt04 work on prompt system branch (current)... sound good? if so, can you do a code review..."
+
+5. "I don't want you to make code changes; if there's work to do, just create a short concise task list. go for minimal info to flag issue."
+
+6. "oh, ok. it's just a few lines of code. go ahead and patch."
+
+7. "Good news! I've now installed gh so you can directly build the PR!"
+
+8. "whoops, that's merging to main; I have only been merging to the version branch version-0.1.4. perhaps that's not standard? yikes. currently main is 266 commits behind... I may need a cleanup strategy."
+
+9. "ah. so to 'go back in time to former release' I just use the tag; the branch serves no useful purpose after PR closed and merged to main? accurate? if so, let's adopt that and note it in the release_checklist perhaps?"
+
+10. "ok. let's go. we should be careful around git reset hard and git push --force; perhaps we run these dry first and you show me the output before proceeding?"
+
+11. "ok, should we reset backup-main to be current with existing main, so we have a backup if catastrophe?"
+
+## 7. Pending Tasks
+
+1. **Merge PR #11** (User action via GitHub UI)
+2. **Post-merge release workflow**:
+   - Tag v0.1.5 from version-0.1.4
+   - Reset main to version-0.1.4 (with user approval)
+   - Force push main (with user approval)
+   - Delete version-0.1.4 branch (with user approval)
+3. **Future follow-ups** (deferred):
+   - Add missing docstrings (5 adapter methods)
+   - Migrate `srt_translate` CLI tool to new prompt system
+   - Delete legacy `ai_text_processing/prompts.py`
+   - Refactor metadata module error handling (typed exceptions vs logging)
+
+## 8. Current Work
+
+**Immediately before summary request**, I was executing a safety backup operation:
+
+```bash
+# Updated backup-main to current main state
+git branch -f backup-main main
+git push origin backup-main --force
+```
+
+**Result**: Successfully updated backup-main from commit `33e48b1` to `90f64cb` (current main), providing safety rollback option before proceeding with destructive git operations.
+
+**Context**: This was the final safety measure before proceeding with the post-merge workflow that will:
+1. Tag v0.1.5 after PR #11 merges
+2. Reset main to version-0.1.4
+3. Force push main
+4. Delete version-0.1.4 branch
+
+**Status**: 
+- ✅ PR #11 created: https://github.com/aaronksolomon/tnh-scholar/pull/11
+- ✅ PR retargeted to version-0.1.4 branch
+- ✅ All tests passing (16 tests)
+- ✅ All quality checks passing (ruff, mypy, pytest)
+- ✅ backup-main updated as safety measure
+- ⏸️ Awaiting user to merge PR #11 via GitHub UI
+
+## 9. Optional Next Step
+
+**Next step**: Wait for user to merge PR #11 via GitHub, then proceed with Step 2 (tagging v0.1.5).
+
+**Direct quote from conversation**:
+User: "ok. let's go. we should be careful around git reset hard and git push --force; perhaps we run these dry first and you show me the output before proceeding?".
+Please continue the conversation from where we left it off without asking the user any further questions. Continue with the last task that you were asked to work on.
