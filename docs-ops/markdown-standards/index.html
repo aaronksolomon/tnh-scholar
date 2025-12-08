@@ -6157,6 +6157,8 @@
       
         
       
+        
+      
     
     
     
@@ -6360,6 +6362,34 @@
   
   
     <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/release-workflow/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release Workflow
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
   
 
   
@@ -7381,13 +7411,18 @@
 <h2 id="content-guidelines">Content Guidelines<a class="headerlink" href="#content-guidelines" title="Link to this section">&para;</a></h2>
 <ul>
 <li>Use fenced code blocks with language hints (```bash, ```python, ```yaml, etc.).</li>
-<li>Prefer relative links (<code>[Getting Started](/getting-started/installation.md)</code>) over absolute URLs inside the repo.</li>
+<li><strong>Link Format</strong>: Use absolute paths from the docs root (<code>/path/to/file.md</code>), <strong>not</strong> relative paths with <code>../</code>.</li>
+<li>✅ Correct: <code>[Architecture Overview](/architecture/overview.md)</code></li>
+<li>✅ Correct: <code>[Release Workflow](/development/release-workflow.md)</code></li>
+<li>❌ Wrong: <code>[Overview](../architecture/overview.md)</code> - relative parent references not allowed</li>
+<li>❌ Wrong: <code>[Workflow](../../development/release-workflow.md)</code> - relative parent references not allowed</li>
+<li>Note: External URLs (<code>https://...</code>) are fine for external references</li>
 <li>Tables should include header separators (<code>| --- |</code>) so markdownlint can validate alignment.</li>
 <li>When embedding lists, keep them short and use parallel grammar. Use numbered lists only when order matters.</li>
 <li>Reference other documents via their kebab-case paths (matching the naming rule).</li>
 <li><strong>Directory links</strong>: MkDocs resolves pages, not bare folders. Do not link to a directory path (<code>[Architecture](architecture/)</code>). Instead:</li>
-<li>Link to a specific page (e.g., <code>[Architecture Overview](architecture/overview.md)</code>), or</li>
-<li>Add an <code>index.md</code> in that directory and link to it (<code>architecture/index.md</code>).</li>
+<li>Link to a specific page (e.g., <code>[Architecture Overview](/architecture/overview.md)</code>), or</li>
+<li>Add an <code>index.md</code> in that directory and link to it (<code>/architecture/index.md</code>).</li>
 <li><code>README.md</code> inside a folder is <em>not</em> treated as a landing page by MkDocs; prefer <code>index.md</code> for folder entry points.</li>
 </ul>
 <h2 id="linting-automation">Linting &amp; Automation<a class="headerlink" href="#linting-automation" title="Link to this section">&para;</a></h2>
