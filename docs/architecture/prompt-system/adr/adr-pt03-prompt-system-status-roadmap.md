@@ -162,7 +162,7 @@ Future enhancements will preserve these principles while adding:
 ### Current Documentation
 - [Prompt System User Guide](/user-guide/prompt-system.md)
 - [Prompt System Overview](/getting-started/quick-start-guide.md)
-- [Configuration Guide](/getting-started/configuration.md#prompt-configuration)
+- [Configuration Guide](/getting-started/configuration.md)
 
 ### Related ADRs
 - [ADR-DD03: Pattern to Prompt Terminology Standardization](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md) - Documentation terminology shift

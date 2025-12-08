@@ -12,7 +12,7 @@ Research documents/notes and experiments across the project. Includes initial fe
 
 Key starting points:
 
-- [TNH Scholar Knowledge Base: Design Document](kb-design-document.md)
-- [Summary Report on Metadata Extraction, Source Parsing, and Model Training](metadata-summary-report.md)
-- [Preliminary Feasibility Study](preliminary-feasibility-study.md)
-- [Structural-Informed Adaptive Processing (SIAP) Methodology](siap-methodology.md)
+- [TNH Scholar Knowledge Base: Design Document](/research/kb-design-document.md)
+- [Summary Report on Metadata Extraction, Source Parsing, and Model Training](/research/metadata-summary-report.md)
+- [Preliminary Feasibility Study](/research/preliminary-feasibility-study.md)
+- [Structural-Informed Adaptive Processing (SIAP) Methodology](/research/siap-methodology.md)

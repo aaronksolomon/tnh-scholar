@@ -4,7 +4,7 @@ description: "Table of contents for architecture/prompt-system"
 owner: ""
 author: ""
 status: processing
-created: "2025-12-04"
+created: "2025-12-08"
 auto_generated: true
 ---
 
@@ -12,13 +12,13 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
 
-**[Prompt System Architecture](prompt-system-architecture.md)** - Current and planned architecture for the TNH Scholar prompt system, including VS Code integration and PromptCatalog service design.
+**[Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)** - Current and planned architecture for the TNH Scholar prompt system, including VS Code integration and PromptCatalog service design.
 
-**[Adr](adr/index.md)** - Table of contents for architecture/prompt-system/adr
+**[Adr](/architecture/prompt-system/adr/index.md)** - Table of contents for architecture/prompt-system/adr
 
-**[Archive](archive/index.md)** - Table of contents for architecture/prompt-system/archive
+**[Archive](/architecture/prompt-system/archive/index.md)** - Table of contents for architecture/prompt-system/archive
 
 ---
 

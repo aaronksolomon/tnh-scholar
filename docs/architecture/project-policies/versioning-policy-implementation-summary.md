@@ -10,7 +10,7 @@ This document summarizes the documentation updates made to clarify TNH Scholar's
 
 ## Background
 
-[ADR-PP01](adr/adr-pp01-rapid-prototype-versioning.md) (Rapid Prototype Versioning Policy) establishes that breaking changes are acceptable in ANY 0.x release, including patch versions. This enables fast iteration and architectural improvements (e.g., [ADR-PT04](../prompt-system/adr/adr-pt04-prompt-system-refactor.md) prompt system refactor).
+[ADR-PP01](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) (Rapid Prototype Versioning Policy) establishes that breaking changes are acceptable in ANY 0.x release, including patch versions. This enables fast iteration and architectural improvements (e.g., [ADR-PT04](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md) prompt system refactor).
 
 This deviates from typical semver expectations where 0.x patch bumps avoid breaking changes. To prevent confusion, we've documented this policy explicitly across all key entry points where developers encounter the project.
 
@@ -184,9 +184,9 @@ To verify policy is discoverable:
 
 This documentation work directly supports:
 
-- [ADR-PP01](adr/adr-pp01-rapid-prototype-versioning.md) - Rapid prototype versioning policy
-- [ADR-PT04](../prompt-system/adr/adr-pt04-prompt-system-refactor.md) - Prompt system refactor with breaking changes
-- [ADR-OS01](../object-service/adr/adr-os01-object-service-architecture-v3.md) - Object-service architecture (breaking refactors needed)
+- [ADR-PP01](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) - Rapid prototype versioning policy
+- [ADR-PT04](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md) - Prompt system refactor with breaking changes
+- [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md) - Object-service architecture (breaking refactors needed)
 - Future rapid prototype refactors during 0.x phase
 
 ## Conclusion

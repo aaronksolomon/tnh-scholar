@@ -15,7 +15,7 @@ Retire the monolithic pattern-era prompt code and replace it with a modular, obj
 - **Date**: 2025-12-05 (Updated: 2025-12-06)
 - **Owner**: TNH Scholar Architecture Working Group
 - **Authors**: Codex (GPT-5), Aaron Solomon, Claude Sonnet 4.5
-- **Related**: [ADR-PT03](adr-pt03-prompt-system-status-roadmap.md), [ADR-A12](/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md), [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md), [ADR-VSC02](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md), [TODO](/project/repo-root/todo-list.md)
+- **Related**: [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md), [ADR-A12](/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md), [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md), [ADR-VSC02](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md), [TODO](/project/repo-root/todo-list.md)
 
 ---
 
@@ -1192,6 +1192,39 @@ class PromptMapper:
 **Architectural Insight**: This implementation revealed that **metadata is foundational infrastructure** in TNH Scholar, not a service-specific concern. Prompts are just one type of .md file with metadata; corpus documents, derivative data, and documentation all share this pattern. See ADR-MD02 for metadata's role in the object-service architecture.
 
 **Related**: [ADR-MD01](/architecture/metadata/adr/adr-md01-json-ld-metadata.md), [ADR-MD02](/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md), [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
+
+---
+
+### 2025-12-07: Incomplete `tnh-gen` CLI Integration and Dependencies
+
+**Context**: Section 8.2 ("Integration with `tnh-gen` CLI") describes the CLI variable mapping and command structure, but implementation was deferred due to broader architectural dependencies.
+
+**Decision**: The `tnh-gen` CLI implementation and `ai_text_processing` refactor are tracked in separate ADR series:
+
+- **ADR-TG01** ([CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)): Core `tnh-gen` CLI design (commands, error handling, configuration)
+- **ADR-TG02** ([Prompt Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)): CLI ↔ prompt system integration (implements PT04 §8.2)
+- **ADR-AT03** ([AI Text Processing Refactor](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md)): Comprehensive 3-tier refactor:
+  - Tier 1: Object-service compliance (ADR-OS01, ADR-AT01)
+  - Tier 2: GenAIService integration (ADR-A13)
+  - Tier 3: Prompt system integration (ADR-PT04)
+
+**Rationale**:
+
+1. **Scope Separation**: `tnh-gen` is a standalone CLI tool consuming multiple refactored systems
+2. **Dependency Complexity**: CLI requires completed `ai_text_processing` refactor (AT03) before full implementation
+3. **Domain Ownership**: Text processing refactor belongs in `ai-text-processing/adr/` series, not `tnh-gen/`
+4. **Parallel Development**: Enables prompt system refinement while dependent systems mature
+
+**Status**:
+
+- ✅ Section 8.2 variable mapping design is **complete** and authoritative for ADR-TG02
+- ✅ `PromptsAdapter.list_all()` and `introspect()` methods are **implemented**
+- ⏳ CLI implementation blocked pending ADR-AT03 (ai_text_processing refactor)
+- ⏳ `tnh-fab` remains active until ADR-TG01/TG02 implementation complete
+
+**Migration Path**: Once ADR-TG01/TG02/AT03 are implemented, `tnh-fab` will be deprecated and archived under `docs/architecture/tnh-gen/design/archive/`.
+
+**Related**: [ADR-VSC02](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md), [ADR-AT03](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md), [ADR-TG01](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md), [ADR-TG02](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)
 
 ---
 

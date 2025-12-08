@@ -2,7 +2,7 @@ PYTHON_VERSION = 3.12.4
 POETRY        = poetry
 LYCHEE        = lychee
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell link-check docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell link-check docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -39,9 +39,18 @@ docs-generate: docs-validate
 	$(POETRY) run python scripts/sync_root_docs.py
 	$(POETRY) run python scripts/generate_index_md.py
 	$(POETRY) run python scripts/generate_doc_index.py
-	$(POETRY) run python scripts/generate_cli_docs.py
 
-docs-build: docs-generate
+docs-links:
+	@echo "Auto-fixing unambiguous documentation links..."
+	$(POETRY) run python scripts/verify_doc_links.py --apply
+	@echo "Verifying documentation links..."
+	$(POETRY) run python scripts/verify_doc_links.py
+
+docs-links-apply:
+	@echo "Auto-fixing unambiguous documentation links..."
+	$(POETRY) run python scripts/verify_doc_links.py --apply
+
+docs-build: docs-generate docs-links
 	@echo "Building MkDocs site..."
 	$(POETRY) run mkdocs build --strict
 
@@ -66,6 +75,7 @@ docs: docs-verify
 
 docs-quickcheck: docs-generate
 	@echo "Running docs quickcheck (strict build, links, spelling)..."
+	$(MAKE) docs-links
 	$(POETRY) run mkdocs build --strict
 	$(MAKE) link-check
 	$(MAKE) codespell

@@ -12,12 +12,12 @@ TNH Scholar provides a suite of command-line tools designed to work together for
 
 ## Available tools
 
-- **[audio-transcribe](audio-transcribe.md)** – Transcribe audio files with diarization
-- **[nfmt](nfmt.md)** – Normalize and format text files
-- **[tnh-fab](tnh-fab.md)** – Pattern-driven text processing and translation
-- **[tnh-setup](tnh-setup.md)** – Environment setup helper
-- **[token-count](token-count.md)** – Token estimation utility
-- **[ytt-fetch](ytt-fetch.md)** – YouTube transcript fetcher
+- **[audio-transcribe](/cli-reference/audio-transcribe.md)** – Transcribe audio files with diarization
+- **[nfmt](/cli-reference/nfmt.md)** – Normalize and format text files
+- **[tnh-fab](/cli-reference/tnh-fab.md)** – Pattern-driven text processing and translation
+- **[tnh-setup](/cli-reference/tnh-setup.md)** – Environment setup helper
+- **[token-count](/cli-reference/token-count.md)** – Token estimation utility
+- **[ytt-fetch](/cli-reference/ytt-fetch.md)** – YouTube transcript fetcher
 
 ## TNH-FAB
 

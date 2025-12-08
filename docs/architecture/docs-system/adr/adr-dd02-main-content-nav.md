@@ -14,7 +14,7 @@ Establishes how README.md and docs/index.md relate, defines content inclusion pa
 - **Date**: 2025-11-23
 - **Owner**: Documentation Working Group
 - **Supersedes**: None
-- **Related**: [ADR-DD01: Documentation System Reorganization Strategy](adr-dd01-docs-reorg-strategy.md)
+- **Related**: [ADR-DD01: Documentation System Reorganization Strategy](/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
 
 ## Context
 
@@ -438,7 +438,7 @@ Phase 1 accepts controlled duplication with drift monitoring. When duplication b
 - **TODO Reference**: TODO #9 (Documentation Reorganization, ADR-DD01), Part 3b
 - **Implementation Tracking**: GitHub issues tagged `docs` + `adr-dd02`
 - **Related ADRs**:
-- [ADR-DD01](adr-dd01-docs-reorg-strategy.md): Documentation System Reorganization Strategy (accepted)
+- [ADR-DD01](/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md): Documentation System Reorganization Strategy (accepted)
   - **ADR-DD03**: Content Reuse and Inclusion Strategies (future - Phase 2)
   - **ADR-DD04**: Documentation Generation and Templating (future - Phase 3, if needed)
 - **Review Cycle**: Reassess Phase 2 transition 6 months post-beta or when 10+ instances of complex content duplication observed

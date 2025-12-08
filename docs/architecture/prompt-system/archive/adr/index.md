@@ -4,7 +4,7 @@ description: "Table of contents for architecture/prompt-system/archive/adr"
 owner: ""
 author: ""
 status: processing
-created: "2025-12-04"
+created: "2025-12-08"
 auto_generated: true
 ---
 

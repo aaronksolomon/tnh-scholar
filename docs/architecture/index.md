@@ -4,7 +4,7 @@ description: "Table of contents for architecture"
 owner: ""
 author: ""
 status: processing
-created: "2025-12-04"
+created: "2025-12-08"
 auto_generated: true
 ---
 
@@ -12,41 +12,43 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
 
-**[Architecture Overview](overview.md)** - High-level conceptual view of TNH Scholar's layered, object-service oriented architecture with links to detailed design documents and ADRs.
+**[Architecture Overview](/architecture/overview.md)** - High-level conceptual view of TNH Scholar's layered, object-service oriented architecture with links to detailed design documents and ADRs.
 
-**[Ai Text Processing](ai-text-processing/index.md)** - Table of contents for architecture/ai-text-processing
+**[Ai Text Processing](/architecture/ai-text-processing/index.md)** - Table of contents for architecture/ai-text-processing
 
-**[Configuration](configuration/index.md)** - Table of contents for architecture/configuration
+**[Configuration](/architecture/configuration/index.md)** - Table of contents for architecture/configuration
 
-**[Docs System](docs-system/index.md)** - Table of contents for architecture/docs-system
+**[Docs System](/architecture/docs-system/index.md)** - Table of contents for architecture/docs-system
 
-**[Gen Ai Service](gen-ai-service/index.md)** - Table of contents for architecture/gen-ai-service
+**[Gen Ai Service](/architecture/gen-ai-service/index.md)** - Table of contents for architecture/gen-ai-service
 
-**[Jvb Viewer](jvb-viewer/index.md)** - Table of contents for architecture/jvb-viewer
+**[Jvb Viewer](/architecture/jvb-viewer/index.md)** - Table of contents for architecture/jvb-viewer
 
-**[Knowledge Base](knowledge-base/index.md)** - Table of contents for architecture/knowledge-base
+**[Knowledge Base](/architecture/knowledge-base/index.md)** - Table of contents for architecture/knowledge-base
 
-**[Metadata](metadata/index.md)** - Table of contents for architecture/metadata
+**[Metadata](/architecture/metadata/index.md)** - Table of contents for architecture/metadata
 
-**[Object Service](object-service/index.md)** - Table of contents for architecture/object-service
+**[Object Service](/architecture/object-service/index.md)** - Table of contents for architecture/object-service
 
-**[Prompt System](prompt-system/index.md)** - Table of contents for architecture/prompt-system
+**[Project Policies](/architecture/project-policies/index.md)** - Cross-cutting architectural policies and decisions affecting the entire TNH Scholar codebase
 
-**[Setup Tnh](setup-tnh/index.md)** - Table of contents for architecture/setup-tnh
+**[Prompt System](/architecture/prompt-system/index.md)** - Table of contents for architecture/prompt-system
 
-**[Tnh Fab](tnh-fab/index.md)** - Table of contents for architecture/tnh-fab
+**[Setup Tnh](/architecture/setup-tnh/index.md)** - Table of contents for architecture/setup-tnh
 
-**[Transcription](transcription/index.md)** - Table of contents for architecture/transcription
+**[TNH-Gen CLI](/architecture/tnh-gen/index.md)** - Unified command-line interface for TNH Scholar GenAI operations
 
-**[Ui Ux](ui-ux/index.md)** - Table of contents for architecture/ui-ux
+**[Transcription](/architecture/transcription/index.md)** - Table of contents for architecture/transcription
 
-**[Utilities](utilities/index.md)** - Table of contents for architecture/utilities
+**[Ui Ux](/architecture/ui-ux/index.md)** - Table of contents for architecture/ui-ux
 
-**[Video Processing](video-processing/index.md)** - Table of contents for architecture/video-processing
+**[Utilities](/architecture/utilities/index.md)** - Table of contents for architecture/utilities
 
-**[Ytt Fetch](ytt-fetch/index.md)** - Table of contents for architecture/ytt-fetch
+**[Video Processing](/architecture/video-processing/index.md)** - Table of contents for architecture/video-processing
+
+**[Ytt Fetch](/architecture/ytt-fetch/index.md)** - Table of contents for architecture/ytt-fetch
 
 ---
 

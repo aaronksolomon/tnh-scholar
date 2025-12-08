@@ -173,7 +173,7 @@ make changelog-draft
 
 **Example output**:
 
-```
+```text
 📝 Generating CHANGELOG entry from git history...
 
 ## [0.1.5] - 2025-12-06
@@ -331,7 +331,7 @@ make release-publish
 
 **Example output**:
 
-```
+```text
 📝 Preparing README for PyPI (stripping YAML frontmatter)...
 ✓ Backed up README.md to /path/to/README.md.bak
 ✓ Stripped 443 bytes of frontmatter from README.md

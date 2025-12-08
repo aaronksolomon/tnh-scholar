@@ -80,8 +80,8 @@ Visit these pages to see theme in action:
 - [Index](/index.md) - Hero content and overview
 - [Architecture Overview](/architecture/overview.md) - Technical content with code
 - [Quick Start Guide](/getting-started/quick-start-guide.md) - User-facing docs
-- [Theme Design](theme-design.md) - Color palette showcase
-- [ADR Template](adr-template.md) - Structured document format
+- [Theme Design](/docs-ops/theme-design.md) - Color palette showcase
+- [ADR Template](/docs-ops/adr-template.md) - Structured document format
 
 ## Customization
 

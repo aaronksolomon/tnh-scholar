@@ -14,7 +14,7 @@ Architectural patterns, design philosophy, and system organization principles fo
 
 This document establishes design principles for the TNH Scholar project. While the project is currently in a rapid prototyping phase, these guidelines aim to maintain architectural quality and consistency throughout development. The guide distinguishes between immediate prototyping requirements and standards for later production phases where appropriate.
 
-For code formatting and naming conventions, see [Style Guide](style-guide.md). For high-level project philosophy and vision, see [Project Principles](/project/principles.md) and [Conceptual Architecture](/project/conceptual-architecture.md).
+For code formatting and naming conventions, see [Style Guide](/development/style-guide.md). For high-level project philosophy and vision, see [Project Principles](/project/principles.md) and [Conceptual Architecture](/project/conceptual-architecture.md).
 
 ## Core Design Philosophy
 
@@ -232,7 +232,7 @@ class ProcessingResult:
 - Enums replace string literals for identifiers
 - Adapters handle dict conversions **only at API transport boundaries**
 
-See [Style Guide: Strong Typing Standards](style-guide.md#strong-typing-standards) for details.
+See [Style Guide: Strong Typing Standards](/development/style-guide.md) for details.
 
 ### Separation of Data and Logic
 
@@ -281,7 +281,7 @@ During prototyping, **fail fast** to identify issues early:
 - Let stack traces propagate for debugging
 - Add TODO comments for future error handling
 
-See [Style Guide: Error Handling](style-guide.md#error-handling) for implementation details.
+See [Style Guide: Error Handling](/development/style-guide.md) for implementation details.
 
 ## Processing Architecture
 
@@ -489,12 +489,12 @@ See [Future Directions](/project/future-directions.md) for long-term vision.
 
 ## Related Documentation
 
-- [Style Guide](style-guide.md) - Code formatting and naming conventions
+- [Style Guide](/development/style-guide.md) - Code formatting and naming conventions
 - [Object-Service Design Blueprint](/architecture/object-service/object-service-design-overview.md) - Detailed architecture patterns
-- [System Design](system-design.md) - High-level system architecture
+- [System Design](/development/system-design.md) - High-level system architecture
 - [Project Principles](/project/principles.md) - High-level project principles
 - [Conceptual Architecture](/project/conceptual-architecture.md) - Conceptual system model
-- [Contributing Guide](contributing-prototype-phase.md) - Contribution workflow
+- [Contributing Guide](/development/contributing-prototype-phase.md) - Contribution workflow
 
 ## References
 

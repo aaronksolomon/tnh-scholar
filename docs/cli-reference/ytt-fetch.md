@@ -1,21 +1,38 @@
 ---
 title: "ytt-fetch"
-description: "CLI reference for ytt-fetch"
+description: "(Y)ou(T)ube (T)ranscript-(Fetch)ing utility."
 owner: ""
 author: ""
-status: auto_generated
-created: "2025-12-06"
-auto_generated: true
+status: processing
+created: "2025-01-21"
 ---
-
 # ytt-fetch
 
-For full command-line help, run:
+(Y)ou(T)ube (T)ranscript-(Fetch)ing utility.
+
+## Usage
 
 ```bash
-poetry run ytt-fetch --help
+ytt-fetch [OPTIONS] URL
 ```
 
-## Location
+## Options
 
-`src/tnh_scholar/cli_tools/ytt_fetch/`
+```plaintext
+-l, --lang TEXT     Language code for transcript (default: en)
+-o, --output PATH   Save transcript text to file
+```
+
+## Examples
+
+### Download English Transcript
+
+```bash
+ytt-fetch "https://youtube.com/watch?v=example" -l en -o transcript.txt
+```
+
+### Print Transcript to Console
+
+```bash
+ytt-fetch "https://youtube.com/watch?v=example"
+```

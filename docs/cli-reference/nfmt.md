@@ -1,21 +1,45 @@
 ---
 title: "nfmt"
-description: "CLI reference for nfmt"
+description: "`nfmt`, a newline formatting utility, standardizes line endings and spacing in text files."
 owner: ""
 author: ""
-status: auto_generated
-created: "2025-12-06"
-auto_generated: true
+status: processing
+created: "2025-02-01"
 ---
-
 # nfmt
 
-For full command-line help, run:
+`nfmt`, a newline formatting utility, standardizes line endings and spacing in text files.
+
+## Usage
 
 ```bash
-poetry run nfmt --help
+nfmt [OPTIONS] [INPUT_FILE]
 ```
 
-## Location
+## Options
 
-`src/tnh_scholar/cli_tools/nfmt/`
+```bash
+-s, --spacing INTEGER  Number of newlines between paragraphs (default: 1)
+-o, --output PATH     Output file (default: stdout)
+```
+
+## Examples
+
+### Basic Usage
+
+```bash
+# Format with single newline spacing
+nfmt input.txt > formatted.txt
+
+# Format with double spacing
+nfmt -s 2 input.txt > formatted.txt
+
+# Process from stdin
+cat input.txt | nfmt > formatted.txt
+```
+
+## Common Use Cases
+
+- Standardizing line endings before processing
+- Preparing text for pattern-based processing
+- Cleaning up transcribed text

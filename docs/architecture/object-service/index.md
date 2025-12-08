@@ -4,7 +4,7 @@ description: "Table of contents for architecture/object-service"
 owner: ""
 author: ""
 status: processing
-created: "2025-12-04"
+created: "2025-12-08"
 auto_generated: true
 ---
 
@@ -12,13 +12,15 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
 
-**[Object-Service Design Overview](object-service-design-overview.md)** - High-level overview of TNH Scholar's layered architecture for complex objects and API-backed services.
+**[Object-Service Design Gaps](/architecture/object-service/object-service-design-gaps.md)** - Gaps, resolved items, and outstanding work needed to fully satisfy the Object-Service design blueprint.
 
-**[Object-Service Implementation Status](object-service-implementation-status.md)** - Implementation status, resolved gaps, and outstanding work for the Object-Service design architecture.
+**[Object-Service Design Overview](/architecture/object-service/object-service-design-overview.md)** - High-level overview of TNH Scholar's layered architecture for complex objects and API-backed services.
 
-**[Adr](adr/index.md)** - Table of contents for architecture/object-service/adr
+**[Object-Service Implementation Status](/architecture/object-service/object-service-implementation-status.md)** - Implementation status, resolved gaps, and outstanding work for the Object-Service design architecture.
+
+**[Adr](/architecture/object-service/adr/index.md)** - Table of contents for architecture/object-service/adr
 
 ---
 
