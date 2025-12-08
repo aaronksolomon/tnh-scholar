@@ -5,6 +5,7 @@ owner: ""
 author: "Aaron Solomon, OpenAI GPT-5, Anthropic Claude Sonnet 4.5"
 status: accepted
 created: "2025-10-24"
+updated: "2025-12-07"
 ---
 # ADR-OS01: Object-Service Design Architecture V3
 
@@ -158,6 +159,98 @@ Dependencies flow inward: `Application → Service → Port → (Adapter → Map
 - Domain → Infrastructure
 - Models → Services
 - Ports → Implementations
+
+---
+
+### 3.3 Foundational Infrastructure: Metadata
+
+**Note**: The metadata system (`tnh_scholar.metadata`) is a **cross-cutting foundational layer** that sits outside the standard service architecture but is available to all layers.
+
+#### Metadata System Components
+
+```python
+# tnh_scholar.metadata (foundational infrastructure)
+from tnh_scholar.metadata import Metadata, Frontmatter, ProcessMetadata
+
+# Used across all layers:
+# - Domain: Metadata as typed dict alternative
+# - Mappers: Frontmatter.extract() for .md files
+# - Services: ProcessMetadata for transformation tracking
+# - Transport: Metadata.to_dict() for JSON serialization
+```
+
+#### Core Classes
+
+| Class | Purpose | Usage Pattern |
+|-------|---------|---------------|
+| `Metadata` | JSON-serializable dict-like container | Replace `Dict[str, Any]` for metadata storage |
+| `Frontmatter` | YAML frontmatter extraction/embedding | Parse/embed metadata in .md files |
+| `ProcessMetadata` | Transformation provenance tracking | Record processing steps in pipelines |
+
+#### Integration with Object-Service Layers
+
+**Mappers**:
+
+```python
+# mappers/prompt_mapper.py
+from tnh_scholar.metadata import Frontmatter
+
+class PromptMapper:
+    def to_domain_prompt(self, file_content: str) -> Prompt:
+        # Use Frontmatter for consistent .md parsing
+        metadata_obj, body = Frontmatter.extract(file_content)
+        # Validate against domain schema
+        prompt_metadata = PromptMetadata.model_validate(metadata_obj.to_dict())
+        return Prompt(metadata=prompt_metadata, template=body)
+```
+
+**Domain Models**:
+
+```python
+# Use Metadata instead of Dict[str, Any]
+from tnh_scholar.metadata import Metadata
+
+class DocumentResult(BaseModel):
+    content: str
+    metadata: Metadata  # Type-safe, JSON-serializable
+```
+
+**Provenance Tracking**:
+
+```python
+# services/pipeline.py
+from tnh_scholar.metadata import ProcessMetadata
+
+def process_document(doc: Document) -> Document:
+    result = transform(doc)
+    # Track transformation
+    result.metadata.add_process_info(
+        ProcessMetadata(
+            step="translation",
+            processor="genai_service",
+            tool="gpt-4o",
+            source_lang="vi",
+            target_lang="en"
+        )
+    )
+    return result
+```
+
+#### Design Principles
+
+1. **Use Metadata, not dicts**: Replace `Dict[str, Any]` with `Metadata` for type safety and JSON guarantees
+2. **Reuse Frontmatter**: Never reimplement YAML frontmatter parsing; use `Frontmatter.extract()`
+3. **Track provenance**: Use `ProcessMetadata` for transformation chains
+4. **Domain validation**: Mappers use `Frontmatter.extract()`, then validate with domain schemas (e.g., `PromptMetadata`)
+
+#### Relationship to Services
+
+- **Not a service**: Metadata is infrastructure, not a service with ports/adapters
+- **Available everywhere**: All layers can import and use metadata utilities
+- **No protocols needed**: Pure utility classes with no external dependencies
+- **Self-reflexive**: System can operate on its own metadata (prompts, docs, corpus)
+
+**See Also**: [ADR-MD01](/architecture/metadata/adr/adr-md01-json-ld-metadata.md) (JSON-LD strategy), [ADR-MD02](/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md) (integration patterns)
 
 ---
 

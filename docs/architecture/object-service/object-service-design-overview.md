@@ -27,6 +27,13 @@ This document provides a high-level introduction to the Object-Service design pa
 ## Architectural Layers
 
 ```text
+┌─────────────────────────────────────────────────────┐
+│  Foundational Infrastructure (Cross-Cutting)        │
+│  • tnh_scholar.metadata (Metadata, Frontmatter)     │
+│  • Available to ALL layers                          │
+└─────────────────────────────────────────────────────┘
+                         │
+                         ▼
 Application Layer (CLI, notebooks, web, Streamlit)
   └─ Orchestrators (thin): <Feature>Processor, ResultWriter
         ▲
@@ -44,6 +51,16 @@ Transport Layer
   └─ VendorClient  (upload/start/status/poll, retries, rate-limit)
      JobPoller     (backoff, jitter, deadline)
 ```
+
+### Foundational Infrastructure: Metadata
+
+The **metadata system** (`tnh_scholar.metadata`) is a cross-cutting foundational layer available to all service layers:
+
+- **`Metadata`**: JSON-serializable dict-like container (replaces `Dict[str, Any]`)
+- **`Frontmatter`**: YAML frontmatter extraction/embedding for .md files
+- **`ProcessMetadata`**: Transformation provenance tracking
+
+**Usage Pattern**: Mappers use `Frontmatter.extract()` to parse .md files, then validate against domain schemas. Services use `ProcessMetadata` to track transformation chains. See [ADR-MD02](/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md) for integration patterns.
 
 ## Key Design Contracts
 
@@ -82,6 +99,7 @@ See [object-service-design-gaps.md](object-service-design-gaps.md) for current g
 ## Related Documentation
 
 - [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-object-service-architecture-v3.md) - Complete architectural specification
+- [ADR-MD02: Metadata Object-Service Integration](/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md) - Metadata infrastructure patterns
 - [Design Gaps](object-service-design-gaps.md) - Gaps analysis and progress
 - [Design Principles](/development/design-principles.md) - General design philosophy
 - [Conceptual Architecture](/project/conceptual-architecture.md) - High-level system model

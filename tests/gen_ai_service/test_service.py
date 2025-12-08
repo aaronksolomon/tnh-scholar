@@ -47,7 +47,17 @@ def _write_prompt(tmp_path):
         dedent(
             """\
             ---
-            location: Plum Village
+            key: daily
+            name: daily
+            version: 1.0.0
+            description: Daily guidance
+            task_type: guidance
+            required_variables:
+              - audience
+            optional_variables:
+              - location
+            default_variables:
+              location: Plum Village
             ---
             # Daily Guidance
             

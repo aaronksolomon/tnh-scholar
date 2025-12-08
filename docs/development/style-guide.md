@@ -77,9 +77,6 @@ Each module should maintain this general structure:
 # External imports
 # Internal imports
 
-# Module-level constants
-DEFAULT_CHUNK_SIZE = 1024
-
 # Classes
 class ExampleClass:
     """Class docstring."""
@@ -87,6 +84,35 @@ class ExampleClass:
 # Functions
 def example_function():
     """Function docstring."""
+```
+
+**Configuration and constants:**
+
+Avoid top-level generic constants. Instead, prefer:
+
+- **Settings classes** (Pydantic `BaseSettings`) for configuration values
+- **Policy objects** or config classes with typed attributes
+- **Dataclass/Pydantic models** for structured settings
+
+```python
+# ✅ Preferred: Settings class
+from pydantic_settings import BaseSettings
+
+class ProcessingSettings(BaseSettings):
+    """Processing configuration."""
+    chunk_size: int = 1024
+    max_retries: int = 3
+
+# ✅ Preferred: Policy object
+@dataclass(frozen=True)
+class ChunkingPolicy:
+    """Chunking behavior policy."""
+    default_size: int = 1024
+    max_size: int = 4096
+
+# 🚫 Avoid: Top-level constants
+DEFAULT_CHUNK_SIZE = 1024
+MAX_RETRIES = 3
 ```
 
 ## Naming Conventions
