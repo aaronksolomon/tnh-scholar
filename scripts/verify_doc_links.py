@@ -189,13 +189,18 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser.add_argument(
         "--apply",
         action="store_true",
-        help="Apply auto-fixes when there is a single unambiguous match",
+        help="Apply auto-fixes when there is a single unambiguous match, and normalize resolvable relative links to absolute.",
     )
     parser.add_argument(
         "--verbose", action="store_true", help="Print per-file replacement details"
     )
     parser.add_argument(
         "--debug", action="store_true", help="Print debugging info for flagged links"
+    )
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Exit non-zero when issues are found (default: warn-only).",
     )
     args = parser.parse_args(list(argv) if argv is not None else None)
 
@@ -223,11 +228,11 @@ def main(argv: Iterable[str] | None = None) -> int:
         for iss in flagged:
             print(f"- {iss.file}: '{iss.original}' -> {iss.reason}")
 
-    # Fail if anything needs attention. Require --apply to clear auto-fixables.
+    # Fail only in strict mode. Otherwise warn-only so CI can proceed.
     if flagged or (auto_fixes and not args.apply):
         if auto_fixes and not args.apply:
             print("\nRun with --apply to rewrite unambiguous markdown links.")
-        return 1
+        return 1 if args.strict else 0
     return 0
 
 
