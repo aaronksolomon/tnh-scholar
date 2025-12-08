@@ -237,7 +237,11 @@ class ProcessMetadata(Metadata):
         self.update(additional_params)
     
 class Frontmatter:
-    """Handles YAML frontmatter embedding and extraction."""
+    """Handles YAML frontmatter embedding and extraction.
+
+    Note: `extract` is pure (no I/O). `extract_from_file` performs I/O and should be
+    treated as adapter-level convenience, not domain-level parsing.
+    """
     @staticmethod
     def extract(content: str) -> tuple[Metadata, str]:
         """Extract frontmatter and content from text.
@@ -260,6 +264,7 @@ class Frontmatter:
     
     @classmethod
     def extract_from_file(cls, file: Path) -> tuple[Metadata, str]:
+        """Adapter-level convenience wrapper that reads from disk then parses."""
         text_str = read_str_from_file(file)
         return cls.extract(text_str)
 
