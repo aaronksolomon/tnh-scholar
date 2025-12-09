@@ -2,7 +2,7 @@ PYTHON_VERSION = 3.12.4
 POETRY        = poetry
 LYCHEE        = lychee
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -83,6 +83,43 @@ docs-quickcheck: docs-generate
 type-check:
 	@echo "Running type checks..."
 	$(POETRY) run mypy src/
+
+# CI check - run all CI checks locally
+ci-check:
+	@echo "========================================="
+	@echo "Running CI checks locally..."
+	@echo "========================================="
+	@echo ""
+	@echo "📁 [1/6] Verifying directory trees..."
+	@$(POETRY) run python scripts/generate_tree.py
+	@if ! git diff --quiet -- project_directory_tree.txt src_directory_tree.txt; then \
+		echo "⚠️  Directory tree drift detected:"; \
+		git diff --stat -- project_directory_tree.txt src_directory_tree.txt; \
+	else \
+		echo "✅ Directory trees are up to date"; \
+	fi
+	@echo ""
+	@echo "🔍 [2/6] Running ruff lint..."
+	@$(POETRY) run ruff check . && echo "✅ Ruff lint passed" || echo "⚠️  Ruff lint found issues (non-blocking)"
+	@echo ""
+	@echo "✨ [3/6] Checking ruff format..."
+	@$(POETRY) run ruff format --check . && echo "✅ Ruff format passed" || echo "⚠️  Ruff format check found issues (non-blocking)"
+	@echo ""
+	@echo "🔎 [4/6] Running type checks..."
+	@$(POETRY) run mypy src/ && echo "✅ Type checking passed" || echo "⚠️  Type checking found issues (non-blocking)"
+	@echo ""
+	@echo "🧪 [5/6] Running tests..."
+	@$(POETRY) run pytest --maxfail=1 --cov=tnh_scholar --cov-report=term-missing
+	@echo ""
+	@echo "📝 [6/6] Verifying README ↔ docs/index.md sync..."
+	@$(POETRY) run python scripts/sync_readme.py && echo "✅ README sync verified"
+	@echo ""
+	@echo "========================================="
+	@echo "✅ CI checks complete!"
+	@echo "========================================="
+	@echo ""
+	@echo "Note: Markdown lint (npx markdownlint) requires Node.js and is not included."
+	@echo "Run manually: npx markdownlint '**/*.md'"
 
 # Release management targets
 # Set DRY_RUN=1 to preview commands without executing (e.g., make release-patch DRY_RUN=1)

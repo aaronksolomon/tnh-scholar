@@ -9,8 +9,6 @@
 ├── TODO.md
 ├── VERSIONING.md
 ├── data
-│   ├── PDF
-│   │   └── Phat_Giao_journals
 │   └── books
 │       └── public_books
 ├── docs
@@ -256,13 +254,11 @@
 │       └── prompt-system.md
 ├── docs_build_output.txt
 ├── evaluation
-├── logs
 ├── mkdocs.yaml
 ├── mypy_errors.txt
 ├── notebook_management.ipynb
 ├── notebooks
 │   ├── ai_text_processing
-│   │   ├── logs
 │   │   ├── patterns.ipynb
 │   │   └── section_processing_tests.ipynb
 │   ├── audio_processing
@@ -278,7 +274,6 @@
 │   │   ├── full_pipe1.ipynb
 │   │   ├── full_pipe2.ipynb
 │   │   ├── full_pipe3.ipynb
-│   │   ├── logs
 │   │   └── speech_detect.ipynb
 │   ├── html_viewing
 │   │   ├── tx_journal_to_html.ipynb
@@ -325,7 +320,6 @@
 │   │   ├── github_dl_test.ipynb
 │   │   ├── logging_config
 │   │   │   └── logging_config_test.ipynb
-│   │   ├── logs
 │   │   ├── logtesting.ipynb
 │   │   ├── package_contents_tests.ipynb
 │   │   ├── pydantic_text_obj_error.ipynb
@@ -354,7 +348,6 @@
 │   │   │   ├── translate_section_thay_en.md
 │   │   │   └── xml_format_dt_section_en.md
 │   │   ├── transcription-engine
-│   │   │   ├── logs
 │   │   │   ├── transciption0.ipynb
 │   │   │   └── transciption1.ipynb
 │   │   ├── waveform-diarization
@@ -379,7 +372,6 @@
 │   └── video_processing
 │       ├── batch_recovery.ipynb
 │       ├── collating.ipynb
-│       ├── logs
 │       ├── output_adjustment_system_messages.md
 │       ├── postprocessing_english.ipynb
 │       ├── postprocessing_viet.ipynb
@@ -707,4 +699,4 @@
     └── text_processing
         └── test_numbered_text.py
 
-164 directories, 544 files
+156 directories, 544 files
