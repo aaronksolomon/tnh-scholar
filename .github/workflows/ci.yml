@@ -44,7 +44,11 @@ jobs:
       - name: Verify directory trees
         run: |
           poetry run python scripts/generate_tree.py
-          git diff --exit-code project_directory_tree.txt src_directory_tree.txt
+          if ! git diff --quiet -- project_directory_tree.txt src_directory_tree.txt; then
+            echo "Directory tree drift detected:"
+            git diff --stat -- project_directory_tree.txt src_directory_tree.txt
+            git diff -- project_directory_tree.txt src_directory_tree.txt
+          fi
 
       - name: Verify notebook prep state
         run: |
