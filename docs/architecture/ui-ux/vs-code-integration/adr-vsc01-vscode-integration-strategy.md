@@ -530,7 +530,7 @@ The following ADRs will detail implementation:
 
 ### **ADR-VSC02: `tnh-gen` CLI Implementation** ✅ Created
 
-**Status:** Complete (see [adr-vsc02-tnh-gen-cli-implementation.md](adr-vsc02-tnh-gen-cli-implementation.md))
+**Status:** Complete (see [adr-vsc02-tnh-gen-cli-implementation.md](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md))
 
 **Scope:**
 

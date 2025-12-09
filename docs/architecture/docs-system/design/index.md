@@ -4,7 +4,7 @@ description: "Table of contents for architecture/docs-system/design"
 owner: ""
 author: ""
 status: processing
-created: "2025-12-04"
+created: "2025-12-08"
 auto_generated: true
 ---
 
@@ -12,9 +12,9 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
 
-**[Documentation Design](documentation-design.md)** - Reference for the documentation stack, covering tooling choices, information architecture, and publishing workflow.
+**[Documentation Design](/architecture/docs-system/design/documentation-design.md)** - Reference for the documentation stack, covering tooling choices, information architecture, and publishing workflow.
 
 ---
 

@@ -13,7 +13,7 @@ Outlines the pared-down GenAI Service build that keeps public seams intact but s
 **Status:** Accepted  
 **Date:** 2025-10-05  
 **Author:** Aaron Solomon, ChatGPT (GPT‑5)  
-**Linked Docs:** [GenAI Service — Design Strategy (v0.2)](/architecture/gen-ai-service/design/genai-service-design-strategy.md), [ADR‑A01 (Domain & Object Service)](adr-a01-object-service-genai.md)
+**Linked Docs:** [GenAI Service — Design Strategy (v0.2)](/architecture/gen-ai-service/design/genai-service-design-strategy.md), [ADR‑A01 (Domain & Object Service)](/architecture/gen-ai-service/adr/adr-a01-object-service-genai.md)
 
 ---
 

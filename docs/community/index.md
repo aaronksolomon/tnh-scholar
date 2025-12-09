@@ -9,7 +9,7 @@ This section contains documentation for community partners, stakeholders, and co
 
 ## Contents
 
-- [Parallax Press & Plum Village Editorial Overview](parallax-overview.md) - Project introduction for editorial and publishing stakeholders
+- [Parallax Press & Plum Village Editorial Overview](/community/parallax-overview.md) - Project introduction for editorial and publishing stakeholders
 
 ## Purpose
 
@@ -35,7 +35,7 @@ In the spirit of Thầy's teachings, our community engagement emphasizes:
 
 If you're interested in supporting or collaborating with TNH Scholar, please:
 
-- Review the [Parallax Overview](parallax-overview.md) for an accessible project introduction
+- Review the [Parallax Overview](/community/parallax-overview.md) for an accessible project introduction
 - Visit our [Project Vision](/project/vision.md) for the long-term aspirations
 - Reach out via [GitHub Discussions](https://github.com/aaronksolomon/tnh-scholar/discussions)
 - See [Contributing to TNH Scholar (Prototype Phase)](/development/contributing-prototype-phase.md) for how to participate as a tester, experimenter, or code contributor

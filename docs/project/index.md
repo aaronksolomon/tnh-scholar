@@ -4,7 +4,7 @@ description: "Table of contents for project"
 owner: ""
 author: ""
 status: processing
-created: "2025-12-04"
+created: "2025-12-08"
 auto_generated: true
 ---
 
@@ -12,17 +12,17 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
 
-**[conceptual-architecture](conceptual-architecture.md)**
+**[conceptual-architecture](/project/conceptual-architecture.md)**
 
-**[future-directions](future-directions.md)**
+**[future-directions](/project/future-directions.md)**
 
-**[philosophy](philosophy.md)**
+**[philosophy](/project/philosophy.md)**
 
-**[principles](principles.md)**
+**[principles](/project/principles.md)**
 
-**[vision](vision.md)**
+**[vision](/project/vision.md)**
 
 ---
 

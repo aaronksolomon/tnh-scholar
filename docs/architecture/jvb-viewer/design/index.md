@@ -4,7 +4,7 @@ description: "Table of contents for architecture/jvb-viewer/design"
 owner: ""
 author: ""
 status: processing
-created: "2025-12-04"
+created: "2025-12-08"
 auto_generated: true
 ---
 
@@ -12,15 +12,15 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
 
-**[Generate Markdown Translation JSON Pairs](generate-md-translation-json-pairs.md)** - Instructions for producing paired Vietnamese-English Markdown JSON lines from scanned journal pages with strict formatting.
+**[Generate Markdown Translation JSON Pairs](/architecture/jvb-viewer/design/generate-md-translation-json-pairs.md)** - Instructions for producing paired Vietnamese-English Markdown JSON lines from scanned journal pages with strict formatting.
 
-**[Generate Markdown Vietnamese](generate-md-vietnamese.md)** - Guidelines for rewriting Vietnamese journal pages into structured Markdown with one sentence per line and preserved metadata.
+**[Generate Markdown Vietnamese](/architecture/jvb-viewer/design/generate-md-vietnamese.md)** - Guidelines for rewriting Vietnamese journal pages into structured Markdown with one sentence per line and preserved metadata.
 
-**[JVB Viewer — Version 2 Strategy & High‑Level Design](jvb-viewer-v2-strategy.md)** - Strategy for a projection-first VS Code-based viewer/editor that reconciles OCR outputs into a canonical JSON artifact.
+**[JVB Viewer — Version 2 Strategy & High‑Level Design](/architecture/jvb-viewer/design/jvb-viewer-v2-strategy.md)** - Strategy for a projection-first VS Code-based viewer/editor that reconciles OCR outputs into a canonical JSON artifact.
 
-**[LUÂN-HỒI](luan-hoi.md)** - Transcribed Markdown sample of the 'Luân-Hồi Một Thực-Thể' article used to validate viewer output.
+**[LUÂN-HỒI](/architecture/jvb-viewer/design/luan-hoi.md)** - Transcribed Markdown sample of the 'Luân-Hồi Một Thực-Thể' article used to validate viewer output.
 
 ---
 

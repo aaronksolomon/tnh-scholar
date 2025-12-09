@@ -1,14 +1,14 @@
 ---
-title: "Design"
-description: "Table of contents for architecture/tnh-fab/design"
+title: "Archive"
+description: "Table of contents for architecture/tnh-gen/design/archive"
 owner: ""
 author: ""
 status: processing
-created: "2025-12-04"
+created: "2025-12-08"
 auto_generated: true
 ---
 
-# Design
+# Archive
 
 **Table of Contents**:
 

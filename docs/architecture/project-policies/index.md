@@ -32,8 +32,8 @@ This directory contains Architecture Decision Records (ADRs) and policy document
 
 ### Versioning & Releases
 
-- **[ADR-PP01: Rapid Prototype Versioning Policy](adr/adr-pp01-rapid-prototype-versioning.md)** - Establishes versioning policy for 0.x releases, allowing breaking changes in any release to enable fast iteration
-- **[Implementation Summary](versioning-policy-implementation-summary.md)** - Documentation updates implementing ADR-PP01
+- **[ADR-PP01: Rapid Prototype Versioning Policy](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md)** - Establishes versioning policy for 0.x releases, allowing breaking changes in any release to enable fast iteration
+- **[Implementation Summary](/architecture/project-policies/versioning-policy-implementation-summary.md)** - Documentation updates implementing ADR-PP01
 
 **Status**: Active (0.x phase)
 **Key Principle**: Breaking changes acceptable in ANY 0.x release to prioritize architectural consistency

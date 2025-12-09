@@ -14,7 +14,7 @@ Establishes metadata system (`tnh_scholar.metadata`) as foundational cross-cutti
 - **Status**: Accepted
 - **Date**: 2025-12-07
 - **Authors**: Aaron Solomon, Claude Sonnet 4.5
-- **Related**: [ADR-MD01](adr-md01-json-ld-metadata.md), [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md), [ADR-PT04](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- **Related**: [ADR-MD01](/architecture/metadata/adr/adr-md01-json-ld-metadata.md), [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md), [ADR-PT04](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
 
 ---
 
@@ -38,7 +38,7 @@ During implementation of ADR-PT04 (Prompt System Refactor), we discovered that:
 
 ### Object-Service Compliance Assessment
 
-**Current implementation** ([src/tnh_scholar/metadata/metadata.py](../../../src/tnh_scholar/metadata/metadata.py)):
+**Current implementation** ([src/tnh_scholar/metadata/metadata.py](https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/metadata/metadata.py)):
 
 ✅ **Compliant aspects**:
 - Strong typing (`Metadata`, `ProcessMetadata` are typed classes)
@@ -237,7 +237,7 @@ Unlike services (which flow vertically: Application → Service → Adapter → 
 
 ### Issue 1: File I/O Mixed with Domain Logic
 
-**Current** ([metadata/metadata.py:262-264](../../../src/tnh_scholar/metadata/metadata.py#L262-L264)):
+**Current** ([metadata/metadata.py:262-264](https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/metadata/metadata.py#L262-L264)):
 
 ```python
 class Frontmatter:
@@ -288,7 +288,7 @@ class FrontmatterFileAdapter:
 
 ### Issue 2: Logging in Utility Code
 
-**Current** ([metadata/metadata.py:22-36](../../../src/tnh_scholar/metadata/metadata.py#L22-L36)):
+**Current** ([metadata/metadata.py:22-36](https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/metadata/metadata.py#L22-L36)):
 
 ```python
 def safe_yaml_load(yaml_str: str, *, context: str = "unknown") -> dict:
@@ -455,10 +455,10 @@ class DocumentResult(BaseModel):
 
 ## References
 
-- [ADR-MD01: JSON-LD Metadata Strategy](adr-md01-json-ld-metadata.md)
+- [ADR-MD01: JSON-LD Metadata Strategy](/architecture/metadata/adr/adr-md01-json-ld-metadata.md)
 - [ADR-OS01: Object-Service Architecture V3](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
 - [ADR-PT04: Prompt System Refactor](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
-- [src/tnh_scholar/metadata/metadata.py](../../../src/tnh_scholar/metadata/metadata.py)
+- [src/tnh_scholar/metadata/metadata.py](https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/metadata/metadata.py)
 
 ---
 

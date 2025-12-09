@@ -10,7 +10,7 @@ created: "2025-01-20"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2025-11-29
+> **Last Updated**: 2025-12-09
 > **Version**: 0.2.0 (Alpha)
 > **Status**: Active Development - Documentation Reorganization Phase
 
@@ -24,7 +24,7 @@ This section organizes work into three priority levels based on criticality for 
 
 **Goal**: Remove blockers to production readiness. These items must be completed before beta release.
 
-**Status**: 3/5 Complete ✅
+**Status**: 4/5 Complete ✅
 
 #### 1. ✅ Add pytest to CI
 
@@ -67,13 +67,13 @@ This section organizes work into three priority levels based on criticality for 
     - Structured error propagation
     - Don't just raise ValueError on non-OK status
 
-#### 5. 🚧 Unify OpenAI Clients
+#### 5. ✅ Unify OpenAI Clients
 
-- **Status**: PHASE 1 COMPLETE ✅ 
+- **Status**: COMPLETED ✅
 - **Priority**: HIGH
 - **ADR**: [ADR-A13: Legacy Client Migration](docs/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md)
 - **Plan**: [Migration Plan](docs/architecture/gen-ai-service/design/openai-interface-migration-plan.md)
-- **Problem**: Two implementations causing code divergence (legacy client now removed)
+- **What**: Unified OpenAI client implementations by migrating from legacy to modern architecture
   - **Modern**: [gen_ai_service/providers/openai_client.py](src/tnh_scholar/gen_ai_service/providers/openai_client.py) - typed, retrying
   - **Legacy**: `openai_interface/` – removed as of Phase 6
 - **Phase 1: Utilities & Adapters** ✅ COMPLETE
@@ -82,7 +82,7 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Create [simple_completion.py](src/tnh_scholar/gen_ai_service/adapters/simple_completion.py) - migration adapter
   - [x] Add comprehensive tests (33 new tests)
   - [x] Fix hard-coded literals (use policy dataclass)
-- **Phase 2-6: Migration**
+- **Phase 2-6: Migration** ✅ COMPLETE
   - [x] Phase 2: Migrate core modules (ai_text_processing, journal_processing)
   - [x] Phase 3: Migrate CLI tools
   - [x] Phase 4: Migrate tests
@@ -121,7 +121,7 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 8. 🚧 Clean Up CLI Tool Versions
 
-- **Status**: NOT STARTED
+- **Status**: PARTIAL (old versions removed, utilities pending)
 - **Location**: [cli_tools/audio_transcribe/](src/tnh_scholar/cli_tools/audio_transcribe/)
 - **Tasks**:
   - [x] Remove [audio_transcribe0.py](src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe0.py)
@@ -288,12 +288,13 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 14. 🚧 Developer Experience Improvements
 
-- **Status**: NOT STARTED
+- **Status**: PARTIAL (hooks and Makefile exist, automation pending)
 - **Tasks**:
-  - [ ] Add pre-commit hooks (Black, Ruff, MyPy)
-  - [ ] Create Makefile/justfile for common tasks (lint, test, docs, format)
-  - [ ] Add contribution templates
-  - [ ] Improve CONTRIBUTING.md
+  - [x] Add pre-commit hooks (Ruff, notebook prep)
+  - [x] Create Makefile for common tasks (lint, test, docs, format, setup)
+  - [ ] Add MyPy to pre-commit hooks
+  - [ ] Add contribution templates (issue/PR templates)
+  - [x] CONTRIBUTING.md exists and documented
   - [ ] Release automation
   - [ ] Changelog automation
 
@@ -510,27 +511,98 @@ This section organizes work into three priority levels based on criticality for 
   - Automation friendly: scripts can construct absolute paths easily
   - Less error-prone: no counting `../` levels in deep hierarchies
 
+#### 19. 🚧 Document Success Cases
+
+- **Status**: NOT STARTED
+- **Priority**: MEDIUM
+- **Goal**: Create comprehensive documentation of TNH Scholar's successful real-world applications
+- **Context**: Cleanly document proven use cases to demonstrate project value and guide future development
+- **Success Cases to Document**:
+  - [ ] **Deer Park Monastery Cooking Course**
+    - Generating translated SRTs for video recordings
+    - Diarization implementation
+    - SRT generation workflow
+  - [ ] **1950s JVB (Journal of Vietnamese Buddhism) Translation**
+    - OCR work on Thay's 1950s editorial work
+    - Proof-of-concept translations
+    - Historical document processing pipeline
+  - [ ] **Dharma Talk Transcriptions**
+    - Generating polished standalone XML documents from recordings
+    - Transcription to structured format workflow
+  - [ ] **Sr. Dang Nhiem's Dharma Talks**
+    - Clean transcription work using audio-transcribe and related tools
+    - Audio processing pipeline
+- **Tasks**:
+  - [ ] Create `docs/case-studies/` directory structure
+  - [ ] Document each success case with:
+    - Project context and goals
+    - Tools and workflows used
+    - Technical challenges and solutions
+    - Results and outcomes
+    - Lessons learned
+  - [ ] Add references to relevant code, prompts, and configuration
+  - [ ] Include sample outputs where appropriate
+  - [ ] Link from main documentation and README
+
+#### 20. 🚧 Notebook System Overhaul
+
+- **Status**: NOT STARTED
+- **Priority**: HIGH
+- **Goal**: Transform notebook collection from exploratory/testing to production-quality examples and convert testing notebooks to proper test cases
+- **Context**: Current notebooks include valuable work but mix exploration, testing, and examples without clear organization
+- **Tasks**:
+  - [ ] **Audit & Categorize**:
+    - [ ] Inventory all notebooks with purpose classification
+    - [ ] Identify core example notebooks (referencing success cases from TODO #19)
+    - [ ] Identify testing notebooks to convert to pytest
+    - [ ] Identify legacy/archival notebooks
+  - [ ] **Core Example Notebooks** (keep and polish):
+    - [ ] Fully annotate with current code
+    - [ ] Ensure working with latest codebase
+    - [ ] Add clear documentation headers
+    - [ ] Reference relevant success cases
+    - [ ] Add to docs as working examples
+  - [ ] **Testing Notebooks → Pytest Migration**:
+    - [ ] Convert notebook-based tests to standard pytest test cases
+    - [ ] Ensure pytest coverage for all testing scenarios
+    - [ ] Remove testing notebooks after conversion
+    - [ ] Update test documentation
+  - [ ] **Legacy/Archival Notebooks**:
+    - [ ] Mark clearly as legacy/archival
+    - [ ] Add context notes for understanding past work
+    - [ ] Move to `notebooks/archive/` or similar
+    - [ ] Document their historical purpose
+  - [ ] **Documentation Updates**:
+    - [ ] Update notebook documentation structure
+    - [ ] Create notebook usage guide
+    - [ ] Link core examples from user guide
+    - [ ] Document notebook development workflow
+- **ADR Decision**: May require architecture decision record for notebook management strategy
+
 ---
 
 ## Progress Summary
 
-**Quick Wins Completed (2025-11-16)**:
+**Recently Completed (as of 2025-12-09)**:
 
 - ✅ Packaging & dependencies fixed
 - ✅ CI pytest integration
 - ✅ Library exception handling (removed sys.exit)
+- ✅ OpenAI client unification (all 6 phases complete)
+- ✅ Documentation reorganization (Phase 1 complete)
+- ✅ Pre-commit hooks and Makefile setup
 
-**Next Sprint Focus**:
+**Current Sprint Focus**:
 
 - 🎯 Implement core stubs (policy, routing, safety)
-- 🎯 Unify OpenAI clients
 - 🎯 Expand test coverage to 50%+
+- 🎯 Type system improvements (58 errors to resolve)
 
 **Beta Blockers**:
 
 - Configuration & data layout (pattern directory)
-- Core stub implementations
-- OpenAI client unification
+- Core stub implementations (params_policy, model_router, safety_gate)
+- Test coverage expansion
 
 ---
 

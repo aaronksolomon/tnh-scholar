@@ -11,11 +11,11 @@ updated: "2025-11-29"
 
 Gaps, resolved items, and outstanding work needed to fully satisfy the Object-Service design blueprint.
 
-**Purpose**: Track progress on implementing [ADR-OS01: Object-Service Design Architecture V3](adr/adr-os01-object-service-architecture-v3.md)
+**Purpose**: Track progress on implementing [ADR-OS01: Object-Service Design Architecture V3](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
 **Status**: In Progress
 **Last Updated**: 2025-11-29
 
-**Canonical Example**: The [GenAIService](../gen-ai-service/design/genai-service-design-strategy.md) follows the object-service layers (domain/service/adapters/transport) and is the preferred reference implementation for new services until a dedicated sample is published.
+**Canonical Example**: The [GenAIService](/architecture/gen-ai-service/design/genai-service-design-strategy.md) follows the object-service layers (domain/service/adapters/transport) and is the preferred reference implementation for new services until a dedicated sample is published.
 
 ---
 
