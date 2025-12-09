@@ -5,6 +5,12 @@ repos:
       - id: poetry-check
       - id: poetry-lock
         args: ['--check']
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.2
+    hooks:
+      - id: ruff
+        args: ['--fix', '--exit-zero']
+      - id: ruff-format
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
     hooks:

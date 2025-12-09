@@ -145,6 +145,12 @@ exclude_lines = [
 line-length = 110
 target-version = "py312"
 lint.select = ["E", "F", "I", "C90"]
+exclude = [
+    "*.ipynb",
+    "notebooks/**",
+    ".venv",
+    "__pycache__",
+]
 
 [tool.pylint."MAIN"]
 max-line-length = 110
