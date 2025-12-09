@@ -340,7 +340,7 @@ If you lose work and can't recover:
 - Installed pre-checkout hook
 - Configured git safety aliases
 
-**Full Details**: See [incident-reports/2025-12-07-git-recovery.md](incident-reports/2025-12-07-git-recovery.md)
+**Full Details**: See [Incident Report: Git Recovery 2025-12-07](/development/incident-reports/2025-12-07-git-recovery.md)
 
 ---
 

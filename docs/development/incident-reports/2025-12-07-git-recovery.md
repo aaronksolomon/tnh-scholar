@@ -596,7 +596,7 @@ Complete list in PR #13: <https://github.com/aaronksolomon/tnh-scholar/pull/13>
 
 ### Related Documents
 
-- [Git Workflow Guide](../git-workflow.md) - Safe git practices
+- [Git Workflow Guide](/development/git-workflow.md) - Safe git practices
 - [PR #13](https://github.com/aaronksolomon/tnh-scholar/pull/13) - Recovery PR
 - [ADR-PT04](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md) - Recovered work
 - Tag Correction Plan (v0.2.0 tag fix, documentation pending)
