@@ -28,6 +28,7 @@ repos:
           - "3"
           - "-I"
           - ".codespell-ignore.txt"
+          - "--skip=*.txt"
           - "README.md"
           - "docs"
   - repo: local
