@@ -5,8 +5,8 @@
 # This is critical for preventing data loss when using branch names in git reset or other
 # destructive operations after remote PR merges.
 #
-# Usage: ./git-check-staleness.sh <branch-name>
-#        ./git-check-staleness.sh           (checks current branch)
+# Usage: ./git-check-staleness.sh [--remote <remote>] [--branch <remote-branch>] [<local-branch>]
+#        ./git-check-staleness.sh           (checks current branch against its upstream)
 #
 # Exit codes:
 #   0 - Branch is up-to-date or has no remote tracking branch
@@ -34,14 +34,35 @@ print_warning() {
     echo -e "${YELLOW}⚠  $1${NC}"
 }
 
+# Parse flags/args
+override_remote=""
+override_remote_branch=""
+branch=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --remote|-r)
+            override_remote="$2"
+            shift 2
+            ;;
+        --branch|-b)
+            override_remote_branch="$2"
+            shift 2
+            ;;
+        *)
+            if [ -z "$branch" ]; then
+                branch="$1"
+                shift
+            else
+                print_error "Usage: $0 [--remote <remote>] [--branch <remote-branch>] [<local-branch>]"
+                exit 2
+            fi
+            ;;
+    esac
+done
+
 # Get branch name (from argument or current branch)
-if [ $# -eq 0 ]; then
+if [ -z "$branch" ]; then
     branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "HEAD")
-elif [ $# -eq 1 ]; then
-    branch="$1"
-else
-    print_error "Usage: $0 [branch-name]"
-    exit 2
 fi
 
 # Validate branch exists
@@ -50,21 +71,41 @@ if ! git rev-parse --verify "$branch" >/dev/null 2>&1; then
     exit 2
 fi
 
+# Resolve upstream tracking ref
+upstream_ref=$(git rev-parse --abbrev-ref --symbolic-full-name "${branch}@{upstream}" 2>/dev/null || echo "")
+if [ -n "$upstream_ref" ]; then
+    upstream_remote=${upstream_ref%%/*}
+    upstream_branch=${upstream_ref#*/}
+else
+    upstream_remote=""
+    upstream_branch=""
+fi
+
+remote="${override_remote:-$upstream_remote}"
+remote_branch="${override_remote_branch:-${upstream_branch:-$branch}}"
+
+if [ -z "$remote" ]; then
+    print_success "Branch '$branch' has no remote tracking branch"
+    exit 0
+fi
+
+remote_ref="$remote/$remote_branch"
+
 # Fetch latest remote state (quietly)
-echo "Fetching remote state..."
-if ! git fetch origin "$branch" 2>/dev/null; then
-    # Branch might not exist on remote yet (new local branch)
-    print_success "Branch '$branch' has no remote tracking branch (new local branch)"
+echo "Fetching remote state from $remote_ref..."
+if ! git fetch "$remote" "$remote_branch" 2>/dev/null; then
+    # Branch might not exist on remote yet (new local branch or custom remote missing)
+    print_success "Branch '$branch' has no remote tracking branch on '$remote' (or fetch failed)"
     exit 0
 fi
 
 # Get local and remote SHAs
 local_sha=$(git rev-parse "$branch" 2>/dev/null)
-remote_sha=$(git rev-parse "origin/$branch" 2>/dev/null || echo "")
+remote_sha=$(git rev-parse "$remote_ref" 2>/dev/null || echo "")
 
 # If no remote branch, exit success
 if [ -z "$remote_sha" ]; then
-    print_success "Branch '$branch' has no remote tracking branch"
+    print_success "Branch '$branch' has no remote tracking branch on '$remote'"
     exit 0
 fi
 
@@ -83,8 +124,8 @@ echo "  Remote: $remote_sha"
 echo ""
 
 # Show what commits are ahead/behind
-ahead=$(git rev-list --count "$branch".."origin/$branch" 2>/dev/null || echo "0")
-behind=$(git rev-list --count "origin/$branch".."$branch" 2>/dev/null || echo "0")
+ahead=$(git rev-list --count "$branch".."$remote_ref" 2>/dev/null || echo "0")
+behind=$(git rev-list --count "$remote_ref".."$branch" 2>/dev/null || echo "0")
 
 if [ "$ahead" -gt 0 ]; then
     print_warning "Local is $ahead commit(s) BEHIND remote"
@@ -99,6 +140,6 @@ echo "To update local branch:"
 echo "  git checkout $branch && git pull"
 echo ""
 echo "Or to force local to match remote:"
-echo "  git fetch origin && git reset --hard origin/$branch"
+echo "  git fetch $remote && git reset --hard $remote_ref"
 
 exit 1

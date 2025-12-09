@@ -239,9 +239,9 @@ This incident would have been **prevented** with branch staleness tracking. The 
 
 ## Files to Update
 
-1. `docs/development/incident-reports/2025-12-07-git-recovery.md` - Main incident report
+1. `/development/incident-reports/2025-12-07-git-recovery.md` - Main incident report
 2. `.claude/CLAUDE.md` - Add post-merge fetch protocol (if not already done)
-3. `docs/development/git-workflow.md` - Add branch staleness section (if exists)
+3. `/development/git-workflow.md` - Add branch staleness section (if exists)
 
 ---
 

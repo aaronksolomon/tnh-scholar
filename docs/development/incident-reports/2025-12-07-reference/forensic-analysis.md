@@ -5,7 +5,7 @@
 **Evidence Sources**:
 
 - Session log: `convo-with-hard-reset.txt`
-- Incident report: `docs/development/incident-reports/2025-12-07-git-recovery.md`
+- Incident report: [`docs/development/incident-reports/2025-12-07-git-recovery.md`](/development/incident-reports/2025-12-07-git-recovery.md)
 - Git reflog analysis
 
 ---

@@ -207,7 +207,12 @@ git push -u origin <old-branch-name>
 
 # Check current branch
 ./scripts/git-check-staleness.sh
+
+# Check a branch against a specific remote/branch (non-origin setups)
+./scripts/git-check-staleness.sh --remote upstream --branch main feature/123-new-flow
 ```
+
+The script resolves the branch's configured upstream tracking ref by default (e.g., `feature/foo@{u}`) so it works with custom tracking branches. Use `--remote`/`--branch` only when you need to override that default.
 
 **Example output (up-to-date)**:
 
@@ -335,7 +340,7 @@ If you lose work and can't recover:
 - Installed pre-checkout hook
 - Configured git safety aliases
 
-**Full Details**: See [docs/development/incident-reports/2025-12-07-git-recovery.md](/development/incident-reports/2025-12-07-git-recovery.md)
+**Full Details**: See [incident-reports/2025-12-07-git-recovery.md](incident-reports/2025-12-07-git-recovery.md)
 
 ---
 

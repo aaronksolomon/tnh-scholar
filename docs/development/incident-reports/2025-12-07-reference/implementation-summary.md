@@ -80,7 +80,7 @@ Multiple layers now prevent loss: process (protocols), verification (diffs), aut
 
 ## Related Artifacts
 
-- [Forensic Analysis](/development/incident-reports/2025-21-07-reference/forensic-analysis.md)
-- [Incident Report Updates Guide](/development/incident-reports/2025-21-07-reference/incident-report-updates.md)
-- [Session Log Compaction Summary](/development/incident-reports/2025-21-07-reference/compaction-summary.txt)
-- [Session Conversation Log](/development/incident-reports/2025-21-07-reference/convo-with-hard-reset.txt)
+- [Forensic Analysis](/development/incident-reports/2025-12-07-reference/forensic-analysis.md)
+- [Incident Report Updates Guide](/development/incident-reports/2025-12-07-reference/incident-report-updates.md)
+- [Session Log Compaction Summary](/development/incident-reports/2025-12-07-reference/compaction-summary.txt)
+- [Session Conversation Log](/development/incident-reports/2025-12-07-reference/convo-with-hard-reset.txt)
