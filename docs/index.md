@@ -12,6 +12,19 @@ description: Comprehensive documentation for TNH Scholar, an AI-driven project e
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 # TNH Scholar
 
 **TNH Scholar is a long-term, community-aligned initiative to build a trusted multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
@@ -234,10 +247,6 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [Git Workflow & Safety Guide](/development/git-workflow.md)
 - [Human-AI Software Engineering Principles](/development/human-ai-software-engineering-principles.md)
 - [Improvements / Initial structure](/development/improvements-initial-structure.md)
-- [Incident Report: Git Recovery - December 7, 2025](/development/incident-reports/2025-12-07-git-recovery.md)
-- [Forensic Analysis](/development/incident-reports/2025-21-07-reference/forensic-analysis.md)
-- [Implementation Summary: Git Safety Improvements](/development/incident-reports/2025-21-07-reference/implementation-summary.md)
-- [Incident Report Updates](/development/incident-reports/2025-21-07-reference/incident-report-updates.md)
 - [Development Documentation](/development/overview.md)
 - [Release Workflow](/development/release-workflow.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)
@@ -263,12 +272,13 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [Future Directions](/project/future-directions.md)
 - [Philosophy](/project/philosophy.md)
 - [Principles](/project/principles.md)
-- [TNH Scholar CHANGELOG](project/repo-root/changelog.md)
-- [TNH Scholar CONTRIBUTING](project/repo-root/contributing-root.md)
-- [TNH-Scholar DEV_SETUP](project/repo-root/dev-setup-guide.md)
-- [TNH Scholar Release Checklist](project/repo-root/release_checklist.md)
-- [TNH Scholar README](project/repo-root/repo-readme.md)
-- [TNH Scholar TODO List](project/repo-root/todo-list.md)
+- [TNH Scholar CHANGELOG](/project/repo-root/changelog.md)
+- [TNH Scholar CONTRIBUTING](/project/repo-root/contributing-root.md)
+- [TNH-Scholar DEV_SETUP](/project/repo-root/dev-setup-guide.md)
+- [TNH Scholar Release Checklist](/project/repo-root/release_checklist.md)
+- [TNH Scholar README](/project/repo-root/repo-readme.md)
+- [TNH Scholar TODO List](/project/repo-root/todo-list.md)
+- [TNH Scholar Versioning Policy](/project/repo-root/versioning.md)
 - [Vision](/project/vision.md)
 
 ### Research

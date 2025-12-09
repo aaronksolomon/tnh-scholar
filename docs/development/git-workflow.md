@@ -192,4 +192,4 @@ If you lose work and can't recover:
 
 - [Git Best Practices](https://git-scm.com/book/en/v2)
 - [Git Reflog Documentation](https://git-scm.com/docs/git-reflog)
-- [Contributing Guide](contributing.md)
+- [Contributing Guide](/project/repo-root/contributing-root.md)

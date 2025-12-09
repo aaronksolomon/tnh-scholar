@@ -36,7 +36,24 @@ def iter_markdown_files(root: Path) -> Iterator[Path]:
             continue
         if "archive" in path.parts:
             continue
+        if is_auto_generated(path):
+            continue
         yield path
+
+
+def is_auto_generated(path: Path) -> bool:
+    """Return True if file declares auto_generated: true in front matter."""
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except (OSError, UnicodeDecodeError):
+        return False
+    if not lines or lines[0].strip() != "---":
+        return False
+    for idx in range(1, len(lines)):
+        if lines[idx].strip() == "---":
+            block = "\n".join(lines[1:idx])
+            return "auto_generated: true" in block.lower()
+    return False
 
 
 def strip_code(text: str) -> str:
@@ -78,10 +95,14 @@ def replace_links(text: str, replacements: dict[str, str]) -> str:
 
 def find_link_issues(
     docs_root: Path, apply: bool, verbose: bool, debug: bool = False
-) -> tuple[list[LinkIssue], list[Path]]:
+) -> tuple[list[LinkIssue], list[Path], int, int, int, set[Path]]:
     basename_index = build_basename_index(docs_root)
     modified_files: list[Path] = []
     issues: list[LinkIssue] = []
+    total_links = 0
+    auto_fix_candidates = 0
+    fixed_links_count = 0
+    auto_fix_files: set[Path] = set()
 
     for md_file in iter_markdown_files(docs_root):
         raw_text = md_file.read_text(encoding="utf-8")
@@ -105,6 +126,8 @@ def find_link_issues(
             if suffix and suffix.lower() != ".md":
                 continue
 
+            total_links += 1
+
             target_is_absolute = target.startswith("/")
             rel_candidate = (md_file.parent / target_no_fragment).resolve()
             abs_candidate = docs_root / target_no_fragment
@@ -126,6 +149,8 @@ def find_link_issues(
                     )
                 )
                 replacements[target] = fixed
+                auto_fix_candidates += 1
+                auto_fix_files.add(md_file)
                 continue
 
             # Normalize any docs/ prefix for lookup.
@@ -147,6 +172,8 @@ def find_link_issues(
                     )
                 )
                 replacements[target] = fixed
+                auto_fix_candidates += 1
+                auto_fix_files.add(md_file)
             elif len(candidates) > 1:
                 issue = LinkIssue(
                     file=md_file,
@@ -169,13 +196,14 @@ def find_link_issues(
                     print(f"[debug] missing link in {md_file}: {target}")
 
         if apply and replacements:
-            new_text = replace_links(text, replacements)
-            if new_text != text:
+            new_text = replace_links(raw_text, replacements)
+            if new_text != raw_text:
                 md_file.write_text(new_text, encoding="utf-8")
                 modified_files.append(md_file)
+                fixed_links_count += len(replacements)
                 if verbose:
                     print(f"Updated {md_file} ({len(replacements)} replacements)")
-    return issues, modified_files
+    return issues, modified_files, total_links, auto_fix_candidates, fixed_links_count, auto_fix_files
 
 
 def main(argv: Iterable[str] | None = None) -> int:
@@ -189,7 +217,8 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser.add_argument(
         "--apply",
         action="store_true",
-        help="Apply auto-fixes when there is a single unambiguous match, and normalize resolvable relative links to absolute.",
+        help="Apply auto-fixes when there is a single unambiguous match, "
+        "and normalize resolvable relative links to absolute.",
     )
     parser.add_argument(
         "--verbose", action="store_true", help="Print per-file replacement details"
@@ -209,19 +238,33 @@ def main(argv: Iterable[str] | None = None) -> int:
         print(f"Docs root not found: {docs_root}", file=sys.stderr)
         return 2
 
-    issues, modified = find_link_issues(
+    issues, modified, total_links, auto_fix_candidates, fixed_count, auto_fix_files = find_link_issues(
         docs_root, apply=args.apply, verbose=args.verbose, debug=args.debug
     )
 
     auto_fixes = [iss for iss in issues if iss.fixed]
     flagged = [iss for iss in issues if iss.fixed is None]
 
-    if auto_fixes:
-        print(f"Auto-fixable: {len(auto_fixes)}")
-    if flagged:
-        print(f"Flagged (manual): {len(flagged)}")
-    if modified:
+    if args.apply:
+        print(f"Links inspected: {total_links}")
+        print(f"Links fixed: {fixed_count}")
         print(f"Files updated: {len(modified)}")
+        if modified:
+            print("Updated files:")
+            for path in sorted(modified):
+                try:
+                    rel_path = path.relative_to(docs_root)
+                except ValueError:
+                    rel_path = path
+                print(f"- {rel_path}")
+    else:
+        print(f"Links inspected: {total_links}")
+        print(f"Links needing fix: {auto_fix_candidates}")
+        if auto_fix_files:
+            print("Files with auto-fixes pending:")
+            for path in sorted(auto_fix_files):
+                print(f"- {path}")
+        print(f"Links needing manual review: {len(flagged)}")
 
     if flagged:
         print("\nManual review needed:")

@@ -1,7 +1,7 @@
 ---
 title: "Documentation Map"
 description: "Hierarchical navigation of TNH Scholar documentation"
-created: "2025-12-08"
+created: "2025-12-09"
 auto_generated: true
 ---
 
@@ -25,12 +25,13 @@ auto_generated: true
 - [future-directions](/project/future-directions.md)
 - [philosophy](/project/philosophy.md)
 - [principles](/project/principles.md)
-- [TNH Scholar CHANGELOG](project/repo-root/changelog.md)
-- [TNH Scholar CONTRIBUTING](project/repo-root/contributing-root.md)
-- [TNH Scholar README](project/repo-root/repo-readme.md)
-- [TNH Scholar Release Checklist](project/repo-root/release_checklist.md)
-- [TNH Scholar TODO List](project/repo-root/todo-list.md)
-- [TNH-Scholar DEV_SETUP](project/repo-root/dev-setup-guide.md)
+- [TNH Scholar CHANGELOG](/project/repo-root/changelog.md)
+- [TNH Scholar CONTRIBUTING](/project/repo-root/contributing-root.md)
+- [TNH Scholar README](/project/repo-root/repo-readme.md)
+- [TNH Scholar Release Checklist](/project/repo-root/release_checklist.md)
+- [TNH Scholar TODO List](/project/repo-root/todo-list.md)
+- [TNH Scholar Versioning Policy](/project/repo-root/versioning.md)
+- [TNH-Scholar DEV_SETUP](/project/repo-root/dev-setup-guide.md)
 - [vision](/project/vision.md)
 
 ## Community
@@ -129,13 +130,9 @@ auto_generated: true
 - [Contributing to TNH Scholar (Prototype Phase)](/development/contributing-prototype-phase.md)
 - [Development Documentation](/development/overview.md)
 - [Fine Tuning Strategy](/development/fine-tuning-strategy.md)
-- [forensic-analysis](/development/incident-reports/2025-21-07-reference/forensic-analysis.md)
 - [Git Workflow & Safety Guide](/development/git-workflow.md)
 - [Human-AI Software Engineering Principles](/development/human-ai-software-engineering-principles.md)
-- [Implementation Summary: Git Safety Improvements](/development/incident-reports/2025-21-07-reference/implementation-summary.md)
 - [Improvements / Initial structure](/development/improvements-initial-structure.md)
-- [Incident Report: Git Recovery - December 7, 2025](/development/incident-reports/2025-12-07-git-recovery.md)
-- [incident-report-updates](/development/incident-reports/2025-21-07-reference/incident-report-updates.md)
 - [Release Workflow](/development/release-workflow.md)
 - [TNH Scholar Design Principles](/development/design-principles.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)

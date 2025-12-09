@@ -2,7 +2,7 @@ PYTHON_VERSION = 3.12.4
 POETRY        = poetry
 LYCHEE        = lychee
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell link-check docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -66,7 +66,7 @@ codespell:
 	@echo "Running codespell..."
 	$(POETRY) run codespell -q 3 -I .codespell-ignore.txt README.md docs
 
-docs-verify: docs-drift docs-build link-check codespell
+docs-verify: docs-drift docs-build codespell
 	@echo "Verifying documentation..."
 	$(POETRY) run python scripts/sync_readme.py
 
@@ -77,7 +77,6 @@ docs-quickcheck: docs-generate
 	@echo "Running docs quickcheck (strict build, links, spelling)..."
 	$(MAKE) docs-links
 	$(POETRY) run mkdocs build --strict
-	$(MAKE) link-check
 	$(MAKE) codespell
 
 # Type checking

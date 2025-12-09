@@ -21,6 +21,7 @@
 │   │   │   ├── adr
 │   │   │   │   ├── adr-at01-ai-text-processing.md
 │   │   │   │   ├── adr-at02-sectioning-textobject.md
+│   │   │   │   ├── adr-at03-object-service-refactor.md
 │   │   │   │   └── index.md
 │   │   │   ├── design
 │   │   │   │   ├── data-flow-through-pipeline.mermaid
@@ -88,7 +89,8 @@
 │   │   ├── overview.md
 │   │   ├── project-policies
 │   │   │   ├── adr
-│   │   │   │   └── adr-pp01-rapid-prototype-versioning.md
+│   │   │   │   ├── adr-pp01-rapid-prototype-versioning.md
+│   │   │   │   └── index.md
 │   │   │   ├── index.md
 │   │   │   └── versioning-policy-implementation-summary.md
 │   │   ├── prompt-system
@@ -110,11 +112,16 @@
 │   │   │   │   ├── index.md
 │   │   │   │   └── setup-tnh-minimal-extensible-tool.md
 │   │   │   └── index.md
-│   │   ├── tnh-fab
+│   │   ├── tnh-gen
+│   │   │   ├── adr
+│   │   │   │   ├── adr-tg01-cli-architecture.md
+│   │   │   │   ├── adr-tg02-prompt-integration.md
+│   │   │   │   └── index.md
 │   │   │   ├── design
-│   │   │   │   ├── index.md
-│   │   │   │   ├── tnh-fab-cli-spec.md
-│   │   │   │   └── tnh-fab-design-document.md
+│   │   │   │   └── archive
+│   │   │   │       ├── index.md
+│   │   │   │       ├── tnh-fab-cli-spec.md
+│   │   │   │       └── tnh-fab-design-document.md
 │   │   │   └── index.md
 │   │   ├── transcription
 │   │   │   ├── adr
@@ -170,7 +177,8 @@
 │   │       │   └── youtube-api-vs-yt-dlp-eval.md
 │   │       └── index.md
 │   ├── archive
-│   │   └── index-old.md
+│   │   ├── index-old.md
+│   │   └── index.md
 │   ├── cli-reference
 │   │   ├── audio-transcribe.md
 │   │   ├── index.md
@@ -399,7 +407,6 @@
 │   ├── check_readme_docs_drift.py
 │   ├── convert_relative_links.py
 │   ├── generate_changelog_entry.py
-│   ├── generate_cli_docs.py
 │   ├── generate_doc_index.py
 │   ├── generate_index_md.py
 │   ├── generate_mkdocs_nav.py
@@ -409,7 +416,8 @@
 │   ├── prepare_pypi_readme.py
 │   ├── sync_readme.py
 │   ├── sync_root_docs.py
-│   └── validate_markdown.py
+│   ├── validate_markdown.py
+│   └── verify_doc_links.py
 ├── src
 │   ├── __init__.py
 │   ├── sitecustomize.py
@@ -699,4 +707,4 @@
     └── text_processing
         └── test_numbered_text.py
 
-162 directories, 538 files
+164 directories, 544 files
