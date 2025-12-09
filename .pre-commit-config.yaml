@@ -11,6 +11,14 @@ repos:
       - id: ruff
         args: ['--fix', '--exit-zero']
       - id: ruff-format
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy type checking
+        entry: bash -c 'poetry run mypy src/ || true'
+        language: system
+        types: [python]
+        pass_filenames: false
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
     hooks:

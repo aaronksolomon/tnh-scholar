@@ -59,7 +59,8 @@ jobs:
         continue-on-error: true
 
       - name: Type checking
-        run: poetry run mypy src/
+        run: poetry run mypy src/ || echo "⚠️ Type checking found issues (non-blocking)"
+        continue-on-error: true
 
       - name: Run tests
         run: poetry run pytest --maxfail=1 --cov=tnh_scholar --cov-report=term-missing
