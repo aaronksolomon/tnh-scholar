@@ -114,6 +114,7 @@ Understand the technical foundation and start contributing:
 - **Standards**: [Style Guide](/development/style-guide.md) and [Contributing](https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md) – code quality and PR workflow
 - **Key ADRs**: Start with [GenAI Service Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md) and [Prompt System Status](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
 - **Research**: [Research Index](/research/index.md) – experiments, evaluations, and exploratory work
+- **Future Directions**: [Long-term Vision](/project/future-directions.md) – planned research directions and architectural horizons
 - **Common commands**: , , , , 
 
 ---
