@@ -19,7 +19,7 @@ A consistent Markdown style keeps the documentation easy to navigate, parse, and
 
 ## Required Front Matter
 
-All Markdown files must start with YAML front matter so the doc tooling can build the global index:
+All Markdown files must start with YAML front matter so the doc tooling can build the global index (initial state example):
 
 ```yaml
 ---
@@ -27,7 +27,7 @@ title: "Human-readable Title"
 description: "One-sentence summary"
 owner: ""
 author: ""
-status: processing
+status: draft
 created: "YYYY-MM-DD"
 ---
 ```
@@ -35,9 +35,23 @@ created: "YYYY-MM-DD"
 - `title` and `description` should match the real content (not just repeat headings).
 - `owner` may remain blank while we have a single maintainer but should be populated when an area gains ownership.
 - `author` records provenance (person, tool, or AI agent responsible for the initial version of the document). Use a short identifier or comma-separated list when multiple authors collaborate.
-- `status` tracks lifecycle (`processing`, `draft`, `current`, `archived`, etc.).
+- `status` tracks document lifecycle. See status values below.
 - `created` reflects the original commit date when possible (auto-filled by tooling).
+- `auto_generated` (boolean) indicates whether the file is machine-generated. When `true`, only `current`, `archived`, `deprecated`, or `superseded` statuses are allowed.
+- `updated` date of change, added if file is updated.
 - **Prompt Template Exception**: files in `patterns/` (soon living under `docs/prompt-templates/`) use a prompt-specific front matter schema that includes runtime variables and other metadata. Continue using that specialized format until the Prompt Template standard is finalized (TBD); do **not** remodel those files to the generic doc front matter without an explicit migration plan.
+
+### Document Status Values
+
+- `proposed` = early RFC/discussion stage
+- `draft` = initial iteration pending approval
+- `wip` = actively being revised (expected to change)
+- `current` = approved baseline
+- `deprecated` = still valid but being phased out
+- `superseded` = replaced by newer version (see link in doc)
+- `archived` = historical reference only
+
+**Auto-generated file constraint**: Files with `auto_generated: true` may only use `current`, `archived`, `deprecated`, or `superseded` status. Manual lifecycle states (`proposed`, `draft`, `wip`) are invalid for generated content.
 
 ## Heading & Summary Rules
 
@@ -69,16 +83,26 @@ created: "YYYY-MM-DD"
 ## Content Guidelines
 
 - Use fenced code blocks with language hints (\```bash, \```python, \```yaml, etc.).
-- **Link Format**: Use absolute paths from the docs root (`/path/to/file.md`), **not** relative paths with `../`.
-  - ✅ Correct: `[Architecture Overview](/architecture/overview.md)`
-  - ✅ Correct: `[Release Workflow](/development/release-workflow.md)`
-  - ❌ Wrong: `[Overview](../architecture/overview.md)` - relative parent references not allowed
-  - ❌ Wrong: `[Workflow](../../development/release-workflow.md)` - relative parent references not allowed
-  - Note: External URLs (`https://...`) are fine for external references
+- **Link formatting**:
+  - **Use absolute links only** for internal documentation references. Absolute links are relative to the MkDocs root (`/docs` directory).
+  - Example: `/architecture/overview.md` (resolves to `docs/architecture/overview.md` in the repository).
+  - Example: `/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md` (resolves to `docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md`).
+  - **Never use** relative links like `../architecture/overview.md` or paths that include `/docs/` in the link itself.
+  - Always use absolute links starting with `/` not relative links to avoid broken references when files are moved or reorganized.
+  - For external URLs, use full absolute URLs (e.g., `https://example.com`).
+- **Repository root file references**:
+  - When drafting documentation that links to tracked repository root files (e.g., `README.md`, `CONTRIBUTING.md`, `VERSIONING.md`), **always link to the generated copies** under `/project/repo-root/<name>.md`.
+  - Example: Link to `/project/repo-root/versioning.md` instead of `/VERSIONING.md` to match MkDocs target paths and avoid later rewrites.
+  - These generated files are created by `scripts/sync_root_docs.py` from the repository root originals.
+- **Adding new repository root files**:
+  - If adding a new file to the repository root that should be surfaced in the documentation (e.g., `VERSIONING.md`), you **must update** `scripts/sync_root_docs.py`:
+    1. Add the filename to the `ROOT_DOCS` tuple (lines 64-72).
+    2. Add a mapping entry to `ROOT_DOC_DEST_MAP` (lines 74-82) that specifies the kebab-case destination filename.
+  - This ensures the file is automatically synced to `/docs/project/repo-root/` during the MkDocs build process.
 - Tables should include header separators (`| --- |`) so markdownlint can validate alignment.
 - When embedding lists, keep them short and use parallel grammar. Use numbered lists only when order matters.
 - Reference other documents via their kebab-case paths (matching the naming rule).
-- **Directory links**: MkDocs resolves pages, not bare folders. Do not link to a directory path (`[Architecture](architecture/)`). Instead:
+- **Directory links**: MkDocs resolves pages, not bare folders. Do not link to a directory path (`[Architecture](/architecture/index.md)`). Instead:
   - Link to a specific page (e.g., `[Architecture Overview](/architecture/overview.md)`), or
   - Add an `index.md` in that directory and link to it (`/architecture/index.md`).
   - `README.md` inside a folder is *not* treated as a landing page by MkDocs; prefer `index.md` for folder entry points.

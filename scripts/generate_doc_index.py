@@ -138,6 +138,11 @@ def format_category_title(category: str) -> str:
     return CATEGORY_TITLES.get(category, category.replace("-", " ").title())
 
 
+def as_absolute_link(path: str) -> str:
+    """Normalize links to absolute paths rooted at docs/."""
+    return "/" + path.lstrip("/")
+
+
 def build_file_data() -> list[dict]:
     """Build list of file metadata dicts."""
     files = []
@@ -213,7 +218,7 @@ def write_documentation_map(path: Path, files: list[dict]) -> None:
 
         for file in category_files:
             # Simple list format with title and link
-            lines.append(f"- [{file['title']}]({file['path']})")
+            lines.append(f"- [{file['title']}]({as_absolute_link(file['path'])})")
 
         lines.append("")
 
@@ -247,9 +252,11 @@ def write_documentation_index(path: Path, files: list[dict]) -> None:
         "",
         "# Documentation Index",
         "",
-        "This is a comprehensive, searchable index of all TNH Scholar documentation with descriptions and metadata.",
+        "This is a comprehensive, searchable index of all TNH Scholar " 
+        "documentation with descriptions and metadata.",
         "",
-        "For a simpler hierarchical view, see the Documentation Map section at the bottom of the [main index](index.md).",
+        "For a simpler hierarchical view, see the Documentation Map "
+        "section at the bottom of the [main index](/index.md).",
         "",
     ]
 
@@ -267,7 +274,7 @@ def write_documentation_index(path: Path, files: list[dict]) -> None:
 
         for file in category_files:
             lines.append(
-                f"| [{file['title']}]({file['path']}) | {file['description']} | "
+                f"| [{file['title']}]({as_absolute_link(file['path'])}) | {file['description']} | "
                 f"{file['created']} | `docs/{file['path']}` |"
             )
 

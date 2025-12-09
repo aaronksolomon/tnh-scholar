@@ -31,6 +31,13 @@ sandbox/
 # temporary files:
 tmp/
 
+# local logs and transient artifacts:
+logs/
+notebooks/**/logs/
+
+# data not tracked in repo:
+data/PDF/
+
 # local notebooks:
 *_local.ipynb
 

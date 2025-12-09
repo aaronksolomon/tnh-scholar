@@ -5,6 +5,20 @@ repos:
       - id: poetry-check
       - id: poetry-lock
         args: ['--check']
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.2
+    hooks:
+      - id: ruff
+        args: ['--fix', '--exit-zero']
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy type checking
+        entry: bash -c 'poetry run mypy src/ || true'
+        language: system
+        types: [python]
+        pass_filenames: false
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
     hooks:
@@ -24,4 +38,11 @@ repos:
         entry: .pre-commit-hooks/version-sync.sh
         language: script
         pass_filenames: false
-        stages: [commit]
+        stages: [pre-commit]
+      - id: prep-notebooks
+        name: Ensure notebooks are prepped
+        entry: poetry run python scripts/prep_notebooks.py --directory notebooks
+        language: system
+        pass_filenames: false
+        files: "\\.ipynb$"
+        stages: [pre-commit]

@@ -91,7 +91,7 @@ At this prototype stage:
 - Keep changes focused
 - Include tests for new functionality
 - Follow existing code style
-- See [style guide](style-guide.md) and [design principles](design-principles.md) for coding standards and architectural patterns.
+- See [style guide](/development/style-guide.md) and [design principles](/development/design-principles.md) for coding standards and architectural patterns.
 
 ## Questions and Discussion
 

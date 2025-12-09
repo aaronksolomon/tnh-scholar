@@ -4,7 +4,7 @@ description: "Table of contents for architecture/gen-ai-service/design"
 owner: ""
 author: ""
 status: processing
-created: "2025-12-04"
+created: "2025-12-08"
 auto_generated: true
 ---
 
@@ -12,11 +12,11 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
 
-**[GenAI Service — Design Strategy](genai-service-design-strategy.md)** - Strategy for unifying GenAI Service capabilities, personas, and phased releases.
+**[GenAI Service — Design Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md)** - Strategy for unifying GenAI Service capabilities, personas, and phased releases.
 
-**[OpenAI Interface Migration Plan](openai-interface-migration-plan.md)** - Step-by-step plan for migrating from the legacy `openai_interface` module to the typed GenAI Service.
+**[OpenAI Interface Migration Plan](/architecture/gen-ai-service/design/openai-interface-migration-plan.md)** - Step-by-step plan for migrating from the legacy  module to the typed GenAI Service.
 
 ---
 

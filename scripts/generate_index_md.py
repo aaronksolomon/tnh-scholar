@@ -42,6 +42,11 @@ def humanize_name(name: str) -> str:
     return name.replace("-", " ").replace("_", " ").title()
 
 
+def as_absolute_link(path: str) -> str:
+    """Normalize links to absolute paths rooted at docs/."""
+    return "/" + path.lstrip("/")
+
+
 def build_map_content() -> str:
     """Generate the documentation map list grouped by top-level section."""
     sections: dict[str, list[tuple[Path, Optional[str]]]] = {}
@@ -67,7 +72,7 @@ def build_map_content() -> str:
         lines.append(f"### {section_title}")
         lines.append("")
         for rel_path, title in sections[section]:
-            lines.append(f"- [{title}]({rel_path.as_posix()})")
+            lines.append(f"- [{title}]({as_absolute_link(rel_path.as_posix())})")
         lines.append("")
 
     return "\n".join(lines).rstrip() + "\n"

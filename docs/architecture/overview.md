@@ -19,22 +19,22 @@ TNH Scholar is built around a **layered, object-service oriented architecture**.
 
 ### Subsystem directory map
 
-- **[AI Text Processing](ai-text-processing/design/textobject-system-design.md)** — Text object system and AI text processing
-- **[Configuration](configuration/tnh-configuration-management.md)** — Configuration management system
-- **[Docs System](docs-system/design/documentation-design.md)** — Documentation system architecture
-- **[GenAI Service](gen-ai-service/design/genai-service-design-strategy.md)** — GenAI service architecture and interfaces
-- **[JVB Viewer](jvb-viewer/design/jvb-viewer-v2-strategy.md)** — JVB viewer
-- **[Knowledge Base](knowledge-base/adr/adr-k01-kb-architecture-strategy.md)** — Knowledge base architecture
-- **[Metadata](metadata/adr/adr-md01-json-ld-metadata.md)** — Metadata systems and JSON-LD
-- **[Object Service](object-service/object-service-design-overview.md)** — Core object service architecture
-- **[Prompt System](prompt-system/prompt-system-architecture.md)** — Prompt system and pattern catalog
-- **[Setup TNH](setup-tnh/design/setup-tnh-minimal-extensible-tool.md)** — Setup tool architecture
-- **[TNH-FAB](tnh-fab/design/tnh-fab-design-document.md)** — TNH Fabrication tool design
-- **[Transcription](transcription/design/diarization-system-design.md)** — Audio transcription and diarization
-- **[UI/UX](ui-ux/design/vs-code-as-ui-platform.md)** — User interface and experience design
-- **[Utilities](utilities/design/utilities-catalog.md)** — Utility functions and tools
-- **[Video Processing](video-processing/adr/adr-vp01-video-processing.md)** — Video processing pipeline
-- **[ytt-fetch](ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)** — YouTube transcript fetching
+- **[AI Text Processing](/architecture/ai-text-processing/design/textobject-system-design.md)** — Text object system and AI text processing
+- **[Configuration](/architecture/configuration/tnh-configuration-management.md)** — Configuration management system
+- **[Docs System](/architecture/docs-system/design/documentation-design.md)** — Documentation system architecture
+- **[GenAI Service](/architecture/gen-ai-service/design/genai-service-design-strategy.md)** — GenAI service architecture and interfaces
+- **[JVB Viewer](/architecture/jvb-viewer/design/jvb-viewer-v2-strategy.md)** — JVB viewer
+- **[Knowledge Base](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)** — Knowledge base architecture
+- **[Metadata](/architecture/metadata/adr/adr-md01-json-ld-metadata.md)** — Metadata systems and JSON-LD
+- **[Object Service](/architecture/object-service/object-service-design-overview.md)** — Core object service architecture
+- **[Prompt System](/architecture/prompt-system/prompt-system-architecture.md)** — Prompt system and pattern catalog
+- **[Setup TNH](/architecture/setup-tnh/design/setup-tnh-minimal-extensible-tool.md)** — Setup tool architecture
+- **[TNH-FAB](/architecture/tnh-gen/design/archive/tnh-fab-design-document.md)** — TNH Fabrication tool design
+- **[Transcription](/architecture/transcription/design/diarization-system-design.md)** — Audio transcription and diarization
+- **[UI/UX](/architecture/ui-ux/design/vs-code-as-ui-platform.md)** — User interface and experience design
+- **[Utilities](/architecture/utilities/design/utilities-catalog.md)** — Utility functions and tools
+- **[Video Processing](/architecture/video-processing/adr/adr-vp01-video-processing.md)** — Video processing pipeline
+- **[ytt-fetch](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)** — YouTube transcript fetching
 
 ---
 
@@ -122,10 +122,10 @@ The GenAI Service is an **internal orchestration layer** that:
 
 It is implemented as an object-service, following the architecture described in:
 
-- [ADR-A01: Object-Service Blueprint for GenAI Service](gen-ai-service/adr/adr-a01-object-service-genai.md)
-- [ADR-A02: Pattern Catalog Integration & Legacy Adoption (V1)](gen-ai-service/adr/adr-a02-patterncatalog-integration-v1.md)
-- [ADR-A11: Model Parameters Fix](gen-ai-service/adr/adr-a11-model-parameters-fix.md)
-- [ADR-A12: Prompt Fingerprints (V1)](gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
+- [ADR-A01: Object-Service Blueprint for GenAI Service](/architecture/gen-ai-service/adr/adr-a01-object-service-genai.md)
+- [ADR-A02: Pattern Catalog Integration & Legacy Adoption (V1)](/architecture/gen-ai-service/adr/adr-a02-patterncatalog-integration-v1.md)
+- [ADR-A11: Model Parameters Fix](/architecture/gen-ai-service/adr/adr-a11-model-parameters-fix.md)
+- [ADR-A12: Prompt Fingerprints (V1)](/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
 
 ---
 
@@ -161,8 +161,8 @@ The exact backend may vary (for example, file-based JSON, SQL, or document store
 
 Related documents:
 
-- [Knowledge Base Architecture Strategy](knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
-- [JSON-LD Metadata ADR](metadata/adr/adr-md01-json-ld-metadata.md)
+- [Knowledge Base Architecture Strategy](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
+- [JSON-LD Metadata ADR](/architecture/metadata/adr/adr-md01-json-ld-metadata.md)
 
 ---
 

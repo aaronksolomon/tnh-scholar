@@ -12,7 +12,7 @@ Code formatting, naming conventions, and Python standards for TNH Scholar develo
 
 ## Overview
 
-This style guide establishes coding standards for the TNH Scholar project. These guidelines ensure code quality, consistency, and maintainability across all development phases. For architectural design principles, see [Design Principles](design-principles.md).
+This style guide establishes coding standards for the TNH Scholar project. These guidelines ensure code quality, consistency, and maintainability across all development phases. For architectural design principles, see [Design Principles](/development/design-principles.md).
 
 ## Python Standards
 
@@ -511,10 +511,10 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 ## Related Documentation
 
-- [Design Principles](design-principles.md) - Architectural patterns and design philosophy
-- [Contributing Guide](contributing-prototype-phase.md) - Contribution workflow and standards
+- [Design Principles](/development/design-principles.md) - Architectural patterns and design philosophy
+- [Contributing Guide](/development/contributing-prototype-phase.md) - Contribution workflow and standards
 - [Project Principles](/project/principles.md) - High-level project principles
-- [System Design](system-design.md) - Overall system architecture
+- [System Design](/development/system-design.md) - Overall system architecture
 
 ## References
 

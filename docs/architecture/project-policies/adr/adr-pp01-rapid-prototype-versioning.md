@@ -14,7 +14,7 @@ Establish versioning policy for TNH Scholar during rapid prototype phase (0.x) t
 - **Date**: 2025-12-06
 - **Owner**: TNH Scholar Architecture Working Group
 - **Authors**: Aaron Solomon, Claude Sonnet 4.5
-- **Related**: [ADR-PT04](../../prompt-system/adr/adr-pt04-prompt-system-refactor.md), [ADR-OS01](../../object-service/adr/adr-os01-object-service-architecture-v3.md), [VERSIONING.md](/project/repo-root/versioning.md)
+- **Related**: [ADR-PT04](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md), [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md), [VERSIONING.md](/project/repo-root/versioning.md)
 
 ---
 
@@ -23,8 +23,8 @@ Establish versioning policy for TNH Scholar during rapid prototype phase (0.x) t
 ### Problem
 
 TNH Scholar is in rapid prototype phase (0.x) where architectural patterns are still evolving. Recent work includes:
-- Object-service architecture refactors ([ADR-OS01](../../object-service/adr/adr-os01-object-service-architecture-v3.md))
-- Prompt system refactor ([ADR-PT04](../../prompt-system/adr/adr-pt04-prompt-system-refactor.md))
+- Object-service architecture refactors ([ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md))
+- Prompt system refactor ([ADR-PT04](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md))
 - GenAI service improvements
 - Transport layer isolations
 
@@ -129,7 +129,7 @@ Created/updated the following files:
 4. ✅ [release_checklist.md](/project/repo-root/release_checklist.md) - Breaking change documentation reminders
 5. ✅ [contributing-prototype-phase.md](/development/contributing-prototype-phase.md) - Policy callout
 
-See [implementation summary](../versioning-policy-implementation-summary.md) for details.
+See [implementation summary](/architecture/project-policies/versioning-policy-implementation-summary.md) for details.
 
 ### Communication Strategy
 
@@ -252,9 +252,9 @@ See [implementation summary](../versioning-policy-implementation-summary.md) for
 ## Related Documentation
 
 - [VERSIONING.md](/project/repo-root/versioning.md) - Complete versioning policy
-- [ADR-PT04](../../prompt-system/adr/adr-pt04-prompt-system-refactor.md) - Example breaking change (prompt system)
-- [ADR-OS01](../../object-service/adr/adr-os01-object-service-architecture-v3.md) - Architecture requiring breaking refactors
-- [Implementation Summary](../versioning-policy-implementation-summary.md) - Documentation updates
+- [ADR-PT04](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md) - Example breaking change (prompt system)
+- [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md) - Architecture requiring breaking refactors
+- [Implementation Summary](/architecture/project-policies/versioning-policy-implementation-summary.md) - Documentation updates
 
 ---
 

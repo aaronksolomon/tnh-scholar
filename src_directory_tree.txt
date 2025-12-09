@@ -1,4 +1,4 @@
-/Users/phapman/Desktop/Projects/tnh-scholar/src
+.
 ├── __init__.py
 ├── sitecustomize.py
 └── tnh_scholar

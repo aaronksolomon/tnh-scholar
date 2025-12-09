@@ -1,21 +1,39 @@
 ---
 title: "audio-transcribe"
-description: "CLI reference for audio-transcribe"
+description: "Command-line tool for audio transcription tasks."
 owner: ""
 author: ""
-status: auto_generated
-created: "2025-12-06"
-auto_generated: true
+status: processing
+created: "2025-01-21"
 ---
-
 # audio-transcribe
 
-For full command-line help, run:
+Command-line tool for audio transcription tasks.
+
+## Usage
 
 ```bash
-poetry run audio-transcribe --help
+audio-transcribe [OPTIONS] [INPUT_FILE]
 ```
 
-## Location
+## Options
 
-`src/tnh_scholar/cli_tools/audio_transcribe/`
+```
+-s, --split              Split audio into chunks
+-t, --transcribe         Transcribe the audio chunks
+-y, --yt_url TEXT        Single YouTube URL to process
+-v, --yt_url_csv PATH    CSV file containing multiple YouTube URLs
+...
+```
+
+## Examples
+
+### Download and Transcribe from YouTube
+```bash
+audio-transcribe --yt_url "https://youtube.com/watch?v=example" --split --transcribe
+```
+
+### Process Local Audio File
+```bash
+audio-transcribe -f my_audio.mp3 --split --transcribe
+```

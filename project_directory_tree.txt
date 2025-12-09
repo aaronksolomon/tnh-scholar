@@ -1,4 +1,4 @@
-/Users/phapman/Desktop/Projects/tnh-scholar
+.
 ├── AGENTLOG.md
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
@@ -9,8 +9,6 @@
 ├── TODO.md
 ├── VERSIONING.md
 ├── data
-│   ├── PDF
-│   │   └── Phat_Giao_journals
 │   └── books
 │       └── public_books
 ├── docs
@@ -21,6 +19,7 @@
 │   │   │   ├── adr
 │   │   │   │   ├── adr-at01-ai-text-processing.md
 │   │   │   │   ├── adr-at02-sectioning-textobject.md
+│   │   │   │   ├── adr-at03-object-service-refactor.md
 │   │   │   │   └── index.md
 │   │   │   ├── design
 │   │   │   │   ├── data-flow-through-pipeline.mermaid
@@ -88,7 +87,8 @@
 │   │   ├── overview.md
 │   │   ├── project-policies
 │   │   │   ├── adr
-│   │   │   │   └── adr-pp01-rapid-prototype-versioning.md
+│   │   │   │   ├── adr-pp01-rapid-prototype-versioning.md
+│   │   │   │   └── index.md
 │   │   │   ├── index.md
 │   │   │   └── versioning-policy-implementation-summary.md
 │   │   ├── prompt-system
@@ -110,11 +110,16 @@
 │   │   │   │   ├── index.md
 │   │   │   │   └── setup-tnh-minimal-extensible-tool.md
 │   │   │   └── index.md
-│   │   ├── tnh-fab
+│   │   ├── tnh-gen
+│   │   │   ├── adr
+│   │   │   │   ├── adr-tg01-cli-architecture.md
+│   │   │   │   ├── adr-tg02-prompt-integration.md
+│   │   │   │   └── index.md
 │   │   │   ├── design
-│   │   │   │   ├── index.md
-│   │   │   │   ├── tnh-fab-cli-spec.md
-│   │   │   │   └── tnh-fab-design-document.md
+│   │   │   │   └── archive
+│   │   │   │       ├── index.md
+│   │   │   │       ├── tnh-fab-cli-spec.md
+│   │   │   │       └── tnh-fab-design-document.md
 │   │   │   └── index.md
 │   │   ├── transcription
 │   │   │   ├── adr
@@ -170,7 +175,8 @@
 │   │       │   └── youtube-api-vs-yt-dlp-eval.md
 │   │       └── index.md
 │   ├── archive
-│   │   └── index-old.md
+│   │   ├── index-old.md
+│   │   └── index.md
 │   ├── cli-reference
 │   │   ├── audio-transcribe.md
 │   │   ├── index.md
@@ -193,16 +199,6 @@
 │   │   ├── git-workflow.md
 │   │   ├── human-ai-software-engineering-principles.md
 │   │   ├── improvements-initial-structure.md
-│   │   ├── incident-reports
-│   │   │   ├── 2025-12-07-git-recovery.md
-│   │   │   ├── 2025-12-07-reference
-│   │   │   │   ├── compaction-summary.txt
-│   │   │   │   ├── convo-with-hard-reset.txt
-│   │   │   │   ├── forensic-analysis.md
-│   │   │   │   ├── implementation-summary.md
-│   │   │   │   ├── incident-report-updates.md
-│   │   │   │   └── index.md
-│   │   │   └── index.md
 │   │   ├── index.md
 │   │   ├── overview.md
 │   │   ├── release-workflow.md
@@ -258,13 +254,11 @@
 │       └── prompt-system.md
 ├── docs_build_output.txt
 ├── evaluation
-├── logs
 ├── mkdocs.yaml
 ├── mypy_errors.txt
 ├── notebook_management.ipynb
 ├── notebooks
 │   ├── ai_text_processing
-│   │   ├── logs
 │   │   ├── patterns.ipynb
 │   │   └── section_processing_tests.ipynb
 │   ├── audio_processing
@@ -280,7 +274,6 @@
 │   │   ├── full_pipe1.ipynb
 │   │   ├── full_pipe2.ipynb
 │   │   ├── full_pipe3.ipynb
-│   │   ├── logs
 │   │   └── speech_detect.ipynb
 │   ├── html_viewing
 │   │   ├── tx_journal_to_html.ipynb
@@ -327,7 +320,6 @@
 │   │   ├── github_dl_test.ipynb
 │   │   ├── logging_config
 │   │   │   └── logging_config_test.ipynb
-│   │   ├── logs
 │   │   ├── logtesting.ipynb
 │   │   ├── package_contents_tests.ipynb
 │   │   ├── pydantic_text_obj_error.ipynb
@@ -356,7 +348,6 @@
 │   │   │   ├── translate_section_thay_en.md
 │   │   │   └── xml_format_dt_section_en.md
 │   │   ├── transcription-engine
-│   │   │   ├── logs
 │   │   │   ├── transciption0.ipynb
 │   │   │   └── transciption1.ipynb
 │   │   ├── waveform-diarization
@@ -381,7 +372,6 @@
 │   └── video_processing
 │       ├── batch_recovery.ipynb
 │       ├── collating.ipynb
-│       ├── logs
 │       ├── output_adjustment_system_messages.md
 │       ├── postprocessing_english.ipynb
 │       ├── postprocessing_viet.ipynb
@@ -409,18 +399,17 @@
 │   ├── check_readme_docs_drift.py
 │   ├── convert_relative_links.py
 │   ├── generate_changelog_entry.py
-│   ├── generate_cli_docs.py
 │   ├── generate_doc_index.py
 │   ├── generate_index_md.py
 │   ├── generate_mkdocs_nav.py
 │   ├── generate_subdir_indexes.py
 │   ├── generate_tree.py
-│   ├── git-check-staleness.sh
 │   ├── prep_notebooks.py
 │   ├── prepare_pypi_readme.py
 │   ├── sync_readme.py
 │   ├── sync_root_docs.py
-│   └── validate_markdown.py
+│   ├── validate_markdown.py
+│   └── verify_doc_links.py
 ├── src
 │   ├── __init__.py
 │   ├── sitecustomize.py
@@ -710,4 +699,4 @@
     └── text_processing
         └── test_numbered_text.py
 
-164 directories, 547 files
+156 directories, 544 files

@@ -3,7 +3,7 @@ title: "ADR Template"
 description: "Reusable template for TNH Scholar architecture decision records."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-27"
 ---
 # ADR-XXX: Concise Decision Title
@@ -16,6 +16,18 @@ One-sentence or short paragraph summarizing the decision.
 - **Date**: YYYY-MM-DD
 - **Authors**: Initial creator of ADR (typically an AI agent or system, plus human initiator/reviewer)
 - **Owner**: Person or group responsible (typically aaronksolomon (git name), current repo maintainer/builder)
+
+---
+
+## ADR Editing Policy
+
+**IMPORTANT**: How you edit this ADR depends on its status (note that the adr status is not the same as the markdown frontmatter status -> see markdown standards for frontmatter status codes.)
+
+- **`proposed` status**: ADR is in the design loop. We may **rewrite** or edit the document as needed to refine the design.
+- **`accepted`, `wip`,  status**: Coding has begun. **NEVER edit** the original Context/Decision/Consequences sections. Only append addendums (see below).
+- **Status transitions**: If we need to make significant changes to an ADR in `accepted` or `wip` status, and an addendum is insufficient, we should supersede the ADR with a new one. General rule: no edits accept addendums after moving out of proposed.
+
+**Rationale**: Once implementation begins, the original decision must be preserved for historical context. Changes during/after implementation are tracked as addendums to show the evolution of thinking.
 
 ## Context
 

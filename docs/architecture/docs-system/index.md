@@ -4,7 +4,7 @@ description: "Table of contents for architecture/docs-system"
 owner: ""
 author: ""
 status: processing
-created: "2025-12-04"
+created: "2025-12-08"
 auto_generated: true
 ---
 
@@ -12,11 +12,11 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
 
-**[Adr](adr/index.md)** - Table of contents for architecture/docs-system/adr
+**[Adr](/architecture/docs-system/adr/index.md)** - Table of contents for architecture/docs-system/adr
 
-**[Design](design/index.md)** - Table of contents for architecture/docs-system/design
+**[Design](/architecture/docs-system/design/index.md)** - Table of contents for architecture/docs-system/design
 
 ---
 
