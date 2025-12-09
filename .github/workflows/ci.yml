@@ -50,11 +50,6 @@ jobs:
             git diff -- project_directory_tree.txt src_directory_tree.txt
           fi
 
-      - name: Verify notebook prep state
-        run: |
-          poetry run python scripts/prep_notebooks.py --directory notebooks
-          git diff --exit-code notebooks
-
       - name: Ruff lint
         run: poetry run ruff check .
 

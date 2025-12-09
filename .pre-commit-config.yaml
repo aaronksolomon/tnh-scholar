@@ -23,4 +23,11 @@ repos:
         entry: .pre-commit-hooks/version-sync.sh
         language: script
         pass_filenames: false
-        stages: [commit]
+        stages: [pre-commit]
+      - id: prep-notebooks
+        name: Ensure notebooks are prepped
+        entry: poetry run python scripts/prep_notebooks.py --directory notebooks
+        language: system
+        pass_filenames: false
+        files: "\\.ipynb$"
+        stages: [pre-commit]
