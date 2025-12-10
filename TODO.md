@@ -91,8 +91,10 @@ This section organizes work into three priority levels based on criticality for 
     - Moved to `Settings.price_per_1k_tokens`; safety gate now consumes setting.
   - [x] Type tightening in completion_mapper
     - Added `PolicyApplied` alias (`dict[str, str | int | float]`).
-
+  
 - **Medium Priority (V1 Completion)**:
+  - [ ] Promote `policy_applied` typing to a shared domain type (CompletionEnvelope) to avoid loose `dict` usage across the service.
+
   - [ ] Capability registry extraction (**→ ADR-A14**)
     - Create `runtime_assets/registries/providers/openai.jsonc`
     - Implement `RegistryLoader` with JSONC support

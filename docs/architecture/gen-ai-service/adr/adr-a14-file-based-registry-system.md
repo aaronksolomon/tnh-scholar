@@ -21,7 +21,7 @@ Establishes a human-editable, file-based registry for model capabilities, pricin
 
 ## ADR Editing Policy
 
-**IMPORTANT**: This ADR is in **proposed** status. We may rewrite or edit the document as needed to refine the design. Once accepted and implementation begins, only addendums may be added.
+**IMPORTANT**: This ADR is in **proposed** status. We may rewrite or edit the document as needed to refine the design. Once accepted and implementation begins, only addenda may be added.
 
 ## Context
 
@@ -29,13 +29,13 @@ Establishes a human-editable, file-based registry for model capabilities, pricin
 
 Multiple modules currently contain hardcoded metadata that should be centralized and externalized:
 
-1. **Pricing Constants** ([safety_gate.py:30](../../../src/tnh_scholar/gen_ai_service/safety/safety_gate.py#L30)):
+1. **Pricing Constants** ([safety_gate.py:30](https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/safety/safety_gate.py#L30)):
 
    ```python
    _PRICE_PER_1K_TOKENS = 0.005  # placeholder until price tables are wired
    ```
 
-2. **Model Capabilities** ([model_router.py:25-34](../../../src/tnh_scholar/gen_ai_service/routing/model_router.py#L25-L34)):
+2. **Model Capabilities** ([model_router.py:25-34](https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/routing/model_router.py#L25-L34)):
 
    ```python
    _MODEL_CAPABILITIES: Mapping[str, _Capability] = {
@@ -1150,6 +1150,6 @@ This enables:
 
 ---
 
-## As-Built Notes & Addendums
+## As-Built Notes & Addenda
 
-*This section will be populated during implementation. Never edit the original Context/Decision/Consequences sections - always append addendums here.*
+*This section will be populated during implementation. Never edit the original Context/Decision/Consequences sections - always append addenda here.*

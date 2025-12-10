@@ -36,15 +36,16 @@ _MODEL_CAPABILITIES: Mapping[str, _Capability] = {
 
 
 def _lookup_capability(model: str) -> Optional[_Capability]:
-    if model in _MODEL_CAPABILITIES:
-        return _MODEL_CAPABILITIES[model]
+    normalized = model.lower()
+    if normalized in _MODEL_CAPABILITIES:
+        return _MODEL_CAPABILITIES[normalized]
     return next(
-        (entry for key, entry in _MODEL_CAPABILITIES.items() if model.startswith(key)),
+        (entry for key, entry in _MODEL_CAPABILITIES.items() if normalized.startswith(key)),
         None,
     )
 
 
-def _pick_structured_fallback(provider: str, preferred: str) -> str:
+def _pick_structured_fallback(preferred: str) -> str:
     """
     Return a structured-capable model; prefer the configured default if it
     supports structured outputs, otherwise pick the first structured-capable
@@ -93,7 +94,7 @@ def select_provider_and_model(
     routing_reason = params.routing_reason or "policy-preselection"
 
     if structured_needed and (capability is None or not capability.structured):
-        fallback = _pick_structured_fallback(params.provider, settings.default_model)
+        fallback = _pick_structured_fallback(settings.default_model)
         routing_reason = f"{routing_reason} → router: switched to structured-capable model {fallback}"
         model = fallback
 

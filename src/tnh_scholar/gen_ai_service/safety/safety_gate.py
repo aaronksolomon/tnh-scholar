@@ -114,7 +114,6 @@ def pre_check(
     if estimated_cost > settings.max_dollars:
         raise SafetyBlocked(f"Estimated cost {estimated_cost:.4f} exceeds budget {settings.max_dollars:.4f}")
 
-    warnings: list[str] = []
     if prompt_metadata and prompt_metadata.safety_level == "sensitive":
         warnings.append("prompt-metadata: sensitive content")
 
