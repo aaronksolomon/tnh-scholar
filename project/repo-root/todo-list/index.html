@@ -1302,45 +1302,45 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#12-complete-provider-abstraction" class="md-nav__link">
+  <a href="#13-complete-provider-abstraction" class="md-nav__link">
     <span class="md-ellipsis">
-      12. 🚧 Complete Provider Abstraction
+      13. 🚧 Complete Provider Abstraction
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#13-knowledge-base-implementation" class="md-nav__link">
+  <a href="#14-knowledge-base-implementation" class="md-nav__link">
     <span class="md-ellipsis">
-      13. 🚧 Knowledge Base Implementation
+      14. 🚧 Knowledge Base Implementation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#14-developer-experience-improvements" class="md-nav__link">
+  <a href="#15-developer-experience-improvements" class="md-nav__link">
     <span class="md-ellipsis">
-      14. 🚧 Developer Experience Improvements
+      15. 🚧 Developer Experience Improvements
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#15-configuration-data-layout" class="md-nav__link">
+  <a href="#16-configuration-data-layout" class="md-nav__link">
     <span class="md-ellipsis">
-      15. 🚧 Configuration &amp; Data Layout
+      16. 🚧 Configuration &amp; Data Layout
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#16-prompt-catalog-safety" class="md-nav__link">
+  <a href="#17-prompt-catalog-safety" class="md-nav__link">
     <span class="md-ellipsis">
-      16. 🚧 Prompt Catalog Safety
+      17. 🚧 Prompt Catalog Safety
     </span>
   </a>
   
@@ -1604,7 +1604,7 @@
           <li class="md-nav__item">
   <a href="#18-convert-documentation-links-to-absolute-paths" class="md-nav__link">
     <span class="md-ellipsis">
-      18. 🚧 Convert Documentation Links to Absolute Paths
+      18. ✅ Convert Documentation Links to Absolute Paths
     </span>
   </a>
   
@@ -3159,6 +3159,8 @@
       
         
       
+        
+      
     
     
     
@@ -3390,6 +3392,34 @@
   
   
     <span class="md-status md-status--processing"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-A14: File-Based Registry System for Provider Metadata
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
   
 
   
@@ -8725,45 +8755,45 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#12-complete-provider-abstraction" class="md-nav__link">
+  <a href="#13-complete-provider-abstraction" class="md-nav__link">
     <span class="md-ellipsis">
-      12. 🚧 Complete Provider Abstraction
+      13. 🚧 Complete Provider Abstraction
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#13-knowledge-base-implementation" class="md-nav__link">
+  <a href="#14-knowledge-base-implementation" class="md-nav__link">
     <span class="md-ellipsis">
-      13. 🚧 Knowledge Base Implementation
+      14. 🚧 Knowledge Base Implementation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#14-developer-experience-improvements" class="md-nav__link">
+  <a href="#15-developer-experience-improvements" class="md-nav__link">
     <span class="md-ellipsis">
-      14. 🚧 Developer Experience Improvements
+      15. 🚧 Developer Experience Improvements
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#15-configuration-data-layout" class="md-nav__link">
+  <a href="#16-configuration-data-layout" class="md-nav__link">
     <span class="md-ellipsis">
-      15. 🚧 Configuration &amp; Data Layout
+      16. 🚧 Configuration &amp; Data Layout
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#16-prompt-catalog-safety" class="md-nav__link">
+  <a href="#17-prompt-catalog-safety" class="md-nav__link">
     <span class="md-ellipsis">
-      16. 🚧 Prompt Catalog Safety
+      17. 🚧 Prompt Catalog Safety
     </span>
   </a>
   
@@ -9027,7 +9057,7 @@
           <li class="md-nav__item">
   <a href="#18-convert-documentation-links-to-absolute-paths" class="md-nav__link">
     <span class="md-ellipsis">
-      18. 🚧 Convert Documentation Links to Absolute Paths
+      18. ✅ Convert Documentation Links to Absolute Paths
     </span>
   </a>
   
@@ -9170,29 +9200,128 @@
 </ul>
 <h4 id="4-implement-core-stubs">4. 🚧 Implement Core Stubs<a class="headerlink" href="#4-implement-core-stubs" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: IN PROGRESS - Needs Implementation</li>
+<li><strong>Status</strong>: PRELIMINARY IMPLEMENTATION COMPLETE ✅ - Needs Polish &amp; Registry Integration</li>
 <li><strong>Priority</strong>: HIGH</li>
-<li><strong>Tasks</strong>:</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/config/params_policy.py">https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/config/params_policy.py</a> — Implement actual policy logic (currently pass-through)<ul>
-<li>Policy precedence: call hint → prompt metadata → defaults</li>
-<li>Cache Settings instead of re-instantiating per call</li>
+<li><strong>Review</strong>: Code review completed 2025-12-10 - <strong>Grade: A- (92/100)</strong> ⭐⭐⭐⭐⭐</li>
+<li><strong>Core Implementation</strong>:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/config/params_policy.py">params_policy.py</a> — Policy precedence implemented ✅<ul>
+<li>✅ Policy precedence: call hint → prompt metadata → defaults</li>
+<li>✅ Settings cached via <code>@lru_cache</code> (excellent optimization)</li>
+<li>✅ Strong typing with <code>ResolvedParams</code> Pydantic model</li>
+<li>✅ Routing diagnostics in <code>routing_reason</code> field</li>
+<li><strong>Score</strong>: 95/100 - Excellent implementation</li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/routing/model_router.py">https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/routing/model_router.py</a> — Implement model selection logic (currently echoes input)<ul>
-<li>Intent-based routing</li>
-<li>Provider capability mapping</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/routing/model_router.py">model_router.py</a> — Capability-based routing implemented ✅<ul>
+<li>✅ Declarative routing table with <code>_MODEL_CAPABILITIES</code></li>
+<li>✅ Structured output fallback (JSON mode capability switching)</li>
+<li>✅ Intent-aware architecture foundation</li>
+<li>⚠️ Intent routing currently placeholder (line 98-101)</li>
+<li><strong>Score</strong>: 92/100 - Strong implementation</li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/safety/safety_gate.py">https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/safety/safety_gate.py</a> — Implement content safety (currently placeholder)<ul>
-<li>Pre-submission content checks</li>
-<li>Post-completion validation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/safety/safety_gate.py">safety_gate.py</a> — Three-layer safety checks implemented ✅<ul>
+<li>✅ Character limit, context window, budget estimation</li>
+<li>✅ Typed exceptions (<code>SafetyBlocked</code>)</li>
+<li>✅ Structured <code>SafetyReport</code> with actionable diagnostics</li>
+<li>✅ Content type handling (string/list with warnings)</li>
+<li>✅ Prompt metadata integration (<code>safety_level</code>)</li>
+<li>⚠️ Price constant hardcoded (line 30: <code>_PRICE_PER_1K_TOKENS = 0.005</code>)</li>
+<li>⚠️ Post-check currently stubbed</li>
+<li><strong>Score</strong>: 94/100 - Excellent implementation</li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/mappers/completion_mapper.py">https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/mappers/completion_mapper.py</a> — Surface provider error bodies<ul>
-<li>Structured error propagation</li>
-<li>Don't just raise ValueError on non-OK status</li>
+<li class="task-list-item">
+<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/mappers/completion_mapper.py">completion_mapper.py</a> — Bi-directional mapping implemented ✅</p>
+<ul>
+<li>✅ Clean transport → domain transformation</li>
+<li>✅ Error details surfaced in <code>policy_applied</code></li>
+<li>✅ Status handling (OK/FAILED/INCOMPLETE)</li>
+<li>✅ Pure mapper functions (no side effects)</li>
+<li>⚠️ <code>policy_applied</code> uses <code>Dict[str, object]</code> (should be more specific)</li>
+<li><strong>Score</strong>: 91/100 - Strong implementation</li>
 </ul>
 </li>
+<li>
+<p><strong>High Priority (Before Merging)</strong>:</p>
+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Add Google-style docstrings to public functions (<a href="../../../development/style-guide/#L315-L341">style-guide.md:315-341</a>)<ul>
+<li><code>apply_policy()</code>, <code>select_provider_and_model()</code>, <code>pre_check()</code>, <code>post_check()</code>, <code>provider_to_completion()</code></li>
+</ul>
+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Move <code>_PRICE_PER_1K_TOKENS</code> constant to Settings or registry (blocks ADR-A14)<ul>
+<li>Moved to <code>Settings.price_per_1k_tokens</code>; safety gate now consumes setting.</li>
+</ul>
+</li>
+<li class="task-list-item">
+<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Type tightening in completion_mapper</p>
+<ul>
+<li>Added <code>PolicyApplied</code> alias (<code>dict[str, str | int | float]</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Medium Priority (V1 Completion)</strong>:</p>
+</li>
+<li class="task-list-item">
+<p><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Promote <code>policy_applied</code> typing to a shared domain type (CompletionEnvelope) to avoid loose <code>dict</code> usage across the service.</p>
+</li>
+<li class="task-list-item">
+<p><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Capability registry extraction (<strong>→ ADR-A14</strong>)</p>
+<ul>
+<li>Create <code>runtime_assets/registries/providers/openai.jsonc</code></li>
+<li>Implement <code>RegistryLoader</code> with JSONC support</li>
+<li>Refactor <code>model_router.py</code> to use registry</li>
+<li>Refactor <code>safety_gate.py</code> to use registry pricing</li>
+<li>See: <a href="../../../architecture/gen-ai-service/adr/adr-a14-file-based-registry-system/">ADR-A14: File-Based Registry System</a></li>
+</ul>
+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Intent routing implementation<ul>
+<li>Document planned approach or create follow-up issue</li>
+<li>Current: placeholder at <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/routing/model_router.py#L98-L101">model_router.py:98-101</a></li>
+</ul>
+</li>
+<li class="task-list-item">
+<p><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Post-check safety implementation</p>
+<ul>
+<li>Add content validation logic to <code>safety_gate.post_check()</code></li>
+<li>Current: stubbed at <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/safety/safety_gate.py#L124-L133">safety_gate.py:124-133</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Low Priority (Future Work)</strong>:</p>
+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Warning enum system<ul>
+<li>Create typed warning codes instead of strings</li>
+<li>Affects: safety_gate, completion_mapper, model_router</li>
+</ul>
+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Enhanced diagnostics<ul>
+<li>More granular routing reasons</li>
+<li>Detailed safety check diagnostics</li>
+</ul>
+</li>
+<li class="task-list-item">
+<p><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Message.content Type Architecture Investigation</strong> (design quality, non-blocking)</p>
+<ul>
+<li><strong>Location</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/models/domain.py#L92-L96">gen_ai_service/models/domain.py:92-96</a></li>
+<li><strong>Issue</strong>: Sourcery identifies <code>Union[str, List[ChatCompletionContentPartParam]]</code> as source of complexity</li>
+<li><strong>Context</strong>: Current design intentionally supports OpenAI's flexible content API (plain text OR structured parts with images/etc)</li>
+<li><strong>Investigation Areas</strong>:</li>
+<li>Document current usage patterns across codebase</li>
+<li>Assess downstream complexity: where are type checks needed?</li>
+<li>Evaluate normalization strategies (always list? separate fields? utility methods?)</li>
+<li>Consider provider compatibility (Anthropic, etc)</li>
+<li>Draft ADR or addendum to existing GenAI ADRs if design change warranted</li>
+<li><strong>Impact</strong>: Affects message representation throughout GenAIService</li>
+</ul>
+</li>
+<li>
+<p><strong>Review Summary</strong>:</p>
+</li>
+<li><strong>Strengths</strong>: Excellent architectural alignment, strong typing, proper separation of concerns, clean integration</li>
+<li><strong>Minor Issues</strong>: Missing function docstrings, hardcoded price constant, one dict type needing refinement</li>
+<li><strong>Overall</strong>: Production-ready with minor polish (estimated 1 hour total)</li>
+<li><strong>Detailed Review</strong>: See code review session 2025-12-10</li>
 </ul>
 <h4 id="5-unify-openai-clients">5. ✅ Unify OpenAI Clients<a class="headerlink" href="#5-unify-openai-clients" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
@@ -9415,7 +9544,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="12-complete-provider-abstraction">12. 🚧 Complete Provider Abstraction<a class="headerlink" href="#12-complete-provider-abstraction" title="Link to this section">&para;</a></h4>
+<h4 id="13-complete-provider-abstraction">13. 🚧 Complete Provider Abstraction<a class="headerlink" href="#13-complete-provider-abstraction" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
 <li><strong>Status</strong>: NOT STARTED</li>
 <li><strong>Tasks</strong>:</li>
@@ -9425,7 +9554,7 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Provider capability discovery</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Multi-provider cost optimization</li>
 </ul>
-<h4 id="13-knowledge-base-implementation">13. 🚧 Knowledge Base Implementation<a class="headerlink" href="#13-knowledge-base-implementation" title="Link to this section">&para;</a></h4>
+<h4 id="14-knowledge-base-implementation">14. 🚧 Knowledge Base Implementation<a class="headerlink" href="#14-knowledge-base-implementation" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
 <li><strong>Status</strong>: DESIGN COMPLETE</li>
 <li><strong>ADR</strong>: <a href="../../../architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy/">ADR-K01: Preliminary Architectural Strategy</a></li>
@@ -9435,7 +9564,7 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Query capabilities</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Semantic similarity search</li>
 </ul>
-<h4 id="14-developer-experience-improvements">14. 🚧 Developer Experience Improvements<a class="headerlink" href="#14-developer-experience-improvements" title="Link to this section">&para;</a></h4>
+<h4 id="15-developer-experience-improvements">15. 🚧 Developer Experience Improvements<a class="headerlink" href="#15-developer-experience-improvements" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
 <li><strong>Status</strong>: PARTIAL (hooks and Makefile exist, automation pending)</li>
 <li><strong>Tasks</strong>:</li>
@@ -9447,7 +9576,7 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Release automation</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Changelog automation</li>
 </ul>
-<h4 id="15-configuration-data-layout">15. 🚧 Configuration &amp; Data Layout<a class="headerlink" href="#15-configuration-data-layout" title="Link to this section">&para;</a></h4>
+<h4 id="16-configuration-data-layout">16. 🚧 Configuration &amp; Data Layout<a class="headerlink" href="#16-configuration-data-layout" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
 <li><strong>Status</strong>: NOT STARTED</li>
 <li><strong>Priority</strong>: HIGH (blocks pip install)</li>
@@ -9458,7 +9587,7 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Move directory checks to CLI entry points only</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Ensure installed wheels work without patterns/ directory</li>
 </ul>
-<h4 id="16-prompt-catalog-safety">16. 🚧 Prompt Catalog Safety<a class="headerlink" href="#16-prompt-catalog-safety" title="Link to this section">&para;</a></h4>
+<h4 id="17-prompt-catalog-safety">17. 🚧 Prompt Catalog Safety<a class="headerlink" href="#17-prompt-catalog-safety" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
 <li><strong>Status</strong>: NOT STARTED</li>
 <li><strong>Priority</strong>: MEDIUM</li>
@@ -9633,23 +9762,26 @@
 <li>Requires examining actual CLI code structure for comprehensive coverage</li>
 <li>Should align with user guide examples</li>
 </ul>
-<h4 id="18-convert-documentation-links-to-absolute-paths">18. 🚧 Convert Documentation Links to Absolute Paths<a class="headerlink" href="#18-convert-documentation-links-to-absolute-paths" title="Link to this section">&para;</a></h4>
+<h4 id="18-convert-documentation-links-to-absolute-paths">18. ✅ Convert Documentation Links to Absolute Paths<a class="headerlink" href="#18-convert-documentation-links-to-absolute-paths" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: NOT STARTED</li>
+<li><strong>Status</strong>: COMPLETED (PR #14, commit 85ec6b0)</li>
 <li><strong>Priority</strong>: MEDIUM</li>
 <li><strong>Context</strong>: Enabled MkDocs 1.6+ absolute link validation (2025-12-04). Absolute links (<code>/path/to/file.md</code>) are clearer, easier to maintain, and automation-friendly compared to relative links (<code>../../../path/to/file.md</code>).</li>
 <li><strong>Reference</strong>: <a href="../../../architecture/docs-system/adr/adr-dd01-docs-reorg-strategy/">ADR-DD01 Addendum 2025-12-04: Absolute Link Strategy</a></li>
+<li><strong>Completed</strong>: 2025-12-05</li>
 <li><strong>Tasks</strong>:</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Audit all Markdown files for relative internal links</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Convert relative links to absolute paths (e.g., <code>../../../cli-reference/overview.md</code> → <code>/cli-reference/overview.md</code>)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update documentation generation scripts to emit absolute links</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Verify all links resolve correctly with <code>mkdocs build --strict</code></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run link checker to validate changes</li>
-<li><strong>Benefits</strong>:</li>
-<li>Clearer intent: immediately obvious where links point</li>
-<li>Easier refactoring: search/replace when moving files</li>
-<li>Automation friendly: scripts can construct absolute paths easily</li>
-<li>Less error-prone: no counting <code>../</code> levels in deep hierarchies</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Audit all Markdown files for relative internal links (120 links found across 25 files)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Convert relative links to absolute paths (e.g., <code>../../../cli-reference/overview.md</code> → <code>/cli-reference/overview.md</code>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Update documentation generation scripts to emit absolute links (created <code>scripts/convert_relative_links.py</code>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Verify all links resolve correctly with <code>mkdocs build --strict</code> (passed)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Run link checker to validate changes (verified with <code>scripts/verify_doc_links.py</code>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Update markdown standards documentation to mandate absolute links</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Add Makefile targets for link verification (<code>docs-links</code>, <code>docs-links-apply</code>)</li>
+<li><strong>Results</strong>:</li>
+<li>964 absolute links now in use across 96 markdown files</li>
+<li>All internal documentation links use absolute paths</li>
+<li>MkDocs configured with <code>validation.links.absolute_links: relative_to_docs</code></li>
+<li>Link verification integrated into docs build process</li>
 </ul>
 <h4 id="19-document-success-cases">19. 🚧 Document Success Cases<a class="headerlink" href="#19-document-success-cases" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
@@ -9749,6 +9881,7 @@
 <li>✅ OpenAI client unification (all 6 phases complete)</li>
 <li>✅ Documentation reorganization (Phase 1 complete)</li>
 <li>✅ Pre-commit hooks and Makefile setup</li>
+<li>✅ Documentation links converted to absolute paths (TODO #18)</li>
 </ul>
 <p><strong>Current Sprint Focus</strong>:</p>
 <ul>
