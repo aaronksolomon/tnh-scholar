@@ -10,9 +10,13 @@ Connected modules:
   - pattern_catalog.catalog.PatternCatalog
 """
 
+from functools import lru_cache
 from typing import Optional
 
 from pydantic import BaseModel
+
+from tnh_scholar.gen_ai_service.config.settings import Settings
+from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
 
 class ResolvedParams(BaseModel):
@@ -20,28 +24,66 @@ class ResolvedParams(BaseModel):
     model: str
     temperature: float
     max_output_tokens: int
+    output_mode: str = "text"
     seed: Optional[int] = None
+    routing_reason: Optional[str] = None
 
-# TODO V1 requires more simple policy management. For now in prototype walking skeleton we use a stub.
+
+@lru_cache(maxsize=1)
+def _cached_settings() -> Settings:
+    """Cache Settings so policy resolution doesn't re-read env on every call."""
+    return Settings()
+
 
 def apply_policy(
-    intent: str | None, 
-    call_hint: str | None
-    ) -> ResolvedParams:
+    intent: str | None,
+    call_hint: str | None,
+    *,
+    prompt_metadata: PromptMetadata | None = None,
+    settings: Settings | None = None,
+) -> ResolvedParams:
     """
-    Merge in order: call_hint / pattern_defaults / global policy / settings.
-    This function reads ADR-A08 policy (yaml/env) via Settings accessor(s).
-    For V1, read from Settings directly; later, load from policies/params file.
+    Merge defaults to choose effective params for a completion request.
+
+    Precedence:
+      1. `call_hint` (explicit caller override)
+      2. Prompt metadata defaults (`default_model`, `output_mode`)
+      3. Service settings defaults
+
+    V1 uses Settings as the policy source; later versions can replace the
+    settings lookup with a policy registry while keeping the same contract.
+
+    Args:
+        intent: Optional intent tag for routing diagnostics.
+        call_hint: Explicit model hint from the request.
+        prompt_metadata: Metadata from the prompt catalog entry.
+        settings: Optional Settings instance (defaults to cached Settings()).
+
+    Returns:
+        ResolvedParams: Fully-resolved provider/model/parameter set with routing reason.
     """
-    # sketch only; implement with real merges:
-    # - get defaults from settings (no literals)
-    from .settings import Settings
-    settings = Settings()
-    model = call_hint or settings.default_model
+    current_settings = settings or _cached_settings()
+
+    metadata_model = prompt_metadata.default_model if prompt_metadata else None
+    metadata_output_mode = prompt_metadata.output_mode if prompt_metadata else None
+
+    model = (
+        call_hint
+        if call_hint is not None
+        else metadata_model
+        if metadata_model is not None
+        else current_settings.default_model
+    )
+    output_mode = metadata_output_mode if metadata_output_mode is not None else "text"
+
     return ResolvedParams(
-        provider=settings.default_provider,
+        provider=current_settings.default_provider,
         model=model,
-        temperature=settings.default_temperature,
-        max_output_tokens=settings.default_max_output_tokens,
-        seed=settings.default_seed,
+        temperature=current_settings.default_temperature,
+        max_output_tokens=current_settings.default_max_output_tokens,
+        output_mode=output_mode,
+        seed=current_settings.default_seed,
+        routing_reason=f"policy: intent={intent or 'unspecified'},"
+        f" call_hint={'yes' if call_hint else 'no'},"
+        f" prompt_default={'yes' if metadata_model else 'no'}",
     )

@@ -51,21 +51,87 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 4. 🚧 Implement Core Stubs
 
-- **Status**: IN PROGRESS - Needs Implementation
+- **Status**: PRELIMINARY IMPLEMENTATION COMPLETE ✅ - Needs Polish & Registry Integration
 - **Priority**: HIGH
-- **Tasks**:
-  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/config/params_policy.py> — Implement actual policy logic (currently pass-through)
-    - Policy precedence: call hint → prompt metadata → defaults
-    - Cache Settings instead of re-instantiating per call
-  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/routing/model_router.py> — Implement model selection logic (currently echoes input)
-    - Intent-based routing
-    - Provider capability mapping
-  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/safety/safety_gate.py> — Implement content safety (currently placeholder)
-    - Pre-submission content checks
-    - Post-completion validation
-  - [ ] <https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/mappers/completion_mapper.py> — Surface provider error bodies
-    - Structured error propagation
-    - Don't just raise ValueError on non-OK status
+- **Review**: Code review completed 2025-12-10 - **Grade: A- (92/100)** ⭐⭐⭐⭐⭐
+- **Core Implementation**:
+  - [x] [params_policy.py](src/tnh_scholar/gen_ai_service/config/params_policy.py) — Policy precedence implemented ✅
+    - ✅ Policy precedence: call hint → prompt metadata → defaults
+    - ✅ Settings cached via `@lru_cache` (excellent optimization)
+    - ✅ Strong typing with `ResolvedParams` Pydantic model
+    - ✅ Routing diagnostics in `routing_reason` field
+    - **Score**: 95/100 - Excellent implementation
+  - [x] [model_router.py](src/tnh_scholar/gen_ai_service/routing/model_router.py) — Capability-based routing implemented ✅
+    - ✅ Declarative routing table with `_MODEL_CAPABILITIES`
+    - ✅ Structured output fallback (JSON mode capability switching)
+    - ✅ Intent-aware architecture foundation
+    - ⚠️ Intent routing currently placeholder (line 98-101)
+    - **Score**: 92/100 - Strong implementation
+  - [x] [safety_gate.py](src/tnh_scholar/gen_ai_service/safety/safety_gate.py) — Three-layer safety checks implemented ✅
+    - ✅ Character limit, context window, budget estimation
+    - ✅ Typed exceptions (`SafetyBlocked`)
+    - ✅ Structured `SafetyReport` with actionable diagnostics
+    - ✅ Content type handling (string/list with warnings)
+    - ✅ Prompt metadata integration (`safety_level`)
+    - ⚠️ Price constant hardcoded (line 30: `_PRICE_PER_1K_TOKENS = 0.005`)
+    - ⚠️ Post-check currently stubbed
+    - **Score**: 94/100 - Excellent implementation
+  - [x] [completion_mapper.py](src/tnh_scholar/gen_ai_service/mappers/completion_mapper.py) — Bi-directional mapping implemented ✅
+    - ✅ Clean transport → domain transformation
+    - ✅ Error details surfaced in `policy_applied`
+    - ✅ Status handling (OK/FAILED/INCOMPLETE)
+    - ✅ Pure mapper functions (no side effects)
+    - ⚠️ `policy_applied` uses `Dict[str, object]` (should be more specific)
+    - **Score**: 91/100 - Strong implementation
+
+- **High Priority (Before Merging)**:
+  - [x] Add Google-style docstrings to public functions ([style-guide.md:315-341](docs/development/style-guide.md#L315-L341))
+    - `apply_policy()`, `select_provider_and_model()`, `pre_check()`, `post_check()`, `provider_to_completion()`
+  - [x] Move `_PRICE_PER_1K_TOKENS` constant to Settings or registry (blocks ADR-A14)
+    - Moved to `Settings.price_per_1k_tokens`; safety gate now consumes setting.
+  - [x] Type tightening in completion_mapper
+    - Added `PolicyApplied` alias (`dict[str, str | int | float]`).
+  
+- **Medium Priority (V1 Completion)**:
+  - [ ] Promote `policy_applied` typing to a shared domain type (CompletionEnvelope) to avoid loose `dict` usage across the service.
+
+  - [ ] Capability registry extraction (**→ ADR-A14**)
+    - Create `runtime_assets/registries/providers/openai.jsonc`
+    - Implement `RegistryLoader` with JSONC support
+    - Refactor `model_router.py` to use registry
+    - Refactor `safety_gate.py` to use registry pricing
+    - See: [ADR-A14: File-Based Registry System](docs/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
+  - [ ] Intent routing implementation
+    - Document planned approach or create follow-up issue
+    - Current: placeholder at [model_router.py:98-101](src/tnh_scholar/gen_ai_service/routing/model_router.py#L98-L101)
+  - [ ] Post-check safety implementation
+    - Add content validation logic to `safety_gate.post_check()`
+    - Current: stubbed at [safety_gate.py:124-133](src/tnh_scholar/gen_ai_service/safety/safety_gate.py#L124-L133)
+
+- **Low Priority (Future Work)**:
+  - [ ] Warning enum system
+    - Create typed warning codes instead of strings
+    - Affects: safety_gate, completion_mapper, model_router
+  - [ ] Enhanced diagnostics
+    - More granular routing reasons
+    - Detailed safety check diagnostics
+  - [ ] **Message.content Type Architecture Investigation** (design quality, non-blocking)
+    - **Location**: [gen_ai_service/models/domain.py:92-96](src/tnh_scholar/gen_ai_service/models/domain.py#L92-L96)
+    - **Issue**: Sourcery identifies `Union[str, List[ChatCompletionContentPartParam]]` as source of complexity
+    - **Context**: Current design intentionally supports OpenAI's flexible content API (plain text OR structured parts with images/etc)
+    - **Investigation Areas**:
+      - Document current usage patterns across codebase
+      - Assess downstream complexity: where are type checks needed?
+      - Evaluate normalization strategies (always list? separate fields? utility methods?)
+      - Consider provider compatibility (Anthropic, etc)
+      - Draft ADR or addendum to existing GenAI ADRs if design change warranted
+    - **Impact**: Affects message representation throughout GenAIService
+
+- **Review Summary**:
+  - **Strengths**: Excellent architectural alignment, strong typing, proper separation of concerns, clean integration
+  - **Minor Issues**: Missing function docstrings, hardcoded price constant, one dict type needing refinement
+  - **Overall**: Production-ready with minor polish (estimated 1 hour total)
+  - **Detailed Review**: See code review session 2025-12-10
 
 #### 5. ✅ Unify OpenAI Clients
 
@@ -266,7 +332,7 @@ This section organizes work into three priority levels based on criticality for 
     - Identify focused units
     - Extract reusable components
 
-#### 12. 🚧 Complete Provider Abstraction
+#### 13. 🚧 Complete Provider Abstraction
 
 - **Status**: NOT STARTED
 - **Tasks**:
@@ -276,7 +342,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Provider capability discovery
   - [ ] Multi-provider cost optimization
 
-#### 13. 🚧 Knowledge Base Implementation
+#### 14. 🚧 Knowledge Base Implementation
 
 - **Status**: DESIGN COMPLETE
 - **ADR**: [ADR-K01: Preliminary Architectural Strategy](docs/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
@@ -286,7 +352,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Query capabilities
   - [ ] Semantic similarity search
 
-#### 14. 🚧 Developer Experience Improvements
+#### 15. 🚧 Developer Experience Improvements
 
 - **Status**: PARTIAL (hooks and Makefile exist, automation pending)
 - **Tasks**:
@@ -298,7 +364,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Release automation
   - [ ] Changelog automation
 
-#### 15. 🚧 Configuration & Data Layout
+#### 16. 🚧 Configuration & Data Layout
 
 - **Status**: NOT STARTED
 - **Priority**: HIGH (blocks pip install)
@@ -309,7 +375,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Move directory checks to CLI entry points only
   - [ ] Ensure installed wheels work without patterns/ directory
 
-#### 16. 🚧 Prompt Catalog Safety
+#### 17. 🚧 Prompt Catalog Safety
 
 - **Status**: NOT STARTED
 - **Priority**: MEDIUM
@@ -493,23 +559,26 @@ This section organizes work into three priority levels based on criticality for 
   - Requires examining actual CLI code structure for comprehensive coverage
   - Should align with user guide examples
 
-#### 18. 🚧 Convert Documentation Links to Absolute Paths
+#### 18. ✅ Convert Documentation Links to Absolute Paths
 
-- **Status**: NOT STARTED
+- **Status**: COMPLETED (PR #14, commit 85ec6b0)
 - **Priority**: MEDIUM
 - **Context**: Enabled MkDocs 1.6+ absolute link validation (2025-12-04). Absolute links (`/path/to/file.md`) are clearer, easier to maintain, and automation-friendly compared to relative links (`../../../path/to/file.md`).
 - **Reference**: [ADR-DD01 Addendum 2025-12-04: Absolute Link Strategy](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
+- **Completed**: 2025-12-05
 - **Tasks**:
-  - [ ] Audit all Markdown files for relative internal links
-  - [ ] Convert relative links to absolute paths (e.g., `../../../cli-reference/overview.md` → `/cli-reference/overview.md`)
-  - [ ] Update documentation generation scripts to emit absolute links
-  - [ ] Verify all links resolve correctly with `mkdocs build --strict`
-  - [ ] Run link checker to validate changes
-- **Benefits**:
-  - Clearer intent: immediately obvious where links point
-  - Easier refactoring: search/replace when moving files
-  - Automation friendly: scripts can construct absolute paths easily
-  - Less error-prone: no counting `../` levels in deep hierarchies
+  - [x] Audit all Markdown files for relative internal links (120 links found across 25 files)
+  - [x] Convert relative links to absolute paths (e.g., `../../../cli-reference/overview.md` → `/cli-reference/overview.md`)
+  - [x] Update documentation generation scripts to emit absolute links (created `scripts/convert_relative_links.py`)
+  - [x] Verify all links resolve correctly with `mkdocs build --strict` (passed)
+  - [x] Run link checker to validate changes (verified with `scripts/verify_doc_links.py`)
+  - [x] Update markdown standards documentation to mandate absolute links
+  - [x] Add Makefile targets for link verification (`docs-links`, `docs-links-apply`)
+- **Results**:
+  - 964 absolute links now in use across 96 markdown files
+  - All internal documentation links use absolute paths
+  - MkDocs configured with `validation.links.absolute_links: relative_to_docs`
+  - Link verification integrated into docs build process
 
 #### 19. 🚧 Document Success Cases
 
@@ -591,6 +660,7 @@ This section organizes work into three priority levels based on criticality for 
 - ✅ OpenAI client unification (all 6 phases complete)
 - ✅ Documentation reorganization (Phase 1 complete)
 - ✅ Pre-commit hooks and Makefile setup
+- ✅ Documentation links converted to absolute paths (TODO #18)
 
 **Current Sprint Focus**:
 
