@@ -82,11 +82,11 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
     apply_calls: list[tuple[str | None, str | None]] = []
     select_calls: list[tuple[str | None, ResolvedParams, Settings]] = []
 
-    def fake_apply_policy(intent, call_hint):
+    def fake_apply_policy(intent, call_hint, **_):
         apply_calls.append((intent, call_hint))
         return policy_params
 
-    def fake_select(intent, params, settings):
+    def fake_select(intent, params, settings, **_):
         select_calls.append((intent, params, settings))
         return params
 

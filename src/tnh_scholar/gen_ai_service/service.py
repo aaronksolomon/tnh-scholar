@@ -28,6 +28,7 @@ from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import 
 from tnh_scholar.gen_ai_service.providers.openai_adapter import OpenAIAdapter
 from tnh_scholar.gen_ai_service.providers.openai_client import OpenAIClient
 from tnh_scholar.gen_ai_service.routing.model_router import select_provider_and_model
+from tnh_scholar.gen_ai_service.safety import safety_gate
 
 
 class GenAIService:
@@ -36,18 +37,21 @@ class GenAIService:
     def __init__(self, settings: Settings | None = None):
         self.settings = settings or Settings()
         prompts_base = self.settings.default_prompt_dir
-        if self.settings.openai_api_key is not None:
-            self.openai_client = OpenAIClient(self.settings.openai_api_key, None)
-        else:
+        api_key = self.settings.openai_api_key
+        self.openai_client: OpenAIClient
+        if api_key is None:
+            # library usage should fail fast; IssueHandler raises ConfigurationError
             IssueHandler.no_api_key("OPENAI_API_KEY")
+        self.openai_client = OpenAIClient(api_key, None)
         if prompts_base is None:
             prompts_base = IssueHandler.no_prompt_catalog()
         if prompts_base is None:
             raise RuntimeError("GenAIService could not determine a prompt catalog directory")
         self.catalog = PromptsAdapter(prompts_base=prompts_base)
         self.openai_adapter = OpenAIAdapter()
-    
+
     def generate(self, request: RenderRequest) -> CompletionEnvelope:
+        prompt_metadata = self.catalog.introspect(request.instruction_key)
         # Adapter / catalog returns a RenderedPrompt and a Fingerprint (per ADR-A12)
         rendered, fingerprint = self.catalog.render(request)
 
@@ -55,13 +59,23 @@ class GenAIService:
         base_params = apply_policy(
             intent=request.intent,
             call_hint=request.model,
+            prompt_metadata=prompt_metadata,
+            settings=self.settings,
         )
         selection = select_provider_and_model(
             intent=request.intent,
             params=base_params,
             settings=self.settings,
+            prompt_metadata=prompt_metadata,
         )
         # selection contains: provider, model, temperature, max_output_tokens, seed
+
+        safety_report = safety_gate.pre_check(
+            rendered,
+            selection,
+            self.settings,
+            prompt_metadata=prompt_metadata,
+        )
 
         provider_request = ProviderRequest(
             provider=selection.provider,
@@ -91,4 +105,18 @@ class GenAIService:
             attempt_count=response.attempts,
         )
 
-        return provider_to_completion(response, provenance=provenance)
+        envelope = provider_to_completion(
+            response,
+            provenance=provenance,
+            policy_applied={
+                "routing_reason": selection.routing_reason,
+                "prompt_tokens": safety_report.prompt_tokens,
+                "context_limit": safety_report.context_limit,
+                "estimated_cost": safety_report.estimated_cost,
+            },
+            warnings=list(safety_report.warnings),
+        )
+
+        post_warnings = safety_gate.post_check(envelope.result)
+        envelope.warnings.extend(post_warnings)
+        return envelope

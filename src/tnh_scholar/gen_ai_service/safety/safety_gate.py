@@ -9,35 +9,138 @@ Connected modules:
   - models.errors.SafetyError
 """
 
-from tnh_scholar.gen_ai_service.models.domain import CompletionResult, RenderedPrompt
+from dataclasses import dataclass
+from typing import List, Sequence
+
+from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
+from tnh_scholar.gen_ai_service.config.settings import Settings
+from tnh_scholar.gen_ai_service.models.domain import (
+    CompletionResult,
+    Message,
+    RenderedPrompt,
+    Role,
+)
 from tnh_scholar.gen_ai_service.models.errors import SafetyBlocked
+from tnh_scholar.gen_ai_service.utils.token_utils import (
+    FALLBACK_CONTEXT_LIMIT,
+    MODEL_CONTEXT_LIMITS,
+    token_count_messages,
+)
+from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
 
-def pre_check(prompt: RenderedPrompt) -> None:
+@dataclass(frozen=True)
+class SafetyReport:
+    prompt_tokens: int
+    context_limit: int
+    estimated_cost: float
+    warnings: List[str]
+
+
+def _context_limit_for_model(model: str) -> int:
+    return next(
+        (limit for name, limit in MODEL_CONTEXT_LIMITS if model.lower().startswith(name.lower())),
+        FALLBACK_CONTEXT_LIMIT,
+    )
+
+
+def _estimate_cost(tokens_in: int, max_tokens_out: int) -> float:
+    total = tokens_in + max_tokens_out
+    return total / 1000.0
+
+
+def _normalize_messages(prompt: RenderedPrompt) -> Sequence[Message]:
+    """Flatten system + user messages for counting."""
+    messages: list[Message] = []
+    if prompt.system:
+        messages.append(Message(role=Role.system, content=prompt.system))
+    messages.extend(prompt.messages)
+    return messages
+
+
+def pre_check(
+    prompt: RenderedPrompt,
+    selection: ResolvedParams,
+    settings: Settings,
+    *,
+    prompt_metadata: PromptMetadata | None = None,
+) -> SafetyReport:
     """
-    V1: trivial length guard using typed Message objects.
+    Apply basic size and budget checks before provider call.
 
-    TODO: move the hard-coded limit to a typed policy/settings source
-    (e.g., ADR-A08 params policy) and inject here; no literals.
+    - Max input chars from settings
+    - Context window guard (prompt + max_output_tokens)
+    - Budget guard using simple token-based estimator
+
+    Args:
+        prompt: Rendered prompt (system + messages).
+        selection: Resolved parameters (provider, model, max tokens).
+        settings: Service settings for limits/pricing.
+        prompt_metadata: Optional metadata to emit additional warnings.
+
+    Returns:
+        SafetyReport with prompt tokens, context limit, estimated cost, warnings.
+
+    Raises:
+        SafetyBlocked: when character, context, or budget limits are exceeded.
     """
-    system_text = prompt.system or ""
-    # `prompt.messages` is List[Message]; use attribute access
-    # Normalize all message contents to strings; if content is a list, flatten by joining its parts.
-    user_text_parts: list[str] = []
-    for m in prompt.messages:
-        c = m.content
-        if isinstance(c, list):
-            # join inner elements defensively, converting each element to str
-            user_text_parts.append("".join(str(p) for p in c))
+    messages = _normalize_messages(prompt)
+    prompt_tokens = token_count_messages(messages, model=selection.model)
+    context_limit = _context_limit_for_model(selection.model)
+
+    # Character bound
+    warnings: list[str] = []
+    text_parts: list[str] = []
+    for m in messages:
+        if isinstance(m.content, str):
+            text_parts.append(m.content)
+        elif isinstance(m.content, list):
+            text_parts.append("".join(str(part) for part in m.content))
+            warnings.append("non-string-content-coerced")
         else:
-            user_text_parts.append(str(c))
-    user_text = "".join(user_text_parts)
-    content = system_text + user_text
+            warnings.append("non-string-content-ignored")
+    text_concat = "".join(text_parts)
+    if len(text_concat) > settings.max_input_chars:
+        raise SafetyBlocked(f"Prompt too large: {len(text_concat)} chars > limit {settings.max_input_chars}")
 
-    if len(content) > 20_000:  # temporary literal until policy wiring lands
-        raise SafetyBlocked("Prompt too large")
+    if prompt_tokens + selection.max_output_tokens > context_limit:
+        raise SafetyBlocked(
+            f"Context window exceeded for model {selection.model}: "
+            f"{prompt_tokens + selection.max_output_tokens} tokens > {context_limit}"
+        )
+
+    estimated_cost = _estimate_cost(prompt_tokens, selection.max_output_tokens)
+    estimated_cost *= settings.price_per_1k_tokens
+    if estimated_cost > settings.max_dollars:
+        raise SafetyBlocked(f"Estimated cost {estimated_cost:.4f} exceeds budget {settings.max_dollars:.4f}")
+
+    warnings: list[str] = []
+    if prompt_metadata and prompt_metadata.safety_level == "sensitive":
+        warnings.append("prompt-metadata: sensitive content")
+
+    return SafetyReport(
+        prompt_tokens=prompt_tokens,
+        context_limit=context_limit,
+        estimated_cost=estimated_cost,
+        warnings=warnings,
+    )
 
 
-def post_check(result: CompletionResult) -> None:
-    # V1: no-op
-    return
+def post_check(result: CompletionResult | None) -> list[str]:
+    """
+    Post-generation validation hooks (stubbed for now).
+
+    Args:
+        result: CompletionResult or None when provider response missing.
+
+    Returns:
+        List of warning codes (empty when no issues detected).
+    """
+    warnings: list[str] = []
+    if result is None:
+        return warnings
+
+    if not result.text:
+        warnings.append("empty-result")
+
+    return warnings
