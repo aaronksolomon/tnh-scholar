@@ -196,14 +196,16 @@ _release-update-files:
 	else \
 		echo "⚠️  Version marker not found in TODO.md"; \
 	fi; \
-	echo "✅ Version updated to $$VERSION"; \
+	echo "📝 Updating version to $$VERSION in __init__.py..."; \
+	$(POETRY) run python scripts/update_version.py; \
+	echo "✅ Version updated to $$VERSION in all files"; \
 	echo ""; \
 	echo "Next steps:"; \
 	echo "  1. Run 'make changelog-draft' to generate CHANGELOG entry"; \
 	echo "  2. Edit CHANGELOG.md with the generated content"; \
 	echo "  3. Run 'make release-commit' to commit changes"; \
 	echo "  4. Run 'make release-tag' to tag and push"; \
-	echo "  5. Run 'make release-publish' to publish to PyPI"
+	echo "  5. Run 'make release-publish' to publish to PyPI and create GitHub release"
 
 release-commit:
 	@VERSION=$$($(POETRY) version -s); \
@@ -215,6 +217,7 @@ release-commit:
 		echo "Files that would be staged:"; \
 		echo "  - pyproject.toml"; \
 		echo "  - TODO.md"; \
+		echo "  - src/tnh_scholar/__init__.py"; \
 		echo "  - CHANGELOG.md"; \
 		echo "  - poetry.lock"; \
 		echo ""; \
@@ -223,6 +226,7 @@ release-commit:
 		echo ""; \
 		echo "  - Update version in pyproject.toml"; \
 		echo "  - Update TODO.md version header"; \
+		echo "  - Update __init__.py __version__"; \
 		echo "  - Add $$VERSION release notes to CHANGELOG.md"; \
 		echo ""; \
 		echo "  🤖 Generated with Claude Code"; \
@@ -232,11 +236,12 @@ release-commit:
 		echo "To execute: make release-commit"; \
 	else \
 		echo "📝 Committing version $$VERSION..."; \
-		git add pyproject.toml TODO.md CHANGELOG.md poetry.lock; \
+		git add pyproject.toml TODO.md src/tnh_scholar/__init__.py CHANGELOG.md poetry.lock; \
 		git commit -m "chore: Bump version to $$VERSION" \
 			-m "" \
 			-m "- Update version in pyproject.toml" \
 			-m "- Update TODO.md version header" \
+			-m "- Update __init__.py __version__" \
 			-m "- Add $$VERSION release notes to CHANGELOG.md" \
 			-m "" \
 			-m "🤖 Generated with Claude Code" \
@@ -292,13 +297,14 @@ release-publish:
 	if [ "$(DRY_RUN)" = "1" ]; then \
 		echo "🔍 DRY RUN MODE - No changes will be made"; \
 		echo ""; \
-		echo "📦 Would build and publish package v$$VERSION to PyPI"; \
+		echo "📦 Would build and publish package v$$VERSION to PyPI and GitHub"; \
 		echo ""; \
 		echo "Commands that would run:"; \
 		echo "  python scripts/prepare_pypi_readme.py  # Strip YAML frontmatter"; \
 		echo "  poetry build"; \
 		echo "  poetry publish"; \
 		echo "  python scripts/prepare_pypi_readme.py --restore  # Restore original"; \
+		echo "  gh release create v$$VERSION --title 'Release v$$VERSION' --notes-file CHANGELOG.md"; \
 		echo ""; \
 		echo "Files that would be created:"; \
 		echo "  - dist/tnh_scholar-$$VERSION-py3-none-any.whl"; \
@@ -306,6 +312,14 @@ release-publish:
 		echo ""; \
 		echo "To execute: make release-publish"; \
 	else \
+		if ! command -v gh >/dev/null 2>&1; then \
+			echo "❌ GitHub CLI (gh) not found. Please install it and ensure it's on your PATH before running release-publish." >&2; \
+			exit 1; \
+		fi; \
+		if ! gh auth status >/dev/null 2>&1; then \
+			echo "❌ GitHub CLI (gh) is not authenticated. Please run 'gh auth login' before running release-publish." >&2; \
+			exit 1; \
+		fi; \
 		echo "📝 Preparing README for PyPI (stripping YAML frontmatter)..."; \
 		$(POETRY) run python scripts/prepare_pypi_readme.py; \
 		echo ""; \
@@ -320,7 +334,38 @@ release-publish:
 		echo ""; \
 		echo "✅ Published v$$VERSION to PyPI"; \
 		echo ""; \
-		echo "🎉 Release complete! Check https://pypi.org/project/tnh-scholar/"; \
+		echo "📢 Creating GitHub release..."; \
+		if [ -f CHANGELOG.md ]; then \
+			gh release create "v$$VERSION" \
+				--title "Release v$$VERSION" \
+				--notes-file CHANGELOG.md \
+				--latest; \
+		else \
+			gh release create "v$$VERSION" \
+				--title "Release v$$VERSION" \
+				--notes "See CHANGELOG.md for details." \
+				--latest; \
+		fi; \
+		echo "✅ Created GitHub release v$$VERSION"; \
+		echo ""; \
+		REMOTE_URL=$$(git remote get-url origin 2>/dev/null || true); \
+		GITHUB_REPO=$$(REMOTE_URL="$$REMOTE_URL" python - <<'PY' \
+import os
+import re
+
+remote = os.environ.get("REMOTE_URL", "")
+match = re.search(r'github\\.com[:/](?P<repo>[^/]+/[^/]+)(?:\\.git)?$', remote)
+if match:
+    print(match.group("repo"))
+PY
+); \
+		echo "🎉 Release complete!"; \
+		echo "   PyPI: https://pypi.org/project/tnh-scholar/"; \
+		if [ -n "$$GITHUB_REPO" ]; then \
+			echo "   GitHub: https://github.com/$$GITHUB_REPO/releases/tag/v$$VERSION"; \
+		else \
+			echo "   GitHub release URL not shown (origin remote not recognized as GitHub)."; \
+		fi; \
 	fi
 
 release-full: release-commit release-tag release-publish
