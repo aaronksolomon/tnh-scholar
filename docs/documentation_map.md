@@ -1,7 +1,7 @@
 ---
 title: "Documentation Map"
 description: "Hierarchical navigation of TNH Scholar documentation"
-created: "2025-12-09"
+created: "2025-12-11"
 auto_generated: true
 ---
 
@@ -60,6 +60,7 @@ auto_generated: true
 - [ADR-A11: Model Parameters and Strong Typing Fix](/architecture/gen-ai-service/adr/adr-a11-model-parameters-fix.md)
 - [ADR-A12: Prompt System & Fingerprinting Architecture (V1)](/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
 - [ADR-A13: Migrate All OpenAI Interactions to GenAIService](/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md)
+- [ADR-A14: File-Based Registry System for Provider Metadata](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
 - [ADR-AT01: AI Text Processing Pipeline Redesign](/architecture/ai-text-processing/adr/adr-at01-ai-text-processing.md)
 - [ADR-AT02: TextObject Architecture Decision Records](/architecture/ai-text-processing/adr/adr-at02-sectioning-textobject.md)
 - [ADR-AT03: AI Text Processing Object-Service Refactor](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md)
@@ -130,9 +131,13 @@ auto_generated: true
 - [Contributing to TNH Scholar (Prototype Phase)](/development/contributing-prototype-phase.md)
 - [Development Documentation](/development/overview.md)
 - [Fine Tuning Strategy](/development/fine-tuning-strategy.md)
+- [forensic-analysis](/development/incident-reports/2025-12-07-reference/forensic-analysis.md)
 - [Git Workflow & Safety Guide](/development/git-workflow.md)
 - [Human-AI Software Engineering Principles](/development/human-ai-software-engineering-principles.md)
+- [Implementation Summary: Git Safety Improvements](/development/incident-reports/2025-12-07-reference/implementation-summary.md)
 - [Improvements / Initial structure](/development/improvements-initial-structure.md)
+- [Incident Report: Git Recovery - December 7, 2025](/development/incident-reports/2025-12-07-git-recovery.md)
+- [incident-report-updates](/development/incident-reports/2025-12-07-reference/incident-report-updates.md)
 - [Release Workflow](/development/release-workflow.md)
 - [TNH Scholar Design Principles](/development/design-principles.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)

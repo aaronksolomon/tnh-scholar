@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate documentation_index.md and documentation_map.md from Markdown front matter."""
+
 from __future__ import annotations
 
 from collections import defaultdict
@@ -10,6 +11,7 @@ from typing import Iterable
 try:
     import yaml  # type: ignore
 except ModuleNotFoundError:
+
     class _MiniYAML:
         @staticmethod
         def safe_load(text: str):
@@ -29,22 +31,24 @@ DOCS_INDEX_PATH = DOCS_DIR / "documentation_index.md"
 DOCS_MAP_PATH = DOCS_DIR / "documentation_map.md"
 
 # Exclude these directories from doc index
-EXCLUDED_DIRS = {".git",
-                 ".github",
-                 ".mypy_cache",
-                 ".pytest_cache",
-                 ".ruff_cache",
-                 "node_modules",
-                 "site",
-                 "build",
-                 "dist"}
+EXCLUDED_DIRS = {
+    ".git",
+    ".github",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    "node_modules",
+    "site",
+    "build",
+    "dist",
+    "archive",
+}  # Exclude all archive directories throughout docs tree
 
 # Files to exclude from navigation (should match mkdocs.yaml exclude_docs)
 EXCLUDE_PATTERNS = [
-    "archive/index-old.md",
     "tnh-index-updated.md",
     "documentation_index.md",  # Don't include itself
-    "documentation_map.md",     # Don't include itself
+    "documentation_map.md",  # Don't include itself
 ]
 
 # Category display order and titles (matches generate_mkdocs_nav.py)
@@ -79,8 +83,7 @@ CATEGORY_TITLES = {
 def should_exclude(rel_path: str) -> bool:
     """Check if file should be excluded based on EXCLUDE_PATTERNS."""
     return any(
-        rel_path == pattern or rel_path.startswith(pattern.rstrip('/') + '/')
-        for pattern in EXCLUDE_PATTERNS
+        rel_path == pattern or rel_path.startswith(pattern.rstrip("/") + "/") for pattern in EXCLUDE_PATTERNS
     )
 
 
@@ -159,13 +162,15 @@ def build_file_data() -> list[dict]:
         if isinstance(desc, str):
             desc = desc.replace("|", "\\|")
 
-        files.append({
-            "path": rel_path,
-            "title": title,
-            "description": desc,
-            "created": created,
-            "category": category,
-        })
+        files.append(
+            {
+                "path": rel_path,
+                "title": title,
+                "description": desc,
+                "created": created,
+                "category": category,
+            }
+        )
 
     return files
 
@@ -173,10 +178,7 @@ def build_file_data() -> list[dict]:
 def write_documentation_map(path: Path, files: list[dict]) -> None:
     """Generate hierarchical documentation map (for appending to index.md)."""
     # Filter out index.md files (navigation landing pages) except root-level
-    filtered_files = [
-        f for f in files
-        if not (f["path"].endswith("/index.md") or f["path"] == "index.md")
-    ]
+    filtered_files = [f for f in files if not (f["path"].endswith("/index.md") or f["path"] == "index.md")]
 
     # Group by category
     by_category = defaultdict(list)
@@ -252,7 +254,7 @@ def write_documentation_index(path: Path, files: list[dict]) -> None:
         "",
         "# Documentation Index",
         "",
-        "This is a comprehensive, searchable index of all TNH Scholar " 
+        "This is a comprehensive, searchable index of all TNH Scholar "
         "documentation with descriptions and metadata.",
         "",
         "For a simpler hierarchical view, see the Documentation Map "

@@ -1,7 +1,7 @@
 ---
 title: "Documentation Index"
 description: "Complete searchable index of TNH Scholar documentation with metadata"
-created: "2025-12-09"
+created: "2025-12-11"
 auto_generated: true
 ---
 
@@ -101,6 +101,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [ADR-A11: Model Parameters and Strong Typing Fix](/architecture/gen-ai-service/adr/adr-a11-model-parameters-fix.md) | Enforces typed parameter objects and removes literals from GenAI Service so provider flows stay consistent. | 2025-11-15 | `docs/architecture/gen-ai-service/adr/adr-a11-model-parameters-fix.md` |
 | [ADR-A12: Prompt System & Fingerprinting Architecture (V1)](/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md) | Replaces the Pattern Catalog adapter with a Prompt-first design that yields domain objects plus fingerprints. | 2025-02-04 | `docs/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md` |
 | [ADR-A13: Migrate All OpenAI Interactions to GenAIService](/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md) | Retires the legacy OpenAI client and standardizes every caller on the typed GenAI Service pipeline. | 2025-11-17 | `docs/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md` |
+| [ADR-A14: File-Based Registry System for Provider Metadata](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md) | Establishes a JSONC-based registry system for model capabilities, pricing, and provider metadata with auto-update mechanisms, aligned with VS Code's native configuration format. | 2025-12-10 | `docs/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md` |
 | [ADR-AT01: AI Text Processing Pipeline Redesign](/architecture/ai-text-processing/adr/adr-at01-ai-text-processing.md) | Defines the modular TextObject pipeline, metadata handling, and configuration strategy for AI processing. | 2025-02-26 | `docs/architecture/ai-text-processing/adr/adr-at01-ai-text-processing.md` |
 | [ADR-AT02: TextObject Architecture Decision Records](/architecture/ai-text-processing/adr/adr-at02-sectioning-textobject.md) | Captures the historical TextObject design comparisons and links to the original/new design documents. | 2025-02-01 | `docs/architecture/ai-text-processing/adr/adr-at02-sectioning-textobject.md` |
 | [ADR-AT03: AI Text Processing Object-Service Refactor](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md) | Three-tier refactor of ai_text_processing module for object-service compliance, GenAIService integration, and prompt system adoption | 2025-12-07 | `docs/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md` |
@@ -200,13 +201,19 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 
 | Title | Description | Created | Path |
 | --- | --- | --- | --- |
+| [2025 12 07 Reference](/development/incident-reports/2025-12-07-reference/index.md) | Table of contents for development/incident-reports/2025-12-07-reference | 2025-12-08 | `docs/development/incident-reports/2025-12-07-reference/index.md` |
 | [Contributing to TNH Scholar (Prototype Phase)](/development/contributing-prototype-phase.md) | TNH Scholar is currently in rapid prototype phase, focusing on core functionality and basic usability. We welcome contributions that help validate and improve the prototype implementation. | 2025-01-19 | `docs/development/contributing-prototype-phase.md` |
 | [Development](/development/index.md) | Table of contents for development | 2025-12-08 | `docs/development/index.md` |
 | [Development Documentation](/development/overview.md) | Landing page for contributor guides, design principles, and engineering practices for TNH Scholar. | 2025-12-03 | `docs/development/overview.md` |
 | [Fine Tuning Strategy](/development/fine-tuning-strategy.md) | Strategy outline and development plan for fine-tuning foundation models on Thich Nhat Hanh translations. | 2025-02-26 | `docs/development/fine-tuning-strategy.md` |
+| [forensic-analysis](/development/incident-reports/2025-12-07-reference/forensic-analysis.md) |  |  | `docs/development/incident-reports/2025-12-07-reference/forensic-analysis.md` |
 | [Git Workflow & Safety Guide](/development/git-workflow.md) | Safe git practices for TNH Scholar development to prevent data loss | 2025-12-07 | `docs/development/git-workflow.md` |
 | [Human-AI Software Engineering Principles](/development/human-ai-software-engineering-principles.md) | This document presents the **Human-AI Software Engineering Principles**, a comprehensive framework that builds upon established **software engineering, architecture, and design principles** from human-only teams and extends them to optimize collaboration between humans and AI agents. Central to this framework is the clear distinction between the **Design Phase** and the **Coding Phase**, each with distinct goals, modes, and workflows. It also addresses challenges such as **context window limitations** and maintaining alignment despite session resets. In addition to general principles, this framework incorporates concrete documentation and planning strategies designed to support long-term, sustainable human-AI collaboration. | 2025-11-15 | `docs/development/human-ai-software-engineering-principles.md` |
+| [Implementation Summary: Git Safety Improvements](/development/incident-reports/2025-12-07-reference/implementation-summary.md) | Summary of remediation work completed after the 2025-12-07 git recovery incident. | 2025-12-08 | `docs/development/incident-reports/2025-12-07-reference/implementation-summary.md` |
 | [Improvements / Initial structure](/development/improvements-initial-structure.md) | Initial high-level view of the TNH Scholar ecosystem. | 2025-02-01 | `docs/development/improvements-initial-structure.md` |
+| [Incident Report: Git Recovery - December 7, 2025](/development/incident-reports/2025-12-07-git-recovery.md) | Post-mortem analysis of orphaned commits and successful recovery of prompt system implementation (ADR-PT04) |  | `docs/development/incident-reports/2025-12-07-git-recovery.md` |
+| [Incident Reports](/development/incident-reports/index.md) | Table of contents for development/incident-reports | 2025-12-08 | `docs/development/incident-reports/index.md` |
+| [incident-report-updates](/development/incident-reports/2025-12-07-reference/incident-report-updates.md) |  |  | `docs/development/incident-reports/2025-12-07-reference/incident-report-updates.md` |
 | [Release Workflow](/development/release-workflow.md) | Automated release process for TNH Scholar with biweekly cadence during rapid prototyping. | 2025-12-06 | `docs/development/release-workflow.md` |
 | [TNH Scholar Design Principles](/development/design-principles.md) | Architectural patterns, design philosophy, and system organization principles for TNH Scholar development. | 2025-11-29 | `docs/development/design-principles.md` |
 | [TNH Scholar Style Guide](/development/style-guide.md) | Code formatting, naming conventions, and Python standards for TNH Scholar development. | 2025-11-29 | `docs/development/style-guide.md` |

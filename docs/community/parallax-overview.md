@@ -1,4 +1,4 @@
-# TNH-Scholar: Project Overview for Parallax Press & Plum Village Editorial Stakeholders
+# TNH-Scholar: Project Overview for Parallax Press & Plum Village Editorial Community
 
 ## 1. Purpose of This Document
 
@@ -10,22 +10,25 @@ This document provides a clear, non-technical introduction to the TNH‑Scholar 
 
 **TNH‑Scholar** is a long-term digital humanities and AI‑assisted research project dedicated to:
 
-- preserving, organizing, and making searchable the collected works of Thầy.
+- preserving, organizing, and making searchable the collected works of Thầy,
+- enabling semantic search and discovery across teachings through advanced retrieval techniques,
 - supporting translation, annotation, and scholarship across Vietnamese, English, French, and other languages,
 - developing tools for practitioners, educators, editors, researchers, and archivists,
 - ensuring high accuracy, transparency, and lineage‑faithfulness through provenance tracking and human‑guided AI workflows.
 
-Though it has been joked about, this project is **not** aimed at creating a chatbot to imitate Thầy; chat based features certainly have the potential to be explored.
-It **is** aimed at creating a *scholarly infrastructure*, a set of tools that help people understand, translate, cross‑reference, and preserve the teachings with care.
+This project is **not** aimed at creating a chatbot to imitate Thầy. Chat based features for research may have the potential to be explored in the future.
+
+The project **is** aimed at creating a *scholarly infrastructure*, a set of tools that help people understand, translate, cross‑reference, and preserve the teachings with care.
 
 Core goals:
 
-- A clean, well‑structured, multilingual digital corpus  
-- Tools for translation, metadata extraction, and scholarly indexing  
-- Research utilities for exploring teachings across decades  
-- A foundation for future learning tools, training materials, and editorial workflows  
+- A clean, well‑structured, multilingual digital corpus
+- Semantic search and discovery tools enabling practitioners and scholars to explore teachings thematically
+- Tools for translation, metadata extraction, and scholarly indexing
+- Research utilities for exploring teachings across decades and languages
+- A foundation for future learning tools, training materials, and editorial workflows
 
-**The project intends deep respect for the lineage and for the careful stewardship of Thầy’s teachings.**
+**The project intends deep respect for the lineage, careful stewardship of Thầy's teachings, and mindful use of AI technologies.**
 
 ---
 
@@ -38,11 +41,12 @@ Core goals:
 - Automated glossaries for Buddhist and Plum Village terminology  
 - Tools for comparing versions across languages
 
-### 3.2 Supporting Publication & Editorial Pipelines
+### 3.2 Supporting Publication & Editorial Pathways
 
-- A searchable corpus of all published (and historically significant unpublished) materials  
-- Automatic metadata extraction (e.g., footnotes, headings, quotes)  
-- Tools for preparing anthologies, themed collections, revised editions  
+- A searchable corpus of all published (and historically significant unpublished) materials
+- Semantic search capabilities for discovering related teachings, themes, and concepts across the corpus
+- Automatic metadata extraction (e.g., footnotes, headings, quotes)
+- Tools for preparing anthologies, themed collections, revised editions
 - Detection of duplicated text or passages reused across books, talks, or letters
 
 ### 3.3 Archival & Preservation
@@ -54,10 +58,13 @@ Core goals:
 
 ### 3.4 Accessibility & Community Benefit
 
-- Resources for educators and sanghas  
-- Study and research tools for practitioners  
-- Future bilingual interactive readers or teaching companions  
+- Resources for educators and sanghas
+- Search and discovery tools enabling practitioners to explore teachings by theme, concept, or practice
+- Study and research tools for practitioners
+- Future bilingual interactive readers or teaching companions
 - A foundation for future Plum Village digital learning platforms
+
+> **Note on Search Development**: A prototype sutra search tool is currently being developed at Deer Park Monastery, exploring approaches to searching and discovering teachings within the broader ecosystem of Plum Village digital initiatives. TNH Scholar's knowledge base architecture (see ADR-K01) is designed to support similar search and retrieval capabilities as part of the scholarly infrastructure.
 
 ---
 
@@ -65,17 +72,14 @@ Core goals:
 
 Parallax Press is uniquely positioned to act as:
 
-- **A Steward** — ensuring the project remains aligned with Thầy’s values.
-- **A Beneficiary** — gaining tools that support editing, translation, and publishing.
-- **A Contributor** — with access to high-quality source materials.
-- **A Guide** — offering feedback on editorial standards and lineage integrity.
+- **A Beneficiary** — tools that support editing, translation, and publishing.
+- **A Contributor** — access to high-quality source materials.
 
-Possible roles:
+Possible engagement:
 
-- A liaison or advisory team
+- A liaison or small support group
 - Review of project direction documents  
-- Guidance on terminology, lineage language, text selection  
-- Access to digital source materials for specific books  
+- Guidance on terminology, text selection  
 - Collaborative long-term vision for Plum Village’s digital future  
 
 ---
@@ -89,10 +93,10 @@ TNH‑Scholar consists of:
 Digital text organized into:
 
 - books, chapters, sections, paragraphs  
-- talks, retreats, interviews, letters  
+- talks (audio and video), retreats, interviews, letters  
 - early journals (e.g., Vietnamese Buddhist Review collections)
 
-### 5.2 Processing Pipelines  
+### 5.2 Processing Flows  
 
 Tools for:
 
@@ -111,11 +115,12 @@ A system that runs AI-powered tasks with:
 - strict provenance (never hidden)  
 - human review loops  
 
-### 5.4 User Interfaces  
+### 5.4 User Interfaces
 
-- command line tools for researchers  
-- Jupyter notebooks for analysis  
-- (future) VS Code tools for editors/translators  
+- command line tools for researchers
+- Jupyter notebooks for analysis
+- (future) semantic search interfaces for discovering teachings
+- (future) VS Code tools for editors/translators
 - (future) interactive web portals for reading/study  
 
 ---
@@ -125,10 +130,12 @@ A system that runs AI-powered tasks with:
 ### 6.1 Background
 
 For decades, Thầy produced a vast corpus of material across multiple languages and formats.  
+
 Much of this exists in:
 
-- scanned PDFs  
+- scanned documents  
 - partial digital manuscripts  
+- audio and video recordings
 - older OCR with errors  
 - translations with varying conventions  
 - scattered archival sources  
@@ -137,11 +144,11 @@ As scholarship grows, and as new generations seek to engage with these teachings
 
 ### 6.2 Goals of TNH‑Scholar
 
-- Provide a **faithful, structured representation** of Thầy’s teachings  
-- Enable **search, discovery, and thematic exploration**  
-- Support **translation workflows** with accuracy and style fidelity  
-- Offer **scholarly infrastructure**, not automated interpretation  
-- Ensure **ethical, transparent AI usage** firmly grounded in human oversight  
+- Provide a **faithful, structured representation** of Thầy's teachings
+- Enable **search, discovery, and thematic exploration** across the corpus using semantic retrieval and traditional search methods
+- Support **translation workflows** with accuracy and style fidelity
+- Offer **scholarly infrastructure**, not automated interpretation
+- Ensure **ethical, transparent AI usage** firmly grounded in human oversight
 - Preserve text for future generations in durable, well-defined digital formats  
 
 ### 6.3 Editorial Benefits
@@ -154,18 +161,19 @@ As scholarship grows, and as new generations seek to engage with these teachings
 
 ### 6.4 Community Benefits
 
-- Practitioners gain indexed, searchable access to teachings.  
-- Teachers gain bilingual tools for quoting or referencing materials.  
-- Researchers gain deeper insight into historical development of themes.  
+- Practitioners gain indexed, searchable access to teachings across multiple languages and formats
+- Semantic search enables discovery of related teachings, themes, and concepts
+- Teachers gain bilingual tools for quoting or referencing materials
+- Researchers gain deeper insight into historical development of themes and cross-linguistic connections  
 
 ### 6.5 Long-Term Vision
 
 The TNH‑Scholar system becomes the base layer of a future:
 
-- Plum Village Digital Archive  
-- Multilingual Study Companion  
-- Hermitage Research Tool for monastics  
-- Teaching companion for Dharma instructors  
+- Plum Village Digital Archive with advanced search and discovery capabilities
+- Multilingual Study Companion enabling thematic exploration across languages
+- Hermitage Research Tool for monastics with semantic search
+- Teaching companion for Dharma instructors
 - Preservation system for rare or fragile materials  
 
 ---
@@ -177,7 +185,7 @@ Request for the Parallax Press Team:
 - Review the project’s principles and vision  
 - Explore possible collaboration  
 - Discuss mutual needs in publishing and digital preservation  
-- Consider forming a small advisory/feedback group  
+- Consider a small advisory/feedback group  
 - Co-create a long-term roadmap for Plum Village digital infrastructure  
 
 With an aspiration for partnership, alignment, and mutual benefit.
@@ -194,4 +202,3 @@ Aaron Solomon
 [Project Repository (GitHub)](https://github.com/aaronksolomon/tnh-scholar)
 [Project Documentation](https://aaronksolomon.github.io/tnh-scholar/)
 
-This document may be shared within editorial leadership circles at Parallax Press, Plum Village, and related sangha communities.

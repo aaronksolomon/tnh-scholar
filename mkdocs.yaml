@@ -82,7 +82,7 @@ validation:
     absolute_links: relative_to_docs  # Enable absolute links starting with /
 
 exclude_docs: |
-  archive/index-old.md
+  **/archive/**
   tnh-index-updated.md
   documentation_map.md
 

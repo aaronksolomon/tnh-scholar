@@ -13,18 +13,34 @@ This guide establishes safe git practices to prevent accidental data loss.
 
 ## Critical Safety Rules
 
-### NEVER Execute Without Approval
+### Commands That Must NEVER Be Executed by AI - User Only
 
-These commands are **destructive** and require explicit human approval:
+These commands are **FORBIDDEN** for AI agents to execute. **Only humans** should run these commands:
 
 ```bash
-# DANGEROUS - Never run without approval
+# FORBIDDEN FOR AI AGENTS - User must run manually
 git reset --hard <ref>
+git reset --soft <ref>
+git reset --mixed <ref>
 git push --force
+git push --force-with-lease
 git branch -D <branch>
-git rebase -i
+git branch -d <branch>
+git rebase (any flags)
+git tag -d <tag>
+git clean -fd
+git checkout -- .
+git restore (with destructive flags)
 git filter-branch
 ```
+
+**If AI agents identify a need for these operations:**
+
+- STOP immediately
+- Explain to the user why the operation may be useful
+- Provide context for understanding the command and how it is intended to be used as well as its non-recoverable aspects (destructive consequences) in detail
+- Provide potential backup operations that will allow full recovery
+- Allow the user to consider this path and explore other options. Confirm if the user has indeed executed.
 
 ### ALWAYS Check Before Switching Branches
 
@@ -194,7 +210,7 @@ git push -u origin <old-branch-name>
 
 **When to use**:
 
-- Before any `git reset --hard <branch>` operation
+- Before any destructive git operation (performed by user, never by AI)
 - After a PR merges on GitHub (before using that branch locally)
 - Before complex git operations involving branch references
 - When you're unsure if local branch matches remote
@@ -243,7 +259,7 @@ To update local branch:
 - `1` - Branch is stale (local differs from remote)
 - `2` - Invalid usage or branch doesn't exist
 
-**Critical use case**: The December 7 incident would have been prevented if this script was run before `git reset --hard version-0.2.0`.
+**Critical use case**: The December 7 incident would have been prevented if this script was run before the destructive reset operation. As of the updated safety rules, AI agents are now forbidden from executing such commands - only users may run them after proper verification.
 
 ### Post-Remote-Merge Protocol
 
@@ -333,8 +349,9 @@ If you lose work and can't recover:
 
 **Prevention Measures Implemented**:
 
+- **Absolute prohibition**: AI agents forbidden from executing destructive git commands (`.claude/CLAUDE.md`)
+- Added educational protocol: AI must explain commands, consequences, and recovery options before user executes
 - Added post-remote-merge fetch protocol to `.claude/CLAUDE.md`
-- Added pre-reset content verification protocol
 - Created `scripts/git-check-staleness.sh` to detect stale branches
 - Enhanced this workflow guide with simplified workflow recommendations
 - Installed pre-checkout hook

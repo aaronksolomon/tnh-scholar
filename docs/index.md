@@ -4,27 +4,6 @@ description: Comprehensive documentation for TNH Scholar, an AI-driven project e
   processing, and translating the teachings of Thich Nhat Hanh.
 ---
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # TNH Scholar
 
 **TNH Scholar is a long-term, community-aligned initiative to build a trusted multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
@@ -58,7 +37,8 @@ For the full vision, including scope, non-scope, relationship to spin-offs, and 
 TNH Scholar aims to support the community in:
 
 - Exploring teachings with bilingual text and translation side-by-side
-- Searching themes and teachings across languages and periods
+- Searching themes and teachings across languages and periods using semantic search and retrieval
+- Discovering related teachings, concepts, and practices through advanced search capabilities
 - Reviewing and refining translations collaboratively with transparent history
 - Connecting practitioners, researchers, and teachers with reliable digital resources
 - Preserving teaching materials for future generations with clarity and care
@@ -87,7 +67,7 @@ Choose your path based on your primary interest:
 
 Get up and running with TNH Scholar's CLI tools for transcription, translation, and text processing:
 
-- Install from PyPI: 
+- Install from PyPI:
 - Configure credentials per [Configuration](/getting-started/configuration.md)
 - Follow the [Quick Start Guide](/getting-started/quick-start-guide.md) for your first workflow
 - Explore task-oriented workflows in the [User Guide](/user-guide/overview.md)
@@ -115,7 +95,7 @@ Understand the technical foundation and start contributing:
 - **Key ADRs**: Start with [GenAI Service Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md) and [Prompt System Status](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
 - **Research**: [Research Index](/research/index.md) – experiments, evaluations, and exploratory work
 - **Future Directions**: [Long-term Vision](/project/future-directions.md) – planned research directions and architectural horizons
-- **Common commands**: , , , , 
+- **Common commands**: , , , ,
 
 ---
 
@@ -165,6 +145,7 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [ADR-A11: Model Parameters and Strong Typing Fix](/architecture/gen-ai-service/adr/adr-a11-model-parameters-fix.md)
 - [ADR-A12: Prompt System & Fingerprinting Architecture (V1)](/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
 - [ADR-A13: Migrate All OpenAI Interactions to GenAIService](/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md)
+- [ADR-A14: File-Based Registry System for Provider Metadata](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
 - [GenAI Service — Design Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md)
 - [OpenAI Interface Migration Plan](/architecture/gen-ai-service/design/openai-interface-migration-plan.md)
 - [Generate Markdown Translation JSON Pairs](/architecture/jvb-viewer/design/generate-md-translation-json-pairs.md)
@@ -248,6 +229,10 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [Git Workflow & Safety Guide](/development/git-workflow.md)
 - [Human-AI Software Engineering Principles](/development/human-ai-software-engineering-principles.md)
 - [Improvements / Initial structure](/development/improvements-initial-structure.md)
+- [Incident Report: Git Recovery - December 7, 2025](/development/incident-reports/2025-12-07-git-recovery.md)
+- [Forensic Analysis](/development/incident-reports/2025-12-07-reference/forensic-analysis.md)
+- [Implementation Summary: Git Safety Improvements](/development/incident-reports/2025-12-07-reference/implementation-summary.md)
+- [Incident Report Updates](/development/incident-reports/2025-12-07-reference/incident-report-updates.md)
 - [Development Documentation](/development/overview.md)
 - [Release Workflow](/development/release-workflow.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)

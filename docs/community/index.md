@@ -5,11 +5,11 @@ description: Documentation for community partners, stakeholders, and collaborato
 
 # Community & Outreach
 
-This section contains documentation for community partners, stakeholders, and collaborators who support the TNH Scholar project within the Plum Village tradition.
+This section contains documentation for community partners, friends, and collaborators who support the TNH Scholar project within the Plum Village tradition.
 
 ## Contents
 
-- [Parallax Press & Plum Village Editorial Overview](/community/parallax-overview.md) - Project introduction for editorial and publishing stakeholders
+- [Parallax Press & Plum Village Editorial Overview](/community/parallax-overview.md) - Project introduction for editorial and publishing community
 
 ## Purpose
 
