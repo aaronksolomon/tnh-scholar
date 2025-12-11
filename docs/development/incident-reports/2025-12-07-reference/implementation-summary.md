@@ -1,8 +1,8 @@
 ---
 title: "Implementation Summary: Git Safety Improvements"
 description: "Summary of remediation work completed after the 2025-12-07 git recovery incident."
-owner: ""
-author: ""
+owner: "Engineering"
+author: "Claude Sonnet 4.5"
 status: current
 created: "2025-12-08"
 updated: "2025-12-10"

@@ -1,10 +1,10 @@
 ---
 title: "Project"
 description: "Table of contents for project"
-owner: ""
-author: ""
-status: processing
-created: "2025-12-08"
+owner: "Project Leadership"
+author: "Docs Automation"
+status: current
+created: "2025-12-11"
 auto_generated: true
 ---
 
@@ -12,17 +12,17 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
-**[conceptual-architecture](/project/conceptual-architecture.md)**
+**[conceptual-architecture](conceptual-architecture.md)**
 
-**[future-directions](/project/future-directions.md)**
+**[future-directions](future-directions.md)**
 
-**[philosophy](/project/philosophy.md)**
+**[philosophy](philosophy.md)**
 
-**[principles](/project/principles.md)**
+**[principles](principles.md)**
 
-**[vision](/project/vision.md)**
+**[vision](vision.md)**
 
 ---
 

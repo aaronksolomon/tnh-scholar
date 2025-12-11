@@ -3,7 +3,7 @@ title: "ADR-YF02: YouTube Transcript Format Selection"
 description: "Locks yt-fetch to a single transcript format (initially VTT) for predictable downstream processing."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-01-21"
 ---
 # ADR-YF02: YouTube Transcript Format Selection

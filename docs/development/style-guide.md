@@ -3,7 +3,7 @@ title: "TNH Scholar Style Guide"
 description: "Code formatting, naming conventions, and Python standards for TNH Scholar development."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-29"
 ---
 # TNH Scholar Style Guide

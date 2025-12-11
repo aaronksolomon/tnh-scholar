@@ -1,11 +1,23 @@
+---
+title: "ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)"
+description: "Strategy ADR defining a CLI-first VS Code integration built on the unified tnh-gen interface for extension v0.1.0."
+owner: "UI/UX Working Group"
+author: "Aaron Solomon"
+status: proposed
+created: "2025-01-28"
+updated: "2025-12-11"
+---
 # ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)
 
-**Status:** Proposed
-**Author:** Aaron Solomon
-**Date:** 2025-01-28
-**Tags:** strategy, vscode, genai, architecture, integration
-**Context:** Long-term TNH-Scholar UX roadmap; GenAIService maturity; PromptCatalog stability.
-**Related ADRs:** GenAI Service Strategy, UI/UX Strategy (VS Code as Platform)
+Defines the CLI-first integration strategy for the TNH-Scholar VS Code extension v0.1.0, using `tnh-gen` as the sole interface into GenAI Service capabilities.
+
+- **Status:** Proposed
+- **Date:** 2025-01-28
+- **Owner:** UI/UX Working Group
+- **Author:** Aaron Solomon
+- **Tags:** strategy, vscode, genai, architecture, integration
+- **Context:** Long-term TNH-Scholar UX roadmap; GenAIService maturity; PromptCatalog stability.
+- **Related ADRs:** GenAI Service Strategy, UI/UX Strategy (VS Code as Platform)
 
 ---
 

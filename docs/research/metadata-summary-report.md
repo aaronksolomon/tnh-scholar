@@ -3,7 +3,7 @@ title: "Summary Report on Metadata Extraction, Source Parsing, and Model Trainin
 description: "Summary of metadata extraction lessons, tooling, and training implications across Thich Nhat Hanh sources."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2024-10-24"
 ---
 

@@ -3,7 +3,7 @@ title: "TextObject System Design Document"
 description: "Detailed blueprint for the modern TextObject pipeline, outlining segmentation models, metadata, and API surfaces."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-01"
 ---
 # TextObject System Design Document

@@ -3,7 +3,7 @@ title: "Speaker Diarization and Time-Mapped Transcription System Design"
 description: "System design for mapping diarization outputs to speaker-specific transcriptions with accurate global timelines."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-05-01"
 ---
 # Speaker Diarization and Time-Mapped Transcription System Design

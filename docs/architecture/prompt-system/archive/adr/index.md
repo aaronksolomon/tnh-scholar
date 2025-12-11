@@ -3,7 +3,7 @@ title: "Adr"
 description: "Table of contents for architecture/prompt-system/archive/adr"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-12-08"
 auto_generated: true
 ---

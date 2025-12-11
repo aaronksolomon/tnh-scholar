@@ -3,7 +3,7 @@ title: "ADR-DD02: Documentation Main Content and Navigation Strategy"
 description: "Defines content architecture, sync mechanisms, and navigation patterns for README.md, docs/index.md, and filesystem-driven documentation."
 owner: ""
 author: "Claude (Sonnet 4.5)"
-status: approved
+status: current
 created: "2025-11-23"
 ---
 # ADR-DD02: Documentation Main Content and Navigation Strategy

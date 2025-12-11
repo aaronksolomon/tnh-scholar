@@ -29,6 +29,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCS_DIR = ROOT / "docs"
 DOCS_INDEX_PATH = DOCS_DIR / "documentation_index.md"
 DOCS_MAP_PATH = DOCS_DIR / "documentation_map.md"
+DEFAULT_OWNER = "Documentation Working Group"
+DEFAULT_AUTHOR = "Docs Automation"
+DEFAULT_STATUS = "current"
 
 # Exclude these directories from doc index
 EXCLUDED_DIRS = {
@@ -199,11 +202,17 @@ def write_documentation_map(path: Path, files: list[dict]) -> None:
         "---",
         'title: "Documentation Map"',
         'description: "Hierarchical navigation of TNH Scholar documentation"',
+        f'owner: "{DEFAULT_OWNER}"',
+        f'author: "{DEFAULT_AUTHOR}"',
+        f'status: "{DEFAULT_STATUS}"',
         f'created: "{datetime.now(timezone.utc).date()}"',
         "auto_generated: true",
         "---",
         "",
         "# Documentation Map",
+        "",
+        "Auto-generated map of the documentation hierarchy. Regenerated during "
+        "docs builds; edit source content instead of this file.",
         "",
     ]
 
@@ -248,6 +257,9 @@ def write_documentation_index(path: Path, files: list[dict]) -> None:
         "---",
         'title: "Documentation Index"',
         'description: "Complete searchable index of TNH Scholar documentation with metadata"',
+        f'owner: "{DEFAULT_OWNER}"',
+        f'author: "{DEFAULT_AUTHOR}"',
+        f'status: "{DEFAULT_STATUS}"',
         f'created: "{datetime.now(timezone.utc).date()}"',
         "auto_generated: true",
         "---",

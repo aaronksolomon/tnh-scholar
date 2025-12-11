@@ -1,6 +1,10 @@
 ---
 title: Community & Outreach
 description: Documentation for community partners, stakeholders, and collaborators in the Plum Village tradition.
+owner: "Community Engagement"
+author: "Documentation Working Group"
+status: current
+created: "2025-12-11"
 ---
 
 # Community & Outreach

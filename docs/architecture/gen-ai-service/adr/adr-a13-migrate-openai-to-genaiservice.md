@@ -3,7 +3,7 @@ title: "ADR-A13: Migrate All OpenAI Interactions to GenAIService"
 description: "Retires the legacy OpenAI client and standardizes every caller on the typed GenAI Service pipeline."
 owner: ""
 author: "Aaron Solomon, Claude AI (Sonnet 4.5)"
-status: processing
+status: current
 created: "2025-11-17"
 ---
 # ADR-A13: Migrate All OpenAI Interactions to GenAIService

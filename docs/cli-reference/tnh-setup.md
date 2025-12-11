@@ -3,7 +3,7 @@ title: "tnh-setup"
 description: "The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-01"
 ---
 # tnh-setup

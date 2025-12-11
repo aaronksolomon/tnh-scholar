@@ -3,7 +3,7 @@ title: "ADR-VP01: Video Processing Return Types and Configuration"
 description: "Centralizes yt-dlp configuration and return types so video tooling emits consistent metadata."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-01"
 ---
 # ADR-VP01: Video Processing Return Types and Configuration

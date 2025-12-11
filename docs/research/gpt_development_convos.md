@@ -3,7 +3,7 @@ title: "GPT Development Convos"
 description: "Link log of early GPT design, feasibility, and data processing conversations for the project."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2024-10-23"
 ---
 # GPT Development Convos

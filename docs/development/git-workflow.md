@@ -5,6 +5,7 @@ author: "Claude Sonnet 4.5"
 status: "current"
 created: "2025-12-07"
 updated: "2025-12-08"
+owner: "Engineering"
 ---
 
 # Git Workflow & Safety Guide

@@ -3,7 +3,7 @@ title: "ADR-AT02: TextObject Architecture Decision Records"
 description: "Captures the historical TextObject design comparisons and links to the original/new design documents."
 owner: ""
 author: ""
-status: historical
+status: archived
 created: "2025-02-01"
 ---
 # ADR-AT02: TextObject Architecture Decision Records

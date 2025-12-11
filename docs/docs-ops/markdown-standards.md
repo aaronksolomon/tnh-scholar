@@ -3,7 +3,7 @@ title: "Markdown Standards"
 description: "House style, linting, and structure requirements for TNH Scholar documentation."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-27"
 ---
 # Markdown Standards
@@ -113,6 +113,49 @@ created: "YYYY-MM-DD"
 - CI must run markdownlint alongside MkDocs builds; documentation PRs fail if lint errors remain.
 - Documentation tooling (e.g., `documentation_index.md`) assumes compliant front matter and headings—if a file deviates, the generator will flag it. Regenerate the index with `scripts/generate_doc_index.py`; the script writes `auto_generated: true` into the front matter so downstream tooling knows not to edit it manually.
 - The repo-wide `.markdownlint.json` disables MD025 ("multiple top-level headings") and MD013 (line length) because front matter + title duplication and long tables are intentional.
+
+## Historical References Pattern
+
+When documenting superseded designs, archived ADRs, or earlier explorations, use the "Historical References" pattern to provide progressive disclosure of archived content:
+
+```markdown
+---
+
+## Historical References
+
+<details>
+<summary>📚 View superseded design documents (maintainers/contributors)</summary>
+
+**Note**: These documents are archived and excluded from the published documentation. They provide historical context for the current design.
+
+### Superseded ADRs
+
+- **[ADR-XX: Title](<docs-absolute-path>/archive/adr/adr-xx-title.md)** (YYYY-MM-DD)
+  *Status*: Superseded by [ADR-YY](/path/to/current-adr.md)
+
+### Earlier Design Explorations
+
+- **[Design Doc Title](<docs-absolute-path>/archive/design-doc.md)** (YYYY-MM-DD)
+  *Status*: Replaced by [Current Doc](/path/to/current-doc.md)
+
+</details>
+```
+
+**When to use**:
+
+- Current ADR supersedes archived ADRs
+- Design documents replace earlier explorations
+- Implementation supersedes prototypes
+- Providing historical context adds value for contributors
+
+**Benefits**:
+
+- Archive links work in GitHub/IDE even when excluded from MkDocs build
+- `<details>` tags render in both MkDocs and GitHub
+- Progressive disclosure keeps published docs clean for users
+- Maintainers can access historical context via repository
+
+**See also**: [ADR-DD01 Addendum 4: Archive Linking Pattern](/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md#addendum-4-archive-linking-pattern-2025-12-11)
 
 ## Exceptions & Legacy Content
 

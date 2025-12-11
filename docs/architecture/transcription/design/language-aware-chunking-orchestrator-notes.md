@@ -3,7 +3,7 @@ title: "Language-Aware Chunking Orchestrator Notes"
 description: "Working notes for extending the DiarizationChunker orchestrator with language-aware strategies."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-06-24"
 ---
 # Language-Aware Chunking Orchestrator Notes

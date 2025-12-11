@@ -3,7 +3,7 @@ title: "Design Strategy: VS Code as UI/UX Platform for TNH Scholar"
 description: "---"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # Design Strategy: VS Code as UI/UX Platform for TNH Scholar

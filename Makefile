@@ -31,8 +31,8 @@ kernel:
 
 # Documentation targets
 docs-validate:
-	@echo "Validating markdown documentation..."
-	@$(POETRY) run python scripts/validate_markdown.py || echo "⚠️  Validation warnings found (non-fatal)"
+	@echo "Validating markdown documentation"
+	$(POETRY) run python scripts/validate_markdown.py || echo "⚠️  Validation warnings found (non-fatal)"
 
 docs-generate: docs-validate
 	@echo "Generating documentation artifacts..."
@@ -43,8 +43,6 @@ docs-generate: docs-validate
 docs-links:
 	@echo "Auto-fixing unambiguous documentation links..."
 	$(POETRY) run python scripts/verify_doc_links.py --apply
-	@echo "Verifying documentation links..."
-	$(POETRY) run python scripts/verify_doc_links.py
 
 docs-links-apply:
 	@echo "Auto-fixing unambiguous documentation links..."

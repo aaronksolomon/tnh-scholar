@@ -3,8 +3,8 @@ title: "Jvb Viewer"
 description: "Table of contents for architecture/jvb-viewer"
 owner: ""
 author: ""
-status: processing
-created: "2025-12-08"
+status: current
+created: "2025-12-11"
 auto_generated: true
 ---
 
@@ -12,9 +12,9 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
-**[Design](/architecture/jvb-viewer/design/index.md)** - Table of contents for architecture/jvb-viewer/design
+**[Design](design/index.md)** - Table of contents for architecture/jvb-viewer/design
 
 ---
 

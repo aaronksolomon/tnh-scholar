@@ -102,6 +102,9 @@ def collect_entries(directory: Path) -> List[Tuple[str, str, str, str]]:
 
     # subdirectories with their index.md
     for subdir in sorted(p for p in directory.iterdir() if p.is_dir()):
+        # Skip excluded directories (including archive)
+        if subdir.name in EXCLUDED_DIRS:
+            continue
         # Avoid nesting mirrored repo-root docs under project TOC.
         if rel_dir == Path("project") and subdir.name == "repo-root":
             continue

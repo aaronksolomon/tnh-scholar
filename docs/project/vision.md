@@ -1,3 +1,12 @@
+---
+title: "TNH-Scholar Project Vision"
+description: "North star for TNH-Scholar: purpose, scope, aspirations, and long-term directions."
+owner: "Project Leadership"
+author: "Aaron Solomon"
+status: current
+created: "2025-12-11"
+updated: "2025-12-11"
+---
 # TNH-Scholar Project Vision
 
 This document defines the long-term north star of the TNH-Scholar project — its purpose, scope, aspirations, and the future directions it aims toward.

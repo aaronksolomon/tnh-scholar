@@ -1,6 +1,6 @@
 ---
 title: "Archive Directory"
-description: "Explains the purpose and usage of archive directories that store historical and deprecated documentation."
+description: "Archived TNH-Gen design documents preserved for maintainers; excluded from the published documentation."
 owner: "Documentation Working Group"
 author: ""
 status: archived

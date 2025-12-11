@@ -3,7 +3,7 @@ title: "token-count"
 description: "The `token-count` command calculates the OpenAI API token count for text input. This is useful for ensuring that a text is within maximum token limits for the API model and also for estimating API costs."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-01"
 ---
 # token-count

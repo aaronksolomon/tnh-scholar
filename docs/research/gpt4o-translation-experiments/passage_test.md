@@ -3,7 +3,7 @@ title: "Passage Test"
 description: "Spot-checks comparing GPT-4o translation outputs with bilingual baselines on short passages."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2024-11-08"
 ---
 # Passage Test

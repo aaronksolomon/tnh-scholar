@@ -3,7 +3,7 @@ title: "Diarization Chunker Module Design Strategy"
 description: "I've analyzed the current system and PoC code to propose a modular, extensible design for integrating the diarization chunking functionality into your tnh-scholar project."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-05-05"
 ---
 # Diarization Chunker Module Design Strategy

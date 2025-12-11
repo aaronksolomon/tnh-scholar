@@ -3,7 +3,7 @@ title: "Core Pattern Architecture: Meta-patterns, Textual Expansion Processing"
 description: "```mermaid"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-26"
 ---
 # Core Pattern Architecture: Meta-patterns, Textual Expansion Processing

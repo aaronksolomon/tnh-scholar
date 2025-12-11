@@ -3,14 +3,14 @@ title: "ADR-YF00: Early yt-fetch Transcript Decisions (Historical)"
 description: "Consolidates the original transcript ADR notes for yt-fetch before they were split into discrete records."
 owner: ""
 author: ""
-status: historical
+status: archived
 created: "2025-01-17"
 ---
 # ADR-YF00: Early yt-fetch Transcript Decisions (Historical)
 
 Preserves the original consolidated transcript decisions that led to ADR-YF01 and ADR-YF02.
 
-- **Status**: Historical
+- **Status**: Archived
 - **Date**: 2024-01-15
 
 ## ADR-1: YouTube Transcript Format Selection 

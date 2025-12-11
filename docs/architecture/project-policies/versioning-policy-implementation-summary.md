@@ -1,8 +1,10 @@
 ---
 title: "Versioning Policy Documentation Additions"
 description: "Summary of documentation updates to clarify rapid prototype versioning policy"
-status: complete
+status: current
 created: "2025-12-06"
+owner: "Project Policies"
+author: "Documentation Working Group"
 ---
 # Versioning Policy Documentation Additions
 

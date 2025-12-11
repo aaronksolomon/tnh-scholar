@@ -3,7 +3,7 @@ title: "TNH FAB Design Document"
 description: "First-generation design of the `tnh-fab` CLI covering core commands, usage patterns, and processing goals."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-01-21"
 ---
 # TNH FAB Design Document

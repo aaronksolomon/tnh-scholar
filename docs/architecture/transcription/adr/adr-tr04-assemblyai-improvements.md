@@ -3,7 +3,7 @@ title: "ADR-TR04: AssemblyAI Service Implementation Improvements"
 description: "Refactors the AssemblyAI adapter to use the official SDK, richer options, and better error handling."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-05-01"
 ---
 # ADR-TR04: AssemblyAI Service Implementation Improvements

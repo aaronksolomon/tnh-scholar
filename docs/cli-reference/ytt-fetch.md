@@ -3,7 +3,7 @@ title: "ytt-fetch"
 description: "(Y)ou(T)ube (T)ranscript-(Fetch)ing utility."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-01-21"
 ---
 # ytt-fetch

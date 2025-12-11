@@ -3,7 +3,7 @@ title: "ADR-A08: Configuration / Parameters / Policy Taxonomy"
 description: "Establishes the Config/Params/Policy taxonomy for GenAI Service to prevent parameter soup and clarify ownership."
 owner: ""
 author: "Aaron Solomon, GPT-5.0"
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # ADR-A08: Configuration / Parameters / Policy Taxonomy

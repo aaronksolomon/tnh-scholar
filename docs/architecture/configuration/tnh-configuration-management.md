@@ -3,7 +3,7 @@ title: "TNH Configuration Management"
 description: "Architecture decisions and a phased plan for consolidating TNH Scholar configuration across modules, CLIs, and environments."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-01"
 ---
 # TNH Configuration Management

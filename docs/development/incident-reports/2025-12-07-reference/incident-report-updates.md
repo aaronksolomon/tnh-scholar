@@ -1,4 +1,15 @@
+---
+title: "Proposed Updates to Incident Report"
+description: "Recommended edits to the December 7, 2025 incident report to capture the stale branch reset root cause and updated safeguards."
+owner: "Engineering"
+author: "Claude Sonnet 4.5"
+status: draft
+created: "2025-12-08"
+updated: "2025-12-11"
+---
 # Proposed Updates to Incident Report
+
+Draft updates to the December 7, 2025 incident report clarifying the stale branch reset root cause, timeline, and required git safety protocols.
 
 Based on forensic analysis of session log `convo-with-hard-reset.txt`
 

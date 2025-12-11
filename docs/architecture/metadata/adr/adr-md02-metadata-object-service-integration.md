@@ -3,7 +3,7 @@ title: "ADR-MD02: Metadata Infrastructure Object-Service Integration"
 description: "Defines metadata system's role as foundational infrastructure in the object-service architecture, establishing patterns for cross-layer usage and ensuring compliance with design principles."
 owner: ""
 author: "Aaron Solomon, Claude Sonnet 4.5"
-status: accepted
+status: current
 created: "2025-12-07"
 ---
 

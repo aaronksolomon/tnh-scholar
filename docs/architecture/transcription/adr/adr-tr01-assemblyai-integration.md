@@ -3,7 +3,7 @@ title: "ADR-TR01: AssemblyAI Integration for Transcription Service"
 description: "Introduces a pluggable transcription interface with AssemblyAI and Whisper providers."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-05-01"
 ---
 # ADR-TR01: AssemblyAI Integration for Transcription Service

@@ -1,4 +1,15 @@
+---
+title: "TNH-Scholar: Project Overview for Parallax Press & Plum Village Editorial Community"
+description: "Non-technical overview of TNH-Scholar for Parallax Press and Plum Village editors, highlighting goals, benefits, and collaboration opportunities."
+owner: "Community Engagement"
+author: "Aaron Solomon"
+status: current
+created: "2025-12-11"
+updated: "2025-12-11"
+---
 # TNH-Scholar: Project Overview for Parallax Press & Plum Village Editorial Community
+
+Orientation for Parallax Press and Plum Village editors on TNH-Scholar’s goals, current capabilities, editorial benefits, and ways to collaborate with the project team.
 
 ## 1. Purpose of This Document
 
@@ -201,4 +212,3 @@ Aaron Solomon
 
 [Project Repository (GitHub)](https://github.com/aaronksolomon/tnh-scholar)
 [Project Documentation](https://aaronksolomon.github.io/tnh-scholar/)
-

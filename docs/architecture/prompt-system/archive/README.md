@@ -1,6 +1,6 @@
 ---
 title: "Archive Directory"
-description: "Explains the purpose and usage of archive directories that store historical and deprecated documentation."
+description: "Archived prompt-system documentation preserved for maintainer reference and excluded from the published site."
 owner: "Documentation Working Group"
 author: ""
 status: archived

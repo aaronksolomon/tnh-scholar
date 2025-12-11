@@ -2,6 +2,10 @@
 title: Research
 description: Entry points to research notes, experiments, and feasibility studies.
 auto_generated: False
+owner: "Research"
+author: "Documentation Working Group"
+status: current
+created: "2025-12-11"
 ---
 
 # Research

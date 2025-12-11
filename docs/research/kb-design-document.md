@@ -3,7 +3,7 @@ title: "TNH Scholar Knowledge Base: Design Document"
 description: "Design document for the TNH Scholar knowledge base and semantic search stack."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-06-10"
 ---
 # TNH Scholar Knowledge Base: Design Document

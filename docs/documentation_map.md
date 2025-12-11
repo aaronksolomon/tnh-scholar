@@ -1,11 +1,16 @@
 ---
 title: "Documentation Map"
 description: "Hierarchical navigation of TNH Scholar documentation"
+owner: "Documentation Working Group"
+author: "Docs Automation"
+status: "current"
 created: "2025-12-11"
 auto_generated: true
 ---
 
 # Documentation Map
+
+Auto-generated map of the documentation hierarchy. Regenerated during docs builds; edit source content instead of this file.
 
 ## Getting Started
 
@@ -21,10 +26,8 @@ auto_generated: true
 
 ## Project
 
-- [conceptual-architecture](/project/conceptual-architecture.md)
-- [future-directions](/project/future-directions.md)
-- [philosophy](/project/philosophy.md)
-- [principles](/project/principles.md)
+- [Conceptual Architecture of TNH-Scholar](/project/conceptual-architecture.md)
+- [Future Directions of TNH-Scholar](/project/future-directions.md)
 - [TNH Scholar CHANGELOG](/project/repo-root/changelog.md)
 - [TNH Scholar CONTRIBUTING](/project/repo-root/contributing-root.md)
 - [TNH Scholar README](/project/repo-root/repo-readme.md)
@@ -32,11 +35,13 @@ auto_generated: true
 - [TNH Scholar TODO List](/project/repo-root/todo-list.md)
 - [TNH Scholar Versioning Policy](/project/repo-root/versioning.md)
 - [TNH-Scholar DEV_SETUP](/project/repo-root/dev-setup-guide.md)
-- [vision](/project/vision.md)
+- [TNH-Scholar Project Philosophy](/project/philosophy.md)
+- [TNH-Scholar Project Principles](/project/principles.md)
+- [TNH-Scholar Project Vision](/project/vision.md)
 
 ## Community
 
-- [parallax-overview](/community/parallax-overview.md)
+- [TNH-Scholar: Project Overview for Parallax Press & Plum Village Editorial Community](/community/parallax-overview.md)
 
 ## CLI Reference
 
@@ -66,17 +71,15 @@ auto_generated: true
 - [ADR-AT03: AI Text Processing Object-Service Refactor](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md)
 - [ADR-DD01: Documentation System Reorganization Strategy](/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
 - [ADR-DD02: Documentation Main Content and Navigation Strategy](/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
-- [adr-dd03-phase1-punchlist](/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md)
 - [ADR-DD03: Pattern to Prompt Terminology Standardization](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md)
+- [ADR-DD03: Phase 1 Execution Punch List](/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md)
 - [ADR-K01: Preliminary Architectural Strategy for TNH Scholar Knowledge Base](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
 - [ADR-MD01: Adoption of JSON-LD for Metadata Management](/architecture/metadata/adr/adr-md01-json-ld-metadata.md)
 - [ADR-MD02: Metadata Infrastructure Object-Service Integration](/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md)
 - [ADR-OS01: Object-Service Design Architecture V3](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
 - [ADR-PP01: Rapid Prototype Versioning Policy](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md)
-- [ADR-PT01: Pattern Access Strategy](/architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy.md)
-- [ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts](/architecture/prompt-system/archive/adr/adr-pt02-adopt-pattern-and-patterncatalog.md)
 - [ADR-PT03: Prompt System Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
-- [ADR-PT04: Prompt System Refactor Plan](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- [ADR-PT04: Prompt System Refactor Plan (Revised)](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
 - [ADR-TG01: tnh-gen CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)
 - [ADR-TG02: TNH-Gen CLI Prompt System Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)
 - [ADR-TR01: AssemblyAI Integration for Transcription Service](/architecture/transcription/adr/adr-tr01-assemblyai-integration.md)
@@ -84,14 +87,13 @@ auto_generated: true
 - [ADR-TR03: Standardizing Timestamps to Milliseconds](/architecture/transcription/adr/adr-tr03-ms-timestamps.md)
 - [ADR-TR04: AssemblyAI Service Implementation Improvements](/architecture/transcription/adr/adr-tr04-assemblyai-improvements.md)
 - [ADR-VP01: Video Processing Return Types and Configuration](/architecture/video-processing/adr/adr-vp01-video-processing.md)
-- [adr-vsc01-vscode-integration-strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
+- [ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
 - [ADR-VSC02: VS Code Extension Integration with tnh-gen CLI](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
 - [ADR-YF00: Early yt-fetch Transcript Decisions (Historical)](/architecture/ytt-fetch/adr/adr-yf00-early-decisions.md)
 - [ADR-YF01: YouTube Transcript Source Handling](/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md)
 - [ADR-YF02: YouTube Transcript Format Selection](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)
 - [Architecture Overview](/architecture/overview.md)
 - [Audio Chunking Algorithm Design Document](/architecture/transcription/design/audio-chunking-design.md)
-- [Core Pattern Architecture: Meta-patterns, Textual Expansion Processing](/architecture/prompt-system/archive/core-pattern-architecture.md)
 - [Design Strategy: VS Code as UI/UX Platform for TNH Scholar](/architecture/ui-ux/design/vs-code-as-ui-platform.md)
 - [Diarization Algorithms](/architecture/transcription/design/diarization-algorithms.md)
 - [Diarization Chunker Module Design Strategy](/architecture/transcription/design/diarization-chunker-design.md)
@@ -120,8 +122,6 @@ auto_generated: true
 - [TextObject System Design Document](/architecture/ai-text-processing/design/textobject-system-design.md)
 - [TimelineMapper Design Document](/architecture/transcription/design/timelinemapper-design.md)
 - [TNH Configuration Management](/architecture/configuration/tnh-configuration-management.md)
-- [TNH FAB Design Document](/architecture/tnh-gen/design/archive/tnh-fab-design-document.md)
-- [TNH-FAB Command Line Tool Specification](/architecture/tnh-gen/design/archive/tnh-fab-cli-spec.md)
 - [TNH‑Scholar Utilities Catalog](/architecture/utilities/design/utilities-catalog.md)
 - [Versioning Policy Documentation Additions](/architecture/project-policies/versioning-policy-implementation-summary.md)
 - [YouTube API vs yt-dlp Evaluation](/architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval.md)
@@ -131,13 +131,13 @@ auto_generated: true
 - [Contributing to TNH Scholar (Prototype Phase)](/development/contributing-prototype-phase.md)
 - [Development Documentation](/development/overview.md)
 - [Fine Tuning Strategy](/development/fine-tuning-strategy.md)
-- [forensic-analysis](/development/incident-reports/2025-12-07-reference/forensic-analysis.md)
+- [Forensic Analysis: December 7, 2025 Git Data Loss Incident](/development/incident-reports/2025-12-07-reference/forensic-analysis.md)
 - [Git Workflow & Safety Guide](/development/git-workflow.md)
 - [Human-AI Software Engineering Principles](/development/human-ai-software-engineering-principles.md)
 - [Implementation Summary: Git Safety Improvements](/development/incident-reports/2025-12-07-reference/implementation-summary.md)
 - [Improvements / Initial structure](/development/improvements-initial-structure.md)
 - [Incident Report: Git Recovery - December 7, 2025](/development/incident-reports/2025-12-07-git-recovery.md)
-- [incident-report-updates](/development/incident-reports/2025-12-07-reference/incident-report-updates.md)
+- [Proposed Updates to Incident Report](/development/incident-reports/2025-12-07-reference/incident-report-updates.md)
 - [Release Workflow](/development/release-workflow.md)
 - [TNH Scholar Design Principles](/development/design-principles.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)

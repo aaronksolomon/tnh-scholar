@@ -3,7 +3,7 @@ title: "User Guide Overview"
 description: "Practical guide for using TNH Scholar as a tool user or workflow designer, covering main workflows and how the pieces fit together."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-12-02"
 ---
 # User Guide Overview

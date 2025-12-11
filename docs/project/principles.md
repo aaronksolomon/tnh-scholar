@@ -1,6 +1,15 @@
+---
+title: "TNH-Scholar Project Principles"
+description: "Guiding principles, values, and constraints for design and engineering decisions in TNH-Scholar."
+owner: "Project Leadership"
+author: "Aaron Solomon"
+status: current
+created: "2025-12-11"
+updated: "2025-12-11"
+---
 # TNH-Scholar Project Principles
 
-This document defines the guiding principles, values, and constraints that shape all design and engineering decisions in the TNH-Scholar project.
+Defines the guiding principles, values, and constraints that shape design and engineering decisions in the TNH-Scholar project.
 
 ## 1. Dharma-Respecting Design
 
