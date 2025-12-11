@@ -13,6 +13,62 @@ All notable changes to TNH Scholar will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-12-11
+
+### Infrastructure & Tooling
+
+This patch release focuses on hardening release automation, improving developer experience, and expanding project documentation infrastructure.
+
+### Added
+
+- **Archive System Infrastructure**
+  - Comprehensive archive linking system with automated AGENTLOG management
+  - Search capabilities for archived documentation and session logs
+  - AGENTLOG template for structured agent work tracking
+  - Issue draft system for capturing work-in-progress documentation
+
+- **GenAI Service Core Implementation**
+  - Complete policy, routing, and safety gate implementation per ADR-A08/A09/A11
+  - Expanded test coverage (+128% improvement)
+  - Sourcery fixes for code quality improvements
+
+- **CI/CD Enhancements**
+  - Local CI check command (`make ci-check`) for pre-push validation
+  - Non-blocking quality checks (mypy, ruff, markdown lint) to prevent CI bottlenecks
+  - Pre-commit hooks for notebook preparation and code quality
+
+### Changed
+
+- **Release Automation Hardening**
+  - Makefile robustness improvements (UTF-8 handling, GitHub CLI access checks)
+  - Enhanced version sync mechanism between pyproject.toml and TODO.md
+  - Fixed Python heredoc formatting in release-publish target
+
+- **Documentation Quality**
+  - Codespell configuration now skips .txt archival files
+  - Documentation metadata validation and normalization
+  - Enhanced markdown link verification with warning-only default mode
+
+### Fixed
+
+- Node.js setup for markdown linting in CI
+- Git workflow improvements with staleness detection
+- Directory tree generation for CI verification
+- Documentation build automation scripts
+
+### Documentation
+
+- Training pipeline research documentation
+- Archive linking patterns (ADR-DD01 Addendum 4)
+- Long-term project initiatives in TODO
+- Comprehensive session logs in archive/agentlogs/
+
+### Notes
+
+- All 124 tests passing
+- Pre-existing lint/type-check issues tracked separately (technical debt)
+- Focus on infrastructure stability for rapid prototyping phase
+
 ## [0.2.0] - 2025-12-06
 
 ### Major Infrastructure Improvements
