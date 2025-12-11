@@ -3,7 +3,7 @@ title: "Object-Service Design Gaps"
 description: "Gaps, resolved items, and outstanding work needed to fully satisfy the Object-Service design blueprint."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-10-24"
 updated: "2025-11-29"
 ---

@@ -29,7 +29,7 @@ The TNH Scholar prompt system currently uses:
 
 - **Git-based Storage**: Prompts stored as versioned text files in `~/.config/tnh_scholar/patterns/` (directory name retained for backwards compatibility)
 - **Jinja2 Templates**: Prompts are Jinja2 templates rendered with context variables before AI processing
-- **LocalPatternManager**: Singleton pattern manager providing global access to prompts (prototype phase; see historical notes in [Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md))
+- **LocalPatternManager**: Singleton pattern manager providing global access to prompts (prototype phase; see historical notes in Core Pattern Architecture in Historical References)
 - **CLI Integration**: Command-line tools (`tnh-fab`) use prompts via `--pattern` flag
 
 ### Key Components
@@ -71,10 +71,7 @@ All user-facing documentation has been updated to use "Prompt" instead of "Patte
 
 ### Historical Context
 
-Earlier architectural explorations (now archived):
-- [Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md): Legacy prompt/pattern design notes (uses historical "Pattern" terminology)
-
-These archived notes document the evolution from prototype singleton architecture toward production dependency-injection patterns.
+Earlier architectural explorations (now archived) document the evolution from prototype singleton architecture toward production dependency-injection patterns (see Historical References).
 
 ## Planned Work & Roadmap
 
@@ -108,7 +105,7 @@ These archived notes document the evolution from prototype singleton architectur
 
 **Status**: Design phase; awaiting gen-ai-service ADRs
 
-**Historical Reference**: [Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md) outlined early dependency-injection transition ideas
+**Historical Reference**: Core Pattern Architecture outlined early dependency-injection transition ideas (see Historical References)
 
 ### 3. tnh-gen CLI Redesign
 
@@ -167,11 +164,22 @@ Future enhancements will preserve these principles while adding:
 ### Related ADRs
 - [ADR-DD03: Pattern to Prompt Terminology Standardization](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md) - Documentation terminology shift
 - [ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md) - VS Code extension requirements
-- [Archive: Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md) - Historical architecture decisions
 
 ### Development Documentation
-- [Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md) - Detailed architectural concepts (uses legacy "Pattern" terminology)
+- Core Pattern Architecture (see Historical References) - Detailed architectural concepts using legacy "Pattern" terminology
 - [System Design](/development/system-design.md) - High-level system architecture
+
+## Historical References
+
+<details>
+<summary>📚 View superseded design documents (maintainers/contributors)</summary>
+
+**Note**: This document is archived and excluded from the published documentation. It captures legacy terminology and architecture explorations.
+
+- **[Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md)** (2024)
+  *Status*: Historical prompt/pattern architecture exploration superseded by ADR-PT03/ADR-PT04
+
+</details>
 
 ## Status
 

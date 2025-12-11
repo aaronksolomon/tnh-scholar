@@ -6,6 +6,12 @@ author: ""
 status: current
 created: "2025-02-27"
 ---
+
+# ADR Template
+
+Template for ADRs in TNH scholar system
+
+```markdown
 # ADR-XXX: Concise Decision Title
 
 One-sentence or short paragraph summarizing the decision.
@@ -67,3 +73,27 @@ Document any follow-up work, unresolved issues, or validation steps to revisit l
 **Implementation Changes**: List specific code/config changes.
 
 **References**: Link to related TODOs, issues, or ADRs.
+
+---
+
+## Historical References
+
+*Optional section for linking to superseded ADRs or archived design documents. Use this pattern to provide progressive disclosure of historical context for maintainers and contributors.*
+
+<details>
+<summary>📚 View superseded design documents (maintainers/contributors)</summary>
+
+**Note**: These documents are archived and excluded from the published documentation. They provide historical context for the current design.
+
+### Superseded ADRs
+
+- **[ADR-XX: Title](<docs-absolute-path>/archive/adr/adr-xx-title.md)** (YYYY-MM-DD)
+  *Status*: Superseded by this ADR
+
+### Earlier Design Explorations
+
+- **[Design Doc Title](<docs-absolute-path>/archive/design-doc.md)** (YYYY-MM-DD)
+  *Status*: Replaced by this ADR
+
+</details>
+```

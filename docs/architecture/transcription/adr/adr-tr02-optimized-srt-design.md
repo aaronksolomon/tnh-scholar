@@ -3,7 +3,7 @@ title: "ADR-TR02: Optimized SRT Generation Design"
 description: "Uses provider-native SRT generation to simplify the transcription pipeline."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-05-01"
 ---
 # ADR-TR02: Optimized SRT Generation Design

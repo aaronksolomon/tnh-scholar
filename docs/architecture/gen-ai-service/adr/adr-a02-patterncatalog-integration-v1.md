@@ -3,7 +3,7 @@ title: "ADR-A02: PatternCatalog Integration (V1)"
 description: "Describes the V1 contract for plugging the legacy PatternCatalog into GenAI Service via rendered system prompts."
 owner: ""
 author: "Aaron Solomon, GPT-5.0"
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # ADR-A02: PatternCatalog Integration (V1)

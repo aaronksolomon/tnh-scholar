@@ -3,7 +3,7 @@ title: "Prompt System Architecture"
 description: "Current and planned architecture for the TNH Scholar prompt system, including VS Code integration and PromptCatalog service design."
 owner: ""
 author: "Claude Sonnet 4.5"
-status: processing
+status: current
 created: "2025-11-29"
 ---
 # Prompt System Architecture
@@ -14,9 +14,7 @@ Current and planned architecture for the TNH Scholar prompt system, including VS
 
 The TNH Scholar prompt system provides engineered text inputs (prompts) for AI models, enabling consistent, reproducible, and customizable text processing. This document describes the current implementation and planned enhancements.
 
-**Current Status**: See [ADR-PT03: Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) for implementation details.
-
-**Historical Context**: See [Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md) for earlier architectural explorations (uses legacy "Pattern" terminology).
+**Current Status**: See [ADR-PT03: Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) for implementation details. Historical prototype notes are summarized in the Historical References section.
 
 ## Design Goals
 
@@ -435,10 +433,25 @@ response_cache.set(rendered.fingerprint.full_hash, result)
 - [ADR-DD03: Terminology Standardization](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md) - Pattern→Prompt shift
 - [ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
 - [Object-Service Design](/architecture/object-service/object-service-design-overview.md) - Architecture pattern
-- [Archive: Pattern Core Design](/architecture/prompt-system/archive/core-pattern-architecture.md) - Historical architecture (legacy terminology)
 
 ## References
 
 - [Jinja2 Template Designer Documentation](https://jinja.palletsprojects.com/en/3.1.x/templates/)
 - [Prompt Engineering Guide](https://www.promptingguide.ai/)
 - [LangChain Prompt Templates](https://python.langchain.com/docs/modules/model_io/prompts/)
+
+---
+
+## Historical References
+
+<details>
+<summary>📚 View superseded design documents (maintainers/contributors)</summary>
+
+**Note**: These documents are archived and excluded from the published documentation. They provide historical context for the current design.
+
+### Earlier Design Explorations
+
+- **[Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md)** (2024-11-09)
+  *Status*: Replaced by this architecture document. Uses legacy "Pattern" terminology before standardization to "Prompt" nomenclature.
+
+</details>

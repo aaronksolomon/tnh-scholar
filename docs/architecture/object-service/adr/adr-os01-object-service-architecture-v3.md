@@ -3,7 +3,7 @@ title: "ADR-OS01: Object-Service Design Architecture V3"
 description: "Establishes layered architecture for complex objects and API-backed services across TNH Scholar, defining clear boundaries between domain, service, and transport layers."
 owner: ""
 author: "Aaron Solomon, OpenAI GPT-5, Anthropic Claude Sonnet 4.5"
-status: accepted
+status: current
 created: "2025-10-24"
 ---
 # ADR-OS01: Object-Service Design Architecture V3

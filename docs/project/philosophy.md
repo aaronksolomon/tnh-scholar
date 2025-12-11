@@ -1,6 +1,15 @@
+---
+title: "TNH-Scholar Project Philosophy"
+description: "Foundational philosophy guiding TNH-Scholar’s conceptual, ethical, and methodological approach."
+owner: "Project Leadership"
+author: "Aaron Solomon"
+status: current
+created: "2025-12-11"
+updated: "2025-12-11"
+---
 # TNH-Scholar Project Philosophy
 
-> This document captures the project’s foundational philosophy — the conceptual, ethical, and methodological lens through which TNH-Scholar is designed and understood.
+Outlines the conceptual, ethical, and methodological lens that guides TNH-Scholar’s design and evolution.
 
 ## 1. Human–AI Collaboration, Not Replacement
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate auto index.md files for docs subdirectories."""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -9,6 +10,7 @@ from typing import Dict, List, Tuple
 try:
     import yaml  # type: ignore
 except ModuleNotFoundError:
+
     class _MiniYAML:
         @staticmethod
         def safe_load(text: str) -> Dict:
@@ -33,6 +35,7 @@ EXCLUDED_DIRS = {
     "build",
     "dist",
     "__pycache__",
+    "archive",
 }
 
 TITLE_OVERRIDES = {
@@ -99,6 +102,9 @@ def collect_entries(directory: Path) -> List[Tuple[str, str, str, str]]:
 
     # subdirectories with their index.md
     for subdir in sorted(p for p in directory.iterdir() if p.is_dir()):
+        # Skip excluded directories (including archive)
+        if subdir.name in EXCLUDED_DIRS:
+            continue
         # Avoid nesting mirrored repo-root docs under project TOC.
         if rel_dir == Path("project") and subdir.name == "repo-root":
             continue
@@ -135,7 +141,7 @@ def write_index(directory: Path, entries: List[Tuple[str, str, str, str]]) -> No
         f'description: "Table of contents for {rel_dir}"',
         'owner: ""',
         'author: ""',
-        'status: processing',
+        "status: processing",
         f'created: "{datetime.now(timezone.utc).date()}"',
         f"{AUTO_FLAG}: true",
         "---",

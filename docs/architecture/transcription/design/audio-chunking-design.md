@@ -3,7 +3,7 @@ title: "Audio Chunking Algorithm Design Document"
 description: "Design for splitting diarization segments into five-minute audio chunks using greedy accumulation and speaker-aware boundaries."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-05-01"
 ---
 # Audio Chunking Algorithm Design Document

@@ -3,7 +3,7 @@ title: "ADR-YF01: YouTube Transcript Source Handling"
 description: "Documents how yt-fetch prioritizes manual subtitles while accepting auto captions for maximum coverage."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-01-21"
 ---
 # ADR-YF01: YouTube Transcript Source Handling

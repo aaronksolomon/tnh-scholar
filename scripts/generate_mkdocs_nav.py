@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate the literate navigation file consumed by mkdocs-literate-nav."""
+
 from __future__ import annotations
 
 import importlib.util
@@ -34,7 +35,7 @@ ROOT_TITLE = "TNH Scholar"
 
 # Files to exclude from navigation (should match mkdocs.yaml exclude_docs)
 EXCLUDE_PATTERNS = [
-    "archive/index-old.md",
+    "archive/",  # All archive directories
     "tnh-index-updated.md",
     "documentation_map.md",  # Auto-generated, appended to index.md
 ]
@@ -73,12 +74,17 @@ def iter_markdown_files() -> Iterable[Path]:
 
     all_files = DOCS_DIR.rglob("*.md")
 
-    # Filter out excluded files
+    # Filter out excluded files and paths containing "archive"
     filtered_files = []
     for path in all_files:
         relative = path.relative_to(DOCS_DIR).as_posix()
-        if not any(relative == pattern or relative.startswith(pattern.rstrip('/') + '/')
-                   for pattern in EXCLUDE_PATTERNS):
+        # Exclude if path contains "archive" directory or matches other patterns
+        if "archive/" in relative or "/archive/" in relative:
+            continue
+        if not any(
+            relative == pattern or relative.startswith(pattern.rstrip("/") + "/")
+            for pattern in EXCLUDE_PATTERNS
+        ):
             filtered_files.append(path)
 
     return sorted(filtered_files, key=nav_sort_key)

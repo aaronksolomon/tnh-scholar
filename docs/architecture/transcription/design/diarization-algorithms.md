@@ -3,7 +3,7 @@ title: "Diarization Algorithms"
 description: "This document details the key algorithms in the diarization system, focusing on high-level design without implementation details. Each algorithm is presented with its inputs, outputs, and process flow."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-05-01"
 ---
 # Diarization Algorithms

@@ -1,5 +1,5 @@
 ---
-title: "ADR-PT04: Prompt System Refactor Plan"
+title: "ADR-PT04: Prompt System Refactor Plan (Revised)"
 description: "Refactors the legacy pattern-based prompt system into a modular, object-service compliant PromptCatalog with validation, transport isolation, and clean dependency injection seams."
 owner: "TNH Scholar Architecture Working Group"
 author: "Codex (GPT-5), Aaron Solomon, Claude Sonnet 4.5"

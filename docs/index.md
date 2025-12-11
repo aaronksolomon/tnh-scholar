@@ -2,23 +2,11 @@
 title: TNH Scholar
 description: Comprehensive documentation for TNH Scholar, an AI-driven project exploring,
   processing, and translating the teachings of Thich Nhat Hanh.
+owner: Documentation Working Group
+author: Documentation Working Group
+status: current
+created: '2025-12-11'
 ---
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -58,7 +46,8 @@ For the full vision, including scope, non-scope, relationship to spin-offs, and 
 TNH Scholar aims to support the community in:
 
 - Exploring teachings with bilingual text and translation side-by-side
-- Searching themes and teachings across languages and periods
+- Searching themes and teachings across languages and periods using semantic search and retrieval
+- Discovering related teachings, concepts, and practices through advanced search capabilities
 - Reviewing and refining translations collaboratively with transparent history
 - Connecting practitioners, researchers, and teachers with reliable digital resources
 - Preserving teaching materials for future generations with clarity and care
@@ -87,7 +76,7 @@ Choose your path based on your primary interest:
 
 Get up and running with TNH Scholar's CLI tools for transcription, translation, and text processing:
 
-- Install from PyPI: 
+- Install from PyPI:
 - Configure credentials per [Configuration](/getting-started/configuration.md)
 - Follow the [Quick Start Guide](/getting-started/quick-start-guide.md) for your first workflow
 - Explore task-oriented workflows in the [User Guide](/user-guide/overview.md)
@@ -115,7 +104,7 @@ Understand the technical foundation and start contributing:
 - **Key ADRs**: Start with [GenAI Service Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md) and [Prompt System Status](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
 - **Research**: [Research Index](/research/index.md) – experiments, evaluations, and exploratory work
 - **Future Directions**: [Long-term Vision](/project/future-directions.md) – planned research directions and architectural horizons
-- **Common commands**: , , , , 
+- **Common commands**: , , , ,
 
 ---
 
@@ -156,7 +145,7 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [ADR-DD01: Documentation System Reorganization Strategy](/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
 - [ADR-DD02: Documentation Main Content and Navigation Strategy](/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
 - [ADR-DD03: Pattern to Prompt Terminology Standardization](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md)
-- [Adr Dd03 Phase1 Punchlist](/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md)
+- [ADR-DD03: Phase 1 Execution Punch List](/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md)
 - [Documentation Design](/architecture/docs-system/design/documentation-design.md)
 - [ADR-A01: Adopt Object-Service for GenAI Interactions](/architecture/gen-ai-service/adr/adr-a01-object-service-genai.md)
 - [ADR-A02: PatternCatalog Integration (V1)](/architecture/gen-ai-service/adr/adr-a02-patterncatalog-integration-v1.md)
@@ -165,6 +154,7 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [ADR-A11: Model Parameters and Strong Typing Fix](/architecture/gen-ai-service/adr/adr-a11-model-parameters-fix.md)
 - [ADR-A12: Prompt System & Fingerprinting Architecture (V1)](/architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1.md)
 - [ADR-A13: Migrate All OpenAI Interactions to GenAIService](/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md)
+- [ADR-A14: File-Based Registry System for Provider Metadata](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
 - [GenAI Service — Design Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md)
 - [OpenAI Interface Migration Plan](/architecture/gen-ai-service/design/openai-interface-migration-plan.md)
 - [Generate Markdown Translation JSON Pairs](/architecture/jvb-viewer/design/generate-md-translation-json-pairs.md)
@@ -182,7 +172,8 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [ADR-PP01: Rapid Prototype Versioning Policy](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md)
 - [Versioning Policy Documentation Additions](/architecture/project-policies/versioning-policy-implementation-summary.md)
 - [ADR-PT03: Prompt System Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
-- [ADR-PT04: Prompt System Refactor Plan](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- [ADR-PT04: Prompt System Refactor Plan (Revised)](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- [Archive Directory](/architecture/prompt-system/archive/README.md)
 - [ADR-PT01: Pattern Access Strategy](/architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy.md)
 - [ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts](/architecture/prompt-system/archive/adr/adr-pt02-adopt-pattern-and-patterncatalog.md)
 - [Core Pattern Architecture: Meta-patterns, Textual Expansion Processing](/architecture/prompt-system/archive/core-pattern-architecture.md)
@@ -190,6 +181,7 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [minimal but extensible setup tool for the prototyping phase](/architecture/setup-tnh/design/setup-tnh-minimal-extensible-tool.md)
 - [ADR-TG01: tnh-gen CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)
 - [ADR-TG02: TNH-Gen CLI Prompt System Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)
+- [Archive Directory](/architecture/tnh-gen/design/archive/README.md)
 - [TNH-FAB Command Line Tool Specification](/architecture/tnh-gen/design/archive/tnh-fab-cli-spec.md)
 - [TNH FAB Design Document](/architecture/tnh-gen/design/archive/tnh-fab-design-document.md)
 - [ADR-TR01: AssemblyAI Integration for Transcription Service](/architecture/transcription/adr/adr-tr01-assemblyai-integration.md)
@@ -209,7 +201,7 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [Speaker Diarization and Time-Mapped Transcription System Design](/architecture/transcription/design/speaker-diarization-time-mapped-design.md)
 - [TimelineMapper Design Document](/architecture/transcription/design/timelinemapper-design.md)
 - [Design Strategy: VS Code as UI/UX Platform for TNH Scholar](/architecture/ui-ux/design/vs-code-as-ui-platform.md)
-- [Adr Vsc01 Vscode Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
+- [ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
 - [ADR-VSC02: VS Code Extension Integration with tnh-gen CLI](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
 - [Package Version Checker Design Document](/architecture/utilities/design/package-version-checker-design.md)
 - [TNH‑Scholar Utilities Catalog](/architecture/utilities/design/utilities-catalog.md)
@@ -221,6 +213,7 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 
 ### Archive
 
+- [Archive Directory](/archive/README.md)
 - [TNH Scholar](/archive/index-old.md)
 
 ### Cli Reference
@@ -238,7 +231,7 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 
 ### Community
 
-- [Parallax Overview](/community/parallax-overview.md)
+- [TNH-Scholar: Project Overview for Parallax Press & Plum Village Editorial Community](/community/parallax-overview.md)
 
 ### Development
 
@@ -248,6 +241,10 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [Git Workflow & Safety Guide](/development/git-workflow.md)
 - [Human-AI Software Engineering Principles](/development/human-ai-software-engineering-principles.md)
 - [Improvements / Initial structure](/development/improvements-initial-structure.md)
+- [Incident Report: Git Recovery - December 7, 2025](/development/incident-reports/2025-12-07-git-recovery.md)
+- [Forensic Analysis: December 7, 2025 Git Data Loss Incident](/development/incident-reports/2025-12-07-reference/forensic-analysis.md)
+- [Implementation Summary: Git Safety Improvements](/development/incident-reports/2025-12-07-reference/implementation-summary.md)
+- [Proposed Updates to Incident Report](/development/incident-reports/2025-12-07-reference/incident-report-updates.md)
 - [Development Documentation](/development/overview.md)
 - [Release Workflow](/development/release-workflow.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)
@@ -269,10 +266,10 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 
 ### Project
 
-- [Conceptual Architecture](/project/conceptual-architecture.md)
-- [Future Directions](/project/future-directions.md)
-- [Philosophy](/project/philosophy.md)
-- [Principles](/project/principles.md)
+- [Conceptual Architecture of TNH-Scholar](/project/conceptual-architecture.md)
+- [Future Directions of TNH-Scholar](/project/future-directions.md)
+- [TNH-Scholar Project Philosophy](/project/philosophy.md)
+- [TNH-Scholar Project Principles](/project/principles.md)
 - [TNH Scholar CHANGELOG](/project/repo-root/changelog.md)
 - [TNH Scholar CONTRIBUTING](/project/repo-root/contributing-root.md)
 - [TNH-Scholar DEV_SETUP](/project/repo-root/dev-setup-guide.md)
@@ -280,7 +277,7 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [TNH Scholar README](/project/repo-root/repo-readme.md)
 - [TNH Scholar TODO List](/project/repo-root/todo-list.md)
 - [TNH Scholar Versioning Policy](/project/repo-root/versioning.md)
-- [Vision](/project/vision.md)
+- [TNH-Scholar Project Vision](/project/vision.md)
 
 ### Research
 
@@ -298,3 +295,28 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [Best Practices](/user-guide/best-practices.md)
 - [User Guide Overview](/user-guide/overview.md)
 - [TNH Scholar Prompt System](/user-guide/prompt-system.md)
+
+## Historical References
+
+<details>
+<summary>📚 View superseded design documents (maintainers/contributors)</summary>
+
+**Note**: These documents are archived and excluded from the published documentation. They provide historical context for the current design and terminology migration.
+
+### Superseded Prompt System ADRs
+
+- **[ADR-PT01: Pattern Access Strategy](/architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy.md)** (2024)
+  *Status*: Superseded by prompt system ADR series (ADR-PT03/ADR-PT04)
+- **[ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts](/architecture/prompt-system/archive/adr/adr-pt02-adopt-pattern-and-patterncatalog.md)** (2024)
+  *Status*: Superseded by prompt system ADR series (ADR-PT03/ADR-PT04)
+- **[Core Pattern Architecture: Meta-patterns, Textual Expansion Processing](/architecture/prompt-system/archive/core-pattern-architecture.md)** (2024)
+  *Status*: Historical architecture exploration informing current prompt system design
+
+### Legacy TNH-FAB Design Documents
+
+- **[TNH-FAB Command Line Tool Specification](/architecture/tnh-gen/design/archive/tnh-fab-cli-spec.md)** (2024)
+  *Status*: Superseded by ADR-TG01/ADR-TG02 (tnh-gen)
+- **[TNH-FAB Design Document](/architecture/tnh-gen/design/archive/tnh-fab-design-document.md)** (2024)
+  *Status*: Superseded by ADR-TG01/ADR-TG02 (tnh-gen)
+
+</details>

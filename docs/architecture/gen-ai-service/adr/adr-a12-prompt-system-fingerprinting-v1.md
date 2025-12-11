@@ -3,7 +3,7 @@ title: "ADR-A12: Prompt System & Fingerprinting Architecture (V1)"
 description: "Replaces the Pattern Catalog adapter with a Prompt-first design that yields domain objects plus fingerprints."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-04"
 ---
 # ADR-A12: Prompt System & Fingerprinting Architecture (V1)

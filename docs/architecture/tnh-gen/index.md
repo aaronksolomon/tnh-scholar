@@ -1,5 +1,5 @@
 ---
-title: "TNH-Gen CLI"
+title: "TNH-Gen CLI Architecture"
 description: "Unified command-line interface for TNH Scholar GenAI operations"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.5"
@@ -69,15 +69,6 @@ The `tnh-gen` CLI supersedes the legacy `tnh-fab` tool:
 | Configuration | Ad-hoc, `TNH_PATTERN_DIR` | Hierarchical, `TNH_PROMPT_DIR` |
 | VS Code Support | None | First-class citizen |
 
-### Design Archive
-
-Legacy `tnh-fab` design documents are archived for historical reference:
-
-- **[tnh-fab CLI Specification](/architecture/tnh-gen/design/archive/tnh-fab-cli-spec.md)** - Original CLI design (archived)
-- **[tnh-fab Design Document](/architecture/tnh-gen/design/archive/tnh-fab-design-document.md)** - First-generation design (archived)
-
-These documents informed the `tnh-gen` design but are superseded by the ADR-TG series.
-
 ## Status
 
 - **Current Phase**: ADR drafting
@@ -125,4 +116,24 @@ See ADR-TG01 for complete command specification.
 
 ---
 
-*Last Updated: 2025-12-07*
+## Historical References
+
+<details>
+<summary>📚 View superseded design documents (maintainers/contributors)</summary>
+
+**Note**: These documents are archived and excluded from the published documentation. They provide historical context for the current design.
+
+### Legacy tnh-fab Design Documents
+
+Legacy `tnh-fab` design documents are archived for historical reference. These documents informed the `tnh-gen` design but are superseded by the ADR-TG series.
+
+- **[tnh-fab CLI Specification](/architecture/tnh-gen/design/archive/tnh-fab-cli-spec.md)** (2024)
+  *Status*: Superseded by [ADR-TG01](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)
+- **[tnh-fab Design Document](/architecture/tnh-gen/design/archive/tnh-fab-design-document.md)** (2024)
+  *Status*: Superseded by ADR-TG series
+
+</details>
+
+---
+
+*Last Updated: 2025-12-11*

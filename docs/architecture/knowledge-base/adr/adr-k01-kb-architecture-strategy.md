@@ -3,7 +3,7 @@ title: "ADR-K01: Preliminary Architectural Strategy for TNH Scholar Knowledge Ba
 description: "Proposes a phased managed-to-open-source knowledge base rollout to validate retrieval before scaling."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # ADR-K01: Preliminary Architectural Strategy for TNH Scholar Knowledge Base

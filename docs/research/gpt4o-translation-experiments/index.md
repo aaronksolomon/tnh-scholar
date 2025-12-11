@@ -3,8 +3,8 @@ title: "Gpt4O Translation Experiments"
 description: "Table of contents for research/gpt4o-translation-experiments"
 owner: ""
 author: ""
-status: processing
-created: "2025-12-08"
+status: current
+created: "2025-12-11"
 auto_generated: true
 ---
 
@@ -12,9 +12,9 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
-**[Passage Test](/research/gpt4o-translation-experiments/passage_test.md)** - Spot-checks comparing GPT-4o translation outputs with bilingual baselines on short passages.
+**[Passage Test](passage_test.md)** - Spot-checks comparing GPT-4o translation outputs with bilingual baselines on short passages.
 
 ---
 

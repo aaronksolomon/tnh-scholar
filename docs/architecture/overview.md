@@ -3,7 +3,7 @@ title: "Architecture Overview"
 description: "High-level conceptual view of TNH Scholar's layered, object-service oriented architecture with links to detailed design documents and ADRs."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-12-02"
 ---
 # Architecture Overview
@@ -29,7 +29,6 @@ TNH Scholar is built around a **layered, object-service oriented architecture**.
 - **[Object Service](/architecture/object-service/object-service-design-overview.md)** — Core object service architecture
 - **[Prompt System](/architecture/prompt-system/prompt-system-architecture.md)** — Prompt system and pattern catalog
 - **[Setup TNH](/architecture/setup-tnh/design/setup-tnh-minimal-extensible-tool.md)** — Setup tool architecture
-- **[TNH-FAB](/architecture/tnh-gen/design/archive/tnh-fab-design-document.md)** — TNH Fabrication tool design
 - **[Transcription](/architecture/transcription/design/diarization-system-design.md)** — Audio transcription and diarization
 - **[UI/UX](/architecture/ui-ux/design/vs-code-as-ui-platform.md)** — User interface and experience design
 - **[Utilities](/architecture/utilities/design/utilities-catalog.md)** — Utility functions and tools
@@ -189,3 +188,17 @@ For a more detailed discussion of design principles and patterns, see:
 
 - [System Design](/development/system-design.md)
 - [Human–AI Software Engineering Principles](/development/human-ai-software-engineering-principles.md)
+
+## Historical References
+
+<details>
+<summary>📚 View superseded design documents (maintainers/contributors)</summary>
+
+**Note**: These documents are archived and excluded from the published documentation. They provide historical context for early CLI design.
+
+- **[TNH-FAB CLI Specification](/architecture/tnh-gen/design/archive/tnh-fab-cli-spec.md)** (2024)
+  *Status*: Superseded by ADR-TG01/ADR-TG02 (tnh-gen)
+- **[TNH-FAB Design Document](/architecture/tnh-gen/design/archive/tnh-fab-design-document.md)** (2024)
+  *Status*: Superseded by ADR-TG01/ADR-TG02 (tnh-gen)
+
+</details>

@@ -3,7 +3,7 @@ title: "TNH‑Scholar Utilities Catalog"
 description: "This catalog lists core utility modules used across the TNH‑Scholar codebase. It provides a quick reference for shared abstractions, their purpose, API highlights, and stability. All modules are currently in **Prototype** phase, with most stable in active use."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # TNH‑Scholar Utilities Catalog

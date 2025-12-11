@@ -3,7 +3,7 @@ title: "MkDocs Strict Warning Backlog"
 description: "Checklist to drive MkDocs builds to zero warnings in strict mode."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-25"
 ---
 

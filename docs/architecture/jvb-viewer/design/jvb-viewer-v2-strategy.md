@@ -3,7 +3,7 @@ title: "JVB Viewer — Version 2 Strategy & High‑Level Design"
 description: "Strategy for a projection-first VS Code-based viewer/editor that reconciles OCR outputs into a canonical JSON artifact."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # JVB Viewer — Version 2 Strategy & High‑Level Design

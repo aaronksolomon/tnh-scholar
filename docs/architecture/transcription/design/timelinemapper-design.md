@@ -3,7 +3,7 @@ title: "TimelineMapper Design Document"
 description: "Design for the TimelineMapper component that reprojects chunk-level transcripts into the original audio timeline."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-05-08"
 ---
 # TimelineMapper Design Document

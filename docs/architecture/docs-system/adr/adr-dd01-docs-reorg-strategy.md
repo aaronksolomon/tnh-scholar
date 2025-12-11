@@ -3,7 +3,7 @@ title: "ADR-DD01: Documentation System Reorganization Strategy"
 description: "Rebuilds the documentation architecture with new directories, automation, and Prompt terminology."
 owner: ""
 author: "Codex (GPT-5)"
-status: accepted
+status: current
 created: "2024-11-09"
 ---
 # ADR-DD01: Documentation System Reorganization Strategy
@@ -304,3 +304,81 @@ Implemented a dual-format auto-generated documentation index system:
 - `/scripts/append_doc_map_to_index.py` - Build-time index.md augmentation
 - `/docs/documentation_index.md` - Auto-generated comprehensive reference
 - `/docs/documentation_map.md` - Auto-generated hierarchical navigation (excluded from site nav)
+
+---
+
+## Addendum 4: Archive Linking Pattern (2025-12-11)
+
+**Context**:
+
+Archive directories (`**/archive/**`) are excluded from the MkDocs build to keep published documentation clean for users and researchers. However, many active documents reference archived ADRs and design documents. Developers and maintainers need access to historical context, but direct links to archived docs cause MkDocs warnings and broken links in the published site.
+
+**Decision**:
+
+Implement a consistent "Historical References" pattern using collapsible sections at the end of relevant documents to provide progressive disclosure of archived content.
+
+**Pattern Template**:
+
+```markdown
+---
+
+## Historical References
+
+<details>
+<summary>📚 View superseded design documents (maintainers/contributors)</summary>
+
+**Note**: These documents are archived and excluded from the published documentation. They provide historical context for the current design.
+
+### Superseded ADRs
+
+- **[ADR-XX: Title](../archive/adr/adr-xx-title.md)** (YYYY-MM-DD)
+  *Status*: Superseded by [ADR-YY](/path/to/current-adr.md)
+
+### Earlier Design Explorations
+
+- **[Design Doc Title](../archive/design-doc.md)** (YYYY-MM-DD)
+  *Status*: Replaced by [Current Doc](/path/to/current-doc.md)
+
+</details>
+```
+
+**Implementation Requirements**:
+
+1. **Archive README Files**: All archive directories must contain a `README.md` explaining:
+   - Archive policy (when files are moved here)
+   - Contents overview
+   - Retrieval guidance
+
+2. **Historical References Sections**: Active documents that reference archived content should:
+   - Use collapsible `<details>` tags for progressive disclosure
+   - Clearly label as "maintainers/contributors" content
+   - Note that archived docs are excluded from published site
+   - Use relative links (work in GitHub/IDE, fail gracefully in published site)
+
+3. **When to Use**: Add Historical References sections when:
+   - Current ADR supersedes archived ADRs
+   - Design documents replace earlier explorations
+   - Implementation supersedes prototypes
+   - Providing historical context adds value for contributors
+
+**Benefits**:
+
+- **Clean published docs**: Users see only current, relevant documentation
+- **Developer access**: Maintainers can trace design evolution via repository/IDE
+- **Progressive disclosure**: Historical context available but not prominent
+- **Graceful degradation**: Archive links work in GitHub even when excluded from MkDocs build
+- **No MkDocs warnings**: Pattern explicitly handles excluded content
+
+**Impact**:
+
+- All archive directories (`docs/archive/`, `docs/architecture/*/archive/`) now have README.md files
+- Active documentation uses Historical References pattern instead of direct archive links
+- MkDocs build passes with `--strict` (no broken link warnings)
+- Pattern documented in style guide for future use
+
+**References**:
+
+- [Markdown Standards: Historical References Pattern](/docs-ops/markdown-standards.md#historical-references-pattern)
+- `/docs/archive/README.md` - Root archive directory
+- `/docs/architecture/prompt-system/archive/README.md`
+- `/docs/architecture/tnh-gen/design/archive/README.md`

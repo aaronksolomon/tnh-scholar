@@ -3,8 +3,8 @@ title: "Adr"
 description: "Table of contents for architecture/knowledge-base/adr"
 owner: ""
 author: ""
-status: processing
-created: "2025-12-08"
+status: current
+created: "2025-12-11"
 auto_generated: true
 ---
 
@@ -12,9 +12,9 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
-**[ADR-K01: Preliminary Architectural Strategy for TNH Scholar Knowledge Base](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)** - Proposes a phased managed-to-open-source knowledge base rollout to validate retrieval before scaling.
+**[ADR-K01: Preliminary Architectural Strategy for TNH Scholar Knowledge Base](adr-k01-kb-architecture-strategy.md)** - Proposes a phased managed-to-open-source knowledge base rollout to validate retrieval before scaling.
 
 ---
 

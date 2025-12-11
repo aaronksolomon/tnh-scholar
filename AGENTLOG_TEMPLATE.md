@@ -1,7 +1,6 @@
 # Agent Session Log
 
 This file captures AI agent interactions, decisions, discoveries, and work performed on the TNH Scholar project. It provides historical context for continuity across sessions and helps human collaborators understand the evolution of the codebase.
-One AGENTLOG file is intended to be kept per branch/dev/refactor/issue push, and archived on completion of work.
 
 ## Format Specification
 
@@ -62,7 +61,6 @@ Brief description of what prompted this session and relevant background.
 
 ---
 
-## Branch work: gen-ai-core-stubs
+## Session History (Most Recent First)
 
-## Session History (Most Recent on Top)
-
+---

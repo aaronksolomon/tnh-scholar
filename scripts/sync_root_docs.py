@@ -5,18 +5,22 @@ Uses mkdocs-gen-files to generate read-only copies under `project/` so the
 MkDocs navigation can expose repository metadata without adding files to the
 working tree.
 """
+
 from __future__ import annotations
 
 import json
 import re
 import shutil
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Tuple
 
 try:
     import yaml  # type: ignore
+
     YAMLError = yaml.YAMLError
 except ModuleNotFoundError:
+
     class _MiniYAML:
         YAMLError = ValueError
 
@@ -43,6 +47,7 @@ except ModuleNotFoundError:
 try:
     import mkdocs_gen_files  # type: ignore
 except ModuleNotFoundError:
+
     class _DummyGenFiles:
         @staticmethod
         def open(path: str, mode: str = "r", encoding: str | None = None):
@@ -59,6 +64,9 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT_REPO_DIR = Path("project") / "repo-root"
 DOCS_DIR = ROOT / "docs"
 GITHUB_ROOT = "https://github.com/aaronksolomon/tnh-scholar/blob/main/"
+DEFAULT_OWNER = "Documentation Working Group"
+DEFAULT_AUTHOR = "Docs Automation"
+DEFAULT_STATUS = "current"
 
 # Root-level markdown files to surface in the documentation site.
 ROOT_DOCS: Tuple[str, ...] = (
@@ -147,6 +155,13 @@ def build_generated_content(source: Path, dest_rel: Path) -> str:
     metadata = metadata or {}
     metadata["auto_generated"] = True
     metadata.setdefault("generated_from", f"/{source.name}")
+    metadata.setdefault("owner", DEFAULT_OWNER)
+    metadata.setdefault("author", DEFAULT_AUTHOR)
+    metadata_status = metadata.get("status")
+    if metadata_status not in {"proposed", "draft", "wip", "current", "deprecated", "superseded", "archived"}:
+        metadata["status"] = DEFAULT_STATUS
+    created_date = datetime.fromtimestamp(source.stat().st_mtime, tz=timezone.utc).date().isoformat()
+    metadata.setdefault("created", created_date)
 
     warning = WARNING_TEMPLATE.format(name=source.name)
     fm = "---\n" + yaml.safe_dump(metadata, sort_keys=False).rstrip() + "\n---\n\n"
@@ -187,6 +202,10 @@ def write_index() -> None:
         "---",
         'title: "Repo Root"',
         'description: "Repository root documentation surfaced in the MkDocs site."',
+        f'owner: "{DEFAULT_OWNER}"',
+        f'author: "{DEFAULT_AUTHOR}"',
+        f'status: "{DEFAULT_STATUS}"',
+        f'created: "{datetime.now(timezone.utc).date().isoformat()}"',
         "auto_generated: true",
         "---",
         "",

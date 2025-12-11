@@ -3,7 +3,7 @@ title: "Structural-Informed Adaptive Processing (SIAP) Methodology"
 description: "Methodology for structure-aware adaptive processing that selects AI strategies based on content fingerprints."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-06-24"
 ---
 # Structural-Informed Adaptive Processing (SIAP) Methodology

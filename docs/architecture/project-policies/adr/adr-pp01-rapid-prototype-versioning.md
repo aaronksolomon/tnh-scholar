@@ -3,7 +3,7 @@ title: "ADR-PP01: Rapid Prototype Versioning Policy"
 description: "Establishes versioning policy for TNH Scholar during 0.x releases, allowing breaking changes in any release to enable fast iteration and architectural improvements."
 owner: "TNH Scholar Architecture Working Group"
 author: "Aaron Solomon, Claude Sonnet 4.5"
-status: accepted
+status: current
 created: "2025-12-06"
 ---
 # ADR-PP01: Rapid Prototype Versioning Policy

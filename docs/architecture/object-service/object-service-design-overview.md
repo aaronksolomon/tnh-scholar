@@ -3,7 +3,7 @@ title: "Object-Service Design Overview"
 description: "High-level overview of TNH Scholar's layered architecture for complex objects and API-backed services."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-29"
 ---
 # Object-Service Design Overview

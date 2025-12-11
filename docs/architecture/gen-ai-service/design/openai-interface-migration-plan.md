@@ -3,7 +3,7 @@ title: "OpenAI Interface Migration Plan"
 description: "Step-by-step plan for migrating from the legacy `openai_interface` module to the typed GenAI Service."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-17"
 ---
 # OpenAI Interface Migration Plan

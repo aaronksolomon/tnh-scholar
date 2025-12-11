@@ -1,8 +1,19 @@
+---
+title: "Forensic Analysis: December 7, 2025 Git Data Loss Incident"
+description: "Post-incident analysis detailing the stale-branch reset that temporarily orphaned prompt system work and the safeguards required to prevent recurrence."
+owner: "Engineering"
+author: "Claude Sonnet 4.5"
+status: current
+created: "2025-12-08"
+updated: "2025-12-11"
+---
 # Forensic Analysis: December 7, 2025 Git Data Loss Incident
 
-**Analyst**: Claude Sonnet 4.5
-**Date**: December 8, 2025
-**Evidence Sources**:
+Analysis of the December 7, 2025 data loss incident, tracing how a reset to a stale local branch reference orphaned prompt system work and outlining required safeguards.
+
+- **Analyst**: Claude Sonnet 4.5
+- **Date**: December 8, 2025
+- **Evidence Sources**:
 
 - Session log: `convo-with-hard-reset.txt`
 - Incident report: [`docs/development/incident-reports/2025-12-07-git-recovery.md`](/development/incident-reports/2025-12-07-git-recovery.md)

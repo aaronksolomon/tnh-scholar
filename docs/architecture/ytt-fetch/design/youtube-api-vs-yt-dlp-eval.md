@@ -3,7 +3,7 @@ title: "YouTube API vs yt-dlp Evaluation"
 description: "Comparison of using the YouTube Data API versus yt-dlp for fetching Plum Village media assets."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-01-21"
 ---
 # YouTube API vs yt-dlp Evaluation

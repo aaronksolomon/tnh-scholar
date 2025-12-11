@@ -3,7 +3,7 @@ title: "ADR-TR03: Standardizing Timestamps to Milliseconds"
 description: "Aligns all transcription providers on millisecond timestamps to avoid float drift."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-05-01"
 ---
 # ADR-TR03: Standardizing Timestamps to Milliseconds

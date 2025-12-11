@@ -3,7 +3,7 @@ title: "tnh-fab"
 description: "User-facing reference for the `tnh-fab` CLI covering commands, options, and example workflows."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-01-19"
 ---
 # tnh-fab

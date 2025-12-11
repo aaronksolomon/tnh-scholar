@@ -3,7 +3,7 @@ title: "ADR-PT01: Pattern Access Strategy"
 description: "Introduces a two-phase plan for accessing PromptTemplate metadata, moving from a singleton to injected managers."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-26"
 ---
 # ADR-PT01: Pattern Access Strategy

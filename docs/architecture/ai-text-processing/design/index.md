@@ -3,8 +3,8 @@ title: "Design"
 description: "Table of contents for architecture/ai-text-processing/design"
 owner: ""
 author: ""
-status: processing
-created: "2025-12-08"
+status: current
+created: "2025-12-11"
 auto_generated: true
 ---
 
@@ -12,11 +12,11 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
-**[TextObject Original Design](/architecture/ai-text-processing/design/textobject-original-design.md)** - Legacy TextObject design notes capturing the original sectioning models, metadata strategy, and validation approach.
+**[TextObject Original Design](textobject-original-design.md)** - Legacy TextObject design notes capturing the original sectioning models, metadata strategy, and validation approach.
 
-**[TextObject System Design Document](/architecture/ai-text-processing/design/textobject-system-design.md)** - Detailed blueprint for the modern TextObject pipeline, outlining segmentation models, metadata, and API surfaces.
+**[TextObject System Design Document](textobject-system-design.md)** - Detailed blueprint for the modern TextObject pipeline, outlining segmentation models, metadata, and API surfaces.
 
 ---
 

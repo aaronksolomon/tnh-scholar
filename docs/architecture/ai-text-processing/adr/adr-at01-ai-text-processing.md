@@ -3,7 +3,7 @@ title: "ADR-AT01: AI Text Processing Pipeline Redesign"
 description: "Defines the modular TextObject pipeline, metadata handling, and configuration strategy for AI processing."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-26"
 ---
 # ADR-AT01: AI Text Processing Pipeline Redesign

@@ -3,7 +3,7 @@ title: "TNH Scholar Design Principles"
 description: "Architectural patterns, design philosophy, and system organization principles for TNH Scholar development."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-29"
 ---
 # TNH Scholar Design Principles
@@ -204,7 +204,7 @@ class TextProcessor:
         return global_ai_service.process(text, prompt)  # Global access
 ```
 
-**Note**: During prototyping, singleton access (like `LocalPromptManager`) is acceptable for rapid development. Plan transition to dependency injection for production (see [ADR-PT01](/architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy.md)).
+**Note**: During prototyping, singleton access (like `LocalPromptManager`) is acceptable for rapid development. Plan transition to dependency injection for production (see ADR-PT01 in Historical References below).
 
 ## Data Architecture
 
@@ -496,9 +496,23 @@ See [Future Directions](/project/future-directions.md) for long-term vision.
 - [Conceptual Architecture](/project/conceptual-architecture.md) - Conceptual system model
 - [Contributing Guide](/development/contributing-prototype-phase.md) - Contribution workflow
 
+## Historical References
+
+<details>
+<summary>📚 View superseded design documents (maintainers/contributors)</summary>
+
+**Note**: These documents are archived and excluded from the published documentation. They provide historical context for the prompt system architecture and terminology migration.
+
+- **[ADR-PT01: Pattern Access Strategy](/architecture/prompt-system/archive/adr/adr-pt01-pattern-access-strategy.md)** (2024)
+  *Status*: Superseded by prompt system ADR series (ADR-PT03/ADR-PT04)
+- **[Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md)** (2024)
+  *Status*: Historical prompt/pattern architecture exploration
+
+</details>
+
 ## References
 
-- [Core Pattern Architecture](/architecture/prompt-system/archive/core-pattern-architecture.md) - Legacy prompt/pattern design notes
+- Core Pattern Architecture (see Historical References) - Legacy prompt/pattern design notes
 - [Object-Service Design Blueprint](/architecture/object-service/object-service-design-overview.md) - Layer architecture and design patterns
 - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) - Robert C. Martin
 - [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html) - Eric Evans via Martin Fowler

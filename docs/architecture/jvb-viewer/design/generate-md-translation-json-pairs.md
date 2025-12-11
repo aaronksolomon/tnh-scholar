@@ -3,7 +3,7 @@ title: "Generate Markdown Translation JSON Pairs"
 description: "Instructions for producing paired Vietnamese-English Markdown JSON lines from scanned journal pages with strict formatting."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # Generate Markdown Translation JSON Pairs

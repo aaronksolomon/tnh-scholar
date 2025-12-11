@@ -3,7 +3,7 @@ title: "Practical Language-Aware Chunking Design"
 description: "Practical heuristics for detecting language changes during chunking when diarization output is noisy."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-06-24"
 ---
 # Practical Language-Aware Chunking Design

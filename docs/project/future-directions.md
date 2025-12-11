@@ -1,11 +1,19 @@
+---
+title: "Future Directions of TNH-Scholar"
+description: "Blue-sky exploration of potential long-term evolutions of TNH-Scholar built on the project’s philosophy and architecture."
+owner: "Architecture"
+author: "Aaron Solomon"
+status: draft
+created: "2025-12-11"
+updated: "2025-12-11"
+---
 # Future Directions of TNH-Scholar
 
-> This document explores long-term, blue-sky horizons of the TNH-Scholar project and potential descendant systems.  
-> These are **not commitments**, but informed possibilities that arise naturally from the project's philosophy, architecture, and trajectory.
+Explores long-horizon possibilities for TNH-Scholar and related systems—non-committal scenarios informed by the project’s philosophy, architecture, and trajectory.
 
 TNH-Scholar is intentionally designed as a *foundational system* — a clean corpus, structured text models, provenance-rich transformations, agent-ready pipelines, and a pattern-driven GenAI interface. This foundation enables not only the current scholarly workflows, but also a number of long-horizon possibilities.
 
-# The sections below outline potential future evolutions.
+## The sections below outline potential future evolutions.
 
 ---
 

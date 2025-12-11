@@ -3,7 +3,7 @@ title: "Configuration"
 description: "TNH Scholar requires some initial configuration to function properly. This guide covers the essential configuration steps and options."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-01"
 ---
 # Configuration

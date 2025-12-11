@@ -3,7 +3,7 @@ title: "ADR-A01: Adopt Object-Service for GenAI Interactions"
 description: "Standardizes GenAI interactions with an Object-Service pattern that separates domain shapes from provider orchestration."
 owner: ""
 author: "Aaron Solomon, GPT-5.0, Claude AI"
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # ADR-A01: Adopt Object-Service for GenAI Interactions

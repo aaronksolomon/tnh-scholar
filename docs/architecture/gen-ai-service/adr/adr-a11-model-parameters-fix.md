@@ -3,7 +3,7 @@ title: "ADR-A11: Model Parameters and Strong Typing Fix"
 description: "Enforces typed parameter objects and removes literals from GenAI Service so provider flows stay consistent."
 owner: ""
 author: "Aaron Solomon, GPT-5.0"
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # ADR-A11: Model Parameters and Strong Typing Fix

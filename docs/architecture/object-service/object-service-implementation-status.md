@@ -3,7 +3,7 @@ title: "Object-Service Implementation Status"
 description: "Implementation status, resolved gaps, and outstanding work for the Object-Service design architecture."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-10-24"
 updated: "2025-11-29"
 ---

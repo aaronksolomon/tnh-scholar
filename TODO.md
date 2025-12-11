@@ -85,7 +85,7 @@ This section organizes work into three priority levels based on criticality for 
     - **Score**: 91/100 - Strong implementation
 
 - **High Priority (Before Merging)**:
-  - [x] Add Google-style docstrings to public functions ([style-guide.md:315-341](docs/development/style-guide.md#L315-L341))
+  - [x] Add Google-style docstrings to public functions (see [style-guide.md](docs/development/style-guide.md))
     - `apply_policy()`, `select_provider_and_model()`, `pre_check()`, `post_check()`, `provider_to_completion()`
   - [x] Move `_PRICE_PER_1K_TOKENS` constant to Settings or registry (blocks ADR-A14)
     - Moved to `Settings.price_per_1k_tokens`; safety gate now consumes setting.

@@ -2,6 +2,10 @@
 title: TNH Scholar
 description: Comprehensive documentation for TNH Scholar, an AI-driven project exploring,
   processing, and translating the teachings of Thich Nhat Hanh.
+owner: "Documentation Working Group"
+author: "Legacy Documentation"
+status: archived
+created: "2024-11-09"
 ---
 
 

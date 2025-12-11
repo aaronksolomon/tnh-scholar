@@ -3,7 +3,7 @@ title: "Generate Markdown Vietnamese"
 description: "Guidelines for rewriting Vietnamese journal pages into structured Markdown with one sentence per line and preserved metadata."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # Generate Markdown Vietnamese

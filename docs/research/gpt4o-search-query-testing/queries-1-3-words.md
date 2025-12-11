@@ -3,7 +3,7 @@ title: "1-3 Word Queries"
 description: "Prompt experiments for generating search query and passage pairs used to train retrieval models."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2024-10-28"
 ---
 # 1-3 Word Queries

@@ -3,7 +3,7 @@ title: "Project Policies"
 description: "Cross-cutting architectural policies and decisions affecting the entire TNH Scholar codebase"
 owner: "TNH Scholar Architecture Working Group"
 author: ""
-status: active
+status: current
 created: "2025-12-06"
 ---
 # Project Policies

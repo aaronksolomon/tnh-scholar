@@ -1,6 +1,15 @@
+---
+title: "Conceptual Architecture of TNH-Scholar"
+description: "High-level, implementation-agnostic view of TNH-Scholar’s layers, abstractions, and how they interact."
+owner: "Architecture"
+author: "Aaron Solomon"
+status: draft
+created: "2025-12-11"
+updated: "2025-12-11"
+---
 # Conceptual Architecture of TNH-Scholar
 
-> This document presents a high-level, implementation-agnostic conceptual architecture of TNH-Scholar — the system’s core abstractions and how they relate.
+High-level, implementation-agnostic overview of TNH-Scholar’s conceptual layers, core entities, and how the system’s abstractions relate.
 
 ## 1. Conceptual Layers
 

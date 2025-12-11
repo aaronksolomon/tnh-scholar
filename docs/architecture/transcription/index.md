@@ -3,8 +3,8 @@ title: "Transcription"
 description: "Table of contents for architecture/transcription"
 owner: ""
 author: ""
-status: processing
-created: "2025-12-08"
+status: current
+created: "2025-12-11"
 auto_generated: true
 ---
 
@@ -12,11 +12,11 @@ auto_generated: true
 
 **Table of Contents**:
 
-<!-- To manually edit this file, update the front matter and keep  to allow regeneration. -->
+<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
-**[Adr](/architecture/transcription/adr/index.md)** - Table of contents for architecture/transcription/adr
+**[Adr](adr/index.md)** - Table of contents for architecture/transcription/adr
 
-**[Design](/architecture/transcription/design/index.md)** - Table of contents for architecture/transcription/design
+**[Design](design/index.md)** - Table of contents for architecture/transcription/design
 
 ---
 

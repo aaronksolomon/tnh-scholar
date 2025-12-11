@@ -1,8 +1,21 @@
-# ADR-DD03 Phase 1 Execution Punch List
+---
+title: "ADR-DD03: Phase 1 Execution Punch List"
+description: "Pre-merge checklist to complete Pattern→Prompt terminology updates and related navigation changes."
+owner: "Documentation Working Group"
+author: "Codex (GPT-5)"
+status: wip
+created: "2025-11-28"
+updated: "2025-12-11"
+---
+# ADR-DD03: Phase 1 Execution Punch List
 
-**Status**: IN PROGRESS
-**Started**: 2025-11-28
-**Goal**: Complete Pattern→Prompt terminology updates before docs-reorg merge
+Task list for completing the Pattern→Prompt terminology sweep and directory/nav updates ahead of merging the documentation reorg.
+
+- **Status**: In Progress
+- **Date**: 2025-11-28
+- **Owner**: Documentation Working Group
+- **Author**: Codex (GPT-5)
+- **Goal**: Complete Pattern→Prompt terminology updates before docs-reorg merge
 
 ## Phase 1 Tasks (Pre-Merge)
 

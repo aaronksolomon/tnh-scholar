@@ -3,7 +3,7 @@ title: "TNH-FAB Command Line Tool Specification"
 description: "Expanded specification for the `tnh-fab` CLI with refined command behaviors, options, and workflow integration."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-01-21"
 ---
 # TNH-FAB Command Line Tool Specification

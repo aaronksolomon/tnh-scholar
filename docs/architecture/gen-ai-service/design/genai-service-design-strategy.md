@@ -3,7 +3,7 @@ title: "GenAI Service — Design Strategy"
 description: "Strategy for unifying GenAI Service capabilities, personas, and phased releases."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-11-15"
 ---
 # GenAI Service — Design Strategy

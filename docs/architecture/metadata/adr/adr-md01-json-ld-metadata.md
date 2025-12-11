@@ -3,7 +3,7 @@ title: "ADR-MD01: Adoption of JSON-LD for Metadata Management"
 description: "Chooses JSON-LD as the canonical metadata format to capture provenance, relationships, and future semantic queries."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-02-01"
 ---
 # ADR-MD01: Adoption of JSON-LD for Metadata Management

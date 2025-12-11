@@ -13,7 +13,7 @@ TNH Scholar is an AI-driven project designed to explore, query, process and tran
 
 ## Vision & Goals
 
-TNH Scholar aims to make the teachings of Thich Nhat Hanh and the Plum Village tradition more accessible and discoverable through modern AI techniques. By combining natural language processing, machine learning, and careful curation, we create pathways for practitioners and scholars to translate, search, organize, process and otherwise find meaningful connections among the body of teachings.
+TNH Scholar aims to make the teachings of Thich Nhat Hanh and the Plum Village tradition more accessible and discoverable through modern AI techniques. By combining natural language processing, machine learning, semantic search, and careful curation, we create pathways for practitioners and scholars to translate, search, organize, process and otherwise find meaningful connections among the body of teachings.
 
 ## Features
 

@@ -3,7 +3,7 @@ title: "Development Documentation"
 description: "Landing page for contributor guides, design principles, and engineering practices for TNH Scholar."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-12-03"
 ---
 # Development Documentation

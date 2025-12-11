@@ -3,7 +3,7 @@ title: "ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts"
 description: "Keeps the Pattern terminology while clarifying how PatternCatalog functions in TNH Scholar."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-09-22"
 ---
 # ADR-PT02: Adopt Pattern and PatternCatalog as Core Concepts

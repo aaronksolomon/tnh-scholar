@@ -3,7 +3,7 @@ title: "TNH Scholar Prompt System"
 description: "This document describes the TNH Scholar Prompt System (formerly called patterns). The system allows for template-based prompting of AI interactions, with version control and concurrent access management."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-01-19"
 ---
 # TNH Scholar Prompt System

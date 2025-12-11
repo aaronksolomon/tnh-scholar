@@ -3,8 +3,11 @@ title: "Incident Report: Git Recovery - December 7, 2025"
 description: "Post-mortem analysis of orphaned commits and successful recovery of prompt system implementation (ADR-PT04)"
 date: "2025-12-07"
 severity: "high"
-status: "resolved"
+status: "current"
 affected_releases: "v0.2.0"
+owner: "Engineering"
+author: "Claude Sonnet 4.5"
+created: "2025-12-08"
 ---
 
 # Incident Report: Git Recovery - December 7, 2025

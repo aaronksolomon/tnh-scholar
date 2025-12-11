@@ -1,15 +1,19 @@
 ---
 title: Community & Outreach
 description: Documentation for community partners, stakeholders, and collaborators in the Plum Village tradition.
+owner: "Community Engagement"
+author: "Documentation Working Group"
+status: current
+created: "2025-12-11"
 ---
 
 # Community & Outreach
 
-This section contains documentation for community partners, stakeholders, and collaborators who support the TNH Scholar project within the Plum Village tradition.
+This section contains documentation for community partners, friends, and collaborators who support the TNH Scholar project within the Plum Village tradition.
 
 ## Contents
 
-- [Parallax Press & Plum Village Editorial Overview](/community/parallax-overview.md) - Project introduction for editorial and publishing stakeholders
+- [Parallax Press & Plum Village Editorial Overview](/community/parallax-overview.md) - Project introduction for editorial and publishing community
 
 ## Purpose
 

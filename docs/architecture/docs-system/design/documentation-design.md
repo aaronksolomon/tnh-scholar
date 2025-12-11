@@ -3,7 +3,7 @@ title: "Documentation Design"
 description: "Reference for the documentation stack, covering tooling choices, information architecture, and publishing workflow."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-01-19"
 ---
 # Documentation Design

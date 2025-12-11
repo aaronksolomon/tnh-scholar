@@ -3,7 +3,7 @@ title: "Package Version Checker Design Document"
 description: "Specification for a reusable package version checking utility with flexible strategies and clear reporting."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-06-10"
 ---
 # Package Version Checker Design Document

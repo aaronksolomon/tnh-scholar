@@ -3,7 +3,7 @@ title: "Diarization System Design"
 description: "Detailed architecture for the diarization pipeline, covering segmentation, track extraction, and transcript remapping."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-05-01"
 ---
 # Diarization System Design
