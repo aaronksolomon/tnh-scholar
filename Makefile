@@ -312,6 +312,14 @@ release-publish:
 		echo ""; \
 		echo "To execute: make release-publish"; \
 	else \
+		if ! command -v gh >/dev/null 2>&1; then \
+			echo "❌ GitHub CLI (gh) not found. Please install it and ensure it's on your PATH before running release-publish." >&2; \
+			exit 1; \
+		fi; \
+		if ! gh auth status >/dev/null 2>&1; then \
+			echo "❌ GitHub CLI (gh) is not authenticated. Please run 'gh auth login' before running release-publish." >&2; \
+			exit 1; \
+		fi; \
 		echo "📝 Preparing README for PyPI (stripping YAML frontmatter)..."; \
 		$(POETRY) run python scripts/prepare_pypi_readme.py; \
 		echo ""; \
@@ -340,9 +348,24 @@ release-publish:
 		fi; \
 		echo "✅ Created GitHub release v$$VERSION"; \
 		echo ""; \
+		REMOTE_URL=$$(git remote get-url origin 2>/dev/null || true); \
+		GITHUB_REPO=$$(REMOTE_URL="$$REMOTE_URL" python - <<'PY' \
+import os
+import re
+
+remote = os.environ.get("REMOTE_URL", "")
+match = re.search(r'github\\.com[:/](?P<repo>[^/]+/[^/]+)(?:\\.git)?$', remote)
+if match:
+    print(match.group("repo"))
+PY
+); \
 		echo "🎉 Release complete!"; \
 		echo "   PyPI: https://pypi.org/project/tnh-scholar/"; \
-		echo "   GitHub: https://github.com/$$(git remote get-url origin | sed 's/.*github.com[:/]\(.*\)\.git/\1/')/releases/tag/v$$VERSION"; \
+		if [ -n "$$GITHUB_REPO" ]; then \
+			echo "   GitHub: https://github.com/$$GITHUB_REPO/releases/tag/v$$VERSION"; \
+		else \
+			echo "   GitHub release URL not shown (origin remote not recognized as GitHub)."; \
+		fi; \
 	fi
 
 release-full: release-commit release-tag release-publish

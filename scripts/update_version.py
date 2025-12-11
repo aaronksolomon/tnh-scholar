@@ -36,7 +36,7 @@ def get_init_version() -> Optional[str]:
         print("❌ Error: src/tnh_scholar/__init__.py not found", file=sys.stderr)
         sys.exit(1)
 
-    content = init_path.read_text()
+    content = init_path.read_text(encoding="utf-8")
     match = re.search(r'^__version__\s*=\s*["\']([^"\']+)["\']', content, re.MULTILINE)
     if match:
         return match.group(1)
@@ -46,7 +46,7 @@ def get_init_version() -> Optional[str]:
 def update_init_version(new_version: str) -> bool:
     """Update version in __init__.py."""
     init_path = Path("src/tnh_scholar/__init__.py")
-    content = init_path.read_text()
+    content = init_path.read_text(encoding="utf-8")
 
     # Replace __version__ = "x.y.z" with new version
     new_content = re.sub(
@@ -57,10 +57,13 @@ def update_init_version(new_version: str) -> bool:
     )
 
     if new_content == content:
-        print("⚠️  Warning: No __version__ variable found in __init__.py", file=sys.stderr)
+        print(
+            "❌ Error: __version__ variable not found in src/tnh_scholar/__init__.py",
+            file=sys.stderr,
+        )
         return False
 
-    init_path.write_text(new_content)
+    init_path.write_text(new_content, encoding="utf-8")
     return True
 
 
@@ -72,6 +75,13 @@ def main() -> None:
     print("📦 Current versions:")
     print(f"   pyproject.toml: {pyproject_version}")
     print(f"   __init__.py:    {init_version or 'NOT FOUND'}")
+
+    if init_version is None:
+        print(
+            "❌ Error: __version__ variable not found in src/tnh_scholar/__init__.py",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     if init_version == pyproject_version:
         print(f"✅ Versions already in sync ({pyproject_version})")
