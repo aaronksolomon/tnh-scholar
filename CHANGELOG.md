@@ -13,6 +13,31 @@ All notable changes to TNH Scholar will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.2] - 2025-12-11
+
+### Deprecated
+
+- **tnh-fab CLI Tool**
+  - Added comprehensive deprecation warnings for tnh-fab CLI tool
+  - Runtime warning displayed on all tnh-fab command invocations
+  - Help text updated to indicate deprecation and migration path to tnh-gen
+  - All user-facing documentation updated with deprecation notices
+  - Migration guidance pointing to TNH-Gen Architecture (ADR-TG01, ADR-TG02)
+
+### Changed
+
+- **Documentation Updates**
+  - Updated README.md, docs/index.md with tnh-fab deprecation notices
+  - Updated CLI reference documentation to mark tnh-fab as deprecated
+  - Updated getting started guide and user guide with migration information
+  - Updated architecture overview to note CLI tool transition
+  - Changed status metadata for tnh-fab.md to "deprecated"
+
+### Infrastructure
+
+- **Makefile Improvements**
+  - Minor robustness enhancements to build and release targets
+
 ## [0.2.1] - 2025-12-11
 
 ### Infrastructure & Tooling

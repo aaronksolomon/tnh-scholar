@@ -14,12 +14,16 @@ TNH Scholar provides a suite of command-line tools designed to work together for
 
 - **[audio-transcribe](/cli-reference/audio-transcribe.md)** – Transcribe audio files with diarization
 - **[nfmt](/cli-reference/nfmt.md)** – Normalize and format text files
-- **[tnh-fab](/cli-reference/tnh-fab.md)** – Pattern-driven text processing and translation
+- **[tnh-fab](/cli-reference/tnh-fab.md)** – Pattern-driven text processing and translation ⚠️ **DEPRECATED** (migrating to tnh-gen)
 - **[tnh-setup](/cli-reference/tnh-setup.md)** – Environment setup helper
 - **[token-count](/cli-reference/token-count.md)** – Token estimation utility
 - **[ytt-fetch](/cli-reference/ytt-fetch.md)** – YouTube transcript fetcher
 
-## TNH-FAB
+> **⚠️ CLI Tool Migration**: The `tnh-fab` tool is deprecated and will be replaced by `tnh-gen` in an upcoming release. See [TNH-Gen Architecture](/architecture/tnh-gen/index.md) for details.
+
+## TNH-FAB (Deprecated)
+
+**Note**: This tool is being replaced by `tnh-gen`. It remains functional with a deprecation warning.
 
 The primary text processing tool, TNH-FAB ('fab' short for 'fabric'), provides core functionality for text manipulation and analysis. This versatile tool includes several subcommands:
 

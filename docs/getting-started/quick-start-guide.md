@@ -24,7 +24,9 @@ This creates necessary directories and downloads default prompts.
 
 TNH Scholar includes several specialized tools:
 
-### tnh-fab
+### tnh-fab (Deprecated - Migrating to tnh-gen)
+
+> **⚠️ Note**: `tnh-fab` is deprecated and will be replaced by `tnh-gen`. The tool remains functional with a deprecation warning.
 
 The main text processing tool, providing functions for:
 
@@ -36,12 +38,14 @@ The main text processing tool, providing functions for:
 Example usage:
 
 ```bash
-# Add punctuation to text
+# Add punctuation to text (deprecated command)
 tnh-fab punctuate input.txt > punctuated.txt
 
 # Translate Vietnamese text to English
 tnh-fab translate -l vi input.txt > translated.txt
 ```
+
+See [TNH-Gen Architecture](/architecture/tnh-gen/index.md) for the upcoming replacement tool.
 
 ### audio-transcribe
 

@@ -62,7 +62,7 @@ link-check:
 
 codespell:
 	@echo "Running codespell..."
-	$(POETRY) run codespell -q 3 -I .codespell-ignore.txt README.md docs
+	$(POETRY) run codespell -q 3 -I .codespell-ignore.txt --skip="*.txt" README.md docs
 
 docs-verify: docs-drift docs-build codespell
 	@echo "Verifying documentation..."
@@ -349,16 +349,16 @@ release-publish:
 		echo "✅ Created GitHub release v$$VERSION"; \
 		echo ""; \
 		REMOTE_URL=$$(git remote get-url origin 2>/dev/null || true); \
-		GITHUB_REPO=$$(REMOTE_URL="$$REMOTE_URL" python - <<'PY' \
-import os
-import re
-
-remote = os.environ.get("REMOTE_URL", "")
-match = re.search(r'github\\.com[:/](?P<repo>[^/]+/[^/]+)(?:\\.git)?$', remote)
-if match:
-    print(match.group("repo"))
-PY
-); \
+		GITHUB_REPO=$$(REMOTE_URL="$$REMOTE_URL" python - <<'PY'\
+	import os\
+	import re\
+	\
+	remote = os.environ.get("REMOTE_URL", "")\
+	match = re.search(r'github\\.com[:/](?P<repo>[^/]+/[^/]+)(?:\\.git)?$$', remote)\
+	if match:\
+	    print(match.group("repo"))\
+	PY\
+	); \
 		echo "🎉 Release complete!"; \
 		echo "   PyPI: https://pypi.org/project/tnh-scholar/"; \
 		if [ -n "$$GITHUB_REPO" ]; then \

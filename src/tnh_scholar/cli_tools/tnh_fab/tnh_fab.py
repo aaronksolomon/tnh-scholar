@@ -3,9 +3,9 @@
 TNH-FAB Command Line Interface
 
 Part of the THICH NHAT HANH SCHOLAR (TNH_SCHOLAR) project.
-A rapid prototype implementation of the TNH-FAB command-line tool 
+A rapid prototype implementation of the TNH-FAB command-line tool
 for Open AI based text processing.
-Provides core functionality for text punctuation, sectioning, 
+Provides core functionality for text punctuation, sectioning,
 translation, and general processing.
 """
 
@@ -52,7 +52,7 @@ class TNHFabConfig:
         # Initialize pattern manager with directory set in .env file or default.
 
         load_dotenv()
-        
+
         if pattern_path_name := os.getenv("TNH_PATTERN_DIR"):
             pattern_dir = Path(pattern_path_name)
             logger.debug(f"pattern dir: {pattern_path_name}")
@@ -62,7 +62,9 @@ class TNHFabConfig:
         pattern_dir.mkdir(parents=True, exist_ok=True)
         self.pattern_manager = PromptCatalog(pattern_dir)
 
+
 pass_config = click.make_pass_decorator(TNHFabConfig, ensure=True)
+
 
 def gen_text_input(ctx: Context, input_file: Optional[Path]) -> TextObject:
     """Read input from file or stdin."""
@@ -71,6 +73,7 @@ def gen_text_input(ctx: Context, input_file: Optional[Path]) -> TextObject:
     if not sys.stdin.isatty():
         return TextObject.from_str(sys.stdin.read())
     raise UsageError("No input provided")
+
 
 def get_pattern(pattern_manager: PromptCatalog, pattern_name: str) -> Prompt:
     """
@@ -97,13 +100,17 @@ def get_pattern(pattern_manager: PromptCatalog, pattern_name: str) -> Prompt:
 
 
 @click.group()
-@click.option("-v", "--verbose", is_flag=True, 
-              help="Enable detailed logging. (NOT implemented)")
+@click.option("-v", "--verbose", is_flag=True, help="Enable detailed logging. (NOT implemented)")
 @click.option("--debug", is_flag=True, help="Enable debug output")
 @click.option("--quiet", is_flag=True, help="Suppress all non-error output")
 @click.pass_context
 def tnh_fab(ctx: Context, verbose: bool, debug: bool, quiet: bool):
     """TNH-FAB: Thich Nhat Hanh Scholar Text processing command-line tool.
+
+    ⚠️  DEPRECATION WARNING: tnh-fab is deprecated and will be removed in a future release.
+    Please migrate to tnh-gen, which provides the same functionality with improved
+    architecture and VS Code integration. See the migration guide at:
+    https://aaronksolomon.github.io/tnh-scholar/architecture/tnh-gen/
 
     CORE COMMANDS: punctuate, section, translate, process
 
@@ -116,13 +123,25 @@ def tnh_fab(ctx: Context, verbose: bool, debug: bool, quiet: bool):
     Offers functionalities for punctuation, sectioning, line-based translation,
     and general text processing based on predefined patterns.
     Input text can be provided either via a file or standard input.
-    """        
+    """
     config = ctx.ensure_object(TNHFabConfig)
-    
+
+    # Print deprecation warning unless quiet mode is enabled
+    if not quiet:
+        click.echo(
+            click.style(
+                "\n⚠️  DEPRECATION WARNING: tnh-fab is deprecated and will be moved to tnh-gen.\n"
+                "   This tool will be removed in a future release. Please plan to migrate to tnh-gen.\n"
+                "   See: https://aaronksolomon.github.io/tnh-scholar/architecture/tnh-gen/\n",
+                fg="yellow",
+                bold=True,
+            ),
+            err=True,
+        )
+
     if not check_openai_env():
-        
         raise click.ClickException("Missing OpenAI Credentials.")
-        
+
     config.verbose = verbose
     config.debug = debug
     config.quiet = quiet
@@ -135,19 +154,16 @@ def tnh_fab(ctx: Context, verbose: bool, debug: bool, quiet: bool):
 
 
 @tnh_fab.command()
-@click.argument(
-    "input_file", type=click.Path(exists=True, path_type=Path), required=False
-)
+@click.argument("input_file", type=click.Path(exists=True, path_type=Path), required=False)
 @click.option("-l", "--language", help="[DEPRECATED] Source language code")
 @click.option("-y", "--style", help="[DEPRECATED] Punctuation style")
-@click.option("-c", "--review-count", type=int, 
-              help="[DEPRECATED] Number of review passes")
+@click.option("-c", "--review-count", type=int, help="[DEPRECATED] Number of review passes")
 @click.option("-p", "--pattern", help="[DEPRECATED] Pattern name for punctuation")
 def punctuate(
     input_file: Optional[Path],
     language: Optional[str],
     style: Optional[str],
-    review_count: Optional[int], 
+    review_count: Optional[int],
     pattern: Optional[str],
 ):
     """[DEPRECATED] Punctuation command is deprecated."""
@@ -161,9 +177,7 @@ def punctuate(
 
 
 @tnh_fab.command()
-@click.argument(
-    "input_file", type=click.Path(exists=True, path_type=Path), required=False
-)
+@click.argument("input_file", type=click.Path(exists=True, path_type=Path), required=False)
 @click.option(
     "-l",
     "--language",
@@ -233,7 +247,7 @@ def section(
     """
     input_text = gen_text_input(click, input_file)  # type: ignore
     section_pattern = get_pattern(config.pattern_manager, pattern)
-    
+
     text_object = find_sections(
         input_text,
         section_pattern=section_pattern,
@@ -244,19 +258,12 @@ def section(
     info = text_object.export_info(input_file)
     click.echo(info.model_dump_json(indent=2))
 
+
 @tnh_fab.command()
-@click.argument(
-    "input_file", type=click.Path(exists=True, path_type=Path), required=False
-)
-@click.option(
-    "-l", "--language", help="Source language code. Auto-detected if not specified."
-)
-@click.option(
-    "-r", "--target", default="en", help="Target language code (default: 'en')"
-)
-@click.option(
-    "-y", "--style", help="Translation style (e.g., 'American Dharma Teaching')"
-)
+@click.argument("input_file", type=click.Path(exists=True, path_type=Path), required=False)
+@click.option("-l", "--language", help="Source language code. Auto-detected if not specified.")
+@click.option("-r", "--target", default="en", help="Target language code (default: 'en')")
+@click.option("-y", "--style", help="Translation style (e.g., 'American Dharma Teaching')")
 @click.option(
     "--context-lines",
     type=int,
@@ -287,10 +294,10 @@ def translate(
 ):
     """Translate text while preserving line numbers and contextual understanding.
 
-    This command performs intelligent translation that maintains 
-    line number correspondence between source and translated text. 
+    This command performs intelligent translation that maintains
+    line number correspondence between source and translated text.
     It uses surrounding context to improve translation
-    accuracy and consistency, particularly important for texts 
+    accuracy and consistency, particularly important for texts
     where terminology and context are crucial.
 
     Examples:
@@ -333,10 +340,9 @@ def translate(
     )
     click.echo(text_obj)
 
+
 @tnh_fab.command()
-@click.argument(
-    "input_file", type=click.Path(exists=True, path_type=Path), required=False
-)
+@click.argument("input_file", type=click.Path(exists=True, path_type=Path), required=False)
 @click.option("-p", "--pattern", required=True, help="Pattern name for processing")
 @click.option(
     "-s",
@@ -344,9 +350,7 @@ def translate(
     type=click.Path(exists=True, path_type=Path),
     help="Process using sections from JSON file.",
 )
-@click.option(
-    "-a", "--auto", is_flag=True, help="Automatically generate and process by sections."
-)
+@click.option("-a", "--auto", is_flag=True, help="Automatically generate and process by sections.")
 @click.option("-g", "--paragraph", is_flag=True, help="Process text by paragraphs")
 @click.option(
     "-t",
@@ -407,10 +411,10 @@ def process(
             - Treats each line/paragraph as a separate unit
             - Useful for simpler processing tasks
             - More memory efficient for large files
-        
+
         \b
         3. Auto Section Mode (-a):
-            - Automatically sections the input file 
+            - Automatically sections the input file
             - Processes by section
 
     \b
@@ -420,52 +424,45 @@ def process(
 
     """
     text_obj = gen_text_input(click, input_file)  # type: ignore
-    
+
     process_pattern = get_pattern(config.pattern_manager, pattern)
 
     template_dict: Dict[str, str] = {}
 
     if paragraph:
-        result = process_text_by_paragraphs(
-            text_obj, template_dict, pattern=process_pattern
-        )
-        export_processed_sections(result, text_obj)        
-    elif section is not None:  # Section mode (either file or auto-generate)    
+        result = process_text_by_paragraphs(text_obj, template_dict, pattern=process_pattern)
+        export_processed_sections(result, text_obj)
+    elif section is not None:  # Section mode (either file or auto-generate)
         text_obj = TextObject.from_section_file(section, text_obj.content)
 
-        result = process_text_by_sections(
-            text_obj, template_dict, pattern=process_pattern
-        )
+        result = process_text_by_sections(text_obj, template_dict, pattern=process_pattern)
         export_processed_sections(result, text_obj)
     elif auto:
-        # Auto-generate sections     
-        default_section_pattern = get_pattern(
-            config.pattern_manager, DEFAULT_SECTION_PATTERN
-        )
+        # Auto-generate sections
+        default_section_pattern = get_pattern(config.pattern_manager, DEFAULT_SECTION_PATTERN)
         text_obj = find_sections(text_obj, section_pattern=default_section_pattern)
-        
-        result = process_text_by_sections(
-            text_obj, template_dict, pattern=process_pattern
-        )
+
+        result = process_text_by_sections(text_obj, template_dict, pattern=process_pattern)
         export_processed_sections(result, text_obj)
-            
+
     else:
-        result = process_text(
-            text_obj, pattern=process_pattern, template_dict=template_dict
-        )
+        result = process_text(text_obj, pattern=process_pattern, template_dict=template_dict)
         click.echo(result)
 
+
 def export_processed_sections(
-    section_result: Generator[ProcessedSection, None, None], 
-    text_obj: TextObject) -> None:
+    section_result: Generator[ProcessedSection, None, None], text_obj: TextObject
+) -> None:
     click.echo(f"{Frontmatter.generate(text_obj.metadata)}")
     for processed_section in section_result:
         click.echo(processed_section.processed_str)
-        click.echo("\n")  # newline separated output. 
-            
+        click.echo("\n")  # newline separated output.
+
+
 def main():
     """Entry point for TNH-FAB CLI tool."""
     tnh_fab()
+
 
 if __name__ == "__main__":
     main()

@@ -20,10 +20,12 @@ TNH Scholar aims to make the teachings of Thich Nhat Hanh and the Plum Village t
 TNH Scholar is currently in active prototyping. Key capabilities:
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
-- **Text formatting and translation**: `tnh-gen` CLI (rename in flight; see [ADR-VSC01](docs/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md) and [ADR-VSC02](docs/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)) for punctuation, translation, sectioning, and prompt-driven processing
+- **Text formatting and translation**: `tnh-gen` CLI (in development; currently `tnh-fab`, deprecated) for punctuation, translation, sectioning, and prompt-driven processing. See [ADR-TG01](docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) and [ADR-TG02](docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md) for architecture details.
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See ADRs under [docs/architecture/prompt-system/index.md](docs/architecture/prompt-system/index.md) for decisions and roadmap
+
+> **⚠️ CLI Tool Migration Notice**: The `tnh-fab` command-line tool is deprecated and will be replaced by `tnh-gen` in an upcoming release. The tool remains functional with a deprecation warning. See the [TNH-Gen Architecture documentation](docs/architecture/tnh-gen/) for migration details.
 
 ## Quick Start
 
@@ -61,12 +63,18 @@ export OPENAI_API_KEY="your-api-key"
 audio-transcribe --yt_url "https://youtube.com/watch?v=example" --split --transcribe
 ```
 
-**Process Text with TNH-GEN (was previously tnh-fab: CLI refactor and rename in progress; see ADR-VSC01/VSC02):**
-
 **Download Video Transcripts:**
 
 ```bash
 ytt-fetch "https://youtube.com/watch?v=example" -l en -o transcript.txt
+```
+
+**Process Text (currently using tnh-fab; migrating to tnh-gen):**
+
+```bash
+# Note: tnh-fab is deprecated; tnh-gen is in development
+tnh-fab translate -l vi input.txt
+tnh-fab section input.txt
 ```
 
 ## Getting Started
