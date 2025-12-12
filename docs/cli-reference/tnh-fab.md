@@ -3,10 +3,12 @@ title: "tnh-fab"
 description: "User-facing reference for the `tnh-fab` CLI covering commands, options, and example workflows."
 owner: ""
 author: ""
-status: current
+status: deprecated
 created: "2025-01-19"
 ---
 # tnh-fab
+
+> **⚠️ DEPRECATION WARNING**: `tnh-fab` is deprecated and will be replaced by `tnh-gen` in an upcoming release. This tool remains functional but emits a deprecation warning. Please plan to migrate to `tnh-gen`. See the [TNH-Gen Architecture](/architecture/tnh-gen/index.md) for details on the migration path and improved capabilities.
 
 User-facing reference for the `tnh-fab` CLI covering commands, options, and example workflows.
 
@@ -15,6 +17,8 @@ User-facing reference for the `tnh-fab` CLI covering commands, options, and exam
 `tnh-fab` is a specialized command-line tool, part of the Thich Nhat Hanh Scholar Project.
 `tnh-fab` can process multilingual texts using AI 'patterns'.
 It is originally developed to work with processing Dharma-based materials such as talks by Thich Nhat Hanh.
+
+**Migration Status**: This tool is being replaced by `tnh-gen`, which provides the same functionality with improved architecture, better VS Code integration, and a more maintainable codebase.
 
 It provides functionality for:
 

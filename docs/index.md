@@ -13,6 +13,8 @@ created: '2025-12-11'
 
 
 
+
+
 # TNH Scholar
 
 **TNH Scholar is a long-term, community-aligned initiative to build a trusted multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
@@ -58,11 +60,13 @@ These are aspirational but active development goals aligned with the needs of th
 
 ## Features
 
-- **Audio and transcript processing**:  with diarization and YouTube support
-- **Text formatting and translation**:  for punctuation, translation, sectioning, and prompt-driven processing
-- **Acquisition utilities**:  for transcripts;  and  for prep and planning
-- **Setup and configuration**:  plus guided config in Getting Started
+- **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
+- **Text formatting and translation**: `tnh-gen` CLI (in development; currently `tnh-fab`, deprecated) for punctuation, translation, sectioning, and prompt-driven processing
+- **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
+- **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md) and [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) for current status and roadmap
+
+> **⚠️ CLI Tool Migration**: The `tnh-fab` CLI is deprecated and will be replaced by `tnh-gen` in an upcoming release. See [TNH-Gen Architecture](/architecture/tnh-gen/index.md) for the migration path. Current installations continue to use `tnh-fab` with a deprecation warning.
 
 ---
 

@@ -49,8 +49,8 @@ Typical steps:
    - Input: transcript text.  
    - Output: normalized plain text, with consistent line wrapping, spacing, and punctuation.
 
-3. **Optional: apply structure or tagging** with `tnh-fab` or GenAIService-based flows  
-   - Add markers for paragraphs, headings, quotes, or exercises.  
+3. **Optional: apply structure or tagging** with `tnh-fab` (deprecated; migrating to `tnh-gen`) or GenAIService-based flows
+   - Add markers for paragraphs, headings, quotes, or exercises.
    - Prepare the text for metadata or translation workflows.
 
 Relevant documentation:
@@ -69,21 +69,21 @@ Typical steps:
 1. **Normalize and clean**  
    - Use `nfmt` or equivalent preprocessing to remove obvious noise and enforce consistent formatting.
 
-2. **Apply patterns and prompts** with `tnh-fab`  
-   - Use domain-specific patterns or prompts to:  
-     - Identify headings and sections,  
-     - Tag poems, plays, quotes, exercises, or notes,  
+2. **Apply patterns and prompts** with `tnh-fab` (deprecated; migrating to `tnh-gen`)
+   - Use domain-specific patterns or prompts to:
+     - Identify headings and sections,
+     - Tag poems, plays, quotes, exercises, or notes,
      - Insert metadata or footnote markers.
 
-3. **Review and refine**  
-   - Humans review the output, correct tagging, and adjust patterns as needed.  
+3. **Review and refine**
+   - Humans review the output, correct tagging, and adjust patterns as needed.
    - The corrected text becomes a better training or reference dataset for future workflows.
 
 Relevant documentation:
 
 - [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)
 - Additional prompt design docs: [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
-- [tnh-fab](/cli-reference/tnh-fab.md) CLI guide
+- [tnh-fab](/cli-reference/tnh-fab.md) CLI guide (deprecated; see [TNH-Gen](/architecture/tnh-gen/index.md) for migration)
 
 ---
 

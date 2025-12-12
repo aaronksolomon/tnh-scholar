@@ -92,10 +92,12 @@ The CLI layer provides user-facing commands such as:
 
 - `audio-transcribe`
 - `nfmt`
-- `tnh-fab`
+- `tnh-fab` (deprecated; migrating to `tnh-gen`)
 - `tnh-setup`
 - `token-count`
 - `ytt-fetch`
+
+> **Note**: `tnh-fab` is being replaced by `tnh-gen`. See [TNH-Gen Architecture](/architecture/tnh-gen/index.md) for details.
 
 These tools are small, composable, and focused on a single responsibility. They generally:
 
