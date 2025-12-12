@@ -1600,7 +1600,7 @@
     
   
   
-    <span class="md-status md-status--current"></span>
+    <span class="md-status md-status--deprecated"></span>
   
 
   
@@ -7960,9 +7960,9 @@
 <p>Output: normalized plain text, with consistent line wrapping, spacing, and punctuation.</p>
 </li>
 <li>
-<p><strong>Optional: apply structure or tagging</strong> with <code>tnh-fab</code> or GenAIService-based flows  </p>
+<p><strong>Optional: apply structure or tagging</strong> with <code>tnh-fab</code> (deprecated; migrating to <code>tnh-gen</code>) or GenAIService-based flows</p>
 </li>
-<li>Add markers for paragraphs, headings, quotes, or exercises.  </li>
+<li>Add markers for paragraphs, headings, quotes, or exercises.</li>
 <li>Prepare the text for metadata or translation workflows.</li>
 </ol>
 <p>Relevant documentation:</p>
@@ -7980,27 +7980,27 @@
 <p>Use <code>nfmt</code> or equivalent preprocessing to remove obvious noise and enforce consistent formatting.</p>
 </li>
 <li>
-<p><strong>Apply patterns and prompts</strong> with <code>tnh-fab</code>  </p>
+<p><strong>Apply patterns and prompts</strong> with <code>tnh-fab</code> (deprecated; migrating to <code>tnh-gen</code>)</p>
 </li>
 <li>
-<p>Use domain-specific patterns or prompts to:  </p>
+<p>Use domain-specific patterns or prompts to:</p>
 <ul>
-<li>Identify headings and sections,  </li>
-<li>Tag poems, plays, quotes, exercises, or notes,  </li>
+<li>Identify headings and sections,</li>
+<li>Tag poems, plays, quotes, exercises, or notes,</li>
 <li>Insert metadata or footnote markers.</li>
 </ul>
 </li>
 <li>
-<p><strong>Review and refine</strong>  </p>
+<p><strong>Review and refine</strong></p>
 </li>
-<li>Humans review the output, correct tagging, and adjust patterns as needed.  </li>
+<li>Humans review the output, correct tagging, and adjust patterns as needed.</li>
 <li>The corrected text becomes a better training or reference dataset for future workflows.</li>
 </ol>
 <p>Relevant documentation:</p>
 <ul>
 <li><a href="../../architecture/prompt-system/prompt-system-architecture/">Prompt System Architecture</a></li>
 <li>Additional prompt design docs: <a href="../../architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap/">ADR-PT03</a></li>
-<li><a href="../../cli-reference/tnh-fab/">tnh-fab</a> CLI guide</li>
+<li><a href="../../cli-reference/tnh-fab/">tnh-fab</a> CLI guide (deprecated; see <a href="../../architecture/tnh-gen/">TNH-Gen</a> for migration)</li>
 </ul>
 <hr />
 <h3 id="3-prepared-text-to-model-ready-chunks">3. Prepared Text to Model-Ready Chunks<a class="headerlink" href="#3-prepared-text-to-model-ready-chunks" title="Link to this section">&para;</a></h3>

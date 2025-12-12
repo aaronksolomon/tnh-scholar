@@ -523,9 +523,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tnh-fab" class="md-nav__link">
+  <a href="#tnh-fab-deprecated-migrating-to-tnh-gen" class="md-nav__link">
     <span class="md-ellipsis">
-      tnh-fab
+      tnh-fab (Deprecated - Migrating to tnh-gen)
     </span>
   </a>
   
@@ -1624,7 +1624,7 @@
     
   
   
-    <span class="md-status md-status--current"></span>
+    <span class="md-status md-status--deprecated"></span>
   
 
   
@@ -7867,9 +7867,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tnh-fab" class="md-nav__link">
+  <a href="#tnh-fab-deprecated-migrating-to-tnh-gen" class="md-nav__link">
     <span class="md-ellipsis">
-      tnh-fab
+      tnh-fab (Deprecated - Migrating to tnh-gen)
     </span>
   </a>
   
@@ -7976,7 +7976,10 @@
 <p>This creates necessary directories and downloads default prompts.</p>
 <h2 id="core-tools">Core Tools<a class="headerlink" href="#core-tools" title="Link to this section">&para;</a></h2>
 <p>TNH Scholar includes several specialized tools:</p>
-<h3 id="tnh-fab">tnh-fab<a class="headerlink" href="#tnh-fab" title="Link to this section">&para;</a></h3>
+<h3 id="tnh-fab-deprecated-migrating-to-tnh-gen">tnh-fab (Deprecated - Migrating to tnh-gen)<a class="headerlink" href="#tnh-fab-deprecated-migrating-to-tnh-gen" title="Link to this section">&para;</a></h3>
+<blockquote>
+<p><strong>⚠️ Note</strong>: <code>tnh-fab</code> is deprecated and will be replaced by <code>tnh-gen</code>. The tool remains functional with a deprecation warning.</p>
+</blockquote>
 <p>The main text processing tool, providing functions for:</p>
 <ul>
 <li>Text punctuation and formatting</li>
@@ -7985,12 +7988,13 @@
 <li>Prompt-based processing</li>
 </ul>
 <p>Example usage:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Add punctuation to text</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Add punctuation to text (deprecated command)</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>tnh-fab<span class="w"> </span>punctuate<span class="w"> </span>input.txt<span class="w"> </span>&gt;<span class="w"> </span>punctuated.txt
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Translate Vietnamese text to English</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>tnh-fab<span class="w"> </span>translate<span class="w"> </span>-l<span class="w"> </span>vi<span class="w"> </span>input.txt<span class="w"> </span>&gt;<span class="w"> </span>translated.txt
 </span></code></pre></div>
+<p>See <a href="../../architecture/tnh-gen/">TNH-Gen Architecture</a> for the upcoming replacement tool.</p>
 <h3 id="audio-transcribe">audio-transcribe<a class="headerlink" href="#audio-transcribe" title="Link to this section">&para;</a></h3>
 <p>Process and transcribe audio content:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Transcribe from YouTube</span>

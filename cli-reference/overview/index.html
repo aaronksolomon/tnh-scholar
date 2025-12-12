@@ -1450,9 +1450,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tnh-fab" class="md-nav__link">
+  <a href="#tnh-fab-deprecated" class="md-nav__link">
     <span class="md-ellipsis">
-      TNH-FAB
+      TNH-FAB (Deprecated)
     </span>
   </a>
   
@@ -1612,7 +1612,7 @@
     
   
   
-    <span class="md-status md-status--current"></span>
+    <span class="md-status md-status--deprecated"></span>
   
 
   
@@ -7845,9 +7845,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tnh-fab" class="md-nav__link">
+  <a href="#tnh-fab-deprecated" class="md-nav__link">
     <span class="md-ellipsis">
-      TNH-FAB
+      TNH-FAB (Deprecated)
     </span>
   </a>
   
@@ -7949,12 +7949,16 @@
 <ul>
 <li><strong><a href="../audio-transcribe/">audio-transcribe</a></strong> – Transcribe audio files with diarization</li>
 <li><strong><a href="../nfmt/">nfmt</a></strong> – Normalize and format text files</li>
-<li><strong><a href="../tnh-fab/">tnh-fab</a></strong> – Pattern-driven text processing and translation</li>
+<li><strong><a href="../tnh-fab/">tnh-fab</a></strong> – Pattern-driven text processing and translation ⚠️ <strong>DEPRECATED</strong> (migrating to tnh-gen)</li>
 <li><strong><a href="../tnh-setup/">tnh-setup</a></strong> – Environment setup helper</li>
 <li><strong><a href="../token-count/">token-count</a></strong> – Token estimation utility</li>
 <li><strong><a href="../ytt-fetch/">ytt-fetch</a></strong> – YouTube transcript fetcher</li>
 </ul>
-<h2 id="tnh-fab">TNH-FAB<a class="headerlink" href="#tnh-fab" title="Link to this section">&para;</a></h2>
+<blockquote>
+<p><strong>⚠️ CLI Tool Migration</strong>: The <code>tnh-fab</code> tool is deprecated and will be replaced by <code>tnh-gen</code> in an upcoming release. See <a href="../../architecture/tnh-gen/">TNH-Gen Architecture</a> for details.</p>
+</blockquote>
+<h2 id="tnh-fab-deprecated">TNH-FAB (Deprecated)<a class="headerlink" href="#tnh-fab-deprecated" title="Link to this section">&para;</a></h2>
+<p><strong>Note</strong>: This tool is being replaced by <code>tnh-gen</code>. It remains functional with a deprecation warning.</p>
 <p>The primary text processing tool, TNH-FAB ('fab' short for 'fabric'), provides core functionality for text manipulation and analysis. This versatile tool includes several subcommands:</p>
 <p>The <strong>punctuate</strong> command handles text punctuation and basic formatting. It can work with multiple languages and adapts to various writing styles.</p>
 <p>The <strong>section</strong> command analyzes text structure and identifies logical divisions. It helps organize content into meaningful segments for further processing. This is crucial for working with larger text where model context limits may be reached or where processing will be ineffective due to content size.</p>

@@ -1687,7 +1687,7 @@
     
   
   
-    <span class="md-status md-status--current"></span>
+    <span class="md-status md-status--deprecated"></span>
   
 
   
@@ -8103,11 +8103,14 @@
 <p>TNH Scholar is currently in active prototyping. Key capabilities:</p>
 <ul>
 <li><strong>Audio and transcript processing</strong>: <code>audio-transcribe</code> with diarization and YouTube support</li>
-<li><strong>Text formatting and translation</strong>: <code>tnh-gen</code> CLI (rename in flight; see <a href="../../../architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/">ADR-VSC01</a> and <a href="../../../architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/">ADR-VSC02</a>) for punctuation, translation, sectioning, and prompt-driven processing</li>
+<li><strong>Text formatting and translation</strong>: <code>tnh-gen</code> CLI (in development; currently <code>tnh-fab</code>, deprecated) for punctuation, translation, sectioning, and prompt-driven processing. See <a href="../../../architecture/tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01</a> and <a href="../../../architecture/tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02</a> for architecture details.</li>
 <li><strong>Acquisition utilities</strong>: <code>ytt-fetch</code> for transcripts; <code>token-count</code> and <code>nfmt</code> for prep and planning</li>
 <li><strong>Setup and configuration</strong>: <code>tnh-setup</code> plus guided config in Getting Started</li>
 <li><strong>Prompt system</strong>: See ADRs under <a href="../../../architecture/prompt-system/">docs/architecture/prompt-system/index.md</a> for decisions and roadmap</li>
 </ul>
+<blockquote>
+<p><strong>⚠️ CLI Tool Migration Notice</strong>: The <code>tnh-fab</code> command-line tool is deprecated and will be replaced by <code>tnh-gen</code> in an upcoming release. The tool remains functional with a deprecation warning. See the <a href="../../architecture/tnh-gen/">TNH-Gen Architecture documentation</a> for migration details.</p>
+</blockquote>
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Link to this section">&para;</a></h2>
 <h3 id="installation-pypi">Installation (PyPI)<a class="headerlink" href="#installation-pypi" title="Link to this section">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>tnh-scholar
@@ -8128,9 +8131,13 @@
 <p><strong>Transcribe Audio from YouTube:</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>audio-transcribe<span class="w"> </span>--yt_url<span class="w"> </span><span class="s2">&quot;https://youtube.com/watch?v=example&quot;</span><span class="w"> </span>--split<span class="w"> </span>--transcribe
 </span></code></pre></div>
-<p><strong>Process Text with TNH-GEN (was previously tnh-fab: CLI refactor and rename in progress; see ADR-VSC01/VSC02):</strong></p>
 <p><strong>Download Video Transcripts:</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ytt-fetch<span class="w"> </span><span class="s2">&quot;https://youtube.com/watch?v=example&quot;</span><span class="w"> </span>-l<span class="w"> </span>en<span class="w"> </span>-o<span class="w"> </span>transcript.txt
+</span></code></pre></div>
+<p><strong>Process Text (currently using tnh-fab; migrating to tnh-gen):</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Note: tnh-fab is deprecated; tnh-gen is in development</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>tnh-fab<span class="w"> </span>translate<span class="w"> </span>-l<span class="w"> </span>vi<span class="w"> </span>input.txt
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>tnh-fab<span class="w"> </span>section<span class="w"> </span>input.txt
 </span></code></pre></div>
 <h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Link to this section">&para;</a></h2>
 <ul>

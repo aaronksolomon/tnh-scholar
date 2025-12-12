@@ -1715,7 +1715,7 @@
     
   
   
-    <span class="md-status md-status--current"></span>
+    <span class="md-status md-status--deprecated"></span>
   
 
   
@@ -8184,12 +8184,15 @@
 <hr />
 <h2 id="features">Features<a class="headerlink" href="#features" title="Link to this section">&para;</a></h2>
 <ul>
-<li><strong>Audio and transcript processing</strong>:  with diarization and YouTube support</li>
-<li><strong>Text formatting and translation</strong>:  for punctuation, translation, sectioning, and prompt-driven processing</li>
-<li><strong>Acquisition utilities</strong>:  for transcripts;  and  for prep and planning</li>
-<li><strong>Setup and configuration</strong>:  plus guided config in Getting Started</li>
+<li><strong>Audio and transcript processing</strong>: <code>audio-transcribe</code> with diarization and YouTube support</li>
+<li><strong>Text formatting and translation</strong>: <code>tnh-gen</code> CLI (in development; currently <code>tnh-fab</code>, deprecated) for punctuation, translation, sectioning, and prompt-driven processing</li>
+<li><strong>Acquisition utilities</strong>: <code>ytt-fetch</code> for transcripts; <code>token-count</code> and <code>nfmt</code> for prep and planning</li>
+<li><strong>Setup and configuration</strong>: <code>tnh-setup</code> plus guided config in Getting Started</li>
 <li><strong>Prompt system</strong>: See <a href="architecture/prompt-system/prompt-system-architecture/">Prompt System Architecture</a> and <a href="architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap/">ADR-PT03</a> for current status and roadmap</li>
 </ul>
+<blockquote>
+<p><strong>⚠️ CLI Tool Migration</strong>: The <code>tnh-fab</code> CLI is deprecated and will be replaced by <code>tnh-gen</code> in an upcoming release. See <a href="architecture/tnh-gen/">TNH-Gen Architecture</a> for the migration path. Current installations continue to use <code>tnh-fab</code> with a deprecation warning.</p>
+</blockquote>
 <hr />
 <h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Link to this section">&para;</a></h2>
 <p>Choose your path based on your primary interest:</p>

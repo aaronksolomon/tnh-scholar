@@ -1473,7 +1473,7 @@
     
   
   
-    <span class="md-status md-status--current"></span>
+    <span class="md-status md-status--deprecated"></span>
   
 
   
@@ -8009,11 +8009,14 @@
 <ul>
 <li><code>audio-transcribe</code></li>
 <li><code>nfmt</code></li>
-<li><code>tnh-fab</code></li>
+<li><code>tnh-fab</code> (deprecated; migrating to <code>tnh-gen</code>)</li>
 <li><code>tnh-setup</code></li>
 <li><code>token-count</code></li>
 <li><code>ytt-fetch</code></li>
 </ul>
+<blockquote>
+<p><strong>Note</strong>: <code>tnh-fab</code> is being replaced by <code>tnh-gen</code>. See <a href="../tnh-gen/">TNH-Gen Architecture</a> for details.</p>
+</blockquote>
 <p>These tools are small, composable, and focused on a single responsibility. They generally:</p>
 <ul>
 <li>Accept file or directory inputs,</li>
