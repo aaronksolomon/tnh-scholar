@@ -15,6 +15,7 @@ created: '2025-12-11'
 
 
 
+
 # TNH Scholar
 
 **TNH Scholar is a long-term, community-aligned initiative to build a trusted multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
@@ -142,7 +143,11 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 
 - [ADR-AT01: AI Text Processing Pipeline Redesign](/architecture/ai-text-processing/adr/adr-at01-ai-text-processing.md)
 - [ADR-AT02: TextObject Architecture Decision Records](/architecture/ai-text-processing/adr/adr-at02-sectioning-textobject.md)
-- [ADR-AT03: AI Text Processing Object-Service Refactor](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md)
+- [ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md)
+- [ADR-AT03.1: AT03→AT04 Transition Plan](/architecture/ai-text-processing/adr/adr-at03.1-transition-plan.md)
+- [ADR-AT03.2: NumberedText Section Boundary Validation](/architecture/ai-text-processing/adr/adr-at03.2-numberedtext-validation.md)
+- [ADR-AT03.3: TextObject Robustness and Metadata Management](/architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness.md)
+- [ADR-AT04: AI Text Processing Platform Strategy](/architecture/ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat.md)
 - [TextObject Original Design](/architecture/ai-text-processing/design/textobject-original-design.md)
 - [TextObject System Design Document](/architecture/ai-text-processing/design/textobject-system-design.md)
 - [TNH Configuration Management](/architecture/configuration/tnh-configuration-management.md)
@@ -161,6 +166,8 @@ This project is licensed under the [GPL-3.0 License](https://github.com/aaronkso
 - [ADR-A14: File-Based Registry System for Provider Metadata](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
 - [GenAI Service — Design Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md)
 - [OpenAI Interface Migration Plan](/architecture/gen-ai-service/design/openai-interface-migration-plan.md)
+- [Adr Jv03 Canonical Xml Ast](/architecture/jvb-viewer/adr/adr-jv03-canonical-xml-ast.md)
+- [Adr Jvb01 As Built Jvb Viewer V1](/architecture/jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1.md)
 - [Generate Markdown Translation JSON Pairs](/architecture/jvb-viewer/design/generate-md-translation-json-pairs.md)
 - [Generate Markdown Vietnamese](/architecture/jvb-viewer/design/generate-md-vietnamese.md)
 - [JVB Viewer — Version 2 Strategy & High‑Level Design](/architecture/jvb-viewer/design/jvb-viewer-v2-strategy.md)

@@ -8,7 +8,11 @@ created: "2025-11-15"
 ---
 # Human-AI Software Engineering Principles
 
-This document presents the **Human-AI Software Engineering Principles**, a comprehensive framework that builds upon established **software engineering, architecture, and design principles** from human-only teams and extends them to optimize collaboration between humans and AI agents. Central to this framework is the clear distinction between the **Design Phase** and the **Coding Phase**, each with distinct goals, modes, and workflows. It also addresses challenges such as **context window limitations** and maintaining alignment despite session resets. In addition to general principles, this framework incorporates concrete documentation and planning strategies designed to support long-term, sustainable human-AI collaboration.
+This document presents general **Human-AI Software Engineering Principles**, a comprehensive framework that builds upon established **software engineering, architecture, and design principles** from human-only teams and extends them to optimize collaboration between humans and AI agents.
+
+We adopt this general vision for TNH Scholar project recognizing that some elements may not be in use, and that the system of collaboration is evolving organically through development.
+
+Central to this framework is the clear distinction between the **Design Phase** and the **Coding Phase**, each with distinct goals, modes, and workflows. It also addresses challenges such as **context window limitations** and maintaining alignment despite session resets. In addition to general principles, this framework incorporates concrete documentation and planning strategies designed to support long-term, sustainable human-AI collaboration.
 
 ---
 

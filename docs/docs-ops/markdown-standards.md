@@ -63,7 +63,13 @@ created: "YYYY-MM-DD"
 ## ADR Format
 
 - Store ADRs under module directories such as `docs/architecture/<module>/adr/` (legacy ADRs move there during the restructure).
-- File naming convention: `adr-<modulecode><number>-<descriptor>.md`, all lowercase, hyphen-separated (e.g., `adr-dd01-docs-reorg-strat.md``adr-kb02-knowledge-store.md`). Strategy ADRs append `-strat` to the descriptor (`adr-dd01-docs-reorg-strat.md`) so higher-level directional docs are easy to spot.
+- File naming convention: `adr-<modulecode><number>-<descriptor>.md`, all lowercase, hyphen-separated (e.g., `adr-dd01-docs-reorg-strat.md`, `adr-kb02-knowledge-store.md`). Strategy ADRs append `-strat` to the descriptor (`adr-dd01-docs-reorg-strat.md`) so higher-level directional docs are easy to spot.
+- **Decimal ADR Convention** (added 2025-12-12): Related or supporting ADRs use decimal notation:
+  - `adr-at03-object-service-refactor.md` (main ADR)
+  - `adr-at03.1-transition-plan.md` (transition strategy)
+  - `adr-at03.2-implementation-guide.md` (implementation details)
+  - Decimal ADRs must include `parent_adr` and optionally `type` in frontmatter (see template)
+  - Benefits: Clear hierarchy, namespace flexibility, maintains traceability without namespace cramping
 - The visible title in the Markdown file must use uppercase module codes, e.g., `# ADR-DD01: Documentation System Reorganization Strategy`. A simple lowercase-to-uppercase transform keeps filenames and titles aligned.
 - Each ADR uses the same front matter and heading rules as any other doc.
 - After the introductory paragraph, list metadata bullets:
