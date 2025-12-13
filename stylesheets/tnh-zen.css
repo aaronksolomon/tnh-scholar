@@ -32,6 +32,12 @@
   --tnh-accent: var(--tnh-bamboo-green);
   --tnh-link: var(--tnh-meditation-blue);
   --tnh-code-bg: #252525;
+  --tnh-code-keyword: #9ac8a4;
+  --tnh-code-string: var(--tnh-lotus-pink);
+  --tnh-code-number: var(--tnh-plum-purple);
+  --tnh-code-comment: #8a8680;
+  --tnh-code-decorator: var(--tnh-meditation-blue);
+  --tnh-code-highlight: rgba(122, 155, 118, 0.16);
 
   /* Spacing - mindful breathing room */
   --tnh-space-breath: 2rem;
@@ -104,24 +110,120 @@ a:hover {
 /* Code - Technical mindfulness */
 code {
   background-color: var(--tnh-code-bg);
-  color: var(--tnh-zen-gold);
+  color: var(--md-code-fg-color);
   padding: 0.2em 0.4em;
   border-radius: 3px;
   font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
   font-size: 0.85em;  /* Reduced from 0.9em */
 }
 
-pre {
+/* Respect code colors from the palette while keeping layout intact */
+:root,
+[data-md-color-scheme="slate"] {
+  --md-code-bg-color: var(--tnh-code-bg);
+  --md-code-fg-color: var(--tnh-soft-white);
+  --md-code-hl-color: var(--tnh-code-highlight);
+  --md-code-hl-number-color: var(--tnh-code-number);
+  --md-code-hl-special-color: var(--tnh-zen-gold);
+  --md-code-hl-function-color: var(--tnh-zen-gold);
+  --md-code-hl-constant-color: var(--tnh-zen-gold);
+  --md-code-hl-keyword-color: var(--tnh-code-keyword);
+  --md-code-hl-string-color: var(--tnh-code-string);
+  --md-code-hl-name-color: var(--tnh-soft-white);
+  --md-code-hl-operator-color: var(--tnh-text-secondary);
+  --md-code-hl-punctuation-color: var(--tnh-text-secondary);
+  --md-code-hl-comment-color: var(--tnh-code-comment);
+  --md-code-hl-generic-color: var(--tnh-code-comment);
+  --md-code-hl-variable-color: var(--tnh-soft-white);
+}
+
+/* Pygments token tuning for better Python readability */
+.md-typeset .highlight .k,
+.md-typeset .highlight .kc,
+.md-typeset .highlight .kd,
+.md-typeset .highlight .kn,
+.md-typeset .highlight .kp,
+.md-typeset .highlight .kr,
+.md-typeset .highlight .kt {
+  color: var(--tnh-code-keyword) !important;
+  font-weight: 600;
+}
+
+.md-typeset .highlight .c,
+.md-typeset .highlight .c1,
+.md-typeset .highlight .cm,
+.md-typeset .highlight .ch {
+  color: var(--tnh-code-comment) !important;
+  font-style: italic;
+}
+
+.md-typeset .highlight .s,
+.md-typeset .highlight .s1,
+.md-typeset .highlight .s2,
+.md-typeset .highlight .sb,
+.md-typeset .highlight .sc,
+.md-typeset .highlight .sd,
+.md-typeset .highlight .se,
+.md-typeset .highlight .sh,
+.md-typeset .highlight .si,
+.md-typeset .highlight .sr,
+.md-typeset .highlight .ss {
+  color: var(--tnh-code-string) !important;
+}
+
+.md-typeset .highlight .m,
+.md-typeset .highlight .mi,
+.md-typeset .highlight .mf,
+.md-typeset .highlight .mh,
+.md-typeset .highlight .mo {
+  color: var(--tnh-code-number) !important;
+}
+
+.md-typeset .highlight .nf,
+.md-typeset .highlight .nc {
+  color: var(--tnh-zen-gold) !important;
+  font-weight: 600;
+}
+
+.md-typeset .highlight .nd {
+  color: var(--tnh-code-decorator) !important;
+  font-weight: 600;
+}
+
+.md-typeset .highlight .o,
+.md-typeset .highlight .p {
+  color: var(--tnh-text-secondary) !important;
+}
+
+.md-typeset pre,
+.md-typeset .highlight {
   background-color: var(--tnh-code-bg);
+  border: 1px solid #2f2f2f;
   border-left: 3px solid var(--tnh-bamboo-green);
-  padding: var(--tnh-space-moment);
-  border-radius: 4px;
+  border-radius: 6px;
+  overflow: auto;
+}
+
+.md-typeset .highlight pre {
+  margin: 0;
+}
+
+.md-typeset pre > code,
+.md-typeset .highlight pre > code {
+  background-color: transparent;
+  color: var(--md-code-fg-color);
+  display: block;
+  padding: 0.85rem 1rem;
+  line-height: 1.45;
+  white-space: pre;
+  word-break: normal;
+  font-size: 0.85em;
   overflow-x: auto;
 }
 
-pre code {
-  background-color: transparent;
-  padding: 0;
+/* Keep highlighted tokens inline to prevent broken vertical stacking */
+.md-typeset .highlight span {
+  display: inline;
 }
 
 /* Blockquotes - Wisdom and teachings */
