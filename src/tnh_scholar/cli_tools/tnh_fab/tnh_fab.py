@@ -32,6 +32,7 @@ from tnh_scholar.ai_text_processing import (
     translate_text_by_lines,
 )
 from tnh_scholar.ai_text_processing.ai_text_processing import ProcessedSection
+from tnh_scholar.cli_tools.utils import run_or_fail
 from tnh_scholar.logging_config import get_child_logger, setup_logging
 from tnh_scholar.metadata.metadata import Frontmatter
 from tnh_scholar.utils.validate import check_openai_env
@@ -90,7 +91,7 @@ def get_pattern(pattern_manager: PromptCatalog, pattern_name: str) -> Prompt:
         click.ClickException: If pattern cannot be loaded
     """
     try:
-        return pattern_manager.load_pattern(pattern_name)
+        return pattern_manager.load(pattern_name)
     except FileNotFoundError as e:
         raise click.ClickException(
             f"Pattern '{pattern_name}' not found in {pattern_manager.base_path}"
@@ -245,14 +246,17 @@ def section(
             - start_line: Starting line number (inclusive)
             - end_line: Ending line number (inclusive)
     """
-    input_text = gen_text_input(click, input_file)  # type: ignore
+    input_text = run_or_fail("Unable to read input", lambda: gen_text_input(click, input_file))  # type: ignore
     section_pattern = get_pattern(config.pattern_manager, pattern)
 
-    text_object = find_sections(
-        input_text,
-        section_pattern=section_pattern,
-        section_count=num_sections,
-        review_count=review_count,
+    text_object = run_or_fail(
+        "Sectioning failed",
+        lambda: find_sections(
+            input_text,
+            section_pattern=section_pattern,
+            section_count=num_sections,
+            review_count=review_count,
+        ),
     )
     # For prototype, just output the JSON representation
     info = text_object.export_info(input_file)
@@ -324,19 +328,22 @@ def translate(
         - Context lines are used to improve translation accuracy
         - Segment size affects processing speed and memory usage
     """
-    text_obj = gen_text_input(click, input_file)  # type: ignore
+    text_obj = run_or_fail("Unable to read input", lambda: gen_text_input(click, input_file))  # type: ignore
     translation_pattern = get_pattern(config.pattern_manager, pattern)
 
     text_obj.update_metadata(source_file=input_file)
 
-    text_obj = translate_text_by_lines(
-        text_obj,
-        source_language=language,
-        target_language=target,
-        pattern=translation_pattern,
-        style=style,
-        context_lines=context_lines,
-        segment_size=segment_size,
+    text_obj = run_or_fail(
+        "Translation failed",
+        lambda: translate_text_by_lines(
+            text_obj,
+            source_language=language,
+            target_language=target,
+            pattern=translation_pattern,
+            style=style,
+            context_lines=context_lines,
+            segment_size=segment_size,
+        ),
     )
     click.echo(text_obj)
 
@@ -423,30 +430,46 @@ def process(
         - Template values can customize pattern behavior
 
     """
-    text_obj = gen_text_input(click, input_file)  # type: ignore
+    text_obj = run_or_fail("Unable to read input", lambda: gen_text_input(click, input_file))  # type: ignore
 
     process_pattern = get_pattern(config.pattern_manager, pattern)
 
     template_dict: Dict[str, str] = {}
 
     if paragraph:
-        result = process_text_by_paragraphs(text_obj, template_dict, pattern=process_pattern)
+        result = run_or_fail(
+            "Paragraph processing failed",
+            lambda: process_text_by_paragraphs(text_obj, template_dict, pattern=process_pattern),
+        )
         export_processed_sections(result, text_obj)
     elif section is not None:  # Section mode (either file or auto-generate)
-        text_obj = TextObject.from_section_file(section, text_obj.content)
+        text_obj = run_or_fail(
+            "Failed to read sections", lambda: TextObject.from_section_file(section, text_obj.content)
+        )
 
-        result = process_text_by_sections(text_obj, template_dict, pattern=process_pattern)
+        result = run_or_fail(
+            "Section processing failed",
+            lambda: process_text_by_sections(text_obj, template_dict, pattern=process_pattern),
+        )
         export_processed_sections(result, text_obj)
     elif auto:
         # Auto-generate sections
         default_section_pattern = get_pattern(config.pattern_manager, DEFAULT_SECTION_PATTERN)
-        text_obj = find_sections(text_obj, section_pattern=default_section_pattern)
+        text_obj = run_or_fail(
+            "Sectioning failed", lambda: find_sections(text_obj, section_pattern=default_section_pattern)
+        )
 
-        result = process_text_by_sections(text_obj, template_dict, pattern=process_pattern)
+        result = run_or_fail(
+            "Section processing failed",
+            lambda: process_text_by_sections(text_obj, template_dict, pattern=process_pattern),
+        )
         export_processed_sections(result, text_obj)
 
     else:
-        result = process_text(text_obj, pattern=process_pattern, template_dict=template_dict)
+        result = run_or_fail(
+            "Processing failed",
+            lambda: process_text(text_obj, pattern=process_pattern, template_dict=template_dict),
+        )
         click.echo(result)
 
 

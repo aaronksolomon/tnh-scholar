@@ -1,5 +1,6 @@
 import click
 
+from tnh_scholar.cli_tools.utils import run_or_fail
 from tnh_scholar.text_processing import normalize_newlines
 
 
@@ -12,13 +13,11 @@ from tnh_scholar.text_processing import normalize_newlines
     default="-",
     help="Output file (default: stdout)",
 )
-@click.option(
-    "-s", "--spacing", default=2, help="Number of newlines between blocks (default: 2)"
-)
+@click.option("-s", "--spacing", default=2, help="Number of newlines between blocks (default: 2)")
 def nfmt(input_file, output, spacing):
     """Normalize the number of newlines in a text file."""
-    text = input_file.read()
-    result = normalize_newlines(text, spacing)
+    text = run_or_fail("Unable to read input", input_file.read)
+    result = run_or_fail("Normalization failed", lambda: normalize_newlines(text, spacing))
     output.write(result)
 
 
