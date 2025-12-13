@@ -1,165 +1,312 @@
 ---
-title: "ADR-AT03: AI Text Processing Object-Service Refactor"
-description: "Three-tier refactor of ai_text_processing module for object-service compliance, GenAIService integration, and prompt system adoption"
+title: "ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen"
+description: "Focused refactor of ai_text_processing module to support tnh-gen CLI release: TextObject robustness, GenAI Service integration, and basic prompt system adoption"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.5"
-status: draft
+status: proposed
 created: "2025-12-07"
+updated: "2025-12-12"
 ---
 
-# ADR-AT03: AI Text Processing Object-Service Refactor
+# ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen
 
-This ADR defines a comprehensive three-tier refactor of the `ai_text_processing` module to achieve object-service architecture compliance (ADR-OS01), integrate with GenAIService (ADR-A13), and adopt the new prompt system (ADR-PT04).
+This ADR defines a **minimal viable refactor** of the `ai_text_processing` module to support the tnh-gen CLI release (ADR-TG01). It focuses on TextObject robustness, GenAI Service integration, and basic prompt system adoption—without implementing the full platform architecture proposed in ADR-AT04.
 
-- **Status**: Draft
+- **Status**: Proposed
 - **Date**: 2025-12-07
+- **Updated**: 2025-12-12
 - **Owner**: Aaron Solomon
 - **Author**: Aaron Solomon, Claude Sonnet 4.5
 
+## Executive Summary
+
+**Problem**: tnh-gen CLI (ADR-TG01) is blocked pending robust ai_text_processing, but the full AT04 platform (13-17 weeks) would delay the release significantly.
+
+**Solution**: Implement a focused 1-2 week refactor that:
+
+1. Fixes critical TextObject/NumberedText bugs (section boundary validation, metadata propagation)
+2. Integrates GenAI Service (removes direct OpenAI SDK calls, adds provenance)
+3. Adopts basic prompt system (load prompts from catalog, variable substitution)
+4. Provides structured error handling for tnh-gen CLI exit codes
+
+**Scope Constraint**: This ADR explicitly **does NOT** implement AT04's Task Orchestration, Context Propagation Graph, Strategy Catalog, Validation Loops, or Experimentation Harness. Those capabilities are deferred to AT04's phased implementation.
+
+**Relationship to AT04**: This refactor establishes the **foundation** that AT04 builds upon. The TextObject improvements, GenAI Service integration, and prompt system adoption are prerequisites for AT04's platform architecture (as noted in AT04 §5 "Migration from AT03").
+
 ## Context
 
-The current `ai_text_processing` module (`src/tnh_scholar/ai_text_processing/`) suffers from architectural debt accumulated during rapid prototyping:
+### The Release Blocker
 
-### Current Pain Points
+The tnh-gen CLI (ADR-TG01) requires a functional ai_text_processing module to:
 
-1. **Mixed Concerns**: Business logic (text processing), transport (OpenAI API calls), and prompts intermingled in single files
-2. **Tight Coupling**: Direct OpenAI SDK dependencies scattered throughout processors (`openai_process_interface.py`, `line_translator.py`, etc.)
-3. **Legacy Prompts**: Hard-coded prompt strings in `prompts.py` instead of modular, versioned prompt templates
-4. **No Protocol Contracts**: Missing adapter/port boundaries between domain and infrastructure layers
-5. **Testability**: Difficult to test processors without mocking OpenAI SDK internals
-6. **Configuration Sprawl**: Ad-hoc configuration handling, no clear precedence rules
+- Execute prompts from the catalog with variable substitution
+- Return structured results with provenance tracking
+- Raise structured exceptions that map to CLI exit codes
+- Support batch processing of multiple files
 
-### Architectural Vision
+However, the current `ai_text_processing` module suffers from critical issues that block tnh-gen:
 
-The refactor establishes three clear tiers:
+### Critical Pain Points (Blocking tnh-gen)
 
-```text
-┌─────────────────────────────────────────────────────────────┐
-│                   Tier 1: Object-Service                    │
-│  (Domain models, protocols, adapters, mappers)              │
-└────────────────┬────────────────────────┬───────────────────┘
-                 │                        │
-         ┌───────▼───────┐          ┌──────▼────────┐
-         │ Tier 2: GenAI │          │ Tier 3:       │
-         │ Service       │          │ Prompt System │
-         │ (ADR-A13)     │          │ (ADR-PT04)    │
-         └───────┬───────┘          └───────┬───────┘
-                 │                          │
-                 └──────────┬───────────────┘
-                            │
-                   ┌────────▼──────────┐
-                   │  Transport Layer  │
-                   │  (OpenAI SDK,     │
-                   │   caching, etc.)  │
-                   └───────────────────┘
-```
+1. **TextObject Brittleness**:
+   - Implicit end_line calculation produces off-by-one errors
+   - No validation for section gaps/overlaps
+   - Metadata propagation bugs during merging
+
+2. **Direct OpenAI Dependencies**:
+   - Direct SDK calls scattered in `openai_process_interface.py`, `line_translator.py`
+   - No response fingerprinting for provenance
+   - Cannot route through GenAI Service policies (budget limits, rate limiting)
+
+3. **Hard-Coded Prompts**:
+   - Prompts in `prompts.py` as Python strings
+   - No versioning or variable validation
+   - Cannot leverage tnh-gen's prompt catalog integration
+
+4. **Unstructured Errors**:
+   - Generic exceptions don't map to tnh-gen's exit codes
+   - No distinction between PolicyError, TransportError, etc.
+
+### Non-Critical Issues (Deferred to AT04)
+
+These issues exist but are **not blockers** for tnh-gen and are addressed in AT04:
+
+1. **No Context Propagation**: Documents processed in isolation, no cross-section context (AT04 Phase 1)
+2. **No Strategy Polymorphism**: Single hard-coded sectioning approach (AT04 Phase 2)
+3. **No Validation Loops**: No quality gates to catch translation drift (AT04 Phase 3)
+4. **No Experimentation Harness**: Cannot compare strategies quantitatively (AT04 Phase 4)
+5. **No Cross-Document Coherence**: Multi-document works lack terminology consistency (AT04 Phase 5)
+
+### Scope Constraints
+
+**What This ADR Implements** (1-2 weeks):
+
+- ✅ **Tier 0**: TextObject/NumberedText robustness fixes
+- ✅ **Tier 1**: Basic object-service patterns (minimal protocols/adapters for GenAI/Prompts)
+- ✅ **Tier 2**: GenAI Service integration (remove direct OpenAI calls)
+- ✅ **Tier 3**: Basic prompt system adoption (load from catalog, variable substitution)
+- ✅ **Error Handling**: Structured exceptions for tnh-gen CLI
+
+**What This ADR Does NOT Implement** (Deferred to AT04):
+
+- ❌ Task Orchestration Layer (AT04 Phase 1)
+- ❌ Context Propagation Graph (AT04 Phase 1)
+- ❌ Strategy Catalog & Polymorphism (AT04 Phase 2)
+- ❌ Validation Loops (AT04 Phase 3)
+- ❌ Experimentation Harness (AT04 Phase 4)
+- ❌ Cross-Document Coherence (AT04 Phase 5)
 
 ### Design Drivers
 
-1. **Separation of Concerns**: Domain logic isolated from transport and prompts
-2. **Testability**: Protocol-based contracts enable comprehensive unit testing
-3. **Flexibility**: Swap prompt systems, GenAI providers, or caching strategies without changing domain
-4. **Consistency**: Align with object-service architecture used across TNH Scholar (ADR-OS01)
-5. **Migration Path**: Incremental refactor without breaking existing functionality
+1. **Unblock tnh-gen**: Minimal changes to enable CLI release
+2. **Foundation for AT04**: Implement prerequisites (TextObject, GenAI, Prompts) that AT04 builds upon
+3. **Avoid Over-Engineering**: Keep current sectioning/translation strategies as-is (no strategy catalog)
+4. **Testability**: Add basic tests for TextObject validation and GenAI integration
+5. **Incremental Migration**: Maintain backwards compatibility during refactor
 
 ## Decision
 
-### Tier 1: Object-Service Compliance
+### Tier 0: TextObject/NumberedText Robustness (NEW)
 
-#### 1.1 Domain Models
+Fix critical bugs in TextObject that cause section boundary errors:
 
-Refactor existing models to follow domain-driven design:
+#### 0.1 Section Boundary Validation
+
+Add validation methods to detect and report boundary errors:
 
 ```python
-# domain/models.py
-from pydantic import BaseModel, Field
-from enum import Enum
+# text_object.py
+from dataclasses import dataclass
 
-class ProcessingTask(str, Enum):
-    """Text processing task types."""
-    TRANSLATION = "translation"
-    SECTIONING = "sectioning"
-    SUMMARIZATION = "summarization"
-    GENERAL = "general"
+@dataclass
+class SectionValidationError:
+    """Error found in section boundaries."""
+    error_type: str  # 'gap', 'overlap', 'out_of_bounds'
+    section_index: int
+    expected_start: int
+    actual_start: int
+    message: str
 
-class TextProcessingRequest(BaseModel):
-    """Domain request for text processing."""
-    text_object: TextObject
-    task: ProcessingTask
-    target_language: str | None = None
-    section_count: int | None = None
-    custom_variables: dict[str, str] = Field(default_factory=dict)
+class NumberedText:
+    """Immutable container for numbered text lines."""
 
-class TextProcessingResult(BaseModel):
-    """Domain result from text processing."""
-    processed_text_object: TextObject
-    metadata: ProcessingMetadata
-    fingerprint: Fingerprint  # From ADR-PT04
+    def validate_section_boundaries(self) -> list[SectionValidationError]:
+        """Validate section boundaries for gaps, overlaps, out-of-bounds.
 
-class ProcessingMetadata(BaseModel):
-    """Metadata about the processing operation."""
-    task: ProcessingTask
-    model_used: str
-    prompt_key: str
-    prompt_version: str
-    token_usage: TokenUsage
-    processing_time_ms: int
+        Returns:
+            List of validation errors (empty if valid)
+        """
+        errors = []
+
+        if not self.sections:
+            return errors
+
+        for i, section in enumerate(self.sections):
+            # Check start_line is within bounds
+            if section.start_line < 1 or section.start_line > len(self.lines):
+                errors.append(SectionValidationError(
+                    error_type='out_of_bounds',
+                    section_index=i,
+                    expected_start=1,
+                    actual_start=section.start_line,
+                    message=f"Section {i} start_line {section.start_line} out of bounds [1, {len(self.lines)}]"
+                ))
+                continue
+
+            # Calculate implicit end_line
+            end_line = (
+                self.sections[i + 1].start_line - 1
+                if i < len(self.sections) - 1
+                else len(self.lines)
+            )
+
+            # Check for gaps (expected_start != actual_start)
+            if i > 0:
+                expected_start = self.sections[i - 1].get_implicit_end_line(self) + 1
+                if section.start_line != expected_start:
+                    error_type = 'gap' if section.start_line > expected_start else 'overlap'
+                    errors.append(SectionValidationError(
+                        error_type=error_type,
+                        section_index=i,
+                        expected_start=expected_start,
+                        actual_start=section.start_line,
+                        message=f"Section {i} has {error_type}: expected start {expected_start}, got {section.start_line}"
+                    ))
+
+        return errors
+
+    def get_coverage_report(self) -> dict[str, Any]:
+        """Get coverage statistics for debugging.
+
+        Returns:
+            Dict with coverage info: total_lines, covered_lines, gaps, overlaps
+        """
+        if not self.sections:
+            return {
+                'total_lines': len(self.lines),
+                'covered_lines': 0,
+                'coverage_pct': 0.0,
+                'gaps': [],
+                'overlaps': []
+            }
+
+        covered = set()
+        gaps = []
+        overlaps = []
+
+        for i, section in enumerate(self.sections):
+            start = section.start_line
+            end = self.sections[i + 1].start_line - 1 if i < len(self.sections) - 1 else len(self.lines)
+
+            section_lines = set(range(start, end + 1))
+
+            # Check for overlaps
+            overlap = covered & section_lines
+            if overlap:
+                overlaps.append({
+                    'section_index': i,
+                    'lines': sorted(overlap)
+                })
+
+            covered.update(section_lines)
+
+        # Check for gaps
+        all_lines = set(range(1, len(self.lines) + 1))
+        gap_lines = all_lines - covered
+        if gap_lines:
+            gaps.append(sorted(gap_lines))
+
+        return {
+            'total_lines': len(self.lines),
+            'covered_lines': len(covered),
+            'coverage_pct': len(covered) / len(self.lines) * 100 if self.lines else 0,
+            'gaps': gaps,
+            'overlaps': overlaps
+        }
 ```
 
-#### 1.2 Protocol Contracts
+#### 0.2 Metadata Merging Fixes
 
-Define ports for external dependencies:
+Fix metadata propagation bugs in `merge_metadata()`:
 
 ```python
-# domain/protocols.py
-from typing import Protocol
-from .models import TextProcessingRequest, TextProcessingResult
+# text_object.py
+class TextObject:
+    """Mutable state container for text processing."""
 
-class TextProcessorPort(Protocol):
-    """Port for text processing operations."""
+    def merge_metadata(self, other: 'TextObject', strategy: str = 'preserve') -> None:
+        """Merge metadata from another TextObject.
 
-    def process(self, request: TextProcessingRequest) -> TextProcessingResult:
-        """Process text according to request."""
-        ...
+        Args:
+            other: TextObject to merge metadata from
+            strategy: 'preserve' (keep existing), 'update' (overwrite), 'combine' (merge dicts)
+        """
+        if strategy == 'preserve':
+            # Only add keys that don't exist
+            for key, value in other.metadata.items():
+                self.metadata.setdefault(key, value)
 
-class GenAIPort(Protocol):
-    """Port for GenAI service integration."""
+        elif strategy == 'update':
+            # Overwrite all keys
+            self.metadata.update(other.metadata)
 
-    def render_and_execute(
-        self,
-        prompt_key: str,
-        variables: dict[str, str],
-        model: str | None = None
-    ) -> tuple[str, Fingerprint]:
-        """Render prompt and execute via GenAI service."""
-        ...
+        elif strategy == 'combine':
+            # Merge dictionaries deeply
+            for key, value in other.metadata.items():
+                if key in self.metadata and isinstance(self.metadata[key], dict) and isinstance(value, dict):
+                    # Deep merge dicts
+                    self.metadata[key] = {**self.metadata[key], **value}
+                else:
+                    self.metadata[key] = value
 
-class PromptCatalogPort(Protocol):
-    """Port for prompt discovery (ADR-PT04 integration)."""
-
-    def get_prompt_for_task(self, task: ProcessingTask) -> str:
-        """Get prompt key for processing task."""
-        ...
+        else:
+            raise ValueError(f"Invalid merge strategy: {strategy}")
 ```
 
-#### 1.3 Adapters
+### Tier 1: Minimal Object-Service Patterns
 
-Implement adapters to external systems:
+**Scope**: Keep it minimal—only what's needed for GenAI/Prompt integration. Avoid full domain modeling.
+
+#### 1.1 Simple Error Hierarchy
+
+Add structured exceptions for tnh-gen CLI exit code mapping:
 
 ```python
-# adapters/genai_adapter.py
-from ..domain.protocols import GenAIPort
+# exceptions.py
+class AITextProcessingError(Exception):
+    """Base exception for ai_text_processing module."""
+    pass
+
+class SectionBoundaryError(AITextProcessingError):
+    """Section boundaries have gaps, overlaps, or out-of-bounds errors."""
+    def __init__(self, errors: list[SectionValidationError]):
+        self.errors = errors
+        message = f"Section boundary validation failed: {len(errors)} errors"
+        super().__init__(message)
+
+class PromptRenderError(AITextProcessingError):
+    """Failed to render prompt template."""
+    pass
+
+class ProcessingError(AITextProcessingError):
+    """Generic processing failure (wraps GenAI Service errors)."""
+    pass
+```
+
+#### 1.2 Minimal Adapter for GenAI Service
+
+Wrap GenAI Service to isolate direct dependency:
+
+```python
+# genai_wrapper.py
 from tnh_scholar.gen_ai_service.services.genai_service import GenAIService
 from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import PromptsAdapter
+from .exceptions import ProcessingError, PromptRenderError
 
-class GenAIServiceAdapter(GenAIPort):
-    """Adapter for GenAIService integration."""
+class GenAIWrapper:
+    """Minimal wrapper for GenAI Service integration."""
 
-    def __init__(
-        self,
-        genai_service: GenAIService,
-        prompts_adapter: PromptsAdapter
-    ):
+    def __init__(self, genai_service: GenAIService, prompts_adapter: PromptsAdapter):
         self._genai = genai_service
         self._prompts = prompts_adapter
 
@@ -168,194 +315,178 @@ class GenAIServiceAdapter(GenAIPort):
         prompt_key: str,
         variables: dict[str, str],
         model: str | None = None
-    ) -> tuple[str, Fingerprint]:
-        """Render prompt via PromptsAdapter, execute via GenAIService."""
+    ) -> tuple[str, dict]:
+        """Render prompt and execute via GenAI Service.
 
-        # 1. Render prompt
-        rendered, fingerprint = self._prompts.render(
-            RenderRequest(
-                instruction_key=prompt_key,
-                variables=variables,
-                user_input=variables.get("input_text", "")
+        Args:
+            prompt_key: Key for prompt in catalog
+            variables: Template variables
+            model: Optional model override
+
+        Returns:
+            Tuple of (result_text, metadata_dict)
+
+        Raises:
+            PromptRenderError: Prompt rendering failed
+            ProcessingError: GenAI execution failed
+        """
+        try:
+            # Render prompt
+            rendered, fingerprint = self._prompts.render(
+                RenderRequest(
+                    instruction_key=prompt_key,
+                    variables=variables,
+                    user_input=variables.get("input_text", "")
+                )
             )
-        )
+        except Exception as e:
+            raise PromptRenderError(f"Failed to render prompt '{prompt_key}': {e}") from e
 
-        # 2. Execute via GenAI
-        response = self._genai.execute(
-            messages=rendered.messages,
-            model=model or rendered.model,
-            response_format=rendered.response_format
-        )
+        try:
+            # Execute via GenAI
+            response = self._genai.execute(
+                messages=rendered.messages,
+                model=model or rendered.model,
+                response_format=rendered.response_format
+            )
+        except Exception as e:
+            raise ProcessingError(f"GenAI execution failed: {e}") from e
 
-        return response.content, fingerprint
-```
-
-#### 1.4 Mappers
-
-Pure mapping functions between layers:
-
-```python
-# mappers/text_processing_mapper.py
-from ..domain.models import TextProcessingRequest, ProcessingTask
-from tnh_scholar.ai_text_processing.text_object import TextObject
-
-class TextProcessingMapper:
-    """Maps between domain models and external representations."""
-
-    @staticmethod
-    def to_processing_request(
-        text_object: TextObject,
-        task: ProcessingTask,
-        **kwargs
-    ) -> TextProcessingRequest:
-        """Map TextObject to domain request."""
-        return TextProcessingRequest(
-            text_object=text_object,
-            task=task,
-            **kwargs
-        )
-
-    @staticmethod
-    def to_prompt_variables(
-        request: TextProcessingRequest
-    ) -> dict[str, str]:
-        """Map domain request to prompt variables."""
-        variables = {
-            "input_text": request.text_object.get_text(),
-            **request.custom_variables
+        # Build metadata
+        metadata = {
+            'prompt_key': prompt_key,
+            'prompt_fingerprint': fingerprint,
+            'model': response.model,
+            'usage': response.usage._asdict() if response.usage else {},
+            'latency_ms': getattr(response, 'latency_ms', None)
         }
 
-        if request.target_language:
-            variables["target_language"] = request.target_language
-        if request.section_count:
-            variables["section_count"] = str(request.section_count)
-
-        return variables
+        return response.content, metadata
 ```
 
-### Tier 2: GenAIService Integration
+### Tier 2: GenAI Service Integration
 
-Replace direct OpenAI SDK calls with GenAIService:
+**Scope**: Replace direct OpenAI SDK calls with GenAI Service. Keep existing processor logic.
 
-#### 2.1 Remove Direct OpenAI Dependencies
+#### 2.1 Update Existing Processors
+
+Update `line_translator.py` and other processors to use `GenAIWrapper`:
 
 **Before (current):**
 
 ```python
-# openai_process_interface.py (LEGACY)
+# line_translator.py (CURRENT - uses direct OpenAI)
 import openai
+from .prompts import TRANSLATION_PROMPT
 
-def process_with_openai(prompt: str, text: str) -> str:
+def translate_section(section_text: str, target_lang: str) -> str:
+    """Translate section using OpenAI."""
+    prompt = TRANSLATION_PROMPT.format(
+        target_language=target_lang,
+        input_text=section_text
+    )
+
     response = openai.ChatCompletion.create(
         model="gpt-4",
-        messages=[{"role": "user", "content": prompt + text}]
+        messages=[{"role": "user", "content": prompt}]
     )
+
     return response.choices[0].message.content
 ```
 
 **After (refactored):**
 
 ```python
-# services/text_processor_service.py
-from ..domain.protocols import GenAIPort, TextProcessorPort
-from ..domain.models import TextProcessingRequest, TextProcessingResult
+# line_translator.py (REFACTORED - uses GenAIWrapper)
+from .genai_wrapper import GenAIWrapper
+from .exceptions import ProcessingError
 
-class TextProcessorService(TextProcessorPort):
-    """Service for text processing operations."""
+def translate_section(
+    section_text: str,
+    target_lang: str,
+    genai: GenAIWrapper,
+    model: str | None = None
+) -> tuple[str, dict]:
+    """Translate section using GenAI Service.
 
-    def __init__(self, genai: GenAIPort, prompt_catalog: PromptCatalogPort):
-        self._genai = genai
-        self._prompts = prompt_catalog
+    Args:
+        section_text: Text to translate
+        target_lang: Target language code
+        genai: GenAI wrapper instance
+        model: Optional model override
 
-    def process(self, request: TextProcessingRequest) -> TextProcessingResult:
-        """Process text via GenAI service."""
+    Returns:
+        Tuple of (translated_text, metadata)
 
-        # 1. Get prompt key for task
-        prompt_key = self._prompts.get_prompt_for_task(request.task)
+    Raises:
+        ProcessingError: Translation failed
+    """
+    variables = {
+        'input_text': section_text,
+        'target_language': target_lang
+    }
 
-        # 2. Map request to variables
-        variables = TextProcessingMapper.to_prompt_variables(request)
+    result_text, metadata = genai.render_and_execute(
+        prompt_key='translation',
+        variables=variables,
+        model=model
+    )
 
-        # 3. Execute via GenAI adapter
-        result_text, fingerprint = self._genai.render_and_execute(
-            prompt_key=prompt_key,
-            variables=variables
-        )
-
-        # 4. Build result
-        return self._build_result(request, result_text, fingerprint)
+    return result_text, metadata
 ```
 
-#### 2.2 Dependency Injection
+#### 2.2 Simple Factory Function
 
-Configure dependencies via factory:
+Add factory to create configured GenAI wrapper:
 
 ```python
-# config/factory.py
+# factory.py
 from tnh_scholar.gen_ai_service.services.genai_service import GenAIService
-from tnh_scholar.prompt_system.adapters.git_catalog_adapter import GitPromptCatalog
-from ..adapters.genai_adapter import GenAIServiceAdapter
-from ..services.text_processor_service import TextProcessorService
+from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import PromptsAdapter
+from .genai_wrapper import GenAIWrapper
 
-def create_text_processor() -> TextProcessorService:
-    """Factory for creating configured text processor."""
+def create_genai_wrapper() -> GenAIWrapper:
+    """Create configured GenAI wrapper.
 
-    # 1. Initialize GenAI service
-    genai_service = GenAIService.from_config(GenAIConfig.from_env())
+    Returns:
+        GenAIWrapper ready for use
+    """
+    # Initialize from environment/config
+    genai_service = GenAIService.from_env()
+    prompts_adapter = PromptsAdapter.from_env()
 
-    # 2. Initialize prompt system
-    prompt_catalog = GitPromptCatalog.from_config(
-        PromptCatalogConfig.from_env()
-    )
-    prompts_adapter = PromptsAdapter(
-        catalog=prompt_catalog,
-        renderer=PromptRenderer(...),
-        validator=PromptValidator()
-    )
-
-    # 3. Build adapters
-    genai_adapter = GenAIServiceAdapter(genai_service, prompts_adapter)
-    prompt_catalog_adapter = PromptCatalogAdapter(prompts_adapter)
-
-    # 4. Return service
-    return TextProcessorService(genai_adapter, prompt_catalog_adapter)
+    return GenAIWrapper(genai_service, prompts_adapter)
 ```
 
-### Tier 3: Prompt System Integration
+### Tier 3: Basic Prompt System Integration
 
-Migrate from `prompts.py` hard-coded strings to modular prompt system:
+**Scope**: Migrate prompts to catalog, use PromptsAdapter for rendering. No complex task mapping.
 
-#### 3.1 Migrate Legacy Prompts
+#### 3.1 Migrate Key Prompts to Catalog
+
+Move prompts from `prompts.py` to prompt catalog:
 
 **Before (current):**
 
 ```python
-# prompts.py (LEGACY)
+# prompts.py (LEGACY - to be deprecated)
 TRANSLATION_PROMPT = """
 Translate the following text to {target_language}:
 
 {input_text}
 """
-
-SECTIONING_PROMPT = """
-Divide the following text into {section_count} logical sections:
-
-{input_text}
-"""
 ```
 
-**After (migrated to prompt system):**
+**After (in prompt catalog):**
 
-```bash
-# prompts/translation.md
+```markdown
+<!-- prompts/translation.md -->
 ---
 name: translation
 version: 1.0
 description: Translate text to target language
-task_type: translation
 required_variables: [input_text, target_language]
-optional_variables: []
-default_model: gpt-4
+default_model: gpt-4o
 output_mode: text
 tags: [translation, text-processing]
 ---
@@ -365,172 +496,159 @@ Translate the following text to {{target_language}}:
 {{input_text}}
 ```
 
-```bash
-# prompts/sectioning.md
----
-name: sectioning
-version: 1.0
-description: Divide text into logical sections
-task_type: sectioning
-required_variables: [input_text, section_count]
-optional_variables: []
-default_model: gpt-4
-output_mode: json
-response_format: sectioning_response
-tags: [sectioning, text-processing]
----
+#### 3.2 Keep Task Mapping Simple
 
-Divide the following text into {{section_count}} logical sections:
-
-{{input_text}}
-```
-
-#### 3.2 Prompt Catalog Adapter
-
-Map processing tasks to prompt keys:
+No complex PromptCatalogPort—just pass prompt keys directly:
 
 ```python
-# adapters/prompt_catalog_adapter.py
-from ..domain.protocols import PromptCatalogPort
-from ..domain.models import ProcessingTask
-
-class PromptCatalogAdapter(PromptCatalogPort):
-    """Adapter for prompt system integration."""
-
-    # Task → Prompt Key mapping
-    TASK_PROMPT_MAP = {
-        ProcessingTask.TRANSLATION: "translation",
-        ProcessingTask.SECTIONING: "sectioning",
-        ProcessingTask.SUMMARIZATION: "summarization",
-        ProcessingTask.GENERAL: "general_processing"
-    }
-
-    def __init__(self, prompts_adapter: PromptsAdapter):
-        self._prompts = prompts_adapter
-
-    def get_prompt_for_task(self, task: ProcessingTask) -> str:
-        """Get prompt key for processing task."""
-        prompt_key = self.TASK_PROMPT_MAP.get(task)
-        if not prompt_key:
-            raise ValueError(f"No prompt configured for task: {task}")
-
-        # Validate prompt exists
-        try:
-            self._prompts.introspect(prompt_key)
-        except PromptNotFoundError:
-            raise ValueError(f"Prompt not found: {prompt_key}")
-
-        return prompt_key
+# Processors call GenAIWrapper with explicit prompt keys
+result, metadata = genai.render_and_execute(
+    prompt_key='translation',  # Direct key reference
+    variables={'input_text': text, 'target_language': 'en'},
+    model='gpt-4o'
+)
 ```
 
-### Migration Strategy
+**Rationale**: Avoid premature abstraction. AT04 will add strategy catalog later.
 
-#### Phase 1: Object-Service Foundation (Week 1-2)
+### Migration Strategy (1-2 Weeks)
 
-1. Create `domain/` directory with models and protocols
-2. Implement mappers (pure functions, easy to test)
-3. Add unit tests for domain layer (no I/O dependencies)
-4. **Deliverable**: Domain models pass all tests
+#### Phase 1: TextObject Robustness (Days 1-3)
 
-#### Phase 2: GenAI Integration (Week 2-3)
+1. Add `validate_section_boundaries()` to `NumberedText`
+2. Add `get_coverage_report()` for debugging
+3. Fix `merge_metadata()` bugs in `TextObject`
+4. Add unit tests for validation methods
+5. **Deliverable**: TextObject tests pass, section validation working
 
-1. Implement `GenAIServiceAdapter` using existing GenAIService
-2. Replace `openai_process_interface.py` calls with adapter
-3. Add integration tests with mocked GenAI responses
-4. **Deliverable**: All processors use GenAIService, no direct OpenAI calls
+#### Phase 2: GenAI Service Integration (Days 4-6)
 
-#### Phase 3: Prompt System Integration (Week 3-4)
+1. Create `GenAIWrapper` class with `render_and_execute()`
+2. Add `exceptions.py` with error hierarchy
+3. Create `factory.py` with `create_genai_wrapper()`
+4. Update `line_translator.py` to use wrapper (keep function signature compatible)
+5. Remove direct OpenAI imports
+6. **Deliverable**: No direct OpenAI SDK calls, provenance metadata captured
 
-1. Migrate prompts from `prompts.py` to `prompts/` directory
-2. Implement `PromptCatalogAdapter` with task mapping
-3. Update processors to use prompt keys instead of hard-coded strings
-4. Add prompt validation tests
-5. **Deliverable**: All prompts loaded from prompt system
+#### Phase 3: Prompt Migration (Days 7-9)
 
-#### Phase 4: Cleanup & Deprecation (Week 4-5)
+1. Migrate 3-5 key prompts to catalog (`translation`, `sectioning`, `summarization`)
+2. Update processors to use prompt keys instead of `prompts.py` strings
+3. Add deprecation warning to `prompts.py`
+4. Test prompt rendering with PromptsAdapter
+5. **Deliverable**: Key prompts loaded from catalog
 
-1. Mark legacy files (`prompts.py`, `openai_process_interface.py`) as deprecated
-2. Update documentation with migration guide
-3. Remove unused code after migration verification
-4. **Deliverable**: Clean architecture, no legacy code paths
+#### Phase 4: Integration & Testing (Days 10-12)
+
+1. Integration tests for full workflows (sectioning → translation)
+2. Test tnh-gen CLI with refactored module
+3. Verify error handling maps to CLI exit codes
+4. Documentation updates (migration guide for consumers)
+5. **Deliverable**: tnh-gen CLI functional with robust ai_text_processing
 
 ## Consequences
 
 ### Positive
 
-- **Testability**: Protocol-based contracts enable comprehensive unit testing without external dependencies
-- **Flexibility**: Swap GenAI providers, prompt systems, or caching without changing domain logic
-- **Consistency**: Aligns with object-service architecture used across TNH Scholar
-- **Maintainability**: Clear separation of concerns makes code easier to understand and modify
-- **Reusability**: Domain models and protocols can be shared across other modules
-- **Prompt Versioning**: Modular prompts enable A/B testing, rollback, and collaborative editing
+- **Unblocks tnh-gen**: Enables CLI release in 1-2 weeks instead of waiting 13-17 weeks for AT04
+- **Foundation for AT04**: TextObject robustness, GenAI integration, and prompt adoption are AT04 prerequisites
+- **Provenance Tracking**: Response fingerprinting from GenAI Service supports audit trails
+- **Structured Errors**: Exception hierarchy maps to tnh-gen CLI exit codes for better UX
+- **Reduced Technical Debt**: Removes direct OpenAI SDK dependencies
+- **Testability**: GenAIWrapper enables mocking for unit tests
+- **Prompt Versioning**: Basic prompt catalog integration enables future strategy work
 
 ### Negative
 
-- **Migration Effort**: Significant refactor required across entire `ai_text_processing` module
-- **Learning Curve**: Team must understand object-service patterns, adapters, and protocols
-- **Abstraction Overhead**: More layers may slow initial feature development
-- **Breaking Changes**: Existing consumers of `ai_text_processing` API must be updated
+- **Minimal Abstraction**: No full object-service patterns (ports/adapters) to avoid over-engineering
+- **Limited Scope**: Does not solve context fragmentation, strategy polymorphism, or validation loops (deferred to AT04)
+- **Function Signature Changes**: Processors now require GenAIWrapper parameter (breaking change)
+- **Incomplete Migration**: Some prompts may remain in `prompts.py` temporarily
 
-### Risks
+### Risks & Mitigations
 
-- **Scope Creep**: Three-tier refactor is ambitious; risk of incomplete migration
-- **Performance Regression**: Additional abstraction layers may introduce overhead (mitigated by profiling)
-- **Coordination Complexity**: Requires coordinated work across GenAIService and prompt system teams
-
-### Mitigation Strategies
-
-1. **Incremental Migration**: Phase-based rollout allows early validation
-2. **Backwards Compatibility**: Keep legacy code paths functional during migration
-3. **Test Coverage**: Require 80%+ test coverage before deprecating legacy code
-4. **Documentation**: Provide migration guide and examples for consumers
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| **Scope creep** | Refactor takes longer than 2 weeks | Strict scope: only TextObject, GenAI, and basic prompts. No strategy catalog. |
+| **Breaking changes** | Consumers of ai_text_processing break | Keep backwards-compatible wrappers for key functions during transition. |
+| **Technical debt** | Minimal patterns accumulate debt | Document relationship to AT04; plan full migration path. |
+| **Testing gaps** | Bugs slip through | Add unit tests for TextObject validation, GenAIWrapper integration. |
 
 ## Alternatives Considered
 
-### Alternative 1: Partial Refactor (GenAI Only)
+### Alternative 1: Wait for AT04 Full Platform
 
-**Approach**: Integrate GenAIService but keep hard-coded prompts.
+**Approach**: Block tnh-gen release until AT04's complete platform (13-17 weeks) is ready.
 
-**Rejected**: Leaves technical debt in prompt management. Misses opportunity for full architectural alignment.
+**Rejected**: Delays tnh-gen release significantly. AT04's Task Orchestration, Context Graph, and Strategy Catalog are not needed for basic CLI functionality.
 
-### Alternative 2: Big-Bang Refactor
+### Alternative 2: Skip Refactor, Ship Current Code
 
-**Approach**: Rewrite entire module in one PR.
+**Approach**: Ship tnh-gen with current ai_text_processing (direct OpenAI calls, hard-coded prompts).
 
-**Rejected**: Too risky. Incremental migration allows early feedback and reduces blast radius.
+**Rejected**: TextObject brittleness causes section boundary errors. No provenance tracking. Would accumulate more technical debt.
 
-### Alternative 3: Greenfield Rewrite
+### Alternative 3: Minimal Patch Only (No GenAI Integration)
 
-**Approach**: Build new `ai_text_processing_v2` module, deprecate old one.
+**Approach**: Fix only TextObject bugs, defer GenAI and Prompt integration.
 
-**Rejected**: Increases maintenance burden (two modules). Migration path unclear for consumers.
+**Rejected**: Misses opportunity to remove OpenAI dependencies and enable provenance. GenAI integration is straightforward and valuable.
 
-## Open Questions
+## Relationship to ADR-AT04
 
-1. **Performance Impact**: What is the overhead of adapter/protocol layers? (Requires profiling)
-2. **Prompt Versioning**: How do we handle prompt schema changes that break existing processors?
-3. **Error Handling**: Should adapters map GenAI exceptions to domain-specific errors?
-4. **Caching Strategy**: Where does response caching live—GenAI service or text processor layer?
-5. **Legacy Code Removal**: When can we safely delete `prompts.py` and `openai_process_interface.py`?
+This ADR implements **Phase 0.5** of the AT04 roadmap:
+
+```text
+ADR-AT03 (this doc)          →  ADR-AT04 Full Platform
+─────────────────────────────────────────────────────────
+✅ TextObject robustness      →  Context Propagation Graph
+✅ GenAI Service integration  →  Task Orchestration Layer
+✅ Basic prompt adoption      →  Strategy Catalog & Polymorphism
+✅ Error handling             →  Validation Loops
+                              →  Experimentation Harness
+                              →  Cross-Document Coherence
+```
+
+**AT03 is not wasted work**—it's the foundation AT04 builds on (as stated in AT04 §5 "Migration from AT03").
+
+**Key Differences**:
+
+- **AT03**: Minimal changes to unblock tnh-gen (1-2 weeks)
+- **AT04**: Comprehensive platform for strategy experimentation, context fidelity, evaluation (13-17 weeks)
+
+**Migration Path**: After tnh-gen release, AT04 implementation can proceed incrementally without disrupting the CLI.
+
+## Success Criteria
+
+This ADR succeeds if:
+
+1. **tnh-gen CLI functional**: Can execute prompts from catalog with provenance
+2. **Section validation working**: `validate_section_boundaries()` catches gaps/overlaps
+3. **No direct OpenAI calls**: All AI requests go through GenAI Service
+4. **Structured errors**: Exceptions map to tnh-gen exit codes (PolicyError, TransportError, etc.)
+5. **Timeline met**: Deliverables completed in 10-12 working days
+6. **Tests pass**: Unit tests for TextObject validation, GenAIWrapper integration
+7. **AT04-ready**: Foundation in place for Task Orchestration, Context Graph, Strategy Catalog
 
 ## References
 
 ### Related ADRs
 
-- **[ADR-OS01: Object-Service Architecture V3](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)** - Object-service pattern foundation
- - **[ADR-A13: GenAI Service](/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md)** - GenAI service architecture
-- **[ADR-PT04: Prompt System Refactor](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)** - New prompt system architecture
+- **[ADR-AT04: AI Text Processing Strategy](/architecture/ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat.md)** - Full platform architecture (builds on AT03)
+- **[ADR-TG01: CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)** - tnh-gen CLI (primary consumer)
+- **[ADR-TG02: Prompt Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)** - CLI ↔ prompt system integration
+- **[ADR-A13: GenAI Service](/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md)** - GenAI service architecture
+- **[ADR-PT04: Prompt System Refactor](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)** - Prompt system architecture
 - **[ADR-AT01: AI Text Processing Pipeline](/architecture/ai-text-processing/adr/adr-at01-ai-text-processing.md)** - Original text processing design
 - **[ADR-AT02: TextObject Architecture](/architecture/ai-text-processing/adr/adr-at02-sectioning-textobject.md)** - TextObject historical context
-- **[ADR-TG01: CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)** - CLI integration patterns
-- **[ADR-TG02: Prompt Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)** - CLI ↔ prompt system integration
 
 ### External Resources
 
-- [Hexagonal Architecture (Ports & Adapters)](https://alistair.cockburn.us/hexagonal-architecture/)
-- [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
-- [Dependency Injection Patterns](https://www.martinfowler.com/articles/injection.html)
+- [GenAI Service Documentation](https://github.com/anthropics/tnh-scholar) - Integration guide
+- [Prompt System Documentation](https://github.com/anthropics/tnh-scholar) - Catalog structure
 
 ---
 
-*This ADR defines the comprehensive refactor strategy that enables `tnh-gen` CLI implementation and modern prompt system adoption.*
+**Approval Path**: Architecture review → Implementation → Testing → tnh-gen Release
+
+*This ADR defines the minimal viable refactor that enables tnh-gen CLI release while establishing the foundation for ADR-AT04's comprehensive platform architecture.*
