@@ -1,5 +1,6 @@
 import click
 
+from tnh_scholar.cli_tools.utils import run_or_fail
 from tnh_scholar.gen_ai_service.utils.token_utils import token_count
 
 
@@ -7,8 +8,8 @@ from tnh_scholar.gen_ai_service.utils.token_utils import token_count
 @click.argument("input_file", type=click.File("r"), default="-")
 def token_count_cli(input_file):
     """Return the Open AI API token count of a text file. Based on gpt-4o."""
-    text = input_file.read()
-    result = token_count(text)
+    text = run_or_fail("Unable to read input", input_file.read)
+    result = run_or_fail("Token count failed", lambda: token_count(text))
     click.echo(result)
 
 

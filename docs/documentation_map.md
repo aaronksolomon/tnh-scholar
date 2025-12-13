@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2025-12-11"
+created: "2025-12-12"
 auto_generated: true
 ---
 
@@ -68,11 +68,17 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-A14: File-Based Registry System for Provider Metadata](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
 - [ADR-AT01: AI Text Processing Pipeline Redesign](/architecture/ai-text-processing/adr/adr-at01-ai-text-processing.md)
 - [ADR-AT02: TextObject Architecture Decision Records](/architecture/ai-text-processing/adr/adr-at02-sectioning-textobject.md)
-- [ADR-AT03: AI Text Processing Object-Service Refactor](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md)
+- [ADR-AT03.1: AT03→AT04 Transition Plan](/architecture/ai-text-processing/adr/adr-at03.1-transition-plan.md)
+- [ADR-AT03.2: NumberedText Section Boundary Validation](/architecture/ai-text-processing/adr/adr-at03.2-numberedtext-validation.md)
+- [ADR-AT03.3: TextObject Robustness and Metadata Management](/architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness.md)
+- [ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md)
+- [ADR-AT04: AI Text Processing Platform Strategy](/architecture/ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat.md)
 - [ADR-DD01: Documentation System Reorganization Strategy](/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
 - [ADR-DD02: Documentation Main Content and Navigation Strategy](/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
 - [ADR-DD03: Pattern to Prompt Terminology Standardization](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md)
 - [ADR-DD03: Phase 1 Execution Punch List](/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md)
+- [adr-jv03-canonical-xml-ast](/architecture/jvb-viewer/adr/adr-jv03-canonical-xml-ast.md)
+- [adr-jvb01_as-built_jvb_viewer_v1](/architecture/jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1.md)
 - [ADR-K01: Preliminary Architectural Strategy for TNH Scholar Knowledge Base](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
 - [ADR-MD01: Adoption of JSON-LD for Metadata Management](/architecture/metadata/adr/adr-md01-json-ld-metadata.md)
 - [ADR-MD02: Metadata Infrastructure Object-Service Integration](/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md)

@@ -10,9 +10,9 @@ created: "2025-01-20"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2025-12-09
-> **Version**: 0.2.1 (Alpha)
-> **Status**: Active Development - Documentation Reorganization Phase
+> **Last Updated**: 2025-12-12
+> **Version**: 0.2.2 (Alpha)
+> **Status**: Active Development - ADR-AT03 Implementation Phase
 
 ---
 
@@ -489,12 +489,16 @@ This section organizes work into three priority levels based on criticality for 
 
 ### Medium Priority
 
-#### Improve NumberedText Ergonomics
+#### ✅ Improve NumberedText Ergonomics
 
+- **Status**: IN PROGRESS - ADR-AT03.2 ACCEPTED
 - **Location**: [text_processing/numbered_text.py](src/tnh_scholar/text_processing/numbered_text.py)
-- **Problem**: Constructor raises for content=None even though typed as optional
+- **ADR**: [ADR-AT03.2: NumberedText Section Boundary Validation](docs/architecture/ai-text-processing/adr/adr-at03.2-numberedtext-validation.md)
 - **Tasks**:
-  - [ ] Decide whether empty content should mean "no lines yet"
+  - [x] ADR-AT03.2 design approved and accepted (2025-12-12)
+  - [ ] Implement `validate_section_boundaries()` method
+  - [ ] Implement `get_coverage_report()` method
+  - [ ] Add comprehensive unit tests for validation
   - [ ] Add file-based round-trip tests
   - [ ] Trim redundant pytest boilerplate in tests
 

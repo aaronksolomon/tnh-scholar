@@ -13,6 +13,38 @@ All notable changes to TNH Scholar will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **AI Text Processing Design Work**
+  - Add ADR-AT03: Minimal ai_text_processing refactor for tnh-gen
+  - Add ADR-AT03.1: Transition plan for phased implementation
+  - Add ADR-AT03.2: NumberedText section boundary validation (ACCEPTED)
+  - Add ADR-AT03.3: TextObject robustness improvements
+  - Add ADR-AT04: Future AI text processing platform strategy
+
+- **UI/UX Design Work**
+  - Add ADR-VSC03: Python-JavaScript impedance investigation
+  - Add ADR-VSC03.1: Investigation findings
+  - Add ADR-VSC03.2: Real-world survey addendum
+  - Add ADR-VSC03.3: Investigation synthesis
+  - Add JVB Viewer ADR series for UI architecture
+
+- **Test Coverage**
+  - Add comprehensive CLI test coverage for json_to_srt, nfmt, sent_split, srt_translate, token_count
+  - Add tnh_fab CLI tests for deprecated tool
+  - Add shared CLI utilities module for test helpers
+
+### Changed
+
+- **Documentation Infrastructure**
+  - Enhanced ADR template with clearer structure and examples
+  - Updated markdown standards for consistency
+  - Refined human-AI software engineering principles
+  - Improved documentation navigation (index, map)
+  - Enhanced tnh-zen CSS styling for better readability
+
 ## [0.2.2] - 2025-12-11
 
 ### Deprecated
