@@ -133,6 +133,120 @@ def process_and_validate_language_with_fallback_and_logging(
     # ... lots of mixed logic
 ```
 
+### Stateful Iteration Loops Use Classes
+
+**When iteration logic requires complex state management, use a dedicated class** to encapsulate state and dispatch to methods:
+
+```python
+# ✅ Preferred: Stateful validation as a class
+class _SectionBoundaryValidator:
+    """Stateful validator for clean, readable loop logic."""
+
+    def __init__(self, owner: "NumberedText", section_start_lines: List[int]) -> None:
+        self.owner = owner
+        self.section_start_lines = section_start_lines
+        self.errors: List[SectionValidationError] = []
+        self.prev_start: Optional[int] = None
+        self.first_valid_seen = False
+
+    def run(self) -> List[SectionValidationError]:
+        """Main loop stays simple by dispatching to focused methods."""
+        if not self.section_start_lines:
+            return self.owner._errors_for_no_sections()
+
+        sorted_with_idx = sorted(enumerate(self.section_start_lines), key=lambda t: t[1])
+
+        for section_index, (input_idx, start_line) in enumerate(sorted_with_idx):
+            if self.owner._is_out_of_bounds(start_line):
+                self.errors.append(
+                    self.owner._error_out_of_bounds(section_index, input_idx, start_line)
+                )
+                continue
+
+            if not self.first_valid_seen:
+                self._handle_first(section_index, input_idx, start_line)
+                continue
+
+            self._handle_body(section_index, input_idx, start_line)
+
+        return self.errors
+
+    def _handle_first(self, section_index: int, input_idx: int, start_line: int) -> None:
+        """Handle first valid section."""
+        self.errors.extend(
+            self.owner._errors_for_first_section(section_index, input_idx, start_line)
+        )
+        self.first_valid_seen = True
+        self.prev_start = start_line
+
+    def _handle_body(self, section_index: int, input_idx: int, start_line: int) -> None:
+        """Handle subsequent sections."""
+        assert self.prev_start is not None
+        if start_line <= self.prev_start:
+            self.errors.append(
+                self.owner._error_overlap(section_index, input_idx, self.prev_start, start_line)
+            )
+        elif start_line > self.prev_start + 1:
+            self.errors.append(
+                self.owner._error_gap(section_index, input_idx, self.prev_start, start_line)
+            )
+        self.prev_start = start_line
+
+# Public API stays clean:
+def validate_section_boundaries(
+    self, section_start_lines: List[int]
+) -> List[SectionValidationError]:
+    """Validate section boundaries for gaps, overlaps, and out-of-bounds errors."""
+    return self._SectionBoundaryValidator(self, section_start_lines).run()
+
+# 🚫 Avoid: Complex state in procedural loop
+def validate_section_boundaries(
+    self, section_start_lines: List[int]
+) -> List[SectionValidationError]:
+    """Procedural loop with hard-to-follow state management."""
+    errors = []
+    prev_start = None
+    first_valid_seen = False
+
+    # 50+ lines of nested conditionals, state mutations, and edge cases
+    # Hard to test individual logic branches
+    # Difficult to understand control flow
+    for section_index, (input_idx, start_line) in enumerate(sorted_with_idx):
+        if out_of_bounds:
+            # complex logic here
+            pass
+        elif not first_valid_seen:
+            # complex logic here
+            first_valid_seen = True
+            prev_start = start_line
+        else:
+            # more complex logic here
+            prev_start = start_line
+
+    return errors
+```
+
+**Benefits:**
+
+- **Readability**: Main loop logic is clean and straightforward
+- **Testability**: Each method can be tested independently
+- **Maintainability**: State is explicit and localized
+- **Debuggability**: Clear method boundaries for breakpoints and logging
+
+**When to use:**
+
+- Validation loops with complex state tracking
+- Multi-pass parsers with lookahead/lookbehind
+- State machines with transitions
+- Iterative algorithms that accumulate results based on conditions
+
+**Implementation notes:**
+
+- Use private nested classes (`_ValidatorClass`) for internal-only validators
+- Keep the main loop in a `run()` method for clear entry point
+- Dispatch to focused helper methods (`_handle_first`, `_handle_body`, etc.)
+- Initialize all state in `__init__` for explicitness
+
 ## Interface Design
 
 ### Abstract Base Classes and Protocols
@@ -272,6 +386,88 @@ class Prompt:
 - Let unknown exceptions propagate
 - Document expected exceptions in docstrings
 - Use custom exceptions for domain-specific errors
+
+### Error Classes: Exceptions vs Error Metadata
+
+TNH Scholar uses two distinct patterns for error handling:
+
+**1. Exception Classes** - For errors that interrupt control flow:
+
+```python
+# ✅ Exception classes inherit from TnhScholarError
+from tnh_scholar.exceptions import TnhScholarError
+
+class ValidationError(TnhScholarError):
+    """Raised when input validation fails."""
+    pass
+
+class ConfigurationError(TnhScholarError):
+    """Raised when configuration is invalid."""
+    pass
+```
+
+**2. Error Metadata Classes** - For structured error information returned as data:
+
+```python
+# ✅ Error metadata classes use Pydantic BaseModel
+from pydantic import BaseModel, ConfigDict
+
+class ErrorInfo(BaseModel):
+    """Error information returned from validation or processing.
+
+    Not raised as exception - returned as structured data for
+    programmatic handling, serialization, and reporting.
+    """
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    error_type: str
+    message: str
+    context: dict[str, Any] | None = None
+
+# ✅ Example: Validation returns error metadata
+def validate_sections(sections: List[Section]) -> List[SectionValidationError]:
+    """Returns list of errors found (does not raise exception)."""
+    errors = []
+    # ... validation logic that appends SectionValidationError instances
+    return errors
+```
+
+**When to use each pattern:**
+
+| Pattern | Use Case | Example |
+|---------|----------|---------|
+| **Exception class** (inherits `TnhScholarError`) | Fatal errors requiring immediate control flow change | `raise ConfigurationError("Missing API key")` |
+| **Error metadata class** (Pydantic `BaseModel`) | Validation results, batch error reporting, API responses | `return [ErrorInfo(type="gap", message="...")]` |
+
+**Key requirements for error metadata classes:**
+
+```python
+from pydantic import BaseModel, ConfigDict
+
+class MyErrorInfo(BaseModel):
+    """Always include these for error metadata classes."""
+    model_config = ConfigDict(
+        frozen=True,      # Immutability
+        extra="forbid"    # Reject unexpected fields
+    )
+
+    # Strongly typed fields (no raw dicts/strings)
+    error_type: str
+    message: str
+```
+
+**Benefits:**
+
+- **Serialization**: Pydantic models serialize to JSON for APIs and logging
+- **Validation**: Type checking and field validation at construction
+- **Immutability**: `frozen=True` prevents accidental mutation
+- **Strict schema**: `extra="forbid"` catches schema mismatches
+
+**Examples in the codebase:**
+
+- Exception classes: [src/tnh_scholar/exceptions.py](../../src/tnh_scholar/exceptions.py)
+- Error metadata: [src/tnh_scholar/gen_ai_service/models/transport.py](../../src/tnh_scholar/gen_ai_service/models/transport.py) (`ErrorInfo`)
+- Error metadata: [src/tnh_scholar/text_processing/numbered_text.py](../../src/tnh_scholar/text_processing/numbered_text.py) (`SectionValidationError`)
 
 ### Fail Fast
 

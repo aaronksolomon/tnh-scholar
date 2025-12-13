@@ -49,17 +49,18 @@ From `numbered_text.py:279-287`:
 
 ```python
 def get_segment(self, start: int, end: int) -> str:
-    """return the segment from start line (inclusive) up to end line (exclusive)"""
+    """Return the segment from start line (inclusive) up to end line (inclusive)."""
     if start < self.start:
         raise IndexError(f"Start index {start} is before first line {self.start}")
-    if end > len(self) + 1:
-        raise IndexError(f"End index {end} is past last line {len(self)}")
-    if start >= end:
-        raise IndexError(f"Start index {start} must be less than end index {end}")
-    return "\n".join(self.get_lines(start, end))
+    if end > self.end:
+        raise IndexError(f"End index {end} is past last line {self.end}")
+    if start > end:
+        raise IndexError(f"Start index {start} must be less than or equal to end index {end}")
+    return "\n".join(self.get_lines_exclusive(start, end + 1))
 ```
 
 **Limitations**:
+
 - Only validates individual segment requests
 - No holistic validation of section coverage
 - No reporting of gaps or overlaps
@@ -88,7 +89,8 @@ Add a new validation method to NumberedText that accepts a list of section start
 class SectionValidationError:
     """Error found in section boundaries."""
     error_type: str  # 'gap', 'overlap', 'out_of_bounds'
-    section_index: int
+    section_index: int  # position in sorted order
+    section_input_index: int  # original caller order
     expected_start: int
     actual_start: int
     message: str
@@ -120,25 +122,50 @@ class NumberedText:
             >>> len(errors)
             0
 
-            >>> # Invalid: gap between line 3 and line 5
-            >>> errors = text.validate_section_boundaries([1, 5])
+            >>> # Invalid: initial gap (first section starts at line 2)
+            >>> errors = text.validate_section_boundaries([2, 5])
             >>> errors[0].error_type
             'gap'
         """
         errors = []
 
         if not section_start_lines:
+            if self.size > 0:
+                errors.append(SectionValidationError(
+                    error_type='gap',
+                    section_index=0,
+                    section_input_index=-1,
+                    expected_start=1,
+                    actual_start=0,
+                    message="No sections provided; expected first section at line 1"
+                ))
             return errors
 
-        # Sort to ensure sequential checking
-        sorted_starts = sorted(section_start_lines)
+        # Sort but retain caller order for diagnostics
+        sorted_with_idx = sorted(enumerate(section_start_lines), key=lambda t: t[1])
 
-        for i, start_line in enumerate(sorted_starts):
+        # Verify first section starts at line 1
+        first_idx, first_start = sorted_with_idx[0]
+        if first_start != 1:
+            errors.append(SectionValidationError(
+                error_type='gap',
+                section_index=0,
+                section_input_index=first_idx,
+                expected_start=1,
+                actual_start=first_start,
+                message=f"First section starts at {first_start}, "
+                        f"leaving gap at lines 1-{first_start-1}"
+            ))
+
+        prev_start = first_start
+
+        for i, (input_idx, start_line) in enumerate(sorted_with_idx):
             # Check out-of-bounds
             if start_line < 1 or start_line > self.size:
                 errors.append(SectionValidationError(
                     error_type='out_of_bounds',
                     section_index=i,
+                    section_input_index=input_idx,
                     expected_start=1 if start_line < 1 else self.size,
                     actual_start=start_line,
                     message=f"Section {i} start_line {start_line} "
@@ -148,33 +175,40 @@ class NumberedText:
 
             # Check for gaps/overlaps with previous section
             if i > 0:
-                prev_start = sorted_starts[i - 1]
-                # Previous section's implicit end is (current_start - 1)
-                prev_end = start_line - 1
-
-                # Expected start is previous end + 1
-                expected_start = prev_end + 1
-
-                if start_line != expected_start:
-                    error_type = 'gap' if start_line > expected_start else 'overlap'
+                if start_line <= prev_start:
+                    error_type = 'overlap'
                     errors.append(SectionValidationError(
                         error_type=error_type,
                         section_index=i,
-                        expected_start=expected_start,
+                        section_input_index=input_idx,
+                        expected_start=prev_start + 1,
                         actual_start=start_line,
                         message=f"Section {i} has {error_type}: "
-                                f"expected start {expected_start}, got {start_line}"
+                                f"expected start > {prev_start}, got {start_line}"
                     ))
+                elif start_line > prev_start + 1:
+                    error_type = 'gap'
+                    errors.append(SectionValidationError(
+                        error_type=error_type,
+                        section_index=i,
+                        section_input_index=input_idx,
+                        expected_start=prev_start + 1,
+                        actual_start=start_line,
+                        message=f"Section {i} has {error_type}: "
+                                f"expected start {prev_start + 1}, got {start_line}"
+                    ))
+                prev_start = start_line
 
-        # Verify first section starts at line 1
-        if sorted_starts[0] != 1:
+        # Verify tail coverage reaches end of text
+        last_start = sorted_with_idx[-1][1]
+        if last_start > self.size:
             errors.append(SectionValidationError(
-                error_type='gap',
-                section_index=0,
-                expected_start=1,
-                actual_start=sorted_starts[0],
-                message=f"First section starts at {sorted_starts[0]}, "
-                        f"leaving gap at lines 1-{sorted_starts[0]-1}"
+                error_type='out_of_bounds',
+                section_index=len(sorted_with_idx) - 1,
+                section_input_index=sorted_with_idx[-1][0],
+                expected_start=self.size,
+                actual_start=last_start,
+                message=f"Final section starts at {last_start}, past last line {self.size}"
             ))
 
         return errors
@@ -186,6 +220,8 @@ class NumberedText:
 - **Returns structured errors**: Enables programmatic error handling and detailed diagnostics
 - **Non-throwing**: Returns error list instead of raising exceptions (allows batch validation)
 - **1-based indexing**: Consistent with NumberedText's existing API
+- **Full coverage required**: Enforces start at line 1 and rejects empty section lists for non-empty text
+- **Caller-order diagnostics**: `section_input_index` preserves the original ordering for clearer error reporting
 
 ### 2. Coverage Reporting
 
@@ -295,6 +331,7 @@ class NumberedText:
 - **Identifies gap ranges**: Groups consecutive uncovered lines
 - **Overlap detection**: Shows which lines are claimed by multiple sections
 - **JSON-serializable**: Dict output enables logging and reporting
+- **Inclusive semantics**: Final section is assumed to run through `self.size`; gaps appear when start lines skip coverage or when no sections are provided for non-empty text
 
 ### 3. Integration with TextObject
 
@@ -331,13 +368,11 @@ class TextObject:
             )
 ```
 
-### 4. Backward Compatibility
+### 4. Compatibility
 
-**No Breaking Changes**:
-
-- New methods are **additive** (don't modify existing API)
-- Existing `get_segment()` behavior unchanged
+- New methods are **additive** (don't modify existing API surface)
 - TextObject validation is **opt-in** (called explicitly in `validate_sections()`)
+- **Breaking change**: `get_segment()` moves to inclusive end semantics to align with Monaco; callers must adjust (see Monaco alignment below).
 
 **Migration Path**:
 
@@ -567,8 +602,7 @@ def get_segment(self, start_line: int, end_line: int) -> str:
         raise IndexError(f"end_line {end_line} invalid (must be in [{start_line}, {self.size}])")
 
     # Convert inclusive end to Python range (exclusive upper bound)
-    python_range = range(start_line, end_line + 1)
-    return "\n".join(self.get_lines(python_range))
+    return "\n".join(self.get_lines_exclusive(start_line, end_line + 1))
 ```
 
 #### Validation Logic Adjustment
@@ -622,7 +656,7 @@ def validate_section_boundaries(
 
 **Files Modified**:
 
-- `numbered_text.py`: Update `get_segment()` to accept inclusive end
+- `numbered_text.py`: Update `get_segment()` to accept inclusive end and enforce full coverage to end-of-text
 - `text_object.py`: Update `SectionRange` to use inclusive `end_line`
 - Validation logic: Adjust contiguity checks for inclusive semantics
 
@@ -664,6 +698,7 @@ def validate_section_boundaries(
 **Approach**: Add gap/overlap detection to existing `get_segment()` method.
 
 **Rejected**:
+
 - Can't detect gaps until they're accessed (fails late)
 - No holistic view of section coverage
 - Harder to provide actionable diagnostics
@@ -673,6 +708,7 @@ def validate_section_boundaries(
 **Approach**: Change `LogicalSection` to include explicit `end_line` field.
 
 **Rejected**:
+
 - Breaking change to existing data model
 - Increases complexity (must validate end > start for every section)
 - Doesn't solve the root problem (still need boundary validation)
@@ -683,6 +719,7 @@ def validate_section_boundaries(
 **Approach**: Create a `Section` class in NumberedText that encapsulates start/end.
 
 **Rejected**:
+
 - Couples NumberedText to sectioning concept (reduces reusability)
 - Duplicates `LogicalSection` from TextObject
 - Over-engineers for current needs
