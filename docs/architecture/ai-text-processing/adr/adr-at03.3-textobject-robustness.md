@@ -3,8 +3,8 @@ title: "ADR-AT03.3: TextObject Robustness and Metadata Management"
 description: "Fixes metadata propagation bugs, enhances section validation, and adds merge strategies to TextObject for reliable ai_text_processing workflows"
 type: "design-detail"
 owner: "aaronksolomon"
-author: "Aaron Solomon, Claude Sonnet 4.5"
-status: proposed
+author: "Aaron Solomon, Claude Sonnet 4.5, Codex Max"
+status: accepted
 created: "2025-12-12"
 parent_adr: "adr-at03-object-service-refactor.md"
 related_adrs: ["adr-at03.2-numberedtext-validation.md", "adr-at03.1-transition-plan.md"]
@@ -14,13 +14,67 @@ related_adrs: ["adr-at03.2-numberedtext-validation.md", "adr-at03.1-transition-p
 
 Fixes critical metadata propagation bugs, enhances section validation using NumberedText capabilities (ADR-AT03.2), and adds explicit merge strategies to TextObject for reliable text processing workflows.
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Type**: Design Detail
 - **Date**: 2025-12-12
 - **Owner**: aaronksolomon
 - **Author**: Aaron Solomon, Claude Sonnet 4.5
 - **Parent ADR**: [ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md)
 - **Related ADRs**: [ADR-AT03.2: NumberedText Validation](/architecture/ai-text-processing/adr/adr-at03.2-numberedtext-validation.md), [ADR-AT03.1: Transition Plan](/architecture/ai-text-processing/adr/adr-at03.1-transition-plan.md)
+
+---
+
+## Implementation Fix Checklist (2025-12-14 update)
+
+All core implementation items have been completed. The ADR design is now fully implemented in the codebase.
+
+### 1. MetadataConflictError Definition
+
+- **Status**: ✅ **COMPLETED** - Added in [src/tnh_scholar/exceptions.py](src/tnh_scholar/exceptions.py:53-54)
+- **Action**: Use this for the `FAIL_ON_CONFLICT` merge strategy to surface metadata key collisions.
+- **Implementation**: [text_object.py:390-396](src/tnh_scholar/ai_text_processing/text_object.py:390-396)
+
+### 2. _deep_merge_metadata Must Preserve the Metadata Wrapper
+
+- **Status**: ✅ **COMPLETED** - Implemented in [text_object.py:383-388](src/tnh_scholar/ai_text_processing/text_object.py:383-388)
+- **Problem**: Reassigning a raw dict to `self.metadata` would drop Metadata methods (`to_yaml`, `add_process_info`, etc.).
+- **Solution**: Correctly accesses `self.metadata._data` and `new_metadata._data`, then reassigns merged dict to `self.metadata._data`.
+
+### 3. List Merge with Unhashable Elements
+
+- **Status**: ✅ **COMPLETED** - Implemented in [text_object.py:430-431](src/tnh_scholar/ai_text_processing/text_object.py:430-431)
+- **Problem**: Deduping with `dict.fromkeys(result[key] + value)` fails on unhashable items (e.g., provenance dicts).
+- **Solution**: Uses simple append (`result[key] = result[key] + value`) without deduplication.
+
+### 4. Validation Mode Default
+
+- **Status**: ✅ **COMPLETED** - Implemented in [text_object.py:458-475](src/tnh_scholar/ai_text_processing/text_object.py:458-475)
+- **Problem**: Existing `validate_sections()` only warns; design requires fail-fast by default.
+- **Solution**: Defaults to `raise_on_error=True` with opt-out via `raise_on_error=False`.
+
+### 5. Section End-Line Strategy
+
+- **Status**: ✅ **COMPLETED** - Documented in code comments
+- **Problem**: Validation checks only start lines; callers might assume custom end bounds are honored.
+- **Solution**: Start lines are authoritative; `_build_section_objects` derives end lines (each section ends where the next begins).
+
+### 6. SectionBoundaryError Exception Hierarchy
+
+- **Status**: ✅ **COMPLETED** - Implemented in [text_object.py:167-215](src/tnh_scholar/ai_text_processing/text_object.py:167-215)
+- **Problem**: Must inherit from `ValidationError` per TNH Scholar exception standards.
+- **Solution**: `SectionBoundaryError(ValidationError)` with structured context including errors and coverage_report.
+
+### 7. Pydantic v2 BaseModel Conversion
+
+- **Status**: ✅ **COMPLETED** - See Addendum 2025-12-14 below
+- **Problem**: TextObject was a plain Python class, violating ADR-OS01 §1.1 "Strong Typing" requirement.
+- **Solution**: Converted to Pydantic v2 BaseModel with `ConfigDict(arbitrary_types_allowed=True)` and `@model_validator`.
+
+---
+
+## Open Questions (Discovered During Implementation)
+
+1. **Provenance growth bounds**: `TextObject.merge_metadata` appends provenance entries without deduplication or size limits. For this interim tnh-gen unblock, provenance is intentionally unbounded. Future maintainers should decide on a policy (e.g., cap entries, drop oldest, or deduplicate by source/strategy/keys) during the planned TextObject rebuild.
 
 ---
 
@@ -35,12 +89,14 @@ TextObject (in `src/tnh_scholar/ai_text_processing/text_object.py`) is the prima
 1. **Weak Section Validation**: `validate_sections()` (lines 359-372) only logs warnings and doesn't leverage NumberedText's boundary checking capabilities.
 
 2. **Metadata Merge Ambiguity**: `merge_metadata()` (lines 324-352) has an `override` parameter but the semantics are confusing:
+
    ```python
    if override:
        self._metadata |= new_metadata  # new overrides existing
    else:
        self._metadata = new_metadata | self._metadata  # existing preserved
    ```
+
    - Which values win in nested dicts?
    - How are lists merged?
    - When should you use `override=True` vs `override=False`?
@@ -202,6 +258,9 @@ class TextObject:
 - **Fail-fast default**: Raises exception by default to catch errors early
 - **Opt-in non-throwing**: Can return error list for batch validation scenarios
 - **Rich diagnostics**: Exception includes coverage report with gap/overlap details
+- **Start-line authoritative**: Validation only checks start lines because end lines are **derived**
+  from start lines (each section ends where the next begins, per `_build_section_objects:243-246`).
+  This is the TextObject contract: callers supply start lines, ends are computed automatically.
 
 ### 2. Explicit Metadata Merge Strategies
 
@@ -262,10 +321,11 @@ class TextObject:
 
         elif strategy == MergeStrategy.DEEP_MERGE:
             # Deep merge nested structures
-            self._metadata = self._deep_merge_metadata(
-                self._metadata,
-                new_metadata
+            merged_dict = self._deep_merge_metadata(
+                self._metadata._data,
+                new_metadata._data
             )
+            self._metadata._data = merged_dict
 
         elif strategy == MergeStrategy.FAIL_ON_CONFLICT:
             # Check for conflicts first
@@ -287,15 +347,20 @@ class TextObject:
 
         Rules:
             - Nested dicts: Recursively merge
-            - Lists: Append update items to base (deduplicate)
+            - Lists: Append update items to base (no deduplication for unhashable items)
             - Scalars: Update value overrides base value
 
         Args:
-            base: Base metadata dict
-            update: Update metadata dict
+            base: Base metadata dict (raw dict from Metadata._data)
+            update: Update metadata dict (raw dict from Metadata._data)
 
         Returns:
-            Merged metadata dict
+            Merged metadata dict (to be assigned back to Metadata._data)
+
+        Note:
+            This is an interim implementation for ADR-AT03.3. List merging is kept simple
+            to avoid TypeError with unhashable elements (e.g., provenance dicts).
+            For production use, consider more sophisticated merge strategies.
         """
         result = base.copy()
 
@@ -309,8 +374,9 @@ class TextObject:
                 result[key] = TextObject._deep_merge_metadata(result[key], value)
 
             elif isinstance(result[key], list) and isinstance(value, list):
-                # Both lists: append and deduplicate
-                result[key] = list(dict.fromkeys(result[key] + value))
+                # Both lists: simple append (preserves order, no deduplication)
+                # Note: Avoids TypeError with unhashable items like provenance dicts
+                result[key] = result[key] + value
 
             else:
                 # Scalar or type mismatch: override with update value
@@ -325,6 +391,8 @@ class TextObject:
 - **Deep merge support**: Handles nested dicts and list appending
 - **Fail-on-conflict option**: Enables strict metadata validation
 - **Backward compatible**: Old `merge_metadata(override=True)` → `MergeStrategy.UPDATE`
+- **Metadata contract**: `merge_metadata` expects **sanitized `Metadata` instances**, not raw dicts.
+  Values pass through `Metadata` processing for JSON-serializable types; callers must not bypass it.
 
 ### 3. Metadata Provenance Tracking
 
@@ -765,11 +833,13 @@ def test_merge_metadata_provenance_tracking():
 
 ## Migration Path
 
-### Phase 1: Add New APIs (Backward Compatible)
+### Phase 1: Add New APIs (Fail-Fast by Default)
 
 - Add new `merge_metadata()` with `strategy` parameter
 - Keep old `merge_metadata()` signature working via deprecation wrapper
-- Update `validate_sections()` but default to non-throwing mode
+- Update `validate_sections()` to **fail-fast by default** (`raise_on_error=True`)
+  - **Rationale**: This is an interim implementation to unblock tnh-gen, not a final solution.
+    Fail-fast catches errors early during development and prevents silent failures.
 
 ### Phase 2: Gradual Adoption
 
@@ -816,3 +886,94 @@ This ADR succeeds if:
 **Approval Path**: Architecture review → Implementation → Unit tests → Integration with ADR-AT03.2
 
 *This ADR completes the TextObject robustness improvements (AT03 Tier 0) and establishes the foundation for GenAI Service integration (AT03 Tier 2) and prompt system adoption (AT03 Tier 3).*
+
+---
+
+## Addendum 2025-12-14: Pydantic v2 BaseModel Requirement
+
+### Background Context
+
+During implementation review, we identified that TextObject violates ADR-OS01 §1.1 "Strong Typing" principle:
+
+> "All payloads, parameters, and responses use **Pydantic** or dataclass models"
+
+**Current State**: TextObject is implemented as a plain Python class with manual attribute assignment, while sibling models (`LogicalSection`, `AIResponse`, `TextObjectInfo`) correctly use Pydantic v2 `BaseModel`.
+
+**ADR-OS01 Conformance Requirement** (§3.1 Layer Structure):
+
+| Layer | Example Classes | Type Requirement |
+|-------|----------------|------------------|
+| **Domain Models** | `CompletionResult`, `SpeakerBlock` | Pydantic or dataclass |
+
+### Addendum Decision
+
+**Convert TextObject to Pydantic v2 BaseModel** to align with TNH Scholar's object-service architecture principles.
+
+**Rationale**:
+
+1. **Consistency**: All domain models in `ai_text_processing` should use the same pattern
+2. **Type Safety**: Pydantic enforces runtime validation of `num_text`, `language`, `sections`, `metadata`
+3. **Serialization**: Automatic `.model_dump()` and `.model_dump_json()` support
+4. **Validation**: Leverage `@model_validator` for complex initialization logic (auto-detect language, validate sections)
+5. **Future-Proof**: Enables easier integration with GenAI Service and prompt system (AT03 Tier 2+3)
+
+### Implementation Strategy
+
+**Challenge**: TextObject has complex initialization logic that requires careful migration:
+
+1. Auto-detection of `language` from content if not provided
+2. Automatic section validation on construction
+3. Support for `NumberedText` (non-Pydantic type)
+
+**Solution**: Use Pydantic v2's `model_validator` with `arbitrary_types_allowed`:
+
+```python
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+class TextObject(BaseModel):
+    """Domain model for text content with section organization."""
+
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,  # Allow NumberedText
+        validate_assignment=True
+    )
+
+    num_text: NumberedText
+    language: str = ""  # Will be auto-detected if empty
+    sections: List[SectionObject] = Field(default_factory=list)
+    metadata: Metadata = Field(default_factory=Metadata)
+
+    @model_validator(mode='after')
+    def validate_initialization(self) -> Self:
+        """Post-initialization validation and defaults."""
+        # Auto-detect language if not provided
+        if not self.language:
+            self.language = get_language_code_from_text(self.num_text.content)
+
+        # Validate sections if provided
+        if self.sections:
+            self.validate_sections()
+
+        return self
+```
+
+**Private Attributes**: The `_sections` and `_metadata` private attributes become public fields managed by Pydantic. The property accessors remain for backward compatibility.
+
+**Backward Compatibility**: All existing methods and properties remain unchanged; only the internal class structure changes.
+
+### Migration Checklist
+
+- [x] Convert `TextObject` class definition to inherit from `BaseModel` - [text_object.py:217](src/tnh_scholar/ai_text_processing/text_object.py:217)
+- [x] Add `model_config = ConfigDict(arbitrary_types_allowed=True)` - [text_object.py:226](src/tnh_scholar/ai_text_processing/text_object.py:226)
+- [x] Convert `__init__` parameters to class fields with defaults - [text_object.py:221-224](src/tnh_scholar/ai_text_processing/text_object.py:221-224)
+- [x] Move initialization logic to `@model_validator(mode='after')` - [text_object.py:243-254](src/tnh_scholar/ai_text_processing/text_object.py:243-254)
+- [x] Update property accessors - Removed `_sections` and `_metadata` prefixes; fields now public
+- [x] Update `SectionBoundaryError` to inherit from `ValidationError` - [text_object.py:167](src/tnh_scholar/ai_text_processing/text_object.py:167)
+- [ ] Verify all tests pass with new Pydantic model - **PENDING TEST RUN**
+- [ ] Update any serialization code to use `.model_dump()` - **TO BE VERIFIED**
+
+### Related Artifacts
+
+- **TNH Scholar Architecture**: [ADR-OS01: Object-Service Architecture](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md) §1.1, §3.1
+- **Implementation File**: [src/tnh_scholar/ai_text_processing/text_object.py](src/tnh_scholar/ai_text_processing/text_object.py:196)
+- **Sibling Models**: `LogicalSection` (line 90), `AIResponse` (line 108), `TextObjectInfo` (line 152) - already using Pydantic v2

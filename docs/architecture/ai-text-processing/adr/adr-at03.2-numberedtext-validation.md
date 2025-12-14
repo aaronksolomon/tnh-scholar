@@ -821,3 +821,51 @@ This ADR succeeds if:
 **Approval Path**: Architecture review → Implementation → Unit tests → Integration with ADR-AT03.3
 
 *This ADR provides the foundational validation capabilities that enable TextObject robustness (ADR-AT03.3) and support reliable sectioning in the ai_text_processing module.*
+
+---
+
+## Addendum 2025-12-13: Validation Contract Clarification
+
+### Background Context
+
+During implementation review, a question arose about whether `validate_section_boundaries` should detect "trailing gaps" - cases where the final section might not reach `self.end`.
+
+### Analysis and Decision
+
+After reviewing the design specification (lines 364-370) and implementation (`numbered_text.py:384-422`), we confirmed that **no trailing gap detection is needed** because:
+
+**By design**: The final section always implicitly ends at `self.end`. From the original decision (§2.1):
+
+> "the end of each section is implicit: it ends at the line before the next section starts, **with the final section ending at the last line of the text**"
+
+This means the last section's end is **defined** as `self.end`, not calculated from boundaries. Therefore, "trailing gaps" cannot exist under the current design contract.
+
+**What the validator guarantees**:
+
+1. First section starts at `self.start` (no initial gap)
+2. Each section starts exactly one line after the previous section's implicit end (no inter-section gaps)
+3. No sections overlap
+4. All sections are within bounds
+
+Together, these rules ensure complete contiguous coverage from `self.start` to `self.end`.
+
+**Example validating full coverage**:
+
+```python
+text = NumberedText("line1\nline2\nline3\nline4\nline5")  # 5 lines, self.end = 5
+errors = text.validate_section_boundaries([1, 4])
+# Section 1: lines 1-3 (implicit end = 4-1 = 3)
+# Section 2: lines 4-5 (implicit end = self.end = 5)
+# No gaps → validation passes ✓
+```
+
+### Implementation Status
+
+**No code changes required**. The current implementation correctly enforces the validation contract as designed.
+
+### Related Artifacts
+
+- **GitHub Issue**: [#20 - NumberedText.validate_section_boundaries misses trailing coverage gaps](https://github.com/aaronksolomon/tnh-scholar/issues/20)
+  - Resolution: Closed as "working as designed" with contract clarification
+- **Original Design**: Section §2.1 (lines 105-111, 364-370)
+- **Implementation**: `src/tnh_scholar/text_processing/numbered_text.py:384-422`

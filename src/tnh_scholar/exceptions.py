@@ -7,13 +7,14 @@ from typing import Any, Mapping, Optional
 
 class TnhScholarError(Exception):
     """Base exception for all tnh_scholar errors.
-    
+
     Attributes:
         message: Human-readable summary.
         context: Optional structured context to aid logging/diagnostics.
                  Keep this JSON-serializable.
         cause:   Optional underlying exception.
     """
+
     def __init__(
         self,
         message: str = "",
@@ -50,6 +51,18 @@ class NotRetryable(TnhScholarError):
     """Marker for errors where retry is known to be pointless (e.g., bad auth)."""
 
 
+class MetadataConflictError(ValidationError):
+    """Raised when metadata merge encounters key conflicts in FAIL_ON_CONFLICT mode."""
+
+
+class SectionBoundaryError(ValidationError):
+    """Raised when section boundaries have gaps, overlaps, or out-of-bounds errors.
+
+    Note: Implementation is in text_object.py to avoid circular imports.
+    This entry exists for documentation and to reserve the error name.
+    """
+
+
 __all__ = [
     "TnhScholarError",
     "ConfigurationError",
@@ -57,4 +70,6 @@ __all__ = [
     "ExternalServiceError",
     "RateLimitError",
     "NotRetryable",
+    "MetadataConflictError",
+    "SectionBoundaryError",
 ]
