@@ -38,10 +38,16 @@ class SectionValidationError(BaseModel):
 
 class NumberedText:
     """
-    Represents a text document with numbered lines for easy reference and manipulation.
+    Immutable container for text documents with numbered lines.
 
     Provides utilities for working with line-numbered text including reading,
     writing, accessing lines by number, and iterating over numbered lines.
+
+    Immutability Note:
+        NumberedText is designed to be used immutably after construction. While not
+        enforced at runtime (for performance reasons as a low-level container),
+        instances should not be modified after creation. All operations return new
+        data rather than mutating the instance.
 
     Whitespace and Blank Line Handling (Monaco Editor as standard for compatibility):
         NumberedText follows Monaco Editor's verbatim line and whitespace handling.
@@ -60,9 +66,9 @@ class NumberedText:
         - Example: "1: foo\\n2:\\n3: bar" → lines=[' foo', '', ' bar']
 
     Attributes:
-        lines (List[str]): List of text lines
-        start (int): Starting line number (default: 1)
-        separator (str): Separator between line number and content (default: ": ")
+        lines (List[str]): List of text lines (do not modify after construction)
+        start (int): Starting line number (do not modify after construction)
+        separator (str): Separator between line number and content (do not modify after construction)
 
     Examples:
         >>> text = "First line\\nSecond line\\n\\nFourth line"
@@ -626,30 +632,6 @@ class NumberedText:
         """
         content = str(self) if numbered else "\n".join(self.lines)
         write_str_to_file(path, content)
-
-    def append(self, text: str) -> None:
-        """Append text, splitting into lines if needed."""
-        self.lines.extend(text.splitlines())
-
-    def insert(self, line_num: int, text: str) -> None:
-        """Insert text at specified line number. Assumes text is not empty.
-
-        Notes:
-            - Uses 1-based indexing, so the first line is 1.
-            - This follows existing semantics: appending by passing end + 1 is
-              not supported and will raise IndexError via _to_internal_index.
-        """
-        new_lines = text.splitlines()
-        internal_idx = self._to_internal_index(line_num)
-        self.lines[internal_idx:internal_idx] = new_lines
-
-    def reset_numbering(self):
-        """Reset numbering offset to 1 (content is stored without embedded numbers)."""
-        self.start = 1
-
-    def remove_whitespace(self) -> None:
-        """Remove leading and trailing whitespace from all lines."""
-        self.lines = [line.strip() for line in self.lines]
 
     @property
     def content(self) -> str:
