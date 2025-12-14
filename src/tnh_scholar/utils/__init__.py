@@ -15,6 +15,7 @@ from .lang import (
     get_language_from_code,
     get_language_name_from_text,
 )
+from .math_utils import fraction_to_percent
 from .progress_utils import ExpectedTimeTQDM, TimeProgress
 from .timing_utils import TimeMs, convert_ms_to_sec, convert_sec_to_ms
 from .tnh_audio_segment import TNHAudioSegment
@@ -37,6 +38,7 @@ __all__ = [
     "get_language_code_from_text",
     "get_language_from_code",
     "get_language_name_from_text",
+    "fraction_to_percent",
     "ExpectedTimeTQDM",
     "TimeProgress",
     "TimeMs",
