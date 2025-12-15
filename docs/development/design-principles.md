@@ -348,6 +348,199 @@ class ProcessingResult:
 
 See [Style Guide: Strong Typing Standards](/development/style-guide.md) for details.
 
+### Choosing Between Pydantic Models and Plain Python Classes
+
+**Default to Pydantic v2 `BaseModel` for domain models**, but use plain Python classes when Pydantic introduces significant friction.
+
+#### When to Use Pydantic BaseModel
+
+**Pydantic excels at:**
+
+- **Data Transfer Objects (DTOs)**: Serialization/deserialization for APIs, JSON persistence, configuration
+- **Simple domain models**: Data containers with straightforward validation
+- **Transport layer models**: API requests/responses, file format schemas
+- **Configuration models**: Settings with validation and environment variable parsing
+
+**Example - Ideal Pydantic usage:**
+
+```python
+from pydantic import BaseModel, Field, ConfigDict
+
+class TextObjectInfo(BaseModel):
+    """Serializable DTO for TextObject persistence."""
+    model_config = ConfigDict(frozen=True)
+
+    source_file: Path | None = None
+    language: str
+    sections: list[SectionObject]
+    metadata: Metadata
+
+    # Clean serialization:
+    # info.model_dump_json() → JSON file
+    # TextObjectInfo.model_validate_json(json_str) → instance
+```
+
+#### When NOT to Use Pydantic BaseModel
+
+**Use plain Python classes when the domain model has:**
+
+1. **Custom iteration semantics that conflict with Pydantic's `__iter__`**
+   - Pydantic's `BaseModel.__iter__` yields `(field_name, value)` for dict-like iteration
+   - Domain-specific iteration (e.g., iterating over sections, lines, entries) requires `# type: ignore[override]`
+   - This signals a semantic mismatch
+
+2. **Core dependencies that are non-Pydantic types**
+   - When using `arbitrary_types_allowed=True` for most fields
+   - Defeats Pydantic's validation benefits
+   - Example: Model wrapping `NumberedText` (plain class) and `Metadata` (MutableMapping)
+
+3. **Complex initialization requiring multiple validation hooks**
+   - Needing both `@model_validator(mode="before")` AND `model_post_init`
+   - Suggests Pydantic's lifecycle doesn't match domain needs
+   - Plain class with explicit `__init__` is clearer
+
+4. **Rich domain behavior beyond data validation**
+   - Complex stateful operations
+   - Multiple internal state transitions
+   - Custom protocols that don't align with Pydantic's model lifecycle
+
+**Example - When plain class is better:**
+
+```python
+# ✅ Preferred: Plain Python class for rich domain model
+class TextObject:
+    """Rich domain model with complex behavior (NOT a Pydantic model)."""
+
+    def __init__(
+        self,
+        num_text: NumberedText,  # Non-Pydantic type
+        language: str | None = None,
+        sections: list[SectionObject] | None = None,
+        metadata: Metadata | None = None,  # MutableMapping, not Pydantic
+    ):
+        self.num_text = num_text
+        self.language = language or get_language_code_from_text(num_text.content)
+        self.sections = sections or []
+        self.metadata = metadata or Metadata()
+
+        if self.sections:
+            self.validate_sections()  # Complex validation
+
+    def __iter__(self) -> Iterator[SectionEntry]:
+        """Domain-specific iteration - clean, no type: ignore needed."""
+        for i, section in enumerate(self.sections):
+            content = self.num_text.get_segment(section.section_range.start, section.section_range.end)
+            yield SectionEntry(number=i + 1, title=section.title, content=content)
+
+    def export_info(self) -> TextObjectInfo:
+        """Convert to Pydantic DTO for serialization."""
+        return TextObjectInfo(
+            source_file=self.source_file,
+            language=self.language,
+            sections=self.sections,
+            metadata=self.metadata
+        )
+
+    @classmethod
+    def from_info(cls, info: TextObjectInfo, num_text: NumberedText) -> "TextObject":
+        """Create from Pydantic DTO."""
+        return cls(
+            num_text=num_text,
+            language=info.language,
+            sections=info.sections,
+            metadata=info.metadata
+        )
+
+# 🚫 Avoid: Forcing Pydantic when it doesn't fit
+class TextObject(BaseModel):
+    """Pydantic model with significant friction."""
+    model_config = ConfigDict(arbitrary_types_allowed=True)  # Red flag
+
+    num_text: NumberedText  # Requires arbitrary_types_allowed
+    metadata: Metadata  # Requires coercion in @model_validator + model_post_init
+
+    @model_validator(mode="before")
+    @classmethod
+    def _coerce_metadata(cls, data: Any) -> Any:
+        """Complex pre-validation coercion needed."""
+        # ... complex logic
+
+    def model_post_init(self, __context: Any) -> None:
+        """More complex post-init coercion needed."""
+        # ... more complex logic
+
+    def __iter__(self) -> Iterator[SectionEntry]:  # type: ignore[override]
+        """Domain iteration conflicts with Pydantic's __iter__."""
+        # ... requires type: ignore
+```
+
+#### Hybrid Pattern: Separate Domain Model and DTO
+
+**Best of both worlds** - use plain class for domain logic, Pydantic for serialization:
+
+```python
+# Domain model: Plain Python class
+class TextObject:
+    """Rich domain model with complex behavior."""
+
+    def __init__(self, num_text: NumberedText, ...):
+        # ... domain logic
+
+    def __iter__(self) -> Iterator[SectionEntry]:
+        # Clean domain-specific iteration
+        ...
+
+    def export_info(self) -> TextObjectInfo:
+        """Convert to DTO for persistence."""
+        return TextObjectInfo(...)
+
+# DTO: Pydantic model for serialization
+class TextObjectInfo(BaseModel):
+    """Serializable snapshot of TextObject state."""
+    source_file: Path | None
+    language: str
+    sections: list[SectionObject]
+    metadata: Metadata
+```
+
+**Benefits:**
+
+- **Separation of concerns**: Domain logic separate from serialization
+- **Type safety**: Pydantic validates DTOs, domain model handles business logic
+- **Clean APIs**: Each class has a clear, focused purpose
+- **No friction**: No `# type: ignore`, no `arbitrary_types_allowed`, no dual validators
+
+#### Decision Checklist
+
+**Use Pydantic BaseModel if:**
+
+- ✅ Primary purpose is data validation or serialization
+- ✅ Simple field-based model without complex initialization
+- ✅ All fields are Pydantic-compatible types
+- ✅ No custom iteration semantics needed
+
+**Use plain Python class if:**
+
+- ✅ Model has rich domain behavior beyond data validation
+- ✅ Custom `__iter__` conflicts with Pydantic's field iteration
+- ✅ Core fields require `arbitrary_types_allowed`
+- ✅ Initialization needs complex multi-step validation
+- ✅ Model wraps non-Pydantic core types (NumberedText, custom collections)
+
+**Consider hybrid pattern if:**
+
+- ✅ Domain model is complex BUT needs serialization
+- ✅ Want clean separation between domain logic and persistence
+- ✅ Multiple serialization formats needed (JSON, YAML, database)
+
+**See also:**
+
+- **[ADR-AT03.3 Addendum 2025-12-14](/architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness.md)**: Real-world example of reverting Pydantic adoption after identifying friction
+- **Examples in codebase:**
+  - Plain classes: [NumberedText](../../src/tnh_scholar/text_processing/numbered_text.py), [Metadata](../../src/tnh_scholar/metadata/metadata.py), TextObject (after ADR-AT03.3 revision)
+  - Pydantic DTOs: [TextObjectInfo](../../src/tnh_scholar/ai_text_processing/text_object.py), [LogicalSection](../../src/tnh_scholar/ai_text_processing/text_object.py)
+  - Pydantic domain models: [AIResponse](../../src/tnh_scholar/ai_text_processing/text_object.py), [CompletionResult](../../src/tnh_scholar/gen_ai_service/models/domain.py)
+
 ### Separation of Data and Logic
 
 **Separate data representation from business logic** where appropriate:

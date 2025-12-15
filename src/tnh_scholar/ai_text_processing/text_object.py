@@ -1,21 +1,11 @@
+from copy import deepcopy
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from enum import Enum
 from pathlib import Path
-from typing import (
-    Any,
-    Dict,
-    Iterator,
-    List,
-    Literal,
-    NamedTuple,
-    Optional,
-    Self,
-    TypeAlias,
-    Union,
-)
+from typing import Any, Dict, Iterator, List, Literal, NamedTuple, Optional, TypeAlias, Union
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 from tnh_scholar.exceptions import MetadataConflictError, ValidationError
 from tnh_scholar.logging_config import get_child_logger
@@ -45,6 +35,84 @@ class MergeStrategy(Enum):
     FAIL_ON_CONFLICT = "fail"
 
 
+class _MetadataMerger:
+    """Encapsulates metadata merge strategies and provenance handling.
+
+    This helper class implements the strategy pattern for metadata merging,
+    keeping merge logic modular and testable. Each merge strategy is isolated
+    in its own method for clarity and maintainability.
+
+    Attributes:
+        target: The base Metadata instance to merge into
+        incoming: The new Metadata to merge from
+    """
+
+    def __init__(self, target: Metadata, incoming: Metadata) -> None:
+        self.target = target
+        self.incoming = incoming
+
+    def merge(self, strategy: MergeStrategy) -> None:
+        match strategy:
+            case MergeStrategy.PRESERVE:
+                self._preserve()
+            case MergeStrategy.UPDATE:
+                self._update()
+            case MergeStrategy.DEEP_MERGE:
+                self._deep_merge()
+            case MergeStrategy.FAIL_ON_CONFLICT:
+                self._fail_on_conflict()
+            case _:
+                raise ValueError(f"Unknown merge strategy: {strategy}")
+
+    def add_provenance(self, source: str, strategy: MergeStrategy) -> None:
+        provenance = self.target.get("_provenance", [])
+        if not isinstance(provenance, list):
+            provenance = []
+        provenance.append(
+            {
+                "timestamp": datetime.now(UTC).isoformat(),
+                "source": source,
+                "strategy": strategy.value,
+                "keys_added": list(self.incoming.keys()),
+            }
+        )
+        self.target["_provenance"] = provenance
+        # NOTE: Provenance is intentionally unbounded for this interim implementation to unblock tnh-gen.
+        # Future work should consider capping or deduplicating provenance entries to avoid unbounded growth.
+
+    def _preserve(self) -> None:
+        for key, value in self.incoming.items():
+            if key not in self.target:
+                self.target[key] = value
+
+    def _update(self) -> None:
+        self.target.update(self.incoming)
+
+    def _deep_merge(self) -> None:
+        merged_dict = self._deep_merge_dicts(self.target._data, self.incoming._data)
+        self.target._data = merged_dict
+
+    def _fail_on_conflict(self) -> None:
+        if conflicts := set(self.target.keys()) & set(self.incoming.keys()):
+            raise MetadataConflictError(f"Metadata key conflicts: {sorted(conflicts)}")
+        self.target.update(self.incoming)
+
+    @staticmethod
+    def _deep_merge_dicts(base: Dict[str, Any], update: Dict[str, Any]) -> Dict[str, Any]:
+        """Recursively merge dictionaries with list append semantics."""
+        result = base.copy()
+        for key, value in update.items():
+            if key not in result:
+                result[key] = value
+            elif isinstance(result[key], dict) and isinstance(value, dict):
+                result[key] = _MetadataMerger._deep_merge_dicts(result[key], value)
+            elif isinstance(result[key], list) and isinstance(value, list):
+                result[key] = result[key] + value
+            else:
+                result[key] = value
+        return result
+
+
 @dataclass(frozen=True)
 class LoadConfig:
     """Configuration for loading a TextObject.
@@ -64,15 +132,31 @@ class LoadConfig:
     source_file: Optional[Path] = None
 
     def __post_init__(self):
-        """Validate configuration."""
+        """Validate LoadConfig constraints.
+
+        Ensures exactly one source is provided for JSON format using XOR logic.
+
+        Raises:
+            ValueError: If JSON format specified without exactly one source
+        """
         valid_source = (self.source_str is None) ^ (self.source_file is None)
         if self.format == StorageFormat.JSON and not valid_source:
             raise ValueError("Either source_str or source_file (not both) must be set for JSON format.")
 
     def get_source_text(self) -> Optional[str]:
-        """Get source content as text if provided."""
+        """Get source content as text.
+
+        Reads from source_file if provided, otherwise returns source_str.
+
+        Returns:
+            Source text content, or None if neither source is set
+
+        Note:
+            This method is primarily used internally by TextObject.load()
+            for JSON format loading.
+        """
         if self.source_file is not None:
-            return read_str_from_file(self.source_file)
+            return str(read_str_from_file(self.source_file))
         return self.source_str
 
 
@@ -130,7 +214,17 @@ class AIResponse(BaseModel):
 
 @dataclass
 class SectionObject:
-    """Represents a section of text with metadata."""
+    """Represents a section of text with computed boundaries and optional metadata.
+
+    SectionObject is used internally by TextObject to track section ranges.
+    Unlike LogicalSection (which only has start_line), SectionObject includes
+    the computed end boundary.
+
+    Attributes:
+        title: Descriptive title of the section
+        section_range: Line range (start inclusive, end exclusive)
+        metadata: Optional section-specific metadata
+    """
 
     title: str
     section_range: SectionRange
@@ -140,7 +234,16 @@ class SectionObject:
     def from_logical_section(
         cls, logical_section: LogicalSection, end_line: int, metadata: Optional[Metadata] = None
     ) -> "SectionObject":
-        """Create a SectionObject from a LogicalSection model."""
+        """Create a SectionObject from a LogicalSection with computed end boundary.
+
+        Args:
+            logical_section: AI-generated section with start_line and title
+            end_line: Computed end boundary (exclusive)
+            metadata: Optional metadata for this section
+
+        Returns:
+            SectionObject with complete range information
+        """
         return cls(
             title=logical_section.title,
             section_range=SectionRange(logical_section.start_line, end_line),
@@ -160,7 +263,18 @@ class TextObjectInfo(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def _coerce_metadata(cls, data: Any) -> Any:
-        """Coerce metadata to Metadata before model creation to avoid post-hoc mutation."""
+        """Coerce raw dict to Metadata instance before Pydantic validation.
+
+        This pre-validator ensures metadata is always a Metadata instance,
+        avoiding post-initialization mutation and enabling proper method access
+        (to_yaml, add_process_info, etc.).
+
+        Args:
+            data: Raw input data dict
+
+        Returns:
+            Data with metadata coerced to Metadata instance if needed
+        """
         if isinstance(data, dict) and "metadata" in data and isinstance(data["metadata"], dict):
             data = {**data, "metadata": Metadata(data["metadata"])}
         return data
@@ -224,7 +338,7 @@ class SectionBoundaryError(ValidationError):
         )
 
 
-class TextObject(BaseModel):
+class TextObject:
     """
     Manages text content with section organization and metadata tracking.
 
@@ -250,43 +364,28 @@ class TextObject(BaseModel):
         >>> obj = TextObject(content, language="en")
     """
 
-    num_text: NumberedText
-    language: Optional[str] = None
-    sections: List[SectionObject] = Field(default_factory=list)
-    metadata: Metadata = Field(default_factory=Metadata)
-
-    model_config = ConfigDict(arbitrary_types_allowed=True, validate_assignment=True)
-
     def __init__(
         self,
         num_text: NumberedText,
         language: Optional[str] = None,
         sections: Optional[List[SectionObject]] = None,
         metadata: Optional[Metadata] = None,
+        validate_on_init: bool = True,
     ):
-        """Allow positional construction while routing through BaseModel init."""
-        super().__init__(
-            num_text=num_text,
-            language=language,
-            sections=sections or [],
-            metadata=metadata or Metadata(),
-        )
-
-    @model_validator(mode="after")
-    def _initialize_defaults(self) -> "TextObject":
-        """Derive defaults and validate sections after model creation."""
-        if self.language is None:
-            self.language = get_language_code_from_text(self.num_text.content)
-        if self.sections is None:
-            self.sections = []
-        if self.metadata is None:
-            self.metadata = Metadata()
-        if self.sections:
+        self.num_text = num_text
+        self.language = language or get_language_code_from_text(num_text.content)
+        self.sections = sections or []
+        self.metadata = metadata or Metadata()
+        if validate_on_init and self.sections:
             self.validate_sections()
-        return self
 
-    def __iter__(self) -> Iterator[SectionEntry]:
-        """Iterate through sections, yielding full section information."""
+    def __iter__(self) -> Iterator[SectionEntry]:  # type: ignore[override]
+        """Iterate through sections, yielding full section information.
+
+        Note: Pydantic BaseModel defines __iter__ for dict-like iteration over fields.
+        We override it here for domain-specific section iteration. The type: ignore
+        is intentional as we're providing a different iteration interface.
+        """
         if not self.sections:
             raise ValueError("No Sections available.")
 
@@ -298,13 +397,25 @@ class TextObject(BaseModel):
 
     def __str__(self) -> str:
         # Include metadata as frontmatter to preserve provenance/context when serialized.
-        return Frontmatter.embed(self.metadata, self.content)
+        return str(Frontmatter.embed(self.metadata, self.content))
 
     @staticmethod
     def _build_section_objects(
         logical_sections: List[LogicalSection], last_line: int, metadata: Optional[Metadata] = None
     ) -> List[SectionObject]:
-        """Convert LogicalSections to SectionObjects with proper ranges."""
+        """Convert LogicalSections to SectionObjects with computed end boundaries.
+
+        Each section's end line is computed as the start of the next section,
+        or last_line + 1 for the final section. This ensures contiguous coverage.
+
+        Args:
+            logical_sections: List of LogicalSection models from AI response
+            last_line: Last line number in the text (for final section boundary)
+            metadata: Optional metadata to attach to each section
+
+        Returns:
+            List of SectionObjects with computed ranges
+        """
         section_objects = []
 
         for i, section in enumerate(logical_sections):
@@ -351,7 +462,22 @@ class TextObject(BaseModel):
     def from_response(
         cls, response: AIResponse, existing_metadata: Metadata, num_text: "NumberedText"
     ) -> "TextObject":
-        """Create TextObject from AI response format."""
+        """Create TextObject from AI response with section boundaries and metadata.
+
+        Extracts sections, language, and metadata from an AI-generated response
+        (e.g., from sectioning or translation processing).
+
+        Args:
+            response: AIResponse model containing sections and metadata
+            existing_metadata: Base metadata to start with
+            num_text: NumberedText instance with the text content
+
+        Returns:
+            TextObject with sections and merged metadata from AI response
+
+        Note:
+            Merges metadata in order: existing → ai_summary/concepts/context → document_metadata
+        """
         # Create metadata from response
         ai_metadata = response.document_metadata
         new_metadata = Metadata(
@@ -385,66 +511,16 @@ class TextObject(BaseModel):
         if new_metadata is None:
             return
 
-        if strategy == MergeStrategy.PRESERVE:
-            for key, value in new_metadata.items():
-                if key not in self.metadata:
-                    self.metadata[key] = value
-
-        elif strategy == MergeStrategy.UPDATE:
-            self.metadata.update(new_metadata)
-
-        elif strategy == MergeStrategy.DEEP_MERGE:
-            merged_dict = self._deep_merge_metadata(
-                self.metadata._data,
-                new_metadata._data,
-            )
-            self.metadata._data = merged_dict
-
-        elif strategy == MergeStrategy.FAIL_ON_CONFLICT:
-            conflicts = set(self.metadata.keys()) & set(new_metadata.keys())
-            if conflicts:
-                raise MetadataConflictError(f"Metadata key conflicts: {sorted(conflicts)}")
-            self.metadata.update(new_metadata)
-
-        else:
-            raise ValueError(f"Unknown merge strategy: {strategy}")
-
+        merger = _MetadataMerger(self.metadata, new_metadata)
+        merger.merge(strategy)
         if source:
-            provenance = self.metadata.get("_provenance", [])
-            if not isinstance(provenance, list):
-                provenance = []
-            provenance.append(
-                {
-                    "timestamp": datetime.now(UTC).isoformat(),
-                    "source": source,
-                    "strategy": strategy.value,
-                    "keys_added": list(new_metadata.keys()),
-                }
-            )
-            self.metadata["_provenance"] = provenance
-            # NOTE: Provenance is intentionally unbounded for this interim implementation to unblock tnh-gen.
-            # Future work should consider capping or deduplicating provenance entries to avoid unbounded growth.
+            merger.add_provenance(source, strategy)
 
         logger.debug(
             "Merged metadata using %s strategy: %s keys",
             strategy.value,
             len(new_metadata),
         )
-
-    @staticmethod
-    def _deep_merge_metadata(base: Dict[str, Any], update: Dict[str, Any]) -> Dict[str, Any]:
-        """Recursively merge metadata dictionaries."""
-        result = base.copy()
-        for key, value in update.items():
-            if key not in result:
-                result[key] = value
-            elif isinstance(result[key], dict) and isinstance(value, dict):
-                result[key] = TextObject._deep_merge_metadata(result[key], value)
-            elif isinstance(result[key], list) and isinstance(value, list):
-                result[key] = result[key] + value
-            else:
-                result[key] = value
-        return result
 
     def merge_metadata_legacy(
         self,
@@ -463,8 +539,17 @@ class TextObject(BaseModel):
         strategy = MergeStrategy.UPDATE if override else MergeStrategy.PRESERVE
         self.merge_metadata(new_metadata, strategy=strategy)
 
-    def update_metadata(self, **kwargs) -> None:
-        """Update metadata with new key-value pairs."""
+    def update_metadata(self, **kwargs: Any) -> None:
+        """Update metadata with new key-value pairs using PRESERVE strategy.
+
+        Convenience method for adding metadata without overriding existing keys.
+
+        Args:
+            **kwargs: Key-value pairs to add to metadata
+
+        Example:
+            >>> obj.update_metadata(author="Thich Nhat Hanh", year=2020)
+        """
         new_metadata = Metadata(kwargs)
         self.merge_metadata(new_metadata)
 
@@ -477,38 +562,78 @@ class TextObject(BaseModel):
             raise ValueError("No sections set.")
 
         start_lines = [section.section_range.start for section in self.sections]
-        errors = self.num_text.validate_section_boundaries(start_lines)
-
-        if errors:
+        if errors := self.num_text.validate_section_boundaries(start_lines):
             if raise_on_error:
                 coverage_report = self.num_text.get_coverage_report(start_lines)
                 raise SectionBoundaryError(errors, coverage_report)
-            return errors
+            return list(errors)
 
         return []
 
     def get_section_content(self, index: int) -> str:
+        """Get content for a section by index.
+
+        Args:
+            index: Zero-based section index
+
+        Returns:
+            Section content as string
+
+        Raises:
+            ValueError: If no sections are available
+            IndexError: If index is out of range
+
+        Example:
+            >>> obj = TextObject(num_text, sections=[...])
+            >>> content = obj.get_section_content(0)  # First section
+        """
         if not self.sections:
             raise ValueError("No Sections available.")
-        """Get content for a section."""
         if index < 0 or index >= len(self.sections):
             raise IndexError("Section index out of range")
 
         section = self.sections[index]
-        return self.num_text.get_segment(section.section_range.start, section.section_range.end)
+        return str(self.num_text.get_segment(section.section_range.start, section.section_range.end))
 
     def export_info(self, source_file: Optional[Path] = None) -> TextObjectInfo:
-        """Export serializable state."""
+        """Export serializable state for persistence.
+
+        Args:
+            source_file: Optional path to source file to record in metadata
+
+        Returns:
+            TextObjectInfo instance containing serializable state
+
+        Note:
+            If source_file is provided, it will be resolved to an absolute path.
+        """
         if source_file:
             source_file = source_file.resolve()  # use absolute path for info
 
         return TextObjectInfo(
-            source_file=source_file, language=self.language, sections=self.sections, metadata=self.metadata
+            source_file=source_file,
+            language=self.language or "unknown",  # Guaranteed by validator but type system doesn't know
+            sections=self.sections,
+            metadata=self.metadata,
         )
 
     @classmethod
     def from_info(cls, info: TextObjectInfo, metadata: Metadata, num_text: "NumberedText") -> "TextObject":
-        """Create TextObject from info and content."""
+        """Create TextObject from serialized info and content.
+
+        Args:
+            info: Serialized TextObjectInfo with section and language data
+            metadata: Base metadata to merge into the object
+            num_text: NumberedText instance with the actual content
+
+        Returns:
+            TextObject instance with combined info and metadata
+
+        Example:
+            >>> info = TextObjectInfo.model_validate_json(json_str)
+            >>> text = read_str_from_file(info.source_file)
+            >>> obj = TextObject.from_info(info, Metadata(), NumberedText(text))
+        """
         text_obj = cls(
             num_text=num_text, language=info.language, sections=info.sections, metadata=info.metadata
         )
@@ -518,6 +643,19 @@ class TextObject(BaseModel):
 
     @classmethod
     def from_text_file(cls, file: Path) -> "TextObject":
+        """Create TextObject from a text file.
+
+        Reads the file and extracts any frontmatter metadata.
+
+        Args:
+            file: Path to text file
+
+        Returns:
+            TextObject instance with extracted content and metadata
+
+        Example:
+            >>> obj = TextObject.from_text_file(Path("document.txt"))
+        """
         text_str = read_str_from_file(file)
         return cls.from_str(text_str)
 
@@ -581,7 +719,13 @@ class TextObject(BaseModel):
             pretty: For JSON output, whether to pretty print
         """
         if isinstance(output_format, str):
-            output_format = StorageFormat(output_format)
+            try:
+                output_format = StorageFormat(output_format)
+            except ValueError as e:
+                raise ValueError(
+                    f"Invalid output_format '{output_format}'. "
+                    f"Valid options are: {[fmt.value for fmt in StorageFormat]}"
+                ) from e
 
         if output_format == StorageFormat.TEXT:
             # Full text output with metadata as frontmatter
@@ -592,6 +736,9 @@ class TextObject(BaseModel):
             info = self.export_info(source_file)
             json_str = info.model_dump_json(indent=2 if pretty else None)
             write_str_to_file(path, json_str)
+
+        else:
+            raise ValueError(f"Unknown output_format: {output_format}")
 
     @classmethod
     def load(cls, path: Path, config: Optional[LoadConfig] = None) -> "TextObject":
@@ -643,50 +790,85 @@ class TextObject(BaseModel):
         metadata: Optional[Metadata] = None,
         process_metadata: Optional[ProcessMetadata] = None,
         sections: Optional[List[SectionObject]] = None,
-    ) -> Self:
+    ) -> "TextObject":
         """
-        Update TextObject content and metadata **in place** and return self for chaining.
-
-        Optionally modifies the object's content, language, and adds process tracking.
-        Process history is maintained in metadata.
+        Return a **new** TextObject with requested changes; does not mutate the original.
 
         Args:
-            data_str: New text content
-            language: New language code
-            metadata: Metadata to merge into the object
-            process_metadata: Identifier and details for the process performed
+            data_str: Optional new text content
+            language: Optional new language code
+            metadata: Metadata to merge into the new object
+            process_metadata: Identifier/details for the process performed
             sections: Optional replacement list of sections
         """
-        # Update potentially changed elements
-        if data_str:
-            self.num_text = NumberedText(data_str)
-        if language:
-            self.language = language
+        new_num_text = NumberedText(data_str) if data_str is not None else self.num_text
+        new_language = language or self.language
+        new_sections = deepcopy(sections) if sections is not None else deepcopy(self.sections)
+        new_metadata = deepcopy(self.metadata)
         if metadata:
-            self.merge_metadata(metadata)
+            merger = _MetadataMerger(new_metadata, metadata)
+            merger.merge(MergeStrategy.UPDATE)
         if process_metadata:
-            self.metadata.add_process_info(process_metadata)
-        if sections:
-            self.sections = sections
+            new_metadata.add_process_info(process_metadata)
 
-        return self
+        return TextObject(
+            num_text=new_num_text,
+            language=new_language,
+            sections=new_sections,
+            metadata=new_metadata,
+        )
 
     @property
     def section_count(self) -> int:
+        """Get the total number of sections.
+
+        Returns:
+            Number of sections, or 0 if no sections defined
+        """
         return len(self.sections) if self.sections else 0
 
     @property
     def last_line_num(self) -> int:
-        return self.num_text.size
+        """Get the last line number in the text.
+
+        Returns:
+            Last line number (1-based indexing)
+        """
+        return int(self.num_text.size)
 
     @property
     def content(self) -> str:
-        return self.num_text.content
+        """Get the raw text content without line numbers.
+
+        Returns:
+            Plain text content as string
+        """
+        return str(self.num_text.content)
 
     @property
     def metadata_str(self) -> str:
-        return self.metadata.to_yaml()
+        """Get metadata as YAML-formatted string.
+
+        Returns:
+            YAML representation of metadata
+
+        Example:
+            >>> print(obj.metadata_str)
+            author: Thich Nhat Hanh
+            language: en
+        """
+        return str(self.metadata.to_yaml())
 
     @property
     def numbered_content(self) -> str:
-        return self.num_text.numbered_content
+        """Get text content with line numbers prefixed.
+
+        Returns:
+            Text with line numbers in format "  1 | line content"
+
+        Example:
+            >>> print(obj.numbered_content)
+              1 | First line
+              2 | Second line
+        """
+        return str(self.num_text.numbered_content)

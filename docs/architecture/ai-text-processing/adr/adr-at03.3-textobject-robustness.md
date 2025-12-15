@@ -969,11 +969,456 @@ class TextObject(BaseModel):
 - [x] Move initialization logic to `@model_validator(mode='after')` - [text_object.py:243-254](src/tnh_scholar/ai_text_processing/text_object.py:243-254)
 - [x] Update property accessors - Removed `_sections` and `_metadata` prefixes; fields now public
 - [x] Update `SectionBoundaryError` to inherit from `ValidationError` - [text_object.py:167](src/tnh_scholar/ai_text_processing/text_object.py:167)
-- [ ] Verify all tests pass with new Pydantic model - **PENDING TEST RUN**
-- [ ] Update any serialization code to use `.model_dump()` - **TO BE VERIFIED**
+- [x] Verify all tests pass with new Pydantic model - **ALL 9 TESTS PASSING**
+- [x] Update any serialization code to use `.model_dump()` - **VERIFIED: No changes needed**
 
 ### Related Artifacts
 
 - **TNH Scholar Architecture**: [ADR-OS01: Object-Service Architecture](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md) §1.1, §3.1
 - **Implementation File**: [src/tnh_scholar/ai_text_processing/text_object.py](src/tnh_scholar/ai_text_processing/text_object.py:196)
 - **Sibling Models**: `LogicalSection` (line 90), `AIResponse` (line 108), `TextObjectInfo` (line 152) - already using Pydantic v2
+
+---
+
+## Addendum 2025-12-14: Reversal - Plain Python Class for TextObject
+
+### Discovered Friction with Pydantic Implementation
+
+After implementing TextObject as a Pydantic v2 BaseModel (previous addendum), we identified **significant friction** that suggests Pydantic is not the right fit for this domain model:
+
+**Friction Points Observed:**
+
+1. **`__iter__` Override with `# type: ignore[override]`** ([text_object.py:412](../../src/tnh_scholar/ai_text_processing/text_object.py#L412))
+   - Pydantic's `BaseModel.__iter__` yields `(field_name, value)` for dict-like iteration
+   - TextObject needs domain-specific iteration over `SectionEntry` objects
+   - This fundamental semantic conflict requires suppressing type checking
+
+2. **Dual Validation Hooks** ([text_object.py:273-297](../../src/tnh_scholar/ai_text_processing/text_object.py#L273-L297))
+   - Required both `@model_validator(mode="before")` AND `model_post_init`
+   - Needed because `Metadata` is a `MutableMapping`, not a Pydantic model
+   - Suggests Pydantic's lifecycle doesn't match domain needs
+
+3. **`arbitrary_types_allowed=True`** ([text_object.py:382](../../src/tnh_scholar/ai_text_processing/text_object.py#L382))
+   - Required for `NumberedText` (plain class) and `Metadata` (MutableMapping)
+   - Disables much of Pydantic's validation power for core fields
+   - Defeats the primary benefit of using Pydantic
+
+**While the implementation works** (all 9 tests passing, zero mypy errors), the complexity indicates a **fundamental impedance mismatch** between Pydantic's data-centric model and TextObject's rich domain behavior.
+
+### Design Principle Discovery
+
+This friction led to an important design principle clarification documented in [Design Principles: Choosing Between Pydantic Models and Plain Python Classes](/development/design-principles.md#choosing-between-pydantic-models-and-plain-python-classes):
+
+**When NOT to use Pydantic BaseModel:**
+
+1. Custom iteration semantics that conflict with Pydantic's `__iter__`
+2. Core dependencies that are non-Pydantic types (requires `arbitrary_types_allowed`)
+3. Complex initialization requiring multiple validation hooks
+4. Rich domain behavior beyond data validation
+
+TextObject meets **all four criteria** for using a plain Python class instead of Pydantic.
+
+### Reversal Decision
+
+**Revert TextObject to plain Python class** while keeping `TextObjectInfo` as Pydantic DTO for serialization.
+
+**Rationale:**
+
+1. **Separation of Concerns**: Domain logic (TextObject) separate from serialization (TextObjectInfo)
+2. **Clean Iteration**: No `# type: ignore[override]` needed for domain-specific `__iter__`
+3. **Simple Initialization**: Plain `__init__` with explicit validation, no dual validators
+4. **No `arbitrary_types_allowed`**: Works naturally with NumberedText and Metadata
+5. **Follows Updated Design Principles**: Real-world example of when plain class is better
+6. **Living Design History**: Documents architectural learning for future work
+
+**Hybrid Pattern:**
+
+```python
+# Domain model: Plain Python class
+class TextObject:
+    """Rich domain model with complex behavior (NOT a Pydantic model)."""
+
+    def __init__(
+        self,
+        num_text: NumberedText,
+        language: Optional[str] = None,
+        sections: Optional[List[SectionObject]] = None,
+        metadata: Optional[Metadata] = None,
+    ):
+        self.num_text = num_text
+        self.language = language or get_language_code_from_text(num_text.content)
+        self.sections = sections or []
+        self.metadata = metadata or Metadata()
+
+        if self.sections:
+            self.validate_sections()
+
+    def __iter__(self) -> Iterator[SectionEntry]:
+        """Domain-specific iteration - clean, no type: ignore needed."""
+        for i, section in enumerate(self.sections):
+            content = self.num_text.get_segment(section.section_range.start, section.section_range.end)
+            yield SectionEntry(number=i + 1, title=section.title, content=content)
+
+    def export_info(self, source_file: Optional[Path] = None) -> TextObjectInfo:
+        """Convert to Pydantic DTO for serialization."""
+        return TextObjectInfo(
+            source_file=source_file,
+            language=self.language,
+            sections=self.sections,
+            metadata=self.metadata
+        )
+
+    @classmethod
+    def from_info(cls, info: TextObjectInfo, metadata: Metadata, num_text: NumberedText) -> "TextObject":
+        """Create from Pydantic DTO."""
+        return cls(
+            num_text=num_text,
+            language=info.language,
+            sections=info.sections,
+            metadata=metadata
+        )
+
+# DTO: Pydantic model for serialization (unchanged)
+class TextObjectInfo(BaseModel):
+    """Serializable snapshot of TextObject state."""
+    source_file: Optional[Path] = None
+    language: str
+    sections: List[SectionObject]
+    metadata: Metadata
+
+    @model_validator(mode="before")
+    @classmethod
+    def _coerce_metadata(cls, data: Any) -> Any:
+        """Coerce raw dict to Metadata instance before Pydantic validation."""
+        if isinstance(data, dict) and "metadata" in data and isinstance(data["metadata"], dict):
+            data = {**data, "metadata": Metadata(data["metadata"])}
+        return data
+```
+
+**Benefits of This Approach:**
+
+- ✅ **Clean Domain API**: No Pydantic-specific workarounds in TextObject
+- ✅ **Type Safety**: Pydantic validates TextObjectInfo DTOs
+- ✅ **Serialization**: `TextObjectInfo` provides JSON persistence via Pydantic
+- ✅ **Simplicity**: Each class has clear, focused purpose
+- ✅ **No Friction**: No `# type: ignore`, no `arbitrary_types_allowed`, no dual validators
+- ✅ **Architectural Learning**: Documents when plain class is better than Pydantic
+
+### Reversal Checklist
+
+Implementation tasks for code agent:
+
+- [ ] Convert `TextObject` from `BaseModel` back to plain Python class
+- [ ] Remove `model_config = ConfigDict(arbitrary_types_allowed=True)`
+- [ ] Convert class fields back to `__init__` parameters with type hints
+- [ ] Replace `@model_validator(mode='after')` with plain initialization logic in `__init__`
+- [ ] Remove `# type: ignore[override]` from `__iter__` method
+- [ ] Keep `TextObjectInfo` as Pydantic BaseModel unchanged (DTO for serialization)
+- [ ] Verify `export_info()` and `from_info()` work correctly with hybrid pattern
+- [ ] Run full test suite - confirm all 9 tests still passing
+- [ ] Run mypy - confirm zero type errors (should improve with removal of `type: ignore`)
+
+### ADR-OS01 Conformance Note
+
+This reversal does NOT violate ADR-OS01 §1.1 "Strong Typing" requirement. The updated Design Principles document clarifies:
+
+> **Default to Pydantic v2 `BaseModel` for domain models**, but use plain Python classes when Pydantic introduces significant friction.
+
+TextObject is a **rich domain model** with behavior beyond data validation. The hybrid pattern (plain class + Pydantic DTO) maintains type safety while avoiding Pydantic's lifecycle friction.
+
+**ADR-OS01 Compliance via Hybrid Pattern:**
+
+- ✅ **Type Safety**: Full type hints on `TextObject.__init__` and all methods
+- ✅ **Serialization**: `TextObjectInfo` (Pydantic) handles JSON persistence
+- ✅ **Validation**: Explicit validation methods with typed errors
+- ✅ **Transport**: Pydantic DTOs at serialization boundaries
+
+### Implementation References
+
+- **Design Principles Update**: [Choosing Between Pydantic Models and Plain Python Classes](/development/design-principles.md#choosing-between-pydantic-models-and-plain-python-classes)
+- **Examples in Codebase**:
+  - Plain classes: [NumberedText](../../src/tnh_scholar/text_processing/numbered_text.py), [Metadata](../../src/tnh_scholar/metadata/metadata.py)
+  - Pydantic DTOs: [TextObjectInfo](../../src/tnh_scholar/ai_text_processing/text_object.py), [LogicalSection](../../src/tnh_scholar/ai_text_processing/text_object.py)
+  - Pydantic domain models: [AIResponse](../../src/tnh_scholar/ai_text_processing/text_object.py), [CompletionResult](../../src/tnh_scholar/gen_ai_service/models/domain.py)
+
+### Lessons Learned
+
+**Key Insight**: Architectural consistency doesn't mean forcing every model into the same pattern. The "Strong Typing" principle is satisfied by:
+
+1. Using Pydantic where it excels (DTOs, simple models, serialization)
+2. Using plain classes where Pydantic creates friction (rich domain models, custom iteration)
+3. Maintaining type safety through explicit type hints and validation
+
+This addendum provides a **living example** of architectural decision-making based on real implementation experience, documenting the learning for future development work.
+
+---
+
+## Addendum 2025-12-14: Immutability - Refactor `transform()` to Return New Instance
+
+### Inconsistency Discovered
+
+After reverting TextObject to a plain Python class, a **design inconsistency** was identified in the `transform()` method:
+
+**Current Implementation** ([text_object.py:776-809](../../src/tnh_scholar/ai_text_processing/text_object.py#L776-L809)):
+
+```python
+def transform(
+    self,
+    data_str: Optional[str] = None,
+    language: Optional[str] = None,
+    metadata: Optional[Metadata] = None,
+    process_metadata: Optional[ProcessMetadata] = None,
+    sections: Optional[List[SectionObject]] = None,
+) -> Self:
+    """
+    Update TextObject content and metadata **in place** and return self for chaining.
+    """
+    # Update potentially changed elements
+    if data_str:
+        self.num_text = NumberedText(data_str)  # MUTATION
+    if language:
+        self.language = language  # MUTATION
+    if metadata:
+        self.merge_metadata(metadata)  # MUTATION
+    if process_metadata:
+        self.metadata.add_process_info(process_metadata)  # MUTATION
+    if sections:
+        self.sections = sections  # MUTATION
+
+    return self
+```
+
+**Problem**: This mutates the TextObject in place, violating the immutability design principle.
+
+**Design Principle** ([Design Principles: Immutability by Default](/development/design-principles.md#immutability-by-default)):
+
+> **Keep data models immutable** when possible for safer concurrent code
+
+**NumberedText Precedent** ([numbered_text.py:39-50](../../src/tnh_scholar/text_processing/numbered_text.py#L39-L50)):
+
+> **Immutable container for text documents** with numbered lines. Instances should not be modified after creation. All operations return new data rather than mutating the instance.
+
+### Usage Analysis
+
+The `transform()` method is used in **7-8 call sites** across the codebase:
+
+1. **line_translator.py** (2 calls):
+   - Translation: `text.transform(data_str=new_text, language=target_language)`
+   - Process tracking: `text.transform(process_metadata=process_metadata)`
+
+2. **ai_text_processing.py** (4 calls):
+   - Various processing stages adding process metadata
+
+3. **sent_split.py** (2 calls):
+   - Sentence splitting with new content
+
+**Current usage pattern**:
+
+```python
+# Pattern 1: Mutation with return value ignored
+text.transform(process_metadata=process_metadata)
+return text  # Callers expect mutation
+
+# Pattern 2: Chained mutation
+return text.transform(data_str=new_text, language=target_language)
+```
+
+### Proposed Refactor
+
+**Make `transform()` return a new TextObject instance** following immutability principles:
+
+```python
+def transform(
+    self,
+    data_str: Optional[str] = None,
+    language: Optional[str] = None,
+    metadata: Optional[Metadata] = None,
+    process_metadata: Optional[ProcessMetadata] = None,
+    sections: Optional[List[SectionObject]] = None,
+) -> "TextObject":
+    """
+    Create a new TextObject with transformed content and metadata.
+
+    Returns a new instance with updated values while preserving the original.
+    Follows immutability design principle for safer concurrent processing.
+
+    Args:
+        data_str: New text content (creates new NumberedText)
+        language: New language code
+        metadata: Metadata to merge into new instance
+        process_metadata: Process info to add to metadata
+        sections: Replacement section list
+
+    Returns:
+        New TextObject instance with transformed values
+
+    Example:
+        >>> original = TextObject(num_text, language="en")
+        >>> translated = original.transform(
+        ...     data_str=translated_text,
+        ...     language="es"
+        ... )
+        >>> assert original.language == "en"  # Original unchanged
+        >>> assert translated.language == "es"
+    """
+    # Start with current values
+    new_num_text = NumberedText(data_str) if data_str else self.num_text
+    new_language = language if language else self.language
+    new_sections = sections if sections else self.sections.copy()
+
+    # Deep copy metadata to avoid shared mutable state
+    new_metadata = Metadata(self.metadata._data.copy())
+
+    # Apply metadata updates to copy
+    if metadata:
+        new_metadata.update(metadata)
+    if process_metadata:
+        new_metadata.add_process_info(process_metadata)
+
+    # Return new instance
+    return TextObject(
+        num_text=new_num_text,
+        language=new_language,
+        sections=new_sections,
+        metadata=new_metadata,
+        validate_on_init=False,  # Skip validation (sections already validated)
+    )
+```
+
+### Migration Impact
+
+**Call Site Updates** (7-8 locations):
+
+```python
+# Before (mutation):
+text.transform(process_metadata=process_metadata)
+return text
+
+# After (immutable):
+result = text.transform(process_metadata=process_metadata)
+return result
+
+# Before (chained mutation):
+return text.transform(data_str=new_text, language=target_language)
+
+# After (immutable - no change needed):
+return text.transform(data_str=new_text, language=target_language)
+```
+
+**Breaking Change**: Code that relies on in-place mutation will need updates, but most call sites already use the return value.
+
+### Benefits
+
+**Immutability advantages**:
+
+1. **Thread Safety**: Original TextObject unchanged during transformation
+2. **Debugging**: No hidden state mutations to track
+3. **Testing**: Easier to verify transformations without side effects
+4. **Design Consistency**: Aligns with NumberedText's immutability principle
+5. **Functional Style**: Enables composable transformations
+
+**Example - Composable Transformations**:
+
+```python
+# Immutable style enables clear transformation chains
+original = TextObject.from_text_file(Path("input.txt"))
+
+translated = original.transform(
+    data_str=translate(original.content),
+    language="es"
+)
+
+sectioned = translated.transform(
+    sections=compute_sections(translated.content),
+    process_metadata=ProcessMetadata(step="sectioning")
+)
+
+# Original and intermediate results preserved
+assert original.language == "en"
+assert translated.language == "es"
+assert len(sectioned.sections) > 0
+```
+
+### Implementation Checklist
+
+- [ ] Refactor `transform()` to create and return new TextObject instance
+- [ ] Deep copy metadata to avoid shared mutable state
+- [ ] Add `validate_on_init=False` parameter to TextObject constructor (optimization)
+- [ ] Update 7-8 call sites in:
+  - [ ] `line_translator.py` (2 calls)
+  - [ ] `ai_text_processing.py` (4 calls)
+  - [ ] `sent_split.py` (2 calls)
+- [ ] Update `transform()` docstring with immutability guarantees and example
+- [ ] Add unit test verifying original instance unchanged after transform
+- [ ] Run full test suite - confirm all tests passing
+- [ ] Update AGENTLOG.md with immutability refactor notes
+
+### Design Principles Update
+
+This refactor reinforces the existing design principle:
+
+**[Immutability by Default](/development/design-principles.md#immutability-by-default)**:
+
+> **Keep data models immutable** when possible for safer concurrent code
+
+Add TextObject as example:
+
+```python
+# ✅ Preferred: Immutable transformation
+class TextObject:
+    def transform(self, ...) -> "TextObject":
+        """Return new instance with transformed values."""
+        return TextObject(...)  # New instance, original unchanged
+
+# 🚫 Avoid: In-place mutation
+class TextObject:
+    def transform(self, ...) -> Self:
+        """Mutate self and return for chaining."""
+        self.language = language  # Mutates original
+        return self
+```
+
+### Rationale
+
+**Why immutability matters for TextObject**:
+
+1. **Processing Pipelines**: TextObject flows through multi-stage pipelines (translate → section → process). Immutability prevents upstream stages from being affected by downstream transformations.
+
+2. **Provenance Tracking**: Metadata tracks processing history. Immutability ensures each transformation creates a new snapshot, preserving the full lineage.
+
+3. **Concurrent Processing**: Future parallelization of section processing requires thread-safe domain models.
+
+4. **Consistency with Dependencies**: NumberedText is immutable; TextObject should follow the same principle.
+
+### Alternative Considered: Frozen Dataclass
+
+**Approach**: Use `@dataclass(frozen=True)` to enforce immutability at runtime.
+
+**Rejected**:
+
+- Requires all fields to be frozen (including complex `Metadata` and `NumberedText`)
+- `Metadata` is intentionally mutable (`MutableMapping`) for flexibility
+- Runtime enforcement adds overhead for minimal benefit (convention over enforcement)
+- Plain class with immutable methods is sufficient
+
+**Decision**: Keep plain class with **immutable methods by convention**, documented in docstrings and enforced through code review.
+
+### Refactor Success Criteria
+
+This refactor succeeds if:
+
+1. ✅ `transform()` returns new TextObject instance
+2. ✅ Original TextObject unchanged after transformation
+3. ✅ All 7-8 call sites updated and tested
+4. ✅ Full test suite passes (9 TextObject tests + integration tests)
+5. ✅ No performance regression (deep copy overhead acceptable)
+6. ✅ Design principle reinforced with TextObject example
+
+### Implementation Artifacts
+
+- **NumberedText Immutability**: [numbered_text.py:39-50](../../src/tnh_scholar/text_processing/numbered_text.py#L39-L50) - "Immutable container... All operations return new data"
+- **Design Principles**: [Immutability by Default](/development/design-principles.md#immutability-by-default)
+- **Call Sites**:
+  - [line_translator.py:286](../../src/tnh_scholar/ai_text_processing/line_translator.py#L286)
+  - [ai_text_processing.py:297, 503, 537, 578](../../src/tnh_scholar/ai_text_processing/ai_text_processing.py)
+  - [sent_split.py:85](../../src/tnh_scholar/cli_tools/sent_split/sent_split.py#L85)
