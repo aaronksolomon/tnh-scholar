@@ -1,5 +1,6 @@
 .
 ├── AGENTLOG.md
+├── AGENTLOG_TEMPLATE.md
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── DEV_SETUP.md
@@ -8,6 +9,14 @@
 ├── README.md
 ├── TODO.md
 ├── VERSIONING.md
+├── archive
+│   ├── ISSUE_DRAFT_archive_linking.md
+│   ├── README.md
+│   └── agentlogs
+│       ├── AGENTLOG-12-07-25.md
+│       ├── AGENTLOG-12-10-25.md
+│       ├── AGENTLOG-12-11-25.md
+│       └── AGENTLOG-12-13-25.md
 ├── data
 │   └── books
 │       └── public_books
@@ -20,6 +29,10 @@
 │   │   │   │   ├── adr-at01-ai-text-processing.md
 │   │   │   │   ├── adr-at02-sectioning-textobject.md
 │   │   │   │   ├── adr-at03-object-service-refactor.md
+│   │   │   │   ├── adr-at03.1-transition-plan.md
+│   │   │   │   ├── adr-at03.2-numberedtext-validation.md
+│   │   │   │   ├── adr-at03.3-textobject-robustness.md
+│   │   │   │   ├── adr-at04-ai-text-processing-platform-strat.md
 │   │   │   │   └── index.md
 │   │   │   ├── design
 │   │   │   │   ├── data-flow-through-pipeline.mermaid
@@ -50,6 +63,7 @@
 │   │   │   │   ├── adr-a11-model-parameters-fix.md
 │   │   │   │   ├── adr-a12-prompt-system-fingerprinting-v1.md
 │   │   │   │   ├── adr-a13-migrate-openai-to-genaiservice.md
+│   │   │   │   ├── adr-a14-file-based-registry-system.md
 │   │   │   │   └── index.md
 │   │   │   ├── design
 │   │   │   │   ├── genai-service-design-strategy.md
@@ -58,6 +72,9 @@
 │   │   │   └── index.md
 │   │   ├── index.md
 │   │   ├── jvb-viewer
+│   │   │   ├── adr
+│   │   │   │   ├── adr-jv03-canonical-xml-ast.md
+│   │   │   │   └── adr-jvb01_as-built_jvb_viewer_v1.md
 │   │   │   ├── design
 │   │   │   │   ├── generate-md-translation-json-pairs.md
 │   │   │   │   ├── generate-md-vietnamese.md
@@ -97,12 +114,12 @@
 │   │   │   │   ├── adr-pt04-prompt-system-refactor.md
 │   │   │   │   └── index.md
 │   │   │   ├── archive
+│   │   │   │   ├── README.md
 │   │   │   │   ├── adr
 │   │   │   │   │   ├── adr-pt01-pattern-access-strategy.md
 │   │   │   │   │   ├── adr-pt02-adopt-pattern-and-patterncatalog.md
 │   │   │   │   │   └── index.md
-│   │   │   │   ├── core-pattern-architecture.md
-│   │   │   │   └── index.md
+│   │   │   │   └── core-pattern-architecture.md
 │   │   │   ├── index.md
 │   │   │   └── prompt-system-architecture.md
 │   │   ├── setup-tnh
@@ -117,7 +134,7 @@
 │   │   │   │   └── index.md
 │   │   │   ├── design
 │   │   │   │   └── archive
-│   │   │   │       ├── index.md
+│   │   │   │       ├── README.md
 │   │   │   │       ├── tnh-fab-cli-spec.md
 │   │   │   │       └── tnh-fab-design-document.md
 │   │   │   └── index.md
@@ -152,6 +169,10 @@
 │   │   │   └── vs-code-integration
 │   │   │       ├── adr-vsc01-vscode-integration-strategy.md
 │   │   │       ├── adr-vsc02-tnh-gen-cli-implementation.md
+│   │   │       ├── adr-vsc03-python-javascript-impedance-investigation.md
+│   │   │       ├── adr-vsc03.1-findings.md
+│   │   │       ├── adr-vsc03.2-real-world-survey-addendum.md
+│   │   │       ├── adr-vsc03.3-investigation-synthesis.md
 │   │   │       └── index.md
 │   │   ├── utilities
 │   │   │   ├── design
@@ -175,8 +196,8 @@
 │   │       │   └── youtube-api-vs-yt-dlp-eval.md
 │   │       └── index.md
 │   ├── archive
-│   │   ├── index-old.md
-│   │   └── index.md
+│   │   ├── README.md
+│   │   └── index-old.md
 │   ├── cli-reference
 │   │   ├── audio-transcribe.md
 │   │   ├── index.md
@@ -199,6 +220,16 @@
 │   │   ├── git-workflow.md
 │   │   ├── human-ai-software-engineering-principles.md
 │   │   ├── improvements-initial-structure.md
+│   │   ├── incident-reports
+│   │   │   ├── 2025-12-07-git-recovery.md
+│   │   │   ├── 2025-12-07-reference
+│   │   │   │   ├── compaction-summary.txt
+│   │   │   │   ├── convo-with-hard-reset.txt
+│   │   │   │   ├── forensic-analysis.md
+│   │   │   │   ├── implementation-summary.md
+│   │   │   │   ├── incident-report-updates.md
+│   │   │   │   └── index.md
+│   │   │   └── index.md
 │   │   ├── index.md
 │   │   ├── overview.md
 │   │   ├── release-workflow.md
@@ -404,10 +435,12 @@
 │   ├── generate_mkdocs_nav.py
 │   ├── generate_subdir_indexes.py
 │   ├── generate_tree.py
+│   ├── git-check-staleness.sh
 │   ├── prep_notebooks.py
 │   ├── prepare_pypi_readme.py
 │   ├── sync_readme.py
 │   ├── sync_root_docs.py
+│   ├── update_version.py
 │   ├── validate_markdown.py
 │   └── verify_doc_links.py
 ├── src
@@ -511,6 +544,7 @@
 │       │   ├── token_count
 │       │   │   ├── __init__.py
 │       │   │   └── token_count.py
+│       │   ├── utils.py
 │       │   └── ytt_fetch
 │       │       ├── __init__.py
 │       │       └── ytt_fetch.py
@@ -648,6 +682,7 @@
 │       │   ├── file_utils.py
 │       │   ├── json_utils.py
 │       │   ├── lang.py
+│       │   ├── math_utils.py
 │       │   ├── progress_utils.py
 │       │   ├── timing_utils.py
 │       │   ├── tnh_audio_segment.py
@@ -675,9 +710,15 @@
 │           └── xml_processing.py
 ├── src_directory_tree.txt
 └── tests
+    ├── ai_text_processing
+    │   └── test_text_object.py
     ├── cli_tools
+    │   ├── test_other_clis.py
+    │   ├── test_tnh_fab.py
     │   └── test_token_count.py
     ├── gen_ai_service
+    │   ├── test_completion_mapper.py
+    │   ├── test_policy_routing_safety.py
     │   ├── test_service.py
     │   ├── test_settings.py
     │   ├── test_simple_completion.py
@@ -696,7 +737,9 @@
     │   ├── test_models.py
     │   ├── test_renderer.py
     │   └── test_validator.py
-    └── text_processing
-        └── test_numbered_text.py
+    ├── text_processing
+    │   └── test_numbered_text.py
+    └── utils
+        └── test_math_utils.py
 
-156 directories, 544 files
+163 directories, 580 files
