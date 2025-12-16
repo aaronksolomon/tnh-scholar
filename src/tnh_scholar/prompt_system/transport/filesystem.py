@@ -15,7 +15,10 @@ class FilesystemTransport:
     def read_file(self, request: PromptFileRequest) -> PromptFileResponse:
         """Read a prompt file from disk."""
         content = request.path.read_text(encoding="utf-8")
-        metadata_raw, _ = self._mapper._split_frontmatter(content)
+        try:
+            metadata_raw, _ = self._mapper._split_frontmatter(content)
+        except Exception:
+            metadata_raw = {}
         return PromptFileResponse(
             content=content,
             metadata_raw=metadata_raw,
