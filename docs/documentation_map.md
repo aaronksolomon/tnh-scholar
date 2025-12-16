@@ -134,7 +134,6 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TNH Configuration Management](/architecture/configuration/tnh-configuration-management.md)
 - [TNH‑Scholar Utilities Catalog](/architecture/utilities/design/utilities-catalog.md)
 - [Versioning Policy Documentation Additions](/architecture/project-policies/versioning-policy-implementation-summary.md)
-- [vscode-vs-tnh-scholar-ai-integration-review](/architecture/ui-ux/vs-code-integration/vscode-vs-tnh-scholar-ai-integration-review.md)
 - [YouTube API vs yt-dlp Evaluation](/architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval.md)
 
 ## Development

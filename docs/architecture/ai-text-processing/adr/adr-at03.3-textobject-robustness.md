@@ -30,25 +30,25 @@ All core implementation items have been completed. The ADR design is now fully i
 
 ### 1. MetadataConflictError Definition
 
-- **Status**: ✅ **COMPLETED** - Added in [src/tnh_scholar/exceptions.py](src/tnh_scholar/exceptions.py:53-54)
+- **Status**: ✅ **COMPLETED** - Added in `src/tnh_scholar/exceptions.py:53-54`
 - **Action**: Use this for the `FAIL_ON_CONFLICT` merge strategy to surface metadata key collisions.
-- **Implementation**: [text_object.py:390-396](src/tnh_scholar/ai_text_processing/text_object.py:390-396)
+- **Implementation**: `src/tnh_scholar/ai_text_processing/text_object.py:390-396`
 
 ### 2. _deep_merge_metadata Must Preserve the Metadata Wrapper
 
-- **Status**: ✅ **COMPLETED** - Implemented in [text_object.py:383-388](src/tnh_scholar/ai_text_processing/text_object.py:383-388)
+- **Status**: ✅ **COMPLETED** - Implemented in `src/tnh_scholar/ai_text_processing/text_object.py:383-388`
 - **Problem**: Reassigning a raw dict to `self.metadata` would drop Metadata methods (`to_yaml`, `add_process_info`, etc.).
 - **Solution**: Correctly accesses `self.metadata._data` and `new_metadata._data`, then reassigns merged dict to `self.metadata._data`.
 
 ### 3. List Merge with Unhashable Elements
 
-- **Status**: ✅ **COMPLETED** - Implemented in [text_object.py:430-431](src/tnh_scholar/ai_text_processing/text_object.py:430-431)
+- **Status**: ✅ **COMPLETED** - Implemented in `src/tnh_scholar/ai_text_processing/text_object.py:430-431`
 - **Problem**: Deduping with `dict.fromkeys(result[key] + value)` fails on unhashable items (e.g., provenance dicts).
 - **Solution**: Uses simple append (`result[key] = result[key] + value`) without deduplication.
 
 ### 4. Validation Mode Default
 
-- **Status**: ✅ **COMPLETED** - Implemented in [text_object.py:458-475](src/tnh_scholar/ai_text_processing/text_object.py:458-475)
+- **Status**: ✅ **COMPLETED** - Implemented in `src/tnh_scholar/ai_text_processing/text_object.py:458-475`
 - **Problem**: Existing `validate_sections()` only warns; design requires fail-fast by default.
 - **Solution**: Defaults to `raise_on_error=True` with opt-out via `raise_on_error=False`.
 
@@ -60,7 +60,7 @@ All core implementation items have been completed. The ADR design is now fully i
 
 ### 6. SectionBoundaryError Exception Hierarchy
 
-- **Status**: ✅ **COMPLETED** - Implemented in [text_object.py:167-215](src/tnh_scholar/ai_text_processing/text_object.py:167-215)
+- **Status**: ✅ **COMPLETED** - Implemented in `src/tnh_scholar/ai_text_processing/text_object.py:167-215`
 - **Problem**: Must inherit from `ValidationError` per TNH Scholar exception standards.
 - **Solution**: `SectionBoundaryError(ValidationError)` with structured context including errors and coverage_report.
 
@@ -963,19 +963,19 @@ class TextObject(BaseModel):
 
 ### Migration Checklist
 
-- [x] Convert `TextObject` class definition to inherit from `BaseModel` - [text_object.py:217](src/tnh_scholar/ai_text_processing/text_object.py:217)
-- [x] Add `model_config = ConfigDict(arbitrary_types_allowed=True)` - [text_object.py:226](src/tnh_scholar/ai_text_processing/text_object.py:226)
-- [x] Convert `__init__` parameters to class fields with defaults - [text_object.py:221-224](src/tnh_scholar/ai_text_processing/text_object.py:221-224)
-- [x] Move initialization logic to `@model_validator(mode='after')` - [text_object.py:243-254](src/tnh_scholar/ai_text_processing/text_object.py:243-254)
+- [x] Convert `TextObject` class definition to inherit from `BaseModel` - `src/tnh_scholar/ai_text_processing/text_object.py:217`
+- [x] Add `model_config = ConfigDict(arbitrary_types_allowed=True)` - `src/tnh_scholar/ai_text_processing/text_object.py:226`
+- [x] Convert `__init__` parameters to class fields with defaults - `src/tnh_scholar/ai_text_processing/text_object.py:221-224`
+- [x] Move initialization logic to `@model_validator(mode='after')` - `src/tnh_scholar/ai_text_processing/text_object.py:243-254`
 - [x] Update property accessors - Removed `_sections` and `_metadata` prefixes; fields now public
-- [x] Update `SectionBoundaryError` to inherit from `ValidationError` - [text_object.py:167](src/tnh_scholar/ai_text_processing/text_object.py:167)
+- [x] Update `SectionBoundaryError` to inherit from `ValidationError` - `src/tnh_scholar/ai_text_processing/text_object.py:167`
 - [x] Verify all tests pass with new Pydantic model - **ALL 9 TESTS PASSING**
 - [x] Update any serialization code to use `.model_dump()` - **VERIFIED: No changes needed**
 
 ### Related Artifacts
 
 - **TNH Scholar Architecture**: [ADR-OS01: Object-Service Architecture](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md) §1.1, §3.1
-- **Implementation File**: [src/tnh_scholar/ai_text_processing/text_object.py](src/tnh_scholar/ai_text_processing/text_object.py:196)
+- **Implementation File**: `src/tnh_scholar/ai_text_processing/text_object.py:196`
 - **Sibling Models**: `LogicalSection` (line 90), `AIResponse` (line 108), `TextObjectInfo` (line 152) - already using Pydantic v2
 
 ---
@@ -988,17 +988,17 @@ After implementing TextObject as a Pydantic v2 BaseModel (previous addendum), we
 
 **Friction Points Observed:**
 
-1. **`__iter__` Override with `# type: ignore[override]`** ([text_object.py:412](../../src/tnh_scholar/ai_text_processing/text_object.py#L412))
+1. **`__iter__` Override with `# type: ignore[override]`** (`src/tnh_scholar/ai_text_processing/text_object.py:412`)
    - Pydantic's `BaseModel.__iter__` yields `(field_name, value)` for dict-like iteration
    - TextObject needs domain-specific iteration over `SectionEntry` objects
    - This fundamental semantic conflict requires suppressing type checking
 
-2. **Dual Validation Hooks** ([text_object.py:273-297](../../src/tnh_scholar/ai_text_processing/text_object.py#L273-L297))
+2. **Dual Validation Hooks** (`src/tnh_scholar/ai_text_processing/text_object.py:273-297`)
    - Required both `@model_validator(mode="before")` AND `model_post_init`
    - Needed because `Metadata` is a `MutableMapping`, not a Pydantic model
    - Suggests Pydantic's lifecycle doesn't match domain needs
 
-3. **`arbitrary_types_allowed=True`** ([text_object.py:382](../../src/tnh_scholar/ai_text_processing/text_object.py#L382))
+3. **`arbitrary_types_allowed=True`** (`src/tnh_scholar/ai_text_processing/text_object.py:382`)
    - Required for `NumberedText` (plain class) and `Metadata` (MutableMapping)
    - Disables much of Pydantic's validation power for core fields
    - Defeats the primary benefit of using Pydantic
@@ -1137,9 +1137,9 @@ TextObject is a **rich domain model** with behavior beyond data validation. The 
 
 - **Design Principles Update**: [Choosing Between Pydantic Models and Plain Python Classes](/development/design-principles.md#choosing-between-pydantic-models-and-plain-python-classes)
 - **Examples in Codebase**:
-  - Plain classes: [NumberedText](../../src/tnh_scholar/text_processing/numbered_text.py), [Metadata](../../src/tnh_scholar/metadata/metadata.py)
-  - Pydantic DTOs: [TextObjectInfo](../../src/tnh_scholar/ai_text_processing/text_object.py), [LogicalSection](../../src/tnh_scholar/ai_text_processing/text_object.py)
-  - Pydantic domain models: [AIResponse](../../src/tnh_scholar/ai_text_processing/text_object.py), [CompletionResult](../../src/tnh_scholar/gen_ai_service/models/domain.py)
+  - Plain classes: `src/tnh_scholar/text_processing/numbered_text.py`, `src/tnh_scholar/metadata/metadata.py`
+  - Pydantic DTOs: `src/tnh_scholar/ai_text_processing/text_object.py` (`TextObjectInfo`, `LogicalSection`)
+  - Pydantic domain models: `src/tnh_scholar/ai_text_processing/text_object.py` (`AIResponse`), `src/tnh_scholar/gen_ai_service/models/domain.py` (`CompletionResult`)
 
 ### Lessons Learned
 
@@ -1159,7 +1159,7 @@ This addendum provides a **living example** of architectural decision-making bas
 
 After reverting TextObject to a plain Python class, a **design inconsistency** was identified in the `transform()` method:
 
-**Current Implementation** ([text_object.py:776-809](../../src/tnh_scholar/ai_text_processing/text_object.py#L776-L809)):
+**Current Implementation** (`src/tnh_scholar/ai_text_processing/text_object.py:776-809`):
 
 ```python
 def transform(
@@ -1194,7 +1194,7 @@ def transform(
 
 > **Keep data models immutable** when possible for safer concurrent code
 
-**NumberedText Precedent** ([numbered_text.py:39-50](../../src/tnh_scholar/text_processing/numbered_text.py#L39-L50)):
+**NumberedText Precedent** (`src/tnh_scholar/text_processing/numbered_text.py:39-50`):
 
 > **Immutable container for text documents** with numbered lines. Instances should not be modified after creation. All operations return new data rather than mutating the instance.
 
@@ -1416,9 +1416,9 @@ This refactor succeeds if:
 
 ### Implementation Artifacts
 
-- **NumberedText Immutability**: [numbered_text.py:39-50](../../src/tnh_scholar/text_processing/numbered_text.py#L39-L50) - "Immutable container... All operations return new data"
+- **NumberedText Immutability**: `src/tnh_scholar/text_processing/numbered_text.py:39-50` - "Immutable container... All operations return new data"
 - **Design Principles**: [Immutability by Default](/development/design-principles.md#immutability-by-default)
 - **Call Sites**:
-  - [line_translator.py:286](../../src/tnh_scholar/ai_text_processing/line_translator.py#L286)
-  - [ai_text_processing.py:297, 503, 537, 578](../../src/tnh_scholar/ai_text_processing/ai_text_processing.py)
-  - [sent_split.py:85](../../src/tnh_scholar/cli_tools/sent_split/sent_split.py#L85)
+  - `src/tnh_scholar/ai_text_processing/line_translator.py:286`
+  - `src/tnh_scholar/ai_text_processing/ai_text_processing.py` (lines 297, 503, 537, 578)
+  - `src/tnh_scholar/cli_tools/sent_split/sent_split.py:85`

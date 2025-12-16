@@ -199,7 +199,6 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [Versioning Policy Documentation Additions](/architecture/project-policies/versioning-policy-implementation-summary.md) | Summary of documentation updates to clarify rapid prototype versioning policy | 2025-12-06 | `docs/architecture/project-policies/versioning-policy-implementation-summary.md` |
 | [Video Processing](/architecture/video-processing/index.md) | Table of contents for architecture/video-processing | 2025-12-11 | `docs/architecture/video-processing/index.md` |
 | [Vs Code Integration](/architecture/ui-ux/vs-code-integration/index.md) | Table of contents for architecture/ui-ux/vs-code-integration | 2025-12-11 | `docs/architecture/ui-ux/vs-code-integration/index.md` |
-| [vscode-vs-tnh-scholar-ai-integration-review](/architecture/ui-ux/vs-code-integration/vscode-vs-tnh-scholar-ai-integration-review.md) |  |  | `docs/architecture/ui-ux/vs-code-integration/vscode-vs-tnh-scholar-ai-integration-review.md` |
 | [YouTube API vs yt-dlp Evaluation](/architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval.md) | Comparison of using the YouTube Data API versus yt-dlp for fetching Plum Village media assets. | 2025-01-21 | `docs/architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval.md` |
 | [Ytt Fetch](/architecture/ytt-fetch/index.md) | Table of contents for architecture/ytt-fetch | 2025-12-11 | `docs/architecture/ytt-fetch/index.md` |
 

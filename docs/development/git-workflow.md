@@ -4,13 +4,39 @@ description: "Safe git practices for TNH Scholar development to prevent data los
 author: "Claude Sonnet 4.5"
 status: "current"
 created: "2025-12-07"
-updated: "2025-12-08"
+updated: "2025-12-15"
 owner: "Engineering"
 ---
 
 # Git Workflow & Safety Guide
 
 This guide establishes safe git practices to prevent accidental data loss.
+
+## Pre-Commit Hooks: DISABLED
+
+**Status**: Pre-commit hooks are **permanently disabled** for this project.
+
+**Reason**: Pre-commit hooks with `pass_filenames: false` (mypy, version-sync) automatically stash unstaged changes during commit. If the restore fails (due to branch switching, interruptions, or timing issues), **work is silently lost** to `.cache/pre-commit/patch*` files instead of git stash, making recovery difficult.
+
+**New Workflow**: Run quality checks manually before committing:
+
+```bash
+# BEFORE every commit, run:
+make ci-check
+
+# This runs all checks that pre-commit would have run:
+# - Ruff linting
+# - Type checking (mypy)
+# - Documentation validation
+# - Tests
+
+# If checks pass, commit with hooks disabled:
+git add .
+git commit -m "your message"
+git push
+```
+
+**Recovery if work was lost**: Check `/Users/phapman/.cache/pre-commit/patch*` files (sorted by timestamp) and apply with `git apply <patch-file>`.
 
 ## Critical Safety Rules
 

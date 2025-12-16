@@ -299,11 +299,11 @@ The real-world survey (ADR-VSC03.2) provides strong validation for TNH Scholar's
 
 ## Related ADRs
 
-- **[ADR-VSC01: VS Code Integration Strategy](adr-vsc01-vscode-integration-strategy.md)** - CLI-first integration (validated)
-- **[ADR-VSC03: Python-JavaScript Impedance Investigation](adr-vsc03-python-javascript-impedance-investigation.md)** - Parent investigation
-- **[ADR-VSC03.2: Real-World Survey Addendum](adr-vsc03.2-real-world-survey-addendum.md)** - Survey findings
-- **[ADR-AT03.2: NumberedText Monaco Alignment](../../../architecture/ai-text-processing/adr/adr-at03.2-numberedtext-validation.md)** - Monaco alignment decision (validated)
-- **[ADR-AT03.3: TextObject Robustness](../../../architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness.md)** - Object-service conformance (validated)
+- **[ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)** - CLI-first integration (validated)
+- **[ADR-VSC03: Python-JavaScript Impedance Investigation](/architecture/ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation.md)** - Parent investigation
+- **[ADR-VSC03.2: Real-World Survey Addendum](/architecture/ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum.md)** - Survey findings
+- **[ADR-AT03.2: NumberedText Monaco Alignment](/architecture/ai-text-processing/adr/adr-at03.2-numberedtext-validation.md)** - Monaco alignment decision (validated)
+- **[ADR-AT03.3: TextObject Robustness](/architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness.md)** - Object-service conformance (validated)
 
 ---
 
