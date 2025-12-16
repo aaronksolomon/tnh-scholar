@@ -9,7 +9,7 @@
         <meta name="description" content="Fixes metadata propagation bugs, enhances section validation, and adds merge strategies to TextObject for reliable ai_text_processing workflows">
       
       
-        <meta name="author" content="Aaron Solomon, Claude Sonnet 4.5">
+        <meta name="author" content="Aaron Solomon, Claude Sonnet 4.5, Codex Max">
       
       
       
@@ -2055,7 +2055,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -2073,7 +2073,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -2094,6 +2094,93 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-fix-checklist-2025-12-14-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Fix Checklist (2025-12-14 update)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Fix Checklist (2025-12-14 update)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-metadataconflicterror-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. MetadataConflictError Definition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-_deep_merge_metadata-must-preserve-the-metadata-wrapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. _deep_merge_metadata Must Preserve the Metadata Wrapper
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-list-merge-with-unhashable-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. List Merge with Unhashable Elements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-validation-mode-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Validation Mode Default
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-section-end-line-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Section End-Line Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-sectionboundaryerror-exception-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. SectionBoundaryError Exception Hierarchy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-pydantic-v2-basemodel-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Pydantic v2 BaseModel Conversion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions-discovered-during-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions (Discovered During Implementation)
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#context" class="md-nav__link">
@@ -2409,9 +2496,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#phase-1-add-new-apis-backward-compatible" class="md-nav__link">
+  <a href="#phase-1-add-new-apis-fail-fast-by-default" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 1: Add New APIs (Backward Compatible)
+      Phase 1: Add New APIs (Fail-Fast by Default)
     </span>
   </a>
   
@@ -2472,6 +2559,258 @@
   <a href="#implementation-files" class="md-nav__link">
     <span class="md-ellipsis">
       Implementation Files
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2025-12-14-pydantic-v2-basemodel-requirement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2025-12-14: Pydantic v2 BaseModel Requirement
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Addendum 2025-12-14: Pydantic v2 BaseModel Requirement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#background-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#addendum-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#related-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Artifacts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2025-12-14-reversal-plain-python-class-for-textobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2025-12-14: Reversal - Plain Python Class for TextObject
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Addendum 2025-12-14: Reversal - Plain Python Class for TextObject">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discovered-friction-with-pydantic-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovered Friction with Pydantic Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-principle-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Principle Discovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reversal-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reversal Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reversal-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reversal Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-os01-conformance-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-OS01 Conformance Note
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation References
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lessons Learned
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2025-12-14-immutability-refactor-transform-to-return-new-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2025-12-14: Immutability - Refactor transform() to Return New Instance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Addendum 2025-12-14: Immutability - Refactor transform() to Return New Instance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inconsistency-discovered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inconsistency Discovered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proposed-refactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proposed Refactor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Impact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-principles-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Principles Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-considered-frozen-dataclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative Considered: Frozen Dataclass
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refactor-success-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refactor Success Criteria
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Artifacts
     </span>
   </a>
   
@@ -8472,6 +8811,93 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#implementation-fix-checklist-2025-12-14-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Fix Checklist (2025-12-14 update)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Fix Checklist (2025-12-14 update)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-metadataconflicterror-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. MetadataConflictError Definition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-_deep_merge_metadata-must-preserve-the-metadata-wrapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. _deep_merge_metadata Must Preserve the Metadata Wrapper
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-list-merge-with-unhashable-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. List Merge with Unhashable Elements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-validation-mode-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Validation Mode Default
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-section-end-line-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Section End-Line Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-sectionboundaryerror-exception-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. SectionBoundaryError Exception Hierarchy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-pydantic-v2-basemodel-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Pydantic v2 BaseModel Conversion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions-discovered-during-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions (Discovered During Implementation)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       Context
@@ -8785,9 +9211,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#phase-1-add-new-apis-backward-compatible" class="md-nav__link">
+  <a href="#phase-1-add-new-apis-fail-fast-by-default" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 1: Add New APIs (Backward Compatible)
+      Phase 1: Add New APIs (Fail-Fast by Default)
     </span>
   </a>
   
@@ -8858,6 +9284,258 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2025-12-14-pydantic-v2-basemodel-requirement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2025-12-14: Pydantic v2 BaseModel Requirement
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Addendum 2025-12-14: Pydantic v2 BaseModel Requirement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#background-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#addendum-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#related-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Artifacts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2025-12-14-reversal-plain-python-class-for-textobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2025-12-14: Reversal - Plain Python Class for TextObject
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Addendum 2025-12-14: Reversal - Plain Python Class for TextObject">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discovered-friction-with-pydantic-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovered Friction with Pydantic Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-principle-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Principle Discovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reversal-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reversal Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reversal-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reversal Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-os01-conformance-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-OS01 Conformance Note
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation References
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lessons Learned
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2025-12-14-immutability-refactor-transform-to-return-new-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2025-12-14: Immutability - Refactor transform() to Return New Instance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Addendum 2025-12-14: Immutability - Refactor transform() to Return New Instance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inconsistency-discovered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inconsistency Discovered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proposed-refactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proposed Refactor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Impact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-principles-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Principles Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-considered-frozen-dataclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative Considered: Frozen Dataclass
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refactor-success-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refactor Success Criteria
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Artifacts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -8879,7 +9557,7 @@
 <h1 id="adr-at033-textobject-robustness-and-metadata-management">ADR-AT03.3: TextObject Robustness and Metadata Management<a class="headerlink" href="#adr-at033-textobject-robustness-and-metadata-management" title="Link to this section">&para;</a></h1>
 <p>Fixes critical metadata propagation bugs, enhances section validation using NumberedText capabilities (ADR-AT03.2), and adds explicit merge strategies to TextObject for reliable text processing workflows.</p>
 <ul>
-<li><strong>Status</strong>: Proposed</li>
+<li><strong>Status</strong>: Accepted</li>
 <li><strong>Type</strong>: Design Detail</li>
 <li><strong>Date</strong>: 2025-12-12</li>
 <li><strong>Owner</strong>: aaronksolomon</li>
@@ -8887,6 +9565,56 @@
 <li><strong>Parent ADR</strong>: <a href="../adr-at03-object-service-refactor/">ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen</a></li>
 <li><strong>Related ADRs</strong>: <a href="../adr-at03.2-numberedtext-validation/">ADR-AT03.2: NumberedText Validation</a>, <a href="../adr-at03.1-transition-plan/">ADR-AT03.1: Transition Plan</a></li>
 </ul>
+<hr />
+<h2 id="implementation-fix-checklist-2025-12-14-update">Implementation Fix Checklist (2025-12-14 update)<a class="headerlink" href="#implementation-fix-checklist-2025-12-14-update" title="Link to this section">&para;</a></h2>
+<p>All core implementation items have been completed. The ADR design is now fully implemented in the codebase.</p>
+<h3 id="1-metadataconflicterror-definition">1. MetadataConflictError Definition<a class="headerlink" href="#1-metadataconflicterror-definition" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>Status</strong>: ✅ <strong>COMPLETED</strong> - Added in <code>src/tnh_scholar/exceptions.py:53-54</code></li>
+<li><strong>Action</strong>: Use this for the <code>FAIL_ON_CONFLICT</code> merge strategy to surface metadata key collisions.</li>
+<li><strong>Implementation</strong>: <code>src/tnh_scholar/ai_text_processing/text_object.py:390-396</code></li>
+</ul>
+<h3 id="2-_deep_merge_metadata-must-preserve-the-metadata-wrapper">2. _deep_merge_metadata Must Preserve the Metadata Wrapper<a class="headerlink" href="#2-_deep_merge_metadata-must-preserve-the-metadata-wrapper" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>Status</strong>: ✅ <strong>COMPLETED</strong> - Implemented in <code>src/tnh_scholar/ai_text_processing/text_object.py:383-388</code></li>
+<li><strong>Problem</strong>: Reassigning a raw dict to <code>self.metadata</code> would drop Metadata methods (<code>to_yaml</code>, <code>add_process_info</code>, etc.).</li>
+<li><strong>Solution</strong>: Correctly accesses <code>self.metadata._data</code> and <code>new_metadata._data</code>, then reassigns merged dict to <code>self.metadata._data</code>.</li>
+</ul>
+<h3 id="3-list-merge-with-unhashable-elements">3. List Merge with Unhashable Elements<a class="headerlink" href="#3-list-merge-with-unhashable-elements" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>Status</strong>: ✅ <strong>COMPLETED</strong> - Implemented in <code>src/tnh_scholar/ai_text_processing/text_object.py:430-431</code></li>
+<li><strong>Problem</strong>: Deduping with <code>dict.fromkeys(result[key] + value)</code> fails on unhashable items (e.g., provenance dicts).</li>
+<li><strong>Solution</strong>: Uses simple append (<code>result[key] = result[key] + value</code>) without deduplication.</li>
+</ul>
+<h3 id="4-validation-mode-default">4. Validation Mode Default<a class="headerlink" href="#4-validation-mode-default" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>Status</strong>: ✅ <strong>COMPLETED</strong> - Implemented in <code>src/tnh_scholar/ai_text_processing/text_object.py:458-475</code></li>
+<li><strong>Problem</strong>: Existing <code>validate_sections()</code> only warns; design requires fail-fast by default.</li>
+<li><strong>Solution</strong>: Defaults to <code>raise_on_error=True</code> with opt-out via <code>raise_on_error=False</code>.</li>
+</ul>
+<h3 id="5-section-end-line-strategy">5. Section End-Line Strategy<a class="headerlink" href="#5-section-end-line-strategy" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>Status</strong>: ✅ <strong>COMPLETED</strong> - Documented in code comments</li>
+<li><strong>Problem</strong>: Validation checks only start lines; callers might assume custom end bounds are honored.</li>
+<li><strong>Solution</strong>: Start lines are authoritative; <code>_build_section_objects</code> derives end lines (each section ends where the next begins).</li>
+</ul>
+<h3 id="6-sectionboundaryerror-exception-hierarchy">6. SectionBoundaryError Exception Hierarchy<a class="headerlink" href="#6-sectionboundaryerror-exception-hierarchy" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>Status</strong>: ✅ <strong>COMPLETED</strong> - Implemented in <code>src/tnh_scholar/ai_text_processing/text_object.py:167-215</code></li>
+<li><strong>Problem</strong>: Must inherit from <code>ValidationError</code> per TNH Scholar exception standards.</li>
+<li><strong>Solution</strong>: <code>SectionBoundaryError(ValidationError)</code> with structured context including errors and coverage_report.</li>
+</ul>
+<h3 id="7-pydantic-v2-basemodel-conversion">7. Pydantic v2 BaseModel Conversion<a class="headerlink" href="#7-pydantic-v2-basemodel-conversion" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>Status</strong>: ✅ <strong>COMPLETED</strong> - See Addendum 2025-12-14 below</li>
+<li><strong>Problem</strong>: TextObject was a plain Python class, violating ADR-OS01 §1.1 "Strong Typing" requirement.</li>
+<li><strong>Solution</strong>: Converted to Pydantic v2 BaseModel with <code>ConfigDict(arbitrary_types_allowed=True)</code> and <code>@model_validator</code>.</li>
+</ul>
+<hr />
+<h2 id="open-questions-discovered-during-implementation">Open Questions (Discovered During Implementation)<a class="headerlink" href="#open-questions-discovered-during-implementation" title="Link to this section">&para;</a></h2>
+<ol>
+<li><strong>Provenance growth bounds</strong>: <code>TextObject.merge_metadata</code> appends provenance entries without deduplication or size limits. For this interim tnh-gen unblock, provenance is intentionally unbounded. Future maintainers should decide on a policy (e.g., cap entries, drop oldest, or deduplicate by source/strategy/keys) during the planned TextObject rebuild.</li>
+</ol>
 <hr />
 <h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
 <h3 id="the-problem">The Problem<a class="headerlink" href="#the-problem" title="Link to this section">&para;</a></h3>
@@ -8897,13 +9625,15 @@
 <p><strong>Weak Section Validation</strong>: <code>validate_sections()</code> (lines 359-372) only logs warnings and doesn't leverage NumberedText's boundary checking capabilities.</p>
 </li>
 <li>
-<p><strong>Metadata Merge Ambiguity</strong>: <code>merge_metadata()</code> (lines 324-352) has an <code>override</code> parameter but the semantics are confusing:
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">if</span> <span class="n">override</span><span class="p">:</span>
+<p><strong>Metadata Merge Ambiguity</strong>: <code>merge_metadata()</code> (lines 324-352) has an <code>override</code> parameter but the semantics are confusing:</p>
+</li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">if</span> <span class="n">override</span><span class="p">:</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">|=</span> <span class="n">new_metadata</span>  <span class="c1"># new overrides existing</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">else</span><span class="p">:</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">new_metadata</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span>  <span class="c1"># existing preserved</span>
-</span></code></pre></div></p>
-</li>
+</span></code></pre></div>
+<ul>
 <li>Which values win in nested dicts?</li>
 <li>How are lists merged?</li>
 <li>
@@ -8915,7 +9645,7 @@
 <li>
 <p><strong>No Provenance Chain</strong>: Metadata operations don't track transformation history (who merged what when).</p>
 </li>
-</ol>
+</ul>
 <h3 id="current-implementation">Current Implementation<a class="headerlink" href="#current-implementation" title="Link to this section">&para;</a></h3>
 <p>From <code>text_object.py:359-372</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">validate_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -9054,6 +9784,9 @@
 <li><strong>Fail-fast default</strong>: Raises exception by default to catch errors early</li>
 <li><strong>Opt-in non-throwing</strong>: Can return error list for batch validation scenarios</li>
 <li><strong>Rich diagnostics</strong>: Exception includes coverage report with gap/overlap details</li>
+<li><strong>Start-line authoritative</strong>: Validation only checks start lines because end lines are <strong>derived</strong>
+  from start lines (each section ends where the next begins, per <code>_build_section_objects:243-246</code>).
+  This is the TextObject contract: callers supply start lines, ends are computed automatically.</li>
 </ul>
 <h3 id="2-explicit-metadata-merge-strategies">2. Explicit Metadata Merge Strategies<a class="headerlink" href="#2-explicit-metadata-merge-strategies" title="Link to this section">&para;</a></h3>
 <p>Replace ambiguous <code>override</code> parameter with explicit merge strategies:</p>
@@ -9111,61 +9844,68 @@
 </span><span id="__span-4-52"><a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a>
 </span><span id="__span-4-53"><a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a>        <span class="k">elif</span> <span class="n">strategy</span> <span class="o">==</span> <span class="n">MergeStrategy</span><span class="o">.</span><span class="n">DEEP_MERGE</span><span class="p">:</span>
 </span><span id="__span-4-54"><a id="__codelineno-4-54" name="__codelineno-4-54" href="#__codelineno-4-54"></a>            <span class="c1"># Deep merge nested structures</span>
-</span><span id="__span-4-55"><a id="__codelineno-4-55" name="__codelineno-4-55" href="#__codelineno-4-55"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deep_merge_metadata</span><span class="p">(</span>
-</span><span id="__span-4-56"><a id="__codelineno-4-56" name="__codelineno-4-56" href="#__codelineno-4-56"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">,</span>
-</span><span id="__span-4-57"><a id="__codelineno-4-57" name="__codelineno-4-57" href="#__codelineno-4-57"></a>                <span class="n">new_metadata</span>
+</span><span id="__span-4-55"><a id="__codelineno-4-55" name="__codelineno-4-55" href="#__codelineno-4-55"></a>            <span class="n">merged_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deep_merge_metadata</span><span class="p">(</span>
+</span><span id="__span-4-56"><a id="__codelineno-4-56" name="__codelineno-4-56" href="#__codelineno-4-56"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span>
+</span><span id="__span-4-57"><a id="__codelineno-4-57" name="__codelineno-4-57" href="#__codelineno-4-57"></a>                <span class="n">new_metadata</span><span class="o">.</span><span class="n">_data</span>
 </span><span id="__span-4-58"><a id="__codelineno-4-58" name="__codelineno-4-58" href="#__codelineno-4-58"></a>            <span class="p">)</span>
-</span><span id="__span-4-59"><a id="__codelineno-4-59" name="__codelineno-4-59" href="#__codelineno-4-59"></a>
-</span><span id="__span-4-60"><a id="__codelineno-4-60" name="__codelineno-4-60" href="#__codelineno-4-60"></a>        <span class="k">elif</span> <span class="n">strategy</span> <span class="o">==</span> <span class="n">MergeStrategy</span><span class="o">.</span><span class="n">FAIL_ON_CONFLICT</span><span class="p">:</span>
-</span><span id="__span-4-61"><a id="__codelineno-4-61" name="__codelineno-4-61" href="#__codelineno-4-61"></a>            <span class="c1"># Check for conflicts first</span>
-</span><span id="__span-4-62"><a id="__codelineno-4-62" name="__codelineno-4-62" href="#__codelineno-4-62"></a>            <span class="n">conflicts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">new_metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-</span><span id="__span-4-63"><a id="__codelineno-4-63" name="__codelineno-4-63" href="#__codelineno-4-63"></a>            <span class="k">if</span> <span class="n">conflicts</span><span class="p">:</span>
-</span><span id="__span-4-64"><a id="__codelineno-4-64" name="__codelineno-4-64" href="#__codelineno-4-64"></a>                <span class="k">raise</span> <span class="n">MetadataConflictError</span><span class="p">(</span>
-</span><span id="__span-4-65"><a id="__codelineno-4-65" name="__codelineno-4-65" href="#__codelineno-4-65"></a>                    <span class="sa">f</span><span class="s2">&quot;Metadata key conflicts: </span><span class="si">{</span><span class="n">conflicts</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-4-66"><a id="__codelineno-4-66" name="__codelineno-4-66" href="#__codelineno-4-66"></a>                <span class="p">)</span>
-</span><span id="__span-4-67"><a id="__codelineno-4-67" name="__codelineno-4-67" href="#__codelineno-4-67"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_metadata</span><span class="p">)</span>
-</span><span id="__span-4-68"><a id="__codelineno-4-68" name="__codelineno-4-68" href="#__codelineno-4-68"></a>
-</span><span id="__span-4-69"><a id="__codelineno-4-69" name="__codelineno-4-69" href="#__codelineno-4-69"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-</span><span id="__span-4-70"><a id="__codelineno-4-70" name="__codelineno-4-70" href="#__codelineno-4-70"></a>            <span class="sa">f</span><span class="s2">&quot;Merged metadata using </span><span class="si">{</span><span class="n">strategy</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> strategy: &quot;</span>
-</span><span id="__span-4-71"><a id="__codelineno-4-71" name="__codelineno-4-71" href="#__codelineno-4-71"></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">new_metadata</span><span class="p">)</span><span class="si">}</span><span class="s2"> keys&quot;</span>
-</span><span id="__span-4-72"><a id="__codelineno-4-72" name="__codelineno-4-72" href="#__codelineno-4-72"></a>        <span class="p">)</span>
-</span><span id="__span-4-73"><a id="__codelineno-4-73" name="__codelineno-4-73" href="#__codelineno-4-73"></a>
-</span><span id="__span-4-74"><a id="__codelineno-4-74" name="__codelineno-4-74" href="#__codelineno-4-74"></a>    <span class="nd">@staticmethod</span>
-</span><span id="__span-4-75"><a id="__codelineno-4-75" name="__codelineno-4-75" href="#__codelineno-4-75"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_deep_merge_metadata</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">update</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="__span-4-76"><a id="__codelineno-4-76" name="__codelineno-4-76" href="#__codelineno-4-76"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursively merge metadata dictionaries.</span>
-</span><span id="__span-4-77"><a id="__codelineno-4-77" name="__codelineno-4-77" href="#__codelineno-4-77"></a>
-</span><span id="__span-4-78"><a id="__codelineno-4-78" name="__codelineno-4-78" href="#__codelineno-4-78"></a><span class="sd">        Rules:</span>
-</span><span id="__span-4-79"><a id="__codelineno-4-79" name="__codelineno-4-79" href="#__codelineno-4-79"></a><span class="sd">            - Nested dicts: Recursively merge</span>
-</span><span id="__span-4-80"><a id="__codelineno-4-80" name="__codelineno-4-80" href="#__codelineno-4-80"></a><span class="sd">            - Lists: Append update items to base (deduplicate)</span>
-</span><span id="__span-4-81"><a id="__codelineno-4-81" name="__codelineno-4-81" href="#__codelineno-4-81"></a><span class="sd">            - Scalars: Update value overrides base value</span>
-</span><span id="__span-4-82"><a id="__codelineno-4-82" name="__codelineno-4-82" href="#__codelineno-4-82"></a>
-</span><span id="__span-4-83"><a id="__codelineno-4-83" name="__codelineno-4-83" href="#__codelineno-4-83"></a><span class="sd">        Args:</span>
-</span><span id="__span-4-84"><a id="__codelineno-4-84" name="__codelineno-4-84" href="#__codelineno-4-84"></a><span class="sd">            base: Base metadata dict</span>
-</span><span id="__span-4-85"><a id="__codelineno-4-85" name="__codelineno-4-85" href="#__codelineno-4-85"></a><span class="sd">            update: Update metadata dict</span>
-</span><span id="__span-4-86"><a id="__codelineno-4-86" name="__codelineno-4-86" href="#__codelineno-4-86"></a>
-</span><span id="__span-4-87"><a id="__codelineno-4-87" name="__codelineno-4-87" href="#__codelineno-4-87"></a><span class="sd">        Returns:</span>
-</span><span id="__span-4-88"><a id="__codelineno-4-88" name="__codelineno-4-88" href="#__codelineno-4-88"></a><span class="sd">            Merged metadata dict</span>
-</span><span id="__span-4-89"><a id="__codelineno-4-89" name="__codelineno-4-89" href="#__codelineno-4-89"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-4-90"><a id="__codelineno-4-90" name="__codelineno-4-90" href="#__codelineno-4-90"></a>        <span class="n">result</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</span><span id="__span-4-91"><a id="__codelineno-4-91" name="__codelineno-4-91" href="#__codelineno-4-91"></a>
-</span><span id="__span-4-92"><a id="__codelineno-4-92" name="__codelineno-4-92" href="#__codelineno-4-92"></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">update</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span id="__span-4-93"><a id="__codelineno-4-93" name="__codelineno-4-93" href="#__codelineno-4-93"></a>            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-</span><span id="__span-4-94"><a id="__codelineno-4-94" name="__codelineno-4-94" href="#__codelineno-4-94"></a>                <span class="c1"># New key: add directly</span>
-</span><span id="__span-4-95"><a id="__codelineno-4-95" name="__codelineno-4-95" href="#__codelineno-4-95"></a>                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-</span><span id="__span-4-96"><a id="__codelineno-4-96" name="__codelineno-4-96" href="#__codelineno-4-96"></a>
-</span><span id="__span-4-97"><a id="__codelineno-4-97" name="__codelineno-4-97" href="#__codelineno-4-97"></a>            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-</span><span id="__span-4-98"><a id="__codelineno-4-98" name="__codelineno-4-98" href="#__codelineno-4-98"></a>                <span class="c1"># Both dicts: recurse</span>
-</span><span id="__span-4-99"><a id="__codelineno-4-99" name="__codelineno-4-99" href="#__codelineno-4-99"></a>                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">TextObject</span><span class="o">.</span><span class="n">_deep_merge_metadata</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
-</span><span id="__span-4-100"><a id="__codelineno-4-100" name="__codelineno-4-100" href="#__codelineno-4-100"></a>
-</span><span id="__span-4-101"><a id="__codelineno-4-101" name="__codelineno-4-101" href="#__codelineno-4-101"></a>            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-</span><span id="__span-4-102"><a id="__codelineno-4-102" name="__codelineno-4-102" href="#__codelineno-4-102"></a>                <span class="c1"># Both lists: append and deduplicate</span>
-</span><span id="__span-4-103"><a id="__codelineno-4-103" name="__codelineno-4-103" href="#__codelineno-4-103"></a>                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">value</span><span class="p">))</span>
-</span><span id="__span-4-104"><a id="__codelineno-4-104" name="__codelineno-4-104" href="#__codelineno-4-104"></a>
-</span><span id="__span-4-105"><a id="__codelineno-4-105" name="__codelineno-4-105" href="#__codelineno-4-105"></a>            <span class="k">else</span><span class="p">:</span>
-</span><span id="__span-4-106"><a id="__codelineno-4-106" name="__codelineno-4-106" href="#__codelineno-4-106"></a>                <span class="c1"># Scalar or type mismatch: override with update value</span>
-</span><span id="__span-4-107"><a id="__codelineno-4-107" name="__codelineno-4-107" href="#__codelineno-4-107"></a>                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-</span><span id="__span-4-108"><a id="__codelineno-4-108" name="__codelineno-4-108" href="#__codelineno-4-108"></a>
-</span><span id="__span-4-109"><a id="__codelineno-4-109" name="__codelineno-4-109" href="#__codelineno-4-109"></a>        <span class="k">return</span> <span class="n">result</span>
+</span><span id="__span-4-59"><a id="__codelineno-4-59" name="__codelineno-4-59" href="#__codelineno-4-59"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">merged_dict</span>
+</span><span id="__span-4-60"><a id="__codelineno-4-60" name="__codelineno-4-60" href="#__codelineno-4-60"></a>
+</span><span id="__span-4-61"><a id="__codelineno-4-61" name="__codelineno-4-61" href="#__codelineno-4-61"></a>        <span class="k">elif</span> <span class="n">strategy</span> <span class="o">==</span> <span class="n">MergeStrategy</span><span class="o">.</span><span class="n">FAIL_ON_CONFLICT</span><span class="p">:</span>
+</span><span id="__span-4-62"><a id="__codelineno-4-62" name="__codelineno-4-62" href="#__codelineno-4-62"></a>            <span class="c1"># Check for conflicts first</span>
+</span><span id="__span-4-63"><a id="__codelineno-4-63" name="__codelineno-4-63" href="#__codelineno-4-63"></a>            <span class="n">conflicts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">new_metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</span><span id="__span-4-64"><a id="__codelineno-4-64" name="__codelineno-4-64" href="#__codelineno-4-64"></a>            <span class="k">if</span> <span class="n">conflicts</span><span class="p">:</span>
+</span><span id="__span-4-65"><a id="__codelineno-4-65" name="__codelineno-4-65" href="#__codelineno-4-65"></a>                <span class="k">raise</span> <span class="n">MetadataConflictError</span><span class="p">(</span>
+</span><span id="__span-4-66"><a id="__codelineno-4-66" name="__codelineno-4-66" href="#__codelineno-4-66"></a>                    <span class="sa">f</span><span class="s2">&quot;Metadata key conflicts: </span><span class="si">{</span><span class="n">conflicts</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-4-67"><a id="__codelineno-4-67" name="__codelineno-4-67" href="#__codelineno-4-67"></a>                <span class="p">)</span>
+</span><span id="__span-4-68"><a id="__codelineno-4-68" name="__codelineno-4-68" href="#__codelineno-4-68"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_metadata</span><span class="p">)</span>
+</span><span id="__span-4-69"><a id="__codelineno-4-69" name="__codelineno-4-69" href="#__codelineno-4-69"></a>
+</span><span id="__span-4-70"><a id="__codelineno-4-70" name="__codelineno-4-70" href="#__codelineno-4-70"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+</span><span id="__span-4-71"><a id="__codelineno-4-71" name="__codelineno-4-71" href="#__codelineno-4-71"></a>            <span class="sa">f</span><span class="s2">&quot;Merged metadata using </span><span class="si">{</span><span class="n">strategy</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> strategy: &quot;</span>
+</span><span id="__span-4-72"><a id="__codelineno-4-72" name="__codelineno-4-72" href="#__codelineno-4-72"></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">new_metadata</span><span class="p">)</span><span class="si">}</span><span class="s2"> keys&quot;</span>
+</span><span id="__span-4-73"><a id="__codelineno-4-73" name="__codelineno-4-73" href="#__codelineno-4-73"></a>        <span class="p">)</span>
+</span><span id="__span-4-74"><a id="__codelineno-4-74" name="__codelineno-4-74" href="#__codelineno-4-74"></a>
+</span><span id="__span-4-75"><a id="__codelineno-4-75" name="__codelineno-4-75" href="#__codelineno-4-75"></a>    <span class="nd">@staticmethod</span>
+</span><span id="__span-4-76"><a id="__codelineno-4-76" name="__codelineno-4-76" href="#__codelineno-4-76"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_deep_merge_metadata</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">update</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="__span-4-77"><a id="__codelineno-4-77" name="__codelineno-4-77" href="#__codelineno-4-77"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursively merge metadata dictionaries.</span>
+</span><span id="__span-4-78"><a id="__codelineno-4-78" name="__codelineno-4-78" href="#__codelineno-4-78"></a>
+</span><span id="__span-4-79"><a id="__codelineno-4-79" name="__codelineno-4-79" href="#__codelineno-4-79"></a><span class="sd">        Rules:</span>
+</span><span id="__span-4-80"><a id="__codelineno-4-80" name="__codelineno-4-80" href="#__codelineno-4-80"></a><span class="sd">            - Nested dicts: Recursively merge</span>
+</span><span id="__span-4-81"><a id="__codelineno-4-81" name="__codelineno-4-81" href="#__codelineno-4-81"></a><span class="sd">            - Lists: Append update items to base (no deduplication for unhashable items)</span>
+</span><span id="__span-4-82"><a id="__codelineno-4-82" name="__codelineno-4-82" href="#__codelineno-4-82"></a><span class="sd">            - Scalars: Update value overrides base value</span>
+</span><span id="__span-4-83"><a id="__codelineno-4-83" name="__codelineno-4-83" href="#__codelineno-4-83"></a>
+</span><span id="__span-4-84"><a id="__codelineno-4-84" name="__codelineno-4-84" href="#__codelineno-4-84"></a><span class="sd">        Args:</span>
+</span><span id="__span-4-85"><a id="__codelineno-4-85" name="__codelineno-4-85" href="#__codelineno-4-85"></a><span class="sd">            base: Base metadata dict (raw dict from Metadata._data)</span>
+</span><span id="__span-4-86"><a id="__codelineno-4-86" name="__codelineno-4-86" href="#__codelineno-4-86"></a><span class="sd">            update: Update metadata dict (raw dict from Metadata._data)</span>
+</span><span id="__span-4-87"><a id="__codelineno-4-87" name="__codelineno-4-87" href="#__codelineno-4-87"></a>
+</span><span id="__span-4-88"><a id="__codelineno-4-88" name="__codelineno-4-88" href="#__codelineno-4-88"></a><span class="sd">        Returns:</span>
+</span><span id="__span-4-89"><a id="__codelineno-4-89" name="__codelineno-4-89" href="#__codelineno-4-89"></a><span class="sd">            Merged metadata dict (to be assigned back to Metadata._data)</span>
+</span><span id="__span-4-90"><a id="__codelineno-4-90" name="__codelineno-4-90" href="#__codelineno-4-90"></a>
+</span><span id="__span-4-91"><a id="__codelineno-4-91" name="__codelineno-4-91" href="#__codelineno-4-91"></a><span class="sd">        Note:</span>
+</span><span id="__span-4-92"><a id="__codelineno-4-92" name="__codelineno-4-92" href="#__codelineno-4-92"></a><span class="sd">            This is an interim implementation for ADR-AT03.3. List merging is kept simple</span>
+</span><span id="__span-4-93"><a id="__codelineno-4-93" name="__codelineno-4-93" href="#__codelineno-4-93"></a><span class="sd">            to avoid TypeError with unhashable elements (e.g., provenance dicts).</span>
+</span><span id="__span-4-94"><a id="__codelineno-4-94" name="__codelineno-4-94" href="#__codelineno-4-94"></a><span class="sd">            For production use, consider more sophisticated merge strategies.</span>
+</span><span id="__span-4-95"><a id="__codelineno-4-95" name="__codelineno-4-95" href="#__codelineno-4-95"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-4-96"><a id="__codelineno-4-96" name="__codelineno-4-96" href="#__codelineno-4-96"></a>        <span class="n">result</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</span><span id="__span-4-97"><a id="__codelineno-4-97" name="__codelineno-4-97" href="#__codelineno-4-97"></a>
+</span><span id="__span-4-98"><a id="__codelineno-4-98" name="__codelineno-4-98" href="#__codelineno-4-98"></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">update</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-4-99"><a id="__codelineno-4-99" name="__codelineno-4-99" href="#__codelineno-4-99"></a>            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+</span><span id="__span-4-100"><a id="__codelineno-4-100" name="__codelineno-4-100" href="#__codelineno-4-100"></a>                <span class="c1"># New key: add directly</span>
+</span><span id="__span-4-101"><a id="__codelineno-4-101" name="__codelineno-4-101" href="#__codelineno-4-101"></a>                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</span><span id="__span-4-102"><a id="__codelineno-4-102" name="__codelineno-4-102" href="#__codelineno-4-102"></a>
+</span><span id="__span-4-103"><a id="__codelineno-4-103" name="__codelineno-4-103" href="#__codelineno-4-103"></a>            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="__span-4-104"><a id="__codelineno-4-104" name="__codelineno-4-104" href="#__codelineno-4-104"></a>                <span class="c1"># Both dicts: recurse</span>
+</span><span id="__span-4-105"><a id="__codelineno-4-105" name="__codelineno-4-105" href="#__codelineno-4-105"></a>                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">TextObject</span><span class="o">.</span><span class="n">_deep_merge_metadata</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
+</span><span id="__span-4-106"><a id="__codelineno-4-106" name="__codelineno-4-106" href="#__codelineno-4-106"></a>
+</span><span id="__span-4-107"><a id="__codelineno-4-107" name="__codelineno-4-107" href="#__codelineno-4-107"></a>            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+</span><span id="__span-4-108"><a id="__codelineno-4-108" name="__codelineno-4-108" href="#__codelineno-4-108"></a>                <span class="c1"># Both lists: simple append (preserves order, no deduplication)</span>
+</span><span id="__span-4-109"><a id="__codelineno-4-109" name="__codelineno-4-109" href="#__codelineno-4-109"></a>                <span class="c1"># Note: Avoids TypeError with unhashable items like provenance dicts</span>
+</span><span id="__span-4-110"><a id="__codelineno-4-110" name="__codelineno-4-110" href="#__codelineno-4-110"></a>                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">value</span>
+</span><span id="__span-4-111"><a id="__codelineno-4-111" name="__codelineno-4-111" href="#__codelineno-4-111"></a>
+</span><span id="__span-4-112"><a id="__codelineno-4-112" name="__codelineno-4-112" href="#__codelineno-4-112"></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-4-113"><a id="__codelineno-4-113" name="__codelineno-4-113" href="#__codelineno-4-113"></a>                <span class="c1"># Scalar or type mismatch: override with update value</span>
+</span><span id="__span-4-114"><a id="__codelineno-4-114" name="__codelineno-4-114" href="#__codelineno-4-114"></a>                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</span><span id="__span-4-115"><a id="__codelineno-4-115" name="__codelineno-4-115" href="#__codelineno-4-115"></a>
+</span><span id="__span-4-116"><a id="__codelineno-4-116" name="__codelineno-4-116" href="#__codelineno-4-116"></a>        <span class="k">return</span> <span class="n">result</span>
 </span></code></pre></div>
 <p><strong>Design Notes</strong>:</p>
 <ul>
@@ -9173,6 +9913,8 @@
 <li><strong>Deep merge support</strong>: Handles nested dicts and list appending</li>
 <li><strong>Fail-on-conflict option</strong>: Enables strict metadata validation</li>
 <li><strong>Backward compatible</strong>: Old <code>merge_metadata(override=True)</code> → <code>MergeStrategy.UPDATE</code></li>
+<li><strong>Metadata contract</strong>: <code>merge_metadata</code> expects <strong>sanitized <code>Metadata</code> instances</strong>, not raw dicts.
+  Values pass through <code>Metadata</code> processing for JSON-serializable types; callers must not bypass it.</li>
 </ul>
 <h3 id="3-metadata-provenance-tracking">3. Metadata Provenance Tracking<a class="headerlink" href="#3-metadata-provenance-tracking" title="Link to this section">&para;</a></h3>
 <p>Add provenance chain to track metadata transformations:</p>
@@ -9599,11 +10341,13 @@
 </ul>
 <hr />
 <h2 id="migration-path">Migration Path<a class="headerlink" href="#migration-path" title="Link to this section">&para;</a></h2>
-<h3 id="phase-1-add-new-apis-backward-compatible">Phase 1: Add New APIs (Backward Compatible)<a class="headerlink" href="#phase-1-add-new-apis-backward-compatible" title="Link to this section">&para;</a></h3>
+<h3 id="phase-1-add-new-apis-fail-fast-by-default">Phase 1: Add New APIs (Fail-Fast by Default)<a class="headerlink" href="#phase-1-add-new-apis-fail-fast-by-default" title="Link to this section">&para;</a></h3>
 <ul>
 <li>Add new <code>merge_metadata()</code> with <code>strategy</code> parameter</li>
 <li>Keep old <code>merge_metadata()</code> signature working via deprecation wrapper</li>
-<li>Update <code>validate_sections()</code> but default to non-throwing mode</li>
+<li>Update <code>validate_sections()</code> to <strong>fail-fast by default</strong> (<code>raise_on_error=True</code>)</li>
+<li><strong>Rationale</strong>: This is an interim implementation to unblock tnh-gen, not a final solution.
+    Fail-fast catches errors early during development and prevents silent failures.</li>
 </ul>
 <h3 id="phase-2-gradual-adoption">Phase 2: Gradual Adoption<a class="headerlink" href="#phase-2-gradual-adoption" title="Link to this section">&para;</a></h3>
 <ul>
@@ -9644,6 +10388,505 @@
 <hr />
 <p><strong>Approval Path</strong>: Architecture review → Implementation → Unit tests → Integration with ADR-AT03.2</p>
 <p><em>This ADR completes the TextObject robustness improvements (AT03 Tier 0) and establishes the foundation for GenAI Service integration (AT03 Tier 2) and prompt system adoption (AT03 Tier 3).</em></p>
+<hr />
+<h2 id="addendum-2025-12-14-pydantic-v2-basemodel-requirement">Addendum 2025-12-14: Pydantic v2 BaseModel Requirement<a class="headerlink" href="#addendum-2025-12-14-pydantic-v2-basemodel-requirement" title="Link to this section">&para;</a></h2>
+<h3 id="background-context">Background Context<a class="headerlink" href="#background-context" title="Link to this section">&para;</a></h3>
+<p>During implementation review, we identified that TextObject violates ADR-OS01 §1.1 "Strong Typing" principle:</p>
+<blockquote>
+<p>"All payloads, parameters, and responses use <strong>Pydantic</strong> or dataclass models"</p>
+</blockquote>
+<p><strong>Current State</strong>: TextObject is implemented as a plain Python class with manual attribute assignment, while sibling models (<code>LogicalSection</code>, <code>AIResponse</code>, <code>TextObjectInfo</code>) correctly use Pydantic v2 <code>BaseModel</code>.</p>
+<p><strong>ADR-OS01 Conformance Requirement</strong> (§3.1 Layer Structure):</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Example Classes</th>
+<th>Type Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Domain Models</strong></td>
+<td><code>CompletionResult</code>, <code>SpeakerBlock</code></td>
+<td>Pydantic or dataclass</td>
+</tr>
+</tbody>
+</table>
+<h3 id="addendum-decision">Addendum Decision<a class="headerlink" href="#addendum-decision" title="Link to this section">&para;</a></h3>
+<p><strong>Convert TextObject to Pydantic v2 BaseModel</strong> to align with TNH Scholar's object-service architecture principles.</p>
+<p><strong>Rationale</strong>:</p>
+<ol>
+<li><strong>Consistency</strong>: All domain models in <code>ai_text_processing</code> should use the same pattern</li>
+<li><strong>Type Safety</strong>: Pydantic enforces runtime validation of <code>num_text</code>, <code>language</code>, <code>sections</code>, <code>metadata</code></li>
+<li><strong>Serialization</strong>: Automatic <code>.model_dump()</code> and <code>.model_dump_json()</code> support</li>
+<li><strong>Validation</strong>: Leverage <code>@model_validator</code> for complex initialization logic (auto-detect language, validate sections)</li>
+<li><strong>Future-Proof</strong>: Enables easier integration with GenAI Service and prompt system (AT03 Tier 2+3)</li>
+</ol>
+<h3 id="implementation-strategy">Implementation Strategy<a class="headerlink" href="#implementation-strategy" title="Link to this section">&para;</a></h3>
+<p><strong>Challenge</strong>: TextObject has complex initialization logic that requires careful migration:</p>
+<ol>
+<li>Auto-detection of <code>language</code> from content if not provided</li>
+<li>Automatic section validation on construction</li>
+<li>Support for <code>NumberedText</code> (non-Pydantic type)</li>
+</ol>
+<p><strong>Solution</strong>: Use Pydantic v2's <code>model_validator</code> with <code>arbitrary_types_allowed</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">TextObject</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Domain model for text content with section organization.&quot;&quot;&quot;</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>        <span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Allow NumberedText</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>        <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    <span class="p">)</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    <span class="n">num_text</span><span class="p">:</span> <span class="n">NumberedText</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>    <span class="n">language</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># Will be auto-detected if empty</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>    <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SectionObject</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>    <span class="n">metadata</span><span class="p">:</span> <span class="n">Metadata</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">Metadata</span><span class="p">)</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;after&#39;</span><span class="p">)</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Post-initialization validation and defaults.&quot;&quot;&quot;</span>
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>        <span class="c1"># Auto-detect language if not provided</span>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">:</span>
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">get_language_code_from_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_text</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>        <span class="c1"># Validate sections if provided</span>
+</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+</span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">validate_sections</span><span class="p">()</span>
+</span><span id="__span-11-26"><a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>
+</span><span id="__span-11-27"><a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>        <span class="k">return</span> <span class="bp">self</span>
+</span></code></pre></div>
+<p><strong>Private Attributes</strong>: The <code>_sections</code> and <code>_metadata</code> private attributes become public fields managed by Pydantic. The property accessors remain for backward compatibility.</p>
+<p><strong>Backward Compatibility</strong>: All existing methods and properties remain unchanged; only the internal class structure changes.</p>
+<h3 id="migration-checklist">Migration Checklist<a class="headerlink" href="#migration-checklist" title="Link to this section">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Convert <code>TextObject</code> class definition to inherit from <code>BaseModel</code> - <code>src/tnh_scholar/ai_text_processing/text_object.py:217</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Add <code>model_config = ConfigDict(arbitrary_types_allowed=True)</code> - <code>src/tnh_scholar/ai_text_processing/text_object.py:226</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Convert <code>__init__</code> parameters to class fields with defaults - <code>src/tnh_scholar/ai_text_processing/text_object.py:221-224</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Move initialization logic to <code>@model_validator(mode='after')</code> - <code>src/tnh_scholar/ai_text_processing/text_object.py:243-254</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Update property accessors - Removed <code>_sections</code> and <code>_metadata</code> prefixes; fields now public</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Update <code>SectionBoundaryError</code> to inherit from <code>ValidationError</code> - <code>src/tnh_scholar/ai_text_processing/text_object.py:167</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Verify all tests pass with new Pydantic model - <strong>ALL 9 TESTS PASSING</strong></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Update any serialization code to use <code>.model_dump()</code> - <strong>VERIFIED: No changes needed</strong></li>
+</ul>
+<h3 id="related-artifacts">Related Artifacts<a class="headerlink" href="#related-artifacts" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>TNH Scholar Architecture</strong>: <a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/">ADR-OS01: Object-Service Architecture</a> §1.1, §3.1</li>
+<li><strong>Implementation File</strong>: <code>src/tnh_scholar/ai_text_processing/text_object.py:196</code></li>
+<li><strong>Sibling Models</strong>: <code>LogicalSection</code> (line 90), <code>AIResponse</code> (line 108), <code>TextObjectInfo</code> (line 152) - already using Pydantic v2</li>
+</ul>
+<hr />
+<h2 id="addendum-2025-12-14-reversal-plain-python-class-for-textobject">Addendum 2025-12-14: Reversal - Plain Python Class for TextObject<a class="headerlink" href="#addendum-2025-12-14-reversal-plain-python-class-for-textobject" title="Link to this section">&para;</a></h2>
+<h3 id="discovered-friction-with-pydantic-implementation">Discovered Friction with Pydantic Implementation<a class="headerlink" href="#discovered-friction-with-pydantic-implementation" title="Link to this section">&para;</a></h3>
+<p>After implementing TextObject as a Pydantic v2 BaseModel (previous addendum), we identified <strong>significant friction</strong> that suggests Pydantic is not the right fit for this domain model:</p>
+<p><strong>Friction Points Observed:</strong></p>
+<ol>
+<li><strong><code>__iter__</code> Override with <code># type: ignore[override]</code></strong> (<code>src/tnh_scholar/ai_text_processing/text_object.py:412</code>)</li>
+<li>Pydantic's <code>BaseModel.__iter__</code> yields <code>(field_name, value)</code> for dict-like iteration</li>
+<li>TextObject needs domain-specific iteration over <code>SectionEntry</code> objects</li>
+<li>
+<p>This fundamental semantic conflict requires suppressing type checking</p>
+</li>
+<li>
+<p><strong>Dual Validation Hooks</strong> (<code>src/tnh_scholar/ai_text_processing/text_object.py:273-297</code>)</p>
+</li>
+<li>Required both <code>@model_validator(mode="before")</code> AND <code>model_post_init</code></li>
+<li>Needed because <code>Metadata</code> is a <code>MutableMapping</code>, not a Pydantic model</li>
+<li>
+<p>Suggests Pydantic's lifecycle doesn't match domain needs</p>
+</li>
+<li>
+<p><strong><code>arbitrary_types_allowed=True</code></strong> (<code>src/tnh_scholar/ai_text_processing/text_object.py:382</code>)</p>
+</li>
+<li>Required for <code>NumberedText</code> (plain class) and <code>Metadata</code> (MutableMapping)</li>
+<li>Disables much of Pydantic's validation power for core fields</li>
+<li>Defeats the primary benefit of using Pydantic</li>
+</ol>
+<p><strong>While the implementation works</strong> (all 9 tests passing, zero mypy errors), the complexity indicates a <strong>fundamental impedance mismatch</strong> between Pydantic's data-centric model and TextObject's rich domain behavior.</p>
+<h3 id="design-principle-discovery">Design Principle Discovery<a class="headerlink" href="#design-principle-discovery" title="Link to this section">&para;</a></h3>
+<p>This friction led to an important design principle clarification documented in <a href="../../../../development/design-principles/#choosing-between-pydantic-models-and-plain-python-classes">Design Principles: Choosing Between Pydantic Models and Plain Python Classes</a>:</p>
+<p><strong>When NOT to use Pydantic BaseModel:</strong></p>
+<ol>
+<li>Custom iteration semantics that conflict with Pydantic's <code>__iter__</code></li>
+<li>Core dependencies that are non-Pydantic types (requires <code>arbitrary_types_allowed</code>)</li>
+<li>Complex initialization requiring multiple validation hooks</li>
+<li>Rich domain behavior beyond data validation</li>
+</ol>
+<p>TextObject meets <strong>all four criteria</strong> for using a plain Python class instead of Pydantic.</p>
+<h3 id="reversal-decision">Reversal Decision<a class="headerlink" href="#reversal-decision" title="Link to this section">&para;</a></h3>
+<p><strong>Revert TextObject to plain Python class</strong> while keeping <code>TextObjectInfo</code> as Pydantic DTO for serialization.</p>
+<p><strong>Rationale:</strong></p>
+<ol>
+<li><strong>Separation of Concerns</strong>: Domain logic (TextObject) separate from serialization (TextObjectInfo)</li>
+<li><strong>Clean Iteration</strong>: No <code># type: ignore[override]</code> needed for domain-specific <code>__iter__</code></li>
+<li><strong>Simple Initialization</strong>: Plain <code>__init__</code> with explicit validation, no dual validators</li>
+<li><strong>No <code>arbitrary_types_allowed</code></strong>: Works naturally with NumberedText and Metadata</li>
+<li><strong>Follows Updated Design Principles</strong>: Real-world example of when plain class is better</li>
+<li><strong>Living Design History</strong>: Documents architectural learning for future work</li>
+</ol>
+<p><strong>Hybrid Pattern:</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Domain model: Plain Python class</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">TextObject</span><span class="p">:</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Rich domain model with complex behavior (NOT a Pydantic model).&quot;&quot;&quot;</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>        <span class="n">num_text</span><span class="p">:</span> <span class="n">NumberedText</span><span class="p">,</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>        <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>        <span class="n">sections</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">SectionObject</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>        <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Metadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>    <span class="p">):</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">num_text</span> <span class="o">=</span> <span class="n">num_text</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">language</span> <span class="ow">or</span> <span class="n">get_language_code_from_text</span><span class="p">(</span><span class="n">num_text</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="n">sections</span> <span class="ow">or</span> <span class="p">[]</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span> <span class="ow">or</span> <span class="n">Metadata</span><span class="p">()</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">validate_sections</span><span class="p">()</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">SectionEntry</span><span class="p">]:</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Domain-specific iteration - clean, no type: ignore needed.&quot;&quot;&quot;</span>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">section</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">):</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>            <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_text</span><span class="o">.</span><span class="n">get_segment</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">section_range</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">section</span><span class="o">.</span><span class="n">section_range</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>            <span class="k">yield</span> <span class="n">SectionEntry</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">section</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">export_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TextObjectInfo</span><span class="p">:</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to Pydantic DTO for serialization.&quot;&quot;&quot;</span>
+</span><span id="__span-12-28"><a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>        <span class="k">return</span> <span class="n">TextObjectInfo</span><span class="p">(</span>
+</span><span id="__span-12-29"><a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>            <span class="n">source_file</span><span class="o">=</span><span class="n">source_file</span><span class="p">,</span>
+</span><span id="__span-12-30"><a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>            <span class="n">language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">,</span>
+</span><span id="__span-12-31"><a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>            <span class="n">sections</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">,</span>
+</span><span id="__span-12-32"><a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
+</span><span id="__span-12-33"><a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>        <span class="p">)</span>
+</span><span id="__span-12-34"><a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>
+</span><span id="__span-12-35"><a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>    <span class="nd">@classmethod</span>
+</span><span id="__span-12-36"><a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">from_info</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="n">TextObjectInfo</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Metadata</span><span class="p">,</span> <span class="n">num_text</span><span class="p">:</span> <span class="n">NumberedText</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TextObject&quot;</span><span class="p">:</span>
+</span><span id="__span-12-37"><a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Create from Pydantic DTO.&quot;&quot;&quot;</span>
+</span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+</span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>            <span class="n">num_text</span><span class="o">=</span><span class="n">num_text</span><span class="p">,</span>
+</span><span id="__span-12-40"><a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a>            <span class="n">language</span><span class="o">=</span><span class="n">info</span><span class="o">.</span><span class="n">language</span><span class="p">,</span>
+</span><span id="__span-12-41"><a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a>            <span class="n">sections</span><span class="o">=</span><span class="n">info</span><span class="o">.</span><span class="n">sections</span><span class="p">,</span>
+</span><span id="__span-12-42"><a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+</span><span id="__span-12-43"><a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a>        <span class="p">)</span>
+</span><span id="__span-12-44"><a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>
+</span><span id="__span-12-45"><a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a><span class="c1"># DTO: Pydantic model for serialization (unchanged)</span>
+</span><span id="__span-12-46"><a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a><span class="k">class</span><span class="w"> </span><span class="nc">TextObjectInfo</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-12-47"><a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Serializable snapshot of TextObject state.&quot;&quot;&quot;</span>
+</span><span id="__span-12-48"><a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a>    <span class="n">source_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-12-49"><a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a>    <span class="n">language</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-12-50"><a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a>    <span class="n">sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SectionObject</span><span class="p">]</span>
+</span><span id="__span-12-51"><a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a>    <span class="n">metadata</span><span class="p">:</span> <span class="n">Metadata</span>
+</span><span id="__span-12-52"><a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a>
+</span><span id="__span-12-53"><a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a>    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+</span><span id="__span-12-54"><a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a>    <span class="nd">@classmethod</span>
+</span><span id="__span-12-55"><a id="__codelineno-12-55" name="__codelineno-12-55" href="#__codelineno-12-55"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_coerce_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+</span><span id="__span-12-56"><a id="__codelineno-12-56" name="__codelineno-12-56" href="#__codelineno-12-56"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Coerce raw dict to Metadata instance before Pydantic validation.&quot;&quot;&quot;</span>
+</span><span id="__span-12-57"><a id="__codelineno-12-57" name="__codelineno-12-57" href="#__codelineno-12-57"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;metadata&quot;</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="__span-12-58"><a id="__codelineno-12-58" name="__codelineno-12-58" href="#__codelineno-12-58"></a>            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="n">Metadata</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">])}</span>
+</span><span id="__span-12-59"><a id="__codelineno-12-59" name="__codelineno-12-59" href="#__codelineno-12-59"></a>        <span class="k">return</span> <span class="n">data</span>
+</span></code></pre></div>
+<p><strong>Benefits of This Approach:</strong></p>
+<ul>
+<li>✅ <strong>Clean Domain API</strong>: No Pydantic-specific workarounds in TextObject</li>
+<li>✅ <strong>Type Safety</strong>: Pydantic validates TextObjectInfo DTOs</li>
+<li>✅ <strong>Serialization</strong>: <code>TextObjectInfo</code> provides JSON persistence via Pydantic</li>
+<li>✅ <strong>Simplicity</strong>: Each class has clear, focused purpose</li>
+<li>✅ <strong>No Friction</strong>: No <code># type: ignore</code>, no <code>arbitrary_types_allowed</code>, no dual validators</li>
+<li>✅ <strong>Architectural Learning</strong>: Documents when plain class is better than Pydantic</li>
+</ul>
+<h3 id="reversal-checklist">Reversal Checklist<a class="headerlink" href="#reversal-checklist" title="Link to this section">&para;</a></h3>
+<p>Implementation tasks for code agent:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Convert <code>TextObject</code> from <code>BaseModel</code> back to plain Python class</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Remove <code>model_config = ConfigDict(arbitrary_types_allowed=True)</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Convert class fields back to <code>__init__</code> parameters with type hints</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Replace <code>@model_validator(mode='after')</code> with plain initialization logic in <code>__init__</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Remove <code># type: ignore[override]</code> from <code>__iter__</code> method</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Keep <code>TextObjectInfo</code> as Pydantic BaseModel unchanged (DTO for serialization)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Verify <code>export_info()</code> and <code>from_info()</code> work correctly with hybrid pattern</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run full test suite - confirm all 9 tests still passing</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run mypy - confirm zero type errors (should improve with removal of <code>type: ignore</code>)</li>
+</ul>
+<h3 id="adr-os01-conformance-note">ADR-OS01 Conformance Note<a class="headerlink" href="#adr-os01-conformance-note" title="Link to this section">&para;</a></h3>
+<p>This reversal does NOT violate ADR-OS01 §1.1 "Strong Typing" requirement. The updated Design Principles document clarifies:</p>
+<blockquote>
+<p><strong>Default to Pydantic v2 <code>BaseModel</code> for domain models</strong>, but use plain Python classes when Pydantic introduces significant friction.</p>
+</blockquote>
+<p>TextObject is a <strong>rich domain model</strong> with behavior beyond data validation. The hybrid pattern (plain class + Pydantic DTO) maintains type safety while avoiding Pydantic's lifecycle friction.</p>
+<p><strong>ADR-OS01 Compliance via Hybrid Pattern:</strong></p>
+<ul>
+<li>✅ <strong>Type Safety</strong>: Full type hints on <code>TextObject.__init__</code> and all methods</li>
+<li>✅ <strong>Serialization</strong>: <code>TextObjectInfo</code> (Pydantic) handles JSON persistence</li>
+<li>✅ <strong>Validation</strong>: Explicit validation methods with typed errors</li>
+<li>✅ <strong>Transport</strong>: Pydantic DTOs at serialization boundaries</li>
+</ul>
+<h3 id="implementation-references">Implementation References<a class="headerlink" href="#implementation-references" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>Design Principles Update</strong>: <a href="../../../../development/design-principles/#choosing-between-pydantic-models-and-plain-python-classes">Choosing Between Pydantic Models and Plain Python Classes</a></li>
+<li><strong>Examples in Codebase</strong>:</li>
+<li>Plain classes: <code>src/tnh_scholar/text_processing/numbered_text.py</code>, <code>src/tnh_scholar/metadata/metadata.py</code></li>
+<li>Pydantic DTOs: <code>src/tnh_scholar/ai_text_processing/text_object.py</code> (<code>TextObjectInfo</code>, <code>LogicalSection</code>)</li>
+<li>Pydantic domain models: <code>src/tnh_scholar/ai_text_processing/text_object.py</code> (<code>AIResponse</code>), <code>src/tnh_scholar/gen_ai_service/models/domain.py</code> (<code>CompletionResult</code>)</li>
+</ul>
+<h3 id="lessons-learned">Lessons Learned<a class="headerlink" href="#lessons-learned" title="Link to this section">&para;</a></h3>
+<p><strong>Key Insight</strong>: Architectural consistency doesn't mean forcing every model into the same pattern. The "Strong Typing" principle is satisfied by:</p>
+<ol>
+<li>Using Pydantic where it excels (DTOs, simple models, serialization)</li>
+<li>Using plain classes where Pydantic creates friction (rich domain models, custom iteration)</li>
+<li>Maintaining type safety through explicit type hints and validation</li>
+</ol>
+<p>This addendum provides a <strong>living example</strong> of architectural decision-making based on real implementation experience, documenting the learning for future development work.</p>
+<hr />
+<h2 id="addendum-2025-12-14-immutability-refactor-transform-to-return-new-instance">Addendum 2025-12-14: Immutability - Refactor <code>transform()</code> to Return New Instance<a class="headerlink" href="#addendum-2025-12-14-immutability-refactor-transform-to-return-new-instance" title="Link to this section">&para;</a></h2>
+<h3 id="inconsistency-discovered">Inconsistency Discovered<a class="headerlink" href="#inconsistency-discovered" title="Link to this section">&para;</a></h3>
+<p>After reverting TextObject to a plain Python class, a <strong>design inconsistency</strong> was identified in the <code>transform()</code> method:</p>
+<p><strong>Current Implementation</strong> (<code>src/tnh_scholar/ai_text_processing/text_object.py:776-809</code>):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="n">data_str</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Metadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="n">process_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ProcessMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="n">sections</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">SectionObject</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="sd">    Update TextObject content and metadata **in place** and return self for chaining.</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>    <span class="c1"># Update potentially changed elements</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>    <span class="k">if</span> <span class="n">data_str</span><span class="p">:</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">num_text</span> <span class="o">=</span> <span class="n">NumberedText</span><span class="p">(</span><span class="n">data_str</span><span class="p">)</span>  <span class="c1"># MUTATION</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>    <span class="k">if</span> <span class="n">language</span><span class="p">:</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">language</span>  <span class="c1"># MUTATION</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>    <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">merge_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>  <span class="c1"># MUTATION</span>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>    <span class="k">if</span> <span class="n">process_metadata</span><span class="p">:</span>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">add_process_info</span><span class="p">(</span><span class="n">process_metadata</span><span class="p">)</span>  <span class="c1"># MUTATION</span>
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>    <span class="k">if</span> <span class="n">sections</span><span class="p">:</span>
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="n">sections</span>  <span class="c1"># MUTATION</span>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>
+</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>    <span class="k">return</span> <span class="bp">self</span>
+</span></code></pre></div>
+<p><strong>Problem</strong>: This mutates the TextObject in place, violating the immutability design principle.</p>
+<p><strong>Design Principle</strong> (<a href="../../../../development/design-principles/#immutability-by-default">Design Principles: Immutability by Default</a>):</p>
+<blockquote>
+<p><strong>Keep data models immutable</strong> when possible for safer concurrent code</p>
+</blockquote>
+<p><strong>NumberedText Precedent</strong> (<code>src/tnh_scholar/text_processing/numbered_text.py:39-50</code>):</p>
+<blockquote>
+<p><strong>Immutable container for text documents</strong> with numbered lines. Instances should not be modified after creation. All operations return new data rather than mutating the instance.</p>
+</blockquote>
+<h3 id="usage-analysis">Usage Analysis<a class="headerlink" href="#usage-analysis" title="Link to this section">&para;</a></h3>
+<p>The <code>transform()</code> method is used in <strong>7-8 call sites</strong> across the codebase:</p>
+<ol>
+<li><strong>line_translator.py</strong> (2 calls):</li>
+<li>Translation: <code>text.transform(data_str=new_text, language=target_language)</code></li>
+<li>
+<p>Process tracking: <code>text.transform(process_metadata=process_metadata)</code></p>
+</li>
+<li>
+<p><strong>ai_text_processing.py</strong> (4 calls):</p>
+</li>
+<li>
+<p>Various processing stages adding process metadata</p>
+</li>
+<li>
+<p><strong>sent_split.py</strong> (2 calls):</p>
+</li>
+<li>Sentence splitting with new content</li>
+</ol>
+<p><strong>Current usage pattern</strong>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Pattern 1: Mutation with return value ignored</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">text</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">process_metadata</span><span class="o">=</span><span class="n">process_metadata</span><span class="p">)</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">return</span> <span class="n">text</span>  <span class="c1"># Callers expect mutation</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># Pattern 2: Chained mutation</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data_str</span><span class="o">=</span><span class="n">new_text</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">target_language</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="proposed-refactor">Proposed Refactor<a class="headerlink" href="#proposed-refactor" title="Link to this section">&para;</a></h3>
+<p><strong>Make <code>transform()</code> return a new TextObject instance</strong> following immutability principles:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">data_str</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Metadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="n">process_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ProcessMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    <span class="n">sections</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">SectionObject</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TextObject&quot;</span><span class="p">:</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="sd">    Create a new TextObject with transformed content and metadata.</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="sd">    Returns a new instance with updated values while preserving the original.</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="sd">    Follows immutability design principle for safer concurrent processing.</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="sd">    Args:</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="sd">        data_str: New text content (creates new NumberedText)</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="sd">        language: New language code</span>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="sd">        metadata: Metadata to merge into new instance</span>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="sd">        process_metadata: Process info to add to metadata</span>
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="sd">        sections: Replacement section list</span>
+</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>
+</span><span id="__span-15-22"><a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="sd">    Returns:</span>
+</span><span id="__span-15-23"><a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="sd">        New TextObject instance with transformed values</span>
+</span><span id="__span-15-24"><a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>
+</span><span id="__span-15-25"><a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="sd">    Example:</span>
+</span><span id="__span-15-26"><a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a><span class="sd">        &gt;&gt;&gt; original = TextObject(num_text, language=&quot;en&quot;)</span>
+</span><span id="__span-15-27"><a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a><span class="sd">        &gt;&gt;&gt; translated = original.transform(</span>
+</span><span id="__span-15-28"><a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a><span class="sd">        ...     data_str=translated_text,</span>
+</span><span id="__span-15-29"><a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a><span class="sd">        ...     language=&quot;es&quot;</span>
+</span><span id="__span-15-30"><a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a><span class="sd">        ... )</span>
+</span><span id="__span-15-31"><a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a><span class="sd">        &gt;&gt;&gt; assert original.language == &quot;en&quot;  # Original unchanged</span>
+</span><span id="__span-15-32"><a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a><span class="sd">        &gt;&gt;&gt; assert translated.language == &quot;es&quot;</span>
+</span><span id="__span-15-33"><a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-15-34"><a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a>    <span class="c1"># Start with current values</span>
+</span><span id="__span-15-35"><a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a>    <span class="n">new_num_text</span> <span class="o">=</span> <span class="n">NumberedText</span><span class="p">(</span><span class="n">data_str</span><span class="p">)</span> <span class="k">if</span> <span class="n">data_str</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_text</span>
+</span><span id="__span-15-36"><a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a>    <span class="n">new_language</span> <span class="o">=</span> <span class="n">language</span> <span class="k">if</span> <span class="n">language</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span>
+</span><span id="__span-15-37"><a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a>    <span class="n">new_sections</span> <span class="o">=</span> <span class="n">sections</span> <span class="k">if</span> <span class="n">sections</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</span><span id="__span-15-38"><a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a>
+</span><span id="__span-15-39"><a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a>    <span class="c1"># Deep copy metadata to avoid shared mutable state</span>
+</span><span id="__span-15-40"><a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a>    <span class="n">new_metadata</span> <span class="o">=</span> <span class="n">Metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+</span><span id="__span-15-41"><a id="__codelineno-15-41" name="__codelineno-15-41" href="#__codelineno-15-41"></a>
+</span><span id="__span-15-42"><a id="__codelineno-15-42" name="__codelineno-15-42" href="#__codelineno-15-42"></a>    <span class="c1"># Apply metadata updates to copy</span>
+</span><span id="__span-15-43"><a id="__codelineno-15-43" name="__codelineno-15-43" href="#__codelineno-15-43"></a>    <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
+</span><span id="__span-15-44"><a id="__codelineno-15-44" name="__codelineno-15-44" href="#__codelineno-15-44"></a>        <span class="n">new_metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+</span><span id="__span-15-45"><a id="__codelineno-15-45" name="__codelineno-15-45" href="#__codelineno-15-45"></a>    <span class="k">if</span> <span class="n">process_metadata</span><span class="p">:</span>
+</span><span id="__span-15-46"><a id="__codelineno-15-46" name="__codelineno-15-46" href="#__codelineno-15-46"></a>        <span class="n">new_metadata</span><span class="o">.</span><span class="n">add_process_info</span><span class="p">(</span><span class="n">process_metadata</span><span class="p">)</span>
+</span><span id="__span-15-47"><a id="__codelineno-15-47" name="__codelineno-15-47" href="#__codelineno-15-47"></a>
+</span><span id="__span-15-48"><a id="__codelineno-15-48" name="__codelineno-15-48" href="#__codelineno-15-48"></a>    <span class="c1"># Return new instance</span>
+</span><span id="__span-15-49"><a id="__codelineno-15-49" name="__codelineno-15-49" href="#__codelineno-15-49"></a>    <span class="k">return</span> <span class="n">TextObject</span><span class="p">(</span>
+</span><span id="__span-15-50"><a id="__codelineno-15-50" name="__codelineno-15-50" href="#__codelineno-15-50"></a>        <span class="n">num_text</span><span class="o">=</span><span class="n">new_num_text</span><span class="p">,</span>
+</span><span id="__span-15-51"><a id="__codelineno-15-51" name="__codelineno-15-51" href="#__codelineno-15-51"></a>        <span class="n">language</span><span class="o">=</span><span class="n">new_language</span><span class="p">,</span>
+</span><span id="__span-15-52"><a id="__codelineno-15-52" name="__codelineno-15-52" href="#__codelineno-15-52"></a>        <span class="n">sections</span><span class="o">=</span><span class="n">new_sections</span><span class="p">,</span>
+</span><span id="__span-15-53"><a id="__codelineno-15-53" name="__codelineno-15-53" href="#__codelineno-15-53"></a>        <span class="n">metadata</span><span class="o">=</span><span class="n">new_metadata</span><span class="p">,</span>
+</span><span id="__span-15-54"><a id="__codelineno-15-54" name="__codelineno-15-54" href="#__codelineno-15-54"></a>        <span class="n">validate_on_init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Skip validation (sections already validated)</span>
+</span><span id="__span-15-55"><a id="__codelineno-15-55" name="__codelineno-15-55" href="#__codelineno-15-55"></a>    <span class="p">)</span>
+</span></code></pre></div>
+<h3 id="migration-impact">Migration Impact<a class="headerlink" href="#migration-impact" title="Link to this section">&para;</a></h3>
+<p><strong>Call Site Updates</strong> (7-8 locations):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Before (mutation):</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">text</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">process_metadata</span><span class="o">=</span><span class="n">process_metadata</span><span class="p">)</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="k">return</span> <span class="n">text</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="c1"># After (immutable):</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="n">result</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">process_metadata</span><span class="o">=</span><span class="n">process_metadata</span><span class="p">)</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="k">return</span> <span class="n">result</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="c1"># Before (chained mutation):</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data_str</span><span class="o">=</span><span class="n">new_text</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">target_language</span><span class="p">)</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="c1"># After (immutable - no change needed):</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data_str</span><span class="o">=</span><span class="n">new_text</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">target_language</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Breaking Change</strong>: Code that relies on in-place mutation will need updates, but most call sites already use the return value.</p>
+<h3 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Link to this section">&para;</a></h3>
+<p><strong>Immutability advantages</strong>:</p>
+<ol>
+<li><strong>Thread Safety</strong>: Original TextObject unchanged during transformation</li>
+<li><strong>Debugging</strong>: No hidden state mutations to track</li>
+<li><strong>Testing</strong>: Easier to verify transformations without side effects</li>
+<li><strong>Design Consistency</strong>: Aligns with NumberedText's immutability principle</li>
+<li><strong>Functional Style</strong>: Enables composable transformations</li>
+</ol>
+<p><strong>Example - Composable Transformations</strong>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Immutable style enables clear transformation chains</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">original</span> <span class="o">=</span> <span class="n">TextObject</span><span class="o">.</span><span class="n">from_text_file</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;input.txt&quot;</span><span class="p">))</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="n">translated</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">data_str</span><span class="o">=</span><span class="n">translate</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">content</span><span class="p">),</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">language</span><span class="o">=</span><span class="s2">&quot;es&quot;</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="p">)</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="n">sectioned</span> <span class="o">=</span> <span class="n">translated</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="n">sections</span><span class="o">=</span><span class="n">compute_sections</span><span class="p">(</span><span class="n">translated</span><span class="o">.</span><span class="n">content</span><span class="p">),</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>    <span class="n">process_metadata</span><span class="o">=</span><span class="n">ProcessMetadata</span><span class="p">(</span><span class="n">step</span><span class="o">=</span><span class="s2">&quot;sectioning&quot;</span><span class="p">)</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="p">)</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="c1"># Original and intermediate results preserved</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="k">assert</span> <span class="n">original</span><span class="o">.</span><span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;en&quot;</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="k">assert</span> <span class="n">translated</span><span class="o">.</span><span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;es&quot;</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sectioned</span><span class="o">.</span><span class="n">sections</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span></code></pre></div>
+<h3 id="implementation-checklist">Implementation Checklist<a class="headerlink" href="#implementation-checklist" title="Link to this section">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Refactor <code>transform()</code> to create and return new TextObject instance</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Deep copy metadata to avoid shared mutable state</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add <code>validate_on_init=False</code> parameter to TextObject constructor (optimization)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update 7-8 call sites in:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>line_translator.py</code> (2 calls)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>ai_text_processing.py</code> (4 calls)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>sent_split.py</code> (2 calls)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <code>transform()</code> docstring with immutability guarantees and example</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add unit test verifying original instance unchanged after transform</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run full test suite - confirm all tests passing</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update AGENTLOG.md with immutability refactor notes</li>
+</ul>
+<h3 id="design-principles-update">Design Principles Update<a class="headerlink" href="#design-principles-update" title="Link to this section">&para;</a></h3>
+<p>This refactor reinforces the existing design principle:</p>
+<p><strong><a href="../../../../development/design-principles/#immutability-by-default">Immutability by Default</a></strong>:</p>
+<blockquote>
+<p><strong>Keep data models immutable</strong> when possible for safer concurrent code</p>
+</blockquote>
+<p>Add TextObject as example:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># ✅ Preferred: Immutable transformation</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">TextObject</span><span class="p">:</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TextObject&quot;</span><span class="p">:</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return new instance with transformed values.&quot;&quot;&quot;</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>        <span class="k">return</span> <span class="n">TextObject</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># New instance, original unchanged</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="c1"># 🚫 Avoid: In-place mutation</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">TextObject</span><span class="p">:</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Mutate self and return for chaining.&quot;&quot;&quot;</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">language</span>  <span class="c1"># Mutates original</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>        <span class="k">return</span> <span class="bp">self</span>
+</span></code></pre></div>
+<h3 id="rationale">Rationale<a class="headerlink" href="#rationale" title="Link to this section">&para;</a></h3>
+<p><strong>Why immutability matters for TextObject</strong>:</p>
+<ol>
+<li>
+<p><strong>Processing Pipelines</strong>: TextObject flows through multi-stage pipelines (translate → section → process). Immutability prevents upstream stages from being affected by downstream transformations.</p>
+</li>
+<li>
+<p><strong>Provenance Tracking</strong>: Metadata tracks processing history. Immutability ensures each transformation creates a new snapshot, preserving the full lineage.</p>
+</li>
+<li>
+<p><strong>Concurrent Processing</strong>: Future parallelization of section processing requires thread-safe domain models.</p>
+</li>
+<li>
+<p><strong>Consistency with Dependencies</strong>: NumberedText is immutable; TextObject should follow the same principle.</p>
+</li>
+</ol>
+<h3 id="alternative-considered-frozen-dataclass">Alternative Considered: Frozen Dataclass<a class="headerlink" href="#alternative-considered-frozen-dataclass" title="Link to this section">&para;</a></h3>
+<p><strong>Approach</strong>: Use <code>@dataclass(frozen=True)</code> to enforce immutability at runtime.</p>
+<p><strong>Rejected</strong>:</p>
+<ul>
+<li>Requires all fields to be frozen (including complex <code>Metadata</code> and <code>NumberedText</code>)</li>
+<li><code>Metadata</code> is intentionally mutable (<code>MutableMapping</code>) for flexibility</li>
+<li>Runtime enforcement adds overhead for minimal benefit (convention over enforcement)</li>
+<li>Plain class with immutable methods is sufficient</li>
+</ul>
+<p><strong>Decision</strong>: Keep plain class with <strong>immutable methods by convention</strong>, documented in docstrings and enforced through code review.</p>
+<h3 id="refactor-success-criteria">Refactor Success Criteria<a class="headerlink" href="#refactor-success-criteria" title="Link to this section">&para;</a></h3>
+<p>This refactor succeeds if:</p>
+<ol>
+<li>✅ <code>transform()</code> returns new TextObject instance</li>
+<li>✅ Original TextObject unchanged after transformation</li>
+<li>✅ All 7-8 call sites updated and tested</li>
+<li>✅ Full test suite passes (9 TextObject tests + integration tests)</li>
+<li>✅ No performance regression (deep copy overhead acceptable)</li>
+<li>✅ Design principle reinforced with TextObject example</li>
+</ol>
+<h3 id="implementation-artifacts">Implementation Artifacts<a class="headerlink" href="#implementation-artifacts" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>NumberedText Immutability</strong>: <code>src/tnh_scholar/text_processing/numbered_text.py:39-50</code> - "Immutable container... All operations return new data"</li>
+<li><strong>Design Principles</strong>: <a href="../../../../development/design-principles/#immutability-by-default">Immutability by Default</a></li>
+<li><strong>Call Sites</strong>:</li>
+<li><code>src/tnh_scholar/ai_text_processing/line_translator.py:286</code></li>
+<li><code>src/tnh_scholar/ai_text_processing/ai_text_processing.py</code> (lines 297, 503, 537, 578)</li>
+<li><code>src/tnh_scholar/cli_tools/sent_split/sent_split.py:85</code></li>
+</ul>
 
 
 

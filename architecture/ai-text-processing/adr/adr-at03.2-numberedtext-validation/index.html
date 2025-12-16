@@ -2147,9 +2147,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-backward-compatibility" class="md-nav__link">
+  <a href="#4-compatibility" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Backward Compatibility
+      4. Compatibility
     </span>
   </a>
   
@@ -2505,6 +2505,57 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2025-12-13-validation-contract-clarification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2025-12-13: Validation Contract Clarification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Addendum 2025-12-13: Validation Contract Clarification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#background-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analysis-and-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analysis and Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#related-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Artifacts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2531,7 +2582,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -8602,9 +8653,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-backward-compatibility" class="md-nav__link">
+  <a href="#4-compatibility" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Backward Compatibility
+      4. Compatibility
     </span>
   </a>
   
@@ -8960,6 +9011,57 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2025-12-13-validation-contract-clarification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2025-12-13: Validation Contract Clarification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Addendum 2025-12-13: Validation Contract Clarification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#background-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analysis-and-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analysis and Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#related-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Artifacts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -9016,20 +9118,22 @@
 <h3 id="current-implementation">Current Implementation<a class="headerlink" href="#current-implementation" title="Link to this section">&para;</a></h3>
 <p>From <code>numbered_text.py:279-287</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;return the segment from start line (inclusive) up to end line (exclusive)&quot;&quot;&quot;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the segment from start line (inclusive) up to end line (inclusive).&quot;&quot;&quot;</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Start index </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> is before first line </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;End index </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2"> is past last line </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Start index </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> must be less than end index </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_lines</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">:</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;End index </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2"> is past last line </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">end</span><span class="p">:</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Start index </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> must be less than or equal to end index </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_lines_exclusive</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 </span></code></pre></div>
-<p><strong>Limitations</strong>:
-- Only validates individual segment requests
-- No holistic validation of section coverage
-- No reporting of gaps or overlaps
-- Error messages lack context about section relationships</p>
+<p><strong>Limitations</strong>:</p>
+<ul>
+<li>Only validates individual segment requests</li>
+<li>No holistic validation of section coverage</li>
+<li>No reporting of gaps or overlaps</li>
+<li>Error messages lack context about section relationships</li>
+</ul>
 <h3 id="design-drivers">Design Drivers<a class="headerlink" href="#design-drivers" title="Link to this section">&para;</a></h3>
 <ol>
 <li><strong>Reliability First</strong>: Eliminate silent failures in section boundary management</li>
@@ -9048,96 +9152,129 @@
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">SectionValidationError</span><span class="p">:</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Error found in section boundaries.&quot;&quot;&quot;</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">error_type</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># &#39;gap&#39;, &#39;overlap&#39;, &#39;out_of_bounds&#39;</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">section_index</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">expected_start</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">actual_start</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">NumberedText</span><span class="p">:</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Immutable container for numbered text lines.&quot;&quot;&quot;</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate_section_boundaries</span><span class="p">(</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="n">section_start_lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SectionValidationError</span><span class="p">]:</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate section boundaries for gaps, overlaps, out-of-bounds.</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="sd">        Validates that sections defined by start lines provide complete,</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="sd">        non-overlapping coverage of the text. End lines are implicit:</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="sd">        each section ends at (next_section.start - 1), with the final</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="sd">        section ending at the last line.</span>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="sd">        Args:</span>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="sd">            section_start_lines: List of section start line numbers (1-based)</span>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="sd">        Returns:</span>
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="sd">            List of validation errors (empty if valid)</span>
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="sd">        Example:</span>
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="sd">            &gt;&gt;&gt; text = NumberedText(&quot;line1\\nline2\\nline3\\nline4\\nline5&quot;)</span>
-</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="sd">            &gt;&gt;&gt; # Valid: sections cover lines 1-3, 4-5</span>
-</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="sd">            &gt;&gt;&gt; errors = text.validate_section_boundaries([1, 4])</span>
-</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="sd">            &gt;&gt;&gt; len(errors)</span>
-</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="sd">            0</span>
-</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>
-</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="sd">            &gt;&gt;&gt; # Invalid: gap between line 3 and line 5</span>
-</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="sd">            &gt;&gt;&gt; errors = text.validate_section_boundaries([1, 5])</span>
-</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="sd">            &gt;&gt;&gt; errors[0].error_type</span>
-</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="sd">            &#39;gap&#39;</span>
-</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>
-</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">section_start_lines</span><span class="p">:</span>
-</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>            <span class="k">return</span> <span class="n">errors</span>
-</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>
-</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>        <span class="c1"># Sort to ensure sequential checking</span>
-</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>        <span class="n">sorted_starts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">section_start_lines</span><span class="p">)</span>
-</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>
-</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">start_line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sorted_starts</span><span class="p">):</span>
-</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>            <span class="c1"># Check out-of-bounds</span>
-</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>            <span class="k">if</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">start_line</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
-</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>                    <span class="n">error_type</span><span class="o">=</span><span class="s1">&#39;out_of_bounds&#39;</span><span class="p">,</span>
-</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>                    <span class="n">section_index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
-</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>                    <span class="n">expected_start</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
-</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>                    <span class="n">actual_start</span><span class="o">=</span><span class="n">start_line</span><span class="p">,</span>
-</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Section </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> start_line </span><span class="si">{</span><span class="n">start_line</span><span class="si">}</span><span class="s2"> &quot;</span>
-</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>                            <span class="sa">f</span><span class="s2">&quot;out of bounds [1, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">]&quot;</span>
-</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a>                <span class="p">))</span>
-</span><span id="__span-1-63"><a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>                <span class="k">continue</span>
-</span><span id="__span-1-64"><a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a>
-</span><span id="__span-1-65"><a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a>            <span class="c1"># Check for gaps/overlaps with previous section</span>
-</span><span id="__span-1-66"><a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a>            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-</span><span id="__span-1-67"><a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a>                <span class="n">prev_start</span> <span class="o">=</span> <span class="n">sorted_starts</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-</span><span id="__span-1-68"><a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a>                <span class="c1"># Previous section&#39;s implicit end is (current_start - 1)</span>
-</span><span id="__span-1-69"><a id="__codelineno-1-69" name="__codelineno-1-69" href="#__codelineno-1-69"></a>                <span class="n">prev_end</span> <span class="o">=</span> <span class="n">start_line</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="__span-1-70"><a id="__codelineno-1-70" name="__codelineno-1-70" href="#__codelineno-1-70"></a>
-</span><span id="__span-1-71"><a id="__codelineno-1-71" name="__codelineno-1-71" href="#__codelineno-1-71"></a>                <span class="c1"># Expected start is previous end + 1</span>
-</span><span id="__span-1-72"><a id="__codelineno-1-72" name="__codelineno-1-72" href="#__codelineno-1-72"></a>                <span class="n">expected_start</span> <span class="o">=</span> <span class="n">prev_end</span> <span class="o">+</span> <span class="mi">1</span>
-</span><span id="__span-1-73"><a id="__codelineno-1-73" name="__codelineno-1-73" href="#__codelineno-1-73"></a>
-</span><span id="__span-1-74"><a id="__codelineno-1-74" name="__codelineno-1-74" href="#__codelineno-1-74"></a>                <span class="k">if</span> <span class="n">start_line</span> <span class="o">!=</span> <span class="n">expected_start</span><span class="p">:</span>
-</span><span id="__span-1-75"><a id="__codelineno-1-75" name="__codelineno-1-75" href="#__codelineno-1-75"></a>                    <span class="n">error_type</span> <span class="o">=</span> <span class="s1">&#39;gap&#39;</span> <span class="k">if</span> <span class="n">start_line</span> <span class="o">&gt;</span> <span class="n">expected_start</span> <span class="k">else</span> <span class="s1">&#39;overlap&#39;</span>
-</span><span id="__span-1-76"><a id="__codelineno-1-76" name="__codelineno-1-76" href="#__codelineno-1-76"></a>                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
-</span><span id="__span-1-77"><a id="__codelineno-1-77" name="__codelineno-1-77" href="#__codelineno-1-77"></a>                        <span class="n">error_type</span><span class="o">=</span><span class="n">error_type</span><span class="p">,</span>
-</span><span id="__span-1-78"><a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a>                        <span class="n">section_index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
-</span><span id="__span-1-79"><a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a>                        <span class="n">expected_start</span><span class="o">=</span><span class="n">expected_start</span><span class="p">,</span>
-</span><span id="__span-1-80"><a id="__codelineno-1-80" name="__codelineno-1-80" href="#__codelineno-1-80"></a>                        <span class="n">actual_start</span><span class="o">=</span><span class="n">start_line</span><span class="p">,</span>
-</span><span id="__span-1-81"><a id="__codelineno-1-81" name="__codelineno-1-81" href="#__codelineno-1-81"></a>                        <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Section </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="n">error_type</span><span class="si">}</span><span class="s2">: &quot;</span>
-</span><span id="__span-1-82"><a id="__codelineno-1-82" name="__codelineno-1-82" href="#__codelineno-1-82"></a>                                <span class="sa">f</span><span class="s2">&quot;expected start </span><span class="si">{</span><span class="n">expected_start</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">start_line</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-1-83"><a id="__codelineno-1-83" name="__codelineno-1-83" href="#__codelineno-1-83"></a>                    <span class="p">))</span>
-</span><span id="__span-1-84"><a id="__codelineno-1-84" name="__codelineno-1-84" href="#__codelineno-1-84"></a>
-</span><span id="__span-1-85"><a id="__codelineno-1-85" name="__codelineno-1-85" href="#__codelineno-1-85"></a>        <span class="c1"># Verify first section starts at line 1</span>
-</span><span id="__span-1-86"><a id="__codelineno-1-86" name="__codelineno-1-86" href="#__codelineno-1-86"></a>        <span class="k">if</span> <span class="n">sorted_starts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-</span><span id="__span-1-87"><a id="__codelineno-1-87" name="__codelineno-1-87" href="#__codelineno-1-87"></a>            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
-</span><span id="__span-1-88"><a id="__codelineno-1-88" name="__codelineno-1-88" href="#__codelineno-1-88"></a>                <span class="n">error_type</span><span class="o">=</span><span class="s1">&#39;gap&#39;</span><span class="p">,</span>
-</span><span id="__span-1-89"><a id="__codelineno-1-89" name="__codelineno-1-89" href="#__codelineno-1-89"></a>                <span class="n">section_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-1-90"><a id="__codelineno-1-90" name="__codelineno-1-90" href="#__codelineno-1-90"></a>                <span class="n">expected_start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-</span><span id="__span-1-91"><a id="__codelineno-1-91" name="__codelineno-1-91" href="#__codelineno-1-91"></a>                <span class="n">actual_start</span><span class="o">=</span><span class="n">sorted_starts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-</span><span id="__span-1-92"><a id="__codelineno-1-92" name="__codelineno-1-92" href="#__codelineno-1-92"></a>                <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;First section starts at </span><span class="si">{</span><span class="n">sorted_starts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
-</span><span id="__span-1-93"><a id="__codelineno-1-93" name="__codelineno-1-93" href="#__codelineno-1-93"></a>                        <span class="sa">f</span><span class="s2">&quot;leaving gap at lines 1-</span><span class="si">{</span><span class="n">sorted_starts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-1-94"><a id="__codelineno-1-94" name="__codelineno-1-94" href="#__codelineno-1-94"></a>            <span class="p">))</span>
-</span><span id="__span-1-95"><a id="__codelineno-1-95" name="__codelineno-1-95" href="#__codelineno-1-95"></a>
-</span><span id="__span-1-96"><a id="__codelineno-1-96" name="__codelineno-1-96" href="#__codelineno-1-96"></a>        <span class="k">return</span> <span class="n">errors</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">section_index</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># position in sorted order</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">section_input_index</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># original caller order</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">expected_start</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">actual_start</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">NumberedText</span><span class="p">:</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Immutable container for numbered text lines.&quot;&quot;&quot;</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate_section_boundaries</span><span class="p">(</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>        <span class="n">section_start_lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SectionValidationError</span><span class="p">]:</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate section boundaries for gaps, overlaps, out-of-bounds.</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="sd">        Validates that sections defined by start lines provide complete,</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="sd">        non-overlapping coverage of the text. End lines are implicit:</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="sd">        each section ends at (next_section.start - 1), with the final</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="sd">        section ending at the last line.</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="sd">        Args:</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="sd">            section_start_lines: List of section start line numbers (1-based)</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="sd">        Returns:</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="sd">            List of validation errors (empty if valid)</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="sd">        Example:</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="sd">            &gt;&gt;&gt; text = NumberedText(&quot;line1\\nline2\\nline3\\nline4\\nline5&quot;)</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="sd">            &gt;&gt;&gt; # Valid: sections cover lines 1-3, 4-5</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="sd">            &gt;&gt;&gt; errors = text.validate_section_boundaries([1, 4])</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="sd">            &gt;&gt;&gt; len(errors)</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="sd">            0</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="sd">            &gt;&gt;&gt; # Invalid: initial gap (first section starts at line 2)</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="sd">            &gt;&gt;&gt; errors = text.validate_section_boundaries([2, 5])</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="sd">            &gt;&gt;&gt; errors[0].error_type</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="sd">            &#39;gap&#39;</span>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">section_start_lines</span><span class="p">:</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>                    <span class="n">error_type</span><span class="o">=</span><span class="s1">&#39;gap&#39;</span><span class="p">,</span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>                    <span class="n">section_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>                    <span class="n">section_input_index</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>                    <span class="n">expected_start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>                    <span class="n">actual_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>                    <span class="n">message</span><span class="o">=</span><span class="s2">&quot;No sections provided; expected first section at line 1&quot;</span>
+</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>                <span class="p">))</span>
+</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>            <span class="k">return</span> <span class="n">errors</span>
+</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>
+</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>        <span class="c1"># Sort but retain caller order for diagnostics</span>
+</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>        <span class="n">sorted_with_idx</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">section_start_lines</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>
+</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a>        <span class="c1"># Verify first section starts at line 1</span>
+</span><span id="__span-1-63"><a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>        <span class="n">first_idx</span><span class="p">,</span> <span class="n">first_start</span> <span class="o">=</span> <span class="n">sorted_with_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-1-64"><a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a>        <span class="k">if</span> <span class="n">first_start</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+</span><span id="__span-1-65"><a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a>            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
+</span><span id="__span-1-66"><a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a>                <span class="n">error_type</span><span class="o">=</span><span class="s1">&#39;gap&#39;</span><span class="p">,</span>
+</span><span id="__span-1-67"><a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a>                <span class="n">section_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-1-68"><a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a>                <span class="n">section_input_index</span><span class="o">=</span><span class="n">first_idx</span><span class="p">,</span>
+</span><span id="__span-1-69"><a id="__codelineno-1-69" name="__codelineno-1-69" href="#__codelineno-1-69"></a>                <span class="n">expected_start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-1-70"><a id="__codelineno-1-70" name="__codelineno-1-70" href="#__codelineno-1-70"></a>                <span class="n">actual_start</span><span class="o">=</span><span class="n">first_start</span><span class="p">,</span>
+</span><span id="__span-1-71"><a id="__codelineno-1-71" name="__codelineno-1-71" href="#__codelineno-1-71"></a>                <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;First section starts at </span><span class="si">{</span><span class="n">first_start</span><span class="si">}</span><span class="s2">, &quot;</span>
+</span><span id="__span-1-72"><a id="__codelineno-1-72" name="__codelineno-1-72" href="#__codelineno-1-72"></a>                        <span class="sa">f</span><span class="s2">&quot;leaving gap at lines 1-</span><span class="si">{</span><span class="n">first_start</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-1-73"><a id="__codelineno-1-73" name="__codelineno-1-73" href="#__codelineno-1-73"></a>            <span class="p">))</span>
+</span><span id="__span-1-74"><a id="__codelineno-1-74" name="__codelineno-1-74" href="#__codelineno-1-74"></a>
+</span><span id="__span-1-75"><a id="__codelineno-1-75" name="__codelineno-1-75" href="#__codelineno-1-75"></a>        <span class="n">prev_start</span> <span class="o">=</span> <span class="n">first_start</span>
+</span><span id="__span-1-76"><a id="__codelineno-1-76" name="__codelineno-1-76" href="#__codelineno-1-76"></a>
+</span><span id="__span-1-77"><a id="__codelineno-1-77" name="__codelineno-1-77" href="#__codelineno-1-77"></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">input_idx</span><span class="p">,</span> <span class="n">start_line</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sorted_with_idx</span><span class="p">):</span>
+</span><span id="__span-1-78"><a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a>            <span class="c1"># Check out-of-bounds</span>
+</span><span id="__span-1-79"><a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a>            <span class="k">if</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">start_line</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+</span><span id="__span-1-80"><a id="__codelineno-1-80" name="__codelineno-1-80" href="#__codelineno-1-80"></a>                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
+</span><span id="__span-1-81"><a id="__codelineno-1-81" name="__codelineno-1-81" href="#__codelineno-1-81"></a>                    <span class="n">error_type</span><span class="o">=</span><span class="s1">&#39;out_of_bounds&#39;</span><span class="p">,</span>
+</span><span id="__span-1-82"><a id="__codelineno-1-82" name="__codelineno-1-82" href="#__codelineno-1-82"></a>                    <span class="n">section_index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+</span><span id="__span-1-83"><a id="__codelineno-1-83" name="__codelineno-1-83" href="#__codelineno-1-83"></a>                    <span class="n">section_input_index</span><span class="o">=</span><span class="n">input_idx</span><span class="p">,</span>
+</span><span id="__span-1-84"><a id="__codelineno-1-84" name="__codelineno-1-84" href="#__codelineno-1-84"></a>                    <span class="n">expected_start</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+</span><span id="__span-1-85"><a id="__codelineno-1-85" name="__codelineno-1-85" href="#__codelineno-1-85"></a>                    <span class="n">actual_start</span><span class="o">=</span><span class="n">start_line</span><span class="p">,</span>
+</span><span id="__span-1-86"><a id="__codelineno-1-86" name="__codelineno-1-86" href="#__codelineno-1-86"></a>                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Section </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> start_line </span><span class="si">{</span><span class="n">start_line</span><span class="si">}</span><span class="s2"> &quot;</span>
+</span><span id="__span-1-87"><a id="__codelineno-1-87" name="__codelineno-1-87" href="#__codelineno-1-87"></a>                            <span class="sa">f</span><span class="s2">&quot;out of bounds [1, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">]&quot;</span>
+</span><span id="__span-1-88"><a id="__codelineno-1-88" name="__codelineno-1-88" href="#__codelineno-1-88"></a>                <span class="p">))</span>
+</span><span id="__span-1-89"><a id="__codelineno-1-89" name="__codelineno-1-89" href="#__codelineno-1-89"></a>                <span class="k">continue</span>
+</span><span id="__span-1-90"><a id="__codelineno-1-90" name="__codelineno-1-90" href="#__codelineno-1-90"></a>
+</span><span id="__span-1-91"><a id="__codelineno-1-91" name="__codelineno-1-91" href="#__codelineno-1-91"></a>            <span class="c1"># Check for gaps/overlaps with previous section</span>
+</span><span id="__span-1-92"><a id="__codelineno-1-92" name="__codelineno-1-92" href="#__codelineno-1-92"></a>            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-1-93"><a id="__codelineno-1-93" name="__codelineno-1-93" href="#__codelineno-1-93"></a>                <span class="k">if</span> <span class="n">start_line</span> <span class="o">&lt;=</span> <span class="n">prev_start</span><span class="p">:</span>
+</span><span id="__span-1-94"><a id="__codelineno-1-94" name="__codelineno-1-94" href="#__codelineno-1-94"></a>                    <span class="n">error_type</span> <span class="o">=</span> <span class="s1">&#39;overlap&#39;</span>
+</span><span id="__span-1-95"><a id="__codelineno-1-95" name="__codelineno-1-95" href="#__codelineno-1-95"></a>                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
+</span><span id="__span-1-96"><a id="__codelineno-1-96" name="__codelineno-1-96" href="#__codelineno-1-96"></a>                        <span class="n">error_type</span><span class="o">=</span><span class="n">error_type</span><span class="p">,</span>
+</span><span id="__span-1-97"><a id="__codelineno-1-97" name="__codelineno-1-97" href="#__codelineno-1-97"></a>                        <span class="n">section_index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+</span><span id="__span-1-98"><a id="__codelineno-1-98" name="__codelineno-1-98" href="#__codelineno-1-98"></a>                        <span class="n">section_input_index</span><span class="o">=</span><span class="n">input_idx</span><span class="p">,</span>
+</span><span id="__span-1-99"><a id="__codelineno-1-99" name="__codelineno-1-99" href="#__codelineno-1-99"></a>                        <span class="n">expected_start</span><span class="o">=</span><span class="n">prev_start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-1-100"><a id="__codelineno-1-100" name="__codelineno-1-100" href="#__codelineno-1-100"></a>                        <span class="n">actual_start</span><span class="o">=</span><span class="n">start_line</span><span class="p">,</span>
+</span><span id="__span-1-101"><a id="__codelineno-1-101" name="__codelineno-1-101" href="#__codelineno-1-101"></a>                        <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Section </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="n">error_type</span><span class="si">}</span><span class="s2">: &quot;</span>
+</span><span id="__span-1-102"><a id="__codelineno-1-102" name="__codelineno-1-102" href="#__codelineno-1-102"></a>                                <span class="sa">f</span><span class="s2">&quot;expected start &gt; </span><span class="si">{</span><span class="n">prev_start</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">start_line</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-1-103"><a id="__codelineno-1-103" name="__codelineno-1-103" href="#__codelineno-1-103"></a>                    <span class="p">))</span>
+</span><span id="__span-1-104"><a id="__codelineno-1-104" name="__codelineno-1-104" href="#__codelineno-1-104"></a>                <span class="k">elif</span> <span class="n">start_line</span> <span class="o">&gt;</span> <span class="n">prev_start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+</span><span id="__span-1-105"><a id="__codelineno-1-105" name="__codelineno-1-105" href="#__codelineno-1-105"></a>                    <span class="n">error_type</span> <span class="o">=</span> <span class="s1">&#39;gap&#39;</span>
+</span><span id="__span-1-106"><a id="__codelineno-1-106" name="__codelineno-1-106" href="#__codelineno-1-106"></a>                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
+</span><span id="__span-1-107"><a id="__codelineno-1-107" name="__codelineno-1-107" href="#__codelineno-1-107"></a>                        <span class="n">error_type</span><span class="o">=</span><span class="n">error_type</span><span class="p">,</span>
+</span><span id="__span-1-108"><a id="__codelineno-1-108" name="__codelineno-1-108" href="#__codelineno-1-108"></a>                        <span class="n">section_index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+</span><span id="__span-1-109"><a id="__codelineno-1-109" name="__codelineno-1-109" href="#__codelineno-1-109"></a>                        <span class="n">section_input_index</span><span class="o">=</span><span class="n">input_idx</span><span class="p">,</span>
+</span><span id="__span-1-110"><a id="__codelineno-1-110" name="__codelineno-1-110" href="#__codelineno-1-110"></a>                        <span class="n">expected_start</span><span class="o">=</span><span class="n">prev_start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-1-111"><a id="__codelineno-1-111" name="__codelineno-1-111" href="#__codelineno-1-111"></a>                        <span class="n">actual_start</span><span class="o">=</span><span class="n">start_line</span><span class="p">,</span>
+</span><span id="__span-1-112"><a id="__codelineno-1-112" name="__codelineno-1-112" href="#__codelineno-1-112"></a>                        <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Section </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="n">error_type</span><span class="si">}</span><span class="s2">: &quot;</span>
+</span><span id="__span-1-113"><a id="__codelineno-1-113" name="__codelineno-1-113" href="#__codelineno-1-113"></a>                                <span class="sa">f</span><span class="s2">&quot;expected start </span><span class="si">{</span><span class="n">prev_start</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">start_line</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-1-114"><a id="__codelineno-1-114" name="__codelineno-1-114" href="#__codelineno-1-114"></a>                    <span class="p">))</span>
+</span><span id="__span-1-115"><a id="__codelineno-1-115" name="__codelineno-1-115" href="#__codelineno-1-115"></a>                <span class="n">prev_start</span> <span class="o">=</span> <span class="n">start_line</span>
+</span><span id="__span-1-116"><a id="__codelineno-1-116" name="__codelineno-1-116" href="#__codelineno-1-116"></a>
+</span><span id="__span-1-117"><a id="__codelineno-1-117" name="__codelineno-1-117" href="#__codelineno-1-117"></a>        <span class="c1"># Verify tail coverage reaches end of text</span>
+</span><span id="__span-1-118"><a id="__codelineno-1-118" name="__codelineno-1-118" href="#__codelineno-1-118"></a>        <span class="n">last_start</span> <span class="o">=</span> <span class="n">sorted_with_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+</span><span id="__span-1-119"><a id="__codelineno-1-119" name="__codelineno-1-119" href="#__codelineno-1-119"></a>        <span class="k">if</span> <span class="n">last_start</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+</span><span id="__span-1-120"><a id="__codelineno-1-120" name="__codelineno-1-120" href="#__codelineno-1-120"></a>            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
+</span><span id="__span-1-121"><a id="__codelineno-1-121" name="__codelineno-1-121" href="#__codelineno-1-121"></a>                <span class="n">error_type</span><span class="o">=</span><span class="s1">&#39;out_of_bounds&#39;</span><span class="p">,</span>
+</span><span id="__span-1-122"><a id="__codelineno-1-122" name="__codelineno-1-122" href="#__codelineno-1-122"></a>                <span class="n">section_index</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sorted_with_idx</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-1-123"><a id="__codelineno-1-123" name="__codelineno-1-123" href="#__codelineno-1-123"></a>                <span class="n">section_input_index</span><span class="o">=</span><span class="n">sorted_with_idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+</span><span id="__span-1-124"><a id="__codelineno-1-124" name="__codelineno-1-124" href="#__codelineno-1-124"></a>                <span class="n">expected_start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+</span><span id="__span-1-125"><a id="__codelineno-1-125" name="__codelineno-1-125" href="#__codelineno-1-125"></a>                <span class="n">actual_start</span><span class="o">=</span><span class="n">last_start</span><span class="p">,</span>
+</span><span id="__span-1-126"><a id="__codelineno-1-126" name="__codelineno-1-126" href="#__codelineno-1-126"></a>                <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Final section starts at </span><span class="si">{</span><span class="n">last_start</span><span class="si">}</span><span class="s2">, past last line </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-1-127"><a id="__codelineno-1-127" name="__codelineno-1-127" href="#__codelineno-1-127"></a>            <span class="p">))</span>
+</span><span id="__span-1-128"><a id="__codelineno-1-128" name="__codelineno-1-128" href="#__codelineno-1-128"></a>
+</span><span id="__span-1-129"><a id="__codelineno-1-129" name="__codelineno-1-129" href="#__codelineno-1-129"></a>        <span class="k">return</span> <span class="n">errors</span>
 </span></code></pre></div>
 <p><strong>Design Notes</strong>:</p>
 <ul>
@@ -9145,6 +9282,8 @@
 <li><strong>Returns structured errors</strong>: Enables programmatic error handling and detailed diagnostics</li>
 <li><strong>Non-throwing</strong>: Returns error list instead of raising exceptions (allows batch validation)</li>
 <li><strong>1-based indexing</strong>: Consistent with NumberedText's existing API</li>
+<li><strong>Full coverage required</strong>: Enforces start at line 1 and rejects empty section lists for non-empty text</li>
+<li><strong>Caller-order diagnostics</strong>: <code>section_input_index</code> preserves the original ordering for clearer error reporting</li>
 </ul>
 <h3 id="2-coverage-reporting">2. Coverage Reporting<a class="headerlink" href="#2-coverage-reporting" title="Link to this section">&para;</a></h3>
 <p>Add a coverage report method for debugging and visualization:</p>
@@ -9250,6 +9389,7 @@
 <li><strong>Identifies gap ranges</strong>: Groups consecutive uncovered lines</li>
 <li><strong>Overlap detection</strong>: Shows which lines are claimed by multiple sections</li>
 <li><strong>JSON-serializable</strong>: Dict output enables logging and reporting</li>
+<li><strong>Inclusive semantics</strong>: Final section is assumed to run through <code>self.size</code>; gaps appear when start lines skip coverage or when no sections are provided for non-empty text</li>
 </ul>
 <h3 id="3-integration-with-textobject">3. Integration with TextObject<a class="headerlink" href="#3-integration-with-textobject" title="Link to this section">&para;</a></h3>
 <p>TextObject will use these new methods during section validation (see ADR-AT03.3):</p>
@@ -9282,12 +9422,11 @@
 </span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>                <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">report</span><span class="p">[</span><span class="s1">&#39;covered_lines&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">report</span><span class="p">[</span><span class="s1">&#39;total_lines&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> lines)&quot;</span>
 </span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>            <span class="p">)</span>
 </span></code></pre></div>
-<h3 id="4-backward-compatibility">4. Backward Compatibility<a class="headerlink" href="#4-backward-compatibility" title="Link to this section">&para;</a></h3>
-<p><strong>No Breaking Changes</strong>:</p>
+<h3 id="4-compatibility">4. Compatibility<a class="headerlink" href="#4-compatibility" title="Link to this section">&para;</a></h3>
 <ul>
-<li>New methods are <strong>additive</strong> (don't modify existing API)</li>
-<li>Existing <code>get_segment()</code> behavior unchanged</li>
+<li>New methods are <strong>additive</strong> (don't modify existing API surface)</li>
 <li>TextObject validation is <strong>opt-in</strong> (called explicitly in <code>validate_sections()</code>)</li>
+<li><strong>Breaking change</strong>: <code>get_segment()</code> moves to inclusive end semantics to align with Monaco; callers must adjust (see Monaco alignment below).</li>
 </ul>
 <p><strong>Migration Path</strong>:</p>
 <ol>
@@ -9496,8 +9635,7 @@
 </span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;end_line </span><span class="si">{</span><span class="n">end_line</span><span class="si">}</span><span class="s2"> invalid (must be in [</span><span class="si">{</span><span class="n">start_line</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">])&quot;</span><span class="p">)</span>
 </span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>
 </span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>    <span class="c1"># Convert inclusive end to Python range (exclusive upper bound)</span>
-</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>    <span class="n">python_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_line</span><span class="p">,</span> <span class="n">end_line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_lines</span><span class="p">(</span><span class="n">python_range</span><span class="p">))</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_lines_exclusive</span><span class="p">(</span><span class="n">start_line</span><span class="p">,</span> <span class="n">end_line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 </span></code></pre></div>
 <h4 id="validation-logic-adjustment">Validation Logic Adjustment<a class="headerlink" href="#validation-logic-adjustment" title="Link to this section">&para;</a></h4>
 <p>Gap detection accounts for inclusive semantics:</p>
@@ -9545,7 +9683,7 @@
 <h3 id="implementation-impact">Implementation Impact<a class="headerlink" href="#implementation-impact" title="Link to this section">&para;</a></h3>
 <p><strong>Files Modified</strong>:</p>
 <ul>
-<li><code>numbered_text.py</code>: Update <code>get_segment()</code> to accept inclusive end</li>
+<li><code>numbered_text.py</code>: Update <code>get_segment()</code> to accept inclusive end and enforce full coverage to end-of-text</li>
 <li><code>text_object.py</code>: Update <code>SectionRange</code> to use inclusive <code>end_line</code></li>
 <li>Validation logic: Adjust contiguity checks for inclusive semantics</li>
 </ul>
@@ -9598,23 +9736,29 @@
 <h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Link to this section">&para;</a></h2>
 <h3 id="alternative-1-validate-in-get_segment-only">Alternative 1: Validate in get_segment() Only<a class="headerlink" href="#alternative-1-validate-in-get_segment-only" title="Link to this section">&para;</a></h3>
 <p><strong>Approach</strong>: Add gap/overlap detection to existing <code>get_segment()</code> method.</p>
-<p><strong>Rejected</strong>:
-- Can't detect gaps until they're accessed (fails late)
-- No holistic view of section coverage
-- Harder to provide actionable diagnostics</p>
+<p><strong>Rejected</strong>:</p>
+<ul>
+<li>Can't detect gaps until they're accessed (fails late)</li>
+<li>No holistic view of section coverage</li>
+<li>Harder to provide actionable diagnostics</li>
+</ul>
 <h3 id="alternative-2-explicit-end-lines">Alternative 2: Explicit End Lines<a class="headerlink" href="#alternative-2-explicit-end-lines" title="Link to this section">&para;</a></h3>
 <p><strong>Approach</strong>: Change <code>LogicalSection</code> to include explicit <code>end_line</code> field.</p>
-<p><strong>Rejected</strong>:
-- Breaking change to existing data model
-- Increases complexity (must validate end &gt; start for every section)
-- Doesn't solve the root problem (still need boundary validation)
-- Deferred to potential future ADR-AT02 revisit</p>
+<p><strong>Rejected</strong>:</p>
+<ul>
+<li>Breaking change to existing data model</li>
+<li>Increases complexity (must validate end &gt; start for every section)</li>
+<li>Doesn't solve the root problem (still need boundary validation)</li>
+<li>Deferred to potential future ADR-AT02 revisit</li>
+</ul>
 <h3 id="alternative-3-custom-section-class-in-numberedtext">Alternative 3: Custom Section Class in NumberedText<a class="headerlink" href="#alternative-3-custom-section-class-in-numberedtext" title="Link to this section">&para;</a></h3>
 <p><strong>Approach</strong>: Create a <code>Section</code> class in NumberedText that encapsulates start/end.</p>
-<p><strong>Rejected</strong>:
-- Couples NumberedText to sectioning concept (reduces reusability)
-- Duplicates <code>LogicalSection</code> from TextObject
-- Over-engineers for current needs</p>
+<p><strong>Rejected</strong>:</p>
+<ul>
+<li>Couples NumberedText to sectioning concept (reduces reusability)</li>
+<li>Duplicates <code>LogicalSection</code> from TextObject</li>
+<li>Over-engineers for current needs</li>
+</ul>
 <hr />
 <h2 id="implementation-notes">Implementation Notes<a class="headerlink" href="#implementation-notes" title="Link to this section">&para;</a></h2>
 <h3 id="phase-1-core-validation-days-1-2">Phase 1: Core Validation (Days 1-2)<a class="headerlink" href="#phase-1-core-validation-days-1-2" title="Link to this section">&para;</a></h3>
@@ -9700,6 +9844,41 @@
 <hr />
 <p><strong>Approval Path</strong>: Architecture review → Implementation → Unit tests → Integration with ADR-AT03.3</p>
 <p><em>This ADR provides the foundational validation capabilities that enable TextObject robustness (ADR-AT03.3) and support reliable sectioning in the ai_text_processing module.</em></p>
+<hr />
+<h2 id="addendum-2025-12-13-validation-contract-clarification">Addendum 2025-12-13: Validation Contract Clarification<a class="headerlink" href="#addendum-2025-12-13-validation-contract-clarification" title="Link to this section">&para;</a></h2>
+<h3 id="background-context">Background Context<a class="headerlink" href="#background-context" title="Link to this section">&para;</a></h3>
+<p>During implementation review, a question arose about whether <code>validate_section_boundaries</code> should detect "trailing gaps" - cases where the final section might not reach <code>self.end</code>.</p>
+<h3 id="analysis-and-decision">Analysis and Decision<a class="headerlink" href="#analysis-and-decision" title="Link to this section">&para;</a></h3>
+<p>After reviewing the design specification (lines 364-370) and implementation (<code>numbered_text.py:384-422</code>), we confirmed that <strong>no trailing gap detection is needed</strong> because:</p>
+<p><strong>By design</strong>: The final section always implicitly ends at <code>self.end</code>. From the original decision (§2.1):</p>
+<blockquote>
+<p>"the end of each section is implicit: it ends at the line before the next section starts, <strong>with the final section ending at the last line of the text</strong>"</p>
+</blockquote>
+<p>This means the last section's end is <strong>defined</strong> as <code>self.end</code>, not calculated from boundaries. Therefore, "trailing gaps" cannot exist under the current design contract.</p>
+<p><strong>What the validator guarantees</strong>:</p>
+<ol>
+<li>First section starts at <code>self.start</code> (no initial gap)</li>
+<li>Each section starts exactly one line after the previous section's implicit end (no inter-section gaps)</li>
+<li>No sections overlap</li>
+<li>All sections are within bounds</li>
+</ol>
+<p>Together, these rules ensure complete contiguous coverage from <code>self.start</code> to <code>self.end</code>.</p>
+<p><strong>Example validating full coverage</strong>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">text</span> <span class="o">=</span> <span class="n">NumberedText</span><span class="p">(</span><span class="s2">&quot;line1</span><span class="se">\n</span><span class="s2">line2</span><span class="se">\n</span><span class="s2">line3</span><span class="se">\n</span><span class="s2">line4</span><span class="se">\n</span><span class="s2">line5&quot;</span><span class="p">)</span>  <span class="c1"># 5 lines, self.end = 5</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">errors</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">validate_section_boundaries</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c1"># Section 1: lines 1-3 (implicit end = 4-1 = 3)</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Section 2: lines 4-5 (implicit end = self.end = 5)</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="c1"># No gaps → validation passes ✓</span>
+</span></code></pre></div>
+<h3 id="implementation-status">Implementation Status<a class="headerlink" href="#implementation-status" title="Link to this section">&para;</a></h3>
+<p><strong>No code changes required</strong>. The current implementation correctly enforces the validation contract as designed.</p>
+<h3 id="related-artifacts">Related Artifacts<a class="headerlink" href="#related-artifacts" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>GitHub Issue</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/issues/20">#20 - NumberedText.validate_section_boundaries misses trailing coverage gaps</a></li>
+<li>Resolution: Closed as "working as designed" with contract clarification</li>
+<li><strong>Original Design</strong>: Section §2.1 (lines 105-111, 364-370)</li>
+<li><strong>Implementation</strong>: <code>src/tnh_scholar/text_processing/numbered_text.py:384-422</code></li>
+</ul>
 
 
 
