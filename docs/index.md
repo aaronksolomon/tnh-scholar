@@ -10,7 +10,7 @@ created: '2025-12-11'
 
 # TNH Scholar
 
-**The TNH Scholar project has been established to support a community-aligned multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
+**TNH Scholar is intended to support a community-aligned, open-source, multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
 
 This document contains deeper onboarding and architectural context. For a more concise intro to the project, see the [README](/project/repo-root/repo-readme.md).
 

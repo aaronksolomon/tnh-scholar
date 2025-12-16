@@ -25,7 +25,7 @@ TNH Scholar is currently in active prototyping. Key capabilities:
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See ADRs under [docs/architecture/prompt-system/index.md](docs/architecture/prompt-system/index.md) for decisions and roadmap
 
-> **⚠️ CLI Tool Migration Notice**: The `tnh-fab` command-line tool is deprecated and will be replaced by `tnh-gen` in an upcoming release. The tool remains functional with a deprecation warning. See the [TNH-Gen Architecture documentation](docs/architecture/tnh-gen/) for migration details.
+> **⚠️ CLI Tool Migration Notice**: The `tnh-fab` command-line tool is deprecated and will be replaced by `tnh-gen` in an upcoming release. The tool remains functional with a deprecation warning. See the [TNH-Gen Architecture documentation](docs/architecture/tnh-gen/index.md) for migration details.
 
 ## Quick Start
 
