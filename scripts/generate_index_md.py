@@ -6,6 +6,7 @@ entire file is regenerated (legacy behavior). Otherwise, only the
 `## Documentation Map` section is replaced while preserving curated content
 above it.
 """
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -16,6 +17,7 @@ import yaml
 DOCS_DIR = Path("docs")
 INDEX_PATH = DOCS_DIR / "index.md"
 MAP_HEADING = "## Documentation Map"
+
 
 def read_title(path: Path) -> Optional[str]:
     """Extract the `title` field from YAML front matter if present."""
@@ -146,6 +148,10 @@ def update_map_section(existing_text: str) -> str:
         fm = "---\n" + yaml.safe_dump(metadata, sort_keys=False).rstrip() + "\n---\n\n"
     else:
         fm = ""
+
+    # Strip leading empty lines from body to avoid accumulating blank lines
+    while new_body and new_body[0].strip() == "":
+        new_body.pop(0)
 
     return fm + "\n".join(new_body).rstrip() + "\n"
 

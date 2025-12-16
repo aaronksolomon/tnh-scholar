@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2025-12-12"
+created: "2025-12-16"
 auto_generated: true
 ---
 
@@ -95,6 +95,10 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-VP01: Video Processing Return Types and Configuration](/architecture/video-processing/adr/adr-vp01-video-processing.md)
 - [ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
 - [ADR-VSC02: VS Code Extension Integration with tnh-gen CLI](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
+- [ADR-VSC03.2: Real-World Survey Addendum (VS Code as a UI/UX Platform)](/architecture/ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum.md)
+- [ADR-VSC03.3: Investigation Synthesis - Validation of Design Choices](/architecture/ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis.md)
+- [ADR-VSC03: Preliminary Investigation Findings](/architecture/ui-ux/vs-code-integration/adr-vsc03.1-findings.md)
+- [ADR-VSC03: Python-JavaScript Impedance Mismatch Investigation](/architecture/ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation.md)
 - [ADR-YF00: Early yt-fetch Transcript Decisions (Historical)](/architecture/ytt-fetch/adr/adr-yf00-early-decisions.md)
 - [ADR-YF01: YouTube Transcript Source Handling](/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md)
 - [ADR-YF02: YouTube Transcript Format Selection](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)
@@ -130,6 +134,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TNH Configuration Management](/architecture/configuration/tnh-configuration-management.md)
 - [TNH‑Scholar Utilities Catalog](/architecture/utilities/design/utilities-catalog.md)
 - [Versioning Policy Documentation Additions](/architecture/project-policies/versioning-policy-implementation-summary.md)
+- [vscode-vs-tnh-scholar-ai-integration-review](/architecture/ui-ux/vs-code-integration/vscode-vs-tnh-scholar-ai-integration-review.md)
 - [YouTube API vs yt-dlp Evaluation](/architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval.md)
 
 ## Development
