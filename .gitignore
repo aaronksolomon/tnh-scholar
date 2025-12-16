@@ -30,6 +30,7 @@ sandbox/
 
 # temporary files:
 tmp/
+tmp_*/
 
 # local logs and transient artifacts:
 logs/

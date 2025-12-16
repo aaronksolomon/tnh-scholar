@@ -59,6 +59,7 @@ torch = "2.5.1"
 tqdm = "4.67.1"
 transformers = "4.48"
 unidecode = "1.3.8"
+typer = "0.12.5"
 yt-dlp = ">=2025.1.15"
 
 [tool.poetry.extras]
@@ -92,6 +93,7 @@ md-dead-link-check = "^1.2.0"
 [tool.poetry.scripts]
 audio-transcribe = "tnh_scholar.cli_tools.audio_transcribe.audio_transcribe:main"
 tnh-fab = "tnh_scholar.cli_tools.tnh_fab.tnh_fab:main"
+tnh-gen = "tnh_scholar.cli_tools.tnh_gen.tnh_gen:main"
 ytt-fetch = "tnh_scholar.cli_tools.ytt_fetch.ytt_fetch:main"
 nfmt = "tnh_scholar.cli_tools.nfmt.nfmt:main"
 token-count = "tnh_scholar.cli_tools.token_count.token_count:main"
