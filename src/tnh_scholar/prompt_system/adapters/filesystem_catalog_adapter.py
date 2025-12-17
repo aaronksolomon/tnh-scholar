@@ -45,7 +45,6 @@ class FilesystemPromptCatalog(PromptCatalogPort):
         file_resp = self._transport.read_file(request)
         try:
             prompt = self._mapper.to_domain_prompt(file_resp.content)
-            warnings: list[str] = []
         except Exception as exc:  # noqa: BLE001
             body = self._best_effort_body(file_resp.content)
             fallback_metadata = self._fallback_metadata(key, reason=str(exc))
@@ -55,7 +54,6 @@ class FilesystemPromptCatalog(PromptCatalogPort):
                 template=body,
                 metadata=fallback_metadata,
             )
-            warnings = list(fallback_metadata.warnings)
         else:
             if self._config.validation_on_load:
                 validation = self._loader.validate(prompt)
@@ -70,7 +68,6 @@ class FilesystemPromptCatalog(PromptCatalogPort):
                         template=prompt.template,
                         metadata=prompt.metadata.model_copy(update={"warnings": fallback_metadata.warnings}),
                     )
-            warnings = getattr(prompt.metadata, "warnings", []) or []
 
         self._cache.set(cache_key, prompt, ttl_s=self._config.cache_ttl_s)
         return prompt
