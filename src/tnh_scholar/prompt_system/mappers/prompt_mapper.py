@@ -28,7 +28,7 @@ class PromptMapper:
 
     def _split_frontmatter(self, content: str) -> tuple[dict[str, Any], str]:
         """Split YAML front matter from markdown content using shared Frontmatter helper."""
-        cleaned = content.lstrip("\ufeff")
+        cleaned = content.lstrip("\ufeff\n\r\t ")
         metadata_obj, body = Frontmatter.extract(cleaned)
         metadata_raw = metadata_obj.to_dict() if metadata_obj else {}
         if not metadata_raw:

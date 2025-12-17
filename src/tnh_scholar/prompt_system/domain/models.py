@@ -25,6 +25,7 @@ class PromptMetadata(BaseModel):
     schema_version: str = "1.0"
     created_at: str | None = None
     updated_at: str | None = None
+    warnings: list[str] = Field(default_factory=list)
 
 
 class Prompt(BaseModel):
