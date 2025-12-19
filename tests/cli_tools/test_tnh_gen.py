@@ -184,7 +184,7 @@ def test_run_merges_variables_and_writes_file(tmp_path, monkeypatch):
     monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
-    monkeypatch.setattr(run_module, "_build_service", lambda *_, **__: stub_service)
+    monkeypatch.setattr(run_module, "_initialize_service", lambda *_, **__: stub_service)
 
     output_file = tmp_path / "out.txt"
     result = runner.invoke(
@@ -252,6 +252,40 @@ def test_run_reports_invalid_vars_file(tmp_path, monkeypatch):
     payload = json.loads(result.stdout)
     assert payload["status"] == "failed"
     assert "Invalid JSON" in payload["error"]
+
+
+def test_cli_loads_dotenv_for_settings(tmp_path, monkeypatch):
+    dotenv_path = tmp_path / ".env"
+    dotenv_path.write_text("OPENAI_API_KEY=from_dotenv\n", encoding="utf-8")
+
+    monkeypatch.chdir(tmp_path)
+
+    env = {"OPENAI_API_KEY": None, "TNH_GEN_CONFIG_HOME": str(tmp_path / "config-home")}
+
+    result = runner.invoke(tnh_gen.app, ["config", "get", "api_key"], env=env)
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.stdout)
+    assert payload["api_key"] == "from_dotenv"
+
+
+def test_legacy_prompt_allows_auto_input_text_variable():
+    metadata = PromptMetadata(
+        key="legacy",
+        name="Legacy Prompt",
+        version="1.0.0",
+        description="Legacy prompt without declared vars.",
+        task_type="edit",
+        required_variables=[],
+        optional_variables=[],
+        default_variables={},
+        tags=[],
+    )
+
+    updated = run_module._ensure_input_text_variable(metadata)
+
+    assert "input_text" in updated.optional_variables
+    assert "input_text" not in metadata.optional_variables  # original untouched
 
 
 def test_config_set_and_get_user_scope(tmp_path, monkeypatch):
