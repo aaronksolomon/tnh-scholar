@@ -439,7 +439,6 @@ Production logging should include:
 - **Linting**: `ruff` to enforce style and complexity limits
 - **Type checking**: `mypy` to enforce type annotations
 - **Complexity analysis**: Sourcery to monitor function complexity
-- **Pre-commit hooks**: Automate code quality checks
 
 ### Optional Tools
 
