@@ -17,6 +17,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **tnh-gen CLI Tool** - New prompt-driven content generation CLI (ADR-TG01, ADR-TG02)
+  - Typer-based command structure (`list`, `run`, `config`, `version` subcommands)
+  - Layered configuration system (defaults → env → user → workspace → CLI overrides)
+  - Multiple output formats (JSON, YAML, text, table) with provenance tracking
+  - Protocol-based dependency injection (GenAIServiceProtocol, PromptCatalogProtocol)
+  - Legacy prompt compatibility with graceful degradation and warnings
+  - Environment variable loading (.env support) and input_text auto-injection
+  - Comprehensive test coverage for CLI commands and variable precedence
+  - `src/tnh_scholar/cli_tools/tnh_gen/`: Core CLI package with modular command structure
+  - `src/tnh_scholar/gen_ai_service/protocols.py`: Service and catalog protocol definitions
+  - `tests/cli_tools/test_tnh_gen.py`: CLI test suite
+
 - **AI Text Processing Design Work**
   - Add ADR-AT03: Minimal ai_text_processing refactor for tnh-gen
   - Add ADR-AT03.1: Transition plan for phased implementation
@@ -38,12 +50,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **tnh-gen Architecture Improvements**
+  - Refactored run command from 222 lines with 90-line function to 380 lines with 12 focused functions
+  - Introduced RunContext dataclass to encapsulate execution state
+  - Added pre-flight variable validation with actionable error messages
+  - Structured logging with correlation ID tracking
+  - Improved type safety across gen_ai_service modules
+
+- **Prompt System Enhancements**
+  - Best-effort prompt loading with synthetic metadata for invalid frontmatter
+  - Warnings field in PromptMetadata threaded through list/run outputs
+  - Frontmatter parsing leniency (leading whitespace/BOM handling)
+  - Invalid-metadata tagging for filtering in downstream clients
+  - Whitelisted `input_text` in validator for legacy prompt compatibility
+
 - **Documentation Infrastructure**
   - Enhanced ADR template with clearer structure and examples
   - Updated markdown standards for consistency
   - Refined human-AI software engineering principles
   - Improved documentation navigation (index, map)
   - Enhanced tnh-zen CSS styling for better readability
+  - Updated docs/index.md with current feature status
 
 ## [0.2.2] - 2025-12-11
 
