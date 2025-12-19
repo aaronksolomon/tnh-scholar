@@ -26,7 +26,7 @@ from tnh_scholar import TNH_DEFAULT_PATTERN_DIR
 from tnh_scholar.gen_ai_service.utils.token_utils import MODEL_CONTEXT_LIMITS
 
 
-class Settings(BaseSettings):
+class GenAISettings(BaseSettings):
     """Application-level settings loaded from environment or .env.
 
     Pydantic v2 note:

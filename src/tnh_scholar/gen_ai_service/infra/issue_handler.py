@@ -69,7 +69,7 @@ class IssueHandler:
         raise ConfigurationError(message)
 
     @staticmethod
-    def no_prompt_catalog():
+    def no_prompt_catalog() -> Path:
         """
         Fallback handler for missing prompt catalog directory.
 
