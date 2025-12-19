@@ -8,14 +8,6 @@ status: current
 created: '2025-12-11'
 ---
 
-
-
-
-
-
-
-
-
 # TNH Scholar
 
 **TNH Scholar is a long-term, community-aligned initiative to build a trusted multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
@@ -59,7 +51,7 @@ These are aspirational but active development goals aligned with the needs of th
 
 ---
 
-## Features
+## Current Features
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
 - **Text formatting and translation**: `tnh-gen` CLI (in development; currently `tnh-fab`, deprecated) for punctuation, translation, sectioning, and prompt-driven processing
