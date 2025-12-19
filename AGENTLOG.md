@@ -8,6 +8,264 @@ This file captures AI agent interactions, decisions, discoveries, and work perfo
 
 ## Session History (Most Recent First)
 
+## [2025-12-17 20:10 UTC] tnh-gen legacy prompt compatibility (.env + input_text)
+
+**Agent**: GPT-5 (Codex)  
+**Chat Reference**: tnh-gen-legacy-dotenv-and-input-text  
+**Human Collaborator**: phapman
+
+### Context
+
+Addressed CLI usability gaps: ensured `.env` is loaded at startup and allowed legacy prompts that omit `input_text` metadata to accept auto-injected input files without validation errors.
+
+### Work Completed
+
+- Load `.env` via `dotenv.find_dotenv(usecwd=True)` in the Typer callback so API keys/config are available before settings initialization (`src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py`).
+- Added `_ensure_input_text_variable` to augment prompt metadata with `input_text` when missing and used it in run context prep (`src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`).
+- Whitelisted `input_text` in prompt validation to prevent EXTRA_VARIABLES failures for legacy prompts (`src/tnh_scholar/prompt_system/service/validator.py`).
+- Added tests for dotenv loading and legacy `input_text` allowance in CLI and validator (`tests/cli_tools/test_tnh_gen.py`, `tests/prompt_system/test_validator.py`).
+
+### Results
+
+- `poetry run tnh-gen run --prompt repair_markdown --input-file AGENTLOG.md` now passes variable validation; current failure is an expected OpenAI connectivity issue in this environment.
+- Targeted pytest subsets pass: dotenv and legacy/input_text cases.
+
+### Next Steps
+
+- Run full CLI and prompt-system test suites once network/API access is available.
+- Consider documenting .env loading and legacy prompt handling in CLI docs/README.
+
+---
+
+## [2025-12-17 18:30 UTC] tnh-gen Code Review & Architecture Refinements
+
+**Agent**: Claude Sonnet 4.5
+**Chat Reference**: tnh-gen-review-and-refactor
+**Human Collaborator**: phapman
+
+### Context
+
+Performed comprehensive code review of initial tnh-gen CLI implementation against ADR-TG01, ADR-TG02, and TNH Scholar design principles. Identified Object-Service architecture violations and readability issues. Refactored run.py to reduce complexity, added proper dependency injection, improved protocol-based interfaces, and enhanced type safety.
+
+### Key Decisions
+
+- **Protocol-based catalog interface**: Introduced `PromptCatalogProtocol` to decouple `GenAIServiceProtocol` from concrete `PromptsAdapter`, improving testability and following Object-Service pattern.
+- **Factory injection via CLIContext**: Moved `ServiceFactory` to shared CLI context instead of instantiating in commands, enabling dependency injection and easier testing.
+- **Modular function decomposition**: Broke down 90-line `run_prompt()` into 12 focused functions (10-20 lines each), following Single Responsibility Principle and improving readability/testability.
+- **Structured error handling with logging**: Added logger for unexpected errors, separated known exceptions from unexpected ones, included correlation IDs for debugging.
+
+### Work Completed
+
+- [x] Code review identifying 6 priority issues (P0-P3) in compliance, architecture, and code quality (deliverable: review document)
+- [x] Fixed protocol typing to use `PromptCatalogProtocol` instead of concrete types (files: `src/tnh_scholar/gen_ai_service/protocols.py`)
+- [x] Added `service_factory` to `CLIContext` with lazy initialization (files: `src/tnh_scholar/cli_tools/tnh_gen/state.py`, `tnh_gen.py`)
+- [x] Refactored `run.py` from 222 lines with single 90-line function to 380 lines with 12 focused functions (files: `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`)
+- [x] Added structured logging for unexpected errors with correlation ID tracking
+- [x] Fixed mypy warnings in `config_loader.py` for JSON type validation (files: `src/tnh_scholar/cli_tools/tnh_gen/config_loader.py`)
+- [x] Verified all changes with mypy (zero errors), manual imports, and CLI help tests
+
+### Discoveries & Insights
+
+- **Variable precedence clarity**: Explicit `defaults` parameter in `_merge_variables()` makes metadata default integration self-documenting and testable.
+- **RunContext dataclass pattern**: Encapsulating all execution state in a typed dataclass reduced parameter passing from 11 parameters to 1 object, improving function signatures dramatically.
+- **Section headers aid navigation**: Adding `# ---- Section ----` comments between function groups improved file scannability without adding coupling.
+- **Pre-flight validation value**: Validating required variables before API call provides better UX with actionable error messages (e.g., "Add with: --var foo=VALUE").
+
+### Files Modified/Created
+
+- `src/tnh_scholar/gen_ai_service/protocols.py`: Added `PromptCatalogProtocol`, improved `GenAIServiceProtocol` decoupling
+- `src/tnh_scholar/cli_tools/tnh_gen/state.py`: Added `service_factory` field, `_create_default_factory()` helper
+- `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py`: Initialize `service_factory` in CLI callback
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`: Complete refactor - added `RunContext` dataclass, decomposed into 12 focused functions, added logging
+- `src/tnh_scholar/cli_tools/tnh_gen/config_loader.py`: Fixed mypy warning with runtime type check in `_load_json()`
+
+### Next Steps
+
+- [ ] Write unit tests for individual helper functions in refactored `run.py` (especially variable merging and validation)
+- [ ] Add integration test for end-to-end prompt execution with factory injection
+- [ ] Consider extracting `RunContext` preparation logic into a builder class if complexity grows
+- [ ] Update CHANGELOG.md and TODO.md per git commit safety protocol
+
+### Open Questions
+
+- Should `RunContext` be converted to a Pydantic model for validation, or keep as lightweight dataclass?
+- Would a command-pattern abstraction for execute/payload/output improve testability further?
+- Should we add telemetry/metrics for prompt execution times and token usage?
+
+### References
+
+- ADR-OS01: `/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md`
+- ADR-TG01: `/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md`
+- ADR-TG02: `/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md`
+- Design Principles: `/development/design-principles.md` (Single Responsibility, Composition, Protocols)
+- Style Guide: `/development/style-guide.md` (Type hints, naming, strong typing)
+
+---
+
+## [2025-02-16 15:00 UTC] tnh-gen DI + variable validation refinements
+
+**Agent**: GPT-5 (Codex)  
+**Chat Reference**: tnh-gen-review-followups  
+**Human Collaborator**: phapman
+
+### Context
+
+Addressed Claude review items for `tnh-gen`: aligned with OS design principles by adding a service protocol/factory, removed direct GenAIService construction, added typed variable handling, and tightened validation while keeping CLI tests green.
+
+### Key Decisions
+
+- **DI via protocol/factory**: Introduced `GenAIServiceProtocol`, `DefaultServiceFactory`, and a mapper to build settings from CLI config and overrides instead of constructing `GenAIService` directly in the CLI.
+- **Typed variable sets**: Wrapped CLI variables in a Pydantic `VariableSet` to avoid raw dict usage; added pre-flight required-variable validation using prompt metadata defaults.
+- **Specific exception handling**: Narrowed CLI catch blocks for common input/JSON errors, retaining structured error mapping.
+
+### Work Completed
+
+- [x] Added service protocol and factory/mappers for DI (files: `src/tnh_scholar/gen_ai_service/protocols.py`, `src/tnh_scholar/cli_tools/tnh_gen/factory.py`)
+- [x] Refactored `run.py` to use factory-built services, prompt defaults, and typed variable sets with validation (files: `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`)
+- [x] Adjusted Typer option to satisfy linters/mypy warnings for `--var` defaults
+- [x] Re-ran CLI tests (all passing): `poetry run pytest tests/cli_tools/test_tnh_gen.py`
+
+### Discoveries & Insights
+
+- Prompt metadata defaults can seed variable maps cleanly; pre-flight validation improves UX with actionable suggestions.
+- Factory + protocol pattern keeps CLI thin/testable without changing GenAI service behavior.
+
+### Files Modified/Created
+
+- `src/tnh_scholar/gen_ai_service/protocols.py`: New service protocol.
+- `src/tnh_scholar/cli_tools/tnh_gen/factory.py`: Mapper and default factory for Settings/GenAIService creation.
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`: DI wiring, variable wrapping, validation tweaks.
+
+### Next Steps
+
+- [ ] Consider exposing catalog via protocol explicitly and extending pre-flight validation (e.g., defaults/optional guidance in errors).
+- [ ] Decide if CLI should offer quieter warnings for legacy frontmatter.
+
+### Open Questions
+
+- Should the factory be extended for pluggable middleware (logging/tracing) or multiple providers?
+- Do we need a dedicated CLI-level protocol for prompts/catalog to avoid hasattr checks entirely?
+
+### References
+
+- ADR-OS01: `docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md`
+- ADR-TG01/TG02: `docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md`, `docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md`
+- Tests: `tests/cli_tools/test_tnh_gen.py`
+
+---
+
+## [2025-02-16 12:20 UTC] tnh-gen Typer CLI first build
+
+**Agent**: GPT-5 (Codex)  
+**Chat Reference**: tnh-gen-initial-implementation  
+**Human Collaborator**: phapman
+
+### Context
+
+Built the first working `tnh-gen` CLI per ADR-TG01/TG02 to replace `tnh-fab`, focusing on Typer-based commands, structured JSON outputs, and integration with the existing GenAIService/prompt system.
+
+### Key Decisions
+
+- **Config loader simplification**: Implemented a layered JSON/ENV loader (defaults/env → user → workspace → CLI override) in lieu of the ADR’s fuller hierarchical settings; persisted `config set` to user/workspace JSON.
+- **Error/exit mapping**: Centralized exception→exit code mapping with structured JSON errors; treats missing API/config and bad args as Input errors (exit 5).
+- **Streaming deferral**: Accepted `--streaming` flag but raise not-implemented; `--top-p` accepted with a warning (not wired through yet).
+- **Typer subcommand layout**: Modular commands (`list`, `run`, `config`, `version`) with shared context and format enums to mirror ADR structure.
+
+### Work Completed
+
+- [x] Created Typer entrypoint and subcommands with global flags (files: `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py`, `src/tnh_scholar/cli_tools/tnh_gen/commands/*.py`)
+- [x] Added config loader/persistence helpers and shared CLI state (files: `src/tnh_scholar/cli_tools/tnh_gen/config_loader.py`, `src/tnh_scholar/cli_tools/tnh_gen/state.py`)
+- [x] Implemented JSON/YAML/text/table formatting and provenance-aware file writing (files: `src/tnh_scholar/cli_tools/tnh_gen/output/*`)
+- [x] Added error mapping with structured diagnostics (files: `src/tnh_scholar/cli_tools/tnh_gen/errors.py`)
+- [x] Registered Poetry script and Typer dependency (files: `pyproject.toml`)
+- [x] Added Typer CLI tests for list/run/config flows and variable precedence (files: `tests/cli_tools/test_tnh_gen.py`)
+
+### Discoveries & Insights
+
+- The existing GenAIService Settings allowed simple override injection for CLI flags (model, temperature, max tokens) without new config plumbing.
+- Table output is intentionally minimal; JSON/YAML remain the contract surface for VS Code and automation.
+
+### Files Modified/Created
+
+- `src/tnh_scholar/cli_tools/tnh_gen/**`: New CLI package (entrypoint, commands, state, config loader, errors, output helpers).
+- `pyproject.toml`: Added `tnh-gen` script and `typer` dependency.
+- `tests/cli_tools/test_tnh_gen.py`: New CLI test suite.
+
+### Next Steps
+
+- [ ] Document CLI usage/migration from `tnh-fab` in docs and quickstart.
+- [ ] Decide on streaming semantics and wire `--top-p` through provider params.
+
+### Open Questions
+
+- Should config precedence expand to match ADR’s full workspace/user/VS Code paths beyond simple JSON files?
+- Do we need richer table formatting or `--keys-only` caching for large catalogs?
+
+### References
+
+- ADR-TG01: `docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md`
+- ADR-TG02: `docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md`
+- Tests: `tests/cli_tools/test_tnh_gen.py`
+
+---
+
+## [2025-02-16 13:00 UTC] Legacy prompt tolerance for tnh-gen
+
+**Agent**: GPT-5 (Codex)  
+**Chat Reference**: tnh-gen-legacy-compat  
+**Human Collaborator**: phapman
+
+### Context
+
+Extended the new `tnh-gen` CLI and prompt catalog to handle legacy prompts lacking proper frontmatter so they still list and run, while surfacing warnings and guidance on expected metadata.
+
+### Key Decisions
+
+- **Best-effort prompt loading**: When frontmatter is missing/invalid, synthesize metadata and warnings instead of failing the catalog entry.
+- **Surface warnings in CLI**: Emit warnings in `list` JSON/stderr and include `prompt_warnings` in `run` responses for downstream clients.
+- **Frontmatter leniency**: Strip leading whitespace/BOM and tolerate non-dict YAML while still extracting the template body.
+
+### Work Completed
+
+- [x] Added `warnings` to `PromptMetadata` and threaded through `list`/`run` outputs (files: `src/tnh_scholar/prompt_system/domain/models.py`, `src/tnh_scholar/cli_tools/tnh_gen/commands/list.py`, `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`)
+- [x] Implemented fallback loading with synthetic metadata/tags for invalid frontmatter and preserved templates (files: `src/tnh_scholar/prompt_system/adapters/filesystem_catalog_adapter.py`, `src/tnh_scholar/prompt_system/transport/filesystem.py`)
+- [x] Loosened frontmatter parsing to handle leading whitespace/BOM and salvage bodies (files: `src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`)
+- [x] Added legacy prompt coverage in CLI tests (files: `tests/cli_tools/test_tnh_gen.py`)
+- [x] Verified `poetry run tnh-gen list --keys-only` includes `default_*` prompts with warnings
+
+### Discoveries & Insights
+
+- **Logging noise**: Frontmatter extraction warns to stderr for malformed YAML; CLI still succeeds but UX may benefit from quieter logging.
+- **Invalid metadata tagging**: Tagging legacy prompts with `invalid-metadata` enables filtering/flagging in clients like VS Code.
+
+### Files Modified/Created
+
+- `src/tnh_scholar/prompt_system/domain/models.py`: Added `warnings` field to prompt metadata.
+- `src/tnh_scholar/prompt_system/adapters/filesystem_catalog_adapter.py`: Best-effort load with synthetic metadata and warning generation.
+- `src/tnh_scholar/prompt_system/transport/filesystem.py`: Graceful handling when metadata parse fails.
+- `src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`: Strip leading whitespace/BOM before frontmatter parse.
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/list.py`: Warn in JSON/stderr for prompts missing proper frontmatter.
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`: Return `prompt_warnings` in run output.
+- `tests/cli_tools/test_tnh_gen.py`: Added legacy prompt test coverage.
+
+### Next Steps
+
+- [ ] Decide whether to suppress/downgrade frontmatter YAML warnings in CLI output.
+- [ ] Document expected frontmatter format and migration path for legacy prompts in CLI docs.
+
+### Open Questions
+
+- Should CLI offer a `--quiet-warnings` flag to silence legacy frontmatter notices while still tagging JSON?
+- Do we want an auto-migration tool to inject minimal frontmatter into legacy prompts?
+
+### References
+
+- ADR-TG01: `docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md`
+- ADR-TG02: `docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md`
+- Tests: `tests/cli_tools/test_tnh_gen.py`
+
+---
+
 ## [2025-12-14 04:14 PST] TextObject merge refactor & Pydantic reversal
 
 **Agent**: Codex (GPT-5)  
@@ -15,29 +273,35 @@ This file captures AI agent interactions, decisions, discoveries, and work perfo
 **Human Collaborator**: phapman
 
 ### Context
+
 Refactored `merge_metadata` per style/design guidelines and reverted TextObject from Pydantic BaseModel to a plain class per addendum.
 
 ### Key Decisions
+
 - Encapsulated merge strategy dispatch in `_MetadataMerger` using `match`.
 - Left provenance unbounded for the interim release but flagged for future bounding/deduplication.
 - Reverted TextObject to a plain Python class while retaining Pydantic DTO (`TextObjectInfo`).
 
 ### Work Completed
+
 - [x] Added `_MetadataMerger` helper and simplified `merge_metadata` orchestration (`src/tnh_scholar/ai_text_processing/text_object.py`)
 - [x] Reverted TextObject to a plain class with explicit `__init__` and `validate_on_init` flag; added missing import for Pydantic validator used by `TextObjectInfo` (`src/tnh_scholar/ai_text_processing/text_object.py`)
 - [x] Added provenance growth open question to ADR addendum (`docs/architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness.md`)
 - [x] Updated tests to plain-class construction; reran via poetry (9 passed) (`tests/ai_text_processing/test_text_object.py`)
 
 ### Discoveries & Insights
+
 - Plain-class TextObject avoids Pydantic friction while preserving DTO validation via `TextObjectInfo`.
 - Strategy dispatch and helper class bring `merge_metadata` complexity in line with style guide expectations.
 
 ### Files Modified/Created
+
 - `src/tnh_scholar/ai_text_processing/text_object.py`: Merge refactor, Pydantic reversal, validator import for DTO.
 - `docs/architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness.md`: Added open question on provenance bounding.
 - `tests/ai_text_processing/test_text_object.py`: Updated instantiation paths and executed tests.
 
 ### Next Steps
+
 - [ ] Define provenance bounding/dedup policy in the planned TextObject rebuild.
 
 ---

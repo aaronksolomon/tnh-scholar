@@ -84,14 +84,31 @@
     │   │   └── nfmt.py
     │   ├── sent_split
     │   │   ├── __init__.py
-    │   │   ├── sent_split.py
-    │   │   └── sent_split_bak.py
+    │   │   ├── sent_split_bak.py
+    │   │   └── sent_split.py
     │   ├── srt_translate
     │   │   ├── __init__.py
     │   │   └── srt_translate.py
     │   ├── tnh_fab
     │   │   ├── __init__.py
     │   │   └── tnh_fab.py
+    │   ├── tnh_gen
+    │   │   ├── __init__.py
+    │   │   ├── commands
+    │   │   │   ├── __init__.py
+    │   │   │   ├── config.py
+    │   │   │   ├── list.py
+    │   │   │   ├── run.py
+    │   │   │   └── version.py
+    │   │   ├── config_loader.py
+    │   │   ├── errors.py
+    │   │   ├── factory.py
+    │   │   ├── output
+    │   │   │   ├── __init__.py
+    │   │   │   ├── formatter.py
+    │   │   │   └── provenance.py
+    │   │   ├── state.py
+    │   │   └── tnh_gen.py
     │   ├── tnh_setup
     │   │   ├── __init__.py
     │   │   └── tnh_setup.py
@@ -141,6 +158,7 @@
     │   ├── ports
     │   │   ├── __init__.py
     │   │   └── genai_port.py
+    │   ├── protocols.py
     │   ├── providers
     │   │   ├── __init__.py
     │   │   ├── anthropic_adapter.py
@@ -255,13 +273,13 @@
     │   └── webhook_server.py
     ├── video_processing
     │   ├── __init__.py
-    │   ├── video_processing.py
     │   ├── video_processing_old1.py
     │   ├── video_processing_old2.py
+    │   ├── video_processing.py
     │   └── yt_transcribe.py
     └── xml_processing
         ├── __init__.py
         ├── extract_tags.py
         └── xml_processing.py
 
-60 directories, 205 files
+63 directories, 220 files
