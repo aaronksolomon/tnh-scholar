@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Iterable, List
+from pathlib import Path
+from typing import Iterable
 from uuid import uuid4
 
 import typer
@@ -10,6 +11,7 @@ from tnh_scholar.cli_tools.tnh_gen.errors import error_response
 from tnh_scholar.cli_tools.tnh_gen.output.formatter import format_table, render_output
 from tnh_scholar.cli_tools.tnh_gen.state import ListOutputFormat, ctx
 from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import PromptsAdapter
+from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
 app = typer.Typer(help="List available prompts with metadata.", invoke_without_command=True)
 
@@ -19,7 +21,18 @@ _EXPECTED_FRONTMATTER = (
 )
 
 
-def _build_adapter(prompts_base) -> PromptsAdapter:
+def _build_adapter(prompts_base: Path | None) -> PromptsAdapter:
+    """Build a prompts adapter rooted at the configured prompt directory.
+
+    Args:
+        prompts_base: Base path for prompt catalog content.
+
+    Returns:
+        PromptsAdapter configured for the provided directory.
+
+    Raises:
+        ValueError: If no prompt directory is configured.
+    """
     if prompts_base is None:
         raise ValueError("No prompt catalog directory configured (set TNH_PROMPT_DIR or config).")
     base = prompts_base.expanduser()
@@ -27,10 +40,23 @@ def _build_adapter(prompts_base) -> PromptsAdapter:
     return PromptsAdapter(prompts_base=base)
 
 
-def _apply_filters(prompts: Iterable, tags: list[str], search: str | None):
+def _apply_filters(prompts: Iterable[PromptMetadata], 
+                   tags: list[str], 
+                   search: str | None
+                   ) -> Iterable[PromptMetadata]:
+    """Yield prompts that match provided tag and search filters.
+
+    Args:
+        prompts: Iterable of prompt metadata objects.
+        tags: Tag filters (any match will include the prompt).
+        search: Optional text search applied to name/description.
+
+    Returns:
+        Iterable of prompts that satisfy all filters.
+    """
     lowered = search.lower() if search else None
     for prompt in prompts:
-        if tags and not any(tag in prompt.tags for tag in tags):
+        if tags and all(tag not in prompt.tags for tag in tags):
             continue
         if lowered and lowered not in prompt.name.lower() and lowered not in prompt.description.lower():
             continue
@@ -39,7 +65,7 @@ def _apply_filters(prompts: Iterable, tags: list[str], search: str | None):
 
 @app.callback()
 def list_prompts(
-    tag: List[str] = typer.Option([], "--tag", help="Filter by tag (repeatable)."),
+    tag: list[str] = typer.Option([], "--tag", help="Filter by tag (repeatable)."),
     search: str | None = typer.Option(None, "--search", help="Search prompt name/description."),
     keys_only: bool = typer.Option(False, "--keys-only", help="Output only prompt keys."),
     format: ListOutputFormat | None = typer.Option(
@@ -49,6 +75,14 @@ def list_prompts(
         case_sensitive=False,
     ),
 ):
+    """List prompts with optional filters and output formats.
+
+    Args:
+        tag: Filter prompts by tag (repeatable).
+        search: Case-insensitive search across name/description.
+        keys_only: Whether to output only prompt keys.
+        format: Desired output format (defaults to global setting).
+    """
     correlation_id = uuid4().hex
     try:
         config, meta = load_config(ctx.config_path)

@@ -9,14 +9,24 @@ from tnh_scholar.cli_tools.tnh_gen.state import ListOutputFormat, OutputFormat
 
 
 def render_output(payload: Any, fmt: OutputFormat | ListOutputFormat) -> str:
-    if fmt == OutputFormat.json or fmt == ListOutputFormat.json:
+    """Serialize payload to the requested output format.
+
+    Args:
+        payload: Data to serialize.
+        fmt: Output format enum selection.
+
+    Returns:
+        Serialized string representation for CLI display.
+
+    Raises:
+        ValueError: If the requested format is unsupported.
+    """
+    if fmt in [OutputFormat.json, ListOutputFormat.json]:
         return json.dumps(payload, indent=2)
-    if fmt == OutputFormat.yaml or fmt == ListOutputFormat.yaml:
+    if fmt in [OutputFormat.yaml, ListOutputFormat.yaml]:
         return yaml.safe_dump(payload, sort_keys=False)
     if fmt in (OutputFormat.text, ListOutputFormat.text):
-        if isinstance(payload, str):
-            return payload
-        return json.dumps(payload, indent=2)
+        return payload if isinstance(payload, str) else json.dumps(payload, indent=2)
     if fmt == ListOutputFormat.table:
         if isinstance(payload, str):
             return payload
@@ -25,6 +35,15 @@ def render_output(payload: Any, fmt: OutputFormat | ListOutputFormat) -> str:
 
 
 def format_table(headers: list[str], rows: Iterable[list[str]]) -> str:
+    """Render a simple fixed-width table for CLI display.
+
+    Args:
+        headers: Column headers.
+        rows: Row data to render.
+
+    Returns:
+        Rendered table string.
+    """
     data = [headers, *list(rows)]
     widths = [max(len(row[idx]) for row in data) for idx in range(len(headers))]
     lines = []

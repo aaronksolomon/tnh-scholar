@@ -1,9 +1,12 @@
+"""Typer entrypoint for the tnh-gen CLI."""
+
 from __future__ import annotations
 
 from pathlib import Path
 from typing import Optional
 
 import typer
+from dotenv import find_dotenv, load_dotenv
 
 from tnh_scholar.cli_tools.tnh_gen.commands import config as config_cmd
 from tnh_scholar.cli_tools.tnh_gen.commands import list as list_cmd
@@ -36,12 +39,28 @@ def cli_callback(
     quiet: bool = typer.Option(False, "--quiet", "-q", help="Suppress non-error output."),
     no_color: bool = typer.Option(False, "--no-color", help="Disable colored output."),
 ):
-    """Global options for all tnh-gen commands."""
+    """Apply global options and initialize shared context.
+
+    Args:
+        config: Optional path to an explicit config file.
+        format: Default output format for all commands.
+        verbose: Whether to emit verbose logs.
+        quiet: Whether to suppress non-error output.
+        no_color: Whether to disable colored terminal output.
+    """
+    from tnh_scholar.cli_tools.tnh_gen.state import _create_default_factory
+
+    # Load environment variables from a .env file so settings (e.g., API keys)
+    # are available before config and service initialization.
+    load_dotenv(dotenv_path=find_dotenv(usecwd=True) or None)
+
     ctx.config_path = config
     ctx.output_format = format
     ctx.verbose = verbose
     ctx.quiet = quiet
     ctx.no_color = no_color
+    if ctx.service_factory is None:
+        ctx.service_factory = _create_default_factory()
 
 
 app.add_typer(list_cmd.app, name="list")
@@ -51,6 +70,7 @@ app.command()(version)
 
 
 def main() -> None:
+    """Dispatch execution to the Typer application."""
     app()
 
 

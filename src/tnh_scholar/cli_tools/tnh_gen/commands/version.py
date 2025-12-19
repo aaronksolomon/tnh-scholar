@@ -13,6 +13,7 @@ from tnh_scholar.cli_tools.tnh_gen.state import OutputFormat, ctx
 
 
 def _python_version() -> str:
+    """Return the current interpreter version as a string."""
     return ".".join(map(str, sys.version_info[:3]))
 
 
@@ -21,6 +22,11 @@ def version(
         None, "--format", help="json (default) or yaml.", case_sensitive=False
     ),
 ):
+    """Display version information for tnh-gen and dependencies.
+
+    Args:
+        format: Optional output format override (json or yaml).
+    """
     correlation_id = uuid4().hex
     try:
         payload = {
