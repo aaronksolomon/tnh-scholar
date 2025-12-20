@@ -1,5 +1,8 @@
 """Filesystem-backed prompt catalog adapter."""
 
+from __future__ import annotations
+
+import logging
 from pathlib import Path
 
 from ..config.prompt_catalog_config import PromptCatalogConfig
@@ -10,6 +13,8 @@ from ..service.loader import PromptLoader
 from ..transport.cache import CacheTransport, InMemoryCacheTransport
 from ..transport.filesystem import FilesystemTransport
 from ..transport.models import PromptFileRequest
+
+logger = logging.getLogger(__name__)
 
 
 class FilesystemPromptCatalog(PromptCatalogPort):
@@ -74,6 +79,9 @@ class FilesystemPromptCatalog(PromptCatalogPort):
                     )
             warnings = getattr(prompt.metadata, "warnings", []) or []
 
+        if warnings:
+            self._log_warnings(key, warnings)
+
         self._cache.set(cache_key, prompt, ttl_s=self._config.cache_ttl_s)
         return prompt
 
@@ -124,3 +132,8 @@ class FilesystemPromptCatalog(PromptCatalogPort):
             if len(parts) == 3:
                 return parts[2].lstrip()
         return cleaned
+
+    def _log_warnings(self, key: str, warnings: list[str]) -> None:
+        """Surface prompt warnings to help with diagnostics."""
+        for warning in warnings:
+            logger.warning("Prompt '%s' warning: %s", key, warning)

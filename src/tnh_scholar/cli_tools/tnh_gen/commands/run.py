@@ -8,7 +8,6 @@ from typing import Any
 from uuid import uuid4
 
 import typer
-from pydantic import BaseModel, Field, field_validator
 
 from tnh_scholar.cli_tools.tnh_gen.config_loader import CLIConfig, load_config
 from tnh_scholar.cli_tools.tnh_gen.errors import error_response
@@ -50,17 +49,6 @@ class TnhGenCLIOptions:
 
 
 # ---- Data Models ----
-
-
-class VariableSet(BaseModel):
-    """Wrapper for CLI-provided variables to avoid raw dict usage."""
-
-    values: dict[str, Any] = Field(default_factory=dict)
-
-    @field_validator("values", mode="before")
-    @classmethod
-    def _ensure_str_keys(cls, value: Any) -> dict[str, Any]:
-        return {} if value is None else {str(k): v for k, v in dict(value).items()}
 
 
 @dataclass
@@ -161,7 +149,14 @@ def _merge_variables(
     merged["input_text"] = _read_input_text(input_file)
     merged |= _load_vars_file(vars_file)
     merged.update(_parse_inline_vars(inline_vars))
-    return VariableSet(values=merged).values
+    return _normalize_variable_keys(merged)
+
+
+def _normalize_variable_keys(values: dict[Any, Any] | None) -> dict[str, Any]:
+    """Normalize variable keys to strings for downstream components."""
+    if not values:
+        return {}
+    return {str(k): v for k, v in values.items()}
 
 
 def _ensure_input_text_variable(metadata: PromptMetadata) -> PromptMetadata:
@@ -227,6 +222,7 @@ def _prepare_run_context(
     output_file: Path | None,
     output_format: OutputFormat | None,
     no_provenance: bool,
+    correlation_id: str,
 ) -> RunContext:
     """Prepare all context needed for prompt execution.
 
@@ -242,6 +238,7 @@ def _prepare_run_context(
         output_file: Optional path to write rendered output.
         output_format: Preferred CLI output format for stdout.
         no_provenance: Whether to skip provenance header when writing files.
+        correlation_id: Trace identifier for this invocation.
 
     Returns:
         RunContext populated with config, service, metadata, and variables.
@@ -250,8 +247,6 @@ def _prepare_run_context(
         ConfigurationError: If service factory is not initialized.
         ValueError: If required variables are missing or inputs are invalid.
     """
-    correlation_id = uuid4().hex
-
     # Load configuration
     config, meta = load_config(ctx.config_path, overrides={"default_model": model})
 
@@ -290,34 +285,6 @@ def _prepare_run_context(
     )
 
 
-# ---- Execution ----
-
-
-def _execute_prompt(context: RunContext) -> CompletionEnvelope:
-    """Execute prompt and return completion envelope.
-
-    Args:
-        context: Prepared run context containing service and variables.
-
-    Returns:
-        Completion envelope containing result and provenance details.
-    """
-    user_input = str(context.variables.get("input_text", ""))
-
-    request = RenderRequest(
-        instruction_key=context.prompt_key,
-        user_input=user_input,
-        variables=context.variables,
-        intent=context.intent,
-        model=context.model_override,
-    )
-
-    return context.service.generate(request)
-
-
-# ---- Response Formatting ----
-
-
 def _build_success_payload(
     envelope: CompletionEnvelope,
     metadata: PromptMetadata,
@@ -349,7 +316,7 @@ def _build_success_payload(
     result = envelope.result
     usage = result.usage if result else None
 
-    return {
+    payload = {
         "status": "succeeded",
         "result": {
             "text": result.text if result else "",
@@ -382,34 +349,7 @@ def _build_success_payload(
         "sources": config_meta["sources"],
         "correlation_id": correlation_id,
     }
-
-
-def _handle_output(
-    envelope: CompletionEnvelope,
-    context: RunContext,
-    payload: dict[str, Any],
-) -> None:
-    """Handle output file writing and console display.
-
-    Args:
-        envelope: Completion envelope to source result text.
-        context: Run context containing output preferences.
-        payload: Serialized payload ready for stdout.
-    """
-    result_text = envelope.result.text if envelope.result else ""
-
-    if context.output_file:
-        write_output_file(
-            context.output_file,
-            result_text=result_text,
-            envelope=envelope,
-            correlation_id=context.correlation_id,
-            prompt_version=context.metadata.version,
-            include_provenance=context.include_provenance,
-        )
-        typer.echo(f"Wrote output to {context.output_file}", err=True)
-
-    typer.echo(render_output(payload, context.output_format))
+    return payload
 
 
 # ---- Error Handling ----
@@ -491,21 +431,42 @@ def run_prompt(
             output_file=output_file,
             output_format=format,
             no_provenance=no_provenance,
+            correlation_id=correlation_id,
         )
 
         # Execute prompt
-        envelope = _execute_prompt(context)
+        user_input = str(context.variables.get("input_text", ""))
+        request = RenderRequest(
+            instruction_key=context.prompt_key,
+            user_input=user_input,
+            variables=context.variables,
+            intent=context.intent,
+            model=context.model_override,
+        )
+        envelope = context.service.generate(request)
 
         # Build response payload
         payload = _build_success_payload(
             envelope=envelope,
             metadata=context.metadata,
             config_meta=context.config_meta,
-            correlation_id=correlation_id,
+            correlation_id=context.correlation_id,
         )
 
         # Handle output
-        _handle_output(envelope, context, payload)
+        result_text = envelope.result.text if envelope.result else ""
+        if context.output_file:
+            write_output_file(
+                context.output_file,
+                result_text=result_text,
+                envelope=envelope,
+                correlation_id=context.correlation_id,
+                prompt_version=context.metadata.version,
+                include_provenance=context.include_provenance,
+            )
+            typer.echo(f"Wrote output to {context.output_file}", err=True)
+
+        typer.echo(render_output(payload, context.output_format))
 
     except Exception as exc:
         _handle_error(exc, correlation_id)
