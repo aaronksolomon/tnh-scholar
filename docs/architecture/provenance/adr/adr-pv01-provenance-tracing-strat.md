@@ -230,16 +230,28 @@ Transport Layer:
 
 #### File Headers (Human-Readable)
 
-```markdown
-<!-- Provenance Header
-Trace ID: abc123def456
-Operation: tnh-gen run summarize-talk
-Provider: openai
-Model: gpt-4-turbo-2024-04-09
-Fingerprint: sha256:8f3e4d...
-Generated: 2025-12-19T10:30:45Z
--->
+Use YAML frontmatter with `---` delimiters (consistent with TNH Scholar metadata patterns):
+
+```yaml
+---
+# Provenance metadata (generated output)
+trace_id: abc123def456
+operation: tnh-gen run summarize-talk
+provider: openai
+model: gpt-4-turbo-2024-04-09
+fingerprint: sha256:8f3e4d...
+generated: 2025-12-19T10:30:45Z
+---
+
+[Generated content follows...]
 ```
+
+**Rationale**: Maintains consistency with existing TNH Scholar patterns:
+
+- Metadata infrastructure (ADR-MD01/MD02) uses YAML frontmatter
+- All `.md` files in corpus use `---` delimiters
+- Enables reuse of `Frontmatter.extract()` utilities
+- Machine-parseable and human-readable
 
 #### JSON Output (Machine-Readable)
 
