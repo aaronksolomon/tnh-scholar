@@ -21,7 +21,7 @@ def _iso(dt: datetime) -> str:
 def provenance_block(
     envelope: CompletionEnvelope,
     *,
-    correlation_id: str,
+    trace_id: str,
     prompt_version: str | None,
 ) -> str:
     """Build an HTML comment block capturing provenance for saved files."""
@@ -32,7 +32,7 @@ def provenance_block(
         f"Prompt: {fp.prompt_key} ({prompt_version or f'v?-{fp.prompt_key}'})",
         f"Model: {envelope.provenance.model}",
         f"Fingerprint: {fp.prompt_content_hash}",
-        f"Correlation ID: {correlation_id}",
+        f"Trace ID: {trace_id}",
         f"Generated: {_iso(envelope.provenance.finished_at)}",
         "-->",
         "",
@@ -45,7 +45,7 @@ def write_output_file(
     *,
     result_text: str,
     envelope: CompletionEnvelope,
-    correlation_id: str,
+    trace_id: str,
     prompt_version: str | None,
     include_provenance: bool,
 ) -> None:
@@ -54,7 +54,7 @@ def write_output_file(
     if include_provenance:
         header = provenance_block(
             envelope,
-            correlation_id=correlation_id,
+            trace_id=trace_id,
             prompt_version=prompt_version,
         )
         path.write_text(f"{header}{result_text}", encoding="utf-8")

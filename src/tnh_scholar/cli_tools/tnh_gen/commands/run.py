@@ -61,7 +61,7 @@ class RunContext:
     service: GenAIServiceProtocol
     metadata: PromptMetadata
     variables: dict[str, Any]
-    correlation_id: str
+    trace_id: str
     model_override: str | None
     intent: str | None
     output_format: OutputFormat
@@ -222,7 +222,7 @@ def _prepare_run_context(
     output_file: Path | None,
     output_format: OutputFormat | None,
     no_provenance: bool,
-    correlation_id: str,
+    trace_id: str,
 ) -> RunContext:
     """Prepare all context needed for prompt execution.
 
@@ -238,7 +238,7 @@ def _prepare_run_context(
         output_file: Optional path to write rendered output.
         output_format: Preferred CLI output format for stdout.
         no_provenance: Whether to skip provenance header when writing files.
-        correlation_id: Trace identifier for this invocation.
+        trace_id: Unique trace identifier for this invocation.
 
     Returns:
         RunContext populated with config, service, metadata, and variables.
@@ -276,7 +276,7 @@ def _prepare_run_context(
         service=service,
         metadata=metadata,
         variables=variables,
-        correlation_id=correlation_id,
+        trace_id=trace_id,
         model_override=model,
         intent=intent,
         output_format=output_format or ctx.output_format,
@@ -289,7 +289,7 @@ def _build_success_payload(
     envelope: CompletionEnvelope,
     metadata: PromptMetadata,
     config_meta: dict[str, Any],
-    correlation_id: str,
+    trace_id: str,
 ) -> dict[str, Any]:
     """Build success response payload for CLI output serialization.
 
@@ -308,7 +308,7 @@ def _build_success_payload(
         envelope: Completion envelope returned from the service.
         metadata: Prompt metadata used for the invocation.
         config_meta: Metadata describing configuration sources.
-        correlation_id: Trace identifier for the CLI invocation.
+        trace_id: Unique trace identifier for the CLI invocation.
 
     Returns:
         Untyped payload suitable for serialization to stdout.
@@ -347,7 +347,7 @@ def _build_success_payload(
         "prompt_warnings": getattr(metadata, "warnings", []),
         "policy_applied": envelope.policy_applied,
         "sources": config_meta["sources"],
-        "correlation_id": correlation_id,
+        "trace_id": trace_id,
     }
     return payload
 
@@ -355,20 +355,20 @@ def _build_success_payload(
 # ---- Error Handling ----
 
 
-def _handle_error(exc: Exception, correlation_id: str) -> None:
+def _handle_error(exc: Exception, trace_id: str) -> None:
     """Handle error and exit with appropriate code.
 
     Args:
         exc: The caught exception.
-        correlation_id: Trace identifier for the current invocation.
+        trace_id: Unique trace identifier for the current invocation.
 
     Raises:
         typer.Exit: Always raised with the mapped exit code.
     """
     if not isinstance(exc, (ValueError, KeyError, json.JSONDecodeError, ValidationError, ConfigurationError)):
-        logger.exception(f"Unexpected error in run command [correlation_id={correlation_id}]")
+        logger.exception(f"Unexpected error in run command [trace_id={trace_id}]")
 
-    payload, exit_code = error_response(exc, correlation_id=correlation_id)
+    payload, exit_code = error_response(exc, trace_id=trace_id)
     typer.echo(render_output(payload, OutputFormat.json))
     raise typer.Exit(code=int(exit_code)) from exc
 
@@ -409,7 +409,7 @@ def run_prompt(
         no_provenance: Whether to omit provenance header in written files.
         streaming: Whether to request streaming (not yet implemented).
     """
-    correlation_id = uuid4().hex
+    trace_id = uuid4().hex
 
     try:
         # Validate unsupported options
@@ -431,7 +431,7 @@ def run_prompt(
             output_file=output_file,
             output_format=format,
             no_provenance=no_provenance,
-            correlation_id=correlation_id,
+            trace_id=trace_id,
         )
 
         # Execute prompt
@@ -450,7 +450,7 @@ def run_prompt(
             envelope=envelope,
             metadata=context.metadata,
             config_meta=context.config_meta,
-            correlation_id=context.correlation_id,
+            trace_id=context.trace_id,
         )
 
         # Handle output
@@ -460,7 +460,7 @@ def run_prompt(
                 context.output_file,
                 result_text=result_text,
                 envelope=envelope,
-                correlation_id=context.correlation_id,
+                trace_id=context.trace_id,
                 prompt_version=context.metadata.version,
                 include_provenance=context.include_provenance,
             )
@@ -469,4 +469,4 @@ def run_prompt(
         typer.echo(render_output(payload, context.output_format))
 
     except Exception as exc:
-        _handle_error(exc, correlation_id)
+        _handle_error(exc, trace_id)

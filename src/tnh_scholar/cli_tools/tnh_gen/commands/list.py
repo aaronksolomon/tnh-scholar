@@ -83,7 +83,7 @@ def list_prompts(
         keys_only: Whether to output only prompt keys.
         format: Desired output format (defaults to global setting).
     """
-    correlation_id = uuid4().hex
+    trace_id = uuid4().hex
     try:
         config, meta = load_config(ctx.config_path)
         adapter = _build_adapter(config.prompt_catalog_dir)
@@ -136,6 +136,6 @@ def list_prompts(
     except typer.Exit:
         raise
     except Exception as exc:  # noqa: BLE001
-        payload, exit_code = error_response(exc, correlation_id=correlation_id)
+        payload, exit_code = error_response(exc, trace_id=trace_id)
         typer.echo(render_output(payload, ListOutputFormat.json))
         raise typer.Exit(code=int(exit_code)) from exc

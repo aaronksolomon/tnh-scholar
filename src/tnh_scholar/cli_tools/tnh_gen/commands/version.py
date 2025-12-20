@@ -27,7 +27,7 @@ def version(
     Args:
         format: Optional output format override (json or yaml).
     """
-    correlation_id = uuid4().hex
+    trace_id = uuid4().hex
     try:
         payload = {
             "tnh_scholar": __version__,
@@ -36,11 +36,11 @@ def version(
             "platform": platform.system().lower(),
             "prompt_system_version": __version__,
             "genai_service_version": __version__,
-            "correlation_id": correlation_id,
+            "trace_id": trace_id,
         }
         fmt = format or ctx.output_format
         typer.echo(render_output(payload, fmt))
     except Exception as exc:  # noqa: BLE001
-        payload, exit_code = error_response(exc, correlation_id=correlation_id)
+        payload, exit_code = error_response(exc, trace_id=trace_id)
         typer.echo(render_output(payload, OutputFormat.json))
         raise typer.Exit(code=int(exit_code)) from exc

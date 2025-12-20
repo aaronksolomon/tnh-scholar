@@ -53,7 +53,7 @@ def error_response(
     *,
     error_code: str | None = None,
     suggestion: str | None = None,
-    correlation_id: str,
+    trace_id: str,
 ) -> Tuple[dict[str, Any], ExitCode]:
     """Construct a serialized error response and matching exit code.
 
@@ -61,7 +61,7 @@ def error_response(
         exc: The caught exception.
         error_code: Optional explicit error code to surface in diagnostics.
         suggestion: Optional user-facing recovery suggestion.
-        correlation_id: Trace identifier passed through CLI requests.
+        trace_id: Unique trace identifier for tracking this CLI request.
 
     Returns:
         A tuple containing the response payload and associated exit code.
@@ -78,6 +78,6 @@ def error_response(
         "status": "failed",
         "error": str(exc) or exc.__class__.__name__,
         "diagnostics": diagnostics,
-        "correlation_id": correlation_id,
+        "trace_id": trace_id,
     }
     return payload, exit_code
