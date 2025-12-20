@@ -424,13 +424,31 @@ src/tnh_scholar/provenance/
 
 ## Open Questions
 
+**Note**: These questions will be addressed in supporting decimal ADRs (see Future Extensions below).
+
 1. **JSON-LD Integration**: Should provenance use JSON-LD schema.org vocabulary? (Metadata does)
+   - **Direction**: ADR-PV01.1 will define Schema.org mappings and integration patterns
+
 2. **Fingerprint Algorithm**: Always SHA-256 or configurable per use case?
-3. **Provenance Compression**: For large pipelines, how to avoid verbose provenance chains?
-4. **Database Schema**: When to implement full provenance database? (Future feature)
-5. **OpenTelemetry Migration**: Timeline for adopting OpenTelemetry tracing? (Not immediate)
-6. **Backward Compatibility**: Timeline for migrating existing `correlation_id` to `trace_id`?
-7. **Testing Strategy**: How to test provenance propagation in integration tests?
+   - **Direction**: ADR-PV01.5 will specify pluggable algorithm interface with SHA-256 as default
+
+3. **OpenTelemetry Compatibility**: How to map internal models to OTEL semantic conventions?
+   - **Direction**: ADR-PV01.3 will provide compatibility mapping for future instrumentation
+
+4. **Logging Integration**: How to inject trace_id into log messages and structured logging?
+   - **Direction**: ADR-PV01.4 will define context injection and formatter patterns
+
+5. **Testing Strategy**: How to test provenance propagation in integration tests?
+   - **Direction**: ADR-PV01.2 will establish testing patterns and CI integration
+
+6. **Provenance Compression**: For large pipelines, how to avoid verbose provenance chains?
+   - **Future consideration**: May need summarization or sampling strategies
+
+7. **Database Schema**: When to implement full provenance database?
+   - **Future consideration**: Deferred until usage patterns emerge
+
+8. **Backward Compatibility**: Timeline for migrating existing `correlation_id` to `trace_id`?
+   - **Decision**: Gradual migration; `correlation_id` acceptable as alias during transition
 
 ---
 
@@ -463,6 +481,124 @@ src/tnh_scholar/provenance/
 1. Add `TransportProvenance` capture in OpenAI adapter
 2. Propagate trace_id in HTTP headers (X-Trace-ID)
 3. Document adapter patterns for other services
+
+---
+
+## Future Extensions
+
+The following decimal ADRs will provide detailed implementation guidance for specific aspects of the provenance infrastructure. These extend ADR-PV01 without modifying the core strategy decisions.
+
+### ADR-PV01.1: JSON-LD Provenance Vocabulary
+
+**Type**: `implementation-guide`
+**Status**: Planned
+
+**Scope**:
+
+- Define Schema.org vocabulary mappings for provenance models
+- Integration with existing metadata JSON-LD infrastructure (ADR-MD01/MD02)
+- Serialization examples and templates
+- Benefits: semantic web compatibility, dataset interoperability, advanced querying
+
+**Key Decisions**:
+
+- Map `RequestProvenance`, `ServiceProvenance`, `TransportProvenance` to Schema.org types
+- Use `schema:Provenance`, `schema:Action`, `schema:SoftwareApplication` vocabulary
+- Provide bidirectional conversion utilities (internal models ↔ JSON-LD)
+
+### ADR-PV01.2: Provenance Testing Strategy
+
+**Type**: `testing-strategy`
+**Status**: Planned
+
+**Scope**:
+
+- Integration test patterns for trace_id propagation across layers
+- Property-based tests for consistency (same trace_id in all outputs)
+- Serialization/deserialization round-trip tests
+- CI/CD integration and regression prevention
+
+**Key Decisions**:
+
+- Test trace_id flows: CLI → service → adapter → transport
+- Verify provenance nesting in multi-stage operations
+- Assert trace_id consistency in stdout JSON, file headers, logs
+- Add provenance assertions to existing service tests
+
+### ADR-PV01.3: OpenTelemetry Compatibility Mapping
+
+**Type**: `design-detail`
+**Status**: Planned
+
+**Scope**:
+
+- Mapping table: internal provenance models → OpenTelemetry semantic conventions
+- Optional instrumentation layer for OTEL export
+- Future migration path to full OTEL tracing
+- Preserves investment in current models while enabling future observability
+
+**Key Decisions**:
+
+- Map `trace_id` → OTEL `trace_id` (W3C Trace Context format)
+- Map `ServiceProvenance` → OTEL span attributes (provider, model, parameters)
+- Map `TransportProvenance.request_id` → OTEL span/event attributes
+- Provide serializer module for OTEL export (opt-in)
+
+**Benefits**:
+
+- Future-proofs provenance infrastructure
+- Enables integration with OTEL-compatible tools (Jaeger, Zipkin, DataDog)
+- No immediate migration required; gradual adoption path
+
+### ADR-PV01.4: Logging & Observability Integration
+
+**Type**: `implementation-guide`
+**Status**: Planned
+
+**Scope**:
+
+- Context injection patterns for trace_id in log messages
+- Structured logging formatter integration (JSON logs)
+- Correlation between provenance and application logs
+- Log aggregation and querying patterns
+
+**Key Decisions**:
+
+- Standardized logging context manager (`with trace_context(trace_id)`)
+- Custom logging formatter that extracts trace_id from context
+- Log message format: `[trace_id=abc123] Operation completed`
+- Integration with Python `logging` module and structured loggers (e.g., structlog)
+
+**Benefits**:
+
+- Significantly enhances debugging (grep logs by trace_id)
+- Links errors, warnings, and info messages to specific operations
+- Enables log-based analysis and alerting
+
+### ADR-PV01.5: Fingerprint Algorithms & Extensibility
+
+**Type**: `design-detail`
+**Status**: Planned
+
+**Scope**:
+
+- Pluggable fingerprint algorithm interface
+- Default SHA-256 implementation
+- Support for alternative algorithms (e.g., BLAKE3 for performance, MD5 for legacy)
+- Algorithm selection based on data type or performance requirements
+
+**Key Decisions**:
+
+- Define `FingerprintAlgorithm` protocol with `hash(content: bytes) -> str` method
+- Register algorithms in a factory or registry pattern
+- Default to SHA-256 for security and compatibility
+- Allow per-operation algorithm override via configuration
+
+**Benefits**:
+
+- Flexibility for different use cases (text, audio, images)
+- Performance tuning for large datasets
+- Future-proof for new hash algorithms
 
 ---
 
