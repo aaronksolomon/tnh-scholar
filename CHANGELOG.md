@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Post-PR21 Merge Hotfix**
+  - Fixed IndentationError in `filesystem_catalog_adapter.py` caused by duplicate lines from merge conflict resolution
+  - Removed orphaned code fragments (lines 84-85) that were incomplete fragments of a closed `Prompt()` constructor
+  - Restored test collection functionality (all 210 tests passing)
+  - Preserved warning logging functionality (`_log_warnings` call at lines 82-83)
+
 ### Added
 
 - **tnh-gen CLI Tool** - New prompt-driven content generation CLI (ADR-TG01, ADR-TG02)
