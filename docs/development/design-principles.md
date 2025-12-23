@@ -537,9 +537,9 @@ class TextObjectInfo(BaseModel):
 
 - **[ADR-AT03.3 Addendum 2025-12-14](/architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness.md)**: Real-world example of reverting Pydantic adoption after identifying friction
 - **Examples in codebase:**
-  - Plain classes: [NumberedText](../../src/tnh_scholar/text_processing/numbered_text.py), [Metadata](../../src/tnh_scholar/metadata/metadata.py), TextObject (after ADR-AT03.3 revision)
-  - Pydantic DTOs: [TextObjectInfo](../../src/tnh_scholar/ai_text_processing/text_object.py), [LogicalSection](../../src/tnh_scholar/ai_text_processing/text_object.py)
-  - Pydantic domain models: [AIResponse](../../src/tnh_scholar/ai_text_processing/text_object.py), [CompletionResult](../../src/tnh_scholar/gen_ai_service/models/domain.py)
+  - Plain classes: `src/tnh_scholar/text_processing/numbered_text.py`, `src/tnh_scholar/metadata/metadata.py`, TextObject (after ADR-AT03.3 revision)
+  - Pydantic DTOs: `src/tnh_scholar/ai_text_processing/text_object.py`, `src/tnh_scholar/ai_text_processing/text_object.py`
+  - Pydantic domain models: `src/tnh_scholar/ai_text_processing/text_object.py`, `src/tnh_scholar/gen_ai_service/models/domain.py`
 
 ### Separation of Data and Logic
 
@@ -658,9 +658,9 @@ class MyErrorInfo(BaseModel):
 
 **Examples in the codebase:**
 
-- Exception classes: [src/tnh_scholar/exceptions.py](../../src/tnh_scholar/exceptions.py)
-- Error metadata: [src/tnh_scholar/gen_ai_service/models/transport.py](../../src/tnh_scholar/gen_ai_service/models/transport.py) (`ErrorInfo`)
-- Error metadata: [src/tnh_scholar/text_processing/numbered_text.py](../../src/tnh_scholar/text_processing/numbered_text.py) (`SectionValidationError`)
+- Exception classes: `src/tnh_scholar/exceptions.py`
+- Error metadata: `src/tnh_scholar/gen_ai_service/models/transport.py` (`ErrorInfo`)
+- Error metadata: `src/tnh_scholar/text_processing/numbered_text.py` (`SectionValidationError`)
 
 ### Fail Fast
 

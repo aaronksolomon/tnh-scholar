@@ -4,7 +4,7 @@ description: "Complete searchable index of TNH Scholar documentation with metada
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2025-12-12"
+created: "2025-12-16"
 auto_generated: true
 ---
 
@@ -39,7 +39,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [Conceptual Architecture of TNH-Scholar](/project/conceptual-architecture.md) | High-level, implementation-agnostic view of TNH-Scholar’s layers, abstractions, and how they interact. | 2025-12-11 | `docs/project/conceptual-architecture.md` |
 | [Future Directions of TNH-Scholar](/project/future-directions.md) | Blue-sky exploration of potential long-term evolutions of TNH-Scholar built on the project’s philosophy and architecture. | 2025-12-11 | `docs/project/future-directions.md` |
 | [Project](/project/index.md) | Table of contents for project | 2025-12-11 | `docs/project/index.md` |
-| [Repo Root](/project/repo-root/index.md) | Repository root documentation surfaced in the MkDocs site. | 2025-12-12 | `docs/project/repo-root/index.md` |
+| [Repo Root](/project/repo-root/index.md) | Repository root documentation surfaced in the MkDocs site. | 2025-12-16 | `docs/project/repo-root/index.md` |
 | [TNH Scholar CHANGELOG](/project/repo-root/changelog.md) | Chronological log of notable TNH Scholar changes. | 2025-02-28 | `docs/project/repo-root/changelog.md` |
 | [TNH Scholar CONTRIBUTING](/project/repo-root/contributing-root.md) | TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow. | 2024-10-21 | `docs/project/repo-root/contributing-root.md` |
 | [TNH Scholar README](/project/repo-root/repo-readme.md) | TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models. | 2024-10-21 | `docs/project/repo-root/repo-readme.md` |
@@ -133,6 +133,10 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [ADR-VP01: Video Processing Return Types and Configuration](/architecture/video-processing/adr/adr-vp01-video-processing.md) | Centralizes yt-dlp configuration and return types so video tooling emits consistent metadata. | 2025-02-01 | `docs/architecture/video-processing/adr/adr-vp01-video-processing.md` |
 | [ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md) | Strategy ADR defining a CLI-first VS Code integration built on the unified tnh-gen interface for extension v0.1.0. | 2025-01-28 | `docs/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md` |
 | [ADR-VSC02: VS Code Extension Integration with tnh-gen CLI](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md) | VS Code extension strategy for consuming tnh-gen CLI and providing GenAI text processing UI | 2025-01-28 | `docs/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md` |
+| [ADR-VSC03.2: Real-World Survey Addendum (VS Code as a UI/UX Platform)](/architecture/ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum.md) | Online survey of existing systems and patterns that de-risk Python↔TypeScript boundaries for TNH-Scholar’s VS Code UI/UX strategy |  | `docs/architecture/ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum.md` |
+| [ADR-VSC03.3: Investigation Synthesis - Validation of Design Choices](/architecture/ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis.md) | Synthesis of real-world survey findings validating TNH Scholar's VS Code integration strategy and design decisions |  | `docs/architecture/ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis.md` |
+| [ADR-VSC03: Preliminary Investigation Findings](/architecture/ui-ux/vs-code-integration/adr-vsc03.1-findings.md) | Phase 1 research findings on Python-JavaScript impedance mitigation strategies |  | `docs/architecture/ui-ux/vs-code-integration/adr-vsc03.1-findings.md` |
+| [ADR-VSC03: Python-JavaScript Impedance Mismatch Investigation](/architecture/ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation.md) | Decision to investigate architectural strategies for mitigating Python-JavaScript platform mismatch in VS Code integration | 2025-12-12 | `docs/architecture/ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation.md` |
 | [ADR-YF00: Early yt-fetch Transcript Decisions (Historical)](/architecture/ytt-fetch/adr/adr-yf00-early-decisions.md) | Consolidates the original transcript ADR notes for yt-fetch before they were split into discrete records. | 2025-01-17 | `docs/architecture/ytt-fetch/adr/adr-yf00-early-decisions.md` |
 | [ADR-YF01: YouTube Transcript Source Handling](/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md) | Documents how yt-fetch prioritizes manual subtitles while accepting auto captions for maximum coverage. | 2025-01-21 | `docs/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md` |
 | [ADR-YF02: YouTube Transcript Format Selection](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md) | Locks yt-fetch to a single transcript format (initially VTT) for predictable downstream processing. | 2025-01-21 | `docs/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md` |

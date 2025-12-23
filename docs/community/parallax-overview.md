@@ -9,11 +9,11 @@ updated: "2025-12-11"
 ---
 # TNH-Scholar: Project Overview for Parallax Press & Plum Village Editorial Community
 
-Orientation for Parallax Press and Plum Village editors on TNH-Scholar’s goals, current capabilities, editorial benefits, and ways to collaborate with the project team.
+ Overview for Parallax Press and Plum Village editors on the TNH-Scholar project vision, current capabilities, potential editorial benefits, and possible pathways of collaboration.
 
 ## 1. Purpose of This Document
 
-This document provides a clear, non-technical introduction to the TNH‑Scholar project for members of Parallax Press and the Plum Village Editorial community. It outlines the project’s goals, current capabilities, potential value to Parallax Press, and areas where collaboration or guidance would be mutually beneficial.
+This document provides a clear, non-technical introduction to the TNH‑Scholar project vision for members of Parallax Press and the Plum Village Editorial community. It outlines the project’s scope, current capabilities, potential value to Parallax Press, and areas where collaboration or guidance would be mutually beneficial.
 
 ---
 
@@ -27,11 +27,9 @@ This document provides a clear, non-technical introduction to the TNH‑Scholar 
 - developing tools for practitioners, educators, editors, researchers, and archivists,
 - ensuring high accuracy, transparency, and lineage‑faithfulness through provenance tracking and human‑guided AI workflows.
 
-This project is **not** aimed at creating a chatbot to imitate Thầy. Chat based features for research may have the potential to be explored in the future.
+The project has as its core a vision of creating a *scholarly infrastructure*, a set of tools that help people understand, translate, cross‑reference, and preserve the teachings with care.
 
-The project **is** aimed at creating a *scholarly infrastructure*, a set of tools that help people understand, translate, cross‑reference, and preserve the teachings with care.
-
-Core goals:
+Core aspirations:
 
 - A clean, well‑structured, multilingual digital corpus
 - Semantic search and discovery tools enabling practitioners and scholars to explore teachings thematically
@@ -75,7 +73,7 @@ Core goals:
 - Future bilingual interactive readers or teaching companions
 - A foundation for future Plum Village digital learning platforms
 
-> **Note on Search Development**: A prototype sutra search tool is currently being developed at Deer Park Monastery, exploring approaches to searching and discovering teachings within the broader ecosystem of Plum Village digital initiatives. TNH Scholar's knowledge base architecture (see ADR-K01) is designed to support similar search and retrieval capabilities as part of the scholarly infrastructure.
+> **Note on Search Development**: A prototype sutra search tool is currently being developed at Deer Park Monastery, exploring approaches to searching and discovering teachings across multiple Buddhist corpora. TNH Scholar's knowledge base architecture (see ADR-K01) is designed to support similar search and retrieval capabilities as part of the scholarly infrastructure.
 
 ---
 
@@ -84,6 +82,7 @@ Core goals:
 Parallax Press is uniquely positioned to act as:
 
 - **A Beneficiary** — tools that support editing, translation, and publishing.
+- **A Reviewer** - helping to insure accuracy, fidelity, applicability
 - **A Contributor** — access to high-quality source materials.
 
 Possible engagement:

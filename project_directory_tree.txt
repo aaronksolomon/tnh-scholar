@@ -438,6 +438,7 @@
 │   ├── prepare_pypi_readme.py
 │   ├── sync_readme.py
 │   ├── sync_root_docs.py
+│   ├── update_index_doc_map.py
 │   ├── update_version.py
 │   ├── validate_markdown.py
 │   └── verify_doc_links.py
