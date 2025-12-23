@@ -51,7 +51,7 @@ These are aspirational but active development goals aligned with the needs of th
 
 ---
 
-## Features
+## Current Features
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
 - **Text formatting and translation**: `tnh-gen` CLI (in development; currently `tnh-fab`, deprecated) for punctuation, translation, sectioning, and prompt-driven processing

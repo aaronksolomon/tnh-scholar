@@ -39,13 +39,7 @@ The Makefile mirrors our CI configuration, so using it locally guarantees parity
   make test         # poetry run pytest
   ```
 
-- Install git hooks so notebook prep and other checks run automatically:
-
-  ```bash
-  pre-commit install
-  ```
-
-  When you commit notebook changes, the hook creates/upgrades `*_local.ipynb` copies and strips outputs from the originals.
+- When committing changes, group related modifications together in logical commits.
 
 - Update documentation (README, DEV_SETUP, etc.) whenever behavior or commands change.
 

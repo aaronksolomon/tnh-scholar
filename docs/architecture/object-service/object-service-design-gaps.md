@@ -5,7 +5,7 @@ owner: ""
 author: ""
 status: current
 created: "2025-10-24"
-updated: "2025-11-29"
+updated: "2025-12-19"
 ---
 # Object-Service Design Gaps
 
@@ -13,7 +13,7 @@ Gaps, resolved items, and outstanding work needed to fully satisfy the Object-Se
 
 **Purpose**: Track progress on implementing [ADR-OS01: Object-Service Design Architecture V3](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
 **Status**: In Progress
-**Last Updated**: 2025-11-29
+**Last Updated**: 2025-12-19
 
 **Canonical Example**: The [GenAIService](/architecture/gen-ai-service/design/genai-service-design-strategy.md) follows the object-service layers (domain/service/adapters/transport) and is the preferred reference implementation for new services until a dedicated sample is published.
 
@@ -49,6 +49,28 @@ Gaps, resolved items, and outstanding work needed to fully satisfy the Object-Se
 - Google-style docstrings adopted
 
 **Reference**: [Style Guide](/development/style-guide.md), [Design Principles](/development/design-principles.md)
+
+---
+
+### Mapper Pattern and Implementation Guidance (Resolved)
+
+**Status**: ✅ **RESOLVED** (2025-12-19)
+
+**Resolution**:
+
+- **ADR-OS01 §8.8** already provided guidance: "Use a class if mapping depends on injected config or policy; use a pure function if stateless"
+- **ADR-OS01 §14.1** added comprehensive implementation guidance with concrete examples
+- Decision matrix provided for classes vs functions and Pydantic vs dataclasses
+- Common anti-patterns documented with corrections
+
+**Resolved Questions**:
+
+- ✅ Should mappers be stateless functions or stateful classes? → **Both valid; use function if stateless, class if needs dependencies**
+- ✅ When to choose each approach? → **See ADR-OS01 §14.1 decision matrix**
+- ✅ Should mappers handle validation or just transformation? → **Transformation only; validation at boundaries (Pydantic models)**
+- ✅ When to use Pydantic vs dataclass? → **Pydantic for validation/settings, dataclass for internal DTOs**
+
+**Reference**: [ADR-OS01 §14.1: Choosing Between Classes and Pure Functions](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
 
 ---
 
@@ -504,12 +526,6 @@ Gaps, resolved items, and outstanding work needed to fully satisfy the Object-Se
 ---
 
 ## Specific Open Questions
-
-### Mapper Pattern
-
-- Should mappers be stateless functions or stateful classes?
-- When to choose each approach?
-- Should mappers handle validation or just transformation?
 
 ### Protocol vs ABC
 

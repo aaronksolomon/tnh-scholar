@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from typing import Mapping, Optional
 
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
-from tnh_scholar.gen_ai_service.config.settings import Settings
+from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
 
@@ -64,7 +64,7 @@ def _pick_structured_fallback(preferred: str) -> str:
 def select_provider_and_model(
     intent: str | None,
     params: ResolvedParams,
-    settings: Settings,
+    settings: GenAISettings,
     *,
     prompt_metadata: PromptMetadata | None = None,
 ) -> ResolvedParams:

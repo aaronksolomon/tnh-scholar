@@ -14,6 +14,7 @@ from ..domain.models import (
 from ..domain.protocols import PromptValidatorPort
 
 _SEMVER_PATTERN = re.compile(r"^\d+\.\d+(?:\.\d+)?$")
+_ALWAYS_ALLOWED_VARIABLES = {"input_text"}
 
 
 class PromptValidator(PromptValidatorPort):
@@ -131,8 +132,10 @@ class PromptValidator(PromptValidatorPort):
         if self._policy.allow_extra_variables:
             return
 
-        allowed = set(prompt.metadata.required_variables) | set(
-            prompt.metadata.optional_variables
+        allowed = (
+            set(prompt.metadata.required_variables)
+            | set(prompt.metadata.optional_variables)
+            | _ALWAYS_ALLOWED_VARIABLES
         )
         extra = set(params.variables.keys()) - allowed
         if not extra:

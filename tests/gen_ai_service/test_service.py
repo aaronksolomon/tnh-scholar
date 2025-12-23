@@ -7,7 +7,7 @@ import pytest
 from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.gen_ai_service import service as service_module
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
-from tnh_scholar.gen_ai_service.config.settings import Settings
+from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.infra.tracking.fingerprint import (
     hash_prompt_bytes,
     hash_user_string,
@@ -80,7 +80,7 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
     )
 
     apply_calls: list[tuple[str | None, str | None]] = []
-    select_calls: list[tuple[str | None, ResolvedParams, Settings]] = []
+    select_calls: list[tuple[str | None, ResolvedParams, GenAISettings]] = []
 
     def fake_apply_policy(intent, call_hint, **_):
         apply_calls.append((intent, call_hint))
@@ -96,7 +96,7 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("TNH_PATTERN_DIR", str(prompt_dir))
     monkeypatch.setenv("OPENAI_API_KEY", "unit-test-key")
 
-    settings = Settings(_env_file=None)
+    settings = GenAISettings(_env_file=None)
     service = GenAIService(settings=settings)
     dummy_client: DummyOpenAIClient = service.openai_client  # type: ignore[assignment]
     assert service.settings.prompt_dir == prompt_dir
@@ -158,7 +158,7 @@ def test_missing_api_key_raises_configuration_error(tmp_path, monkeypatch: pytes
     monkeypatch.setenv("TNH_PATTERN_DIR", str(prompt_dir))
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
 
-    settings = Settings(_env_file=None)
+    settings = GenAISettings(_env_file=None)
 
     with pytest.raises(ConfigurationError, match="Missing required API key: OPENAI_API_KEY"):
         GenAIService(settings=settings)

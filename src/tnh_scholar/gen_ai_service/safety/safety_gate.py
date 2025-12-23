@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from typing import List, Sequence
 
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
-from tnh_scholar.gen_ai_service.config.settings import Settings
+from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionResult,
     Message,
@@ -61,7 +61,7 @@ def _normalize_messages(prompt: RenderedPrompt) -> Sequence[Message]:
 def pre_check(
     prompt: RenderedPrompt,
     selection: ResolvedParams,
-    settings: Settings,
+    settings: GenAISettings,
     *,
     prompt_metadata: PromptMetadata | None = None,
 ) -> SafetyReport:

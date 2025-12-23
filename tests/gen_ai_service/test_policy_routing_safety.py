@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams, apply_policy
-from tnh_scholar.gen_ai_service.config.settings import Settings
+from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.models.domain import CompletionResult, Message, RenderedPrompt, Role
 from tnh_scholar.gen_ai_service.models.errors import SafetyBlocked
 from tnh_scholar.gen_ai_service.routing.model_router import select_provider_and_model
@@ -32,7 +32,7 @@ def _prompt_metadata(
 
 
 def test_apply_policy_precedence_prefers_call_hint_over_prompt_default():
-    settings = Settings(_env_file=None, default_model="gpt-settings")
+    settings = GenAISettings(_env_file=None, default_model="gpt-settings")
     metadata = _prompt_metadata(default_model="gpt-meta", output_mode="json")
 
     resolved = apply_policy(
@@ -48,7 +48,7 @@ def test_apply_policy_precedence_prefers_call_hint_over_prompt_default():
 
 
 def test_apply_policy_falls_back_to_settings_defaults_when_no_metadata():
-    settings = Settings(_env_file=None, default_model="gpt-settings")
+    settings = GenAISettings(_env_file=None, default_model="gpt-settings")
 
     resolved = apply_policy(
         intent=None,
@@ -63,7 +63,7 @@ def test_apply_policy_falls_back_to_settings_defaults_when_no_metadata():
 
 
 def test_apply_policy_routing_reason_includes_intent_and_hints():
-    settings = Settings(_env_file=None, default_model="gpt-settings")
+    settings = GenAISettings(_env_file=None, default_model="gpt-settings")
     metadata = _prompt_metadata(default_model="gpt-meta", output_mode="json")
 
     resolved = apply_policy(
@@ -80,7 +80,7 @@ def test_apply_policy_routing_reason_includes_intent_and_hints():
 
 
 def test_apply_policy_uses_prompt_default_when_no_call_hint():
-    settings = Settings(_env_file=None, default_model="gpt-settings")
+    settings = GenAISettings(_env_file=None, default_model="gpt-settings")
     metadata = _prompt_metadata(default_model="gpt-meta", output_mode="text")
 
     resolved = apply_policy(
@@ -95,7 +95,7 @@ def test_apply_policy_uses_prompt_default_when_no_call_hint():
 
 
 def test_router_switches_to_structured_capable_model_for_json_mode():
-    settings = Settings(_env_file=None, default_model="gpt-4o-mini")
+    settings = GenAISettings(_env_file=None, default_model="gpt-4o-mini")
     params = ResolvedParams(
         provider="openai",
         model="gpt-3.5-turbo",
@@ -116,7 +116,7 @@ def test_router_switches_to_structured_capable_model_for_json_mode():
 
 
 def test_router_keeps_structured_capable_model_for_json_mode():
-    settings = Settings(_env_file=None, default_model="gpt-4o-mini")
+    settings = GenAISettings(_env_file=None, default_model="gpt-4o-mini")
     params = ResolvedParams(
         provider="openai",
         model="gpt-4o-mini",
@@ -136,7 +136,7 @@ def test_router_keeps_structured_capable_model_for_json_mode():
 
 
 def test_router_leaves_model_for_text_mode():
-    settings = Settings(_env_file=None, default_model="gpt-4o-mini")
+    settings = GenAISettings(_env_file=None, default_model="gpt-4o-mini")
     params = ResolvedParams(
         provider="openai",
         model="gpt-3.5-turbo",
@@ -156,7 +156,7 @@ def test_router_leaves_model_for_text_mode():
 
 
 def test_safety_gate_blocks_on_character_limit():
-    settings = Settings(_env_file=None, max_input_chars=16)
+    settings = GenAISettings(_env_file=None, max_input_chars=16)
     selection = ResolvedParams(
         provider=settings.default_provider,
         model=settings.default_model,
@@ -174,7 +174,7 @@ def test_safety_gate_blocks_on_character_limit():
 
 
 def test_safety_gate_blocks_on_context_window_overflow():
-    settings = Settings(_env_file=None)
+    settings = GenAISettings(_env_file=None)
     selection = ResolvedParams(
         provider=settings.default_provider,
         model="gpt-3.5-turbo",
@@ -192,7 +192,7 @@ def test_safety_gate_blocks_on_context_window_overflow():
 
 
 def test_safety_gate_blocks_on_budget_overflow():
-    settings = Settings(_env_file=None, max_dollars=0.0001)
+    settings = GenAISettings(_env_file=None, max_dollars=0.0001)
     selection = ResolvedParams(
         provider=settings.default_provider,
         model=settings.default_model,
@@ -210,7 +210,7 @@ def test_safety_gate_blocks_on_budget_overflow():
 
 
 def test_safety_gate_warnings_for_metadata_and_non_string_content():
-    settings = Settings(_env_file=None, max_input_chars=2000, max_dollars=10.0)
+    settings = GenAISettings(_env_file=None, max_input_chars=2000, max_dollars=10.0)
     selection = ResolvedParams(
         provider=settings.default_provider,
         model=settings.default_model,
@@ -235,7 +235,7 @@ def test_safety_gate_warnings_for_metadata_and_non_string_content():
 
 
 def test_safety_gate_returns_report_and_warnings(monkeypatch: pytest.MonkeyPatch):
-    settings = Settings(_env_file=None, max_input_chars=2000, max_dollars=10.0)
+    settings = GenAISettings(_env_file=None, max_input_chars=2000, max_dollars=10.0)
     selection = ResolvedParams(
         provider=settings.default_provider,
         model=settings.default_model,

@@ -15,7 +15,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from tnh_scholar.gen_ai_service.config.settings import Settings
+from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
 
@@ -30,9 +30,9 @@ class ResolvedParams(BaseModel):
 
 
 @lru_cache(maxsize=1)
-def _cached_settings() -> Settings:
+def _cached_settings() -> GenAISettings:
     """Cache Settings so policy resolution doesn't re-read env on every call."""
-    return Settings()
+    return GenAISettings()
 
 
 def apply_policy(
@@ -40,7 +40,7 @@ def apply_policy(
     call_hint: str | None,
     *,
     prompt_metadata: PromptMetadata | None = None,
-    settings: Settings | None = None,
+    settings: GenAISettings | None = None,
 ) -> ResolvedParams:
     """
     Merge defaults to choose effective params for a completion request.

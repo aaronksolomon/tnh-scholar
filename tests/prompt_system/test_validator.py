@@ -44,3 +44,28 @@ def test_validate_render_allows_extra_when_policy_warns():
 
     assert result.valid
     assert any(w.code == "EXTRA_VARIABLES" for w in result.warnings)
+
+
+def test_validate_render_allows_input_text_even_when_strict():
+    validator = PromptValidator(ValidationPolicy(mode="strict"))
+    prompt = make_prompt(required=["name"])
+    params = RenderParams(variables={"name": "x", "input_text": "from file"})
+
+    result = validator.validate_render(prompt, params)
+
+    assert result.valid
+    assert not any(err.code == "EXTRA_VARIABLES" for err in result.errors)
+
+
+def test_validate_render_rejects_other_extra_variables_when_input_text_allowed():
+    validator = PromptValidator(ValidationPolicy(mode="strict"))
+    prompt = make_prompt(required=["name"])
+    params = RenderParams(variables={"name": "x", "input_text": "ok", "extra": "nope"})
+
+    result = validator.validate_render(prompt, params)
+
+    assert not result.valid
+    extras = [err for err in result.errors if err.code == "EXTRA_VARIABLES"]
+    assert len(extras) == 1
+    assert "extra" in extras[0].message
+    assert "input_text" not in extras[0].message

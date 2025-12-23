@@ -180,7 +180,7 @@ make changelog-draft
 
 ### Added
 
-- Version sync pre-commit hook to prevent version mismatches
+- Automated version sync between pyproject.toml and TODO.md in release targets
 - Python-based link checker (md-dead-link-check) for documentation
 
 ### Changed
@@ -227,7 +227,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Version Sync Pre-commit Hook**: Automatically validates that pyproject.toml and TODO.md versions match before allowing commits
+- **Automated Version Sync**: Release targets automatically sync pyproject.toml and TODO.md versions
 - **Python-based Link Checker**: Replaced lychee (Rust tool) with md-dead-link-check for pure Python toolchain
 
 ### Changed
@@ -480,29 +480,23 @@ make release-publish
 
 ## Automation Features
 
-### Version Sync Pre-commit Hook
+### Version Sync
 
-A pre-commit hook validates that `pyproject.toml` and `TODO.md` versions match before allowing commits. This prevents version drift bugs.
+The release targets automatically sync versions between `pyproject.toml` and `TODO.md` to prevent version drift bugs.
 
-**What it checks**:
+**How version sync works**:
 
-- Reads version from `pyproject.toml` via `poetry version -s`
-- Extracts version from `TODO.md` using pattern matching
-- Fails commit if versions don't match
+- `make release-patch/minor/major` updates both files simultaneously
+- Version is read from `pyproject.toml` via `poetry version -s`
+- TODO.md version header is updated to match
 
-**How to fix a mismatch**:
+**If versions get out of sync**, use a release target to sync them:
 
 ```bash
 # Use one of the release targets to sync versions
 make release-patch   # Bump patch version
 make release-minor   # Bump minor version
 make release-major   # Bump major version
-```
-
-The hook runs automatically on every commit. You can also run it manually:
-
-```bash
-poetry run pre-commit run version-sync --all-files
 ```
 
 ### Documentation Verification

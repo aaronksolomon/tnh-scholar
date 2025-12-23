@@ -1182,6 +1182,196 @@ Always record in `provenance.params`:
 
 ---
 
+## 14.1. Choosing Between Classes and Pure Functions
+
+This section provides concrete guidance on when to use classes vs pure functions, and when to use Pydantic vs dataclasses—decisions that frequently arise when implementing the Object-Service pattern.
+
+### When to Use Pure Functions vs Classes
+
+**Use Pure Functions When:**
+- Performing **stateless transformations** (e.g., `cli_config_to_settings_kwargs()`)
+- **No injected dependencies** required
+- **No shared state** across invocations
+- **Simple data transformation** only
+- Mapping is **uni-directional** (one input → one output)
+
+**Use Classes When:**
+- Needs **injected config, policy, or dependencies**
+- **Maintains state** between calls or across method invocations
+- **Implements a Protocol interface** (structural typing requirement)
+- Requires **multiple related methods** (cohesive behavior)
+- Mapping is **bi-directional** (request + response mapping)
+
+**Examples:**
+
+✅ **Pure Function (Stateless Mapping)**
+```python
+# mappers/completion_mapper.py
+def to_completion_result(resp: ProviderResponse, fingerprint: str) -> CompletionResult:
+    """Map ProviderResponse to CompletionResult (pure function)."""
+    return CompletionResult(
+        text=resp.text,
+        usage=resp.usage,
+        model=resp.model,
+        provider=resp.provider,
+        prompt_fingerprint=fingerprint,
+    )
+```
+
+✅ **Class (Injected Dependencies, Bi-directional)**
+```python
+# mappers/openai_mapper.py
+class OpenAIRequestMapper:
+    """Bi-directional mapper with injected config."""
+
+    def __init__(self, default_temperature: float = 0.7):
+        self.default_temperature = default_temperature
+
+    def to_sdk_request(self, req: ProviderRequest) -> dict:
+        """Domain → SDK (uses injected config)."""
+        return {
+            "model": req.model,
+            "messages": [{"role": m.role, "content": m.content} for m in req.messages],
+            "temperature": req.temperature or self.default_temperature,
+        }
+
+    def from_sdk_response(self, resp) -> ProviderResponse:
+        """SDK → Domain."""
+        return ProviderResponse(
+            text=resp.choices[0].message.content,
+            usage=Usage(
+                input_tokens=resp.usage.prompt_tokens,
+                output_tokens=resp.usage.completion_tokens,
+            ),
+            model=resp.model,
+            provider="openai",
+        )
+```
+
+### When to Use Dataclass vs Pydantic
+
+**Use Dataclass When:**
+- **Internal DTOs** (data transfer objects within your codebase)
+- **No validation** required (data already validated upstream)
+- **Simple structure** (basic types, no complex serialization)
+- **Performance-sensitive** code (dataclasses have lower overhead)
+- **No configuration** or settings needed
+
+**Use Pydantic When:**
+- **API boundaries** (external input/output)
+- **Validation required** (user input, external APIs, configuration files)
+- **Complex serialization** (JSON, YAML, environment variables)
+- **Settings and configuration** (Pydantic Settings for env vars)
+- **Dynamic field defaults** or computed fields
+
+**Examples:**
+
+✅ **Dataclass (Internal DTO, No Validation)**
+```python
+from dataclasses import dataclass
+
+@dataclass
+class ServiceOverrides:
+    """Lightweight internal overrides (no validation needed)."""
+    model: str | None = None
+    max_tokens: int | None = None
+    temperature: float | None = None
+```
+
+✅ **Pydantic (Settings with Validation)**
+```python
+from pydantic_settings import BaseSettings
+
+class GenAISettings(BaseSettings):
+    """Configuration with validation and env var support."""
+    openai_api_key: str  # Required, validated at init
+    default_model: str = "gpt-4"
+    default_temperature: float = 0.7
+    max_dollars: float | None = None
+
+    class Config:
+        env_file = ".env"
+        validate_assignment = True  # Validate on attribute assignment
+```
+
+✅ **Pydantic (API Boundary with Validation)**
+```python
+from pydantic import BaseModel, Field, validator
+
+class RenderRequest(BaseModel):
+    """External API request (validation required)."""
+    prompt_name: str = Field(..., min_length=1)
+    variables: dict[str, str] = Field(default_factory=dict)
+    model: str | None = None
+    temperature: float | None = Field(None, ge=0.0, le=2.0)
+    max_tokens: int | None = Field(None, gt=0)
+
+    @validator("temperature")
+    def validate_temperature(cls, v):
+        if v is not None and not 0.0 <= v <= 2.0:
+            raise ValueError("temperature must be between 0.0 and 2.0")
+        return v
+```
+
+### Decision Matrix
+
+| Scenario | Recommendation | Rationale |
+|----------|---------------|-----------|
+| CLI flag overrides passed to service | **Dataclass** | Internal DTO, no validation needed |
+| Settings loaded from env vars | **Pydantic** | Validation, env var support required |
+| Stateless mapping (config → kwargs) | **Pure Function** | No state, no dependencies |
+| Bi-directional adapter mapping | **Class** | Multiple methods, possibly injected config |
+| User input from API endpoint | **Pydantic** | Validation at system boundary |
+| Internal result object | **Dataclass** | Already validated, simple structure |
+| Factory creating services | **Class** | Dependency injection, implements protocol |
+| Helper converting one type to another | **Pure Function** | Stateless transformation |
+
+### Common Anti-Patterns to Avoid
+
+❌ **Unnecessary Class Wrapper**
+```python
+# AVOID: Stateless class with single method
+class CLIConfigToSettingsMapper:
+    def to_settings_kwargs(self, cli_config: CLIConfig, overrides: ServiceOverrides) -> dict[str, Any]:
+        # ... stateless logic ...
+```
+
+✅ **Better: Pure Function**
+```python
+def cli_config_to_settings_kwargs(cli_config: CLIConfig, overrides: ServiceOverrides) -> dict[str, Any]:
+    """Convert CLI config + overrides to Settings kwargs."""
+    # ... same logic, simpler interface ...
+```
+
+❌ **Pydantic for Internal DTOs**
+```python
+# AVOID: Pydantic overhead for internal data
+class ServiceOverrides(BaseModel):
+    model: str | None = None
+    max_tokens: int | None = None
+```
+
+✅ **Better: Lightweight Dataclass**
+```python
+@dataclass
+class ServiceOverrides:
+    model: str | None = None
+    max_tokens: int | None = None
+```
+
+### Summary: Rules of Thumb
+
+1. **Mappers**: Class if bi-directional or has dependencies; pure function if stateless
+2. **Internal DTOs**: Dataclass (unless validation needed)
+3. **Settings/Config**: Pydantic (for validation and env var support)
+4. **API Boundaries**: Pydantic (for validation)
+5. **Factories**: Class (for dependency injection)
+6. **Simple Transformations**: Pure function (for clarity and performance)
+
+**Guiding Principle**: Choose the simplest abstraction that satisfies your requirements. Prefer pure functions over classes, and dataclasses over Pydantic, unless you need the additional capabilities.
+
+---
+
 ## 15. Reference Implementation Index
 
 | Concept | GenAI Service | Diarization Service |

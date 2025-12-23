@@ -1,5 +1,8 @@
 """Filesystem-backed prompt catalog adapter."""
 
+from __future__ import annotations
+
+import logging
 from pathlib import Path
 
 from ..config.prompt_catalog_config import PromptCatalogConfig
@@ -10,6 +13,8 @@ from ..service.loader import PromptLoader
 from ..transport.cache import CacheTransport, InMemoryCacheTransport
 from ..transport.filesystem import FilesystemTransport
 from ..transport.models import PromptFileRequest
+
+logger = logging.getLogger(__name__)
 
 
 class FilesystemPromptCatalog(PromptCatalogPort):
@@ -45,6 +50,7 @@ class FilesystemPromptCatalog(PromptCatalogPort):
         file_resp = self._transport.read_file(request)
         try:
             prompt = self._mapper.to_domain_prompt(file_resp.content)
+            warnings: list[str] = []
         except Exception as exc:  # noqa: BLE001
             body = self._best_effort_body(file_resp.content)
             fallback_metadata = self._fallback_metadata(key, reason=str(exc))
@@ -54,6 +60,7 @@ class FilesystemPromptCatalog(PromptCatalogPort):
                 template=body,
                 metadata=fallback_metadata,
             )
+            warnings = list(fallback_metadata.warnings)
         else:
             if self._config.validation_on_load:
                 validation = self._loader.validate(prompt)
@@ -66,6 +73,14 @@ class FilesystemPromptCatalog(PromptCatalogPort):
                         name=fallback_metadata.name,
                         version=fallback_metadata.version,
                         template=prompt.template,
+                        metadata=prompt.metadata.model_copy(
+                            update={"warnings": fallback_metadata.warnings}
+                        ),
+                    )
+            warnings = getattr(prompt.metadata, "warnings", []) or []
+
+        if warnings:
+            self._log_warnings(key, warnings)
                         metadata=prompt.metadata.model_copy(update={"warnings": fallback_metadata.warnings}),
                     )
 
@@ -119,3 +134,8 @@ class FilesystemPromptCatalog(PromptCatalogPort):
             if len(parts) == 3:
                 return parts[2].lstrip()
         return cleaned
+
+    def _log_warnings(self, key: str, warnings: list[str]) -> None:
+        """Surface prompt warnings to help with diagnostics."""
+        for warning in warnings:
+            logger.warning("Prompt '%s' warning: %s", key, warning)
