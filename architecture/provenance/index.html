@@ -6,32 +6,30 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Integration pattern for tnh-gen CLI with prompt system via PromptsAdapter">
-      
-      
-        <meta name="author" content="Aaron Solomon, Claude Sonnet 4.5">
+        <meta name="description" content="Cross-cutting infrastructure for tracking data lineage, request tracing, and reproducibility across TNH Scholar">
       
       
       
-        <link rel="prev" href="../adr-tg01-cli-architecture/">
+      
+        <link rel="prev" href="../prompt-system/adr/adr-pt04-prompt-system-refactor/">
       
       
-        <link rel="next" href="../../../transcription/">
+        <link rel="next" href="adr/adr-pv01-provenance-tracing-strat/">
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
     
     
       
-        <title>ADR-TG02: TNH-Gen CLI Prompt System Integration - TNH Scholar Documentation</title>
+        <title>Provenance & Tracing Architecture - TNH Scholar Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -50,11 +48,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../stylesheets/tnh-zen.css">
+      <link rel="stylesheet" href="../../stylesheets/tnh-zen.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -122,7 +120,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-tg02-tnh-gen-cli-prompt-system-integration" class="md-skip">
+        <a href="#provenance-tracing-architecture" class="md-skip">
           Skip to content
         </a>
       
@@ -158,7 +156,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -178,7 +176,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-TG02: TNH-Gen CLI Prompt System Integration
+              Provenance & Tracing Architecture
             
           </span>
         </div>
@@ -267,7 +265,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -297,7 +295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -348,7 +346,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../getting-started/" class="md-nav__link ">
+            <a href="../../getting-started/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -388,7 +386,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/configuration/" class="md-nav__link">
+      <a href="../../getting-started/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -416,7 +414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/installation/" class="md-nav__link">
+      <a href="../../getting-started/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -444,7 +442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/quick-start-guide/" class="md-nav__link">
+      <a href="../../getting-started/quick-start-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -503,7 +501,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../user-guide/" class="md-nav__link ">
+            <a href="../../user-guide/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -543,7 +541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
+      <a href="../../user-guide/best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -571,7 +569,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/overview/" class="md-nav__link">
+      <a href="../../user-guide/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -599,7 +597,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/prompt-system/" class="md-nav__link">
+      <a href="../../user-guide/prompt-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -662,7 +660,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../project/" class="md-nav__link ">
+            <a href="../../project/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -702,7 +700,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/conceptual-architecture/" class="md-nav__link">
+      <a href="../../project/conceptual-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -730,7 +728,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/future-directions/" class="md-nav__link">
+      <a href="../../project/future-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -758,7 +756,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/philosophy/" class="md-nav__link">
+      <a href="../../project/philosophy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -786,7 +784,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/principles/" class="md-nav__link">
+      <a href="../../project/principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -814,7 +812,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/vision/" class="md-nav__link">
+      <a href="../../project/vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -869,7 +867,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../community/" class="md-nav__link ">
+            <a href="../../community/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -909,7 +907,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../community/parallax-overview/" class="md-nav__link">
+      <a href="../../community/parallax-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -976,7 +974,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../project/repo-root/" class="md-nav__link ">
+            <a href="../../project/repo-root/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1016,7 +1014,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/changelog/" class="md-nav__link">
+      <a href="../../project/repo-root/changelog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1044,7 +1042,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/contributing-root/" class="md-nav__link">
+      <a href="../../project/repo-root/contributing-root/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1072,7 +1070,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
+      <a href="../../project/repo-root/dev-setup-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1100,7 +1098,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/release_checklist/" class="md-nav__link">
+      <a href="../../project/repo-root/release_checklist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1128,7 +1126,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/repo-readme/" class="md-nav__link">
+      <a href="../../project/repo-root/repo-readme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1156,7 +1154,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/todo-list/" class="md-nav__link">
+      <a href="../../project/repo-root/todo-list/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1184,7 +1182,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/versioning/" class="md-nav__link">
+      <a href="../../project/repo-root/versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1257,7 +1255,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../cli-reference/" class="md-nav__link ">
+            <a href="../../cli-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1297,7 +1295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/audio-transcribe/" class="md-nav__link">
+      <a href="../../cli-reference/audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1325,7 +1323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/json-to-srt/" class="md-nav__link">
+      <a href="../../cli-reference/json-to-srt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1353,7 +1351,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/nfmt/" class="md-nav__link">
+      <a href="../../cli-reference/nfmt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1381,7 +1379,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/overview/" class="md-nav__link">
+      <a href="../../cli-reference/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1409,7 +1407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/sent-split/" class="md-nav__link">
+      <a href="../../cli-reference/sent-split/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1437,7 +1435,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/srt-translate/" class="md-nav__link">
+      <a href="../../cli-reference/srt-translate/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1465,7 +1463,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/tnh-fab/" class="md-nav__link">
+      <a href="../../cli-reference/tnh-fab/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1493,7 +1491,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/tnh-setup/" class="md-nav__link">
+      <a href="../../cli-reference/tnh-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1521,7 +1519,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/token-count/" class="md-nav__link">
+      <a href="../../cli-reference/token-count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1549,7 +1547,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/ytt-fetch/" class="md-nav__link">
+      <a href="../../cli-reference/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1584,7 +1582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../api/" class="md-nav__link">
+      <a href="../../api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1689,7 +1687,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1729,7 +1727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../overview/" class="md-nav__link">
+      <a href="../overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1757,7 +1755,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/" class="md-nav__link">
+      <a href="../ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1858,7 +1856,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ai-text-processing/adr/" class="md-nav__link ">
+            <a href="../ai-text-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1898,7 +1896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
+      <a href="../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1926,7 +1924,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
+      <a href="../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1954,7 +1952,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
+      <a href="../ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1982,7 +1980,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
+      <a href="../ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2010,7 +2008,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
+      <a href="../ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2038,7 +2036,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
+      <a href="../ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2066,7 +2064,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
+      <a href="../ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2124,7 +2122,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ai-text-processing/design/" class="md-nav__link ">
+            <a href="../ai-text-processing/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2164,7 +2162,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
+      <a href="../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2192,7 +2190,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
+      <a href="../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2256,7 +2254,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../configuration/" class="md-nav__link ">
+            <a href="../configuration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2296,7 +2294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../configuration/tnh-configuration-management/" class="md-nav__link">
+      <a href="../configuration/tnh-configuration-management/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2354,7 +2352,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/" class="md-nav__link ">
+            <a href="../docs-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2420,7 +2418,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/adr/" class="md-nav__link ">
+            <a href="../docs-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2460,7 +2458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
+      <a href="../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2488,7 +2486,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
+      <a href="../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2516,7 +2514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
+      <a href="../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2544,7 +2542,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
+      <a href="../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2600,7 +2598,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/design/" class="md-nav__link ">
+            <a href="../docs-system/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2640,7 +2638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/design/documentation-design/" class="md-nav__link">
+      <a href="../docs-system/design/documentation-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2684,7 +2682,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/" class="md-nav__link">
+      <a href="../gen-ai-service/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2787,7 +2785,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../gen-ai-service/adr/" class="md-nav__link ">
+            <a href="../gen-ai-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2827,7 +2825,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
+      <a href="../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2855,7 +2853,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
+      <a href="../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2883,7 +2881,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
+      <a href="../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2911,7 +2909,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
+      <a href="../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2939,7 +2937,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+      <a href="../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2967,7 +2965,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+      <a href="../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2995,7 +2993,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
+      <a href="../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3023,7 +3021,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
+      <a href="../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3081,7 +3079,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../gen-ai-service/design/" class="md-nav__link ">
+            <a href="../gen-ai-service/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3121,7 +3119,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
+      <a href="../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3149,7 +3147,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
+      <a href="../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3215,7 +3213,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../jvb-viewer/" class="md-nav__link ">
+            <a href="../jvb-viewer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3296,7 +3294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
+      <a href="../jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3317,7 +3315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
+      <a href="../jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3372,7 +3370,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../jvb-viewer/design/" class="md-nav__link ">
+            <a href="../jvb-viewer/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3412,7 +3410,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
+      <a href="../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3440,7 +3438,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
+      <a href="../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3468,7 +3466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
+      <a href="../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3496,7 +3494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
+      <a href="../jvb-viewer/design/luan-hoi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3560,7 +3558,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../knowledge-base/" class="md-nav__link ">
+            <a href="../knowledge-base/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3620,7 +3618,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../knowledge-base/adr/" class="md-nav__link ">
+            <a href="../knowledge-base/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3660,7 +3658,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
+      <a href="../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3724,7 +3722,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metadata/" class="md-nav__link ">
+            <a href="../metadata/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3786,7 +3784,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metadata/adr/" class="md-nav__link ">
+            <a href="../metadata/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3826,7 +3824,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
+      <a href="../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3854,7 +3852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
+      <a href="../metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3924,7 +3922,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../object-service/" class="md-nav__link ">
+            <a href="../object-service/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3964,7 +3962,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-design-gaps/" class="md-nav__link">
+      <a href="../object-service/object-service-design-gaps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3992,7 +3990,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-design-overview/" class="md-nav__link">
+      <a href="../object-service/object-service-design-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4020,7 +4018,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-implementation-status/" class="md-nav__link">
+      <a href="../object-service/object-service-implementation-status/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4068,7 +4066,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../object-service/adr/" class="md-nav__link ">
+            <a href="../object-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4108,7 +4106,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
+      <a href="../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4174,7 +4172,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../project-policies/" class="md-nav__link ">
+            <a href="../project-policies/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4214,7 +4212,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
+      <a href="../project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4262,7 +4260,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../project-policies/adr/" class="md-nav__link ">
+            <a href="../project-policies/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4302,7 +4300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
+      <a href="../project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4368,7 +4366,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../prompt-system/" class="md-nav__link ">
+            <a href="../prompt-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4408,7 +4406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/prompt-system-architecture/" class="md-nav__link">
+      <a href="../prompt-system/prompt-system-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4458,7 +4456,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../prompt-system/adr/" class="md-nav__link ">
+            <a href="../prompt-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4498,7 +4496,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
+      <a href="../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4526,7 +4524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
+      <a href="../prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4567,10 +4565,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../provenance/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Provenance & Tracing Architecture
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -4586,6 +4611,62 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-decision-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Decision Records
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Concepts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Architecture
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -4676,7 +4757,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
+      <a href="adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4740,7 +4821,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../setup-tnh/" class="md-nav__link ">
+            <a href="../setup-tnh/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4800,7 +4881,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../setup-tnh/design/" class="md-nav__link ">
+            <a href="../setup-tnh/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4840,7 +4921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
+      <a href="../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4884,7 +4965,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../tnh-gen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4902,8 +4983,6 @@
                 
   
   
-    
-  
   
   
     
@@ -4914,11 +4993,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19" >
         
           
           <label class="md-nav__link" for="__nav_9_19" id="__nav_9_19_label" tabindex="0">
@@ -4932,7 +5011,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_19_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_19_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_19">
             <span class="md-nav__icon md-icon"></span>
             Tnh Gen
@@ -4943,8 +5022,6 @@
                 
   
   
-    
-  
   
   
     
@@ -4961,16 +5038,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19_1" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../tnh-gen/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4994,7 +5071,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_19_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_19_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_19_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -5010,7 +5087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-tg01-cli-architecture/" class="md-nav__link">
+      <a href="../tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5035,37 +5112,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    ADR-TG02: TNH-Gen CLI Prompt System Integration
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--draft"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5081,221 +5131,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Decision">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-cli-variable-precedence-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. CLI Variable Precedence Model
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-list-command-implementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. List Command Implementation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-promptsadapter-dependency-injection" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. PromptsAdapter Dependency Injection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-error-handling-alignment" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Error Handling Alignment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-configuration-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Configuration Integration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#consequences" class="md-nav__link">
-    <span class="md-ellipsis">
-      Consequences
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Consequences">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#positive" class="md-nav__link">
-    <span class="md-ellipsis">
-      Positive
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#negative" class="md-nav__link">
-    <span class="md-ellipsis">
-      Negative
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#risks" class="md-nav__link">
-    <span class="md-ellipsis">
-      Risks
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#alternatives-considered" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternatives Considered
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Alternatives Considered">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#alternative-1-direct-prompt-system-access" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 1: Direct Prompt System Access
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternative-2-separate-cli-variable-layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 2: Separate CLI Variable Layer
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternative-3-graphql-api-between-cli-and-prompt-system" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 3: GraphQL API Between CLI and Prompt System
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#open-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Open Questions
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="References">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#related-adrs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Related ADRs
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#external-resources" class="md-nav__link">
-    <span class="md-ellipsis">
-      External Resources
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -5346,7 +5181,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../transcription/" class="md-nav__link ">
+            <a href="../transcription/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5412,7 +5247,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../transcription/adr/" class="md-nav__link ">
+            <a href="../transcription/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5452,7 +5287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
+      <a href="../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5480,7 +5315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
+      <a href="../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5508,7 +5343,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
+      <a href="../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5536,7 +5371,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+      <a href="../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5614,7 +5449,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../transcription/design/" class="md-nav__link ">
+            <a href="../transcription/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5654,7 +5489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/audio-chunking-design/" class="md-nav__link">
+      <a href="../transcription/design/audio-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5682,7 +5517,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/diarization-algorithms/" class="md-nav__link">
+      <a href="../transcription/design/diarization-algorithms/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5710,7 +5545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/diarization-chunker-design/" class="md-nav__link">
+      <a href="../transcription/design/diarization-chunker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5738,7 +5573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/diarization-system-design/" class="md-nav__link">
+      <a href="../transcription/design/diarization-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5766,7 +5601,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
+      <a href="../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5794,7 +5629,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/language-aware-chunking-design/" class="md-nav__link">
+      <a href="../transcription/design/language-aware-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5822,7 +5657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
+      <a href="../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5850,7 +5685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
+      <a href="../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5878,7 +5713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
+      <a href="../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5906,7 +5741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
+      <a href="../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5934,7 +5769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
+      <a href="../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5962,7 +5797,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/timelinemapper-design/" class="md-nav__link">
+      <a href="../transcription/design/timelinemapper-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6028,7 +5863,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/" class="md-nav__link ">
+            <a href="../ui-ux/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6088,7 +5923,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/design/" class="md-nav__link ">
+            <a href="../ui-ux/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6128,7 +5963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
+      <a href="../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6194,7 +6029,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/vs-code-integration/" class="md-nav__link ">
+            <a href="../ui-ux/vs-code-integration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6234,7 +6069,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
+      <a href="../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6262,7 +6097,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
+      <a href="../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6290,7 +6125,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
+      <a href="../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6318,7 +6153,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
+      <a href="../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6346,7 +6181,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
+      <a href="../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6374,7 +6209,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
+      <a href="../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6438,7 +6273,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../utilities/" class="md-nav__link ">
+            <a href="../utilities/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6500,7 +6335,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../utilities/design/" class="md-nav__link ">
+            <a href="../utilities/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6540,7 +6375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../utilities/design/package-version-checker-design/" class="md-nav__link">
+      <a href="../utilities/design/package-version-checker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6568,7 +6403,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../utilities/design/utilities-catalog/" class="md-nav__link">
+      <a href="../utilities/design/utilities-catalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6632,7 +6467,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../video-processing/" class="md-nav__link ">
+            <a href="../video-processing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6692,7 +6527,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../video-processing/adr/" class="md-nav__link ">
+            <a href="../video-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6732,7 +6567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+      <a href="../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6776,7 +6611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/" class="md-nav__link">
+      <a href="../ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6869,7 +6704,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ytt-fetch/adr/" class="md-nav__link ">
+            <a href="../ytt-fetch/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6909,7 +6744,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
+      <a href="../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6937,7 +6772,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
+      <a href="../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6965,7 +6800,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
+      <a href="../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7021,7 +6856,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ytt-fetch/design/" class="md-nav__link ">
+            <a href="../ytt-fetch/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7061,7 +6896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
+      <a href="../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7152,7 +6987,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../development/" class="md-nav__link ">
+            <a href="../../development/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7192,7 +7027,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/contributing-prototype-phase/" class="md-nav__link">
+      <a href="../../development/contributing-prototype-phase/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7220,7 +7055,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/design-principles/" class="md-nav__link">
+      <a href="../../development/design-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7248,7 +7083,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/fine-tuning-strategy/" class="md-nav__link">
+      <a href="../../development/fine-tuning-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7276,7 +7111,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/git-workflow/" class="md-nav__link">
+      <a href="../../development/git-workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7304,7 +7139,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
+      <a href="../../development/human-ai-software-engineering-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7332,7 +7167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/improvements-initial-structure/" class="md-nav__link">
+      <a href="../../development/improvements-initial-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7360,7 +7195,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/overview/" class="md-nav__link">
+      <a href="../../development/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7388,7 +7223,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/release-workflow/" class="md-nav__link">
+      <a href="../../development/release-workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7416,7 +7251,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/style-guide/" class="md-nav__link">
+      <a href="../../development/style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7444,7 +7279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/system-design/" class="md-nav__link">
+      <a href="../../development/system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7494,7 +7329,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../development/incident-reports/" class="md-nav__link ">
+            <a href="../../development/incident-reports/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7534,7 +7369,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
+      <a href="../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7586,7 +7421,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
+            <a href="../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7626,7 +7461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
+      <a href="../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7654,7 +7489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
+      <a href="../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7682,7 +7517,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
+      <a href="../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7761,7 +7596,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../docs-ops/" class="md-nav__link ">
+            <a href="../../docs-ops/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7801,7 +7636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/adr-template/" class="md-nav__link">
+      <a href="../../docs-ops/adr-template/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7829,7 +7664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/markdown-standards/" class="md-nav__link">
+      <a href="../../docs-ops/markdown-standards/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7857,7 +7692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
+      <a href="../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7885,7 +7720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/preview-theme/" class="md-nav__link">
+      <a href="../../docs-ops/preview-theme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7913,7 +7748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/theme-design/" class="md-nav__link">
+      <a href="../../docs-ops/theme-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7982,7 +7817,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/" class="md-nav__link ">
+            <a href="../../research/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8022,7 +7857,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt_development_convos/" class="md-nav__link">
+      <a href="../../research/gpt_development_convos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8050,7 +7885,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/kb-design-document/" class="md-nav__link">
+      <a href="../../research/kb-design-document/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8078,7 +7913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/metadata-summary-report/" class="md-nav__link">
+      <a href="../../research/metadata-summary-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8106,7 +7941,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/preliminary-feasibility-study/" class="md-nav__link">
+      <a href="../../research/preliminary-feasibility-study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8134,7 +7969,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/rag-research-directions/" class="md-nav__link">
+      <a href="../../research/rag-research-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8162,7 +7997,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/siap-methodology/" class="md-nav__link">
+      <a href="../../research/siap-methodology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8210,7 +8045,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
+            <a href="../../research/gpt4o-search-query-testing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8250,7 +8085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
+      <a href="../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8306,7 +8141,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
+            <a href="../../research/gpt4o-translation-experiments/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8346,7 +8181,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
+      <a href="../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8389,7 +8224,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../documentation_index/" class="md-nav__link">
+      <a href="../../documentation_index/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8436,197 +8271,38 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Context
+      Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
+  <a href="#architecture-decision-records" class="md-nav__link">
     <span class="md-ellipsis">
-      Decision
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Decision">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-cli-variable-precedence-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. CLI Variable Precedence Model
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-list-command-implementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. List Command Implementation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-promptsadapter-dependency-injection" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. PromptsAdapter Dependency Injection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-error-handling-alignment" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Error Handling Alignment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-configuration-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Configuration Integration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#consequences" class="md-nav__link">
-    <span class="md-ellipsis">
-      Consequences
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Consequences">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#positive" class="md-nav__link">
-    <span class="md-ellipsis">
-      Positive
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#negative" class="md-nav__link">
-    <span class="md-ellipsis">
-      Negative
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#risks" class="md-nav__link">
-    <span class="md-ellipsis">
-      Risks
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#alternatives-considered" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternatives Considered
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Alternatives Considered">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#alternative-1-direct-prompt-system-access" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 1: Direct Prompt System Access
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternative-2-separate-cli-variable-layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 2: Separate CLI Variable Layer
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternative-3-graphql-api-between-cli-and-prompt-system" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 3: GraphQL API Between CLI and Prompt System
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#open-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Open Questions
+      Architecture Decision Records
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
+  <a href="#key-concepts" class="md-nav__link">
     <span class="md-ellipsis">
-      References
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="References">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#related-adrs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Related ADRs
+      Key Concepts
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#external-resources" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#related-architecture" class="md-nav__link">
     <span class="md-ellipsis">
-      External Resources
+      Related Architecture
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -8648,279 +8324,26 @@
   
 
 
-<h1 id="adr-tg02-tnh-gen-cli-prompt-system-integration">ADR-TG02: TNH-Gen CLI Prompt System Integration<a class="headerlink" href="#adr-tg02-tnh-gen-cli-prompt-system-integration" title="Link to this section">&para;</a></h1>
-<p>This ADR defines how the <code>tnh-gen</code> CLI integrates with the prompt system (ADR-PT04) through the <code>PromptsAdapter</code>, establishing variable precedence rules and command implementation patterns.</p>
+<h1 id="provenance-tracing-architecture">Provenance &amp; Tracing Architecture<a class="headerlink" href="#provenance-tracing-architecture" title="Link to this section">&para;</a></h1>
+<p>Cross-cutting infrastructure establishing unified patterns for tracking data lineage, request tracing, and operation provenance across all layers of TNH Scholar.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Link to this section">&para;</a></h2>
+<p>Provenance infrastructure provides consistent mechanisms for answering "where did this come from?" across different operational scopes—from CLI invocations to AI generations to document transformations.</p>
+<h2 id="architecture-decision-records">Architecture Decision Records<a class="headerlink" href="#architecture-decision-records" title="Link to this section">&para;</a></h2>
 <ul>
-<li><strong>Status</strong>: Draft</li>
-<li><strong>Date</strong>: 2025-12-07</li>
-<li><strong>Owner</strong>: Aaron Solomon</li>
-<li><strong>Author</strong>: Aaron Solomon, Claude Sonnet 4.5</li>
+<li><strong><a href="adr/adr-pv01-provenance-tracing-strat/">ADR-PV01: Provenance &amp; Tracing Infrastructure Strategy</a></strong> - Establishes foundational patterns for cross-cutting provenance tracking across all layers</li>
 </ul>
-<h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
-<p>The <code>tnh-gen</code> CLI must bridge user input (files, variables, flags) to the prompt system while maintaining clean separation of concerns. Key requirements include:</p>
-<ol>
-<li><strong>Variable Precedence</strong>: CLI flags must override file-based variables, which override defaults</li>
-<li><strong>Prompt Discovery</strong>: Users need to list and search available prompts without exposing internal catalog structure</li>
-<li><strong>Transport Isolation</strong>: CLI layer should not depend on prompt storage implementation (git, filesystem, etc.)</li>
-<li><strong>VS Code Integration</strong>: Command outputs must be JSON-formatted for programmatic consumption</li>
-<li><strong>Consistency</strong>: Variable handling must align with prompt system's rendering policy (ADR-PT04 §5)</li>
-</ol>
-<p>The <code>PromptsAdapter</code> (defined in ADR-PT04 §8.1) provides the contract boundary between CLI and prompt system, offering <code>list_all()</code>, <code>introspect()</code>, and <code>render()</code> methods.</p>
-<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
-<h3 id="1-cli-variable-precedence-model">1. CLI Variable Precedence Model<a class="headerlink" href="#1-cli-variable-precedence-model" title="Link to this section">&para;</a></h3>
-<p>The CLI collects variables from three sources with clear precedence:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># In tnh-gen CLI implementation (commands/run.py):</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.prompt_system.domain.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">RenderParams</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.models.domain</span><span class="w"> </span><span class="kn">import</span> <span class="n">RenderRequest</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">run_prompt</span><span class="p">(</span><span class="n">prompt_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">vars_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">var</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute a prompt with CLI-provided variables.&quot;&quot;&quot;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="c1"># 1. Build variables dict with CLI precedence (lowest to highest)</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="c1"># Lowest precedence: input file content (auto-injected as input_text)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="k">if</span> <span class="n">input_file</span><span class="p">:</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;input_text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="c1"># Medium precedence: JSON vars file (--vars)</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="k">if</span> <span class="n">vars_file</span><span class="p">:</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">vars_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="c1"># Highest precedence: inline --var parameters</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">var</span><span class="p">:</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        <span class="n">k</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        <span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="c1"># 2. Build RenderParams (feeds into prompt_system&#39;s caller_context)</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="c1"># This becomes the highest precedence in PromptRenderPolicy</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="n">params</span> <span class="o">=</span> <span class="n">RenderParams</span><span class="p">(</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>        <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>        <span class="n">strict_undefined</span><span class="o">=</span><span class="kc">True</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="p">)</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>    <span class="c1"># 3. Call PromptsAdapter</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">PromptsAdapter</span><span class="p">(</span><span class="n">catalog</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">validator</span><span class="p">)</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>    <span class="n">rendered</span><span class="p">,</span> <span class="n">fingerprint</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>        <span class="n">RenderRequest</span><span class="p">(</span>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>            <span class="n">instruction_key</span><span class="o">=</span><span class="n">prompt_key</span><span class="p">,</span>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>            <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>            <span class="n">user_input</span><span class="o">=</span><span class="n">variables</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>        <span class="p">)</span>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>    <span class="p">)</span>
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>    <span class="k">return</span> <span class="n">rendered</span><span class="p">,</span> <span class="n">fingerprint</span>
-</span></code></pre></div>
-<p><strong>Precedence Alignment:</strong></p>
-<table>
-<thead>
-<tr>
-<th>CLI Layer (ADR-TG02)</th>
-<th>Prompt System Layer (ADR-PT04)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--var</code> inline params</td>
-<td><code>caller_context</code> (highest)</td>
-</tr>
-<tr>
-<td><code>--vars</code> JSON file</td>
-<td><code>caller_context</code> (highest)</td>
-</tr>
-<tr>
-<td><code>--input-file</code> content</td>
-<td><code>caller_context</code> (highest)</td>
-</tr>
-<tr>
-<td>(not applicable)</td>
-<td><code>frontmatter_defaults</code> (medium)</td>
-</tr>
-<tr>
-<td>(not applicable)</td>
-<td><code>settings_defaults</code> (lowest)</td>
-</tr>
-</tbody>
-</table>
-<p>All CLI-provided variables merge into a single <code>variables</code> dict that becomes <code>caller_context</code> in the prompt system's precedence order.</p>
-<h3 id="2-list-command-implementation">2. List Command Implementation<a class="headerlink" href="#2-list-command-implementation" title="Link to this section">&para;</a></h3>
-<p>The <code>list</code> command uses <code>PromptsAdapter.list_all()</code> for prompt discovery:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># In tnh-gen CLI implementation (commands/list.py):</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptsAdapter</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">list_prompts</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;List all available prompts with optional filtering.&quot;&quot;&quot;</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="c1"># Initialize adapter</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">PromptsAdapter</span><span class="p">(</span><span class="n">catalog</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">validator</span><span class="p">)</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="c1"># Get all prompts via new list_all() method</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">all_prompts</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">list_all</span><span class="p">()</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="c1"># Apply filters</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">all_prompts</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">tag</span> <span class="ow">or</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">search</span> <span class="ow">or</span> <span class="n">search</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>             <span class="ow">or</span> <span class="n">search</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="p">]</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    <span class="c1"># Format output for CLI/VS Code consumption</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        <span class="s2">&quot;prompts&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>            <span class="p">{</span>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>                <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>                <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">tags</span><span class="p">,</span>
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>                <span class="s2">&quot;required_variables&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">required_variables</span><span class="p">,</span>
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>                <span class="s2">&quot;optional_variables&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">optional_variables</span><span class="p">,</span>
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>                <span class="s2">&quot;default_model&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">default_model</span><span class="p">,</span>
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>                <span class="s2">&quot;output_mode&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">output_mode</span><span class="p">,</span>
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>                <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">version</span>
-</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>            <span class="p">}</span>
-</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">filtered</span>
-</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="p">],</span>
-</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>        <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">filtered</span><span class="p">)</span>
-</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>    <span class="p">}</span>
-</span></code></pre></div>
-<p><strong>Design Note</strong>: The <code>list_all()</code> and <code>introspect()</code> methods added to <code>PromptsAdapter</code> enable prompt discoverability without exposing internal prompt system implementation to the CLI layer. This maintains clean separation of concerns.</p>
-<h3 id="3-promptsadapter-dependency-injection">3. PromptsAdapter Dependency Injection<a class="headerlink" href="#3-promptsadapter-dependency-injection" title="Link to this section">&para;</a></h3>
-<p>The CLI uses dependency injection to configure the <code>PromptsAdapter</code>:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># In tnh-gen CLI initialization (cli.py):</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.prompt_system.adapters.git_catalog_adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">GitPromptCatalog</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.prompt_system.service.renderer</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptRenderer</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.prompt_system.service.validator</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptValidator</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptsAdapter</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.services.genai_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenAIService</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">initialize_app</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">PromptsAdapter</span><span class="p">,</span> <span class="n">GenAIService</span><span class="p">]:</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize application dependencies.&quot;&quot;&quot;</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="c1"># 1. Configure prompt catalog</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">catalog_config</span> <span class="o">=</span> <span class="n">PromptCatalogConfig</span><span class="o">.</span><span class="n">from_env</span><span class="p">()</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="n">catalog</span> <span class="o">=</span> <span class="n">GitPromptCatalog</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">catalog_config</span><span class="p">)</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="c1"># 2. Configure renderer and validator</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="n">render_policy</span> <span class="o">=</span> <span class="n">PromptRenderPolicy</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">catalog_config</span><span class="o">.</span><span class="n">render_policy</span><span class="p">)</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="n">renderer</span> <span class="o">=</span> <span class="n">PromptRenderer</span><span class="p">(</span><span class="n">render_policy</span><span class="p">)</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    <span class="n">validator</span> <span class="o">=</span> <span class="n">PromptValidator</span><span class="p">()</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>    <span class="c1"># 3. Build PromptsAdapter</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    <span class="n">prompts_adapter</span> <span class="o">=</span> <span class="n">PromptsAdapter</span><span class="p">(</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>        <span class="n">catalog</span><span class="o">=</span><span class="n">catalog</span><span class="p">,</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>        <span class="n">renderer</span><span class="o">=</span><span class="n">renderer</span><span class="p">,</span>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>        <span class="n">validator</span><span class="o">=</span><span class="n">validator</span>
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>    <span class="p">)</span>
-</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>
-</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>    <span class="c1"># 4. Configure GenAIService</span>
-</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>    <span class="n">genai_service</span> <span class="o">=</span> <span class="n">GenAIService</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">GenAIConfig</span><span class="o">.</span><span class="n">from_env</span><span class="p">())</span>
-</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>
-</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>    <span class="k">return</span> <span class="n">prompts_adapter</span><span class="p">,</span> <span class="n">genai_service</span>
-</span></code></pre></div>
-<h3 id="4-error-handling-alignment">4. Error Handling Alignment<a class="headerlink" href="#4-error-handling-alignment" title="Link to this section">&para;</a></h3>
-<p>CLI error codes (ADR-TG01 §5) map to prompt system exceptions:</p>
-<table>
-<thead>
-<tr>
-<th>Prompt System Exception</th>
-<th>CLI Exit Code</th>
-<th>Error Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>PromptNotFoundError</code></td>
-<td><code>5</code></td>
-<td>Input Error</td>
-</tr>
-<tr>
-<td><code>VariableValidationError</code></td>
-<td><code>5</code></td>
-<td>Input Error</td>
-</tr>
-<tr>
-<td><code>RenderError</code> (template syntax)</td>
-<td><code>4</code></td>
-<td>Format Error</td>
-</tr>
-<tr>
-<td><code>ValidationError</code> (schema)</td>
-<td><code>1</code></td>
-<td>Policy Error</td>
-</tr>
-<tr>
-<td><code>GitTransportError</code></td>
-<td><code>2</code></td>
-<td>Transport Error</td>
-</tr>
-</tbody>
-</table>
-<h3 id="5-configuration-integration">5. Configuration Integration<a class="headerlink" href="#5-configuration-integration" title="Link to this section">&para;</a></h3>
-<p>The CLI respects prompt system configuration via hierarchical precedence:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># ~/.config/tnh-scholar/tnh-gen.yaml</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">prompt_system</span><span class="p">:</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">repository_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/prompts</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">enable_git_refresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">validation_on_load</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">cache_ttl_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">render_policy</span><span class="p">:</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">strict_undefined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">max_output_size_kb</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
-</span></code></pre></div>
-<p>CLI flags override config file values (see ADR-TG01 §4 for precedence).</p>
-<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
-<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
+<h2 id="key-concepts">Key Concepts<a class="headerlink" href="#key-concepts" title="Link to this section">&para;</a></h2>
 <ul>
-<li><strong>Clean Separation</strong>: CLI layer depends only on <code>PromptsAdapter</code> contract, not prompt system internals</li>
-<li><strong>Consistent Precedence</strong>: Variable handling aligns across CLI and prompt system layers</li>
-<li><strong>Discoverability</strong>: <code>list_all()</code> and <code>introspect()</code> enable rich prompt exploration without leaking implementation</li>
-<li><strong>Testability</strong>: Adapter contract allows mocking entire prompt system in CLI tests</li>
-<li><strong>VS Code Integration</strong>: JSON output format enables seamless editor consumption</li>
+<li><strong>Request Tracing</strong>: Track individual operations through the system (CLI commands, API requests)</li>
+<li><strong>Service Provenance</strong>: Record how AI/processing results were generated (model, parameters, fingerprints)</li>
+<li><strong>Data Lineage</strong>: Chain of transformations from source to derivative artifacts</li>
+<li><strong>Reproducibility</strong>: Sufficient metadata to recreate results</li>
 </ul>
-<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
+<h2 id="related-architecture">Related Architecture<a class="headerlink" href="#related-architecture" title="Link to this section">&para;</a></h2>
 <ul>
-<li><strong>Adapter Maintenance</strong>: Changes to prompt system require coordinated updates to <code>PromptsAdapter</code></li>
-<li><strong>Variable Complexity</strong>: Three-level CLI precedence (file → vars → flags) may confuse users unfamiliar with override patterns</li>
-<li><strong>Validation Boundaries</strong>: Prompt variable validation happens after CLI parsing, delaying error feedback</li>
+<li><a href="../metadata/">Metadata Infrastructure</a> - Foundation for frontmatter and structured metadata</li>
+<li><a href="../object-service/adr/adr-os01-object-service-architecture-v3/">Object-Service Architecture</a> - Layered architecture patterns</li>
 </ul>
-<h3 id="risks">Risks<a class="headerlink" href="#risks" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Breaking Changes</strong>: Prompt system refactors (e.g., new metadata fields) may break CLI expectations</li>
-<li><strong>Performance</strong>: Listing all prompts via <code>list_all()</code> may be slow for large catalogs (mitigated by caching in ADR-PT04 §6)</li>
-</ul>
-<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Link to this section">&para;</a></h2>
-<h3 id="alternative-1-direct-prompt-system-access">Alternative 1: Direct Prompt System Access<a class="headerlink" href="#alternative-1-direct-prompt-system-access" title="Link to this section">&para;</a></h3>
-<p><strong>Approach</strong>: CLI directly imports and uses <code>PromptCatalog</code>, <code>PromptRenderer</code>, etc.</p>
-<p><strong>Rejected</strong>: Violates object-service architecture (ADR-OS01). CLI should not depend on domain internals.</p>
-<h3 id="alternative-2-separate-cli-variable-layer">Alternative 2: Separate CLI Variable Layer<a class="headerlink" href="#alternative-2-separate-cli-variable-layer" title="Link to this section">&para;</a></h3>
-<p><strong>Approach</strong>: Create <code>CLIVariableResolver</code> to handle precedence, separate from <code>RenderParams</code>.</p>
-<p><strong>Rejected</strong>: Adds unnecessary abstraction. Merging variables into <code>caller_context</code> is simpler and aligns with existing prompt system precedence.</p>
-<h3 id="alternative-3-graphql-api-between-cli-and-prompt-system">Alternative 3: GraphQL API Between CLI and Prompt System<a class="headerlink" href="#alternative-3-graphql-api-between-cli-and-prompt-system" title="Link to this section">&para;</a></h3>
-<p><strong>Approach</strong>: Expose prompt system via GraphQL API that CLI queries.</p>
-<p><strong>Rejected</strong>: Overengineering for single-process CLI. Useful for future web UI but premature for MVP.</p>
-<h2 id="open-questions">Open Questions<a class="headerlink" href="#open-questions" title="Link to this section">&para;</a></h2>
-<ol>
-<li><strong>Lazy Loading</strong>: Should <code>list_all()</code> return full metadata or just keys/names for performance? (See ADR-PT04 §8.1)</li>
-<li><strong>Variable Validation Feedback</strong>: Should CLI pre-validate variables against prompt schema before calling <code>render()</code>?</li>
-<li><strong>Cache Control</strong>: Should CLI expose <code>--no-cache</code> flag to bypass prompt caching?</li>
-</ol>
-<h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
-<h3 id="related-adrs">Related ADRs<a class="headerlink" href="#related-adrs" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong><a href="../adr-tg01-cli-architecture/">ADR-TG01: CLI Architecture</a></strong> - Command structure, error codes, configuration</li>
-<li><strong><a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/">ADR-PT04: Prompt System Refactor</a></strong> - Prompt system architecture, <code>PromptsAdapter</code> contract</li>
-<li><strong><a href="../../../ai-text-processing/adr/adr-at03-object-service-refactor/">ADR-AT03: AI Text Processing Refactor</a></strong> - <code>ai_text_processing</code> module refactor</li>
-<li><strong><a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/">ADR-VSC02: VS Code Extension</a></strong> - VS Code integration strategy</li>
-</ul>
-<h3 id="external-resources">External Resources<a class="headerlink" href="#external-resources" title="Link to this section">&para;</a></h3>
-<ul>
-<li><a href="https://typer.tiangolo.com/">Typer Documentation</a></li>
-<li><a href="https://jinja.palletsprojects.com/">Jinja2 Template Syntax</a></li>
-<li><a href="https://docs.pydantic.dev/">Pydantic Validation</a></li>
-</ul>
-<hr />
-<p><em>This ADR implements prompt system integration patterns from ADR-PT04 §8.2.</em></p>
 
 
 
@@ -9017,10 +8440,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
       
     
   </body>

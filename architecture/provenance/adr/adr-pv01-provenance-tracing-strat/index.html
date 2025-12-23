@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Integration pattern for tnh-gen CLI with prompt system via PromptsAdapter">
+        <meta name="description" content="Establishes unified cross-cutting infrastructure for tracking data lineage, request tracing, and operation provenance across all TNH Scholar layers">
       
       
         <meta name="author" content="Aaron Solomon, Claude Sonnet 4.5">
       
       
       
-        <link rel="prev" href="../adr-tg01-cli-architecture/">
+        <link rel="prev" href="../../">
       
       
-        <link rel="next" href="../../../transcription/">
+        <link rel="next" href="../../../setup-tnh/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>ADR-TG02: TNH-Gen CLI Prompt System Integration - TNH Scholar Documentation</title>
+        <title>ADR-PV01: Provenance & Tracing Infrastructure Strategy - TNH Scholar Documentation</title>
       
     
     
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-tg02-tnh-gen-cli-prompt-system-integration" class="md-skip">
+        <a href="#adr-pv01-provenance-tracing-infrastructure-strategy" class="md-skip">
           Skip to content
         </a>
       
@@ -178,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-TG02: TNH-Gen CLI Prompt System Integration
+              ADR-PV01: Provenance & Tracing Infrastructure Strategy
             
           </span>
         </div>
@@ -4570,7 +4570,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../provenance/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4595,8 +4595,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -4605,11 +4607,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16" checked>
         
           
           <label class="md-nav__link" for="__nav_9_16" id="__nav_9_16_label" tabindex="0">
@@ -4623,7 +4625,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_16_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_16_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_16">
             <span class="md-nav__icon md-icon"></span>
             Provenance
@@ -4634,8 +4636,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -4644,11 +4648,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16_1" checked>
         
           
           <label class="md-nav__link" for="__nav_9_16_1" id="__nav_9_16_1_label" tabindex="0">
@@ -4662,7 +4666,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_16_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_16_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_16_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -4673,10 +4677,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ADR-PV01: Provenance & Tracing Infrastructure Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -4692,6 +4723,476 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#adr-editing-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR Editing Policy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discovery-fragmented-provenance-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovery: Fragmented Provenance Concepts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architectural-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architectural Questions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relationship-to-existing-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship to Existing Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-provenance-system-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Provenance System Role
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-unified-terminology" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Unified Terminology
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-layered-provenance-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Layered Provenance Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Layered Provenance Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#layer-1-request-provenance-cliapi-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 1: Request Provenance (CLI/API Layer)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-2-service-provenance-genaiprocessing-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 2: Service Provenance (GenAI/Processing Layer)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-3-transport-provenance-httpsdk-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 3: Transport Provenance (HTTP/SDK Layer)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fingerprint-model-content-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fingerprint Model (Content Identity)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-propagation-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Propagation Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-storage-serialization-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Storage &amp; Serialization Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Storage & Serialization Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-headers-human-readable" class="md-nav__link">
+    <span class="md-ellipsis">
+      File Headers (Human-Readable)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-output-machine-readable" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON Output (Machine-Readable)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-schema-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Schema (Future)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-integration-with-existing-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Integration with Existing Infrastructure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Integration with Existing Infrastructure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relationship-to-metadata-adr-md02" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship to Metadata (ADR-MD02)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relationship-to-object-service-provenance-adr-os01-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship to Object-Service Provenance (ADR-OS01 §12)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-implementation-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Implementation Location
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trade-offs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trade-offs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-1-keep-current-fragmented-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 1: Keep Current Fragmented Approach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-2-single-flat-provenance-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 2: Single Flat Provenance Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-3-use-opentelemetry-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 3: Use OpenTelemetry Directly
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Plan
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Plan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-foundation-immediate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Foundation (Immediate)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-cli-integration-next-pr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: CLI Integration (Next PR)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-service-integration-subsequent-pr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Service Integration (Subsequent PR)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-adapter-transport-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Adapter &amp; Transport (Future)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Extensions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Future Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adr-pv011-json-ld-provenance-vocabulary" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-PV01.1: JSON-LD Provenance Vocabulary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-pv012-provenance-testing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-PV01.2: Provenance Testing Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-pv013-opentelemetry-compatibility-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-PV01.3: OpenTelemetry Compatibility Mapping
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-pv014-logging-observability-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-PV01.4: Logging &amp; Observability Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-pv015-fingerprint-algorithms-extensibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-PV01.5: Fingerprint Algorithms &amp; Extensibility
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#as-built-notes-addendums" class="md-nav__link">
+    <span class="md-ellipsis">
+      As-Built Notes &amp; Addendums
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -4884,7 +5385,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../../../tnh-gen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4902,8 +5403,6 @@
                 
   
   
-    
-  
   
   
     
@@ -4914,11 +5413,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19" >
         
           
           <label class="md-nav__link" for="__nav_9_19" id="__nav_9_19_label" tabindex="0">
@@ -4932,7 +5431,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_19_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_19_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_19">
             <span class="md-nav__icon md-icon"></span>
             Tnh Gen
@@ -4943,8 +5442,6 @@
                 
   
   
-    
-  
   
   
     
@@ -4961,16 +5458,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19_1" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../tnh-gen/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4994,7 +5491,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_19_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_19_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_19_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -5010,7 +5507,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-tg01-cli-architecture/" class="md-nav__link">
+      <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5035,37 +5532,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    ADR-TG02: TNH-Gen CLI Prompt System Integration
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--draft"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5081,221 +5551,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Decision">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-cli-variable-precedence-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. CLI Variable Precedence Model
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-list-command-implementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. List Command Implementation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-promptsadapter-dependency-injection" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. PromptsAdapter Dependency Injection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-error-handling-alignment" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Error Handling Alignment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-configuration-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Configuration Integration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#consequences" class="md-nav__link">
-    <span class="md-ellipsis">
-      Consequences
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Consequences">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#positive" class="md-nav__link">
-    <span class="md-ellipsis">
-      Positive
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#negative" class="md-nav__link">
-    <span class="md-ellipsis">
-      Negative
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#risks" class="md-nav__link">
-    <span class="md-ellipsis">
-      Risks
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#alternatives-considered" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternatives Considered
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Alternatives Considered">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#alternative-1-direct-prompt-system-access" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 1: Direct Prompt System Access
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternative-2-separate-cli-variable-layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 2: Separate CLI Variable Layer
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternative-3-graphql-api-between-cli-and-prompt-system" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 3: GraphQL API Between CLI and Prompt System
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#open-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Open Questions
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="References">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#related-adrs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Related ADRs
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#external-resources" class="md-nav__link">
-    <span class="md-ellipsis">
-      External Resources
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -8436,11 +8691,53 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#adr-editing-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR Editing Policy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       Context
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discovery-fragmented-provenance-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovery: Fragmented Provenance Concepts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architectural-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architectural Questions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relationship-to-existing-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship to Existing Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -8455,45 +8752,162 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-cli-variable-precedence-model" class="md-nav__link">
+  <a href="#1-provenance-system-role" class="md-nav__link">
     <span class="md-ellipsis">
-      1. CLI Variable Precedence Model
+      1. Provenance System Role
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-list-command-implementation" class="md-nav__link">
+  <a href="#2-unified-terminology" class="md-nav__link">
     <span class="md-ellipsis">
-      2. List Command Implementation
+      2. Unified Terminology
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-promptsadapter-dependency-injection" class="md-nav__link">
+  <a href="#3-layered-provenance-model" class="md-nav__link">
     <span class="md-ellipsis">
-      3. PromptsAdapter Dependency Injection
+      3. Layered Provenance Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Layered Provenance Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#layer-1-request-provenance-cliapi-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 1: Request Provenance (CLI/API Layer)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-error-handling-alignment" class="md-nav__link">
+  <a href="#layer-2-service-provenance-genaiprocessing-layer" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Error Handling Alignment
+      Layer 2: Service Provenance (GenAI/Processing Layer)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-configuration-integration" class="md-nav__link">
+  <a href="#layer-3-transport-provenance-httpsdk-layer" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Configuration Integration
+      Layer 3: Transport Provenance (HTTP/SDK Layer)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fingerprint-model-content-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fingerprint Model (Content Identity)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-propagation-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Propagation Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-storage-serialization-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Storage &amp; Serialization Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Storage & Serialization Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-headers-human-readable" class="md-nav__link">
+    <span class="md-ellipsis">
+      File Headers (Human-Readable)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-output-machine-readable" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON Output (Machine-Readable)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-schema-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Schema (Future)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-integration-with-existing-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Integration with Existing Infrastructure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Integration with Existing Infrastructure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relationship-to-metadata-adr-md02" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship to Metadata (ADR-MD02)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relationship-to-object-service-provenance-adr-os01-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship to Object-Service Provenance (ADR-OS01 §12)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-implementation-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Implementation Location
     </span>
   </a>
   
@@ -8533,9 +8947,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#risks" class="md-nav__link">
+  <a href="#trade-offs" class="md-nav__link">
     <span class="md-ellipsis">
-      Risks
+      Trade-offs
     </span>
   </a>
   
@@ -8557,27 +8971,27 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#alternative-1-direct-prompt-system-access" class="md-nav__link">
+  <a href="#alternative-1-keep-current-fragmented-approach" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternative 1: Direct Prompt System Access
+      Alternative 1: Keep Current Fragmented Approach
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#alternative-2-separate-cli-variable-layer" class="md-nav__link">
+  <a href="#alternative-2-single-flat-provenance-model" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternative 2: Separate CLI Variable Layer
+      Alternative 2: Single Flat Provenance Model
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#alternative-3-graphql-api-between-cli-and-prompt-system" class="md-nav__link">
+  <a href="#alternative-3-use-opentelemetry-directly" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternative 3: GraphQL API Between CLI and Prompt System
+      Alternative 3: Use OpenTelemetry Directly
     </span>
   </a>
   
@@ -8598,28 +9012,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
+  <a href="#implementation-plan" class="md-nav__link">
     <span class="md-ellipsis">
-      References
+      Implementation Plan
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="References">
+    <nav class="md-nav" aria-label="Implementation Plan">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#related-adrs" class="md-nav__link">
+  <a href="#phase-1-foundation-immediate" class="md-nav__link">
     <span class="md-ellipsis">
-      Related ADRs
+      Phase 1: Foundation (Immediate)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#external-resources" class="md-nav__link">
+  <a href="#phase-2-cli-integration-next-pr" class="md-nav__link">
     <span class="md-ellipsis">
-      External Resources
+      Phase 2: CLI Integration (Next PR)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-service-integration-subsequent-pr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Service Integration (Subsequent PR)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-adapter-transport-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Adapter &amp; Transport (Future)
     </span>
   </a>
   
@@ -8627,6 +9059,84 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Extensions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Future Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adr-pv011-json-ld-provenance-vocabulary" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-PV01.1: JSON-LD Provenance Vocabulary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-pv012-provenance-testing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-PV01.2: Provenance Testing Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-pv013-opentelemetry-compatibility-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-PV01.3: OpenTelemetry Compatibility Mapping
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-pv014-logging-observability-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-PV01.4: Logging &amp; Observability Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-pv015-fingerprint-algorithms-extensibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-PV01.5: Fingerprint Algorithms &amp; Extensibility
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#as-built-notes-addendums" class="md-nav__link">
+    <span class="md-ellipsis">
+      As-Built Notes &amp; Addendums
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
   
 </li>
       
@@ -8648,279 +9158,585 @@
   
 
 
-<h1 id="adr-tg02-tnh-gen-cli-prompt-system-integration">ADR-TG02: TNH-Gen CLI Prompt System Integration<a class="headerlink" href="#adr-tg02-tnh-gen-cli-prompt-system-integration" title="Link to this section">&para;</a></h1>
-<p>This ADR defines how the <code>tnh-gen</code> CLI integrates with the prompt system (ADR-PT04) through the <code>PromptsAdapter</code>, establishing variable precedence rules and command implementation patterns.</p>
+<h1 id="adr-pv01-provenance-tracing-infrastructure-strategy">ADR-PV01: Provenance &amp; Tracing Infrastructure Strategy<a class="headerlink" href="#adr-pv01-provenance-tracing-infrastructure-strategy" title="Link to this section">&para;</a></h1>
+<p>Establishes provenance and tracing as foundational cross-cutting infrastructure that provides unified patterns for tracking data lineage, request tracing, and operation provenance across all TNH Scholar layers.</p>
 <ul>
-<li><strong>Status</strong>: Draft</li>
-<li><strong>Date</strong>: 2025-12-07</li>
-<li><strong>Owner</strong>: Aaron Solomon</li>
-<li><strong>Author</strong>: Aaron Solomon, Claude Sonnet 4.5</li>
-</ul>
-<h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
-<p>The <code>tnh-gen</code> CLI must bridge user input (files, variables, flags) to the prompt system while maintaining clean separation of concerns. Key requirements include:</p>
-<ol>
-<li><strong>Variable Precedence</strong>: CLI flags must override file-based variables, which override defaults</li>
-<li><strong>Prompt Discovery</strong>: Users need to list and search available prompts without exposing internal catalog structure</li>
-<li><strong>Transport Isolation</strong>: CLI layer should not depend on prompt storage implementation (git, filesystem, etc.)</li>
-<li><strong>VS Code Integration</strong>: Command outputs must be JSON-formatted for programmatic consumption</li>
-<li><strong>Consistency</strong>: Variable handling must align with prompt system's rendering policy (ADR-PT04 §5)</li>
-</ol>
-<p>The <code>PromptsAdapter</code> (defined in ADR-PT04 §8.1) provides the contract boundary between CLI and prompt system, offering <code>list_all()</code>, <code>introspect()</code>, and <code>render()</code> methods.</p>
-<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
-<h3 id="1-cli-variable-precedence-model">1. CLI Variable Precedence Model<a class="headerlink" href="#1-cli-variable-precedence-model" title="Link to this section">&para;</a></h3>
-<p>The CLI collects variables from three sources with clear precedence:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># In tnh-gen CLI implementation (commands/run.py):</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.prompt_system.domain.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">RenderParams</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.models.domain</span><span class="w"> </span><span class="kn">import</span> <span class="n">RenderRequest</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">run_prompt</span><span class="p">(</span><span class="n">prompt_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">vars_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">var</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute a prompt with CLI-provided variables.&quot;&quot;&quot;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="c1"># 1. Build variables dict with CLI precedence (lowest to highest)</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="c1"># Lowest precedence: input file content (auto-injected as input_text)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="k">if</span> <span class="n">input_file</span><span class="p">:</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="n">variables</span><span class="p">[</span><span class="s2">&quot;input_text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="c1"># Medium precedence: JSON vars file (--vars)</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="k">if</span> <span class="n">vars_file</span><span class="p">:</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="n">variables</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">vars_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="c1"># Highest precedence: inline --var parameters</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">var</span><span class="p">:</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        <span class="n">k</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        <span class="n">variables</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="c1"># 2. Build RenderParams (feeds into prompt_system&#39;s caller_context)</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="c1"># This becomes the highest precedence in PromptRenderPolicy</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="n">params</span> <span class="o">=</span> <span class="n">RenderParams</span><span class="p">(</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>        <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>        <span class="n">strict_undefined</span><span class="o">=</span><span class="kc">True</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="p">)</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>    <span class="c1"># 3. Call PromptsAdapter</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">PromptsAdapter</span><span class="p">(</span><span class="n">catalog</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">validator</span><span class="p">)</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>    <span class="n">rendered</span><span class="p">,</span> <span class="n">fingerprint</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>        <span class="n">RenderRequest</span><span class="p">(</span>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>            <span class="n">instruction_key</span><span class="o">=</span><span class="n">prompt_key</span><span class="p">,</span>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>            <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>            <span class="n">user_input</span><span class="o">=</span><span class="n">variables</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>        <span class="p">)</span>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>    <span class="p">)</span>
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>    <span class="k">return</span> <span class="n">rendered</span><span class="p">,</span> <span class="n">fingerprint</span>
-</span></code></pre></div>
-<p><strong>Precedence Alignment:</strong></p>
-<table>
-<thead>
-<tr>
-<th>CLI Layer (ADR-TG02)</th>
-<th>Prompt System Layer (ADR-PT04)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--var</code> inline params</td>
-<td><code>caller_context</code> (highest)</td>
-</tr>
-<tr>
-<td><code>--vars</code> JSON file</td>
-<td><code>caller_context</code> (highest)</td>
-</tr>
-<tr>
-<td><code>--input-file</code> content</td>
-<td><code>caller_context</code> (highest)</td>
-</tr>
-<tr>
-<td>(not applicable)</td>
-<td><code>frontmatter_defaults</code> (medium)</td>
-</tr>
-<tr>
-<td>(not applicable)</td>
-<td><code>settings_defaults</code> (lowest)</td>
-</tr>
-</tbody>
-</table>
-<p>All CLI-provided variables merge into a single <code>variables</code> dict that becomes <code>caller_context</code> in the prompt system's precedence order.</p>
-<h3 id="2-list-command-implementation">2. List Command Implementation<a class="headerlink" href="#2-list-command-implementation" title="Link to this section">&para;</a></h3>
-<p>The <code>list</code> command uses <code>PromptsAdapter.list_all()</code> for prompt discovery:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># In tnh-gen CLI implementation (commands/list.py):</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptsAdapter</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">list_prompts</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;List all available prompts with optional filtering.&quot;&quot;&quot;</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="c1"># Initialize adapter</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">PromptsAdapter</span><span class="p">(</span><span class="n">catalog</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">validator</span><span class="p">)</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="c1"># Get all prompts via new list_all() method</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">all_prompts</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">list_all</span><span class="p">()</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="c1"># Apply filters</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">filtered</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">all_prompts</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">tag</span> <span class="ow">or</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">search</span> <span class="ow">or</span> <span class="n">search</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>             <span class="ow">or</span> <span class="n">search</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="p">]</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    <span class="c1"># Format output for CLI/VS Code consumption</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        <span class="s2">&quot;prompts&quot;</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>            <span class="p">{</span>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>                <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>                <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">tags</span><span class="p">,</span>
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>                <span class="s2">&quot;required_variables&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">required_variables</span><span class="p">,</span>
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>                <span class="s2">&quot;optional_variables&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">optional_variables</span><span class="p">,</span>
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>                <span class="s2">&quot;default_model&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">default_model</span><span class="p">,</span>
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>                <span class="s2">&quot;output_mode&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">output_mode</span><span class="p">,</span>
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>                <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">version</span>
-</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>            <span class="p">}</span>
-</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">filtered</span>
-</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="p">],</span>
-</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>        <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">filtered</span><span class="p">)</span>
-</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>    <span class="p">}</span>
-</span></code></pre></div>
-<p><strong>Design Note</strong>: The <code>list_all()</code> and <code>introspect()</code> methods added to <code>PromptsAdapter</code> enable prompt discoverability without exposing internal prompt system implementation to the CLI layer. This maintains clean separation of concerns.</p>
-<h3 id="3-promptsadapter-dependency-injection">3. PromptsAdapter Dependency Injection<a class="headerlink" href="#3-promptsadapter-dependency-injection" title="Link to this section">&para;</a></h3>
-<p>The CLI uses dependency injection to configure the <code>PromptsAdapter</code>:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># In tnh-gen CLI initialization (cli.py):</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.prompt_system.adapters.git_catalog_adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">GitPromptCatalog</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.prompt_system.service.renderer</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptRenderer</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.prompt_system.service.validator</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptValidator</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptsAdapter</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.services.genai_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenAIService</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">initialize_app</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">PromptsAdapter</span><span class="p">,</span> <span class="n">GenAIService</span><span class="p">]:</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize application dependencies.&quot;&quot;&quot;</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="c1"># 1. Configure prompt catalog</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">catalog_config</span> <span class="o">=</span> <span class="n">PromptCatalogConfig</span><span class="o">.</span><span class="n">from_env</span><span class="p">()</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="n">catalog</span> <span class="o">=</span> <span class="n">GitPromptCatalog</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">catalog_config</span><span class="p">)</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="c1"># 2. Configure renderer and validator</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="n">render_policy</span> <span class="o">=</span> <span class="n">PromptRenderPolicy</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">catalog_config</span><span class="o">.</span><span class="n">render_policy</span><span class="p">)</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="n">renderer</span> <span class="o">=</span> <span class="n">PromptRenderer</span><span class="p">(</span><span class="n">render_policy</span><span class="p">)</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    <span class="n">validator</span> <span class="o">=</span> <span class="n">PromptValidator</span><span class="p">()</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>    <span class="c1"># 3. Build PromptsAdapter</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    <span class="n">prompts_adapter</span> <span class="o">=</span> <span class="n">PromptsAdapter</span><span class="p">(</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>        <span class="n">catalog</span><span class="o">=</span><span class="n">catalog</span><span class="p">,</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>        <span class="n">renderer</span><span class="o">=</span><span class="n">renderer</span><span class="p">,</span>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>        <span class="n">validator</span><span class="o">=</span><span class="n">validator</span>
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>    <span class="p">)</span>
-</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>
-</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>    <span class="c1"># 4. Configure GenAIService</span>
-</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>    <span class="n">genai_service</span> <span class="o">=</span> <span class="n">GenAIService</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">GenAIConfig</span><span class="o">.</span><span class="n">from_env</span><span class="p">())</span>
-</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>
-</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>    <span class="k">return</span> <span class="n">prompts_adapter</span><span class="p">,</span> <span class="n">genai_service</span>
-</span></code></pre></div>
-<h3 id="4-error-handling-alignment">4. Error Handling Alignment<a class="headerlink" href="#4-error-handling-alignment" title="Link to this section">&para;</a></h3>
-<p>CLI error codes (ADR-TG01 §5) map to prompt system exceptions:</p>
-<table>
-<thead>
-<tr>
-<th>Prompt System Exception</th>
-<th>CLI Exit Code</th>
-<th>Error Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>PromptNotFoundError</code></td>
-<td><code>5</code></td>
-<td>Input Error</td>
-</tr>
-<tr>
-<td><code>VariableValidationError</code></td>
-<td><code>5</code></td>
-<td>Input Error</td>
-</tr>
-<tr>
-<td><code>RenderError</code> (template syntax)</td>
-<td><code>4</code></td>
-<td>Format Error</td>
-</tr>
-<tr>
-<td><code>ValidationError</code> (schema)</td>
-<td><code>1</code></td>
-<td>Policy Error</td>
-</tr>
-<tr>
-<td><code>GitTransportError</code></td>
-<td><code>2</code></td>
-<td>Transport Error</td>
-</tr>
-</tbody>
-</table>
-<h3 id="5-configuration-integration">5. Configuration Integration<a class="headerlink" href="#5-configuration-integration" title="Link to this section">&para;</a></h3>
-<p>The CLI respects prompt system configuration via hierarchical precedence:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># ~/.config/tnh-scholar/tnh-gen.yaml</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">prompt_system</span><span class="p">:</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">repository_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/prompts</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">enable_git_refresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">validation_on_load</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">cache_ttl_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">render_policy</span><span class="p">:</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">strict_undefined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">max_output_size_kb</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
-</span></code></pre></div>
-<p>CLI flags override config file values (see ADR-TG01 §4 for precedence).</p>
-<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
-<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Clean Separation</strong>: CLI layer depends only on <code>PromptsAdapter</code> contract, not prompt system internals</li>
-<li><strong>Consistent Precedence</strong>: Variable handling aligns across CLI and prompt system layers</li>
-<li><strong>Discoverability</strong>: <code>list_all()</code> and <code>introspect()</code> enable rich prompt exploration without leaking implementation</li>
-<li><strong>Testability</strong>: Adapter contract allows mocking entire prompt system in CLI tests</li>
-<li><strong>VS Code Integration</strong>: JSON output format enables seamless editor consumption</li>
-</ul>
-<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Adapter Maintenance</strong>: Changes to prompt system require coordinated updates to <code>PromptsAdapter</code></li>
-<li><strong>Variable Complexity</strong>: Three-level CLI precedence (file → vars → flags) may confuse users unfamiliar with override patterns</li>
-<li><strong>Validation Boundaries</strong>: Prompt variable validation happens after CLI parsing, delaying error feedback</li>
-</ul>
-<h3 id="risks">Risks<a class="headerlink" href="#risks" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Breaking Changes</strong>: Prompt system refactors (e.g., new metadata fields) may break CLI expectations</li>
-<li><strong>Performance</strong>: Listing all prompts via <code>list_all()</code> may be slow for large catalogs (mitigated by caching in ADR-PT04 §6)</li>
-</ul>
-<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Link to this section">&para;</a></h2>
-<h3 id="alternative-1-direct-prompt-system-access">Alternative 1: Direct Prompt System Access<a class="headerlink" href="#alternative-1-direct-prompt-system-access" title="Link to this section">&para;</a></h3>
-<p><strong>Approach</strong>: CLI directly imports and uses <code>PromptCatalog</code>, <code>PromptRenderer</code>, etc.</p>
-<p><strong>Rejected</strong>: Violates object-service architecture (ADR-OS01). CLI should not depend on domain internals.</p>
-<h3 id="alternative-2-separate-cli-variable-layer">Alternative 2: Separate CLI Variable Layer<a class="headerlink" href="#alternative-2-separate-cli-variable-layer" title="Link to this section">&para;</a></h3>
-<p><strong>Approach</strong>: Create <code>CLIVariableResolver</code> to handle precedence, separate from <code>RenderParams</code>.</p>
-<p><strong>Rejected</strong>: Adds unnecessary abstraction. Merging variables into <code>caller_context</code> is simpler and aligns with existing prompt system precedence.</p>
-<h3 id="alternative-3-graphql-api-between-cli-and-prompt-system">Alternative 3: GraphQL API Between CLI and Prompt System<a class="headerlink" href="#alternative-3-graphql-api-between-cli-and-prompt-system" title="Link to this section">&para;</a></h3>
-<p><strong>Approach</strong>: Expose prompt system via GraphQL API that CLI queries.</p>
-<p><strong>Rejected</strong>: Overengineering for single-process CLI. Useful for future web UI but premature for MVP.</p>
-<h2 id="open-questions">Open Questions<a class="headerlink" href="#open-questions" title="Link to this section">&para;</a></h2>
-<ol>
-<li><strong>Lazy Loading</strong>: Should <code>list_all()</code> return full metadata or just keys/names for performance? (See ADR-PT04 §8.1)</li>
-<li><strong>Variable Validation Feedback</strong>: Should CLI pre-validate variables against prompt schema before calling <code>render()</code>?</li>
-<li><strong>Cache Control</strong>: Should CLI expose <code>--no-cache</code> flag to bypass prompt caching?</li>
-</ol>
-<h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
-<h3 id="related-adrs">Related ADRs<a class="headerlink" href="#related-adrs" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong><a href="../adr-tg01-cli-architecture/">ADR-TG01: CLI Architecture</a></strong> - Command structure, error codes, configuration</li>
-<li><strong><a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/">ADR-PT04: Prompt System Refactor</a></strong> - Prompt system architecture, <code>PromptsAdapter</code> contract</li>
-<li><strong><a href="../../../ai-text-processing/adr/adr-at03-object-service-refactor/">ADR-AT03: AI Text Processing Refactor</a></strong> - <code>ai_text_processing</code> module refactor</li>
-<li><strong><a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/">ADR-VSC02: VS Code Extension</a></strong> - VS Code integration strategy</li>
-</ul>
-<h3 id="external-resources">External Resources<a class="headerlink" href="#external-resources" title="Link to this section">&para;</a></h3>
-<ul>
-<li><a href="https://typer.tiangolo.com/">Typer Documentation</a></li>
-<li><a href="https://jinja.palletsprojects.com/">Jinja2 Template Syntax</a></li>
-<li><a href="https://docs.pydantic.dev/">Pydantic Validation</a></li>
+<li><strong>Filename</strong>: <code>adr-pv01-provenance-tracing-strat.md</code></li>
+<li><strong>Heading</strong>: <code># ADR-PV01: Provenance &amp; Tracing Infrastructure Strategy</code></li>
+<li><strong>Status</strong>: Proposed</li>
+<li><strong>Date</strong>: 2025-12-19</li>
+<li><strong>Authors</strong>: Aaron Solomon, Claude Sonnet 4.5</li>
+<li><strong>Related ADRs</strong>:</li>
+<li><a href="../../../metadata/adr/adr-md02-metadata-object-service-integration/">ADR-MD02: Metadata Infrastructure Object-Service Integration</a></li>
+<li><a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/">ADR-OS01: Object-Service Architecture V3</a></li>
 </ul>
 <hr />
-<p><em>This ADR implements prompt system integration patterns from ADR-PT04 §8.2.</em></p>
+<h2 id="adr-editing-policy">ADR Editing Policy<a class="headerlink" href="#adr-editing-policy" title="Link to this section">&para;</a></h2>
+<p><strong>IMPORTANT</strong>: How you edit this ADR depends on its status.</p>
+<ul>
+<li><strong><code>proposed</code> status</strong>: ADR is in the design loop. We may <strong>rewrite</strong> or edit the document as needed to refine the design.</li>
+<li><strong><code>accepted</code>, <code>wip</code> status</strong>: Coding has begun. <strong>NEVER edit</strong> the original Context/Decision/Consequences sections. Only append addendums.</li>
+</ul>
+<p><strong>Rationale</strong>: Once implementation begins, the original decision must be preserved for historical context.</p>
+<hr />
+<h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
+<h3 id="discovery-fragmented-provenance-concepts">Discovery: Fragmented Provenance Concepts<a class="headerlink" href="#discovery-fragmented-provenance-concepts" title="Link to this section">&para;</a></h3>
+<p>During Sourcery code review of PR #21 (tnh-gen CLI), we identified a <strong>correlation ID inconsistency</strong>: two separate IDs were being generated for a single CLI invocation—one for CLI output and another for provenance headers in output files. This revealed a deeper architectural gap.</p>
+<p><strong>Current state across TNH Scholar:</strong></p>
+<ol>
+<li><strong>GenAI Service</strong>: <code>Provenance</code> class (provider, model, timestamps, fingerprint)</li>
+<li><strong>CLI Layer</strong>: <code>correlation_id</code> (request tracing)</li>
+<li><strong>Metadata Infrastructure</strong>: <code>ProcessMetadata</code> (document processing history)</li>
+<li><strong>Object-Service §12</strong>: Mentions "correlation IDs" in provenance.params but no standard model</li>
+</ol>
+<p><strong>Problem</strong>: We're using <strong>different terminologies and models</strong> for essentially the same concept—tracking "where things came from"—across different operational scopes. There's no unified guidance on:</p>
+<ul>
+<li>Standard terminology (provenance vs correlation_id vs trace_id vs fingerprint)</li>
+<li>When to use which tracking mechanism</li>
+<li>How to propagate tracking data through call chains</li>
+<li>How to nest/aggregate provenance across multi-stage operations</li>
+<li>Storage and serialization patterns</li>
+</ul>
+<h3 id="architectural-questions">Architectural Questions<a class="headerlink" href="#architectural-questions" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Is provenance a service?</strong> No—it's foundational infrastructure (like Metadata)</li>
+<li><strong>Does it need ports/adapters?</strong> No—pure data models used across all layers</li>
+<li><strong>How does it fit object-service architecture?</strong> Cross-cutting concern, available everywhere</li>
+<li><strong>Should we standardize terminology?</strong> Yes—prevents confusion and implementation errors</li>
+<li><strong>Do we need layered models?</strong> Yes—different scopes need different granularity</li>
+</ol>
+<h3 id="relationship-to-existing-infrastructure">Relationship to Existing Infrastructure<a class="headerlink" href="#relationship-to-existing-infrastructure" title="Link to this section">&para;</a></h3>
+<p><strong>Metadata (ADR-MD02)</strong> provides:
+- Frontmatter parsing for .md files
+- <code>ProcessMetadata</code> for document transformations
+- JSON-LD serialization</p>
+<p><strong>Provenance/Tracing</strong> extends this with:
+- Request-level tracing (CLI invocations, API requests)
+- Service-level provenance (AI generations, processing operations)
+- Transport-level tracking (HTTP request IDs, retry counts)
+- Aggregation patterns for multi-stage workflows</p>
+<hr />
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
+<h3 id="1-provenance-system-role">1. Provenance System Role<a class="headerlink" href="#1-provenance-system-role" title="Link to this section">&para;</a></h3>
+<p><strong>Provenance/Tracing is FOUNDATIONAL CROSS-CUTTING INFRASTRUCTURE</strong>, similar to Metadata:</p>
+<ul>
+<li><strong>Available everywhere</strong>: All layers (domain, service, adapter, mapper, transport) can import</li>
+<li><strong>No protocols/ports</strong>: Pure data models with no abstraction needed</li>
+<li><strong>Cross-cutting concern</strong>: Supports object-service architecture without being a service itself</li>
+<li><strong>Reproducibility enabler</strong>: System can recreate results and trace operations</li>
+</ul>
+<h3 id="2-unified-terminology">2. Unified Terminology<a class="headerlink" href="#2-unified-terminology" title="Link to this section">&para;</a></h3>
+<p>Establish standard terms to replace fragmented naming:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Term</strong></th>
+<th><strong>Scope</strong></th>
+<th><strong>Purpose</strong></th>
+<th><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Trace ID</strong></td>
+<td>Request/Invocation</td>
+<td>Track single operation end-to-end</td>
+<td>CLI command, API request, batch job</td>
+</tr>
+<tr>
+<td><strong>Correlation ID</strong></td>
+<td><em>Alias for Trace ID</em></td>
+<td>(Legacy term, prefer "trace_id")</td>
+<td>Same as trace_id</td>
+</tr>
+<tr>
+<td><strong>Provenance</strong></td>
+<td>Service Operation</td>
+<td>Record how result was generated</td>
+<td>AI generation, document processing</td>
+</tr>
+<tr>
+<td><strong>Fingerprint</strong></td>
+<td>Content Identity</td>
+<td>Content-based hash for reproducibility</td>
+<td>Prompt hash, input file hash</td>
+</tr>
+<tr>
+<td><strong>Lineage</strong></td>
+<td>Data Flow</td>
+<td>Chain of transformations</td>
+<td>Source → derivative artifacts</td>
+</tr>
+<tr>
+<td><strong>Process Metadata</strong></td>
+<td>Document Transformation</td>
+<td>Metadata about processing operations</td>
+<td>(Existing in metadata infrastructure)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Migration Path</strong>:
+- New code: use <code>trace_id</code>
+- Existing <code>correlation_id</code>: acceptable as alias, gradually refactor
+- Always use <code>provenance</code> for service-level result tracking</p>
+<h3 id="3-layered-provenance-model">3. Layered Provenance Model<a class="headerlink" href="#3-layered-provenance-model" title="Link to this section">&para;</a></h3>
+<p>Define standard data models for different operational scopes:</p>
+<h4 id="layer-1-request-provenance-cliapi-layer">Layer 1: Request Provenance (CLI/API Layer)<a class="headerlink" href="#layer-1-request-provenance-cliapi-layer" title="Link to this section">&para;</a></h4>
+<p><strong>Purpose</strong>: Track individual operations through the system</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nd">@dataclass</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">RequestProvenance</span><span class="p">:</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Provenance for CLI commands, API requests, batch jobs.&quot;&quot;&quot;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">trace_id</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># Unique identifier for this operation</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># e.g., &quot;tnh-gen run&quot;, &quot;api.generate&quot;, &quot;batch.process&quot;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">started_at</span><span class="p">:</span> <span class="n">datetime</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">finished_at</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">user_context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># User, environment, etc.</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">service_provenance</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="s2">&quot;ServiceProvenance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Usage</strong>:
+- Generate <code>trace_id</code> once at operation entry point
+- Propagate through all downstream calls
+- Include in all outputs (stdout JSON, file headers, logs)</p>
+<h4 id="layer-2-service-provenance-genaiprocessing-layer">Layer 2: Service Provenance (GenAI/Processing Layer)<a class="headerlink" href="#layer-2-service-provenance-genaiprocessing-layer" title="Link to this section">&para;</a></h4>
+<p><strong>Purpose</strong>: Record how AI/processing results were generated</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@dataclass</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">ServiceProvenance</span><span class="p">:</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Provenance for AI generations, document processing, transformations.&quot;&quot;&quot;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># &quot;openai&quot;, &quot;anthropic&quot;, &quot;pyannote&quot;, &quot;docprocessor&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Model name if applicable</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">fingerprint</span><span class="p">:</span> <span class="n">Fingerprint</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Content hash for reproducibility</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">started_at</span><span class="p">:</span> <span class="n">datetime</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">finished_at</span><span class="p">:</span> <span class="n">datetime</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">attempt_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>  <span class="c1"># Effective params</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">policy_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="n">transport_provenance</span><span class="p">:</span> <span class="s2">&quot;TransportProvenance | None&quot;</span> <span class="o">=</span> <span class="kc">None</span>
+</span></code></pre></div>
+<p><strong>Usage</strong>:
+- Created by services (GenAIService, DocumentProcessor, etc.)
+- Embedded in result envelopes
+- Nested within RequestProvenance for full trace</p>
+<h4 id="layer-3-transport-provenance-httpsdk-layer">Layer 3: Transport Provenance (HTTP/SDK Layer)<a class="headerlink" href="#layer-3-transport-provenance-httpsdk-layer" title="Link to this section">&para;</a></h4>
+<p><strong>Purpose</strong>: Track external system interactions</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@dataclass</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">TransportProvenance</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Provenance for HTTP requests, SDK calls, external APIs.&quot;&quot;&quot;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Backend-provided request ID</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">retry_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">backend_metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">sdk_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span></code></pre></div>
+<p><strong>Usage</strong>:
+- Captured by adapters when calling external systems
+- Nested within ServiceProvenance
+- Aids debugging and cost tracking</p>
+<h4 id="fingerprint-model-content-identity">Fingerprint Model (Content Identity)<a class="headerlink" href="#fingerprint-model-content-identity" title="Link to this section">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@dataclass</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">Fingerprint</span><span class="p">:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Content-based identity for reproducibility.&quot;&quot;&quot;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">content_hash</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># Hash of primary input content</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">variables_hash</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Hash of template variables</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">algorithm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sha256&quot;</span>  <span class="c1"># Hash algorithm used</span>
+</span></code></pre></div>
+<p><strong>Usage</strong>:
+- Generate for all deterministic inputs (prompts, templates, source files)
+- Enables cache lookups and reproducibility verification</p>
+<h3 id="4-propagation-rules">4. Propagation Rules<a class="headerlink" href="#4-propagation-rules" title="Link to this section">&para;</a></h3>
+<p><strong>Rule 1: Single Trace ID Per Operation</strong>
+- Generate trace_id at entry point (CLI command, API handler)
+- Pass through all function calls via context or explicit parameter
+- Never regenerate within the same operation</p>
+<p><strong>Rule 2: Nesting for Multi-Stage Operations</strong>
+- RequestProvenance contains list of ServiceProvenance
+- ServiceProvenance optionally contains TransportProvenance
+- Preserve full chain for debugging and audit</p>
+<p><strong>Rule 3: Aggregation for Pipelines</strong>
+- Multi-stage pipelines: maintain list of ServiceProvenance (one per stage)
+- Each stage records its own provenance
+- Top-level RequestProvenance aggregates all stages</p>
+<p><strong>Rule 4: Propagation Through Object-Service Layers</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>CLI/Application Layer:
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  └─ Creates RequestProvenance with trace_id
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>       │
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Service Layer:
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  └─ Creates ServiceProvenance (embedded in result Envelope)
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>       │
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Adapter Layer:
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  └─ Propagates trace_id to transport, captures TransportProvenance
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>       │
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>Transport Layer:
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  └─ Includes trace_id in HTTP headers (X-Trace-ID)
+</span></code></pre></div></p>
+<h3 id="5-storage-serialization-patterns">5. Storage &amp; Serialization Patterns<a class="headerlink" href="#5-storage-serialization-patterns" title="Link to this section">&para;</a></h3>
+<h4 id="file-headers-human-readable">File Headers (Human-Readable)<a class="headerlink" href="#file-headers-human-readable" title="Link to this section">&para;</a></h4>
+<p>Use YAML frontmatter with <code>---</code> delimiters (consistent with TNH Scholar metadata patterns):</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nn">---</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># Provenance metadata (generated output)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">trace_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">abc123def456</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nt">operation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tnh-gen run summarize-talk</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4-turbo-2024-04-09</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="nt">fingerprint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sha256:8f3e4d...</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nt">generated</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2025-12-19T10:30:45Z</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="nn">---</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p p-Indicator">[</span><span class="nv">Generated content follows...</span><span class="p p-Indicator">]</span>
+</span></code></pre></div>
+<p><strong>Rationale</strong>: Maintains consistency with existing TNH Scholar patterns:</p>
+<ul>
+<li>Metadata infrastructure (ADR-MD01/MD02) uses YAML frontmatter</li>
+<li>All <code>.md</code> files in corpus use <code>---</code> delimiters</li>
+<li>Enables reuse of <code>Frontmatter.extract()</code> utilities</li>
+<li>Machine-parseable and human-readable</li>
+</ul>
+<h4 id="json-output-machine-readable">JSON Output (Machine-Readable)<a class="headerlink" href="#json-output-machine-readable" title="Link to this section">&para;</a></h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;succeeded&quot;</span><span class="p">,</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">&quot;provenance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">&quot;trace_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123def456&quot;</span><span class="p">,</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tnh-gen run summarize-talk&quot;</span><span class="p">,</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">&quot;started_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-12-19T10:30:42Z&quot;</span><span class="p">,</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">&quot;finished_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-12-19T10:30:45Z&quot;</span><span class="p">,</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">&quot;service_provenance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">        </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4-turbo-2024-04-09&quot;</span><span class="p">,</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">        </span><span class="nt">&quot;fingerprint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">          </span><span class="nt">&quot;content_hash&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8f3e4d...&quot;</span><span class="p">,</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">          </span><span class="nt">&quot;algorithm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sha256&quot;</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">        </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">        </span><span class="nt">&quot;attempt_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="database-schema-future">Database Schema (Future)<a class="headerlink" href="#database-schema-future" title="Link to this section">&para;</a></h4>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">request_provenance</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="n">trace_id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="k">operation</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="n">started_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="n">finished_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="n">user_context</span><span class="w"> </span><span class="n">JSONB</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">);</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">service_provenance</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="n">trace_id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">request_provenance</span><span class="p">(</span><span class="n">trace_id</span><span class="p">),</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="n">provider</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">    </span><span class="n">fingerprint_hash</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">    </span><span class="n">started_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">    </span><span class="n">finished_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">    </span><span class="k">parameters</span><span class="w"> </span><span class="n">JSONB</span><span class="p">,</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">    </span><span class="n">policy_version</span><span class="w"> </span><span class="nb">TEXT</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="p">);</span>
+</span></code></pre></div>
+<h3 id="6-integration-with-existing-infrastructure">6. Integration with Existing Infrastructure<a class="headerlink" href="#6-integration-with-existing-infrastructure" title="Link to this section">&para;</a></h3>
+<h4 id="relationship-to-metadata-adr-md02">Relationship to Metadata (ADR-MD02)<a class="headerlink" href="#relationship-to-metadata-adr-md02" title="Link to this section">&para;</a></h4>
+<p><strong>Metadata provides</strong>:
+- Frontmatter parsing (<code>Frontmatter.extract()</code>)
+- <code>ProcessMetadata</code> for document transformations
+- JSON-LD serialization</p>
+<p><strong>Provenance extends</strong>:
+- Request tracing (trace_id)
+- Service result provenance
+- Cross-operation aggregation</p>
+<p><strong>Integration Pattern</strong>:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessMetadata</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.provenance</span><span class="w"> </span><span class="kn">import</span> <span class="n">RequestProvenance</span><span class="p">,</span> <span class="n">ServiceProvenance</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># ProcessMetadata records transformation details</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">process_meta</span> <span class="o">=</span> <span class="n">ProcessMetadata</span><span class="p">(</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;summarize&quot;</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;max_length&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">}</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="p">)</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="c1"># ServiceProvenance records how AI generated result</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="n">service_prov</span> <span class="o">=</span> <span class="n">ServiceProvenance</span><span class="p">(</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>    <span class="n">provider</span><span class="o">=</span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">,</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>    <span class="n">parameters</span><span class="o">=</span><span class="n">process_meta</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>  <span class="c1"># Link to ProcessMetadata</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>    <span class="n">fingerprint</span><span class="o">=</span><span class="n">Fingerprint</span><span class="p">(</span><span class="n">content_hash</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="p">)</span>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="c1"># RequestProvenance tracks full CLI operation</span>
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="n">request_prov</span> <span class="o">=</span> <span class="n">RequestProvenance</span><span class="p">(</span>
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>    <span class="n">trace_id</span><span class="o">=</span><span class="s2">&quot;abc123&quot;</span><span class="p">,</span>
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>    <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;tnh-gen run summarize&quot;</span><span class="p">,</span>
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>    <span class="n">service_provenance</span><span class="o">=</span><span class="p">[</span><span class="n">service_prov</span><span class="p">]</span>
+</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="p">)</span>
+</span></code></pre></div></p>
+<h4 id="relationship-to-object-service-provenance-adr-os01-12">Relationship to Object-Service Provenance (ADR-OS01 §12)<a class="headerlink" href="#relationship-to-object-service-provenance-adr-os01-12" title="Link to this section">&para;</a></h4>
+<p><strong>ADR-OS01 §12.2 states</strong>:</p>
+<blockquote>
+<p>Always record in <code>provenance.params</code>:
+- Upstream IDs (job_id/request_id) and correlation IDs</p>
+</blockquote>
+<p><strong>ADR-PV01 standardizes this</strong>:
+- <code>trace_id</code> = standard correlation ID
+- <code>ServiceProvenance.parameters</code> = effective params
+- <code>TransportProvenance.request_id</code> = upstream IDs</p>
+<p><strong>Migration</strong>: Existing <code>Provenance</code> class in GenAI service becomes <code>ServiceProvenance</code> (backward compatible with alias)</p>
+<h3 id="7-implementation-location">7. Implementation Location<a class="headerlink" href="#7-implementation-location" title="Link to this section">&para;</a></h3>
+<p><strong>New module</strong>: <code>src/tnh_scholar/provenance/</code></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>src/tnh_scholar/provenance/
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  ├── __init__.py          # Export public models
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  ├── models.py            # RequestProvenance, ServiceProvenance, etc.
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  ├── fingerprint.py       # Fingerprint generation utilities
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  └── serialization.py     # JSON, file header, JSON-LD serializers
+</span></code></pre></div>
+<p><strong>Available to all layers</strong> (like metadata):
+- Domain: Include in result models
+- Service: Create ServiceProvenance
+- Adapter: Capture TransportProvenance
+- Transport: Propagate trace_id in HTTP headers
+- CLI: Generate RequestProvenance</p>
+<hr />
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Unified Terminology</strong>: Eliminates confusion between correlation_id, trace_id, provenance</li>
+<li><strong>Consistent Tracking</strong>: Standard patterns across CLI, service, transport layers</li>
+<li><strong>Debuggability</strong>: Trace_id links logs, errors, outputs for same operation</li>
+<li><strong>Reproducibility</strong>: Fingerprints + provenance enable result recreation</li>
+<li><strong>Audit Trail</strong>: Full lineage from request to result to output file</li>
+<li><strong>Error Prevention</strong>: Prevents bugs like duplicate correlation_id generation</li>
+<li><strong>Cross-Layer Visibility</strong>: Single trace_id flows through entire operation</li>
+<li><strong>Standards Alignment</strong>: Uses industry-standard terms (trace_id from OpenTelemetry/W3C)</li>
+</ol>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Migration Effort</strong>: Existing code uses <code>correlation_id</code> (low risk: alias acceptable)</li>
+<li><strong>Storage Overhead</strong>: Additional metadata in outputs and databases</li>
+<li><strong>Complexity</strong>: Developers must understand layered provenance model</li>
+<li><strong>Learning Curve</strong>: New team members need to learn provenance patterns</li>
+</ol>
+<h3 id="trade-offs">Trade-offs<a class="headerlink" href="#trade-offs" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>Verbosity vs Clarity</strong>: More structured models increase boilerplate but improve clarity</li>
+<li><strong>Performance vs Traceability</strong>: Provenance tracking adds minimal overhead for significant debugging value</li>
+<li><strong>Flexibility vs Standards</strong>: Opinionated models constrain implementation but ensure consistency</li>
+</ul>
+<hr />
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Link to this section">&para;</a></h2>
+<h3 id="alternative-1-keep-current-fragmented-approach">Alternative 1: Keep Current Fragmented Approach<a class="headerlink" href="#alternative-1-keep-current-fragmented-approach" title="Link to this section">&para;</a></h3>
+<p><strong>Rejected</strong> because:
+- Continues allowing bugs like duplicate correlation_id generation
+- No guidance for developers on when to use which tracking mechanism
+- Difficult to trace operations across layers</p>
+<h3 id="alternative-2-single-flat-provenance-model">Alternative 2: Single Flat Provenance Model<a class="headerlink" href="#alternative-2-single-flat-provenance-model" title="Link to this section">&para;</a></h3>
+<p><strong>Rejected</strong> because:
+- Different layers need different granularity
+- Doesn't support nesting for multi-stage operations
+- Mixes concerns (request tracing vs service provenance)</p>
+<h3 id="alternative-3-use-opentelemetry-directly">Alternative 3: Use OpenTelemetry Directly<a class="headerlink" href="#alternative-3-use-opentelemetry-directly" title="Link to this section">&para;</a></h3>
+<p><strong>Considered but deferred</strong> because:
+- OpenTelemetry is complex infrastructure (spans, traces, instrumentation)
+- Our needs are simpler (data models, not distributed tracing infrastructure)
+- Can adopt OpenTelemetry later and map our models to their schema
+- <strong>Future path</strong>: Provenance models are compatible with OpenTelemetry semantic conventions</p>
+<hr />
+<h2 id="open-questions">Open Questions<a class="headerlink" href="#open-questions" title="Link to this section">&para;</a></h2>
+<p><strong>Note</strong>: These questions will be addressed in supporting decimal ADRs (see Future Extensions below).</p>
+<ol>
+<li><strong>JSON-LD Integration</strong>: Should provenance use JSON-LD schema.org vocabulary? (Metadata does)</li>
+<li>
+<p><strong>Direction</strong>: ADR-PV01.1 will define Schema.org mappings and integration patterns</p>
+</li>
+<li>
+<p><strong>Fingerprint Algorithm</strong>: Always SHA-256 or configurable per use case?</p>
+</li>
+<li>
+<p><strong>Direction</strong>: ADR-PV01.5 will specify pluggable algorithm interface with SHA-256 as default</p>
+</li>
+<li>
+<p><strong>OpenTelemetry Compatibility</strong>: How to map internal models to OTEL semantic conventions?</p>
+</li>
+<li>
+<p><strong>Direction</strong>: ADR-PV01.3 will provide compatibility mapping for future instrumentation</p>
+</li>
+<li>
+<p><strong>Logging Integration</strong>: How to inject trace_id into log messages and structured logging?</p>
+</li>
+<li>
+<p><strong>Direction</strong>: ADR-PV01.4 will define context injection and formatter patterns</p>
+</li>
+<li>
+<p><strong>Testing Strategy</strong>: How to test provenance propagation in integration tests?</p>
+</li>
+<li>
+<p><strong>Direction</strong>: ADR-PV01.2 will establish testing patterns and CI integration</p>
+</li>
+<li>
+<p><strong>Provenance Compression</strong>: For large pipelines, how to avoid verbose provenance chains?</p>
+</li>
+<li>
+<p><strong>Future consideration</strong>: May need summarization or sampling strategies</p>
+</li>
+<li>
+<p><strong>Database Schema</strong>: When to implement full provenance database?</p>
+</li>
+<li>
+<p><strong>Future consideration</strong>: Deferred until usage patterns emerge</p>
+</li>
+<li>
+<p><strong>Backward Compatibility</strong>: Timeline for migrating existing <code>correlation_id</code> to <code>trace_id</code>?</p>
+</li>
+<li><strong>Decision</strong>: Gradual migration; <code>correlation_id</code> acceptable as alias during transition</li>
+</ol>
+<hr />
+<h2 id="implementation-plan">Implementation Plan<a class="headerlink" href="#implementation-plan" title="Link to this section">&para;</a></h2>
+<h3 id="phase-1-foundation-immediate">Phase 1: Foundation (Immediate)<a class="headerlink" href="#phase-1-foundation-immediate" title="Link to this section">&para;</a></h3>
+<ol>
+<li>✅ Create <code>src/tnh_scholar/provenance/</code> module</li>
+<li>✅ Define <code>RequestProvenance</code>, <code>ServiceProvenance</code>, <code>TransportProvenance</code> models</li>
+<li>✅ Define <code>Fingerprint</code> model</li>
+<li>✅ Add serialization utilities (JSON, file headers)</li>
+<li>✅ Update documentation with terminology standards</li>
+</ol>
+<h3 id="phase-2-cli-integration-next-pr">Phase 2: CLI Integration (Next PR)<a class="headerlink" href="#phase-2-cli-integration-next-pr" title="Link to this section">&para;</a></h3>
+<ol>
+<li>Refactor tnh-gen CLI to use <code>RequestProvenance</code> with <code>trace_id</code></li>
+<li>Update file header generation to use standard format</li>
+<li>Add trace_id to all JSON outputs</li>
+<li>Update error handling to include trace_id</li>
+</ol>
+<h3 id="phase-3-service-integration-subsequent-pr">Phase 3: Service Integration (Subsequent PR)<a class="headerlink" href="#phase-3-service-integration-subsequent-pr" title="Link to this section">&para;</a></h3>
+<ol>
+<li>Alias existing <code>Provenance</code> class to <code>ServiceProvenance</code></li>
+<li>Update GenAIService to use new model</li>
+<li>Add fingerprint generation to prompt rendering</li>
+<li>Nest ServiceProvenance within RequestProvenance in CLI</li>
+</ol>
+<h3 id="phase-4-adapter-transport-future">Phase 4: Adapter &amp; Transport (Future)<a class="headerlink" href="#phase-4-adapter-transport-future" title="Link to this section">&para;</a></h3>
+<ol>
+<li>Add <code>TransportProvenance</code> capture in OpenAI adapter</li>
+<li>Propagate trace_id in HTTP headers (X-Trace-ID)</li>
+<li>Document adapter patterns for other services</li>
+</ol>
+<hr />
+<h2 id="future-extensions">Future Extensions<a class="headerlink" href="#future-extensions" title="Link to this section">&para;</a></h2>
+<p>The following decimal ADRs will provide detailed implementation guidance for specific aspects of the provenance infrastructure. These extend ADR-PV01 without modifying the core strategy decisions.</p>
+<h3 id="adr-pv011-json-ld-provenance-vocabulary">ADR-PV01.1: JSON-LD Provenance Vocabulary<a class="headerlink" href="#adr-pv011-json-ld-provenance-vocabulary" title="Link to this section">&para;</a></h3>
+<p><strong>Type</strong>: <code>implementation-guide</code>
+<strong>Status</strong>: Planned</p>
+<p><strong>Scope</strong>:</p>
+<ul>
+<li>Define Schema.org vocabulary mappings for provenance models</li>
+<li>Integration with existing metadata JSON-LD infrastructure (ADR-MD01/MD02)</li>
+<li>Serialization examples and templates</li>
+<li>Benefits: semantic web compatibility, dataset interoperability, advanced querying</li>
+</ul>
+<p><strong>Key Decisions</strong>:</p>
+<ul>
+<li>Map <code>RequestProvenance</code>, <code>ServiceProvenance</code>, <code>TransportProvenance</code> to Schema.org types</li>
+<li>Use <code>schema:Provenance</code>, <code>schema:Action</code>, <code>schema:SoftwareApplication</code> vocabulary</li>
+<li>Provide bidirectional conversion utilities (internal models ↔ JSON-LD)</li>
+</ul>
+<h3 id="adr-pv012-provenance-testing-strategy">ADR-PV01.2: Provenance Testing Strategy<a class="headerlink" href="#adr-pv012-provenance-testing-strategy" title="Link to this section">&para;</a></h3>
+<p><strong>Type</strong>: <code>testing-strategy</code>
+<strong>Status</strong>: Planned</p>
+<p><strong>Scope</strong>:</p>
+<ul>
+<li>Integration test patterns for trace_id propagation across layers</li>
+<li>Property-based tests for consistency (same trace_id in all outputs)</li>
+<li>Serialization/deserialization round-trip tests</li>
+<li>CI/CD integration and regression prevention</li>
+</ul>
+<p><strong>Key Decisions</strong>:</p>
+<ul>
+<li>Test trace_id flows: CLI → service → adapter → transport</li>
+<li>Verify provenance nesting in multi-stage operations</li>
+<li>Assert trace_id consistency in stdout JSON, file headers, logs</li>
+<li>Add provenance assertions to existing service tests</li>
+</ul>
+<h3 id="adr-pv013-opentelemetry-compatibility-mapping">ADR-PV01.3: OpenTelemetry Compatibility Mapping<a class="headerlink" href="#adr-pv013-opentelemetry-compatibility-mapping" title="Link to this section">&para;</a></h3>
+<p><strong>Type</strong>: <code>design-detail</code>
+<strong>Status</strong>: Planned</p>
+<p><strong>Scope</strong>:</p>
+<ul>
+<li>Mapping table: internal provenance models → OpenTelemetry semantic conventions</li>
+<li>Optional instrumentation layer for OTEL export</li>
+<li>Future migration path to full OTEL tracing</li>
+<li>Preserves investment in current models while enabling future observability</li>
+</ul>
+<p><strong>Key Decisions</strong>:</p>
+<ul>
+<li>Map <code>trace_id</code> → OTEL <code>trace_id</code> (W3C Trace Context format)</li>
+<li>Map <code>ServiceProvenance</code> → OTEL span attributes (provider, model, parameters)</li>
+<li>Map <code>TransportProvenance.request_id</code> → OTEL span/event attributes</li>
+<li>Provide serializer module for OTEL export (opt-in)</li>
+</ul>
+<p><strong>Benefits</strong>:</p>
+<ul>
+<li>Future-proofs provenance infrastructure</li>
+<li>Enables integration with OTEL-compatible tools (Jaeger, Zipkin, DataDog)</li>
+<li>No immediate migration required; gradual adoption path</li>
+</ul>
+<h3 id="adr-pv014-logging-observability-integration">ADR-PV01.4: Logging &amp; Observability Integration<a class="headerlink" href="#adr-pv014-logging-observability-integration" title="Link to this section">&para;</a></h3>
+<p><strong>Type</strong>: <code>implementation-guide</code>
+<strong>Status</strong>: Planned</p>
+<p><strong>Scope</strong>:</p>
+<ul>
+<li>Context injection patterns for trace_id in log messages</li>
+<li>Structured logging formatter integration (JSON logs)</li>
+<li>Correlation between provenance and application logs</li>
+<li>Log aggregation and querying patterns</li>
+</ul>
+<p><strong>Key Decisions</strong>:</p>
+<ul>
+<li>Standardized logging context manager (<code>with trace_context(trace_id)</code>)</li>
+<li>Custom logging formatter that extracts trace_id from context</li>
+<li>Log message format: <code>[trace_id=abc123] Operation completed</code></li>
+<li>Integration with Python <code>logging</code> module and structured loggers (e.g., structlog)</li>
+</ul>
+<p><strong>Benefits</strong>:</p>
+<ul>
+<li>Significantly enhances debugging (grep logs by trace_id)</li>
+<li>Links errors, warnings, and info messages to specific operations</li>
+<li>Enables log-based analysis and alerting</li>
+</ul>
+<h3 id="adr-pv015-fingerprint-algorithms-extensibility">ADR-PV01.5: Fingerprint Algorithms &amp; Extensibility<a class="headerlink" href="#adr-pv015-fingerprint-algorithms-extensibility" title="Link to this section">&para;</a></h3>
+<p><strong>Type</strong>: <code>design-detail</code>
+<strong>Status</strong>: Planned</p>
+<p><strong>Scope</strong>:</p>
+<ul>
+<li>Pluggable fingerprint algorithm interface</li>
+<li>Default SHA-256 implementation</li>
+<li>Support for alternative algorithms (e.g., BLAKE3 for performance, MD5 for legacy)</li>
+<li>Algorithm selection based on data type or performance requirements</li>
+</ul>
+<p><strong>Key Decisions</strong>:</p>
+<ul>
+<li>Define <code>FingerprintAlgorithm</code> protocol with <code>hash(content: bytes) -&gt; str</code> method</li>
+<li>Register algorithms in a factory or registry pattern</li>
+<li>Default to SHA-256 for security and compatibility</li>
+<li>Allow per-operation algorithm override via configuration</li>
+</ul>
+<p><strong>Benefits</strong>:</p>
+<ul>
+<li>Flexibility for different use cases (text, audio, images)</li>
+<li>Performance tuning for large datasets</li>
+<li>Future-proof for new hash algorithms</li>
+</ul>
+<hr />
+<h2 id="as-built-notes-addendums">As-Built Notes &amp; Addendums<a class="headerlink" href="#as-built-notes-addendums" title="Link to this section">&para;</a></h2>
+<p><em>Optional section for post-decision updates.</em></p>
+<hr />
+<h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
+<ul>
+<li><a href="https://www.w3.org/TR/trace-context/">W3C Trace Context Specification</a> - Industry standard for trace propagation</li>
+<li><a href="https://opentelemetry.io/docs/specs/semconv/">OpenTelemetry Semantic Conventions</a> - Standard attribute naming</li>
+<li><a href="https://schema.org/Provenance">Schema.org Provenance Vocabulary</a> - JSON-LD provenance schema</li>
+<li><a href="https://www.w3.org/TR/prov-dm/">PROV-DM: The PROV Data Model</a> - W3C provenance standard</li>
+</ul>
 
 
 
