@@ -81,8 +81,6 @@ class FilesystemPromptCatalog(PromptCatalogPort):
 
         if warnings:
             self._log_warnings(key, warnings)
-                        metadata=prompt.metadata.model_copy(update={"warnings": fallback_metadata.warnings}),
-                    )
 
         self._cache.set(cache_key, prompt, ttl_s=self._config.cache_ttl_s)
         return prompt
