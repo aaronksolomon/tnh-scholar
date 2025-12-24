@@ -48,8 +48,8 @@ def show_config(
     trace_id = uuid4().hex
     try:
         config, meta = load_config(ctx.config_path)
-        payload = {"config": config.model_dump(),
-                   "sources": meta["sources"], 
+        payload = {"config": config.model_dump(mode='json'),
+                   "sources": meta["sources"],
                    "trace_id": trace_id,
                    }
         fmt = format or ctx.output_format
