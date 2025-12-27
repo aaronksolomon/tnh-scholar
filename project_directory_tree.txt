@@ -117,6 +117,10 @@
 │   │   │   │   └── README.md
 │   │   │   ├── index.md
 │   │   │   └── prompt-system-architecture.md
+│   │   ├── provenance
+│   │   │   ├── adr
+│   │   │   │   └── adr-pv01-provenance-tracing-strat.md
+│   │   │   └── index.md
 │   │   ├── setup-tnh
 │   │   │   ├── design
 │   │   │   │   ├── index.md
@@ -762,4 +766,4 @@
 ├── TODO.md
 └── VERSIONING.md
 
-166 directories, 596 files
+168 directories, 599 files

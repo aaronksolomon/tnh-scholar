@@ -1,6 +1,6 @@
-# Agent Session Log
+# Agent Session Template
 
-This file captures AI agent interactions, decisions, discoveries, and work performed on the TNH Scholar project. It provides historical context for continuity across sessions and helps human collaborators understand the evolution of the codebase.
+This file specifies the format for AGENTLOG files which captures AI agent interactions, decisions, discoveries, and work performed on the TNH Scholar project. These provides historical context for continuity across sessions and helps human collaborators understand the evolution of the codebase.
 
 ## Format Specification
 

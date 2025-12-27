@@ -78,6 +78,7 @@ git show v0.2.0 --stat | head -n 20
 ## Verification
 
 After tag correction:
+
 - v0.2.0 should point to main after PR #13 merge
 - Tag annotation should document the correction
 - `git ls-tree -r v0.2.0 --name-only | grep prompt_system` should find files
@@ -85,7 +86,8 @@ After tag correction:
 ## Documentation
 
 This correction is documented in:
-- This file: /tmp/tag-correction-plan.md
+
+- This file: docs/incident-reports/tag-correction-plan.md
 - Git workflow guide: docs/development/git-workflow.md
 - Tag annotation message (see above)
 - CHANGELOG.md (should be updated with v0.2.0 actual contents)
