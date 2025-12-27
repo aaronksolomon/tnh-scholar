@@ -6,30 +6,28 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Design for the TimelineMapper component that reprojects chunk-level transcripts into the original audio timeline.">
       
       
       
-      
-        <link rel="prev" href="../speaker-diarization-time-mapped-design/">
-      
-      
-        <link rel="next" href="../../../ui-ux/">
+        <link rel="prev" href="../2025-12-07-git-recovery/">
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+        <link rel="next" href="../2025-12-07-reference/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
     
     
       
-        <title>TimelineMapper Design Document - TNH Scholar Documentation</title>
+        <title>Tag V0.2.0 Correction Plan - TNH Scholar Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.a40c8224.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,11 +46,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../stylesheets/tnh-zen.css">
+      <link rel="stylesheet" href="../../../stylesheets/tnh-zen.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -120,7 +118,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#timelinemapper-design-document" class="md-skip">
+        <a href="#v020-tag-correction-plan" class="md-skip">
           Skip to content
         </a>
       
@@ -156,7 +154,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -176,7 +174,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TimelineMapper Design Document
+              Tag V0.2.0 Correction Plan
             
           </span>
         </div>
@@ -265,7 +263,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -295,7 +293,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -346,7 +344,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../getting-started/" class="md-nav__link ">
+            <a href="../../../getting-started/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -386,7 +384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/configuration/" class="md-nav__link">
+      <a href="../../../getting-started/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -414,7 +412,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/installation/" class="md-nav__link">
+      <a href="../../../getting-started/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -442,7 +440,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/quick-start-guide/" class="md-nav__link">
+      <a href="../../../getting-started/quick-start-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -501,7 +499,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../user-guide/" class="md-nav__link ">
+            <a href="../../../user-guide/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -541,7 +539,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
+      <a href="../../../user-guide/best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -569,7 +567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/overview/" class="md-nav__link">
+      <a href="../../../user-guide/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -597,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/prompt-system/" class="md-nav__link">
+      <a href="../../../user-guide/prompt-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -660,7 +658,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../project/" class="md-nav__link ">
+            <a href="../../../project/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -700,7 +698,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/conceptual-architecture/" class="md-nav__link">
+      <a href="../../../project/conceptual-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -728,7 +726,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/future-directions/" class="md-nav__link">
+      <a href="../../../project/future-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -756,7 +754,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/philosophy/" class="md-nav__link">
+      <a href="../../../project/philosophy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -784,7 +782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/principles/" class="md-nav__link">
+      <a href="../../../project/principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -812,7 +810,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/vision/" class="md-nav__link">
+      <a href="../../../project/vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -867,7 +865,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../community/" class="md-nav__link ">
+            <a href="../../../community/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -907,7 +905,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../community/parallax-overview/" class="md-nav__link">
+      <a href="../../../community/parallax-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -974,7 +972,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../project/repo-root/" class="md-nav__link ">
+            <a href="../../../project/repo-root/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1014,7 +1012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/changelog/" class="md-nav__link">
+      <a href="../../../project/repo-root/changelog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1042,7 +1040,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/contributing-root/" class="md-nav__link">
+      <a href="../../../project/repo-root/contributing-root/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1070,7 +1068,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
+      <a href="../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1098,7 +1096,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/release_checklist/" class="md-nav__link">
+      <a href="../../../project/repo-root/release_checklist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1126,7 +1124,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/repo-readme/" class="md-nav__link">
+      <a href="../../../project/repo-root/repo-readme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1154,7 +1152,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/todo-list/" class="md-nav__link">
+      <a href="../../../project/repo-root/todo-list/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1182,7 +1180,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/versioning/" class="md-nav__link">
+      <a href="../../../project/repo-root/versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1255,7 +1253,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../cli-reference/" class="md-nav__link ">
+            <a href="../../../cli-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1295,7 +1293,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/audio-transcribe/" class="md-nav__link">
+      <a href="../../../cli-reference/audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1323,7 +1321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/json-to-srt/" class="md-nav__link">
+      <a href="../../../cli-reference/json-to-srt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1351,7 +1349,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/nfmt/" class="md-nav__link">
+      <a href="../../../cli-reference/nfmt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1379,7 +1377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/overview/" class="md-nav__link">
+      <a href="../../../cli-reference/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1407,7 +1405,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/sent-split/" class="md-nav__link">
+      <a href="../../../cli-reference/sent-split/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1435,7 +1433,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/srt-translate/" class="md-nav__link">
+      <a href="../../../cli-reference/srt-translate/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1463,7 +1461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/tnh-fab/" class="md-nav__link">
+      <a href="../../../cli-reference/tnh-fab/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1491,7 +1489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/tnh-setup/" class="md-nav__link">
+      <a href="../../../cli-reference/tnh-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1519,7 +1517,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/token-count/" class="md-nav__link">
+      <a href="../../../cli-reference/token-count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1547,7 +1545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/ytt-fetch/" class="md-nav__link">
+      <a href="../../../cli-reference/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1582,7 +1580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../api/" class="md-nav__link">
+      <a href="../../../api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1606,10 +1604,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -1678,16 +1674,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../" class="md-nav__link ">
+            <a href="../../../architecture/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1711,7 +1707,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             Architecture
@@ -1727,7 +1723,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../overview/" class="md-nav__link">
+      <a href="../../../architecture/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1755,7 +1751,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/" class="md-nav__link">
+      <a href="../../../architecture/ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1856,7 +1852,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ai-text-processing/adr/" class="md-nav__link ">
+            <a href="../../../architecture/ai-text-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1896,7 +1892,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
+      <a href="../../../architecture/ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1924,7 +1920,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
+      <a href="../../../architecture/ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1952,7 +1948,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
+      <a href="../../../architecture/ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1980,7 +1976,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
+      <a href="../../../architecture/ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2008,7 +2004,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
+      <a href="../../../architecture/ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2036,7 +2032,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
+      <a href="../../../architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2064,7 +2060,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
+      <a href="../../../architecture/ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2122,7 +2118,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ai-text-processing/design/" class="md-nav__link ">
+            <a href="../../../architecture/ai-text-processing/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2162,7 +2158,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
+      <a href="../../../architecture/ai-text-processing/design/textobject-original-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2190,7 +2186,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
+      <a href="../../../architecture/ai-text-processing/design/textobject-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2254,7 +2250,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../configuration/" class="md-nav__link ">
+            <a href="../../../architecture/configuration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2294,7 +2290,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../configuration/tnh-configuration-management/" class="md-nav__link">
+      <a href="../../../architecture/configuration/tnh-configuration-management/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2352,7 +2348,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/" class="md-nav__link ">
+            <a href="../../../architecture/docs-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2418,7 +2414,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/adr/" class="md-nav__link ">
+            <a href="../../../architecture/docs-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2458,7 +2454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
+      <a href="../../../architecture/docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2486,7 +2482,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
+      <a href="../../../architecture/docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2514,7 +2510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
+      <a href="../../../architecture/docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2542,7 +2538,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
+      <a href="../../../architecture/docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2598,7 +2594,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/design/" class="md-nav__link ">
+            <a href="../../../architecture/docs-system/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2638,7 +2634,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/design/documentation-design/" class="md-nav__link">
+      <a href="../../../architecture/docs-system/design/documentation-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2682,7 +2678,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2787,7 +2783,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../gen-ai-service/adr/" class="md-nav__link ">
+            <a href="../../../architecture/gen-ai-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2827,7 +2823,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2855,7 +2851,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2883,7 +2879,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2911,7 +2907,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2939,7 +2935,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2967,7 +2963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2995,7 +2991,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3023,7 +3019,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3051,7 +3047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3109,7 +3105,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../gen-ai-service/design/" class="md-nav__link ">
+            <a href="../../../architecture/gen-ai-service/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3149,7 +3145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3177,7 +3173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
+      <a href="../../../architecture/gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3243,7 +3239,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../jvb-viewer/" class="md-nav__link ">
+            <a href="../../../architecture/jvb-viewer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3324,7 +3320,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
+      <a href="../../../architecture/jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3345,7 +3341,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
+      <a href="../../../architecture/jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3400,7 +3396,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../jvb-viewer/design/" class="md-nav__link ">
+            <a href="../../../architecture/jvb-viewer/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3440,7 +3436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
+      <a href="../../../architecture/jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3468,7 +3464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
+      <a href="../../../architecture/jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3496,7 +3492,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
+      <a href="../../../architecture/jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3524,7 +3520,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
+      <a href="../../../architecture/jvb-viewer/design/luan-hoi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3588,7 +3584,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../knowledge-base/" class="md-nav__link ">
+            <a href="../../../architecture/knowledge-base/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3648,7 +3644,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../knowledge-base/adr/" class="md-nav__link ">
+            <a href="../../../architecture/knowledge-base/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3688,7 +3684,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
+      <a href="../../../architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3752,7 +3748,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metadata/" class="md-nav__link ">
+            <a href="../../../architecture/metadata/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3814,7 +3810,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metadata/adr/" class="md-nav__link ">
+            <a href="../../../architecture/metadata/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3854,7 +3850,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
+      <a href="../../../architecture/metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3882,7 +3878,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
+      <a href="../../../architecture/metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3952,7 +3948,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../object-service/" class="md-nav__link ">
+            <a href="../../../architecture/object-service/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3992,7 +3988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-design-gaps/" class="md-nav__link">
+      <a href="../../../architecture/object-service/object-service-design-gaps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4020,7 +4016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-design-overview/" class="md-nav__link">
+      <a href="../../../architecture/object-service/object-service-design-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4048,7 +4044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-implementation-status/" class="md-nav__link">
+      <a href="../../../architecture/object-service/object-service-implementation-status/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4096,7 +4092,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../object-service/adr/" class="md-nav__link ">
+            <a href="../../../architecture/object-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4136,7 +4132,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
+      <a href="../../../architecture/object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4202,7 +4198,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../project-policies/" class="md-nav__link ">
+            <a href="../../../architecture/project-policies/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4242,7 +4238,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
+      <a href="../../../architecture/project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4290,7 +4286,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../project-policies/adr/" class="md-nav__link ">
+            <a href="../../../architecture/project-policies/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4330,7 +4326,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
+      <a href="../../../architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4396,7 +4392,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../prompt-system/" class="md-nav__link ">
+            <a href="../../../architecture/prompt-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4436,7 +4432,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/prompt-system-architecture/" class="md-nav__link">
+      <a href="../../../architecture/prompt-system/prompt-system-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4486,7 +4482,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../prompt-system/adr/" class="md-nav__link ">
+            <a href="../../../architecture/prompt-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4526,7 +4522,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
+      <a href="../../../architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4554,7 +4550,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
+      <a href="../../../architecture/prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4598,7 +4594,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../provenance/" class="md-nav__link">
+      <a href="../../../architecture/provenance/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4704,7 +4700,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
+      <a href="../../../architecture/provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4768,7 +4764,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../setup-tnh/" class="md-nav__link ">
+            <a href="../../../architecture/setup-tnh/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4828,7 +4824,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../setup-tnh/design/" class="md-nav__link ">
+            <a href="../../../architecture/setup-tnh/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4868,7 +4864,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
+      <a href="../../../architecture/setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4912,7 +4908,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/" class="md-nav__link">
+      <a href="../../../architecture/tnh-gen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4996,7 +4992,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../tnh-gen/adr/" class="md-nav__link ">
+            <a href="../../../architecture/tnh-gen/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5036,7 +5032,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
+      <a href="../../../architecture/tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5064,7 +5060,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
+      <a href="../../../architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5092,7 +5088,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
+      <a href="../../../architecture/tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5133,8 +5129,6 @@
                 
   
   
-    
-  
   
   
     
@@ -5151,16 +5145,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../architecture/transcription/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5184,7 +5178,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_20_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_20_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_20">
             <span class="md-nav__icon md-icon"></span>
             Transcription
@@ -5226,7 +5220,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../adr/" class="md-nav__link ">
+            <a href="../../../architecture/transcription/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5266,7 +5260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
+      <a href="../../../architecture/transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5294,7 +5288,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
+      <a href="../../../architecture/transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5322,7 +5316,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-tr03-ms-timestamps/" class="md-nav__link">
+      <a href="../../../architecture/transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5350,7 +5344,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+      <a href="../../../architecture/transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5383,8 +5377,6 @@
                 
   
   
-    
-  
   
   
     
@@ -5421,16 +5413,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../architecture/transcription/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5454,7 +5446,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_20_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_20_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_20_3">
             <span class="md-nav__icon md-icon"></span>
             Design
@@ -5470,7 +5462,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../audio-chunking-design/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/audio-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5498,7 +5490,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../diarization-algorithms/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/diarization-algorithms/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5526,7 +5518,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../diarization-chunker-design/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/diarization-chunker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5554,7 +5546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../diarization-system-design/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/diarization-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5582,7 +5574,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../interval-to-segment-mapping/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/interval-to-segment-mapping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5610,7 +5602,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../language-aware-chunking-design/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/language-aware-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5638,7 +5630,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../language-aware-chunking-orchestrator-notes/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5666,7 +5658,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modular-pipeline-best-practices/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5694,7 +5686,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../practical-language-aware-chunking/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/practical-language-aware-chunking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5722,7 +5714,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../speaker-diarization-algorithm-design/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5750,7 +5742,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../speaker-diarization-time-mapped-design/" class="md-nav__link">
+      <a href="../../../architecture/transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5775,37 +5767,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    TimelineMapper Design Document
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--current"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../architecture/transcription/design/timelinemapper-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5821,215 +5786,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#purpose" class="md-nav__link">
-    <span class="md-ellipsis">
-      Purpose
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Context">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#high-level-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      High-Level Pipeline
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#core-problem" class="md-nav__link">
-    <span class="md-ellipsis">
-      Core Problem
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#remapping-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remapping Strategy
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conceptual-illustration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Conceptual Illustration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#detailed-algorithm" class="md-nav__link">
-    <span class="md-ellipsis">
-      Detailed Algorithm
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Detailed Algorithm">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mapping-table-construction" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mapping Table Construction
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#remapping-each-subtitle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remapping Each Subtitle
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#proposed-timelinemapper-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      Proposed TimelineMapper Class
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#internal-helpers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Internal Helpers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#design-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Design Considerations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      Testing Plan
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#potential-future-extensions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Potential Future Extensions
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      Implementation Plan
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Implementation Plan">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-core-implementation-1-2-days" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Core Implementation (1-2 days)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-testing-1-day" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Testing (1 day)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-pipeline-integration-1-day" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Pipeline Integration (1 day)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Summary
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -6080,7 +5836,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/" class="md-nav__link ">
+            <a href="../../../architecture/ui-ux/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6140,7 +5896,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/design/" class="md-nav__link ">
+            <a href="../../../architecture/ui-ux/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6180,7 +5936,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
+      <a href="../../../architecture/ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6246,7 +6002,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/vs-code-integration/" class="md-nav__link ">
+            <a href="../../../architecture/ui-ux/vs-code-integration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6286,7 +6042,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
+      <a href="../../../architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6314,7 +6070,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
+      <a href="../../../architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6342,7 +6098,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
+      <a href="../../../architecture/ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6370,7 +6126,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
+      <a href="../../../architecture/ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6398,7 +6154,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
+      <a href="../../../architecture/ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6426,7 +6182,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
+      <a href="../../../architecture/ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6490,7 +6246,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../utilities/" class="md-nav__link ">
+            <a href="../../../architecture/utilities/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6552,7 +6308,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../utilities/design/" class="md-nav__link ">
+            <a href="../../../architecture/utilities/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6592,7 +6348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../utilities/design/package-version-checker-design/" class="md-nav__link">
+      <a href="../../../architecture/utilities/design/package-version-checker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6620,7 +6376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../utilities/design/utilities-catalog/" class="md-nav__link">
+      <a href="../../../architecture/utilities/design/utilities-catalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6684,7 +6440,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../video-processing/" class="md-nav__link ">
+            <a href="../../../architecture/video-processing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6744,7 +6500,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../video-processing/adr/" class="md-nav__link ">
+            <a href="../../../architecture/video-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6784,7 +6540,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+      <a href="../../../architecture/video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6828,7 +6584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/" class="md-nav__link">
+      <a href="../../../architecture/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6921,7 +6677,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ytt-fetch/adr/" class="md-nav__link ">
+            <a href="../../../architecture/ytt-fetch/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6961,7 +6717,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
+      <a href="../../../architecture/ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6989,7 +6745,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
+      <a href="../../../architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7017,7 +6773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
+      <a href="../../../architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7073,7 +6829,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ytt-fetch/design/" class="md-nav__link ">
+            <a href="../../../architecture/ytt-fetch/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7113,7 +6869,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
+      <a href="../../../architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7161,6 +6917,8 @@
       
   
   
+    
+  
   
   
     
@@ -7195,16 +6953,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../development/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7228,7 +6986,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             Development
@@ -7244,7 +7002,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/contributing-prototype-phase/" class="md-nav__link">
+      <a href="../../contributing-prototype-phase/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7272,7 +7030,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/design-principles/" class="md-nav__link">
+      <a href="../../design-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7300,7 +7058,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/fine-tuning-strategy/" class="md-nav__link">
+      <a href="../../fine-tuning-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7328,7 +7086,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/git-workflow/" class="md-nav__link">
+      <a href="../../git-workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7356,7 +7114,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
+      <a href="../../human-ai-software-engineering-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7384,7 +7142,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/improvements-initial-structure/" class="md-nav__link">
+      <a href="../../improvements-initial-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7412,7 +7170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/overview/" class="md-nav__link">
+      <a href="../../overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7440,7 +7198,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/release-workflow/" class="md-nav__link">
+      <a href="../../release-workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7468,7 +7226,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/style-guide/" class="md-nav__link">
+      <a href="../../style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7496,7 +7254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/system-design/" class="md-nav__link">
+      <a href="../../system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7521,6 +7279,8 @@
                 
   
   
+    
+  
   
   
     
@@ -7539,16 +7299,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_12" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_12" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../development/incident-reports/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7572,7 +7332,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_12_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_12_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_10_12">
             <span class="md-nav__icon md-icon"></span>
             Incident Reports
@@ -7588,7 +7348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
+      <a href="../2025-12-07-git-recovery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7613,10 +7373,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/tag-v0.2.0-correction-plan/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Tag V0.2.0 Correction Plan
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -7625,6 +7405,71 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#corrective-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Corrective Action
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -7661,7 +7506,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
+            <a href="../2025-12-07-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7701,7 +7546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
+      <a href="../2025-12-07-reference/forensic-analysis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7729,7 +7574,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
+      <a href="../2025-12-07-reference/implementation-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7757,7 +7602,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
+      <a href="../2025-12-07-reference/incident-report-updates/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7836,7 +7681,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../docs-ops/" class="md-nav__link ">
+            <a href="../../../docs-ops/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7876,7 +7721,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/adr-template/" class="md-nav__link">
+      <a href="../../../docs-ops/adr-template/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7904,7 +7749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/markdown-standards/" class="md-nav__link">
+      <a href="../../../docs-ops/markdown-standards/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7932,7 +7777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
+      <a href="../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7960,7 +7805,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/preview-theme/" class="md-nav__link">
+      <a href="../../../docs-ops/preview-theme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7988,7 +7833,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/theme-design/" class="md-nav__link">
+      <a href="../../../docs-ops/theme-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8057,7 +7902,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/" class="md-nav__link ">
+            <a href="../../../research/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8097,7 +7942,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt_development_convos/" class="md-nav__link">
+      <a href="../../../research/gpt_development_convos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8125,7 +7970,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/kb-design-document/" class="md-nav__link">
+      <a href="../../../research/kb-design-document/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8153,7 +7998,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/metadata-summary-report/" class="md-nav__link">
+      <a href="../../../research/metadata-summary-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8181,7 +8026,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/preliminary-feasibility-study/" class="md-nav__link">
+      <a href="../../../research/preliminary-feasibility-study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8209,7 +8054,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/rag-research-directions/" class="md-nav__link">
+      <a href="../../../research/rag-research-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8237,7 +8082,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/siap-methodology/" class="md-nav__link">
+      <a href="../../../research/siap-methodology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8285,7 +8130,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
+            <a href="../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8325,7 +8170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
+      <a href="../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8381,7 +8226,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
+            <a href="../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8421,7 +8266,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
+      <a href="../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8464,7 +8309,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../documentation_index/" class="md-nav__link">
+      <a href="../../../documentation_index/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8511,189 +8356,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#purpose" class="md-nav__link">
-    <span class="md-ellipsis">
-      Purpose
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       Context
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Context">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#high-level-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      High-Level Pipeline
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
-  <a href="#core-problem" class="md-nav__link">
+  <a href="#corrective-action" class="md-nav__link">
     <span class="md-ellipsis">
-      Core Problem
+      Corrective Action
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#remapping-strategy" class="md-nav__link">
+  <a href="#commands" class="md-nav__link">
     <span class="md-ellipsis">
-      Remapping Strategy
+      Commands
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#conceptual-illustration" class="md-nav__link">
+  <a href="#verification" class="md-nav__link">
     <span class="md-ellipsis">
-      Conceptual Illustration
+      Verification
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#detailed-algorithm" class="md-nav__link">
+  <a href="#documentation" class="md-nav__link">
     <span class="md-ellipsis">
-      Detailed Algorithm
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Detailed Algorithm">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mapping-table-construction" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mapping Table Construction
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#remapping-each-subtitle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remapping Each Subtitle
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#proposed-timelinemapper-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      Proposed TimelineMapper Class
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#internal-helpers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Internal Helpers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#design-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Design Considerations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      Testing Plan
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#potential-future-extensions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Potential Future Extensions
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      Implementation Plan
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Implementation Plan">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-core-implementation-1-2-days" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Core Implementation (1-2 days)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-testing-1-day" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Testing (1 day)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-pipeline-integration-1-day" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Pipeline Integration (1 day)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Summary
+      Documentation
     </span>
   </a>
   
@@ -8717,264 +8418,97 @@
   
 
 
-<h1 id="timelinemapper-design-document">TimelineMapper Design Document<a class="headerlink" href="#timelinemapper-design-document" title="Link to this section">&para;</a></h1>
-<p>Design for the TimelineMapper component that reprojects chunk-level transcripts into the original audio timeline.</p>
-<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Link to this section">&para;</a></h2>
-<p>In an audio transcription pipeline that integrates <strong>speaker diarization</strong> and <strong>chunked audio processing</strong>, transcriptions produced by ASR (Automatic Speech Recognition) are <strong>offset relative to each audio chunk</strong> rather than the original full audio file.</p>
-<p>The <code>TimelineMapper</code> solves this by <strong>remapping</strong> each transcription segment's start and end timecodes from the chunk's local timeline back into the global original audio timeline.</p>
-<hr />
+<h1 id="v020-tag-correction-plan">v0.2.0 Tag Correction Plan<a class="headerlink" href="#v020-tag-correction-plan" title="Link to this section">&para;</a></h1>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
-<h3 id="high-level-pipeline">High-Level Pipeline<a class="headerlink" href="#high-level-pipeline" title="Link to this section">&para;</a></h3>
-<pre class="mermaid"><code>flowchart LR
-    DiarizationJSON[Diarization JSON] --&gt; Chunker[DiarizationChunker]
-    Chunker --&gt; AudioHandler
-    AudioHandler --&gt; Transcription
-    Transcription --&gt; TimelineMapper
-    TimelineMapper --&gt; SRTProcessor</code></pre>
+<p>During recovery from the December 7-8, 2025 incident where branches were deleted
+and work was orphaned, we discovered that the v0.2.0 tag points to commit 0d7d459
+which does NOT include the prompt system implementation work.</p>
+<p>The v0.2.0 tag was created during release prep BEFORE the actual work was merged.
+The intended v0.2.0 release should include:</p>
+<ul>
+<li>Prompt system implementation (ADR-PT04) </li>
+<li>Metadata infrastructure documentation (ADR-MD02)</li>
+<li>All work from PRs #11 and #12 (recovered in PR #13)</li>
+</ul>
+<h2 id="corrective-action">Corrective Action<a class="headerlink" href="#corrective-action" title="Link to this section">&para;</a></h2>
+<p>After PR #13 merges to main, we will:</p>
 <ol>
-<li><strong>DiarizationChunker</strong> splits diarization segments into manageable processing units</li>
-<li><strong>AudioHandler</strong> extracts corresponding audio for each chunk</li>
-<li><strong>Transcription</strong> produces transcriptions relative to chunk timelines</li>
-<li><strong>TimelineMapper</strong> <strong>reprojects</strong> the transcription back into original audio coordinates</li>
-<li><strong>SRTProcessor</strong> formats the finalized subtitles</li>
+<li>Delete the incorrect v0.2.0 tag locally and remotely</li>
+<li>Create new v0.2.0 tag at the correct commit (main after PR #13 merge)</li>
+<li>Document this correction in the tag annotation</li>
 </ol>
-<hr />
-<h2 id="core-problem">Core Problem<a class="headerlink" href="#core-problem" title="Link to this section">&para;</a></h2>
-<p>When a chunk of audio is built, it <strong>splices together</strong> diarized segments, sometimes <strong>inserting silences</strong> for gaps.
-This causes the chunk's internal time (0 → chunk duration) to <strong>diverge</strong> from the original global audio timeline.</p>
-<p>Since ASR operates on the chunk, its output <strong>must be corrected</strong> to be meaningful relative to the original full audio.</p>
-<hr />
-<h2 id="remapping-strategy">Remapping Strategy<a class="headerlink" href="#remapping-strategy" title="Link to this section">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Step</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;"><strong>Build a piecewise mapping table</strong> from original segment start/end times and their corresponding chunk offsets (<code>audio_map_time</code>).</td>
-</tr>
-<tr>
-<td style="text-align: left;">2</td>
-<td style="text-align: left;"><strong>For each subtitle segment</strong> (in chunk time), find the <strong>best matching interval</strong> in the mapping table.</td>
-</tr>
-<tr>
-<td style="text-align: left;">3</td>
-<td style="text-align: left;"><strong>Apply a simple shift</strong> (no stretch or scale): <code>global_time = orig_start + (chunk_time - local_start)</code></td>
-</tr>
-<tr>
-<td style="text-align: left;">4</td>
-<td style="text-align: left;"><strong>Handle edge cases</strong> gracefully, e.g., no matching interval found.</td>
-</tr>
-<tr>
-<td style="text-align: left;">5</td>
-<td style="text-align: left;"><strong>Return a new <code>TimedText</code> object</strong> with remapped times, keeping all text and metadata intact.</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="conceptual-illustration">Conceptual Illustration<a class="headerlink" href="#conceptual-illustration" title="Link to this section">&para;</a></h2>
-<pre class="mermaid"><code>flowchart TB
-    TimedTextLocal["TimedText&lt;br/&gt;(chunk time)"] --&gt; TimelineMapper["TimelineMapper.remap()"]
-    DiarizationChunk["DiarizationChunk&lt;br/&gt;(original mapping info)"] --&gt; TimelineMapper
-    TimelineMapper --&gt; TimedTextGlobal["TimedText&lt;br/&gt;(global time)"]</code></pre>
-<hr />
-<h2 id="detailed-algorithm">Detailed Algorithm<a class="headerlink" href="#detailed-algorithm" title="Link to this section">&para;</a></h2>
-<h3 id="mapping-table-construction">Mapping Table Construction<a class="headerlink" href="#mapping-table-construction" title="Link to this section">&para;</a></h3>
-<p>Each diarization segment produces an interval:</p>
-<ul>
-<li><code>orig_start</code> → <code>orig_end</code> (original timeline)</li>
-<li><code>local_start</code> = <code>audio_map_time</code></li>
-<li><code>local_end</code> = <code>audio_map_time + segment_duration</code></li>
-</ul>
-<p>For inserted silences (gap fill-ins), we can infer synthetic intervals if needed to maintain timeline continuity.</p>
-<hr />
-<h3 id="remapping-each-subtitle">Remapping Each Subtitle<a class="headerlink" href="#remapping-each-subtitle" title="Link to this section">&para;</a></h3>
-<p>For each transcription segment:</p>
-<ol>
-<li><strong>Identify overlap</strong>: Find the mapping interval with the <strong>largest overlap</strong> (≥ 1 ms).</li>
-<li><strong>Shift time</strong>:</li>
-</ol>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>new_start = orig_start + (subtitle_start - local_start)
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>new_end   = orig_start + (subtitle_end - local_start)
+<h2 id="commands">Commands<a class="headerlink" href="#commands" title="Link to this section">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 1. Merge PR #13 (via GitHub UI or gh CLI)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>gh<span class="w"> </span>pr<span class="w"> </span>merge<span class="w"> </span><span class="m">13</span><span class="w"> </span>--merge
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 2. Update local main</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>git<span class="w"> </span>checkout<span class="w"> </span>main
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>git<span class="w"> </span>pull
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># 3. Delete old v0.2.0 tag</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>git<span class="w"> </span>tag<span class="w"> </span>-d<span class="w"> </span>v0.2.0
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>:refs/tags/v0.2.0
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># 4. Create corrected v0.2.0 tag with documentation</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>git<span class="w"> </span>tag<span class="w"> </span>-a<span class="w"> </span>v0.2.0<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Release v0.2.0 (Corrected)</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="s2">Release v0.2.0 with prompt system implementation and metadata infrastructure.</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="s2">## Includes</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="s2">- Prompt system package (ADR-PT04) - 22 source files, 6 test files</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="s2">- Metadata infrastructure documentation (ADR-MD02)</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="s2">- Project versioning policy (ADR-PP01)</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="s2">- Git safety documentation and tooling</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="s2">- All work from PRs #11, #12, #13</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="s2">## Tag Correction Note</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="s2">This tag was corrected on 2025-12-07 after recovery from branch deletion incident.</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="s2">Original v0.2.0 tag (0d7d459) created during release prep but did not include</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="s2">the prompt system work. This corrected tag points to the actual v0.2.0 release</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="s2">including all intended features.</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="s2">See docs/development/git-workflow.md for incident details and recovery process.</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="s2">## References</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="s2">- PR #13: Recovery of prompt system implementation</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="s2">- ADR-PT04: Prompt System Refactor</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="s2">- ADR-MD02: Metadata Infrastructure Integration</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="s2">- Recovered from commit c6532f5 (orphaned 2025-12-07)</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="s2">🤖 Generated with Claude Code</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="s2">&quot;</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="c1"># 5. Push corrected tag</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v0.2.0
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="c1"># 6. Verify</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>git<span class="w"> </span>show<span class="w"> </span>v0.2.0<span class="w"> </span>--stat<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">20</span>
 </span></code></pre></div>
-<ol>
-<li>
-<p><strong>Edge Handling</strong>:</p>
-</li>
-<li>
-<p>If no matching interval is found, either:</p>
+<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Link to this section">&para;</a></h2>
+<p>After tag correction:</p>
 <ul>
-<li>Log a warning and leave unchanged</li>
-<li>Apply a fallback shift</li>
-<li>Raise an exception (configurable)</li>
+<li>v0.2.0 should point to main after PR #13 merge</li>
+<li>Tag annotation should document the correction</li>
+<li><code>git ls-tree -r v0.2.0 --name-only | grep prompt_system</code> should find files</li>
 </ul>
-</li>
-</ol>
-<hr />
-<h2 id="proposed-timelinemapper-class">Proposed <code>TimelineMapper</code> Class<a class="headerlink" href="#proposed-timelinemapper-class" title="Link to this section">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.audio_processing.transcription_service.diarization_chunker</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiarizationChunk</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.audio_processing.timed_text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimedText</span><span class="p">,</span> <span class="n">TimedTextUnit</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">TimelineMapper</span><span class="p">:</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps TimedText from chunk-relative timecodes back to global timecodes.&quot;&quot;&quot;</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">remap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timed_text</span><span class="p">:</span> <span class="n">TimedText</span><span class="p">,</span> <span class="n">chunk</span><span class="p">:</span> <span class="n">DiarizationChunk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TimedText</span><span class="p">:</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="sd">        Remap TimedText from chunk-relative timecodes back to global timecodes.</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="sd">        Args:</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="sd">            timed_text: TimedText with chunk-relative timestamps</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="sd">            chunk: DiarizationChunk with mapping information</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="sd">        Returns:</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="sd">            New TimedText with global timestamps</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>            <span class="k">raise</span> <span class="n">exception</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>        <span class="o">...</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>        <span class="k">return</span> <span class="n">TimedText</span><span class="p">(</span><span class="n">segments</span><span class="o">=</span><span class="n">remapped_segments</span><span class="p">)</span>
-</span></code></pre></div>
-<hr />
-<h2 id="internal-helpers">Internal Helpers<a class="headerlink" href="#internal-helpers" title="Link to this section">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Helper</th>
-<th style="text-align: left;">Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><code>_build_mapping_intervals(chunk: DiarizationChunk)</code></td>
-<td style="text-align: left;">Constructs ordered list of mapping intervals</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>_find_best_overlap(intervals, start, end)</code></td>
-<td style="text-align: left;">Finds the mapping interval with the greatest overlap for a subtitle</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>_apply_shift(interval, segment)</code></td>
-<td style="text-align: left;">Applies the simple shift formula to subtitle times</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Internal data structure</strong>:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@dataclass</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">MappingInterval</span><span class="p">:</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">orig_start</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">orig_end</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">local_start</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">local_end</span><span class="p">:</span> <span class="nb">int</span>
-</span></code></pre></div>
-<hr />
-<h2 id="design-considerations">Design Considerations<a class="headerlink" href="#design-considerations" title="Link to this section">&para;</a></h2>
+<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Link to this section">&para;</a></h2>
+<p>This correction is documented in:</p>
 <ul>
-<li><strong>Statelessness</strong>: <code>TimelineMapper</code> does not hold state between remaps.</li>
-<li><strong>Immutability</strong>: Never mutate the input <code>TimedText</code>; always produce a new instance.</li>
-<li>
-<p><strong>Performance</strong>:</p>
-</li>
-<li>
-<p>Pre-sort intervals by <code>local_start</code></p>
-</li>
-<li>Consider <code>bisect</code> (binary search) for efficient lookup</li>
-<li>
-<p><strong>Configurability</strong>:</p>
-</li>
-<li>
-<p>Handling of unmatched subtitles (warn/skip/fallback)</p>
-</li>
-<li>Optional detailed logging for debug mode</li>
-<li>
-<p><strong>Testability</strong>:</p>
-</li>
-<li>
-<p>Easily unit-testable with synthetic chunks and known offsets</p>
-</li>
-<li>Edge case coverage: overlaps, straddling gaps, missing matches</li>
+<li>This file: docs/incident-reports/tag-correction-plan.md</li>
+<li>Git workflow guide: docs/development/git-workflow.md</li>
+<li>Tag annotation message (see above)</li>
+<li>CHANGELOG.md (should be updated with v0.2.0 actual contents)</li>
 </ul>
-<hr />
-<h2 id="testing-plan">Testing Plan<a class="headerlink" href="#testing-plan" title="Link to this section">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Test Case</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Basic remap</td>
-<td style="text-align: left;">Straightforward 1-to-1 mapping with no gaps</td>
-</tr>
-<tr>
-<td style="text-align: left;">Overlapping segments</td>
-<td style="text-align: left;">Subtitle overlaps two mapping intervals</td>
-</tr>
-<tr>
-<td style="text-align: left;">Gaps and silences</td>
-<td style="text-align: left;">Subtitle falls into an inserted silence</td>
-</tr>
-<tr>
-<td style="text-align: left;">No matching interval</td>
-<td style="text-align: left;">Subtitle completely outside known mappings</td>
-</tr>
-<tr>
-<td style="text-align: left;">Boundary conditions</td>
-<td style="text-align: left;">Subtitle exactly starts/ends at interval boundary</td>
-</tr>
-<tr>
-<td style="text-align: left;">Performance test</td>
-<td style="text-align: left;">10,000+ segments</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="potential-future-extensions">Potential Future Extensions<a class="headerlink" href="#potential-future-extensions" title="Link to this section">&para;</a></h2>
-<ul>
-<li><strong>Affine time transforms</strong>: for stretch/compression correction (e.g., <code>(t) → a·t + b</code>)</li>
-<li><strong>Speaker-aware remapping</strong>: Map only into segments from the same speaker</li>
-<li><strong>Multi-chunk remapping</strong>: Process an entire transcription consisting of multiple chunks in one pass</li>
-<li><strong>Confidence-weighted remap</strong>: If multiple overlaps, prefer higher ASR confidence segments</li>
-</ul>
-<hr />
-<h2 id="implementation-plan">Implementation Plan<a class="headerlink" href="#implementation-plan" title="Link to this section">&para;</a></h2>
-<h3 id="1-core-implementation-1-2-days">1. <strong>Core Implementation (1-2 days)</strong><a class="headerlink" href="#1-core-implementation-1-2-days" title="Link to this section">&para;</a></h3>
-<ul>
-<li>Build <code>MappingInterval</code> class and internal helpers</li>
-<li>Implement basic remapping algorithm</li>
-<li>Handle edge cases for unmatched segments</li>
-</ul>
-<h3 id="2-testing-1-day">2. <strong>Testing (1 day)</strong><a class="headerlink" href="#2-testing-1-day" title="Link to this section">&para;</a></h3>
-<ul>
-<li>Create unit tests with synthetic data</li>
-<li>Test with real audio data from the pipeline</li>
-</ul>
-<h3 id="3-pipeline-integration-1-day">3. <strong>Pipeline Integration (1 day)</strong><a class="headerlink" href="#3-pipeline-integration-1-day" title="Link to this section">&para;</a></h3>
-<ul>
-<li>Add to the transcription processing workflow</li>
-<li>Optimize for performance with real data</li>
-</ul>
-<hr />
-<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">&para;</a></h2>
-<p>The <code>TimelineMapper</code> cleanly restores transcriptions into the global audio timeline after diarization and chunked processing, preserving the modular design and clarity of the broader transcription pipeline.</p>
-<p>Its simplicity, performance, and testability make it a critical bridge from localized ASR output to globally meaningful subtitle and transcript data.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 
@@ -9062,10 +8596,10 @@ This causes the chunk's internal time (0 → chunk duration) to <strong>diverge<
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.60a45f97.min.js"></script>
       
     
   </body>

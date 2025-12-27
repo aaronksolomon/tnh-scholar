@@ -6,15 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Design for the TimelineMapper component that reprojects chunk-level transcripts into the original audio timeline.">
+        <meta name="description" content="Default to human-readable output for CLI usage, with --verbose flag for API-style JSON">
+      
+      
+        <meta name="author" content="Aaron Solomon, Claude Sonnet 4.5">
       
       
       
+        <link rel="prev" href="../adr-tg01-cli-architecture/">
       
-        <link rel="prev" href="../speaker-diarization-time-mapped-design/">
       
-      
-        <link rel="next" href="../../../ui-ux/">
+        <link rel="next" href="../adr-tg02-prompt-integration/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -22,7 +24,7 @@
     
     
       
-        <title>TimelineMapper Design Document - TNH Scholar Documentation</title>
+        <title>ADR-TG01.1: Human-Friendly CLI Defaults - TNH Scholar Documentation</title>
       
     
     
@@ -120,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#timelinemapper-design-document" class="md-skip">
+        <a href="#adr-tg011-human-friendly-cli-defaults" class="md-skip">
           Skip to content
         </a>
       
@@ -176,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TimelineMapper Design Document
+              ADR-TG01.1: Human-Friendly CLI Defaults
             
           </span>
         </div>
@@ -4912,7 +4914,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4930,8 +4932,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -4940,11 +4944,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19" checked>
         
           
           <label class="md-nav__link" for="__nav_9_19" id="__nav_9_19_label" tabindex="0">
@@ -4958,7 +4962,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_19_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_19_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_19">
             <span class="md-nav__icon md-icon"></span>
             Tnh Gen
@@ -4969,6 +4973,8 @@
                 
   
   
+    
+  
   
   
     
@@ -4987,16 +4993,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_19_1" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../tnh-gen/adr/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5020,7 +5026,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_19_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_19_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_19_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -5036,7 +5042,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
+      <a href="../adr-tg01-cli-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5061,10 +5067,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ADR-TG01.1: Human-Friendly CLI Defaults
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -5080,6 +5113,494 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requirements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-default-output-mode-human-friendly" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Default Output Mode: Human-Friendly
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Default Output Mode: Human-Friendly">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tnh-gen-list-default-human-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      tnh-gen list (default human mode)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tnh-gen-list-verbose-api-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      tnh-gen list --verbose (API mode)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-flag-semantics" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Flag Semantics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Flag Semantics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-global-flag-verbose-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      New Global Flag: --verbose / -v
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-command-specific-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Command-Specific Defaults
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Command-Specific Defaults">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tnh-gen-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      tnh-gen list
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tnh-gen-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      tnh-gen run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tnh-gen-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      tnh-gen config
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-implementation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Implementation Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Implementation Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-update-listpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Update list.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-add-human-friendly-formatters" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Add Human-Friendly Formatters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-update-runpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 Update run.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-update-global-cli-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 Update Global CLI State
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-backward-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Backward Compatibility
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-examples-before-after" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Examples (Before &amp; After)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Examples (Before & After)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-human-using-cli-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: Human using CLI directly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-vs-code-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: VS Code extension
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-script-parsing-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: Script parsing output
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neutral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Neutral
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a-keep-json-default-add-human-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option A: Keep JSON Default, Add --human Flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b-default-to-table-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option B: Default to Table Format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-c-separate-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option C: Separate Commands
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-direct-cli-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Direct CLI Users
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-scripts-and-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Scripts and Automation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-vs-code-extension-adr-vsc02" class="md-nav__link">
+    <span class="md-ellipsis">
+      For VS Code Extension (ADR-VSC02)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unit Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#golden-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Golden Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Tests
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="References">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parent-adr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parent ADR
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#related-adrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related ADRs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      External References
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -5092,7 +5613,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
+      <a href="../adr-tg02-prompt-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5133,8 +5654,6 @@
                 
   
   
-    
-  
   
   
     
@@ -5151,16 +5670,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../transcription/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5184,7 +5703,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_20_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_20_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_20">
             <span class="md-nav__icon md-icon"></span>
             Transcription
@@ -5226,7 +5745,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../adr/" class="md-nav__link ">
+            <a href="../../../transcription/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5266,7 +5785,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5294,7 +5813,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5322,7 +5841,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-tr03-ms-timestamps/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5350,7 +5869,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5383,8 +5902,6 @@
                 
   
   
-    
-  
   
   
     
@@ -5421,16 +5938,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../transcription/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5454,7 +5971,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_20_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_20_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_20_3">
             <span class="md-nav__icon md-icon"></span>
             Design
@@ -5470,7 +5987,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../audio-chunking-design/" class="md-nav__link">
+      <a href="../../../transcription/design/audio-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5498,7 +6015,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../diarization-algorithms/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-algorithms/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5526,7 +6043,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../diarization-chunker-design/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-chunker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5554,7 +6071,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../diarization-system-design/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5582,7 +6099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../interval-to-segment-mapping/" class="md-nav__link">
+      <a href="../../../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5610,7 +6127,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../language-aware-chunking-design/" class="md-nav__link">
+      <a href="../../../transcription/design/language-aware-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5638,7 +6155,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../language-aware-chunking-orchestrator-notes/" class="md-nav__link">
+      <a href="../../../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5666,7 +6183,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modular-pipeline-best-practices/" class="md-nav__link">
+      <a href="../../../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5694,7 +6211,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../practical-language-aware-chunking/" class="md-nav__link">
+      <a href="../../../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5722,7 +6239,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../speaker-diarization-algorithm-design/" class="md-nav__link">
+      <a href="../../../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5750,7 +6267,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../speaker-diarization-time-mapped-design/" class="md-nav__link">
+      <a href="../../../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5775,37 +6292,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    TimelineMapper Design Document
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--current"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../transcription/design/timelinemapper-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5821,215 +6311,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#purpose" class="md-nav__link">
-    <span class="md-ellipsis">
-      Purpose
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Context">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#high-level-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      High-Level Pipeline
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#core-problem" class="md-nav__link">
-    <span class="md-ellipsis">
-      Core Problem
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#remapping-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remapping Strategy
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conceptual-illustration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Conceptual Illustration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#detailed-algorithm" class="md-nav__link">
-    <span class="md-ellipsis">
-      Detailed Algorithm
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Detailed Algorithm">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mapping-table-construction" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mapping Table Construction
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#remapping-each-subtitle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remapping Each Subtitle
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#proposed-timelinemapper-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      Proposed TimelineMapper Class
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#internal-helpers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Internal Helpers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#design-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Design Considerations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      Testing Plan
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#potential-future-extensions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Potential Future Extensions
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      Implementation Plan
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Implementation Plan">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-core-implementation-1-2-days" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Core Implementation (1-2 days)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-testing-1-day" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Testing (1 day)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-pipeline-integration-1-day" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Pipeline Integration (1 day)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Summary
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -8511,15 +8792,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#purpose" class="md-nav__link">
-    <span class="md-ellipsis">
-      Purpose
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       Context
@@ -8530,9 +8802,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#high-level-pipeline" class="md-nav__link">
+  <a href="#background" class="md-nav__link">
     <span class="md-ellipsis">
-      High-Level Pipeline
+      Background
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requirements
     </span>
   </a>
   
@@ -8544,142 +8825,253 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#core-problem" class="md-nav__link">
+  <a href="#decision" class="md-nav__link">
     <span class="md-ellipsis">
-      Core Problem
+      Decision
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#remapping-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remapping Strategy
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conceptual-illustration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Conceptual Illustration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#detailed-algorithm" class="md-nav__link">
-    <span class="md-ellipsis">
-      Detailed Algorithm
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Detailed Algorithm">
+    <nav class="md-nav" aria-label="Decision">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mapping-table-construction" class="md-nav__link">
+  <a href="#1-default-output-mode-human-friendly" class="md-nav__link">
     <span class="md-ellipsis">
-      Mapping Table Construction
+      1. Default Output Mode: Human-Friendly
     </span>
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#remapping-each-subtitle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remapping Each Subtitle
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#proposed-timelinemapper-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      Proposed TimelineMapper Class
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#internal-helpers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Internal Helpers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#design-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Design Considerations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      Testing Plan
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#potential-future-extensions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Potential Future Extensions
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      Implementation Plan
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Implementation Plan">
+    <nav class="md-nav" aria-label="1. Default Output Mode: Human-Friendly">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-core-implementation-1-2-days" class="md-nav__link">
+  <a href="#tnh-gen-list-default-human-mode" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Core Implementation (1-2 days)
+      tnh-gen list (default human mode)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-testing-1-day" class="md-nav__link">
+  <a href="#tnh-gen-list-verbose-api-mode" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Testing (1 day)
+      tnh-gen list --verbose (API mode)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-flag-semantics" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Flag Semantics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Flag Semantics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-global-flag-verbose-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      New Global Flag: --verbose / -v
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-command-specific-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Command-Specific Defaults
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Command-Specific Defaults">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tnh-gen-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      tnh-gen list
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-pipeline-integration-1-day" class="md-nav__link">
+  <a href="#tnh-gen-run" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Pipeline Integration (1 day)
+      tnh-gen run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tnh-gen-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      tnh-gen config
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-implementation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Implementation Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Implementation Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-update-listpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Update list.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-add-human-friendly-formatters" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Add Human-Friendly Formatters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-update-runpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 Update run.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-update-global-cli-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 Update Global CLI State
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-backward-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Backward Compatibility
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-examples-before-after" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Examples (Before &amp; After)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Examples (Before & After)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-human-using-cli-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: Human using CLI directly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-vs-code-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: VS Code extension
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-script-parsing-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: Script parsing output
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neutral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Neutral
     </span>
   </a>
   
@@ -8691,11 +9083,179 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
+  <a href="#alternatives-considered" class="md-nav__link">
     <span class="md-ellipsis">
-      Summary
+      Alternatives Considered
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a-keep-json-default-add-human-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option A: Keep JSON Default, Add --human Flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b-default-to-table-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option B: Default to Table Format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-c-separate-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option C: Separate Commands
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-direct-cli-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Direct CLI Users
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-scripts-and-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Scripts and Automation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-vs-code-extension-adr-vsc02" class="md-nav__link">
+    <span class="md-ellipsis">
+      For VS Code Extension (ADR-VSC02)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unit Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#golden-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Golden Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Tests
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="References">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parent-adr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parent ADR
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#related-adrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related ADRs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      External References
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -8717,255 +9277,505 @@
   
 
 
-<h1 id="timelinemapper-design-document">TimelineMapper Design Document<a class="headerlink" href="#timelinemapper-design-document" title="Link to this section">&para;</a></h1>
-<p>Design for the TimelineMapper component that reprojects chunk-level transcripts into the original audio timeline.</p>
-<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Link to this section">&para;</a></h2>
-<p>In an audio transcription pipeline that integrates <strong>speaker diarization</strong> and <strong>chunked audio processing</strong>, transcriptions produced by ASR (Automatic Speech Recognition) are <strong>offset relative to each audio chunk</strong> rather than the original full audio file.</p>
-<p>The <code>TimelineMapper</code> solves this by <strong>remapping</strong> each transcription segment's start and end timecodes from the chunk's local timeline back into the global original audio timeline.</p>
+<h1 id="adr-tg011-human-friendly-cli-defaults">ADR-TG01.1: Human-Friendly CLI Defaults<a class="headerlink" href="#adr-tg011-human-friendly-cli-defaults" title="Link to this section">&para;</a></h1>
+<p>Extends <a href="../adr-tg01-cli-architecture/">ADR-TG01</a> to make tnh-gen CLI more human-friendly by default, while preserving API-style structured output for programmatic use via <code>--verbose</code> flag.</p>
+<ul>
+<li><strong>Filename</strong>: <code>adr-tg01.1-human-friendly-defaults.md</code></li>
+<li><strong>Heading</strong>: <code># ADR-TG01.1: Human-Friendly CLI Defaults</code></li>
+<li><strong>Status</strong>: Proposed</li>
+<li><strong>Date</strong>: 2025-12-23</li>
+<li><strong>Authors</strong>: Aaron Solomon, Claude Sonnet 4.5</li>
+<li><strong>Owner</strong>: aaronksolomon</li>
+<li><strong>Parent ADR</strong>: <a href="../adr-tg01-cli-architecture/">ADR-TG01: tnh-gen CLI Architecture</a></li>
+</ul>
 <hr />
 <h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
-<h3 id="high-level-pipeline">High-Level Pipeline<a class="headerlink" href="#high-level-pipeline" title="Link to this section">&para;</a></h3>
-<pre class="mermaid"><code>flowchart LR
-    DiarizationJSON[Diarization JSON] --&gt; Chunker[DiarizationChunker]
-    Chunker --&gt; AudioHandler
-    AudioHandler --&gt; Transcription
-    Transcription --&gt; TimelineMapper
-    TimelineMapper --&gt; SRTProcessor</code></pre>
+<h3 id="background">Background<a class="headerlink" href="#background" title="Link to this section">&para;</a></h3>
+<p>ADR-TG01 designed tnh-gen with an API-first approach, optimizing for VS Code integration and programmatic consumption. The CLI defaults to JSON output with complete metadata, which is ideal for structured consumption but verbose for human interactive use.</p>
+<p><strong>Current behavior</strong> (<code>tnh-gen list --format json</code>):
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;prompts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;daily&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Daily Guidance&quot;</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Daily guidance prompt for testing.&quot;</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;guidance&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;study&quot;</span><span class="p">],</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">&quot;required_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;audience&quot;</span><span class="p">],</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">&quot;optional_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">],</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="nt">&quot;default_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Plum Village&quot;</span><span class="p">},</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">      </span><span class="nt">&quot;default_model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="nt">&quot;output_mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="nt">&quot;warnings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="p">],</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<p><strong>Human perspective</strong>: When using the CLI directly (not via VS Code), developers want:
+1. Quick scanning of available prompts with descriptions
+2. Simple variable lists (not JSON dictionaries)
+3. Less visual noise from metadata fields
+4. Natural reading experience without JSON syntax</p>
+<p><strong>API perspective</strong>: VS Code extension and scripts need:
+1. Complete structured metadata
+2. Parseable JSON/YAML
+3. All fields including warnings, versions, sources
+4. Consistent machine-readable format</p>
+<h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Link to this section">&para;</a></h3>
 <ol>
-<li><strong>DiarizationChunker</strong> splits diarization segments into manageable processing units</li>
-<li><strong>AudioHandler</strong> extracts corresponding audio for each chunk</li>
-<li><strong>Transcription</strong> produces transcriptions relative to chunk timelines</li>
-<li><strong>TimelineMapper</strong> <strong>reprojects</strong> the transcription back into original audio coordinates</li>
-<li><strong>SRTProcessor</strong> formats the finalized subtitles</li>
+<li><strong>Default to human-friendly output</strong> for direct CLI usage</li>
+<li><strong>Preserve API mode</strong> via <code>--verbose</code> flag for programmatic consumption</li>
+<li><strong>Apply across commands</strong> (<code>list</code>, <code>run</code>, etc.) consistently</li>
+<li><strong>Maintain backward compatibility</strong> with existing VS Code integration</li>
+<li><strong>No breaking changes</strong> to ADR-TG01 contract</li>
 </ol>
 <hr />
-<h2 id="core-problem">Core Problem<a class="headerlink" href="#core-problem" title="Link to this section">&para;</a></h2>
-<p>When a chunk of audio is built, it <strong>splices together</strong> diarized segments, sometimes <strong>inserting silences</strong> for gaps.
-This causes the chunk's internal time (0 → chunk duration) to <strong>diverge</strong> from the original global audio timeline.</p>
-<p>Since ASR operates on the chunk, its output <strong>must be corrected</strong> to be meaningful relative to the original full audio.</p>
-<hr />
-<h2 id="remapping-strategy">Remapping Strategy<a class="headerlink" href="#remapping-strategy" title="Link to this section">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Step</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;"><strong>Build a piecewise mapping table</strong> from original segment start/end times and their corresponding chunk offsets (<code>audio_map_time</code>).</td>
-</tr>
-<tr>
-<td style="text-align: left;">2</td>
-<td style="text-align: left;"><strong>For each subtitle segment</strong> (in chunk time), find the <strong>best matching interval</strong> in the mapping table.</td>
-</tr>
-<tr>
-<td style="text-align: left;">3</td>
-<td style="text-align: left;"><strong>Apply a simple shift</strong> (no stretch or scale): <code>global_time = orig_start + (chunk_time - local_start)</code></td>
-</tr>
-<tr>
-<td style="text-align: left;">4</td>
-<td style="text-align: left;"><strong>Handle edge cases</strong> gracefully, e.g., no matching interval found.</td>
-</tr>
-<tr>
-<td style="text-align: left;">5</td>
-<td style="text-align: left;"><strong>Return a new <code>TimedText</code> object</strong> with remapped times, keeping all text and metadata intact.</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="conceptual-illustration">Conceptual Illustration<a class="headerlink" href="#conceptual-illustration" title="Link to this section">&para;</a></h2>
-<pre class="mermaid"><code>flowchart TB
-    TimedTextLocal["TimedText&lt;br/&gt;(chunk time)"] --&gt; TimelineMapper["TimelineMapper.remap()"]
-    DiarizationChunk["DiarizationChunk&lt;br/&gt;(original mapping info)"] --&gt; TimelineMapper
-    TimelineMapper --&gt; TimedTextGlobal["TimedText&lt;br/&gt;(global time)"]</code></pre>
-<hr />
-<h2 id="detailed-algorithm">Detailed Algorithm<a class="headerlink" href="#detailed-algorithm" title="Link to this section">&para;</a></h2>
-<h3 id="mapping-table-construction">Mapping Table Construction<a class="headerlink" href="#mapping-table-construction" title="Link to this section">&para;</a></h3>
-<p>Each diarization segment produces an interval:</p>
-<ul>
-<li><code>orig_start</code> → <code>orig_end</code> (original timeline)</li>
-<li><code>local_start</code> = <code>audio_map_time</code></li>
-<li><code>local_end</code> = <code>audio_map_time + segment_duration</code></li>
-</ul>
-<p>For inserted silences (gap fill-ins), we can infer synthetic intervals if needed to maintain timeline continuity.</p>
-<hr />
-<h3 id="remapping-each-subtitle">Remapping Each Subtitle<a class="headerlink" href="#remapping-each-subtitle" title="Link to this section">&para;</a></h3>
-<p>For each transcription segment:</p>
-<ol>
-<li><strong>Identify overlap</strong>: Find the mapping interval with the <strong>largest overlap</strong> (≥ 1 ms).</li>
-<li><strong>Shift time</strong>:</li>
-</ol>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>new_start = orig_start + (subtitle_start - local_start)
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>new_end   = orig_start + (subtitle_end - local_start)
-</span></code></pre></div>
-<ol>
-<li>
-<p><strong>Edge Handling</strong>:</p>
-</li>
-<li>
-<p>If no matching interval is found, either:</p>
-<ul>
-<li>Log a warning and leave unchanged</li>
-<li>Apply a fallback shift</li>
-<li>Raise an exception (configurable)</li>
-</ul>
-</li>
-</ol>
-<hr />
-<h2 id="proposed-timelinemapper-class">Proposed <code>TimelineMapper</code> Class<a class="headerlink" href="#proposed-timelinemapper-class" title="Link to this section">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.audio_processing.transcription_service.diarization_chunker</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiarizationChunk</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.audio_processing.timed_text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimedText</span><span class="p">,</span> <span class="n">TimedTextUnit</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">TimelineMapper</span><span class="p">:</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps TimedText from chunk-relative timecodes back to global timecodes.&quot;&quot;&quot;</span>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
+<h3 id="1-default-output-mode-human-friendly">1. Default Output Mode: Human-Friendly<a class="headerlink" href="#1-default-output-mode-human-friendly" title="Link to this section">&para;</a></h3>
+<p><strong>When <code>--verbose</code> is NOT set</strong>, default to simplified human-readable output:</p>
+<h4 id="tnh-gen-list-default-human-mode"><code>tnh-gen list</code> (default human mode)<a class="headerlink" href="#tnh-gen-list-default-human-mode" title="Link to this section">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Available Prompts (3)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>daily - Daily Guidance
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Daily guidance prompt for testing.
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Variables: audience, [location]
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  Model: gpt-4o | Tags: guidance, study
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">remap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timed_text</span><span class="p">:</span> <span class="n">TimedText</span><span class="p">,</span> <span class="n">chunk</span><span class="p">:</span> <span class="n">DiarizationChunk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TimedText</span><span class="p">:</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="sd">        Remap TimedText from chunk-relative timecodes back to global timecodes.</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="sd">        Args:</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="sd">            timed_text: TimedText with chunk-relative timestamps</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="sd">            chunk: DiarizationChunk with mapping information</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="sd">        Returns:</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="sd">            New TimedText with global timestamps</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>            <span class="k">raise</span> <span class="n">exception</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>        <span class="o">...</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>        <span class="k">return</span> <span class="n">TimedText</span><span class="p">(</span><span class="n">segments</span><span class="o">=</span><span class="n">remapped_segments</span><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>translate - Vietnamese-English Translation
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  Translate Vietnamese dharma texts to English with context awareness.
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  Variables: source_lang, target_lang, input_text, [context]
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  Model: gpt-4o | Tags: translation, dharma
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>summarize - Summarize Teaching
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  Generate concise summary of dharma teaching.
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  Variables: input_text, [max_length]
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>  Model: gpt-4o-mini | Tags: summarization, dharma
 </span></code></pre></div>
-<hr />
-<h2 id="internal-helpers">Internal Helpers<a class="headerlink" href="#internal-helpers" title="Link to this section">&para;</a></h2>
+<p><strong>Design choices</strong>:
+- <strong>Header</strong>: Shows total count for quick reference
+- <strong>Prompt title</strong>: <code>key - name</code> on first line (key is what you type in commands)
+- <strong>Description</strong>: Full description on second line (indented)
+- <strong>Variables</strong>: Simple comma-separated list, optional vars in brackets <code>[var]</code>
+- <strong>Metadata line</strong>: Compact single line with model and tags
+- <strong>Whitespace</strong>: Blank line between prompts for scanning</p>
+<h4 id="tnh-gen-list-verbose-api-mode"><code>tnh-gen list --verbose</code> (API mode)<a class="headerlink" href="#tnh-gen-list-verbose-api-mode" title="Link to this section">&para;</a></h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;prompts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;daily&quot;</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Daily Guidance&quot;</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Daily guidance prompt for testing.&quot;</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;guidance&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;study&quot;</span><span class="p">],</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="nt">&quot;required_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;audience&quot;</span><span class="p">],</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="nt">&quot;optional_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">],</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">      </span><span class="nt">&quot;default_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Plum Village&quot;</span><span class="p">},</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="nt">&quot;default_model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">      </span><span class="nt">&quot;output_mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">      </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="nt">&quot;warnings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span><span class="p">],</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">  </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">  </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Unchanged from ADR-TG01</strong>: Full structured output with all metadata fields.</p>
+<h3 id="2-flag-semantics">2. Flag Semantics<a class="headerlink" href="#2-flag-semantics" title="Link to this section">&para;</a></h3>
+<h4 id="new-global-flag-verbose-v">New Global Flag: <code>--verbose</code> / <code>-v</code><a class="headerlink" href="#new-global-flag-verbose-v" title="Link to this section">&para;</a></h4>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>--verbose,<span class="w"> </span>-v<span class="w">      </span><span class="c1"># Enable API-style structured output (JSON default)</span>
+</span></code></pre></div>
+<p><strong>Behavior</strong>:
+- <strong>WITHOUT <code>--verbose</code></strong>: Human-friendly output (format auto-selected per command)
+- <strong>WITH <code>--verbose</code></strong>: API-style JSON output (full metadata, structured)</p>
+<p><strong>Precedence rules</strong>:
+1. <strong>Explicit <code>--format</code></strong>: Overrides everything (e.g., <code>--format yaml</code> gives YAML regardless of verbose)
+2. <strong><code>--verbose</code> flag</strong>: Triggers API mode (JSON with full metadata)
+3. <strong>Default</strong>: Human-friendly mode (command-specific formatting)</p>
+<p><strong>Examples</strong>:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Human-friendly (default)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>tnh-gen<span class="w"> </span>list
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># API mode (full JSON)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--verbose
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>-v
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1"># Explicit format override</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--format<span class="w"> </span>yaml<span class="w">          </span><span class="c1"># YAML, human-friendly subset</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--verbose<span class="w"> </span>--format<span class="w"> </span>yaml<span class="w">  </span><span class="c1"># YAML, full API metadata</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="c1"># Legacy table format still works</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--format<span class="w"> </span>table
+</span></code></pre></div></p>
+<h3 id="3-command-specific-defaults">3. Command-Specific Defaults<a class="headerlink" href="#3-command-specific-defaults" title="Link to this section">&para;</a></h3>
+<h4 id="tnh-gen-list"><code>tnh-gen list</code><a class="headerlink" href="#tnh-gen-list" title="Link to this section">&para;</a></h4>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Helper</th>
-<th style="text-align: left;">Purpose</th>
+<th>Mode</th>
+<th>Default Format</th>
+<th>Content</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>_build_mapping_intervals(chunk: DiarizationChunk)</code></td>
-<td style="text-align: left;">Constructs ordered list of mapping intervals</td>
+<td>Human (default)</td>
+<td>Custom text</td>
+<td>Description, variables (simplified), model, tags</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>_find_best_overlap(intervals, start, end)</code></td>
-<td style="text-align: left;">Finds the mapping interval with the greatest overlap for a subtitle</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>_apply_shift(interval, segment)</code></td>
-<td style="text-align: left;">Applies the simple shift formula to subtitle times</td>
+<td>Verbose (<code>-v</code>)</td>
+<td>JSON</td>
+<td>Full metadata (all fields from ADR-TG01)</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Internal data structure</strong>:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@dataclass</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">MappingInterval</span><span class="p">:</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">orig_start</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">orig_end</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">local_start</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">local_end</span><span class="p">:</span> <span class="nb">int</span>
-</span></code></pre></div>
-<hr />
-<h2 id="design-considerations">Design Considerations<a class="headerlink" href="#design-considerations" title="Link to this section">&para;</a></h2>
-<ul>
-<li><strong>Statelessness</strong>: <code>TimelineMapper</code> does not hold state between remaps.</li>
-<li><strong>Immutability</strong>: Never mutate the input <code>TimedText</code>; always produce a new instance.</li>
-<li>
-<p><strong>Performance</strong>:</p>
-</li>
-<li>
-<p>Pre-sort intervals by <code>local_start</code></p>
-</li>
-<li>Consider <code>bisect</code> (binary search) for efficient lookup</li>
-<li>
-<p><strong>Configurability</strong>:</p>
-</li>
-<li>
-<p>Handling of unmatched subtitles (warn/skip/fallback)</p>
-</li>
-<li>Optional detailed logging for debug mode</li>
-<li>
-<p><strong>Testability</strong>:</p>
-</li>
-<li>
-<p>Easily unit-testable with synthetic chunks and known offsets</p>
-</li>
-<li>Edge case coverage: overlaps, straddling gaps, missing matches</li>
-</ul>
-<hr />
-<h2 id="testing-plan">Testing Plan<a class="headerlink" href="#testing-plan" title="Link to this section">&para;</a></h2>
+<h4 id="tnh-gen-run"><code>tnh-gen run</code><a class="headerlink" href="#tnh-gen-run" title="Link to this section">&para;</a></h4>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Test Case</th>
-<th style="text-align: left;">Description</th>
+<th>Mode</th>
+<th>Default Format</th>
+<th>Content</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">Basic remap</td>
-<td style="text-align: left;">Straightforward 1-to-1 mapping with no gaps</td>
+<td>Human (default)</td>
+<td>Text output only</td>
+<td>Just the generated text (no JSON wrapper)</td>
 </tr>
 <tr>
-<td style="text-align: left;">Overlapping segments</td>
-<td style="text-align: left;">Subtitle overlaps two mapping intervals</td>
-</tr>
-<tr>
-<td style="text-align: left;">Gaps and silences</td>
-<td style="text-align: left;">Subtitle falls into an inserted silence</td>
-</tr>
-<tr>
-<td style="text-align: left;">No matching interval</td>
-<td style="text-align: left;">Subtitle completely outside known mappings</td>
-</tr>
-<tr>
-<td style="text-align: left;">Boundary conditions</td>
-<td style="text-align: left;">Subtitle exactly starts/ends at interval boundary</td>
-</tr>
-<tr>
-<td style="text-align: left;">Performance test</td>
-<td style="text-align: left;">10,000+ segments</td>
+<td>Verbose (<code>-v</code>)</td>
+<td>JSON</td>
+<td>Full response with status, provenance, usage, latency</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Example</strong>:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Human mode: just the generated content</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span>--var<span class="w"> </span><span class="nv">source_lang</span><span class="o">=</span>vi<span class="w"> </span>--var<span class="w"> </span><span class="nv">target_lang</span><span class="o">=</span>en
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="o">[</span>Generated<span class="w"> </span>translation<span class="w"> </span>text<span class="w"> </span>here...<span class="o">]</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Verbose mode: full structured response</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span>--var<span class="w"> </span><span class="nv">source_lang</span><span class="o">=</span>vi<span class="w"> </span>--var<span class="w"> </span><span class="nv">target_lang</span><span class="o">=</span>en<span class="w"> </span>--verbose
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="o">{</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;succeeded&quot;</span>,
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="s2">&quot;result&quot;</span>:<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="s2">&quot;text&quot;</span>:<span class="w"> </span><span class="s2">&quot;[Generated translation...]&quot;</span>,
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="s2">&quot;model&quot;</span>:<span class="w"> </span><span class="s2">&quot;gpt-4o&quot;</span>,
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="s2">&quot;usage&quot;</span>:<span class="w"> </span><span class="o">{</span>...<span class="o">}</span>,
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="s2">&quot;latency_ms&quot;</span>:<span class="w"> </span><span class="m">3456</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">  </span><span class="o">}</span>,
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">  </span><span class="s2">&quot;provenance&quot;</span>:<span class="w"> </span><span class="o">{</span>...<span class="o">}</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="o">}</span>
+</span></code></pre></div></p>
+<h4 id="tnh-gen-config"><code>tnh-gen config</code><a class="headerlink" href="#tnh-gen-config" title="Link to this section">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Default Format</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Human (default)</td>
+<td>YAML</td>
+<td>Human-readable config (comments preserved)</td>
+</tr>
+<tr>
+<td>Verbose (<code>-v</code>)</td>
+<td>JSON</td>
+<td>Full config with sources metadata</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-implementation-strategy">4. Implementation Strategy<a class="headerlink" href="#4-implementation-strategy" title="Link to this section">&para;</a></h3>
+<h4 id="41-update-listpy">4.1 Update <code>list.py</code><a class="headerlink" href="#41-update-listpy" title="Link to this section">&para;</a></h4>
+<p><strong>Current</strong> (<code>list.py:96-127</code>):
+- Always builds full JSON entries with all metadata
+- Formats as JSON/YAML/table based on explicit <code>--format</code></p>
+<p><strong>Proposed</strong>:
+1. Check <code>ctx.verbose</code> flag first
+2. If <code>not ctx.verbose</code> and <code>format is None</code>: use human-friendly text formatter
+3. If <code>ctx.verbose</code> or explicit format: use current structured logic</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Pseudocode</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">if</span> <span class="ow">not</span> <span class="n">ctx</span><span class="o">.</span><span class="n">verbose</span> <span class="ow">and</span> <span class="nb">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="c1"># Human-friendly mode</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">output</span> <span class="o">=</span> <span class="n">format_human_friendly_list</span><span class="p">(</span><span class="n">prompts</span><span class="p">)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">else</span><span class="p">:</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="c1"># API mode (current behavior)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">entries</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="n">full</span> <span class="n">metadata</span><span class="o">...</span><span class="p">]</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">fmt</span> <span class="o">=</span> <span class="nb">format</span> <span class="ow">or</span> <span class="n">ListOutputFormat</span><span class="o">.</span><span class="n">json</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="n">render_output</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">fmt</span><span class="p">))</span>
+</span></code></pre></div>
+<h4 id="42-add-human-friendly-formatters">4.2 Add Human-Friendly Formatters<a class="headerlink" href="#42-add-human-friendly-formatters" title="Link to this section">&para;</a></h4>
+<p><strong>New module</strong>: <code>src/tnh_scholar/cli_tools/tnh_gen/output/human_formatter.py</code></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">format_human_friendly_list</span><span class="p">(</span><span class="n">prompts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PromptMetadata</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Format prompts for human readability.</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="sd">    Args:</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="sd">        prompts: List of prompt metadata objects.</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="sd">    Returns:</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="sd">        Formatted string with descriptions and simplified variables.</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Available Prompts (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">prompts</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">prompts</span><span class="p">:</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>        <span class="c1"># Title line: key - name</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prompt</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">prompt</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>        <span class="c1"># Description (indented)</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">prompt</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>        <span class="c1"># Variables (simplified)</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>        <span class="n">req_vars</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prompt</span><span class="o">.</span><span class="n">required_variables</span><span class="p">)</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>        <span class="n">opt_vars</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">prompt</span><span class="o">.</span><span class="n">optional_variables</span><span class="p">)</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>        <span class="n">all_vars</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">req_vars</span><span class="p">,</span> <span class="n">opt_vars</span><span class="p">]))</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Variables: </span><span class="si">{</span><span class="n">all_vars</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;(none)&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>        <span class="c1"># Metadata line</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>        <span class="n">model</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">default_model</span> <span class="ow">or</span> <span class="s2">&quot;(no default)&quot;</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>        <span class="n">tags</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prompt</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span> <span class="k">if</span> <span class="n">prompt</span><span class="o">.</span><span class="n">tags</span> <span class="k">else</span> <span class="s2">&quot;(no tags)&quot;</span>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Model: </span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2"> | Tags: </span><span class="si">{</span><span class="n">tags</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>
+</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># Blank line between prompts</span>
+</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>
+</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+</span></code></pre></div>
+<h4 id="43-update-runpy">4.3 Update <code>run.py</code><a class="headerlink" href="#43-update-runpy" title="Link to this section">&para;</a></h4>
+<p><strong>Current behavior</strong>: Always outputs JSON response (ADR-TG01 §4.7)</p>
+<p><strong>Proposed</strong>:
+- <strong>Human mode</strong> (<code>not verbose</code>): Output only <code>result.text</code> directly
+- <strong>Verbose mode</strong>: Current JSON response with full metadata</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># After successful generation</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">if</span> <span class="ow">not</span> <span class="n">ctx</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="c1"># Human mode: just the content</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">else</span><span class="p">:</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="c1"># API mode: full JSON response</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;succeeded&quot;</span><span class="p">,</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="s2">&quot;provenance&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    <span class="p">}</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>    <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="n">render_output</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">OutputFormat</span><span class="o">.</span><span class="n">json</span><span class="p">))</span>
+</span></code></pre></div>
+<h4 id="44-update-global-cli-state">4.4 Update Global CLI State<a class="headerlink" href="#44-update-global-cli-state" title="Link to this section">&para;</a></h4>
+<p><strong>Modify</strong> <code>src/tnh_scholar/cli_tools/tnh_gen/state.py</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CLIContext</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output_format</span><span class="p">:</span> <span class="n">OutputFormat</span> <span class="o">=</span> <span class="n">OutputFormat</span><span class="o">.</span><span class="n">json</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># ADD: Track verbose mode</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</span></code></pre></div>
+<p><strong>Modify</strong> <code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py</code> (main entry point):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">()</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;--config&quot;</span><span class="p">),</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="nb">format</span><span class="p">:</span> <span class="n">OutputFormat</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="n">OutputFormat</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="s2">&quot;--format&quot;</span><span class="p">),</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;API-style structured output&quot;</span><span class="p">),</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;--quiet&quot;</span><span class="p">,</span> <span class="s2">&quot;-q&quot;</span><span class="p">),</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="p">):</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Global options for all tnh-gen commands.&quot;&quot;&quot;</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="n">ctx</span><span class="o">.</span><span class="n">config_path</span> <span class="o">=</span> <span class="n">config</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="n">ctx</span><span class="o">.</span><span class="n">output_format</span> <span class="o">=</span> <span class="nb">format</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>    <span class="n">ctx</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>  <span class="c1"># Store in context</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>    <span class="n">ctx</span><span class="o">.</span><span class="n">quiet</span> <span class="o">=</span> <span class="n">quiet</span>
+</span></code></pre></div>
+<h3 id="5-backward-compatibility">5. Backward Compatibility<a class="headerlink" href="#5-backward-compatibility" title="Link to this section">&para;</a></h3>
+<p><strong>VS Code Extension</strong> (ADR-VSC02):
+- Extension currently uses <code>tnh-gen list --format json</code> explicitly
+- <strong>No impact</strong>: Explicit <code>--format</code> overrides verbose logic
+- Extension continues to receive structured JSON as expected</p>
+<p><strong>Scripts using JSON output</strong>:
+- Scripts that rely on default JSON output should add <code>--verbose</code> flag
+- Alternatively, use explicit <code>--format json</code>
+- <strong>Migration period</strong>: Add deprecation notice in v0.2.x, enforce in v0.3.0</p>
+<p><strong>Table format</strong>:
+- <code>--format table</code> continues to work exactly as before
+- Human-friendly text format is a new default, doesn't replace table</p>
+<h3 id="6-examples-before-after">6. Examples (Before &amp; After)<a class="headerlink" href="#6-examples-before-after" title="Link to this section">&para;</a></h3>
+<h4 id="scenario-1-human-using-cli-directly">Scenario 1: Human using CLI directly<a class="headerlink" href="#scenario-1-human-using-cli-directly" title="Link to this section">&para;</a></h4>
+<p><strong>Before (ADR-TG01)</strong>:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>list
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="o">{</span><span class="s2">&quot;prompts&quot;</span>:<span class="w"> </span><span class="o">[{</span><span class="s2">&quot;key&quot;</span>:<span class="w"> </span><span class="s2">&quot;daily&quot;</span>,<span class="w"> </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;Daily Guidance&quot;</span>,<span class="w"> </span>...<span class="o">}]</span>,<span class="w"> </span><span class="s2">&quot;count&quot;</span>:<span class="w"> </span><span class="m">1</span>,<span class="w"> </span>...<span class="o">}</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="c1"># JSON blob is hard to read</span>
+</span></code></pre></div></p>
+<p><strong>After (ADR-TG01.1)</strong>:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>list
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Available<span class="w"> </span>Prompts<span class="w"> </span><span class="o">(</span><span class="m">1</span><span class="o">)</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>daily<span class="w"> </span>-<span class="w"> </span>Daily<span class="w"> </span>Guidance
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span>Daily<span class="w"> </span>guidance<span class="w"> </span>prompt<span class="w"> </span><span class="k">for</span><span class="w"> </span>testing.
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span>Variables:<span class="w"> </span>audience,<span class="w"> </span><span class="o">[</span>location<span class="o">]</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span>Model:<span class="w"> </span>gpt-4o<span class="w"> </span><span class="p">|</span><span class="w"> </span>Tags:<span class="w"> </span>guidance,<span class="w"> </span>study
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="c1"># Easy to scan and understand</span>
+</span></code></pre></div></p>
+<h4 id="scenario-2-vs-code-extension">Scenario 2: VS Code extension<a class="headerlink" href="#scenario-2-vs-code-extension" title="Link to this section">&para;</a></h4>
+<p><strong>Before &amp; After (unchanged)</strong>:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>list<span class="w"> </span>--format<span class="w"> </span>json
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="o">{</span><span class="s2">&quot;prompts&quot;</span>:<span class="w"> </span><span class="o">[</span>...<span class="o">]</span>,<span class="w"> </span><span class="s2">&quot;count&quot;</span>:<span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="s2">&quot;sources&quot;</span>:<span class="w"> </span><span class="o">{</span>...<span class="o">}}</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1"># Extension explicitly requests JSON, gets structured output</span>
+</span></code></pre></div></p>
+<h4 id="scenario-3-script-parsing-output">Scenario 3: Script parsing output<a class="headerlink" href="#scenario-3-script-parsing-output" title="Link to this section">&para;</a></h4>
+<p><strong>Before (implicit JSON)</strong>:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.prompts[].key&#39;</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>daily
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>translate
+</span></code></pre></div></p>
+<p><strong>After (add --verbose)</strong>:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>list<span class="w"> </span>--verbose<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.prompts[].key&#39;</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>daily
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>translate
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># Scripts add --verbose flag for API mode</span>
+</span></code></pre></div></p>
 <hr />
-<h2 id="potential-future-extensions">Potential Future Extensions<a class="headerlink" href="#potential-future-extensions" title="Link to this section">&para;</a></h2>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Better Human UX</strong>: CLI is now friendly for interactive use without JSON noise</li>
+<li><strong>Clear Intent</strong>: <code>--verbose</code> flag explicitly signals "I want full API output"</li>
+<li><strong>Progressive Disclosure</strong>: Simple cases simple (default), complex cases possible (verbose)</li>
+<li><strong>Backward Compatible</strong>: VS Code and scripts using <code>--format json</code> unaffected</li>
+<li><strong>Consistent Pattern</strong>: Same verbose semantics apply across all commands (<code>list</code>, <code>run</code>, <code>config</code>)</li>
+<li><strong>Easier Onboarding</strong>: New users can read prompts naturally without parsing JSON</li>
+</ol>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Breaking Change for Scripts</strong>: Scripts relying on default JSON output must add <code>--verbose</code></li>
+<li><strong>Mitigation</strong>: Document in CHANGELOG, provide migration guide</li>
+<li><strong>Two Output Modes</strong>: Increased testing surface (human + API modes)</li>
+<li><strong>Mitigation</strong>: Golden tests for both modes</li>
+<li><strong>Format Ambiguity</strong>: Users might be confused when <code>--format</code> overrides <code>--verbose</code></li>
+<li><strong>Mitigation</strong>: Clear help text and examples in docs</li>
+</ol>
+<h3 id="neutral">Neutral<a class="headerlink" href="#neutral" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Affine time transforms</strong>: for stretch/compression correction (e.g., <code>(t) → a·t + b</code>)</li>
-<li><strong>Speaker-aware remapping</strong>: Map only into segments from the same speaker</li>
-<li><strong>Multi-chunk remapping</strong>: Process an entire transcription consisting of multiple chunks in one pass</li>
-<li><strong>Confidence-weighted remap</strong>: If multiple overlaps, prefer higher ASR confidence segments</li>
+<li><strong>Documentation Overhead</strong>: Need to document both modes clearly</li>
+<li><strong>Code Complexity</strong>: Additional formatter module, but well-isolated</li>
 </ul>
 <hr />
-<h2 id="implementation-plan">Implementation Plan<a class="headerlink" href="#implementation-plan" title="Link to this section">&para;</a></h2>
-<h3 id="1-core-implementation-1-2-days">1. <strong>Core Implementation (1-2 days)</strong><a class="headerlink" href="#1-core-implementation-1-2-days" title="Link to this section">&para;</a></h3>
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Link to this section">&para;</a></h2>
+<h3 id="option-a-keep-json-default-add-human-flag">Option A: Keep JSON Default, Add <code>--human</code> Flag<a class="headerlink" href="#option-a-keep-json-default-add-human-flag" title="Link to this section">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>tnh-gen<span class="w"> </span>list<span class="w">          </span><span class="c1"># JSON (default)</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--human<span class="w">  </span><span class="c1"># Human-friendly</span>
+</span></code></pre></div>
+<p><strong>Rejected</strong>: Optimizes for API use, not human use. Most CLI tools default to human-friendly output (e.g., <code>git log</code>, <code>ls</code>, <code>docker ps</code>).</p>
+<h3 id="option-b-default-to-table-format">Option B: Default to Table Format<a class="headerlink" href="#option-b-default-to-table-format" title="Link to this section">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>tnh-gen<span class="w"> </span>list<span class="w">          </span><span class="c1"># Table (default)</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--format<span class="w"> </span>json<span class="w">  </span><span class="c1"># API mode</span>
+</span></code></pre></div>
+<p><strong>Rejected</strong>: Table format lacks descriptions and is too constrained. Human-friendly text can include descriptions and multiline content.</p>
+<h3 id="option-c-separate-commands">Option C: Separate Commands<a class="headerlink" href="#option-c-separate-commands" title="Link to this section">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>tnh-gen<span class="w"> </span>list<span class="w">          </span><span class="c1"># Human-friendly</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>tnh-gen<span class="w"> </span>list-json<span class="w">     </span><span class="c1"># API mode</span>
+</span></code></pre></div>
+<p><strong>Rejected</strong>: Duplicates commands, breaks Unix conventions. Single command with flags is cleaner.</p>
+<hr />
+<h2 id="migration-guide">Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this section">&para;</a></h2>
+<h3 id="for-direct-cli-users">For Direct CLI Users<a class="headerlink" href="#for-direct-cli-users" title="Link to this section">&para;</a></h3>
+<p><strong>No action required</strong>. You'll automatically get better, more readable output.</p>
+<h3 id="for-scripts-and-automation">For Scripts and Automation<a class="headerlink" href="#for-scripts-and-automation" title="Link to this section">&para;</a></h3>
+<p><strong>Add <code>--verbose</code> flag</strong> to get structured JSON output:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Before</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.prompts[].key&#39;</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># After</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--verbose<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.prompts[].key&#39;</span>
+</span></code></pre></div>
+<p><strong>Alternative</strong>: Use explicit <code>--format json</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--format<span class="w"> </span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.prompts[].key&#39;</span>
+</span></code></pre></div>
+<h3 id="for-vs-code-extension-adr-vsc02">For VS Code Extension (ADR-VSC02)<a class="headerlink" href="#for-vs-code-extension-adr-vsc02" title="Link to this section">&para;</a></h3>
+<p><strong>No changes required</strong>. Extension uses <code>--format json</code> explicitly, which overrides default behavior.</p>
+<hr />
+<h2 id="testing-strategy">Testing Strategy<a class="headerlink" href="#testing-strategy" title="Link to this section">&para;</a></h2>
+<h3 id="unit-tests">Unit Tests<a class="headerlink" href="#unit-tests" title="Link to this section">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_list_default_human_friendly</span><span class="p">(</span><span class="n">cli_runner</span><span class="p">):</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Default list output is human-friendly text.&quot;&quot;&quot;</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">cli_runner</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;list&#39;</span><span class="p">])</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">exit_code</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    <span class="k">assert</span> <span class="s2">&quot;Available Prompts&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    <span class="k">assert</span> <span class="s2">&quot;Variables:&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>    <span class="c1"># Should NOT be JSON</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>    <span class="k">assert</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_list_verbose_json</span><span class="p">(</span><span class="n">cli_runner</span><span class="p">):</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Verbose flag produces structured JSON.&quot;&quot;&quot;</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">cli_runner</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;--verbose&#39;</span><span class="p">])</span>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">exit_code</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>    <span class="n">output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+</span><span id="__span-21-15"><a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a>    <span class="k">assert</span> <span class="s1">&#39;prompts&#39;</span> <span class="ow">in</span> <span class="n">output</span>
+</span><span id="__span-21-16"><a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a>    <span class="k">assert</span> <span class="s1">&#39;count&#39;</span> <span class="ow">in</span> <span class="n">output</span>
+</span><span id="__span-21-17"><a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a>
+</span><span id="__span-21-18"><a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_explicit_format_overrides_verbose</span><span class="p">(</span><span class="n">cli_runner</span><span class="p">):</span>
+</span><span id="__span-21-19"><a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Explicit --format overrides verbose logic.&quot;&quot;&quot;</span>
+</span><span id="__span-21-20"><a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">cli_runner</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;--format&#39;</span><span class="p">,</span> <span class="s1">&#39;yaml&#39;</span><span class="p">])</span>
+</span><span id="__span-21-21"><a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a>    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">exit_code</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span id="__span-21-22"><a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a>    <span class="c1"># Should be YAML, not JSON or text</span>
+</span><span id="__span-21-23"><a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a>    <span class="k">assert</span> <span class="s1">&#39;---&#39;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span> <span class="ow">or</span> <span class="s1">&#39;prompts:&#39;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span>
+</span></code></pre></div>
+<h3 id="golden-tests">Golden Tests<a class="headerlink" href="#golden-tests" title="Link to this section">&para;</a></h3>
 <ul>
-<li>Build <code>MappingInterval</code> class and internal helpers</li>
-<li>Implement basic remapping algorithm</li>
-<li>Handle edge cases for unmatched segments</li>
+<li>Store expected human-friendly output for known prompts</li>
+<li>Store expected JSON output for verbose mode</li>
+<li>Validate both modes against golden files</li>
 </ul>
-<h3 id="2-testing-1-day">2. <strong>Testing (1 day)</strong><a class="headerlink" href="#2-testing-1-day" title="Link to this section">&para;</a></h3>
+<h3 id="integration-tests">Integration Tests<a class="headerlink" href="#integration-tests" title="Link to this section">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Human mode</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Available Prompts&quot;</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="c1"># API mode</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--verbose<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;.prompts&#39;</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># VS Code compatibility</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--format<span class="w"> </span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;.count&#39;</span>
+</span></code></pre></div>
+<hr />
+<h2 id="open-questions">Open Questions<a class="headerlink" href="#open-questions" title="Link to this section">&para;</a></h2>
+<ol>
+<li><strong>Should <code>run</code> command default to text or JSON?</strong></li>
+<li>Proposal: Text (just the generated content) for human mode</li>
+<li>
+<p>Verbose mode preserves full JSON response with provenance</p>
+</li>
+<li>
+<p><strong>Should warnings still go to stderr in human mode?</strong></p>
+</li>
+<li>
+<p>Proposal: Yes, keep warnings on stderr in both modes</p>
+</li>
+<li>
+<p><strong>Should human-friendly mode support filtering/searching?</strong></p>
+</li>
+<li>Proposal: Yes, <code>--tag</code> and <code>--search</code> work the same in both modes</li>
+</ol>
+<hr />
+<h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
+<h3 id="parent-adr">Parent ADR<a class="headerlink" href="#parent-adr" title="Link to this section">&para;</a></h3>
 <ul>
-<li>Create unit tests with synthetic data</li>
-<li>Test with real audio data from the pipeline</li>
+<li><a href="../adr-tg01-cli-architecture/">ADR-TG01: tnh-gen CLI Architecture</a> - Core CLI design</li>
 </ul>
-<h3 id="3-pipeline-integration-1-day">3. <strong>Pipeline Integration (1 day)</strong><a class="headerlink" href="#3-pipeline-integration-1-day" title="Link to this section">&para;</a></h3>
+<h3 id="related-adrs">Related ADRs<a class="headerlink" href="#related-adrs" title="Link to this section">&para;</a></h3>
 <ul>
-<li>Add to the transcription processing workflow</li>
-<li>Optimize for performance with real data</li>
+<li><a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/">ADR-VSC02: VS Code Integration</a> - VS Code client integration</li>
+<li><a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/">ADR-PT04: Prompt System Refactor</a> - PromptMetadata schema</li>
+</ul>
+<h3 id="external-references">External References<a class="headerlink" href="#external-references" title="Link to this section">&para;</a></h3>
+<ul>
+<li><a href="https://github.com/jlevy/the-art-of-command-line">The Art of Command Line</a> - CLI best practices</li>
+<li><a href="https://medium.com/@jdxcode/12-factor-cli-apps-dd3c227a0e46">12 Factor CLI Apps</a> - Design principles</li>
+<li><a href="https://clig.dev/">clig.dev</a> - Command line interface guidelines</li>
 </ul>
 <hr />
-<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">&para;</a></h2>
-<p>The <code>TimelineMapper</code> cleanly restores transcriptions into the global audio timeline after diarization and chunked processing, preserving the modular design and clarity of the broader transcription pipeline.</p>
-<p>Its simplicity, performance, and testability make it a critical bridge from localized ASR output to globally meaningful subtitle and transcript data.</p>
+<p><strong>Approval Path</strong>: User review → Implementation → Testing → Documentation → Merge</p>
 
 
 
