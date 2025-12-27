@@ -15,7 +15,7 @@ Provenance infrastructure provides consistent mechanisms for answering "where di
 
 ## Architecture Decision Records
 
-- **[ADR-PV01: Provenance & Tracing Infrastructure Strategy](adr/adr-pv01-provenance-tracing-strat.md)** - Establishes foundational patterns for cross-cutting provenance tracking across all layers
+- **[ADR-PV01: Provenance & Tracing Infrastructure Strategy](/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md)** - Establishes foundational patterns for cross-cutting provenance tracking across all layers
 
 ## Key Concepts
 
@@ -26,5 +26,5 @@ Provenance infrastructure provides consistent mechanisms for answering "where di
 
 ## Related Architecture
 
-- [Metadata Infrastructure](../metadata/index.md) - Foundation for frontmatter and structured metadata
-- [Object-Service Architecture](../object-service/adr/adr-os01-object-service-architecture-v3.md) - Layered architecture patterns
+- [Metadata Infrastructure](/architecture/metadata/index.md) - Foundation for frontmatter and structured metadata
+- [Object-Service Architecture](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md) - Layered architecture patterns
