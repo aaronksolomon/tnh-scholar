@@ -10,7 +10,7 @@ created: "2025-01-20"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2025-12-12
+> **Last Updated**: 2025-12-23
 > **Version**: 0.2.2 (Alpha)
 > **Status**: Active Development - ADR-AT03 Implementation Phase
 
@@ -24,7 +24,7 @@ This section organizes work into three priority levels based on criticality for 
 
 **Goal**: Remove blockers to production readiness. These items must be completed before beta release.
 
-**Status**: 4/5 Complete ✅
+**Status**: 5/6 Complete ✅
 
 #### 1. ✅ Add pytest to CI
 
@@ -155,13 +155,53 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Phase 5: Update notebooks
   - [x] Phase 6: Delete legacy code (openai_interface/)
 
+#### 6. 🚧 GenAIService Thread Safety and Rate Limiting
+
+- **Status**: NOT STARTED
+- **Priority**: HIGH
+- **Issue**: [#22](https://github.com/aaronksolomon/tnh-scholar/issues/22)
+- **ADR**: [ADR-A15: Thread Safety and Rate Limiting](docs/architecture/gen-ai-service/adr/adr-a15-thread-safety-rate-limiting.md)
+- **Severity**: HIGH - Blocks concurrent/parallel processing for production pipelines
+- **Estimate**: 3-6 hours (Phase 1: 1-2 hours, Phase 2: 2-4 hours)
+- **Problem**: GenAIService has two critical gaps for production use:
+  1. **Thread Safety**: Not safe to share one GenAIService instance across threads
+     - `OpenAIClient` keeps single `Retrying` instance that mutates retry state on each call
+     - `InMemoryCacheTransport` uses plain dict without locking (race conditions on concurrent reads/writes)
+  2. **Rate Limiting**: No rate limiting implementation despite architectural plan
+     - OpenAI enforces RPM (requests/min) and TPM (tokens/min) limits
+     - Tier 1: ~500 RPM, ~200K TPM; Tier 2+: ~5K RPM, ~2M TPM
+     - Critical for avoiding API throttling in batch/pipeline scenarios
+- **Implementation (per ADR-A15)**:
+  - **Phase 1: Thread Safety (1-2 hours)** - Quick wins for safe concurrent usage:
+    - [ ] Per-call retry objects: Move `_create_retry_caller()` into `generate()` (30 min)
+    - [ ] Thread-safe cache: Add `threading.Lock` to `InMemoryCacheTransport` (30 min)
+    - [ ] Testing & docs: Concurrency integration tests, docstring warnings (30 min)
+  - **Phase 2: Rate Limiting (2-4 hours)** - Provider-aware rate limiting:
+    - [ ] Implement `TokenBucketRateLimiter` class (tracks RPM + TPM) (1 hour)
+    - [ ] Registry integration: Extend `openai.jsonc` with rate limit tiers (1 hour)
+    - [ ] Service integration: Settings + limiter in `generate()` pre-flight (1 hour)
+    - [ ] Testing & documentation: Rate limit tests, config guide (1 hour)
+- **Files Modified**:
+  - Phase 1: `openai_client.py`, `cache.py`, `test_concurrency.py` (new)
+  - Phase 2: `rate_limiter.py` (new), `settings.py`, `service.py`, `openai.jsonc`
+- **Performance Analysis**:
+  - Per-instance overhead: <1ms, ~few KB (negligible vs 100-500ms network I/O)
+  - 20-30 concurrent calls: Safe with per-instance pattern, no rate limit risk
+  - 100+ concurrent calls: Requires Phase 2 rate limiting (Tier 1 accounts)
+- **Related ADRs**:
+  - [ADR-A15: Thread Safety and Rate Limiting](docs/architecture/gen-ai-service/adr/adr-a15-thread-safety-rate-limiting.md) ← **Full Design**
+  - [GenAI Service Design Strategy](docs/architecture/gen-ai-service/design/genai-service-design-strategy.md)
+  - [ADR-A01: Object-Service GenAI](docs/architecture/gen-ai-service/adr/adr-a01-object-service-genai.md)
+  - [ADR-A09: V1 Simplified Implementation](docs/architecture/gen-ai-service/adr/adr-a09-v1-simplified.md)
+  - [ADR-A14: File-Based Registry System](docs/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
+
 ---
 
 ### Priority 2: Beta Quality
 
 **Goal**: Improve maintainability, user experience, and code quality for beta release.
 
-#### 6. 🚧 Expand Test Coverage
+#### 7. 🚧 Expand Test Coverage
 
 - **Status**: NOT STARTED
 - **Current Coverage**: ~5% (4 test modules)
@@ -172,8 +212,17 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Configuration loading edge cases
   - [ ] Error handling scenarios
   - [ ] Pattern catalog validation
+  - [ ] **tnh-gen CLI comprehensive coverage** (HIGH PRIORITY - Missing basic command tests):
+    - [ ] Add tests for all `tnh-gen config` commands (show, get, set, list)
+    - [ ] Add tests for all `tnh-gen list` commands (simple, query)
+    - [ ] Add tests for `tnh-gen gen` command with various options
+    - [ ] Test Path serialization in config commands (regression test for model_dump)
+    - [ ] Test config precedence: defaults → user → workspace → CLI flags
+    - [ ] Test error handling for all commands
+    - [ ] Integration tests for full workflows
+    - **Context**: Basic command `tnh-gen config show` failed with Path serialization bug that should have been caught by tests
 
-#### 7. 🚧 Consolidate Environment Loading
+#### 8. 🚧 Consolidate Environment Loading
 
 - **Status**: NOT STARTED
 - **Problem**: Multiple modules call `load_dotenv()` at import time
@@ -185,7 +234,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Pass configuration objects instead of `os.getenv()` calls
   - [ ] Remove import-time side effects
 
-#### 8. 🚧 Clean Up CLI Tool Versions
+#### 9. 🚧 Clean Up CLI Tool Versions
 
 - **Status**: PARTIAL (old versions removed, utilities pending)
 - **Location**: [cli_tools/audio_transcribe/](src/tnh_scholar/cli_tools/audio_transcribe/)
@@ -196,7 +245,7 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Keep only current version
   - [ ] Create shared utilities (argument parsing, environment validation, logging)
 
-#### 9. ✅ Documentation Reorganization (ADR-DD01 & ADR-DD02)
+#### 10. ✅ Documentation Reorganization (ADR-DD01 & ADR-DD02)
 
 - **Status**: PHASE 1 COMPLETE ✅ (Parts 1–4 ✅ COMPLETE, Part 8 ✅ COMPLETE, File Reorganization ✅ COMPLETE; Parts 5–7 deferred to Phase 2)
 - **Reference**:
@@ -308,7 +357,7 @@ This section organizes work into three priority levels based on criticality for 
        - [x] Create `docs/project/index.md` with section overview
        - [x] Wire into gen-files plugin for automatic sync on build
 
-#### 10. 🚧 Type System Improvements
+#### 11. 🚧 Type System Improvements
 
 - **Status**: PARTIAL (see detailed section below)
 - **Current**: 58 errors across 16 files
@@ -320,7 +369,7 @@ This section organizes work into three priority levels based on criticality for 
 
 **Goal**: Long-term sustainability, advanced features, and production hardening.
 
-#### 11. 🚧 Refactor Monolithic Modules
+#### 12. 🚧 Refactor Monolithic Modules
 
 - **Status**: NOT STARTED
 - **Targets**:
@@ -332,7 +381,7 @@ This section organizes work into three priority levels based on criticality for 
     - Identify focused units
     - Extract reusable components
 
-#### 13. 🚧 Complete Provider Abstraction
+#### 14. 🚧 Complete Provider Abstraction
 
 - **Status**: NOT STARTED
 - **Tasks**:
@@ -342,7 +391,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Provider capability discovery
   - [ ] Multi-provider cost optimization
 
-#### 14. 🚧 Knowledge Base Implementation
+#### 15. 🚧 Knowledge Base Implementation
 
 - **Status**: DESIGN COMPLETE
 - **ADR**: [ADR-K01: Preliminary Architectural Strategy](docs/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
@@ -352,7 +401,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Query capabilities
   - [ ] Semantic similarity search
 
-#### 15. 🚧 Developer Experience Improvements
+#### 16. 🚧 Developer Experience Improvements
 
 - **Status**: PARTIAL (hooks and Makefile exist, automation pending)
 - **Tasks**:
@@ -364,7 +413,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Release automation
   - [ ] Changelog automation
 
-#### 16. 🚧 Configuration & Data Layout
+#### 17. 🚧 Configuration & Data Layout
 
 - **Status**: NOT STARTED
 - **Priority**: HIGH (blocks pip install)
@@ -375,7 +424,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Move directory checks to CLI entry points only
   - [ ] Ensure installed wheels work without patterns/ directory
 
-#### 17. 🚧 Prompt Catalog Safety
+#### 18. 🚧 Prompt Catalog Safety
 
 - **Status**: NOT STARTED
 - **Priority**: MEDIUM
