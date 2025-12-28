@@ -15,6 +15,7 @@ This directory contains documentation for developers contributing to TNH Scholar
 - **[contributing-prototype-phase.md](/development/contributing-prototype-phase.md)** - Contributing guidelines for the prototype phase
 - **[design-principles.md](/development/design-principles.md)** - Core design principles and patterns
 - **[fine-tuning-strategy.md](/development/fine-tuning-strategy.md)** - Strategy for fine-tuning AI models
+- **[git-workflow.md](/development/git-workflow.md)** - Safe git practices and workflow guidelines
 - **[human-ai-software-engineering-principles.md](/development/human-ai-software-engineering-principles.md)** - Principles for human-AI collaborative development
 - **[improvements-initial-structure.md](/development/improvements-initial-structure.md)** - Initial structural improvements and refactoring notes
 - **[style-guide.md](/development/style-guide.md)** - Code style guide and conventions
@@ -22,9 +23,10 @@ This directory contains documentation for developers contributing to TNH Scholar
 
 ## Getting Started as a Contributor
 
-1. Read [contributing-prototype-phase.md](/development/contributing-prototype-phase.md) for contribution guidelines
-2. Review [design-principles.md](/development/design-principles.md) to understand our approach
-3. Follow the [style-guide.md](/development/style-guide.md) for code consistency
+1. **Set up your development environment** - See [`DEV_SETUP.md`](/project/repo-root/dev-setup-root.md) for Python, Poetry, and dependency installation
+2. Read [contributing-prototype-phase.md](/development/contributing-prototype-phase.md) for contribution guidelines
+3. Review [design-principles.md](/development/design-principles.md) to understand our approach
+4. Follow the [style-guide.md](/development/style-guide.md) for code consistency
 
 ## Development Philosophy
 
