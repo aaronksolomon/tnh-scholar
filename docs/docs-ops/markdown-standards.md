@@ -46,12 +46,13 @@ created: "YYYY-MM-DD"
 - `proposed` = early RFC/discussion stage
 - `draft` = initial iteration pending approval
 - `wip` = actively being revised (expected to change)
-- `current` = approved baseline
+- `accepted` = decision approved and implemented (primarily for ADRs)
+- `current` = approved baseline for active use
 - `deprecated` = still valid but being phased out
 - `superseded` = replaced by newer version (see link in doc)
 - `archived` = historical reference only
 
-**Auto-generated file constraint**: Files with `auto_generated: true` may only use `current`, `archived`, `deprecated`, or `superseded` status. Manual lifecycle states (`proposed`, `draft`, `wip`) are invalid for generated content.
+**Auto-generated file constraint**: Files with `auto_generated: true` may only use `current`, `archived`, `deprecated`, or `superseded` status. Manual lifecycle states (`proposed`, `draft`, `wip`, `accepted`) are invalid for generated content.
 
 ## Heading & Summary Rules
 

@@ -63,7 +63,7 @@ REQUIRED_FIELDS = ["title", "description", "owner", "author", "status", "created
 # Directories that may use specialized frontmatter (e.g., prompt templates)
 SPECIAL_FRONTMATTER_DIRS = {"patterns", "prompt-templates"}
 # Allowed status values (see docs/docs-ops/markdown-standards.md)
-ALLOWED_STATUSES = {"proposed", "draft", "wip", "current", "deprecated", "superseded", "archived"}
+ALLOWED_STATUSES = {"proposed", "draft", "wip", "accepted", "current", "deprecated", "superseded", "archived"}
 AUTO_GENERATED_ALLOWED_STATUSES = {"current", "archived", "deprecated", "superseded"}
 
 
