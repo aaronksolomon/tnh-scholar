@@ -68,7 +68,6 @@ query = ["beautifulsoup4", "spacy", "ebooklib"]
 ocr = ["fitz", "pillow", "google-cloud", "google-cloud-vision", "pdf2image"]
 
 [tool.poetry.group.dev]
-optional = true
 
 [tool.poetry.group.dev.dependencies]
 black = "24.10.0"
