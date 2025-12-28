@@ -3408,20 +3408,20 @@ python-legacy = ["mkdocstrings-python-legacy (>=0.2.1)"]
 
 [[package]]
 name = "mkdocstrings-python"
-version = "1.13.0"
+version = "2.0.1"
 description = "A Python handler for mkdocstrings."
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "mkdocstrings_python-1.13.0-py3-none-any.whl", hash = "sha256:b88bbb207bab4086434743849f8e796788b373bd32e7bfefbf8560ac45d88f97"},
-    {file = "mkdocstrings_python-1.13.0.tar.gz", hash = "sha256:2dbd5757e8375b9720e81db16f52f1856bf59905428fd7ef88005d1370e2f64c"},
+    {file = "mkdocstrings_python-2.0.1-py3-none-any.whl", hash = "sha256:66ecff45c5f8b71bf174e11d49afc845c2dfc7fc0ab17a86b6b337e0f24d8d90"},
+    {file = "mkdocstrings_python-2.0.1.tar.gz", hash = "sha256:843a562221e6a471fefdd4b45cc6c22d2607ccbad632879234fa9692e9cf7732"},
 ]
 
 [package.dependencies]
-griffe = ">=0.49"
-mkdocs-autorefs = ">=1.2"
-mkdocstrings = ">=0.26"
+griffe = ">=1.13"
+mkdocs-autorefs = ">=1.4"
+mkdocstrings = ">=0.30"
 
 [[package]]
 name = "more-itertools"
@@ -8256,4 +8256,4 @@ query = ["beautifulsoup4", "ebooklib", "spacy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "504e15d1db07c6e93ba28180327bdcdac6b70bf55d8a322d8d7267512c301bef"
+content-hash = "9d2931dd881cd7b4426f4aaf1515a0da8c8b4edd3304bea62c54102c4ce89833"

@@ -12,7 +12,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 > **Last Updated**: 2025-12-28
 > **Version**: 0.2.3 (Alpha)
-> **Status**: Active Development - tnh-gen CLI Documentation Phase
+> **Status**: Active Development - Documentation Build Infrastructure Updated
 
 ---
 

@@ -83,7 +83,7 @@ Relevant documentation:
 
 - [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)
 - Additional prompt design docs: [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
-- [tnh-fab](/cli-reference/tnh-fab.md) CLI guide (deprecated; see [TNH-Gen](/architecture/tnh-gen/index.md) for migration)
+- [tnh-gen](/cli-reference/tnh-gen.md) CLI guide (replaces deprecated `tnh-fab`; see [TNH-Gen](/architecture/tnh-gen/index.md) for architecture)
 
 ---
 

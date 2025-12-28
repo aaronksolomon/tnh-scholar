@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Documentation Build Infrastructure**
+  - Updated `mkdocstrings-python` from 1.13.0 to 2.0.1 to resolve deprecation warnings
+  - Eliminated all mkdocstrings-related deprecation warnings in docs build process
+  - Build now completes cleanly without any warnings about deprecated import paths or handler methods
+  - Updated references from deprecated `tnh-fab.md` to `tnh-gen.md` in CLI reference and user guide
+
 ### Fixed
 
 - **Post-PR21 Merge Hotfix**
