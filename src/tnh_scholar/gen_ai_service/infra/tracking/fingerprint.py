@@ -28,9 +28,9 @@ from enum import Enum
 from hashlib import sha256
 from json import dumps
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Mapping
 
-RenderVars = Dict[str, Any]
+RenderVars = Mapping[str, Any]
 
 __all__ = [
     "sha256_bytes",

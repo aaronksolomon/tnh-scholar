@@ -227,12 +227,58 @@ class TextObject(BaseModel):
 
 **Goal**: Zero literals, zero dicts, clear typing, explicit configuration — ensuring predictable behavior and strong IDE/type support.
 
+### Replacing Literal Values
+
+**Avoid module-level constants at the top of files.** Instead, use these patterns:
+
+**For display labels/messages** → `@dataclass(frozen=True)`:
+
+```python
+@dataclass(frozen=True)
+class HumanOutputLabels:
+    """Display labels for human-friendly CLI output."""
+    no_variables: str = "(none)"
+    no_default_model: str = "(no default)"
+
+LABELS = HumanOutputLabels()
+# Usage: LABELS.no_variables
+```
+
+**For identifiers/categories** → `str` Enum:
+
+```python
+class OutputColor(str, Enum):
+    """ANSI color codes for terminal output."""
+    TITLE = "bright_blue"
+    ERROR = "red"
+
+# Usage: OutputColor.TITLE
+```
+
+**For numeric thresholds** → `@dataclass(frozen=True)`:
+
+```python
+@dataclass(frozen=True)
+class ValidationLimits:
+    """Validation thresholds for CLI inputs."""
+    max_prompt_key_length: int = 64
+    max_temperature: float = 2.0
+
+LIMITS = ValidationLimits()
+# Usage: LIMITS.max_temperature
+```
+
+**Benefits**: Type-safe, discoverable with IDE autocomplete, grouped by semantic purpose, testable, avoids top-of-file constant clutter.
+
 ## Function and Method Complexity
 
 ### Size Limits
 
 - **Target length**: 15-20 lines of code (excluding docstring)
-- **Cyclomatic complexity**: 7 or less
+- **Cyclomatic complexity**: Target 7 or less (enforced at 9 by Ruff)
+  - McCabe complexity counts decision points (if/elif/match), which can flag low-complexity patterns like simple match statements with many cases
+  - Use Sourcery for cognitive complexity analysis (better semantic understanding)
+  - Ruff threshold set at 9 to avoid false positives on type-safe mappings
 - If a function grows beyond limits, refactor into smaller helpers
 
 ### Single Responsibility

@@ -31,8 +31,8 @@ class CLIContext:
     """Holds shared CLI state populated by the Typer callback."""
 
     config_path: Path | None = None
-    output_format: OutputFormat = OutputFormat.json
-    verbose: bool = False
+    output_format: OutputFormat | None = None
+    api: bool = False
     quiet: bool = False
     no_color: bool = False
     service_factory: "ServiceFactory | None" = None

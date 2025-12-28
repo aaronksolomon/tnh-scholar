@@ -1,1 +1,1 @@
-"""Output helpers for tnh-gen."""
+"""Output helpers for tnh-gen, including formatting policy utilities."""

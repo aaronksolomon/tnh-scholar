@@ -34,16 +34,17 @@ Policy note:
 
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, List, Literal, Mapping, Optional, Union
 
 from openai.types.chat.chat_completion_content_part_param import (
     ChatCompletionContentPartParam,
 )
 from pydantic import BaseModel, Field
 
+# TODO: Consolidate RenderVars into a shared GenAI types module to avoid duplication.
 # V1 Requirement (ADR-A02) to avoid passing raw dicts
 # later versions: move to a pydantic model
-RenderVars = Dict[str, Any]
+RenderVars = Mapping[str, Any]
 
 
 # Fingerprint domain model
