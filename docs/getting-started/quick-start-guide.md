@@ -24,28 +24,39 @@ This creates necessary directories and downloads default prompts.
 
 TNH Scholar includes several specialized tools:
 
-### tnh-fab (Deprecated - Migrating to tnh-gen)
+### tnh-gen (Current)
 
-> **⚠️ Note**: `tnh-fab` is deprecated and will be replaced by `tnh-gen`. The tool remains functional with a deprecation warning.
+The unified GenAI-powered text processing CLI. This is the primary tool for AI-based text transformations.
 
-The main text processing tool, providing functions for:
-
-- Text punctuation and formatting
-- Section analysis
-- Translation
-- Prompt-based processing
-
-Example usage:
+**Quick Start**:
 
 ```bash
-# Add punctuation to text (deprecated command)
-tnh-fab punctuate input.txt > punctuated.txt
+# List available prompts
+tnh-gen list
 
 # Translate Vietnamese text to English
-tnh-fab translate -l vi input.txt > translated.txt
+tnh-gen run --prompt translate \
+  --input-file teaching.md \
+  --var source_lang=vi \
+  --var target_lang=en \
+  --output-file teaching.en.md
+
+# Get machine-readable output for scripts
+tnh-gen run --prompt translate \
+  --input-file teaching.md \
+  --var source_lang=vi \
+  --var target_lang=en \
+  --api > output.json
 ```
 
-See [TNH-Gen Architecture](/architecture/tnh-gen/index.md) for the upcoming replacement tool.
+**Key Features**:
+
+- Human-friendly output by default
+- `--api` flag for JSON output (VS Code, scripts)
+- Prompt discovery with `tnh-gen list`
+- Hierarchical configuration system
+
+For complete documentation, see [tnh-gen CLI Reference](/cli-reference/tnh-gen.md).
 
 ### audio-transcribe
 
@@ -79,15 +90,33 @@ nfmt input.txt > formatted.txt
 
 ## Common Workflows
 
-### Text Processing Pipeline
+### Text Processing with tnh-gen
 
 ```bash
-# Complete processing pipeline
-cat input.txt | \
-tnh-fab punctuate | \
-tnh-fab section | \
-tnh-fab translate -l vi | \
-tnh-fab process -p format_xml > output.xml
+# Discover available prompts
+tnh-gen list
+
+# Filter prompts by tag
+tnh-gen list --tag translation
+
+# Translate a teaching
+tnh-gen run --prompt translate \
+  --input-file vietnamese_teaching.md \
+  --var source_lang=vi \
+  --var target_lang=en \
+  --output-file english_teaching.md
+
+# Summarize a dharma talk
+tnh-gen run --prompt summarize \
+  --input-file long_talk.md \
+  --var max_length=500 \
+  --output-file summary.md
+
+# Use variables from JSON file
+tnh-gen run --prompt translate \
+  --input-file teaching.md \
+  --vars translation_config.json \
+  --output-file output.md
 ```
 
 ### Audio Processing
@@ -96,9 +125,11 @@ tnh-fab process -p format_xml > output.xml
 # Download and transcribe
 audio-transcribe --yt_url "https://example.com/video" --split --transcribe
 
-# Post-process transcription
-tnh-fab punctuate transcript.txt | \
-tnh-fab section > processed.txt
+# Post-process transcription with tnh-gen
+tnh-gen run --prompt punctuate \
+  --input-file transcript.txt \
+  --var language=vi \
+  --output-file punctuated.txt
 ```
 
 ## Next Steps
