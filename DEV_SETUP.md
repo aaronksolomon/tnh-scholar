@@ -123,10 +123,11 @@ If you prefer to do it manually without `make`:
 
 ```shell
 poetry env use python
-poetry install
-poetry install --with dev
+poetry install  # Installs all dependencies including dev group (as of Dec 2025)
 poetry run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
 ```
+
+**Note**: As of December 2025, `poetry install` automatically includes dev dependencies (pytest, mkdocs, mypy, etc.) since the dev group is no longer marked as optional. No need for `--with dev` flag.
 
 ---
 
@@ -173,13 +174,13 @@ setup:
  pyenv install -s $(PYTHON_VERSION)
  pyenv local $(PYTHON_VERSION)
  $(POETRY) env use python
- $(POETRY) install
+ $(POETRY) install  # Includes dev dependencies automatically
 
 setup-dev:
  pyenv install -s $(PYTHON_VERSION)
  pyenv local $(PYTHON_VERSION)
  $(POETRY) env use python
- $(POETRY) install --with dev
+ $(POETRY) install  # Dev dependencies included by default (dev group not optional)
  $(POETRY) run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
 
 test:
