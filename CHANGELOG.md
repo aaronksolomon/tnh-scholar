@@ -25,17 +25,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **tnh-gen CLI Tool** - New prompt-driven content generation CLI (ADR-TG01, ADR-TG02)
-  - Typer-based command structure (`list`, `run`, `config`, `version` subcommands)
-  - Layered configuration system (defaults → env → user → workspace → CLI overrides)
-  - Multiple output formats (JSON, YAML, text, table) with provenance tracking
-  - Protocol-based dependency injection (GenAIServiceProtocol, PromptCatalogProtocol)
-  - Legacy prompt compatibility with graceful degradation and warnings
-  - Environment variable loading (.env support) and input_text auto-injection
-  - Comprehensive test coverage for CLI commands and variable precedence
-  - `src/tnh_scholar/cli_tools/tnh_gen/`: Core CLI package with modular command structure
-  - `src/tnh_scholar/gen_ai_service/protocols.py`: Service and catalog protocol definitions
-  - `tests/cli_tools/test_tnh_gen.py`: CLI test suite
+- **tnh-gen CLI Tool** - New prompt-driven content generation CLI (ADR-TG01, ADR-TG01.1, ADR-TG02)
+  - **Core Implementation (Dec 2025)** - Initial CLI based on ADR-TG01 and ADR-TG02:
+    - Typer-based command structure (`list`, `run`, `config`, `version` subcommands)
+    - JSON-first output with structured metadata for VS Code integration
+    - Layered configuration system (defaults → env → user → workspace → CLI overrides)
+    - Multiple output formats (JSON, YAML, text, table) with provenance tracking
+    - Protocol-based dependency injection (GenAIServiceProtocol, PromptCatalogProtocol)
+    - Legacy prompt compatibility with graceful degradation and warnings
+    - Environment variable loading (.env support) and input_text auto-injection
+    - Variable precedence (inline vars > JSON file > input file)
+    - Comprehensive test coverage for CLI commands and variable precedence
+    - `src/tnh_scholar/cli_tools/tnh_gen/`: Core CLI package with modular command structure
+    - `src/tnh_scholar/gen_ai_service/protocols.py`: Service and catalog protocol definitions
+    - `tests/cli_tools/test_tnh_gen.py`: CLI test suite
+  - **Human-Friendly Defaults (Dec 23-28, 2025)** - ADR-TG01.1 implementation:
+    - Redesigned default output mode from JSON-first to human-readable text
+    - Added `--api` flag for machine-readable contract output (VS Code, scripts)
+    - Dual output modes: simplified text for CLI users, full JSON/YAML for programmatic consumption
+    - Simplified default output: `list` shows readable descriptions, `run` shows text only
+    - Added output format policy with validation: `--api` incompatible with `--format text/table`
+    - Updated all commands (list, run, config, version) for dual-mode output
+    - Enhanced error messages for dual-mode: plain text (human) vs JSON envelope (API)
+    - `src/tnh_scholar/cli_tools/tnh_gen/output/human_formatter.py`: Human-readable formatters
+    - `src/tnh_scholar/cli_tools/tnh_gen/output/policy.py`: Format policy resolution/validation
+    - Enhanced test coverage for API vs human output modes
+  - **Documentation (Dec 28, 2025)**:
+    - `docs/cli-reference/tnh-gen.md`: Complete CLI reference documentation
+    - `docs/cli-reference/archive/`: Archived legacy tnh-fab documentation
+    - Updated getting-started guides with tnh-gen workflows
+    - Updated CLI reference overview to feature tnh-gen
 
 - **AI Text Processing Design Work**
   - Add ADR-AT03: Minimal ai_text_processing refactor for tnh-gen
@@ -58,12 +77,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **tnh-gen Human-Friendly Defaults (ADR-TG01.1)**
+  - Redesigned default output mode from JSON-first to human-readable text
+  - Introduced `--api` flag for machine-readable contract output (VS Code, scripts)
+  - Simplified default output: `list` shows readable descriptions, `run` shows text only
+  - Added output format policy with validation: `--api` incompatible with `--format text/table`
+  - Updated error messages for dual-mode output: plain text (human) vs JSON envelope (API)
+  - Refactored config command to show YAML overrides (human) vs full JSON with sources (API)
+  - Updated version command for concise text (human) vs structured JSON (API)
+  - Centralized format resolution and validation in `output/policy.py`
+  - Enhanced stderr diagnostics with trace IDs in both modes
+
 - **tnh-gen Architecture Improvements**
   - Refactored run command from 222 lines with 90-line function to 380 lines with 12 focused functions
   - Introduced RunContext dataclass to encapsulate execution state
   - Added pre-flight variable validation with actionable error messages
+  - Extracted output pipeline into focused helpers: `_emit_run_output`, `_apply_api_settings`, `_validate_run_options`
   - Structured logging with correlation ID tracking
   - Improved type safety across gen_ai_service modules
+  - Changed RenderVars type from `Dict` to `Mapping[str, Any]` for broader compatibility
+  - Fixed TypedDict optionality in `ConfigValuePayload` for mapping-compatible typing
 
 - **Prompt System Enhancements**
   - Best-effort prompt loading with synthetic metadata for invalid frontmatter
@@ -73,12 +106,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Whitelisted `input_text` in validator for legacy prompt compatibility
 
 - **Documentation Infrastructure**
+  - Added comprehensive tnh-gen CLI reference documentation (`docs/cli-reference/tnh-gen.md`)
+  - Documented ADR-TG01.1 human-friendly defaults implementation
   - Enhanced ADR template with clearer structure and examples
   - Updated markdown standards for consistency
   - Refined human-AI software engineering principles
   - Improved documentation navigation (index, map)
   - Enhanced tnh-zen CSS styling for better readability
   - Updated docs/index.md with current feature status
+  - Updated VS Code integration ADRs to use `--api` flag
 
 ## [0.2.2] - 2025-12-11
 

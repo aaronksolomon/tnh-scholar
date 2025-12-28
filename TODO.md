@@ -10,9 +10,9 @@ created: "2025-01-20"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2025-12-23
-> **Version**: 0.2.2 (Alpha)
-> **Status**: Active Development - ADR-AT03 Implementation Phase
+> **Last Updated**: 2025-12-28
+> **Version**: 0.2.3 (Alpha)
+> **Status**: Active Development - tnh-gen CLI Documentation Phase
 
 ---
 
@@ -591,26 +591,86 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 17. 🚧 Comprehensive CLI Reference Documentation
 
-- **Status**: NOT STARTED (deferred post-CLI-refactor)
+- **Status**: IN PROGRESS - tnh-gen documentation complete ✅, other CLIs pending
 - **Priority**: MEDIUM
-- **Context**: Removed auto-generated CLI reference stubs (2025-12-03). Renamed `docs/cli/` to `docs/cli-reference/` to reflect reference-style content. CLI structure scheduled for overhaul.
-- **Blocked By**: CLI tool consolidation (TODO #8)
-- **Tasks**:
-  - [ ] Review final CLI structure after refactor
-  - [ ] Create comprehensive CLI reference using actual `--help` output at all command levels
-  - [ ] Generate structured documentation for each command:
-    - Command purpose and use cases
-    - Full option/argument reference
-    - Usage examples
-    - Common workflows
-  - [ ] Automate CLI reference generation in `scripts/generate_cli_docs.py`
-  - [ ] Integrate with MkDocs build process
-  - [ ] Enhance existing `docs/cli-reference/` structure with comprehensive reference material
+- **Context**: tnh-gen CLI (ADR-TG01, ADR-TG01.1) implementation complete; documentation work started 2025-12-28
+- **Completed (2025-12-28)**:
+  - [x] Created comprehensive tnh-gen CLI reference (`docs/cli-reference/tnh-gen.md`)
+    - Complete command reference: `list`, `run`, `config`, `version`
+    - Human-friendly vs API mode documentation
+    - Variable precedence, error handling, environment variables
+    - Migration guide from tnh-fab
+  - [x] Archived legacy tnh-fab documentation
+    - Moved `docs/cli-reference/tnh-fab.md` to `docs/cli-reference/archive/`
+    - Created `docs/cli-reference/archive/README.md` with archiving policy
+  - [x] Updated CLI reference overview (`docs/cli-reference/overview.md`)
+    - Promoted tnh-gen to primary tool
+    - Added tnh-gen quick start examples
+    - Moved tnh-fab to "Archived Tools" section
+  - [x] Updated getting-started documentation
+    - Updated quick-start-guide with tnh-gen workflows
+    - Updated installation guide verification steps
+  - [x] Updated CHANGELOG with ADR-TG01.1 implementation details
+- **Remaining Tasks**:
+  - [ ] Update user-guide examples to use tnh-gen
+    - [ ] `docs/user-guide/prompt-system.md` - Replace tnh-fab examples
+    - [ ] `docs/user-guide/best-practices.md` - Update CLI workflows
+  - [ ] Update architecture docs with tnh-gen examples
+  - [ ] Document other CLI tools (audio-transcribe, ytt-fetch, nfmt, etc.)
+  - [ ] Consider automation for CLI reference generation (`scripts/generate_cli_docs.py`)
 - **Notes**:
-  - Previously had placeholder stubs with minimal content
-  - Current `docs/cli-reference/` contains hand-written per-command reference pages
-  - Requires examining actual CLI code structure for comprehensive coverage
-  - Should align with user guide examples
+  - tnh-gen follows ADR-TG01 (CLI Architecture) and ADR-TG01.1 (Human-Friendly Defaults)
+  - Archive system uses MkDocs `exclude_docs: **/archive/**` pattern
+  - Documentation links use absolute paths (per TODO #18)
+  - Provenance format inconsistency identified 2025-12-28 (see TODO #20)
+
+#### 20. 🚧 Provenance Format Refactor - YAML Frontmatter
+
+- **Status**: NOT STARTED (documentation updated, code changes pending)
+- **Priority**: MEDIUM
+- **Context**: Current tnh-gen implementation uses HTML comments for provenance (per ADR-TG01 §4.8), which is inconsistent with TNH Scholar's standard use of YAML frontmatter throughout documentation, ADRs, and generated content.
+- **Issue Identified**: 2025-12-28
+- **ADR Reference**: [ADR-TG01 Addendum 2025-12-28: Provenance Format Standardization](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md#addendum-2025-12-28---provenance-format-standardization)
+- **Implementation Plan**:
+  - [ ] Create feature branch for provenance refactor
+  - [ ] Update `src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py`:
+    - Replace `provenance_block()` HTML comment generation with YAML frontmatter
+    - Update function signature and implementation
+    - Maintain backward compatibility option via flag (optional)
+  - [ ] Update `write_output_file()` to use YAML format
+  - [ ] Add YAML frontmatter parsing utilities if needed
+  - [ ] Update tests in `tests/cli_tools/test_tnh_gen.py`:
+    - Update provenance format expectations
+    - Add YAML parsing validation tests
+    - Test roundtrip (write → read → parse)
+  - [ ] Update examples in user documentation
+  - [ ] Consider migration path for existing generated files (optional)
+- **Target Format** (from ADR-TG01 Addendum):
+
+  ```yaml
+  ---
+  tnh_scholar_generated: true
+  prompt_key: translate
+  prompt_version: "1.0.0"
+  model: gpt-4o
+  fingerprint: sha256:abc123...
+  trace_id: 01HQXYZ123ABC
+  generated_at: "2025-12-28T10:30:03Z"
+  schema_version: "1.0"
+  ---
+  ```
+
+- **Benefits**:
+  - Consistent with TNH Scholar metadata standards (ADRs, docs, etc.)
+  - Machine-parseable with standard YAML libraries
+  - Widely supported across tools (MkDocs, static site generators, etc.)
+  - Enables downstream processing and validation
+- **Files to Modify**:
+  - `src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py`
+  - `tests/cli_tools/test_tnh_gen.py`
+  - Example files in documentation (if any)
+- **Estimate**: 2-3 hours (implementation + testing + docs)
+- **Related**: TODO #17 (CLI Documentation)
 
 #### 18. ✅ Convert Documentation Links to Absolute Paths
 
