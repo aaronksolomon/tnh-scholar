@@ -769,4 +769,40 @@ def test_run_with_real_prompt_system():
 
 ---
 
+## Addendum: 2025-12-28 - Provenance Format Standardization
+
+**Issue**: Initial ADR specified HTML comment format for provenance markers (§4.8), which is inconsistent with TNH Scholar's standard use of YAML frontmatter throughout documentation, ADRs, and other generated content.
+
+**Decision**: Standardize on **YAML frontmatter** for provenance metadata to maintain consistency across the TNH Scholar ecosystem.
+
+**Planned Format**:
+
+```yaml
+---
+tnh_scholar_generated: true
+prompt_key: translate
+prompt_version: "1.0.0"
+model: gpt-4o
+fingerprint: sha256:abc123...
+trace_id: 01HQXYZ123ABC
+generated_at: "2025-12-28T10:30:03Z"
+schema_version: "1.0"
+---
+
+[Generated content follows...]
+```
+
+**Benefits**:
+
+- Consistent with TNH Scholar metadata standards (ADRs, docs, etc.)
+- Machine-parseable with standard YAML libraries
+- Widely supported across tools (MkDocs, static site generators, etc.)
+- Enables downstream processing and validation
+
+**Migration**: Implementation work tracked in TODO.md (see "Provenance Format Refactor"). Current HTML comment format will be replaced in a future branch.
+
+**Status**: Accepted addendum; implementation pending
+
+---
+
 **Approval Path**: Architecture review → Implementation → Testing → Documentation
