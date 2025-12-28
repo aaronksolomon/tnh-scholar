@@ -5070,13 +5070,13 @@
         
   
   <span class="md-ellipsis">
-    ADR-TG01.1: Human-Friendly CLI Defaults
+    ADR-TG01.1: Human-Friendly CLI Defaults with --api Flag
   </span>
   
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -9554,7 +9554,7 @@
 <p>The <code>tnh-gen</code> CLI provides three primary commands:</p>
 <h4 id="tnh-gen-list-discover-prompts"><strong><code>tnh-gen list</code></strong> - Discover Prompts<a class="headerlink" href="#tnh-gen-list-discover-prompts" title="Link to this section">&para;</a></h4>
 <p>Lists all available prompts with rich metadata (names, descriptions, tags, required variables).</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--format<span class="w"> </span>json
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--api
 </span></code></pre></div>
 <p>Enables VS Code extension to build dynamic QuickPick interfaces without hardcoding prompt metadata.</p>
 <h4 id="tnh-gen-run-execute-patterns"><strong><code>tnh-gen run</code></strong> - Execute Patterns<a class="headerlink" href="#tnh-gen-run-execute-patterns" title="Link to this section">&para;</a></h4>
@@ -9590,7 +9590,7 @@
 <h4 id="command-1-tnh-scholar-run-prompt-on-active-file">Command 1: "TNH Scholar: Run Prompt on Active File"<a class="headerlink" href="#command-1-tnh-scholar-run-prompt-on-active-file" title="Link to this section">&para;</a></h4>
 <p>Workflow:</p>
 <ol>
-<li>Execute <code>tnh-gen list --format json</code></li>
+<li>Execute <code>tnh-gen list --api</code></li>
 <li>Show QuickPick with prompt names + descriptions</li>
 <li>For selected prompt, show input form for required variables</li>
 <li>Execute <code>tnh-gen run --prompt &lt;key&gt; --input-file &lt;active_file&gt; --vars &lt;temp.json&gt;</code></li>
@@ -9999,7 +9999,7 @@
 <h2 id="11-acceptance-criteria-v010">11. Acceptance Criteria (v0.1.0)<a class="headerlink" href="#11-acceptance-criteria-v010" title="Link to this section">&para;</a></h2>
 <p><strong>CLI Implementation:</strong></p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen list --format json</code> returns prompt metadata</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen list --api</code> returns prompt metadata</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> supports JSON file variable passing</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> supports inline <code>--var</code> parameter passing</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> injects <code>--input-file</code> content as variable</li>
