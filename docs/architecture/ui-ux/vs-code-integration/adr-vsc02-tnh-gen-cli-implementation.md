@@ -5,7 +5,7 @@ owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.5"
 status: proposed
 created: "2025-01-28"
-updated: "2025-12-07"
+updated: "2025-12-27"
 ---
 
 # ADR-VSC02: VS Code Extension Integration with tnh-gen CLI
@@ -14,7 +14,7 @@ This ADR defines how the VS Code extension integrates with the `tnh-gen` CLI to 
 
 - **Status**: Proposed
 - **Date**: 2025-01-28
-- **Updated**: 2025-12-07
+- **Updated**: 2025-12-27
 - **Owner**: Aaron Solomon
 - **Author**: Aaron Solomon, Claude Sonnet 4.5
 
@@ -38,6 +38,7 @@ TNH Scholar users work primarily in VS Code for text editing and translation wor
 
 - **ADR-VSC01**: VS Code Integration Strategy (establishes CLI-based architecture)
 - **ADR-TG01**: CLI Architecture (defines `tnh-gen` command structure, error codes, configuration)
+- **ADR-TG01.1**: Human-Friendly CLI Defaults (defines `--api` flag for machine-readable contract output)
 - **ADR-TG02**: Prompt System Integration (defines CLI ↔ prompt system integration patterns)
 
 ## Decision
@@ -65,7 +66,10 @@ TNH Scholar users work primarily in VS Code for text editing and translation wor
 
 ### 2. CLI Invocation Strategy
 
-The extension spawns `tnh-gen` as a child process and communicates via JSON:
+The extension spawns `tnh-gen` as a child process and communicates via JSON using the `--api` flag for structured API output (ADR-TG01.1):
+
+- **Always pass `--api`** for machine-readable output; do not rely on `--format json` without `--api`.
+- **Parse stdout as JSON**; treat stderr as diagnostics (warnings, trace IDs, debug info).
 
 ```typescript
 // src/cli/CliAdapter.ts
@@ -79,7 +83,7 @@ export class TnhGenCliAdapter {
   }
 
   async listPrompts(options?: { tag?: string; search?: string }): Promise<PromptListResponse> {
-    const args = ['list', '--format', 'json'];
+    const args = ['list', '--api']; // Use --api for full API metadata
     if (options?.tag) args.push('--tag', options.tag);
     if (options?.search) args.push('--search', options.search);
 
@@ -88,7 +92,7 @@ export class TnhGenCliAdapter {
   }
 
   async runPrompt(request: RunPromptRequest): Promise<RunPromptResponse> {
-    const args = ['run', '--prompt', request.promptKey, '--format', 'json'];
+    const args = ['run', '--prompt', request.promptKey, '--api']; // Use --api for full response metadata
 
     // Add input file
     if (request.inputFile) {
@@ -132,7 +136,9 @@ export class TnhGenCliAdapter {
 
 ### 3. Error Handling
 
-Map CLI exit codes (ADR-TG01 §5) to user-friendly messages:
+Parse JSON error responses from `--api` mode (ADR-TG01.1 §3.4) and map CLI exit codes (ADR-TG01 §5) to user-friendly messages:
+
+**Diagnostics**: stderr contains trace IDs and warnings for correlation; stdout remains JSON for programmatic parsing.
 
 ```typescript
 // src/cli/CliError.ts
@@ -147,15 +153,16 @@ export class CliError extends Error {
 
   static formatMessage(stdout: string, exitCode: number): string {
     try {
+      // With --api, errors are JSON with full diagnostics
       const response = JSON.parse(stdout);
-      if (response.error) {
-        // Use CLI's structured error message
+      if (response.status === 'failed' && response.error) {
+        // Use CLI's structured error message (ADR-TG01.1 §3.4)
         return response.diagnostics?.suggestion
           ? `${response.error}\n\nSuggestion: ${response.diagnostics.suggestion}`
           : response.error;
       }
     } catch {
-      // Fallback to generic message
+      // Fallback to generic message if JSON parse fails
       return CliError.genericMessage(exitCode);
     }
   }
@@ -288,7 +295,7 @@ export class ConfigManager {
 export class CliValidator {
   static async validateCli(cliPath: string): Promise<{ valid: boolean; version?: string; error?: string }> {
     try {
-      const proc = spawn(cliPath, ['version', '--format', 'json']);
+      const proc = spawn(cliPath, ['version', '--api']);
       const stdout = await this.readStream(proc.stdout);
       const version = JSON.parse(stdout);
 
@@ -350,11 +357,13 @@ export class CliValidator {
 
 ### Positive
 
-- **Stable Contract**: Extension depends only on CLI JSON protocol, not Python internals
+- **Stable Contract**: Extension depends only on CLI JSON protocol via `--api` flag, not Python internals
 - **Version Independence**: Extension and CLI can evolve independently
-- **Error Transparency**: CLI exit codes and structured errors enable rich error handling
+- **Error Transparency**: CLI exit codes and structured JSON errors (ADR-TG01.1) enable rich error handling
+- **Full Metadata Access**: `--api` provides complete prompt metadata, provenance, usage stats
 - **Testability**: CLI can be mocked for extension unit tests
-- **Reusability**: CLI implementation (ADR-TG01/TG02) serves both VS Code and command-line users
+- **Reusability**: CLI implementation (ADR-TG01/TG01.1/TG02) serves both VS Code and command-line users
+- **Human-Friendly CLI**: Interactive CLI users get readable output by default, while extension gets full API metadata via `--api`
 
 ### Negative
 
@@ -399,6 +408,7 @@ export class CliValidator {
 
 - **[ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)** - Overall VS Code strategy
 - **[ADR-TG01: CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)** - CLI command structure, error codes, configuration
+- **[ADR-TG01.1: Human-Friendly CLI Defaults](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md)** - `--api` flag for machine-readable contract output
 - **[ADR-TG02: Prompt System Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)** - CLI ↔ prompt system integration
 - **[ADR-AT03: AI Text Processing Refactor](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md)** - ai_text_processing refactor
 
@@ -410,4 +420,19 @@ export class CliValidator {
 
 ---
 
-*This ADR focuses on VS Code extension strategy. CLI implementation details are defined in ADR-TG01 and ADR-TG02.*
+## Changelog
+
+### 2025-12-27: Updated for ADR-TG01.1 `--api` flag
+
+- Changed all CLI invocations to use `--api` flag (replacing earlier `--verbose` design)
+- `--api` is the machine-readable API contract mode for structured output (ADR-TG01.1)
+- Updated error handling to parse structured JSON errors from `--api` mode
+- Updated version checking to use `--api` flag
+- Added reference to ADR-TG01.1 in Related Work and References sections
+- Interactive CLI users now get human-friendly output by default
+- Extension receives full API metadata via `--api` flag
+- This is a breaking change from the initial `--verbose` design, done while ADR is still in proposed status
+
+---
+
+*This ADR focuses on VS Code extension strategy. CLI implementation details are defined in ADR-TG01, ADR-TG01.1, and ADR-TG02.*

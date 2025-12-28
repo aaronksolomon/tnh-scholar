@@ -6,7 +6,8 @@
 │   │   ├── AGENTLOG-12-07-25.md
 │   │   ├── AGENTLOG-12-10-25.md
 │   │   ├── AGENTLOG-12-11-25.md
-│   │   └── AGENTLOG-12-13-25.md
+│   │   ├── AGENTLOG-12-13-25.md
+│   │   └── AGENTLOG-12-23-25.md
 │   ├── ISSUE_DRAFT_archive_linking.md
 │   └── README.md
 ├── CHANGELOG.md
@@ -59,6 +60,7 @@
 │   │   │   │   ├── adr-a12-prompt-system-fingerprinting-v1.md
 │   │   │   │   ├── adr-a13-migrate-openai-to-genaiservice.md
 │   │   │   │   ├── adr-a14-file-based-registry-system.md
+│   │   │   │   ├── adr-a15-thread-safety-rate-limiting.md
 │   │   │   │   └── index.md
 │   │   │   ├── design
 │   │   │   │   ├── genai-service-design-strategy.md
@@ -129,6 +131,7 @@
 │   │   ├── tnh-gen
 │   │   │   ├── adr
 │   │   │   │   ├── adr-tg01-cli-architecture.md
+│   │   │   │   ├── adr-tg01.1-human-friendly-defaults.md
 │   │   │   │   ├── adr-tg02-prompt-integration.md
 │   │   │   │   └── index.md
 │   │   │   ├── design
@@ -228,7 +231,8 @@
 │   │   │   │   ├── implementation-summary.md
 │   │   │   │   ├── incident-report-updates.md
 │   │   │   │   └── index.md
-│   │   │   └── index.md
+│   │   │   ├── index.md
+│   │   │   └── tag-v0.2.0-correction-plan.md
 │   │   ├── index.md
 │   │   ├── overview.md
 │   │   ├── release-workflow.md
@@ -554,9 +558,12 @@
 │       │   │   ├── output
 │       │   │   │   ├── __init__.py
 │       │   │   │   ├── formatter.py
+│       │   │   │   ├── human_formatter.py
+│       │   │   │   ├── policy.py
 │       │   │   │   └── provenance.py
 │       │   │   ├── state.py
-│       │   │   └── tnh_gen.py
+│       │   │   ├── tnh_gen.py
+│       │   │   └── types.py
 │       │   ├── tnh_setup
 │       │   │   ├── __init__.py
 │       │   │   └── tnh_setup.py
@@ -766,4 +773,4 @@
 ├── TODO.md
 └── VERSIONING.md
 
-168 directories, 599 files
+168 directories, 606 files

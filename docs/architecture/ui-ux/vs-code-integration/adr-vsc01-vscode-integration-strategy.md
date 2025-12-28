@@ -145,7 +145,7 @@ The `tnh-gen` CLI provides three primary commands:
 Lists all available prompts with rich metadata (names, descriptions, tags, required variables).
 
 ```bash
-tnh-gen list --format json
+tnh-gen list --api
 ```
 
 Enables VS Code extension to build dynamic QuickPick interfaces without hardcoding prompt metadata.
@@ -196,7 +196,7 @@ The extension provides minimal commands that wrap `tnh-gen`:
 
 Workflow:
 
-1. Execute `tnh-gen list --format json`
+1. Execute `tnh-gen list --api`
 2. Show QuickPick with prompt names + descriptions
 3. For selected prompt, show input form for required variables
 4. Execute `tnh-gen run --prompt <key> --input-file <active_file> --vars <temp.json>`
@@ -657,7 +657,7 @@ The extension acts as a **thin client**, delegating all GenAI logic to the CLI/s
 
 **CLI Implementation:**
 
-- [ ] `tnh-gen list --format json` returns prompt metadata
+- [ ] `tnh-gen list --api` returns prompt metadata
 - [ ] `tnh-gen run` supports JSON file variable passing
 - [ ] `tnh-gen run` supports inline `--var` parameter passing
 - [ ] `tnh-gen run` injects `--input-file` content as variable
