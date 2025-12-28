@@ -1,6 +1,8 @@
 ---
 title: "Provenance & Tracing Architecture"
 description: "Cross-cutting infrastructure for tracking data lineage, request tracing, and reproducibility across TNH Scholar"
+owner: "phapman"
+author: "Claude Sonnet 4"
 status: current
 created: "2025-12-19"
 ---

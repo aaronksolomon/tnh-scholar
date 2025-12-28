@@ -1,10 +1,12 @@
 ---
 title: "ADR-VSC03.2: Real-World Survey Addendum (VS Code as a UI/UX Platform)"
-description: "Online survey of existing systems and patterns that de-risk Python↔TypeScript boundaries for TNH-Scholar’s VS Code UI/UX strategy"
+description: "Online survey of existing systems and patterns that de-risk Python↔TypeScript boundaries for TNH-Scholar's VS Code UI/UX strategy"
+owner: "phapman"
+author: "Claude Sonnet 4"
 type: "investigation-findings"
 parent_adr: "adr-vsc03-python-javascript-impedance-investigation.md"
 status: "draft"
-date: "2025-12-12"
+created: "2025-12-12"
 ---
 
 # ADR-VSC03.2: Real-World Survey Addendum (VS Code as a UI/UX Platform)

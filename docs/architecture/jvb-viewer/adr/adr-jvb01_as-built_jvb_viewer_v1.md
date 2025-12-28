@@ -1,4 +1,15 @@
-# ADR-JVB-001: JVB Parallel Viewer v1 As-Built
+---
+title: "ADR-JVB01: JVB Parallel Viewer v1 As-Built"
+description: "As-built architecture documentation for JVB parallel viewer v1 bilingual journal interface"
+owner: "phapman"
+author: "Claude Sonnet 4"
+status: "accepted"
+created: "2025-12-12"
+---
+
+# ADR-JVB01: JVB Parallel Viewer v1 As-Built
+
+As-built architecture documentation for JVB parallel viewer v1 bilingual journal interface.
 
 - **Status:** Accepted (as-built)
 - **Date:** 2025-12-12
