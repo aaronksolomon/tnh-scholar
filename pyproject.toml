@@ -147,6 +147,7 @@ exclude_lines = [
 line-length = 110
 target-version = "py312"
 lint.select = ["E", "F", "I", "C90"]
+lint.mccabe.max-complexity = 9
 exclude = [
     "*.ipynb",
     "notebooks/**",

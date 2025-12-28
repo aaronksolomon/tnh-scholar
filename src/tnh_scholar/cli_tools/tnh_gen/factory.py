@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Protocol
+from typing import Protocol
 
 from tnh_scholar.cli_tools.tnh_gen.config_loader import CLIConfig
+from tnh_scholar.cli_tools.tnh_gen.types import SettingsKwargs
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.protocols import GenAIServiceProtocol
 from tnh_scholar.gen_ai_service.service import GenAIService
@@ -18,9 +19,9 @@ class ServiceOverrides:
     temperature: float | None = None
 
 
-def cli_config_to_settings_kwargs(cli_config: CLIConfig, overrides: ServiceOverrides) -> dict[str, Any]:
+def cli_config_to_settings_kwargs(cli_config: CLIConfig, overrides: ServiceOverrides) -> SettingsKwargs:
     """Translate CLI configuration into kwargs for GenAI service settings."""
-    payload: dict[str, Any] = {}
+    payload: SettingsKwargs = {}
     if cli_config.prompt_catalog_dir:
         payload["prompt_dir"] = cli_config.prompt_catalog_dir
     if cli_config.api_key:

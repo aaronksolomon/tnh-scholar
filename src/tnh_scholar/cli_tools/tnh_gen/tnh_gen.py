@@ -29,22 +29,35 @@ def cli_callback(
         "--config",
         help="Path to config file that overrides user/workspace config.",
     ),
-    format: OutputFormat = typer.Option(
-        OutputFormat.json,
+    format: OutputFormat | None = typer.Option(
+        None,
         "--format",
-        help="Default output format for all commands (json, yaml, text).",
+        help="Output format for commands (json, yaml, text).",
         case_sensitive=False,
     ),
-    verbose: bool = typer.Option(False, "--verbose", "-v", help="Enable verbose logging."),
+    api: bool = typer.Option(
+        False,
+        "--api",
+        help="Machine-readable API contract output (JSON by default).",
+    ),
     quiet: bool = typer.Option(False, "--quiet", "-q", help="Suppress non-error output."),
     no_color: bool = typer.Option(False, "--no-color", help="Disable colored output."),
 ):
     """Apply global options and initialize shared context.
 
+    Default behavior: human-friendly output optimized for interactive CLI use.
+    Use --api for machine-readable JSON contract output.
+
+    Examples:
+      tnh-gen list
+      tnh-gen list --api
+      tnh-gen run --prompt daily --input-file notes.md
+      tnh-gen run --prompt daily --input-file notes.md --api
+
     Args:
         config: Optional path to an explicit config file.
-        format: Default output format for all commands.
-        verbose: Whether to emit verbose logs.
+        format: Output format override for commands.
+        api: Whether to emit machine-readable API contract output.
         quiet: Whether to suppress non-error output.
         no_color: Whether to disable colored terminal output.
     """
@@ -56,7 +69,7 @@ def cli_callback(
 
     ctx.config_path = config
     ctx.output_format = format
-    ctx.verbose = verbose
+    ctx.api = api
     ctx.quiet = quiet
     ctx.no_color = no_color
     if ctx.service_factory is None:

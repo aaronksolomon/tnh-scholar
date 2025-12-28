@@ -10,7 +10,6 @@ from typer.testing import CliRunner
 from tnh_scholar.cli_tools.tnh_gen import tnh_gen
 from tnh_scholar.cli_tools.tnh_gen.commands import run as run_module
 from tnh_scholar.cli_tools.tnh_gen.errors import ExitCode
-from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import PromptsAdapter
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionEnvelope,
     CompletionResult,
@@ -18,6 +17,7 @@ from tnh_scholar.gen_ai_service.models.domain import (
     Provenance,
     Usage,
 )
+from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import PromptsAdapter
 from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
 runner = CliRunner(mix_stderr=False)
@@ -158,7 +158,7 @@ def test_list_prompts_outputs_json(tmp_path, monkeypatch):
     monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
     monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
 
-    result = runner.invoke(tnh_gen.app, ["list", "--format", "json"])
+    result = runner.invoke(tnh_gen.app, ["list", "--api"])
 
     assert result.exit_code == 0, result.output
     payload = json.loads(result.stdout)
@@ -178,12 +178,24 @@ def test_list_keys_only(tmp_path, monkeypatch):
     assert result.stdout.strip() == "daily"
 
 
+def test_list_keys_only_emits_warning_for_legacy_prompt(tmp_path, monkeypatch):
+    prompt_dir = _write_legacy_prompt(tmp_path)
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+
+    result = runner.invoke(tnh_gen.app, ["list", "--keys-only"])
+
+    assert result.exit_code == 0
+    assert result.stdout.strip() == "legacy"
+    assert "[warn]" in result.stderr
+
+
 def test_list_includes_warning_for_legacy_prompt(tmp_path, monkeypatch):
     prompt_dir = _write_legacy_prompt(tmp_path)
     monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
     monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
 
-    result = runner.invoke(tnh_gen.app, ["list", "--format", "json"])
+    result = runner.invoke(tnh_gen.app, ["list", "--api"])
 
     assert result.exit_code == 0, result.output
     payload = json.loads(result.stdout)
@@ -192,6 +204,7 @@ def test_list_includes_warning_for_legacy_prompt(tmp_path, monkeypatch):
     assert warnings, "Expected warning for legacy prompt with missing metadata"
     assert "Expected YAML frontmatter keys" in warnings[0]
     assert "invalid-metadata" in payload["prompts"][0]["tags"]
+    assert "[warn]" in result.stderr
 
 
 def test_list_prompts_filters_by_tag_and_search(tmp_path, monkeypatch):
@@ -201,7 +214,7 @@ def test_list_prompts_filters_by_tag_and_search(tmp_path, monkeypatch):
 
     result = runner.invoke(
         tnh_gen.app,
-        ["list", "--tag", "study", "--search", "Planner", "--format", "json"],
+        ["list", "--tag", "study", "--search", "Planner", "--api"],
     )
 
     assert result.exit_code == 0, result.output
@@ -227,6 +240,32 @@ def test_list_prompts_table_output(tmp_path, monkeypatch):
     assert all(len(line.split()) >= 4 for line in lines)
 
 
+def test_list_default_human_output(tmp_path, monkeypatch):
+    prompt_dir = _write_prompt(tmp_path)
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+
+    result = runner.invoke(tnh_gen.app, ["list"])
+
+    assert result.exit_code == 0, result.output
+    assert "Available Prompts" in result.stdout
+    assert "Variables:" in result.stdout
+    assert not result.stdout.lstrip().startswith("{")
+
+
+def test_list_api_rejects_text_format(tmp_path, monkeypatch):
+    prompt_dir = _write_prompt(tmp_path)
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+
+    result = runner.invoke(tnh_gen.app, ["list", "--api", "--format", "text"])
+
+    assert result.exit_code != 0
+    payload = json.loads(result.stdout)
+    assert "cannot be combined" in payload["error"].lower()
+    assert "trace_id=" in result.stderr
+
+
 class _StubCatalog:
     def __init__(self, metadata: PromptMetadata):
         self._metadata = metadata
@@ -245,10 +284,12 @@ class _StubService:
         self.last_request = request
         started = datetime.now()
         finished = started + timedelta(seconds=1)
-        envelope = CompletionEnvelope(
+        return CompletionEnvelope(
             result=CompletionResult(
                 text="generated text",
-                usage=Usage(prompt_tokens=10, completion_tokens=20, total_tokens=30),
+                usage=Usage(
+                    prompt_tokens=10, completion_tokens=20, total_tokens=30
+                ),
                 model="gpt-4o",
                 provider="openai",
                 finish_reason="stop",
@@ -271,7 +312,6 @@ class _StubService:
             policy_applied={"routing_reason": "test"},
             warnings=[],
         )
-        return envelope
 
 
 class _CatalogBackedStubService:
@@ -345,6 +385,7 @@ def test_run_missing_required_variables_returns_error(tmp_path, monkeypatch):
             "daily",
             "--input-file",
             str(input_file),
+            "--api",
         ],
     )
 
@@ -353,6 +394,7 @@ def test_run_missing_required_variables_returns_error(tmp_path, monkeypatch):
     assert payload["status"] == "failed"
     assert "Missing required variables" in payload["error"]
     assert payload["trace_id"]
+    assert "trace_id=" in result.stderr
 
 
 def test_run_invalid_input_file_returns_error(tmp_path, monkeypatch):
@@ -385,6 +427,7 @@ def test_run_invalid_input_file_returns_error(tmp_path, monkeypatch):
             "daily",
             "--input-file",
             str(missing_input),
+            "--api",
         ],
     )
 
@@ -393,6 +436,7 @@ def test_run_invalid_input_file_returns_error(tmp_path, monkeypatch):
     assert payload["status"] == "failed"
     assert "Unable to read input file" in payload["error"]
     assert payload["trace_id"]
+    assert "trace_id=" in result.stderr
 
 
 def test_run_merges_variables_and_writes_file(tmp_path, monkeypatch):
@@ -438,6 +482,7 @@ def test_run_merges_variables_and_writes_file(tmp_path, monkeypatch):
             "input_text=inline_input",
             "--output-file",
             str(output_file),
+            "--api",
         ],
     )
 
@@ -456,6 +501,91 @@ def test_run_merges_variables_and_writes_file(tmp_path, monkeypatch):
     written = output_file.read_text(encoding="utf-8")
     assert "TNH-Scholar Generated Content" in written
     assert "generated text" in written
+
+
+def test_run_human_mode_outputs_text_only(tmp_path, monkeypatch):
+    prompt_dir = _write_prompt(tmp_path)
+    input_file = tmp_path / "input.txt"
+    input_file.write_text("file-input", encoding="utf-8")
+
+    metadata = PromptMetadata(
+        key="daily",
+        name="Daily Guidance",
+        version="1.0.0",
+        description="Daily guidance prompt for testing.",
+        task_type="study-plan",
+        required_variables=["audience"],
+        optional_variables=[],
+        default_variables={},
+        tags=["guidance"],
+    )
+    stub_service = _StubService(metadata)
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+    monkeypatch.setattr(run_module, "_initialize_service", lambda *_, **__: stub_service)
+
+    result = runner.invoke(
+        tnh_gen.app,
+        [
+            "run",
+            "--prompt",
+            "daily",
+            "--input-file",
+            str(input_file),
+            "--var",
+            "audience=students",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert result.stdout.strip() == "generated text"
+    assert not result.stdout.lstrip().startswith("{")
+
+
+def test_run_human_mode_rejects_json_format(tmp_path, monkeypatch):
+    prompt_dir = _write_prompt(tmp_path)
+    input_file = tmp_path / "input.txt"
+    input_file.write_text("file-input", encoding="utf-8")
+
+    metadata = PromptMetadata(
+        key="daily",
+        name="Daily Guidance",
+        version="1.0.0",
+        description="Daily guidance prompt for testing.",
+        task_type="study-plan",
+        required_variables=["audience"],
+        optional_variables=[],
+        default_variables={},
+        tags=["guidance"],
+    )
+    stub_service = _StubService(metadata)
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+    monkeypatch.setattr(run_module, "_initialize_service", lambda *_, **__: stub_service)
+
+    result = runner.invoke(
+        tnh_gen.app,
+        [
+            "run",
+            "--prompt",
+            "daily",
+            "--input-file",
+            str(input_file),
+            "--var",
+            "audience=students",
+            "--format",
+            "json",
+        ],
+    )
+
+    assert result.exit_code != 0
+    assert "Error:" in result.stdout
+    assert "requires --api" in result.stdout
+    assert "trace_id=" in result.stderr
 
 
 def test_run_reports_invalid_vars_file(tmp_path, monkeypatch):
@@ -494,6 +624,7 @@ def test_run_reports_invalid_vars_file(tmp_path, monkeypatch):
             str(input_file),
             "--vars",
             str(broken_vars),
+            "--api",
         ],
     )
 
@@ -539,6 +670,7 @@ def test_run_reports_non_object_vars_file(tmp_path, monkeypatch):
             str(input_file),
             "--vars",
             str(vars_file),
+            "--api",
         ],
     )
 
@@ -556,11 +688,42 @@ def test_cli_loads_dotenv_for_settings(tmp_path, monkeypatch):
 
     env = {"OPENAI_API_KEY": None, "TNH_GEN_CONFIG_HOME": str(tmp_path / "config-home")}
 
-    result = runner.invoke(tnh_gen.app, ["config", "get", "api_key"], env=env)
+    result = runner.invoke(tnh_gen.app, ["config", "get", "api_key", "--api"], env=env)
 
     assert result.exit_code == 0, result.output
     payload = json.loads(result.stdout)
     assert payload["api_key"] == "from_dotenv"
+
+
+def test_config_show_human_outputs_yaml(tmp_path, monkeypatch):
+    config_home = tmp_path / "config-home"
+    config_home.mkdir()
+    config_home.joinpath("tnh-gen.json").write_text(
+        json.dumps({"default_model": "gpt-4o-mini"}, indent=2),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(config_home))
+
+    result = runner.invoke(tnh_gen.app, ["config", "show"])
+
+    assert result.exit_code == 0, result.output
+    assert "default_model: gpt-4o-mini" in result.stdout
+    assert not result.stdout.lstrip().startswith("{")
+
+
+def test_config_show_human_outputs_text(tmp_path, monkeypatch):
+    config_home = tmp_path / "config-home"
+    config_home.mkdir()
+    config_home.joinpath("tnh-gen.json").write_text(
+        json.dumps({"default_model": "gpt-4o-mini"}, indent=2),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(config_home))
+
+    result = runner.invoke(tnh_gen.app, ["config", "show", "--format", "text"])
+
+    assert result.exit_code == 0, result.output
+    assert "default_model: gpt-4o-mini" in result.stdout
 
 
 def test_legacy_prompt_allows_auto_input_text_variable():
@@ -603,6 +766,7 @@ def test_legacy_prompt_run_uses_fallback_metadata_and_input_text(tmp_path, monke
             "legacy",
             "--input-file",
             str(input_file),
+            "--api",
         ],
     )
 
@@ -620,10 +784,12 @@ def test_config_set_and_get_user_scope(tmp_path, monkeypatch):
     monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
     monkeypatch.chdir(tmp_path)
 
-    set_result = runner.invoke(tnh_gen.app, ["config", "set", "default_model", "gpt-4o"])
+    set_result = runner.invoke(
+        tnh_gen.app, ["config", "set", "default_model", "gpt-4o", "--api"]
+    )
     assert set_result.exit_code == 0
 
-    get_result = runner.invoke(tnh_gen.app, ["config", "get", "default_model"])
+    get_result = runner.invoke(tnh_gen.app, ["config", "get", "default_model", "--api"])
     assert get_result.exit_code == 0
     payload = json.loads(get_result.stdout)
     assert payload["default_model"] == "gpt-4o"
