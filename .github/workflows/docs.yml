@@ -58,7 +58,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry env use python
-          poetry install --with dev --no-interaction --no-ansi
+          poetry install --no-interaction --no-ansi
 
       - name: Check documentation drift
         run: |

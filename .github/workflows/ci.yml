@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry env use python
-          poetry install --with dev -E gui -E query -E ocr --no-interaction --no-ansi --no-root
+          poetry install -E gui -E query -E ocr --no-interaction --no-ansi --no-root
 
       - name: Install system dependencies
         run: |
