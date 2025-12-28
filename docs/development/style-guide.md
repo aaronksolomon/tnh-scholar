@@ -275,7 +275,7 @@ LIMITS = ValidationLimits()
 ### Size Limits
 
 - **Target length**: 15-20 lines of code (excluding docstring)
-- **Cyclomatic complexity**: Target 7 or less (enforced at 9 by ruff)
+- **Cyclomatic complexity**: Target 7 or less (enforced at 9 by Ruff)
   - McCabe complexity counts decision points (if/elif/match), which can flag low-complexity patterns like simple match statements with many cases
   - Use Sourcery for cognitive complexity analysis (better semantic understanding)
   - Ruff threshold set at 9 to avoid false positives on type-safe mappings

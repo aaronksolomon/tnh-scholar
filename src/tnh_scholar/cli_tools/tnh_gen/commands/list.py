@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, cast
 from uuid import uuid4
 
 import typer
@@ -13,8 +13,6 @@ from tnh_scholar.cli_tools.tnh_gen.output.human_formatter import format_human_fr
 from tnh_scholar.cli_tools.tnh_gen.output.policy import resolve_list_format, validate_list_format
 from tnh_scholar.cli_tools.tnh_gen.state import ListOutputFormat, OutputFormat, ctx
 from tnh_scholar.cli_tools.tnh_gen.types import (
-    HumanEntry,
-    ListApiEntry,
     ListApiPayload,
     ListHumanPayload,
 )
@@ -72,40 +70,67 @@ def _apply_filters(
         yield prompt
 
 
-def _build_api_entries(prompts: Iterable[PromptMetadata]) -> list[ListApiEntry]:
-    return [
-        {
-            "key": prompt.key,
-            "name": prompt.name,
-            "description": prompt.description,
-            "tags": prompt.tags,
-            "required_variables": prompt.required_variables,
-            "optional_variables": prompt.optional_variables,
-            "default_variables": prompt.default_variables,
-            "default_model": prompt.default_model,
-            "output_mode": prompt.output_mode,
-            "version": prompt.version,
-            "warnings": getattr(prompt, "warnings", []),
-        }
-        for prompt in prompts
-    ]
+def _normalize_prompt(prompt: PromptMetadata) -> dict[str, object]:
+    return {
+        "key": prompt.key,
+        "name": prompt.name,
+        "description": prompt.description,
+        "tags": prompt.tags,
+        "required_variables": prompt.required_variables,
+        "optional_variables": prompt.optional_variables,
+        "default_variables": prompt.default_variables,
+        "default_model": prompt.default_model,
+        "output_mode": prompt.output_mode,
+        "version": prompt.version,
+        "warnings": getattr(prompt, "warnings", []),
+    }
 
 
-def _build_human_entries(prompts: Iterable[PromptMetadata]) -> list[HumanEntry]:
-    return [
-        {
-            "key": prompt.key,
-            "name": prompt.name,
-            "description": prompt.description,
-            "variables": {
-                "required": prompt.required_variables,
-                "optional": prompt.optional_variables,
-            },
-            "default_model": prompt.default_model,
-            "tags": prompt.tags,
-        }
-        for prompt in prompts
-    ]
+def _build_entries(prompts: Iterable[PromptMetadata]) -> list[dict[str, object]]:
+    return [_normalize_prompt(prompt) for prompt in prompts]
+
+
+def _to_api_payload(entries: list[dict[str, object]], sources: list[str]) -> ListApiPayload:
+    return {
+        "prompts": [
+            {
+                "key": cast(str, entry["key"]),
+                "name": cast(str, entry["name"]),
+                "description": cast(str, entry["description"]),
+                "tags": cast(list[str], entry["tags"]),
+                "required_variables": cast(list[str], entry["required_variables"]),
+                "optional_variables": cast(list[str], entry["optional_variables"]),
+                "default_variables": cast(dict[str, object], entry["default_variables"]),
+                "default_model": cast(str | None, entry["default_model"]),
+                "output_mode": cast(str | None, entry["output_mode"]),
+                "version": cast(str, entry["version"]),
+                "warnings": cast(list[str], entry["warnings"]),
+            }
+            for entry in entries
+        ],
+        "count": len(entries),
+        "sources": sources,
+    }
+
+
+def _to_human_payload(entries: list[dict[str, object]]) -> ListHumanPayload:
+    return {
+        "prompts": [
+            {
+                "key": cast(str, entry["key"]),
+                "name": cast(str, entry["name"]),
+                "description": cast(str, entry["description"]),
+                "variables": {
+                    "required": cast(list[str], entry["required_variables"]),
+                    "optional": cast(list[str], entry["optional_variables"]),
+                },
+                "default_model": cast(str | None, entry["default_model"]),
+                "tags": cast(list[str], entry["tags"]),
+            }
+            for entry in entries
+        ],
+        "count": len(entries),
+    }
 
 
 def _emit_prompt_warnings(prompts: Iterable[PromptMetadata]) -> None:
@@ -120,40 +145,37 @@ def _emit_prompt_warnings(prompts: Iterable[PromptMetadata]) -> None:
             )
 
 
-def _render_keys_only(prompts: Iterable[PromptMetadata]) -> None:
-    typer.echo("\n".join(prompt.key for prompt in prompts))
-
-
-def _render_human_list(prompts: list[PromptMetadata], fmt: ListOutputFormat) -> None:
-    if fmt == ListOutputFormat.text:
+def _render_list(
+    *,
+    prompts: list[PromptMetadata],
+    sources: list[str],
+    fmt: ListOutputFormat,
+    api: bool,
+    keys_only: bool,
+) -> None:
+    if keys_only:
+        typer.echo("\n".join(prompt.key for prompt in prompts))
+        return
+    if not api and fmt == ListOutputFormat.text:
         typer.echo(format_human_friendly_list(prompts))
         return
-    if fmt == ListOutputFormat.table:
-        entries = _build_human_entries(prompts)
+
+    entries = _build_entries(prompts)
+    if not api and fmt == ListOutputFormat.table:
         rows = [
             [
-                entry["key"],
-                entry["name"],
-                ", ".join(entry["tags"]),
-                entry["default_model"] or "",
+                cast(str, entry["key"]),
+                cast(str, entry["name"]),
+                ", ".join(cast(list[str], entry["tags"])),
+                cast(str | None, entry["default_model"]) or "",
             ]
             for entry in entries
         ]
         headers = ["KEY", "NAME", "TAGS", "MODEL"]
         typer.echo(format_table(headers, rows))
         return
-    entries = _build_human_entries(prompts)
-    payload: ListHumanPayload = {"prompts": entries, "count": len(entries)}
-    typer.echo(render_output(payload, fmt))
 
-
-def _render_api_list(
-    prompts: list[PromptMetadata],
-    sources: list[str],
-    fmt: ListOutputFormat,
-) -> None:
-    entries = _build_api_entries(prompts)
-    payload: ListApiPayload = {"prompts": entries, "count": len(entries), "sources": sources}
+    payload = _to_api_payload(entries, sources) if api else _to_human_payload(entries)
     typer.echo(render_output(payload, fmt))
 
 
@@ -163,8 +185,8 @@ def _resolve_list_output_format(format_override: ListOutputFormat | None) -> Lis
     return fmt
 
 
-def _resolve_list_error_format(format_override: ListOutputFormat | None) -> OutputFormat | None:
-    if format_override is None:
+def _error_output_format(api: bool, format_override: ListOutputFormat | None) -> OutputFormat | None:
+    if not api:
         return None
     if format_override in (ListOutputFormat.json, ListOutputFormat.yaml):
         return OutputFormat(format_override.value)
@@ -184,14 +206,23 @@ def _list_prompts_impl(
 
     _emit_prompt_warnings(prompts)
     if keys_only:
-        _render_keys_only(prompts)
+        _render_list(
+            prompts=prompts,
+            sources=meta["sources"],
+            fmt=ListOutputFormat.text,
+            api=ctx.api,
+            keys_only=True,
+        )
         return
 
     fmt = _resolve_list_output_format(format_override)
-    if ctx.api:
-        _render_api_list(prompts, meta["sources"], fmt)
-    else:
-        _render_human_list(prompts, fmt)
+    _render_list(
+        prompts=prompts,
+        sources=meta["sources"],
+        fmt=fmt,
+        api=ctx.api,
+        keys_only=False,
+    )
 
 
 @app.callback()
@@ -199,11 +230,10 @@ def list_prompts(
     tag: list[str] = typer.Option([], "--tag", help="Filter by tag (repeatable)."),
     search: str | None = typer.Option(None, "--search", help="Search prompt name/description."),
     keys_only: bool = typer.Option(False, "--keys-only", help="Output only prompt keys."),
-    api: bool = typer.Option(False, "--api", help="Machine-readable API contract output."),
     format: ListOutputFormat | None = typer.Option(
         None,
         "--format",
-        help="Output format: json, yaml, text, table.",
+        help="Output format: json (requires --api), yaml, text/table (human-only).",
         case_sensitive=False,
     ),
 ):
@@ -217,8 +247,6 @@ def list_prompts(
     """
     trace_id = uuid4().hex
     try:
-        if api:
-            ctx.api = True
         _list_prompts_impl(
             tag=tag,
             search=search,
@@ -228,4 +256,4 @@ def list_prompts(
     except typer.Exit:
         raise
     except Exception as exc:  # noqa: BLE001
-        exit_with_error(exc, trace_id=trace_id, format_override=_resolve_list_error_format(format))
+        exit_with_error(exc, trace_id=trace_id, format_override=_error_output_format(ctx.api, format))

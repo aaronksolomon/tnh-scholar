@@ -32,8 +32,15 @@ class ConfigMeta(TypedDict):
     config_files: list[str]
 
 
-class ConfigValuePayload(ConfigData, total=False):
+class ConfigValuePayload(TypedDict):
     trace_id: str
+    prompt_catalog_dir: NotRequired[str | Path | None]
+    default_model: NotRequired[str | None]
+    max_dollars: NotRequired[float | None]
+    max_input_chars: NotRequired[int | None]
+    default_temperature: NotRequired[float | None]
+    api_key: NotRequired[str | None]
+    cli_path: NotRequired[str | None]
 
 
 class ConfigShowPayload(TypedDict):

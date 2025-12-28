@@ -32,7 +32,7 @@ def cli_callback(
     format: OutputFormat | None = typer.Option(
         None,
         "--format",
-        help="Output format for commands (json, yaml, text).",
+        help="Output format for commands (json/yaml for API output; text/yaml for human output).",
         case_sensitive=False,
     ),
     api: bool = typer.Option(
@@ -50,9 +50,9 @@ def cli_callback(
 
     Examples:
       tnh-gen list
-      tnh-gen list --api
+      tnh-gen --api list
       tnh-gen run --prompt daily --input-file notes.md
-      tnh-gen run --prompt daily --input-file notes.md --api
+      tnh-gen --api run --prompt daily --input-file notes.md
 
     Args:
         config: Optional path to an explicit config file.

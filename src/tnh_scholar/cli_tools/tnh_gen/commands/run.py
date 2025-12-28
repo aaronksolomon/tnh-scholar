@@ -446,9 +446,7 @@ def _validate_run_options(streaming: bool, top_p: float | None) -> None:
         typer.echo("Warning: --top-p is accepted but not applied in this version.", err=True)
 
 
-def _apply_api_settings(api: bool, format_override: OutputFormat | None) -> None:
-    if api:
-        ctx.api = True
+def _apply_api_settings(format_override: OutputFormat | None) -> None:
     effective_format = format_override or ctx.output_format
     validate_run_format(ctx.api, effective_format)
 
@@ -488,7 +486,6 @@ def run_prompt(
     input_file: Path = TnhGenCLIOptions.INPUT_FILE,
     vars_file: Path | None = TnhGenCLIOptions.VARS_FILE,
     var: list[str] = TnhGenCLIOptions.VAR,
-    api: bool = typer.Option(False, "--api", help="Machine-readable API contract output."),
     model: str | None = TnhGenCLIOptions.MODEL,
     intent: str | None = TnhGenCLIOptions.INTENT,
     max_tokens: int | None = TnhGenCLIOptions.MAX_TOKENS,
@@ -520,7 +517,7 @@ def run_prompt(
 
     try:
         _validate_run_options(streaming, top_p)
-        _apply_api_settings(api, format)
+        _apply_api_settings(format)
 
         # Prepare execution context
         context = _prepare_run_context(

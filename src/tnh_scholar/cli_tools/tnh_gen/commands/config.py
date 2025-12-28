@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import cast
+from typing import Mapping, cast
 from uuid import uuid4
 
 import typer
@@ -33,15 +33,6 @@ from tnh_scholar.cli_tools.tnh_gen.types import (
 
 app = typer.Typer(help="Inspect and edit tnh-gen configuration.")
 
-CONFIG_KEYS: tuple[ConfigKey, ...] = (
-    "prompt_catalog_dir",
-    "default_model",
-    "max_dollars",
-    "max_input_chars",
-    "default_temperature",
-    "api_key",
-    "cli_path",
-)
 ConfigValue = str | Path | float | int | None
 
 
@@ -66,11 +57,15 @@ def _resolve_human_config_format(format_override: OutputFormat | None) -> Output
     return format_override or ctx.output_format or OutputFormat.yaml
 
 
+def _get_config_keys() -> tuple[ConfigKey, ...]:
+    return cast(tuple[ConfigKey, ...], tuple(available_keys()))
+
+
 def _format_config_text(overrides: ConfigData) -> str:
     if not overrides:
         return ""
-    lines = []
-    for key in CONFIG_KEYS:
+    lines: list[str] = []
+    for key in _get_config_keys():
         if key not in overrides:
             continue
         value = cast(ConfigValue, overrides.get(key))
@@ -83,43 +78,12 @@ def _format_config_text(overrides: ConfigData) -> str:
 
 
 def _build_config_data_entry(key: ConfigKey, value: ConfigValue) -> ConfigData:
-    payload: ConfigData = {}
-    match key:
-        case "prompt_catalog_dir":
-            payload["prompt_catalog_dir"] = cast(str | Path | None, value)
-        case "default_model":
-            payload["default_model"] = cast(str | None, value)
-        case "max_dollars":
-            payload["max_dollars"] = cast(float | None, value)
-        case "max_input_chars":
-            payload["max_input_chars"] = cast(int | None, value)
-        case "default_temperature":
-            payload["default_temperature"] = cast(float | None, value)
-        case "api_key":
-            payload["api_key"] = cast(str | None, value)
-        case "cli_path":
-            payload["cli_path"] = cast(str | None, value)
-    return payload
+    return cast(ConfigData, {key: value})
 
 
 def _build_config_value_payload(key: ConfigKey, value: ConfigValue, trace_id: str) -> ConfigValuePayload:
-    payload: ConfigValuePayload = {"trace_id": trace_id}
-    match key:
-        case "prompt_catalog_dir":
-            payload["prompt_catalog_dir"] = cast(str | Path | None, value)
-        case "default_model":
-            payload["default_model"] = cast(str | None, value)
-        case "max_dollars":
-            payload["max_dollars"] = cast(float | None, value)
-        case "max_input_chars":
-            payload["max_input_chars"] = cast(int | None, value)
-        case "default_temperature":
-            payload["default_temperature"] = cast(float | None, value)
-        case "api_key":
-            payload["api_key"] = cast(str | None, value)
-        case "cli_path":
-            payload["cli_path"] = cast(str | None, value)
-    return payload
+    payload: dict[str, object] = {"trace_id": trace_id, key: value}
+    return cast(ConfigValuePayload, payload)
 
 
 def _build_config_update(key: ConfigKey, value: str | float | int) -> ConfigData:
@@ -127,69 +91,66 @@ def _build_config_update(key: ConfigKey, value: str | float | int) -> ConfigData
 
 
 def _get_config_value(config: ConfigData, key: ConfigKey) -> ConfigValue:
-    match key:
-        case "prompt_catalog_dir":
-            return cast(str | Path | None, config.get("prompt_catalog_dir"))
-        case "default_model":
-            return cast(str | None, config.get("default_model"))
-        case "max_dollars":
-            return cast(float | None, config.get("max_dollars"))
-        case "max_input_chars":
-            return cast(int | None, config.get("max_input_chars"))
-        case "default_temperature":
-            return cast(float | None, config.get("default_temperature"))
-        case "api_key":
-            return cast(str | None, config.get("api_key"))
-        case "cli_path":
-            return cast(str | None, config.get("cli_path"))
-    return None
+    return cast(ConfigValue, config.get(key))
 
 
-def _render_show_config(trace_id: str, format_override: OutputFormat | None) -> str:
+def _render_config_response(
+    *,
+    api_payload: Mapping[str, object] | None,
+    human_payload: object | None,
+    text_fallback: str | None = None,
+    format_override: OutputFormat | None = None,
+) -> str:
     validate_global_format(ctx.api, format_override or ctx.output_format)
     if ctx.api:
-        config, meta = load_config(ctx.config_path)
-        config_dump = cast(ConfigData, config.model_dump(mode="json"))
-        payload: ConfigShowPayload = {
-            "config": config_dump,
-            "sources": meta["sources"],
-            "config_files": meta["config_files"],
-            "trace_id": trace_id,
-        }
+        if api_payload is None:
+            raise RuntimeError("API payload is required in API mode")
         fmt = resolve_output_format(
             api=True,
             format_override=format_override or ctx.output_format,
             default_format=OutputFormat.json,
         )
-        return cast(str, render_output(payload, fmt))
+        return cast(str, render_output(api_payload, fmt))
 
-    overrides = load_config_overrides(ctx.config_path)
     fmt = _resolve_human_config_format(format_override)
-    if fmt == OutputFormat.text:
-        return _format_config_text(overrides)
-    return cast(str, render_output(overrides, fmt))
+    if fmt == OutputFormat.text and text_fallback is not None:
+        return text_fallback
+    return cast(str, render_output(human_payload, fmt))
+
+
+def _render_show_config(trace_id: str, format_override: OutputFormat | None) -> str:
+    config, meta = load_config(ctx.config_path)
+    config_dump = cast(ConfigData, config.model_dump(mode="json"))
+    api_payload: ConfigShowPayload = {
+        "config": config_dump,
+        "sources": meta["sources"],
+        "config_files": meta["config_files"],
+        "trace_id": trace_id,
+    }
+    overrides = load_config_overrides(ctx.config_path)
+    return _render_config_response(
+        api_payload=cast(Mapping[str, object], api_payload),
+        human_payload=overrides,
+        text_fallback=_format_config_text(overrides),
+        format_override=format_override,
+    )
 
 
 def _render_get_config_value(key: str, trace_id: str) -> str:
-    validate_global_format(ctx.api, ctx.output_format)
     if key not in available_keys():
         raise KeyError(f"Unknown config key: {key}")
     config_key = cast(ConfigKey, key)
     config, _ = load_config(ctx.config_path)
     config_dump = cast(ConfigData, config.model_dump())
     value = _get_config_value(config_dump, config_key)
-    if ctx.api:
-        payload = _build_config_value_payload(config_key, value, trace_id)
-        fmt = resolve_output_format(
-            api=True,
-            format_override=ctx.output_format,
-            default_format=OutputFormat.json,
-        )
-        return cast(str, render_output(payload, fmt))
-    fmt = _resolve_human_config_format(ctx.output_format)
-    if fmt == OutputFormat.text:
-        return f"{key}: {value}"
-    return cast(str, render_output(_build_config_data_entry(config_key, value), fmt))
+    api_payload = _build_config_value_payload(config_key, value, trace_id)
+    human_payload = _build_config_data_entry(config_key, value)
+    return _render_config_response(
+        api_payload=cast(Mapping[str, object], api_payload),
+        human_payload=human_payload,
+        text_fallback=f"{key}: {value}",
+        format_override=ctx.output_format,
+    )
 
 
 def _render_set_config_value(
@@ -198,50 +159,40 @@ def _render_set_config_value(
     target: Path,
     trace_id: str,
 ) -> str:
-    validate_global_format(ctx.api, ctx.output_format)
     updated = _build_config_update(key, value)
-    if ctx.api:
-        api_payload: ConfigUpdateApiPayload = {
-            "status": "succeeded",
-            "updated": updated,
-            "target": str(target),
-            "trace_id": trace_id,
-        }
-        fmt = resolve_output_format(
-            api=True,
-            format_override=ctx.output_format,
-            default_format=OutputFormat.json,
-        )
-        return cast(str, render_output(api_payload, fmt))
-    fmt = _resolve_human_config_format(ctx.output_format)
-    if fmt == OutputFormat.text:
-        return f"Updated {key} in {target}"
     human_payload: ConfigUpdatePayload = {"updated": updated, "target": str(target)}
-    return cast(str, render_output(human_payload, fmt))
+    api_payload: ConfigUpdateApiPayload = {
+        "status": "succeeded",
+        "updated": updated,
+        "target": str(target),
+        "trace_id": trace_id,
+    }
+    return _render_config_response(
+        api_payload=cast(Mapping[str, object], api_payload),
+        human_payload=human_payload,
+        text_fallback=f"Updated {key} in {target}",
+        format_override=ctx.output_format,
+    )
 
 
 def _render_config_keys(keys: list[str], trace_id: str) -> str:
-    validate_global_format(ctx.api, ctx.output_format)
-    if ctx.api:
-        api_payload: ConfigKeysPayload = {"keys": keys, "trace_id": trace_id}
-        fmt = resolve_output_format(
-            api=True,
-            format_override=ctx.output_format,
-            default_format=OutputFormat.json,
-        )
-        return cast(str, render_output(api_payload, fmt))
-    fmt = _resolve_human_config_format(ctx.output_format)
-    if fmt == OutputFormat.text:
-        return "\n".join(keys)
     human_payload: ConfigKeysHumanPayload = {"keys": keys}
-    return cast(str, render_output(human_payload, fmt))
+    api_payload: ConfigKeysPayload = {"keys": keys, "trace_id": trace_id}
+    return _render_config_response(
+        api_payload=cast(Mapping[str, object], api_payload),
+        human_payload=human_payload,
+        text_fallback="\n".join(keys),
+        format_override=ctx.output_format,
+    )
 
 
 @app.command("show")
 def show_config(
-    api: bool = typer.Option(False, "--api", help="Machine-readable API contract output."),
     format: OutputFormat | None = typer.Option(
-        None, "--format", help="json or yaml.", case_sensitive=False
+        None,
+        "--format",
+        help="Output format: json (requires --api), yaml, or text (human-only).",
+        case_sensitive=False,
     ),
 ):
     """Show the effective configuration and its source precedence.
@@ -251,8 +202,6 @@ def show_config(
     """
     trace_id = uuid4().hex
     try:
-        if api:
-            ctx.api = True
         typer.echo(_render_show_config(trace_id, format))
     except Exception as exc:  # noqa: BLE001
         exit_with_error(exc, trace_id=trace_id, format_override=format)
@@ -261,7 +210,6 @@ def show_config(
 @app.command("get")
 def get_config_value(
     key: str,
-    api: bool = typer.Option(False, "--api", help="Machine-readable API contract output."),
 ):
     """Retrieve a single config value by key.
 
@@ -270,8 +218,6 @@ def get_config_value(
     """
     trace_id = uuid4().hex
     try:
-        if api:
-            ctx.api = True
         typer.echo(_render_get_config_value(key, trace_id))
     except Exception as exc:  # noqa: BLE001
         exit_with_error(exc, trace_id=trace_id)
@@ -281,7 +227,6 @@ def get_config_value(
 def set_config_value(
     key: str = typer.Argument(..., help=f"Config key. Supported: {', '.join(available_keys())}"),
     value: str = typer.Argument(..., help="New value for the config key."),
-    api: bool = typer.Option(False, "--api", help="Machine-readable API contract output."),
     workspace: bool = typer.Option(
         False,
         "--workspace",
@@ -297,8 +242,6 @@ def set_config_value(
     """
     trace_id = uuid4().hex
     try:
-        if api:
-            ctx.api = True
         if key not in available_keys():
             raise KeyError(f"Unknown config key: {key}")
         config_key = cast(ConfigKey, key)
@@ -311,13 +254,10 @@ def set_config_value(
 
 @app.command("list")
 def list_config_keys(
-    api: bool = typer.Option(False, "--api", help="Machine-readable API contract output."),
 ):
     """List available configuration keys supported by the CLI."""
     trace_id = uuid4().hex
     try:
-        if api:
-            ctx.api = True
         keys = available_keys()
         typer.echo(_render_config_keys(keys, trace_id))
     except Exception as exc:  # noqa: BLE001

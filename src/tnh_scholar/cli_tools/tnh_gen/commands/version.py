@@ -23,9 +23,11 @@ def _python_version() -> str:
 
 
 def version(
-    api: bool = typer.Option(False, "--api", help="Machine-readable API contract output."),
     format: OutputFormat | None = typer.Option(
-        None, "--format", help="json or yaml.", case_sensitive=False
+        None,
+        "--format",
+        help="Output format: json (requires --api), yaml, or text (human-only).",
+        case_sensitive=False,
     ),
 ):
     """Display version information for tnh-gen and dependencies.
@@ -44,8 +46,6 @@ def version(
             "genai_service_version": __version__,
             "trace_id": trace_id,
         }
-        if api:
-            ctx.api = True
         validate_global_format(ctx.api, format or ctx.output_format)
         if ctx.api:
             fmt = resolve_output_format(
