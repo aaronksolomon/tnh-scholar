@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Eliminated all mkdocstrings-related deprecation warnings in docs build process
   - Build now completes cleanly without any warnings about deprecated import paths or handler methods
   - Updated references from deprecated `tnh-fab.md` to `tnh-gen.md` in CLI reference and user guide
+  - Made dev dependencies non-optional in `pyproject.toml` (removed `optional = true` from dev group) to ensure `poetry install` always includes dev tools (pytest, mkdocs, mypy, etc.) and prevent accidental removal
 
 ### Fixed
 
