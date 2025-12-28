@@ -4,7 +4,7 @@ description: "Complete searchable index of TNH Scholar documentation with metada
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2025-12-27"
+created: "2025-12-28"
 auto_generated: true
 ---
 
@@ -39,7 +39,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [Conceptual Architecture of TNH-Scholar](/project/conceptual-architecture.md) | High-level, implementation-agnostic view of TNH-Scholar’s layers, abstractions, and how they interact. | 2025-12-11 | `docs/project/conceptual-architecture.md` |
 | [Future Directions of TNH-Scholar](/project/future-directions.md) | Blue-sky exploration of potential long-term evolutions of TNH-Scholar built on the project’s philosophy and architecture. | 2025-12-11 | `docs/project/future-directions.md` |
 | [Project](/project/index.md) | Table of contents for project | 2025-12-11 | `docs/project/index.md` |
-| [Repo Root](/project/repo-root/index.md) | Repository root documentation surfaced in the MkDocs site. | 2025-12-27 | `docs/project/repo-root/index.md` |
+| [Repo Root](/project/repo-root/index.md) | Repository root documentation surfaced in the MkDocs site. | 2025-12-28 | `docs/project/repo-root/index.md` |
 | [TNH Scholar CHANGELOG](/project/repo-root/changelog.md) | Chronological log of notable TNH Scholar changes. | 2025-02-28 | `docs/project/repo-root/changelog.md` |
 | [TNH Scholar CONTRIBUTING](/project/repo-root/contributing-root.md) | TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow. | 2024-10-21 | `docs/project/repo-root/contributing-root.md` |
 | [TNH Scholar README](/project/repo-root/repo-readme.md) | TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models. | 2024-10-21 | `docs/project/repo-root/repo-readme.md` |
@@ -69,7 +69,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [nfmt](/cli-reference/nfmt.md) | `nfmt`, a newline formatting utility, standardizes line endings and spacing in text files. | 2025-02-01 | `docs/cli-reference/nfmt.md` |
 | [sent-split](/cli-reference/sent-split.md) | Split text into sentences using NLTK, with newline or space separators. | 2025-12-10 | `docs/cli-reference/sent-split.md` |
 | [srt-translate](/cli-reference/srt-translate.md) | Translate SRT subtitle files while preserving timecodes, using TNH Scholar translation patterns. | 2025-12-10 | `docs/cli-reference/srt-translate.md` |
-| [tnh-fab](/cli-reference/tnh-fab.md) | User-facing reference for the `tnh-fab` CLI covering commands, options, and example workflows. | 2025-01-19 | `docs/cli-reference/tnh-fab.md` |
+| [tnh-gen](/cli-reference/tnh-gen.md) | Complete reference for the tnh-gen CLI - TNH Scholar's unified command-line interface for GenAI-powered text processing | 2025-12-28 | `docs/cli-reference/tnh-gen.md` |
 | [tnh-setup](/cli-reference/tnh-setup.md) | The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns. | 2025-02-01 | `docs/cli-reference/tnh-setup.md` |
 | [token-count](/cli-reference/token-count.md) | The `token-count` command calculates the OpenAI API token count for text input. This is useful for ensuring that a text is within maximum token limits for the API model and also for estimating API costs. | 2025-02-01 | `docs/cli-reference/token-count.md` |
 | [ytt-fetch](/cli-reference/ytt-fetch.md) | (Y)ou(T)ube (T)ranscript-(Fetch)ing utility. | 2025-01-21 | `docs/cli-reference/ytt-fetch.md` |
@@ -126,7 +126,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [ADR-PT03: Prompt System Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) | Current as-built status of the TNH Scholar prompt system, documentation terminology standardization, and planned enhancements. | 2025-11-29 | `docs/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md` |
 | [ADR-PT04: Prompt System Refactor Plan (Revised)](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md) | Refactors the legacy pattern-based prompt system into a modular, object-service compliant PromptCatalog with validation, transport isolation, and clean dependency injection seams. | 2025-12-05 | `docs/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md` |
 | [ADR-PV01: Provenance & Tracing Infrastructure Strategy](/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md) | Establishes unified cross-cutting infrastructure for tracking data lineage, request tracing, and operation provenance across all TNH Scholar layers | 2025-12-19 | `docs/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md` |
-| [ADR-TG01.1: Human-Friendly CLI Defaults](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md) | Default to human-readable output for CLI usage, with --verbose flag for API-style JSON | 2025-12-23 | `docs/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md` |
+| [ADR-TG01.1: Human-Friendly CLI Defaults with --api Flag](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md) | Default to human-readable output for CLI usage, with --api flag for machine-readable contract output | 2025-12-23 | `docs/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md` |
 | [ADR-TG01: tnh-gen CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) | Core command structure, error handling, and configuration for the unified TNH Scholar CLI tool | 2025-12-07 | `docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md` |
 | [ADR-TG02: TNH-Gen CLI Prompt System Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md) | Integration pattern for tnh-gen CLI with prompt system via PromptsAdapter | 2025-12-07 | `docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md` |
 | [ADR-TR01: AssemblyAI Integration for Transcription Service](/architecture/transcription/adr/adr-tr01-assemblyai-integration.md) | Introduces a pluggable transcription interface with AssemblyAI and Whisper providers. | 2025-05-01 | `docs/architecture/transcription/adr/adr-tr01-assemblyai-integration.md` |
