@@ -23,7 +23,7 @@ This directory contains documentation for developers contributing to TNH Scholar
 
 ## Getting Started as a Contributor
 
-1. **Set up your development environment** - See [`DEV_SETUP.md`](/project/repo-root/dev-setup-root.md) for Python, Poetry, and dependency installation
+1. **Set up your development environment** - See [`DEV_SETUP.md`](/project/repo-root/dev-setup-guide.md) for Python, Poetry, and dependency installation
 2. Read [contributing-prototype-phase.md](/development/contributing-prototype-phase.md) for contribution guidelines
 3. Review [design-principles.md](/development/design-principles.md) to understand our approach
 4. Follow the [style-guide.md](/development/style-guide.md) for code consistency
