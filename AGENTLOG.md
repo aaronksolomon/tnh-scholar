@@ -10,6 +10,89 @@ This file captures AI agent interactions, decisions, discoveries, and work perfo
 
 <!-- Add new sessions here following the template format -->
 
+## 2025-12-28 22:15 PST Documentation Standards & ADR Status Lifecycle
+
+**Agent**: Claude Sonnet 4.5 (Claude Code)
+**Chat Reference**: docs-adr-status-standardization
+**Human Collaborator**: phapman
+
+### Context
+Cleaned up ADR status lifecycle definitions and updated implemented ADRs that were still marked as "proposed" or "accepted". Discovered 25 historical ADRs with `status: current` from pre-markdown-standards migration.
+
+### Key Decisions
+- **ADR status lifecycle**: Formalized `proposed` → `accepted` → `implemented` → `superseded`/`archived` with optional `wip` and terminal `rejected`
+- **Status separation**: ADRs use `accepted`/`implemented`, guides/docs use `current`, never mix
+- **`rejected` not `discarded`**: Standardized on `rejected` for clarity (more standard terminology)
+- **Historical ADRs**: Added TODO for 25 ADRs marked `current` (low priority audit needed)
+
+### Work Completed
+- [x] Updated markdown-standards.md with ADR vs guide/doc status values and lifecycle flows (files: `docs/docs-ops/markdown-standards.md`)
+- [x] Updated adr-template.md with complete ADR status definitions and editing policy (files: `docs/docs-ops/adr-template.md`)
+- [x] Updated 3 implemented ADRs from `proposed`/`accepted` → `implemented` (files: `docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md`, `docs/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md`, `docs/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md`)
+- [x] Added TODO item for Historical ADR Status Audit (25 ADRs with `current` status) (files: `TODO.md`)
+- [x] Verified AT03.2 and AT03.3 already correctly marked as `implemented`
+
+### Discoveries & Insights
+- **Historical context matters**: 25 ADRs marked `current` were from before markdown-standards formalization (when migrating to YAML frontmatter, default was `current` for all kept files)
+- **Status semantics**: `current` = content validity (guides), `implemented` = decision execution (ADRs)
+- **Agent-friendly naming**: `rejected` clearer than `discarded` for standard ADR workflows
+
+### Files Modified/Created
+- `docs/docs-ops/markdown-standards.md`: Added universal vs ADR-specific status values, lifecycle flows, and key distinctions
+- `docs/docs-ops/adr-template.md`: Updated ADR status values and editing rules
+- `docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md`: Status `proposed` → `implemented`
+- `docs/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md`: Status `accepted` → `implemented`
+- `docs/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md`: Status `proposed` → `implemented`
+- `TODO.md`: Added "Historical ADR Status Audit" task (low priority, 25 ADRs)
+
+### Next Steps
+- [ ] Low priority: Audit 25 historical ADRs with `status: current` to determine actual status (`implemented`, `superseded`, or `rejected`)
+
+### Open Questions
+- None noted.
+
+### References
+- [Markdown Standards](/docs-ops/markdown-standards.md)
+- [ADR Template](/docs-ops/adr-template.md)
+- TODO.md (Historical ADR Status Audit section)
+
+---
+
+## 2025-12-28 21:52 PST tnh-gen Coverage to 100%
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: tnh-gen-coverage-100
+**Human Collaborator**: phapman
+
+### Context
+Expanded test coverage for the `tnh-gen` CLI to reach 100% module coverage and validated with targeted and full test runs.
+
+### Key Decisions
+- **Coverage via targeted tests**: Added focused unit/CLI tests to exercise edge branches rather than introducing broad integration scaffolding.
+- **Exclude TYPE_CHECKING**: Marked the `TYPE_CHECKING` import guard as non-coverable to keep coverage signal meaningful.
+
+### Work Completed
+- [x] Added comprehensive coverage tests for config/list/run/output/policy/error/factory paths (files: `tests/cli_tools/test_tnh_gen_coverage.py`)
+- [x] Excluded `TYPE_CHECKING` block from coverage (files: `src/tnh_scholar/cli_tools/tnh_gen/state.py`)
+- [x] Ran targeted coverage and full test suite to confirm 100% coverage (files: `tests/cli_tools/test_tnh_gen.py`, `tests/cli_tools/test_tnh_gen_coverage.py`)
+
+### Discoveries & Insights
+- **Warnings surfaced**: Full suite emits `audioop` deprecation and a legacy metadata merge deprecation warning.
+
+### Files Modified/Created
+- `tests/cli_tools/test_tnh_gen_coverage.py`: Created coverage-focused tests for tnh-gen CLI.
+- `src/tnh_scholar/cli_tools/tnh_gen/state.py`: Marked `TYPE_CHECKING` guard as `no cover`.
+
+### Next Steps
+- [ ] Decide whether to address the `audioop` and legacy metadata deprecation warnings.
+
+### Open Questions
+- None noted.
+
+### References
+- `AGENTLOG_TEMPLATE.md`
+---
+
 ## 2025-12-27 21:30 PST ADR-TG01.1 Review Fixes
 
 **Agent**: GPT-5 (Codex CLI)

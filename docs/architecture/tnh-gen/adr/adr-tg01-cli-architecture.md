@@ -3,7 +3,7 @@ title: "ADR-TG01: tnh-gen CLI Architecture"
 description: "Core command structure, error handling, and configuration for the unified TNH Scholar CLI tool"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.5"
-status: proposed
+status: implemented
 created: "2025-12-07"
 ---
 # ADR-TG01: tnh-gen CLI Architecture
@@ -12,7 +12,7 @@ Defines the core architecture, command structure, error handling, and configurat
 
 - **Filename**: `adr-tg01-cli-architecture.md`
 - **Heading**: `# ADR-TG01: tnh-gen CLI Architecture`
-- **Status**: Proposed
+- **Status**: Implemented
 - **Date**: 2025-12-07
 - **Authors**: Aaron Solomon, Claude Sonnet 4.5
 - **Owner**: aaronksolomon

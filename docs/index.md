@@ -54,12 +54,12 @@ These are aspirational but active development goals aligned with the needs of th
 ## Current Features
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
-- **Text formatting and translation**: `tnh-gen` CLI (in development; currently `tnh-fab`, deprecated) for punctuation, translation, sectioning, and prompt-driven processing
+- **Text formatting and translation**: `tnh-gen` CLI for prompt-driven text processing with human-friendly defaults and API mode for programmatic use
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md) and [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) for current status and roadmap
 
-> **⚠️ CLI Tool Migration**: The `tnh-fab` CLI is deprecated and will be replaced by `tnh-gen` in an upcoming release. See [TNH-Gen Architecture](/architecture/tnh-gen/index.md) for the migration path. Current installations continue to use `tnh-fab` with a deprecation warning.
+> **✅ tnh-gen v1.0 Available**: The `tnh-gen` CLI is now fully implemented with dual output modes (human-friendly by default, `--api` flag for machine-readable output). See [tnh-gen CLI Reference](/cli-reference/tnh-gen.md) for complete documentation. The deprecated `tnh-fab` CLI remains available with deprecation warnings.
 
 ---
 

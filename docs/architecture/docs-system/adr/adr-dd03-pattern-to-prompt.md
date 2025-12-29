@@ -3,7 +3,7 @@ title: "ADR-DD03: Pattern to Prompt Terminology Standardization"
 description: "Standardizes documentation terminology from 'Pattern' to 'Prompt' to align with industry conventions and gen-ai-service refactoring."
 owner: ""
 author: "Claude Sonnet 4.5"
-status: proposed
+status: implemented
 created: "2025-11-28"
 ---
 # ADR-DD03: Pattern to Prompt Terminology Standardization

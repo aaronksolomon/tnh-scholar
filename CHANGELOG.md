@@ -17,6 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Documentation Standards - ADR Status Lifecycle** (2025-12-28)
+  - Formalized ADR status lifecycle: `proposed` → `accepted` → `implemented` → `superseded`/`archived`
+  - Clarified status separation: ADRs use `accepted`/`implemented`, guides/docs use `current`
+  - Updated markdown-standards.md with universal vs ADR-specific status values and lifecycle flows
+  - Updated adr-template.md with complete ADR status definitions and editing policy
+  - Standardized on `rejected` (not `discarded`) for proposed-but-not-approved ADRs
+  - Updated 3 implemented ADRs to correct status: ADR-TG01, ADR-TG01.1, ADR-DD03
+  - Added TODO task for 25 historical ADRs marked `current` (low priority audit needed)
+  - Files: `docs/docs-ops/markdown-standards.md`, `docs/docs-ops/adr-template.md`, `docs/architecture/tnh-gen/adr/*.md`, `docs/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md`, `TODO.md`
+
 - **Documentation Build Infrastructure**
   - Updated `mkdocstrings-python` from 1.13.0 to 2.0.1 to resolve deprecation warnings
   - Eliminated all mkdocstrings-related deprecation warnings in docs build process
@@ -56,9 +66,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Added output format policy with validation: `--api` incompatible with `--format text/table`
     - Updated all commands (list, run, config, version) for dual-mode output
     - Enhanced error messages for dual-mode: plain text (human) vs JSON envelope (API)
+    - Refactored run command from 222 lines with 90-line function to 380 lines with 12 focused functions
+    - Introduced RunContext dataclass to encapsulate execution state
     - `src/tnh_scholar/cli_tools/tnh_gen/output/human_formatter.py`: Human-readable formatters
     - `src/tnh_scholar/cli_tools/tnh_gen/output/policy.py`: Format policy resolution/validation
-    - Enhanced test coverage for API vs human output modes
+    - Enhanced test coverage for API vs human output modes (100% coverage achieved Dec 28, 2025)
   - **Documentation (Dec 28, 2025)**:
     - `docs/cli-reference/tnh-gen.md`: Complete CLI reference documentation
     - `docs/cli-reference/archive/`: Archived legacy tnh-fab documentation
@@ -83,26 +95,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add comprehensive CLI test coverage for json_to_srt, nfmt, sent_split, srt_translate, token_count
   - Add tnh_fab CLI tests for deprecated tool
   - Add shared CLI utilities module for test helpers
+  - Add tnh-gen coverage tests achieving 100% module coverage (Dec 28, 2025)
 
 ### Changed
 
-- **tnh-gen Human-Friendly Defaults (ADR-TG01.1)**
-  - Redesigned default output mode from JSON-first to human-readable text
-  - Introduced `--api` flag for machine-readable contract output (VS Code, scripts)
-  - Simplified default output: `list` shows readable descriptions, `run` shows text only
-  - Added output format policy with validation: `--api` incompatible with `--format text/table`
-  - Updated error messages for dual-mode output: plain text (human) vs JSON envelope (API)
-  - Refactored config command to show YAML overrides (human) vs full JSON with sources (API)
-  - Updated version command for concise text (human) vs structured JSON (API)
-  - Centralized format resolution and validation in `output/policy.py`
-  - Enhanced stderr diagnostics with trace IDs in both modes
-
-- **tnh-gen Architecture Improvements**
-  - Refactored run command from 222 lines with 90-line function to 380 lines with 12 focused functions
-  - Introduced RunContext dataclass to encapsulate execution state
-  - Added pre-flight variable validation with actionable error messages
-  - Extracted output pipeline into focused helpers: `_emit_run_output`, `_apply_api_settings`, `_validate_run_options`
-  - Structured logging with correlation ID tracking
+- **Type Safety Improvements**
   - Improved type safety across gen_ai_service modules
   - Changed RenderVars type from `Dict` to `Mapping[str, Any]` for broader compatibility
   - Fixed TypedDict optionality in `ConfigValuePayload` for mapping-compatible typing

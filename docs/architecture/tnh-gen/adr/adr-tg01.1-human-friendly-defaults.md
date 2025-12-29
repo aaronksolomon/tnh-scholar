@@ -3,7 +3,7 @@ title: "ADR-TG01.1: Human-Friendly CLI Defaults with --api Flag"
 description: "Default to human-readable output for CLI usage, with --api flag for machine-readable contract output"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Code - Claude Sonnet 4.5, Codex Max"
-status: accepted
+status: implemented
 created: "2025-12-23"
 updated: "2025-12-27"
 parent_adr: "adr-tg01-cli-architecture.md"
@@ -14,7 +14,7 @@ Extends [ADR-TG01](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) to ma
 
 - **Filename**: `adr-tg01.1-human-friendly-defaults.md`
 - **Heading**: `# ADR-TG01.1: Human-Friendly CLI Defaults with --api Flag`
-- **Status**: Proposed
+- **Status**: Implemented
 - **Date**: 2025-12-23
 - **Updated**: 2025-12-27
 - **Authors**: Aaron Solomon, Claude Sonnet 4.5
