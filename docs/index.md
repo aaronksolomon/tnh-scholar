@@ -10,7 +10,7 @@ created: '2025-12-11'
 
 # TNH Scholar
 
-**TNH Scholar is intended to support a community-aligned, open-source, multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village tradition.**
+**TNH Scholar is intended to support a community-aligned, open-source, multilingual digital ecosystem for studying, translating, and engaging with the teachings of Thích Nhất Hạnh and the Plum Village Community of Engaged Buddhism.**
 
 This document contains deeper onboarding and architectural context. For a more concise intro to the project, see the [README](/project/repo-root/repo-readme.md).
 
@@ -199,8 +199,8 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-DD02: Documentation Main Content and Navigation Strategy](/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
 - [ADR-DD03: Pattern to Prompt Terminology Standardization](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md)
 - [ADR-DD03: Phase 1 Execution Punch List](/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md)
-- [adr-jv03-canonical-xml-ast](/architecture/jvb-viewer/adr/adr-jv03-canonical-xml-ast.md)
-- [adr-jvb01_as-built_jvb_viewer_v1](/architecture/jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1.md)
+- [ADR-JV03: Canonical XML AST for English Parsing](/architecture/jvb-viewer/adr/adr-jv03-canonical-xml-ast.md)
+- [ADR-JVB01: JVB Parallel Viewer v1 As-Built](/architecture/jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1.md)
 - [ADR-K01: Preliminary Architectural Strategy for TNH Scholar Knowledge Base](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
 - [ADR-MD01: Adoption of JSON-LD for Metadata Management](/architecture/metadata/adr/adr-md01-json-ld-metadata.md)
 - [ADR-MD02: Metadata Infrastructure Object-Service Integration](/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md)
@@ -273,10 +273,10 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [Incident Report: Git Recovery - December 7, 2025](/development/incident-reports/2025-12-07-git-recovery.md)
 - [Proposed Updates to Incident Report](/development/incident-reports/2025-12-07-reference/incident-report-updates.md)
 - [Release Workflow](/development/release-workflow.md)
-- [tag-v0.2.0-correction-plan](/development/incident-reports/tag-v0.2.0-correction-plan.md)
 - [TNH Scholar Design Principles](/development/design-principles.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)
 - [TNH Scholar System Design](/development/system-design.md)
+- [v0.2.0 Tag Correction Plan](/development/incident-reports/tag-v0.2.0-correction-plan.md)
 
 ## Docs Ops
 
