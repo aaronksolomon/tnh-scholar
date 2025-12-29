@@ -4,7 +4,7 @@ description: "Fixes metadata propagation bugs, enhances section validation, and 
 type: "design-detail"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.5, Codex Max"
-status: accepted
+status: implemented
 created: "2025-12-12"
 parent_adr: "adr-at03-object-service-refactor.md"
 related_adrs: ["adr-at03.2-numberedtext-validation.md", "adr-at03.1-transition-plan.md"]

@@ -10,9 +10,12 @@ created: "2025-01-20"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2025-12-23
-> **Version**: 0.2.2 (Alpha)
-> **Status**: Active Development - ADR-AT03 Implementation Phase
+> **Last Updated**: 2025-12-28 (Reorganized for Bootstrap Path)
+> **Version**: 0.2.3 (Alpha)
+> **Status**: Active Development - VS Code Integration Path
+>
+> **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
+> Use `####` (h4) for task headers within priority sections.
 
 ---
 
@@ -20,41 +23,89 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 This section organizes work into three priority levels based on criticality for production readiness.
 
-### Priority 1: Critical Path to Beta
+### Priority 1: VS Code Integration Enablement (Bootstrap Path)
 
-**Goal**: Remove blockers to production readiness. These items must be completed before beta release.
+**Goal**: Enable AI-assisted development of TNH Scholar itself via VS Code extension. Prioritizes foundational work for tnh-gen + extension integration.
 
-**Status**: 5/6 Complete ✅
+**Status**: Foundation Complete (tnh-gen CLI ✅), Registry System In Progress
 
-#### 1. ✅ Add pytest to CI
+#### ✅ tnh-gen CLI Implementation
 
-- **Status**: COMPLETED
-- **Location**: [.github/workflows/ci.yml](.github/workflows/ci.yml)
-- **What**: Tests now run in CI with coverage reporting
-- **Command**: `pytest --maxfail=1 --cov=tnh_scholar --cov-report=term-missing`
+- **Status**: COMPLETED ✅
+- **ADR**: [ADR-TG01: CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md), [ADR-TG01.1: Human-Friendly Defaults](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md)
+- **What**: Protocol-driven CLI with dual modes (human-friendly default, `--api` for machine consumption)
+- **Commands**: `list`, `run`, `config`, `version`
+- **Documentation**: [tnh-gen CLI Reference](/cli-reference/tnh-gen.md) (661 lines, comprehensive)
+- **Next**: Consumed by VS Code extension for prompt discovery and execution
 
-#### 2. ✅ Fix Packaging Issues
+#### 🚧 File-Based Registry System (ADR-A14)
 
-- **Status**: COMPLETED
-- **Location**: [pyproject.toml](pyproject.toml)
-- **What**:
-  - ✅ Runtime dependencies declared (pydantic-settings, python-json-logger, tenacity)
-  - ✅ Python version pinned to 3.12.4
-  - ⚠️ Pattern directory import issue still pending (see Configuration & Data Layout below)
+- **Status**: NOT STARTED - **HIGHEST PRIORITY**
+- **Priority**: **P0 - BLOCKS VS CODE EXTENSION**
+- **ADR**: [ADR-A14: File-Based Registry System](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
+- **Estimate**: 4-6 hours
+- **Why Critical**: VS Code extension needs registry for:
+  - Prompt metadata discovery (`tnh-gen list --api`)
+  - Model selection with pricing info in UI
+  - Capability-based routing validation
+  - Rich QuickPick menus with model costs
+- **Deliverables**:
+  - [ ] Create `runtime_assets/registries/providers/openai.jsonc` with model metadata
+  - [ ] Implement `RegistryLoader` with JSONC parsing (comment/trailing comma support)
+  - [ ] Create Pydantic schemas for validation (`ModelInfo`, `ProviderRegistry`)
+  - [ ] Create JSON Schema for VS Code autocomplete in registry files
+  - [ ] Refactor `model_router.py` to use registry capabilities
+  - [ ] Refactor `safety_gate.py` to use registry pricing (remove hardcoded `_PRICE_PER_1K_TOKENS`)
+  - [ ] Update `tnh-gen list --api` to include model metadata from registry
+  - [ ] Add unit tests for registry loading and validation
+- **Files Created**:
+  - `runtime_assets/registries/providers/openai.jsonc`
+  - `runtime_assets/registries/providers/schema.py` (Pydantic)
+  - `runtime_assets/registries/providers/schema.json` (JSON Schema)
+  - `src/tnh_scholar/gen_ai_service/config/registry.py` (RegistryLoader)
+- **Files Modified**:
+  - `src/tnh_scholar/gen_ai_service/routing/model_router.py`
+  - `src/tnh_scholar/gen_ai_service/safety/safety_gate.py`
+  - `src/tnh_scholar/cli_tools/tnh_gen/commands/list.py` (add registry metadata)
+- **Related**: Unblocks VS Code Extension Walking Skeleton (next step after registry)
 
-#### 3. ✅ Remove Library sys.exit() Calls
+#### 🔮 VS Code Extension Walking Skeleton
 
-- **Status**: COMPLETED
-- **Location**: [gen_ai_service/infra/issue_handler.py](src/tnh_scholar/gen_ai_service/infra/issue_handler.py)
-- **What**: Library code now raises ConfigurationError by default
-- **Test**: [tests/gen_ai_service/test_service.py::test_missing_api_key_raises_configuration_error](tests/gen_ai_service/test_service.py)
+- **Status**: NOT STARTED - Blocked by ADR-A14 Registry
+- **Priority**: HIGH (after registry)
+- **ADR**: [ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md), [ADR-VSC02: Extension Implementation](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
+- **Estimate**: 8-12 hours (first working prototype)
+- **What**: Minimal VS Code extension that enables "Run Prompt on Active File" workflow
+- **Capabilities**:
+  - Command: "TNH Scholar: Run Prompt on Active File"
+  - QuickPick prompt selector (from `tnh-gen list --api`)
+  - Dynamic variable input form based on prompt metadata
+  - Execute via `tnh-gen run` subprocess
+  - Open output file in split pane
+- **Validation**: Proves bootstrapping concept - use extension to develop TNH Scholar faster
+- **Blocked By**: Registry system (needs model metadata for rich UI)
 
-#### 4. 🚧 Implement Core Stubs
+#### 🚧 Provenance Format Refactor - YAML Frontmatter
+
+- **Status**: NOT STARTED
+- **Priority**: HIGH (critical for tnh-gen usability - parsing generated output)
+- **Estimate**: 2-3 hours
+- **Context**: Current tnh-gen uses HTML comments for provenance, inconsistent with TNH Scholar's YAML frontmatter standard
+- **ADR**: [ADR-TG01 Addendum 2025-12-28](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md#addendum-2025-12-28---provenance-format-standardization)
+- **Why Critical**: Generated files need machine-parsable metadata for downstream processing, VS Code integration, and provenance tracking
+- **Deliverables**:
+  - [ ] Update `provenance.py` to generate YAML frontmatter instead of HTML comments
+  - [ ] Update tests for new format
+  - [ ] Validate YAML parsing roundtrip
+- **Files Modified**: `src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py`, `tests/cli_tools/test_tnh_gen.py`
+
+#### 🚧 GenAIService Core Components - Final Polish
 
 - **Status**: PRELIMINARY IMPLEMENTATION COMPLETE ✅ - Needs Polish & Registry Integration
-- **Priority**: HIGH
+- **Priority**: MEDIUM (minor cleanup, not blocking)
 - **Review**: Code review completed 2025-12-10 - **Grade: A- (92/100)** ⭐⭐⭐⭐⭐
-- **Core Implementation**:
+- **What**: Core GenAI service components (params_policy, model_router, safety_gate, completion_mapper) are implemented and working, need minor polish
+- **Components Implemented**:
   - [x] [params_policy.py](src/tnh_scholar/gen_ai_service/config/params_policy.py) — Policy precedence implemented ✅
     - ✅ Policy precedence: call hint → prompt metadata → defaults
     - ✅ Settings cached via `@lru_cache` (excellent optimization)
@@ -133,75 +184,24 @@ This section organizes work into three priority levels based on criticality for 
   - **Overall**: Production-ready with minor polish (estimated 1 hour total)
   - **Detailed Review**: See code review session 2025-12-10
 
-#### 5. ✅ Unify OpenAI Clients
+#### ⏸️ GenAIService Thread Safety and Rate Limiting (ADR-A15)
 
-- **Status**: COMPLETED ✅
-- **Priority**: HIGH
-- **ADR**: [ADR-A13: Legacy Client Migration](docs/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md)
-- **Plan**: [Migration Plan](docs/architecture/gen-ai-service/design/openai-interface-migration-plan.md)
-- **What**: Unified OpenAI client implementations by migrating from legacy to modern architecture
-  - **Modern**: [gen_ai_service/providers/openai_client.py](src/tnh_scholar/gen_ai_service/providers/openai_client.py) - typed, retrying
-  - **Legacy**: `openai_interface/` – removed as of Phase 6
-- **Phase 1: Utilities & Adapters** ✅ COMPLETE
-  - [x] Create [token_utils.py](src/tnh_scholar/gen_ai_service/utils/token_utils.py) - token counting
-  - [x] Create [response_utils.py](src/tnh_scholar/gen_ai_service/utils/response_utils.py) - response extraction
-  - [x] Create [simple_completion.py](src/tnh_scholar/gen_ai_service/adapters/simple_completion.py) - migration adapter
-  - [x] Add comprehensive tests (33 new tests)
-  - [x] Fix hard-coded literals (use policy dataclass)
-- **Phase 2-6: Migration** ✅ COMPLETE
-  - [x] Phase 2: Migrate core modules (ai_text_processing, journal_processing)
-  - [x] Phase 3: Migrate CLI tools
-  - [x] Phase 4: Migrate tests
-  - [x] Phase 5: Update notebooks
-  - [x] Phase 6: Delete legacy code (openai_interface/)
-
-#### 6. 🚧 GenAIService Thread Safety and Rate Limiting
-
-- **Status**: NOT STARTED
-- **Priority**: HIGH
+- **Status**: DEFERRED - Not needed for VS Code integration (process isolation)
+- **Priority**: MEDIUM (revisit when building Python batch pipelines)
 - **Issue**: [#22](https://github.com/aaronksolomon/tnh-scholar/issues/22)
-- **ADR**: [ADR-A15: Thread Safety and Rate Limiting](docs/architecture/gen-ai-service/adr/adr-a15-thread-safety-rate-limiting.md)
-- **Severity**: HIGH - Blocks concurrent/parallel processing for production pipelines
+- **ADR**: [ADR-A15: Thread Safety and Rate Limiting](/architecture/gen-ai-service/adr/adr-a15-thread-safety-rate-limiting.md)
+- **Why Deferred**: VS Code extension uses process isolation (each `tnh-gen` call = separate GenAIService instance). Thread safety only matters for Python-native batch pipelines.
+- **When to Revisit**: When implementing concurrent corpus processing loops or batch translation pipelines
 - **Estimate**: 3-6 hours (Phase 1: 1-2 hours, Phase 2: 2-4 hours)
-- **Problem**: GenAIService has two critical gaps for production use:
-  1. **Thread Safety**: Not safe to share one GenAIService instance across threads
-     - `OpenAIClient` keeps single `Retrying` instance that mutates retry state on each call
-     - `InMemoryCacheTransport` uses plain dict without locking (race conditions on concurrent reads/writes)
-  2. **Rate Limiting**: No rate limiting implementation despite architectural plan
-     - OpenAI enforces RPM (requests/min) and TPM (tokens/min) limits
-     - Tier 1: ~500 RPM, ~200K TPM; Tier 2+: ~5K RPM, ~2M TPM
-     - Critical for avoiding API throttling in batch/pipeline scenarios
-- **Implementation (per ADR-A15)**:
-  - **Phase 1: Thread Safety (1-2 hours)** - Quick wins for safe concurrent usage:
-    - [ ] Per-call retry objects: Move `_create_retry_caller()` into `generate()` (30 min)
-    - [ ] Thread-safe cache: Add `threading.Lock` to `InMemoryCacheTransport` (30 min)
-    - [ ] Testing & docs: Concurrency integration tests, docstring warnings (30 min)
-  - **Phase 2: Rate Limiting (2-4 hours)** - Provider-aware rate limiting:
-    - [ ] Implement `TokenBucketRateLimiter` class (tracks RPM + TPM) (1 hour)
-    - [ ] Registry integration: Extend `openai.jsonc` with rate limit tiers (1 hour)
-    - [ ] Service integration: Settings + limiter in `generate()` pre-flight (1 hour)
-    - [ ] Testing & documentation: Rate limit tests, config guide (1 hour)
-- **Files Modified**:
-  - Phase 1: `openai_client.py`, `cache.py`, `test_concurrency.py` (new)
-  - Phase 2: `rate_limiter.py` (new), `settings.py`, `service.py`, `openai.jsonc`
-- **Performance Analysis**:
-  - Per-instance overhead: <1ms, ~few KB (negligible vs 100-500ms network I/O)
-  - 20-30 concurrent calls: Safe with per-instance pattern, no rate limit risk
-  - 100+ concurrent calls: Requires Phase 2 rate limiting (Tier 1 accounts)
-- **Related ADRs**:
-  - [ADR-A15: Thread Safety and Rate Limiting](docs/architecture/gen-ai-service/adr/adr-a15-thread-safety-rate-limiting.md) ← **Full Design**
-  - [GenAI Service Design Strategy](docs/architecture/gen-ai-service/design/genai-service-design-strategy.md)
-  - [ADR-A01: Object-Service GenAI](docs/architecture/gen-ai-service/adr/adr-a01-object-service-genai.md)
-  - [ADR-A09: V1 Simplified Implementation](docs/architecture/gen-ai-service/adr/adr-a09-v1-simplified.md)
-  - [ADR-A14: File-Based Registry System](docs/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
+- **Quick Summary**: Add thread-safe retry state, locked cache, and optional rate limiting for high-throughput scenarios
 
 ---
 
-### Priority 2: Beta Quality
+### Priority 2: Production Hardening (Post-Bootstrap)
 
-**Goal**: Improve maintainability, user experience, and code quality for beta release.
+**Goal**: Harden TNH Scholar for production use after VS Code integration enables AI-assisted development. Focuses on reliability, test coverage, and type safety.
 
-#### 7. 🚧 Expand Test Coverage
+#### 🚧 Expand Test Coverage
 
 - **Status**: NOT STARTED
 - **Current Coverage**: ~5% (4 test modules)
@@ -222,7 +222,7 @@ This section organizes work into three priority levels based on criticality for 
     - [ ] Integration tests for full workflows
     - **Context**: Basic command `tnh-gen config show` failed with Path serialization bug that should have been caught by tests
 
-#### 8. 🚧 Consolidate Environment Loading
+#### 🚧 Consolidate Environment Loading
 
 - **Status**: NOT STARTED
 - **Problem**: Multiple modules call `load_dotenv()` at import time
@@ -234,7 +234,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Pass configuration objects instead of `os.getenv()` calls
   - [ ] Remove import-time side effects
 
-#### 9. 🚧 Clean Up CLI Tool Versions
+#### 🚧 Clean Up CLI Tool Versions
 
 - **Status**: PARTIAL (old versions removed, utilities pending)
 - **Location**: [cli_tools/audio_transcribe/](src/tnh_scholar/cli_tools/audio_transcribe/)
@@ -245,7 +245,7 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Keep only current version
   - [ ] Create shared utilities (argument parsing, environment validation, logging)
 
-#### 10. ✅ Documentation Reorganization (ADR-DD01 & ADR-DD02)
+#### ✅ Documentation Reorganization (ADR-DD01 & ADR-DD02)
 
 - **Status**: PHASE 1 COMPLETE ✅ (Parts 1–4 ✅ COMPLETE, Part 8 ✅ COMPLETE, File Reorganization ✅ COMPLETE; Parts 5–7 deferred to Phase 2)
 - **Reference**:
@@ -357,7 +357,7 @@ This section organizes work into three priority levels based on criticality for 
        - [x] Create `docs/project/index.md` with section overview
        - [x] Wire into gen-files plugin for automatic sync on build
 
-#### 11. 🚧 Type System Improvements
+#### 🚧 Type System Improvements
 
 - **Status**: PARTIAL (see detailed section below)
 - **Current**: 58 errors across 16 files
@@ -365,11 +365,11 @@ This section organizes work into three priority levels based on criticality for 
 
 ---
 
-### Priority 3: Production Readiness
+### Priority 3: Future Work & Advanced Features
 
-**Goal**: Long-term sustainability, advanced features, and production hardening.
+**Goal**: Long-term sustainability, advanced features, and nice-to-have improvements. Address after bootstrap loop is working.
 
-#### 12. 🚧 Refactor Monolithic Modules
+#### 🚧 Refactor Monolithic Modules
 
 - **Status**: NOT STARTED
 - **Targets**:
@@ -381,7 +381,7 @@ This section organizes work into three priority levels based on criticality for 
     - Identify focused units
     - Extract reusable components
 
-#### 14. 🚧 Complete Provider Abstraction
+#### 🚧 Complete Provider Abstraction
 
 - **Status**: NOT STARTED
 - **Tasks**:
@@ -391,7 +391,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Provider capability discovery
   - [ ] Multi-provider cost optimization
 
-#### 15. 🚧 Knowledge Base Implementation
+#### 🚧 Knowledge Base Implementation
 
 - **Status**: DESIGN COMPLETE
 - **ADR**: [ADR-K01: Preliminary Architectural Strategy](docs/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
@@ -401,7 +401,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Query capabilities
   - [ ] Semantic similarity search
 
-#### 16. 🚧 Developer Experience Improvements
+#### 🚧 Developer Experience Improvements
 
 - **Status**: PARTIAL (hooks and Makefile exist, automation pending)
 - **Tasks**:
@@ -413,7 +413,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Release automation
   - [ ] Changelog automation
 
-#### 17. 🚧 Configuration & Data Layout
+#### 🚧 Configuration & Data Layout
 
 - **Status**: NOT STARTED
 - **Priority**: HIGH (blocks pip install)
@@ -424,7 +424,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Move directory checks to CLI entry points only
   - [ ] Ensure installed wheels work without patterns/ directory
 
-#### 18. 🚧 Prompt Catalog Safety
+#### 🚧 Prompt Catalog Safety
 
 - **Status**: NOT STARTED
 - **Priority**: MEDIUM
@@ -540,16 +540,15 @@ This section organizes work into three priority levels based on criticality for 
 
 #### ✅ Improve NumberedText Ergonomics
 
-- **Status**: IN PROGRESS - ADR-AT03.2 ACCEPTED
+- **Status**: COMPLETED ✅
 - **Location**: [text_processing/numbered_text.py](src/tnh_scholar/text_processing/numbered_text.py)
 - **ADR**: [ADR-AT03.2: NumberedText Section Boundary Validation](docs/architecture/ai-text-processing/adr/adr-at03.2-numberedtext-validation.md)
-- **Tasks**:
+- **What**: Implemented section boundary validation and coverage reporting
+- **Completed**:
   - [x] ADR-AT03.2 design approved and accepted (2025-12-12)
-  - [ ] Implement `validate_section_boundaries()` method
-  - [ ] Implement `get_coverage_report()` method
-  - [ ] Add comprehensive unit tests for validation
-  - [ ] Add file-based round-trip tests
-  - [ ] Trim redundant pytest boilerplate in tests
+  - [x] Implemented `validate_section_boundaries()` method (numbered_text.py:367)
+  - [x] Implemented `get_coverage_report()` method (numbered_text.py:510)
+- **Note**: ADR status should be updated from "accepted" → "implemented" when updating ADRs
 
 #### Logging System Scope
 
@@ -561,6 +560,50 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Create shared CLI bootstrap helper
 
 ### Low Priority
+
+#### Historical ADR Status Audit
+
+- **Status**: NOT STARTED
+- **Priority**: LOW (documentation hygiene)
+- **Context**: 25 ADRs marked with `status: current` from pre-markdown-standards migration (2025-12-28 audit)
+- **Background**:
+  - These ADRs were created before ADR status lifecycle was formalized
+  - When migrated to YAML frontmatter system, default was `current` for all kept files
+  - Per new markdown-standards.md, ADRs should use: `proposed` → `accepted` → `implemented` → `superseded`/`archived`
+  - `current` status is now reserved for guides/references only, not ADRs
+- **Issue**: Need manual review to determine actual status - most likely `implemented`, but some may be `superseded` or `rejected`
+- **ADRs requiring review** (25 total):
+  - adr-a01-object-service-genai.md
+  - adr-a02-patterncatalog-integration-v1.md
+  - adr-a08-config-params-policy-taxonomy.md
+  - adr-a09-v1-simplified.md
+  - adr-a11-model-parameters-fix.md
+  - adr-a12-prompt-system-fingerprinting-v1.md
+  - adr-a13-migrate-openai-to-genaiservice.md
+  - adr-at01-ai-text-processing.md
+  - adr-dd01-docs-reorg-strategy.md
+  - adr-dd02-main-content-nav.md
+  - adr-k01-kb-architecture-strategy.md
+  - adr-md01-json-ld-metadata.md
+  - adr-md02-metadata-object-service-integration.md
+  - adr-os01-object-service-architecture-v3.md
+  - adr-pp01-rapid-prototype-versioning.md
+  - adr-pt01-pattern-access-strategy.md
+  - adr-pt02-adopt-pattern-and-patterncatalog.md
+  - adr-pt04-prompt-system-refactor.md
+  - adr-tr01-assemblyai-integration.md
+  - adr-tr02-optimized-srt-design.md
+  - adr-tr03-ms-timestamps.md
+  - adr-tr04-assemblyai-improvements.md
+  - adr-vp01-video-processing.md
+  - adr-yf01-yt-transcript-source-handling.md
+  - adr-yf02-yt-transcript-format-selection.md
+- **Tasks**:
+  - [ ] Review each ADR to determine if decision was implemented, superseded, or rejected
+  - [ ] Update status field in YAML frontmatter accordingly
+  - [ ] Check for code evidence of implementation where applicable
+  - [ ] Cross-reference with newer ADRs to identify superseded decisions
+  - [ ] Document any ADRs that should be archived vs marked implemented
 
 #### Package API Definition
 
@@ -589,51 +632,42 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Publish vetted analyses to docs/research via nbconvert
   - [ ] Archive obsolete notebooks
 
-#### 17. 🚧 Comprehensive CLI Reference Documentation
+#### 🚧 Comprehensive CLI Reference Documentation
 
-- **Status**: NOT STARTED (deferred post-CLI-refactor)
+- **Status**: IN PROGRESS - tnh-gen documentation complete ✅, other CLIs pending
 - **Priority**: MEDIUM
-- **Context**: Removed auto-generated CLI reference stubs (2025-12-03). Renamed `docs/cli/` to `docs/cli-reference/` to reflect reference-style content. CLI structure scheduled for overhaul.
-- **Blocked By**: CLI tool consolidation (TODO #8)
-- **Tasks**:
-  - [ ] Review final CLI structure after refactor
-  - [ ] Create comprehensive CLI reference using actual `--help` output at all command levels
-  - [ ] Generate structured documentation for each command:
-    - Command purpose and use cases
-    - Full option/argument reference
-    - Usage examples
-    - Common workflows
-  - [ ] Automate CLI reference generation in `scripts/generate_cli_docs.py`
-  - [ ] Integrate with MkDocs build process
-  - [ ] Enhance existing `docs/cli-reference/` structure with comprehensive reference material
+- **Context**: tnh-gen CLI (ADR-TG01, ADR-TG01.1) implementation complete; documentation work started 2025-12-28
+- **Completed (2025-12-28)**:
+  - [x] Created comprehensive tnh-gen CLI reference (`docs/cli-reference/tnh-gen.md`)
+    - Complete command reference: `list`, `run`, `config`, `version`
+    - Human-friendly vs API mode documentation
+    - Variable precedence, error handling, environment variables
+    - Migration guide from tnh-fab
+  - [x] Archived legacy tnh-fab documentation
+    - Moved `docs/cli-reference/tnh-fab.md` to `docs/cli-reference/archive/`
+    - Created `docs/cli-reference/archive/README.md` with archiving policy
+  - [x] Updated CLI reference overview (`docs/cli-reference/overview.md`)
+    - Promoted tnh-gen to primary tool
+    - Added tnh-gen quick start examples
+    - Moved tnh-fab to "Archived Tools" section
+  - [x] Updated getting-started documentation
+    - Updated quick-start-guide with tnh-gen workflows
+    - Updated installation guide verification steps
+  - [x] Updated CHANGELOG with ADR-TG01.1 implementation details
+- **Remaining Tasks**:
+  - [ ] Update user-guide examples to use tnh-gen
+    - [ ] `docs/user-guide/prompt-system.md` - Replace tnh-fab examples
+    - [ ] `docs/user-guide/best-practices.md` - Update CLI workflows
+  - [ ] Update architecture docs with tnh-gen examples
+  - [ ] Document other CLI tools (audio-transcribe, ytt-fetch, nfmt, etc.)
+  - [ ] Consider automation for CLI reference generation (`scripts/generate_cli_docs.py`)
 - **Notes**:
-  - Previously had placeholder stubs with minimal content
-  - Current `docs/cli-reference/` contains hand-written per-command reference pages
-  - Requires examining actual CLI code structure for comprehensive coverage
-  - Should align with user guide examples
+  - tnh-gen follows ADR-TG01 (CLI Architecture) and ADR-TG01.1 (Human-Friendly Defaults)
+  - Archive system uses MkDocs `exclude_docs: **/archive/**` pattern
+  - Documentation links use absolute paths
+  - Provenance format refactor moved to Priority 1 (critical for tnh-gen usability)
 
-#### 18. ✅ Convert Documentation Links to Absolute Paths
-
-- **Status**: COMPLETED (PR #14, commit 85ec6b0)
-- **Priority**: MEDIUM
-- **Context**: Enabled MkDocs 1.6+ absolute link validation (2025-12-04). Absolute links (`/path/to/file.md`) are clearer, easier to maintain, and automation-friendly compared to relative links (`../../../path/to/file.md`).
-- **Reference**: [ADR-DD01 Addendum 2025-12-04: Absolute Link Strategy](docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
-- **Completed**: 2025-12-05
-- **Tasks**:
-  - [x] Audit all Markdown files for relative internal links (120 links found across 25 files)
-  - [x] Convert relative links to absolute paths (e.g., `../../../cli-reference/overview.md` → `/cli-reference/overview.md`)
-  - [x] Update documentation generation scripts to emit absolute links (created `scripts/convert_relative_links.py`)
-  - [x] Verify all links resolve correctly with `mkdocs build --strict` (passed)
-  - [x] Run link checker to validate changes (verified with `scripts/verify_doc_links.py`)
-  - [x] Update markdown standards documentation to mandate absolute links
-  - [x] Add Makefile targets for link verification (`docs-links`, `docs-links-apply`)
-- **Results**:
-  - 964 absolute links now in use across 96 markdown files
-  - All internal documentation links use absolute paths
-  - MkDocs configured with `validation.links.absolute_links: relative_to_docs`
-  - Link verification integrated into docs build process
-
-#### 19. 🚧 Document Success Cases
+#### 🚧 Document Success Cases
 
 - **Status**: NOT STARTED
 - **Priority**: MEDIUM
@@ -666,7 +700,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Include sample outputs where appropriate
   - [ ] Link from main documentation and README
 
-#### 20. 🚧 Notebook System Overhaul
+#### 🚧 Notebook System Overhaul
 
 - **Status**: NOT STARTED
 - **Priority**: HIGH
@@ -705,27 +739,25 @@ This section organizes work into three priority levels based on criticality for 
 
 ## Progress Summary
 
-**Recently Completed (as of 2025-12-09)**:
+**Recently Completed (as of 2025-12-28)**:
 
-- ✅ Packaging & dependencies fixed
-- ✅ CI pytest integration
-- ✅ Library exception handling (removed sys.exit)
-- ✅ OpenAI client unification (all 6 phases complete)
-- ✅ Documentation reorganization (Phase 1 complete)
-- ✅ Pre-commit hooks and Makefile setup
-- ✅ Documentation links converted to absolute paths (TODO #18)
+- ✅ tnh-gen CLI implementation (ADR-TG01, ADR-TG01.1) - protocol-driven, dual-mode (`--api` flag)
+- ✅ tnh-gen comprehensive documentation (661 lines, CLI reference)
+- ✅ OpenAI client unification (all 6 phases complete, legacy code removed)
+- ✅ Documentation reorganization (Phase 1 complete, absolute links, MkDocs strict mode)
+- ✅ Core stubs implementation (params_policy, model_router, safety_gate, completion_mapper)
+- ✅ Packaging & dependencies fixed, CI pytest integration, pre-commit hooks
 
-**Current Sprint Focus**:
+**Current Sprint Focus (Bootstrap Path)**:
 
-- 🎯 Implement core stubs (policy, routing, safety)
-- 🎯 Expand test coverage to 50%+
-- 🎯 Type system improvements (58 errors to resolve)
+- 🎯 **ADR-A14 Registry System** (P0 - blocks VS Code extension)
+- 🎯 VS Code Extension Walking Skeleton (after registry)
+- 🎯 Validate bootstrapping concept (use extension to develop TNH Scholar)
 
-**Beta Blockers**:
+**Key Dependencies**:
 
-- Configuration & data layout (pattern directory)
-- Core stub implementations (params_policy, model_router, safety_gate)
-- Test coverage expansion
+- Registry system unblocks: VS Code extension, model metadata in UI, capability-based routing
+- VS Code integration enables: AI-assisted development, faster iteration, bootstrapping loop
 
 ---
 
@@ -769,3 +801,61 @@ poetry run mypy src/
 poetry run ruff check src/
 poetry run pytest --maxfail=1 --cov=tnh_scholar
 ```
+
+---
+
+## Recently Completed Tasks (Archive)
+
+### tnh-gen CLI Implementation ✅
+
+- **Completed**: 2025-12-27
+- **ADR**: [ADR-TG01](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md), [ADR-TG01.1](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md)
+- **What**: Protocol-driven CLI replacing tnh-fab, dual modes (human-friendly default, `--api` for machine consumption)
+- **Documentation**: [tnh-gen CLI Reference](/cli-reference/tnh-gen.md) (661 lines)
+
+### OpenAI Client Unification ✅
+
+- **Completed**: 2025-12-10
+- **ADR**: [ADR-A13](/architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice.md)
+- **What**: Migrated from legacy `openai_interface/` to modern `gen_ai_service/providers/` architecture (6 phases)
+
+### Core Stubs Implementation ✅
+
+- **Completed**: 2025-12-10
+- **What**: Implemented params_policy, model_router, safety_gate, completion_mapper with strong typing
+- **Grade**: A- (92/100) - Production ready with minor polish
+
+### Documentation Reorganization Phase 1 ✅
+
+- **Completed**: 2025-12-05
+- **ADR**: [ADR-DD01](/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md), [ADR-DD02](/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
+- **What**: Absolute links, MkDocs strict mode, filesystem-driven nav, lychee link checking
+
+### Packaging & CI Infrastructure ✅
+
+- **Completed**: 2025-11-20
+- **What**: pytest in CI, runtime dependencies declared, pre-commit hooks, Makefile targets
+
+### Remove Library sys.exit() Calls ✅
+
+- **Completed**: 2025-11-15
+- **What**: Library code raises ConfigurationError instead of exiting process
+
+### Convert Documentation Links to Absolute Paths ✅
+
+- **Completed**: 2025-12-05 (PR #14)
+- **What**: Converted 964 links to absolute paths, enabled MkDocs strict link validation, integrated link verification
+
+### NumberedText Section Boundary Validation ✅
+
+- **Completed**: 2025-12-12
+- **ADR**: [ADR-AT03.2](/architecture/ai-text-processing/adr/adr-at03.2-numberedtext-validation.md) (status: accepted → should be implemented)
+- **What**: Implemented `validate_section_boundaries()` and `get_coverage_report()` methods for robust section management
+- **Commits**: cf99375 (docs), 798a552 (refactor unused methods)
+
+### TextObject Robustness Improvements ✅
+
+- **Completed**: 2025-12-14
+- **ADR**: [ADR-AT03.3](/architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness.md) (status: accepted → should be implemented)
+- **What**: Implemented merge_metadata() with MergeStrategy enum, validate_sections() with fail-fast, converted to Pydantic v2, added structured exception hierarchy
+- **Commits**: 096e528 (implementation), 03654fe (docs/docstrings)

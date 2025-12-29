@@ -43,15 +43,43 @@ created: "YYYY-MM-DD"
 
 ### Document Status Values
 
+**Universal status values** (apply to all Markdown documents):
+
 - `proposed` = early RFC/discussion stage
 - `draft` = initial iteration pending approval
 - `wip` = actively being revised (expected to change)
-- `current` = approved baseline
+- `current` = approved baseline for active use (guides, references, documentation)
 - `deprecated` = still valid but being phased out
 - `superseded` = replaced by newer version (see link in doc)
 - `archived` = historical reference only
 
-**Auto-generated file constraint**: Files with `auto_generated: true` may only use `current`, `archived`, `deprecated`, or `superseded` status. Manual lifecycle states (`proposed`, `draft`, `wip`) are invalid for generated content.
+**ADR-specific status values** (only for Architecture Decision Records):
+
+- `accepted` = decision approved, ready for implementation
+- `implemented` = decision has been executed/completed
+- `rejected` = proposed but not approved
+
+**Status lifecycle flows:**
+
+**ADRs:**
+
+```text
+proposed → accepted → [wip] → implemented → [superseded/archived]
+    ↓
+  rejected
+```
+
+**Guides/References/Documentation:**
+
+```text
+draft/proposed → current → [deprecated] → [superseded/archived]
+    ↓
+  wip (if major revision)
+```
+
+**Key distinction**: ADRs track decisions over time (use `accepted`/`implemented`), while guides track content validity (use `current`/`deprecated`). ADRs never use `current`; regular docs never use `accepted`/`implemented`.
+
+**Auto-generated file constraint**: Files with `auto_generated: true` may only use `current`, `archived`, `deprecated`, or `superseded` status. Manual lifecycle states (`proposed`, `draft`, `wip`, `accepted`, `implemented`, `rejected`) are invalid for generated content.
 
 ## Heading & Summary Rules
 

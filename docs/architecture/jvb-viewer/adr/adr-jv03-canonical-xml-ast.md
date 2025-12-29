@@ -1,7 +1,18 @@
-# ADR-003: Canonical XML AST for English Parsing
+---
+title: "ADR-JV03: Canonical XML AST for English Parsing"
+description: "Establishes canonical XML AST structure for JVB viewer English text parsing and rendering"
+owner: "phapman"
+author: "Aaron Solomon"
+status: "accepted"
+created: "2025-09-07"
+---
 
-**Status:** Accepted  
-**Date:** 2025-09-07  
+# ADR-JV03: Canonical XML AST for English Parsing
+
+Establishes canonical XML AST structure for JVB viewer English text parsing and rendering.
+
+**Status:** Accepted
+**Date:** 2025-09-07
 **Authors:** Aaron Solomon
 
 ---

@@ -68,7 +68,24 @@ Install optional components based on your needs:
 Verify your installation:
 
 ```bash
-tnh-fab --help
+tnh-gen version
+```
+
+You should see output like:
+
+```text
+tnh-gen 0.2.3 (tnh-scholar 0.2.3)
+Python 3.12.4 on darwin
+```
+
+Test the CLI:
+
+```bash
+# List available prompts
+tnh-gen list
+
+# Show help for all commands
+tnh-gen --help
 ```
 
 ## Common Issues

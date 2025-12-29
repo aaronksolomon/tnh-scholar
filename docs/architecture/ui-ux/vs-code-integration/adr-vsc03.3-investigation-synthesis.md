@@ -1,10 +1,12 @@
 ---
 title: "ADR-VSC03.3: Investigation Synthesis - Validation of Design Choices"
 description: "Synthesis of real-world survey findings validating TNH Scholar's VS Code integration strategy and design decisions"
+owner: "phapman"
+author: "Claude Sonnet 4"
 type: "investigation-synthesis"
 parent_adr: "adr-vsc03-python-javascript-impedance-investigation.md"
 status: "draft"
-date: "2025-12-12"
+created: "2025-12-12"
 ---
 
 # ADR-VSC03.3: Investigation Synthesis - Validation of Design Choices

@@ -3,7 +3,7 @@ title: "ADR-TG01: tnh-gen CLI Architecture"
 description: "Core command structure, error handling, and configuration for the unified TNH Scholar CLI tool"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.5"
-status: proposed
+status: implemented
 created: "2025-12-07"
 ---
 # ADR-TG01: tnh-gen CLI Architecture
@@ -12,7 +12,7 @@ Defines the core architecture, command structure, error handling, and configurat
 
 - **Filename**: `adr-tg01-cli-architecture.md`
 - **Heading**: `# ADR-TG01: tnh-gen CLI Architecture`
-- **Status**: Proposed
+- **Status**: Implemented
 - **Date**: 2025-12-07
 - **Authors**: Aaron Solomon, Claude Sonnet 4.5
 - **Owner**: aaronksolomon
@@ -766,6 +766,42 @@ def test_run_with_real_prompt_system():
 
 - [Click Documentation](https://click.palletsprojects.com/) - CLI framework
 - [12 Factor CLI Apps](https://medium.com/@jdxcode/12-factor-cli-apps-dd3c227a0e46) - CLI design principles
+
+---
+
+## Addendum: 2025-12-28 - Provenance Format Standardization
+
+**Issue**: Initial ADR specified HTML comment format for provenance markers (§4.8), which is inconsistent with TNH Scholar's standard use of YAML frontmatter throughout documentation, ADRs, and other generated content.
+
+**Decision**: Standardize on **YAML frontmatter** for provenance metadata to maintain consistency across the TNH Scholar ecosystem.
+
+**Planned Format**:
+
+```yaml
+---
+tnh_scholar_generated: true
+prompt_key: translate
+prompt_version: "1.0.0"
+model: gpt-4o
+fingerprint: sha256:abc123...
+trace_id: 01HQXYZ123ABC
+generated_at: "2025-12-28T10:30:03Z"
+schema_version: "1.0"
+---
+
+[Generated content follows...]
+```
+
+**Benefits**:
+
+- Consistent with TNH Scholar metadata standards (ADRs, docs, etc.)
+- Machine-parseable with standard YAML libraries
+- Widely supported across tools (MkDocs, static site generators, etc.)
+- Enables downstream processing and validation
+
+**Migration**: Implementation work tracked in TODO.md (see "Provenance Format Refactor"). Current HTML comment format will be replaced in a future branch.
+
+**Status**: Accepted addendum; implementation pending
 
 ---
 

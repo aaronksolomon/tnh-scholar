@@ -8,10 +8,20 @@ created: "2025-11-19"
 ---
 # TNH-Scholar DEV_SETUP
 
-This document outlines the standard development environment for TNH‑Scholar.  
+This document outlines the standard development environment for TNH‑Scholar.
 The goals are: clarity, reproducibility, stability, and low onboarding friction.
 
 The project uses **pyenv** to manage Python versions and **Poetry** to manage dependencies and virtual environments.
+
+## ⚠️ Important: Rapid Prototype Phase (0.x)
+
+**TNH Scholar is in rapid prototype phase.** Breaking changes may occur in ANY 0.x release (including patches).
+
+- No backward compatibility guarantees during 0.x
+- Breaking changes acceptable in patch releases (0.1.3 → 0.1.4)
+- Expect to refactor code when upgrading dependencies
+
+See [ADR-PP01: Rapid Prototype Versioning](docs/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) for full policy.
 
 ---
 
@@ -123,10 +133,11 @@ If you prefer to do it manually without `make`:
 
 ```shell
 poetry env use python
-poetry install
-poetry install --with dev
+poetry install  # Installs all dependencies including dev group (as of Dec 2025)
 poetry run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
 ```
+
+**Note**: As of December 2025, `poetry install` automatically includes dev dependencies (pytest, mkdocs, mypy, etc.) since the dev group is no longer marked as optional. No need for `--with dev` flag.
 
 ---
 
@@ -173,13 +184,13 @@ setup:
  pyenv install -s $(PYTHON_VERSION)
  pyenv local $(PYTHON_VERSION)
  $(POETRY) env use python
- $(POETRY) install
+ $(POETRY) install  # Includes dev dependencies automatically
 
 setup-dev:
  pyenv install -s $(PYTHON_VERSION)
  pyenv local $(PYTHON_VERSION)
  $(POETRY) env use python
- $(POETRY) install --with dev
+ $(POETRY) install  # Dev dependencies included by default (dev group not optional)
  $(POETRY) run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
 
 test:

@@ -14,7 +14,7 @@ setup-dev:
 	pyenv install -s $(PYTHON_VERSION)
 	pyenv local $(PYTHON_VERSION)
 	$(POETRY) env use python
-	$(POETRY) install --with dev
+	$(POETRY) install
 	$(POETRY) run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
 
 test:

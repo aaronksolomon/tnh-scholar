@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2025-12-27"
+created: "2025-12-29"
 auto_generated: true
 ---
 
@@ -51,7 +51,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [nfmt](/cli-reference/nfmt.md)
 - [sent-split](/cli-reference/sent-split.md)
 - [srt-translate](/cli-reference/srt-translate.md)
-- [tnh-fab](/cli-reference/tnh-fab.md)
+- [tnh-gen](/cli-reference/tnh-gen.md)
 - [tnh-setup](/cli-reference/tnh-setup.md)
 - [token-count](/cli-reference/token-count.md)
 - [ytt-fetch](/cli-reference/ytt-fetch.md)
@@ -78,8 +78,8 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-DD02: Documentation Main Content and Navigation Strategy](/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
 - [ADR-DD03: Pattern to Prompt Terminology Standardization](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md)
 - [ADR-DD03: Phase 1 Execution Punch List](/architecture/docs-system/adr/adr-dd03-phase1-punchlist.md)
-- [adr-jv03-canonical-xml-ast](/architecture/jvb-viewer/adr/adr-jv03-canonical-xml-ast.md)
-- [adr-jvb01_as-built_jvb_viewer_v1](/architecture/jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1.md)
+- [ADR-JV03: Canonical XML AST for English Parsing](/architecture/jvb-viewer/adr/adr-jv03-canonical-xml-ast.md)
+- [ADR-JVB01: JVB Parallel Viewer v1 As-Built](/architecture/jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1.md)
 - [ADR-K01: Preliminary Architectural Strategy for TNH Scholar Knowledge Base](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
 - [ADR-MD01: Adoption of JSON-LD for Metadata Management](/architecture/metadata/adr/adr-md01-json-ld-metadata.md)
 - [ADR-MD02: Metadata Infrastructure Object-Service Integration](/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md)
@@ -88,7 +88,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-PT03: Prompt System Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
 - [ADR-PT04: Prompt System Refactor Plan (Revised)](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
 - [ADR-PV01: Provenance & Tracing Infrastructure Strategy](/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md)
-- [ADR-TG01.1: Human-Friendly CLI Defaults](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md)
+- [ADR-TG01.1: Human-Friendly CLI Defaults with --api Flag](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md)
 - [ADR-TG01: tnh-gen CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)
 - [ADR-TG02: TNH-Gen CLI Prompt System Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)
 - [ADR-TR01: AssemblyAI Integration for Transcription Service](/architecture/transcription/adr/adr-tr01-assemblyai-integration.md)
@@ -152,10 +152,10 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [Incident Report: Git Recovery - December 7, 2025](/development/incident-reports/2025-12-07-git-recovery.md)
 - [Proposed Updates to Incident Report](/development/incident-reports/2025-12-07-reference/incident-report-updates.md)
 - [Release Workflow](/development/release-workflow.md)
-- [tag-v0.2.0-correction-plan](/development/incident-reports/tag-v0.2.0-correction-plan.md)
 - [TNH Scholar Design Principles](/development/design-principles.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)
 - [TNH Scholar System Design](/development/system-design.md)
+- [v0.2.0 Tag Correction Plan](/development/incident-reports/tag-v0.2.0-correction-plan.md)
 
 ## Docs Ops
 

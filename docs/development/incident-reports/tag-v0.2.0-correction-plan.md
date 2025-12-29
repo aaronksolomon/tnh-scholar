@@ -1,4 +1,15 @@
+---
+title: "v0.2.0 Tag Correction Plan"
+description: "Incident response plan for correcting misplaced v0.2.0 tag created before prompt system work was merged"
+owner: "phapman"
+author: "Claude Sonnet 4"
+status: "current"
+created: "2025-12-27"
+---
+
 # v0.2.0 Tag Correction Plan
+
+Incident response plan for correcting misplaced v0.2.0 tag created before prompt system work was merged.
 
 ## Context
 

@@ -68,14 +68,13 @@ query = ["beautifulsoup4", "spacy", "ebooklib"]
 ocr = ["fitz", "pillow", "google-cloud", "google-cloud-vision", "pdf2image"]
 
 [tool.poetry.group.dev]
-optional = true
 
 [tool.poetry.group.dev.dependencies]
 black = "24.10.0"
 ipykernel = "6.29.5"
 mkdocs-gen-files = "0.5.0"
 mkdocs-literate-nav = "0.6.1"
-mkdocstrings-python = "1.13.0"
+mkdocstrings-python = "^2.0.1"
 mkdocs-material = "9.5.50"
 mypy = "1.14.1"
 pipreqs = "0.5.0"

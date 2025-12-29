@@ -12,28 +12,50 @@ TNH Scholar provides a suite of command-line tools designed to work together for
 
 ## Available tools
 
+### Core CLI Tools
+
+- **[tnh-gen](/cli-reference/tnh-gen.md)** – Unified GenAI-powered text processing CLI (NEW)
 - **[audio-transcribe](/cli-reference/audio-transcribe.md)** – Transcribe audio files with diarization
 - **[nfmt](/cli-reference/nfmt.md)** – Normalize and format text files
-- **[tnh-fab](/cli-reference/tnh-fab.md)** – Pattern-driven text processing and translation ⚠️ **DEPRECATED** (migrating to tnh-gen)
 - **[tnh-setup](/cli-reference/tnh-setup.md)** – Environment setup helper
 - **[token-count](/cli-reference/token-count.md)** – Token estimation utility
 - **[ytt-fetch](/cli-reference/ytt-fetch.md)** – YouTube transcript fetcher
 
-> **⚠️ CLI Tool Migration**: The `tnh-fab` tool is deprecated and will be replaced by `tnh-gen` in an upcoming release. See [TNH-Gen Architecture](/architecture/tnh-gen/index.md) for details.
+### Archived Tools
 
-## TNH-FAB (Deprecated)
+- **tnh-fab** – Legacy pattern-driven text processing tool (DEPRECATED, archived)
+  - **Status**: Deprecated in v0.2.2, archived 2025-12-28
+  - **Replacement**: [tnh-gen](/cli-reference/tnh-gen.md)
+  - **Migration Guide**: See [TNH-Gen Architecture](/architecture/tnh-gen/index.md)
 
-**Note**: This tool is being replaced by `tnh-gen`. It remains functional with a deprecation warning.
+## TNH-Gen (Current)
 
-The primary text processing tool, TNH-FAB ('fab' short for 'fabric'), provides core functionality for text manipulation and analysis. This versatile tool includes several subcommands:
+The `tnh-gen` CLI is TNH Scholar's unified command-line interface for GenAI-powered text processing operations. It replaces the legacy `tnh-fab` tool with a modern, object-service compliant architecture.
 
-The **punctuate** command handles text punctuation and basic formatting. It can work with multiple languages and adapts to various writing styles.
+**Key Features**:
 
-The **section** command analyzes text structure and identifies logical divisions. It helps organize content into meaningful segments for further processing. This is crucial for working with larger text where model context limits may be reached or where processing will be ineffective due to content size.
+- **Prompt Discovery**: Browse and search available prompts with `tnh-gen list`
+- **Text Processing**: Execute AI-powered transformations (translation, sectioning, summarization)
+- **Human-Friendly**: Optimized for direct CLI usage with readable output
+- **API Mode**: `--api` flag for machine-readable JSON output (VS Code, scripts)
+- **Configuration Management**: Hierarchical config with clear precedence rules
+- **Provenance Tracking**: All outputs include generation metadata and fingerprints
 
-The **translate** command performs line-by-line translation while maintaining document structure. It provides context-aware translation particularly suited for wisdom and mindfulness content.
+**Quick Example**:
 
-The **process** command applies custom pattern-based processing to text. It offers flexible text transformation capabilities through the pattern system.
+```bash
+# List available prompts
+tnh-gen list
+
+# Translate a text file
+tnh-gen run --prompt translate \
+  --input-file teaching.md \
+  --var source_lang=vi \
+  --var target_lang=en \
+  --output-file teaching.en.md
+```
+
+For complete documentation, see [tnh-gen CLI Reference](/cli-reference/tnh-gen.md).
 
 ## Audio-Transcribe
 

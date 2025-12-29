@@ -26,7 +26,7 @@ auto_generated: true
 
 **[srt-translate](srt-translate.md)** - Translate SRT subtitle files while preserving timecodes, using TNH Scholar translation patterns.
 
-**[tnh-fab](tnh-fab.md)** - User-facing reference for the `tnh-fab` CLI covering commands, options, and example workflows.
+**[tnh-gen](tnh-gen.md)** - User-facing reference for the `tnh-gen` CLI covering commands, options, and example workflows.
 
 **[tnh-setup](tnh-setup.md)** - The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns.
 
