@@ -8,10 +8,20 @@ created: "2025-11-19"
 ---
 # TNH-Scholar DEV_SETUP
 
-This document outlines the standard development environment for TNH‑Scholar.  
+This document outlines the standard development environment for TNH‑Scholar.
 The goals are: clarity, reproducibility, stability, and low onboarding friction.
 
 The project uses **pyenv** to manage Python versions and **Poetry** to manage dependencies and virtual environments.
+
+## ⚠️ Important: Rapid Prototype Phase (0.x)
+
+**TNH Scholar is in rapid prototype phase.** Breaking changes may occur in ANY 0.x release (including patches).
+
+- No backward compatibility guarantees during 0.x
+- Breaking changes acceptable in patch releases (0.1.3 → 0.1.4)
+- Expect to refactor code when upgrading dependencies
+
+See [ADR-PP01: Rapid Prototype Versioning](docs/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) for full policy.
 
 ---
 
