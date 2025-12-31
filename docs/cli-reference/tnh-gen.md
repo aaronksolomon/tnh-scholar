@@ -337,26 +337,7 @@ When `--output-file` is specified:
 4. Print success message to stderr
 5. Print JSON response to stdout (for client parsing)
 
-**Provenance Marker Format:**
-
-> **Note**: Current implementation uses HTML comments, but will transition to YAML frontmatter for consistency with TNH Scholar standards (see ADR-TG01 Addendum 2025-12-28).
-
-**Current format (HTML comments):**
-
-```markdown
-<!--
-TNH-Scholar Generated Content
-Prompt: translate (v1.0.0)
-Model: gpt-4o
-Fingerprint: sha256:abc123...
-Trace ID: 01HQXYZ123ABC
-Generated: 2025-12-28T10:30:03Z
--->
-
-[Generated content follows...]
-```
-
-**Planned format (YAML frontmatter):**
+**Provenance Marker Format (YAML frontmatter):**
 
 ```yaml
 ---

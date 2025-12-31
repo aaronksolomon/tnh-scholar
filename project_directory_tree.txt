@@ -1,6 +1,7 @@
 .
 ├── AGENTLOG_TEMPLATE.md
 ├── AGENTLOG.md
+├── AGENTS.md
 ├── archive
 │   ├── agentlogs
 │   │   ├── AGENTLOG-12-07-25.md
@@ -201,6 +202,9 @@
 │   │   ├── index-old.md
 │   │   └── README.md
 │   ├── cli-reference
+│   │   ├── archive
+│   │   │   ├── README.md
+│   │   │   └── tnh-fab.md
 │   │   ├── audio-transcribe.md
 │   │   ├── index.md
 │   │   ├── json-to-srt.md
@@ -208,7 +212,7 @@
 │   │   ├── overview.md
 │   │   ├── sent-split.md
 │   │   ├── srt-translate.md
-│   │   ├── tnh-fab.md
+│   │   ├── tnh-gen.md
 │   │   ├── tnh-setup.md
 │   │   ├── token-count.md
 │   │   └── ytt-fetch.md
@@ -743,6 +747,7 @@
 │   ├── cli_tools
 │   │   ├── test_other_clis.py
 │   │   ├── test_tnh_fab.py
+│   │   ├── test_tnh_gen_coverage.py
 │   │   ├── test_tnh_gen.py
 │   │   └── test_token_count.py
 │   ├── gen_ai_service
@@ -773,4 +778,4 @@
 ├── TODO.md
 └── VERSIONING.md
 
-168 directories, 606 files
+169 directories, 610 files
