@@ -10,6 +10,38 @@ This file captures AI agent interactions, decisions, discoveries, and work perfo
 
 <!-- Add new sessions here following the template format -->
 
+## 2025-12-30 19:17 PST Provenance YAML Roundtrip Test
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: provenance-yaml-roundtrip-test
+**Human Collaborator**: phapman
+
+### Context
+Added a provenance YAML frontmatter parsing test to complete the TODO item for roundtrip validation.
+
+### Key Decisions
+- **Roundtrip via safe_load**: Parse the YAML header with `yaml.safe_load` and validate fields plus body content.
+
+### Work Completed
+- [x] Added YAML roundtrip test for provenance output (files: `tests/cli_tools/test_tnh_gen_coverage.py`)
+- [x] Marked provenance YAML roundtrip validation as complete (files: `TODO.md`)
+
+### Discoveries & Insights
+- **Warning source**: Running pytest surfaces an `audioop` deprecation warning from `pydub` (unrelated to provenance).
+
+### Files Modified/Created
+- `tests/cli_tools/test_tnh_gen_coverage.py`: Added provenance YAML roundtrip test.
+- `TODO.md`: Marked YAML roundtrip validation as complete.
+
+### Next Steps
+- [ ] None noted.
+
+### Open Questions
+- None noted.
+
+### References
+- /architecture/tnh-gen/adr/adr-tg01-cli-architecture.md
+
 ## 2025-12-30 15:27 PST tnh-gen Provenance YAML Frontmatter
 
 **Agent**: GPT-5 (Codex CLI)

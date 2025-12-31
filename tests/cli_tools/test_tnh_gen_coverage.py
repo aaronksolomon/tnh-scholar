@@ -514,6 +514,33 @@ def test_provenance_write_without_header(tmp_path):
     assert output_file.read_text(encoding="utf-8") == "plain text"
 
 
+def test_provenance_yaml_roundtrip(tmp_path):
+    output_file = tmp_path / "output.txt"
+    envelope = _envelope_with_warnings()
+    provenance_module.write_output_file(
+        output_file,
+        result_text="plain text",
+        envelope=envelope,
+        trace_id="trace",
+        prompt_version=None,
+        include_provenance=True,
+    )
+
+    written = output_file.read_text(encoding="utf-8")
+    header, body = written.split("---\n", 2)[1:]
+    payload = yaml.safe_load(header)
+
+    assert payload["tnh_scholar_generated"] is True
+    assert payload["prompt_key"] == envelope.provenance.fingerprint.prompt_key
+    assert payload["prompt_version"] == "unknown"
+    assert payload["model"] == envelope.provenance.model
+    assert payload["fingerprint"] == envelope.provenance.fingerprint.prompt_content_hash
+    assert payload["trace_id"] == "trace"
+    assert payload["generated_at"].endswith("Z")
+    assert payload["schema_version"] == "1.0"
+    assert body.lstrip("\n") == "plain text"
+
+
 def test_main_dispatch_calls_app(monkeypatch):
     called = {"count": 0}
 

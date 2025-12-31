@@ -87,7 +87,7 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 🚧 Provenance Format Refactor - YAML Frontmatter
 
-- **Status**: COMPLETED (YAML roundtrip validation pending)
+- **Status**: COMPLETED
 - **Priority**: HIGH (critical for tnh-gen usability - parsing generated output)
 - **Estimate**: 2-3 hours
 - **Context**: Current tnh-gen uses HTML comments for provenance, inconsistent with TNH Scholar's YAML frontmatter standard
@@ -96,7 +96,7 @@ This section organizes work into three priority levels based on criticality for 
 - **Deliverables**:
   - [x] Update `provenance.py` to generate YAML frontmatter instead of HTML comments
   - [x] Update tests for new format
-  - [ ] Validate YAML parsing roundtrip
+  - [x] Validate YAML parsing roundtrip
 - **Files Modified**: `src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py`, `tests/cli_tools/test_tnh_gen.py`, `docs/cli-reference/tnh-gen.md`
 
 #### 🚧 GenAIService Core Components - Final Polish
