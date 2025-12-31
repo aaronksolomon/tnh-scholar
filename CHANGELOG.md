@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **tnh-gen Provenance YAML Frontmatter** (2025-12-30)
+  - Switched file output provenance headers from HTML comments to YAML frontmatter
+  - Updated CLI reference to document the YAML provenance format
+  - Updated tests to assert YAML provenance markers
+  - Files: `src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py`, `tests/cli_tools/test_tnh_gen.py`, `docs/cli-reference/tnh-gen.md`
+
 - **Documentation Standards - ADR Status Lifecycle** (2025-12-28)
   - Formalized ADR status lifecycle: `proposed` → `accepted` → `implemented` → `superseded`/`archived`
   - Clarified status separation: ADRs use `accepted`/`implemented`, guides/docs use `current`

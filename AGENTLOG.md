@@ -10,6 +10,41 @@ This file captures AI agent interactions, decisions, discoveries, and work perfo
 
 <!-- Add new sessions here following the template format -->
 
+## 2025-12-30 15:27 PST tnh-gen Provenance YAML Frontmatter
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: provenance-yaml-frontmatter
+**Human Collaborator**: phapman
+
+### Context
+Swapped tnh-gen output provenance from HTML comments to YAML frontmatter per ADR-TG01 addendum and aligned tests/docs.
+
+### Key Decisions
+- **YAML frontmatter header**: Emit provenance as standard YAML frontmatter with a `schema_version` field for forward compatibility.
+- **Unknown prompt version**: Default `prompt_version` to "unknown" when metadata is unavailable.
+
+### Work Completed
+- [x] Updated provenance header generation to YAML frontmatter (files: `src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py`)
+- [x] Updated run test assertions for YAML provenance (files: `tests/cli_tools/test_tnh_gen.py`)
+- [x] Updated CLI docs to reflect YAML provenance format (files: `docs/cli-reference/tnh-gen.md`)
+
+### Discoveries & Insights
+- **Doc alignment**: CLI reference still described HTML comments and needed to be updated once the code switched formats.
+
+### Files Modified/Created
+- `src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py`: Emit YAML frontmatter for provenance.
+- `tests/cli_tools/test_tnh_gen.py`: Assert YAML provenance markers in output files.
+- `docs/cli-reference/tnh-gen.md`: Document YAML provenance format.
+
+### Next Steps
+- [ ] Validate YAML parsing roundtrip for generated files.
+
+### Open Questions
+- None noted.
+
+### References
+- /architecture/tnh-gen/adr/adr-tg01-cli-architecture.md
+
 ## 2025-12-28 22:15 PST Documentation Standards & ADR Status Lifecycle
 
 **Agent**: Claude Sonnet 4.5 (Claude Code)

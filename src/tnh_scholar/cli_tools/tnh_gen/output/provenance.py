@@ -24,17 +24,20 @@ def provenance_block(
     trace_id: str,
     prompt_version: str | None,
 ) -> str:
-    """Build an HTML comment block capturing provenance for saved files."""
+    """Build a YAML frontmatter block capturing provenance for saved files."""
     fp = envelope.provenance.fingerprint
+    version = prompt_version or "unknown"
     lines = [
-        "<!--",
-        "TNH-Scholar Generated Content",
-        f"Prompt: {fp.prompt_key} ({prompt_version or f'v?-{fp.prompt_key}'})",
-        f"Model: {envelope.provenance.model}",
-        f"Fingerprint: {fp.prompt_content_hash}",
-        f"Trace ID: {trace_id}",
-        f"Generated: {_iso(envelope.provenance.finished_at)}",
-        "-->",
+        "---",
+        "tnh_scholar_generated: true",
+        f"prompt_key: {fp.prompt_key}",
+        f"prompt_version: \"{version}\"",
+        f"model: {envelope.provenance.model}",
+        f"fingerprint: {fp.prompt_content_hash}",
+        f"trace_id: {trace_id}",
+        f"generated_at: \"{_iso(envelope.provenance.finished_at)}\"",
+        "schema_version: \"1.0\"",
+        "---",
         "",
     ]
     return "\n".join(lines)

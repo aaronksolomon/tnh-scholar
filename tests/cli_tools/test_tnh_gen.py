@@ -512,7 +512,8 @@ def test_run_merges_variables_and_writes_file(tmp_path, monkeypatch):
     assert stub_service.last_request.user_input == "inline_input"
 
     written = output_file.read_text(encoding="utf-8")
-    assert "TNH-Scholar Generated Content" in written
+    assert "tnh_scholar_generated: true" in written
+    assert "prompt_key: daily" in written
     assert "generated text" in written
 
 
