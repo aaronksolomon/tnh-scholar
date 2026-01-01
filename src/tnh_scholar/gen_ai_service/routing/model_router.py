@@ -9,56 +9,40 @@ Connected modules:
   - providers.base.ProviderClient
 """
 
-from dataclasses import dataclass
-from typing import Mapping, Optional
-
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
+from tnh_scholar.gen_ai_service.config.registry import (
+    get_model_info,
+    get_registry_loader,
+)
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
 
-@dataclass(frozen=True)
-class _Capability:
-    vision: bool
-    structured: bool
+class StructuredFallbackSelector:
+    """Selects a structured-capable fallback model."""
 
+    def __init__(self, provider: str) -> None:
+        self._provider = provider
 
-_MODEL_CAPABILITIES: Mapping[str, _Capability] = {
-    # Text + JSON capable defaults
-    "gpt-5o-mini": _Capability(vision=True, structured=True),
-    "gpt-5o": _Capability(vision=True, structured=True),
-    "gpt-5-mini": _Capability(vision=True, structured=True),
-    "gpt-4o-mini": _Capability(vision=True, structured=True),
-    "gpt-4o": _Capability(vision=True, structured=True),
-    # Text-focused fallback
-    "gpt-3.5-turbo": _Capability(vision=False, structured=False),
-}
+    def supports_structured(self, model: str) -> bool:
+        model_info = get_model_info(self._provider, model)
+        return model_info.capabilities.structured_output
 
+    def select(self, preferred: str) -> str:
+        if self.supports_structured(preferred):
+            return preferred
+        return self._first_structured() or preferred
 
-def _lookup_capability(model: str) -> Optional[_Capability]:
-    normalized = model.lower()
-    if normalized in _MODEL_CAPABILITIES:
-        return _MODEL_CAPABILITIES[normalized]
-    return next(
-        (entry for key, entry in _MODEL_CAPABILITIES.items() if normalized.startswith(key)),
-        None,
-    )
-
-
-def _pick_structured_fallback(preferred: str) -> str:
-    """
-    Return a structured-capable model; prefer the configured default if it
-    supports structured outputs, otherwise pick the first structured-capable
-    option in the capability table.
-    """
-    preferred_caps = _lookup_capability(preferred)
-    if preferred_caps and preferred_caps.structured:
-        return preferred
-
-    return next(
-        (model for model, caps in _MODEL_CAPABILITIES.items() if caps.structured),
-        preferred,
-    )
+    def _first_structured(self) -> str | None:
+        registry = get_registry_loader().get_provider(self._provider)
+        return next(
+            (
+                model_name
+                for model_name, model_info in registry.models.items()
+                if model_info.capabilities.structured_output
+            ),
+            None,
+        )
 
 
 def select_provider_and_model(
@@ -87,16 +71,19 @@ def select_provider_and_model(
     Returns:
         ResolvedParams: Updated with selected model and routing reason.
     """
-    capability = _lookup_capability(params.model)
     structured_needed = params.output_mode == "json"
 
     model = params.model
     routing_reason = params.routing_reason or "policy-preselection"
 
-    if structured_needed and (capability is None or not capability.structured):
-        fallback = _pick_structured_fallback(settings.default_model)
-        routing_reason = f"{routing_reason} → router: switched to structured-capable model {fallback}"
-        model = fallback
+    if structured_needed:
+        selector = StructuredFallbackSelector(params.provider)
+        if not selector.supports_structured(params.model):
+            fallback = selector.select(settings.default_model)
+            routing_reason = (
+                f"{routing_reason} → router: switched to structured-capable model {fallback}"
+            )
+            model = fallback
 
     # Placeholder for future intent-based overrides
     intent_tag = intent or (prompt_metadata.task_type if prompt_metadata else None)

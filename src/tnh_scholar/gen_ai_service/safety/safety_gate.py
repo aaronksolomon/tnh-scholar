@@ -13,7 +13,12 @@ from dataclasses import dataclass
 from typing import List, Sequence
 
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
+from tnh_scholar.gen_ai_service.config.registry import (
+    get_model_info,
+    get_registry_loader,
+)
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
+from tnh_scholar.gen_ai_service.models.registry import ModelPricing
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionResult,
     Message,
@@ -21,11 +26,7 @@ from tnh_scholar.gen_ai_service.models.domain import (
     Role,
 )
 from tnh_scholar.gen_ai_service.models.errors import SafetyBlocked
-from tnh_scholar.gen_ai_service.utils.token_utils import (
-    FALLBACK_CONTEXT_LIMIT,
-    MODEL_CONTEXT_LIMITS,
-    token_count_messages,
-)
+from tnh_scholar.gen_ai_service.utils.token_utils import token_count_messages
 from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
 
@@ -37,16 +38,36 @@ class SafetyReport:
     warnings: List[str]
 
 
-def _context_limit_for_model(model: str) -> int:
-    return next(
-        (limit for name, limit in MODEL_CONTEXT_LIMITS if model.lower().startswith(name.lower())),
-        FALLBACK_CONTEXT_LIMIT,
-    )
+def _context_limit_for_model(provider: str, model: str) -> int:
+    return get_model_info(provider, model).context_window
 
 
-def _estimate_cost(tokens_in: int, max_tokens_out: int) -> float:
-    total = tokens_in + max_tokens_out
-    return total / 1000.0
+def _estimate_cost(
+    provider: str,
+    model: str,
+    tokens_in: int,
+    max_tokens_out: int,
+    *,
+    use_cache: bool = False,
+) -> float:
+    pricing = _pricing_for_model(provider, model, use_cache=use_cache)
+    input_cost = (tokens_in / 1000.0) * pricing.input_per_1k
+    output_cost = (max_tokens_out / 1000.0) * pricing.output_per_1k
+    return input_cost + output_cost
+
+
+def _pricing_for_model(provider: str, model: str, *, use_cache: bool) -> ModelPricing:
+    registry = get_registry_loader().get_provider(provider)
+    model_info = get_model_info(provider, model)
+    tier = registry.pricing_tier or "standard"
+    pricing = model_info.get_pricing(tier)
+    if use_cache and pricing.cached_input_per_1k is not None:
+        return ModelPricing(
+            input_per_1k=pricing.cached_input_per_1k,
+            output_per_1k=pricing.output_per_1k,
+            cached_input_per_1k=pricing.cached_input_per_1k,
+        )
+    return pricing
 
 
 def _normalize_messages(prompt: RenderedPrompt) -> Sequence[Message]:
@@ -86,7 +107,7 @@ def pre_check(
     """
     messages = _normalize_messages(prompt)
     prompt_tokens = token_count_messages(messages, model=selection.model)
-    context_limit = _context_limit_for_model(selection.model)
+    context_limit = _context_limit_for_model(selection.provider, selection.model)
 
     # Character bound
     warnings: list[str] = []
@@ -109,8 +130,12 @@ def pre_check(
             f"{prompt_tokens + selection.max_output_tokens} tokens > {context_limit}"
         )
 
-    estimated_cost = _estimate_cost(prompt_tokens, selection.max_output_tokens)
-    estimated_cost *= settings.price_per_1k_tokens
+    estimated_cost = _estimate_cost(
+        selection.provider,
+        selection.model,
+        prompt_tokens,
+        selection.max_output_tokens,
+    )
     if estimated_cost > settings.max_dollars:
         raise SafetyBlocked(f"Estimated cost {estimated_cost:.4f} exceeds budget {settings.max_dollars:.4f}")
 
