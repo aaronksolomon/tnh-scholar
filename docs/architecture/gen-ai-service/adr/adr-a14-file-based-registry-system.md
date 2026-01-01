@@ -82,7 +82,7 @@ Multiple modules currently contain hardcoded metadata that should be centralized
 - JSON Schema enables IntelliSense and validation in VS Code
 - Extension contribution system uses JSON/JSONC exclusively
 
-**TNH Scholar VS Code Integration** (see [ADR-VSC01](/architecture/ui-ux/vs-code-integration/adr/adr-vsc01-vscode-integration-strategy.md)):
+**TNH Scholar VS Code Integration** (see [ADR-VSC01](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)):
 
 - Workspace config: `.vscode/tnh-scholar.json`
 - `tnh-gen` CLI will consume JSON configs
