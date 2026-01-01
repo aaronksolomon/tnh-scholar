@@ -12,7 +12,8 @@ Implements thread-safe GenAIService operations and provider-aware rate limiting 
 
 **Status:** Proposed
 **Date:** 2025-12-23
-**Related:** [ADR-A01: Object-Service GenAI](/architecture/gen-ai-service/adr/adr-a01-object-service-genai.md), [ADR-A09: V1 Simplified Implementation](/architecture/gen-ai-service/adr/adr-a09-v1-simplified.md), [ADR-A14: File-Based Registry System](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
+**Updated:** 2025-12-31 (revised per ADR-CF01)
+**Related:** [ADR-A01: Object-Service GenAI](/architecture/gen-ai-service/adr/adr-a01-object-service-genai.md), [ADR-A09: V1 Simplified Implementation](/architecture/gen-ai-service/adr/adr-a09-v1-simplified.md), [ADR-A14: File-Based Registry System](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md), [ADR-CF01: Runtime Context Strategy](/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md)
 **Issue:** [#22](https://github.com/aaronksolomon/tnh-scholar/issues/22)
 
 ---
@@ -146,9 +147,11 @@ class TokenBucketRateLimiter:
 
 **Integration:**
 
-1. **Registry Configuration** (extends ADR-A14)
-   - Add rate limit tiers to `runtime_assets/registries/providers/openai.jsonc`
-   - Support tier detection via API or manual configuration
+1. **Registry Configuration** (extends ADR-A14, ADR-CF01)
+   - Add rate limit tiers to provider registries (three-layer model)
+   - Built-in: `runtime_assets/registries/providers/openai.jsonc`
+   - Workspace: `.tnh-scholar/registries/providers/openai.jsonc` (project overrides)
+   - User: `~/.config/tnh-scholar/registries/providers/openai.jsonc` (personal overrides)
 
    ```jsonc
    {
@@ -160,43 +163,46 @@ class TokenBucketRateLimiter:
    ```
 
 2. **Service Integration** (`service.py`)
-   ```python
-   class GenAIService:
-       def __init__(self, settings: GenAISettings | None = None):
-           # ... existing init ...
 
-           # Optional rate limiter (enabled via settings)
-           if settings.enable_rate_limiting:
-               tier_config = self._load_rate_limit_config(settings.rate_limit_tier)
-               self.rate_limiter = TokenBucketRateLimiter(
-                   requests_per_minute=tier_config.rpm,
-                   tokens_per_minute=tier_config.tpm,
-               )
-           else:
-               self.rate_limiter = None
+   **Architecture** (per ADR-CF01):
+   - Service accepts `TNHContext` for configuration access
+   - Rate limiting settings are **user-owned** (personal preference)
+   - Rate limit tiers defined in registry (via ADR-A14)
+   - Configuration retrieved via `context.get_config()` with ownership="user"
 
-       def generate(self, request: RenderRequest) -> CompletionEnvelope:
-           # Pre-flight rate limit check
-           if self.rate_limiter:
-               estimated_tokens = self._estimate_tokens(request)
-               while not self.rate_limiter.acquire(estimated_tokens):
-                   # Blocking mode: wait and retry
-                   # Alternative: raise RateLimitError for caller control
-                   time.sleep(0.1)
+   **Service initialization**:
+   - Query context for rate limiting preferences
+   - Load tier configuration from registry via context
+   - Initialize rate limiter if enabled
 
-           # ... existing generate logic ...
+3. **Configuration Schema** (user config files)
+
+   **User-owned settings** (per ADR-CF01 ownership model):
+
+   Rate limiting preferences stored in user/workspace config files:
+
+   - **User layer**: `~/.config/tnh-scholar/config.jsonc`
+   - **Workspace layer**: `.tnh-scholar/config.jsonc`
+   - **Precedence**: User → Workspace → Built-in (user preference)
+
+   **Configuration structure**:
+
+   ```jsonc
+   {
+     "genai": {
+       "rate_limiting": {
+         "enabled": false,           // User preference: enable/disable
+         "tier": "tier_1",           // User's API tier (tier_1, tier_2, etc.)
+         "mode": "blocking"          // "blocking" or "error"
+       }
+     }
+   }
    ```
 
-3. **Settings Configuration** (`config/settings.py`)
-   ```python
-   class GenAISettings(BaseSettings):
-       # ... existing settings ...
-
-       # Rate limiting (optional, disabled by default for V1 compatibility)
-       enable_rate_limiting: bool = False
-       rate_limit_tier: str = "tier_1"  # or "tier_2", "tier_3", etc.
-       rate_limit_mode: Literal["blocking", "error"] = "blocking"
-   ```
+   **Defaults** (built-in):
+   - `enabled`: `false` (opt-in for backward compatibility)
+   - `tier`: `"tier_1"` (conservative default)
+   - `mode`: `"blocking"` (safer default)
 
 ---
 
@@ -361,7 +367,8 @@ with ProcessPoolExecutor() as executor:
 - [GenAI Service Design Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md) - Original architecture
 - [ADR-A01: Object-Service GenAI](/architecture/gen-ai-service/adr/adr-a01-object-service-genai.md) - Service pattern
 - [ADR-A09: V1 Simplified Implementation](/architecture/gen-ai-service/adr/adr-a09-v1-simplified.md) - Current implementation
-- [ADR-A14: File-Based Registry System](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md) - Rate limit config source
+- [ADR-A14: File-Based Registry System](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md) - Rate limit tier definitions
+- [ADR-CF01: Runtime Context Strategy](/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md) - Context injection, config resolution
 - [OpenAI Rate Limits Documentation](https://platform.openai.com/docs/guides/rate-limits)
 - [Token Bucket Algorithm](https://en.wikipedia.org/wiki/Token_bucket)
 - [GitHub Issue #22](https://github.com/aaronksolomon/tnh-scholar/issues/22)
@@ -381,6 +388,8 @@ with ProcessPoolExecutor() as executor:
 - `runtime_assets/registries/providers/openai.jsonc` - Rate limit tiers (extend existing)
 
 **Files to Update (Phase 2):**
-- `src/tnh_scholar/gen_ai_service/config/settings.py` - Rate limit settings
-- `src/tnh_scholar/gen_ai_service/service.py` - Rate limiter integration
-- `docs/user-guide/configuration.md` - Rate limiting documentation
+
+- `src/tnh_scholar/gen_ai_service/service.py` - Accept `TNHContext`, query config
+- `runtime_assets/registries/providers/openai.jsonc` - Add rate_limits section
+- `docs/user-guide/configuration.md` - Document rate limiting config via JSONC files
+- User config examples (workspace/user layers)

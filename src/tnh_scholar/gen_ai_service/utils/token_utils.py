@@ -29,6 +29,8 @@ from openai.types.chat.chat_completion_content_part_param import (
     ChatCompletionContentPartParam,
 )
 
+from tnh_scholar.exceptions import ConfigurationError
+from tnh_scholar.gen_ai_service.config.registry import find_model_info
 from tnh_scholar.gen_ai_service.models.domain import Message
 from tnh_scholar.logging_config import get_logger
 from tnh_scholar.utils.file_utils import read_str_from_file
@@ -69,23 +71,10 @@ class BufferPolicy:
     minimum: int
 
 
-ModelLimitEntry = tuple[str, int]
 FormattingPolicyEntry = tuple[str, FormattingPolicy]
 MessageContent = Union[str, Sequence[ChatCompletionContentPartParam]]
 MessageSequence = Sequence[Message]
 
-
-MODEL_CONTEXT_LIMITS: tuple[ModelLimitEntry, ...] = (
-    ("gpt-5o-mini", 200_000),
-    ("gpt-5o", 200_000),
-    ("gpt-5-mini", 200_000),
-    ("gpt-5", 200_000),
-    ("gpt-4o-mini", 128_000),
-    ("gpt-4o", 128_000),
-    ("gpt-4-32k", 32_768),
-    ("gpt-4", 8_192),
-    ("gpt-3.5-turbo", 16_385),
-)
 
 MESSAGE_FORMATTING_POLICIES: tuple[FormattingPolicyEntry, ...] = (
     ("gpt-5", FormattingPolicy(tokens_per_message=3, base_tokens=3, tokens_per_name=1)),
@@ -133,7 +122,23 @@ class EncodingProvider:
                 "Unknown model '%s' for token counting, falling back to cl100k_base encoding",
                 model,
             )
-            resolved = tiktoken.get_encoding("cl100k_base")
+            try:
+                resolved = tiktoken.get_encoding("cl100k_base")
+            except Exception as exc:
+                logger.warning(
+                    "Failed to load cl100k_base encoding, using fallback: %s",
+                    exc,
+                )
+                self._cache[model] = self._fallback_encoding
+                return self._fallback_encoding
+        except Exception as exc:
+            logger.warning(
+                "Failed to resolve encoding for model '%s', using fallback: %s",
+                model,
+                exc,
+            )
+            self._cache[model] = self._fallback_encoding
+            return self._fallback_encoding
 
         self._cache[model] = resolved
         return resolved
@@ -210,13 +215,11 @@ class ModelPolicyRegistry:
     def __init__(
         self,
         *,
-        context_entries: Sequence[ModelLimitEntry],
+        context_limit_resolver: "ContextLimitResolver",
         formatting_entries: Sequence[FormattingPolicyEntry],
-        fallback_limit: int,
     ) -> None:
-        self._context_entries = tuple(context_entries)
+        self._context_limit_resolver = context_limit_resolver
         self._formatting_entries = tuple(formatting_entries)
-        self._fallback_limit = fallback_limit
 
     def formatting_policy(self, model: str) -> FormattingPolicy:
         return next(
@@ -231,17 +234,33 @@ class ModelPolicyRegistry:
     def context_limit(self, model: str, override: int | None) -> int:
         if override is not None:
             return override
+        return self._context_limit_resolver.resolve(model)
 
-        for prefix, limit in self._context_entries:
-            if model.startswith(prefix):
-                return limit
 
-        logger.warning(
-            "Unknown context limit for model '%s', assuming %s tokens",
-            model,
-            self._fallback_limit,
-        )
-        return self._fallback_limit
+class ContextLimitResolver(Protocol):
+    """Resolves context limits for models."""
+
+    def resolve(self, model: str) -> int:
+        """Resolve a context limit for a model."""
+
+
+class RegistryContextLimitResolver:
+    """Resolves context limits from the provider registry."""
+
+    def __init__(self, fallback_limit: int) -> None:
+        self._fallback_limit = fallback_limit
+
+    def resolve(self, model: str) -> int:
+        try:
+            model_info = find_model_info(model)
+            return int(model_info.context_window)
+        except ConfigurationError:
+            logger.warning(
+                "Unknown context limit for model '%s', assuming %s tokens",
+                model,
+                self._fallback_limit,
+            )
+            return self._fallback_limit
 
 
 class MessageTokenCounter:
@@ -337,9 +356,8 @@ class CompletionBudgetEstimator:
 _encoding_provider = EncodingProvider()
 _content_renderer = MessageContentRenderer()
 _policy_registry = ModelPolicyRegistry(
-    context_entries=MODEL_CONTEXT_LIMITS,
+    context_limit_resolver=RegistryContextLimitResolver(FALLBACK_CONTEXT_LIMIT),
     formatting_entries=MESSAGE_FORMATTING_POLICIES,
-    fallback_limit=FALLBACK_CONTEXT_LIMIT,
 )
 _message_counter = MessageTokenCounter(
     encoding_provider=_encoding_provider,

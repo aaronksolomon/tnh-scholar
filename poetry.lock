@@ -4766,20 +4766,20 @@ yarg = "0.1.9"
 
 [[package]]
 name = "platformdirs"
-version = "4.5.0"
+version = "4.3.6"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
 optional = false
-python-versions = ">=3.10"
-groups = ["dev"]
+python-versions = ">=3.8"
+groups = ["main", "dev"]
 files = [
-    {file = "platformdirs-4.5.0-py3-none-any.whl", hash = "sha256:e578a81bb873cbb89a41fcc904c7ef523cc18284b7e3b3ccf06aca1403b7ebd3"},
-    {file = "platformdirs-4.5.0.tar.gz", hash = "sha256:70ddccdd7c99fc5942e9fc25636a8b34d04c24b335100223152c2803e4063312"},
+    {file = "platformdirs-4.3.6-py3-none-any.whl", hash = "sha256:73e575e1408ab8103900836b97580d5307456908a03e92031bab39e4554cc3fb"},
+    {file = "platformdirs-4.3.6.tar.gz", hash = "sha256:357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907"},
 ]
 
 [package.extras]
-docs = ["furo (>=2025.9.25)", "proselint (>=0.14)", "sphinx (>=8.2.3)", "sphinx-autodoc-typehints (>=3.2)"]
-test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=8.4.2)", "pytest-cov (>=7)", "pytest-mock (>=3.15.1)"]
-type = ["mypy (>=1.18.2)"]
+docs = ["furo (>=2024.8.6)", "proselint (>=0.14)", "sphinx (>=8.0.2)", "sphinx-autodoc-typehints (>=2.4)"]
+test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=8.3.2)", "pytest-cov (>=5)", "pytest-mock (>=3.14)"]
+type = ["mypy (>=1.11.2)"]
 
 [[package]]
 name = "pluggy"
@@ -6679,6 +6679,17 @@ files = [
 markers = {main = "extra == \"query\""}
 
 [[package]]
+name = "sourcery"
+version = "1.41.1"
+description = "Magically refactor Python"
+optional = false
+python-versions = "*"
+groups = ["local"]
+files = [
+    {file = "sourcery-1.41.1-py2.py3-none-macosx_10_9_universal2.whl", hash = "sha256:9ecb7636301e9dea8934f897151e504127274ea60c7709a65bed7457850f994c"},
+]
+
+[[package]]
 name = "spacy"
 version = "3.8.3"
 description = "Industrial-strength Natural Language Processing (NLP) in Python"
@@ -8256,4 +8267,4 @@ query = ["beautifulsoup4", "ebooklib", "spacy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "9d2931dd881cd7b4426f4aaf1515a0da8c8b4edd3304bea62c54102c4ce89833"
+content-hash = "bbea9d6d26486dcdeda5f82f8423aee6ac7b67625463238850f077495fc8323f"

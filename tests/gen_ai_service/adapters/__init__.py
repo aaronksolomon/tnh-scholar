@@ -1,0 +1,1 @@
+"""GenAI adapter tests."""

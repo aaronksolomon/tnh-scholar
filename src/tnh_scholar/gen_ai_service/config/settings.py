@@ -15,6 +15,8 @@ Connected modules:
   - providers.base.ProviderClient
 """
 
+from dataclasses import dataclass
+from os import getenv
 from pathlib import Path
 
 from pydantic import AliasChoices, Field, model_validator
@@ -23,7 +25,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # We use the default pattern directory for TNH Scholar.
 # Later this will move to 'Prompt' dir.
 from tnh_scholar import TNH_DEFAULT_PATTERN_DIR
-from tnh_scholar.gen_ai_service.utils.token_utils import MODEL_CONTEXT_LIMITS
+from tnh_scholar.exceptions import ConfigurationError
 
 
 class GenAISettings(BaseSettings):
@@ -58,7 +60,8 @@ class GenAISettings(BaseSettings):
     default_seed: int | None = None
     max_input_chars: int = 120_000
     max_dollars: float = 0.10
-    price_per_1k_tokens: float = 0.005
+    registry_staleness_warn: bool = True
+    registry_staleness_threshold_days: int = 90
 
     @model_validator(mode="after")
     def validate_max_output_tokens(cls, values):
@@ -67,17 +70,15 @@ class GenAISettings(BaseSettings):
         for the selected default model.
         """
 
-        def _context_limit_for_model(model_name: str) -> int | None:
-            for name, limit in MODEL_CONTEXT_LIMITS:
-                if model_name.startswith(name):
-                    return limit
-            return None
-
         model = getattr(values, "default_model", "gpt-5-mini")
+        provider = getattr(values, "default_provider", "openai")
         max_tokens = getattr(values, "default_max_output_tokens", 10_000)
-        limit = _context_limit_for_model(model)
-
-        if limit is not None and max_tokens > limit:
+        try:
+            from tnh_scholar.gen_ai_service.config.registry import get_model_info
+            limit = get_model_info(provider, model).context_window
+        except ConfigurationError:
+            return values
+        if max_tokens > limit:
             raise ValueError(
                 f"default_max_output_tokens={max_tokens} exceeds context limit for {model} ({limit}). "
                 "Lower the value or choose a model with a larger context window."
@@ -96,3 +97,22 @@ class GenAISettings(BaseSettings):
     @property
     def default_prompt_dir(self) -> Path | None:
         return self.prompt_dir if self.prompt_dir is not None else None
+
+
+@dataclass(frozen=True)
+class RegistryStalenessConfig:
+    """Configuration for registry staleness warnings."""
+
+    warn: bool
+    threshold_days: int
+
+
+def get_registry_staleness_config() -> RegistryStalenessConfig:
+    """Load registry staleness configuration from environment."""
+    warn_raw = getenv("REGISTRY_STALENESS_WARN", "true").strip().lower()
+    warn = warn_raw not in {"0", "false", "no", "off"}
+    try:
+        threshold_days = int(getenv("REGISTRY_STALENESS_THRESHOLD_DAYS", "90"))
+    except ValueError:
+        threshold_days = 90
+    return RegistryStalenessConfig(warn=warn, threshold_days=threshold_days)

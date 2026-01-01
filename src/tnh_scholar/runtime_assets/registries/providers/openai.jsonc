@@ -1,0 +1,271 @@
+// runtime_assets/registries/providers/openai.jsonc
+{
+  "$schema": "./schema.json",
+  "schema_version": "1.0",
+  "provider": "openai",
+  "last_updated": "2026-01-01",
+  "source_url": "https://openai.com/api/pricing/",
+  "update_method": "manual",
+  "pricing_tier": "standard",
+  "pricing_tier_metadata": {
+    "batch": {
+      "label": "Batch",
+      "description": "Batch tier pricing (lower cost, async completion)",
+      "availability": "beta"
+    },
+    "flex": {
+      "label": "Flex",
+      "description": "Flex tier pricing (lower cost, higher latency)",
+      "availability": "beta"
+    },
+    "standard": {
+      "label": "Standard",
+      "description": "Standard tier pricing (default)",
+      "availability": "public"
+    },
+    "priority": {
+      "label": "Priority",
+      "description": "Priority tier pricing (faster, higher cost)",
+      "availability": "internal"
+    }
+  },
+
+  "defaults": {
+    "base_url": "https://api.openai.com/v1",
+    "timeout_s": 60.0,
+    "max_retries": 3
+  },
+
+  "models": {
+    "gpt-5-mini": {
+      "display_name": "GPT-5 Mini",
+      "family": "gpt-5",
+      "capabilities": {
+        "vision": true,
+        "structured_output": true,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 200000,
+      "max_output_tokens": 16384,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.000125,
+          "output_per_1k": 0.001,
+          "cached_input_per_1k": 0.0000125
+        },
+        "flex": {
+          "input_per_1k": 0.000125,
+          "output_per_1k": 0.001,
+          "cached_input_per_1k": 0.0000125
+        },
+        "standard": {
+          "input_per_1k": 0.00025,
+          "output_per_1k": 0.002,
+          "cached_input_per_1k": 0.000025
+        },
+        "priority": {
+          "input_per_1k": 0.00045,
+          "output_per_1k": 0.0036,
+          "cached_input_per_1k": 0.000045
+        }
+      },
+      "training_cutoff": "2024-10",
+      "released": "2024-11-20",
+      "deprecated": false,
+      "aliases": ["gpt-5-mini-latest"]
+    },
+
+    "gpt-5": {
+      "display_name": "GPT-5",
+      "family": "gpt-5",
+      "capabilities": {
+        "vision": true,
+        "structured_output": true,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 200000,
+      "max_output_tokens": 16384,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.000625,
+          "output_per_1k": 0.005,
+          "cached_input_per_1k": 0.0000625
+        },
+        "flex": {
+          "input_per_1k": 0.000625,
+          "output_per_1k": 0.005,
+          "cached_input_per_1k": 0.0000625
+        },
+        "standard": {
+          "input_per_1k": 0.00125,
+          "output_per_1k": 0.01,
+          "cached_input_per_1k": 0.000125
+        },
+        "priority": {
+          "input_per_1k": 0.0025,
+          "output_per_1k": 0.02,
+          "cached_input_per_1k": 0.00025
+        }
+      },
+      "training_cutoff": "2024-10",
+      "released": "2024-11-20",
+      "deprecated": false,
+      "aliases": ["gpt-5-latest", "gpt-5-chat-latest"]
+    },
+
+    "gpt-4o-mini": {
+      "display_name": "GPT-4o Mini",
+      "family": "gpt-4",
+      "capabilities": {
+        "vision": true,
+        "structured_output": true,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 128000,
+      "max_output_tokens": 16384,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.000075,
+          "output_per_1k": 0.0003
+        },
+        "standard": {
+          "input_per_1k": 0.00015,
+          "output_per_1k": 0.0006,
+          "cached_input_per_1k": 0.000075
+        },
+        "priority": {
+          "input_per_1k": 0.00025,
+          "output_per_1k": 0.001,
+          "cached_input_per_1k": 0.000125
+        }
+      },
+      "training_cutoff": "2023-10",
+      "released": "2024-07-18",
+      "deprecated": false
+    },
+
+    "gpt-4o": {
+      "display_name": "GPT-4o",
+      "family": "gpt-4",
+      "capabilities": {
+        "vision": true,
+        "structured_output": true,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 128000,
+      "max_output_tokens": 16384,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.00125,
+          "output_per_1k": 0.005
+        },
+        "standard": {
+          "input_per_1k": 0.0025,
+          "output_per_1k": 0.01,
+          "cached_input_per_1k": 0.00125
+        },
+        "priority": {
+          "input_per_1k": 0.00425,
+          "output_per_1k": 0.017,
+          "cached_input_per_1k": 0.002125
+        }
+      },
+      "training_cutoff": "2023-10",
+      "released": "2024-05-13",
+      "deprecated": false
+    },
+
+    "gpt-4-32k": {
+      "display_name": "GPT-4 32K",
+      "family": "gpt-4",
+      "capabilities": {
+        "vision": false,
+        "structured_output": false,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 32768,
+      "max_output_tokens": 4096,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.03,
+          "output_per_1k": 0.06
+        },
+        "standard": {
+          "input_per_1k": 0.06,
+          "output_per_1k": 0.12
+        }
+      },
+      "training_cutoff": "2023-03",
+      "released": "2023-03-14",
+      "deprecated": true
+    },
+
+    "gpt-4": {
+      "display_name": "GPT-4",
+      "family": "gpt-4",
+      "capabilities": {
+        "vision": false,
+        "structured_output": false,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 8192,
+      "max_output_tokens": 4096,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.015,
+          "output_per_1k": 0.03
+        },
+        "standard": {
+          "input_per_1k": 0.03,
+          "output_per_1k": 0.06
+        }
+      },
+      "training_cutoff": "2023-03",
+      "released": "2023-03-14",
+      "deprecated": true
+    },
+
+    "gpt-3.5-turbo": {
+      "display_name": "GPT-3.5 Turbo",
+      "family": "gpt-3.5",
+      "capabilities": {
+        "vision": false,
+        "structured_output": false,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 16385,
+      "max_output_tokens": 4096,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.00025,
+          "output_per_1k": 0.00075
+        },
+        "standard": {
+          "input_per_1k": 0.0005,
+          "output_per_1k": 0.0015
+        }
+      },
+      "training_cutoff": "2021-09",
+      "released": "2022-11-28",
+      "deprecated": false
+    }
+  },
+
+  "rate_limits": {
+    "tier_1": {
+      "requests_per_minute": 500,
+      "tokens_per_minute": 30000
+    },
+    "tier_2": {
+      "requests_per_minute": 5000,
+      "tokens_per_minute": 450000
+    }
+  }
+}

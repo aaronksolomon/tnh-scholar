@@ -3,7 +3,7 @@ title: "ADR-A14: File-Based Registry System for Provider Metadata"
 description: "Establishes a JSONC-based registry system for model capabilities, pricing, and provider metadata with auto-update mechanisms, aligned with VS Code's native configuration format."
 owner: "aaronksolomon"
 author: "Aaron Solomon, Anthropic Claude Sonnet 4.5"
-status: proposed
+status: wip
 created: "2025-12-10"
 ---
 # ADR-A14: File-Based Registry System for Provider Metadata
@@ -12,16 +12,12 @@ Establishes a human-editable, file-based registry for model capabilities, pricin
 
 - **Filename**: `adr-a14-file-based-registry-system.md`
 - **Heading**: `# ADR-A14: File-Based Registry System for Provider Metadata`
-- **Status**: Proposed
+- **Status**: wip
 - **Date**: 2025-12-10
 - **Authors**: Aaron Solomon, Anthropic Claude Sonnet 4.5
 - **Owner**: aaronksolomon
 
 ---
-
-## ADR Editing Policy
-
-**IMPORTANT**: This ADR is in **proposed** status. We may rewrite or edit the document as needed to refine the design. Once accepted and implementation begins, only addenda may be added.
 
 ## Context
 
@@ -29,13 +25,13 @@ Establishes a human-editable, file-based registry for model capabilities, pricin
 
 Multiple modules currently contain hardcoded metadata that should be centralized and externalized:
 
-1. **Pricing Constants** ([safety_gate.py:30](https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/safety/safety_gate.py#L30)):
+1. **Pricing Defaults** (`src/tnh_scholar/gen_ai_service/config/settings.py:61`):
 
    ```python
-   _PRICE_PER_1K_TOKENS = 0.005  # placeholder until price tables are wired
+   price_per_1k_tokens: float = 0.005
    ```
 
-2. **Model Capabilities** ([model_router.py:25-34](https://github.com/aaronksolomon/tnh-scholar/blob/main/src/tnh_scholar/gen_ai_service/routing/model_router.py#L25-L34)):
+2. **Model Capabilities** (`src/tnh_scholar/gen_ai_service/routing/model_router.py:26`):
 
    ```python
    _MODEL_CAPABILITIES: Mapping[str, _Capability] = {
@@ -45,14 +41,14 @@ Multiple modules currently contain hardcoded metadata that should be centralized
    }
    ```
 
-3. **Context Limits** (token_utils.py):
+3. **Context Limits** (`src/tnh_scholar/gen_ai_service/utils/token_utils.py:78`):
 
    ```python
-   MODEL_CONTEXT_LIMITS = [
-       ("gpt-5", 128_000),
-       ("gpt-4", 128_000),
+   MODEL_CONTEXT_LIMITS: tuple[ModelLimitEntry, ...] = (
+       ("gpt-5o-mini", 200_000),
+       ("gpt-5o", 200_000),
        # ... hardcoded context limits
-   ]
+   )
    ```
 
 ### Problems with Current Approach
@@ -86,7 +82,7 @@ Multiple modules currently contain hardcoded metadata that should be centralized
 - JSON Schema enables IntelliSense and validation in VS Code
 - Extension contribution system uses JSON/JSONC exclusively
 
-**TNH Scholar VS Code Integration** ([ADR-VSC01](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)):
+**TNH Scholar VS Code Integration** (see [ADR-VSC01](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)):
 
 - Workspace config: `.vscode/tnh-scholar.json`
 - `tnh-gen` CLI will consume JSON configs
@@ -105,13 +101,46 @@ Multiple modules currently contain hardcoded metadata that should be centralized
 
 Implement a **file-based registry system** using **JSON with Comments (JSONC)** format to align with VS Code's native configuration system, enabling seamless integration with the upcoming VS Code extension and providing excellent IDE tooling support.
 
+#### Object-Service Layering
+
+Per [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md), registry loading follows strict architectural boundaries:
+
+**Domain Layer** (`src/tnh_scholar/gen_ai_service/config/`):
+
+- `registry.py`: Registry loader domain logic and API (no protocol for V1)
+- Returns typed domain models (`ModelInfo`, `ProviderRegistry`)
+- Owns caching and validation; delegates parsing/override merging to infrastructure helpers
+
+**Infrastructure Layer** (`src/tnh_scholar/gen_ai_service/adapters/registry/`):
+
+- `jsonc_parser.py`: Pure JSONC parsing utilities (comment stripping, validation)
+- `override_merger.py`: Typed override merging strategy
+- Handles all file I/O and parsing
+
+**Data Layer** (built-in, workspace, user):
+
+- Built-in: `runtime_assets/registries/providers/*.jsonc`
+- Workspace: `.tnh-scholar/registries/providers/*.jsonc`
+- User: `~/.config/tnh-scholar/registries/providers/*.jsonc`
+- Overrides: `{layer}/registries/overrides/<provider>.jsonc`
+- `schema.json`: JSON Schema for VS Code validation (built-in layer)
+- No Python code in these directories (data only)
+
+**Schema Definitions** (`src/tnh_scholar/gen_ai_service/models/registry.py`):
+
+- Pydantic models: `ModelInfo`, `ProviderRegistry`, `ModelCapabilities`, etc.
+- Shared by domain and infrastructure layers
+- Lives in models package per ADR-OS01 convention
+
+**Dependency Flow**: Settings/Service → TNHContext → RegistryLoader → JsoncParser/OverrideMerger → Data Files
+
 #### Core Design Principles
 
 1. **VS Code Native**: JSONC format matches VS Code's `settings.json`, `package.json` conventions
 2. **Human-Editable First**: JSONC supports comments and trailing commas for readability
 3. **IDE Integration**: JSON Schema enables autocomplete and validation in VS Code
-4. **Version-Controlled**: Registry files live in `runtime_assets/registries/` and are committed to git
-5. **Layered Precedence**: User overrides → project defaults → system defaults
+4. **Version-Controlled**: Built-in and workspace registries are committed to git; user registries are local-only
+5. **Layered Precedence**: Workspace → user → built-in (per ADR-CF01 ownership rules)
 6. **Schema-Validated**: All registry files validated via Pydantic models + JSON Schema
 7. **Auto-Update Capable**: Optional scripts to fetch and update from stable URLs
 8. **Strongly Typed**: Registry loader returns typed domain models, never dicts
@@ -119,17 +148,41 @@ Implement a **file-based registry system** using **JSON with Comments (JSONC)** 
 ### File Structure
 
 ```text
+# Built-in data (package, target layout)
 runtime_assets/
   registries/
     providers/
       openai.jsonc             # OpenAI models, pricing, capabilities
       anthropic.jsonc          # Anthropic models (future)
-      schema.py                # Pydantic validation schemas
       schema.json              # JSON Schema for VS Code autocomplete
-    overrides/                 # User-editable overrides (gitignored)
-      pricing-overrides.jsonc  # Local price adjustments
-      capability-overrides.jsonc
     .registry-metadata.json    # Last-update timestamps, sources
+
+# Workspace data (project)
+.tnh-scholar/
+  registries/
+    providers/
+      openai.jsonc             # Project-specific overrides or additions
+    overrides/
+      openai.jsonc             # Provider-specific overrides (typed)
+
+# User data (personal)
+~/.config/tnh-scholar/
+  registries/
+    providers/
+      openai.jsonc             # Personal overrides or additions
+    overrides/
+      openai.jsonc             # Provider-specific overrides (typed)
+
+# Code files (src/)
+src/tnh_scholar/gen_ai_service/
+  models/
+    registry.py                # Pydantic validation schemas (ModelInfo, etc.)
+  config/
+    registry.py                # Registry loader API (no protocol for V1)
+  adapters/
+    registry/
+      jsonc_parser.py          # JSONC parsing utilities
+      override_merger.py       # Typed override merging
 ```
 
 ### Registry Schema (providers/openai.jsonc)
@@ -471,12 +524,13 @@ runtime_assets/
 }
 ```
 
-### Pydantic Schema (providers/schema.py)
+### Pydantic Schema (src/tnh_scholar/gen_ai_service/models/registry.py)
 
 ```python
 """Pydantic schemas for registry validation.
 
 All registry JSONC files must validate against these schemas.
+Follows ADR-OS01 convention: models live in src/, data lives in runtime_assets/.
 """
 from datetime import date
 from typing import Dict, Literal
@@ -544,381 +598,323 @@ class ProviderRegistry(BaseModel):
 
     class Config:
         extra = "forbid"  # Fail on unknown fields
+
+
+class PricingOverride(BaseModel):
+    """Override for a single model's pricing."""
+    input_per_1k: float | None = Field(None, ge=0)
+    output_per_1k: float | None = Field(None, ge=0)
+    cached_input_per_1k: float | None = Field(None, ge=0)
+
+
+class ModelOverride(BaseModel):
+    """Override for a single model's metadata."""
+    pricing: PricingOverride | None = None
+    deprecated: bool | None = None
+
+
+class RegistryOverrides(BaseModel):
+    """User overrides for a provider registry."""
+    schema_version: Literal["1.0"] = "1.0"
+    provider: str
+    models: Dict[str, ModelOverride] = Field(default_factory=dict)
+
+    class Config:
+        extra = "forbid"
 ```
 
-### Registry Loader API
+### Schema Sync Strategy
 
-```python
-# gen_ai_service/config/registry.py
-"""Registry loader for provider metadata.
+**Challenge**: Maintain consistency between JSON Schema (`schema.json`) and Pydantic models (`models/registry.py`).
 
-Provides singleton access to validated provider registries with layered
-precedence: user overrides → project defaults → system defaults.
-"""
-import json
-import re
-from functools import lru_cache
-from pathlib import Path
-from typing import Dict
+**Decision**: Manual synchronization with validation in CI.
 
-from pydantic import ValidationError
+**Rationale**:
 
-from tnh_scholar.gen_ai_service.models.errors import ConfigurationError
-from tnh_scholar.runtime_assets.registries.providers.schema import (
-    ModelInfo,
-    ProviderRegistry,
-)
+- JSON Schema is the source of truth for VS Code IntelliSense
+- Pydantic models are the source of truth for runtime validation
+- Bi-directional generation adds complexity and brittleness
+- Schema changes are infrequent (only on registry format updates)
 
+**Process**:
 
-def _load_jsonc(path: Path) -> dict:
-    """Load JSON with Comments (JSONC) file.
+1. **Schema Definition**: When adding new fields, update BOTH files:
+   - `runtime_assets/registries/providers/schema.json` (for VS Code)
+   - `src/tnh_scholar/gen_ai_service/models/registry.py` (for runtime)
 
-    Strips comments and trailing commas before parsing.
-    Compatible with VS Code's JSONC format.
-    """
-    with path.open() as f:
-        content = f.read()
+2. **Validation**: CI validates consistency via test:
 
-    # Strip single-line comments (// ...)
-    content = re.sub(r'//.*?$', '', content, flags=re.MULTILINE)
+   ```python
+   # tests/test_registry_schema.py
+   def test_pydantic_matches_json_schema():
+       """Verify Pydantic models match JSON Schema definitions."""
+       json_schema = load_json_schema("runtime_assets/registries/providers/schema.json")
+       pydantic_schema = ProviderRegistry.model_json_schema()
 
-    # Strip multi-line comments (/* ... */)
-    content = re.sub(r'/\*.*?\*/', '', content, flags=re.DOTALL)
+       # Compare required fields, types, constraints
+       assert_schemas_match(json_schema, pydantic_schema)
+   ```
 
-    # Strip trailing commas before } or ]
-    content = re.sub(r',(\s*[}\]])', r'\1', content)
+3. **Documentation**: Schema changes require updating:
+   - JSON Schema `schema.json`
+   - Pydantic models `models/registry.py`
+   - Example JSONC files `providers/openai.jsonc`
+   - ADR-A14 (this document) if structural
 
-    return json.loads(content)
+**Future Consideration**: If schema changes become frequent, consider:
 
+- Pydantic → JSON Schema generation (via `pydantic.json_schema()`)
+- Or JSON Schema → Pydantic generation (via `datamodel-code-generator`)
 
-class RegistryLoader:
-    """Loads and caches provider registries."""
+**Why Not Auto-Generate Now**:
 
-    def __init__(self, registry_root: Path | None = None):
-        """Initialize registry loader.
+- Schema is stable (infrequent changes)
+- Manual control ensures optimal VS Code IntelliSense
+- Avoids build-time code generation complexity
+- Hand-crafted JSON Schema provides better descriptions and examples
 
-        Args:
-            registry_root: Path to registries directory. Defaults to
-                runtime_assets/registries in the package.
-        """
-        if registry_root is None:
-            from tnh_scholar import TNH_ROOT
-            registry_root = TNH_ROOT / "runtime_assets" / "registries"
+### Architectural Rationale: Pragmatic Layering
 
-        self.registry_root = registry_root
-        self.providers_dir = registry_root / "providers"
-        self.overrides_dir = registry_root / "overrides"
-        self._cache: Dict[str, ProviderRegistry] = {}
+This implementation follows ADR-OS01's **spirit** (separation of concerns, testability, strong typing) without unnecessary protocol abstraction.
 
-    def get_provider(self, provider: str) -> ProviderRegistry:
-        """Load and validate provider registry.
+**Why no `RegistryLoaderProtocol`?**
 
-        Args:
-            provider: Provider name (e.g., "openai", "anthropic")
+Protocols are valuable when:
 
-        Returns:
-            Validated ProviderRegistry instance
+- Multiple implementations exist or are likely (database, HTTP API, file-based)
+- Runtime swapping is required
+- Abstract interface adds clarity to consumer code
 
-        Raises:
-            ConfigurationError: If registry file missing or invalid
-        """
-        if provider in self._cache:
-            return self._cache[provider]
+**Our reality:**
 
-        registry_path = self.providers_dir / f"{provider}.jsonc"
-        if not registry_path.exists():
-            raise ConfigurationError(
-                f"Provider registry not found: {registry_path}"
-            )
+- JSONC file-based storage is a **strategic architectural decision**, not a swappable detail
+- OpenAI confirmed no pricing API exists (external data source ruled out)
+- YAML/TOML alternatives explicitly rejected for VS Code ecosystem alignment
+- Consumers only need `get_model_info(provider, model) -> ModelInfo` - they don't care about implementation
+- Testing can mock at the class level without protocol overhead
 
-        try:
-            data = _load_jsonc(registry_path)
-            registry = ProviderRegistry.model_validate(data)
+**What we DO extract:**
 
-            # Apply user overrides if present
-            self._apply_overrides(registry, provider)
+- **JsoncParser**: Legitimate concern - parsing implementation might improve (library vs regex)
+- **OverrideMerger**: Focused responsibility, testable business logic
+- Both are **injectable dependencies** for testing without protocol ceremony
 
-            self._cache[provider] = registry
-            return registry
+This achieves ADR-OS01's goals (clean separation, testability, maintainability) with appropriate abstraction level for V1.
 
-        except ValidationError as e:
-            raise ConfigurationError(
-                f"Invalid provider registry {registry_path}: {e}"
-            ) from e
-        except json.JSONDecodeError as e:
-            raise ConfigurationError(
-                f"Invalid JSON in registry {registry_path}: {e}"
-            ) from e
+### Registry Path Configuration
 
-    def get_model(self, provider: str, model: str) -> ModelInfo:
-        """Get model info with alias resolution.
+Per [ADR-CF01: Runtime Context Strategy](/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md), registry discovery is delegated to `TNHContext`.
 
-        Args:
-            provider: Provider name
-            model: Model name or alias
+**Registry Lookup Strategy:**
 
-        Returns:
-            ModelInfo instance
+1. **Workspace layer**: `<project>/.tnh-scholar/registries/providers/`
+   - Project-owned registries and overrides
+   - Discovered via `TNHContext` workspace root discovery
 
-        Raises:
-            ConfigurationError: If model not found
-        """
-        registry = self.get_provider(provider)
+2. **User layer**: `~/.config/tnh-scholar/registries/providers/`
+   - Personal overrides and local customizations
+   - Resolved via `platformdirs.user_config_dir("tnh-scholar")`
 
-        # Direct lookup
-        if model in registry.models:
-            return registry.models[model]
+3. **Built-in layer**: `<package>/runtime_assets/registries/providers/`
+   - Read-only reference registries shipped with package
+   - Located via `importlib.resources` (no TNH_ROOT dependency)
 
-        # Alias lookup
-        for model_name, info in registry.models.items():
-            if model in info.aliases:
-                return info
+4. **Explicit override**: Constructor parameter for testing
+   - `RegistryLoader(registry_paths=[custom_path])` for fixtures
+   - Enables testing with mock registries without environment changes
 
-        raise ConfigurationError(
-            f"Model {model} not found in {provider} registry. "
-            f"Available: {', '.join(registry.models.keys())}"
-        )
+### Registry Loader Architecture
 
-    def _apply_overrides(self, registry: ProviderRegistry, provider: str) -> None:
-        """Apply user overrides if present (in-place modification)."""
-        override_path = self.overrides_dir / f"{provider}-overrides.jsonc"
-        if not override_path.exists():
-            return
+**Domain Layer: `config/registry.py`**
 
-        # Load and merge overrides (pricing, rate limits, etc.)
-        overrides = _load_jsonc(override_path)
+Responsibilities:
 
-        # Example: override pricing for specific models
-        if "pricing" in overrides:
-            for model_name, pricing_data in overrides["pricing"].items():
-                if model_name in registry.models:
-                    registry.models[model_name].pricing = ModelPricing.model_validate(
-                        pricing_data
-                    )
+- Orchestrate registry loading with caching
+- Resolve model aliases to canonical names
+- Apply override merging via infrastructure helpers
+- Return strongly-typed domain models (`ModelInfo`, `ProviderRegistry`)
+- Use `TNHContext` to resolve registry and override search paths
 
+Key methods:
 
-@lru_cache(maxsize=1)
-def get_registry_loader() -> RegistryLoader:
-    """Get singleton registry loader."""
-    return RegistryLoader()
+- `get_provider(provider: str) -> ProviderRegistry` - Load and cache provider registry
+- `get_model(provider, model) -> ModelInfo` - Resolve model with alias support
+- Constructor accepts optional `registry_paths`, `parser`, `merger` for dependency injection
 
+Path resolution:
 
-def get_model_info(provider: str, model: str) -> ModelInfo:
-    """Convenience function to get model info.
+- If `registry_paths` is None, use `TNHContext.get_registry_search_paths("providers")`
+- Search in order: workspace → user → built-in
+- Raise clear `ConfigurationError` if registry not found in any layer
 
-    Args:
-        provider: Provider name (e.g., "openai")
-        model: Model name or alias
+**Infrastructure Layer: `adapters/registry/jsonc_parser.py`**
 
-    Returns:
-        ModelInfo with capabilities, pricing, limits
+Responsibilities:
 
-    Example:
-        >>> info = get_model_info("openai", "gpt-4o-mini")
-        >>> print(f"Context: {info.context_window}, Price: ${info.pricing.input_per_1k}")
-    """
-    return get_registry_loader().get_model(provider, model)
+- Pure JSONC parsing (strip comments, trailing commas)
+- Convert JSONC files to Python dicts for validation
+- Handle both file paths and string content
 
+Key methods:
 
-def list_models(provider: str) -> list[str]:
-    """List available models for a provider.
+- `parse_file(path: Path) -> dict` - Load and parse JSONC file
+- `parse_string(content: str) -> dict` - Parse JSONC string
 
-    Args:
-        provider: Provider name
+Implementation notes:
 
-    Returns:
-        List of model identifiers
-    """
-    registry = get_registry_loader().get_provider(provider)
-    return list(registry.models.keys())
-```
+- Regex-based comment stripping for V1 (simple, no dependencies)
+- Future: Consider library-based parser if regex proves fragile
+- Raises `json.JSONDecodeError` for invalid JSON after comment removal
+
+**Infrastructure Layer: `adapters/registry/override_merger.py`**
+
+Responsibilities:
+
+- Apply typed overrides to base registry models
+- Merge pricing, capabilities, deprecation flags
+- Validate override files against `RegistryOverrides` schema
+
+Key methods:
+
+- `apply_overrides(registry, provider, overrides_dir, parser) -> ProviderRegistry`
+
+Implementation notes:
+
+- Mutates registry in-place for V1 simplicity
+- Skips overrides for unknown models (defensive)
+- Returns modified registry for method chaining
+
+**Public API:**
+
+Convenience functions for common use cases:
+
+- `get_model_info(provider, model) -> ModelInfo` - Get model with capabilities/pricing
+- `list_models(provider) -> list[str]` - List available models for provider
 
 ### Integration with Existing Modules
 
-#### 1. Update model_router.py
+**Replace hardcoded constants with registry lookups:**
+
+#### 1. Model Routing (`routing/model_router.py`)
+
+Current problem: Hardcoded `_MODEL_CAPABILITIES` dict duplicates registry data.
+
+**Integration approach:**
+
+- Extract capability checking to focused helper: `_has_capability(model_info, capability) -> bool`
+- Extract fallback selection to strategy class: `ModelFallbackSelector`
+- Main routing function delegates to helpers, maintains single responsibility
+
+**Key change:**
 
 ```python
-# routing/model_router.py
 from tnh_scholar.gen_ai_service.config.registry import get_model_info
 
-def select_provider_and_model(...) -> ResolvedParams:
-    """Intent-aware routing with registry-based capability checks."""
-
-    # Look up model capabilities from registry
-    model_info = get_model_info(params.provider, params.model)
-
-    structured_needed = params.output_mode == "json"
-
-    if structured_needed and not model_info.capabilities.structured_output:
-        # Pick a structured-capable fallback
-        fallback = _pick_structured_fallback(params.provider, settings.default_model)
-        routing_reason = f"{routing_reason} → switched to {fallback}"
-        model = fallback
-
-    # ... rest of logic
+# Replace: _MODEL_CAPABILITIES dict lookup
+# With: get_model_info(provider, model).capabilities
 ```
 
-#### 2. Update safety_gate.py
+#### 2. Cost Estimation (`safety/safety_gate.py`)
+
+Current problem: Hardcoded `_PRICE_PER_1K_TOKENS` constant.
+
+**Integration approach:**
+
+- Extract cost calculation to pure function: `_calculate_token_cost(pricing, tokens_in, tokens_out, use_cache) -> float`
+- Extract price lookup to helper: `_get_pricing(provider, model) -> ModelPricing`
+- Safety gate orchestrator delegates to focused helpers
+
+**Key change:**
 
 ```python
-# safety/safety_gate.py
 from tnh_scholar.gen_ai_service.config.registry import get_model_info
 
-def _estimate_cost(
-    provider: str,
-    model: str,
-    tokens_in: int,
-    max_tokens_out: int,
-    *,
-    use_cache: bool = False
-) -> float:
-    """Estimate cost using registry pricing."""
-    model_info = get_model_info(provider, model)
-
-    input_price = model_info.pricing.input_per_1k
-    if use_cache and model_info.pricing.cached_input_per_1k:
-        input_price = model_info.pricing.cached_input_per_1k
-
-    input_cost = (tokens_in / 1000.0) * input_price
-    output_cost = (max_tokens_out / 1000.0) * model_info.pricing.output_per_1k
-
-    return input_cost + output_cost
-
-
-def _context_limit_for_model(provider: str, model: str) -> int:
-    """Get context limit from registry."""
-    model_info = get_model_info(provider, model)
-    return model_info.context_window
+# Replace: hardcoded _PRICE_PER_1K_TOKENS
+# With: get_model_info(provider, model).pricing
 ```
 
-#### 3. Update settings.py
+#### 3. Context Limits (`utils/token_utils.py`)
+
+Current problem: Hardcoded `MODEL_CONTEXT_LIMITS` tuple.
+
+**Integration approach:**
+
+- Replace pattern-matching tuple with direct registry lookup
+- Single-line helper: `get_context_limit(provider, model) -> int`
+- No sequential logic needed - direct delegation
+
+**Key change:**
 
 ```python
-# config/settings.py
 from tnh_scholar.gen_ai_service.config.registry import get_model_info
 
-@model_validator(mode="after")
-def validate_max_output_tokens(cls, values):
-    """Validate against registry-sourced context limits."""
-    model = values.default_model
-    provider = values.default_provider
-    max_tokens = values.default_max_output_tokens
-
-    model_info = get_model_info(provider, model)
-    limit = model_info.context_window
-
-    if max_tokens > limit:
-        raise ValueError(
-            f"default_max_output_tokens={max_tokens} exceeds "
-            f"context limit for {model} ({limit})"
-        )
-    return values
+# Replace: MODEL_CONTEXT_LIMITS pattern matching
+# With: get_model_info(provider, model).context_window
 ```
+
+#### 4. Settings Validation (`config/settings.py`)
+
+Current problem: Settings validators can't access dynamic registry data.
+
+**Integration approach:**
+
+- Extract validation to helper class: `ModelConfigValidator`
+- Validator delegates to helper methods for registry lookups
+- Keep validators focused on single validation concerns
+
+**Pattern:**
+
+```python
+# Validator delegates to focused helper
+model_info = get_model_info(provider, model)
+if not _is_within_limit(max_tokens, model_info.context_window):
+    raise ValueError(...)
+```
+
+**Implementation guidance:**
+
+- Each integration point should extract helpers (functions or classes)
+- Avoid sequential logic in main functions - dispatch to focused helpers
+- Use classes when state tracking needed (e.g., fallback selection with history)
+- Keep functions ≤20 LOC, cyclomatic complexity ≤9
 
 ### Auto-Update Mechanism
 
-#### Update Script (scripts/update_registry.py)
+**Script: `scripts/update_registry.py`**
 
-```python
-#!/usr/bin/env python
-"""Update provider registries from external sources.
+**V1 Requirements (Manual Update Helper):**
 
-Usage:
-    poetry run python scripts/update_registry.py openai --dry-run
-    poetry run python scripts/update_registry.py openai --apply
-    poetry run python scripts/update_registry.py --all --apply
-"""
-import argparse
-from datetime import date
-from pathlib import Path
+Core functionality:
 
-import requests
-from bs4 import BeautifulSoup
+- Check registry staleness (days since `last_updated` field)
+- Provide manual update instructions when stale
+- Validate updated registry files against Pydantic schema
+- Runtime warnings are configured via `GenAISettings.registry_staleness_warn` and `GenAISettings.registry_staleness_threshold_days` (see [ADR-A14.1](/architecture/gen-ai-service/adr/adr-a14.1-registry-staleness-detection.md))
 
-from tnh_scholar import TNH_ROOT
+CLI interface:
 
+- `--check-staleness` - Report age of each provider registry
+- `--validate PROVIDER` - Validate registry file syntax and schema
+- Exit codes: 0 (OK), 1 (stale >90 days), 2 (validation error)
 
-class RegistryUpdater:
-    """Updates provider registry files."""
+**V2 Future (Auto-Scraping - Optional):**
 
-    def __init__(self, registry_root: Path):
-        self.registry_root = registry_root
+Additional functionality if web scraping dependencies available:
 
-    def update_openai(self, dry_run: bool = True) -> dict:
-        """Update OpenAI registry.
+- Fetch OpenAI pricing page HTML
+- Parse pricing table to extract current values
+- Show diff between current registry and scraped data
+- `--apply` flag to write changes (with confirmation)
 
-        Strategy:
-        1. Fetch official pricing page HTML
-        2. Parse pricing table (BeautifulSoup)
-        3. Validate against current registry
-        4. Show diff and update if --apply
+Optional dependencies: `requests`, `beautifulsoup4` (not required for V1)
 
-        Returns:
-            Dict of changes detected
-        """
-        # For V1, manual update only
-        print("OpenAI pricing must be updated manually from:")
-        print("https://openai.com/api/pricing/")
+**Design approach:**
 
-        registry_path = self.registry_root / "providers" / "openai.jsonc"
-        print(f"\nRegistry location: {registry_path}")
-
-        # Future: implement web scraping with BeautifulSoup
-        # resp = requests.get("https://openai.com/api/pricing/")
-        # soup = BeautifulSoup(resp.text, 'html.parser')
-        # pricing_table = soup.find('table', class_='pricing')
-        # ...
-
-        return {"status": "manual_update_required"}
-
-    def check_staleness(self, provider: str) -> int:
-        """Check days since last registry update."""
-        import json
-
-        registry_path = self.registry_root / "providers" / f"{provider}.jsonc"
-
-        # Load using simplified JSONC parser
-        with registry_path.open() as f:
-            content = f.read()
-            # Strip comments for parsing
-            import re
-            content = re.sub(r'//.*?$', '', content, flags=re.MULTILINE)
-            content = re.sub(r'/\*.*?\*/', '', content, flags=re.DOTALL)
-            content = re.sub(r',(\s*[}\]])', r'\1', content)
-            data = json.loads(content)
-
-        last_updated = date.fromisoformat(data["last_updated"])
-        days_old = (date.today() - last_updated).days
-
-        return days_old
-
-
-def main():
-    parser = argparse.ArgumentParser(description="Update provider registries")
-    parser.add_argument("provider", nargs="?", help="Provider to update (or --all)")
-    parser.add_argument("--all", action="store_true", help="Update all providers")
-    parser.add_argument("--apply", action="store_true", help="Apply changes")
-    parser.add_argument("--check-staleness", action="store_true")
-
-    args = parser.parse_args()
-
-    registry_root = TNH_ROOT / "runtime_assets" / "registries"
-    updater = RegistryUpdater(registry_root)
-
-    if args.check_staleness:
-        for provider in ["openai"]:  # Add more as implemented
-            days = updater.check_staleness(provider)
-            status = "⚠️ STALE" if days > 90 else "✅ OK"
-            print(f"{provider}: {days} days old {status}")
-        return
-
-    if args.all or args.provider == "openai":
-        updater.update_openai(dry_run=not args.apply)
-
-
-if __name__ == "__main__":
-    main()
-```
+- Extract staleness checking to pure function: `get_registry_age(path) -> int`
+- Extract validation to helper: `validate_registry_file(path) -> list[ErrorInfo]`
+- Use `JsoncParser` from registry infrastructure (no duplication)
+- CLI orchestrator delegates to focused helpers
+- Keep main script <50 LOC by extracting logic to helper modules
 
 #### CI Integration
 
@@ -1101,7 +1097,7 @@ This enables:
 ### Phase 1: Core Registry (Week 1)
 
 - [ ] Create directory structure `runtime_assets/registries/`
-- [ ] Implement Pydantic schemas in `providers/schema.py`
+- [ ] Implement Pydantic schemas in `src/tnh_scholar/gen_ai_service/models/registry.py`
 - [ ] Create JSON Schema in `providers/schema.json`
 - [ ] Create `openai.jsonc` with current models/pricing
 - [ ] Implement `RegistryLoader` with JSONC support
@@ -1122,6 +1118,10 @@ This enables:
 - [ ] Add CI workflow for staleness alerts
 - [ ] Document registry update procedures
 - [ ] Create user override example in docs
+- [ ] **Note**: Web scraping dependencies (`requests`, `beautifulsoup4`) are optional for V1
+  - V1 uses manual updates only
+  - Auto-scraping planned for V2 (requires `poetry install --with scraping`)
+  - Script gracefully degrades when dependencies unavailable
 
 ### Phase 4: Documentation (Week 2)
 
@@ -1152,4 +1152,102 @@ This enables:
 
 ## As-Built Notes & Addenda
 
-*This section will be populated during implementation. Never edit the original Context/Decision/Consequences sections - always append addenda here.*
+### 2026-01-01: Multi-Tier Pricing Implementation
+
+**Status**: Implemented
+
+**Changes**:
+
+- Added `pricing_tiers` field to `ModelInfo` with support for batch, flex, standard, and priority tiers
+- Updated all models in `openai.jsonc` with tiered pricing from official OpenAI pricing page
+- Added `get_pricing(tier)` method to `ModelInfo` for tier-specific pricing retrieval
+- Updated Pydantic schema to include `ModelPricingTiers` and `PricingTierMetadata`
+- Fixed JSONC parser to handle URLs with `//` in strings (proper string-aware comment stripping)
+- Removed backward compatibility - all models now require `pricing_tiers` (no legacy `pricing` field)
+
+**Pricing Data Source**: OpenAI pricing page (2026-01-01, Standard tier)
+
+**Batch Pricing Savings**:
+
+- GPT-5: 50% savings on input/output
+- GPT-5-mini: 50% savings on input/output
+- GPT-4o: 50% savings on input/output
+- GPT-4o-mini: 50% savings on input/output
+
+### 2026-01-01: Custom JSONC Parser Decision
+
+**Status**: Decision Final
+
+**Context**:
+
+ADR-A14 line 766 noted: "Future: Consider library-based parser if regex proves fragile." This addendum documents evaluation of the most popular Python JSONC library and the decision to retain the custom implementation.
+
+**Evaluation of `jsonc-parser` Package**:
+
+Investigated `jsonc-parser` (NickolaiBeloguzov, ~9K weekly downloads on PyPI):
+
+**Package characteristics:**
+
+- **Size**: 214 total lines (180 in `parser.py`, 34 in `errors.py`)
+- **Implementation**: Regex-based comment stripping via `re.compile(r"(\".*?\"|\'.*?\')|(/\*.*?\*/|//[^\r\n]*$)", re.MULTILINE | re.DOTALL)`
+- **Dependencies**: Zero (standard library only)
+- **Maintenance**: No updates in 12+ months (as of 2026-01-01)
+
+**Feature comparison:**
+
+| Feature                            | `jsonc-parser`       | TNH Scholar Custom   |
+| ---------------------------------- | -------------------- | -------------------- |
+| Comment stripping (`//`, `/* */`)  | ✅ Regex-based       | ✅ State-machine     |
+| Trailing comma support             | ❌ **Missing**       | ✅ Implemented       |
+| Line/column error tracking         | ❌ Generic JSON errors | ✅ Custom tracking |
+| String escape handling             | ✅ Via regex groups  | ✅ Explicit state    |
+| Code size                          | 214 lines            | 173 lines            |
+| Dependencies                       | 0                    | 0                    |
+
+**Critical deficiency:**
+
+The `jsonc-parser` package **does not handle trailing commas**, which are a core feature of JSONC and VS Code's `settings.json` format. The regex only strips comments:
+
+```python
+# Their implementation (parser.py:11)
+regex = re.compile(r"(\".*?\"|\'.*?\')|(/\*.*?\*/|//[^\r\n]*$)", ...)
+# No trailing comma logic present
+```
+
+Our implementation explicitly handles this via `_strip_trailing_commas()` (16 lines, `jsonc_parser.py:60-76`).
+
+**Quality comparison:**
+
+Custom implementation advantages:
+
+- Better error messages with line/column numbers for debugging
+- Proper context manager usage (`Path.read_text()` vs manual `open()`/`close()`)
+- Cleaner separation of concerns (parsing vs validation)
+- More robust string handling with explicit escape state tracking
+- Already tested and working in production
+
+**Decision**: **Retain custom JSONC parser implementation**
+
+**Rationale**:
+
+1. **Feature parity impossible**: `jsonc-parser` lacks trailing comma support (critical for VS Code compatibility)
+2. **No size benefit**: Custom implementation is actually smaller (173 vs 214 lines)
+3. **Quality superior**: Better error reporting, modern Python idioms, explicit state management
+4. **Implementation equivalence**: Both use regex/parsing approach; library is not more robust
+5. **Maintenance concern**: Package hasn't been updated in 12+ months
+6. **Zero migration benefit**: Would need to add trailing comma logic anyway, negating any code reduction
+
+**Reversal**: The ADR-A14 note about "consider library-based parser if regex proves fragile" is hereby **reversed**. After evaluating the canonical package, the custom implementation is confirmed as the superior choice for this use case.
+
+**Files**: `src/tnh_scholar/gen_ai_service/adapters/registry/jsonc_parser.py:1-174`
+
+**References**:
+
+- [jsonc-parser on PyPI](https://pypi.org/project/jsonc-parser/)
+- [jsonc-parser GitHub repository](https://github.com/NickolaiBeloguzov/jsonc-parser)
+
+### Related Addenda
+
+**[ADR-A14.1: Registry Staleness Detection](/architecture/gen-ai-service/adr/adr-a14.1-registry-staleness-detection.md)** (WIP 2026-01-01)
+
+Extends this ADR with runtime warning system, CLI maintenance tooling, and CI automation for detecting when registry pricing data becomes outdated. Addresses the manual update workflow with configurable user warnings and GitHub workflow automation.

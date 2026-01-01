@@ -5,7 +5,7 @@ owner: ""
 author: ""
 status: current
 created: "2025-02-27"
-updated: "2025-12-12"
+updated: "2025-12-31"
 ---
 
 # ADR Template
@@ -124,6 +124,13 @@ Describe the background, forces, and problems that make the decision necessary. 
 ## Decision
 
 State the decision clearly. Use bullet points or sub-headings if the decision has multiple parts (e.g., architecture, tooling, processes).
+
+**ADR Content Guidelines** (added 2025-12-31):
+
+- **Focus on architecture, not implementation**: Specify structure and interaction of classes/modules/methods, signatures and types, data flow. Avoid detailed implementation code.
+- **Pseudocode sparingly**: Use only for complex architectural decisions requiring clarity. Prefer flow diagrams or architectural diagrams for control flow.
+- **Strategy ADRs**: Higher-level than component ADRs. Define principles, patterns, and system-wide contracts. Leave detailed design to implementation-guide decimal ADRs if needed.
+- **Implementation plans**: Specify phases and sequence, but avoid time estimates (e.g., "Week 1-2"). Time depends on available hours and AI system capabilities in a non-standard development environment.
 
 ## Consequences
 

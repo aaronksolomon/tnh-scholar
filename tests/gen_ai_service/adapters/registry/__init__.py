@@ -1,0 +1,1 @@
+"""Registry adapter tests."""
