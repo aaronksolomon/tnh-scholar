@@ -73,7 +73,7 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
 
     policy_params = ResolvedParams(
         provider="openai",
-        model="gpt-test-mini",
+        model="gpt-5-mini",
         temperature=0.55,
         max_output_tokens=256,
         seed=999,
