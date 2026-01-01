@@ -1,0 +1,249 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tnh-scholar.org/schemas/provider-registry-v1.json",
+  "title": "TNH Scholar Provider Registry",
+  "description": "Registry of AI provider models, capabilities, and pricing",
+  "type": "object",
+  "required": ["schema_version", "provider", "last_updated", "defaults", "models"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference"
+    },
+    "schema_version": {
+      "type": "string",
+      "enum": ["1.0"],
+      "description": "Registry schema version"
+    },
+    "provider": {
+      "type": "string",
+      "enum": ["openai", "anthropic"],
+      "description": "Provider identifier"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of last registry update (YYYY-MM-DD)"
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Source URL for pricing/capability information"
+    },
+    "update_method": {
+      "type": "string",
+      "enum": ["manual", "auto-scrape", "api"],
+      "description": "How this registry is updated"
+    },
+    "pricing_tier": {
+      "type": "string",
+      "enum": ["batch", "flex", "standard", "priority"],
+      "description": "Default pricing tier for this registry"
+    },
+    "pricing_tier_metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/PricingTierMetadata"
+      },
+      "description": "Metadata describing pricing tiers"
+    },
+    "defaults": {
+      "type": "object",
+      "required": ["base_url"],
+      "properties": {
+        "base_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Default API base URL"
+        },
+        "timeout_s": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Default timeout in seconds"
+        },
+        "max_retries": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Default maximum retry attempts"
+        }
+      }
+    },
+    "models": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/ModelInfo"
+      },
+      "description": "Model registry keyed by model identifier"
+    },
+    "rate_limits": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/RateLimitTier"
+      },
+      "description": "Rate limit tiers"
+    }
+  },
+  "definitions": {
+    "ModelInfo": {
+      "type": "object",
+      "required": [
+        "display_name",
+        "family",
+        "capabilities",
+        "context_window",
+        "max_output_tokens"
+      ],
+      "properties": {
+        "display_name": {
+          "type": "string",
+          "description": "Human-readable model name"
+        },
+        "family": {
+          "type": "string",
+          "description": "Model family (e.g., gpt-4, gpt-5)"
+        },
+        "capabilities": {
+          "$ref": "#/definitions/ModelCapabilities"
+        },
+        "context_window": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum context window size in tokens"
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum output tokens"
+        },
+        "pricing": {
+          "$ref": "#/definitions/ModelPricing"
+        },
+        "pricing_tiers": {
+          "$ref": "#/definitions/ModelPricingTiers"
+        },
+        "training_cutoff": {
+          "type": "string",
+          "description": "Training data cutoff (YYYY-MM format)"
+        },
+        "released": {
+          "type": "string",
+          "format": "date",
+          "description": "Model release date"
+        },
+        "deprecated": {
+          "type": "boolean",
+          "description": "Whether model is deprecated"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Alternative names for this model"
+        }
+      }
+    },
+    "ModelPricingTiers": {
+      "type": "object",
+      "required": ["standard"],
+      "properties": {
+        "batch": {
+          "$ref": "#/definitions/ModelPricing"
+        },
+        "flex": {
+          "$ref": "#/definitions/ModelPricing"
+        },
+        "standard": {
+          "$ref": "#/definitions/ModelPricing"
+        },
+        "priority": {
+          "$ref": "#/definitions/ModelPricing"
+        }
+      }
+    },
+    "ModelCapabilities": {
+      "type": "object",
+      "properties": {
+        "vision": {
+          "type": "boolean",
+          "description": "Supports image inputs"
+        },
+        "structured_output": {
+          "type": "boolean",
+          "description": "Supports JSON mode / structured outputs"
+        },
+        "function_calling": {
+          "type": "boolean",
+          "description": "Supports function/tool calling"
+        },
+        "streaming": {
+          "type": "boolean",
+          "description": "Supports streaming responses"
+        },
+        "audio_input": {
+          "type": "boolean",
+          "description": "Supports audio inputs"
+        },
+        "audio_output": {
+          "type": "boolean",
+          "description": "Supports audio outputs"
+        }
+      }
+    },
+    "ModelPricing": {
+      "type": "object",
+      "required": ["input_per_1k", "output_per_1k"],
+      "properties": {
+        "input_per_1k": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Price per 1K input tokens in USD"
+        },
+        "output_per_1k": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Price per 1K output tokens in USD"
+        },
+        "cached_input_per_1k": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Price per 1K cached input tokens in USD"
+        }
+      }
+    },
+    "RateLimitTier": {
+      "type": "object",
+      "required": ["requests_per_minute", "tokens_per_minute"],
+      "properties": {
+        "requests_per_minute": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum requests per minute"
+        },
+        "tokens_per_minute": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum tokens per minute"
+        }
+      }
+    },
+    "PricingTierMetadata": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Short label for the tier"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the tier"
+        },
+        "availability": {
+          "type": "string",
+          "enum": ["public", "beta", "internal"],
+          "description": "Availability of the tier"
+        }
+      }
+    }
+  }
+}
