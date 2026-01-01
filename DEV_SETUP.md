@@ -139,6 +139,14 @@ poetry run python -m ipykernel install --user --name tnh-scholar --display-name 
 
 **Note**: As of December 2025, `poetry install` automatically includes dev dependencies (pytest, mkdocs, mypy, etc.) since the dev group is no longer marked as optional. No need for `--with dev` flag.
 
+**Optional Local-Only Tools**: For tools like Sourcery (AI code review), install the optional `local` group:
+
+```shell
+poetry install --with local
+```
+
+This group includes platform-specific tools that may not be available in CI/CD environments and are intentionally excluded from GitHub Actions builds.
+
 ---
 
 ## 6. Common development commands

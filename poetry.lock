@@ -6684,7 +6684,7 @@ version = "1.41.1"
 description = "Magically refactor Python"
 optional = false
 python-versions = "*"
-groups = ["dev"]
+groups = ["local"]
 files = [
     {file = "sourcery-1.41.1-py2.py3-none-macosx_10_9_universal2.whl", hash = "sha256:9ecb7636301e9dea8934f897151e504127274ea60c7709a65bed7457850f994c"},
 ]
@@ -8267,4 +8267,4 @@ query = ["beautifulsoup4", "ebooklib", "spacy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "d367b0752909a303452f74faa8e1f73d1ae48fec21d229e1eb1b61ce75aa3b03"
+content-hash = "bbea9d6d26486dcdeda5f82f8423aee6ac7b67625463238850f077495fc8323f"

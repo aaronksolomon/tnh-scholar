@@ -90,6 +90,11 @@ types-requests = "2.32.0.20241016"
 pre-commit = "^4.5.0"
 codespell = "2.3.0"
 md-dead-link-check = "^1.2.0"
+
+[tool.poetry.group.local]
+optional = true
+
+[tool.poetry.group.local.dependencies]
 sourcery = "^1.41.1"
 
 [tool.poetry.scripts]
