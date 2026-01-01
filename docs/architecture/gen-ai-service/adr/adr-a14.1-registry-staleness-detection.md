@@ -4,7 +4,7 @@ description: "Implements staleness detection for OpenAI pricing data with config
 type: "implementation-guide"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Anthropic Claude Sonnet 4.5"
-status: wip
+status: implemented
 created: "2026-01-01"
 parent_adr: "/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md"
 ---

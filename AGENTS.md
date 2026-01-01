@@ -142,6 +142,7 @@ src/tnh_scholar/
 4. **Commit poetry.lock** - always include lockfile changes
 5. **ADRs append-only** - never edit decisions, add addendums
 6. **ADR status lifecycle** - When implementing "accepted" ADRs, update status: `proposed` → `accepted` → `implemented`. Check code exists before marking TODO items as "in progress"
+7. **AGENTLOG archiving** - When AGENTLOG.md grows large, archive to `archive/agentlogs/AGENTLOG-[MM-DD-YY].md`, update `archive/agentlogs/archive-index.md` with summary, reset AGENTLOG.md to template
 
 ## Docs Structure
 

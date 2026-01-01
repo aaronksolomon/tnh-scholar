@@ -4,7 +4,7 @@ description: "Establishes unified project-wide strategy for configuration layers
 type: "strategy"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.5"
-status: proposed
+status: accepted
 created: "2025-12-31"
 related_adrs: ["/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md", "/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md", "/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md"]
 ---

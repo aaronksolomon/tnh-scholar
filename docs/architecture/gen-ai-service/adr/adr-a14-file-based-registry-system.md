@@ -3,7 +3,7 @@ title: "ADR-A14: File-Based Registry System for Provider Metadata"
 description: "Establishes a JSONC-based registry system for model capabilities, pricing, and provider metadata with auto-update mechanisms, aligned with VS Code's native configuration format."
 owner: "aaronksolomon"
 author: "Aaron Solomon, Anthropic Claude Sonnet 4.5"
-status: wip
+status: implemented
 created: "2025-12-10"
 ---
 # ADR-A14: File-Based Registry System for Provider Metadata

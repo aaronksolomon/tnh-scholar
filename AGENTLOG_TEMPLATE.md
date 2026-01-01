@@ -2,6 +2,8 @@
 
 This file specifies the format for AGENTLOG files which captures AI agent interactions, decisions, discoveries, and work performed on the TNH Scholar project. These provides historical context for continuity across sessions and helps human collaborators understand the evolution of the codebase.
 
+**Archive Workflow**: When AGENTLOG.md grows large, copy it to `archive/agentlogs/AGENTLOG-[MM-DD-YY].md`, add a summary to `archive/agentlogs/archive-index.md`, then reset AGENTLOG.md to the template structure with an archive reference line.
+
 ## Format Specification
 
 Each entry must follow this structure:
