@@ -64,7 +64,7 @@ class RegistryProviderIndex:
         self._provider_dirs = tuple(provider_dirs)
 
     def providers(self) -> list[str]:
-        names = set()
+        names: set[str] = set()
         for directory in self._provider_dirs:
             if directory.exists():
                 names.update(self._provider_names(directory))
@@ -137,9 +137,10 @@ class RegistryLoader:
             message = f"Invalid provider registry {registry_path}: {exc}"
             raise ConfigurationError(message) from exc
 
-    def _parse_jsonc(self, registry_path: Path) -> dict:
+    def _parse_jsonc(self, registry_path: Path) -> dict[str, object]:
         try:
-            return self._parser.parse_file(registry_path)
+            result: dict[str, object] = self._parser.parse_file(registry_path)
+            return result
         except json.JSONDecodeError as exc:
             message = f"Invalid JSON in registry {registry_path}: {exc}"
             raise ConfigurationError(message) from exc

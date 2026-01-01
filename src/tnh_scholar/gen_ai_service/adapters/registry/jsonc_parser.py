@@ -36,7 +36,8 @@ class JsoncParser:
             sanitized = self._strip_trailing_commas(sanitized)
         except ValueError as exc:
             raise ValueError(f"Invalid JSONC content: {exc}") from exc
-        return json.loads(sanitized)
+        result: dict[str, object] = json.loads(sanitized)
+        return result
 
     def _strip_comments(self, content: str) -> str:
         """Strip // and /* */ comments while preserving JSON strings."""

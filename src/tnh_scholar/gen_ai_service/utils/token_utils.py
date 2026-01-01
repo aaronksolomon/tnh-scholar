@@ -253,7 +253,7 @@ class RegistryContextLimitResolver:
     def resolve(self, model: str) -> int:
         try:
             model_info = find_model_info(model)
-            return model_info.context_window
+            return int(model_info.context_window)
         except ConfigurationError:
             logger.warning(
                 "Unknown context limit for model '%s', assuming %s tokens",

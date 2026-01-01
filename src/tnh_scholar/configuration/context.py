@@ -64,7 +64,7 @@ class BuiltinRootLocator:
     """Resolves the built-in runtime_assets root."""
 
     def resolve(self) -> Path:
-        package_root = Path(resources.files("tnh_scholar"))
+        package_root = Path(str(resources.files("tnh_scholar")))
         runtime_assets = package_root / "runtime_assets"
         if not runtime_assets.exists():
             raise ConfigurationError("runtime_assets directory not found in package")

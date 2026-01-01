@@ -70,7 +70,7 @@ class ModelInfo(BaseModel):
         Raises:
             ValueError: If the tier is not available for this model
         """
-        tier_pricing = getattr(self.pricing_tiers, tier, None)
+        tier_pricing: ModelPricing | None = getattr(self.pricing_tiers, tier, None)
         if tier_pricing is None:
             raise ValueError(f"Tier '{tier}' not available for this model")
         return tier_pricing

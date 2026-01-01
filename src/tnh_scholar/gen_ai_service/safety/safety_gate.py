@@ -39,7 +39,7 @@ class SafetyReport:
 
 
 def _context_limit_for_model(provider: str, model: str) -> int:
-    return get_model_info(provider, model).context_window
+    return int(get_model_info(provider, model).context_window)
 
 
 def _estimate_cost(
@@ -53,7 +53,7 @@ def _estimate_cost(
     pricing = _pricing_for_model(provider, model, use_cache=use_cache)
     input_cost = (tokens_in / 1000.0) * pricing.input_per_1k
     output_cost = (max_tokens_out / 1000.0) * pricing.output_per_1k
-    return input_cost + output_cost
+    return float(input_cost + output_cost)
 
 
 def _pricing_for_model(provider: str, model: str, *, use_cache: bool) -> ModelPricing:

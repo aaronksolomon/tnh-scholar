@@ -26,7 +26,7 @@ class StructuredFallbackSelector:
 
     def supports_structured(self, model: str) -> bool:
         model_info = get_model_info(self._provider, model)
-        return model_info.capabilities.structured_output
+        return bool(model_info.capabilities.structured_output)
 
     def select(self, preferred: str) -> str:
         if self.supports_structured(preferred):
