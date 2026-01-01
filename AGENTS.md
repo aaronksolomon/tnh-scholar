@@ -8,8 +8,6 @@ CRITICAL CONTEXT FOR CODE AGENTS
 
 **Bootstrap Goal:** VS Code integration (tnh-gen CLI) enables AI-assisted dev of TNH Scholar itself—code agents accelerate the project.
 
-
-
 ## Architecture - Object-Service Pattern (MANDATORY)
 
 **ADR-OS01** - Layered design for all GenAI code:
@@ -20,12 +18,14 @@ Infrastructure:  Adapters (SDK↔domain), Transport clients
 ```
 
 **Rules:**
+
 - Strong typing (Pydantic models), NO dicts/literals in app logic
 - Bi-directional mappers for type translation
 - Config taxonomy: Settings (env) → Config (init) → Params (per-call) → Policy (behavior)
 - Config-at-init, params-per-call pattern
 
 **Example Structure:**
+
 ```
 gen_ai_service/
   protocols.py    # GenAIServiceProtocol, PromptCatalogProtocol
@@ -41,6 +41,7 @@ gen_ai_service/
 **Versioning:** 0.x allows breaking changes in ANY release (patch/minor). No backward compat shims. Clean breaks preferred.
 
 **Doc Links (CRITICAL):**
+
 - Source refs: `` `src/file.py:42` `` (inline code, NOT markdown links)
 - Doc cross-refs: `/architecture/adr/...` (absolute paths from `/docs`, NOT relative `../`)
 - Prevents MkDocs warnings
@@ -87,6 +88,7 @@ gen_ai_service/
 ## CLI Tools
 
 **tnh-gen** (NEW, replaces tnh-fab):
+
 - Typer-based, protocol-driven
 - Dual modes: human (default), `--api` (JSON)
 - Commands: `list`, `run`, `config`, `version`
