@@ -104,9 +104,16 @@ make lint         # ruff check
 make format       # ruff format
 poetry run mypy src/
 make docs-verify  # MkDocs strict + validation
+make ci-check     # REQUIRED before PR - runs full CI suite locally
 ```
 
-**CI/CD:** GitHub Actions, all deps non-optional, 210 tests passing.
+**PR Requirements (CRITICAL):**
+
+- Run `make ci-check` before creating PR - fixes all errors found
+- Run `poetry install --with local && poetry run sourcery review --check <changed-files.py>` - Sourcery is in optional local group (platform-specific wheels)
+- Run `poetry run mypy` on changed .py files - fix all type errors
+
+**CI/CD:** GitHub Actions, all deps non-optional, 264 tests passing.
 
 ## Prompt System
 
