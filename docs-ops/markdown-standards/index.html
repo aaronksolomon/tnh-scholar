@@ -1463,17 +1463,17 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/tnh-fab/" class="md-nav__link">
+      <a href="../../cli-reference/tnh-gen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    tnh-fab
+    tnh-gen
   </span>
   
     
   
   
-    <span class="md-status md-status--deprecated"></span>
+    <span class="md-status md-status--current"></span>
   
 
   
@@ -2016,7 +2016,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2044,7 +2044,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2240,6 +2240,8 @@
       
         
       
+        
+      
     
     
     
@@ -2308,6 +2310,81 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_5_3" id="__nav_9_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-CF01: Runtime Context & Configuration Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2522,7 +2599,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2753,6 +2830,8 @@
       
         
           
+        
+      
         
       
         
@@ -3031,7 +3110,35 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--wip"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/gen-ai-service/adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-A14.1: Registry Staleness Detection and User Warnings
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--wip"></span>
   
 
   
@@ -3326,8 +3433,15 @@
         
   
   <span class="md-ellipsis">
-    Adr Jv03 Canonical Xml Ast
+    ADR-JV03: Canonical XML AST for English Parsing
   </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
   
 
       </a>
@@ -3347,8 +3461,15 @@
         
   
   <span class="md-ellipsis">
-    Adr Jvb01 As Built Jvb Viewer V1
+    ADR-JVB01: JVB Parallel Viewer v1 As-Built
   </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
   
 
       </a>
@@ -5044,7 +5165,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -5072,7 +5193,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -7378,8 +7499,15 @@
         
   
   <span class="md-ellipsis">
-    Tag V0.2.0 Correction Plan
+    v0.2.0 Tag Correction Plan
   </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
   
 
       </a>
@@ -8540,16 +8668,35 @@
 <li><strong>Prompt Template Exception</strong>: files in <code>patterns/</code> (soon living under <code>docs/prompt-templates/</code>) use a prompt-specific front matter schema that includes runtime variables and other metadata. Continue using that specialized format until the Prompt Template standard is finalized (TBD); do <strong>not</strong> remodel those files to the generic doc front matter without an explicit migration plan.</li>
 </ul>
 <h3 id="document-status-values">Document Status Values<a class="headerlink" href="#document-status-values" title="Link to this section">&para;</a></h3>
+<p><strong>Universal status values</strong> (apply to all Markdown documents):</p>
 <ul>
 <li><code>proposed</code> = early RFC/discussion stage</li>
 <li><code>draft</code> = initial iteration pending approval</li>
 <li><code>wip</code> = actively being revised (expected to change)</li>
-<li><code>current</code> = approved baseline</li>
+<li><code>current</code> = approved baseline for active use (guides, references, documentation)</li>
 <li><code>deprecated</code> = still valid but being phased out</li>
 <li><code>superseded</code> = replaced by newer version (see link in doc)</li>
 <li><code>archived</code> = historical reference only</li>
 </ul>
-<p><strong>Auto-generated file constraint</strong>: Files with <code>auto_generated: true</code> may only use <code>current</code>, <code>archived</code>, <code>deprecated</code>, or <code>superseded</code> status. Manual lifecycle states (<code>proposed</code>, <code>draft</code>, <code>wip</code>) are invalid for generated content.</p>
+<p><strong>ADR-specific status values</strong> (only for Architecture Decision Records):</p>
+<ul>
+<li><code>accepted</code> = decision approved, ready for implementation</li>
+<li><code>implemented</code> = decision has been executed/completed</li>
+<li><code>rejected</code> = proposed but not approved</li>
+</ul>
+<p><strong>Status lifecycle flows:</strong></p>
+<p><strong>ADRs:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>proposed → accepted → [wip] → implemented → [superseded/archived]
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    ↓
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  rejected
+</span></code></pre></div>
+<p><strong>Guides/References/Documentation:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>draft/proposed → current → [deprecated] → [superseded/archived]
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    ↓
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  wip (if major revision)
+</span></code></pre></div>
+<p><strong>Key distinction</strong>: ADRs track decisions over time (use <code>accepted</code>/<code>implemented</code>), while guides track content validity (use <code>current</code>/<code>deprecated</code>). ADRs never use <code>current</code>; regular docs never use <code>accepted</code>/<code>implemented</code>.</p>
+<p><strong>Auto-generated file constraint</strong>: Files with <code>auto_generated: true</code> may only use <code>current</code>, <code>archived</code>, <code>deprecated</code>, or <code>superseded</code> status. Manual lifecycle states (<code>proposed</code>, <code>draft</code>, <code>wip</code>, <code>accepted</code>, <code>implemented</code>, <code>rejected</code>) are invalid for generated content.</p>
 <h2 id="heading-summary-rules">Heading &amp; Summary Rules<a class="headerlink" href="#heading-summary-rules" title="Link to this section">&para;</a></h2>
 <ul>
 <li>Immediately after front matter, include a <code># Title</code> heading that <strong>exactly matches</strong> the YAML <code>title</code> field (character-for-character, including punctuation and capitalization).</li>
@@ -8571,10 +8718,10 @@
 <li>Each ADR uses the same front matter and heading rules as any other doc.</li>
 <li>After the introductory paragraph, list metadata bullets:</li>
 </ul>
-<div class="language-markdown highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Status**</span>: Proposed
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Date**</span>: 2025-02-27
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Owner**</span>: Documentation Working Group
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Author**</span>: Codex (GPT-5)
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Status**</span>: Proposed
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Date**</span>: 2025-02-27
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Owner**</span>: Documentation Working Group
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Author**</span>: Codex (GPT-5)
 </span></code></pre></div>
 <ul>
 <li>
@@ -8623,26 +8770,26 @@
 </ul>
 <h2 id="historical-references-pattern">Historical References Pattern<a class="headerlink" href="#historical-references-pattern" title="Link to this section">&para;</a></h2>
 <p>When documenting superseded designs, archived ADRs, or earlier explorations, use the "Historical References" pattern to provide progressive disclosure of archived content:</p>
-<div class="language-markdown highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>---
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="gu">## Historical References</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>&lt;details&gt;
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>&lt;summary&gt;📚 View superseded design documents (maintainers/contributors)&lt;/summary&gt;
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="gs">**Note**</span>: These documents are archived and excluded from the published documentation. They provide historical context for the current design.
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="gu">### Superseded ADRs</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="k">-</span><span class="w"> </span><span class="gs">**[ADR-XX: Title](&lt;docs-absolute-path&gt;/archive/adr/adr-xx-title.md)**</span> (YYYY-MM-DD)
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  <span class="ge">*Status*</span>: Superseded by [<span class="nt">ADR-YY</span>](<span class="na">/path/to/current-adr.md</span>)
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="gu">### Earlier Design Explorations</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="k">-</span><span class="w"> </span><span class="gs">**[Design Doc Title](&lt;docs-absolute-path&gt;/archive/design-doc.md)**</span> (YYYY-MM-DD)
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  <span class="ge">*Status*</span>: Replaced by [<span class="nt">Current Doc</span>](<span class="na">/path/to/current-doc.md</span>)
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>&lt;/details&gt;
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>---
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="gu">## Historical References</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>&lt;details&gt;
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>&lt;summary&gt;📚 View superseded design documents (maintainers/contributors)&lt;/summary&gt;
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="gs">**Note**</span>: These documents are archived and excluded from the published documentation. They provide historical context for the current design.
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="gu">### Superseded ADRs</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="k">-</span><span class="w"> </span><span class="gs">**[ADR-XX: Title](&lt;docs-absolute-path&gt;/archive/adr/adr-xx-title.md)**</span> (YYYY-MM-DD)
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  <span class="ge">*Status*</span>: Superseded by [<span class="nt">ADR-YY</span>](<span class="na">/path/to/current-adr.md</span>)
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="gu">### Earlier Design Explorations</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="k">-</span><span class="w"> </span><span class="gs">**[Design Doc Title](&lt;docs-absolute-path&gt;/archive/design-doc.md)**</span> (YYYY-MM-DD)
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>  <span class="ge">*Status*</span>: Replaced by [<span class="nt">Current Doc</span>](<span class="na">/path/to/current-doc.md</span>)
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>&lt;/details&gt;
 </span></code></pre></div>
 <p><strong>When to use</strong>:</p>
 <ul>

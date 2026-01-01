@@ -11,7 +11,7 @@
       
       
       
-        <link rel="prev" href="../adr-a14-file-based-registry-system/">
+        <link rel="prev" href="../adr-a14.1-registry-staleness-detection/">
       
       
         <link rel="next" href="../../design/">
@@ -1463,17 +1463,17 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/tnh-fab/" class="md-nav__link">
+      <a href="../../../../cli-reference/tnh-gen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    tnh-fab
+    tnh-gen
   </span>
   
     
   
   
-    <span class="md-status md-status--deprecated"></span>
+    <span class="md-status md-status--current"></span>
   
 
   
@@ -2018,7 +2018,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2046,7 +2046,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2242,6 +2242,8 @@
       
         
       
+        
+      
     
     
     
@@ -2310,6 +2312,81 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_9_5_3" id="__nav_9_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Adr
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Adr
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-CF01: Runtime Context & Configuration Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2524,7 +2601,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2759,6 +2836,8 @@
       
         
           
+        
+      
         
       
         
@@ -3037,7 +3116,35 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--wip"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-a14.1-registry-staleness-detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-A14.1: Registry Staleness Detection and User Warnings
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--wip"></span>
   
 
   
@@ -3622,8 +3729,15 @@
         
   
   <span class="md-ellipsis">
-    Adr Jv03 Canonical Xml Ast
+    ADR-JV03: Canonical XML AST for English Parsing
   </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
   
 
       </a>
@@ -3643,8 +3757,15 @@
         
   
   <span class="md-ellipsis">
-    Adr Jvb01 As Built Jvb Viewer V1
+    ADR-JVB01: JVB Parallel Viewer v1 As-Built
   </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
   
 
       </a>
@@ -5340,7 +5461,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -5368,7 +5489,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -7674,8 +7795,15 @@
         
   
   <span class="md-ellipsis">
-    Tag V0.2.0 Correction Plan
+    v0.2.0 Tag Correction Plan
   </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
   
 
       </a>
@@ -8829,7 +8957,8 @@
 <p>Implements thread-safe GenAIService operations and provider-aware rate limiting for concurrent and batch processing scenarios.</p>
 <p><strong>Status:</strong> Proposed
 <strong>Date:</strong> 2025-12-23
-<strong>Related:</strong> <a href="../adr-a01-object-service-genai/">ADR-A01: Object-Service GenAI</a>, <a href="../adr-a09-v1-simplified/">ADR-A09: V1 Simplified Implementation</a>, <a href="../adr-a14-file-based-registry-system/">ADR-A14: File-Based Registry System</a>
+<strong>Updated:</strong> 2025-12-31 (revised per ADR-CF01)
+<strong>Related:</strong> <a href="../adr-a01-object-service-genai/">ADR-A01: Object-Service GenAI</a>, <a href="../adr-a09-v1-simplified/">ADR-A09: V1 Simplified Implementation</a>, <a href="../adr-a14-file-based-registry-system/">ADR-A14: File-Based Registry System</a>, <a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/">ADR-CF01: Runtime Context Strategy</a>
 <strong>Issue:</strong> <a href="https://github.com/aaronksolomon/tnh-scholar/issues/22">#22</a></p>
 <hr />
 <h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
@@ -8955,9 +9084,11 @@
 </span></code></pre></div>
 <p><strong>Integration:</strong></p>
 <ol>
-<li><strong>Registry Configuration</strong> (extends ADR-A14)</li>
-<li>Add rate limit tiers to <code>runtime_assets/registries/providers/openai.jsonc</code></li>
-<li>Support tier detection via API or manual configuration</li>
+<li><strong>Registry Configuration</strong> (extends ADR-A14, ADR-CF01)</li>
+<li>Add rate limit tiers to provider registries (three-layer model)</li>
+<li>Built-in: <code>runtime_assets/registries/providers/openai.jsonc</code></li>
+<li>Workspace: <code>.tnh-scholar/registries/providers/openai.jsonc</code> (project overrides)</li>
+<li>User: <code>~/.config/tnh-scholar/registries/providers/openai.jsonc</code> (personal overrides)</li>
 </ol>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>{
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  &quot;rate_limits&quot;: {
@@ -8967,46 +9098,42 @@
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>}
 </span></code></pre></div>
 <ol>
-<li>
-<p><strong>Service Integration</strong> (<code>service.py</code>)
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">GenAIService</span><span class="p">:</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">GenAISettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="c1"># ... existing init ...</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="c1"># Optional rate limiter (enabled via settings)</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">enable_rate_limiting</span><span class="p">:</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>            <span class="n">tier_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_rate_limit_config</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">rate_limit_tier</span><span class="p">)</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">rate_limiter</span> <span class="o">=</span> <span class="n">TokenBucketRateLimiter</span><span class="p">(</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>                <span class="n">requests_per_minute</span><span class="o">=</span><span class="n">tier_config</span><span class="o">.</span><span class="n">rpm</span><span class="p">,</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>                <span class="n">tokens_per_minute</span><span class="o">=</span><span class="n">tier_config</span><span class="o">.</span><span class="n">tpm</span><span class="p">,</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>            <span class="p">)</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">rate_limiter</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">RenderRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompletionEnvelope</span><span class="p">:</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>        <span class="c1"># Pre-flight rate limit check</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_limiter</span><span class="p">:</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>            <span class="n">estimated_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estimate_tokens</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_limiter</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="n">estimated_tokens</span><span class="p">):</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>                <span class="c1"># Blocking mode: wait and retry</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>                <span class="c1"># Alternative: raise RateLimitError for caller control</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>        <span class="c1"># ... existing generate logic ...</span>
-</span></code></pre></div></p>
-</li>
-<li>
-<p><strong>Settings Configuration</strong> (<code>config/settings.py</code>)
-   <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">GenAISettings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="c1"># ... existing settings ...</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="c1"># Rate limiting (optional, disabled by default for V1 compatibility)</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">enable_rate_limiting</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">rate_limit_tier</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;tier_1&quot;</span>  <span class="c1"># or &quot;tier_2&quot;, &quot;tier_3&quot;, etc.</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">rate_limit_mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;blocking&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;blocking&quot;</span>
-</span></code></pre></div></p>
-</li>
+<li><strong>Service Integration</strong> (<code>service.py</code>)</li>
 </ol>
+<p><strong>Architecture</strong> (per ADR-CF01):
+   - Service accepts <code>TNHContext</code> for configuration access
+   - Rate limiting settings are <strong>user-owned</strong> (personal preference)
+   - Rate limit tiers defined in registry (via ADR-A14)
+   - Configuration retrieved via <code>context.get_config()</code> with ownership="user"</p>
+<p><strong>Service initialization</strong>:
+   - Query context for rate limiting preferences
+   - Load tier configuration from registry via context
+   - Initialize rate limiter if enabled</p>
+<ol>
+<li><strong>Configuration Schema</strong> (user config files)</li>
+</ol>
+<p><strong>User-owned settings</strong> (per ADR-CF01 ownership model):</p>
+<p>Rate limiting preferences stored in user/workspace config files:</p>
+<ul>
+<li><strong>User layer</strong>: <code>~/.config/tnh-scholar/config.jsonc</code></li>
+<li><strong>Workspace layer</strong>: <code>.tnh-scholar/config.jsonc</code></li>
+<li><strong>Precedence</strong>: User → Workspace → Built-in (user preference)</li>
+</ul>
+<p><strong>Configuration structure</strong>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>{
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  &quot;genai&quot;: {
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    &quot;rate_limiting&quot;: {
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>      &quot;enabled&quot;: false,           // User preference: enable/disable
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>      &quot;tier&quot;: &quot;tier_1&quot;,           // User&#39;s API tier (tier_1, tier_2, etc.)
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>      &quot;mode&quot;: &quot;blocking&quot;          // &quot;blocking&quot; or &quot;error&quot;
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    }
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  }
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>}
+</span></code></pre></div>
+<p><strong>Defaults</strong> (built-in):
+   - <code>enabled</code>: <code>false</code> (opt-in for backward compatibility)
+   - <code>tier</code>: <code>"tier_1"</code> (conservative default)
+   - <code>mode</code>: <code>"blocking"</code> (safer default)</p>
 <hr />
 <h2 id="implementation-plan">Implementation Plan<a class="headerlink" href="#implementation-plan" title="Link to this section">&para;</a></h2>
 <h3 id="phase-1-thread-safety-1-2-hours">Phase 1: Thread Safety (1-2 hours)<a class="headerlink" href="#phase-1-thread-safety-1-2-hours" title="Link to this section">&para;</a></h3>
@@ -9068,29 +9195,29 @@
 <hr />
 <h2 id="configuration-examples">Configuration Examples<a class="headerlink" href="#configuration-examples" title="Link to this section">&para;</a></h2>
 <p><strong>Basic Usage (Thread-Safe, No Rate Limiting):</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Safe for concurrent use after Phase 1</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">service</span> <span class="o">=</span> <span class="n">GenAIService</span><span class="p">()</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">futures</span> <span class="o">=</span> <span class="p">[</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">service</span><span class="o">.</span><span class="n">generate</span><span class="p">,</span> <span class="n">req</span><span class="p">)</span> <span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">]</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">futures</span><span class="p">]</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Safe for concurrent use after Phase 1</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">service</span> <span class="o">=</span> <span class="n">GenAIService</span><span class="p">()</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">futures</span> <span class="o">=</span> <span class="p">[</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">service</span><span class="o">.</span><span class="n">generate</span><span class="p">,</span> <span class="n">req</span><span class="p">)</span> <span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">]</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">futures</span><span class="p">]</span>
 </span></code></pre></div></p>
 <p><strong>With Rate Limiting (Phase 2):</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># .env or settings</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">ENABLE_RATE_LIMITING</span><span class="o">=</span><span class="n">true</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">RATE_LIMIT_TIER</span><span class="o">=</span><span class="n">tier_1</span>  <span class="c1"># 500 RPM, 200K TPM</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">service</span> <span class="o">=</span> <span class="n">GenAIService</span><span class="p">()</span>  <span class="c1"># Auto-loads rate limiter</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># Concurrent calls automatically throttled to stay within limits</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># .env or settings</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">ENABLE_RATE_LIMITING</span><span class="o">=</span><span class="n">true</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">RATE_LIMIT_TIER</span><span class="o">=</span><span class="n">tier_1</span>  <span class="c1"># 500 RPM, 200K TPM</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">service</span> <span class="o">=</span> <span class="n">GenAIService</span><span class="p">()</span>  <span class="c1"># Auto-loads rate limiter</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># Concurrent calls automatically throttled to stay within limits</span>
 </span></code></pre></div></p>
 <p><strong>Per-Instance Pattern (Always Safe):</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Alternative: separate instance per worker (minimal overhead)</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">worker</span><span class="p">(</span><span class="n">requests</span><span class="p">):</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">service</span> <span class="o">=</span> <span class="n">GenAIService</span><span class="p">()</span>  <span class="c1"># &lt;1ms overhead</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">service</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">req</span><span class="p">)</span> <span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">]</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">with</span> <span class="n">ProcessPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">results</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="n">batched_requests</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Alternative: separate instance per worker (minimal overhead)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">worker</span><span class="p">(</span><span class="n">requests</span><span class="p">):</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">service</span> <span class="o">=</span> <span class="n">GenAIService</span><span class="p">()</span>  <span class="c1"># &lt;1ms overhead</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">service</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">req</span><span class="p">)</span> <span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">]</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">with</span> <span class="n">ProcessPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">results</span> <span class="o">=</span> <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="n">batched_requests</span><span class="p">)</span>
 </span></code></pre></div></p>
 <hr />
 <h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
@@ -9161,7 +9288,8 @@
 <li><a href="../../design/genai-service-design-strategy/">GenAI Service Design Strategy</a> - Original architecture</li>
 <li><a href="../adr-a01-object-service-genai/">ADR-A01: Object-Service GenAI</a> - Service pattern</li>
 <li><a href="../adr-a09-v1-simplified/">ADR-A09: V1 Simplified Implementation</a> - Current implementation</li>
-<li><a href="../adr-a14-file-based-registry-system/">ADR-A14: File-Based Registry System</a> - Rate limit config source</li>
+<li><a href="../adr-a14-file-based-registry-system/">ADR-A14: File-Based Registry System</a> - Rate limit tier definitions</li>
+<li><a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/">ADR-CF01: Runtime Context Strategy</a> - Context injection, config resolution</li>
 <li><a href="https://platform.openai.com/docs/guides/rate-limits">OpenAI Rate Limits Documentation</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Token_bucket">Token Bucket Algorithm</a></li>
 <li><a href="https://github.com/aaronksolomon/tnh-scholar/issues/22">GitHub Issue #22</a></li>
@@ -9176,10 +9304,13 @@
 <p><strong>Files to Create (Phase 2):</strong>
 - <code>src/tnh_scholar/gen_ai_service/infra/rate_limiter.py</code> - Rate limiter implementation
 - <code>runtime_assets/registries/providers/openai.jsonc</code> - Rate limit tiers (extend existing)</p>
-<p><strong>Files to Update (Phase 2):</strong>
-- <code>src/tnh_scholar/gen_ai_service/config/settings.py</code> - Rate limit settings
-- <code>src/tnh_scholar/gen_ai_service/service.py</code> - Rate limiter integration
-- <code>docs/user-guide/configuration.md</code> - Rate limiting documentation</p>
+<p><strong>Files to Update (Phase 2):</strong></p>
+<ul>
+<li><code>src/tnh_scholar/gen_ai_service/service.py</code> - Accept <code>TNHContext</code>, query config</li>
+<li><code>runtime_assets/registries/providers/openai.jsonc</code> - Add rate_limits section</li>
+<li><code>docs/user-guide/configuration.md</code> - Document rate limiting config via JSONC files</li>
+<li>User config examples (workspace/user layers)</li>
+</ul>
 
 
 
