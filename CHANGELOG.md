@@ -17,6 +17,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **VS Code Extension Architecture ADRs** (2026-01-02)
+  - Accepted ADR-VSC01: VS Code Integration Strategy (CLI-first architecture)
+  - Accepted ADR-VSC02: VS Code Extension Architecture (components, flow, data contracts)
+  - Added Pattern→Prompt migration task to TODO.md (Priority 1, sequenced after extension)
+  - Added AGENT_WORKFLOW.md: Dual-agent development workflow documentation
+  - ADR-TG01 addendum: Documented API success payloads and --config flag usage
+  - ADRs: [ADR-VSC01](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md), [ADR-VSC02](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
+  - Files: `AGENT_WORKFLOW.md`, `TODO.md`, `docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md`
+
 - **ADR-A14: File-Based Registry System** (2026-01-01, PR #24)
   - Implemented JSONC-based registry for provider metadata, model capabilities, pricing, and context limits
   - Added TNHContext for three-layer path resolution (workspace → user → built-in) per ADR-CF01
