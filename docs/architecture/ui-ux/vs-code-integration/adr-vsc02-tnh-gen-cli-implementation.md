@@ -1,20 +1,20 @@
 ---
-title: "ADR-VSC02: VS Code Extension Integration with tnh-gen CLI"
-description: "VS Code extension strategy for consuming tnh-gen CLI and providing GenAI text processing UI"
+title: "ADR-VSC02: VS Code Extension Architecture"
+description: "VS Code extension architecture for consuming tnh-gen CLI - components, flow of control, and data contracts"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.5"
-status: proposed
+status: accepted
 created: "2025-01-28"
-updated: "2025-12-27"
+updated: "2026-01-02"
 ---
 
-# ADR-VSC02: VS Code Extension Integration with tnh-gen CLI
+# ADR-VSC02: VS Code Extension Architecture
 
-This ADR defines how the VS Code extension integrates with the `tnh-gen` CLI to provide GenAI-powered text processing capabilities within the editor.
+This ADR defines the architecture of the VS Code extension that integrates with the `tnh-gen` CLI to provide GenAI-powered text processing capabilities within the editor.
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2025-01-28
-- **Updated**: 2025-12-27
+- **Updated**: 2026-01-02
 - **Owner**: Aaron Solomon
 - **Author**: Aaron Solomon, Claude Sonnet 4.5
 
@@ -27,19 +27,54 @@ TNH Scholar users work primarily in VS Code for text editing and translation wor
 3. **Configuration Management**: Configure prompt directories and GenAI settings
 4. **Provenance Tracking**: Show metadata about generated content
 
+### Walking Skeleton Scope
+
+**v0.1.0 includes:**
+
+- TypeScript extension implementation
+- Unit and integration tests
+- One working command: "Run Prompt on Active File"
+
+**Separate tasks (post-validation):**
+
+- Extension packaging for VS Code Marketplace
+- User-facing documentation and guides
+
 ### Design Constraints
 
 - **No Direct GenAI Integration**: Extension should not directly call OpenAI/Anthropic APIs
 - **CLI as Contract**: Extension consumes `tnh-gen` CLI as stable interface
 - **JSON Protocol**: Structured JSON I/O enables programmatic consumption
 - **Error Handling**: Extension must gracefully handle CLI errors with user-friendly messages
+- **CF01 Compliance**: Configuration resolution follows ADR-CF01 ownership-based precedence; precedence is per-setting (owner category), not a single global order.
+- **OS01 Compliance**: Implementation follows the object-service pattern (protocols/abstractions, stateful service objects, and composed collaborators instead of procedural sprawl).
 
 ### Related Work
 
-- **ADR-VSC01**: VS Code Integration Strategy (establishes CLI-based architecture)
-- **ADR-TG01**: CLI Architecture (defines `tnh-gen` command structure, error codes, configuration)
-- **ADR-TG01.1**: Human-Friendly CLI Defaults (defines `--api` flag for machine-readable contract output)
-- **ADR-TG02**: Prompt System Integration (defines CLI ↔ prompt system integration patterns)
+- **[ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)** - Establishes CLI-based architecture
+- **[ADR-TG01: CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)** - CLI command structure, error codes, configuration
+- **[ADR-TG01.1: Human-Friendly CLI Defaults](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md)** - `--api` flag for machine-readable contract output
+- **[ADR-TG02: Prompt System Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)** - CLI ↔ prompt system integration patterns
+- **[ADR-OS01: Object-Service Architecture](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)** - Layered design, protocols, separation of concerns
+- **[ADR-CF01: Runtime Context Strategy](/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md)** - Configuration discovery and precedence
+
+#### Pattern→Prompt Migration (Pending, Non-Blocking)
+
+The codebase is undergoing a Pattern→Prompt terminology migration (ADR-PT04). Current state:
+
+- **Code**: Still references `TNH_PATTERN_DIR` and `~/.config/tnh_scholar/patterns/`
+- **CLI**: `tnh-gen` uses prompt terminology but reads from patterns directory
+- **Docs**: Use "prompt" terminology consistently
+
+**Impact on Extension**: None. The extension calls `tnh-gen list/run` via `--api` flag, which abstracts the underlying directory structure. The CLI will continue working during and after the migration.
+
+**Sequencing Strategy**: Pattern→Prompt migration is Priority 1 but deferred until after VS Code extension walking skeleton complete (see TODO.md). This allows:
+
+1. Extension validation without simultaneous major changes
+2. Dogfooding: Use working extension to test migrated prompts
+3. Risk minimization: Avoid breaking extension during prompt migration
+
+See [ADR-PT04: Prompt System Refactor](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md) for migration details.
 
 ## Decision
 
@@ -66,257 +101,158 @@ TNH Scholar users work primarily in VS Code for text editing and translation wor
 
 ### 2. CLI Invocation Strategy
 
-The extension spawns `tnh-gen` as a child process and communicates via JSON using the `--api` flag for structured API output (ADR-TG01.1):
+**Architecture:**
 
-- **Always pass `--api`** for machine-readable output; do not rely on `--format json` without `--api`.
-- **Parse stdout as JSON**; treat stderr as diagnostics (warnings, trace IDs, debug info).
+The extension spawns `tnh-gen` as a child process and communicates via JSON using the `--api` flag (ADR-TG01.1).
 
-```typescript
-// src/cli/CliAdapter.ts
-import { spawn } from 'child_process';
+**Component: `TnhGenCliAdapter`**
 
-export class TnhGenCliAdapter {
-  private cliPath: string;
+**Responsibilities:**
 
-  constructor(cliPath: string) {
-    this.cliPath = cliPath; // e.g., /path/to/venv/bin/tnh-gen
-  }
+- Spawn `tnh-gen` subprocess with appropriate arguments
+- Parse JSON responses from stdout
+- Handle process lifecycle (spawn, monitor, cleanup)
+- Throw structured errors on non-zero exit codes
 
-  async listPrompts(options?: { tag?: string; search?: string }): Promise<PromptListResponse> {
-    const args = ['list', '--api']; // Use --api for full API metadata
-    if (options?.tag) args.push('--tag', options.tag);
-    if (options?.search) args.push('--search', options.search);
+**Key methods:**
 
-    const result = await this.spawnCli(args);
-    return JSON.parse(result.stdout);
-  }
+- `listPrompts(options?): Promise<PromptListResponse>` - Invokes `tnh-gen list --api`
+- `runPrompt(request): Promise<RunPromptResponse>` - Invokes `tnh-gen run --api`
+- `getVersion(): Promise<VersionInfo>` - Invokes `tnh-gen version --api`
 
-  async runPrompt(request: RunPromptRequest): Promise<RunPromptResponse> {
-    const args = ['run', '--prompt', request.promptKey, '--api']; // Use --api for full response metadata
+**Protocol contract:**
 
-    // Add input file
-    if (request.inputFile) {
-      args.push('--input-file', request.inputFile);
-    }
-
-    // Add variables
-    for (const [key, value] of Object.entries(request.variables)) {
-      args.push('--var', `${key}=${value}`);
-    }
-
-    // Add output file
-    if (request.outputFile) {
-      args.push('--output-file', request.outputFile);
-    }
-
-    const result = await this.spawnCli(args);
-    return JSON.parse(result.stdout);
-  }
-
-  private async spawnCli(args: string[]): Promise<{ stdout: string; stderr: string; exitCode: number }> {
-    return new Promise((resolve, reject) => {
-      const proc = spawn(this.cliPath, args);
-      let stdout = '';
-      let stderr = '';
-
-      proc.stdout.on('data', (data) => stdout += data.toString());
-      proc.stderr.on('data', (data) => stderr += data.toString());
-
-      proc.on('close', (code) => {
-        if (code === 0) {
-          resolve({ stdout, stderr, exitCode: code });
-        } else {
-          reject(new CliError(stdout, stderr, code || -1));
-        }
-      });
-    });
-  }
-}
-```
+- **Always pass `--api`** flag for machine-readable output
+- **Parse stdout as JSON** - Contains response data
+- **stderr** - Diagnostics only (warnings, trace IDs, debug info); log to Output channel, not used for UX logic
+- **Exit codes** - 0 (success), 1-5 (error categories per ADR-TG01)
+- **Success payload schemas** - `ListApiPayload`, `RunSuccessPayload`, `VersionPayload` in `src/tnh_scholar/cli_tools/tnh_gen/types.py:120`
+- **Error parsing** - On non-zero exit, attempt JSON parse for structured error; if missing/unparseable, show a generic failure and log stderr tail
 
 ### 3. Error Handling
 
-Parse JSON error responses from `--api` mode (ADR-TG01.1 §3.4) and map CLI exit codes (ADR-TG01 §5) to user-friendly messages:
+**Component: `CliError`**
 
-**Diagnostics**: stderr contains trace IDs and warnings for correlation; stdout remains JSON for programmatic parsing.
+**Responsibilities:**
 
-```typescript
-// src/cli/CliError.ts
-export class CliError extends Error {
-  constructor(
-    public stdout: string,
-    public stderr: string,
-    public exitCode: number
-  ) {
-    super(CliError.formatMessage(stdout, exitCode));
-  }
+- Parse JSON error responses from CLI stdout (ADR-TG01.1 §3.4)
+- Map exit codes to user-friendly messages (ADR-TG01 §5)
+- Extract diagnostics and suggestions from structured errors
+- Provide fallback messages when JSON parsing fails
 
-  static formatMessage(stdout: string, exitCode: number): string {
-    try {
-      // With --api, errors are JSON with full diagnostics
-      const response = JSON.parse(stdout);
-      if (response.status === 'failed' && response.error) {
-        // Use CLI's structured error message (ADR-TG01.1 §3.4)
-        return response.diagnostics?.suggestion
-          ? `${response.error}\n\nSuggestion: ${response.diagnostics.suggestion}`
-          : response.error;
-      }
-    } catch {
-      // Fallback to generic message if JSON parse fails
-      return CliError.genericMessage(exitCode);
-    }
-  }
+**Exit code mapping:**
 
-  static genericMessage(exitCode: number): string {
-    switch (exitCode) {
-      case 1: return 'Policy error: Budget exceeded or validation failed';
-      case 2: return 'Transport error: API failure or network issue';
-      case 3: return 'Provider error: Model unavailable or rate limit exceeded';
-      case 4: return 'Format error: Invalid JSON or schema validation failed';
-      case 5: return 'Input error: Invalid arguments or missing required variables';
-      default: return `Unknown error (exit code ${exitCode})`;
-    }
+- **0**: Success
+- **1**: Policy error (budget exceeded, validation failed)
+- **2**: Transport error (API failure, network issue)
+- **3**: Provider error (model unavailable, rate limit)
+- **4**: Format error (invalid JSON, schema validation)
+- **5**: Input error (invalid arguments, missing variables)
+
+**Error response format (from `--api`):**
+
+```json
+{
+  "status": "failed",
+  "error": "Human-readable error message",
+  "diagnostics": {
+    "suggestion": "Try X to resolve",
+    "trace_id": "correlation-id",
+    "exit_code": 2
   }
 }
 ```
 
-### 4. UI Components
+**User-facing error display:**
 
-#### 4.1 Prompt Picker (Quick Pick)
+- Show `error` field in VS Code notification
+- Optionally append `diagnostics.suggestion` if present
+- Log `stderr` and `trace_id` to Output channel for debugging
 
-```typescript
-// src/commands/runPrompt.ts
-import * as vscode from 'vscode';
-import { TnhGenCliAdapter } from '../cli/CliAdapter';
+### 4. Command Flow
 
-export async function runPromptCommand(context: vscode.ExtensionContext) {
-  const cli = new TnhGenCliAdapter(getCliPath(context));
+**Command: "Run Prompt on Active File":**
 
-  // 1. List prompts
-  const response = await cli.listPrompts();
+**Flow of control:**
 
-  // 2. Show quick pick
-  const selected = await vscode.window.showQuickPick(
-    response.prompts.map(p => ({
-      label: p.name,
-      description: p.tags.join(', '),
-      detail: p.description,
-      promptKey: p.key,
-      requiredVariables: p.required_variables
-    })),
-    { placeHolder: 'Select a prompt to run' }
-  );
+1. **Initialize CLI adapter** with configured `tnh-gen` path
+2. **Read VS Code settings** (user + workspace)
+3. **Resolve effective values** per CF01 ownership for each setting
+4. **Build temp config** from effective values and pass `--config <temp.json>` per call
+5. **List prompts** via `tnh-gen --api --config <temp.json> list`
+6. **Show QuickPick** with prompt metadata (name, description, tags)
+7. **Collect required variables** via input boxes (one per required variable from metadata)
+8. **Get active document** content and save to temp file
+9. **Execute prompt** via `tnh-gen --api --config <temp.json> run` with input file and variables
+10. **Parse JSON response** from stdout
+11. **Open output file** in split editor pane
+12. **Show success notification** with execution metadata (model, cost, time)
 
-  if (!selected) return;
+**Error handling at each step:**
 
-  // 3. Collect variables
-  const variables: Record<string, string> = {};
-  for (const varName of selected.requiredVariables) {
-    const value = await vscode.window.showInputBox({
-      prompt: `Enter value for ${varName}`,
-      placeHolder: varName
-    });
-    if (!value) return; // User cancelled
-    variables[varName] = value;
-  }
+- CLI spawn failure → show error notification, check CLI installation
+- User cancellation → abort silently
+- CLI error (non-zero exit) → parse structured error, show user-friendly message
+- JSON parse failure → show generic error, log details to Output channel
 
-  // 4. Get input file (active document)
-  const editor = vscode.window.activeTextEditor;
-  if (!editor) {
-    vscode.window.showErrorMessage('No active document');
-    return;
-  }
+**Single invocation resolution (summary):**
 
-  // Save document to temp file
-  const inputFile = await saveTempFile(editor.document.getText());
+1. Read VS Code settings (user + workspace)
+2. Resolve effective values per CF01 ownership
+3. Write temp config JSON
+4. Call `tnh-gen --api --config <temp.json> list/run`
+5. Render results or errors
 
-  // 5. Execute prompt
-  try {
-    await vscode.window.withProgress(
-      { location: vscode.ProgressLocation.Notification, title: 'Processing...' },
-      async () => {
-        const result = await cli.runPrompt({
-          promptKey: selected.promptKey,
-          inputFile,
-          variables,
-          outputFile: inputFile + '.out'
-        });
+### 5. Configuration Management
 
-        // 6. Show result
-        const doc = await vscode.workspace.openTextDocument(inputFile + '.out');
-        await vscode.window.showTextDocument(doc);
-      }
-    );
-  } catch (error) {
-    if (error instanceof CliError) {
-      vscode.window.showErrorMessage(error.message);
-    } else {
-      throw error;
-    }
-  }
-}
-```
+**Component: `ConfigManager`**
 
-#### 4.2 Configuration Management
+**Responsibilities:**
 
-```typescript
-// src/config/ConfigManager.ts
-export class ConfigManager {
-  static getCliPath(context: vscode.ExtensionContext): string {
-    // Precedence: workspace > user > auto-detect
-    const workspaceConfig = vscode.workspace.getConfiguration('tnhScholar');
-    const cliPath = workspaceConfig.get<string>('cliPath');
+- Discover candidate `tnh-gen` CLI paths
+- Integrate with VS Code Python extension for virtualenv detection
+- Manage extension settings via VS Code configuration API
+- Materialize a temp `tnh-gen` config file per invocation (no persistent mutation)
+- Resolve setting values per CF01 ownership precedence
 
-    if (cliPath) return cliPath;
+**Candidate discovery** (for `cliPath`):
 
-    // Auto-detect from active Python environment
-    return this.detectCliPath();
-  }
+1. **Workspace setting** (`tnhScholar.cliPath` in `.vscode/settings.json`)
+2. **User setting** (`tnhScholar.cliPath` in global VS Code settings)
+3. **Python extension** (detect active interpreter's venv, derive tnh-gen path)
+4. **PATH** (fallback to system `tnh-gen`)
 
-  private static detectCliPath(): string {
-    // Use Python extension API to get active interpreter
-    const pythonExt = vscode.extensions.getExtension('ms-python.python');
-    if (pythonExt?.isActive) {
-      const pythonPath = pythonExt.exports.settings.getExecutionDetails().execCommand[0];
-      // Assume tnh-gen is in same venv
-      return pythonPath.replace(/python$/, 'tnh-gen');
-    }
+**Configuration source**: VS Code settings API only (`.vscode/settings.json` or global settings, JSONC). No separate `tnh-scholar.json` file.
 
-    // Fallback to $PATH
-    return 'tnh-gen';
-  }
-}
-```
+**Settings mapping** (VS Code → `tnh-gen` config):
 
-### 5. CLI Discovery and Version Checking
+- `tnhScholar.promptDirectory` → `prompt_catalog_dir`
+- `tnhScholar.defaultModel` → `default_model`
+- `tnhScholar.maxCostUsd` → `max_dollars`
 
-```typescript
-// src/cli/CliValidator.ts
-export class CliValidator {
-  static async validateCli(cliPath: string): Promise<{ valid: boolean; version?: string; error?: string }> {
-    try {
-      const proc = spawn(cliPath, ['version', '--api']);
-      const stdout = await this.readStream(proc.stdout);
-      const version = JSON.parse(stdout);
+The adapter writes these to a temp JSON config and passes it via the global `--config` flag (see ADR-TG01, implemented in `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:25`).
 
-      // Check minimum version
-      if (this.compareVersions(version.tnh_gen, '0.1.0') < 0) {
-        return {
-          valid: false,
-          error: `tnh-gen version ${version.tnh_gen} is too old (minimum: 0.1.0)`
-        };
-      }
+**Ownership & precedence** (per ADR-CF01):
 
-      return { valid: true, version: version.tnh_gen };
-    } catch (error) {
-      return {
-        valid: false,
-        error: `Failed to execute tnh-gen at ${cliPath}: ${error.message}`
-      };
-    }
-  }
-}
-```
+| Setting | Ownership | Effective precedence |
+| --- | --- | --- |
+| `tnhScholar.promptDirectory` | Project-owned | Workspace → User → Built-in |
+| `tnhScholar.defaultModel` | User-owned | User → Workspace → Built-in |
+| `tnhScholar.maxCostUsd` | User-owned | User → Workspace → Built-in |
+| `tnhScholar.cliPath` | Project-owned | Workspace → User → Auto-detect → PATH |
+
+**Rationale for `cliPath` ownership**: Project-owned to keep team workspaces reproducible and avoid per-user drift in multi-user environments.
+
+**Non-duplication rule**: Extension does not read `TNH_*` env vars or infer registry semantics; it writes a temp config and calls `tnh-gen`. Env merging and TNHContext resolution remain inside the CLI per ADR-CF01.
+
+**Component: `CliValidator`**
+
+**Responsibilities:**
+
+- Validate CLI executable existence and executability
+- Check minimum version compatibility
+- Provide actionable error messages for misconfiguration
+- Enforce minimum compatible CLI version via `tnh-gen --api version`
 
 ### 6. Extension Configuration Schema
 
@@ -402,6 +338,11 @@ export class CliValidator {
 2. **Multi-Root Workspaces**: How to handle different prompt directories per workspace folder?
 3. **Offline Mode**: Should extension cache prompt list to avoid repeated CLI calls?
 
+## Next Increment (Post v0.1.0)
+
+- Add an optional pre-run UI to override a small subset of user-owned settings (e.g., model, max cost) for that invocation only.
+- Overrides are ephemeral: written into the temp config and never persisted to VS Code settings.
+
 ## References
 
 ### Related ADRs
@@ -435,4 +376,4 @@ export class CliValidator {
 
 ---
 
-*This ADR focuses on VS Code extension strategy. CLI implementation details are defined in ADR-TG01, ADR-TG01.1, and ADR-TG02.*
+*This ADR focuses on VS Code extension architecture. CLI implementation details are defined in ADR-TG01, ADR-TG01.1, and ADR-TG02.*
