@@ -15,7 +15,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **ADR-A14: File-Based Registry System** (2026-01-01, PR #24)
+  - Implemented JSONC-based registry for provider metadata, model capabilities, pricing, and context limits
+  - Added TNHContext for three-layer path resolution (workspace → user → built-in) per ADR-CF01
+  - Created RegistryLoader with JSONC parsing, caching, and override merging
+  - Added multi-tier pricing support (batch, flex, standard, priority)
+  - Implemented staleness detection (ADR-A14.1) with configurable 90-day threshold and environment variables
+  - Created built-in OpenAI registry with GPT-4/5 model metadata
+  - Added JSON Schema for VS Code autocomplete and validation
+  - Files: `src/tnh_scholar/configuration/context.py`, `src/tnh_scholar/gen_ai_service/config/registry.py`, `src/tnh_scholar/gen_ai_service/models/registry.py`, `src/tnh_scholar/gen_ai_service/adapters/registry/`, `src/tnh_scholar/runtime_assets/registries/`, comprehensive test suite
+  - ADRs: [ADR-A14](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md), [ADR-A14.1](/architecture/gen-ai-service/adr/adr-a14.1-registry-staleness-detection.md), [ADR-CF01](/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md)
+
 ### Changed
+
+- **GenAI Service Registry Integration** (2026-01-01, PR #24)
+  - Refactored model_router.py to use registry-based capability checks (removed hardcoded MODEL_CAPABILITIES)
+  - Refactored safety_gate.py to use registry pricing with tier support (removed hardcoded pricing constants)
+  - Refactored token_utils.py to use registry context limits with tiktoken fallback
+  - Updated GenAISettings to validate against registry data
+  - Files: `src/tnh_scholar/gen_ai_service/routing/model_router.py`, `src/tnh_scholar/gen_ai_service/safety/safety_gate.py`, `src/tnh_scholar/gen_ai_service/utils/token_utils.py`, `src/tnh_scholar/gen_ai_service/config/settings.py`
+
+- **Development Workflow Improvements** (2026-01-01, PR #24)
+  - Moved Sourcery to optional local group to unblock CI/docs builds (platform-specific wheels issue)
+  - Added PR requirements to AGENTS.md: `make ci-check`, Sourcery review, mypy type checking
+  - Updated DEV_SETUP.md with optional local group installation instructions
+  - Fixed 9 mypy type errors in registry system files
+  - Files: `pyproject.toml`, `poetry.lock`, `DEV_SETUP.md`, `AGENTS.md`
+
+- **AGENTLOG Archive Workflow** (2026-01-01)
+  - Implemented new archiving workflow with archive/agentlogs/archive-index.md
+  - Archived 2026-01-01 sessions to AGENTLOG-01-01-26.md with summary
+  - Reset AGENTLOG.md to template-only structure
+  - Added archiving workflow to AGENTLOG_TEMPLATE.md and AGENTS.md
+  - Files: `AGENTLOG.md`, `archive/agentlogs/AGENTLOG-01-01-26.md`, `archive/agentlogs/archive-index.md`, `AGENTLOG_TEMPLATE.md`, `AGENTS.md`
 
 - **tnh-gen Provenance YAML Frontmatter** (2025-12-30)
   - Switched file output provenance headers from HTML comments to YAML frontmatter

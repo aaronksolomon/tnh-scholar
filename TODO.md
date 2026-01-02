@@ -10,9 +10,9 @@ created: "2025-01-20"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2025-12-28 (Reorganized for Bootstrap Path)
+> **Last Updated**: 2026-01-01 (ADR-A14 Registry System Completed)
 > **Version**: 0.2.3 (Alpha)
-> **Status**: Active Development - VS Code Integration Path
+> **Status**: Active Development - VS Code Extension Ready
 >
 > **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 > Use `####` (h4) for task headers within priority sections.
@@ -27,7 +27,7 @@ This section organizes work into three priority levels based on criticality for 
 
 **Goal**: Enable AI-assisted development of TNH Scholar itself via VS Code extension. Prioritizes foundational work for tnh-gen + extension integration.
 
-**Status**: Foundation Complete (tnh-gen CLI ✅), Registry System In Progress
+**Status**: Foundation Complete (tnh-gen CLI ✅, Registry System ✅)
 
 #### ✅ tnh-gen CLI Implementation
 
@@ -38,41 +38,41 @@ This section organizes work into three priority levels based on criticality for 
 - **Documentation**: [tnh-gen CLI Reference](/cli-reference/tnh-gen.md) (661 lines, comprehensive)
 - **Next**: Consumed by VS Code extension for prompt discovery and execution
 
-#### 🚧 File-Based Registry System (ADR-A14)
+#### ✅ File-Based Registry System (ADR-A14)
 
-- **Status**: NOT STARTED - **HIGHEST PRIORITY**
-- **Priority**: **P0 - BLOCKS VS CODE EXTENSION**
-- **ADR**: [ADR-A14: File-Based Registry System](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
-- **Estimate**: 4-6 hours
-- **Why Critical**: VS Code extension needs registry for:
-  - Prompt metadata discovery (`tnh-gen list --api`)
-  - Model selection with pricing info in UI
-  - Capability-based routing validation
-  - Rich QuickPick menus with model costs
+- **Status**: COMPLETED ✅ (Merged PR #24, 2026-01-01)
+- **ADR**: [ADR-A14: File-Based Registry System](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md), [ADR-A14.1: Staleness Detection](/architecture/gen-ai-service/adr/adr-a14.1-registry-staleness-detection.md)
+- **Completed**: Implemented JSONC-based registry with multi-tier pricing, TNHContext path resolution, and staleness detection
+- **Key Features**:
+  - JSONC format with VS Code schema validation
+  - Three-layer path resolution (workspace → user → built-in)
+  - Multi-tier pricing support (batch/flex/standard/priority)
+  - Staleness detection with configurable 90-day threshold
+  - Comprehensive test coverage (264 tests passing)
 - **Deliverables**:
-  - [ ] Create `runtime_assets/registries/providers/openai.jsonc` with model metadata
-  - [ ] Implement `RegistryLoader` with JSONC parsing (comment/trailing comma support)
-  - [ ] Create Pydantic schemas for validation (`ModelInfo`, `ProviderRegistry`)
-  - [ ] Create JSON Schema for VS Code autocomplete in registry files
-  - [ ] Refactor `model_router.py` to use registry capabilities
-  - [ ] Refactor `safety_gate.py` to use registry pricing (remove hardcoded `_PRICE_PER_1K_TOKENS`)
-  - [ ] Update `tnh-gen list --api` to include model metadata from registry
-  - [ ] Add unit tests for registry loading and validation
+  - [x] Created `runtime_assets/registries/providers/openai.jsonc` with model metadata
+  - [x] Implemented `RegistryLoader` with JSONC parsing (comment/trailing comma support)
+  - [x] Created Pydantic schemas for validation (`ModelInfo`, `ProviderRegistry`)
+  - [x] Created JSON Schema for VS Code autocomplete in registry files
+  - [x] Refactored `model_router.py` to use registry capabilities
+  - [x] Refactored `safety_gate.py` to use registry pricing (removed hardcoded constants)
+  - [x] Added comprehensive unit tests for registry loading and validation
+  - [x] Implemented ADR-A14.1 staleness detection with environment config
 - **Files Created**:
-  - `runtime_assets/registries/providers/openai.jsonc`
-  - `runtime_assets/registries/providers/schema.py` (Pydantic)
-  - `runtime_assets/registries/providers/schema.json` (JSON Schema)
+  - `src/tnh_scholar/configuration/context.py` (TNHContext)
+  - `src/tnh_scholar/runtime_assets/registries/providers/openai.jsonc`
+  - `src/tnh_scholar/runtime_assets/registries/providers/schema.json`
   - `src/tnh_scholar/gen_ai_service/config/registry.py` (RegistryLoader)
-- **Files Modified**:
-  - `src/tnh_scholar/gen_ai_service/routing/model_router.py`
-  - `src/tnh_scholar/gen_ai_service/safety/safety_gate.py`
-  - `src/tnh_scholar/cli_tools/tnh_gen/commands/list.py` (add registry metadata)
-- **Related**: Unblocks VS Code Extension Walking Skeleton (next step after registry)
+  - `src/tnh_scholar/gen_ai_service/models/registry.py` (Pydantic models)
+  - `src/tnh_scholar/gen_ai_service/adapters/registry/jsonc_parser.py`
+  - `src/tnh_scholar/gen_ai_service/adapters/registry/override_merger.py`
+  - `tests/gen_ai_service/test_registry_*.py` (comprehensive test suite)
+- **Related**: Unblocks VS Code Extension Walking Skeleton
 
 #### 🔮 VS Code Extension Walking Skeleton
 
-- **Status**: NOT STARTED - Blocked by ADR-A14 Registry
-- **Priority**: HIGH (after registry)
+- **Status**: NOT STARTED - **READY TO START** (Registry unblocked)
+- **Priority**: **HIGHEST PRIORITY** (Foundation complete)
 - **ADR**: [ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md), [ADR-VSC02: Extension Implementation](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
 - **Estimate**: 8-12 hours (first working prototype)
 - **What**: Minimal VS Code extension that enables "Run Prompt on Active File" workflow
@@ -83,7 +83,7 @@ This section organizes work into three priority levels based on criticality for 
   - Execute via `tnh-gen run` subprocess
   - Open output file in split pane
 - **Validation**: Proves bootstrapping concept - use extension to develop TNH Scholar faster
-- **Blocked By**: Registry system (needs model metadata for rich UI)
+- **Dependencies**: ✅ Registry system complete (model metadata available)
 
 #### 🚧 Provenance Format Refactor - YAML Frontmatter
 
