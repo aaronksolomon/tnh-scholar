@@ -5,12 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
+updated: "2026-01-02"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-01-01 (ADR-A14 Registry System Completed)
+> **Last Updated**: 2026-01-02 (VS Code Extension ADRs Accepted)
 > **Version**: 0.2.3 (Alpha)
 > **Status**: Active Development - VS Code Extension Ready
 >
@@ -71,19 +72,62 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 🔮 VS Code Extension Walking Skeleton
 
-- **Status**: NOT STARTED - **READY TO START** (Registry unblocked)
+- **Status**: **READY FOR IMPLEMENTATION** (ADRs accepted 2026-01-02)
 - **Priority**: **HIGHEST PRIORITY** (Foundation complete)
-- **ADR**: [ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md), [ADR-VSC02: Extension Implementation](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
-- **Estimate**: 8-12 hours (first working prototype)
+- **ADR**: [ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md) (`accepted`), [ADR-VSC02: Extension Architecture](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md) (`accepted`)
+- **Scope**: TypeScript extension + unit/integration tests
 - **What**: Minimal VS Code extension that enables "Run Prompt on Active File" workflow
+- **Deliverables**:
+  - [x] ADR-VSC01 and ADR-VSC02 ready for review (scope clarified)
+  - [x] CO reviews ADRs independently (completed with architecture improvements)
+  - [x] User approves ADRs → `accepted` status (2026-01-02)
+  - [ ] TypeScript extension scaffold (CLI adapter, command implementation)
+  - [ ] Unit tests for CLI adapter
+  - [ ] Integration test for full command workflow
+  - [ ] Manual validation: Run prompt on active file end-to-end
 - **Capabilities**:
   - Command: "TNH Scholar: Run Prompt on Active File"
   - QuickPick prompt selector (from `tnh-gen list --api`)
   - Dynamic variable input form based on prompt metadata
   - Execute via `tnh-gen run` subprocess
   - Open output file in split pane
+- **Follow-up Tasks** (separate after validation):
+  - Extension packaging for VS Code Marketplace
+  - User-facing documentation and guides
 - **Validation**: Proves bootstrapping concept - use extension to develop TNH Scholar faster
 - **Dependencies**: ✅ Registry system complete (model metadata available)
+- **Sequencing**: Complete before Pattern→Prompt Migration (uses extension for validation)
+
+#### 🔮 Pattern→Prompt Migration and Metadata Standardization
+
+- **Status**: NOT STARTED - **SEQUENCED AFTER VS CODE EXTENSION**
+- **Priority**: **PRIORITY 1** (Same tier as VS Code integration, deferred for risk minimization)
+- **ADR**: [ADR-PT04: Prompt System Refactor](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- **Strategy**: Defer until after VS Code extension walking skeleton complete (ADR-VSC02 implementation)
+- **Rationale**:
+  - VS Code extension works with current pattern/prompt system (not blocking)
+  - Avoid simultaneous major changes (extension + prompt migration)
+  - Dogfooding: Use working VS Code extension to help validate migrated prompts
+  - Clear dependency: Extension provides testing surface for prompt metadata changes
+- **What**: Complete Pattern→Prompt terminology migration and standardize metadata structure
+- **Scope**:
+  - Migrate `~/.config/tnh_scholar/patterns/` → `~/.config/tnh_scholar/prompts/`
+  - Remove `TNH_PATTERN_DIR` references (replace with `TNH_PROMPT_DIR`)
+  - Standardize all prompt files with proper metadata structure (YAML frontmatter)
+  - Update code references: `ai_text_processing/prompts.py` and imports
+  - Update environment variable references throughout codebase
+- **Current State**:
+  - Terminology partially migrated (docs use "prompt", code still references "pattern")
+  - ADR-PT04 defines target architecture (object-service compliant prompt system)
+  - `tnh-gen` CLI already uses prompt terminology but reads from patterns directory
+- **Deliverables**:
+  - [ ] Migrate all pattern template files to prompts directory
+  - [ ] Add/validate YAML frontmatter metadata to all prompt files
+  - [ ] Update code references (`TNH_PATTERN_DIR` → `TNH_PROMPT_DIR`)
+  - [ ] Update environment variable documentation
+  - [ ] Test prompt discovery and execution via VS Code extension
+  - [ ] Remove old patterns directory
+- **Related**: Mentioned in ADR-VSC02 as pending but non-blocking work
 
 #### 🚧 Provenance Format Refactor - YAML Frontmatter
 
