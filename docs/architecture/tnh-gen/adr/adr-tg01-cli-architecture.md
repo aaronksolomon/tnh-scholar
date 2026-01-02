@@ -805,4 +805,18 @@ schema_version: "1.0"
 
 ---
 
+## Addendum: 2026-01-01 - API Success Payloads and `--config` Usage
+
+**Context**: VS Code integration needs stable, machine-readable success payloads and a non-persistent way to pass per-call configuration.
+
+**Decision**:
+- Success payload schemas are defined in `src/tnh_scholar/cli_tools/tnh_gen/types.py:120` (`ListApiPayload`, `RunSuccessPayload`, `VersionPayload`).
+- The global `--config` flag is the supported mechanism to pass a per-call config file without mutating user or workspace state (`src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:25`).
+
+**Rationale**: These contracts are already implemented and align with ADR-CF01 precedence. Using `--config` keeps VS Code integration explicit and avoids persistent writes.
+
+**Implementation Changes**: None (documentation-only clarification of existing behavior).
+
+---
+
 **Approval Path**: Architecture review → Implementation → Testing → Documentation
