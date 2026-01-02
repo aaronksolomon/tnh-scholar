@@ -1,8 +1,17 @@
-# AGENTS.md  
+---
+title: "AGENTS.md"
+description: "Critical context for code agents working on TNH Scholar - architecture, constraints, workflow."
+owner: ""
+author: "aaronksolomon, Claude Sonnet 4.5"
+status: current
+created: "2025-12-07"
+updated: "2026-01-01"
+---
+# AGENTS.md
 
 CRITICAL CONTEXT FOR CODE AGENTS
 
-> THIS DOCUMENT MUST REMAIN MINIMAL AND TERSE -> context window preserving
+> THIS DOCUMENT OPTIMIZED FOR AI CONTEXT WINDOWS - MINIMAL AND TERSE
 
 **TNH Scholar** - AI toolkit for Thích Nhất Hạnh teachings. Alpha v0.2.2, rapid prototype phase.
 
@@ -44,6 +53,7 @@ gen_ai_service/
 
 - Source refs: `` `src/file.py:42` `` (inline code, NOT markdown links)
 - Doc cross-refs: `/architecture/adr/...` (absolute paths from `/docs`, NOT relative `../`)
+- Repo-root docs: `/project/repo-root/<name>.md` for files like `README.md`, `CONTRIBUTING.md`, `VERSIONING.md`
 - Prevents MkDocs warnings
 
 **Pre-commit:** DISABLED (`core.hookspath=/dev/null`). No auto-stash concerns.
@@ -87,11 +97,13 @@ gen_ai_service/
 
 ## CLI Tools
 
-**tnh-gen** (NEW, replaces tnh-fab):
+**tnh-gen** (Current CLI - v0.2.3+):
 
+- Replaces deprecated tnh-fab (shows warning)
 - Typer-based, protocol-driven
-- Dual modes: human (default), `--api` (JSON)
+- Dual modes: human (default), `--api` (JSON for VS Code)
 - Commands: `list`, `run`, `config`, `version`
+- Status: Implemented, 661-line reference docs, VS Code-ready
 
 Others: `audio-transcribe`, `ytt-fetch`, `token-count`, `nfmt`
 
@@ -109,6 +121,8 @@ make ci-check     # REQUIRED before PR - runs full CI suite locally
 
 **PR Requirements (CRITICAL):**
 
+- Standard workflow: Feature branches → PR → merge
+- **Hotfix exception**: Critical bugs/security → direct to main with full CI validation (see AGENT_WORKFLOW.md Step 8)
 - Run `make ci-check` before creating PR - fixes all errors found
 - Run `poetry install --with local && poetry run sourcery review --check <changed-files.py>` - Sourcery is in optional local group (platform-specific wheels)
 - Run `poetry run mypy` on changed .py files - fix all type errors
@@ -141,8 +155,8 @@ src/tnh_scholar/
 3. **Pydantic required** - strong typing, no dict/literal sprawl
 4. **Commit poetry.lock** - always include lockfile changes
 5. **ADRs append-only** - never edit decisions, add addendums
-6. **ADR status lifecycle** - When implementing "accepted" ADRs, update status: `proposed` → `accepted` → `implemented`. Check code exists before marking TODO items as "in progress"
-7. **AGENTLOG archiving** - When AGENTLOG.md grows large, archive to `archive/agentlogs/AGENTLOG-[MM-DD-YY].md`, update `archive/agentlogs/archive-index.md` with summary, reset AGENTLOG.md to template
+6. **ADR status lifecycle** - Standard: `proposed` → `accepted` → [`wip`] → `implemented`. Strategy ADRs: stop at `accepted`. Other flows: `rejected`, `superseded`, `archived`. See ADR template for full lifecycle.
+7. **AGENTLOG archiving** - After PR merge, archive to `archive/agentlogs/AGENTLOG-[MM-DD-YY].md`, update archive index, reset to template. Skip for hotfixes/patches/chores.
 
 ## Docs Structure
 
@@ -198,10 +212,6 @@ docs/
 - `docs/development/overview.md` - Dev doc landing page
 - `docs/cli-reference/tnh-gen.md` - tnh-gen comprehensive reference
 
-## Current Branch Context (docs-testing/tnh-gen)
-
-**Focus:** Documentation improvements - tnh-gen CLI reference (661 lines), surfaced versioning policy, fixed markdown validation, made dev deps non-optional.
-
 ---
 
-**For session continuity:** Read ADR-OS01 (object-service pattern—MANDATORY), design-principles.md, style-guide.md. Strong types, no literals/dicts, absolute doc links, user confirms git destructive ops.
+**For session continuity:** Read ADR-OS01 (object-service pattern—MANDATORY), design-principles.md, style-guide.md. Strong types, no literals/dicts, absolute doc links, user confirms git destructive ops. Check TODO.md for active priorities, AGENTLOG.md for recent sessions, git branch for current context.
