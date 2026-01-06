@@ -16,6 +16,7 @@ The implementation follows a modular design with single-action methods and
 supports both synchronous and asynchronous usage patterns.
 """
 
+import inspect
 import os
 from concurrent.futures import Future
 from dataclasses import dataclass, field
@@ -228,12 +229,37 @@ class AAITranscriptionService(TranscriptionService):
                 config_params["webhook_auth_header_value"] = \
                     self.config.webhook_auth_header_value
 
-        # Override with any provided options
+        # Override with any provided options (filtered to SDK-supported keys)
         if options:
-            config_params |= options
+            config_params |= self._normalize_options(options)
 
         # Create config object
         return aai.TranscriptionConfig(**config_params)
+
+    def _normalize_options(self, options: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Filter/translate CLI options into supported AssemblyAI config keys.
+        """
+        normalized: Dict[str, Any] = {}
+        allowed_keys = self._get_transcription_config_keys()
+
+        for key, value in options.items():
+            if key == "language" and "language_code" in allowed_keys:
+                if value is not None:
+                    normalized["language_code"] = value
+                continue
+            if key in allowed_keys:
+                normalized[key] = value
+        if "language_code" in normalized and "language_detection" in allowed_keys:
+            normalized["language_detection"] = False
+        return normalized
+
+    def _get_transcription_config_keys(self) -> set[str]:
+        """
+        Return supported keyword names for AssemblyAI TranscriptionConfig.
+        """
+        params = inspect.signature(aai.TranscriptionConfig).parameters
+        return set(params.keys())
     
     def _get_file_path(
         self, 

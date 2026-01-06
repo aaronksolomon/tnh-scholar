@@ -1,8 +1,11 @@
 PYTHON_VERSION = 3.12.4
 POETRY        = poetry
 LYCHEE        = lychee
+PIPX          = pipx
+PIPX_LOG_DIR  = $(HOME)/.local/pipx/logs
+TNH_CLI_TOOLS = audio-transcribe tnh-fab tnh-gen ytt-fetch nfmt token-count tnh-setup tnh-tree sent-split json-srt srt-translate
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pipx-refresh build-all update
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -16,6 +19,26 @@ setup-dev:
 	$(POETRY) env use python
 	$(POETRY) install
 	$(POETRY) run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
+
+build-all:
+	$(POETRY) self update
+	$(POETRY) update yt-dlp
+	$(POETRY) install
+	$(MAKE) pipx-refresh
+	$(MAKE) docs-build
+
+update:
+	$(POETRY) self update
+	$(POETRY) update
+	$(POETRY) install
+	$(POETRY) build
+	$(MAKE) pipx-build
+
+pipx-build:
+	@echo "Building pipx install for tnh-scholar (all CLI tools)..."
+	PIPX_LOG_DIR=$(PIPX_LOG_DIR) $(PIPX) install --force --editable .
+	@printf "CLI tools available via pipx:\n"
+	@printf "  - %s\n" $(TNH_CLI_TOOLS)
 
 test:
 	$(POETRY) run pytest

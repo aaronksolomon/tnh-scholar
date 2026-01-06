@@ -92,33 +92,46 @@ class YTDVersionChecker:
 
 def check_ytd_version() -> bool:
     """
-    Check if yt-dlp needs updating and log appropriate messages.
+    Check if yt-dlp is up to date and available.
 
     This function checks the installed version of yt-dlp against the latest version
-    on PyPI and logs informational or error messages as appropriate. It handles
-    network errors, missing packages, and version parsing issues gracefully.
+    on PyPI. Since YouTube changes frequently break older yt-dlp versions, this
+    check is strict and requires the latest version.
 
-    The function does not raise exceptions but logs them using the application's
-    logging system.
+    Returns:
+        bool: True if yt-dlp is installed and up to date, False otherwise.
+
+    Note:
+        This is a strict check. Outdated versions return False to prevent
+        wasting time on long-running jobs that will likely fail due to
+        YouTube API changes.
     """
     checker = YTDVersionChecker()
     try:
         needs_update, current, latest = checker.check_version()
         if needs_update:
-            logger.info(f"Update available: {current} -> {latest}")
-            logger.info("Please run the appropriate upgrade in your environment.")
-            logger.info("   For example: pip install --upgrade yt-dlp ")
-            return False
+            logger.error(f"yt-dlp is outdated: {current} (latest: {latest})")
+            logger.error("YouTube downloads require the latest yt-dlp version.")
+            logger.error("Update with: poetry update yt-dlp")
+            logger.error("Or run: make build-all")
+            return False  # Fail fast - don't waste time on outdated version
         else:
             logger.info(f"yt-dlp is up to date (version {current})")
+            return True
 
     except ImportError as e:
-        logger.error(f"In yt-dlp version check: Package error: {e}")
+        logger.error(f"yt-dlp is not installed: {e}")
+        logger.error("Install with: poetry install")
+        return False  # Cannot proceed without yt-dlp
     except requests.RequestException as e:
-        logger.error(f"In yt-dlp version check: Network error: {e}")
+        logger.error(f"Could not check yt-dlp version (network error): {e}")
+        logger.error("Cannot verify yt-dlp is up to date. Refusing to proceed.")
+        return False  # Fail safe - don't run without version confirmation
     except InvalidVersion as e:
-        logger.error(f"In yt-dlp version check: Version parsing error: {e}")
+        logger.error(f"Could not parse yt-dlp version: {e}")
+        logger.error("Cannot verify yt-dlp is up to date. Refusing to proceed.")
+        return False  # Fail safe
     except Exception as e:
-        logger.error(f"In yt-dlp version check: Unexpected error: {e}")
-        
-    return True
+        logger.error(f"Unexpected error checking yt-dlp version: {e}")
+        logger.error("Cannot verify yt-dlp is up to date. Refusing to proceed.")
+        return False  # Fail safe
