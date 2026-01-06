@@ -28,7 +28,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Files: `src/tnh_scholar/configuration/context.py`, `src/tnh_scholar/gen_ai_service/config/registry.py`, `src/tnh_scholar/gen_ai_service/models/registry.py`, `src/tnh_scholar/gen_ai_service/adapters/registry/`, `src/tnh_scholar/runtime_assets/registries/`, comprehensive test suite
   - ADRs: [ADR-A14](/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md), [ADR-A14.1](/architecture/gen-ai-service/adr/adr-a14.1-registry-staleness-detection.md), [ADR-CF01](/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md)
 
+- **Audio Transcribe Hotfix Tests + Dependencies** (2026-01-03)
+  - Added diarization payload parsing tests and AssemblyAI option handling tests
+  - Added `assemblyai` and `pysrt` as required dependencies
+  - Added `make update` target for Poetry update/build + pipx rebuild
+  - Files: `tests/audio_processing/diarization/test_schemas.py`, `tests/cli_tools/test_audio_transcribe_pipeline.py`, `tests/audio_processing/transcription/test_assemblyai_service_options.py`, `tests/audio_processing/transcription/test_transcription_service_factory.py`, `pyproject.toml`, `Makefile`
+
 ### Changed
+
+- **Prompt Frontmatter Normalization + Token Encoding Fallback** (2026-01-05)
+  - Coerced missing/invalid prompt metadata fields to safe defaults with warnings
+  - Added registry-aware encoding fallback for token counting when tiktoken lacks model mapping
+  - Files: `src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`, `src/tnh_scholar/gen_ai_service/utils/token_utils.py`, `patterns/simple_punctuate.md`, `tests/prompt_system/test_catalog_adapters.py`, `tests/gen_ai_service/utils/test_token_utils.py`
+
+- **Audio Transcribe AssemblyAI Pipeline** (2026-01-03)
+  - Skip pyannote diarization for AssemblyAI and transcribe full audio directly
+  - Normalize AssemblyAI options to SDK-supported keys and map language settings
+  - Files: `src/tnh_scholar/cli_tools/audio_transcribe/transcription_pipeline.py`, `src/tnh_scholar/audio_processing/transcription/assemblyai_service.py`
 
 - **GenAI Service Registry Integration** (2026-01-01, PR #24)
   - Refactored model_router.py to use registry-based capability checks (removed hardcoded MODEL_CAPABILITIES)
@@ -81,6 +97,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Removed orphaned code fragments (lines 84-85) that were incomplete fragments of a closed `Prompt()` constructor
   - Restored test collection functionality (all 210 tests passing)
   - Preserved warning logging functionality (`_log_warnings` call at lines 82-83)
+
+- **Audio Transcribe Hotfix** (2026-01-03, Hotfix to main)
+  - Accept pyannote status payload aliases and default outcome for Pydantic validation
+  - Fix diarization success matching and reduce log payload size
+  - Skip diarization for AssemblyAI and transcribe full audio
+  - Improve transcription factory lazy import handling for AssemblyAI
+  - Normalize AssemblyAI options (drop unsupported keys, map language, disable language_detection when language_code set)
+  - Add minimal tests for diarization payloads, pipeline provider routing, and AssemblyAI option normalization
+  - Promote `assemblyai` and `pysrt` to core dependencies to match runtime expectations
+  - Files: `src/tnh_scholar/audio_processing/diarization/schemas.py`, `src/tnh_scholar/cli_tools/audio_transcribe/transcription_pipeline.py`, `src/tnh_scholar/audio_processing/transcription/transcription_service.py`, `src/tnh_scholar/audio_processing/transcription/assemblyai_service.py`, `pyproject.toml`, `Makefile`, `tests/audio_processing/`, `tests/cli_tools/test_audio_transcribe_pipeline.py`
+
+- **Prompt Frontmatter + Token Counting Hotfix** (2026-01-05, Hotfix to main)
+  - Normalized prompt frontmatter loading to default missing required variables and defaults with warnings instead of failing
+  - Fixed `simple_punctuate` frontmatter required variables list
+  - Added registry-based encoding fallback for token counting (resolves `gpt-5-mini` tiktoken warnings)
+  - Added prompt mapper coverage for missing required variables and token counting test for GPT-5 registry encoding resolution
+  - Files: `src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`, `patterns/simple_punctuate.md`, `tests/prompt_system/test_catalog_adapters.py`, `src/tnh_scholar/gen_ai_service/utils/token_utils.py`, `tests/gen_ai_service/utils/test_token_utils.py`
 
 ### Added
 
