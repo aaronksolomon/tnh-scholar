@@ -71,6 +71,15 @@ class BufferPolicy:
     minimum: int
 
 
+@dataclass(frozen=True)
+class EncodingFallbackPolicy:
+    """Fallback mapping for models missing in tiktoken."""
+
+    long_context_threshold: int
+    long_context_encoding: str
+    default_encoding: str
+
+
 FormattingPolicyEntry = tuple[str, FormattingPolicy]
 MessageContent = Union[str, Sequence[ChatCompletionContentPartParam]]
 MessageSequence = Sequence[Message]
@@ -90,10 +99,15 @@ DEFAULT_BUFFER_POLICY = BufferPolicy(ratio=0.01, minimum=256)
 class EncodingProvider:
     """Caches encodings and falls back when tiktoken is unavailable."""
 
-    def __init__(self) -> None:
+    def __init__(self, policy: EncodingFallbackPolicy | None = None) -> None:
         self._cache: dict[str, _EncodingLike] = {}
         self._fallback_warning_emitted = False
         self._fallback_encoding = _FallbackEncoding()
+        self._policy = policy or EncodingFallbackPolicy(
+            long_context_threshold=128000,
+            long_context_encoding="o200k_base",
+            default_encoding="cl100k_base",
+        )
 
     def count_text(self, text: str, model: str) -> int:
         if not text:
@@ -118,19 +132,23 @@ class EncodingProvider:
         try:
             resolved = tiktoken.encoding_for_model(model)
         except KeyError:
-            logger.warning(
-                "Unknown model '%s' for token counting, falling back to cl100k_base encoding",
-                model,
-            )
-            try:
-                resolved = tiktoken.get_encoding("cl100k_base")
-            except Exception as exc:
+            resolved = self._resolve_registry_encoding(model)
+            if resolved is None:
                 logger.warning(
-                    "Failed to load cl100k_base encoding, using fallback: %s",
-                    exc,
+                    "Unknown model '%s' for token counting, falling back to %s encoding",
+                    model,
+                    self._policy.default_encoding,
                 )
-                self._cache[model] = self._fallback_encoding
-                return self._fallback_encoding
+                try:
+                    resolved = tiktoken.get_encoding(self._policy.default_encoding)
+                except Exception as exc:
+                    logger.warning(
+                        "Failed to load %s encoding, using fallback: %s",
+                        self._policy.default_encoding,
+                        exc,
+                    )
+                    self._cache[model] = self._fallback_encoding
+                    return self._fallback_encoding
         except Exception as exc:
             logger.warning(
                 "Failed to resolve encoding for model '%s', using fallback: %s",
@@ -142,6 +160,29 @@ class EncodingProvider:
 
         self._cache[model] = resolved
         return resolved
+
+    def _resolve_registry_encoding(self, model: str) -> _EncodingLike | None:
+        try:
+            model_info = find_model_info(model)
+        except ConfigurationError:
+            return None
+
+        encoding_name = self._encoding_name_for_context(int(model_info.context_window))
+        try:
+            return tiktoken.get_encoding(encoding_name)
+        except Exception as exc:
+            logger.warning(
+                "Failed to resolve encoding '%s' for model '%s', using fallback: %s",
+                encoding_name,
+                model,
+                exc,
+            )
+            return None
+
+    def _encoding_name_for_context(self, context_window: int) -> str:
+        if context_window >= self._policy.long_context_threshold:
+            return self._policy.long_context_encoding
+        return self._policy.default_encoding
 
 
 class MessageContentRenderer:

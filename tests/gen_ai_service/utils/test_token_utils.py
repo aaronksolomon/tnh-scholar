@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import pytest
 
 from tnh_scholar.gen_ai_service.models.domain import Message
+from tnh_scholar.gen_ai_service.utils import token_utils as token_utils_module
 from tnh_scholar.gen_ai_service.utils.token_utils import (
     estimate_max_completion_tokens,
     token_count,
@@ -50,6 +52,19 @@ def test_token_count_different_models():
     # Counts should be similar (same encoding for modern models)
     # Allow larger tolerance to handle fallback encoding case
     assert abs(count_gpt4 - count_gpt35) <= len(text)
+
+
+def test_token_count_gpt5_uses_registry_encoding(caplog):
+    if token_utils_module.tiktoken is None:
+        pytest.skip("tiktoken not installed")
+
+    caplog.set_level(logging.WARNING, logger="tnh_scholar.gen_ai_service.utils.token_utils")
+    count = token_count("Hello, world!", model="gpt-5-mini")
+
+    assert count > 0
+    assert not any(
+        "Unknown model 'gpt-5-mini'" in record.message for record in caplog.records
+    )
 
 
 def test_token_count_file(tmp_path: Path):

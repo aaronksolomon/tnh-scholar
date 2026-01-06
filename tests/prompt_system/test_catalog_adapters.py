@@ -77,3 +77,28 @@ def test_mapper_split_handles_bom_and_delimiters():
     metadata, body = mapper._split_frontmatter(content)
     assert metadata["name"] == "x"
     assert body.strip() == "Body"
+
+
+def test_mapper_defaults_missing_required_variables_with_warning():
+    mapper = PromptMapper()
+    content = """---
+key: simple
+name: Simple
+version: 1.0.0
+description: desc
+task_type: test
+optional_variables:
+  - source_language
+default_variables:
+  source_language: English
+tags:
+  - test
+---
+Hello
+"""
+    prompt = mapper.to_domain_prompt(content)
+
+    assert prompt.metadata.required_variables == []
+    assert any(
+        "required_variables" in warning for warning in prompt.metadata.warnings
+    )
