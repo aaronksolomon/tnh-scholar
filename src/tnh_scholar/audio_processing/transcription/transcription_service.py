@@ -109,6 +109,23 @@ class TranscriptionServiceFactory:
     # Mapping provider names to implementation classes
     # Classes will be imported lazily when needed
     _PROVIDER_MAP: Dict[str, Callable[..., TranscriptionService]] = {}
+
+    @staticmethod
+    def _create_whisper_service(api_key: Optional[str] = None, **kwargs: Any) -> TranscriptionService:
+        from .whisper_service import WhisperTranscriptionService
+
+        return WhisperTranscriptionService(api_key=api_key, **kwargs)
+
+    @staticmethod
+    def _create_assemblyai_service(api_key: Optional[str] = None, **kwargs: Any) -> TranscriptionService:
+        try:
+            from .assemblyai_service import AAITranscriptionService
+        except ModuleNotFoundError as exc:
+            raise ImportError(
+                "assemblyai package is not installed. Install it or use --service whisper."
+            ) from exc
+
+        return AAITranscriptionService(api_key=api_key, **kwargs)
     
     @classmethod
     def register_provider(
@@ -155,13 +172,9 @@ class TranscriptionServiceFactory:
         
         # Initialize provider map if empty
         if not cls._PROVIDER_MAP:
-            # Import lazily to avoid circular imports
-            from .assemblyai_service import AAITranscriptionService
-            from .whisper_service import WhisperTranscriptionService
-            
             cls._PROVIDER_MAP = {
-                "whisper": WhisperTranscriptionService,
-                "assemblyai": AAITranscriptionService,
+                "whisper": cls._create_whisper_service,
+                "assemblyai": cls._create_assemblyai_service,
             }
         
         # Get the provider implementation

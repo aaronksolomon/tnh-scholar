@@ -24,6 +24,7 @@ python = ">=3.12,<3.13"
 beautifulsoup4 = { version = "4.12.3", optional = true }
 click = "8.1.8"
 colorlog = "6.9.0"
+assemblyai = "0.34.0"
 ebooklib = { version = "0.18", optional = true }
 fitz = { version = "0.0.1.dev2", optional = true }
 flask = "3.1.0"
@@ -44,6 +45,7 @@ pillow = { version = "11.1.0", optional = true }
 pycountry = "24.6.1"
 pydantic = "2.10.4"
 pydantic-settings = "2.6.1"
+pysrt = "1.1.2"
 pydub = "0.25.1"
 platformdirs = "4.3.6"
 pyngrok = "7.2.3"

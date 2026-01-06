@@ -89,20 +89,24 @@ class JobStatusResponse(BaseModel):
     - `polls` and `elapsed_s` report client polling metrics.
     """
 
-    model_config = ConfigDict(frozen=True, extra="ignore")
+    model_config = ConfigDict(
+        frozen=True,
+        extra="ignore",
+        populate_by_name=True,
+    )
 
     # The job id for connected to this response
-    job_id: str
+    job_id: str = Field(alias="jobId")
     
     # How the client-side polling finished
-    outcome: PollOutcome
+    outcome: PollOutcome = PollOutcome.ERROR
 
     # Last known server-side status (may be None if never retrieved)
     status: Optional[JobStatus] = None
 
     # Transport-mirrored fields (when server responded with them)
-    server_error_msg: Optional[str] = None
-    payload: Optional[dict[str, Any]] = None
+    server_error_msg: Optional[str] = Field(default=None, alias="error")
+    payload: Optional[dict[str, Any]] = Field(default=None, alias="output")
 
     # Client-side polling metadata
     polls: int = 0

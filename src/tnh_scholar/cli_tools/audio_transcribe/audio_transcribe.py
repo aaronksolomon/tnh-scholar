@@ -199,10 +199,15 @@ class AudioTranscribeApp:
     def _get_audio_from_youtube(self) -> Path:
         """
         Download and return the audio file from YouTube.
+
+        Raises:
+            click.ClickException: If yt-dlp is not installed or unavailable.
         """
         if not check_ytd_version():
-            logger.error("youtube-dl version check failed.")
-            raise RuntimeError("youtube-dl version check failed.")
+            logger.error("yt-dlp is not available. Cannot download from YouTube.")
+            raise click.ClickException(
+                "yt-dlp is missing or outdated. Update with: poetry update yt-dlp"
+            )
 
         dl = DLPDownloader()
 

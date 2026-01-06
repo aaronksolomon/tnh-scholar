@@ -121,6 +121,9 @@ class TranscriptionPipeline:
             RuntimeError: If any pipeline step fails.
         """
         try:
+            if self._should_skip_diarization():
+                self.logger.info("Skipping diarization; transcribing full audio.")
+                return self._transcribe_full_audio()
             self.logger.info("Starting diarization step.")
             segments = self._run_diarization()
             if not segments:
@@ -138,6 +141,20 @@ class TranscriptionPipeline:
         except Exception as exc:
             self._handle_pipeline_error(exc)
             return None
+
+    def _should_skip_diarization(self) -> bool:
+        """
+        AssemblyAI can handle long-form audio without pyannote chunking.
+        """
+        return self.transcriber == "assemblyai"
+
+    def _transcribe_full_audio(self) -> List[str]:
+        """
+        Transcribe the full audio file without diarization/chunking.
+        """
+        ts_service = TranscriptionServiceFactory.create_service(provider=self.transcriber)
+        transcript = ts_service.transcribe(self.audio_file, self.transcription_options)
+        return [transcript.text]
 
     def _run_diarization(self) -> List[Any]:
         """
@@ -165,7 +182,7 @@ class TranscriptionPipeline:
 
         # Discriminated-union matching
         match response:
-            case DiarizationSucceeded(output=out):
+            case DiarizationSucceeded(result=out):
                 segments = getattr(out, "segments", None)
                 if segments is None:
                     raise RuntimeError("DiarizationSucceeded missing 'segments'")
@@ -179,9 +196,11 @@ class TranscriptionPipeline:
                 raise RuntimeError("Diarization incomplete (pending/running).")
 
             case _:
-                self.logger.error("Unhandled diarization response variant: "
-                                  f"{type(response).__name__} - {response!r}"
-                                  )
+                response_type = type(response).__name__
+                job_id = getattr(response, "job_id", None)
+                self.logger.error(
+                    f"Unhandled diarization response variant: {response_type} (job_id={job_id})"
+                )
                 raise RuntimeError("Unhandled diarization response variant")
 
     def _chunk_segments(self, segments):
