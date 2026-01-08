@@ -164,6 +164,27 @@ poetry run ruff check .
 poetry run ruff format .
 ```
 
+### Run CLI tools
+
+**After `make pipx-build`** (recommended for ease of use):
+
+```shell
+# CLI tools available directly in any shell
+audio-transcribe <args>
+tnh-gen <args>
+ytt-fetch <args>
+token-count <args>
+# etc.
+```
+
+**Without pipx installation** (using Poetry environment):
+
+```shell
+poetry run audio-transcribe <args>
+poetry run tnh-gen <args>
+# etc.
+```
+
 ### Run any script or tool
 
 ```shell
@@ -180,27 +201,50 @@ poetry run python scripts/some_tool.py
 
 ## 7. Makefile
 
-The repository includes a `Makefile` at the project root:
+The repository includes a `Makefile` at the project root with development automation:
 
 ```make
 PYTHON_VERSION = 3.12.4
 POETRY        = poetry
+PIPX          = pipx
+TNH_CLI_TOOLS = audio-transcribe tnh-fab tnh-gen ytt-fetch nfmt token-count tnh-setup tnh-tree sent-split json-srt srt-translate
 
-.PHONY: setup setup-dev test lint format kernel
-
+# Setup targets
 setup:
  pyenv install -s $(PYTHON_VERSION)
  pyenv local $(PYTHON_VERSION)
  $(POETRY) env use python
- $(POETRY) install  # Includes dev dependencies automatically
+ $(POETRY) install
 
 setup-dev:
  pyenv install -s $(PYTHON_VERSION)
  pyenv local $(PYTHON_VERSION)
  $(POETRY) env use python
- $(POETRY) install  # Dev dependencies included by default (dev group not optional)
+ $(POETRY) install
  $(POETRY) run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
 
+# Build and update targets
+build-all:
+ $(POETRY) self update
+ $(POETRY) update yt-dlp
+ $(POETRY) install
+ $(MAKE) pipx-build
+ $(MAKE) docs-build
+
+update:
+ $(POETRY) self update
+ $(POETRY) update
+ $(POETRY) install
+ $(POETRY) build
+ $(MAKE) pipx-build
+
+# CLI tool installation via pipx (global access)
+pipx-build:
+ @echo "Building pipx install for tnh-scholar (all CLI tools)..."
+ PIPX_LOG_DIR=$(HOME)/.local/pipx/logs $(PIPX) install --force --editable .
+ @printf "CLI tools available: audio-transcribe, tnh-gen, ytt-fetch, etc.\n"
+
+# Test and quality targets
 test:
  $(POETRY) run pytest
 
@@ -214,14 +258,30 @@ kernel:
  $(POETRY) run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
 ```
 
-Standard onboarding:
+### Common workflows
+
+**Initial setup:**
 
 ```shell
-# minimal (no dev tools)
-make setup
+make setup-dev  # Full development environment (recommended)
+```
 
-# full development environment (recommended)
-make setup-dev
+**After pulling changes:**
+
+```shell
+make update     # Update all dependencies and reinstall pipx tools
+```
+
+**Full rebuild (after major changes):**
+
+```shell
+make build-all  # Poetry update, yt-dlp, pipx tools, docs
+```
+
+**Install CLI tools globally:**
+
+```shell
+make pipx-build  # Makes audio-transcribe, tnh-gen, etc. available in any shell
 ```
 
 ---
@@ -261,6 +321,8 @@ poetry install --no-root --no-interaction --no-ansi
 poetry add <package>
 poetry update <package>
 ```
+
+- **Special case: yt-dlp** — This package is intentionally unpinned (`>=2025.1.15` in `pyproject.toml`) and should always use the latest version. Run `make build-all` to ensure yt-dlp is updated along with Poetry and docs.
 
 - Avoid global packages. Use Poetry environments or `pipx` for global tools.
 

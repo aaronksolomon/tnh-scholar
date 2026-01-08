@@ -110,7 +110,10 @@ Others: `audio-transcribe`, `ytt-fetch`, `token-count`, `nfmt`
 ## Dev Workflow
 
 ```bash
-make setup-dev    # pyenv 3.12.4 + poetry + dev deps (non-optional)
+make setup-dev    # pyenv 3.12.4 + poetry + dev deps + Jupyter kernel
+make build-all    # Full rebuild: poetry update, yt-dlp, pipx, docs
+make update       # Update deps, rebuild, reinstall pipx tools
+make pipx-build   # Install all CLI tools globally via pipx (editable)
 make test         # pytest
 make lint         # ruff check
 make format       # ruff format
@@ -118,6 +121,17 @@ poetry run mypy src/
 make docs-verify  # MkDocs strict + validation
 make ci-check     # REQUIRED before PR - runs full CI suite locally
 ```
+
+**CLI Tool Access:**
+
+All CLI tools (`audio-transcribe`, `tnh-gen`, `ytt-fetch`, `token-count`, `nfmt`, etc.) can be installed globally via pipx for use in any shell:
+
+```bash
+make pipx-build   # Installs all tools in editable mode
+# Now use commands directly: audio-transcribe, tnh-gen, etc.
+```
+
+pipx provides isolated environments per tool while making them globally accessible. Use `make update` to refresh after dependency changes.
 
 **PR Requirements (CRITICAL):**
 
@@ -192,6 +206,16 @@ docs/
    - Update CHANGELOG.md, AGENTLOG.md, TODO.md after commits, before push
 
 **For both:** Proactive architectural thinking. Don't patch—design properly, then implement.
+
+## GitHub Issue Creation
+
+**When documenting bugs or architectural issues:**
+
+- Use issue template: `.github/ISSUE_TEMPLATE.md`
+- Template supports both tactical fixes and architectural-level problems
+- Captures: user impact, technical analysis, solution options (tactical + strategic), architectural considerations
+- Create issues via: `gh issue create --body-file ISSUE_<name>.md` or manually paste into GitHub
+- Template optimized for complex cross-cutting concerns requiring ADRs
 
 ## Critical Reading (Start Here)
 

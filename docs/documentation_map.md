@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-01-02"
+created: "2026-01-04"
 auto_generated: true
 ---
 
@@ -99,7 +99,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-TR04: AssemblyAI Service Implementation Improvements](/architecture/transcription/adr/adr-tr04-assemblyai-improvements.md)
 - [ADR-VP01: Video Processing Return Types and Configuration](/architecture/video-processing/adr/adr-vp01-video-processing.md)
 - [ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
-- [ADR-VSC02: VS Code Extension Integration with tnh-gen CLI](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
+- [ADR-VSC02: VS Code Extension Architecture](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
 - [ADR-VSC03.2: Real-World Survey Addendum (VS Code as a UI/UX Platform)](/architecture/ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum.md)
 - [ADR-VSC03.3: Investigation Synthesis - Validation of Design Choices](/architecture/ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis.md)
 - [ADR-VSC03: Preliminary Investigation Findings](/architecture/ui-ux/vs-code-integration/adr-vsc03.1-findings.md)

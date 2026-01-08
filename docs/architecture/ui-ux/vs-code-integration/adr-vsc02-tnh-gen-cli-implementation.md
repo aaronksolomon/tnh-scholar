@@ -3,7 +3,7 @@ title: "ADR-VSC02: VS Code Extension Architecture"
 description: "VS Code extension architecture for consuming tnh-gen CLI - components, flow of control, and data contracts"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.5"
-status: accepted
+status: wip
 created: "2025-01-28"
 updated: "2026-01-02"
 ---
@@ -12,7 +12,7 @@ updated: "2026-01-02"
 
 This ADR defines the architecture of the VS Code extension that integrates with the `tnh-gen` CLI to provide GenAI-powered text processing capabilities within the editor.
 
-- **Status**: Accepted
+- **Status**: WIP
 - **Date**: 2025-01-28
 - **Updated**: 2026-01-02
 - **Owner**: Aaron Solomon
@@ -342,6 +342,24 @@ The adapter writes these to a temp JSON config and passes it via the global `--c
 
 - Add an optional pre-run UI to override a small subset of user-owned settings (e.g., model, max cost) for that invocation only.
 - Overrides are ephemeral: written into the temp config and never persisted to VS Code settings.
+
+---
+
+## Addendum: 2026-01-02 - Session Defaults and Session Vars Files
+
+**Context**: v0.1.0 collects prompt variables per run, but repeated prompts benefit from session-scoped defaults without requiring persistent config edits.
+
+**Decision**:
+- Introduce **session vars files** as optional inputs to the extension, stored as JSONC in user or workspace context (user-controlled files).
+- Session vars are **auto-ingested** during a session and merged with per-run inputs:
+  - Precedence: prompt defaults → session vars → run-time inputs (inline vars or input prompts).
+- When a user supplies values during a run, the extension can offer **Save session vars** (including required vars) to the chosen session vars file.
+
+**Rationale**: Session defaults reduce repetitive input while keeping persistence explicit and user-controlled. JSONC keeps files readable and consistent with VS Code settings practices.
+
+**Implementation Notes (future)**:
+- Session vars file location should be explicit in extension settings (user/workspace).
+- The extension should never write without user confirmation; saving is opt-in and scoped to the current session file.
 
 ## References
 

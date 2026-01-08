@@ -47,8 +47,9 @@ Follow [DEV_SETUP.md](DEV_SETUP.md) for the full workflow. Short version:
 ```bash
 pyenv install 3.12.4
 poetry config virtualenvs.in-project true
-make setup        # runtime deps
-make setup-dev    # runtime + dev deps (recommended)
+make setup-dev    # Full dev environment (recommended)
+make build-all    # Full rebuild (poetry update, yt-dlp, pipx, docs)
+make pipx-build   # Install CLI tools globally (audio-transcribe, tnh-gen, etc.)
 ```
 
 ### Set OpenAI credentials
@@ -112,9 +113,27 @@ Comprehensive documentation is available in multiple formats:
 
 ## Development
 
-- Common commands: `make test`, `make lint`, `make format`, `make docs`, `poetry run mypy src/`
-- Optional dependency groups (development only): `tnh-scholar[ocr]`, `tnh-scholar[gui]`, `tnh-scholar[query]`, `tnh-scholar[dev]`
-- Troubleshooting and workflows: [DEV_SETUP.md](DEV_SETUP.md)
+**Common commands:**
+
+- `make setup-dev` - Full development environment setup
+- `make build-all` - Full rebuild (poetry update, yt-dlp, pipx tools, docs)
+- `make update` - Update dependencies and reinstall pipx tools
+- `make pipx-build` - Install CLI tools globally via pipx (editable mode)
+- `make test`, `make lint`, `make format` - Testing and code quality
+- `make docs`, `make ci-check` - Documentation and CI validation
+- `poetry run mypy src/` - Type checking
+
+**CLI Tool Access:**
+
+All CLI tools can be installed globally via pipx for easy access in any shell:
+
+```bash
+make pipx-build  # Installs: audio-transcribe, tnh-gen, ytt-fetch, token-count, nfmt, etc.
+```
+
+**Optional dependency groups (development only):** `tnh-scholar[ocr]`, `tnh-scholar[gui]`, `tnh-scholar[query]`, `tnh-scholar[dev]`
+
+**Troubleshooting and workflows:** [DEV_SETUP.md](DEV_SETUP.md)
 
 ## Contributing
 
