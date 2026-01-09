@@ -17,14 +17,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **VS Code Extension Architecture ADRs** (2026-01-02)
+- **VS Code Extension Walking Skeleton (COMPLETED)** (2026-01-07)
+  - Implemented TypeScript extension with CLI integration per ADR-VSC02
+  - Three commands: "Run Prompt on Active File", "Refresh Prompt Catalog", "Show Diagnostics"
+  - TnhGenCliService: CLI adapter with process lifecycle management
+  - ConfigService: VS Code settings integration with CF01 ownership precedence
+  - PromptService: Prompt discovery and execution orchestration
+  - EditorService, FileService: File handling and split pane integration
+  - Unit and integration test harness (node:test + test-electron)
+  - All endpoints tested end-to-end in live dev extension
+  - ADR-VSC02 status updated from 'wip' to 'implemented'
+  - Files: `vscode-extension/tnh-scholar/` (24 files, 3138+ lines)
+  - ADRs: [ADR-VSC01](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md), [ADR-VSC02](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
+
+- **Workspace Improvements** (2026-01-07)
+  - Added .github/ISSUE_TEMPLATE.md for structured issue reporting (supports tactical and architectural problems)
+  - Added poetry.toml for project-level Poetry configuration
+  - Updated .gitignore with VS Code extension build artifacts and temp files
+  - Files: `.github/ISSUE_TEMPLATE.md`, `poetry.toml`, `.gitignore`
+
+- **VS Code Extension Architecture ADRs** (2026-01-02, updated 2026-01-07)
   - Accepted ADR-VSC01: VS Code Integration Strategy (CLI-first architecture)
-  - Accepted ADR-VSC02: VS Code Extension Architecture (components, flow, data contracts)
+  - Implemented ADR-VSC02: VS Code Extension Architecture (components, flow, data contracts)
   - Added Pattern→Prompt migration task to TODO.md (Priority 1, sequenced after extension)
   - Added AGENT_WORKFLOW.md: Dual-agent development workflow documentation
   - ADR-TG01 addendum: Documented API success payloads and --config flag usage
+  - ADR-TG02 addendum: Documented prompt metadata integration with extension
   - ADRs: [ADR-VSC01](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md), [ADR-VSC02](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
-  - Files: `AGENT_WORKFLOW.md`, `TODO.md`, `docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md`
+  - Files: `AGENT_WORKFLOW.md`, `TODO.md`, `docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md`, `docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md`
 
 - **ADR-A14: File-Based Registry System** (2026-01-01, PR #24)
   - Implemented JSONC-based registry for provider metadata, model capabilities, pricing, and context limits
