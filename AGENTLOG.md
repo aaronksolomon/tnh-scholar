@@ -513,3 +513,23 @@ VS Code extension walking skeleton completed and tested end-to-end. All three co
 - ADR-VSC01, ADR-VSC02, ADR-TG01, ADR-TG02
 
 ---
+
+## 2026-01-09 12:31 PST Mypy Fixes in Transcription Pipeline
+
+**Agent**: Codex (GPT-5)
+**Chat Reference**: vscode-extension-wip
+**Human Collaborator**: aaronksolomon
+
+### Context
+Addressed mypy issues in transcription pipeline (branch-only fixes requested).
+
+### Work Completed
+- [x] Aligned transcription return types and added explicit annotations (file: `src/tnh_scholar/cli_tools/audio_transcribe/transcription_pipeline.py`)
+- [x] Renamed duplicated diarization response variable to avoid redefinition
+
+### Files Modified/Created
+- `src/tnh_scholar/cli_tools/audio_transcribe/transcription_pipeline.py`: Type annotations + return shape alignment
+
+### References
+- CI Fix List (audio_transcribe/transcription_pipeline.py)
+---

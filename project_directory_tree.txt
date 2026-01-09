@@ -1,26 +1,31 @@
 .
-├── AGENT_WORKFLOW.md
-├── AGENTLOG_TEMPLATE.md
 ├── AGENTLOG.md
+├── AGENTLOG_TEMPLATE.md
 ├── AGENTS.md
-├── archive
-│   ├── agentlogs
-│   │   ├── AGENTLOG-01-01-26.md
-│   │   ├── AGENTLOG-12-07-25.md
-│   │   ├── AGENTLOG-12-10-25.md
-│   │   ├── AGENTLOG-12-11-25.md
-│   │   ├── AGENTLOG-12-13-25.md
-│   │   ├── AGENTLOG-12-23-25.md
-│   │   ├── AGENTLOG-12-31-25.md
-│   │   └── archive-index.md
-│   ├── ISSUE_DRAFT_archive_linking.md
-│   └── README.md
+├── AGENT_WORKFLOW.md
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
+├── DEV_SETUP.md
+├── LICENSE
+├── Makefile
+├── README.md
+├── TODO.md
+├── VERSIONING.md
+├── archive
+│   ├── ISSUE_DRAFT_archive_linking.md
+│   ├── README.md
+│   └── agentlogs
+│       ├── AGENTLOG-01-01-26.md
+│       ├── AGENTLOG-12-07-25.md
+│       ├── AGENTLOG-12-10-25.md
+│       ├── AGENTLOG-12-11-25.md
+│       ├── AGENTLOG-12-13-25.md
+│       ├── AGENTLOG-12-23-25.md
+│       ├── AGENTLOG-12-31-25.md
+│       └── archive-index.md
 ├── data
 │   └── books
 │       └── public_books
-├── DEV_SETUP.md
 ├── docs
 │   ├── api
 │   │   └── index.md
@@ -119,12 +124,12 @@
 │   │   │   │   ├── adr-pt04-prompt-system-refactor.md
 │   │   │   │   └── index.md
 │   │   │   ├── archive
+│   │   │   │   ├── README.md
 │   │   │   │   ├── adr
 │   │   │   │   │   ├── adr-pt01-pattern-access-strategy.md
 │   │   │   │   │   ├── adr-pt02-adopt-pattern-and-patterncatalog.md
 │   │   │   │   │   └── index.md
-│   │   │   │   ├── core-pattern-architecture.md
-│   │   │   │   └── README.md
+│   │   │   │   └── core-pattern-architecture.md
 │   │   │   ├── index.md
 │   │   │   └── prompt-system-architecture.md
 │   │   ├── provenance
@@ -206,8 +211,8 @@
 │   │       │   └── youtube-api-vs-yt-dlp-eval.md
 │   │       └── index.md
 │   ├── archive
-│   │   ├── index-old.md
-│   │   └── README.md
+│   │   ├── README.md
+│   │   └── index-old.md
 │   ├── cli-reference
 │   │   ├── archive
 │   │   │   ├── README.md
@@ -274,9 +279,6 @@
 │   │   ├── principles.md
 │   │   └── vision.md
 │   ├── research
-│   │   ├── gpt_4o_toc_tag_generation_testing
-│   │   │   └── Nov_2_testing_TOC_label_prompt.txt
-│   │   ├── gpt_development_convos.md
 │   │   ├── gpt4o-search-query-testing
 │   │   │   ├── index.md
 │   │   │   ├── queries-1-3-words.md
@@ -284,6 +286,9 @@
 │   │   ├── gpt4o-translation-experiments
 │   │   │   ├── index.md
 │   │   │   └── passage_test.md
+│   │   ├── gpt_4o_toc_tag_generation_testing
+│   │   │   └── Nov_2_testing_TOC_label_prompt.txt
+│   │   ├── gpt_development_convos.md
 │   │   ├── index.md
 │   │   ├── kb-design-document.md
 │   │   ├── metadata-summary-report.md
@@ -299,8 +304,6 @@
 │       └── prompt-system.md
 ├── docs_build_output.txt
 ├── evaluation
-├── LICENSE
-├── Makefile
 ├── mkdocs.yaml
 ├── mypy_errors.txt
 ├── notebook_management.ipynb
@@ -347,7 +350,6 @@
 │   │   └── test_sentence_splitting.ipynb
 │   ├── ocr_processing
 │   │   ├── ocr_hand_checking.ipynb
-│   │   ├── ocr_testing_asynch_batches.ipynb
 │   │   ├── ocr_testing.ipynb
 │   │   ├── ocr_testing1.ipynb
 │   │   ├── ocr_testing2.ipynb
@@ -355,7 +357,8 @@
 │   │   ├── ocr_testing4.ipynb
 │   │   ├── ocr_testing5.ipynb
 │   │   ├── ocr_testing6.ipynb
-│   │   └── ocr_testing7.ipynb
+│   │   ├── ocr_testing7.ipynb
+│   │   └── ocr_testing_asynch_batches.ipynb
 │   ├── query_text_generation
 │   │   ├── model_testing_prompt.txt
 │   │   └── prompt_sequence1.ipynb
@@ -374,19 +377,19 @@
 │   │   ├── test_patterns
 │   │   │   ├── default_line_translation.md
 │   │   │   ├── default_punctuate.md
-│   │   │   ├── default_section_old.md
 │   │   │   ├── default_section.md
+│   │   │   ├── default_section_old.md
 │   │   │   ├── default_xml_format.md
 │   │   │   ├── default_xml_paragraph_format.md
-│   │   │   ├── extract_wisdom_section.md
 │   │   │   ├── extract_wisdom1.md
 │   │   │   ├── extract_wisdom2.md
+│   │   │   ├── extract_wisdom_section.md
 │   │   │   ├── generate_markdown.md
 │   │   │   ├── generate_sections_en.md
 │   │   │   ├── generate_sections_multi_lang.md
 │   │   │   ├── identify_speakers.md
-│   │   │   ├── repair_markdown_strategy.md
 │   │   │   ├── repair_markdown.md
+│   │   │   ├── repair_markdown_strategy.md
 │   │   │   ├── simple_punctuate.md
 │   │   │   ├── simple_translate_paragraph_thay.md
 │   │   │   ├── special
@@ -441,7 +444,6 @@
 ├── poetry.toml
 ├── project_directory_tree.txt
 ├── pyproject.toml
-├── README.md
 ├── release_checklist.md
 ├── scripts
 │   ├── append_doc_map_to_index.py
@@ -548,8 +550,8 @@
 │       │   │   └── nfmt.py
 │       │   ├── sent_split
 │       │   │   ├── __init__.py
-│       │   │   ├── sent_split_bak.py
-│       │   │   └── sent_split.py
+│       │   │   ├── sent_split.py
+│       │   │   └── sent_split_bak.py
 │       │   ├── srt_translate
 │       │   │   ├── __init__.py
 │       │   │   └── srt_translate.py
@@ -754,9 +756,9 @@
 │       │   └── webhook_server.py
 │       ├── video_processing
 │       │   ├── __init__.py
+│       │   ├── video_processing.py
 │       │   ├── video_processing_old1.py
 │       │   ├── video_processing_old2.py
-│       │   ├── video_processing.py
 │       │   └── yt_transcribe.py
 │       └── xml_processing
 │           ├── __init__.py
@@ -776,8 +778,8 @@
 │   │   ├── test_audio_transcribe_pipeline.py
 │   │   ├── test_other_clis.py
 │   │   ├── test_tnh_fab.py
-│   │   ├── test_tnh_gen_coverage.py
 │   │   ├── test_tnh_gen.py
+│   │   ├── test_tnh_gen_coverage.py
 │   │   └── test_token_count.py
 │   ├── gen_ai_service
 │   │   ├── adapters
@@ -812,8 +814,6 @@
 │   │   └── test_numbered_text.py
 │   └── utils
 │       └── test_math_utils.py
-├── TODO.md
-├── VERSIONING.md
 └── vscode-extension
     └── tnh-scholar
         ├── package-lock.json
@@ -830,19 +830,24 @@
         │   │   ├── cli_args_builder.ts
         │   │   ├── cli_errors.ts
         │   │   ├── config_manager.ts
+        │   │   ├── diagnostics_service.ts
         │   │   ├── editor_service.ts
         │   │   ├── file_service.ts
         │   │   ├── output_channel.ts
         │   │   └── prompt_runner.ts
         │   ├── test
-        │   │   ├── cli_args_builder.test.ts
-        │   │   ├── path_utils.test.ts
+        │   │   ├── integration
+        │   │   │   ├── extension.test.ts
+        │   │   │   └── refresh_catalog.test.ts
         │   │   ├── runTest.ts
-        │   │   └── suite
-        │   │       ├── extension.test.ts
-        │   │       └── index.ts
+        │   │   ├── suite
+        │   │   │   └── index.ts
+        │   │   └── unit
+        │   │       ├── cli_adapter.test.ts
+        │   │       ├── cli_args_builder.test.ts
+        │   │       └── path_utils.test.ts
         │   └── utils
         │       └── path_utils.ts
         └── tsconfig.json
 
-189 directories, 657 files
+191 directories, 660 files
