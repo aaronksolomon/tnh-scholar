@@ -18,7 +18,6 @@ from tnh_scholar.gen_ai_service.config.registry import (
     get_registry_loader,
 )
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
-from tnh_scholar.gen_ai_service.models.registry import ModelPricing
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionResult,
     Message,
@@ -26,6 +25,7 @@ from tnh_scholar.gen_ai_service.models.domain import (
     Role,
 )
 from tnh_scholar.gen_ai_service.models.errors import SafetyBlocked
+from tnh_scholar.gen_ai_service.models.registry import ModelPricing
 from tnh_scholar.gen_ai_service.utils.token_utils import token_count_messages
 from tnh_scholar.prompt_system.domain.models import PromptMetadata
 

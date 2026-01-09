@@ -63,6 +63,8 @@ Brief description of what prompted this session and relevant background.
 
 ---
 
-## Session History (Most Recent First)
+## Session History (Least Recent First)
+
+Append new records at the end so the file stays chronological.
 
 ---
