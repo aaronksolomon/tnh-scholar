@@ -148,13 +148,19 @@ class TranscriptionPipeline:
         """
         return self.transcriber == "assemblyai"
 
-    def _transcribe_full_audio(self) -> List[str]:
+    def _transcribe_full_audio(self) -> List[Dict[str, Any]]:
         """
         Transcribe the full audio file without diarization/chunking.
         """
         ts_service = TranscriptionServiceFactory.create_service(provider=self.transcriber)
         transcript = ts_service.transcribe(self.audio_file, self.transcription_options)
-        return [transcript.text]
+        return [
+            {
+                "chunk": None,
+                "transcript": transcript.text,
+                "error": None,
+            }
+        ]
 
     def _run_diarization(self) -> List[Any]:
         """
@@ -164,26 +170,27 @@ class TranscriptionPipeline:
         # local import to avoid cycles
         from tnh_scholar.audio_processing.diarization import diarize, diarize_to_file
 
+        diarization_response: DiarizationResponse
         if self.save_diarization:
-            response: DiarizationResponse = diarize_to_file(
+            diarization_response = diarize_to_file(
                 audio_file_path=self.audio_file,
                 output_path=self.diarization_results_path,
                 wait_until_complete=True, # for this module defaulting to unlimited processing time
                 **(self.diarization_kwargs or {})
             )
         else:
-            response: DiarizationResponse = diarize(
+            diarization_response = diarize(
                 self.audio_file,
                 wait_until_complete=True,
                 **(self.diarization_kwargs or {})
             )
-        if response is None:
+        if diarization_response is None:
             raise RuntimeError("Diarizer returned None response")
 
         # Discriminated-union matching
-        match response:
+        match diarization_response:
             case DiarizationSucceeded(result=out):
-                segments = getattr(out, "segments", None)
+                segments: List[Any] | None = getattr(out, "segments", None)
                 if segments is None:
                     raise RuntimeError("DiarizationSucceeded missing 'segments'")
                 self.logger.info(f"Diarization succeeded: {len(segments)} segments.")
@@ -196,20 +203,20 @@ class TranscriptionPipeline:
                 raise RuntimeError("Diarization incomplete (pending/running).")
 
             case _:
-                response_type = type(response).__name__
-                job_id = getattr(response, "job_id", None)
+                response_type = type(diarization_response).__name__
+                job_id = getattr(diarization_response, "job_id", None)
                 self.logger.error(
                     f"Unhandled diarization response variant: {response_type} (job_id={job_id})"
                 )
                 raise RuntimeError("Unhandled diarization response variant")
 
-    def _chunk_segments(self, segments):
+    def _chunk_segments(self, segments: List[Any]) -> List[Any]:
         """
         Chunk diarization segments with error handling.
         """
         try:
             chunker = TimeGapChunker(config=self.diarization_config)
-            chunks = chunker.extract(segments)
+            chunks: List[Any] = chunker.extract(segments)
             if not chunks:
                 self.logger.warning("No chunks produced from segments.")
             return chunks
@@ -217,13 +224,13 @@ class TranscriptionPipeline:
             self.logger.error(f"Chunking segments failed: {exc}")
             raise RuntimeError(f"Chunking segments failed: {exc}") from exc
 
-    def _extract_audio_chunks(self, chunk_list):
+    def _extract_audio_chunks(self, chunk_list: List[Any]) -> None:
         """
         Extract audio chunks with error handling.
         Remove failed chunks from the list and add error metadata for traceability.
         """
         audio_handler = AudioHandler()
-        successful_chunks = []
+        successful_chunks: List[Any] = []
         for chunk in chunk_list:
             try:
                 audio_handler.build_audio_chunk(chunk, audio_file=self.audio_file)
@@ -234,12 +241,12 @@ class TranscriptionPipeline:
         # Update chunk_list in place to only include successful chunks
         chunk_list[:] = successful_chunks
 
-    def _transcribe_chunks(self, chunk_list):
+    def _transcribe_chunks(self, chunk_list: List[Any]) -> List[Dict[str, Any]]:
         """
         Transcribe audio chunks with error handling.
         """
         ts_service = TranscriptionServiceFactory.create_service(provider=self.transcriber)
-        transcripts = []
+        transcripts: List[Dict[str, Any]] = []
         for chunk in chunk_list:
             transcript_text = None
             error_detail = None

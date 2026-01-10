@@ -3,21 +3,22 @@ title: "ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)"
 description: "Strategy ADR defining a CLI-first VS Code integration built on the unified tnh-gen interface for extension v0.1.0."
 owner: "UI/UX Working Group"
 author: "Aaron Solomon"
-status: proposed
+status: accepted
 created: "2025-01-28"
-updated: "2025-12-11"
+updated: "2026-01-02"
 ---
 # ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)
 
 Defines the CLI-first integration strategy for the TNH-Scholar VS Code extension v0.1.0, using `tnh-gen` as the sole interface into GenAI Service capabilities.
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2025-01-28
+- **Updated:** 2026-01-02
 - **Owner:** UI/UX Working Group
 - **Author:** Aaron Solomon
 - **Tags:** strategy, vscode, genai, architecture, integration
 - **Context:** Long-term TNH-Scholar UX roadmap; GenAIService maturity; PromptCatalog stability.
-- **Related ADRs:** GenAI Service Strategy, UI/UX Strategy (VS Code as Platform)
+- **Related ADRs:** [GenAI Service Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md), [UI/UX Strategy: VS Code as Platform](/architecture/ui-ux/design/vs-code-as-ui-platform.md)
 
 ---
 
@@ -45,7 +46,7 @@ It is **not** an implementation ADR — it defines the approach, boundaries, res
 
 ### **1.1 Relationship to GenAI Service**
 
-The GenAI Service (see GenAI Service Strategy doc) provides:
+The GenAI Service (see [GenAI Service Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md)) provides:
 
 - Pattern-driven transformations via `GenAIService.generate()`
 - Rich domain model (`RenderRequest`, `CompletionEnvelope`, `PromptCatalog`)
@@ -155,14 +156,14 @@ Enables VS Code extension to build dynamic QuickPick interfaces without hardcodi
 Executes a prompt pattern with flexible variable passing:
 
 ```bash
-# Inline variables
-tnh-gen run --prompt translate \
+# Inline variables (with --api for VS Code)
+tnh-gen run --api --prompt translate \
   --input-file teaching.md \
   --var source_lang=vi \
   --var target_lang=en
 
-# JSON file variables
-tnh-gen run --prompt translate \
+# JSON file variables (with --api for VS Code)
+tnh-gen run --api --prompt translate \
   --input-file teaching.md \
   --vars variables.json
 ```
@@ -171,9 +172,9 @@ tnh-gen run --prompt translate \
 
 - Supports both JSON file and inline parameter styles
 - Auto-injects file content as `input_text` variable
-- Outputs structured JSON for programmatic consumption
-- Provides clear exit codes for error handling (0-5)
-- Generates provenance markers in output files
+- With `--api`: Outputs structured JSON for programmatic consumption
+- Provides clear exit codes for error handling (0-5 per ADR-TG01)
+- Generates provenance markers in output files (YAML frontmatter)
 
 #### **`tnh-gen config`** - Manage Configuration
 
@@ -199,14 +200,14 @@ Workflow:
 1. Execute `tnh-gen list --api`
 2. Show QuickPick with prompt names + descriptions
 3. For selected prompt, show input form for required variables
-4. Execute `tnh-gen run --prompt <key> --input-file <active_file> --vars <temp.json>`
+4. Save active document to a temp file, then execute `tnh-gen run --api --prompt <key> --input-file <temp_file> --vars <temp.json>`
 5. Parse JSON response
 6. Write output to `<basename>.<prompt_key>.<ext>`
 7. Open output file in split editor
 
 #### Command 2: "TNH Scholar: Refresh Prompt Catalog"
 
-- Re-executes `tnh-gen list`
+- Re-executes `tnh-gen list --api`
 - Clears extension cache
 - Shows notification with prompt count
 
@@ -231,17 +232,18 @@ Examples:
 
 **Provenance Markers:**
 
-GenAI Service automatically prepends provenance metadata to output files:
+GenAI Service automatically prepends provenance metadata to output files as YAML frontmatter:
 
-```markdown
-<!--
-TNH-Scholar Generated Content
-Pattern: translate (v1.0)
-Model: gpt-4o
-Fingerprint: sha256:abc123...
-Correlation ID: 01HQXYZ123ABC
-Generated: 2025-01-28T10:30:03Z
--->
+```yaml
+---
+provenance:
+  pattern: translate
+  version: "1.0"
+  model: gpt-4o
+  fingerprint: "sha256:abc123..."
+  correlation_id: "01HQXYZ123ABC"
+  generated: "2025-01-28T10:30:03Z"
+---
 
 [Generated content follows...]
 ```
@@ -295,7 +297,7 @@ PromptCatalog (via `PromptsAdapter`) remains the **only authoritative source** f
 
 The extension must **never duplicate** prompt metadata. All metadata is fetched dynamically via `tnh-gen list`.
 
-**Note:** This requires formalizing the PromptCatalog metadata schema. See ADR-VSC03.
+**Note:** PromptCatalog metadata schema is defined in [ADR-TG02](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md).
 
 ---
 
@@ -303,15 +305,15 @@ The extension must **never duplicate** prompt metadata. All metadata is fetched 
 
 For v0.1.0, the extension assumes `tnh-gen` is on `$PATH`.
 
-**Configuration Sources:**
+**Configuration Sources (per ADR-CF01):**
 
 ```json
-// .vscode/tnh-scholar.json (workspace-level)
+// .vscode/settings.json (workspace-level)
 {
-  "promptCatalog": "./prompts",
-  "defaultModel": "gpt-4o-mini",
-  "maxDollars": 0.10,
-  "cliPath": "/path/to/tnh-gen"  // Optional: override CLI location
+  "tnhScholar.cliPath": "/path/to/tnh-gen",
+  "tnhScholar.promptDirectory": "./prompts",
+  "tnhScholar.defaultModel": "gpt-4o-mini",
+  "tnhScholar.maxCostUsd": 0.10
 }
 ```
 
@@ -321,7 +323,7 @@ For v0.1.0, the extension assumes `tnh-gen` is on `$PATH`.
 - Discover in-project venv
 - Fallback to system Python
 
-See ADR-VSC04 for detailed configuration strategy.
+See [ADR-CF01](/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md) for detailed configuration strategy.
 
 ---
 
@@ -477,7 +479,9 @@ This ADR defines **v0.1.0** using CLI. Future versions will evolve the transport
 
 - **Transport:** `tnh-gen` CLI subprocess
 - **Goal:** Ship walking skeleton, validate UX
+- **Scope:** TypeScript extension + unit/integration tests
 - **Capabilities:** Basic file transformations, prompt discovery
+- **Documentation/Packaging:** Separate task after walking skeleton validation
 
 ### **v0.2.0: Add HTTP Service** 🔄
 
@@ -507,20 +511,26 @@ Before implementing the VS Code extension, these must be completed:
 
 ### **P0: Blocking**
 
-1. **Implement `tnh-gen` CLI** (ADR-VSC02)
+1. **Implement `tnh-gen` CLI** ✅ COMPLETE
+   - **ADR**: [ADR-TG01](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md), [ADR-TG01.1](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md)
    - Wrap GenAI Service with CLI interface
-   - Support JSON and inline variable passing
+   - Support JSON and inline variable passing (`--api` flag)
    - Add to Poetry scripts as entry point
+   - **Status**: Implemented (v0.2.3+)
 
-2. **Define PromptCatalog Metadata Schema** (ADR-VSC03)
-   - Formalize metadata fields (name, description, tags, variables)
+2. **Define PromptCatalog Metadata Schema** ✅ COMPLETE
+   - **ADR**: [ADR-TG02](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)
+   - Formalize metadata fields (name, description, tags, required_variables, optional_variables)
    - Extend `PromptsAdapter.introspect()` to return metadata
    - Create metadata validation
+   - **Status**: Implemented in tnh-gen CLI
 
-3. **Define Configuration Strategy** (ADR-VSC04)
+3. **Define Configuration Strategy** ✅ COMPLETE
+   - **ADR**: [ADR-TG01](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) §4 (Configuration)
    - Specify config file formats and locations
-   - Define precedence rules
+   - Define precedence rules (CLI flags > workspace > user > env > defaults)
    - Handle API key discovery and secrets management
+   - **Status**: Implemented in tnh-gen CLI
 
 ### **P1: High Priority**
 
@@ -540,44 +550,40 @@ Before implementing the VS Code extension, these must be completed:
 
 The following ADRs will detail implementation:
 
-### **ADR-VSC02: `tnh-gen` CLI Implementation** ✅ Created
+### **ADR-TG01: `tnh-gen` CLI Architecture** ✅ Implemented
 
-**Status:** Complete (see [adr-vsc02-tnh-gen-cli-implementation.md](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md))
+**Status:** Implemented (see [ADR-TG01](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md))
 
-**Scope:**
-
-- CLI argument parsing and validation (Click framework)
-- Command implementations (`list`, `run`, `config`, `version`)
-- Variable injection strategies (JSON file, inline params, file content)
-- GenAI Service integration and request building
+**Satisfied prerequisites:**
+- CLI implementation with `--api` flag for machine-readable output
+- Configuration strategy (precedence, file formats, API keys)
 - Error handling and exit codes (0-5 taxonomy)
-- Output formatting (JSON, YAML, table)
-- Provenance marker generation
-- Migration plan from `tnh-fab`
+- Provenance generation
 
-### **ADR-VSC03: PromptCatalog Metadata Schema** 🔴 Required
+### **ADR-TG01.1: Human-Friendly CLI Defaults** ✅ Implemented
 
-**Scope:**
+**Status:** Implemented (see [ADR-TG01.1](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md))
 
-- Metadata field definitions (name, description, tags, variables, etc.)
-- Metadata storage format (YAML frontmatter, JSON sidecar, embedded?)
-- `introspect()` API expansion
-- Validation rules and schema
-- Versioning strategy for prompts
-- Backward compatibility with existing patterns
+**Satisfied prerequisites:**
+- `--api` flag for VS Code integration (JSON output)
+- Human-friendly defaults for interactive use
 
-### **ADR-VSC04: Configuration Discovery & Management** 🔴 Required
+### **ADR-TG02: Prompt System Integration** ✅ Implemented
 
-**Scope:**
+**Status:** Implemented (see [ADR-TG02](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md))
 
-- Configuration file formats (.vscode/tnh-scholar.json, ~/.config/tnh-scholar/)
-- Precedence rules (CLI flags > workspace > user > env > defaults)
-- API key discovery and secrets management
-- Virtualenv/Poetry detection
-- CLI path override mechanisms
-- Environment variable mapping
+**Satisfied prerequisites:**
+- PromptCatalog metadata schema (required_variables, optional_variables, tags, etc.)
+- PromptsAdapter integration
+- Variable precedence rules
 
-### **ADR-VSC05: VS Code Extension Implementation** 🟡 Implementation
+### **ADR-VSC02: VS Code Extension Architecture** 🟡 Proposed
+
+**Status:** Proposed (see [adr-vsc02-tnh-gen-cli-implementation.md](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md))
+
+**Scope:** TypeScript extension architecture consuming tnh-gen CLI
+
+### **ADR-VSC05: VS Code Extension Implementation** 🟢 Future
 
 **Scope:**
 
@@ -657,14 +663,14 @@ The extension acts as a **thin client**, delegating all GenAI logic to the CLI/s
 
 **CLI Implementation:**
 
-- [ ] `tnh-gen list --api` returns prompt metadata
-- [ ] `tnh-gen run` supports JSON file variable passing
-- [ ] `tnh-gen run` supports inline `--var` parameter passing
-- [ ] `tnh-gen run` injects `--input-file` content as variable
-- [ ] CLI outputs structured JSON on success/failure
-- [ ] CLI exits with appropriate error codes (0-4)
-- [ ] CLI respects configuration precedence (flags > workspace > user > env)
-- [ ] `tnh-gen` is installable via Poetry scripts
+- [x] `tnh-gen list --api` returns prompt metadata ✅ (ADR-TG01.1)
+- [x] `tnh-gen run` supports JSON file variable passing ✅ (ADR-TG02)
+- [x] `tnh-gen run` supports inline `--var` parameter passing ✅ (ADR-TG02)
+- [x] `tnh-gen run` injects `--input-file` content as variable ✅ (ADR-TG02)
+- [x] CLI outputs structured JSON with `--api` flag ✅ (ADR-TG01.1)
+- [x] CLI exits with appropriate error codes (0-5) ✅ (ADR-TG01)
+- [x] CLI respects configuration precedence ✅ (ADR-CF01)
+- [x] `tnh-gen` is installable via Poetry scripts ✅ (v0.2.3+)
 
 **VS Code Extension:**
 
@@ -689,15 +695,18 @@ The extension acts as a **thin client**, delegating all GenAI logic to the CLI/s
 
 **Current:** Proposed (awaiting approval)
 
+**Prerequisites Complete:**
+
+1. ✅ ADR-TG01: `tnh-gen` CLI architecture (implemented v0.2.3+)
+2. ✅ ADR-TG01.1: `--api` flag for machine-readable output (implemented)
+3. ✅ ADR-TG02: Prompt system integration (implemented)
+4. ✅ ADR-CF01: Configuration strategy (accepted)
+
 **Next Steps:**
 
-1. ✅ Review and approve ADR-VSC01 (this document)
-2. 🔴 Write ADR-VSC02 (`tnh-gen` CLI implementation)
-3. 🔴 Write ADR-VSC03 (PromptCatalog metadata schema)
-4. 🔴 Write ADR-VSC04 (Configuration discovery)
-5. 🟡 Implement `tnh-gen` CLI
-6. 🟡 Implement VS Code extension
-7. 🟢 Ship v0.1.0
+1. 🟡 Review and approve ADR-VSC01 (this document) + ADR-VSC02
+2. 🟡 Implement VS Code extension (walking skeleton)
+3. 🟢 Ship v0.1.0
 
 ---
 
@@ -728,12 +737,11 @@ The extension acts as a **thin client**, delegating all GenAI logic to the CLI/s
 7. Extension executes:
 
    ```bash
-   tnh-gen run --prompt translate \
+   tnh-gen run --api --prompt translate \
      --input-file teaching.md \
      --var source_lang=vi \
      --var target_lang=en \
-     --var context="Dharma talk on mindfulness" \
-     --output-file teaching.translate.md
+     --var context="Dharma talk on mindfulness"
    ```
 
 8. Output file `teaching.translate.md` opens in split pane with provenance header

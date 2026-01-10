@@ -805,4 +805,78 @@ schema_version: "1.0"
 
 ---
 
+## Addendum: 2026-01-01 - API Success Payloads and `--config` Usage
+
+**Context**: VS Code integration needs stable, machine-readable success payloads and a non-persistent way to pass per-call configuration.
+
+**Decision**:
+- Success payload schemas are defined in `src/tnh_scholar/cli_tools/tnh_gen/types.py:120` (`ListApiPayload`, `RunSuccessPayload`, `VersionPayload`).
+- The global `--config` flag is the supported mechanism to pass a per-call config file without mutating user or workspace state (`src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:25`).
+
+**Rationale**: These contracts are already implemented and align with ADR-CF01 precedence. Using `--config` keeps VS Code integration explicit and avoids persistent writes.
+
+**Implementation Changes**: None (documentation-only clarification of existing behavior).
+
+---
+
+---
+
+## Addendum: 2026-01-02 - Add `--prompt-dir` Global Flag
+
+**Context**: Users need a convenient way to override the prompt catalog directory for one-off CLI calls without setting environment variables or modifying config files.
+
+**Current State**: The prompt catalog directory can only be configured via:
+- Environment variable: `TNH_PROMPT_DIR`
+- Config files (workspace or user)
+- The generic `--config` flag pointing to a custom config file
+
+**Problem**: For one-off operations (testing different prompt directories, CI/CD, development workflows), users must either:
+```bash
+# Awkward - requires environment setup
+TNH_PROMPT_DIR=/some/other/prompts tnh-gen list
+
+# OR create a temporary config file
+echo "prompt_catalog_dir: /some/other/prompts" > /tmp/config.yaml
+tnh-gen --config /tmp/config.yaml list
+```
+
+**Decision**: Add `--prompt-dir` global flag for direct command-line override of prompt catalog directory.
+
+**Proposed Syntax**:
+```bash
+# Clean and explicit
+tnh-gen --prompt-dir /some/other/prompts list
+tnh-gen --prompt-dir ./test-prompts run --prompt translate --input-file test.md
+```
+
+**Implementation Details**:
+- Add `--prompt-dir` to global flags in `cli_callback()` (`src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:26`)
+- Insert into configuration precedence at CLI flags level (highest precedence)
+- Pass through config override system (same mechanism as `--config`)
+- Update `ConfigData` type to accept `prompt_catalog_dir` override
+- Update help text to document the flag
+
+**Precedence Impact**:
+Updated configuration precedence order (highest to lowest):
+1. **CLI flags** (e.g., `--model gpt-4o`, **`--prompt-dir /path`**)
+2. **Workspace config** (`.vscode/tnh-scholar.json`)
+3. **User config** (`~/.config/tnh-scholar/config.json`)
+4. **Environment variables** (`TNH_PROMPT_DIR`, `OPENAI_API_KEY`)
+5. **Defaults** (defined in GenAI Service)
+
+**Rationale**:
+- Follows existing pattern of `--config` global flag for per-call overrides
+- Aligns with "human-friendly defaults" design philosophy (ADR-TG01.1)
+- Common pattern in other CLI tools (e.g., `docker --config`, `git --git-dir`)
+- No persistent state mutation - override only applies to current invocation
+
+**Status**: Accepted addendum; implementation pending
+
+**Related Files**:
+- `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:26` (add flag)
+- `src/tnh_scholar/cli_tools/tnh_gen/config_loader.py` (handle override)
+- `docs/cli-reference/tnh-gen.md` (update documentation)
+
+---
+
 **Approval Path**: Architecture review → Implementation → Testing → Documentation

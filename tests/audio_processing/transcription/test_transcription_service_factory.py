@@ -19,6 +19,6 @@ def test_factory_creates_assemblyai_when_installed() -> None:
     if importlib.util.find_spec("assemblyai") is None:
         pytest.skip("assemblyai is not installed; skipping installed-provider test")
 
-    service = TranscriptionServiceFactory.create_service(provider="assemblyai")
+    service = TranscriptionServiceFactory.create_service(provider="assemblyai", api_key="test-key")
 
     assert service is not None

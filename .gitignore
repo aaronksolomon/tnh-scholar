@@ -52,6 +52,13 @@ patterns/
 *.json
 *.jsonl
 
+# Exceptions: Allow specific JSON/JSONL files to be tracked
+!vscode-extension/**/package*.json
+!vscode-extension/**/tsconfig*.json
+!src/**/*.json
+!src/**/*.jsonl
+!src/**/*.jsonc
+
 # Big files
 *.pdf
 *.jpeg
@@ -103,6 +110,12 @@ patterns/
 
 # VS code
 .vscode
+
+# VS Code extension test harness artifacts
+vscode-extension/tnh-scholar/.vscode-test/
+vscode-extension/tnh-scholar/node_modules/
+vscode-extension/tnh-scholar/dist/
+vscode-extension/tnh-scholar/audio_transcriptions/
 
 *.swp
 

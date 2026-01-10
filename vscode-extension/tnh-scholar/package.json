@@ -1,0 +1,77 @@
+{
+  "name": "tnh-scholar",
+  "displayName": "TNH Scholar",
+  "description": "VS Code extension for TNH Scholar prompt workflows via tnh-gen.",
+  "version": "0.1.0",
+  "publisher": "tnh-scholar",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:tnhScholar.runPromptOnActiveFile",
+    "onCommand:tnhScholar.refreshPromptCatalog",
+    "onCommand:tnhScholar.showDiagnostics"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "tnhScholar.runPromptOnActiveFile",
+        "title": "TNH Scholar: Run Prompt on Active File"
+      },
+      {
+        "command": "tnhScholar.refreshPromptCatalog",
+        "title": "TNH Scholar: Refresh Prompt Catalog"
+      },
+      {
+        "command": "tnhScholar.showDiagnostics",
+        "title": "TNH Scholar: Show Diagnostics"
+      }
+    ],
+    "configuration": {
+      "title": "TNH Scholar",
+      "properties": {
+        "tnhScholar.cliPath": {
+          "type": "string",
+          "default": null,
+          "description": "Path to tnh-gen CLI executable (auto-detected if not set)."
+        },
+        "tnhScholar.promptDirectory": {
+          "type": "string",
+          "default": null,
+          "description": "Path to prompt directory (maps to prompt_catalog_dir)."
+        },
+        "tnhScholar.defaultModel": {
+          "type": "string",
+          "default": "gpt-4o-mini",
+          "description": "Default model for prompts (maps to default_model)."
+        },
+        "tnhScholar.maxCostUsd": {
+          "type": "number",
+          "default": 0.1,
+          "description": "Maximum cost per request in USD (maps to max_dollars)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "vscode:prepublish": "npm run compile",
+    "test": "node --test --require ts-node/register src/test/unit/**/*.test.ts",
+    "test:integration": "npm run compile && node ./dist/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/vscode": "^1.85.0",
+    "@types/mocha": "^10.0.6",
+    "@vscode/test-electron": "^2.4.0",
+    "mocha": "^10.4.0",
+    "glob": "^10.3.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  }
+}

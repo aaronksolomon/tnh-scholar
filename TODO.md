@@ -5,14 +5,15 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
+updated: "2026-01-07"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-01-01 (ADR-A14 Registry System Completed)
+> **Last Updated**: 2026-01-07 (VS Code Extension Walking Skeleton completed)
 > **Version**: 0.2.3 (Alpha)
-> **Status**: Active Development - VS Code Extension Ready
+> **Status**: Active Development - VS Code Extension Implemented
 >
 > **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 > Use `####` (h4) for task headers within priority sections.
@@ -69,21 +70,66 @@ This section organizes work into three priority levels based on criticality for 
   - `tests/gen_ai_service/test_registry_*.py` (comprehensive test suite)
 - **Related**: Unblocks VS Code Extension Walking Skeleton
 
-#### 🔮 VS Code Extension Walking Skeleton
+#### ✅ VS Code Extension Walking Skeleton
 
-- **Status**: NOT STARTED - **READY TO START** (Registry unblocked)
-- **Priority**: **HIGHEST PRIORITY** (Foundation complete)
-- **ADR**: [ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md), [ADR-VSC02: Extension Implementation](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
-- **Estimate**: 8-12 hours (first working prototype)
+- **Status**: COMPLETED ✅ (2026-01-07)
+- **ADR**: [ADR-VSC01: VS Code Integration Strategy](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md) (`accepted`), [ADR-VSC02: Extension Architecture](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md) (`implemented`)
+- **Scope**: TypeScript extension + unit/integration tests
 - **What**: Minimal VS Code extension that enables "Run Prompt on Active File" workflow
-- **Capabilities**:
+- **Deliverables**:
+  - [x] ADR-VSC01 and ADR-VSC02 ready for review (scope clarified)
+  - [x] CO reviews ADRs independently (completed with architecture improvements)
+  - [x] User approves ADRs → `accepted` status (2026-01-02)
+  - [x] TypeScript extension scaffold (CLI adapter, command implementation)
+  - [x] Unit tests for CLI adapter
+  - [x] Integration test for full command workflow
+  - [x] Manual validation: Run prompt on active file end-to-end (all 3 endpoints tested)
+- **Completed Capabilities**:
   - Command: "TNH Scholar: Run Prompt on Active File"
+  - Command: "TNH Scholar: Refresh Prompt Catalog"
+  - Command: "TNH Scholar: Show Diagnostics"
   - QuickPick prompt selector (from `tnh-gen list --api`)
   - Dynamic variable input form based on prompt metadata
-  - Execute via `tnh-gen run` subprocess
+  - Execute via `tnh-gen run` subprocess with temp config
   - Open output file in split pane
-- **Validation**: Proves bootstrapping concept - use extension to develop TNH Scholar faster
-- **Dependencies**: ✅ Registry system complete (model metadata available)
+  - Unit and integration test harness
+- **Follow-up Tasks** (separate, lower priority):
+  - Extension packaging for VS Code Marketplace
+  - User-facing documentation and guides
+  - Extension publishing workflow
+- **Validation**: ✅ Proves bootstrapping concept - extension ready to accelerate TNH Scholar development
+- **Next**: Use extension for Pattern→Prompt Migration validation
+
+#### 🔮 Pattern→Prompt Migration and Metadata Standardization
+
+- **Status**: NOT STARTED - **SEQUENCED AFTER VS CODE EXTENSION**
+- **Priority**: **PRIORITY 1** (Same tier as VS Code integration, deferred for risk minimization)
+- **ADR**: [ADR-PT04: Prompt System Refactor](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- **Strategy**: Defer until after VS Code extension walking skeleton complete (ADR-VSC02 implementation)
+- **Rationale**:
+  - VS Code extension works with current pattern/prompt system (not blocking)
+  - Avoid simultaneous major changes (extension + prompt migration)
+  - Dogfooding: Use working VS Code extension to help validate migrated prompts
+  - Clear dependency: Extension provides testing surface for prompt metadata changes
+- **What**: Complete Pattern→Prompt terminology migration and standardize metadata structure
+- **Scope**:
+  - Migrate `~/.config/tnh_scholar/patterns/` → `~/.config/tnh_scholar/prompts/`
+  - Remove `TNH_PATTERN_DIR` references (replace with `TNH_PROMPT_DIR`)
+  - Standardize all prompt files with proper metadata structure (YAML frontmatter)
+  - Update code references: `ai_text_processing/prompts.py` and imports
+  - Update environment variable references throughout codebase
+- **Current State**:
+  - Terminology partially migrated (docs use "prompt", code still references "pattern")
+  - ADR-PT04 defines target architecture (object-service compliant prompt system)
+  - `tnh-gen` CLI already uses prompt terminology but reads from patterns directory
+- **Deliverables**:
+  - [ ] Migrate all pattern template files to prompts directory
+  - [ ] Add/validate YAML frontmatter metadata to all prompt files
+  - [ ] Update code references (`TNH_PATTERN_DIR` → `TNH_PROMPT_DIR`)
+  - [ ] Update environment variable documentation
+  - [ ] Test prompt discovery and execution via VS Code extension
+  - [ ] Remove old patterns directory
+- **Related**: Mentioned in ADR-VSC02 as pending but non-blocking work
 
 #### 🚧 Provenance Format Refactor - YAML Frontmatter
 
@@ -98,6 +144,32 @@ This section organizes work into three priority levels based on criticality for 
   - [x] Update tests for new format
   - [x] Validate YAML parsing roundtrip
 - **Files Modified**: `src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py`, `tests/cli_tools/test_tnh_gen.py`, `docs/cli-reference/tnh-gen.md`
+
+#### 🔮 Add `--prompt-dir` Global Flag to tnh-gen
+
+- **Status**: NOT STARTED
+- **Priority**: HIGH (improves tnh-gen UX for one-off operations and testing)
+- **Estimate**: 1-2 hours
+- **Context**: Users need convenient way to override prompt catalog directory for one-off CLI calls without setting environment variables or creating temp config files
+- **ADR**: [ADR-TG01 Addendum 2026-01-02](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md#addendum-2026-01-02---add---prompt-dir-global-flag)
+- **Why Important**: Enables clean one-off operations (`tnh-gen --prompt-dir ./test-prompts list`) for testing, CI/CD, and development workflows
+- **Current Workarounds**:
+  - Environment variable: `TNH_PROMPT_DIR=/path tnh-gen list` (awkward)
+  - Temp config file: `tnh-gen --config /tmp/config.yaml list` (verbose)
+- **Deliverables**:
+  - [ ] Add `--prompt-dir` flag to `cli_callback()` in `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:26`
+  - [ ] Update `config_loader.py` to handle prompt directory override at CLI precedence level
+  - [ ] Update `ConfigData` type to accept `prompt_catalog_dir` override
+  - [ ] Add unit tests for flag precedence (CLI flag > workspace > user > env)
+  - [ ] Update help text and CLI reference documentation
+  - [ ] Update `docs/cli-reference/tnh-gen.md` global flags section
+- **Files to Modify**:
+  - `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py` (add flag)
+  - `src/tnh_scholar/cli_tools/tnh_gen/config_loader.py` (precedence handling)
+  - `src/tnh_scholar/cli_tools/tnh_gen/types.py` (type definitions)
+  - `tests/cli_tools/test_tnh_gen.py` (unit tests)
+  - `docs/cli-reference/tnh-gen.md` (documentation)
+- **Testing**: Verify `--prompt-dir` flag overrides all other config sources (workspace, user, env)
 
 #### 🚧 GenAIService Core Components - Final Polish
 
@@ -212,6 +284,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] Configuration loading edge cases
   - [ ] Error handling scenarios
   - [ ] Pattern catalog validation
+  - [ ] **Full CLI test suite with 100% coverage** (HIGH PRIORITY - include all CLI tools, not just tnh-gen)
   - [ ] **tnh-gen CLI comprehensive coverage** (HIGH PRIORITY - Missing basic command tests):
     - [ ] Add tests for all `tnh-gen config` commands (show, get, set, list)
     - [ ] Add tests for all `tnh-gen list` commands (simple, query)
