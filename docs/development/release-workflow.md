@@ -109,6 +109,8 @@ make release-minor
 - New CLI commands or subcommands
 - Major improvements to existing features
 
+**⚠️ Documentation Review Required**: Minor releases with new features require manual review of user-facing documentation to catch status references, feature availability claims, and deprecated tool mentions that automated tests miss. See Step 1.5 below.
+
 ### Major Release (X.y.z → X+1.0.0)
 
 ```bash
@@ -152,11 +154,56 @@ Bumping version from 0.1.4 to 0.1.5
 ✅ Version updated to 0.1.5
 
 Next steps:
-  1. Run 'make changelog-draft' to generate CHANGELOG entry
-  2. Edit CHANGELOG.md with the generated content
-  3. Run 'make release-commit' to commit changes
-  4. Run 'make release-tag' to tag and push
-  5. Run 'make release-publish' to publish to PyPI
+  1. Review user-facing documentation (see Step 1.5 below for minor/major releases)
+  2. Run 'make changelog-draft' to generate CHANGELOG entry
+  3. Edit CHANGELOG.md with the generated content
+  4. Run 'make release-commit' to commit changes
+  5. Run 'make release-tag' to tag and push
+  6. Run 'make release-publish' to publish to PyPI
+```
+
+### Step 1.5: Review User-Facing Documentation (Minor/Major Releases Only)
+
+**⚠️ Critical for feature releases**: Automated tests catch code issues, but documentation status references require human review.
+
+**When to do this**: After `make release-minor` or `make release-major`, before generating CHANGELOG.
+
+**What to check**:
+
+```bash
+# List all user-facing docs modified since last release
+git diff v$(git describe --tags --abbrev=0)..HEAD --name-only \
+  | grep -E '^(README.md|docs/(getting-started|user-guide|cli-reference)|AGENTS.md)'
+
+# Search for common status indicators that may be outdated
+grep -r "in development\|coming soon\|deprecated.*current\|current.*deprecated" \
+  README.md docs/getting-started/ docs/user-guide/ docs/cli-reference/ AGENTS.md \
+  --exclude-dir=archive
+```
+
+**Common issues to catch**:
+
+1. **Feature status claims**: "Feature X is in development" → should be "Feature X is available"
+2. **Tool availability**: "tnh-gen (in development)" → "tnh-gen (current CLI)"
+3. **Deprecation notices**: "Currently using X (Y coming soon)" → "Using Y (X deprecated)"
+4. **Example code**: Outdated commands or flags in README/getting-started guides
+5. **Version-specific notes**: "As of v0.2.0" references that need updating
+
+**Review checklist**:
+
+- [ ] README.md features list reflects current state
+- [ ] README.md example commands use current CLI tools and syntax
+- [ ] Getting Started guides reference available (not planned) features
+- [ ] CLI reference examples show current tool names
+- [ ] User guide workflows use non-deprecated tools
+- [ ] AGENTS.md CLI tools section shows correct status (v0.X.Y+)
+
+**Fix and commit before proceeding**:
+
+```bash
+# Make documentation fixes
+git add README.md docs/
+git commit -m "docs: Update status references for v0.X.0 release"
 ```
 
 ### Step 2: Generate CHANGELOG Entry
