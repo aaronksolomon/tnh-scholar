@@ -516,7 +516,7 @@ Before implementing the VS Code extension, these must be completed:
    - Wrap GenAI Service with CLI interface
    - Support JSON and inline variable passing (`--api` flag)
    - Add to Poetry scripts as entry point
-   - **Status**: Implemented (v0.2.3+)
+   - **Status**: Implemented (v0.2.2+)
 
 2. **Define PromptCatalog Metadata Schema** ✅ COMPLETE
    - **ADR**: [ADR-TG02](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)
@@ -670,7 +670,7 @@ The extension acts as a **thin client**, delegating all GenAI logic to the CLI/s
 - [x] CLI outputs structured JSON with `--api` flag ✅ (ADR-TG01.1)
 - [x] CLI exits with appropriate error codes (0-5) ✅ (ADR-TG01)
 - [x] CLI respects configuration precedence ✅ (ADR-CF01)
-- [x] `tnh-gen` is installable via Poetry scripts ✅ (v0.2.3+)
+- [x] `tnh-gen` is installable via Poetry scripts ✅ (v0.2.2+)
 
 **VS Code Extension:**
 
@@ -697,7 +697,7 @@ The extension acts as a **thin client**, delegating all GenAI logic to the CLI/s
 
 **Prerequisites Complete:**
 
-1. ✅ ADR-TG01: `tnh-gen` CLI architecture (implemented v0.2.3+)
+1. ✅ ADR-TG01: `tnh-gen` CLI architecture (implemented v0.2.2+)
 2. ✅ ADR-TG01.1: `--api` flag for machine-readable output (implemented)
 3. ✅ ADR-TG02: Prompt system integration (implemented)
 4. ✅ ADR-CF01: Configuration strategy (accepted)

@@ -74,7 +74,7 @@ tnh-gen version
 You should see output like:
 
 ```text
-tnh-gen 0.2.3 (tnh-scholar 0.2.3)
+tnh-gen 0.2.2 (tnh-scholar 0.2.2)
 Python 3.12.4 on darwin
 ```
 

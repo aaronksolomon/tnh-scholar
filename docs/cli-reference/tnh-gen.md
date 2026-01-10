@@ -509,7 +509,7 @@ tnh-gen version [OPTIONS]
 
 ```bash
 $ tnh-gen version
-tnh-gen 0.2.3 (tnh-scholar 0.2.3)
+tnh-gen 0.2.2 (tnh-scholar 0.2.2)
 Python 3.12.4 on darwin
 ```
 
@@ -518,8 +518,8 @@ Python 3.12.4 on darwin
 ```bash
 $ tnh-gen version --api
 {
-  "tnh_scholar": "0.2.3",
-  "tnh_gen": "0.2.3",
+  "tnh_scholar": "0.2.2",
+  "tnh_gen": "0.2.2",
   "python": "3.12.4",
   "platform": "darwin",
   "prompt_system_version": "1.0.0",
