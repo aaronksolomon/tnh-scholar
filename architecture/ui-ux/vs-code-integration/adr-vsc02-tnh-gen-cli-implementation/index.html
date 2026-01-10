@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="VS Code extension strategy for consuming tnh-gen CLI and providing GenAI text processing UI">
+        <meta name="description" content="VS Code extension architecture for consuming tnh-gen CLI - components, flow of control, and data contracts">
       
       
         <meta name="author" content="Aaron Solomon, Claude Sonnet 4.5">
@@ -24,7 +24,7 @@
     
     
       
-        <title>ADR-VSC02: VS Code Extension Integration with tnh-gen CLI - TNH Scholar Documentation</title>
+        <title>ADR-VSC02: VS Code Extension Architecture - TNH Scholar Documentation</title>
       
     
     
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-vsc02-vs-code-extension-integration-with-tnh-gen-cli" class="md-skip">
+        <a href="#adr-vsc02-vs-code-extension-architecture" class="md-skip">
           Skip to content
         </a>
       
@@ -178,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-VSC02: VS Code Extension Integration with tnh-gen CLI
+              ADR-VSC02: VS Code Extension Architecture
             
           </span>
         </div>
@@ -5225,7 +5225,7 @@
     
   
   
-    <span class="md-status md-status--draft"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -6183,7 +6183,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -6214,13 +6214,13 @@
           
   
   <span class="md-ellipsis">
-    ADR-VSC02: VS Code Extension Integration with tnh-gen CLI
+    ADR-VSC02: VS Code Extension Architecture
   </span>
   
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--wip"></span>
   
 
   
@@ -6232,13 +6232,13 @@
         
   
   <span class="md-ellipsis">
-    ADR-VSC02: VS Code Extension Integration with tnh-gen CLI
+    ADR-VSC02: VS Code Extension Architecture
   </span>
   
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--wip"></span>
   
 
   
@@ -6271,6 +6271,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#walking-skeleton-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Walking Skeleton Scope
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#design-constraints" class="md-nav__link">
     <span class="md-ellipsis">
       Design Constraints
@@ -6285,6 +6294,21 @@
       Related Work
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Related Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#patternprompt-migration-pending-non-blocking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern→Prompt Migration (Pending, Non-Blocking)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -6331,42 +6355,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-ui-components" class="md-nav__link">
+  <a href="#4-command-flow" class="md-nav__link">
     <span class="md-ellipsis">
-      4. UI Components
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. UI Components">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-prompt-picker-quick-pick" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.1 Prompt Picker (Quick Pick)
+      4. Command Flow
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#42-configuration-management" class="md-nav__link">
+  <a href="#5-configuration-management" class="md-nav__link">
     <span class="md-ellipsis">
-      4.2 Configuration Management
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-cli-discovery-and-version-checking" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. CLI Discovery and Version Checking
+      5. Configuration Management
     </span>
   </a>
   
@@ -6474,6 +6474,24 @@
   <a href="#open-questions" class="md-nav__link">
     <span class="md-ellipsis">
       Open Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-increment-post-v010" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Increment (Post v0.1.0)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-01-02-session-defaults-and-session-vars-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum: 2026-01-02 - Session Defaults and Session Vars Files
     </span>
   </a>
   
@@ -8738,6 +8756,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#walking-skeleton-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Walking Skeleton Scope
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#design-constraints" class="md-nav__link">
     <span class="md-ellipsis">
       Design Constraints
@@ -8752,6 +8779,21 @@
       Related Work
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Related Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#patternprompt-migration-pending-non-blocking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern→Prompt Migration (Pending, Non-Blocking)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -8798,42 +8840,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-ui-components" class="md-nav__link">
+  <a href="#4-command-flow" class="md-nav__link">
     <span class="md-ellipsis">
-      4. UI Components
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. UI Components">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-prompt-picker-quick-pick" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.1 Prompt Picker (Quick Pick)
+      4. Command Flow
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#42-configuration-management" class="md-nav__link">
+  <a href="#5-configuration-management" class="md-nav__link">
     <span class="md-ellipsis">
-      4.2 Configuration Management
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-cli-discovery-and-version-checking" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. CLI Discovery and Version Checking
+      5. Configuration Management
     </span>
   </a>
   
@@ -8947,6 +8965,24 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#next-increment-post-v010" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Increment (Post v0.1.0)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-01-02-session-defaults-and-session-vars-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum: 2026-01-02 - Session Defaults and Session Vars Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#references" class="md-nav__link">
     <span class="md-ellipsis">
       References
@@ -9021,12 +9057,12 @@
   
 
 
-<h1 id="adr-vsc02-vs-code-extension-integration-with-tnh-gen-cli">ADR-VSC02: VS Code Extension Integration with tnh-gen CLI<a class="headerlink" href="#adr-vsc02-vs-code-extension-integration-with-tnh-gen-cli" title="Link to this section">&para;</a></h1>
-<p>This ADR defines how the VS Code extension integrates with the <code>tnh-gen</code> CLI to provide GenAI-powered text processing capabilities within the editor.</p>
+<h1 id="adr-vsc02-vs-code-extension-architecture">ADR-VSC02: VS Code Extension Architecture<a class="headerlink" href="#adr-vsc02-vs-code-extension-architecture" title="Link to this section">&para;</a></h1>
+<p>This ADR defines the architecture of the VS Code extension that integrates with the <code>tnh-gen</code> CLI to provide GenAI-powered text processing capabilities within the editor.</p>
 <ul>
-<li><strong>Status</strong>: Proposed</li>
+<li><strong>Status</strong>: WIP</li>
 <li><strong>Date</strong>: 2025-01-28</li>
-<li><strong>Updated</strong>: 2025-12-27</li>
+<li><strong>Updated</strong>: 2026-01-02</li>
 <li><strong>Owner</strong>: Aaron Solomon</li>
 <li><strong>Author</strong>: Aaron Solomon, Claude Sonnet 4.5</li>
 </ul>
@@ -9038,20 +9074,51 @@
 <li><strong>Configuration Management</strong>: Configure prompt directories and GenAI settings</li>
 <li><strong>Provenance Tracking</strong>: Show metadata about generated content</li>
 </ol>
+<h3 id="walking-skeleton-scope">Walking Skeleton Scope<a class="headerlink" href="#walking-skeleton-scope" title="Link to this section">&para;</a></h3>
+<p><strong>v0.1.0 includes:</strong></p>
+<ul>
+<li>TypeScript extension implementation</li>
+<li>Unit and integration tests</li>
+<li>One working command: "Run Prompt on Active File"</li>
+</ul>
+<p><strong>Separate tasks (post-validation):</strong></p>
+<ul>
+<li>Extension packaging for VS Code Marketplace</li>
+<li>User-facing documentation and guides</li>
+</ul>
 <h3 id="design-constraints">Design Constraints<a class="headerlink" href="#design-constraints" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>No Direct GenAI Integration</strong>: Extension should not directly call OpenAI/Anthropic APIs</li>
 <li><strong>CLI as Contract</strong>: Extension consumes <code>tnh-gen</code> CLI as stable interface</li>
 <li><strong>JSON Protocol</strong>: Structured JSON I/O enables programmatic consumption</li>
 <li><strong>Error Handling</strong>: Extension must gracefully handle CLI errors with user-friendly messages</li>
+<li><strong>CF01 Compliance</strong>: Configuration resolution follows ADR-CF01 ownership-based precedence; precedence is per-setting (owner category), not a single global order.</li>
+<li><strong>OS01 Compliance</strong>: Implementation follows the object-service pattern (protocols/abstractions, stateful service objects, and composed collaborators instead of procedural sprawl).</li>
 </ul>
 <h3 id="related-work">Related Work<a class="headerlink" href="#related-work" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>ADR-VSC01</strong>: VS Code Integration Strategy (establishes CLI-based architecture)</li>
-<li><strong>ADR-TG01</strong>: CLI Architecture (defines <code>tnh-gen</code> command structure, error codes, configuration)</li>
-<li><strong>ADR-TG01.1</strong>: Human-Friendly CLI Defaults (defines <code>--api</code> flag for machine-readable contract output)</li>
-<li><strong>ADR-TG02</strong>: Prompt System Integration (defines CLI ↔ prompt system integration patterns)</li>
+<li><strong><a href="../adr-vsc01-vscode-integration-strategy/">ADR-VSC01: VS Code Integration Strategy</a></strong> - Establishes CLI-based architecture</li>
+<li><strong><a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01: CLI Architecture</a></strong> - CLI command structure, error codes, configuration</li>
+<li><strong><a href="../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/">ADR-TG01.1: Human-Friendly CLI Defaults</a></strong> - <code>--api</code> flag for machine-readable contract output</li>
+<li><strong><a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02: Prompt System Integration</a></strong> - CLI ↔ prompt system integration patterns</li>
+<li><strong><a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/">ADR-OS01: Object-Service Architecture</a></strong> - Layered design, protocols, separation of concerns</li>
+<li><strong><a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/">ADR-CF01: Runtime Context Strategy</a></strong> - Configuration discovery and precedence</li>
 </ul>
+<h4 id="patternprompt-migration-pending-non-blocking">Pattern→Prompt Migration (Pending, Non-Blocking)<a class="headerlink" href="#patternprompt-migration-pending-non-blocking" title="Link to this section">&para;</a></h4>
+<p>The codebase is undergoing a Pattern→Prompt terminology migration (ADR-PT04). Current state:</p>
+<ul>
+<li><strong>Code</strong>: Still references <code>TNH_PATTERN_DIR</code> and <code>~/.config/tnh_scholar/patterns/</code></li>
+<li><strong>CLI</strong>: <code>tnh-gen</code> uses prompt terminology but reads from patterns directory</li>
+<li><strong>Docs</strong>: Use "prompt" terminology consistently</li>
+</ul>
+<p><strong>Impact on Extension</strong>: None. The extension calls <code>tnh-gen list/run</code> via <code>--api</code> flag, which abstracts the underlying directory structure. The CLI will continue working during and after the migration.</p>
+<p><strong>Sequencing Strategy</strong>: Pattern→Prompt migration is Priority 1 but deferred until after VS Code extension walking skeleton complete (see TODO.md). This allows:</p>
+<ol>
+<li>Extension validation without simultaneous major changes</li>
+<li>Dogfooding: Use working extension to test migrated prompts</li>
+<li>Risk minimization: Avoid breaking extension during prompt migration</li>
+</ol>
+<p>See <a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/">ADR-PT04: Prompt System Refactor</a> for migration details.</p>
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
 <h3 id="1-extension-architecture">1. Extension Architecture<a class="headerlink" href="#1-extension-architecture" title="Link to this section">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────────┐
@@ -9072,272 +9139,196 @@
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>         └───────────────┘
 </span></code></pre></div>
 <h3 id="2-cli-invocation-strategy">2. CLI Invocation Strategy<a class="headerlink" href="#2-cli-invocation-strategy" title="Link to this section">&para;</a></h3>
-<p>The extension spawns <code>tnh-gen</code> as a child process and communicates via JSON using the <code>--api</code> flag for structured API output (ADR-TG01.1):</p>
+<p><strong>Architecture:</strong></p>
+<p>The extension spawns <code>tnh-gen</code> as a child process and communicates via JSON using the <code>--api</code> flag (ADR-TG01.1).</p>
+<p><strong>Component: <code>TnhGenCliAdapter</code></strong></p>
+<p><strong>Responsibilities:</strong></p>
 <ul>
-<li><strong>Always pass <code>--api</code></strong> for machine-readable output; do not rely on <code>--format json</code> without <code>--api</code>.</li>
-<li><strong>Parse stdout as JSON</strong>; treat stderr as diagnostics (warnings, trace IDs, debug info).</li>
+<li>Spawn <code>tnh-gen</code> subprocess with appropriate arguments</li>
+<li>Parse JSON responses from stdout</li>
+<li>Handle process lifecycle (spawn, monitor, cleanup)</li>
+<li>Throw structured errors on non-zero exit codes</li>
 </ul>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// src/cli/CliAdapter.ts</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">spawn</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;child_process&#39;</span><span class="p">;</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">TnhGenCliAdapter</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="nx">cliPath</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="nx">cliPath</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">cliPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">cliPath</span><span class="p">;</span><span class="w"> </span><span class="c1">// e.g., /path/to/venv/bin/tnh-gen</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">listPrompts</span><span class="p">(</span><span class="nx">options</span><span class="o">?:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">tag?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="nx">search?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">})</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">PromptListResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;list&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;--api&#39;</span><span class="p">];</span><span class="w"> </span><span class="c1">// Use --api for full API metadata</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">options</span><span class="o">?</span><span class="p">.</span><span class="nx">tag</span><span class="p">)</span><span class="w"> </span><span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;--tag&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">.</span><span class="nx">tag</span><span class="p">);</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">options</span><span class="o">?</span><span class="p">.</span><span class="nx">search</span><span class="p">)</span><span class="w"> </span><span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;--search&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">.</span><span class="nx">search</span><span class="p">);</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">spawnCli</span><span class="p">(</span><span class="nx">args</span><span class="p">);</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">stdout</span><span class="p">);</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">runPrompt</span><span class="p">(</span><span class="nx">request</span><span class="o">:</span><span class="w"> </span><span class="kt">RunPromptRequest</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">RunPromptResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;run&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;--prompt&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">request</span><span class="p">.</span><span class="nx">promptKey</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;--api&#39;</span><span class="p">];</span><span class="w"> </span><span class="c1">// Use --api for full response metadata</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">    </span><span class="c1">// Add input file</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">inputFile</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">      </span><span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;--input-file&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">request</span><span class="p">.</span><span class="nx">inputFile</span><span class="p">);</span>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">    </span><span class="c1">// Add variables</span>
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">]</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nb">Object</span><span class="p">.</span><span class="nx">entries</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">variables</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">      </span><span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;--var&#39;</span><span class="p">,</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="sb">=</span><span class="si">${</span><span class="nx">value</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">    </span><span class="c1">// Add output file</span>
-</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">outputFile</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">      </span><span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;--output-file&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">request</span><span class="p">.</span><span class="nx">outputFile</span><span class="p">);</span>
-</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>
-</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">spawnCli</span><span class="p">(</span><span class="nx">args</span><span class="p">);</span>
-</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">stdout</span><span class="p">);</span>
-</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>
-</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="nx">spawnCli</span><span class="p">(</span><span class="nx">args</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[])</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="p">{</span><span class="w"> </span><span class="nx">stdout</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="nx">stderr</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="nx">exitCode</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="p">}</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span><span class="w"> </span><span class="nx">reject</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">proc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">spawn</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cliPath</span><span class="p">,</span><span class="w"> </span><span class="nx">args</span><span class="p">);</span>
-</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="w">      </span><span class="kd">let</span><span class="w"> </span><span class="nx">stdout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
-</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">      </span><span class="kd">let</span><span class="w"> </span><span class="nx">stderr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
-</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>
-</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="w">      </span><span class="nx">proc</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">stdout</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
-</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="w">      </span><span class="nx">proc</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">stderr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
-</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>
-</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="w">      </span><span class="nx">proc</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;close&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">code</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">code</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a><span class="w">          </span><span class="nx">resolve</span><span class="p">({</span><span class="w"> </span><span class="nx">stdout</span><span class="p">,</span><span class="w"> </span><span class="nx">stderr</span><span class="p">,</span><span class="w"> </span><span class="nx">exitCode</span><span class="o">:</span><span class="w"> </span><span class="kt">code</span><span class="w"> </span><span class="p">});</span>
-</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a><span class="w">          </span><span class="nx">reject</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">CliError</span><span class="p">(</span><span class="nx">stdout</span><span class="p">,</span><span class="w"> </span><span class="nx">stderr</span><span class="p">,</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="p">));</span>
-</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a><span class="w">      </span><span class="p">});</span>
-</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a><span class="w">    </span><span class="p">});</span>
-</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a><span class="p">}</span>
-</span></code></pre></div>
+<p><strong>Key methods:</strong></p>
+<ul>
+<li><code>listPrompts(options?): Promise&lt;PromptListResponse&gt;</code> - Invokes <code>tnh-gen list --api</code></li>
+<li><code>runPrompt(request): Promise&lt;RunPromptResponse&gt;</code> - Invokes <code>tnh-gen run --api</code></li>
+<li><code>getVersion(): Promise&lt;VersionInfo&gt;</code> - Invokes <code>tnh-gen version --api</code></li>
+</ul>
+<p><strong>Protocol contract:</strong></p>
+<ul>
+<li><strong>Always pass <code>--api</code></strong> flag for machine-readable output</li>
+<li><strong>Parse stdout as JSON</strong> - Contains response data</li>
+<li><strong>stderr</strong> - Diagnostics only (warnings, trace IDs, debug info); log to Output channel, not used for UX logic</li>
+<li><strong>Exit codes</strong> - 0 (success), 1-5 (error categories per ADR-TG01)</li>
+<li><strong>Success payload schemas</strong> - <code>ListApiPayload</code>, <code>RunSuccessPayload</code>, <code>VersionPayload</code> in <code>src/tnh_scholar/cli_tools/tnh_gen/types.py:120</code></li>
+<li><strong>Error parsing</strong> - On non-zero exit, attempt JSON parse for structured error; if missing/unparseable, show a generic failure and log stderr tail</li>
+</ul>
 <h3 id="3-error-handling">3. Error Handling<a class="headerlink" href="#3-error-handling" title="Link to this section">&para;</a></h3>
-<p>Parse JSON error responses from <code>--api</code> mode (ADR-TG01.1 §3.4) and map CLI exit codes (ADR-TG01 §5) to user-friendly messages:</p>
-<p><strong>Diagnostics</strong>: stderr contains trace IDs and warnings for correlation; stdout remains JSON for programmatic parsing.</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// src/cli/CliError.ts</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">CliError</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="ne">Error</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nx">stdout</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nx">stderr</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="nx">exitCode</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="k">super</span><span class="p">(</span><span class="nx">CliError</span><span class="p">.</span><span class="nx">formatMessage</span><span class="p">(</span><span class="nx">stdout</span><span class="p">,</span><span class="w"> </span><span class="nx">exitCode</span><span class="p">));</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="nx">formatMessage</span><span class="p">(</span><span class="nx">stdout</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">exitCode</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">      </span><span class="c1">// With --api, errors are JSON with full diagnostics</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">stdout</span><span class="p">);</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;failed&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">        </span><span class="c1">// Use CLI&#39;s structured error message (ADR-TG01.1 §3.4)</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">diagnostics</span><span class="o">?</span><span class="p">.</span><span class="nx">suggestion</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">          </span><span class="o">?</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">error</span><span class="si">}</span><span class="sb">\n\nSuggestion: </span><span class="si">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">diagnostics</span><span class="p">.</span><span class="nx">suggestion</span><span class="si">}</span><span class="sb">`</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">error</span><span class="p">;</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">      </span><span class="c1">// Fallback to generic message if JSON parse fails</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nx">CliError</span><span class="p">.</span><span class="nx">genericMessage</span><span class="p">(</span><span class="nx">exitCode</span><span class="p">);</span>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>
-</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="nx">genericMessage</span><span class="p">(</span><span class="nx">exitCode</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="nx">exitCode</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="nx">1</span><span class="o">:</span><span class="w"> </span><span class="kt">return</span><span class="w"> </span><span class="s1">&#39;Policy error: Budget exceeded or validation failed&#39;</span><span class="p">;</span>
-</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="nx">2</span><span class="o">:</span><span class="w"> </span><span class="kt">return</span><span class="w"> </span><span class="s1">&#39;Transport error: API failure or network issue&#39;</span><span class="p">;</span>
-</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="nx">3</span><span class="o">:</span><span class="w"> </span><span class="kt">return</span><span class="w"> </span><span class="s1">&#39;Provider error: Model unavailable or rate limit exceeded&#39;</span><span class="p">;</span>
-</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="nx">4</span><span class="o">:</span><span class="w"> </span><span class="kt">return</span><span class="w"> </span><span class="s1">&#39;Format error: Invalid JSON or schema validation failed&#39;</span><span class="p">;</span>
-</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="nx">5</span><span class="o">:</span><span class="w"> </span><span class="kt">return</span><span class="w"> </span><span class="s1">&#39;Input error: Invalid arguments or missing required variables&#39;</span><span class="p">;</span>
-</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">      </span><span class="nx">default</span><span class="o">:</span><span class="w"> </span><span class="kt">return</span><span class="w"> </span><span class="sb">`Unknown error (exit code </span><span class="si">${</span><span class="nx">exitCode</span><span class="si">}</span><span class="sb">)`</span><span class="p">;</span>
-</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="p">}</span>
+<p><strong>Component: <code>CliError</code></strong></p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Parse JSON error responses from CLI stdout (ADR-TG01.1 §3.4)</li>
+<li>Map exit codes to user-friendly messages (ADR-TG01 §5)</li>
+<li>Extract diagnostics and suggestions from structured errors</li>
+<li>Provide fallback messages when JSON parsing fails</li>
+</ul>
+<p><strong>Exit code mapping:</strong></p>
+<ul>
+<li><strong>0</strong>: Success</li>
+<li><strong>1</strong>: Policy error (budget exceeded, validation failed)</li>
+<li><strong>2</strong>: Transport error (API failure, network issue)</li>
+<li><strong>3</strong>: Provider error (model unavailable, rate limit)</li>
+<li><strong>4</strong>: Format error (invalid JSON, schema validation)</li>
+<li><strong>5</strong>: Input error (invalid arguments, missing variables)</li>
+</ul>
+<p><strong>Error response format (from <code>--api</code>):</strong></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;failed&quot;</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Human-readable error message&quot;</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;diagnostics&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">&quot;suggestion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Try X to resolve&quot;</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">&quot;trace_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;correlation-id&quot;</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nt">&quot;exit_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">}</span>
 </span></code></pre></div>
-<h3 id="4-ui-components">4. UI Components<a class="headerlink" href="#4-ui-components" title="Link to this section">&para;</a></h3>
-<h4 id="41-prompt-picker-quick-pick">4.1 Prompt Picker (Quick Pick)<a class="headerlink" href="#41-prompt-picker-quick-pick" title="Link to this section">&para;</a></h4>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// src/commands/runPrompt.ts</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">import</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">vscode</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;vscode&#39;</span><span class="p">;</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">TnhGenCliAdapter</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../cli/CliAdapter&#39;</span><span class="p">;</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">export</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">runPromptCommand</span><span class="p">(</span><span class="nx">context</span><span class="o">:</span><span class="w"> </span><span class="kt">vscode.ExtensionContext</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">cli</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">TnhGenCliAdapter</span><span class="p">(</span><span class="nx">getCliPath</span><span class="p">(</span><span class="nx">context</span><span class="p">));</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="c1">// 1. List prompts</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">cli</span><span class="p">.</span><span class="nx">listPrompts</span><span class="p">();</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="c1">// 2. Show quick pick</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">selected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">showQuickPick</span><span class="p">(</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="nx">response</span><span class="p">.</span><span class="nx">prompts</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">({</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">      </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="kt">p.name</span><span class="p">,</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">      </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="kt">p.tags.join</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">),</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">      </span><span class="nx">detail</span><span class="o">:</span><span class="w"> </span><span class="kt">p.description</span><span class="p">,</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">      </span><span class="nx">promptKey</span><span class="o">:</span><span class="w"> </span><span class="kt">p.key</span><span class="p">,</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">      </span><span class="nx">requiredVariables</span><span class="o">:</span><span class="w"> </span><span class="kt">p.required_variables</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">    </span><span class="p">})),</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">placeHolder</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Select a prompt to run&#39;</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">  </span><span class="p">);</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">selected</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">  </span><span class="c1">// 3. Collect variables</span>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">variables</span><span class="o">:</span><span class="w"> </span><span class="kt">Record</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">varName</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">selected</span><span class="p">.</span><span class="nx">requiredVariables</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">showInputBox</span><span class="p">({</span>
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">      </span><span class="nx">prompt</span><span class="o">:</span><span class="w"> </span><span class="sb">`Enter value for </span><span class="si">${</span><span class="nx">varName</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">      </span><span class="nx">placeHolder</span><span class="o">:</span><span class="w"> </span><span class="kt">varName</span>
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">    </span><span class="p">});</span>
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="c1">// User cancelled</span>
-</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">    </span><span class="nx">variables</span><span class="p">[</span><span class="nx">varName</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">value</span><span class="p">;</span>
-</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>
-</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="w">  </span><span class="c1">// 4. Get input file (active document)</span>
-</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">editor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">activeTextEditor</span><span class="p">;</span>
-</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">editor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="w">    </span><span class="nx">vscode</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">showErrorMessage</span><span class="p">(</span><span class="s1">&#39;No active document&#39;</span><span class="p">);</span>
-</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
-</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>
-</span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="w">  </span><span class="c1">// Save document to temp file</span>
-</span><span id="__span-3-44"><a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">inputFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">saveTempFile</span><span class="p">(</span><span class="nx">editor</span><span class="p">.</span><span class="nb">document</span><span class="p">.</span><span class="nx">getText</span><span class="p">());</span>
-</span><span id="__span-3-45"><a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>
-</span><span id="__span-3-46"><a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a><span class="w">  </span><span class="c1">// 5. Execute prompt</span>
-</span><span id="__span-3-47"><a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a><span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-48"><a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">withProgress</span><span class="p">(</span>
-</span><span id="__span-3-49"><a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">location</span><span class="o">:</span><span class="w"> </span><span class="kt">vscode.ProgressLocation.Notification</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Processing...&#39;</span><span class="w"> </span><span class="p">},</span>
-</span><span id="__span-3-50"><a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a><span class="w">      </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-51"><a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a><span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">cli</span><span class="p">.</span><span class="nx">runPrompt</span><span class="p">({</span>
-</span><span id="__span-3-52"><a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a><span class="w">          </span><span class="nx">promptKey</span><span class="o">:</span><span class="w"> </span><span class="kt">selected.promptKey</span><span class="p">,</span>
-</span><span id="__span-3-53"><a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a><span class="w">          </span><span class="nx">inputFile</span><span class="p">,</span>
-</span><span id="__span-3-54"><a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a><span class="w">          </span><span class="nx">variables</span><span class="p">,</span>
-</span><span id="__span-3-55"><a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a><span class="w">          </span><span class="nx">outputFile</span><span class="o">:</span><span class="w"> </span><span class="kt">inputFile</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;.out&#39;</span>
-</span><span id="__span-3-56"><a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a><span class="w">        </span><span class="p">});</span>
-</span><span id="__span-3-57"><a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>
-</span><span id="__span-3-58"><a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a><span class="w">        </span><span class="c1">// 6. Show result</span>
-</span><span id="__span-3-59"><a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a><span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">openTextDocument</span><span class="p">(</span><span class="nx">inputFile</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;.out&#39;</span><span class="p">);</span>
-</span><span id="__span-3-60"><a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a><span class="w">        </span><span class="k">await</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">showTextDocument</span><span class="p">(</span><span class="nx">doc</span><span class="p">);</span>
-</span><span id="__span-3-61"><a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-3-62"><a id="__codelineno-3-62" name="__codelineno-3-62" href="#__codelineno-3-62"></a><span class="w">    </span><span class="p">);</span>
-</span><span id="__span-3-63"><a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-64"><a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="w"> </span><span class="ow">instanceof</span><span class="w"> </span><span class="nx">CliError</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-65"><a id="__codelineno-3-65" name="__codelineno-3-65" href="#__codelineno-3-65"></a><span class="w">      </span><span class="nx">vscode</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">showErrorMessage</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
-</span><span id="__span-3-66"><a id="__codelineno-3-66" name="__codelineno-3-66" href="#__codelineno-3-66"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-67"><a id="__codelineno-3-67" name="__codelineno-3-67" href="#__codelineno-3-67"></a><span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="nx">error</span><span class="p">;</span>
-</span><span id="__span-3-68"><a id="__codelineno-3-68" name="__codelineno-3-68" href="#__codelineno-3-68"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-3-69"><a id="__codelineno-3-69" name="__codelineno-3-69" href="#__codelineno-3-69"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-70"><a id="__codelineno-3-70" name="__codelineno-3-70" href="#__codelineno-3-70"></a><span class="p">}</span>
-</span></code></pre></div>
-<h4 id="42-configuration-management">4.2 Configuration Management<a class="headerlink" href="#42-configuration-management" title="Link to this section">&para;</a></h4>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// src/config/ConfigManager.ts</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">ConfigManager</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="nx">getCliPath</span><span class="p">(</span><span class="nx">context</span><span class="o">:</span><span class="w"> </span><span class="kt">vscode.ExtensionContext</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="c1">// Precedence: workspace &gt; user &gt; auto-detect</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">workspaceConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">getConfiguration</span><span class="p">(</span><span class="s1">&#39;tnhScholar&#39;</span><span class="p">);</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">cliPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">workspaceConfig</span><span class="p">.</span><span class="nx">get</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s1">&#39;cliPath&#39;</span><span class="p">);</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">cliPath</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">cliPath</span><span class="p">;</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="c1">// Auto-detect from active Python environment</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">detectCliPath</span><span class="p">();</span>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="nx">detectCliPath</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">    </span><span class="c1">// Use Python extension API to get active interpreter</span>
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">pythonExt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">extensions</span><span class="p">.</span><span class="nx">getExtension</span><span class="p">(</span><span class="s1">&#39;ms-python.python&#39;</span><span class="p">);</span>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">pythonExt</span><span class="o">?</span><span class="p">.</span><span class="nx">isActive</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">pythonPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">pythonExt</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">getExecutionDetails</span><span class="p">().</span><span class="nx">execCommand</span><span class="p">[</span><span class="mf">0</span><span class="p">];</span>
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">      </span><span class="c1">// Assume tnh-gen is in same venv</span>
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nx">pythonPath</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/python$/</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;tnh-gen&#39;</span><span class="p">);</span>
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
-</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">    </span><span class="c1">// Fallback to $PATH</span>
-</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;tnh-gen&#39;</span><span class="p">;</span>
-</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="p">}</span>
-</span></code></pre></div>
-<h3 id="5-cli-discovery-and-version-checking">5. CLI Discovery and Version Checking<a class="headerlink" href="#5-cli-discovery-and-version-checking" title="Link to this section">&para;</a></h3>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// src/cli/CliValidator.ts</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">CliValidator</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="nx">validateCli</span><span class="p">(</span><span class="nx">cliPath</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="p">{</span><span class="w"> </span><span class="nx">valid</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span><span class="w"> </span><span class="nx">version?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="nx">error?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">}</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">proc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">spawn</span><span class="p">(</span><span class="nx">cliPath</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;--api&#39;</span><span class="p">]);</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">stdout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">readStream</span><span class="p">(</span><span class="nx">proc</span><span class="p">.</span><span class="nx">stdout</span><span class="p">);</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">stdout</span><span class="p">);</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">      </span><span class="c1">// Check minimum version</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">compareVersions</span><span class="p">(</span><span class="nx">version</span><span class="p">.</span><span class="nx">tnh_gen</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;0.1.0&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">          </span><span class="nx">valid</span><span class="o">:</span><span class="w"> </span><span class="kt">false</span><span class="p">,</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">          </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="sb">`tnh-gen version </span><span class="si">${</span><span class="nx">version</span><span class="p">.</span><span class="nx">tnh_gen</span><span class="si">}</span><span class="sb"> is too old (minimum: 0.1.0)`</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">        </span><span class="p">};</span>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">valid</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span><span class="w"> </span><span class="nx">version</span><span class="o">:</span><span class="w"> </span><span class="kt">version.tnh_gen</span><span class="w"> </span><span class="p">};</span>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">        </span><span class="nx">valid</span><span class="o">:</span><span class="w"> </span><span class="kt">false</span><span class="p">,</span>
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">        </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="sb">`Failed to execute tnh-gen at </span><span class="si">${</span><span class="nx">cliPath</span><span class="si">}</span><span class="sb">: </span><span class="si">${</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="si">}</span><span class="sb">`</span>
-</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">      </span><span class="p">};</span>
-</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="p">}</span>
-</span></code></pre></div>
+<p><strong>User-facing error display:</strong></p>
+<ul>
+<li>Show <code>error</code> field in VS Code notification</li>
+<li>Optionally append <code>diagnostics.suggestion</code> if present</li>
+<li>Log <code>stderr</code> and <code>trace_id</code> to Output channel for debugging</li>
+</ul>
+<h3 id="4-command-flow">4. Command Flow<a class="headerlink" href="#4-command-flow" title="Link to this section">&para;</a></h3>
+<p><strong>Command: "Run Prompt on Active File":</strong></p>
+<p><strong>Flow of control:</strong></p>
+<ol>
+<li><strong>Initialize CLI adapter</strong> with configured <code>tnh-gen</code> path</li>
+<li><strong>Read VS Code settings</strong> (user + workspace)</li>
+<li><strong>Resolve effective values</strong> per CF01 ownership for each setting</li>
+<li><strong>Build temp config</strong> from effective values and pass <code>--config &lt;temp.json&gt;</code> per call</li>
+<li><strong>List prompts</strong> via <code>tnh-gen --api --config &lt;temp.json&gt; list</code></li>
+<li><strong>Show QuickPick</strong> with prompt metadata (name, description, tags)</li>
+<li><strong>Collect required variables</strong> via input boxes (one per required variable from metadata)</li>
+<li><strong>Get active document</strong> content and save to temp file</li>
+<li><strong>Execute prompt</strong> via <code>tnh-gen --api --config &lt;temp.json&gt; run</code> with input file and variables</li>
+<li><strong>Parse JSON response</strong> from stdout</li>
+<li><strong>Open output file</strong> in split editor pane</li>
+<li><strong>Show success notification</strong> with execution metadata (model, cost, time)</li>
+</ol>
+<p><strong>Error handling at each step:</strong></p>
+<ul>
+<li>CLI spawn failure → show error notification, check CLI installation</li>
+<li>User cancellation → abort silently</li>
+<li>CLI error (non-zero exit) → parse structured error, show user-friendly message</li>
+<li>JSON parse failure → show generic error, log details to Output channel</li>
+</ul>
+<p><strong>Single invocation resolution (summary):</strong></p>
+<ol>
+<li>Read VS Code settings (user + workspace)</li>
+<li>Resolve effective values per CF01 ownership</li>
+<li>Write temp config JSON</li>
+<li>Call <code>tnh-gen --api --config &lt;temp.json&gt; list/run</code></li>
+<li>Render results or errors</li>
+</ol>
+<h3 id="5-configuration-management">5. Configuration Management<a class="headerlink" href="#5-configuration-management" title="Link to this section">&para;</a></h3>
+<p><strong>Component: <code>ConfigManager</code></strong></p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Discover candidate <code>tnh-gen</code> CLI paths</li>
+<li>Integrate with VS Code Python extension for virtualenv detection</li>
+<li>Manage extension settings via VS Code configuration API</li>
+<li>Materialize a temp <code>tnh-gen</code> config file per invocation (no persistent mutation)</li>
+<li>Resolve setting values per CF01 ownership precedence</li>
+</ul>
+<p><strong>Candidate discovery</strong> (for <code>cliPath</code>):</p>
+<ol>
+<li><strong>Workspace setting</strong> (<code>tnhScholar.cliPath</code> in <code>.vscode/settings.json</code>)</li>
+<li><strong>User setting</strong> (<code>tnhScholar.cliPath</code> in global VS Code settings)</li>
+<li><strong>Python extension</strong> (detect active interpreter's venv, derive tnh-gen path)</li>
+<li><strong>PATH</strong> (fallback to system <code>tnh-gen</code>)</li>
+</ol>
+<p><strong>Configuration source</strong>: VS Code settings API only (<code>.vscode/settings.json</code> or global settings, JSONC). No separate <code>tnh-scholar.json</code> file.</p>
+<p><strong>Settings mapping</strong> (VS Code → <code>tnh-gen</code> config):</p>
+<ul>
+<li><code>tnhScholar.promptDirectory</code> → <code>prompt_catalog_dir</code></li>
+<li><code>tnhScholar.defaultModel</code> → <code>default_model</code></li>
+<li><code>tnhScholar.maxCostUsd</code> → <code>max_dollars</code></li>
+</ul>
+<p>The adapter writes these to a temp JSON config and passes it via the global <code>--config</code> flag (see ADR-TG01, implemented in <code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:25</code>).</p>
+<p><strong>Ownership &amp; precedence</strong> (per ADR-CF01):</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Ownership</th>
+<th>Effective precedence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tnhScholar.promptDirectory</code></td>
+<td>Project-owned</td>
+<td>Workspace → User → Built-in</td>
+</tr>
+<tr>
+<td><code>tnhScholar.defaultModel</code></td>
+<td>User-owned</td>
+<td>User → Workspace → Built-in</td>
+</tr>
+<tr>
+<td><code>tnhScholar.maxCostUsd</code></td>
+<td>User-owned</td>
+<td>User → Workspace → Built-in</td>
+</tr>
+<tr>
+<td><code>tnhScholar.cliPath</code></td>
+<td>Project-owned</td>
+<td>Workspace → User → Auto-detect → PATH</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rationale for <code>cliPath</code> ownership</strong>: Project-owned to keep team workspaces reproducible and avoid per-user drift in multi-user environments.</p>
+<p><strong>Non-duplication rule</strong>: Extension does not read <code>TNH_*</code> env vars or infer registry semantics; it writes a temp config and calls <code>tnh-gen</code>. Env merging and TNHContext resolution remain inside the CLI per ADR-CF01.</p>
+<p><strong>Component: <code>CliValidator</code></strong></p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Validate CLI executable existence and executability</li>
+<li>Check minimum version compatibility</li>
+<li>Provide actionable error messages for misconfiguration</li>
+<li>Enforce minimum compatible CLI version via <code>tnh-gen --api version</code></li>
+</ul>
 <h3 id="6-extension-configuration-schema">6. Extension Configuration Schema<a class="headerlink" href="#6-extension-configuration-schema" title="Link to this section">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// package.json (contributes.configuration)</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">{</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">&quot;contributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">&quot;configuration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TNH Scholar&quot;</span><span class="p">,</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">      </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="nt">&quot;tnhScholar.cliPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">          </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">          </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to tnh-gen CLI executable (auto-detected if not set)&quot;</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="p">},</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">        </span><span class="nt">&quot;tnhScholar.promptDirectory&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">          </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">          </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to prompt directory (overrides TNH_PROMPT_DIR)&quot;</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">        </span><span class="p">},</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">        </span><span class="nt">&quot;tnhScholar.defaultModel&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">          </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
-</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">          </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Default GenAI model for prompts&quot;</span>
-</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">        </span><span class="p">},</span>
-</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">        </span><span class="nt">&quot;tnhScholar.maxCostUsd&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
-</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">          </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10</span><span class="p">,</span>
-</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">          </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum cost per request (USD)&quot;</span>
-</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// package.json (contributes.configuration)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;contributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">&quot;configuration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TNH Scholar&quot;</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="nt">&quot;tnhScholar.cliPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">          </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">          </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to tnh-gen CLI executable (auto-detected if not set)&quot;</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">        </span><span class="nt">&quot;tnhScholar.promptDirectory&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">          </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">          </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Path to prompt directory (overrides TNH_PROMPT_DIR)&quot;</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="nt">&quot;tnhScholar.defaultModel&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">          </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">          </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Default GenAI model for prompts&quot;</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span><span class="nt">&quot;tnhScholar.maxCostUsd&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">          </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10</span><span class="p">,</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">          </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum cost per request (USD)&quot;</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="p">}</span>
 </span></code></pre></div>
 <h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
 <h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
@@ -9377,6 +9368,23 @@
 <li><strong>Multi-Root Workspaces</strong>: How to handle different prompt directories per workspace folder?</li>
 <li><strong>Offline Mode</strong>: Should extension cache prompt list to avoid repeated CLI calls?</li>
 </ol>
+<h2 id="next-increment-post-v010">Next Increment (Post v0.1.0)<a class="headerlink" href="#next-increment-post-v010" title="Link to this section">&para;</a></h2>
+<ul>
+<li>Add an optional pre-run UI to override a small subset of user-owned settings (e.g., model, max cost) for that invocation only.</li>
+<li>Overrides are ephemeral: written into the temp config and never persisted to VS Code settings.</li>
+</ul>
+<hr />
+<h2 id="addendum-2026-01-02-session-defaults-and-session-vars-files">Addendum: 2026-01-02 - Session Defaults and Session Vars Files<a class="headerlink" href="#addendum-2026-01-02-session-defaults-and-session-vars-files" title="Link to this section">&para;</a></h2>
+<p><strong>Context</strong>: v0.1.0 collects prompt variables per run, but repeated prompts benefit from session-scoped defaults without requiring persistent config edits.</p>
+<p><strong>Decision</strong>:
+- Introduce <strong>session vars files</strong> as optional inputs to the extension, stored as JSONC in user or workspace context (user-controlled files).
+- Session vars are <strong>auto-ingested</strong> during a session and merged with per-run inputs:
+  - Precedence: prompt defaults → session vars → run-time inputs (inline vars or input prompts).
+- When a user supplies values during a run, the extension can offer <strong>Save session vars</strong> (including required vars) to the chosen session vars file.</p>
+<p><strong>Rationale</strong>: Session defaults reduce repetitive input while keeping persistence explicit and user-controlled. JSONC keeps files readable and consistent with VS Code settings practices.</p>
+<p><strong>Implementation Notes (future)</strong>:
+- Session vars file location should be explicit in extension settings (user/workspace).
+- The extension should never write without user confirmation; saving is opt-in and scoped to the current session file.</p>
 <h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
 <h3 id="related-adrs">Related ADRs<a class="headerlink" href="#related-adrs" title="Link to this section">&para;</a></h3>
 <ul>
@@ -9406,7 +9414,7 @@
 <li>This is a breaking change from the initial <code>--verbose</code> design, done while ADR is still in proposed status</li>
 </ul>
 <hr />
-<p><em>This ADR focuses on VS Code extension strategy. CLI implementation details are defined in ADR-TG01, ADR-TG01.1, and ADR-TG02.</em></p>
+<p><em>This ADR focuses on VS Code extension architecture. CLI implementation details are defined in ADR-TG01, ADR-TG01.1, and ADR-TG02.</em></p>
 
 
 

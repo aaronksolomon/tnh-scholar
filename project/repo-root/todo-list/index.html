@@ -1247,7 +1247,7 @@
           <li class="md-nav__item">
   <a href="#file-based-registry-system-adr-a14" class="md-nav__link">
     <span class="md-ellipsis">
-      🚧 File-Based Registry System (ADR-A14)
+      ✅ File-Based Registry System (ADR-A14)
     </span>
   </a>
   
@@ -1256,7 +1256,16 @@
           <li class="md-nav__item">
   <a href="#vs-code-extension-walking-skeleton" class="md-nav__link">
     <span class="md-ellipsis">
-      🔮 VS Code Extension Walking Skeleton
+      ✅ VS Code Extension Walking Skeleton
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patternprompt-migration-and-metadata-standardization" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔮 Pattern→Prompt Migration and Metadata Standardization
     </span>
   </a>
   
@@ -1266,6 +1275,15 @@
   <a href="#provenance-format-refactor-yaml-frontmatter" class="md-nav__link">
     <span class="md-ellipsis">
       🚧 Provenance Format Refactor - YAML Frontmatter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-prompt-dir-global-flag-to-tnh-gen" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔮 Add --prompt-dir Global Flag to tnh-gen
     </span>
   </a>
   
@@ -5912,7 +5930,7 @@
     
   
   
-    <span class="md-status md-status--draft"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -6866,7 +6884,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -6888,13 +6906,13 @@
         
   
   <span class="md-ellipsis">
-    ADR-VSC02: VS Code Extension Integration with tnh-gen CLI
+    ADR-VSC02: VS Code Extension Architecture
   </span>
   
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--wip"></span>
   
 
   
@@ -9119,7 +9137,7 @@
           <li class="md-nav__item">
   <a href="#file-based-registry-system-adr-a14" class="md-nav__link">
     <span class="md-ellipsis">
-      🚧 File-Based Registry System (ADR-A14)
+      ✅ File-Based Registry System (ADR-A14)
     </span>
   </a>
   
@@ -9128,7 +9146,16 @@
           <li class="md-nav__item">
   <a href="#vs-code-extension-walking-skeleton" class="md-nav__link">
     <span class="md-ellipsis">
-      🔮 VS Code Extension Walking Skeleton
+      ✅ VS Code Extension Walking Skeleton
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#patternprompt-migration-and-metadata-standardization" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔮 Pattern→Prompt Migration and Metadata Standardization
     </span>
   </a>
   
@@ -9138,6 +9165,15 @@
   <a href="#provenance-format-refactor-yaml-frontmatter" class="md-nav__link">
     <span class="md-ellipsis">
       🚧 Provenance Format Refactor - YAML Frontmatter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-prompt-dir-global-flag-to-tnh-gen" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔮 Add --prompt-dir Global Flag to tnh-gen
     </span>
   </a>
   
@@ -9752,9 +9788,9 @@
 <h1 id="tnh-scholar-todo-list">TNH Scholar TODO List<a class="headerlink" href="#tnh-scholar-todo-list" title="Link to this section">&para;</a></h1>
 <p>Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.</p>
 <blockquote>
-<p><strong>Last Updated</strong>: 2025-12-28 (Reorganized for Bootstrap Path)
+<p><strong>Last Updated</strong>: 2026-01-07 (VS Code Extension Walking Skeleton completed)
 <strong>Version</strong>: 0.2.3 (Alpha)
-<strong>Status</strong>: Active Development - VS Code Integration Path</p>
+<strong>Status</strong>: Active Development - VS Code Extension Implemented</p>
 <p><strong>Style Note</strong>: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 Use <code>####</code> (h4) for task headers within priority sections.</p>
 </blockquote>
@@ -9763,7 +9799,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <p>This section organizes work into three priority levels based on criticality for production readiness.</p>
 <h3 id="priority-1-vs-code-integration-enablement-bootstrap-path">Priority 1: VS Code Integration Enablement (Bootstrap Path)<a class="headerlink" href="#priority-1-vs-code-integration-enablement-bootstrap-path" title="Link to this section">&para;</a></h3>
 <p><strong>Goal</strong>: Enable AI-assisted development of TNH Scholar itself via VS Code extension. Prioritizes foundational work for tnh-gen + extension integration.</p>
-<p><strong>Status</strong>: Foundation Complete (tnh-gen CLI ✅), Registry System In Progress</p>
+<p><strong>Status</strong>: Foundation Complete (tnh-gen CLI ✅, Registry System ✅)</p>
 <h4 id="tnh-gen-cli-implementation">✅ tnh-gen CLI Implementation<a class="headerlink" href="#tnh-gen-cli-implementation" title="Link to this section">&para;</a></h4>
 <ul>
 <li><strong>Status</strong>: COMPLETED ✅</li>
@@ -9773,52 +9809,97 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li><strong>Documentation</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/cli-reference/tnh-gen.md">tnh-gen CLI Reference</a> (661 lines, comprehensive)</li>
 <li><strong>Next</strong>: Consumed by VS Code extension for prompt discovery and execution</li>
 </ul>
-<h4 id="file-based-registry-system-adr-a14">🚧 File-Based Registry System (ADR-A14)<a class="headerlink" href="#file-based-registry-system-adr-a14" title="Link to this section">&para;</a></h4>
+<h4 id="file-based-registry-system-adr-a14">✅ File-Based Registry System (ADR-A14)<a class="headerlink" href="#file-based-registry-system-adr-a14" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: NOT STARTED - <strong>HIGHEST PRIORITY</strong></li>
-<li><strong>Priority</strong>: <strong>P0 - BLOCKS VS CODE EXTENSION</strong></li>
-<li><strong>ADR</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md">ADR-A14: File-Based Registry System</a></li>
-<li><strong>Estimate</strong>: 4-6 hours</li>
-<li><strong>Why Critical</strong>: VS Code extension needs registry for:</li>
-<li>Prompt metadata discovery (<code>tnh-gen list --api</code>)</li>
-<li>Model selection with pricing info in UI</li>
-<li>Capability-based routing validation</li>
-<li>Rich QuickPick menus with model costs</li>
+<li><strong>Status</strong>: COMPLETED ✅ (Merged PR #24, 2026-01-01)</li>
+<li><strong>ADR</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md">ADR-A14: File-Based Registry System</a>, <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/gen-ai-service/adr/adr-a14.1-registry-staleness-detection.md">ADR-A14.1: Staleness Detection</a></li>
+<li><strong>Completed</strong>: Implemented JSONC-based registry with multi-tier pricing, TNHContext path resolution, and staleness detection</li>
+<li><strong>Key Features</strong>:</li>
+<li>JSONC format with VS Code schema validation</li>
+<li>Three-layer path resolution (workspace → user → built-in)</li>
+<li>Multi-tier pricing support (batch/flex/standard/priority)</li>
+<li>Staleness detection with configurable 90-day threshold</li>
+<li>Comprehensive test coverage (264 tests passing)</li>
 <li><strong>Deliverables</strong>:</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Create <code>runtime_assets/registries/providers/openai.jsonc</code> with model metadata</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement <code>RegistryLoader</code> with JSONC parsing (comment/trailing comma support)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Create Pydantic schemas for validation (<code>ModelInfo</code>, <code>ProviderRegistry</code>)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Create JSON Schema for VS Code autocomplete in registry files</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Refactor <code>model_router.py</code> to use registry capabilities</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Refactor <code>safety_gate.py</code> to use registry pricing (remove hardcoded <code>_PRICE_PER_1K_TOKENS</code>)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <code>tnh-gen list --api</code> to include model metadata from registry</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add unit tests for registry loading and validation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Created <code>runtime_assets/registries/providers/openai.jsonc</code> with model metadata</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Implemented <code>RegistryLoader</code> with JSONC parsing (comment/trailing comma support)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Created Pydantic schemas for validation (<code>ModelInfo</code>, <code>ProviderRegistry</code>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Created JSON Schema for VS Code autocomplete in registry files</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Refactored <code>model_router.py</code> to use registry capabilities</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Refactored <code>safety_gate.py</code> to use registry pricing (removed hardcoded constants)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Added comprehensive unit tests for registry loading and validation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Implemented ADR-A14.1 staleness detection with environment config</li>
 <li><strong>Files Created</strong>:</li>
-<li><code>runtime_assets/registries/providers/openai.jsonc</code></li>
-<li><code>runtime_assets/registries/providers/schema.py</code> (Pydantic)</li>
-<li><code>runtime_assets/registries/providers/schema.json</code> (JSON Schema)</li>
+<li><code>src/tnh_scholar/configuration/context.py</code> (TNHContext)</li>
+<li><code>src/tnh_scholar/runtime_assets/registries/providers/openai.jsonc</code></li>
+<li><code>src/tnh_scholar/runtime_assets/registries/providers/schema.json</code></li>
 <li><code>src/tnh_scholar/gen_ai_service/config/registry.py</code> (RegistryLoader)</li>
-<li><strong>Files Modified</strong>:</li>
-<li><code>src/tnh_scholar/gen_ai_service/routing/model_router.py</code></li>
-<li><code>src/tnh_scholar/gen_ai_service/safety/safety_gate.py</code></li>
-<li><code>src/tnh_scholar/cli_tools/tnh_gen/commands/list.py</code> (add registry metadata)</li>
-<li><strong>Related</strong>: Unblocks VS Code Extension Walking Skeleton (next step after registry)</li>
+<li><code>src/tnh_scholar/gen_ai_service/models/registry.py</code> (Pydantic models)</li>
+<li><code>src/tnh_scholar/gen_ai_service/adapters/registry/jsonc_parser.py</code></li>
+<li><code>src/tnh_scholar/gen_ai_service/adapters/registry/override_merger.py</code></li>
+<li><code>tests/gen_ai_service/test_registry_*.py</code> (comprehensive test suite)</li>
+<li><strong>Related</strong>: Unblocks VS Code Extension Walking Skeleton</li>
 </ul>
-<h4 id="vs-code-extension-walking-skeleton">🔮 VS Code Extension Walking Skeleton<a class="headerlink" href="#vs-code-extension-walking-skeleton" title="Link to this section">&para;</a></h4>
-<ul>
-<li><strong>Status</strong>: NOT STARTED - Blocked by ADR-A14 Registry</li>
-<li><strong>Priority</strong>: HIGH (after registry)</li>
-<li><strong>ADR</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md">ADR-VSC01: VS Code Integration Strategy</a>, <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md">ADR-VSC02: Extension Implementation</a></li>
-<li><strong>Estimate</strong>: 8-12 hours (first working prototype)</li>
+<h4 id="vs-code-extension-walking-skeleton">✅ VS Code Extension Walking Skeleton<a class="headerlink" href="#vs-code-extension-walking-skeleton" title="Link to this section">&para;</a></h4>
+<ul class="task-list">
+<li><strong>Status</strong>: COMPLETED ✅ (2026-01-07)</li>
+<li><strong>ADR</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md">ADR-VSC01: VS Code Integration Strategy</a> (<code>accepted</code>), <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md">ADR-VSC02: Extension Architecture</a> (<code>implemented</code>)</li>
+<li><strong>Scope</strong>: TypeScript extension + unit/integration tests</li>
 <li><strong>What</strong>: Minimal VS Code extension that enables "Run Prompt on Active File" workflow</li>
-<li><strong>Capabilities</strong>:</li>
+<li><strong>Deliverables</strong>:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> ADR-VSC01 and ADR-VSC02 ready for review (scope clarified)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CO reviews ADRs independently (completed with architecture improvements)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> User approves ADRs → <code>accepted</code> status (2026-01-02)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> TypeScript extension scaffold (CLI adapter, command implementation)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Unit tests for CLI adapter</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Integration test for full command workflow</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Manual validation: Run prompt on active file end-to-end (all 3 endpoints tested)</li>
+<li><strong>Completed Capabilities</strong>:</li>
 <li>Command: "TNH Scholar: Run Prompt on Active File"</li>
+<li>Command: "TNH Scholar: Refresh Prompt Catalog"</li>
+<li>Command: "TNH Scholar: Show Diagnostics"</li>
 <li>QuickPick prompt selector (from <code>tnh-gen list --api</code>)</li>
 <li>Dynamic variable input form based on prompt metadata</li>
-<li>Execute via <code>tnh-gen run</code> subprocess</li>
+<li>Execute via <code>tnh-gen run</code> subprocess with temp config</li>
 <li>Open output file in split pane</li>
-<li><strong>Validation</strong>: Proves bootstrapping concept - use extension to develop TNH Scholar faster</li>
-<li><strong>Blocked By</strong>: Registry system (needs model metadata for rich UI)</li>
+<li>Unit and integration test harness</li>
+<li><strong>Follow-up Tasks</strong> (separate, lower priority):</li>
+<li>Extension packaging for VS Code Marketplace</li>
+<li>User-facing documentation and guides</li>
+<li>Extension publishing workflow</li>
+<li><strong>Validation</strong>: ✅ Proves bootstrapping concept - extension ready to accelerate TNH Scholar development</li>
+<li><strong>Next</strong>: Use extension for Pattern→Prompt Migration validation</li>
+</ul>
+<h4 id="patternprompt-migration-and-metadata-standardization">🔮 Pattern→Prompt Migration and Metadata Standardization<a class="headerlink" href="#patternprompt-migration-and-metadata-standardization" title="Link to this section">&para;</a></h4>
+<ul class="task-list">
+<li><strong>Status</strong>: NOT STARTED - <strong>SEQUENCED AFTER VS CODE EXTENSION</strong></li>
+<li><strong>Priority</strong>: <strong>PRIORITY 1</strong> (Same tier as VS Code integration, deferred for risk minimization)</li>
+<li><strong>ADR</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md">ADR-PT04: Prompt System Refactor</a></li>
+<li><strong>Strategy</strong>: Defer until after VS Code extension walking skeleton complete (ADR-VSC02 implementation)</li>
+<li><strong>Rationale</strong>:</li>
+<li>VS Code extension works with current pattern/prompt system (not blocking)</li>
+<li>Avoid simultaneous major changes (extension + prompt migration)</li>
+<li>Dogfooding: Use working VS Code extension to help validate migrated prompts</li>
+<li>Clear dependency: Extension provides testing surface for prompt metadata changes</li>
+<li><strong>What</strong>: Complete Pattern→Prompt terminology migration and standardize metadata structure</li>
+<li><strong>Scope</strong>:</li>
+<li>Migrate <code>~/.config/tnh_scholar/patterns/</code> → <code>~/.config/tnh_scholar/prompts/</code></li>
+<li>Remove <code>TNH_PATTERN_DIR</code> references (replace with <code>TNH_PROMPT_DIR</code>)</li>
+<li>Standardize all prompt files with proper metadata structure (YAML frontmatter)</li>
+<li>Update code references: <code>ai_text_processing/prompts.py</code> and imports</li>
+<li>Update environment variable references throughout codebase</li>
+<li><strong>Current State</strong>:</li>
+<li>Terminology partially migrated (docs use "prompt", code still references "pattern")</li>
+<li>ADR-PT04 defines target architecture (object-service compliant prompt system)</li>
+<li><code>tnh-gen</code> CLI already uses prompt terminology but reads from patterns directory</li>
+<li><strong>Deliverables</strong>:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Migrate all pattern template files to prompts directory</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add/validate YAML frontmatter metadata to all prompt files</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update code references (<code>TNH_PATTERN_DIR</code> → <code>TNH_PROMPT_DIR</code>)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update environment variable documentation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Test prompt discovery and execution via VS Code extension</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Remove old patterns directory</li>
+<li><strong>Related</strong>: Mentioned in ADR-VSC02 as pending but non-blocking work</li>
 </ul>
 <h4 id="provenance-format-refactor-yaml-frontmatter">🚧 Provenance Format Refactor - YAML Frontmatter<a class="headerlink" href="#provenance-format-refactor-yaml-frontmatter" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
@@ -9833,6 +9914,32 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Update tests for new format</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Validate YAML parsing roundtrip</li>
 <li><strong>Files Modified</strong>: <code>src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py</code>, <code>tests/cli_tools/test_tnh_gen.py</code>, <code>docs/cli-reference/tnh-gen.md</code></li>
+</ul>
+<h4 id="add-prompt-dir-global-flag-to-tnh-gen">🔮 Add <code>--prompt-dir</code> Global Flag to tnh-gen<a class="headerlink" href="#add-prompt-dir-global-flag-to-tnh-gen" title="Link to this section">&para;</a></h4>
+<ul class="task-list">
+<li><strong>Status</strong>: NOT STARTED</li>
+<li><strong>Priority</strong>: HIGH (improves tnh-gen UX for one-off operations and testing)</li>
+<li><strong>Estimate</strong>: 1-2 hours</li>
+<li><strong>Context</strong>: Users need convenient way to override prompt catalog directory for one-off CLI calls without setting environment variables or creating temp config files</li>
+<li><strong>ADR</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md#addendum-2026-01-02---add---prompt-dir-global-flag">ADR-TG01 Addendum 2026-01-02</a></li>
+<li><strong>Why Important</strong>: Enables clean one-off operations (<code>tnh-gen --prompt-dir ./test-prompts list</code>) for testing, CI/CD, and development workflows</li>
+<li><strong>Current Workarounds</strong>:</li>
+<li>Environment variable: <code>TNH_PROMPT_DIR=/path tnh-gen list</code> (awkward)</li>
+<li>Temp config file: <code>tnh-gen --config /tmp/config.yaml list</code> (verbose)</li>
+<li><strong>Deliverables</strong>:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add <code>--prompt-dir</code> flag to <code>cli_callback()</code> in <code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:26</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <code>config_loader.py</code> to handle prompt directory override at CLI precedence level</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <code>ConfigData</code> type to accept <code>prompt_catalog_dir</code> override</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add unit tests for flag precedence (CLI flag &gt; workspace &gt; user &gt; env)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update help text and CLI reference documentation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <code>docs/cli-reference/tnh-gen.md</code> global flags section</li>
+<li><strong>Files to Modify</strong>:</li>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py</code> (add flag)</li>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/config_loader.py</code> (precedence handling)</li>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/types.py</code> (type definitions)</li>
+<li><code>tests/cli_tools/test_tnh_gen.py</code> (unit tests)</li>
+<li><code>docs/cli-reference/tnh-gen.md</code> (documentation)</li>
+<li><strong>Testing</strong>: Verify <code>--prompt-dir</code> flag overrides all other config sources (workspace, user, env)</li>
 </ul>
 <h4 id="genaiservice-core-components-final-polish">🚧 GenAIService Core Components - Final Polish<a class="headerlink" href="#genaiservice-core-components-final-polish" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
@@ -9985,6 +10092,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Configuration loading edge cases</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Error handling scenarios</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Pattern catalog validation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Full CLI test suite with 100% coverage</strong> (HIGH PRIORITY - include all CLI tools, not just tnh-gen)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>tnh-gen CLI comprehensive coverage</strong> (HIGH PRIORITY - Missing basic command tests):<ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add tests for all <code>tnh-gen config</code> commands (show, get, set, list)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add tests for all <code>tnh-gen list</code> commands (simple, query)</li>

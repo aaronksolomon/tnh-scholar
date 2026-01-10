@@ -1086,6 +1086,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#changed" class="md-nav__link">
     <span class="md-ellipsis">
       Changed
@@ -1104,7 +1113,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -1188,7 +1197,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added_1" class="md-nav__link">
+  <a href="#added_2" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -1257,7 +1266,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added_2" class="md-nav__link">
+  <a href="#added_3" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -1308,7 +1317,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added_3" class="md-nav__link">
+  <a href="#added_4" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -5585,7 +5594,7 @@
     
   
   
-    <span class="md-status md-status--draft"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -6539,7 +6548,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -6561,13 +6570,13 @@
         
   
   <span class="md-ellipsis">
-    ADR-VSC02: VS Code Extension Integration with tnh-gen CLI
+    ADR-VSC02: VS Code Extension Architecture
   </span>
   
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--wip"></span>
   
 
   
@@ -8771,6 +8780,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      Added
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#changed" class="md-nav__link">
     <span class="md-ellipsis">
       Changed
@@ -8789,7 +8807,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -8873,7 +8891,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added_1" class="md-nav__link">
+  <a href="#added_2" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -8942,7 +8960,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added_2" class="md-nav__link">
+  <a href="#added_3" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -8993,7 +9011,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added_3" class="md-nav__link">
+  <a href="#added_4" class="md-nav__link">
     <span class="md-ellipsis">
       Added
     </span>
@@ -9100,9 +9118,115 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
+<h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
+<ul>
+<li><strong>VS Code Extension Walking Skeleton (COMPLETED)</strong> (2026-01-07)</li>
+<li>Implemented TypeScript extension with CLI integration per ADR-VSC02</li>
+<li>Three commands: "Run Prompt on Active File", "Refresh Prompt Catalog", "Show Diagnostics"</li>
+<li>TnhGenCliService: CLI adapter with process lifecycle management</li>
+<li>ConfigService: VS Code settings integration with CF01 ownership precedence</li>
+<li>PromptService: Prompt discovery and execution orchestration</li>
+<li>EditorService, FileService: File handling and split pane integration</li>
+<li>Unit and integration test harness (node:test + test-electron)</li>
+<li>All endpoints tested end-to-end in live dev extension</li>
+<li>ADR-VSC02 status updated from 'wip' to 'implemented'</li>
+<li>Files: <code>vscode-extension/tnh-scholar/</code> (24 files, 3138+ lines)</li>
+<li>
+<p>ADRs: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md">ADR-VSC01</a>, <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md">ADR-VSC02</a></p>
+</li>
+<li>
+<p><strong>Workspace Improvements</strong> (2026-01-07)</p>
+</li>
+<li>Added .github/ISSUE_TEMPLATE.md for structured issue reporting (supports tactical and architectural problems)</li>
+<li>Added poetry.toml for project-level Poetry configuration</li>
+<li>Updated .gitignore with VS Code extension build artifacts and temp files</li>
+<li>
+<p>Files: <code>.github/ISSUE_TEMPLATE.md</code>, <code>poetry.toml</code>, <code>.gitignore</code></p>
+</li>
+<li>
+<p><strong>VS Code Extension Architecture ADRs</strong> (2026-01-02, updated 2026-01-07)</p>
+</li>
+<li>Accepted ADR-VSC01: VS Code Integration Strategy (CLI-first architecture)</li>
+<li>Implemented ADR-VSC02: VS Code Extension Architecture (components, flow, data contracts)</li>
+<li>Added Pattern→Prompt migration task to TODO.md (Priority 1, sequenced after extension)</li>
+<li>Added AGENT_WORKFLOW.md: Dual-agent development workflow documentation</li>
+<li>ADR-TG01 addendum: Documented API success payloads and --config flag usage</li>
+<li>ADR-TG02 addendum: Documented prompt metadata integration with extension</li>
+<li>ADRs: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md">ADR-VSC01</a>, <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md">ADR-VSC02</a></li>
+<li>
+<p>Files: <code>AGENT_WORKFLOW.md</code>, <code>TODO.md</code>, <code>docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md</code>, <code>docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md</code></p>
+</li>
+<li>
+<p><strong>ADR-A14: File-Based Registry System</strong> (2026-01-01, PR #24)</p>
+</li>
+<li>Implemented JSONC-based registry for provider metadata, model capabilities, pricing, and context limits</li>
+<li>Added TNHContext for three-layer path resolution (workspace → user → built-in) per ADR-CF01</li>
+<li>Created RegistryLoader with JSONC parsing, caching, and override merging</li>
+<li>Added multi-tier pricing support (batch, flex, standard, priority)</li>
+<li>Implemented staleness detection (ADR-A14.1) with configurable 90-day threshold and environment variables</li>
+<li>Created built-in OpenAI registry with GPT-&#8536; model metadata</li>
+<li>Added JSON Schema for VS Code autocomplete and validation</li>
+<li>Files: <code>src/tnh_scholar/configuration/context.py</code>, <code>src/tnh_scholar/gen_ai_service/config/registry.py</code>, <code>src/tnh_scholar/gen_ai_service/models/registry.py</code>, <code>src/tnh_scholar/gen_ai_service/adapters/registry/</code>, <code>src/tnh_scholar/runtime_assets/registries/</code>, comprehensive test suite</li>
+<li>
+<p>ADRs: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md">ADR-A14</a>, <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/gen-ai-service/adr/adr-a14.1-registry-staleness-detection.md">ADR-A14.1</a>, <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md">ADR-CF01</a></p>
+</li>
+<li>
+<p><strong>Audio Transcribe Hotfix Tests + Dependencies</strong> (2026-01-03)</p>
+</li>
+<li>Added diarization payload parsing tests and AssemblyAI option handling tests</li>
+<li>Added <code>assemblyai</code> and <code>pysrt</code> as required dependencies</li>
+<li>Added <code>make update</code> target for Poetry update/build + pipx rebuild</li>
+<li>Files: <code>tests/audio_processing/diarization/test_schemas.py</code>, <code>tests/cli_tools/test_audio_transcribe_pipeline.py</code>, <code>tests/audio_processing/transcription/test_assemblyai_service_options.py</code>, <code>tests/audio_processing/transcription/test_transcription_service_factory.py</code>, <code>pyproject.toml</code>, <code>Makefile</code></li>
+</ul>
 <h3 id="changed">Changed<a class="headerlink" href="#changed" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>tnh-gen Provenance YAML Frontmatter</strong> (2025-12-30)</li>
+<li><strong>Prompt Frontmatter Normalization + Token Encoding Fallback</strong> (2026-01-05)</li>
+<li>Coerced missing/invalid prompt metadata fields to safe defaults with warnings</li>
+<li>Added registry-aware encoding fallback for token counting when tiktoken lacks model mapping</li>
+<li>
+<p>Files: <code>src/tnh_scholar/prompt_system/mappers/prompt_mapper.py</code>, <code>src/tnh_scholar/gen_ai_service/utils/token_utils.py</code>, <code>patterns/simple_punctuate.md</code>, <code>tests/prompt_system/test_catalog_adapters.py</code>, <code>tests/gen_ai_service/utils/test_token_utils.py</code></p>
+</li>
+<li>
+<p><strong>Audio Transcribe AssemblyAI Pipeline</strong> (2026-01-03)</p>
+</li>
+<li>Skip pyannote diarization for AssemblyAI and transcribe full audio directly</li>
+<li>Normalize AssemblyAI options to SDK-supported keys and map language settings</li>
+<li>
+<p>Files: <code>src/tnh_scholar/cli_tools/audio_transcribe/transcription_pipeline.py</code>, <code>src/tnh_scholar/audio_processing/transcription/assemblyai_service.py</code></p>
+</li>
+<li>
+<p><strong>GenAI Service Registry Integration</strong> (2026-01-01, PR #24)</p>
+</li>
+<li>Refactored model_router.py to use registry-based capability checks (removed hardcoded MODEL_CAPABILITIES)</li>
+<li>Refactored safety_gate.py to use registry pricing with tier support (removed hardcoded pricing constants)</li>
+<li>Refactored token_utils.py to use registry context limits with tiktoken fallback</li>
+<li>Updated GenAISettings to validate against registry data</li>
+<li>
+<p>Files: <code>src/tnh_scholar/gen_ai_service/routing/model_router.py</code>, <code>src/tnh_scholar/gen_ai_service/safety/safety_gate.py</code>, <code>src/tnh_scholar/gen_ai_service/utils/token_utils.py</code>, <code>src/tnh_scholar/gen_ai_service/config/settings.py</code></p>
+</li>
+<li>
+<p><strong>Development Workflow Improvements</strong> (2026-01-01, PR #24)</p>
+</li>
+<li>Moved Sourcery to optional local group to unblock CI/docs builds (platform-specific wheels issue)</li>
+<li>Added PR requirements to AGENTS.md: <code>make ci-check</code>, Sourcery review, mypy type checking</li>
+<li>Updated DEV_SETUP.md with optional local group installation instructions</li>
+<li>Fixed 9 mypy type errors in registry system files</li>
+<li>
+<p>Files: <code>pyproject.toml</code>, <code>poetry.lock</code>, <code>DEV_SETUP.md</code>, <code>AGENTS.md</code></p>
+</li>
+<li>
+<p><strong>AGENTLOG Archive Workflow</strong> (2026-01-01)</p>
+</li>
+<li>Implemented new archiving workflow with archive/agentlogs/archive-index.md</li>
+<li>Archived 2026-01-01 sessions to AGENTLOG-01-01-26.md with summary</li>
+<li>Reset AGENTLOG.md to template-only structure</li>
+<li>Added archiving workflow to AGENTLOG_TEMPLATE.md and AGENTS.md</li>
+<li>
+<p>Files: <code>AGENTLOG.md</code>, <code>archive/agentlogs/AGENTLOG-01-01-26.md</code>, <code>archive/agentlogs/archive-index.md</code>, <code>AGENTLOG_TEMPLATE.md</code>, <code>AGENTS.md</code></p>
+</li>
+<li>
+<p><strong>tnh-gen Provenance YAML Frontmatter</strong> (2025-12-30)</p>
+</li>
 <li>Switched file output provenance headers from HTML comments to YAML frontmatter</li>
 <li>Updated CLI reference to document the YAML provenance format</li>
 <li>Updated tests to assert YAML provenance markers</li>
@@ -9137,9 +9261,32 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Fixed IndentationError in <code>filesystem_catalog_adapter.py</code> caused by duplicate lines from merge conflict resolution</li>
 <li>Removed orphaned code fragments (lines 84-85) that were incomplete fragments of a closed <code>Prompt()</code> constructor</li>
 <li>Restored test collection functionality (all 210 tests passing)</li>
-<li>Preserved warning logging functionality (<code>_log_warnings</code> call at lines 82-83)</li>
+<li>
+<p>Preserved warning logging functionality (<code>_log_warnings</code> call at lines 82-83)</p>
+</li>
+<li>
+<p><strong>Audio Transcribe Hotfix</strong> (2026-01-03, Hotfix to main)</p>
+</li>
+<li>Accept pyannote status payload aliases and default outcome for Pydantic validation</li>
+<li>Fix diarization success matching and reduce log payload size</li>
+<li>Skip diarization for AssemblyAI and transcribe full audio</li>
+<li>Improve transcription factory lazy import handling for AssemblyAI</li>
+<li>Normalize AssemblyAI options (drop unsupported keys, map language, disable language_detection when language_code set)</li>
+<li>Add minimal tests for diarization payloads, pipeline provider routing, and AssemblyAI option normalization</li>
+<li>Promote <code>assemblyai</code> and <code>pysrt</code> to core dependencies to match runtime expectations</li>
+<li>
+<p>Files: <code>src/tnh_scholar/audio_processing/diarization/schemas.py</code>, <code>src/tnh_scholar/cli_tools/audio_transcribe/transcription_pipeline.py</code>, <code>src/tnh_scholar/audio_processing/transcription/transcription_service.py</code>, <code>src/tnh_scholar/audio_processing/transcription/assemblyai_service.py</code>, <code>pyproject.toml</code>, <code>Makefile</code>, <code>tests/audio_processing/</code>, <code>tests/cli_tools/test_audio_transcribe_pipeline.py</code></p>
+</li>
+<li>
+<p><strong>Prompt Frontmatter + Token Counting Hotfix</strong> (2026-01-05, Hotfix to main)</p>
+</li>
+<li>Normalized prompt frontmatter loading to default missing required variables and defaults with warnings instead of failing</li>
+<li>Fixed <code>simple_punctuate</code> frontmatter required variables list</li>
+<li>Added registry-based encoding fallback for token counting (resolves <code>gpt-5-mini</code> tiktoken warnings)</li>
+<li>Added prompt mapper coverage for missing required variables and token counting test for GPT-5 registry encoding resolution</li>
+<li>Files: <code>src/tnh_scholar/prompt_system/mappers/prompt_mapper.py</code>, <code>patterns/simple_punctuate.md</code>, <code>tests/prompt_system/test_catalog_adapters.py</code>, <code>src/tnh_scholar/gen_ai_service/utils/token_utils.py</code>, <code>tests/gen_ai_service/utils/test_token_utils.py</code></li>
 </ul>
-<h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
+<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>tnh-gen CLI Tool</strong> - New prompt-driven content generation CLI (ADR-TG01, ADR-TG01.1, ADR-TG02)</li>
 <li><strong>Core Implementation (Dec 2025)</strong> - Initial CLI based on ADR-TG01 and ADR-TG02:<ul>
@@ -9267,7 +9414,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="021-2025-12-11">[0.2.1] - 2025-12-11<a class="headerlink" href="#021-2025-12-11" title="Link to this section">&para;</a></h2>
 <h3 id="infrastructure-tooling">Infrastructure &amp; Tooling<a class="headerlink" href="#infrastructure-tooling" title="Link to this section">&para;</a></h3>
 <p>This patch release focuses on hardening release automation, improving developer experience, and expanding project documentation infrastructure.</p>
-<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="Link to this section">&para;</a></h3>
+<h3 id="added_2">Added<a class="headerlink" href="#added_2" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Archive System Infrastructure</strong></li>
 <li>Comprehensive archive linking system with automated AGENTLOG management</li>
@@ -9330,7 +9477,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h3 id="major-infrastructure-improvements">Major Infrastructure Improvements<a class="headerlink" href="#major-infrastructure-improvements" title="Link to this section">&para;</a></h3>
 <p>This release represents a significant maturation of project infrastructure, building on the documentation reorganization from v0.1.4. Combined, these releases deliver comprehensive documentation tooling and streamlined release automation.</p>
 <p><strong>Versioning Note</strong>: The v0.1.3 → v0.1.4 transition should have been v0.1.3 → v0.2.0 given the scope of documentation system changes. This release (v0.2.0) acknowledges both the documentation infrastructure (v0.1.4) and release automation improvements as a cohesive minor release milestone.</p>
-<h3 id="added_2">Added<a class="headerlink" href="#added_2" title="Link to this section">&para;</a></h3>
+<h3 id="added_3">Added<a class="headerlink" href="#added_3" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Comprehensive Dry-Run Mode for Release Workflow</strong></li>
 <li>Preview all release commands before execution (<code>DRY_RUN=1</code> parameter)</li>
@@ -9408,7 +9555,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>All 94 tests passing with 1 deprecation warning (audioop in pydub, Python 3.13)</li>
 </ul>
 <h2 id="014-2025-12-05">[0.1.4] - 2025-12-05<a class="headerlink" href="#014-2025-12-05" title="Link to this section">&para;</a></h2>
-<h3 id="added_3">Added<a class="headerlink" href="#added_3" title="Link to this section">&para;</a></h3>
+<h3 id="added_4">Added<a class="headerlink" href="#added_4" title="Link to this section">&para;</a></h3>
 <ul>
 <li><strong>Documentation System Reorganization (Phase 1)</strong> - Major infrastructure overhaul:</li>
 <li>New hierarchical directory structure with 13 architecture modules</li>

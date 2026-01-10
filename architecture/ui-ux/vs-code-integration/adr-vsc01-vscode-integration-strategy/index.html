@@ -5225,7 +5225,7 @@
     
   
   
-    <span class="md-status md-status--draft"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -6192,7 +6192,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -6210,7 +6210,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -6666,36 +6666,45 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#adr-vsc02-tnh-gen-cli-implementation-created" class="md-nav__link">
+  <a href="#adr-tg01-tnh-gen-cli-architecture-implemented" class="md-nav__link">
     <span class="md-ellipsis">
-      ADR-VSC02: tnh-gen CLI Implementation ✅ Created
+      ADR-TG01: tnh-gen CLI Architecture ✅ Implemented
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#adr-vsc03-promptcatalog-metadata-schema-required" class="md-nav__link">
+  <a href="#adr-tg011-human-friendly-cli-defaults-implemented" class="md-nav__link">
     <span class="md-ellipsis">
-      ADR-VSC03: PromptCatalog Metadata Schema 🔴 Required
+      ADR-TG01.1: Human-Friendly CLI Defaults ✅ Implemented
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#adr-vsc04-configuration-discovery-management-required" class="md-nav__link">
+  <a href="#adr-tg02-prompt-system-integration-implemented" class="md-nav__link">
     <span class="md-ellipsis">
-      ADR-VSC04: Configuration Discovery &amp; Management 🔴 Required
+      ADR-TG02: Prompt System Integration ✅ Implemented
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#adr-vsc05-vs-code-extension-implementation-implementation" class="md-nav__link">
+  <a href="#adr-vsc02-vs-code-extension-architecture-proposed" class="md-nav__link">
     <span class="md-ellipsis">
-      ADR-VSC05: VS Code Extension Implementation 🟡 Implementation
+      ADR-VSC02: VS Code Extension Architecture 🟡 Proposed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-vsc05-vs-code-extension-implementation-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-VSC05: VS Code Extension Implementation 🟢 Future
     </span>
   </a>
   
@@ -6798,13 +6807,13 @@
         
   
   <span class="md-ellipsis">
-    ADR-VSC02: VS Code Extension Integration with tnh-gen CLI
+    ADR-VSC02: VS Code Extension Architecture
   </span>
   
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--wip"></span>
   
 
   
@@ -9431,36 +9440,45 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#adr-vsc02-tnh-gen-cli-implementation-created" class="md-nav__link">
+  <a href="#adr-tg01-tnh-gen-cli-architecture-implemented" class="md-nav__link">
     <span class="md-ellipsis">
-      ADR-VSC02: tnh-gen CLI Implementation ✅ Created
+      ADR-TG01: tnh-gen CLI Architecture ✅ Implemented
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#adr-vsc03-promptcatalog-metadata-schema-required" class="md-nav__link">
+  <a href="#adr-tg011-human-friendly-cli-defaults-implemented" class="md-nav__link">
     <span class="md-ellipsis">
-      ADR-VSC03: PromptCatalog Metadata Schema 🔴 Required
+      ADR-TG01.1: Human-Friendly CLI Defaults ✅ Implemented
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#adr-vsc04-configuration-discovery-management-required" class="md-nav__link">
+  <a href="#adr-tg02-prompt-system-integration-implemented" class="md-nav__link">
     <span class="md-ellipsis">
-      ADR-VSC04: Configuration Discovery &amp; Management 🔴 Required
+      ADR-TG02: Prompt System Integration ✅ Implemented
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#adr-vsc05-vs-code-extension-implementation-implementation" class="md-nav__link">
+  <a href="#adr-vsc02-vs-code-extension-architecture-proposed" class="md-nav__link">
     <span class="md-ellipsis">
-      ADR-VSC05: VS Code Extension Implementation 🟡 Implementation
+      ADR-VSC02: VS Code Extension Architecture 🟡 Proposed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adr-vsc05-vs-code-extension-implementation-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR-VSC05: VS Code Extension Implementation 🟢 Future
     </span>
   </a>
   
@@ -9564,13 +9582,14 @@
 <h1 id="adr-vsc01-vs-code-integration-strategy-tnh-scholar-extension-v010">ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)<a class="headerlink" href="#adr-vsc01-vs-code-integration-strategy-tnh-scholar-extension-v010" title="Link to this section">&para;</a></h1>
 <p>Defines the CLI-first integration strategy for the TNH-Scholar VS Code extension v0.1.0, using <code>tnh-gen</code> as the sole interface into GenAI Service capabilities.</p>
 <ul>
-<li><strong>Status:</strong> Proposed</li>
+<li><strong>Status:</strong> Accepted</li>
 <li><strong>Date:</strong> 2025-01-28</li>
+<li><strong>Updated:</strong> 2026-01-02</li>
 <li><strong>Owner:</strong> UI/UX Working Group</li>
 <li><strong>Author:</strong> Aaron Solomon</li>
 <li><strong>Tags:</strong> strategy, vscode, genai, architecture, integration</li>
 <li><strong>Context:</strong> Long-term TNH-Scholar UX roadmap; GenAIService maturity; PromptCatalog stability.</li>
-<li><strong>Related ADRs:</strong> GenAI Service Strategy, UI/UX Strategy (VS Code as Platform)</li>
+<li><strong>Related ADRs:</strong> <a href="../../../gen-ai-service/design/genai-service-design-strategy/">GenAI Service Strategy</a>, <a href="../../design/vs-code-as-ui-platform/">UI/UX Strategy: VS Code as Platform</a></li>
 </ul>
 <hr />
 <h2 id="1-context">1. Context<a class="headerlink" href="#1-context" title="Link to this section">&para;</a></h2>
@@ -9593,7 +9612,7 @@
 <p>This ADR establishes the <strong>strategic foundation</strong> for VS Code integration and describes the intended shape of v0.1.0 of the TNH-Scholar VS Code Extension.</p>
 <p>It is <strong>not</strong> an implementation ADR — it defines the approach, boundaries, responsibilities, and rationale behind the first integration.</p>
 <h3 id="11-relationship-to-genai-service"><strong>1.1 Relationship to GenAI Service</strong><a class="headerlink" href="#11-relationship-to-genai-service" title="Link to this section">&para;</a></h3>
-<p>The GenAI Service (see GenAI Service Strategy doc) provides:</p>
+<p>The GenAI Service (see <a href="../../../gen-ai-service/design/genai-service-design-strategy/">GenAI Service Strategy</a>) provides:</p>
 <ul>
 <li>Pattern-driven transformations via <code>GenAIService.generate()</code></li>
 <li>Rich domain model (<code>RenderRequest</code>, <code>CompletionEnvelope</code>, <code>PromptCatalog</code>)</li>
@@ -9687,14 +9706,14 @@
 <p>Enables VS Code extension to build dynamic QuickPick interfaces without hardcoding prompt metadata.</p>
 <h4 id="tnh-gen-run-execute-patterns"><strong><code>tnh-gen run</code></strong> - Execute Patterns<a class="headerlink" href="#tnh-gen-run-execute-patterns" title="Link to this section">&para;</a></h4>
 <p>Executes a prompt pattern with flexible variable passing:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Inline variables</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Inline variables (with --api for VS Code)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--api<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_lang</span><span class="o">=</span>vi<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_lang</span><span class="o">=</span>en
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># JSON file variables</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># JSON file variables (with --api for VS Code)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--api<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span>--vars<span class="w"> </span>variables.json
 </span></code></pre></div>
@@ -9702,9 +9721,9 @@
 <ul>
 <li>Supports both JSON file and inline parameter styles</li>
 <li>Auto-injects file content as <code>input_text</code> variable</li>
-<li>Outputs structured JSON for programmatic consumption</li>
-<li>Provides clear exit codes for error handling (0-5)</li>
-<li>Generates provenance markers in output files</li>
+<li>With <code>--api</code>: Outputs structured JSON for programmatic consumption</li>
+<li>Provides clear exit codes for error handling (0-5 per ADR-TG01)</li>
+<li>Generates provenance markers in output files (YAML frontmatter)</li>
 </ul>
 <h4 id="tnh-gen-config-manage-configuration"><strong><code>tnh-gen config</code></strong> - Manage Configuration<a class="headerlink" href="#tnh-gen-config-manage-configuration" title="Link to this section">&para;</a></h4>
 <p>Configuration discovery with precedence: CLI flags &gt; workspace &gt; user &gt; environment &gt; defaults.</p>
@@ -9721,14 +9740,14 @@
 <li>Execute <code>tnh-gen list --api</code></li>
 <li>Show QuickPick with prompt names + descriptions</li>
 <li>For selected prompt, show input form for required variables</li>
-<li>Execute <code>tnh-gen run --prompt &lt;key&gt; --input-file &lt;active_file&gt; --vars &lt;temp.json&gt;</code></li>
+<li>Save active document to a temp file, then execute <code>tnh-gen run --api --prompt &lt;key&gt; --input-file &lt;temp_file&gt; --vars &lt;temp.json&gt;</code></li>
 <li>Parse JSON response</li>
 <li>Write output to <code>&lt;basename&gt;.&lt;prompt_key&gt;.&lt;ext&gt;</code></li>
 <li>Open output file in split editor</li>
 </ol>
 <h4 id="command-2-tnh-scholar-refresh-prompt-catalog">Command 2: "TNH Scholar: Refresh Prompt Catalog"<a class="headerlink" href="#command-2-tnh-scholar-refresh-prompt-catalog" title="Link to this section">&para;</a></h4>
 <ul>
-<li>Re-executes <code>tnh-gen list</code></li>
+<li>Re-executes <code>tnh-gen list --api</code></li>
 <li>Clears extension cache</li>
 <li>Shows notification with prompt count</li>
 </ul>
@@ -9745,17 +9764,18 @@
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  notes.txt → notes.extract_quotes.txt
 </span></code></pre></div>
 <p><strong>Provenance Markers:</strong></p>
-<p>GenAI Service automatically prepends provenance metadata to output files:</p>
-<div class="language-markdown highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&lt;!--
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>TNH-Scholar Generated Content
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Pattern: translate (v1.0)
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Model: gpt-4o
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Fingerprint: sha256:abc123...
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Correlation ID: 01HQXYZ123ABC
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Generated: 2025-01-28T10:30:03Z
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>--&gt;
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>[Generated content follows...]
+<p>GenAI Service automatically prepends provenance metadata to output files as YAML frontmatter:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nn">---</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">provenance</span><span class="p">:</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">translate</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0&quot;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">fingerprint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sha256:abc123...&quot;</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">correlation_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;01HQXYZ123ABC&quot;</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="nt">generated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-01-28T10:30:03Z&quot;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nn">---</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="p p-Indicator">[</span><span class="nv">Generated content follows...</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
 <p><strong>Editor Integration:</strong></p>
 <ul>
@@ -9815,17 +9835,17 @@
 <li>Expected output modes (text/json)</li>
 </ul>
 <p>The extension must <strong>never duplicate</strong> prompt metadata. All metadata is fetched dynamically via <code>tnh-gen list</code>.</p>
-<p><strong>Note:</strong> This requires formalizing the PromptCatalog metadata schema. See ADR-VSC03.</p>
+<p><strong>Note:</strong> PromptCatalog metadata schema is defined in <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02</a>.</p>
 <hr />
 <h3 id="38-workspace-configuration-discovery"><strong>3.8 Workspace Configuration Discovery</strong><a class="headerlink" href="#38-workspace-configuration-discovery" title="Link to this section">&para;</a></h3>
 <p>For v0.1.0, the extension assumes <code>tnh-gen</code> is on <code>$PATH</code>.</p>
-<p><strong>Configuration Sources:</strong></p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// .vscode/tnh-scholar.json (workspace-level)</span>
+<p><strong>Configuration Sources (per ADR-CF01):</strong></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// .vscode/settings.json (workspace-level)</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;promptCatalog&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./prompts&quot;</span><span class="p">,</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">&quot;defaultModel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">&quot;maxDollars&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10</span><span class="p">,</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nt">&quot;cliPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/tnh-gen&quot;</span><span class="w">  </span><span class="c1">// Optional: override CLI location</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;tnhScholar.cliPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/tnh-gen&quot;</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">&quot;tnhScholar.promptDirectory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./prompts&quot;</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">&quot;tnhScholar.defaultModel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nt">&quot;tnhScholar.maxCostUsd&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10</span>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">}</span>
 </span></code></pre></div>
 <p><strong>Future (v0.2.0+):</strong></p>
@@ -9834,7 +9854,7 @@
 <li>Discover in-project venv</li>
 <li>Fallback to system Python</li>
 </ul>
-<p>See ADR-VSC04 for detailed configuration strategy.</p>
+<p>See <a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/">ADR-CF01</a> for detailed configuration strategy.</p>
 <hr />
 <h2 id="4-rationale">4. Rationale<a class="headerlink" href="#4-rationale" title="Link to this section">&para;</a></h2>
 <h3 id="41-stability"><strong>4.1 Stability</strong><a class="headerlink" href="#41-stability" title="Link to this section">&para;</a></h3>
@@ -9959,7 +9979,9 @@
 <ul>
 <li><strong>Transport:</strong> <code>tnh-gen</code> CLI subprocess</li>
 <li><strong>Goal:</strong> Ship walking skeleton, validate UX</li>
+<li><strong>Scope:</strong> TypeScript extension + unit/integration tests</li>
 <li><strong>Capabilities:</strong> Basic file transformations, prompt discovery</li>
+<li><strong>Documentation/Packaging:</strong> Separate task after walking skeleton validation</li>
 </ul>
 <h3 id="v020-add-http-service"><strong>v0.2.0: Add HTTP Service</strong> 🔄<a class="headerlink" href="#v020-add-http-service" title="Link to this section">&para;</a></h3>
 <ul>
@@ -9986,26 +10008,32 @@
 <p>Before implementing the VS Code extension, these must be completed:</p>
 <h3 id="p0-blocking"><strong>P0: Blocking</strong><a class="headerlink" href="#p0-blocking" title="Link to this section">&para;</a></h3>
 <ol>
-<li><strong>Implement <code>tnh-gen</code> CLI</strong> (ADR-VSC02)</li>
+<li><strong>Implement <code>tnh-gen</code> CLI</strong> ✅ COMPLETE</li>
+<li><strong>ADR</strong>: <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01</a>, <a href="../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/">ADR-TG01.1</a></li>
 <li>Wrap GenAI Service with CLI interface</li>
-<li>Support JSON and inline variable passing</li>
+<li>Support JSON and inline variable passing (<code>--api</code> flag)</li>
+<li>Add to Poetry scripts as entry point</li>
 <li>
-<p>Add to Poetry scripts as entry point</p>
+<p><strong>Status</strong>: Implemented (v0.2.3+)</p>
 </li>
 <li>
-<p><strong>Define PromptCatalog Metadata Schema</strong> (ADR-VSC03)</p>
+<p><strong>Define PromptCatalog Metadata Schema</strong> ✅ COMPLETE</p>
 </li>
-<li>Formalize metadata fields (name, description, tags, variables)</li>
+<li><strong>ADR</strong>: <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02</a></li>
+<li>Formalize metadata fields (name, description, tags, required_variables, optional_variables)</li>
 <li>Extend <code>PromptsAdapter.introspect()</code> to return metadata</li>
+<li>Create metadata validation</li>
 <li>
-<p>Create metadata validation</p>
+<p><strong>Status</strong>: Implemented in tnh-gen CLI</p>
 </li>
 <li>
-<p><strong>Define Configuration Strategy</strong> (ADR-VSC04)</p>
+<p><strong>Define Configuration Strategy</strong> ✅ COMPLETE</p>
 </li>
+<li><strong>ADR</strong>: <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01</a> §4 (Configuration)</li>
 <li>Specify config file formats and locations</li>
-<li>Define precedence rules</li>
+<li>Define precedence rules (CLI flags &gt; workspace &gt; user &gt; env &gt; defaults)</li>
 <li>Handle API key discovery and secrets management</li>
+<li><strong>Status</strong>: Implemented in tnh-gen CLI</li>
 </ol>
 <h3 id="p1-high-priority"><strong>P1: High Priority</strong><a class="headerlink" href="#p1-high-priority" title="Link to this section">&para;</a></h3>
 <ol>
@@ -10025,40 +10053,28 @@
 <hr />
 <h2 id="9-follow-up-adrs">9. Follow-up ADRs<a class="headerlink" href="#9-follow-up-adrs" title="Link to this section">&para;</a></h2>
 <p>The following ADRs will detail implementation:</p>
-<h3 id="adr-vsc02-tnh-gen-cli-implementation-created"><strong>ADR-VSC02: <code>tnh-gen</code> CLI Implementation</strong> ✅ Created<a class="headerlink" href="#adr-vsc02-tnh-gen-cli-implementation-created" title="Link to this section">&para;</a></h3>
-<p><strong>Status:</strong> Complete (see <a href="../adr-vsc02-tnh-gen-cli-implementation/">adr-vsc02-tnh-gen-cli-implementation.md</a>)</p>
-<p><strong>Scope:</strong></p>
-<ul>
-<li>CLI argument parsing and validation (Click framework)</li>
-<li>Command implementations (<code>list</code>, <code>run</code>, <code>config</code>, <code>version</code>)</li>
-<li>Variable injection strategies (JSON file, inline params, file content)</li>
-<li>GenAI Service integration and request building</li>
-<li>Error handling and exit codes (0-5 taxonomy)</li>
-<li>Output formatting (JSON, YAML, table)</li>
-<li>Provenance marker generation</li>
-<li>Migration plan from <code>tnh-fab</code></li>
-</ul>
-<h3 id="adr-vsc03-promptcatalog-metadata-schema-required"><strong>ADR-VSC03: PromptCatalog Metadata Schema</strong> 🔴 Required<a class="headerlink" href="#adr-vsc03-promptcatalog-metadata-schema-required" title="Link to this section">&para;</a></h3>
-<p><strong>Scope:</strong></p>
-<ul>
-<li>Metadata field definitions (name, description, tags, variables, etc.)</li>
-<li>Metadata storage format (YAML frontmatter, JSON sidecar, embedded?)</li>
-<li><code>introspect()</code> API expansion</li>
-<li>Validation rules and schema</li>
-<li>Versioning strategy for prompts</li>
-<li>Backward compatibility with existing patterns</li>
-</ul>
-<h3 id="adr-vsc04-configuration-discovery-management-required"><strong>ADR-VSC04: Configuration Discovery &amp; Management</strong> 🔴 Required<a class="headerlink" href="#adr-vsc04-configuration-discovery-management-required" title="Link to this section">&para;</a></h3>
-<p><strong>Scope:</strong></p>
-<ul>
-<li>Configuration file formats (.vscode/tnh-scholar.json, ~/.config/tnh-scholar/)</li>
-<li>Precedence rules (CLI flags &gt; workspace &gt; user &gt; env &gt; defaults)</li>
-<li>API key discovery and secrets management</li>
-<li>Virtualenv/Poetry detection</li>
-<li>CLI path override mechanisms</li>
-<li>Environment variable mapping</li>
-</ul>
-<h3 id="adr-vsc05-vs-code-extension-implementation-implementation"><strong>ADR-VSC05: VS Code Extension Implementation</strong> 🟡 Implementation<a class="headerlink" href="#adr-vsc05-vs-code-extension-implementation-implementation" title="Link to this section">&para;</a></h3>
+<h3 id="adr-tg01-tnh-gen-cli-architecture-implemented"><strong>ADR-TG01: <code>tnh-gen</code> CLI Architecture</strong> ✅ Implemented<a class="headerlink" href="#adr-tg01-tnh-gen-cli-architecture-implemented" title="Link to this section">&para;</a></h3>
+<p><strong>Status:</strong> Implemented (see <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01</a>)</p>
+<p><strong>Satisfied prerequisites:</strong>
+- CLI implementation with <code>--api</code> flag for machine-readable output
+- Configuration strategy (precedence, file formats, API keys)
+- Error handling and exit codes (0-5 taxonomy)
+- Provenance generation</p>
+<h3 id="adr-tg011-human-friendly-cli-defaults-implemented"><strong>ADR-TG01.1: Human-Friendly CLI Defaults</strong> ✅ Implemented<a class="headerlink" href="#adr-tg011-human-friendly-cli-defaults-implemented" title="Link to this section">&para;</a></h3>
+<p><strong>Status:</strong> Implemented (see <a href="../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/">ADR-TG01.1</a>)</p>
+<p><strong>Satisfied prerequisites:</strong>
+- <code>--api</code> flag for VS Code integration (JSON output)
+- Human-friendly defaults for interactive use</p>
+<h3 id="adr-tg02-prompt-system-integration-implemented"><strong>ADR-TG02: Prompt System Integration</strong> ✅ Implemented<a class="headerlink" href="#adr-tg02-prompt-system-integration-implemented" title="Link to this section">&para;</a></h3>
+<p><strong>Status:</strong> Implemented (see <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02</a>)</p>
+<p><strong>Satisfied prerequisites:</strong>
+- PromptCatalog metadata schema (required_variables, optional_variables, tags, etc.)
+- PromptsAdapter integration
+- Variable precedence rules</p>
+<h3 id="adr-vsc02-vs-code-extension-architecture-proposed"><strong>ADR-VSC02: VS Code Extension Architecture</strong> 🟡 Proposed<a class="headerlink" href="#adr-vsc02-vs-code-extension-architecture-proposed" title="Link to this section">&para;</a></h3>
+<p><strong>Status:</strong> Proposed (see <a href="../adr-vsc02-tnh-gen-cli-implementation/">adr-vsc02-tnh-gen-cli-implementation.md</a>)</p>
+<p><strong>Scope:</strong> TypeScript extension architecture consuming tnh-gen CLI</p>
+<h3 id="adr-vsc05-vs-code-extension-implementation-future"><strong>ADR-VSC05: VS Code Extension Implementation</strong> 🟢 Future<a class="headerlink" href="#adr-vsc05-vs-code-extension-implementation-future" title="Link to this section">&para;</a></h3>
 <p><strong>Scope:</strong></p>
 <ul>
 <li>Extension architecture and command structure</li>
@@ -10127,14 +10143,14 @@
 <h2 id="11-acceptance-criteria-v010">11. Acceptance Criteria (v0.1.0)<a class="headerlink" href="#11-acceptance-criteria-v010" title="Link to this section">&para;</a></h2>
 <p><strong>CLI Implementation:</strong></p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen list --api</code> returns prompt metadata</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> supports JSON file variable passing</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> supports inline <code>--var</code> parameter passing</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> injects <code>--input-file</code> content as variable</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> CLI outputs structured JSON on success/failure</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> CLI exits with appropriate error codes (0-4)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> CLI respects configuration precedence (flags &gt; workspace &gt; user &gt; env)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen</code> is installable via Poetry scripts</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>tnh-gen list --api</code> returns prompt metadata ✅ (ADR-TG01.1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> supports JSON file variable passing ✅ (ADR-TG02)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> supports inline <code>--var</code> parameter passing ✅ (ADR-TG02)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> injects <code>--input-file</code> content as variable ✅ (ADR-TG02)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CLI outputs structured JSON with <code>--api</code> flag ✅ (ADR-TG01.1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CLI exits with appropriate error codes (0-5) ✅ (ADR-TG01)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CLI respects configuration precedence ✅ (ADR-CF01)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>tnh-gen</code> is installable via Poetry scripts ✅ (v0.2.3+)</li>
 </ul>
 <p><strong>VS Code Extension:</strong></p>
 <ul class="task-list">
@@ -10156,14 +10172,17 @@
 <hr />
 <h2 id="12-status">12. Status<a class="headerlink" href="#12-status" title="Link to this section">&para;</a></h2>
 <p><strong>Current:</strong> Proposed (awaiting approval)</p>
+<p><strong>Prerequisites Complete:</strong></p>
+<ol>
+<li>✅ ADR-TG01: <code>tnh-gen</code> CLI architecture (implemented v0.2.3+)</li>
+<li>✅ ADR-TG01.1: <code>--api</code> flag for machine-readable output (implemented)</li>
+<li>✅ ADR-TG02: Prompt system integration (implemented)</li>
+<li>✅ ADR-CF01: Configuration strategy (accepted)</li>
+</ol>
 <p><strong>Next Steps:</strong></p>
 <ol>
-<li>✅ Review and approve ADR-VSC01 (this document)</li>
-<li>🔴 Write ADR-VSC02 (<code>tnh-gen</code> CLI implementation)</li>
-<li>🔴 Write ADR-VSC03 (PromptCatalog metadata schema)</li>
-<li>🔴 Write ADR-VSC04 (Configuration discovery)</li>
-<li>🟡 Implement <code>tnh-gen</code> CLI</li>
-<li>🟡 Implement VS Code extension</li>
+<li>🟡 Review and approve ADR-VSC01 (this document) + ADR-VSC02</li>
+<li>🟡 Implement VS Code extension (walking skeleton)</li>
 <li>🟢 Ship v0.1.0</li>
 </ol>
 <hr />
@@ -10190,12 +10209,11 @@
 <li>User fills form, clicks "Run"</li>
 <li>Extension executes:</li>
 </ol>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--api<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_lang</span><span class="o">=</span>vi<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_lang</span><span class="o">=</span>en<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">context</span><span class="o">=</span><span class="s2">&quot;Dharma talk on mindfulness&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span>--output-file<span class="w"> </span>teaching.translate.md
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">context</span><span class="o">=</span><span class="s2">&quot;Dharma talk on mindfulness&quot;</span>
 </span></code></pre></div>
 <ol>
 <li>Output file <code>teaching.translate.md</code> opens in split pane with provenance header</li>

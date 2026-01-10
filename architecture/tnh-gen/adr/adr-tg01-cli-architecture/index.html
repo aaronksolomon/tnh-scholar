@@ -5840,6 +5840,24 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-01-01-api-success-payloads-and-config-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum: 2026-01-01 - API Success Payloads and --config Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-01-02-add-prompt-dir-global-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum: 2026-01-02 - Add --prompt-dir Global Flag
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -5894,7 +5912,7 @@
     
   
   
-    <span class="md-status md-status--draft"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -6848,7 +6866,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -6870,13 +6888,13 @@
         
   
   <span class="md-ellipsis">
-    ADR-VSC02: VS Code Extension Integration with tnh-gen CLI
+    ADR-VSC02: VS Code Extension Architecture
   </span>
   
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--wip"></span>
   
 
   
@@ -9687,6 +9705,24 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-01-01-api-success-payloads-and-config-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum: 2026-01-01 - API Success Payloads and --config Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-01-02-add-prompt-dir-global-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum: 2026-01-02 - Add --prompt-dir Global Flag
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -10383,6 +10419,59 @@
 </ul>
 <p><strong>Migration</strong>: Implementation work tracked in TODO.md (see "Provenance Format Refactor"). Current HTML comment format will be replaced in a future branch.</p>
 <p><strong>Status</strong>: Accepted addendum; implementation pending</p>
+<hr />
+<h2 id="addendum-2026-01-01-api-success-payloads-and-config-usage">Addendum: 2026-01-01 - API Success Payloads and <code>--config</code> Usage<a class="headerlink" href="#addendum-2026-01-01-api-success-payloads-and-config-usage" title="Link to this section">&para;</a></h2>
+<p><strong>Context</strong>: VS Code integration needs stable, machine-readable success payloads and a non-persistent way to pass per-call configuration.</p>
+<p><strong>Decision</strong>:
+- Success payload schemas are defined in <code>src/tnh_scholar/cli_tools/tnh_gen/types.py:120</code> (<code>ListApiPayload</code>, <code>RunSuccessPayload</code>, <code>VersionPayload</code>).
+- The global <code>--config</code> flag is the supported mechanism to pass a per-call config file without mutating user or workspace state (<code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:25</code>).</p>
+<p><strong>Rationale</strong>: These contracts are already implemented and align with ADR-CF01 precedence. Using <code>--config</code> keeps VS Code integration explicit and avoids persistent writes.</p>
+<p><strong>Implementation Changes</strong>: None (documentation-only clarification of existing behavior).</p>
+<hr />
+<hr />
+<h2 id="addendum-2026-01-02-add-prompt-dir-global-flag">Addendum: 2026-01-02 - Add <code>--prompt-dir</code> Global Flag<a class="headerlink" href="#addendum-2026-01-02-add-prompt-dir-global-flag" title="Link to this section">&para;</a></h2>
+<p><strong>Context</strong>: Users need a convenient way to override the prompt catalog directory for one-off CLI calls without setting environment variables or modifying config files.</p>
+<p><strong>Current State</strong>: The prompt catalog directory can only be configured via:
+- Environment variable: <code>TNH_PROMPT_DIR</code>
+- Config files (workspace or user)
+- The generic <code>--config</code> flag pointing to a custom config file</p>
+<p><strong>Problem</strong>: For one-off operations (testing different prompt directories, CI/CD, development workflows), users must either:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="c1"># Awkward - requires environment setup</span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="nv">TNH_PROMPT_DIR</span><span class="o">=</span>/some/other/prompts<span class="w"> </span>tnh-gen<span class="w"> </span>list
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="c1"># OR create a temporary config file</span>
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;prompt_catalog_dir: /some/other/prompts&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/tmp/config.yaml
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>tnh-gen<span class="w"> </span>--config<span class="w"> </span>/tmp/config.yaml<span class="w"> </span>list
+</span></code></pre></div></p>
+<p><strong>Decision</strong>: Add <code>--prompt-dir</code> global flag for direct command-line override of prompt catalog directory.</p>
+<p><strong>Proposed Syntax</strong>:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="c1"># Clean and explicit</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>tnh-gen<span class="w"> </span>--prompt-dir<span class="w"> </span>/some/other/prompts<span class="w"> </span>list
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>tnh-gen<span class="w"> </span>--prompt-dir<span class="w"> </span>./test-prompts<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span>--input-file<span class="w"> </span>test.md
+</span></code></pre></div></p>
+<p><strong>Implementation Details</strong>:
+- Add <code>--prompt-dir</code> to global flags in <code>cli_callback()</code> (<code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:26</code>)
+- Insert into configuration precedence at CLI flags level (highest precedence)
+- Pass through config override system (same mechanism as <code>--config</code>)
+- Update <code>ConfigData</code> type to accept <code>prompt_catalog_dir</code> override
+- Update help text to document the flag</p>
+<p><strong>Precedence Impact</strong>:
+Updated configuration precedence order (highest to lowest):
+1. <strong>CLI flags</strong> (e.g., <code>--model gpt-4o</code>, <strong><code>--prompt-dir /path</code></strong>)
+2. <strong>Workspace config</strong> (<code>.vscode/tnh-scholar.json</code>)
+3. <strong>User config</strong> (<code>~/.config/tnh-scholar/config.json</code>)
+4. <strong>Environment variables</strong> (<code>TNH_PROMPT_DIR</code>, <code>OPENAI_API_KEY</code>)
+5. <strong>Defaults</strong> (defined in GenAI Service)</p>
+<p><strong>Rationale</strong>:
+- Follows existing pattern of <code>--config</code> global flag for per-call overrides
+- Aligns with "human-friendly defaults" design philosophy (ADR-TG01.1)
+- Common pattern in other CLI tools (e.g., <code>docker --config</code>, <code>git --git-dir</code>)
+- No persistent state mutation - override only applies to current invocation</p>
+<p><strong>Status</strong>: Accepted addendum; implementation pending</p>
+<p><strong>Related Files</strong>:
+- <code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:26</code> (add flag)
+- <code>src/tnh_scholar/cli_tools/tnh_gen/config_loader.py</code> (handle override)
+- <code>docs/cli-reference/tnh-gen.md</code> (update documentation)</p>
 <hr />
 <p><strong>Approval Path</strong>: Architecture review → Implementation → Testing → Documentation</p>
 

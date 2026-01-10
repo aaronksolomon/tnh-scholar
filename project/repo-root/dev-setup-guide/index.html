@@ -1214,6 +1214,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#run-cli-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run CLI tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#run-any-script-or-tool" class="md-nav__link">
     <span class="md-ellipsis">
       Run any script or tool
@@ -1233,6 +1242,21 @@
       7. Makefile
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="7. Makefile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common workflows
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -5402,7 +5426,7 @@
     
   
   
-    <span class="md-status md-status--draft"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -6356,7 +6380,7 @@
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -6378,13 +6402,13 @@
         
   
   <span class="md-ellipsis">
-    ADR-VSC02: VS Code Extension Integration with tnh-gen CLI
+    ADR-VSC02: VS Code Extension Architecture
   </span>
   
     
   
   
-    <span class="md-status md-status--proposed"></span>
+    <span class="md-status md-status--wip"></span>
   
 
   
@@ -8660,6 +8684,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#run-cli-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run CLI tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#run-any-script-or-tool" class="md-nav__link">
     <span class="md-ellipsis">
       Run any script or tool
@@ -8679,6 +8712,21 @@
       7. Makefile
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="7. Makefile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common workflows
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -8820,60 +8868,103 @@ The goals are: clarity, reproducibility, stability, and low onboarding friction.
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>.
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>.
 </span></code></pre></div>
+<h3 id="run-cli-tools">Run CLI tools<a class="headerlink" href="#run-cli-tools" title="Link to this section">&para;</a></h3>
+<p><strong>After <code>make pipx-build</code></strong> (recommended for ease of use):</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># CLI tools available directly in any shell</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>audio-transcribe<span class="w"> </span>&lt;args&gt;
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>tnh-gen<span class="w"> </span>&lt;args&gt;
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>ytt-fetch<span class="w"> </span>&lt;args&gt;
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>token-count<span class="w"> </span>&lt;args&gt;
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="c1"># etc.</span>
+</span></code></pre></div>
+<p><strong>Without pipx installation</strong> (using Poetry environment):</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>audio-transcribe<span class="w"> </span>&lt;args&gt;
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>tnh-gen<span class="w"> </span>&lt;args&gt;
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># etc.</span>
+</span></code></pre></div>
 <h3 id="run-any-script-or-tool">Run any script or tool<a class="headerlink" href="#run-any-script-or-tool" title="Link to this section">&para;</a></h3>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>&lt;command&gt;
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>&lt;command&gt;
 </span></code></pre></div>
 <p>Example:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/some_tool.py
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/some_tool.py
 </span></code></pre></div>
 <hr />
 <h2 id="7-makefile">7. Makefile<a class="headerlink" href="#7-makefile" title="Link to this section">&para;</a></h2>
-<p>The repository includes a <code>Makefile</code> at the project root:</p>
-<div class="language-make highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nv">PYTHON_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span>.12.4
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="nv">POETRY</span><span class="w">        </span><span class="o">=</span><span class="w"> </span>poetry
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">setup</span> <span class="n">setup</span>-<span class="n">dev</span> <span class="n">test</span> <span class="n">lint</span> <span class="n">format</span> <span class="n">kernel</span>
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
-</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="nf">setup</span><span class="o">:</span>
-</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w"> </span>pyenv<span class="w"> </span>install<span class="w"> </span>-s<span class="w"> </span><span class="k">$(</span>PYTHON_VERSION<span class="k">)</span>
-</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w"> </span>pyenv<span class="w"> </span><span class="nb">local</span><span class="w"> </span><span class="k">$(</span>PYTHON_VERSION<span class="k">)</span>
-</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>env<span class="w"> </span>use<span class="w"> </span>python
-</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>install<span class="w">  </span><span class="c1"># Includes dev dependencies automatically</span>
-</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
-</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="nf">setup-dev</span><span class="o">:</span>
-</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w"> </span>pyenv<span class="w"> </span>install<span class="w"> </span>-s<span class="w"> </span><span class="k">$(</span>PYTHON_VERSION<span class="k">)</span>
-</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="w"> </span>pyenv<span class="w"> </span><span class="nb">local</span><span class="w"> </span><span class="k">$(</span>PYTHON_VERSION<span class="k">)</span>
-</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>env<span class="w"> </span>use<span class="w"> </span>python
-</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>install<span class="w">  </span><span class="c1"># Dev dependencies included by default (dev group not optional)</span>
-</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span>tnh-scholar<span class="w"> </span>--display-name<span class="w"> </span><span class="s2">&quot;Python (tnh-scholar)&quot;</span>
-</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>
-</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="nf">test</span><span class="o">:</span>
-</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>run<span class="w"> </span>pytest
-</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>
-</span><span id="__span-17-22"><a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="nf">lint</span><span class="o">:</span>
-</span><span id="__span-17-23"><a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>.
-</span><span id="__span-17-24"><a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>
-</span><span id="__span-17-25"><a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="nf">format</span><span class="o">:</span>
-</span><span id="__span-17-26"><a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>.
-</span><span id="__span-17-27"><a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a>
-</span><span id="__span-17-28"><a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a><span class="nf">kernel</span><span class="o">:</span>
-</span><span id="__span-17-29"><a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span>tnh-scholar<span class="w"> </span>--display-name<span class="w"> </span><span class="s2">&quot;Python (tnh-scholar)&quot;</span>
+<p>The repository includes a <code>Makefile</code> at the project root with development automation:</p>
+<div class="language-make highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nv">PYTHON_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span>.12.4
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="nv">POETRY</span><span class="w">        </span><span class="o">=</span><span class="w"> </span>poetry
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="nv">PIPX</span><span class="w">          </span><span class="o">=</span><span class="w"> </span>pipx
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="nv">TNH_CLI_TOOLS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>audio-transcribe<span class="w"> </span>tnh-fab<span class="w"> </span>tnh-gen<span class="w"> </span>ytt-fetch<span class="w"> </span>nfmt<span class="w"> </span>token-count<span class="w"> </span>tnh-setup<span class="w"> </span>tnh-tree<span class="w"> </span>sent-split<span class="w"> </span>json-srt<span class="w"> </span>srt-translate
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="c"># Setup targets</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="nf">setup</span><span class="o">:</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w"> </span>pyenv<span class="w"> </span>install<span class="w"> </span>-s<span class="w"> </span><span class="k">$(</span>PYTHON_VERSION<span class="k">)</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w"> </span>pyenv<span class="w"> </span><span class="nb">local</span><span class="w"> </span><span class="k">$(</span>PYTHON_VERSION<span class="k">)</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>env<span class="w"> </span>use<span class="w"> </span>python
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>install
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="nf">setup-dev</span><span class="o">:</span>
+</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="w"> </span>pyenv<span class="w"> </span>install<span class="w"> </span>-s<span class="w"> </span><span class="k">$(</span>PYTHON_VERSION<span class="k">)</span>
+</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="w"> </span>pyenv<span class="w"> </span><span class="nb">local</span><span class="w"> </span><span class="k">$(</span>PYTHON_VERSION<span class="k">)</span>
+</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>env<span class="w"> </span>use<span class="w"> </span>python
+</span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>install
+</span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span>tnh-scholar<span class="w"> </span>--display-name<span class="w"> </span><span class="s2">&quot;Python (tnh-scholar)&quot;</span>
+</span><span id="__span-19-19"><a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>
+</span><span id="__span-19-20"><a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="c"># Build and update targets</span>
+</span><span id="__span-19-21"><a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="nf">build-all</span><span class="o">:</span>
+</span><span id="__span-19-22"><a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>self<span class="w"> </span>update
+</span><span id="__span-19-23"><a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>update<span class="w"> </span>yt-dlp
+</span><span id="__span-19-24"><a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>install
+</span><span id="__span-19-25"><a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a><span class="w"> </span><span class="k">$(</span>MAKE<span class="k">)</span><span class="w"> </span>pipx-build
+</span><span id="__span-19-26"><a id="__codelineno-19-26" name="__codelineno-19-26" href="#__codelineno-19-26"></a><span class="w"> </span><span class="k">$(</span>MAKE<span class="k">)</span><span class="w"> </span>docs-build
+</span><span id="__span-19-27"><a id="__codelineno-19-27" name="__codelineno-19-27" href="#__codelineno-19-27"></a>
+</span><span id="__span-19-28"><a id="__codelineno-19-28" name="__codelineno-19-28" href="#__codelineno-19-28"></a><span class="nf">update</span><span class="o">:</span>
+</span><span id="__span-19-29"><a id="__codelineno-19-29" name="__codelineno-19-29" href="#__codelineno-19-29"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>self<span class="w"> </span>update
+</span><span id="__span-19-30"><a id="__codelineno-19-30" name="__codelineno-19-30" href="#__codelineno-19-30"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>update
+</span><span id="__span-19-31"><a id="__codelineno-19-31" name="__codelineno-19-31" href="#__codelineno-19-31"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>install
+</span><span id="__span-19-32"><a id="__codelineno-19-32" name="__codelineno-19-32" href="#__codelineno-19-32"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>build
+</span><span id="__span-19-33"><a id="__codelineno-19-33" name="__codelineno-19-33" href="#__codelineno-19-33"></a><span class="w"> </span><span class="k">$(</span>MAKE<span class="k">)</span><span class="w"> </span>pipx-build
+</span><span id="__span-19-34"><a id="__codelineno-19-34" name="__codelineno-19-34" href="#__codelineno-19-34"></a>
+</span><span id="__span-19-35"><a id="__codelineno-19-35" name="__codelineno-19-35" href="#__codelineno-19-35"></a><span class="c"># CLI tool installation via pipx (global access)</span>
+</span><span id="__span-19-36"><a id="__codelineno-19-36" name="__codelineno-19-36" href="#__codelineno-19-36"></a><span class="nf">pipx-build</span><span class="o">:</span>
+</span><span id="__span-19-37"><a id="__codelineno-19-37" name="__codelineno-19-37" href="#__codelineno-19-37"></a><span class="w"> </span>@echo<span class="w"> </span><span class="s2">&quot;Building pipx install for tnh-scholar (all CLI tools)...&quot;</span>
+</span><span id="__span-19-38"><a id="__codelineno-19-38" name="__codelineno-19-38" href="#__codelineno-19-38"></a><span class="w"> </span><span class="nv">PIPX_LOG_DIR</span><span class="o">=</span><span class="k">$(</span>HOME<span class="k">)</span>/.local/pipx/logs<span class="w"> </span><span class="k">$(</span>PIPX<span class="k">)</span><span class="w"> </span>install<span class="w"> </span>--force<span class="w"> </span>--editable<span class="w"> </span>.
+</span><span id="__span-19-39"><a id="__codelineno-19-39" name="__codelineno-19-39" href="#__codelineno-19-39"></a><span class="w"> </span>@printf<span class="w"> </span><span class="s2">&quot;CLI tools available: audio-transcribe, tnh-gen, ytt-fetch, etc.\n&quot;</span>
+</span><span id="__span-19-40"><a id="__codelineno-19-40" name="__codelineno-19-40" href="#__codelineno-19-40"></a>
+</span><span id="__span-19-41"><a id="__codelineno-19-41" name="__codelineno-19-41" href="#__codelineno-19-41"></a><span class="c"># Test and quality targets</span>
+</span><span id="__span-19-42"><a id="__codelineno-19-42" name="__codelineno-19-42" href="#__codelineno-19-42"></a><span class="nf">test</span><span class="o">:</span>
+</span><span id="__span-19-43"><a id="__codelineno-19-43" name="__codelineno-19-43" href="#__codelineno-19-43"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>run<span class="w"> </span>pytest
+</span><span id="__span-19-44"><a id="__codelineno-19-44" name="__codelineno-19-44" href="#__codelineno-19-44"></a>
+</span><span id="__span-19-45"><a id="__codelineno-19-45" name="__codelineno-19-45" href="#__codelineno-19-45"></a><span class="nf">lint</span><span class="o">:</span>
+</span><span id="__span-19-46"><a id="__codelineno-19-46" name="__codelineno-19-46" href="#__codelineno-19-46"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>.
+</span><span id="__span-19-47"><a id="__codelineno-19-47" name="__codelineno-19-47" href="#__codelineno-19-47"></a>
+</span><span id="__span-19-48"><a id="__codelineno-19-48" name="__codelineno-19-48" href="#__codelineno-19-48"></a><span class="nf">format</span><span class="o">:</span>
+</span><span id="__span-19-49"><a id="__codelineno-19-49" name="__codelineno-19-49" href="#__codelineno-19-49"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>.
+</span><span id="__span-19-50"><a id="__codelineno-19-50" name="__codelineno-19-50" href="#__codelineno-19-50"></a>
+</span><span id="__span-19-51"><a id="__codelineno-19-51" name="__codelineno-19-51" href="#__codelineno-19-51"></a><span class="nf">kernel</span><span class="o">:</span>
+</span><span id="__span-19-52"><a id="__codelineno-19-52" name="__codelineno-19-52" href="#__codelineno-19-52"></a><span class="w"> </span><span class="k">$(</span>POETRY<span class="k">)</span><span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>ipykernel<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>--name<span class="w"> </span>tnh-scholar<span class="w"> </span>--display-name<span class="w"> </span><span class="s2">&quot;Python (tnh-scholar)&quot;</span>
 </span></code></pre></div>
-<p>Standard onboarding:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># minimal (no dev tools)</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>make<span class="w"> </span>setup
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1"># full development environment (recommended)</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>make<span class="w"> </span>setup-dev
+<h3 id="common-workflows">Common workflows<a class="headerlink" href="#common-workflows" title="Link to this section">&para;</a></h3>
+<p><strong>Initial setup:</strong></p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>make<span class="w"> </span>setup-dev<span class="w">  </span><span class="c1"># Full development environment (recommended)</span>
+</span></code></pre></div>
+<p><strong>After pulling changes:</strong></p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>make<span class="w"> </span>update<span class="w">     </span><span class="c1"># Update all dependencies and reinstall pipx tools</span>
+</span></code></pre></div>
+<p><strong>Full rebuild (after major changes):</strong></p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>make<span class="w"> </span>build-all<span class="w">  </span><span class="c1"># Poetry update, yt-dlp, pipx tools, docs</span>
+</span></code></pre></div>
+<p><strong>Install CLI tools globally:</strong></p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>make<span class="w"> </span>pipx-build<span class="w">  </span><span class="c1"># Makes audio-transcribe, tnh-gen, etc. available in any shell</span>
 </span></code></pre></div>
 <hr />
 <h2 id="8-optional-jupyter-kernel-registration">8. Optional: Jupyter kernel registration<a class="headerlink" href="#8-optional-jupyter-kernel-registration" title="Link to this section">&para;</a></h2>
 <p>The recommended way to register the Jupyter kernel is via:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>make<span class="w"> </span>setup-dev
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>make<span class="w"> </span>setup-dev
 </span></code></pre></div>
 <p>which automatically installs dev dependencies and registers the kernel.</p>
 <p>If you need to re-register the kernel manually:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>make<span class="w"> </span>kernel
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>make<span class="w"> </span>kernel
 </span></code></pre></div>
 <p>After that, VS Code or Jupyter will show a kernel named <code>Python (tnh-scholar)</code>.</p>
 <hr />
@@ -8882,16 +8973,21 @@ The goals are: clarity, reproducibility, stability, and low onboarding friction.
 <li>Commit both <code>pyproject.toml</code> and <code>poetry.lock</code> to version control.</li>
 <li>In CI, always install using the lockfile:</li>
 </ul>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>poetry<span class="w"> </span>install<span class="w"> </span>--no-root<span class="w"> </span>--no-interaction<span class="w"> </span>--no-ansi
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>poetry<span class="w"> </span>install<span class="w"> </span>--no-root<span class="w"> </span>--no-interaction<span class="w"> </span>--no-ansi
 </span></code></pre></div>
 <ul>
 <li>When updating dependencies, update intentionally:</li>
 </ul>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>poetry<span class="w"> </span>add<span class="w"> </span>&lt;package&gt;
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>poetry<span class="w"> </span>update<span class="w"> </span>&lt;package&gt;
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>poetry<span class="w"> </span>add<span class="w"> </span>&lt;package&gt;
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>poetry<span class="w"> </span>update<span class="w"> </span>&lt;package&gt;
 </span></code></pre></div>
 <ul>
-<li>Avoid global packages. Use Poetry environments or <code>pipx</code> for global tools.</li>
+<li>
+<p><strong>Special case: yt-dlp</strong> — This package is intentionally unpinned (<code>&gt;=2025.1.15</code> in <code>pyproject.toml</code>) and should always use the latest version. Run <code>make build-all</code> to ensure yt-dlp is updated along with Poetry and docs.</p>
+</li>
+<li>
+<p>Avoid global packages. Use Poetry environments or <code>pipx</code> for global tools.</p>
+</li>
 </ul>
 <hr />
 <h2 id="10-summary">10. Summary<a class="headerlink" href="#10-summary" title="Link to this section">&para;</a></h2>
