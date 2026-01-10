@@ -12,7 +12,7 @@ updated: "2026-01-07"
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 > **Last Updated**: 2026-01-07 (VS Code Extension Walking Skeleton completed)
-> **Version**: 0.2.2 (Alpha)
+> **Version**: 0.3.0 (Alpha)
 > **Status**: Active Development - VS Code Extension Implemented
 >
 > **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.

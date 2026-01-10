@@ -47,7 +47,7 @@ Dependencies:
 from pathlib import Path
 
 # Package version
-__version__ = "0.2.2"
+__version__ = "0.3.0"
 
 # Dynamically determine and set up paths for the project
 TNH_CONFIG_DIR = Path.home() / ".config" / "tnh-scholar"
