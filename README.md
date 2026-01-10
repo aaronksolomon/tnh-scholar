@@ -20,7 +20,7 @@ TNH Scholar aims to make the teachings of Thich Nhat Hanh and the Plum Village t
 TNH Scholar is currently in active prototyping. Key capabilities:
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
-- **Text formatting and translation**: `tnh-gen` CLI (in development; currently `tnh-fab`, deprecated) for punctuation, translation, sectioning, and prompt-driven processing. See [ADR-TG01](docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) and [ADR-TG02](docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md) for architecture details.
+- **Text formatting and translation**: `tnh-gen` CLI for punctuation, translation, sectioning, and prompt-driven processing. Replaces deprecated `tnh-fab`. See [ADR-TG01](docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) and [ADR-TG02](docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md) for architecture details.
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See ADRs under [docs/architecture/prompt-system/index.md](docs/architecture/prompt-system/index.md) for decisions and roadmap
@@ -72,12 +72,16 @@ audio-transcribe --yt_url "https://youtube.com/watch?v=example" --split --transc
 ytt-fetch "https://youtube.com/watch?v=example" -l en -o transcript.txt
 ```
 
-**Process Text (currently using tnh-fab; migrating to tnh-gen):**
+**Process Text with tnh-gen:**
 
 ```bash
-# Note: tnh-fab is deprecated; tnh-gen is in development
-tnh-fab translate -l vi input.txt
-tnh-fab section input.txt
+# List available prompts
+tnh-gen list
+
+# Run a prompt on a file
+tnh-gen run --prompt translate --input-file input.txt --var source_lang=vi --var target_lang=en
+
+# Note: tnh-fab is deprecated but still functional with warnings
 ```
 
 ## Getting Started

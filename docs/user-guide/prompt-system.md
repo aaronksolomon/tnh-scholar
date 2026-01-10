@@ -71,8 +71,17 @@ tnh-fab process -p format_xml -t template.yaml input.txt
 
 Note: The `-p` flag uses legacy "pattern" terminology for backwards compatibility with existing code.
 
-Each TNH-FAB command (punctuate, section, translate, process) uses specific prompts:
+**Using prompts with tnh-gen** (current CLI):
 
+```bash
+# List available prompts
+tnh-gen list
+
+# Run a specific prompt
+tnh-gen run --prompt translate --input-file input.txt --var source_lang=vi --var target_lang=en
+```
+
+**Legacy tnh-fab** (deprecated; use tnh-gen instead):
 - punctuate: Uses punctuation prompts (default: 'default_punctuate')
 - section: Uses section analysis prompts (default: 'default_section')
 - translate: Uses translation prompts (default: 'default_line_translation')
@@ -127,11 +136,11 @@ When using a prompt/pattern name with tnh-fab commands (e.g., `tnh-fab process -
 
 ### Default Prompt/Patterns
 
-Through the setup utility, tnh-setup, the user has the option to download and install several default and example patterns.
+Through the setup utility, tnh-setup, the user has the option to download and install several default and example prompts.
 
-Note that tnh-fab expects the following patterns to be in the patterns directory for default use:
+**Note**: The prompt system is used by both `tnh-gen` (current CLI) and legacy `tnh-fab` (deprecated). Default prompts expected in the patterns directory:
 
-- default_punctuate.md - Default punctuation pattern
+- default_punctuate.md - Default punctuation prompt
 - default_section.md - Default section analysis pattern
 - default_line_translation.md - Default translation pattern
 
