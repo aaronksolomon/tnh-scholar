@@ -8803,7 +8803,7 @@
 <p>TNH Scholar is currently in active prototyping. Key capabilities:</p>
 <ul>
 <li><strong>Audio and transcript processing</strong>: <code>audio-transcribe</code> with diarization and YouTube support</li>
-<li><strong>Text formatting and translation</strong>: <code>tnh-gen</code> CLI (in development; currently <code>tnh-fab</code>, deprecated) for punctuation, translation, sectioning, and prompt-driven processing. See <a href="../../../architecture/tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01</a> and <a href="../../../architecture/tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02</a> for architecture details.</li>
+<li><strong>Text formatting and translation</strong>: <code>tnh-gen</code> CLI for punctuation, translation, sectioning, and prompt-driven processing. Replaces deprecated <code>tnh-fab</code>. See <a href="../../../architecture/tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01</a> and <a href="../../../architecture/tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02</a> for architecture details.</li>
 <li><strong>Acquisition utilities</strong>: <code>ytt-fetch</code> for transcripts; <code>token-count</code> and <code>nfmt</code> for prep and planning</li>
 <li><strong>Setup and configuration</strong>: <code>tnh-setup</code> plus guided config in Getting Started</li>
 <li><strong>Prompt system</strong>: See ADRs under <a href="../../../architecture/prompt-system/">docs/architecture/prompt-system/index.md</a> for decisions and roadmap</li>
@@ -8836,10 +8836,14 @@
 <p><strong>Download Video Transcripts:</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ytt-fetch<span class="w"> </span><span class="s2">&quot;https://youtube.com/watch?v=example&quot;</span><span class="w"> </span>-l<span class="w"> </span>en<span class="w"> </span>-o<span class="w"> </span>transcript.txt
 </span></code></pre></div>
-<p><strong>Process Text (currently using tnh-fab; migrating to tnh-gen):</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Note: tnh-fab is deprecated; tnh-gen is in development</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>tnh-fab<span class="w"> </span>translate<span class="w"> </span>-l<span class="w"> </span>vi<span class="w"> </span>input.txt
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>tnh-fab<span class="w"> </span>section<span class="w"> </span>input.txt
+<p><strong>Process Text with tnh-gen:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># List available prompts</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>tnh-gen<span class="w"> </span>list
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Run a prompt on a file</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span>--input-file<span class="w"> </span>input.txt<span class="w"> </span>--var<span class="w"> </span><span class="nv">source_lang</span><span class="o">=</span>vi<span class="w"> </span>--var<span class="w"> </span><span class="nv">target_lang</span><span class="o">=</span>en
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># Note: tnh-fab is deprecated but still functional with warnings</span>
 </span></code></pre></div>
 <h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Link to this section">&para;</a></h2>
 <ul>
