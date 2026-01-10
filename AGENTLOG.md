@@ -533,3 +533,22 @@ Addressed mypy issues in transcription pipeline (branch-only fixes requested).
 ### References
 - CI Fix List (audio_transcribe/transcription_pipeline.py)
 ---
+
+## 2026-01-09 21:45 PST AssemblyAI Factory Test Fix
+
+**Agent**: Codex (GPT-5)
+**Chat Reference**: vscode-extension-wip
+**Human Collaborator**: aaronksolomon
+
+### Context
+CI failed because the AssemblyAI factory test ran without an API key when the SDK is installed.
+
+### Work Completed
+- [x] Pass a dummy API key to the AssemblyAI factory test to avoid env dependency (file: `tests/audio_processing/transcription/test_transcription_service_factory.py`)
+
+### Files Modified/Created
+- `tests/audio_processing/transcription/test_transcription_service_factory.py`: Provide `api_key` in factory test
+
+### References
+- CI failure: AssemblyAI API key requirement
+---
