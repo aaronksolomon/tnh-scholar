@@ -97,7 +97,7 @@ gen_ai_service/
 
 ## CLI Tools
 
-**tnh-gen** (Current CLI - v0.2.3+):
+**tnh-gen** (Current CLI - v0.2.2+):
 
 - Replaces deprecated tnh-fab (shows warning)
 - Typer-based, protocol-driven
