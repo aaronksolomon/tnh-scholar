@@ -27,7 +27,7 @@ TNH Scholar is currently in active prototyping. Key capabilities:
 
 > **⚠️ CLI Tool Migration Notice**: The `tnh-fab` command-line tool is deprecated and will be replaced by `tnh-gen` in an upcoming release. The tool remains functional with a deprecation warning. See the [TNH-Gen Architecture documentation](docs/architecture/tnh-gen/index.md) for migration details.
 >
-> **⚠️ Rapid Prototype Phase (0.x)**: TNH Scholar is in active development with **no backward compatibility guarantees**. Breaking changes may occur in ANY 0.x release (including patches). Pin to a specific version if stability is needed: `pip install tnh-scholar==0.2.2`. See [ADR-PP01](docs/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) for versioning policy.
+> **⚠️ Rapid Prototype Phase (0.x)**: TNH Scholar is in active development with **no backward compatibility guarantees**. Breaking changes may occur in ANY 0.x release (including patches). Pin to a specific version if stability is needed: `pip install tnh-scholar==0.3.0`. See [ADR-PP01](docs/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) for versioning policy.
 
 ## Quick Start
 
@@ -145,7 +145,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing expectation
 
 ## Project Status
 
-TNH Scholar is currently in **alpha stage** (v0.1.3). Expect ongoing API and workflow changes during active development.
+TNH Scholar is currently in **alpha stage** (v0.3.0). Expect ongoing API and workflow changes during active development.
 
 ## Support & Community
 

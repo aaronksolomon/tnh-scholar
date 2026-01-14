@@ -13,7 +13,7 @@ CRITICAL CONTEXT FOR CODE AGENTS
 
 > THIS DOCUMENT OPTIMIZED FOR AI CONTEXT WINDOWS - MINIMAL AND TERSE
 
-**TNH Scholar** - AI toolkit for Thích Nhất Hạnh teachings. Alpha v0.2.2, rapid prototype phase.
+**TNH Scholar** - AI toolkit for Thích Nhất Hạnh teachings. Alpha v0.3.0, rapid prototype phase.
 
 **Bootstrap Goal:** VS Code integration (tnh-gen CLI) enables AI-assisted dev of TNH Scholar itself—code agents accelerate the project.
 
@@ -97,7 +97,7 @@ gen_ai_service/
 
 ## CLI Tools
 
-**tnh-gen** (Current CLI - v0.2.2+):
+**tnh-gen** (Current CLI - v0.3.0+):
 
 - Replaces deprecated tnh-fab (shows warning)
 - Typer-based, protocol-driven
