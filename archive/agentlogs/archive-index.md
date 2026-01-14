@@ -6,6 +6,27 @@ This index provides quick summaries of archived agent session logs.
 
 ---
 
+## 2026-01-09 - VS Code Extension Walking Skeleton (v0.3.0 Release)
+
+**File**: [`AGENTLOG-01-09-26.md`](AGENTLOG-01-09-26.md)
+
+**Major Work**:
+- Implemented VS Code extension walking skeleton per ADR-VSC02
+- Three commands: Run Prompt on Active File, Refresh Prompt Catalog, Show Diagnostics
+- TypeScript services: TnhGenCliAdapter, ConfigService, PromptService, EditorService, FileService
+- Unit and integration test harness (node:test + test-electron)
+- Audio transcribe hotfixes (AssemblyAI pipeline, diarization payloads)
+- Prompt frontmatter normalization and token encoding fallback
+- Released v0.3.0 to PyPI
+
+**Key Decisions**:
+- CLI-first architecture (extension calls tnh-gen subprocess)
+- Temp config per invocation (non-persistent)
+- Object-service structure in TypeScript mirroring Python patterns
+- Session vars file for defaults persistence
+
+---
+
 ## 2026-01-01 - ADR-A14 Registry System Implementation
 
 **File**: [`AGENTLOG-01-01-26.md`](AGENTLOG-01-01-26.md)
