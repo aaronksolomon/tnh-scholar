@@ -36,14 +36,14 @@ This guide outlines recommended practices for using TNH Scholar effectively.
 
 ## Command-Line Tools
 
-### TNH-FAB
+### TNH-Gen
 
-#### 1. Pattern Selection
+#### 1. Prompt Selection
 
-- Use default patterns for initial testing
-- Create custom patterns for specific needs
-- Test patterns with small samples first
-- Document pattern modifications
+- Use default prompts for initial testing
+- Create custom prompts for specific needs
+- Test prompts with small samples first
+- Document prompt modifications
 
 #### 2. Pipeline Design
 
@@ -56,13 +56,12 @@ Example of good pipeline practice:
 
 ```bash
 # Good: Save intermediate results
-cat input.txt | \
-  tnh-fab punctuate > punctuated.txt && \
-  tnh-fab section punctuated.txt > sections.json && \
-  tnh-fab process -p format_xml -s sections.json punctuated.txt > final.xml
+tnh-gen run --prompt punctuate --input-file input.txt --output-file punctuated.txt
+tnh-gen run --prompt section --input-file punctuated.txt --output-file sections.json
+tnh-gen run --prompt format_xml --input-file punctuated.txt --vars sections.json --output-file final.xml
 
-# Not recommended: Direct pipeline without saves
-cat input.txt | tnh-fab punctuate | tnh-fab section | tnh-fab process -p format_xml
+# Not recommended: Overwrite the only copy without checkpoints
+tnh-gen run --prompt format_xml --input-file input.txt --output-file input.txt
 ```
 
 #### 3. Error Handling

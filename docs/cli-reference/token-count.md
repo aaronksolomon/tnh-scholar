@@ -36,13 +36,9 @@ cat input.txt | token-count
 ### Pipeline Usage
 
 ```bash
-# Count tokens after processing
-cat input.txt | tnh-fab punctuate | token-count
-
 # Count tokens at multiple stages
 cat input.txt | tee >(token-count >&2) | \
-  tnh-fab punctuate | tee >(token-count >&2) | \
-  tnh-fab process -p format_xml | token-count
+  token-count
 ```
 
 ## Output
@@ -63,4 +59,3 @@ Returns a single integer representing the number of tokens in the input text, ca
 
 - OpenAI tokenizer documentation
 - TNH Scholar API documentation for token counting
-- tnh-fab documentation for text processing

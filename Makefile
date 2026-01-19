@@ -3,7 +3,7 @@ POETRY        = poetry
 LYCHEE        = lychee
 PIPX          = pipx
 PIPX_LOG_DIR  = $(HOME)/.local/pipx/logs
-TNH_CLI_TOOLS = audio-transcribe tnh-fab tnh-gen ytt-fetch nfmt token-count tnh-setup tnh-tree sent-split json-srt srt-translate
+TNH_CLI_TOOLS = audio-transcribe tnh-gen ytt-fetch nfmt token-count tnh-setup tnh-tree sent-split json-srt srt-translate
 
 .PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pipx-refresh build-all update
 

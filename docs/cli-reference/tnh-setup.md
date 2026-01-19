@@ -1,6 +1,6 @@
 ---
 title: "tnh-setup"
-description: "The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns."
+description: "The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default prompts."
 owner: ""
 author: ""
 status: current
@@ -8,7 +8,7 @@ created: "2025-02-01"
 ---
 # tnh-setup
 
-The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns.
+The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default prompts.
 
 ## Usage
 
@@ -20,7 +20,7 @@ tnh-setup [OPTIONS]
 
 ```bash
 --skip-env       Skip API key setup check
---skip-patterns  Skip pattern download
+--skip-prompts  Skip prompt download
 --help          Show this message and exit
 ```
 
@@ -30,12 +30,12 @@ The setup process includes:
 
 1. Directory Creation
    - Creates ~/.config/tnh_scholar/
-   - Creates patterns directory
+   - Creates prompts directory
    - Creates logs directory
 
-2. Pattern Download
-   - Offers to download default patterns from GitHub
-   - Patterns are saved to ~/.config/tnh_scholar/patterns/
+2. Prompt Download
+   - Offers to download default prompts from GitHub
+   - Prompts are saved to ~/.config/tnh_scholar/prompts/
    - Maintains directory structure from repository
 
 3. Environment Check
@@ -57,16 +57,16 @@ tnh-setup
 # Skip API key check
 tnh-setup --skip-env
 
-# Skip pattern download
-tnh-setup --skip-patterns
+# Skip prompt download
+tnh-setup --skip-prompts
 
 # Skip both
-tnh-setup --skip-env --skip-patterns
+tnh-setup --skip-env --skip-prompts
 ```
 
-## Default Patterns
+## Default Prompts
 
-When downloading patterns, the following are included:
+When downloading prompts, the following are included:
 
 - default_punctuate.md
 - default_section.md
@@ -79,7 +79,7 @@ When downloading patterns, the following are included:
 The setup process checks for and uses:
 
 - OPENAI_API_KEY: Required for AI functionality
-- TNH_PATTERN_DIR: Optional custom pattern directory
+- TNH_PROMPT_DIR: Optional custom prompt directory
 
 ## Troubleshooting
 
@@ -101,7 +101,7 @@ For AI processing with TNH-scholar:
 For OpenAI API access help: https://platform.openai.com/
 ```
 
-### Pattern Download Issues
+### Prompt Download Issues
 
 - Check internet connection
 - Verify GitHub access
@@ -116,12 +116,12 @@ After running setup, verify:
 
    ```plaintext
    ~/.config/tnh_scholar/
-   ├── patterns/
+   ├── prompts/
    └── logs/
    ```
 
-2. Pattern Files:
-   - Check that pattern files are present
+2. Prompt Files:
+   - Check that prompt files are present
    - Verify file permissions
    - Ensure proper formatting
 

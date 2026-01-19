@@ -22,9 +22,8 @@ from pathlib import Path
 from pydantic import AliasChoices, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# We use the default pattern directory for TNH Scholar.
-# Later this will move to 'Prompt' dir.
-from tnh_scholar import TNH_DEFAULT_PATTERN_DIR
+# We use the default prompt directory for TNH Scholar.
+from tnh_scholar import TNH_DEFAULT_PROMPT_DIR
 from tnh_scholar.exceptions import ConfigurationError
 
 
@@ -87,11 +86,11 @@ class GenAISettings(BaseSettings):
 
     # Prompt Catalog
     # Env → field mapping:
-    # - TNH_PATTERN_DIR (project-wide)
-    # - PROMPT_DIR (future, more generic)
+    # - TNH_PROMPT_DIR (project-wide)
+    # - PROMPT_DIR (generic)
     prompt_dir: Path = Field(
-        default=TNH_DEFAULT_PATTERN_DIR,
-        validation_alias=AliasChoices("TNH_PATTERN_DIR", "PROMPT_DIR", "TNH_PROMPT_DIR"),
+        default=TNH_DEFAULT_PROMPT_DIR,
+        validation_alias=AliasChoices("PROMPT_DIR", "TNH_PROMPT_DIR"),
     )
 
     @property

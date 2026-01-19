@@ -1219,10 +1219,10 @@ class PromptMapper:
 
 - ✅ Section 8.2 variable mapping design is **complete** and authoritative for ADR-TG02
 - ✅ `PromptsAdapter.list_all()` and `introspect()` methods are **implemented**
+- ✅ `tnh-fab` has been removed; `tnh-gen` is now the primary CLI (v0.3.1)
 - ⏳ CLI implementation blocked pending ADR-AT03 (ai_text_processing refactor)
-- ⏳ `tnh-fab` remains active until ADR-TG01/TG02 implementation complete
 
-**Migration Path**: Once ADR-TG01/TG02/AT03 are implemented, `tnh-fab` will be deprecated and archived under `docs/architecture/tnh-gen/design/archive/`.
+**Migration Complete**: `tnh-fab` has been deprecated and removed. Legacy documentation archived under `docs/architecture/tnh-gen/design/archive/`.
 
 **Related**: [ADR-VSC02](/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md), [ADR-AT03](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md), [ADR-TG01](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md), [ADR-TG02](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)
 

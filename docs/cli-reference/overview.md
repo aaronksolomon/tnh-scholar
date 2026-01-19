@@ -23,14 +23,13 @@ TNH Scholar provides a suite of command-line tools designed to work together for
 
 ### Archived Tools
 
-- **tnh-fab** – Legacy pattern-driven text processing tool (DEPRECATED, archived)
   - **Status**: Deprecated in v0.2.2, archived 2025-12-28
   - **Replacement**: [tnh-gen](/cli-reference/tnh-gen.md)
   - **Migration Guide**: See [TNH-Gen Architecture](/architecture/tnh-gen/index.md)
 
 ## TNH-Gen (Current)
 
-The `tnh-gen` CLI is TNH Scholar's unified command-line interface for GenAI-powered text processing operations. It replaces the legacy `tnh-fab` tool with a modern, object-service compliant architecture.
+The `tnh-gen` CLI is TNH Scholar's unified command-line interface for GenAI-powered text processing operations, with a modern object-service compliant architecture.
 
 **Key Features**:
 

@@ -620,13 +620,13 @@ The `tnh-gen` CLI supersedes the legacy `tnh-fab` tool. Key differences:
 | Architecture | Monolithic, mixed concerns | Object-service compliant |
 | Output Mode | JSON-first | Human-friendly by default |
 | Prompt System | Legacy patterns | New prompt catalog |
-| Configuration | Ad-hoc, `TNH_PATTERN_DIR` | Hierarchical, `TNH_PROMPT_DIR` |
+| Configuration | Ad-hoc, `TNH_PROMPT_DIR` | Hierarchical, `TNH_PROMPT_DIR` |
 | VS Code Support | None | First-class with `--api` flag |
 
 **Migration Steps**:
 
 1. Replace `tnh-fab run <pattern>` with `tnh-gen run --prompt <pattern>`
-2. Update environment variable from `TNH_PATTERN_DIR` to `TNH_PROMPT_DIR`
+2. Update environment variable to `TNH_PROMPT_DIR`
 3. Update scripts to use `--api` flag for JSON output
 4. Review configuration files for new schema
 

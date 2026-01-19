@@ -10,7 +10,7 @@ auto_generated: false
 
 # TNH-Gen CLI Architecture
 
-The `tnh-gen` CLI is TNH Scholar's unified command-line interface for GenAI-powered text processing operations. It replaces the legacy `tnh-fab` tool with a modern, object-service compliant architecture.
+The `tnh-gen` CLI is TNH Scholar's unified command-line interface for GenAI-powered text processing operations, built on a modern object-service compliant architecture.
 
 ## Purpose
 
@@ -66,14 +66,14 @@ The `tnh-gen` CLI supersedes the legacy `tnh-fab` tool:
 | Architecture | Monolithic, mixed concerns | Object-service compliant |
 | Prompt System | Legacy `ai_text_processing.prompts` | New `prompt_system` (ADR-PT04) |
 | GenAI Integration | Direct OpenAI calls | GenAIService (ADR-A13) |
-| Configuration | Ad-hoc, `TNH_PATTERN_DIR` | Hierarchical, `TNH_PROMPT_DIR` |
+| Configuration | Ad-hoc, `TNH_PROMPT_DIR` | Hierarchical, `TNH_PROMPT_DIR` |
 | VS Code Support | None | First-class citizen |
 
 ## Status
 
 - **Current Phase**: ADR drafting
 - **Implementation**: Blocked pending ADR-AT03 (ai_text_processing refactor)
-- **Active CLI**: `tnh-fab` (legacy, to be deprecated)
+- **Active CLI**: `tnh-gen`
 
 ## Command Overview
 

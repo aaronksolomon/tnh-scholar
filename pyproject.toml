@@ -101,7 +101,6 @@ sourcery = "^1.41.1"
 
 [tool.poetry.scripts]
 audio-transcribe = "tnh_scholar.cli_tools.audio_transcribe.audio_transcribe:main"
-tnh-fab = "tnh_scholar.cli_tools.tnh_fab.tnh_fab:main"
 tnh-gen = "tnh_scholar.cli_tools.tnh_gen.tnh_gen:main"
 ytt-fetch = "tnh_scholar.cli_tools.ytt_fetch.ytt_fetch:main"
 nfmt = "tnh_scholar.cli_tools.nfmt.nfmt:main"

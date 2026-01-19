@@ -4,7 +4,7 @@ CLI tool for translating SRT subtitle files using tnh-scholar line translation.
 
 This module provides a command line interface for translating SRT subtitle files
 from one language to another while preserving timecodes and subtitle structure.
-Uses the same translation engine as tnh-fab translate.
+Uses the same translation engine as the prompt-driven line translator.
 """
 
 import logging

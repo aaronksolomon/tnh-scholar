@@ -6,7 +6,7 @@ import pytest
 
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 
-PROMPT_ENV_VARS = ("TNH_PATTERN_DIR", "PROMPT_DIR", "TNH_PROMPT_DIR")
+PROMPT_ENV_VARS = ("PROMPT_DIR", "TNH_PROMPT_DIR")
 
 
 @pytest.fixture(autouse=True)
@@ -29,25 +29,19 @@ def test_settings_prompt_dir_aliases(env_var: str, tmp_path: Path, monkeypatch: 
 
 
 def test_settings_alias_precedence(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    preferred = tmp_path / "tnh_pattern_dir"
-    fallback = tmp_path / "prompt_dir"
-    legacy = tmp_path / "tnh_prompt_dir"
-    for path in (preferred, fallback, legacy):
+    preferred = tmp_path / "prompt_dir"
+    fallback = tmp_path / "tnh_prompt_dir"
+    for path in (preferred, fallback):
         path.mkdir()
 
     # Set all aliases at once and ensure the declared order wins.
-    monkeypatch.setenv("TNH_PATTERN_DIR", str(preferred))
-    monkeypatch.setenv("PROMPT_DIR", str(fallback))
-    monkeypatch.setenv("TNH_PROMPT_DIR", str(legacy))
+    monkeypatch.setenv("PROMPT_DIR", str(preferred))
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(fallback))
 
     settings = GenAISettings()
     assert settings.prompt_dir == preferred
 
     # Removing the higher-priority alias should expose the next one.
-    monkeypatch.delenv("TNH_PATTERN_DIR", raising=False)
-    settings = GenAISettings()
-    assert settings.prompt_dir == fallback
-
     monkeypatch.delenv("PROMPT_DIR", raising=False)
     settings = GenAISettings()
-    assert settings.prompt_dir == legacy
+    assert settings.prompt_dir == fallback

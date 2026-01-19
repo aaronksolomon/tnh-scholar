@@ -49,7 +49,7 @@ Typical steps:
    - Input: transcript text.  
    - Output: normalized plain text, with consistent line wrapping, spacing, and punctuation.
 
-3. **Optional: apply structure or tagging** with `tnh-fab` (deprecated; migrating to `tnh-gen`) or GenAIService-based flows
+3. **Optional: apply structure or tagging** with `tnh-gen` or GenAIService-based flows
    - Add markers for paragraphs, headings, quotes, or exercises.
    - Prepare the text for metadata or translation workflows.
 
@@ -69,7 +69,7 @@ Typical steps:
 1. **Normalize and clean**  
    - Use `nfmt` or equivalent preprocessing to remove obvious noise and enforce consistent formatting.
 
-2. **Apply patterns and prompts** with `tnh-fab` (deprecated; migrating to `tnh-gen`)
+2. **Apply patterns and prompts** with `tnh-gen`
    - Use domain-specific patterns or prompts to:
      - Identify headings and sections,
      - Tag poems, plays, quotes, exercises, or notes,
@@ -83,7 +83,7 @@ Relevant documentation:
 
 - [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)
 - Additional prompt design docs: [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
-- [tnh-gen](/cli-reference/tnh-gen.md) CLI guide (replaces deprecated `tnh-fab`; see [TNH-Gen](/architecture/tnh-gen/index.md) for architecture)
+- [tnh-gen](/cli-reference/tnh-gen.md) CLI guide (see [TNH-Gen](/architecture/tnh-gen/index.md) for architecture)
 
 ---
 
@@ -121,12 +121,12 @@ When deciding which tool or workflow to use, consider:
 
 - **Type of input**  
   - Audio or video → start with `audio-transcribe`.  
-  - Text or OCR output → start with `nfmt` and/or `tnh-fab`.
+  - Text or OCR output → start with `nfmt` and/or `tnh-gen`.
 
 - **Target output**  
   - Human-readable transcript → focus on `audio-transcribe` + `nfmt`.  
   - Machine-usable chunks for search or translation → include chunking logic and `token-count`.  
-  - Rich, tagged editions → lean on `tnh-fab` and relevant prompt patterns.
+  - Rich, tagged editions → lean on `tnh-gen` and relevant prompt patterns.
 
 - **Review requirements**  
   - For archival or publication-ready materials, assume **human review is mandatory**.  

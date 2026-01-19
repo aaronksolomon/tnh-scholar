@@ -39,7 +39,7 @@ created: "YYYY-MM-DD"
 - `created` reflects the original commit date when possible (auto-filled by tooling).
 - `auto_generated` (boolean) indicates whether the file is machine-generated. When `true`, only `current`, `archived`, `deprecated`, or `superseded` statuses are allowed.
 - `updated` date of change, added if file is updated.
-- **Prompt Template Exception**: files in `patterns/` (soon living under `docs/prompt-templates/`) use a prompt-specific front matter schema that includes runtime variables and other metadata. Continue using that specialized format until the Prompt Template standard is finalized (TBD); do **not** remodel those files to the generic doc front matter without an explicit migration plan.
+- **Prompt Template Exception**: files in `prompts/` (soon living under `docs/prompt-templates/`) use a prompt-specific front matter schema that includes runtime variables and other metadata. Continue using that specialized format until the Prompt Template standard is finalized (TBD); do **not** remodel those files to the generic doc front matter without an explicit migration plan.
 
 ### Document Status Values
 

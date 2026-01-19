@@ -207,7 +207,7 @@ The repository includes a `Makefile` at the project root with development automa
 PYTHON_VERSION = 3.12.4
 POETRY        = poetry
 PIPX          = pipx
-TNH_CLI_TOOLS = audio-transcribe tnh-fab tnh-gen ytt-fetch nfmt token-count tnh-setup tnh-tree sent-split json-srt srt-translate
+TNH_CLI_TOOLS = audio-transcribe tnh-gen ytt-fetch nfmt token-count tnh-setup tnh-tree sent-split json-srt srt-translate
 
 # Setup targets
 setup:
