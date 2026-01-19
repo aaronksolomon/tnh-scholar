@@ -10,7 +10,7 @@ created: "2025-01-19"
 
 This document describes the TNH Scholar Prompt System (formerly called patterns). The system allows for template-based prompting of AI interactions, with version control and concurrent access management.
 
-It is designed to interface with **tnh-fab** a multi-command text processing tool.
+It is designed to interface with **tnh-gen**, the unified CLI for prompt-driven text processing.
 
 Additional tools which use prompts may be developed for the project.
 
@@ -51,27 +51,20 @@ with less specifications.
 
 ## Using Prompts
 
-### Through TNH-FAB CLI
+### Through tnh-gen CLI
 
-The most common way to use prompts is through the TNH-FAB command-line tool:
+The most common way to use prompts is through the `tnh-gen` command-line tool:
 
 ```bash
 # Basic prompt processing
-tnh-fab process -p prompt_name input.txt
+tnh-gen run --prompt prompt_name --input-file input.txt
 
-# Process with sections
-tnh-fab process -p format_xml -s sections.json input.txt
+# Process with sections (pass a vars JSON file)
+tnh-gen run --prompt format_xml --input-file input.txt --vars sections.json
 
-# Process by paragraphs
-tnh-fab process -p format_xml -g input.txt
-
-# Process with template values
-tnh-fab process -p format_xml -t template.yaml input.txt
+# Process with inline variables
+tnh-gen run --prompt format_xml --input-file input.txt --var key=value
 ```
-
-Note: The `-p` flag uses legacy "pattern" terminology for backwards compatibility with existing code.
-
-**Using prompts with tnh-gen** (current CLI):
 
 ```bash
 # List available prompts
@@ -81,27 +74,21 @@ tnh-gen list
 tnh-gen run --prompt translate --input-file input.txt --var source_lang=vi --var target_lang=en
 ```
 
-**Legacy tnh-fab** (deprecated; use tnh-gen instead):
-- punctuate: Uses punctuation prompts (default: 'default_punctuate')
-- section: Uses section analysis prompts (default: 'default_section')
-- translate: Uses translation prompts (default: 'default_line_translation')
-- process: Requires explicit prompt specification
-
 ### Programmatic Usage
 
 For developers building tools that use the prompt system:
 
 ```python
-from tnh_scholar.ai_text_processing import Pattern, PatternManager
+from tnh_scholar.ai_text_processing import Prompt, PromptCatalog
 
-# Initialize pattern manager
-pattern_manager = PatternManager(pattern_dir)
+# Initialize prompt catalog
+prompt_catalog = PromptCatalog(prompt_dir)
 
-# Load a pattern
-pattern = pattern_manager.load_pattern("my_pattern")
+# Load a prompt
+prompt = prompt_catalog.load("my_prompt")
 
 # Apply template values
-result = pattern.apply_template({
+result = prompt.apply_template({
     "language": "English",
     "style_convention": "APA"
 })
@@ -112,39 +99,39 @@ result = pattern.apply_template({
 By default, prompts are stored in the user's home directory under:
 
 ```bash
-~/.config/tnh-scholar/patterns/
+~/.config/tnh-scholar/prompts/
 ```
 
-(Pattern is the legacy name that will be moved soon).
+(Patterns are legacy terminology; the directory is now `prompts`.)
 
-This location can be customized by setting the `TNH_PATTERN_DIR` environment variable:
+This location can be customized by setting the `TNH_PROMPT_DIR` environment variable:
 
 ```bash
 # In .bashrc, .zshrc, or similar:
-export TNH_PATTERN_DIR=/path/to/patterns
+export TNH_PROMPT_DIR=/path/to/prompts
 ```
 
 (or loaded through a `.env` file for development installations.)
 
 The prompt system will:
 
-1. First check for `TNH_PATTERN_DIR` environment variable
-2. If not set, use the default ~/.config/tnh-scholar/patterns
-3. Create the pattern directory if it doesn't exist
+1. First check for `TNH_PROMPT_DIR` environment variable
+2. If not set, use the default ~/.config/tnh-scholar/prompts
+3. Create the prompt directory if it doesn't exist
 
-When using a prompt/pattern name with tnh-fab commands (e.g., `tnh-fab process -p my_pattern`), the system searches for a corresponding .md file (e.g., `my_pattern.md`) in the pattern directory and its subdirectories.
+When using a prompt name with `tnh-gen` (for example, `tnh-gen run --prompt my_prompt`), the system searches for a corresponding .md file (for example, `my_prompt.md`) in the prompt directory and its subdirectories.
 
 ### Default Prompt/Patterns
 
 Through the setup utility, tnh-setup, the user has the option to download and install several default and example prompts.
 
-**Note**: The prompt system is used by both `tnh-gen` (current CLI) and legacy `tnh-fab` (deprecated). Default prompts expected in the patterns directory:
+**Note**: The prompt system is used by `tnh-gen`. Default prompts expected in the prompts directory:
 
 - default_punctuate.md - Default punctuation prompt
 - default_section.md - Default section analysis pattern
 - default_line_translation.md - Default translation pattern
 
-These provide basic functionality but can be customized or overridden by creating patterns with the same names in your pattern directory.
+These provide basic functionality but can be customized or overridden by creating patterns with the same names in your prompt directory.
 
 ### Pattern Integration
 
@@ -178,9 +165,9 @@ The PatternManager provides the main interface for:
 
 Patterns are stored in a directory specified as either:
 
-- `$HOME/.config/tnh-scholar/patterns` (default search location)
+- `$HOME/.config/tnh-scholar/prompts` (default search location)
 
-- A custom directory specified by TNH_PATTERN_DIR environment variable, which can also be configured in a .env file.
+- A custom directory specified by TNH_PROMPT_DIR environment variable, which can also be configured in a .env file.
 
 ### Version Control
 

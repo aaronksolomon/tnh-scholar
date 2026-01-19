@@ -99,7 +99,7 @@ gen_ai_service/
 
 **tnh-gen** (Current CLI - v0.3.0+):
 
-- Replaces deprecated tnh-fab (shows warning)
+- Replaces legacy tnh-fab (removed)
 - Typer-based, protocol-driven
 - Dual modes: human (default), `--api` (JSON for VS Code)
 - Commands: `list`, `run`, `config`, `version`

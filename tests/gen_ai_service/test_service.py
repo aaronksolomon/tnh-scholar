@@ -93,7 +93,7 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(service_module, "apply_policy", fake_apply_policy)
     monkeypatch.setattr(service_module, "select_provider_and_model", fake_select)
     monkeypatch.setattr(service_module, "OpenAIClient", DummyOpenAIClient)
-    monkeypatch.setenv("TNH_PATTERN_DIR", str(prompt_dir))
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(prompt_dir))
     monkeypatch.setenv("OPENAI_API_KEY", "unit-test-key")
 
     settings = GenAISettings(_env_file=None)
@@ -155,7 +155,7 @@ def test_missing_api_key_raises_configuration_error(tmp_path, monkeypatch: pytes
     """Test that GenAIService raises ConfigurationError when API key is missing."""
     prompt_dir = _write_prompt(tmp_path)
 
-    monkeypatch.setenv("TNH_PATTERN_DIR", str(prompt_dir))
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(prompt_dir))
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
 
     settings = GenAISettings(_env_file=None)

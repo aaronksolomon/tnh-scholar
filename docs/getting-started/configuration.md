@@ -39,7 +39,7 @@ TNH Scholar creates and uses the following directory structure:
 
 ```plaintext
 ~/.config/tnh_scholar/
-├── patterns/         # Prompt storage
+├── prompts/          # Prompt storage
 └── logs/            # Log files
 ```
 
@@ -49,13 +49,13 @@ TNH Scholar creates and uses the following directory structure:
 
 Prompts can be stored in:
 
-1. Default location: `~/.config/tnh_scholar/patterns/`
-2. Custom location specified by `TNH_PATTERN_DIR` environment variable (note: uses legacy "PATTERN" name for backwards compatibility)
+1. Default location: `~/.config/tnh_scholar/prompts/`
+2. Custom location specified by `TNH_PROMPT_DIR` environment variable
 
 To use a custom prompt directory:
 
 ```bash
-export TNH_PATTERN_DIR=/path/to/prompts  # Variable name retained for compatibility
+export TNH_PROMPT_DIR=/path/to/prompts
 ```
 
 ### Default Prompts
@@ -76,41 +76,20 @@ The system looks for configuration in this order:
 
 1. Command line arguments
 2. Environment variables
-3. Project-level config: `./.tnh-fab.yaml`
-4. User-level config: `~/.config/tnh_scholar/tnh-fab/config.yaml`
+3. Workspace config: `./.tnh-gen.json` (or `.vscode/tnh-scholar.json`)
+4. User-level config: `~/.config/tnh-scholar/tnh-gen.json`
 
 Example configuration file:
 
-```yaml
-defaults:
-  language: auto
-  output_format: txt
-  
-punctuate:
-  pattern: default_punctuate  # Config key name retained for compatibility
-  style: APA
-  review_count: 3
-
-section:
-  pattern: default_section  # Config key name retained for compatibility
-  review_count: 3
-
-translate:
-  pattern: default_line_translation  # Config key name retained for compatibility
-  target_language: en
-  style: "American Dharma Teaching"
-  context_lines: 3
-  review_count: 3
-
-process:
-  wrap_document: true
-
-patterns:  # Config section name retained for compatibility
-  path: ~/.config/tnh_scholar/patterns
-  
-logging:
-  level: INFO
-  file: ~/.tnh-fab.log
+```json
+{
+  "prompt_catalog_dir": "/path/to/prompts",
+  "default_model": "gpt-5-mini",
+  "max_dollars": 0.10,
+  "max_input_chars": 120000,
+  "default_temperature": 1.0,
+  "api_key": "sk-..."
+}
 ```
 
 ## Initial Setup
@@ -123,7 +102,7 @@ tnh-setup
 
 # Skip specific steps
 tnh-setup --skip-env        # Skip API key check
-tnh-setup --skip-patterns   # Skip prompt download
+tnh-setup --skip-prompts   # Skip prompt download
 ```
 
 This will:

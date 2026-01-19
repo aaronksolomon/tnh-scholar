@@ -9,7 +9,7 @@ learning models.
 Core Features:
     - Audio transcription and processing
     - Multi-lingual text processing and translation
-    - Pattern-based text analysis
+    - Prompt-based text analysis
     - OCR processing for historical documents
     - CLI tools for batch processing
 
@@ -26,13 +26,13 @@ Package Structure:
 
 Environment Configuration:
     - The package uses environment variables for configuration, including:
-       - TNH_PATTERN_DIR - Directory for text processing patterns
+       - TNH_PROMPT_DIR  - Directory for text processing prompts
        - OPENAI_API_KEY     - OpenAI API authentication
        - GOOGLE_VISION_KEY  - Google Cloud Vision API key for OCR
 
 CLI Tools:
     - audio-transcribe  - Audio file transcription utility
-    - tnh-fab          - Text processing and analysis toolkit
+    - tnh-gen          - GenAI CLI for text processing and analysis
 
 For more information, see:
     - Documentation: https://aaronksolomon.github.io/tnh-scholar/
@@ -56,7 +56,7 @@ TNH_PROJECT_ROOT_DIR = (
     TNH_ROOT_SRC_DIR.resolve().parent.parent
 )  # always assume structure is: root_dir/src/TNH_BASE_DIR
 TNH_CLI_TOOLS_DIR = TNH_ROOT_SRC_DIR / "cli_tools"
-TNH_DEFAULT_PATTERN_DIR = TNH_PROJECT_ROOT_DIR / "patterns"
+TNH_DEFAULT_PROMPT_DIR = TNH_PROJECT_ROOT_DIR / "prompts"
 TNH_LOG_DIR = TNH_CONFIG_DIR / "logs"
 
 TNH_METADATA_PROCESS_FIELD = "tnh_processing"

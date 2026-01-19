@@ -45,8 +45,8 @@ data/PDF/
 # output data:
 output_data/
 
-# patterns:
-patterns/
+# prompts:
+prompts/
 
 # json files:
 *.json

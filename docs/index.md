@@ -59,7 +59,7 @@ These are aspirational but active development goals aligned with the needs of th
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md) and [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) for current status and roadmap
 
-> **✅ tnh-gen v1.0 Available**: The `tnh-gen` CLI is now fully implemented with dual output modes (human-friendly by default, `--api` flag for machine-readable output). See [tnh-gen CLI Reference](/cli-reference/tnh-gen.md) for complete documentation. The deprecated `tnh-fab` CLI remains available with deprecation warnings.
+> **✅ tnh-gen v1.0 Available**: The `tnh-gen` CLI is now fully implemented with dual output modes (human-friendly by default, `--api` flag for machine-readable output). See [tnh-gen CLI Reference](/cli-reference/tnh-gen.md) for complete documentation.
 
 ---
 

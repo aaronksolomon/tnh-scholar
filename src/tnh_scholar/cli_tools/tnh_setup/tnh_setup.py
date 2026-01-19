@@ -9,7 +9,7 @@ import requests
 from dotenv import load_dotenv
 
 # Constants
-from tnh_scholar import TNH_CONFIG_DIR, TNH_DEFAULT_PATTERN_DIR, TNH_LOG_DIR
+from tnh_scholar import TNH_CONFIG_DIR, TNH_DEFAULT_PROMPT_DIR, TNH_LOG_DIR
 from tnh_scholar.utils.validate import check_openai_env
 
 OPENAI_ENV_HELP_MSG = """
@@ -28,18 +28,18 @@ For OpenAI API access help: https://platform.openai.com/
 >>>>>>>>>>>>>>>>>>>>>>>>>>> -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 """
 
-PATTERNS_URL = "https://github.com/aaronksolomon/patterns/archive/main.zip"
+PROMPTS_URL = "https://github.com/aaronksolomon/patterns/archive/main.zip"
 
 def create_config_dirs():
     """Create required configuration directories."""
     TNH_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
     TNH_LOG_DIR.mkdir(exist_ok=True)
-    TNH_DEFAULT_PATTERN_DIR.mkdir(exist_ok=True)
+    TNH_DEFAULT_PROMPT_DIR.mkdir(exist_ok=True)
 
-def download_patterns() -> bool:
-    """Download and extract pattern files from GitHub."""
+def download_prompts() -> bool:
+    """Download and extract prompt files from GitHub."""
     try:
-        response = requests.get(PATTERNS_URL)
+        response = requests.get(PROMPTS_URL)
         response.raise_for_status()
         
         with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
@@ -48,7 +48,7 @@ def download_patterns() -> bool:
             for zip_info in zip_ref.filelist:
                 if zip_info.filename.endswith('.md'):
                     rel_path = Path(zip_info.filename).relative_to(root_dir)
-                    target_path = TNH_DEFAULT_PATTERN_DIR / rel_path
+                    target_path = TNH_DEFAULT_PROMPT_DIR / rel_path
                     
                     target_path.parent.mkdir(parents=True, exist_ok=True)
                     
@@ -57,13 +57,13 @@ def download_patterns() -> bool:
         return True
         
     except Exception as e:
-        click.echo(f"Pattern download failed: {e}", err=True)
+        click.echo(f"Prompt download failed: {e}", err=True)
         return False
 
 @click.command()
 @click.option('--skip-env', is_flag=True, help='Skip API key setup')
-@click.option('--skip-patterns', is_flag=True, help='Skip pattern download')
-def tnh_setup(skip_env: bool, skip_patterns: bool):
+@click.option('--skip-prompts', is_flag=True, help='Skip prompt download')
+def tnh_setup(skip_env: bool, skip_prompts: bool):
     """Set up TNH Scholar configuration."""
     click.echo("Setting up TNH Scholar...")
     
@@ -71,16 +71,16 @@ def tnh_setup(skip_env: bool, skip_patterns: bool):
     create_config_dirs()
     click.echo(f"Created config directory: {TNH_CONFIG_DIR}")
     
-    # Pattern download
-    if not skip_patterns and click.confirm(
-                "\nDownload pattern (markdown text) files from GitHub?\n"
-                f"Source: {PATTERNS_URL}\n"
-                f"Target: {TNH_DEFAULT_PATTERN_DIR}"
+    # Prompt download
+    if not skip_prompts and click.confirm(
+                "\nDownload prompt (markdown text) files from GitHub?\n"
+                f"Source: {PROMPTS_URL}\n"
+                f"Target: {TNH_DEFAULT_PROMPT_DIR}"
             ):
-        if download_patterns():
-            click.echo("Pattern files downloaded successfully")
+        if download_prompts():
+            click.echo("Prompt files downloaded successfully")
         else:
-            click.echo("Pattern download failed", err=True)
+            click.echo("Prompt download failed", err=True)
             
     # Environment test:
     if not skip_env:
@@ -94,4 +94,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

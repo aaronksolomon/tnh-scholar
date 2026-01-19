@@ -20,13 +20,11 @@ TNH Scholar aims to make the teachings of Thich Nhat Hanh and the Plum Village t
 TNH Scholar is currently in active prototyping. Key capabilities:
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
-- **Text formatting and translation**: `tnh-gen` CLI for punctuation, translation, sectioning, and prompt-driven processing. Replaces deprecated `tnh-fab`. See [ADR-TG01](docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) and [ADR-TG02](docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md) for architecture details.
+- **Text formatting and translation**: `tnh-gen` CLI for punctuation, translation, sectioning, and prompt-driven processing. See [ADR-TG01](docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) and [ADR-TG02](docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md) for architecture details.
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See ADRs under [docs/architecture/prompt-system/index.md](docs/architecture/prompt-system/index.md) for decisions and roadmap
 
-> **⚠️ CLI Tool Migration Notice**: The `tnh-fab` command-line tool is deprecated and will be replaced by `tnh-gen` in an upcoming release. The tool remains functional with a deprecation warning. See the [TNH-Gen Architecture documentation](docs/architecture/tnh-gen/index.md) for migration details.
->
 > **⚠️ Rapid Prototype Phase (0.x)**: TNH Scholar is in active development with **no backward compatibility guarantees**. Breaking changes may occur in ANY 0.x release (including patches). Pin to a specific version if stability is needed: `pip install tnh-scholar==0.3.0`. See [ADR-PP01](docs/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) for versioning policy.
 
 ## Quick Start
@@ -81,7 +79,6 @@ tnh-gen list
 # Run a prompt on a file
 tnh-gen run --prompt translate --input-file input.txt --var source_lang=vi --var target_lang=en
 
-# Note: tnh-fab is deprecated but still functional with warnings
 ```
 
 ## Getting Started

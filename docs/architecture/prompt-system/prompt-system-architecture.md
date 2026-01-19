@@ -31,7 +31,7 @@ The TNH Scholar prompt system provides engineered text inputs (prompts) for AI m
 
 **Implementation**:
 
-- Prompts stored as Jinja2 `.md` files in `~/.config/tnh_scholar/patterns/`
+- Prompts stored as Jinja2 `.md` files in `~/.config/tnh_scholar/prompts/`
 - Git version control for prompt history
 - Simple file-based discovery
 

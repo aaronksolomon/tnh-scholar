@@ -58,19 +58,17 @@ Your perspective as a practitioner, translator, or researcher using the tools is
    Experiment with real dharma talk content using commands like:
 
    ```bash
-   # Test basic commands
-   tnh-fab punctuate input.txt
-   tnh-fab section input.txt
-   tnh-fab translate input.txt
-   tnh-fab process -p pattern_name input.txt
+   # Discover available prompts
+   tnh-gen list
 
-   # Test pipeline operations
-   cat input.txt | tnh-fab punctuate | tnh-fab section
+   # Run prompts on sample inputs
+   tnh-gen run --prompt summarize --input-file input.txt
+   tnh-gen run --prompt translate --input-file input.txt --var source_lang=vi --var target_lang=en
    ```
 
 4. **Explore the Pattern System**
 
-   - Create test patterns in `~/.config/tnh-scholar/patterns/`
+   - Create test patterns in `~/.config/tnh-scholar/prompts/`
    - Test pattern loading and application
    - Try custom workflow combinations
 
