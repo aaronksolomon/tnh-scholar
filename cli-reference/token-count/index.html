@@ -8634,13 +8634,9 @@
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>cat<span class="w"> </span>input.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>token-count
 </span></code></pre></div>
 <h3 id="pipeline-usage">Pipeline Usage<a class="headerlink" href="#pipeline-usage" title="Link to this section">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Count tokens after processing</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cat<span class="w"> </span>input.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>tnh-fab<span class="w"> </span>punctuate<span class="w"> </span><span class="p">|</span><span class="w"> </span>token-count
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Count tokens at multiple stages</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>cat<span class="w"> </span>input.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>&gt;<span class="o">(</span>token-count<span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span><span class="o">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span>tnh-fab<span class="w"> </span>punctuate<span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>&gt;<span class="o">(</span>token-count<span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span><span class="o">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span>tnh-fab<span class="w"> </span>process<span class="w"> </span>-p<span class="w"> </span>format_xml<span class="w"> </span><span class="p">|</span><span class="w"> </span>token-count
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Count tokens at multiple stages</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cat<span class="w"> </span>input.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>&gt;<span class="o">(</span>token-count<span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span><span class="o">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>token-count
 </span></code></pre></div>
 <h2 id="output">Output<a class="headerlink" href="#output" title="Link to this section">&para;</a></h2>
 <p>Returns a single integer representing the number of tokens in the input text, calculated using the OpenAI tokenizer.</p>
@@ -8658,7 +8654,6 @@
 <ul>
 <li>OpenAI tokenizer documentation</li>
 <li>TNH Scholar API documentation for token counting</li>
-<li>tnh-fab documentation for text processing</li>
 </ul>
 
 

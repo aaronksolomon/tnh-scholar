@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns.">
+        <meta name="description" content="The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default prompts.">
       
       
       
@@ -1613,9 +1613,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#default-patterns" class="md-nav__link">
+  <a href="#default-prompts" class="md-nav__link">
     <span class="md-ellipsis">
-      Default Patterns
+      Default Prompts
     </span>
   </a>
   
@@ -1650,9 +1650,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pattern-download-issues" class="md-nav__link">
+  <a href="#prompt-download-issues" class="md-nav__link">
     <span class="md-ellipsis">
-      Pattern Download Issues
+      Prompt Download Issues
     </span>
   </a>
   
@@ -8626,9 +8626,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#default-patterns" class="md-nav__link">
+  <a href="#default-prompts" class="md-nav__link">
     <span class="md-ellipsis">
-      Default Patterns
+      Default Prompts
     </span>
   </a>
   
@@ -8663,9 +8663,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pattern-download-issues" class="md-nav__link">
+  <a href="#prompt-download-issues" class="md-nav__link">
     <span class="md-ellipsis">
-      Pattern Download Issues
+      Prompt Download Issues
     </span>
   </a>
   
@@ -8704,13 +8704,13 @@
 
 
 <h1 id="tnh-setup">tnh-setup<a class="headerlink" href="#tnh-setup" title="Link to this section">&para;</a></h1>
-<p>The <code>tnh-setup</code> command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns.</p>
+<p>The <code>tnh-setup</code> command configures the TNH Scholar environment, setting up necessary directories and downloading default prompts.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Link to this section">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>tnh-setup<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </span></code></pre></div>
 <h2 id="options">Options<a class="headerlink" href="#options" title="Link to this section">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>--skip-env<span class="w">       </span>Skip<span class="w"> </span>API<span class="w"> </span>key<span class="w"> </span>setup<span class="w"> </span>check
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>--skip-patterns<span class="w">  </span>Skip<span class="w"> </span>pattern<span class="w"> </span>download
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>--skip-prompts<span class="w">  </span>Skip<span class="w"> </span>prompt<span class="w"> </span>download
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>--help<span class="w">          </span>Show<span class="w"> </span>this<span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
 </span></code></pre></div>
 <h2 id="configuration-steps">Configuration Steps<a class="headerlink" href="#configuration-steps" title="Link to this section">&para;</a></h2>
@@ -8718,15 +8718,15 @@
 <ol>
 <li>Directory Creation</li>
 <li>Creates ~/.config/tnh_scholar/</li>
-<li>Creates patterns directory</li>
+<li>Creates prompts directory</li>
 <li>
 <p>Creates logs directory</p>
 </li>
 <li>
-<p>Pattern Download</p>
+<p>Prompt Download</p>
 </li>
-<li>Offers to download default patterns from GitHub</li>
-<li>Patterns are saved to ~/.config/tnh_scholar/patterns/</li>
+<li>Offers to download default prompts from GitHub</li>
+<li>Prompts are saved to ~/.config/tnh_scholar/prompts/</li>
 <li>
 <p>Maintains directory structure from repository</p>
 </li>
@@ -8745,14 +8745,14 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Skip API key check</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>tnh-setup<span class="w"> </span>--skip-env
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Skip pattern download</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>tnh-setup<span class="w"> </span>--skip-patterns
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Skip prompt download</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>tnh-setup<span class="w"> </span>--skip-prompts
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Skip both</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>tnh-setup<span class="w"> </span>--skip-env<span class="w"> </span>--skip-patterns
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>tnh-setup<span class="w"> </span>--skip-env<span class="w"> </span>--skip-prompts
 </span></code></pre></div>
-<h2 id="default-patterns">Default Patterns<a class="headerlink" href="#default-patterns" title="Link to this section">&para;</a></h2>
-<p>When downloading patterns, the following are included:</p>
+<h2 id="default-prompts">Default Prompts<a class="headerlink" href="#default-prompts" title="Link to this section">&para;</a></h2>
+<p>When downloading prompts, the following are included:</p>
 <ul>
 <li>default_punctuate.md</li>
 <li>default_section.md</li>
@@ -8764,7 +8764,7 @@
 <p>The setup process checks for and uses:</p>
 <ul>
 <li>OPENAI_API_KEY: Required for AI functionality</li>
-<li>TNH_PATTERN_DIR: Optional custom pattern directory</li>
+<li>TNH_PROMPT_DIR: Optional custom prompt directory</li>
 </ul>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this section">&para;</a></h2>
 <h3 id="missing-api-key">Missing API Key<a class="headerlink" href="#missing-api-key" title="Link to this section">&para;</a></h3>
@@ -8781,7 +8781,7 @@
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>For OpenAI API access help: https://platform.openai.com/
 </span></code></pre></div>
-<h3 id="pattern-download-issues">Pattern Download Issues<a class="headerlink" href="#pattern-download-issues" title="Link to this section">&para;</a></h3>
+<h3 id="prompt-download-issues">Prompt Download Issues<a class="headerlink" href="#prompt-download-issues" title="Link to this section">&para;</a></h3>
 <ul>
 <li>Check internet connection</li>
 <li>Verify GitHub access</li>
@@ -8794,12 +8794,12 @@
 <li>Directory Structure:</li>
 </ol>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>~/.config/tnh_scholar/
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>├── patterns/
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>├── prompts/
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>└── logs/
 </span></code></pre></div>
 <ol>
-<li>Pattern Files:</li>
-<li>Check that pattern files are present</li>
+<li>Prompt Files:</li>
+<li>Check that prompt files are present</li>
 <li>Verify file permissions</li>
 <li>
 <p>Ensure proper formatting</p>

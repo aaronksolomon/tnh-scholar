@@ -8717,7 +8717,7 @@
 
 
 <h1 id="tnh-gen-cli-architecture">TNH-Gen CLI Architecture<a class="headerlink" href="#tnh-gen-cli-architecture" title="Link to this section">&para;</a></h1>
-<p>The <code>tnh-gen</code> CLI is TNH Scholar's unified command-line interface for GenAI-powered text processing operations. It replaces the legacy <code>tnh-fab</code> tool with a modern, object-service compliant architecture.</p>
+<p>The <code>tnh-gen</code> CLI is TNH Scholar's unified command-line interface for GenAI-powered text processing operations, built on a modern object-service compliant architecture.</p>
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Link to this section">&para;</a></h2>
 <p><code>tnh-gen</code> provides:</p>
 <ul>
@@ -8786,7 +8786,7 @@
 </tr>
 <tr>
 <td>Configuration</td>
-<td>Ad-hoc, <code>TNH_PATTERN_DIR</code></td>
+<td>Ad-hoc, <code>TNH_PROMPT_DIR</code></td>
 <td>Hierarchical, <code>TNH_PROMPT_DIR</code></td>
 </tr>
 <tr>
@@ -8800,7 +8800,7 @@
 <ul>
 <li><strong>Current Phase</strong>: ADR drafting</li>
 <li><strong>Implementation</strong>: Blocked pending ADR-AT03 (ai_text_processing refactor)</li>
-<li><strong>Active CLI</strong>: <code>tnh-fab</code> (legacy, to be deprecated)</li>
+<li><strong>Active CLI</strong>: <code>tnh-gen</code></li>
 </ul>
 <h2 id="command-overview">Command Overview<a class="headerlink" href="#command-overview" title="Link to this section">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># List available prompts with metadata</span>

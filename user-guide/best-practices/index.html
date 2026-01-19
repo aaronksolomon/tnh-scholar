@@ -670,19 +670,19 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tnh-fab" class="md-nav__link">
+  <a href="#tnh-gen" class="md-nav__link">
     <span class="md-ellipsis">
-      TNH-FAB
+      TNH-Gen
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="TNH-FAB">
+    <nav class="md-nav" aria-label="TNH-Gen">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-pattern-selection" class="md-nav__link">
+  <a href="#1-prompt-selection" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Pattern Selection
+      1. Prompt Selection
     </span>
   </a>
   
@@ -8834,19 +8834,19 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tnh-fab" class="md-nav__link">
+  <a href="#tnh-gen" class="md-nav__link">
     <span class="md-ellipsis">
-      TNH-FAB
+      TNH-Gen
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="TNH-FAB">
+    <nav class="md-nav" aria-label="TNH-Gen">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-pattern-selection" class="md-nav__link">
+  <a href="#1-prompt-selection" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Pattern Selection
+      1. Prompt Selection
     </span>
   </a>
   
@@ -9130,13 +9130,13 @@
 <li>Store intermediate results when running long pipelines</li>
 </ul>
 <h2 id="command-line-tools">Command-Line Tools<a class="headerlink" href="#command-line-tools" title="Link to this section">&para;</a></h2>
-<h3 id="tnh-fab">TNH-FAB<a class="headerlink" href="#tnh-fab" title="Link to this section">&para;</a></h3>
-<h4 id="1-pattern-selection">1. Pattern Selection<a class="headerlink" href="#1-pattern-selection" title="Link to this section">&para;</a></h4>
+<h3 id="tnh-gen">TNH-Gen<a class="headerlink" href="#tnh-gen" title="Link to this section">&para;</a></h3>
+<h4 id="1-prompt-selection">1. Prompt Selection<a class="headerlink" href="#1-prompt-selection" title="Link to this section">&para;</a></h4>
 <ul>
-<li>Use default patterns for initial testing</li>
-<li>Create custom patterns for specific needs</li>
-<li>Test patterns with small samples first</li>
-<li>Document pattern modifications</li>
+<li>Use default prompts for initial testing</li>
+<li>Create custom prompts for specific needs</li>
+<li>Test prompts with small samples first</li>
+<li>Document prompt modifications</li>
 </ul>
 <h4 id="2-pipeline-design">2. Pipeline Design<a class="headerlink" href="#2-pipeline-design" title="Link to this section">&para;</a></h4>
 <ul>
@@ -9147,13 +9147,12 @@
 </ul>
 <p>Example of good pipeline practice:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Good: Save intermediate results</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cat<span class="w"> </span>input.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>tnh-fab<span class="w"> </span>punctuate<span class="w"> </span>&gt;<span class="w"> </span>punctuated.txt<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span>tnh-fab<span class="w"> </span>section<span class="w"> </span>punctuated.txt<span class="w"> </span>&gt;<span class="w"> </span>sections.json<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span>tnh-fab<span class="w"> </span>process<span class="w"> </span>-p<span class="w"> </span>format_xml<span class="w"> </span>-s<span class="w"> </span>sections.json<span class="w"> </span>punctuated.txt<span class="w"> </span>&gt;<span class="w"> </span>final.xml
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Not recommended: Direct pipeline without saves</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>cat<span class="w"> </span>input.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>tnh-fab<span class="w"> </span>punctuate<span class="w"> </span><span class="p">|</span><span class="w"> </span>tnh-fab<span class="w"> </span>section<span class="w"> </span><span class="p">|</span><span class="w"> </span>tnh-fab<span class="w"> </span>process<span class="w"> </span>-p<span class="w"> </span>format_xml
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>punctuate<span class="w"> </span>--input-file<span class="w"> </span>input.txt<span class="w"> </span>--output-file<span class="w"> </span>punctuated.txt
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>section<span class="w"> </span>--input-file<span class="w"> </span>punctuated.txt<span class="w"> </span>--output-file<span class="w"> </span>sections.json
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>format_xml<span class="w"> </span>--input-file<span class="w"> </span>punctuated.txt<span class="w"> </span>--vars<span class="w"> </span>sections.json<span class="w"> </span>--output-file<span class="w"> </span>final.xml
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Not recommended: Overwrite the only copy without checkpoints</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>format_xml<span class="w"> </span>--input-file<span class="w"> </span>input.txt<span class="w"> </span>--output-file<span class="w"> </span>input.txt
 </span></code></pre></div>
 <h4 id="3-error-handling">3. Error Handling<a class="headerlink" href="#3-error-handling" title="Link to this section">&para;</a></h4>
 <ul>

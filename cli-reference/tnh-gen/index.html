@@ -9892,7 +9892,7 @@
 </tr>
 <tr>
 <td>Configuration</td>
-<td>Ad-hoc, <code>TNH_PATTERN_DIR</code></td>
+<td>Ad-hoc, <code>TNH_PROMPT_DIR</code></td>
 <td>Hierarchical, <code>TNH_PROMPT_DIR</code></td>
 </tr>
 <tr>
@@ -9905,7 +9905,7 @@
 <p><strong>Migration Steps</strong>:</p>
 <ol>
 <li>Replace <code>tnh-fab run &lt;pattern&gt;</code> with <code>tnh-gen run --prompt &lt;pattern&gt;</code></li>
-<li>Update environment variable from <code>TNH_PATTERN_DIR</code> to <code>TNH_PROMPT_DIR</code></li>
+<li>Update environment variable to <code>TNH_PROMPT_DIR</code></li>
 <li>Update scripts to use <code>--api</code> flag for JSON output</li>
 <li>Review configuration files for new schema</li>
 </ol>

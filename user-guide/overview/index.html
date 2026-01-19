@@ -8660,7 +8660,7 @@
 <p>Output: normalized plain text, with consistent line wrapping, spacing, and punctuation.</p>
 </li>
 <li>
-<p><strong>Optional: apply structure or tagging</strong> with <code>tnh-fab</code> (deprecated; migrating to <code>tnh-gen</code>) or GenAIService-based flows</p>
+<p><strong>Optional: apply structure or tagging</strong> with <code>tnh-gen</code> or GenAIService-based flows</p>
 </li>
 <li>Add markers for paragraphs, headings, quotes, or exercises.</li>
 <li>Prepare the text for metadata or translation workflows.</li>
@@ -8680,7 +8680,7 @@
 <p>Use <code>nfmt</code> or equivalent preprocessing to remove obvious noise and enforce consistent formatting.</p>
 </li>
 <li>
-<p><strong>Apply patterns and prompts</strong> with <code>tnh-fab</code> (deprecated; migrating to <code>tnh-gen</code>)</p>
+<p><strong>Apply patterns and prompts</strong> with <code>tnh-gen</code></p>
 </li>
 <li>
 <p>Use domain-specific patterns or prompts to:</p>
@@ -8700,7 +8700,7 @@
 <ul>
 <li><a href="../../architecture/prompt-system/prompt-system-architecture/">Prompt System Architecture</a></li>
 <li>Additional prompt design docs: <a href="../../architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap/">ADR-PT03</a></li>
-<li><a href="../../cli-reference/tnh-gen/">tnh-gen</a> CLI guide (replaces deprecated <code>tnh-fab</code>; see <a href="../../architecture/tnh-gen/">TNH-Gen</a> for architecture)</li>
+<li><a href="../../cli-reference/tnh-gen/">tnh-gen</a> CLI guide (see <a href="../../architecture/tnh-gen/">TNH-Gen</a> for architecture)</li>
 </ul>
 <hr />
 <h3 id="3-prepared-text-to-model-ready-chunks">3. Prepared Text to Model-Ready Chunks<a class="headerlink" href="#3-prepared-text-to-model-ready-chunks" title="Link to this section">&para;</a></h3>
@@ -8741,7 +8741,7 @@
 <li><strong>Type of input</strong>  </li>
 <li>Audio or video → start with <code>audio-transcribe</code>.  </li>
 <li>
-<p>Text or OCR output → start with <code>nfmt</code> and/or <code>tnh-fab</code>.</p>
+<p>Text or OCR output → start with <code>nfmt</code> and/or <code>tnh-gen</code>.</p>
 </li>
 <li>
 <p><strong>Target output</strong>  </p>
@@ -8749,7 +8749,7 @@
 <li>Human-readable transcript → focus on <code>audio-transcribe</code> + <code>nfmt</code>.  </li>
 <li>Machine-usable chunks for search or translation → include chunking logic and <code>token-count</code>.  </li>
 <li>
-<p>Rich, tagged editions → lean on <code>tnh-fab</code> and relevant prompt patterns.</p>
+<p>Rich, tagged editions → lean on <code>tnh-gen</code> and relevant prompt patterns.</p>
 </li>
 <li>
 <p><strong>Review requirements</strong>  </p>
