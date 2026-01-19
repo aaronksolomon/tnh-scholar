@@ -40,3 +40,17 @@ The patterns→prompts migration is now complete with consistent terminology acr
 - Documentation
 
 **Breaking change noted**: `TNH_PATTERN_DIR` env var no longer accepted in `GenAISettings` - users with existing `.env` files using this variable will silently fall back to defaults. Consider documenting in release notes.
+
+---
+## 2026-01-19
+
+### Summary
+- Removed legacy `tnh-fab` CLI implementation/tests and updated docs/tooling references to `tnh-gen`.
+- Repointed `TNH_PROMPT_DIR` to `prompts/`, updated VS Code repo detection settings, and removed the stray `patterns/` directory.
+- Repaired the `prompts/` nested repo by recloning `tnh-prompts` and overlaying local prompt files; confirmed it is a standalone git repo.
+
+### Changes Made
+- **Code/packaging**: Removed `src/tnh_scholar/cli_tools/tnh_fab/*`, `tests/cli_tools/test_tnh_fab.py`, and the `tnh-fab` script entry in `pyproject.toml`; updated CLI docs in `src/tnh_scholar/cli_tools/__init__.py` and `src/tnh_scholar/__init__.py`.
+- **Docs**: Updated references to tnh-fab across user/CLI/architecture docs and simplified examples; refreshed `project_directory_tree.txt` and `src_directory_tree.txt`.
+- **Env/config**: Updated `.env` `TNH_PROMPT_DIR` to `.../prompts`; set `.vscode/settings.json` `git.autoRepositoryDetection` to `subFolders` and `git.repositoryScanMaxDepth` to `2`.
+- **Prompt repo migration**: Cloned `https://github.com/aaronksolomon/tnh-prompts` into `prompts/`, overlaid local prompt files, and removed the old `patterns/` directory. Backups saved under `/tmp/tnh-prompts-backup-20260118-2128` and `/tmp/tnh-prompts-current-20260119-1514`.

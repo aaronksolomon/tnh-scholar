@@ -38,6 +38,10 @@ git push
 
 **Recovery if work was lost**: Check `/Users/phapman/.cache/pre-commit/patch*` files (sorted by timestamp) and apply with `git apply <patch-file>`.
 
+## Untracked Files Rule
+
+**NEVER stash untracked files.** Untracked → commit to new branch → return to workflow.
+
 ## Critical Safety Rules
 
 ### Commands That Must NEVER Be Executed by AI - User Only

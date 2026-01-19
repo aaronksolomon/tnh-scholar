@@ -58,7 +58,7 @@ gen_ai_service/
 
 **Pre-commit:** DISABLED (`core.hookspath=/dev/null`). No auto-stash concerns.
 
-**Git Safety:** User approval required for destructive ops (reset, force push, rebase, branch delete).
+**Git Safety:** User approval required for destructive ops (reset, force push, rebase, branch delete). NEVER stash untracked files—commit to temp branch first.
 
 ## Design Standards (CRITICAL)
 
