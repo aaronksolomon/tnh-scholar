@@ -6,6 +6,23 @@ This index provides quick summaries of archived agent session logs.
 
 ---
 
+## 2026-01-19 - Patterns→Prompts Migration Complete
+
+**File**: [`AGENTLOG-01-19-26.md`](AGENTLOG-01-19-26.md)
+
+**Major Work**:
+- Completed patterns→prompts terminology migration across codebase
+- Renamed `patterns/` directory to `prompts/`, updated env vars (`TNH_PROMPT_DIR`)
+- Removed legacy `tnh-fab` CLI (replaced by `tnh-gen`)
+- Migrated prompt repo to standalone `tnh-prompts` git repository
+- Updated all CLI flags, constants, documentation
+
+**Breaking Changes**:
+- `TNH_PATTERN_DIR` env var no longer accepted (use `TNH_PROMPT_DIR`)
+- `tnh-fab` CLI removed (use `tnh-gen`)
+
+---
+
 ## 2026-01-09 - VS Code Extension Walking Skeleton (v0.3.0 Release)
 
 **File**: [`AGENTLOG-01-09-26.md`](AGENTLOG-01-09-26.md)

@@ -11,9 +11,9 @@ updated: "2026-01-07"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-01-07 (VS Code Extension Walking Skeleton completed)
+> **Last Updated**: 2026-01-19 (Patterns→Prompts Migration completed)
 > **Version**: 0.3.1 (Alpha)
-> **Status**: Active Development - VS Code Extension Implemented
+> **Status**: Active Development - Patterns→Prompts Migration Complete
 >
 > **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 > Use `####` (h4) for task headers within priority sections.
@@ -100,36 +100,24 @@ This section organizes work into three priority levels based on criticality for 
 - **Validation**: ✅ Proves bootstrapping concept - extension ready to accelerate TNH Scholar development
 - **Next**: Use extension for Pattern→Prompt Migration validation
 
-#### 🔮 Pattern→Prompt Migration and Metadata Standardization
+#### ✅ Pattern→Prompt Migration and Metadata Standardization
 
-- **Status**: NOT STARTED - **SEQUENCED AFTER VS CODE EXTENSION**
-- **Priority**: **PRIORITY 1** (Same tier as VS Code integration, deferred for risk minimization)
+- **Status**: COMPLETED ✅ (2026-01-19)
+- **Priority**: **PRIORITY 1** (Same tier as VS Code integration)
 - **ADR**: [ADR-PT04: Prompt System Refactor](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
-- **Strategy**: Defer until after VS Code extension walking skeleton complete (ADR-VSC02 implementation)
-- **Rationale**:
-  - VS Code extension works with current pattern/prompt system (not blocking)
-  - Avoid simultaneous major changes (extension + prompt migration)
-  - Dogfooding: Use working VS Code extension to help validate migrated prompts
-  - Clear dependency: Extension provides testing surface for prompt metadata changes
-- **What**: Complete Pattern→Prompt terminology migration and standardize metadata structure
-- **Scope**:
-  - Migrate `~/.config/tnh_scholar/patterns/` → `~/.config/tnh_scholar/prompts/`
-  - Remove `TNH_PATTERN_DIR` references (replace with `TNH_PROMPT_DIR`)
-  - Standardize all prompt files with proper metadata structure (YAML frontmatter)
-  - Update code references: `ai_text_processing/prompts.py` and imports
-  - Update environment variable references throughout codebase
-- **Current State**:
-  - Terminology partially migrated (docs use "prompt", code still references "pattern")
-  - ADR-PT04 defines target architecture (object-service compliant prompt system)
-  - `tnh-gen` CLI already uses prompt terminology but reads from patterns directory
-- **Deliverables**:
-  - [ ] Migrate all pattern template files to prompts directory
-  - [ ] Add/validate YAML frontmatter metadata to all prompt files
-  - [ ] Update code references (`TNH_PATTERN_DIR` → `TNH_PROMPT_DIR`)
-  - [ ] Update environment variable documentation
-  - [ ] Test prompt discovery and execution via VS Code extension
-  - [ ] Remove old patterns directory
-- **Related**: Mentioned in ADR-VSC02 as pending but non-blocking work
+- **What**: Completed Pattern→Prompt terminology migration and directory restructuring
+- **Completed Work** (2026-01-17 to 2026-01-19):
+  - [x] Renamed `patterns/` directory to `prompts/` with standalone `tnh-prompts` git repository
+  - [x] Updated env var from `TNH_PATTERN_DIR` → `TNH_PROMPT_DIR`
+  - [x] Renamed CLI flag `--skip-patterns` → `--skip-prompts` in tnh-setup
+  - [x] Updated constants (`TNH_DEFAULT_PROMPT_DIR`), function names (`download_prompts()`)
+  - [x] Updated all documentation references
+  - [x] Removed legacy `tnh-fab` CLI (replaced by `tnh-gen`)
+  - [x] Removed old `patterns/` directory
+- **Breaking Changes**:
+  - `TNH_PATTERN_DIR` env var no longer accepted (use `TNH_PROMPT_DIR`)
+  - `tnh-fab` CLI removed (use `tnh-gen`)
+- **Related**: ADR-PT04 status updated to reflect completion
 
 #### 🚧 Provenance Format Refactor - YAML Frontmatter
 

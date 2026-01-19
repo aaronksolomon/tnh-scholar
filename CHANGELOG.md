@@ -15,6 +15,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Patterns→Prompts Migration Complete** (2026-01-17 to 2026-01-19)
+  - Renamed `patterns/` directory to `prompts/` with standalone `tnh-prompts` git repository
+  - Updated env var from `TNH_PATTERN_DIR` → `TNH_PROMPT_DIR`
+  - Renamed CLI flag `--skip-patterns` → `--skip-prompts` in tnh-setup
+  - Updated constants, function names, and all documentation references
+
+### Removed
+
+- **tnh-fab CLI Tool** (2026-01-19)
+  - Removed deprecated `tnh-fab` CLI implementation and tests
+  - Removed `tnh-fab` entry point from pyproject.toml
+  - All functionality replaced by `tnh-gen` CLI
+
+### Infrastructure
+
+- **Git Workflow Documentation** (2026-01-19)
+  - Added untracked files rule to AGENTS.md, git-workflow.md, and CLAUDE.md
+  - Archived AGENTLOG sessions for patterns→prompts migration
+
 ## [0.3.1] - 2026-01-13
 
 ### Changed
