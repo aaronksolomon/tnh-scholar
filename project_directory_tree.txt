@@ -7,6 +7,7 @@
 │   ├── agentlogs
 │   │   ├── AGENTLOG-01-01-26.md
 │   │   ├── AGENTLOG-01-09-26.md
+│   │   ├── AGENTLOG-01-19-26.md
 │   │   ├── AGENTLOG-12-07-25.md
 │   │   ├── AGENTLOG-12-10-25.md
 │   │   ├── AGENTLOG-12-11-25.md
@@ -23,14 +24,16 @@
 │       └── public_books
 ├── DEV_SETUP.md
 ├── docs
-│   ├── ADR-XX-tnh-conductor.md
 │   ├── api
 │   │   └── index.md
 │   ├── architecture
 │   │   ├── agent-orchestration
-│   │   │   └── adr
-│   │   │       ├── adr-oa01-agent-orchestration-strategy.md
-│   │   │       └── index.md
+│   │   │   ├── adr
+│   │   │   │   ├── adr-oa01-agent-orchestration-strategy.md
+│   │   │   │   ├── adr-oa02-phase-0-protocol-spike.md
+│   │   │   │   └── index.md
+│   │   │   ├── archive
+│   │   │   └── system-design.md
 │   │   ├── ai-text-processing
 │   │   │   ├── adr
 │   │   │   │   ├── adr-at01-ai-text-processing.md
@@ -468,11 +471,35 @@
 │   ├── update_version.py
 │   ├── validate_markdown.py
 │   └── verify_doc_links.py
+├── SPIKE_REPORT.md
 ├── src
 │   ├── __init__.py
 │   ├── sitecustomize.py
 │   └── tnh_scholar
 │       ├── __init__.py
+│       ├── agent_orchestration
+│       │   ├── __init__.py
+│       │   └── spike
+│       │       ├── __init__.py
+│       │       ├── adapters
+│       │       │   ├── __init__.py
+│       │       │   ├── command_filter.py
+│       │       │   ├── prompt_handler.py
+│       │       │   ├── prompt_parser.py
+│       │       │   └── run_id.py
+│       │       ├── models.py
+│       │       ├── policy.py
+│       │       ├── protocols.py
+│       │       ├── providers
+│       │       │   ├── __init__.py
+│       │       │   ├── artifact_writer.py
+│       │       │   ├── clock.py
+│       │       │   ├── command_builder.py
+│       │       │   ├── event_writer_factory.py
+│       │       │   ├── event_writer.py
+│       │       │   ├── git_workspace.py
+│       │       │   └── pty_agent_runner.py
+│       │       └── service.py
 │       ├── ai_text_processing
 │       │   ├── __init__.py
 │       │   ├── ai_text_processing.py
@@ -559,6 +586,9 @@
 │       │   ├── srt_translate
 │       │   │   ├── __init__.py
 │       │   │   └── srt_translate.py
+│       │   ├── tnh_conductor_spike
+│       │   │   ├── __init__.py
+│       │   │   └── tnh_conductor_spike.py
 │       │   ├── tnh_gen
 │       │   │   ├── __init__.py
 │       │   │   ├── commands
@@ -767,6 +797,8 @@
 │           └── xml_processing.py
 ├── src_directory_tree.txt
 ├── tests
+│   ├── agent_orchestration
+│   │   └── test_spike_command_filter.py
 │   ├── ai_text_processing
 │   │   └── test_text_object.py
 │   ├── audio_processing
@@ -814,9 +846,6 @@
 │   │   └── test_numbered_text.py
 │   └── utils
 │       └── test_math_utils.py
-├── tnh-orchestrator-meta-agent v2.md
-├── tnh-orchestrator-meta-agent.md
-├── tnh-orchestrator-system-design.md
 ├── TODO.md
 ├── VERSIONING.md
 └── vscode-extension
@@ -855,4 +884,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-192 directories, 664 files
+199 directories, 686 files
