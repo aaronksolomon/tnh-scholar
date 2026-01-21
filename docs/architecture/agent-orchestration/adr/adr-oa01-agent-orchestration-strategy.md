@@ -4,15 +4,16 @@ description: "Strategic architecture for coordinating external AI agents (Claude
 type: "strategy"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: proposed
+status: accepted
 created: "2026-01-14"
+updated: "2026-01-19"
 ---
 
 # ADR-OA01: TNH-Conductor — Provenance-Driven AI Workflow Coordination
 
 Strategic architecture for coordinating external AI agents through bounded, auditable, human-supervised workflows.
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Type**: Strategy ADR
 - **Date**: 2026-01-14
 - **Owner**: Aaron Solomon
@@ -140,7 +141,7 @@ The kernel handles **hard requirements** that cannot be expressed in prompts:
 | **Work-branch management** | Create/switch branches; prevent commits to main |
 | **PTY transcript capture** | Record full sub-agent sessions |
 | **Workspace diff/status** | Capture git state before/after each step |
-| **Policy enforcement** | Post-hoc diff checks against allowed/forbidden paths |
+| **Policy enforcement** | Post-hoc diff checks against allowed/forbidden paths (code-based) |
 | **Validator execution** | Run tests, lint, typecheck; capture results |
 | **Event/provenance writes** | Record all actions to tnh-gen ledger |
 | **Schema validation** | Validate workflow, prompt, and policy definitions |
@@ -285,11 +286,38 @@ This channel is treated as **semantic signal**, not noise.
 
 The Planner Evaluator interprets both channels to determine actual status.
 
+### Contradiction Detection
+
+The Planner Evaluator must explicitly check for **consistency between channels**:
+
+| Contradiction Type | Example | Classification |
+|--------------------|---------|----------------|
+| Transcript claims success, diff is empty | "Completed refactor" but no files changed | `partial` or `unsafe` |
+| Transcript claims tests run, no validation artifacts | "All tests pass" but no test output captured | `partial` with `risk_flags` |
+| Workspace shows changes outside stated scope | Diff includes files not mentioned in transcript | `unsafe` or `needs_human` |
+| Transcript reports error, workspace shows commits | "Encountered blocker" but files modified | `needs_human` with `risk_flags` |
+
+**Rule:** When the Planner detects contradictions between transcript claims and workspace reality, it must flag the status as `partial` or `unsafe` and emit `risk_flags` describing the discrepancy.
+
 ---
 
 ## Planner Evaluation Loop
 
 After each sub-agent step, tnh-conductor invokes a **planner evaluation** using a trusted, higher-level model.
+
+### Planner is Stateless (No Conversational Memory)
+
+The Planner does **not** maintain conversational memory across evaluations. Each evaluation is independent — the Planner does not "remember" previous interactions or accumulate context over time.
+
+However, to support multi-step workflows and prevent retry loops, the Planner receives a **provenance window**: explicit historical context from the last K steps (typically 2–3).
+
+| Input | Source | Purpose |
+|-------|--------|---------|
+| `provenance_ids` | Last 2–3 step records | Prevent retry loops, understand multi-step context |
+| `prior_statuses` | Previous step outcomes | Detect repeated failures |
+| `prior_blockers` | Blockers from recent steps | Avoid re-attempting known blockers |
+
+**This is not memory** — it is explicit, bounded context fed as structured inputs. The Planner cannot access arbitrary history; it receives only what the kernel explicitly provides.
 
 ### Planner Consumes
 
@@ -297,6 +325,7 @@ After each sub-agent step, tnh-conductor invokes a **planner evaluation** using 
 - Transcript channel (what the agent said/did)
 - Workspace diff summary (filesystem changes)
 - Validation results (tests, lints)
+- Provenance window (last K step records, for multi-step context)
 
 ### Planner Emits
 
@@ -336,9 +365,29 @@ The kernel executes a small, fixed set of opcodes:
 | `RUN_VALIDATION` | Execute tests/lint/typecheck; capture results |
 | `EVALUATE` | Invoke planner to assess status and determine next step |
 | `GATE` | Queue for review or block for approval |
+| `ROLLBACK` | Reset work branch to pre-step state (deterministic cleanup) |
 | `STOP` | Halt workflow (success, failure, or needs_human) |
 
 Workflow YAML compiles to this opcode sequence. The kernel executes opcodes; it does not interpret intent.
+
+### ROLLBACK Semantics
+
+`ROLLBACK` is a **deterministic cleanup opcode** triggered when the Planner returns `unsafe` or when policy violations are detected. It is narrowly scoped to git operations:
+
+| Trigger | ROLLBACK Action |
+|---------|-----------------|
+| `unsafe` status from Planner | Reset work branch to pre-step commit |
+| Policy violation in diff | Discard worktree changes on work branch |
+| Explicit workflow definition | Reset to specified checkpoint |
+
+**Constraints:**
+
+- ROLLBACK only affects the work branch — never main or protected branches
+- ROLLBACK is deterministic: same inputs produce same git state
+- ROLLBACK does not "undo" arbitrary state — it resets to a known git checkpoint
+- All ROLLBACK actions are recorded in provenance
+
+**Not a time machine:** ROLLBACK is a hygiene mechanism for recovering from unsafe steps, not a general-purpose "undo to any point" capability.
 
 ### Example Workflow Definition
 
@@ -466,10 +515,36 @@ It records:
 - Workspace diffs
 - Planner decisions
 - Human review outcomes
+- Human feedback events
 
 It enables auditability, review generation, and long-term system memory **without agent memory**.
 
 **tnh-gen does not make decisions.** It is the ledger, not the judge.
+
+### HUMAN_FEEDBACK Event Type
+
+To accumulate human preferences and decisions without introducing "agent memory," the provenance ledger includes a dedicated event type:
+
+```yaml
+event_type: HUMAN_FEEDBACK
+timestamp: 2026-01-14T10:30:00Z
+workflow_id: implement_adr.v1
+step_id: review
+content:
+  decision: "approved_with_changes"
+  comments: "Good approach, but prefer Result type over exceptions"
+  rationale: "Aligns with project error-handling patterns"
+  related_items:
+    - provenance_id: abc123
+    - provenance_id: def456
+```
+
+**Purpose:**
+
+- Capture human decisions, comments, and rationale from daily journal reviews
+- Provide structured feedback that can inform future triage and evaluation prompts
+- Enable pattern discovery over time (e.g., "human frequently overrides X classification")
+- Avoid agent memory while preserving institutional knowledge in the ledger
 
 ---
 
@@ -482,6 +557,8 @@ The Protocol Layer is explicitly bounded to:
 | **Transcript capture** | PTY/TTY logging of sub-agent sessions |
 | **Workspace capture** | `git diff` / `git status` before/after |
 | **Progress events** | Heartbeats, completion signals |
+| **Heartbeat monitoring** | Detect stalled agents; kill and capture on timeout |
+| **Negative path capture** | Handle hangs, prompts, crashes gracefully |
 
 The Protocol Layer is **NOT** responsible for:
 
@@ -490,6 +567,31 @@ The Protocol Layer is **NOT** responsible for:
 - Parsing structured output from agents (transcripts are semantic, not structured)
 
 **Rationale:** This avoids architectural collapse due to CLI idiosyncrasies across different agent tools.
+
+### Negative Path Handling
+
+The kernel must handle failure modes that prevent normal completion:
+
+| Failure Mode | Detection | Response |
+|--------------|-----------|----------|
+| **Agent hang** | No PTY output for N seconds | Kill process, capture transcript tail, mark `blocked` |
+| **Interactive prompt** | Detected Y/N, auth, 2FA, confirmation patterns | Kill process, mark `blocked`, flag for review |
+| **Tool crash** | Non-zero exit code | Capture stderr, mark `blocked` with cause |
+| **Timeout** | Wall-clock limit exceeded | Kill process, capture state, mark `blocked` |
+
+### Heartbeat Monitor
+
+The kernel implements a heartbeat monitor with the following behavior:
+
+1. **Monitor interval:** Configurable timeout (default: 60 seconds)
+2. **Signal:** Any PTY output or filesystem event resets the timer
+3. **On timeout:**
+   - Kill the sub-agent process
+   - Capture last N lines of transcript
+   - Write `blocked` provenance record with cause classification
+   - Queue for human review
+
+**Rule:** If no output or events for the configured interval, the kernel kills the process, marks the step as `blocked`, captures the transcript tail, and queues for review.
 
 ---
 
@@ -730,6 +832,25 @@ Prompts define intent and expectations. **Enforcement happens after execution**:
 
 No sandbox in Phase 1. Rely on branch isolation + diff-policy + human review.
 
+### Policy Enforcement Model
+
+Policy prompts are **English definitions** of allowed and forbidden behaviors. However, **enforcement is code-based**:
+
+| Layer | Role |
+|-------|------|
+| **Policy prompts** | Human-readable definitions of constraints (the "what") |
+| **Kernel enforcement** | Code that checks diffs against policy rules (the "how") |
+
+**Enforcement flow:**
+
+1. Sub-agent completes step, producing workspace diff
+2. Kernel parses policy prompt's `allowed_paths`, `forbidden_paths`, `forbidden_operations`
+3. Kernel checks diff against these rules (deterministic code check)
+4. If violations detected: kernel auto-marks status as `unsafe` **before** Planner evaluation
+5. Planner receives violation report as input; cannot override kernel safety decisions
+
+**Key principle:** The kernel can autonomously mark a step `unsafe` when forbidden paths are touched — this happens before and independent of Planner/human review. Policy definitions are English; enforcement is code.
+
 ---
 
 ## Implementation Roadmap
@@ -743,9 +864,11 @@ No sandbox in Phase 1. Rely on branch isolation + diff-policy + human review.
 **Spike Scope:**
 
 - Headless invocation of Claude Code CLI (`claude --print` or PTY wrapper)
-- Transcript capture to file
+- Transcript capture (raw + normalized)
 - Git diff capture before/after
-- Basic provenance record write
+- Heartbeat monitoring + inactivity timeout kill
+- Minimal provenance event emission into `tnh-gen`
+- Work-branch isolation for each run
 
 **Target Surfaces:**
 
@@ -758,20 +881,36 @@ No sandbox in Phase 1. Rely on branch isolation + diff-policy + human review.
 **Spike Deliverable:**
 
 ```bash
-# Minimal script that proves the capture chain
-./spike-capture.py --agent claude-code --task "List files in src/"
+# Minimal CLI that proves the capture chain
+tnh-conductor-spike run --agent claude-code --task "List files in src/"
 # Outputs:
 #   transcript.md (full session)
 #   diff.patch (git changes, if any)
-#   provenance.json (minimal record)
+#   run.json (metadata)
+#   events.ndjson (provenance stream)
 ```
 
-**Success Criteria:**
+**Success Criteria (Pass/Fail):**
 
 - [ ] Headless invocation completes without manual interaction
 - [ ] Full transcript captured (not truncated)
 - [ ] Git diff accurately reflects workspace changes
 - [ ] Provenance record written with correct metadata
+- [ ] Handles agent hang: kills process after timeout
+- [ ] Captures last N lines of transcript on failure
+- [ ] Writes `blocked` provenance record with cause classification on failure
+- [ ] Emits progress events independent of filesystem changes
+
+**Spike Deliverables:**
+
+| Artifact | Description |
+|----------|-------------|
+| `tnh_conductor_spike.py` | CLI module implementing the spike |
+| `transcript.md` | Full PTY session log |
+| `diff.patch` | Git changes (if any) |
+| `run.json` | Run metadata |
+| `events.ndjson` | Event stream (newline-delimited JSON) |
+| `SPIKE_REPORT.md` | Findings, gotchas, recommendations |
 
 **Decision Point:** If spike fails, evaluate alternative approaches (SDK, API-only, different agent surface) before proceeding.
 
@@ -854,6 +993,21 @@ tnh-conductor --task "Summarize current progress"
 - Real-time workflow monitoring
 - Review journal browser
 
+### Future: Prompt Regression Testing
+
+Since prompts are "code" in this architecture, prompt changes can shift system behavior in unexpected ways. A future capability (Phase 7+) is **prompt regression testing**:
+
+**Concept:**
+
+- Maintain a test bench of recorded transcripts, diffs, and expected classifications ("golden runs")
+- When evaluation or policy prompts are updated, run them against golden runs
+- Detect if prompt changes shift classifications unexpectedly (e.g., previously `success` now `partial`)
+- Flag regressions for human review before deploying prompt updates
+
+**Goal:** Treat prompt versioning with the same rigor as code versioning — changes are testable and regressions are detectable.
+
+This is a planned capability, not Phase 1 scope.
+
 ---
 
 ## Consequences
@@ -933,15 +1087,24 @@ tnh-conductor --task "Summarize current progress"
 
 ---
 
-## Related ADRs
+## ADR Roadmap
 
-### Proposed Follow-On ADRs
+This strategy ADR establishes the foundation. Implementation details will be captured in a series of follow-on ADRs:
 
-| ADR | Title | Phase |
+| ADR | Title | Scope |
 |-----|-------|-------|
-| ADR-OA02 | Headless Agent Integration | 1 |
-| ADR-OA03 | Workflow Definition Language | 3 |
-| ADR-OA04 | Prompt Library Architecture | 4 |
+| **ADR-OA02** | Phase 0 Protocol Spike | PTY wrapper, heartbeat, kill/reap, capture contract |
+| **ADR-OA03** | Workflow Schema + Opcode Semantics | YAML format, opcode definitions, ROLLBACK semantics |
+| **ADR-OA04** | Prompt Library Specification | Prompt artifact format, versioning, template rendering |
+| **ADR-OA05** | Planner Evaluator Contract | Input/output schemas, contradiction checks, provenance window |
+| **ADR-OA06** | Diff-Policy + Safety Rails | Allowed/forbidden paths, dependency changes, escalation rules |
+| **ADR-OA07** | Prompt Regression Testing Harness | Golden runs, classification drift detection (future) |
+
+Each ADR will be created as implementation progresses through the phases defined in this strategy.
+
+---
+
+## Related ADRs
 
 ### Related Existing ADRs
 
