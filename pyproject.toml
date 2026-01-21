@@ -110,6 +110,7 @@ tnh-tree = "tnh_scholar.cli_tools.tnh_tree:main"
 sent-split = "tnh_scholar.cli_tools.sent_split.sent_split:main"
 json-srt = "tnh_scholar.cli_tools.json_to_srt.json_to_srt:main"
 srt-translate = "tnh_scholar.cli_tools.srt_translate.srt_translate:main"
+tnh-conductor-spike = "tnh_scholar.cli_tools.tnh_conductor_spike.tnh_conductor_spike:main"
 
 [tool.black]
 line-length = 110

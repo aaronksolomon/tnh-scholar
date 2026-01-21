@@ -1,6 +1,6 @@
 ---
 title: "TNH-Scholar Agent Orchestration System"
-description: "Comprehensive design document synthesizing v1 and v2 meta-agent concepts with Claude Code review"
+description: "Comprehensive design document for the agent orchestration system"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Opus 4.5"
 status: draft
@@ -11,7 +11,7 @@ created: "2026-01-13"
 ## Comprehensive Design Document — v1.0
 
 **Status:** Draft
-**Sources:** `tnh-orchestrator-meta-agent.md` (v1), `tnh-orchestrator-meta-agent v2.md`
+**Sources:** Consolidated from in-repo architecture notes and ADRs.
 **Date:** 2026-01-13
 
 ---
