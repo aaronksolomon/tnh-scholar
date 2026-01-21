@@ -274,6 +274,8 @@ class SpikeRunService:
     def _expected_sandbox_root(self, repo_root: Path, config: SpikeConfig) -> Path:
         if config.sandbox_root is not None:
             return config.sandbox_root
+        if repo_root.name.endswith("-sandbox"):
+            return repo_root
         return repo_root.parent / f"{repo_root.name}-sandbox"
 
     def _sandbox_root_message(self, repo_root: Path, expected_root: Path) -> str:
