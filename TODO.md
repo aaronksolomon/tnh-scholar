@@ -11,9 +11,9 @@ updated: "2026-01-07"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-01-19 (Patterns→Prompts Migration completed)
+> **Last Updated**: 2026-01-25 (Agent Orchestration Codex Runner suspended)
 > **Version**: 0.3.1 (Alpha)
-> **Status**: Active Development - Patterns→Prompts Migration Complete
+> **Status**: Active Development - Agent Orchestration spike complete, Codex runner suspended
 >
 > **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 > Use `####` (h4) for task headers within priority sections.
@@ -260,6 +260,26 @@ This section organizes work into three priority levels based on criticality for 
 ### Priority 2: Production Hardening (Post-Bootstrap)
 
 **Goal**: Harden TNH Scholar for production use after VS Code integration enables AI-assisted development. Focuses on reliability, test coverage, and type safety.
+
+#### 🚧 OpenAI SDK 2.15.0 Validation (High Priority)
+
+- **Status**: NOT STARTED
+- **Why**: SDK bump impacts OpenAI adapter. *(Codex harness suspended — see ADR-OA03.2 addendum)*
+- **Tasks**:
+  - [ ] Revalidate OpenAI adapter request/response mappings against 2.15.0
+  - [ ] Update compatibility notes/docs if schema drift is found
+
+#### ⏸️ Agent Orchestration - Codex Runner (ADR-OA03.2)
+
+- **Status**: SUSPENDED (2026-01-25)
+- **ADR**: [ADR-OA03.2](/architecture/agent-orchestration/adr/adr-oa03.2-codex-runner.md)
+- **Why Suspended**: Spike revealed API constraints — model produces tool calls without final text output. VS Code Codex uses client-side orchestration (different architecture).
+- **Findings**: [Codex Harness Spike Findings](/architecture/agent-orchestration/notes/codex-harness-spike-findings.md)
+- **Preserved Artifacts**: `src/tnh_scholar/agent_orchestration/codex_harness/`, `src/tnh_scholar/cli_tools/tnh_codex_harness/`
+- **Conditions for Resumption**:
+  - [ ] OpenAI adds forced-text-output mode to Responses API
+  - [ ] Business need justifies client-side orchestration investment
+  - [ ] Chat Completions API proves more suitable
 
 #### 🚧 Expand Test Coverage
 

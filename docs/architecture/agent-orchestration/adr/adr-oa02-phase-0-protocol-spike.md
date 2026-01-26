@@ -402,7 +402,7 @@ We will implement a kernel-level command filter for the Phase 0 spike. This filt
 
 ### Addendum 2026-01-20: Worktree Preflight Check
 
-Phase 0 runs must fast-fail if the repository is not clean. The spike should exit before branch creation and provide a short suggestion to run in a dedicated git worktree to avoid contaminating active development branches. The sandbox root defaults to `<repo>-sandbox` (override via `SPIKE_SANDBOX_ROOT`), and the runner must fail if the current repo root does not match the sandbox root.
+Phase 0 runs must fast-fail if the repository is not clean. The spike should exit before branch creation and provide a short suggestion to run in a dedicated git worktree to avoid contaminating active development branches. The sandbox root defaults to `<repo>-sandbox` (override via `SPIKE_SANDBOX_ROOT`), and the runner must fail if the current repo root does not match the sandbox root. Dirty worktrees are allowed only when running inside the sandbox root.
 
 ---
 

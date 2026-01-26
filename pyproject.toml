@@ -37,7 +37,7 @@ langdetect = "1.0.9"
 lxml = "5.3.0"
 nltk = "3.9.1"
 numpy = "2.0.2"
-openai = "2.5.0"
+openai = "^2.15.0"
 openai-whisper = "20240930"
 packaging = "24.2"
 pdf2image = { version = "1.17.0", optional = true }
@@ -111,6 +111,7 @@ sent-split = "tnh_scholar.cli_tools.sent_split.sent_split:main"
 json-srt = "tnh_scholar.cli_tools.json_to_srt.json_to_srt:main"
 srt-translate = "tnh_scholar.cli_tools.srt_translate.srt_translate:main"
 tnh-conductor-spike = "tnh_scholar.cli_tools.tnh_conductor_spike.tnh_conductor_spike:main"
+tnh-codex-harness = "tnh_scholar.cli_tools.tnh_codex_harness.tnh_codex_harness:main"
 
 [tool.black]
 line-length = 110

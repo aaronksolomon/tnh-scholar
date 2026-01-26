@@ -7,6 +7,8 @@ from datetime import datetime
 from functools import partial
 from pathlib import Path
 
+from tnh_scholar.logging_config import get_logger
+
 from tnh_scholar.agent_orchestration.spike.models import (
     AgentRunResult,
     GitStatusSnapshot,
@@ -48,13 +50,15 @@ class SpikeRunService:
 
     def run(self, params: SpikeParams, *, config: SpikeConfig, policy: SpikePolicy) -> RunMetadata:
         context = self._init_context(params, config)
-        self._preflight_sandbox_root(context, params, config)
-        self._preflight_clean_workspace(context, params)
+        self._logger().info("spike-run-started: %s", context.run_id)
+        sandbox_root = self._preflight_sandbox_root(context, params, config)
+        self._preflight_clean_workspace(context, params, sandbox_root)
         git_pre = self._prepare_workspace(context, params)
         run_result = self._execute_agent(context, params, policy)
         git_post = self._capture_post(context, params)
         metadata = self._persist_metadata(context, params, git_pre, git_post, run_result)
         self._finalize_workspace(context.base_branch, context.work_branch, policy, run_result.termination_reason)
+        self._logger().info("spike-run-finished: %s", context.run_id)
         return metadata
 
     def _build_artifact_paths(self, run_dir: Path) -> RunArtifactPaths:
@@ -231,9 +235,17 @@ class SpikeRunService:
         )
         return git_pre
 
-    def _preflight_clean_workspace(self, context: RunContext, params: SpikeParams) -> None:
+    def _preflight_clean_workspace(
+        self,
+        context: RunContext,
+        params: SpikeParams,
+        sandbox_root: Path,
+    ) -> None:
         status = self.workspace.capture_status()
         if status.is_clean:
+            return
+        if self._allow_dirty_in_sandbox(sandbox_root):
+            self._logger().warning("spike-preflight: dirty sandbox worktree allowed")
             return
         message = self._worktree_guidance_message()
         self._write_event(
@@ -254,11 +266,11 @@ class SpikeRunService:
             "`git worktree add ../tnh-scholar-sandbox` then run the CLI there."
         )
 
-    def _preflight_sandbox_root(self, context: RunContext, params: SpikeParams, config: SpikeConfig) -> None:
+    def _preflight_sandbox_root(self, context: RunContext, params: SpikeParams, config: SpikeConfig) -> Path:
         repo_root = self.workspace.repo_root()
         expected_root = self._expected_sandbox_root(repo_root, config)
         if repo_root == expected_root:
-            return
+            return repo_root
         message = self._sandbox_root_message(repo_root, expected_root)
         self._write_event(
             context.event_writer,
@@ -277,6 +289,9 @@ class SpikeRunService:
         if repo_root.name.endswith("-sandbox"):
             return repo_root
         return repo_root.parent / f"{repo_root.name}-sandbox"
+
+    def _allow_dirty_in_sandbox(self, sandbox_root: Path) -> bool:
+        return self.workspace.repo_root() == sandbox_root
 
     def _sandbox_root_message(self, repo_root: Path, expected_root: Path) -> str:
         return (
@@ -337,6 +352,7 @@ class SpikeRunService:
         )
 
     def _emit_heartbeat(self, context: RunContext, params: SpikeParams) -> None:
+        self._logger().debug("spike-heartbeat: %s", context.run_id)
         self._write_event(
             context.event_writer,
             context.run_id,
@@ -355,6 +371,7 @@ class SpikeRunService:
         message = self._truncate_output(text, policy.output_event_max_chars)
         if not message:
             return
+        self._logger().info("agent-output: %s", message.rstrip())
         self._write_event(
             context.event_writer,
             context.run_id,
@@ -370,6 +387,9 @@ class SpikeRunService:
         if len(text) <= max_chars:
             return text
         return text[:max_chars]
+
+    def _logger(self):
+        return get_logger(__name__)
 
     def _persist_metadata(
         self,

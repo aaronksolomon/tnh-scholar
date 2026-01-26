@@ -74,7 +74,7 @@ def test_preflight_blocks_dirty_workspace() -> None:
         clock=_FakeClock(),
         run_id_generator=_FakeRunIdGenerator(),
         agent_runner=_FakeAgentRunner(),
-        workspace=_FakeWorkspace(dirty_status, Path("/tmp/tnh-scholar-sandbox")),
+        workspace=_FakeWorkspace(dirty_status, Path("/tmp/tnh-scholar")),
         artifact_writer=_FakeArtifactWriter(),
         event_writer_factory=_FakeEventWriterFactory(),
         command_builder=_FakeCommandBuilder(),
@@ -93,7 +93,40 @@ def test_preflight_blocks_dirty_workspace() -> None:
     events = service.event_writer_factory.writer.events
     assert events
     assert events[-1].event_type == RunEventType.run_blocked
-    assert events[-1].reason == "dirty_worktree"
+    assert events[-1].reason == "sandbox_root_mismatch"
+
+
+def test_preflight_allows_dirty_workspace_in_sandbox() -> None:
+    dirty_status = GitStatusSnapshot(
+        branch="work/test",
+        is_clean=False,
+        staged=0,
+        unstaged=1,
+        lines=[" M README.md"],
+    )
+    sandbox_root = Path("/tmp/tnh-scholar-sandbox")
+    service = SpikeRunService(
+        clock=_FakeClock(),
+        run_id_generator=_FakeRunIdGenerator(),
+        agent_runner=_FakeAgentRunner(),
+        workspace=_FakeWorkspace(dirty_status, sandbox_root),
+        artifact_writer=_FakeArtifactWriter(),
+        event_writer_factory=_FakeEventWriterFactory(),
+        command_builder=_FakeCommandBuilder(),
+        prompt_handler=_FakePromptHandler(),
+    )
+    params = SpikeParams(agent="claude-code", task="noop")
+    config = SpikeConfig(
+        runs_root=Path("/tmp"),
+        work_branch_prefix="work",
+        sandbox_root=sandbox_root,
+    )
+    policy = SpikePolicy()
+    with pytest.raises(AssertionError):
+        service.run(params, config=config, policy=policy)
+    assert service.event_writer_factory.writer is not None
+    events = service.event_writer_factory.writer.events
+    assert events[0].event_type == RunEventType.run_started
 
 
 def test_preflight_blocks_wrong_sandbox_root() -> None:

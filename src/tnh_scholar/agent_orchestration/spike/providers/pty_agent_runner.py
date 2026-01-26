@@ -177,6 +177,7 @@ class PtyAgentRunner(AgentRunnerProtocol):
         return RunnerState(
             output=state.output,
             last_output=state.last_output,
+            last_heartbeat=state.last_heartbeat,
             decision=state.decision,
             termination=reason,
         )

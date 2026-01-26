@@ -26,7 +26,7 @@ The Phase 0 spike ran successfully against the Claude Code CLI, producing full t
 ## Gotchas
 
 - `poetry run` warns when entrypoints are not installed; running `poetry install` removes the warning.
-- The spike enforces a clean worktree and sandbox root preflight; run in a dedicated worktree to avoid blocking.
+- The spike enforces a sandbox root preflight; dirty worktrees are allowed only inside the sandbox root.
 - `codex` agent is declared but not implemented; it currently raises a `NotImplementedError`.
 
 ## Recommendations
@@ -37,7 +37,11 @@ The Phase 0 spike ran successfully against the Claude Code CLI, producing full t
 
 ## Sandbox Strategy
 
-Phase 0 runs should execute from a dedicated worktree named `<repo>-sandbox` (or set via `SPIKE_SANDBOX_ROOT`). The runner now fails fast if the repo root does not match the expected sandbox path.
+Phase 0 runs should execute from a dedicated worktree named `<repo>-sandbox` (or set via `SPIKE_SANDBOX_ROOT`). The runner fails fast if the repo root does not match the expected sandbox path, but allows dirty worktrees inside the sandbox.
+
+### Sandbox Sync
+
+Use `scripts/sync-sandbox.sh` (or `make sync-sandbox`) to update the sandbox. The script now always resets the sandbox to the source repo branch and applies a patch of uncommitted changes, then runs in-place from that snapshot.
 
 ## Artifacts
 

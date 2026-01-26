@@ -27,6 +27,7 @@ from tnh_scholar.agent_orchestration.spike.providers.event_writer_factory import
 from tnh_scholar.agent_orchestration.spike.providers.git_workspace import GitWorkspaceCapture
 from tnh_scholar.agent_orchestration.spike.providers.pty_agent_runner import PtyAgentRunner
 from tnh_scholar.agent_orchestration.spike.service import SpikeRunService
+from tnh_scholar.logging_config import get_logger, setup_logging
 
 app = typer.Typer(
     name="tnh-conductor-spike",
@@ -59,6 +60,9 @@ def run_command(
     work_branch: Optional[str] = typer.Option(None, "--work-branch", help="Explicit work branch name."),
 ) -> None:
     """Run a single Phase 0 spike execution."""
+    setup_logging()
+    logger = get_logger(__name__)
+    logger.info("spike-cli-start")
     settings = SpikeSettings.from_env()
     config = SpikeConfig(
         runs_root=settings.runs_root,
@@ -79,8 +83,10 @@ def run_command(
     try:
         metadata = service.run(params, config=config, policy=policy)
     except SpikePreflightError as exc:
+        logger.error("spike-cli-preflight-failed: %s", exc)
         typer.echo(str(exc))
         raise typer.Exit(code=1) from exc
+    logger.info("spike-cli-complete: %s", metadata.run_id)
     _print_outputs(metadata)
 
 
