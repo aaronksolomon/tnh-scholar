@@ -138,6 +138,76 @@ Stand up a minimal Codex harness inside agent_orchestration to test end-to-end t
 - `/architecture/agent-orchestration/notes/codex-harness-e2e-report.md`
 
 ---
+## [2026-01-26 ~19:30 UTC] Spike Findings Finalization + Commit
+
+**Agent**: Claude Opus 4.5
+**Chat Reference**: codex harness evaluation continuation
+**Human Collaborator**: Aaron
+
+### Context
+Finalize spike findings based on Chat Completions test results and VS Code output channel analysis. Commit all agent orchestration work to branch.
+
+### Work Completed
+- [x] Analyzed Chat Completions test failure — GPT-Codex models are Responses API only
+- [x] Updated Option D in spike findings as TESTED (failed)
+- [x] Added Finding 4: VS Code Extension uses external app server (from output channel logs)
+- [x] Updated CHANGELOG with agent orchestration work summary
+- [x] Updated TODO with suspended Codex runner task
+- [x] Committed all work to feat/agent-orchestration branch (commit: 1a0e759)
+
+### Discoveries & Insights
+- **GPT-Codex is Responses-only**: Chat Completions API returns 404 for gpt-5.2-codex — eliminates Option D
+- **VS Code uses proprietary app server**: Output channel shows `codex/event/*` notifications from external orchestrator, not direct API calls
+- **Public API provides raw capabilities only**: The orchestrated VS Code experience is not replicable via public API
+
+### Files Modified
+- `docs/architecture/agent-orchestration/notes/codex-harness-spike-findings.md`: Added Finding 4, updated Option D
+- `CHANGELOG.md`: Added agent orchestration summary to Unreleased
+- `TODO.md`: Added suspended Codex runner task, updated status
+
+### References
+- Commit 1a0e759: "feat: Add Codex harness with suspension findings"
+
+---
+## [2026-01-26 15:50 UTC] Chat Completions Probe + Sandbox Cleanup
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: codex harness chat-completions probe
+**Human Collaborator**: Aaron
+
+### Context
+Test an alternate Chat Completions pathway for the Codex harness and confirm compatibility. Sync changes to sandbox, run a minimal test, and then remove the sandbox worktree when pausing agent-orchestration work.
+
+### Key Decisions
+- **Chat Completions client**: Added a separate client implementing `ResponsesClientProtocol` with JSON schema response_format for compatibility testing.
+- **CLI toggle**: Added `--use-chat-completions` to switch clients without changing service wiring.
+- **Sandbox decommission**: Removed the sandbox worktree to avoid uncommitted state and accidental commits during pause.
+
+### Work Completed
+- [x] Added Chat Completions client with tool loop (files: `src/tnh_scholar/agent_orchestration/codex_harness/providers/chat_completions_client.py`)
+- [x] Added CLI flag to select chat completions (files: `src/tnh_scholar/cli_tools/tnh_codex_harness/tnh_codex_harness.py`)
+- [x] Synced changes to sandbox and attempted run using chat completions (sandbox path: `/Users/phapman/Desktop/Projects/tnh-scholar-sandbox`)
+- [x] Removed the sandbox worktree after confirmation (`git worktree remove --force`)
+
+### Discoveries & Insights
+- **Model compatibility**: `gpt-5.2-codex` is not a chat model; Chat Completions endpoint returns 404.
+- **Sandbox permissions**: Worktree removal required escalation due to file permissions.
+
+### Files Modified/Created
+- `src/tnh_scholar/agent_orchestration/codex_harness/providers/chat_completions_client.py`: Created Chat Completions client.
+- `src/tnh_scholar/cli_tools/tnh_codex_harness/tnh_codex_harness.py`: Added `--use-chat-completions` flag and client selection.
+
+### Next Steps
+- [ ] If revisiting Chat Completions path, use a chat-capable model override.
+- [ ] Recreate sandbox worktree when resuming agent-orchestration testing.
+
+### Open Questions
+- Which chat-capable model should be the default for chat-completions experiments?
+
+### References
+- `/architecture/agent-orchestration/notes/codex-harness-e2e-report.md`
+
+---
 ## [2026-01-25 ~19:00 UTC] Codex Harness Spike Evaluation + Suspension
 
 **Agent**: Claude Opus 4.5
