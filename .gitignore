@@ -35,6 +35,7 @@ tmp_*/
 # local logs and transient artifacts:
 logs/
 notebooks/**/logs/
+.tnh-gen/
 
 # data not tracked in repo:
 data/PDF/
