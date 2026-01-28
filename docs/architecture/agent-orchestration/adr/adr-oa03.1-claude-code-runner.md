@@ -3,7 +3,7 @@ title: "ADR-OA03.1: Claude Code Runner"
 description: "Claude Code execution path — headless print mode only, no interactive/PTY automation"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: proposed
+status: paused
 created: "2026-01-22"
 updated: "2026-01-22"
 parent_adr: "adr-oa03-agent-runner-architecture.md"
@@ -13,7 +13,7 @@ parent_adr: "adr-oa03-agent-runner-architecture.md"
 
 Claude Code execution path for tnh-conductor — headless print mode as the sole automation surface, with explicit rejection of interactive/PTY automation.
 
-- **Status**: Proposed
+- **Status**: Paused
 - **Date**: 2026-01-22
 - **Owner**: Aaron Solomon
 - **Author**: Aaron Solomon, GPT 5.2, Claude Opus 4.5
@@ -447,3 +447,9 @@ Both are first-class sub-agents under the same conductor, planner, and policy sy
 ## As-Built Notes & Addendums
 
 *Reserved for post-implementation updates. Never edit the original Context/Decision/Consequences sections — always append addendums here.*
+
+### Addendum 2026-01-27: Work Paused
+
+**Status changed**: `proposed` → `paused`
+
+See parent ADR-OA03 addendum for context.

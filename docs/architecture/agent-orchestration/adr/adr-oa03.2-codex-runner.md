@@ -3,7 +3,7 @@ title: "ADR-OA03.2: Codex Runner"
 description: "Codex execution path — API-first, tool-driven runner for implementation tasks"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: proposed
+status: paused
 created: "2026-01-22"
 updated: "2026-01-22"
 parent_adr: "adr-oa03-agent-runner-architecture.md"
@@ -13,7 +13,7 @@ parent_adr: "adr-oa03-agent-runner-architecture.md"
 
 Codex execution path for tnh-conductor — an API-first, tool-driven runner optimized for implementation and mechanical coding tasks.
 
-- **Status**: Proposed
+- **Status**: Paused
 - **Date**: 2026-01-22
 - **Owner**: Aaron Solomon
 - **Author**: Aaron Solomon, GPT 5.2, Claude Opus 4.5

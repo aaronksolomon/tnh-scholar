@@ -110,8 +110,9 @@ tnh-tree = "tnh_scholar.cli_tools.tnh_tree:main"
 sent-split = "tnh_scholar.cli_tools.sent_split.sent_split:main"
 json-srt = "tnh_scholar.cli_tools.json_to_srt.json_to_srt:main"
 srt-translate = "tnh_scholar.cli_tools.srt_translate.srt_translate:main"
-tnh-conductor-spike = "tnh_scholar.cli_tools.tnh_conductor_spike.tnh_conductor_spike:main"
-tnh-codex-harness = "tnh_scholar.cli_tools.tnh_codex_harness.tnh_codex_harness:main"
+# EXPERIMENTAL - disabled (agent orchestration paused, see ADR-OA02 addendum)
+# tnh-conductor-spike = "tnh_scholar.cli_tools.tnh_conductor_spike.tnh_conductor_spike:main"
+# tnh-codex-harness = "tnh_scholar.cli_tools.tnh_codex_harness.tnh_codex_harness:main"
 
 [tool.black]
 line-length = 110

@@ -3,7 +3,7 @@ title: "ADR-OA03: Agent Runner Architecture"
 description: "Phase 1 architecture for agent execution — kernel + adapter pattern based on OA02 spike learnings"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: proposed
+status: paused
 created: "2026-01-21"
 updated: "2026-01-22"
 parent_adr: "adr-oa01-agent-orchestration-strategy.md"
@@ -13,7 +13,7 @@ parent_adr: "adr-oa01-agent-orchestration-strategy.md"
 
 Phase 1 architecture for agent execution — establishing a durable runner architecture that separates cross-agent invariants (kernel) from surface-specific mechanics (adapters), based on evidence gathered in OA02.
 
-- **Status**: Proposed
+- **Status**: Paused
 - **Type**: Architecture ADR
 - **Date**: 2026-01-21
 - **Owner**: Aaron Solomon
@@ -459,3 +459,9 @@ OA02's status remains `accepted` (spike completed successfully). OA03 does not s
 ## As-Built Notes & Addendums
 
 *Reserved for post-implementation updates. Never edit the original Context/Decision/Consequences sections — always append addendums here.*
+
+### Addendum 2026-01-27: Work Paused
+
+**Status changed**: `proposed` → `paused`
+
+Agent orchestration work paused pending evaluation of Codex interface build costs and alternative approaches. This ADR and its decimal sub-ADRs (OA03.1, OA03.2) preserved as design reference for future work.

@@ -4,7 +4,7 @@ description: "De-risking spike to prove headless agent capture and safety contro
 type: "implementation-guide"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: accepted
+status: paused
 created: "2026-01-19"
 updated: "2026-01-19"
 parent_adr: "adr-oa01-agent-orchestration-strategy.md"
@@ -14,7 +14,7 @@ parent_adr: "adr-oa01-agent-orchestration-strategy.md"
 
 De-risking spike to prove headless agent invocation, transcript capture, and safety controls work reliably.
 
-- **Status**: Accepted
+- **Status**: Paused
 - **Type**: Implementation ADR (De-risking Spike)
 - **Date**: 2026-01-19
 - **Owner**: Aaron Solomon
@@ -403,6 +403,12 @@ We will implement a kernel-level command filter for the Phase 0 spike. This filt
 ### Addendum 2026-01-20: Worktree Preflight Check
 
 Phase 0 runs must fast-fail if the repository is not clean. The spike should exit before branch creation and provide a short suggestion to run in a dedicated git worktree to avoid contaminating active development branches. The sandbox root defaults to `<repo>-sandbox` (override via `SPIKE_SANDBOX_ROOT`), and the runner must fail if the current repo root does not match the sandbox root. Dirty worktrees are allowed only when running inside the sandbox root.
+
+### Addendum 2026-01-27: Work Paused
+
+**Status changed**: `accepted` → `paused`
+
+Spike implementation complete and findings documented (see `SPIKE_REPORT.md` and `docs/architecture/agent-orchestration/notes/`). Further work on agent orchestration paused pending evaluation of Codex interface build costs and alternative approaches. Code preserved in `src/tnh_scholar/agent_orchestration/` as reference; marked non-operational via `EXPERIMENTAL.md`.
 
 ---
 
