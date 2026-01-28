@@ -169,7 +169,7 @@ src/tnh_scholar/
 3. **Pydantic required** - strong typing, no dict/literal sprawl
 4. **Commit poetry.lock** - always include lockfile changes
 5. **ADRs append-only** - never edit decisions, add addendums
-6. **ADR status lifecycle** - Standard: `proposed` → `accepted` → [`wip`] → `implemented`. Strategy ADRs: stop at `accepted`. Other flows: `rejected`, `superseded`, `archived`. See ADR template for full lifecycle.
+6. **ADR status lifecycle** - Standard: `proposed` → `accepted` → [`wip`] → `implemented`. Strategy ADRs: stop at `accepted`. Other flows: `paused` (work suspended), `rejected`, `superseded`, `archived`. See ADR template for full lifecycle.
 7. **AGENTLOG archiving** - After PR merge, archive to `archive/agentlogs/AGENTLOG-[MM-DD-YY].md`, update archive index, reset to template. Skip for hotfixes/patches/chores.
 
 ## Docs Structure

@@ -104,6 +104,7 @@ One-sentence or short paragraph summarizing the decision.
 - `proposed` = early RFC/discussion stage
 - `accepted` = decision approved, ready for implementation
 - `wip` = actively being revised during implementation
+- `paused` = work suspended pending external factors (cost evaluation, dependency, etc.)
 - `implemented` = decision has been executed/completed
 - `rejected` = proposed but not approved
 - `superseded` = replaced by newer ADR (link to replacement)

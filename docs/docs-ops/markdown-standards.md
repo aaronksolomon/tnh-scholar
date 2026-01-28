@@ -56,6 +56,7 @@ created: "YYYY-MM-DD"
 **ADR-specific status values** (only for Architecture Decision Records):
 
 - `accepted` = decision approved, ready for implementation
+- `paused` = work suspended pending external factors (cost evaluation, dependency, etc.)
 - `implemented` = decision has been executed/completed
 - `rejected` = proposed but not approved
 
@@ -65,8 +66,8 @@ created: "YYYY-MM-DD"
 
 ```text
 proposed → accepted → [wip] → implemented → [superseded/archived]
-    ↓
-  rejected
+    ↓         ↓
+  rejected  paused (can resume to wip/implemented)
 ```
 
 **Guides/References/Documentation:**
