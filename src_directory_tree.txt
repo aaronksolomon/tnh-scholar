@@ -4,11 +4,28 @@
 └── tnh_scholar
     ├── __init__.py
     ├── agent_orchestration
-    │   ├── codex_harness
-    │   │   └── providers
+    │   ├── __init__.py
     │   └── spike
+    │       ├── __init__.py
     │       ├── adapters
-    │       └── providers
+    │       │   ├── __init__.py
+    │       │   ├── command_filter.py
+    │       │   ├── prompt_handler.py
+    │       │   ├── prompt_parser.py
+    │       │   └── run_id.py
+    │       ├── models.py
+    │       ├── policy.py
+    │       ├── protocols.py
+    │       ├── providers
+    │       │   ├── __init__.py
+    │       │   ├── artifact_writer.py
+    │       │   ├── clock.py
+    │       │   ├── command_builder.py
+    │       │   ├── event_writer_factory.py
+    │       │   ├── event_writer.py
+    │       │   ├── git_workspace.py
+    │       │   └── pty_agent_runner.py
+    │       └── service.py
     ├── ai_text_processing
     │   ├── __init__.py
     │   ├── ai_text_processing.py
@@ -96,6 +113,8 @@
     │   │   ├── __init__.py
     │   │   └── srt_translate.py
     │   ├── tnh_conductor_spike
+    │   │   ├── __init__.py
+    │   │   └── tnh_conductor_spike.py
     │   ├── tnh_gen
     │   │   ├── __init__.py
     │   │   ├── commands
@@ -302,4 +321,4 @@
         ├── extract_tags.py
         └── xml_processing.py
 
-74 directories, 229 files
+72 directories, 250 files

@@ -15,7 +15,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Agent Orchestration Phase 0 Spike** (2026-01-20 to 2026-01-25)
+  - Implemented Phase 0 protocol spike per ADR-OA02 with PTY capture for Claude Code CLI
+  - Built Codex harness with Responses API integration and tool surface (read_file, search_repo, list_files, apply_patch, run_tests)
+  - Added sandbox sync automation (`scripts/sync-sandbox.sh`, `make sync-sandbox`)
+  - Created comprehensive ADRs: OA01 (strategy), OA02 (spike), OA03 (runner architecture), OA03.1 (Claude Code), OA03.2 (Codex)
+  - Files: `src/tnh_scholar/agent_orchestration/spike/`, `src/tnh_scholar/agent_orchestration/codex_harness/`, `src/tnh_scholar/cli_tools/tnh_codex_harness/`
+
 ### Changed
+
+- **ADR-OA03.2 Codex Runner Suspended** (2026-01-25)
+  - Spike revealed API constraints: model produces tool calls without final text output
+  - VS Code Codex extension uses client-side orchestration (different architecture than API-first approach)
+  - Added suspension addendum with findings and conditions for resumption
+  - Comprehensive findings documented in `docs/architecture/agent-orchestration/notes/codex-harness-spike-findings.md`
 
 - **Patterns→Prompts Migration Complete** (2026-01-17 to 2026-01-19)
   - Renamed `patterns/` directory to `prompts/` with standalone `tnh-prompts` git repository

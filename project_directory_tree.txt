@@ -28,7 +28,12 @@
 │   │   └── index.md
 │   ├── architecture
 │   │   ├── agent-orchestration
-│   │   │   └── archive
+│   │   │   ├── adr
+│   │   │   │   ├── adr-oa01-agent-orchestration-strategy.md
+│   │   │   │   ├── adr-oa02-phase-0-protocol-spike.md
+│   │   │   │   └── index.md
+│   │   │   ├── archive
+│   │   │   └── system-design.md
 │   │   ├── ai-text-processing
 │   │   │   ├── adr
 │   │   │   │   ├── adr-at01-ai-text-processing.md
@@ -466,17 +471,35 @@
 │   ├── update_version.py
 │   ├── validate_markdown.py
 │   └── verify_doc_links.py
+├── SPIKE_REPORT.md
 ├── src
 │   ├── __init__.py
 │   ├── sitecustomize.py
 │   └── tnh_scholar
 │       ├── __init__.py
 │       ├── agent_orchestration
-│       │   ├── codex_harness
-│       │   │   └── providers
+│       │   ├── __init__.py
 │       │   └── spike
+│       │       ├── __init__.py
 │       │       ├── adapters
-│       │       └── providers
+│       │       │   ├── __init__.py
+│       │       │   ├── command_filter.py
+│       │       │   ├── prompt_handler.py
+│       │       │   ├── prompt_parser.py
+│       │       │   └── run_id.py
+│       │       ├── models.py
+│       │       ├── policy.py
+│       │       ├── protocols.py
+│       │       ├── providers
+│       │       │   ├── __init__.py
+│       │       │   ├── artifact_writer.py
+│       │       │   ├── clock.py
+│       │       │   ├── command_builder.py
+│       │       │   ├── event_writer_factory.py
+│       │       │   ├── event_writer.py
+│       │       │   ├── git_workspace.py
+│       │       │   └── pty_agent_runner.py
+│       │       └── service.py
 │       ├── ai_text_processing
 │       │   ├── __init__.py
 │       │   ├── ai_text_processing.py
@@ -564,6 +587,8 @@
 │       │   │   ├── __init__.py
 │       │   │   └── srt_translate.py
 │       │   ├── tnh_conductor_spike
+│       │   │   ├── __init__.py
+│       │   │   └── tnh_conductor_spike.py
 │       │   ├── tnh_gen
 │       │   │   ├── __init__.py
 │       │   │   ├── commands
@@ -773,6 +798,7 @@
 ├── src_directory_tree.txt
 ├── tests
 │   ├── agent_orchestration
+│   │   └── test_spike_command_filter.py
 │   ├── ai_text_processing
 │   │   └── test_text_object.py
 │   ├── audio_processing
@@ -858,4 +884,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-200 directories, 659 files
+199 directories, 686 files

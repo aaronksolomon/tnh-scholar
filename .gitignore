@@ -37,6 +37,9 @@ logs/
 notebooks/**/logs/
 .tnh-gen/
 
+# tnh-conductor spike runs (local agent execution artifacts):
+.tnh-gen/
+
 # data not tracked in repo:
 data/PDF/
 

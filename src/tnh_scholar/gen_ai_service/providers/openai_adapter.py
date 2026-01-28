@@ -11,7 +11,7 @@ Connected modules:
   - infra.metrics, infra.tracer
 
 Compatibility:
-  - Pinned OpenAI SDK: 2.5.0 (see PINNED_OPENAI_SDK below)
+  - Pinned OpenAI SDK: 2.15.0 (see PINNED_OPENAI_SDK below)
   - Reference: openai/types/chat/chat_completion.py and openai/types/chat/chat_completion_message_param.py 
    (SDK 2.5.0)
   - This module defines the provider seam → canonical transport envelope.
@@ -21,6 +21,7 @@ TODOs for Hardening:
   - Add compatibility matrix doc (docs/providers/openai_adapter.md) and link to it from here.
   - Add automated version drift check against latest OpenAI SDK to flag mapping review.
   - Add guardrails for empty choices / malformed usage with structured FAILED status.
+  - Revalidate request/response shapes after the OpenAI SDK 2.15.0 bump.
 """
 
 from __future__ import annotations
@@ -44,7 +45,7 @@ from tnh_scholar.gen_ai_service.models.transport import (
 )
 
 ADAPTER_COMPAT_VERSION = "2025-10-31"
-PINNED_OPENAI_SDK = "2.5.0"
+PINNED_OPENAI_SDK = "2.15.0"
 
 
 class OpenAIChatCompletionRequest(BaseModel):

@@ -4,8 +4,11 @@ LYCHEE        = lychee
 PIPX          = pipx
 PIPX_LOG_DIR  = $(HOME)/.local/pipx/logs
 TNH_CLI_TOOLS = audio-transcribe tnh-gen ytt-fetch nfmt token-count tnh-setup tnh-tree sent-split json-srt srt-translate
+SANDBOX_PATH ?= ../tnh-scholar-sandbox
+SANDBOX_BRANCH ?= feat/agent-orchestration-sandbox
+SANDBOX_SOURCE_REPO ?= .
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pipx-refresh build-all update
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pipx-refresh build-all update sync-sandbox
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -33,6 +36,9 @@ update:
 	$(POETRY) install
 	$(POETRY) build
 	$(MAKE) pipx-build
+
+sync-sandbox:
+	./scripts/sync-sandbox.sh --sandbox $(SANDBOX_PATH) --source-repo $(SANDBOX_SOURCE_REPO)
 
 pipx-build:
 	@echo "Building pipx install for tnh-scholar (all CLI tools)..."
