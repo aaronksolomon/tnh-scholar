@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-01-10"
+created: "2026-01-28"
 auto_generated: true
 ---
 

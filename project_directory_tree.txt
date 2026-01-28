@@ -7,6 +7,7 @@
 │   ├── agentlogs
 │   │   ├── AGENTLOG-01-01-26.md
 │   │   ├── AGENTLOG-01-09-26.md
+│   │   ├── AGENTLOG-01-19-26.md
 │   │   ├── AGENTLOG-12-07-25.md
 │   │   ├── AGENTLOG-12-10-25.md
 │   │   ├── AGENTLOG-12-11-25.md
@@ -23,14 +24,11 @@
 │       └── public_books
 ├── DEV_SETUP.md
 ├── docs
-│   ├── ADR-XX-tnh-conductor.md
 │   ├── api
 │   │   └── index.md
 │   ├── architecture
 │   │   ├── agent-orchestration
-│   │   │   └── adr
-│   │   │       ├── adr-oa01-agent-orchestration-strategy.md
-│   │   │       └── index.md
+│   │   │   └── archive
 │   │   ├── ai-text-processing
 │   │   │   ├── adr
 │   │   │   │   ├── adr-at01-ai-text-processing.md
@@ -473,6 +471,12 @@
 │   ├── sitecustomize.py
 │   └── tnh_scholar
 │       ├── __init__.py
+│       ├── agent_orchestration
+│       │   ├── codex_harness
+│       │   │   └── providers
+│       │   └── spike
+│       │       ├── adapters
+│       │       └── providers
 │       ├── ai_text_processing
 │       │   ├── __init__.py
 │       │   ├── ai_text_processing.py
@@ -559,6 +563,7 @@
 │       │   ├── srt_translate
 │       │   │   ├── __init__.py
 │       │   │   └── srt_translate.py
+│       │   ├── tnh_conductor_spike
 │       │   ├── tnh_gen
 │       │   │   ├── __init__.py
 │       │   │   ├── commands
@@ -767,6 +772,7 @@
 │           └── xml_processing.py
 ├── src_directory_tree.txt
 ├── tests
+│   ├── agent_orchestration
 │   ├── ai_text_processing
 │   │   └── test_text_object.py
 │   ├── audio_processing
@@ -814,9 +820,6 @@
 │   │   └── test_numbered_text.py
 │   └── utils
 │       └── test_math_utils.py
-├── tnh-orchestrator-meta-agent v2.md
-├── tnh-orchestrator-meta-agent.md
-├── tnh-orchestrator-system-design.md
 ├── TODO.md
 ├── VERSIONING.md
 └── vscode-extension
@@ -855,4 +858,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-192 directories, 664 files
+200 directories, 659 files

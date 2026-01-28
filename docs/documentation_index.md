@@ -4,7 +4,7 @@ description: "Complete searchable index of TNH Scholar documentation with metada
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-01-10"
+created: "2026-01-28"
 auto_generated: true
 ---
 
@@ -39,7 +39,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [Conceptual Architecture of TNH-Scholar](/project/conceptual-architecture.md) | High-level, implementation-agnostic view of TNH-Scholar’s layers, abstractions, and how they interact. | 2025-12-11 | `docs/project/conceptual-architecture.md` |
 | [Future Directions of TNH-Scholar](/project/future-directions.md) | Blue-sky exploration of potential long-term evolutions of TNH-Scholar built on the project’s philosophy and architecture. | 2025-12-11 | `docs/project/future-directions.md` |
 | [Project](/project/index.md) | Table of contents for project | 2025-12-11 | `docs/project/index.md` |
-| [Repo Root](/project/repo-root/index.md) | Repository root documentation surfaced in the MkDocs site. | 2026-01-10 | `docs/project/repo-root/index.md` |
+| [Repo Root](/project/repo-root/index.md) | Repository root documentation surfaced in the MkDocs site. | 2026-01-28 | `docs/project/repo-root/index.md` |
 | [TNH Scholar CHANGELOG](/project/repo-root/changelog.md) | Chronological log of notable TNH Scholar changes. | 2025-02-28 | `docs/project/repo-root/changelog.md` |
 | [TNH Scholar CONTRIBUTING](/project/repo-root/contributing-root.md) | TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow. | 2024-10-21 | `docs/project/repo-root/contributing-root.md` |
 | [TNH Scholar README](/project/repo-root/repo-readme.md) | TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models. | 2024-10-21 | `docs/project/repo-root/repo-readme.md` |
@@ -70,7 +70,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [sent-split](/cli-reference/sent-split.md) | Split text into sentences using NLTK, with newline or space separators. | 2025-12-10 | `docs/cli-reference/sent-split.md` |
 | [srt-translate](/cli-reference/srt-translate.md) | Translate SRT subtitle files while preserving timecodes, using TNH Scholar translation patterns. | 2025-12-10 | `docs/cli-reference/srt-translate.md` |
 | [tnh-gen](/cli-reference/tnh-gen.md) | Complete reference for the tnh-gen CLI - TNH Scholar's unified command-line interface for GenAI-powered text processing | 2025-12-28 | `docs/cli-reference/tnh-gen.md` |
-| [tnh-setup](/cli-reference/tnh-setup.md) | The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns. | 2025-02-01 | `docs/cli-reference/tnh-setup.md` |
+| [tnh-setup](/cli-reference/tnh-setup.md) | The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default prompts. | 2025-02-01 | `docs/cli-reference/tnh-setup.md` |
 | [token-count](/cli-reference/token-count.md) | The `token-count` command calculates the OpenAI API token count for text input. This is useful for ensuring that a text is within maximum token limits for the API model and also for estimating API costs. | 2025-02-01 | `docs/cli-reference/token-count.md` |
 | [ytt-fetch](/cli-reference/ytt-fetch.md) | (Y)ou(T)ube (T)ranscript-(Fetch)ing utility. | 2025-01-21 | `docs/cli-reference/ytt-fetch.md` |
 
