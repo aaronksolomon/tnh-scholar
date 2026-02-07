@@ -6,6 +6,7 @@ This module provides a command line interface for downloading video transcripts
 in specified languages. It uses yt-dlp for video info extraction.
 """
 
+import os
 import sys
 from pathlib import Path
 from typing import Optional
@@ -20,8 +21,10 @@ from tnh_scholar.utils.file_utils import write_str_to_file
 from tnh_scholar.video_processing import (
     DLPDownloader,
     TranscriptError,
+    YTDownloadService,
     extract_text_from_ttml,
 )
+from tnh_scholar.video_processing.yt_environment import YTDLPEnvironmentInspector
 
 logger = get_child_logger(__name__)
 
@@ -57,34 +60,50 @@ def ytt_fetch(
     keep: bool, 
     info: bool,
     no_embed: bool,
-    output: Optional[str]) -> None:
+    output: Optional[str],
+) -> None:
     """
     YouTube Transcript Fetch: Retrieve and 
     save transcripts for a Youtube video using yt-dlp.
     """
+    inspector = YTDLPEnvironmentInspector()
+    report = inspector.inspect_report()
+    if report.has_items():
+        click.echo("yt-dlp runtime prerequisites are missing:", err=True)
+        for item in report.items:
+            click.echo(
+                f"- {item.code}: {item.message}",
+                err=True,
+            )
+        click.echo(
+            "Fix: run `tnh-setup` or `make ytdlp-runtime` to install runtime dependencies.",
+            err=True,
+        )
+        sys.exit(1)
 
     dl = DLPDownloader()
+    service = YTDownloadService(dl)
     
     output_path = Path(output) if output else None
     
     if not info:  
-        generate_transcript(dl, url, lang, keep, no_embed, output_path)
+        generate_transcript(service, url, lang, keep, no_embed, output_path)
     else:
-        generate_metadata(dl, url, keep, output_path)
+        generate_metadata(service, url, keep, output_path)
             
 def generate_metadata(
-    dl: DLPDownloader, 
+    service: YTDownloadService, 
     url: str, 
     keep: bool,
     output_path: Optional[Path]
     ) -> None:
-    metadata = dl.get_metadata(url)
+    metadata = service.fetch_metadata(url)
     metadata_out = metadata.text_embed("") # Only metadata
     
     export_data(output_path, metadata_out)
 
 def generate_transcript(
-    dl: DLPDownloader, 
+    service: YTDownloadService, 
     url: str, 
     lang: str, 
     keep: bool, 
@@ -92,7 +111,7 @@ def generate_transcript(
     output_path: Optional[Path]
     ) -> None:
     
-    metadata, ttml_path = get_ttml_download(dl, url, lang, output_path)
+    metadata, ttml_path = get_ttml_download(service, url, lang, output_path)
     
     process_metadata = ProcessMetadata(
             step="generate_transcript",
@@ -136,9 +155,14 @@ def export_ttml_data(
         click.echo(f"Type error: {e}", err=True)
         sys.exit(1)
 
-def get_ttml_download(dl, url, lang, output_path):
+def get_ttml_download(
+    dl: YTDownloadService,
+    url: str,
+    lang: str,
+    output_path: Optional[Path],
+):
     try:
-        transcript_data = dl.get_transcript(url, lang, output_path)
+        transcript_data = dl.fetch_transcript(url, lang, output_path)
         metadata = transcript_data.metadata
         ttml_path = transcript_data.filepath
             

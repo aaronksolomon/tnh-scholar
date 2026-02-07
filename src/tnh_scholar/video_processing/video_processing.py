@@ -14,6 +14,7 @@ import yt_dlp
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.metadata import Metadata
 from tnh_scholar.utils import sanitize_filename
+from tnh_scholar.video_processing.yt_environment import YTDLPEnvironmentInspector
 
 # from tnh_scholar.utils.file_utils import write_text_to_file
 
@@ -177,6 +178,21 @@ class DLPDownloader(YTDownloader):
     
     def __init__(self, config: Optional[dict] = None):
         self.config = config or BASE_YDL_OPTIONS
+        self._runtime_inspector = YTDLPEnvironmentInspector()
+
+    def _runtime_options(self) -> dict:
+        options: dict = {}
+        if runtime := self._runtime_inspector.resolve_js_runtime():
+            options["js_runtimes"] = {runtime.name: {"path": str(runtime.path)}}
+        if self._runtime_inspector.has_remote_components():
+            options["remote_components"] = ["ejs:github"]
+        return options
+
+    def _with_runtime_options(self, options: dict) -> dict:
+        runtime_options = self._runtime_options()
+        if not runtime_options:
+            return options
+        return options | runtime_options
         
     def get_metadata(
         self,
@@ -185,7 +201,7 @@ class DLPDownloader(YTDownloader):
         """
         Get metadata for a YouTube video. 
         """
-        options = DEFAULT_METADATA_OPTIONS | self.config
+        options = self._with_runtime_options(DEFAULT_METADATA_OPTIONS | self.config)
         with yt_dlp.YoutubeDL(options) as ydl:
             if info := ydl.extract_info(url):
                 return self._extract_metadata(info)
@@ -213,11 +229,11 @@ class DLPDownloader(YTDownloader):
             TranscriptError: If no transcript found for specified language
         """
         temp_path = Path.cwd() / TEMP_FILENAME_FORMAT
-        options = DEFAULT_TRANSCRIPT_OPTIONS | self.config | {
+        options = self._with_runtime_options(DEFAULT_TRANSCRIPT_OPTIONS | self.config | {
             "skip_download": True,
             "subtitleslangs": [lang],
             "outtmpl": str(temp_path),
-        }
+        })
 
         with yt_dlp.YoutubeDL(options) as ydl:
             if info := ydl.extract_info(url):
@@ -238,9 +254,9 @@ class DLPDownloader(YTDownloader):
     ) -> VideoAudio:
         """Download audio and get metadata for a YouTube video."""
         temp_path = Path.cwd() / TEMP_FILENAME_FORMAT
-        options = DEFAULT_AUDIO_OPTIONS | self.config | {
+        options = self._with_runtime_options(DEFAULT_AUDIO_OPTIONS | self.config | {
             "outtmpl": str(temp_path)
-        }
+        })
 
         self._add_start_stop_times(options, start, end)
 
@@ -275,9 +291,9 @@ class DLPDownloader(YTDownloader):
             VideoDownloadError: If download fails
         """
         temp_path = Path.cwd() / TEMP_FILENAME_FORMAT
-        video_options = DEFAULT_VIDEO_OPTIONS | self.config | {
+        video_options = self._with_runtime_options(DEFAULT_VIDEO_OPTIONS | self.config | {
             "outtmpl": str(temp_path)
-        }
+        })
         if quality:
             video_options["format"] = quality
 
