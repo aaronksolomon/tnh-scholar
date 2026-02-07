@@ -5,6 +5,7 @@ owner: ""
 author: ""
 status: current
 created: "2025-02-01"
+updated: "2026-02-01"
 ---
 # tnh-setup
 
@@ -21,6 +22,10 @@ tnh-setup [OPTIONS]
 ```bash
 --skip-env       Skip API key setup check
 --skip-prompts  Skip prompt download
+--skip-ytdlp-runtime  Skip yt-dlp runtime setup
+--verify-only    Only run environment verification
+-y, --yes        Assume yes for all prompts
+--no-input       Fail if a prompt would be required
 --help          Show this message and exit
 ```
 
@@ -42,6 +47,10 @@ The setup process includes:
    - Verifies OpenAI API key configuration
    - Provides guidance if key is missing
 
+4. yt-dlp Runtime Setup
+   - Offers to install a JS runtime (deno/node/bun)
+   - Offers to install curl_cffi for impersonation support
+
 ## Examples
 
 ### Complete Setup
@@ -62,6 +71,12 @@ tnh-setup --skip-prompts
 
 # Skip both
 tnh-setup --skip-env --skip-prompts
+```
+
+### Verification Only
+
+```bash
+tnh-setup --verify-only
 ```
 
 ## Default Prompts

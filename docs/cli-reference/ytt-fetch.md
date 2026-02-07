@@ -36,3 +36,9 @@ ytt-fetch "https://youtube.com/watch?v=example" -l en -o transcript.txt
 ```bash
 ytt-fetch "https://youtube.com/watch?v=example"
 ```
+
+## yt-dlp Runtime Notes
+
+yt-dlp may emit warnings about missing JS runtime support or impersonation. These are not login prompts.
+They refer to runtime helpers (deno/node/bun) and `curl_cffi` that improve stability against YouTube changes.
+ytt-fetch validates these prerequisites and exits with guidance when missing.

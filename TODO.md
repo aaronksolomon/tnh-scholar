@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-01-27"
+updated: "2026-02-01"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-01-28 (Added JVB VS Code Parallel Viewer P1 item)
+> **Last Updated**: 2026-02-03 (Added tnh_cli_ui module research task)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -27,11 +27,13 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 **Next Steps**:
 
 1. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
-2. 🔮 Add `--prompt-dir` Global Flag to tnh-gen (P1, minor)
-3. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
-4. 🚧 Prompt Catalog Safety - error handling, validation (P2, critical infrastructure)
-5. 🚧 Knowledge Base Implementation (P2, design complete)
-6. 🚧 Expand Test Coverage to 50%+ (P2)
+2. 🔮 Add full-coverage yt-dlp test suite + monthly ops trigger (P1, reliability)
+3. 🔮 Patch ytt-fetch robustness (P1, reliability)
+4. 🔮 Add `--prompt-dir` Global Flag to tnh-gen (P1, minor)
+5. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
+6. 🚧 Prompt Catalog Safety - error handling, validation (P2, critical infrastructure)
+7. 🚧 Knowledge Base Implementation (P2, design complete)
+8. 🚧 Expand Test Coverage to 50%+ (P2)
 
 **For completed items**: See [Archive](#recently-completed-tasks-archive) section at end.
 
@@ -131,6 +133,40 @@ docs/architecture/jvb-viewer/adr/
   - `tests/cli_tools/test_tnh_gen.py` (unit tests)
   - `docs/cli-reference/tnh-gen.md` (documentation)
 - **Testing**: Verify `--prompt-dir` flag overrides all other config sources (workspace, user, env)
+
+#### 🔮 Full-Coverage yt-dlp Test Suite + Monthly Ops Trigger
+
+- **Status**: NOT STARTED
+- **Priority**: HIGH (external dependency instability)
+- **Goal**: Add full coverage for all yt-dlp usage modules (transcript, audio, metadata, video download), then run a scheduled monthly ops test to surface breakage early.
+- **Scope (Code)**:
+  - `src/tnh_scholar/video_processing/video_processing.py`
+  - `src/tnh_scholar/cli_tools/ytt_fetch/ytt_fetch.py`
+  - `src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py`
+  - `src/tnh_scholar/cli_tools/audio_transcribe/version_check.py`
+- **Testing Strategy**:
+  - [ ] Add integration tests that exercise live yt-dlp behavior (guarded, opt-in)
+  - [ ] Add offline unit tests with recorded fixtures for metadata + transcript parsing
+  - [ ] Add failure-mode tests (missing captions, private video, geo-blocked)
+- **Monthly Ops Trigger**:
+  - [ ] Add scheduled CI workflow (monthly) that runs the live integration tests
+  - [ ] Auto-open issue on failure with logs + yt-dlp version
+- **Acceptance Criteria**:
+  - [ ] Coverage for all yt-dlp entry points + error paths
+  - [ ] Monthly workflow runs without manual intervention
+  - [ ] Clear failure report includes test URL, date, yt-dlp version
+
+#### 🔮 Patch ytt-fetch Robustness
+
+- **Status**: NOT STARTED
+- **Priority**: HIGH (frequent breakage path)
+- **Goal**: Make ytt-fetch resilient to upstream changes and failures.
+- **Test URL**: `https://youtu.be/iqNzfK4_meQ`
+- **Deliverables**:
+  - [ ] Verify transcript fetch on test URL (manual + test)
+  - [ ] Add retries / improved error reporting
+  - [ ] Ensure metadata embed + output path handling remain stable
+  - [ ] Update docs and CLI reference if flags or behaviors change
 
 #### 🚧 GenAIService Core Components - Final Polish
 
@@ -235,6 +271,18 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Revalidate OpenAI adapter request/response mappings against 2.15.0
   - [ ] Update compatibility notes/docs if schema drift is found
 
+#### 🚧 Audio-Transcribe Service-Layer Refactor (P2)
+
+- **Status**: NOT STARTED
+- **Goal**: Align audio-transcribe with object-service pattern and ytt-fetch robustness.
+- **Tasks**:
+  - [ ] Introduce typed service orchestrator + protocols (CLI becomes thin wrapper)
+  - [ ] Extract audio source resolution into a typed resolver (yt_url/CSV/local file)
+  - [ ] Replace dict options with Pydantic models (transcription + diarization params)
+  - [ ] Add runtime preflight (yt-dlp inspector + ffmpeg availability); keep version checks ops-only
+  - [ ] Migrate CLI to Typer with minimal surface (smoke tests only)
+  - [ ] Add service-layer tests for all audio-transcribe use cases
+
 #### ⏸️ Agent Orchestration - Codex Runner (ADR-OA03.2)
 
 - **Status**: TABLED (2026-01-25)
@@ -280,6 +328,61 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Use Pydantic Settings consistently
   - [ ] Pass configuration objects instead of `os.getenv()` calls
   - [ ] Remove import-time side effects
+
+#### 🚧 Configuration Tech Debt — Migrate to ADR-CF01/CF02 Three-Layer Model
+
+- **Status**: NOT STARTED
+- **Priority**: MEDIUM (foundational, not blocking current work)
+- **ADRs**:
+  - [ADR-CF01: Runtime Context & Configuration Strategy](/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md)
+  - [ADR-CF02: Prompt Catalog Discovery Strategy](/architecture/configuration/adr/adr-cf02-prompt-catalog-discovery.md)
+- **Related**: [ADR-A08: Config/Params/Policy Taxonomy](/architecture/gen-ai-service/adr/adr-a08-config-params-policy-taxonomy.md)
+- **Problem**: Configuration handling is fragmented across the codebase:
+  - Module-level constants in `__init__.py` (`TNH_CONFIG_DIR`, `TNH_DEFAULT_PROMPT_DIR`, `TNH_LOG_DIR`) violate "no module-level constants" rule
+  - Multiple independent `BaseSettings` classes per subsystem with no unified composition
+  - tnh-gen has mature 5-level precedence config; other CLI tools have Click options only
+  - TNHContext exists for registries but prompts don't use this pattern
+
+**Migration Phases**:
+
+1. **Phase 1: Extend TNHContext for Prompts** (High Priority)
+   - [ ] Add `PromptPathBuilder` analogous to `RegistryPathBuilder`
+   - [ ] Define three-layer prompt discovery: workspace → user → built-in
+   - [ ] Create `runtime_assets/prompts/` with minimal built-in set
+   - [ ] Unit tests for prompt path resolution
+
+2. **Phase 2: Migrate GenAISettings** (High Priority)
+   - [ ] Update `GenAISettings.prompt_dir` to use lazy TNHContext resolution
+   - [ ] Remove `from tnh_scholar import TNH_DEFAULT_PROMPT_DIR` dependency
+   - [ ] Update tnh-gen config_loader to work with new resolution
+
+3. **Phase 3: Eliminate Module-Level Constants** (Medium Priority)
+   - [ ] Replace `TNH_CONFIG_DIR`, `TNH_LOG_DIR`, `TNH_DEFAULT_PROMPT_DIR` with runtime discovery
+   - [ ] Update all import sites across codebase
+   - [ ] Remove `FileNotFoundError` raises at import time
+
+4. **Phase 4: Unify Subsystem Settings** (Medium Priority)
+   - [ ] Audit all `BaseSettings` classes across subsystems
+   - [ ] Deprecate `PromptSystemSettings.tnh_prompt_dir` in favor of unified approach
+   - [ ] Standardize env var prefixes (e.g., `TNH_GENAI_*`, `TNH_AUDIO_*`)
+
+5. **Phase 5: Propagate tnh-gen Config Pattern** (Low Priority)
+   - [ ] Create shared `CLIConfigLoader` base for all CLI tools
+   - [ ] Add `config show/get/set` subcommands to major CLI tools
+   - [ ] Standardize workspace config file format
+
+**Files Affected** (non-exhaustive):
+- `src/tnh_scholar/__init__.py` (constants)
+- `src/tnh_scholar/configuration/context.py` (extend TNHContext)
+- `src/tnh_scholar/gen_ai_service/config/settings.py`
+- `src/tnh_scholar/prompt_system/config/settings.py`
+- `src/tnh_scholar/cli_tools/*/` (all CLI entry points)
+
+**Success Criteria**:
+- [ ] No module-level `Path` constants in `__init__.py`
+- [ ] All path discovery flows through `TNHContext`
+- [ ] Prompt directories follow three-layer precedence (workspace → user → built-in)
+- [ ] At least tnh-gen and audio-transcribe share config loader pattern
 
 #### 🚧 Clean Up CLI Tool Versions
 
@@ -359,6 +462,25 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Update user-guide examples to use tnh-gen
   - [ ] Document other CLI tools (audio-transcribe, ytt-fetch, nfmt, etc.)
   - [ ] Consider automation for CLI reference generation
+
+#### 🔮 Shared CLI UI Module (tnh_cli_ui)
+
+- **Status**: NOT STARTED (Research/Exploration)
+- **Priority**: MEDIUM (UX consistency across CLI tools)
+- **ADR**: [ADR-ST01.1: tnh-setup UI Design](/architecture/setup-tnh/adr/adr-st01.1-tnh-setup-ui-design.md)
+- **Context**: The tnh-setup UI redesign (Rich library) could be extracted into a shared module for consistent styling across all tnh-scholar CLI tools.
+- **Research Questions**:
+  - [ ] Survey CLI tools for shared UI patterns (headers, status indicators, progress, tables)
+  - [ ] Evaluate Rich vs alternatives (click-extra, questionary, etc.)
+  - [ ] Design minimal API surface for common operations
+  - [ ] Consider Typer + Rich integration patterns
+- **Potential Scope**:
+  - Styled section headers with step progress
+  - Standardized status indicators (✓/⚠/✗/○/•) with color vocabulary
+  - Spinner wrappers for async operations
+  - Summary table generators
+  - Banner/header utilities
+- **Affected Tools**: tnh-setup, tnh-gen, ytt-fetch, audio-transcribe, nfmt, token-count, tnh-tree
 
 #### 🚧 Document Success Cases
 

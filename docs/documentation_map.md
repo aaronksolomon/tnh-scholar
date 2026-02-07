@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-01-20"
+created: "2026-02-07"
 auto_generated: true
 ---
 
@@ -76,6 +76,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen](/architecture/ai-text-processing/adr/adr-at03-object-service-refactor.md)
 - [ADR-AT04: AI Text Processing Platform Strategy](/architecture/ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat.md)
 - [ADR-CF01: Runtime Context & Configuration Strategy](/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md)
+- [ADR-CF02: Prompt Catalog Discovery Strategy](/architecture/configuration/adr/adr-cf02-prompt-catalog-discovery.md)
 - [ADR-DD01: Documentation System Reorganization Strategy](/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
 - [ADR-DD02: Documentation Main Content and Navigation Strategy](/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
 - [ADR-DD03: Pattern to Prompt Terminology Standardization](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md)
@@ -86,11 +87,17 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-MD01: Adoption of JSON-LD for Metadata Management](/architecture/metadata/adr/adr-md01-json-ld-metadata.md)
 - [ADR-MD02: Metadata Infrastructure Object-Service Integration](/architecture/metadata/adr/adr-md02-metadata-object-service-integration.md)
 - [ADR-OA01: TNH-Conductor — Provenance-Driven AI Workflow Coordination](/architecture/agent-orchestration/adr/adr-oa01-agent-orchestration-strategy.md)
+- [ADR-OA02: Phase 0 Protocol Layer Spike](/architecture/agent-orchestration/adr/adr-oa02-phase-0-protocol-spike.md)
+- [ADR-OA03.1: Claude Code Runner](/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md)
+- [ADR-OA03.2: Codex Runner](/architecture/agent-orchestration/adr/adr-oa03.2-codex-runner.md)
+- [ADR-OA03: Agent Runner Architecture](/architecture/agent-orchestration/adr/adr-oa03-agent-runner-architecture.md)
 - [ADR-OS01: Object-Service Design Architecture V3](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
 - [ADR-PP01: Rapid Prototype Versioning Policy](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md)
 - [ADR-PT03: Prompt System Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
 - [ADR-PT04: Prompt System Refactor Plan (Revised)](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
 - [ADR-PV01: Provenance & Tracing Infrastructure Strategy](/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md)
+- [ADR-ST01.1: tnh-setup UI Design](/architecture/setup-tnh/adr/adr-st01.1-tnh-setup-ui-design.md)
+- [ADR-ST01: tnh-setup Runtime Hardening](/architecture/setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening.md)
 - [ADR-TG01.1: Human-Friendly CLI Defaults with --api Flag](/architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults.md)
 - [ADR-TG01: tnh-gen CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)
 - [ADR-TG02: TNH-Gen CLI Prompt System Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)
@@ -110,6 +117,8 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-YF02: YouTube Transcript Format Selection](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)
 - [Architecture Overview](/architecture/overview.md)
 - [Audio Chunking Algorithm Design Document](/architecture/transcription/design/audio-chunking-design.md)
+- [Codex Harness End-to-End Test Report](/architecture/agent-orchestration/notes/codex-harness-e2e-report.md)
+- [Codex Harness Spike Findings](/architecture/agent-orchestration/notes/codex-harness-spike-findings.md)
 - [Design Strategy: VS Code as UI/UX Platform for TNH Scholar](/architecture/ui-ux/design/vs-code-as-ui-platform.md)
 - [Diarization Algorithms](/architecture/transcription/design/diarization-algorithms.md)
 - [Diarization Chunker Module Design Strategy](/architecture/transcription/design/diarization-chunker-design.md)
@@ -138,9 +147,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TextObject System Design Document](/architecture/ai-text-processing/design/textobject-system-design.md)
 - [TimelineMapper Design Document](/architecture/transcription/design/timelinemapper-design.md)
 - [TNH Configuration Management](/architecture/configuration/tnh-configuration-management.md)
-- [TNH Orchestrator Meta-Agent v1](/architecture/agent-orchestration/meta-agent-v1.md)
 - [TNH-Scholar Agent Orchestration System](/architecture/agent-orchestration/system-design.md)
-- [TNH-Scholar Agent System — Draft v2](/architecture/agent-orchestration/meta-agent-v2.md)
 - [TNH‑Scholar Utilities Catalog](/architecture/utilities/design/utilities-catalog.md)
 - [Versioning Policy Documentation Additions](/architecture/project-policies/versioning-policy-implementation-summary.md)
 - [YouTube API vs yt-dlp Evaluation](/architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval.md)
@@ -162,6 +169,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TNH Scholar Style Guide](/development/style-guide.md)
 - [TNH Scholar System Design](/development/system-design.md)
 - [v0.2.0 Tag Correction Plan](/development/incident-reports/tag-v0.2.0-correction-plan.md)
+- [yt-dlp Ops Check](/development/yt-dlp-ops-check.md)
 
 ## Docs Ops
 
