@@ -17,6 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **yt-dlp Operational Hardening** (2026-02-02 to 2026-02-07)
+  - Added yt-dlp environment inspection and ops check services (`yt_environment.py`, `ops_check.py`)
+  - Added yt-dlp runtime setup script with JS runtime and curl_cffi support (`scripts/setup_ytdlp_runtime.py`)
+  - Added cron-ready ops check runner with validation URL list (`scripts/yt_dlp_ops_check.py`)
+  - Added preflight validation to ytt-fetch with runtime option injection
+  - Added tnh-setup runtime verification step with Rich UI components
+  - Added comprehensive test suite for ops checks, environment detection, and runtime options
+  - ADRs: ADR-VP02 (yt-dlp operational strategy), ADR-ST01 (tnh-setup runtime hardening), ADR-ST01.1 (UI design)
+  - Files: `src/tnh_scholar/video_processing/yt_environment.py`, `src/tnh_scholar/video_processing/ops_check.py`, `src/tnh_scholar/cli_tools/tnh_setup/ui.py`, `tests/video_processing/`
+
 - **Agent Orchestration Phase 0 Spike** (2026-01-20 to 2026-01-25)
   - Implemented Phase 0 protocol spike per ADR-OA02 with PTY capture for Claude Code CLI
   - Built Codex harness with Responses API integration and tool surface (read_file, search_repo, list_files, apply_patch, run_tests)

@@ -11,7 +11,7 @@ updated: "2026-02-01"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-02-03 (Added tnh_cli_ui module research task)
+> **Last Updated**: 2026-02-07 (Updated yt-dlp reliability tracking)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -27,8 +27,8 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 **Next Steps**:
 
 1. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
-2. 🔮 Add full-coverage yt-dlp test suite + monthly ops trigger (P1, reliability)
-3. 🔮 Patch ytt-fetch robustness (P1, reliability)
+2. 🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)
+3. 🔮 Finish ytt-fetch robustness hardening (P1, reliability)
 4. 🔮 Add `--prompt-dir` Global Flag to tnh-gen (P1, minor)
 5. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
 6. 🚧 Prompt Catalog Safety - error handling, validation (P2, critical infrastructure)
@@ -136,7 +136,7 @@ docs/architecture/jvb-viewer/adr/
 
 #### 🔮 Full-Coverage yt-dlp Test Suite + Monthly Ops Trigger
 
-- **Status**: NOT STARTED
+- **Status**: IN PROGRESS
 - **Priority**: HIGH (external dependency instability)
 - **Goal**: Add full coverage for all yt-dlp usage modules (transcript, audio, metadata, video download), then run a scheduled monthly ops test to surface breakage early.
 - **Scope (Code)**:
@@ -145,28 +145,31 @@ docs/architecture/jvb-viewer/adr/
   - `src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py`
   - `src/tnh_scholar/cli_tools/audio_transcribe/version_check.py`
 - **Testing Strategy**:
-  - [ ] Add integration tests that exercise live yt-dlp behavior (guarded, opt-in)
+  - [x] Add integration tests that exercise live yt-dlp behavior (guarded, opt-in)
+  - [x] Add unit tests for runtime env inspection + yt-dlp option injection
   - [ ] Add offline unit tests with recorded fixtures for metadata + transcript parsing
   - [ ] Add failure-mode tests (missing captions, private video, geo-blocked)
 - **Monthly Ops Trigger**:
-  - [ ] Add scheduled CI workflow (monthly) that runs the live integration tests
-  - [ ] Auto-open issue on failure with logs + yt-dlp version
+  - [x] Add cron-ready ops check script + validation URL list
+  - [x] Document monthly cron usage and log locations
+  - [ ] Add failure notification workflow (issue creation or alerting)
 - **Acceptance Criteria**:
   - [ ] Coverage for all yt-dlp entry points + error paths
-  - [ ] Monthly workflow runs without manual intervention
+  - [ ] Monthly ops check runs without manual intervention (cron)
   - [ ] Clear failure report includes test URL, date, yt-dlp version
 
 #### 🔮 Patch ytt-fetch Robustness
 
-- **Status**: NOT STARTED
+- **Status**: IN PROGRESS
 - **Priority**: HIGH (frequent breakage path)
 - **Goal**: Make ytt-fetch resilient to upstream changes and failures.
 - **Test URL**: `https://youtu.be/iqNzfK4_meQ`
 - **Deliverables**:
+  - [x] Add runtime preflight + yt-dlp runtime option injection
   - [ ] Verify transcript fetch on test URL (manual + test)
   - [ ] Add retries / improved error reporting
   - [ ] Ensure metadata embed + output path handling remain stable
-  - [ ] Update docs and CLI reference if flags or behaviors change
+  - [x] Update docs and CLI reference if flags or behaviors change
 
 #### 🚧 GenAIService Core Components - Final Polish
 
