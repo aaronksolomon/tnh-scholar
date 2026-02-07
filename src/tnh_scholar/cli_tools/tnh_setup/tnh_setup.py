@@ -1,6 +1,8 @@
 # setup.py
 
 import io
+import subprocess
+import sys
 import zipfile
 from pathlib import Path
 
@@ -11,6 +13,7 @@ from dotenv import load_dotenv
 # Constants
 from tnh_scholar import TNH_CONFIG_DIR, TNH_DEFAULT_PROMPT_DIR, TNH_LOG_DIR
 from tnh_scholar.utils.validate import check_openai_env
+from tnh_scholar.video_processing.yt_environment import YTDLPEnvironmentInspector
 
 OPENAI_ENV_HELP_MSG = """
 >>>>>>>>>> OpenAI API key not found in environment. <<<<<<<<<
@@ -63,9 +66,10 @@ def download_prompts() -> bool:
 @click.command()
 @click.option('--skip-env', is_flag=True, help='Skip API key setup')
 @click.option('--skip-prompts', is_flag=True, help='Skip prompt download')
-def tnh_setup(skip_env: bool, skip_prompts: bool):
+@click.option('--skip-ytdlp-runtime', is_flag=True, help='Skip yt-dlp runtime setup')
+def tnh_setup(skip_env: bool, skip_prompts: bool, skip_ytdlp_runtime: bool):
     """Set up TNH Scholar configuration."""
-    click.echo("Setting up TNH Scholar...")
+    click.echo("TNH Setup")
     
     # Create config directories
     create_config_dirs()
@@ -81,6 +85,37 @@ def tnh_setup(skip_env: bool, skip_prompts: bool):
             click.echo("Prompt files downloaded successfully")
         else:
             click.echo("Prompt download failed", err=True)
+
+    if not skip_ytdlp_runtime and click.confirm(
+        "\nSet up yt-dlp runtime dependencies (JS runtime + curl_cffi)?\n"
+        "This improves YouTube download stability."
+    ):
+        click.echo("• yt-dlp runtime setup: running")
+        script_path = Path(__file__).resolve().parents[4] / "scripts" / "setup_ytdlp_runtime.py"
+        if script_path.exists():
+            result = subprocess.run(
+                [sys.executable, str(script_path), "--yes"],
+                check=False,
+            )
+            if result.returncode != 0:
+                click.echo("  ⚠️  runtime setup reported errors. Review output above.", err=True)
+        else:
+            click.echo(
+                f"  ⚠️  runtime setup script not found at {script_path}",
+                err=True,
+            )
+        click.echo("• yt-dlp runtime verification")
+        inspector = YTDLPEnvironmentInspector()
+        report = inspector.inspect_report()
+        if report.has_items():
+            click.echo("  ⚠️  runtime incomplete. Some downloads may fail.", err=True)
+            for item in report.items:
+                click.echo(
+                    f"  - {item.code}: {item.message}",
+                    err=True,
+                )
+        else:
+            click.echo("  ✅ runtime verified.")
             
     # Environment test:
     if not skip_env:
