@@ -54,6 +54,7 @@ python-json-logger = "2.0.7"
 pyyaml = "6.0.2"
 regex = "2024.11.6"
 requests = "2.32.3"
+rich = "13.9.4"
 spacy = { version = "3.8.3", optional = true }
 streamlit = { version = "1.41.1", optional = true }
 supabase = { version = "2.11.0", optional = true }
@@ -105,7 +106,7 @@ tnh-gen = "tnh_scholar.cli_tools.tnh_gen.tnh_gen:main"
 ytt-fetch = "tnh_scholar.cli_tools.ytt_fetch.ytt_fetch:main"
 nfmt = "tnh_scholar.cli_tools.nfmt.nfmt:main"
 token-count = "tnh_scholar.cli_tools.token_count.token_count:main"
-tnh-setup = "tnh_scholar.cli_tools.tnh_setup.tnh_setup:main"
+tnh-setup = "tnh_scholar.cli_tools.tnh_setup.tnh_setup_typer:main"
 tnh-tree = "tnh_scholar.cli_tools.tnh_tree:main"
 sent-split = "tnh_scholar.cli_tools.sent_split.sent_split:main"
 json-srt = "tnh_scholar.cli_tools.json_to_srt.json_to_srt:main"
@@ -124,6 +125,9 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 addopts = "-ra -q"
 pythonpath = ["src"]
+markers = [
+    "live_yt: live yt-dlp integration tests (opt-in via TNH_YT_LIVE_TESTS=1)",
+]
 
 [tool.mypy]
 python_version = "3.12"

@@ -8,7 +8,7 @@ SANDBOX_PATH ?= ../tnh-scholar-sandbox
 SANDBOX_BRANCH ?= feat/agent-orchestration-sandbox
 SANDBOX_SOURCE_REPO ?= .
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pipx-refresh build-all update sync-sandbox
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pipx-refresh build-all update sync-sandbox ytdlp-runtime
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -23,10 +23,14 @@ setup-dev:
 	$(POETRY) install
 	$(POETRY) run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
 
+ytdlp-runtime:
+	$(POETRY) run python scripts/setup_ytdlp_runtime.py --yes
+
 build-all:
 	$(POETRY) self update
 	$(POETRY) update yt-dlp
 	$(POETRY) install
+	$(MAKE) ytdlp-runtime
 	$(MAKE) pipx-refresh
 	$(MAKE) docs-build
 
@@ -45,6 +49,8 @@ pipx-build:
 	PIPX_LOG_DIR=$(PIPX_LOG_DIR) $(PIPX) install --force --editable .
 	@printf "CLI tools available via pipx:\n"
 	@printf "  - %s\n" $(TNH_CLI_TOOLS)
+
+pipx-refresh: pipx-build
 
 test:
 	$(POETRY) run pytest
