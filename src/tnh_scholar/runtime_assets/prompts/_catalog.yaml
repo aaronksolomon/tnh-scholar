@@ -1,0 +1,11 @@
+catalog_version: "1.0"
+prompts:
+  - key: summarize
+    name: Summarize
+    version: "1.0.0"
+  - key: translate
+    name: Translate
+    version: "1.0.0"
+  - key: daily_guidance
+    name: Daily Guidance
+    version: "1.0.0"

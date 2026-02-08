@@ -9,8 +9,8 @@ import requests
 import typer
 from dotenv import load_dotenv
 
-from tnh_scholar import TNH_CONFIG_DIR, TNH_DEFAULT_PROMPT_DIR, TNH_LOG_DIR
 from tnh_scholar.cli_tools.tnh_setup.ui import SetupSummaryItem, SetupUI
+from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.utils.validate import check_openai_env
 from tnh_scholar.video_processing.yt_environment import YTDLPEnvironmentInspector
 
@@ -36,11 +36,12 @@ class PromptDecision:
 
 
 def _build_config() -> SetupConfig:
+    context = TNHContext.discover()
     return SetupConfig(
         prompts_url="https://github.com/aaronksolomon/patterns/archive/main.zip",
-        config_dir=TNH_CONFIG_DIR,
-        log_dir=TNH_LOG_DIR,
-        prompt_dir=TNH_DEFAULT_PROMPT_DIR,
+        config_dir=context.user_root,
+        log_dir=context.user_root / "logs",
+        prompt_dir=context.user_root / "prompts",
     )
 
 

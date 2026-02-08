@@ -11,7 +11,7 @@ import requests
 from dotenv import load_dotenv
 
 # Constants
-from tnh_scholar import TNH_CONFIG_DIR, TNH_DEFAULT_PROMPT_DIR, TNH_LOG_DIR
+from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.utils.validate import check_openai_env
 from tnh_scholar.video_processing.yt_environment import YTDLPEnvironmentInspector
 
@@ -33,11 +33,16 @@ For OpenAI API access help: https://platform.openai.com/
 
 PROMPTS_URL = "https://github.com/aaronksolomon/patterns/archive/main.zip"
 
+
+def _user_root() -> Path:
+    return TNHContext.discover().user_root
+
 def create_config_dirs():
     """Create required configuration directories."""
-    TNH_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
-    TNH_LOG_DIR.mkdir(exist_ok=True)
-    TNH_DEFAULT_PROMPT_DIR.mkdir(exist_ok=True)
+    config_dir = _user_root()
+    config_dir.mkdir(parents=True, exist_ok=True)
+    (config_dir / "logs").mkdir(exist_ok=True)
+    (config_dir / "prompts").mkdir(exist_ok=True)
 
 def download_prompts() -> bool:
     """Download and extract prompt files from GitHub."""
@@ -51,7 +56,7 @@ def download_prompts() -> bool:
             for zip_info in zip_ref.filelist:
                 if zip_info.filename.endswith('.md'):
                     rel_path = Path(zip_info.filename).relative_to(root_dir)
-                    target_path = TNH_DEFAULT_PROMPT_DIR / rel_path
+                    target_path = _user_root() / "prompts" / rel_path
                     
                     target_path.parent.mkdir(parents=True, exist_ok=True)
                     
@@ -73,13 +78,13 @@ def tnh_setup(skip_env: bool, skip_prompts: bool, skip_ytdlp_runtime: bool):
     
     # Create config directories
     create_config_dirs()
-    click.echo(f"Created config directory: {TNH_CONFIG_DIR}")
+    click.echo(f"Created config directory: {_user_root()}")
     
     # Prompt download
     if not skip_prompts and click.confirm(
                 "\nDownload prompt (markdown text) files from GitHub?\n"
                 f"Source: {PROMPTS_URL}\n"
-                f"Target: {TNH_DEFAULT_PROMPT_DIR}"
+                f"Target: {_user_root() / 'prompts'}"
             ):
         if download_prompts():
             click.echo("Prompt files downloaded successfully")

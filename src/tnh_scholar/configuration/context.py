@@ -124,6 +124,14 @@ class TNHContext:
         category = RegistryCategory(registry_type)
         return RegistryPathBuilder(self).build(category)
 
+    def get_prompt_search_paths(self) -> list[Path]:
+        """Return valid prompt directories in precedence order."""
+        return PromptPathBuilder(self).build()
+
+    def get_primary_prompt_dir(self) -> Path | None:
+        """Return the highest-precedence prompt directory that exists."""
+        return PromptPathBuilder(self).primary()
+
     @classmethod
     def _discover_workspace(cls, start_path: Path | None) -> Path | None:
         start = start_path or Path.cwd()
@@ -152,3 +160,32 @@ class RegistryPathBuilder:
 
     def _builtin_path(self, category: RegistryCategory) -> Path:
         return self._context.builtin_root / "registries" / category.value
+
+
+class PromptPathBuilder:
+    """Builds prompt search paths for a context."""
+
+    def __init__(self, context: TNHContext) -> None:
+        self._context = context
+
+    def build(self) -> list[Path]:
+        paths = []
+        if self._context.workspace_root:
+            paths.append(self._workspace_path())
+        paths.append(self._user_path())
+        paths.append(self._builtin_path())
+        return [path for path in paths if path.exists()]
+
+    def primary(self) -> Path | None:
+        for path in self.build():
+            return path
+        return None
+
+    def _workspace_path(self) -> Path:
+        return self._context.workspace_root / "prompts"
+
+    def _user_path(self) -> Path:
+        return self._context.user_root / "prompts"
+
+    def _builtin_path(self) -> Path:
+        return self._context.builtin_root / "prompts"
