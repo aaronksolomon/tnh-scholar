@@ -89,6 +89,7 @@ class SpikeParams(BaseModel):
     agent: str
     task: str | None = None
     prompt_id: str | None = None
+    response_path: Path | None = None
     timeout_seconds: int = Field(default_factory=lambda: SpikeDefaults().default_timeout_seconds)
     idle_timeout_seconds: int = Field(default_factory=lambda: SpikeDefaults().default_idle_timeout_seconds)
     transcript_tail_lines: int = Field(default_factory=lambda: SpikeDefaults().default_transcript_tail_lines)
@@ -156,6 +157,7 @@ class RunArtifactPaths(BaseModel):
     transcript_normalized: Path
     stdout_log: Path
     stderr_log: Path
+    response_path: Path
     git_pre: Path
     git_post: Path
     diff_patch: Path

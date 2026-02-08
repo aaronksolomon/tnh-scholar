@@ -6,6 +6,31 @@ This index provides quick summaries of archived agent session logs.
 
 ---
 
+## 2026-02-08 - Agent Orchestration Spike + yt-dlp Hardening
+
+**File**: [`AGENTLOG-02-08-26.md`](AGENTLOG-02-08-26.md)
+
+**Major Work**:
+- Implemented Phase 0 protocol spike per ADR-OA02 (PTY runner, git capture, sandbox isolation)
+- Built Codex harness with Responses API tool-calling loop
+- Evaluated and suspended Codex harness due to API limitations (model doesn't self-summarize after tool calls)
+- Tested Chat Completions alternative (failed - GPT-Codex is Responses-only)
+- Added yt-dlp runtime hardening with Python setup script, ops checks, and cron-ready validation
+- Hardened tnh-setup CLI with runtime workflow and Rich UI
+
+**Key Decisions**:
+- Suspended Codex harness development; prioritize Claude Code runner (OA03.1)
+- Sandbox-based spike testing with patch-based sync
+- Python-based runtime setup for yt-dlp (replaces shell script)
+- Cron-based ops checks for yt-dlp reliability monitoring
+
+**Discoveries**:
+- VS Code Codex uses external app server orchestration (not replicable via public API)
+- GPT-Codex models are Responses API only; Chat Completions returns 404
+- yt-dlp runtime requires `remote_components` enabled for JS challenge solving
+
+---
+
 ## 2026-01-19 - Patterns→Prompts Migration Complete
 
 **File**: [`AGENTLOG-01-19-26.md`](AGENTLOG-01-19-26.md)

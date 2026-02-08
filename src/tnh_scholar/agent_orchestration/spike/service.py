@@ -67,6 +67,7 @@ class SpikeRunService:
             transcript_normalized=run_dir / "transcript.md",
             stdout_log=run_dir / "stdout.log",
             stderr_log=run_dir / "stderr.log",
+            response_path=run_dir / "response.txt",
             git_pre=run_dir / "git_pre.json",
             git_post=run_dir / "git_post.json",
             diff_patch=run_dir / "diff.patch",
@@ -303,7 +304,8 @@ class SpikeRunService:
     def _execute_agent(
         self, context: RunContext, params: SpikeParams, policy: SpikePolicy
     ) -> AgentRunResult:
-        command = self.command_builder.build(params)
+        run_params = params.model_copy(update={"response_path": context.artifact_paths.response_path})
+        command = self.command_builder.build(run_params)
         self._write_event(
             context.event_writer,
             context.run_id,
