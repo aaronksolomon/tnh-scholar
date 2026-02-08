@@ -3,9 +3,9 @@ title: "ADR-OA03.2: Codex Runner"
 description: "Codex execution path — API-first, tool-driven runner for implementation tasks"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: paused
+status: superseded
 created: "2026-01-22"
-updated: "2026-01-22"
+updated: "2026-02-07"
 parent_adr: "adr-oa03-agent-runner-architecture.md"
 ---
 
@@ -13,7 +13,7 @@ parent_adr: "adr-oa03-agent-runner-architecture.md"
 
 Codex execution path for tnh-conductor — an API-first, tool-driven runner optimized for implementation and mechanical coding tasks.
 
-- **Status**: Paused
+- **Status**: Superseded *(changed from Suspended 2026-02-07 — see Addendum)*
 - **Date**: 2026-01-22
 - **Owner**: Aaron Solomon
 - **Author**: Aaron Solomon, GPT 5.2, Claude Opus 4.5
@@ -438,3 +438,25 @@ The spike produced working code that can be resumed:
 
 - **ADR-OA03 (Agent Runner Architecture)**: Codex runner is not viable as specified. Claude Code runner (OA03.1) should be prioritized.
 - **ADR-OA01 (Orchestration Strategy)**: Multi-agent approach remains valid, but Codex cannot serve as the primary implementation engine until API constraints are resolved.
+
+### Addendum 2026-02-07: Superseded by ADR-OA03.3
+
+**Status changed**: `suspended` → `superseded`
+
+The Codex CLI is now available with headless execution capabilities (`codex exec` with `--json` output, `--output-last-message`, and approval/sandbox controls). This provides a CLI-based execution model analogous to Claude Code's `--print` mode.
+
+**This ADR (API-first Codex Runner) is superseded by ADR-OA03.3 (CLI-based Codex Runner).**
+
+The API-first approach documented here remains a valid historical record of constraints encountered. The CLI approach in OA03.3 sidesteps these constraints entirely by leveraging the Codex CLI rather than the Responses API.
+
+Key Codex CLI capabilities that enable OA03.3:
+
+| Capability | CLI Flag | Significance |
+|------------|----------|--------------|
+| Headless execution | `codex exec` | Non-interactive mode |
+| JSONL output | `--json` | Structured event stream |
+| Final response capture | `--output-last-message <path>` | Captures assistant's final response |
+| Automation controls | `--full-auto`, `--ask-for-approval` | Scriptable approval bypass |
+| Sandbox policy | `--sandbox` | `read-only`, `workspace-write`, `danger-full-access` |
+
+See [ADR-OA03.3](/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md) for the CLI-based approach.

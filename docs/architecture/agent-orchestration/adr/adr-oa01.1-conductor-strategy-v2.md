@@ -1,23 +1,25 @@
 ---
-title: "ADR-OA01: TNH-Conductor — Provenance-Driven AI Workflow Coordination"
-description: "Strategic architecture for coordinating external AI agents (Claude Code, Codex) through bounded, auditable, human-supervised workflows"
+title: "ADR-OA01.1: TNH-Conductor — Provenance-Driven AI Workflow Coordination (v2)"
+description: "Strategic architecture for coordinating external AI agents through bounded, auditable, human-supervised workflows with CLI opcode tooling"
 type: "strategy"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: superseded
-created: "2026-01-14"
+status: accepted
+created: "2026-01-29"
 updated: "2026-02-07"
+parent_adr: "adr-oa01-agent-orchestration-strategy.md"
 ---
 
-# ADR-OA01: TNH-Conductor — Provenance-Driven AI Workflow Coordination
+# ADR-OA01.1: TNH-Conductor — Provenance-Driven AI Workflow Coordination (v2)
 
 Strategic architecture for coordinating external AI agents through bounded, auditable, human-supervised workflows.
 
-- **Status**: Superseded *(by ADR-OA01.1, 2026-02-07 — see Addendum)*
+- **Status**: Accepted
 - **Type**: Strategy ADR
-- **Date**: 2026-01-14
+- **Date**: 2026-01-29
 - **Owner**: Aaron Solomon
 - **Author**: Aaron Solomon, GPT 5.2, Claude Opus 4.5
+- **Supersedes**: [ADR-OA01](/architecture/agent-orchestration/adr/adr-oa01-agent-orchestration-strategy.md)
 
 ---
 
@@ -25,7 +27,7 @@ Strategic architecture for coordinating external AI agents through bounded, audi
 
 TNH-Scholar is a long-lived system for AI-assisted study, translation, and analysis of the teachings of Thich Nhat Hanh and the Plum Village tradition. The project explicitly embraces **AI leverage not only for content work, but for building and evolving the system itself**.
 
-This requires a way to coordinate AI coding agents (e.g., Claude Code, Codex) that:
+The possibility exists to coordinate **AI coding agents exposed via official CLI interfaces** (e.g., **Claude Code CLI**, **Codex CLI**) in a way that:
 
 - Enables semi-autonomous progress
 - Preserves human authority and review
@@ -33,9 +35,11 @@ This requires a way to coordinate AI coding agents (e.g., Claude Code, Codex) th
 - Produces auditable, intelligible work products
 - Fits naturally into an engineering workflow (git, branches, reviews)
 
+These agents are treated not as APIs to be wrapped, but as **already-agentic systems invoked through stable command-line surfaces**, consistent with standard developer tooling.
+
 ### The Problem: "Agents are Hard"
 
-Early experimentation — and industry analysis (see Armin Ronacher's "Agents are Hard") — shows that treating LLMs as either:
+Early experimentation — and industry analysis (see Armin Ronacher's *"Agents are Hard"*) — shows that treating LLMs as either:
 
 - purely conversational assistants, or
 - fully autonomous agents
@@ -44,10 +48,10 @@ both fail at scale.
 
 Autonomous agents fail because they:
 
-1. **Lose the "vibe"** — Context drift over long sessions
-2. **Get stuck in loops** — Recursive hallucination without external grounding
-3. **Lack visibility** — No way to understand why decisions were made
-4. **Cannot recover** — No rollback when things go wrong
+1. **Lose the "vibe"** — Context drift over long sessions  
+2. **Get stuck in loops** — Recursive hallucination without external grounding  
+3. **Lack visibility** — No way to understand why decisions were made  
+4. **Cannot recover** — No rollback when things go wrong  
 
 Traditional agent systems store state in chat history, making debugging impossible and recovery unreliable.
 
@@ -56,6 +60,16 @@ Traditional agent systems store state in chat history, making debugging impossib
 TNH-Scholar's existing `tnh-gen` infrastructure provides the hardest prerequisite for reliable agent coordination: **provenance tracking**. Every transformation is logged with *why*, *what*, *who*, and *what changed*.
 
 This makes TNH-Scholar uniquely positioned to introduce a coordinating component whose role is **interpretation, supervision, and sequencing** — not execution or autonomy.
+
+### The Insight: "You Might Not Need MCP"
+
+Mario Zechner's analysis (*"What if you don't need MCP?"*) identifies a complementary principle: **prefer repo-local CLI tools over heavyweight tool servers** as the agent integration surface.
+
+- Tool servers (like MCP) add lifecycle complexity, schema maintenance, and runtime dependencies
+- CLI commands are composable, versioned in git, self-documenting via `--help`, and testable like normal software
+- CLI invocations + generated artifacts become the durable, auditable contract — not server state
+
+This insight shapes how tnh-conductor integrates with sub-agents: **Claude Code CLI and Codex CLI are invoked as command-line tools**, and their transcripts, diffs, and artifacts form the stable handoff for supervision, evaluation, and provenance — rather than long-lived tool servers or UI-bound integrations.
 
 ---
 
@@ -84,7 +98,22 @@ tnh-conductor inverts this: **behavior lives in versioned prompts; code provides
 | Template-based output | Generation prompts produce journals and reports |
 | Fixed agent selection | Capability prompts guide agent routing |
 
-The kernel becomes small (~500 lines) and stable. The prompt library becomes the "standard library" of system behavior — versioned, auditable, and evolvable.
+The kernel becomes small (300-1k lines) and stable. The prompt library becomes the "standard library" of system behavior — versioned, auditable, and evolvable.
+
+### Tools as Commands, Not Servers
+
+> "Prefer a small, composable CLI opcode surface (repo-local tools) over tool servers; treat CLI invocations + artifacts as the durable contract."
+
+The same principle extends to agent tooling. Rather than building heavyweight tool servers (like MCP), we prefer **repo-local CLI commands** as the agent-facing tool surface:
+
+| Property | Description |
+|----------|-------------|
+| **Composable** | Pipe-friendly, Unix-style; can chain with other tools |
+| **Versioned** | Tools live in-repo and evolve with the codebase |
+| **Low token overhead** | Agent doesn't need full tool schemas—just CLI help text |
+| **Stable and testable** | Normal CLI software with tests, not ephemeral server state |
+
+This is the "bash equivalent" of MCP: tools exist as code + help text, not as long-lived server interfaces. Tools are documented via `--help`, not separate schema files.
 
 ---
 
@@ -125,6 +154,8 @@ This separation of **Conductor** (supervisor) and **Sub-Agent** (performer) is c
 - Guarantee reproducibility (we claim "auditable," not "deterministic")
 - Bypass git-based review and rollback
 - Own project-level decisions
+- Build or maintain heavyweight tool servers (prefer CLI opcodes)
+- Attempt to capture agent UI panes (VS Code panels, Claude UI)
 
 ---
 
@@ -139,7 +170,7 @@ The kernel handles **hard requirements** that cannot be expressed in prompts:
 | Responsibility | Description |
 |----------------|-------------|
 | **Work-branch management** | Create/switch branches; prevent commits to main |
-| **PTY transcript capture** | Record full sub-agent sessions |
+| **Transcript capture** | stdout/stderr capture (primary); PTY fallback for interactivity |
 | **Workspace diff/status** | Capture git state before/after each step |
 | **Policy enforcement** | Post-hoc diff checks against allowed/forbidden paths (code-based) |
 | **Validator execution** | Run tests, lint, typecheck; capture results |
@@ -171,25 +202,25 @@ Prompts are **versioned artifacts** stored in-repo. Workflows reference prompts 
 User submits task: "Implement ADR-AT03"
                           │
                           ▼
-┌─────────────────────────────────────────────────────────┐
-│  PROMPT-PROGRAM LAYER                                   │
-│                                                         │
-│  triage.route_task.v1 → selects workflow: implement_adr │
-│  planner.evaluate_step.v1 → determines status           │
-│  risk.assess_changes.v1 → flags breaking API change     │
-│  journal.generate_daily.v1 → produces review summary    │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  PROMPT-PROGRAM LAYER                                       │
+│                                                             │
+│  triage.route_task.v1 → selects workflow: implement_adr     │
+│  planner.evaluate_step.v1 → determines status               │
+│  risk.assess_changes.v1 → flags breaking API change         │
+│  journal.generate_daily.v1 → produces review summary        │
+└─────────────────────────────────────────────────────────────┘
                           │
                           ▼
-┌─────────────────────────────────────────────────────────┐
-│  KERNEL LAYER                                           │
-│                                                         │
-│  Creates work branch: task/adr-at03-impl                │
-│  Executes opcode: RUN_AGENT(claude-code, prompt_id)     │
-│  Captures: transcript.md, git diff, test results        │
-│  Enforces: diff only touches allowed paths              │
-│  Records: all events to provenance ledger               │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  KERNEL LAYER                                               │
+│                                                             │
+│  Creates work branch: task/adr-at03-impl                    │
+│  Executes opcode: RUN_AGENT(claude-code, prompt_id)         │
+│  Captures: transcript.md, git diff, test results            │
+│  Enforces: diff only touches allowed paths                  │
+│  Records: all events to provenance ledger                   │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -226,7 +257,7 @@ Daily / Periodic Human Review
 │                              │                                  │
 │  ┌───────────────────────────┴───────────────────────────────┐  │
 │  │                  Protocol Layer                           │  │
-│  │     (PTY capture, git diff/status, progress events)       │  │
+│  │     (stdout/stderr capture, git diff/status, progress)    │  │
 │  └───────────────────────────────────────────────────────────┘  │
 └────────────────────────────────┬────────────────────────────────┘
                                  │
@@ -355,9 +386,13 @@ They define:
 
 Workflows **do not self-modify** and **do not branch implicitly**. Intelligence lives in the prompts they reference; control lives in the kernel.
 
-### Opcode Set
+### Opcode Layers
 
-The kernel executes a small, fixed set of opcodes:
+The system distinguishes two opcode surfaces:
+
+#### Kernel Opcodes (Orchestration Primitives)
+
+The kernel executes a small, fixed set of orchestration opcodes:
 
 | Opcode | Description |
 |--------|-------------|
@@ -369,6 +404,30 @@ The kernel executes a small, fixed set of opcodes:
 | `STOP` | Halt workflow (success, failure, or needs_human) |
 
 Workflow YAML compiles to this opcode sequence. The kernel executes opcodes; it does not interpret intent.
+
+#### Agent-Facing CLI Opcodes (Tool Surface)
+
+The agent-facing tool surface is a set of repo-local CLI commands that sub-agents (or the kernel on their behalf) can invoke:
+
+| Command | Purpose |
+|---------|---------|
+| `tnh context` | Print minimal repo context + ADR pointers |
+| `tnh diff` | Diff stat + key hunks for current changes |
+| `tnh test` | Run canonical test suite |
+| `tnh lint` | Run linting checks |
+| `tnh typecheck` | Run type checker |
+| `tnh adr open <id>` | Open/display ADR by ID |
+| `tnh adr list` | List available ADRs |
+| `tnh runlog append` | Append structured entry to run log |
+
+These commands are:
+
+- **Composable**: Pipe-friendly, Unix-style
+- **Versioned**: Live in-repo, evolve with codebase
+- **Self-documenting**: `--help` provides all context agents need
+- **Testable**: Normal CLI testing patterns apply
+
+**Rationale**: This keeps the tool surface small, auditable, and avoids the complexity of maintaining server-based tool interfaces.
 
 ### ROLLBACK Semantics
 
@@ -441,6 +500,7 @@ This framing clarifies responsibilities:
 - **Opcode sequence** = bytecode (kernel-executable steps)
 - **Prompts** = the "functions" called by opcodes
 - **Kernel** = the runtime that executes bytecode
+- **CLI opcodes** = the "syscalls" available to sub-agents
 
 The system is auditable because you can read the workflow (what we intended), the prompts (how we instructed), and the provenance (what actually happened).
 
@@ -554,7 +614,7 @@ The Protocol Layer is explicitly bounded to:
 
 | Responsibility | Description |
 |----------------|-------------|
-| **Transcript capture** | PTY/TTY logging of sub-agent sessions |
+| **Transcript capture** | stdout/stderr capture (primary); PTY fallback for unexpected interactivity |
 | **Workspace capture** | `git diff` / `git status` before/after |
 | **Progress events** | Heartbeats, completion signals |
 | **Heartbeat monitoring** | Detect stalled agents; kill and capture on timeout |
@@ -565,8 +625,19 @@ The Protocol Layer is **NOT** responsible for:
 - Enforcing prompt contracts (post-hoc verification instead)
 - Ensuring determinism (we claim "bounded," not "reproducible")
 - Parsing structured output from agents (transcripts are semantic, not structured)
+- Capturing agent UI panes (VS Code panels, Claude UI — too fragile)
 
 **Rationale:** This avoids architectural collapse due to CLI idiosyncrasies across different agent tools.
+
+### Artifact Contract
+
+The integration point between conductor and sub-agents is **durable repo artifacts**, not UI scraping:
+
+- **Required per run**: AGENTLOG entry + run summary + git diffs
+- **Artifacts are the stable handoff** for meta-agent evaluation and journaling
+- **CLI invocations are captured** in provenance alongside artifacts
+
+This ensures the system remains portable across different agent UIs and versions.
 
 ### Negative Path Handling
 
@@ -574,7 +645,7 @@ The kernel must handle failure modes that prevent normal completion:
 
 | Failure Mode | Detection | Response |
 |--------------|-----------|----------|
-| **Agent hang** | No PTY output for N seconds | Kill process, capture transcript tail, mark `blocked` |
+| **Agent hang** | No stdout/stderr output for N seconds | Kill process, capture transcript tail, mark `blocked` |
 | **Interactive prompt** | Detected Y/N, auth, 2FA, confirmation patterns | Kill process, mark `blocked`, flag for review |
 | **Tool crash** | Non-zero exit code | Capture stderr, mark `blocked` with cause |
 | **Timeout** | Wall-clock limit exceeded | Kill process, capture state, mark `blocked` |
@@ -584,7 +655,7 @@ The kernel must handle failure modes that prevent normal completion:
 The kernel implements a heartbeat monitor with the following behavior:
 
 1. **Monitor interval:** Configurable timeout (default: 60 seconds)
-2. **Signal:** Any PTY output or filesystem event resets the timer
+2. **Signal:** Any stdout/stderr output or filesystem event resets the timer
 3. **On timeout:**
    - Kill the sub-agent process
    - Capture last N lines of transcript
@@ -853,17 +924,47 @@ Policy prompts are **English definitions** of allowed and forbidden behaviors. H
 
 ---
 
+## Anti-Goals and Constraints
+
+To prevent scope creep, the following are explicit **anti-goals**:
+
+### Anti-Goal: No Heavyweight Tool Servers
+
+Don't build or maintain heavyweight "tool servers" (like MCP) unless there is a clear win.
+
+**Prefer "tools as commands" first.** Only escalate to server-based tooling when:
+
+- Streaming/async is required
+- Stateful service is unavoidable
+- Performance demands it
+
+### Anti-Goal: No UI Scraping
+
+Don't attempt to capture agent UI panes (VS Code panels, Claude UI). This is fragile and non-portable. Rely on artifacts and transcripts instead.
+
+### Anti-Goal: No Agent Memory
+
+Don't introduce conversational memory that persists across runs. Use explicit provenance windows instead.
+
+### Anti-Goal: No API Codex Runner
+
+Don't build API-based Codex execution surfaces. Phase-0 targets CLI-based invocation (Codex CLI) for consistency with the "tools as commands" principle.
+
+---
+
 ## Implementation Roadmap
 
 ### Phase 0: Protocol Layer Spike (De-risking)
 
 **Goal:** Prove headless agent invocation + transcript capture works reliably
 
-**Rationale:** The Protocol Layer is the highest-risk component. If we cannot reliably capture PTY transcripts and git diffs from headless agent sessions, the entire architecture is blocked. This spike de-risks before committing to full implementation.
+**Rationale:** The Protocol Layer is the highest-risk component. If we cannot reliably capture stdout/stderr and git diffs from headless agent sessions, the entire architecture is blocked. This spike de-risks before committing to full implementation. API-based Codex runner experiments are superseded; Phase-0 now explicitly targets Codex CLI as the production execution surface.
+
+**Note on PTY:** Early spikes explored PTY capture for transcript completeness. Current findings show both Claude Code CLI and Codex CLI emit bounded, non-interactive stdout/stderr in normal operation. PTY is now a **fallback only** — retained to detect/kill unexpected interactive prompts (auth, Y/N), but not a primary dependency.
 
 **Spike Scope:**
 
-- Headless invocation of Claude Code CLI (`claude --print` or PTY wrapper)
+- Headless invocation of Claude Code CLI (`claude --print`) and Codex CLI
 - Transcript capture (raw + normalized)
 - Git diff capture before/after
 - Heartbeat monitoring + inactivity timeout kill
@@ -874,9 +975,8 @@ Policy prompts are **English definitions** of allowed and forbidden behaviors. H
 
 | Agent | Invocation Method | Capture Method |
 |-------|-------------------|----------------|
-| Claude Code | `claude --print` mode | stdout capture |
-| Claude Code | PTY wrapper | PTY session log |
-| Codex | CLI invocation | stdout/PTY |
+| Claude Code CLI | `claude --print` mode | stdout/stderr (PTY fallback) |
+| Codex CLI | CLI invocation | stdout/stderr (PTY fallback; confirm in spike) |
 
 **Spike Deliverable:**
 
@@ -906,7 +1006,7 @@ tnh-conductor-spike run --agent claude-code --task "List files in src/"
 | Artifact | Description |
 |----------|-------------|
 | `tnh_conductor_spike.py` | CLI module implementing the spike |
-| `transcript.md` | Full PTY session log |
+| `transcript.md` | Full stdout/stderr session log |
 | `diff.patch` | Git changes (if any) |
 | `run.json` | Run metadata |
 | `events.ndjson` | Event stream (newline-delimited JSON) |
@@ -923,7 +1023,7 @@ tnh-conductor-spike run --agent claude-code --task "List files in src/"
 **Deliverables:**
 
 - `tnh-conductor` CLI entry point
-- PTY wrapper for transcript capture (proven in Phase 0)
+- stdout/stderr capture for transcripts (PTY fallback for interactivity)
 - Git diff capture for workspace changes
 - Work-branch creation and management
 - Provenance indexing
@@ -1020,6 +1120,9 @@ This is a planned capability, not Phase 1 scope.
 - **Provider-agnostic** — Same architecture works with Claude Code, Codex, Gemini
 - **Auditable by design** — Full provenance trail for every action
 - **Aligns with engineering practice** — Git branches, async review, standard tooling
+- **Smaller tool surface** — CLI opcodes are simpler than server-based tool interfaces
+- **Better provenance** — CLI invocations + artifacts are first-class, versioned, auditable
+- **Less brittleness** — No server schemas to drift; tools are self-documenting via `--help`
 
 ### Tradeoffs
 
@@ -1046,7 +1149,7 @@ This is a planned capability, not Phase 1 scope.
 
 **Question:** Can Claude Code be reliably wrapped for headless operation?
 
-**Options:** PTY wrapper, `--print` mode, SDK approach
+**Options:** `--print` mode (confirmed), SDK approach, PTY fallback
 
 **Decision needed by:** Phase 1
 
@@ -1077,28 +1180,40 @@ This is a planned capability, not Phase 1 scope.
 | **Prompt-Program** | Versioned prompts that define system behavior (the "English code") |
 | **Sub-Agent** | External AI system performing bounded tasks (Claude Code, Codex) |
 | **Planner** | Trusted evaluator model that interprets outcomes |
-| **Opcode** | Primitive workflow step: RUN_AGENT, VALIDATE, EVALUATE, GATE, STOP |
+| **Kernel Opcode** | Orchestration primitive: RUN_AGENT, VALIDATE, EVALUATE, GATE, STOP |
+| **CLI Opcode** | Agent-facing tool: `tnh test`, `tnh diff`, `tnh context`, etc. |
 | **Transcript Channel** | Conversational output from sub-agent |
 | **Workspace Channel** | Filesystem effects (diffs, new files) |
 | **Daily Review** | Periodic human gating and approval |
 | **Provenance Ledger** | tnh-gen's record of all actions and decisions |
 | **Policy Prompt** | English definition of allowed/forbidden behaviors |
 | **Evaluation Prompt** | English criteria for planner status classification |
+| **Artifact Contract** | Required outputs per run: AGENTLOG + summary + diffs |
 
 ---
 
 ## ADR Roadmap
 
-This strategy ADR establishes the foundation. Implementation details will be captured in a series of follow-on ADRs:
+This strategy ADR establishes the foundation. Implementation details are captured in follow-on ADRs.
+
+### Current / Active
 
 | ADR | Title | Scope |
 |-----|-------|-------|
-| **ADR-OA02** | Phase 0 Protocol Spike | PTY wrapper, heartbeat, kill/reap, capture contract |
+| **ADR-OA03.3** | Codex CLI Phase-0 Protocol Spike | CLI-based Codex invocation; supersedes API runner |
+| **ADR-OA02** | Phase 0 Protocol Spike (Revised) | stdout/stderr capture + artifact contract for Claude Code + Codex CLI |
 | **ADR-OA03** | Workflow Schema + Opcode Semantics | YAML format, opcode definitions, ROLLBACK semantics |
 | **ADR-OA04** | Prompt Library Specification | Prompt artifact format, versioning, template rendering |
 | **ADR-OA05** | Planner Evaluator Contract | Input/output schemas, contradiction checks, provenance window |
 | **ADR-OA06** | Diff-Policy + Safety Rails | Allowed/forbidden paths, dependency changes, escalation rules |
 | **ADR-OA07** | Prompt Regression Testing Harness | Golden runs, classification drift detection (future) |
+
+### Historical / Superseded
+
+| ADR | Title | Status |
+|-----|-------|--------|
+| **ADR-OA01** | TNH-Conductor Strategy (v1) | Superseded by this document |
+| **ADR-OA03.2** | API-Based Codex Runner | Superseded by ADR-OA03.3 (CLI approach) |
 
 Each ADR will be created as implementation progresses through the phases defined in this strategy.
 
@@ -1108,6 +1223,7 @@ Each ADR will be created as implementation progresses through the phases defined
 
 ### Related Existing ADRs
 
+- [ADR-OA01](/architecture/agent-orchestration/adr/adr-oa01-agent-orchestration-strategy.md) — Original strategy (superseded by this document)
 - `adr-pv01-provenance-tracing-strat.md` — Foundation provenance infrastructure
 - `adr-tg01-cli-architecture.md` — CLI patterns for tnh-gen
 - `adr-at04-ai-text-processing-platform-strat.md` — Related orchestration patterns
@@ -1117,8 +1233,9 @@ Each ADR will be created as implementation progresses through the phases defined
 ## References
 
 - Armin Ronacher, "Agents are Hard" — https://lucumr.pocoo.org/2025/11/21/agents-are-hard/
-- Claude Code CLI documentation
-- OpenAI Codex CLI documentation
+- Mario Zechner, "What if you don't need MCP?" — https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/
+- Claude Code CLI documentation — https://code.claude.com/docs/en/cli-reference
+- OpenAI Codex CLI documentation — https://developers.openai.com/codex/cli
 
 ---
 
@@ -1130,9 +1247,11 @@ The system is written in English. Code exists for capture, enforcement, and exec
 
 Key principles:
 
-- **Kernel is minimal** (~500 lines): branch management, PTY capture, diff capture, policy enforcement, opcode execution
+- **Kernel is minimal** (~500 lines): branch management, stdout/stderr capture, diff capture, policy enforcement, opcode execution
 - **Behavior lives in prompts**: task instructions, policies, evaluation criteria, triage rules, journal formats
 - **Workflows are bytecode**: YAML compiles to opcodes; intelligence lives in the prompts they reference
+- **CLI opcodes over tool servers**: prefer small, composable repo-local commands as the agent tool surface
+- **Artifact contract**: CLI invocations + durable artifacts are the stable handoff—not UI scraping
 - **Enforcement is post-hoc**: verify diffs against policies after execution, not during
 - **Humans remain authors**: daily review, blocking gates for high-risk changes, full provenance trail
 
@@ -1140,56 +1259,4 @@ tnh-conductor enables semi-autonomous progress without surrendering control. It 
 
 ---
 
-*This ADR establishes the strategic foundation for TNH-Scholar's agent coordination system: a prompt-program runtime enabling bounded, auditable, provenance-driven development workflows.*
-
----
-
-## Addendums
-
-### Addendum 2026-02-07: Revised ADR Roadmap
-
-**Author**: Claude Opus 4.5
-
-#### Context
-
-The original roadmap (lines 1090-1104) specified OA03 as "Workflow Schema + Opcode Semantics". During Phase 0 implementation, OA03 was repurposed as "Agent Runner Architecture" to establish the kernel + adapter pattern for multi-agent execution — a prerequisite for workflow execution.
-
-Additionally, the Codex CLI is now available (`codex exec` with `--json` output), providing a headless execution model analogous to Claude Code's `--print` mode. This unblocks Codex integration via CLI rather than the API-first approach that was suspended in OA03.2.
-
-#### Revised Roadmap
-
-| ADR | Title | Scope | Status |
-|-----|-------|-------|--------|
-| **OA02** | Phase 0 Protocol Spike | PTY capture, heartbeat, kill/reap, capture contract | WIP |
-| **OA03** | Agent Runner Architecture | Kernel + Adapter pattern, runner contracts | Accepted |
-| **OA03.1** | Claude Code Runner | `--print` mode, stdout capture | Accepted |
-| **OA03.2** | Codex Runner (API) | Responses API approach | Superseded |
-| **OA03.3** | Codex CLI Runner | CLI-based execution via `codex exec` | Proposed |
-| **OA04** | Workflow Schema + Opcode Semantics | YAML format, opcode definitions, ROLLBACK semantics | — |
-| **OA05** | Prompt Library Specification | Prompt artifact format, versioning, template rendering | — |
-| **OA06** | Planner Evaluator Contract | Input/output schemas, contradiction checks, provenance window | — |
-| **OA07** | Diff-Policy + Safety Rails | Allowed/forbidden paths, dependency changes, escalation rules | — |
-| **OA08** | Prompt Regression Testing | Golden runs, classification drift detection (future) | — |
-
-#### Key Changes
-
-1. **OA03 repurposed**: Agent Runner Architecture (kernel + adapter pattern) instead of Workflow Schema
-2. **OA03.x sub-ADRs**: Per-agent runner specifications (Claude Code, Codex API, Codex CLI)
-3. **OA03.2 superseded**: API-first Codex approach superseded by CLI-based OA03.3
-4. **Roadmap shifted**: Workflow Schema becomes OA04; subsequent ADRs renumbered
-
-#### Work Resumption
-
-Orchestration work paused on 2026-01-27 is hereby resumed. The availability of Codex CLI removes the primary blocker (API constraints) that led to suspension.
-
-### Addendum 2026-02-07: Superseded by ADR-OA01.1
-
-**Status changed**: `accepted` → `superseded`
-
-This ADR is superseded by [ADR-OA01.1: Conductor Strategy v2](/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md), which incorporates additional architectural insights:
-
-- Mario Zechner's "CLI tools over MCP" principle
-- stdout/stderr as primary capture (PTY demoted to fallback)
-- "CLI opcodes" framing for agent tooling
-
-OA01 remains a valid historical record of the original strategy.
+*This ADR establishes the strategic foundation for TNH-Scholar's agent coordination system: a prompt-program runtime enabling bounded, auditable, provenance-driven development workflows with CLI opcode tooling.*
