@@ -174,7 +174,7 @@ class PromptPathBuilder:
             paths.append(self._workspace_path())
         paths.append(self._user_path())
         paths.append(self._builtin_path())
-        return [path for path in paths if path.exists()]
+        return [path for path in paths if path.is_dir()]
 
     def primary(self) -> Path | None:
         for path in self.build():

@@ -71,3 +71,25 @@ def test_primary_prompt_dir_none_when_no_dirs(tmp_path: Path) -> None:
     )
 
     assert context.get_primary_prompt_dir() is None
+
+
+def test_prompt_search_paths_skip_non_directory_entries(tmp_path: Path) -> None:
+    workspace_root = tmp_path / "workspace"
+    user_root = tmp_path / "user"
+    builtin_root = tmp_path / "builtin"
+
+    (workspace_root / "prompts").mkdir(parents=True)
+    (user_root / "prompts").mkdir(parents=True)
+    builtin_root.mkdir(parents=True)
+    (builtin_root / "prompts").write_text("not a directory", encoding="utf-8")
+
+    context = _build_context(
+        builtin_root=builtin_root,
+        workspace_root=workspace_root,
+        user_root=user_root,
+    )
+
+    assert context.get_prompt_search_paths() == [
+        workspace_root / "prompts",
+        user_root / "prompts",
+    ]
