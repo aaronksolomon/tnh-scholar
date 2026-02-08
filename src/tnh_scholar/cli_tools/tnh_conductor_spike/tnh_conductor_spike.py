@@ -25,7 +25,9 @@ from tnh_scholar.agent_orchestration.spike.providers.clock import SystemClock
 from tnh_scholar.agent_orchestration.spike.providers.command_builder import AgentCommandBuilder
 from tnh_scholar.agent_orchestration.spike.providers.event_writer_factory import NdjsonEventWriterFactory
 from tnh_scholar.agent_orchestration.spike.providers.git_workspace import GitWorkspaceCapture
-from tnh_scholar.agent_orchestration.spike.providers.pty_agent_runner import PtyAgentRunner
+from tnh_scholar.agent_orchestration.spike.providers.subprocess_agent_runner import (
+    SubprocessAgentRunner,
+)
 from tnh_scholar.agent_orchestration.spike.service import SpikeRunService
 from tnh_scholar.logging_config import get_logger, setup_logging
 
@@ -103,7 +105,7 @@ def _build_service(config: SpikeConfig, policy: SpikePolicy) -> SpikeRunService:
     return SpikeRunService(
         clock=SystemClock(),
         run_id_generator=TimestampRunIdGenerator(),
-        agent_runner=PtyAgentRunner(),
+        agent_runner=SubprocessAgentRunner(),
         workspace=GitWorkspaceCapture(),
         artifact_writer=FileArtifactWriter(runs_root=config.runs_root),
         event_writer_factory=NdjsonEventWriterFactory(),
@@ -117,6 +119,7 @@ def _print_outputs(metadata: RunMetadata) -> None:
     typer.echo(str(artifacts.transcript_normalized))
     typer.echo(str(artifacts.transcript_raw))
     typer.echo(str(artifacts.diff_patch))
+    typer.echo(str(artifacts.response_path))
     typer.echo(str(artifacts.run_metadata))
     typer.echo(str(artifacts.events))
 

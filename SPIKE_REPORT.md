@@ -8,7 +8,7 @@ created: "2026-01-20"
 
 ## Summary
 
-The Phase 0 spike ran successfully against the Claude Code CLI, producing full transcripts, git snapshots, and an NDJSON event stream. The protocol-layer capture chain works end-to-end in a real headless run.
+The Phase 0 spike ran successfully against both Claude Code CLI (earlier) and Codex CLI (2026-02-08), producing full transcripts, git snapshots, and an NDJSON event stream. The protocol-layer capture chain works end-to-end in a real headless run.
 
 ## What Worked
 
@@ -17,6 +17,7 @@ The Phase 0 spike ran successfully against the Claude Code CLI, producing full t
 - Git pre/post snapshots and diff patch were emitted.
 - Events stream recorded run start, workspace capture, agent start, diff, and completion.
 - Heartbeat and agent output events are now emitted during execution.
+- Headless Codex CLI invocation (`codex exec --json --output-last-message ... --full-auto -m gpt-5.2-codex`) completed successfully.
 
 ## Failure Modes Observed
 
@@ -27,7 +28,7 @@ The Phase 0 spike ran successfully against the Claude Code CLI, producing full t
 
 - `poetry run` warns when entrypoints are not installed; running `poetry install` removes the warning.
 - The spike enforces a sandbox root preflight; dirty worktrees are allowed only inside the sandbox root.
-- `codex` agent is declared but not implemented; it currently raises a `NotImplementedError`.
+- Sandbox sync resets and cleans the worktree; uncommitted changes must be re-applied via the sync patch.
 
 ## Recommendations
 
@@ -42,6 +43,23 @@ Phase 0 runs should execute from a dedicated worktree named `<repo>-sandbox` (or
 ### Sandbox Sync
 
 Use `scripts/sync-sandbox.sh` (or `make sync-sandbox`) to update the sandbox. The script now always resets the sandbox to the source repo branch and applies a patch of uncommitted changes, then runs in-place from that snapshot.
+
+## Codex CLI Run (2026-02-08)
+
+- **Worktree**: `/Users/phapman/Desktop/Projects/tnh-scholar-sandbox`
+- **Branch**: `feat/agent-orchestration-v2`
+- **Sync**: `scripts/sync-sandbox.sh --sandbox ... --source-repo ... --branch feat/agent-orchestration-v2`
+- **Deps**: `poetry env use python`, `poetry install`
+- **Command**:
+
+```bash
+poetry run python -m tnh_scholar.cli_tools.tnh_conductor_spike.tnh_conductor_spike \
+  --agent codex \
+  --task "List files in src/"
+```
+
+- **Run ID**: `20260208-063754`
+- **Artifacts**: `.tnh-gen/runs/20260208-063754/` (transcripts, diff, response, run.json, events.ndjson)
 
 ## Artifacts
 
