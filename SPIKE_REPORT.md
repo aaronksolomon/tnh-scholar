@@ -1,8 +1,9 @@
 ---
 title: "Phase 0 Spike Report"
 description: "Findings and gotchas from the protocol layer spike run"
-status: draft
+status: complete
 created: "2026-01-20"
+updated: "2026-02-08"
 ---
 # Phase 0 Spike Report
 
@@ -60,6 +61,79 @@ poetry run python -m tnh_scholar.cli_tools.tnh_conductor_spike.tnh_conductor_spi
 
 - **Run ID**: `20260208-063754`
 - **Artifacts**: `.tnh-gen/runs/20260208-063754/` (transcripts, diff, response, run.json, events.ndjson)
+
+## Codex CLI Implementation Run (2026-02-08)
+
+A full implementation run validated the spike harness with a real coding task.
+
+### Run Details
+
+- **Run ID**: `20260208-155213`
+- **Duration**: 6m 47s (15:52:13 → 15:59:00 UTC)
+- **Task**: Implement ADR-CF02 (Prompt Catalog Discovery)
+- **Exit Code**: 0 (completed)
+- **Work Branch**: `work/20260208-155213`
+
+### Artifact Capture
+
+| Artifact | Size | Description |
+|----------|------|-------------|
+| `run.json` | 3KB | Run metadata, timing, git summaries |
+| `events.ndjson` | 260KB | 272 events in NDJSON stream |
+| `stdout.log` | 294KB | Raw CLI output |
+| `transcript.md` | 294KB | Formatted transcript |
+| `response.txt` | 2KB | Structured final report |
+| `diff.patch` | 13KB | Unified diff (10 files) |
+| `git_pre.json` | 105B | Pre-run clean state |
+| `git_post.json` | 649B | Post-run dirty state |
+
+### Event Stream Analysis
+
+**Orchestration Events:**
+
+| Event Type | Count |
+|------------|-------|
+| AGENT_OUTPUT | 226 |
+| HEARTBEAT | 40 |
+| RUN_STARTED/COMPLETED | 2 |
+| WORKSPACE_CAPTURED | 2 |
+| DIFF_EMITTED | 1 |
+
+**Codex Item Types:**
+
+| Item Type | Count |
+|-----------|-------|
+| item.completed | 137 |
+| command_execution | 108 |
+| reasoning | 70 |
+| item.started | 55 |
+| file_change | 11 |
+| todo_list | 4 |
+| agent_message | 1 |
+
+### Token Usage
+
+```
+Input tokens:        4,239,965  (4.2M)
+Cached input:        4,089,472  (96% cache hit)
+Output tokens:          17,936
+```
+
+### Implementation Quality
+
+The agent produced commit-worthy code:
+
+- Added `PromptPathBuilder` class with workspace → user → built-in precedence
+- Lazy resolution via `@model_validator` in Pydantic settings
+- Removed import-time constants, updated 4 CLI tools
+- Created 4 new tests (all passing)
+- Self-verified cleanup with `rg` for deprecated constants
+
+### Conclusion
+
+**Phase 0 Spike: PASSED**
+
+All success criteria met. The harness provides full observability into autonomous agent runs. Proceed to Phase 1 implementation.
 
 ## Artifacts
 

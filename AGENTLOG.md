@@ -58,7 +58,6 @@ Resumed agent orchestration work after discovering Codex CLI availability. The C
 ### Open Questions
 
 - None.
-
 ### References
 
 - Commit 4f05b2c: "docs(agent-orch): Resume orchestration work with Codex CLI spike"
