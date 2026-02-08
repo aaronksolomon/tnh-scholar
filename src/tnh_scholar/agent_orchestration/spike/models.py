@@ -17,8 +17,8 @@ class SpikeDefaults:
 
     runs_root: Path = Path(".tnh-gen/runs")
     work_branch_prefix: str = "work"
-    default_timeout_seconds: int = 900
-    default_idle_timeout_seconds: int = 60
+    default_timeout_seconds: int = 600
+    default_idle_timeout_seconds: int = 600
     default_transcript_tail_lines: int = 200
     default_heartbeat_interval_seconds: int = 10
     default_output_event_max_chars: int = 2000
