@@ -87,6 +87,15 @@ A full implementation run validated the spike harness with a real coding task.
 | `git_pre.json` | 105B | Pre-run clean state |
 | `git_post.json` | 649B | Post-run dirty state |
 
+### Forensic Note (2026-02-08)
+
+Post-run analysis found two separate conditions:
+
+1. **Artifact capture gap for untracked files**: `git_post.json` records untracked additions (`?? tests/configuration/`), but `diff.patch` only includes tracked-file edits. This explains why the reported implementation scope is larger than the patch alone.
+2. **Later sandbox drift/corruption**: a subsequent sandbox state showed ~557 docs deletions that were not present in the run's recorded `git_post.json`. This indicates post-run workspace drift, not run-time divergence.
+
+Result: the spike run itself is still considered valid; future salvage workflows should collect both tracked patch data and explicit untracked file manifests.
+
 ### Event Stream Analysis
 
 **Orchestration Events:**
