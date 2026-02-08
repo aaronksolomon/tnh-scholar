@@ -4,9 +4,9 @@ description: "De-risking spike to prove headless agent capture and safety contro
 type: "implementation-guide"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: paused
+status: wip
 created: "2026-01-19"
-updated: "2026-01-19"
+updated: "2026-02-07"
 parent_adr: "adr-oa01-agent-orchestration-strategy.md"
 ---
 
@@ -14,7 +14,7 @@ parent_adr: "adr-oa01-agent-orchestration-strategy.md"
 
 De-risking spike to prove headless agent invocation, transcript capture, and safety controls work reliably.
 
-- **Status**: Paused
+- **Status**: WIP *(changed from Paused 2026-02-07 — see Addendum)*
 - **Type**: Implementation ADR (De-risking Spike)
 - **Date**: 2026-01-19
 - **Owner**: Aaron Solomon
@@ -409,6 +409,12 @@ Phase 0 runs must fast-fail if the repository is not clean. The spike should exi
 **Status changed**: `accepted` → `paused`
 
 Spike implementation complete and findings documented (see `SPIKE_REPORT.md` and `docs/architecture/agent-orchestration/notes/`). Further work on agent orchestration paused pending evaluation of Codex interface build costs and alternative approaches. Code preserved in `src/tnh_scholar/agent_orchestration/` as reference; marked non-operational via `EXPERIMENTAL.md`.
+
+### Addendum 2026-02-07: Work Resumed
+
+**Status changed**: `paused` → `wip`
+
+Orchestration work resumed. The availability of Codex CLI (`codex exec` with `--json` output) removes the primary blocker that led to suspension. See ADR-OA01 Addendum 2026-02-07 for revised roadmap and ADR-OA03.3 for Codex CLI spike.
 
 ---
 
