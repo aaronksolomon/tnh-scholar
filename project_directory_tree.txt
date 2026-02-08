@@ -31,8 +31,14 @@
 │   │   │   ├── adr
 │   │   │   │   ├── adr-oa01-agent-orchestration-strategy.md
 │   │   │   │   ├── adr-oa02-phase-0-protocol-spike.md
+│   │   │   │   ├── adr-oa03-agent-runner-architecture.md
+│   │   │   │   ├── adr-oa03.1-claude-code-runner.md
+│   │   │   │   ├── adr-oa03.2-codex-runner.md
 │   │   │   │   └── index.md
 │   │   │   ├── archive
+│   │   │   ├── notes
+│   │   │   │   ├── codex-harness-e2e-report.md
+│   │   │   │   └── codex-harness-spike-findings.md
 │   │   │   └── system-design.md
 │   │   ├── ai-text-processing
 │   │   │   ├── adr
@@ -52,7 +58,8 @@
 │   │   │   └── index.md
 │   │   ├── configuration
 │   │   │   ├── adr
-│   │   │   │   └── adr-cf01-runtime-context-strategy.md
+│   │   │   │   ├── adr-cf01-runtime-context-strategy.md
+│   │   │   │   └── adr-cf02-prompt-catalog-discovery.md
 │   │   │   ├── index.md
 │   │   │   └── tnh-configuration-management.md
 │   │   ├── docs-system
@@ -141,6 +148,9 @@
 │   │   │   │   └── adr-pv01-provenance-tracing-strat.md
 │   │   │   └── index.md
 │   │   ├── setup-tnh
+│   │   │   ├── adr
+│   │   │   │   ├── adr-st01-tnh-setup-runtime-hardening.md
+│   │   │   │   └── adr-st01.1-tnh-setup-ui-design.md
 │   │   │   ├── design
 │   │   │   │   ├── index.md
 │   │   │   │   └── setup-tnh-minimal-extensible-tool.md
@@ -202,6 +212,7 @@
 │   │   ├── video-processing
 │   │   │   ├── adr
 │   │   │   │   ├── adr-vp01-video-processing.md
+│   │   │   │   ├── adr-vp02-ytdlp-operational-strategy.md
 │   │   │   │   └── index.md
 │   │   │   └── index.md
 │   │   └── ytt-fetch
@@ -257,7 +268,8 @@
 │   │   ├── overview.md
 │   │   ├── release-workflow.md
 │   │   ├── style-guide.md
-│   │   └── system-design.md
+│   │   ├── system-design.md
+│   │   └── yt-dlp-ops-check.md
 │   ├── docs-ops
 │   │   ├── adr-template.md
 │   │   ├── index.md
@@ -465,12 +477,15 @@
 │   ├── git-check-staleness.sh
 │   ├── prep_notebooks.py
 │   ├── prepare_pypi_readme.py
+│   ├── setup_ytdlp_runtime.py
 │   ├── sync_readme.py
 │   ├── sync_root_docs.py
+│   ├── sync-sandbox.sh
 │   ├── update_index_doc_map.py
 │   ├── update_version.py
 │   ├── validate_markdown.py
-│   └── verify_doc_links.py
+│   ├── verify_doc_links.py
+│   └── yt_dlp_ops_check.py
 ├── SPIKE_REPORT.md
 ├── src
 │   ├── __init__.py
@@ -479,6 +494,30 @@
 │       ├── __init__.py
 │       ├── agent_orchestration
 │       │   ├── __init__.py
+│       │   ├── codex_harness
+│       │   │   ├── __init__.py
+│       │   │   ├── adapters
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── output_parser.py
+│       │   │   │   └── response_schema.py
+│       │   │   ├── models.py
+│       │   │   ├── protocols.py
+│       │   │   ├── providers
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── artifact_writer.py
+│       │   │   │   ├── chat_completions_client.py
+│       │   │   │   ├── clock.py
+│       │   │   │   ├── openai_responses_client.py
+│       │   │   │   ├── patch_applier.py
+│       │   │   │   ├── run_id.py
+│       │   │   │   ├── searcher.py
+│       │   │   │   ├── test_runner.py
+│       │   │   │   ├── tool_executor.py
+│       │   │   │   ├── tool_registry.py
+│       │   │   │   └── workspace_locator.py
+│       │   │   ├── service.py
+│       │   │   └── tools.py
+│       │   ├── EXPERIMENTAL.md
 │       │   └── spike
 │       │       ├── __init__.py
 │       │       ├── adapters
@@ -586,9 +625,13 @@
 │       │   ├── srt_translate
 │       │   │   ├── __init__.py
 │       │   │   └── srt_translate.py
+│       │   ├── tnh_codex_harness
+│       │   │   ├── __init__.py
+│       │   │   └── tnh_codex_harness.py
 │       │   ├── tnh_conductor_spike
 │       │   │   ├── __init__.py
 │       │   │   └── tnh_conductor_spike.py
+│       │   ├── tnh_fab
 │       │   ├── tnh_gen
 │       │   │   ├── __init__.py
 │       │   │   ├── commands
@@ -611,7 +654,9 @@
 │       │   │   └── types.py
 │       │   ├── tnh_setup
 │       │   │   ├── __init__.py
-│       │   │   └── tnh_setup.py
+│       │   │   ├── tnh_setup_typer.py
+│       │   │   ├── tnh_setup.py
+│       │   │   └── ui.py
 │       │   ├── tnh_tree.py
 │       │   ├── token_count
 │       │   │   ├── __init__.py
@@ -787,9 +832,13 @@
 │       │   └── webhook_server.py
 │       ├── video_processing
 │       │   ├── __init__.py
+│       │   ├── ops_check.py
 │       │   ├── video_processing_old1.py
 │       │   ├── video_processing_old2.py
 │       │   ├── video_processing.py
+│       │   ├── yt_download_service.py
+│       │   ├── yt_environment.py
+│       │   ├── yt_preflight_report.py
 │       │   └── yt_transcribe.py
 │       └── xml_processing
 │           ├── __init__.py
@@ -798,6 +847,7 @@
 ├── src_directory_tree.txt
 ├── tests
 │   ├── agent_orchestration
+│   │   ├── test_codex_harness_tools.py
 │   │   └── test_spike_command_filter.py
 │   ├── ai_text_processing
 │   │   └── test_text_object.py
@@ -812,7 +862,13 @@
 │   │   ├── test_other_clis.py
 │   │   ├── test_tnh_gen_coverage.py
 │   │   ├── test_tnh_gen.py
-│   │   └── test_token_count.py
+│   │   ├── test_token_count.py
+│   │   └── test_yt_dlp_live.py
+│   ├── fixtures
+│   │   └── yt_dlp
+│   │       ├── ttml
+│   │       │   └── sample.ttml
+│   │       └── validation_urls.txt
 │   ├── gen_ai_service
 │   │   ├── adapters
 │   │   │   ├── __init__.py
@@ -842,10 +898,19 @@
 │   │   ├── test_models.py
 │   │   ├── test_renderer.py
 │   │   └── test_validator.py
+│   ├── scripts
+│   │   └── test_setup_ytdlp_runtime_py.py
 │   ├── text_processing
 │   │   └── test_numbered_text.py
-│   └── utils
-│       └── test_math_utils.py
+│   ├── utils
+│   │   └── test_math_utils.py
+│   └── video_processing
+│       ├── test_filename_conversion.py
+│       ├── test_ops_check.py
+│       ├── test_ttml_extraction.py
+│       ├── test_video_processing_runtime_options.py
+│       ├── test_yt_environment_remote_components.py
+│       └── test_yt_environment.py
 ├── TODO.md
 ├── VERSIONING.md
 └── vscode-extension
@@ -884,4 +949,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-199 directories, 686 files
+211 directories, 739 files
