@@ -6,9 +6,9 @@ from typing import Optional
 
 import typer
 
-from tnh_scholar.agent_orchestration.spike.adapters.command_filter import RegexCommandFilter
-from tnh_scholar.agent_orchestration.spike.adapters.prompt_handler import RegexPromptHandler
-from tnh_scholar.agent_orchestration.spike.adapters.prompt_parser import RegexCommandPromptParser
+from tnh_scholar.agent_orchestration.spike.adapters.noop_prompt_handler import (
+    NoopPromptHandler,
+)
 from tnh_scholar.agent_orchestration.spike.adapters.run_id import TimestampRunIdGenerator
 from tnh_scholar.agent_orchestration.spike.models import (
     RunMetadata,
@@ -93,15 +93,6 @@ def run_command(
 
 
 def _build_service(config: SpikeConfig, policy: SpikePolicy) -> SpikeRunService:
-    command_filter = RegexCommandFilter(patterns=tuple(policy.blocked_command_patterns))
-    parser = RegexCommandPromptParser(patterns=tuple(policy.command_capture_patterns))
-    prompt_handler = RegexPromptHandler(
-        parser=parser,
-        command_filter=command_filter,
-        interactive_patterns=tuple(policy.interactive_prompt_patterns),
-        allow_response=policy.allow_response,
-        block_response=policy.block_response,
-    )
     return SpikeRunService(
         clock=SystemClock(),
         run_id_generator=TimestampRunIdGenerator(),
@@ -110,7 +101,7 @@ def _build_service(config: SpikeConfig, policy: SpikePolicy) -> SpikeRunService:
         artifact_writer=FileArtifactWriter(runs_root=config.runs_root),
         event_writer_factory=NdjsonEventWriterFactory(),
         command_builder=AgentCommandBuilder(),
-        prompt_handler=prompt_handler,
+        prompt_handler=NoopPromptHandler(),
     )
 
 
