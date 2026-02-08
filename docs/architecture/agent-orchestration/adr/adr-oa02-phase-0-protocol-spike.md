@@ -4,9 +4,9 @@ description: "De-risking spike to prove headless agent capture and safety contro
 type: "implementation-guide"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: wip
+status: implemented
 created: "2026-01-19"
-updated: "2026-02-07"
+updated: "2026-02-08"
 parent_adr: "adr-oa01-agent-orchestration-strategy.md"
 ---
 
@@ -14,7 +14,7 @@ parent_adr: "adr-oa01-agent-orchestration-strategy.md"
 
 De-risking spike to prove headless agent invocation, transcript capture, and safety controls work reliably.
 
-- **Status**: WIP *(changed from Paused 2026-02-07 — see Addendum)*
+- **Status**: Implemented *(changed from WIP 2026-02-08 — see Addendum)*
 - **Type**: Implementation ADR (De-risking Spike)
 - **Date**: 2026-01-19
 - **Owner**: Aaron Solomon
@@ -415,6 +415,35 @@ Spike implementation complete and findings documented (see `SPIKE_REPORT.md` and
 **Status changed**: `paused` → `wip`
 
 Orchestration work resumed. The availability of Codex CLI (`codex exec` with `--json` output) removes the primary blocker that led to suspension. See ADR-OA01 Addendum 2026-02-07 for revised roadmap and ADR-OA03.3 for Codex CLI spike.
+
+### Addendum 2026-02-08: Phase 0 Spike Complete
+
+**Status changed**: `wip` → `implemented`
+
+Phase 0 spike passed all success criteria. A 7-minute Codex CLI run (run ID `20260208-155213`) successfully implemented ADR-CF02 (Prompt Catalog Discovery) with full artifact capture.
+
+**Success Criteria Results:**
+
+| Criterion | Result |
+|-----------|--------|
+| 1. Headless run completes | PASS - Codex CLI completed without interaction |
+| 2. Transcript is complete | PASS - 294KB stdout.log, 272 NDJSON events |
+| 3. Workspace effects captured | PASS - git_pre.json (clean), git_post.json (10 modified), 13KB diff.patch |
+| 4. Progress events emitted | PASS - 40 heartbeats, 226 AGENT_OUTPUT events |
+| 5. Negative-path handling | PASS - exit_code captured, termination_reason in run.json |
+| 6. Provenance record written | PASS - Full run.json with timestamps, agent, artifacts |
+| 7. Work isolated on branch | PASS - work/20260208-155213 branch created |
+
+**Key Metrics:**
+
+- Duration: 6m 47s
+- Events: 272 total (226 AGENT_OUTPUT, 40 HEARTBEAT)
+- Codex items: 108 command executions, 70 reasoning steps, 11 file changes
+- Token usage: 4.2M input (96% cached), 18K output
+
+**Decision Gate**: Phase 0 passed. Proceed to Phase 1 per ADR-OA03.
+
+See `SPIKE_REPORT.md` and ADR-OA03.3 Addendum for detailed findings.
 
 ---
 
