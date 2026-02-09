@@ -6,15 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Core Requirements:">
+        <meta name="description" content="Extends TNHContext three-layer model to prompt catalog path resolution, replacing hard-coded module constants.">
+      
+      
+        <meta name="author" content="Claude Opus 4.5">
       
       
       
+        <link rel="prev" href="../adr-cf01-runtime-context-strategy/">
       
-        <link rel="prev" href="../">
       
-      
-        <link rel="next" href="../../../tnh-gen/">
+        <link rel="next" href="../../../docs-system/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -22,7 +24,7 @@
     
     
       
-        <title>minimal but extensible setup tool for the prototyping phase - TNH Scholar Documentation</title>
+        <title>ADR-CF02: Prompt Catalog Discovery Strategy - TNH Scholar Documentation</title>
       
     
     
@@ -120,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#minimal-but-extensible-setup-tool-for-the-prototyping-phase" class="md-skip">
+        <a href="#adr-cf02-prompt-catalog-discovery-strategy" class="md-skip">
           Skip to content
         </a>
       
@@ -176,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              minimal but extensible setup tool for the prototyping phase
+              ADR-CF02: Prompt Catalog Discovery Strategy
             
           </span>
         </div>
@@ -2633,6 +2635,8 @@
                 
   
   
+    
+  
   
   
     
@@ -2649,16 +2653,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_6" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../configuration/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2682,7 +2686,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_6">
             <span class="md-nav__icon md-icon"></span>
             Configuration
@@ -2698,7 +2702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../configuration/tnh-configuration-management/" class="md-nav__link">
+      <a href="../../tnh-configuration-management/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2723,8 +2727,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -2735,11 +2741,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_6_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_6_3" checked>
         
           
           <label class="md-nav__link" for="__nav_9_6_3" id="__nav_9_6_3_label" tabindex="0">
@@ -2753,7 +2759,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_6_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_6_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_6_3">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -2767,7 +2773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
+      <a href="../adr-cf01-runtime-context-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2792,10 +2798,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../configuration/adr/adr-cf02-prompt-catalog-discovery/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ADR-CF02: Prompt Catalog Discovery Strategy
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -2811,6 +2844,281 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constraints
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-extend-tnhcontext-with-prompt-path-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Extend TNHContext with Prompt Path Discovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-remove-module-level-path-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Remove Module-Level Path Constants
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-update-genaisettings-to-use-tnhcontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Update GenAISettings to Use TNHContext
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-consolidate-promptsystemsettings" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Consolidate PromptSystemSettings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-bundle-minimal-built-in-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Bundle Minimal Built-in Prompts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neutral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Neutral
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-keep-module-constants-make-them-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Keep Module Constants, Make Them Optional
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-environment-variable-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Environment Variable Only
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-prompt-discovery-in-genaisettings-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Prompt Discovery in GenAISettings Only
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Phases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Phases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-extend-tnhcontext-high-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Extend TNHContext (High Priority)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-migrate-genaisettings-high-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Migrate GenAISettings (High Priority)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-clean-up-module-constants-medium-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Clean Up Module Constants (Medium Priority)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-consolidate-settings-classes-medium-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Consolidate Settings Classes (Medium Priority)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -5298,8 +5606,6 @@
                 
   
   
-    
-  
   
   
     
@@ -5316,16 +5622,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_18" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_18" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../setup-tnh/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5349,7 +5655,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_18_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_18_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_18">
             <span class="md-nav__icon md-icon"></span>
             Setup Tnh
@@ -5406,7 +5712,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-st01-tnh-setup-runtime-hardening/" class="md-nav__link">
+      <a href="../../../setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5434,7 +5740,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-st01.1-tnh-setup-ui-design/" class="md-nav__link">
+      <a href="../../../setup-tnh/adr/adr-st01.1-tnh-setup-ui-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5467,8 +5773,6 @@
                 
   
   
-    
-  
   
   
     
@@ -5483,16 +5787,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_18_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_18_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../setup-tnh/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5516,7 +5820,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_18_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_18_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_18_3">
             <span class="md-nav__icon md-icon"></span>
             Design
@@ -5529,37 +5833,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    minimal but extensible setup tool for the prototyping phase
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--current"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5575,44 +5852,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#high-level-design-structure-iteration-1" class="md-nav__link">
-    <span class="md-ellipsis">
-      high-level design structure (iteration 1)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#high-level-design-structure-iteration-2" class="md-nav__link">
-    <span class="md-ellipsis">
-      high-level design structure (iteration 2)
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -9067,18 +9306,255 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#high-level-design-structure-iteration-1" class="md-nav__link">
+  <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
-      high-level design structure (iteration 1)
+      Context
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constraints
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-extend-tnhcontext-with-prompt-path-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Extend TNHContext with Prompt Path Discovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-remove-module-level-path-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Remove Module-Level Path Constants
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-update-genaisettings-to-use-tnhcontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Update GenAISettings to Use TNHContext
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-consolidate-promptsystemsettings" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Consolidate PromptSystemSettings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-bundle-minimal-built-in-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Bundle Minimal Built-in Prompts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neutral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Neutral
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-keep-module-constants-make-them-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Keep Module Constants, Make Them Optional
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-environment-variable-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Environment Variable Only
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-prompt-discovery-in-genaisettings-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Prompt Discovery in GenAISettings Only
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#high-level-design-structure-iteration-2" class="md-nav__link">
+  <a href="#implementation-phases" class="md-nav__link">
     <span class="md-ellipsis">
-      high-level design structure (iteration 2)
+      Implementation Phases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Phases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-extend-tnhcontext-high-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Extend TNHContext (High Priority)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-migrate-genaisettings-high-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Migrate GenAISettings (High Priority)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-clean-up-module-constants-medium-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Clean Up Module Constants (Medium Priority)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-consolidate-settings-classes-medium-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Consolidate Settings Classes (Medium Priority)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
     </span>
   </a>
   
@@ -9102,115 +9578,217 @@
   
 
 
-<h1 id="minimal-but-extensible-setup-tool-for-the-prototyping-phase">minimal but extensible setup tool for the prototyping phase<a class="headerlink" href="#minimal-but-extensible-setup-tool-for-the-prototyping-phase" title="Link to this section">&para;</a></h1>
-<p>Core Requirements:</p>
+<h1 id="adr-cf02-prompt-catalog-discovery-strategy">ADR-CF02: Prompt Catalog Discovery Strategy<a class="headerlink" href="#adr-cf02-prompt-catalog-discovery-strategy" title="Link to this section">&para;</a></h1>
+<p>Extends the ADR-CF01 three-layer configuration model to prompt catalog discovery, providing consistent runtime resolution for user prompts (production) and dev prompts (workspace development).</p>
+<ul>
+<li><strong>Status</strong>: Accepted</li>
+<li><strong>Date</strong>: 2026-02-05</li>
+<li><strong>Authors</strong>: Claude Opus 4.5</li>
+<li><strong>Owner</strong>: aaronksolomon</li>
+</ul>
+<hr />
+<h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
+<h3 id="current-state">Current State<a class="headerlink" href="#current-state" title="Link to this section">&para;</a></h3>
+<p>Prompt directory resolution is fragmented across multiple mechanisms:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Default Value</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__init__.py:59</code></td>
+<td><code>TNH_PROJECT_ROOT_DIR / "prompts"</code></td>
+<td>Hard-coded module constant</td>
+</tr>
+<tr>
+<td><code>GenAISettings.prompt_dir</code></td>
+<td>Falls back to <code>TNH_DEFAULT_PROMPT_DIR</code></td>
+<td>Env vars <code>PROMPT_DIR</code> or <code>TNH_PROMPT_DIR</code></td>
+</tr>
+<tr>
+<td><code>PromptSystemSettings.tnh_prompt_dir</code></td>
+<td><code>Path("prompts/")</code> (relative)</td>
+<td>Env var <code>TNH_PROMPT_DIR</code></td>
+</tr>
+<tr>
+<td>tnh-gen <code>config_loader</code></td>
+<td>Gets from <code>GenAISettings</code></td>
+<td>5-level precedence chain</td>
+</tr>
+</tbody>
+</table>
+<h3 id="problems">Problems<a class="headerlink" href="#problems" title="Link to this section">&para;</a></h3>
 <ol>
-<li>Configuration directory setup (~/.config/tnh_scholar)</li>
-<li>Basic .env file for API keys</li>
-<li>Pattern directory preparation</li>
-<li>Simple validation checks</li>
+<li>
+<p><strong>Hard-coded repo path</strong>: <code>TNH_DEFAULT_PROMPT_DIR</code> in <code>__init__.py</code> points to <code>&lt;repo&gt;/prompts/</code>, which fails when tnh-scholar is installed as a package (no repo structure).</p>
+</li>
+<li>
+<p><strong>Relative path ambiguity</strong>: <code>PromptSystemSettings</code> defaults to <code>Path("prompts/")</code> - behavior depends on current working directory.</p>
+</li>
+<li>
+<p><strong>No user vs dev distinction</strong>: No clean separation between:</p>
+</li>
+<li><strong>User prompts</strong>: Personal, persistent, lives in <code>~/.config/tnh-scholar/prompts/</code></li>
+<li>
+<p><strong>Dev prompts</strong>: Workspace-local, cloned from <code>tnh-prompts</code> repo for active development</p>
+</li>
+<li>
+<p><strong>Inconsistent with registry pattern</strong>: TNHContext implements three-layer discovery for registries (<code>RegistryPathBuilder</code>), but prompts don't use this established pattern.</p>
+</li>
+<li>
+<p><strong>Import-time side effects</strong>: <code>__init__.py</code> raises <code>FileNotFoundError</code> at import if expected paths don't exist, breaking package installs.</p>
+</li>
 </ol>
-<h2 id="high-level-design-structure-iteration-1">high-level design structure (iteration 1)<a class="headerlink" href="#high-level-design-structure-iteration-1" title="Link to this section">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>tnh-setup/
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── __init__.py
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── setup.py           # Main CLI entry point
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── config.py          # Configuration handling
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── patterns.py        # Pattern management 
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└── validators.py      # Basic validation
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Key Functions:
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>1. Directory Setup
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>   - Create ~/.config/tnh_scholar
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>   - Create patterns subdirectory
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>   - Create logs subdirectory
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>2. Environment Setup
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>   - Create/update .env file
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>   - Basic OpenAI key validation
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>   - (Optional) Google Cloud key setup
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>3. Pattern Setup
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>   - Create patterns directory
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>   - Minimal set of default patterns
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>   - (Future) Pattern repository integration
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>4. Validation
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>   - Check directory permissions
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>   - Verify API key format
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>   - Test pattern loading
+<h3 id="constraints">Constraints<a class="headerlink" href="#constraints" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Prompts are <strong>not tracked in tnh-scholar's git repo</strong>. They live in a separate <a href="https://github.com/aaronksolomon/patterns"><code>tnh-prompts</code></a> repository.</li>
+<li>End users install prompts via <code>tnh-setup</code>, which clones to <code>~/.config/tnh-scholar/prompts/</code>.</li>
+<li>Developers clone <code>tnh-prompts</code> into their workspace's <code>prompts/</code> directory for active development.</li>
+<li>A minimal fallback set should ship with the package for basic functionality.</li>
+</ul>
+<hr />
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
+<h3 id="1-extend-tnhcontext-with-prompt-path-discovery">1. Extend TNHContext with Prompt Path Discovery<a class="headerlink" href="#1-extend-tnhcontext-with-prompt-path-discovery" title="Link to this section">&para;</a></h3>
+<p>Add <code>PromptPathBuilder</code> to <code>src/tnh_scholar/configuration/context.py</code>, following the same pattern as <code>RegistryPathBuilder</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────────────────┐
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                     PROMPT DIRECTORY PRECEDENCE                     │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├─────────────────────────────────────────────────────────────────────┤
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│ 1. Workspace prompts  │ &lt;workspace&gt;/prompts/                        │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│    (dev use)          │ Discovered via TNHContext.workspace_root    │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│                       │ Clone of tnh-prompts repo for development   │
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├───────────────────────┼─────────────────────────────────────────────┤
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│ 2. User prompts       │ ~/.config/tnh-scholar/prompts/              │
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│    (production)       │ Installed via tnh-setup                     │
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│                       │ Standard location for end users             │
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>├───────────────────────┼─────────────────────────────────────────────┤
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│ 3. Built-in prompts   │ &lt;package&gt;/runtime_assets/prompts/           │
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│    (fallback)         │ Minimal set bundled with pip install        │
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│                       │ Ensures basic functionality always works    │
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>└───────────────────────┴─────────────────────────────────────────────┘
 </span></code></pre></div>
-<p>For prototyping, suggested implementation these core functions:</p>
-<ol>
-<li>Directory creation</li>
-<li>Basic .env file with OpenAI key</li>
-<li>Pattern directory preparation</li>
-<li>Simple CLI interface</li>
-</ol>
-<h2 id="high-level-design-structure-iteration-2">high-level design structure (iteration 2)<a class="headerlink" href="#high-level-design-structure-iteration-2" title="Link to this section">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>TNH-SETUP TOOL DESIGN
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>1. Core Functions
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>   - Create config directory (~/.config/tnh_scholar)
+<p><strong>Key methods to add to TNHContext</strong>:</p>
+<ul>
+<li><code>get_prompt_search_paths() -&gt; list[Path]</code>: Returns all valid prompt directories in precedence order</li>
+<li><code>get_primary_prompt_dir() -&gt; Path | None</code>: Returns highest-precedence directory that exists</li>
+</ul>
+<h3 id="2-remove-module-level-path-constants">2. Remove Module-Level Path Constants<a class="headerlink" href="#2-remove-module-level-path-constants" title="Link to this section">&para;</a></h3>
+<p>Eliminate from <code>src/tnh_scholar/__init__.py</code>:</p>
+<ul>
+<li><code>TNH_DEFAULT_PROMPT_DIR</code> - replace with lazy resolution via TNHContext</li>
+<li><code>TNH_CONFIG_DIR</code> - replace with <code>UserRootLocator().resolve()</code></li>
+<li><code>TNH_LOG_DIR</code> - derive from user root at runtime</li>
+</ul>
+<p>These constants violate the style guide's "no module-level constants" rule and bypass runtime discovery.</p>
+<h3 id="3-update-genaisettings-to-use-tnhcontext">3. Update GenAISettings to Use TNHContext<a class="headerlink" href="#3-update-genaisettings-to-use-tnhcontext" title="Link to this section">&para;</a></h3>
+<p>Replace hard-coded default with lazy resolution:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">GenAISettings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">prompt_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Resolved at runtime, not import time</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="n">validation_alias</span><span class="o">=</span><span class="n">AliasChoices</span><span class="p">(</span><span class="s2">&quot;PROMPT_DIR&quot;</span><span class="p">,</span> <span class="s2">&quot;TNH_PROMPT_DIR&quot;</span><span class="p">),</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="p">)</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>   - Set up OpenAI API key in .env
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>   - Optional pattern download
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>2. User Flow
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>   A. Config Directory
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>      - Create ~/.config/tnh_scholar
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>      - Create logs subdirectory
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>   B. Environment Setup 
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>      - Prompt for OpenAI API key
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>      - Create/update .env file
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>   C. Pattern Setup (Optional)
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>      - Show confirmation message:
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>        &quot;Public pattern files (markdown templates) will be downloaded from:
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>         https://github.com/aaronksolomon/patterns 
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>         and installed to: ~/.config/tnh_scholar/patterns&quot;
-</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>
-</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>      - If confirmed, download and extract patterns
-</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>
-</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>3. Command Line Interface
-</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>
-</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>   tnh-setup [OPTIONS]
-</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>
-</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>   Options:
-</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>
-</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>   --skip-env        Skip API key setup
-</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>
-</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>   --skip-patterns   Skip pattern download
-</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>
-</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>4. Files Structure
-</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>
-</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>   setup/
-</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>
-</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>   ├── init.py
-</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>
-</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>   ├── setup.py      # Main CLI tool
-</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>
-</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>   └── download.py   # Pattern download function
-</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>
-</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>5. Dependencies
-</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>
-</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>   - click
-</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>
-</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>   - requests
-</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a>
-</span><span id="__span-1-63"><a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>   - python-dotenv
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">resolve_prompt_dir_default</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GenAISettings&quot;</span><span class="p">:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>            <span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.configuration.context</span><span class="w"> </span><span class="kn">import</span> <span class="n">TNHContext</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>            <span class="n">context</span> <span class="o">=</span> <span class="n">TNHContext</span><span class="o">.</span><span class="n">discover</span><span class="p">()</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">prompt_dir</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get_primary_prompt_dir</span><span class="p">()</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="k">return</span> <span class="bp">self</span>
 </span></code></pre></div>
+<h3 id="4-consolidate-promptsystemsettings">4. Consolidate PromptSystemSettings<a class="headerlink" href="#4-consolidate-promptsystemsettings" title="Link to this section">&para;</a></h3>
+<p>Align <code>PromptSystemSettings</code> with <code>GenAISettings</code> - either:
+- <strong>Option A</strong>: Deprecate <code>PromptSystemSettings.tnh_prompt_dir</code> in favor of <code>GenAISettings.prompt_dir</code>
+- <strong>Option B</strong>: Have <code>PromptSystemSettings</code> also use TNHContext for its default</p>
+<p>Recommendation: <strong>Option A</strong> - single source of truth for prompt directory in <code>GenAISettings</code>.</p>
+<h3 id="5-bundle-minimal-built-in-prompts">5. Bundle Minimal Built-in Prompts<a class="headerlink" href="#5-bundle-minimal-built-in-prompts" title="Link to this section">&para;</a></h3>
+<p>Create <code>src/tnh_scholar/runtime_assets/prompts/</code> with a minimal set of essential prompts:</p>
+<ul>
+<li><code>_catalog.yaml</code> (manifest)</li>
+<li>2-3 core prompts for basic tnh-gen functionality</li>
+</ul>
+<p>This ensures <code>pip install tnh-scholar</code> works out of the box without requiring <code>tnh-setup</code>.</p>
+<hr />
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Consistent discovery</strong>: Prompts use the same three-layer model as registries (ADR-CF01).</li>
+<li><strong>Package-installable</strong>: No hard-coded repo paths; works correctly with <code>pip install</code>.</li>
+<li><strong>Clean dev/user separation</strong>: Developers get workspace prompts; users get <code>~/.config</code> prompts.</li>
+<li><strong>No import-time failures</strong>: Path resolution happens lazily, not at module import.</li>
+<li><strong>Single source of truth</strong>: One mechanism for prompt directory resolution across all subsystems.</li>
+</ol>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>Migration effort</strong>: Existing code importing <code>TNH_DEFAULT_PROMPT_DIR</code> needs updating.</li>
+<li><strong>Lazy resolution complexity</strong>: First access to <code>GenAISettings().prompt_dir</code> triggers discovery.</li>
+<li><strong>Built-in prompts maintenance</strong>: Need to decide which prompts are "essential" for the fallback set.</li>
+</ol>
+<h3 id="neutral">Neutral<a class="headerlink" href="#neutral" title="Link to this section">&para;</a></h3>
+<ul>
+<li>tnh-gen's existing 5-level config precedence continues to work; this ADR affects the <em>default</em> value, not the override chain.</li>
+</ul>
+<hr />
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Link to this section">&para;</a></h2>
+<h3 id="a-keep-module-constants-make-them-optional">A. Keep Module Constants, Make Them Optional<a class="headerlink" href="#a-keep-module-constants-make-them-optional" title="Link to this section">&para;</a></h3>
+<p>Make <code>TNH_DEFAULT_PROMPT_DIR</code> gracefully handle missing directories instead of raising at import.</p>
+<p><strong>Rejected</strong>: Doesn't solve the package-install problem or provide three-layer discovery.</p>
+<h3 id="b-environment-variable-only">B. Environment Variable Only<a class="headerlink" href="#b-environment-variable-only" title="Link to this section">&para;</a></h3>
+<p>Require users to set <code>TNH_PROMPT_DIR</code> explicitly; no default discovery.</p>
+<p><strong>Rejected</strong>: Poor UX; <code>tnh-setup</code> already installs to a standard location that should "just work."</p>
+<h3 id="c-prompt-discovery-in-genaisettings-only">C. Prompt Discovery in GenAISettings Only<a class="headerlink" href="#c-prompt-discovery-in-genaisettings-only" title="Link to this section">&para;</a></h3>
+<p>Add discovery logic to <code>GenAISettings</code> without extending TNHContext.</p>
+<p><strong>Rejected</strong>: Duplicates the discovery pattern already established in TNHContext for registries. Violates DRY.</p>
+<hr />
+<h2 id="open-questions">Open Questions<a class="headerlink" href="#open-questions" title="Link to this section">&para;</a></h2>
+<ol>
+<li>
+<p><strong>Which prompts are "essential" for built-in fallback?</strong> Need to identify the minimal set that enables basic tnh-gen functionality without tnh-setup.</p>
+</li>
+<li>
+<p><strong>Should workspace prompts require a marker file?</strong> Currently workspace discovery uses <code>.tnh-scholar</code> or <code>.git</code> markers. Should prompt directories require explicit opt-in (e.g., <code>.tnh-prompts</code> marker)?</p>
+</li>
+<li>
+<p><strong>PromptSystemSettings deprecation timeline</strong>: When should we fully deprecate <code>PromptSystemSettings.tnh_prompt_dir</code> in favor of the unified approach?</p>
+</li>
+</ol>
+<hr />
+<h2 id="implementation-phases">Implementation Phases<a class="headerlink" href="#implementation-phases" title="Link to this section">&para;</a></h2>
+<h3 id="phase-1-extend-tnhcontext-high-priority">Phase 1: Extend TNHContext (High Priority)<a class="headerlink" href="#phase-1-extend-tnhcontext-high-priority" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Add <code>PromptPathBuilder</code> class to <code>context.py</code></li>
+<li>Add <code>get_prompt_search_paths()</code> and <code>get_primary_prompt_dir()</code> to <code>TNHContext</code></li>
+<li>Create <code>src/tnh_scholar/runtime_assets/prompts/</code> with minimal built-in set</li>
+<li>Unit tests for prompt path resolution</li>
+</ul>
+<h3 id="phase-2-migrate-genaisettings-high-priority">Phase 2: Migrate GenAISettings (High Priority)<a class="headerlink" href="#phase-2-migrate-genaisettings-high-priority" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Update <code>GenAISettings.prompt_dir</code> to use lazy TNHContext resolution</li>
+<li>Remove <code>from tnh_scholar import TNH_DEFAULT_PROMPT_DIR</code> dependency</li>
+<li>Update tnh-gen config_loader to work with new resolution</li>
+</ul>
+<h3 id="phase-3-clean-up-module-constants-medium-priority">Phase 3: Clean Up Module Constants (Medium Priority)<a class="headerlink" href="#phase-3-clean-up-module-constants-medium-priority" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Remove <code>TNH_DEFAULT_PROMPT_DIR</code>, <code>TNH_CONFIG_DIR</code>, <code>TNH_LOG_DIR</code> from <code>__init__.py</code></li>
+<li>Update all import sites across codebase</li>
+<li>Remove <code>FileNotFoundError</code> raises at import time</li>
+</ul>
+<h3 id="phase-4-consolidate-settings-classes-medium-priority">Phase 4: Consolidate Settings Classes (Medium Priority)<a class="headerlink" href="#phase-4-consolidate-settings-classes-medium-priority" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Deprecate <code>PromptSystemSettings.tnh_prompt_dir</code></li>
+<li>Document the unified prompt directory strategy</li>
+<li>Update CLI tools to use consistent resolution</li>
+</ul>
+<hr />
+<h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
+<ul>
+<li><a href="../adr-cf01-runtime-context-strategy/">ADR-CF01: Runtime Context &amp; Configuration Strategy</a> - Parent three-layer model</li>
+<li><a href="../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/">ADR-A08: Config/Params/Policy Taxonomy</a> - Settings vs Config distinction</li>
+<li><a href="https://github.com/aaronksolomon/patterns">tnh-prompts repository</a> - External prompt catalog</li>
+</ul>
 
 
 
