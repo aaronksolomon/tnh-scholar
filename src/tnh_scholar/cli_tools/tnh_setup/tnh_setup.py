@@ -4,6 +4,7 @@ import io
 import subprocess
 import sys
 import zipfile
+from dataclasses import dataclass
 from pathlib import Path
 
 import click
@@ -34,17 +35,32 @@ For OpenAI API access help: https://platform.openai.com/
 PROMPTS_URL = "https://github.com/aaronksolomon/patterns/archive/main.zip"
 
 
-def _user_root() -> Path:
-    return TNHContext.discover().user_root
+@dataclass(frozen=True)
+class SetupPaths:
+    """Resolved filesystem paths used by setup."""
 
-def create_config_dirs():
+    config_dir: Path
+    log_dir: Path
+    prompt_dir: Path
+
+
+def _build_setup_paths(context: TNHContext) -> SetupPaths:
+    user_root = context.user_root
+    return SetupPaths(
+        config_dir=user_root,
+        log_dir=user_root / "logs",
+        prompt_dir=user_root / "prompts",
+    )
+
+
+def create_config_dirs(paths: SetupPaths) -> None:
     """Create required configuration directories."""
-    config_dir = _user_root()
-    config_dir.mkdir(parents=True, exist_ok=True)
-    (config_dir / "logs").mkdir(exist_ok=True)
-    (config_dir / "prompts").mkdir(exist_ok=True)
+    paths.config_dir.mkdir(parents=True, exist_ok=True)
+    paths.log_dir.mkdir(exist_ok=True)
+    paths.prompt_dir.mkdir(exist_ok=True)
 
-def download_prompts() -> bool:
+
+def download_prompts(paths: SetupPaths) -> bool:
     """Download and extract prompt files from GitHub."""
     try:
         response = requests.get(PROMPTS_URL)
@@ -56,7 +72,7 @@ def download_prompts() -> bool:
             for zip_info in zip_ref.filelist:
                 if zip_info.filename.endswith('.md'):
                     rel_path = Path(zip_info.filename).relative_to(root_dir)
-                    target_path = _user_root() / "prompts" / rel_path
+                    target_path = paths.prompt_dir / rel_path
                     
                     target_path.parent.mkdir(parents=True, exist_ok=True)
                     
@@ -74,19 +90,21 @@ def download_prompts() -> bool:
 @click.option('--skip-ytdlp-runtime', is_flag=True, help='Skip yt-dlp runtime setup')
 def tnh_setup(skip_env: bool, skip_prompts: bool, skip_ytdlp_runtime: bool):
     """Set up TNH Scholar configuration."""
+    context = TNHContext.discover()
+    paths = _build_setup_paths(context)
     click.echo("TNH Setup")
     
     # Create config directories
-    create_config_dirs()
-    click.echo(f"Created config directory: {_user_root()}")
+    create_config_dirs(paths)
+    click.echo(f"Created config directory: {paths.config_dir}")
     
     # Prompt download
     if not skip_prompts and click.confirm(
                 "\nDownload prompt (markdown text) files from GitHub?\n"
                 f"Source: {PROMPTS_URL}\n"
-                f"Target: {_user_root() / 'prompts'}"
+                f"Target: {paths.prompt_dir}"
             ):
-        if download_prompts():
+        if download_prompts(paths):
             click.echo("Prompt files downloaded successfully")
         else:
             click.echo("Prompt download failed", err=True)

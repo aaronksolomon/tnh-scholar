@@ -35,8 +35,7 @@ class PromptDecision:
     no_input: bool
 
 
-def _build_config() -> SetupConfig:
-    context = TNHContext.discover()
+def _build_config(context: TNHContext) -> SetupConfig:
     return SetupConfig(
         prompts_url="https://github.com/aaronksolomon/patterns/archive/main.zip",
         config_dir=context.user_root,
@@ -298,7 +297,8 @@ def tnh_setup(
     no_input: bool = typer.Option(False, help="Fail if a prompt would be required."),
 ) -> None:
     """Set up TNH Scholar configuration."""
-    config = _build_config()
+    context = TNHContext.discover()
+    config = _build_config(context)
     decision = _build_decision(
         skip_env=skip_env,
         skip_prompts=skip_prompts,

@@ -177,9 +177,7 @@ class PromptPathBuilder:
         return [path for path in paths if path.is_dir()]
 
     def primary(self) -> Path | None:
-        for path in self.build():
-            return path
-        return None
+        return next((path for path in self.build()), None)
 
     def _workspace_path(self) -> Path:
         return self._context.workspace_root / "prompts"
