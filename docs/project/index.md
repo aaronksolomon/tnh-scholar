@@ -1,10 +1,10 @@
 ---
 title: "Project"
 description: "Table of contents for project"
-owner: "Project Leadership"
-author: "Docs Automation"
-status: current
-created: "2025-12-11"
+owner: ""
+author: ""
+status: processing
+created: "2026-02-09"
 auto_generated: true
 ---
 
@@ -14,15 +14,15 @@ auto_generated: true
 
 <!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
-**[conceptual-architecture](conceptual-architecture.md)**
+**[Conceptual Architecture of TNH-Scholar](conceptual-architecture.md)** - High-level, implementation-agnostic view of TNH-Scholar’s layers, abstractions, and how they interact.
 
-**[future-directions](future-directions.md)**
+**[Future Directions of TNH-Scholar](future-directions.md)** - Blue-sky exploration of potential long-term evolutions of TNH-Scholar built on the project’s philosophy and architecture.
 
-**[philosophy](philosophy.md)**
+**[TNH-Scholar Project Philosophy](philosophy.md)** - Foundational philosophy guiding TNH-Scholar’s conceptual, ethical, and methodological approach.
 
-**[principles](principles.md)**
+**[TNH-Scholar Project Principles](principles.md)** - Guiding principles, values, and constraints for design and engineering decisions in TNH-Scholar.
 
-**[vision](vision.md)**
+**[TNH-Scholar Project Vision](vision.md)** - North star for TNH-Scholar: purpose, scope, aspirations, and long-term directions.
 
 ---
 

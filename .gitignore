@@ -51,6 +51,8 @@ output_data/
 
 # prompts:
 prompts/
+!src/tnh_scholar/runtime_assets/prompts/
+!src/tnh_scholar/runtime_assets/prompts/**
 
 # json files:
 *.json

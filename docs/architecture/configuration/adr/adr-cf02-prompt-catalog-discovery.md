@@ -3,7 +3,7 @@ title: "ADR-CF02: Prompt Catalog Discovery Strategy"
 description: "Extends TNHContext three-layer model to prompt catalog path resolution, replacing hard-coded module constants."
 owner: "aaronksolomon"
 author: "Claude Opus 4.5"
-status: proposed
+status: accepted
 created: "2026-02-05"
 related_adrs: ["adr-cf01-runtime-context-strategy.md", "adr-a08-config-params-policy-taxonomy.md"]
 ---
@@ -12,7 +12,7 @@ related_adrs: ["adr-cf01-runtime-context-strategy.md", "adr-a08-config-params-po
 
 Extends the ADR-CF01 three-layer configuration model to prompt catalog discovery, providing consistent runtime resolution for user prompts (production) and dev prompts (workspace development).
 
-- **Status**: Proposed
+- **Status**: Accepted
 - **Date**: 2026-02-05
 - **Authors**: Claude Opus 4.5
 - **Owner**: aaronksolomon

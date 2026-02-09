@@ -3,8 +3,8 @@ title: "Setup Tnh"
 description: "Table of contents for architecture/setup-tnh"
 owner: ""
 author: ""
-status: current
-created: "2025-12-11"
+status: processing
+created: "2026-02-09"
 auto_generated: true
 ---
 

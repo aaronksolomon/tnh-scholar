@@ -39,8 +39,8 @@ import click
 from dotenv import load_dotenv
 from pydantic import ValidationError
 
-from tnh_scholar import TNH_LOG_DIR
 from tnh_scholar.audio_processing import DiarizationConfig
+from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.logging_config import get_child_logger, setup_logging
 from tnh_scholar.utils import TimeMs, ensure_directory_exists
 from tnh_scholar.video_processing import DLPDownloader, get_youtube_urls_from_csv
@@ -51,7 +51,10 @@ from .transcription_pipeline import TranscriptionPipeline
 from .version_check import check_ytd_version
 
 load_dotenv()
-setup_logging(log_filepath=TNH_LOG_DIR / "audio_transcribe.log", log_level=logging.INFO)
+setup_logging(
+    log_filepath=TNHContext.discover().user_root / "logs" / "audio_transcribe.log",
+    log_level=logging.INFO,
+)
 logger = get_child_logger(__name__)
 
 DEFAULT_OUTPUT_PATH = "./audio_transcriptions/transcript.txt"

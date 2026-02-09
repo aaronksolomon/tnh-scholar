@@ -3,8 +3,8 @@ title: "Adr"
 description: "Table of contents for architecture/docs-system/adr"
 owner: ""
 author: ""
-status: current
-created: "2025-12-11"
+status: processing
+created: "2026-02-09"
 auto_generated: true
 ---
 
@@ -20,7 +20,7 @@ auto_generated: true
 
 **[ADR-DD03: Pattern to Prompt Terminology Standardization](adr-dd03-pattern-to-prompt.md)** - Standardizes documentation terminology from 'Pattern' to 'Prompt' to align with industry conventions and gen-ai-service refactoring.
 
-**[adr-dd03-phase1-punchlist](adr-dd03-phase1-punchlist.md)**
+**[ADR-DD03: Phase 1 Execution Punch List](adr-dd03-phase1-punchlist.md)** - Pre-merge checklist to complete Pattern→Prompt terminology updates and related navigation changes.
 
 ---
 

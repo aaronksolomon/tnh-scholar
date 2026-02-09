@@ -3,8 +3,8 @@ title: "Adr"
 description: "Table of contents for architecture/gen-ai-service/adr"
 owner: ""
 author: ""
-status: current
-created: "2025-12-11"
+status: processing
+created: "2026-02-09"
 auto_generated: true
 ---
 
@@ -29,6 +29,10 @@ auto_generated: true
 **[ADR-A13: Migrate All OpenAI Interactions to GenAIService](adr-a13-migrate-openai-to-genaiservice.md)** - Retires the legacy OpenAI client and standardizes every caller on the typed GenAI Service pipeline.
 
 **[ADR-A14: File-Based Registry System for Provider Metadata](adr-a14-file-based-registry-system.md)** - Establishes a JSONC-based registry system for model capabilities, pricing, and provider metadata with auto-update mechanisms, aligned with VS Code's native configuration format.
+
+**[ADR-A14.1: Registry Staleness Detection and User Warnings](adr-a14.1-registry-staleness-detection.md)** - Implements staleness detection for OpenAI pricing data with configurable warnings and CLI tooling
+
+**[ADR-A15: Thread Safety and Rate Limiting](adr-a15-thread-safety-rate-limiting.md)** - Implements thread-safe GenAIService operations and provider-aware rate limiting for concurrent and batch processing scenarios.
 
 ---
 

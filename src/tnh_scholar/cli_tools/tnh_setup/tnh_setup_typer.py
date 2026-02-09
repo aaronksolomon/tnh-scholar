@@ -9,8 +9,8 @@ import requests
 import typer
 from dotenv import load_dotenv
 
-from tnh_scholar import TNH_CONFIG_DIR, TNH_DEFAULT_PROMPT_DIR, TNH_LOG_DIR
 from tnh_scholar.cli_tools.tnh_setup.ui import SetupSummaryItem, SetupUI
+from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.utils.validate import check_openai_env
 from tnh_scholar.video_processing.yt_environment import YTDLPEnvironmentInspector
 
@@ -35,12 +35,12 @@ class PromptDecision:
     no_input: bool
 
 
-def _build_config() -> SetupConfig:
+def _build_config(context: TNHContext) -> SetupConfig:
     return SetupConfig(
         prompts_url="https://github.com/aaronksolomon/patterns/archive/main.zip",
-        config_dir=TNH_CONFIG_DIR,
-        log_dir=TNH_LOG_DIR,
-        prompt_dir=TNH_DEFAULT_PROMPT_DIR,
+        config_dir=context.user_root,
+        log_dir=context.user_root / "logs",
+        prompt_dir=context.user_root / "prompts",
     )
 
 
@@ -297,7 +297,8 @@ def tnh_setup(
     no_input: bool = typer.Option(False, help="Fail if a prompt would be required."),
 ) -> None:
     """Set up TNH Scholar configuration."""
-    config = _build_config()
+    context = TNHContext.discover()
+    config = _build_config(context)
     decision = _build_decision(
         skip_env=skip_env,
         skip_prompts=skip_prompts,
