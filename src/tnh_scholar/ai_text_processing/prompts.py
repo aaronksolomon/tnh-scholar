@@ -8,13 +8,12 @@ from pathlib import Path
 from typing import Any, Dict, Iterator, List, NewType, Optional, Tuple, Union
 
 import yaml
-from dotenv import load_dotenv
 from git import Actor, Commit, Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError
 from jinja2 import Environment, StrictUndefined, TemplateError
 from jinja2.meta import find_undeclared_variables
 
-from tnh_scholar import TNH_DEFAULT_PROMPT_DIR
+from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils.file_utils import read_str_from_file, write_str_to_file
 
@@ -967,12 +966,10 @@ class LocalPromptManager:
         """
         if self._prompt_manager is None:  # type: ignore
             try:
-                load_dotenv()
-                if prompt_path_name := os.getenv("TNH_PROMPT_DIR"):
-                    prompt_dir = Path(prompt_path_name)
-                    logger.debug(f"prompt dir: {prompt_path_name}")
-                else:
-                    prompt_dir = TNH_DEFAULT_PROMPT_DIR
+                settings = GenAISettings()
+                prompt_dir = settings.prompt_dir
+                if prompt_dir is None:
+                    raise RuntimeError("Prompt directory could not be resolved.")
                 self._prompt_manager = PromptCatalog(prompt_dir)
             except ImportError as err:
                 raise RuntimeError(

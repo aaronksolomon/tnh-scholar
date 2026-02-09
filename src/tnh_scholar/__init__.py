@@ -50,18 +50,10 @@ from pathlib import Path
 __version__ = "0.3.1"
 
 # Dynamically determine and set up paths for the project
-TNH_CONFIG_DIR = Path.home() / ".config" / "tnh-scholar"
 TNH_ROOT_SRC_DIR = Path(__file__).resolve().parent
 TNH_PROJECT_ROOT_DIR = (
     TNH_ROOT_SRC_DIR.resolve().parent.parent
 )  # always assume structure is: root_dir/src/TNH_BASE_DIR
 TNH_CLI_TOOLS_DIR = TNH_ROOT_SRC_DIR / "cli_tools"
-TNH_DEFAULT_PROMPT_DIR = TNH_PROJECT_ROOT_DIR / "prompts"
-TNH_LOG_DIR = TNH_CONFIG_DIR / "logs"
 
 TNH_METADATA_PROCESS_FIELD = "tnh_processing"
-
-if not TNH_ROOT_SRC_DIR.exists():
-    raise FileNotFoundError(f"Base directory {TNH_ROOT_SRC_DIR} does not exist.")
-if not TNH_CLI_TOOLS_DIR.exists():
-    raise FileNotFoundError(f"CLI tools directory {TNH_CLI_TOOLS_DIR} does not exist.")

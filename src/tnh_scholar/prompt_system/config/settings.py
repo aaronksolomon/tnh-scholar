@@ -14,7 +14,8 @@ class PromptSystemSettings(BaseSettings):
         extra="ignore",
     )
 
-    tnh_prompt_dir: Path = Path("prompts/")
+    # Deprecated: prompt directory is resolved via GenAISettings/TNHContext (ADR-CF02).
+    tnh_prompt_dir: Path | None = None
     default_validation_mode: str = "strict"
     cache_enabled: bool = True
     cache_ttl_seconds: int = 300
@@ -24,4 +25,3 @@ class PromptSystemSettings(BaseSettings):
     def from_env(cls) -> "PromptSystemSettings":
         """Factory for consistency with other settings objects."""
         return cls()
-

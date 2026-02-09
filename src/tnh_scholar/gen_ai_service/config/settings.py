@@ -22,8 +22,6 @@ from pathlib import Path
 from pydantic import AliasChoices, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# We use the default prompt directory for TNH Scholar.
-from tnh_scholar import TNH_DEFAULT_PROMPT_DIR
 from tnh_scholar.exceptions import ConfigurationError
 
 
@@ -88,10 +86,20 @@ class GenAISettings(BaseSettings):
     # Env → field mapping:
     # - TNH_PROMPT_DIR (project-wide)
     # - PROMPT_DIR (generic)
-    prompt_dir: Path = Field(
-        default=TNH_DEFAULT_PROMPT_DIR,
+    prompt_dir: Path | None = Field(
+        default=None,
         validation_alias=AliasChoices("PROMPT_DIR", "TNH_PROMPT_DIR"),
     )
+
+    @model_validator(mode="after")
+    def resolve_prompt_dir_default(self) -> "GenAISettings":
+        """Resolve prompt directory defaults via runtime context discovery."""
+        if self.prompt_dir is None:
+            from tnh_scholar.configuration.context import TNHContext
+
+            context = TNHContext.discover()
+            self.prompt_dir = context.get_primary_prompt_dir()
+        return self
 
     @property
     def default_prompt_dir(self) -> Path | None:

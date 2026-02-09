@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 
 PROMPT_ENV_VARS = ("PROMPT_DIR", "TNH_PROMPT_DIR")
@@ -22,7 +23,7 @@ def test_settings_prompt_dir_aliases(env_var: str, tmp_path: Path, monkeypatch: 
     alias_dir.mkdir()
     monkeypatch.setenv(env_var, str(alias_dir))
 
-    settings = GenAISettings()
+    settings = GenAISettings(_env_file=None)
 
     assert settings.prompt_dir == alias_dir
     assert settings.default_prompt_dir == alias_dir
@@ -38,10 +39,39 @@ def test_settings_alias_precedence(tmp_path: Path, monkeypatch: pytest.MonkeyPat
     monkeypatch.setenv("PROMPT_DIR", str(preferred))
     monkeypatch.setenv("TNH_PROMPT_DIR", str(fallback))
 
-    settings = GenAISettings()
+    settings = GenAISettings(_env_file=None)
     assert settings.prompt_dir == preferred
 
     # Removing the higher-priority alias should expose the next one.
     monkeypatch.delenv("PROMPT_DIR", raising=False)
-    settings = GenAISettings()
+    settings = GenAISettings(_env_file=None)
     assert settings.prompt_dir == fallback
+
+
+def test_settings_prompt_dir_defaults_to_context(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace_root = tmp_path / "workspace"
+    user_root = tmp_path / "user"
+    builtin_root = tmp_path / "builtin"
+
+    (workspace_root / "prompts").mkdir(parents=True)
+    (user_root / "prompts").mkdir(parents=True)
+    (builtin_root / "prompts").mkdir(parents=True)
+
+    context = TNHContext(
+        builtin_root=builtin_root,
+        workspace_root=workspace_root,
+        user_root=user_root,
+        correlation_id="corr",
+        session_id="sess",
+    )
+
+    monkeypatch.setattr(
+        TNHContext,
+        "discover",
+        classmethod(lambda cls, **kwargs: context),
+    )
+
+    settings = GenAISettings(_env_file=None)
+    assert settings.prompt_dir == workspace_root / "prompts"
