@@ -1200,13 +1200,16 @@ This strategy ADR establishes the foundation. Implementation details are capture
 
 | ADR | Title | Scope |
 |-----|-------|-------|
-| **ADR-OA03.3** | Codex CLI Phase-0 Protocol Spike | CLI-based Codex invocation; supersedes API runner |
-| **ADR-OA02** | Phase 0 Protocol Spike (Revised) | stdout/stderr capture + artifact contract for Claude Code + Codex CLI |
-| **ADR-OA03** | Workflow Schema + Opcode Semantics | YAML format, opcode definitions, ROLLBACK semantics |
-| **ADR-OA04** | Prompt Library Specification | Prompt artifact format, versioning, template rendering |
-| **ADR-OA05** | Planner Evaluator Contract | Input/output schemas, contradiction checks, provenance window |
-| **ADR-OA06** | Diff-Policy + Safety Rails | Allowed/forbidden paths, dependency changes, escalation rules |
-| **ADR-OA07** | Prompt Regression Testing Harness | Golden runs, classification drift detection (future) |
+| **ADR-OA02** | Phase 0 Protocol Spike | Headless capture contract and safety controls |
+| **ADR-OA03** | Agent Runner Architecture | Kernel + adapter pattern, runner contracts |
+| **ADR-OA03.1** | Claude Code Runner | `--print` mode, stdout/stderr-first capture |
+| **ADR-OA03.2** | Codex Runner (API) | Responses API approach (historical) |
+| **ADR-OA03.3** | Codex CLI Runner | CLI-based execution via `codex exec`; supersedes OA03.2 |
+| **ADR-OA04** | Workflow Schema + Opcode Semantics | YAML format, opcode definitions, ROLLBACK semantics |
+| **ADR-OA05** | Prompt Library Specification | Prompt artifact format, versioning, template rendering |
+| **ADR-OA06** | Planner Evaluator Contract | Input/output schemas, contradiction checks, provenance window |
+| **ADR-OA07** | Diff-Policy + Safety Rails | Allowed/forbidden paths, dependency changes, escalation rules |
+| **ADR-OA08** | Prompt Regression Testing Harness | Golden runs, classification drift detection (future) |
 
 ### Historical / Superseded
 
