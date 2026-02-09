@@ -1,10 +1,10 @@
 ---
 title: "Development"
 description: "Table of contents for development"
-owner: "Engineering"
-author: "Docs Automation"
-status: current
-created: "2025-12-11"
+owner: ""
+author: ""
+status: processing
+created: "2026-02-09"
 auto_generated: true
 ---
 
@@ -33,6 +33,8 @@ auto_generated: true
 **[TNH Scholar Style Guide](style-guide.md)** - Code formatting, naming conventions, and Python standards for TNH Scholar development.
 
 **[TNH Scholar System Design](system-design.md)** - High-level system design describing the cyclical AI processing architecture powering TNH Scholar.
+
+**[yt-dlp Ops Check](yt-dlp-ops-check.md)** - Local cron workflow for monthly yt-dlp integration checks.
 
 **[Incident Reports](incident-reports/index.md)** - Table of contents for development/incident-reports
 

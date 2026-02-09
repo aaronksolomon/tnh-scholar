@@ -3,8 +3,8 @@ title: "2025 12 07 Reference"
 description: "Table of contents for development/incident-reports/2025-12-07-reference"
 owner: ""
 author: ""
-status: current
-created: "2025-12-11"
+status: processing
+created: "2026-02-09"
 auto_generated: true
 ---
 
@@ -14,11 +14,11 @@ auto_generated: true
 
 <!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
-**[forensic-analysis](forensic-analysis.md)**
+**[Forensic Analysis: December 7, 2025 Git Data Loss Incident](forensic-analysis.md)** - Post-incident analysis detailing the stale-branch reset that temporarily orphaned prompt system work and the safeguards required to prevent recurrence.
 
 **[Implementation Summary: Git Safety Improvements](implementation-summary.md)** - Summary of remediation work completed after the 2025-12-07 git recovery incident.
 
-**[incident-report-updates](incident-report-updates.md)**
+**[Proposed Updates to Incident Report](incident-report-updates.md)** - Recommended edits to the December 7, 2025 incident report to capture the stale branch reset root cause and updated safeguards.
 
 ---
 

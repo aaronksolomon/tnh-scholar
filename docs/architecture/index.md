@@ -3,8 +3,8 @@ title: "Architecture"
 description: "Table of contents for architecture"
 owner: ""
 author: ""
-status: current
-created: "2025-12-11"
+status: processing
+created: "2026-02-09"
 auto_generated: true
 ---
 
@@ -36,9 +36,11 @@ auto_generated: true
 
 **[Prompt System](prompt-system/index.md)** - Table of contents for architecture/prompt-system
 
+**[Provenance & Tracing Architecture](provenance/index.md)** - Cross-cutting infrastructure for tracking data lineage, request tracing, and reproducibility across TNH Scholar
+
 **[Setup Tnh](setup-tnh/index.md)** - Table of contents for architecture/setup-tnh
 
-**[TNH-Gen CLI](tnh-gen/index.md)** - Unified command-line interface for TNH Scholar GenAI operations
+**[TNH-Gen CLI Architecture](tnh-gen/index.md)** - Unified command-line interface for TNH Scholar GenAI operations
 
 **[Transcription](transcription/index.md)** - Table of contents for architecture/transcription
 

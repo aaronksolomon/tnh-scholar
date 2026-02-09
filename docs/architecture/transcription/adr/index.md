@@ -3,8 +3,8 @@ title: "Adr"
 description: "Table of contents for architecture/transcription/adr"
 owner: ""
 author: ""
-status: current
-created: "2025-12-11"
+status: processing
+created: "2026-02-09"
 auto_generated: true
 ---
 

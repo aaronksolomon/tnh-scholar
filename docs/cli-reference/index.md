@@ -3,8 +3,8 @@ title: "CLI Reference"
 description: "Table of contents for cli-reference"
 owner: ""
 author: ""
-status: current
-created: "2025-12-11"
+status: processing
+created: "2026-02-09"
 auto_generated: true
 ---
 
@@ -26,9 +26,9 @@ auto_generated: true
 
 **[srt-translate](srt-translate.md)** - Translate SRT subtitle files while preserving timecodes, using TNH Scholar translation patterns.
 
-**[tnh-gen](tnh-gen.md)** - User-facing reference for the `tnh-gen` CLI covering commands, options, and example workflows.
+**[tnh-gen](tnh-gen.md)** - Complete reference for the tnh-gen CLI - TNH Scholar's unified command-line interface for GenAI-powered text processing
 
-**[tnh-setup](tnh-setup.md)** - The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default patterns.
+**[tnh-setup](tnh-setup.md)** - The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default prompts.
 
 **[token-count](token-count.md)** - The `token-count` command calculates the OpenAI API token count for text input. This is useful for ensuring that a text is within maximum token limits for the API model and also for estimating API costs.
 
