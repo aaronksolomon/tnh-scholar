@@ -73,6 +73,7 @@ docs-generate: docs-validate
 	@echo "Generating documentation artifacts..."
 	$(POETRY) run python scripts/sync_root_docs.py
 	$(POETRY) run python scripts/generate_index_md.py
+	$(POETRY) run python scripts/generate_subdir_indexes.py
 	$(POETRY) run python scripts/generate_doc_index.py
 	$(POETRY) run python scripts/update_index_doc_map.py
 
