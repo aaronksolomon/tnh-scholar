@@ -8,6 +8,7 @@
 │   │   ├── AGENTLOG-01-01-26.md
 │   │   ├── AGENTLOG-01-09-26.md
 │   │   ├── AGENTLOG-01-19-26.md
+│   │   ├── AGENTLOG-02-08-26.md
 │   │   ├── AGENTLOG-12-07-25.md
 │   │   ├── AGENTLOG-12-10-25.md
 │   │   ├── AGENTLOG-12-11-25.md
@@ -30,15 +31,25 @@
 │   │   ├── agent-orchestration
 │   │   │   ├── adr
 │   │   │   │   ├── adr-oa01-agent-orchestration-strategy.md
+│   │   │   │   ├── adr-oa01.1-conductor-strategy-v2.md
 │   │   │   │   ├── adr-oa02-phase-0-protocol-spike.md
 │   │   │   │   ├── adr-oa03-agent-runner-architecture.md
 │   │   │   │   ├── adr-oa03.1-claude-code-runner.md
 │   │   │   │   ├── adr-oa03.2-codex-runner.md
+│   │   │   │   ├── adr-oa03.3-codex-cli-runner.md
+│   │   │   │   ├── adr-oa04-workflow-schema-opcode-semantics.md
+│   │   │   │   ├── adr-oa04.1-implementation-notes-mvp-buildout.md
+│   │   │   │   ├── adr-oa05-prompt-library-specification.md
+│   │   │   │   ├── adr-oa06-planner-evaluator-contract.md
 │   │   │   │   └── index.md
 │   │   │   ├── archive
+│   │   │   │   └── adr-oa03.3-codex-cli-spike-2026-01-29.md
+│   │   │   ├── index.md
 │   │   │   ├── notes
 │   │   │   │   ├── codex-harness-e2e-report.md
-│   │   │   │   └── codex-harness-spike-findings.md
+│   │   │   │   ├── codex-harness-spike-findings.md
+│   │   │   │   ├── index.md
+│   │   │   │   └── spike-testing-sequence.md
 │   │   │   └── system-design.md
 │   │   ├── ai-text-processing
 │   │   │   ├── adr
@@ -59,7 +70,8 @@
 │   │   ├── configuration
 │   │   │   ├── adr
 │   │   │   │   ├── adr-cf01-runtime-context-strategy.md
-│   │   │   │   └── adr-cf02-prompt-catalog-discovery.md
+│   │   │   │   ├── adr-cf02-prompt-catalog-discovery.md
+│   │   │   │   └── index.md
 │   │   │   ├── index.md
 │   │   │   └── tnh-configuration-management.md
 │   │   ├── docs-system
@@ -95,7 +107,8 @@
 │   │   ├── jvb-viewer
 │   │   │   ├── adr
 │   │   │   │   ├── adr-jv03-canonical-xml-ast.md
-│   │   │   │   └── adr-jvb01_as-built_jvb_viewer_v1.md
+│   │   │   │   ├── adr-jvb01_as-built_jvb_viewer_v1.md
+│   │   │   │   └── index.md
 │   │   │   ├── design
 │   │   │   │   ├── generate-md-translation-json-pairs.md
 │   │   │   │   ├── generate-md-vietnamese.md
@@ -145,12 +158,14 @@
 │   │   │   └── prompt-system-architecture.md
 │   │   ├── provenance
 │   │   │   ├── adr
-│   │   │   │   └── adr-pv01-provenance-tracing-strat.md
+│   │   │   │   ├── adr-pv01-provenance-tracing-strat.md
+│   │   │   │   └── index.md
 │   │   │   └── index.md
 │   │   ├── setup-tnh
 │   │   │   ├── adr
 │   │   │   │   ├── adr-st01-tnh-setup-runtime-hardening.md
-│   │   │   │   └── adr-st01.1-tnh-setup-ui-design.md
+│   │   │   │   ├── adr-st01.1-tnh-setup-ui-design.md
+│   │   │   │   └── index.md
 │   │   │   ├── design
 │   │   │   │   ├── index.md
 │   │   │   │   └── setup-tnh-minimal-extensible-tool.md
@@ -517,12 +532,31 @@
 │       │   │   │   └── workspace_locator.py
 │       │   │   ├── service.py
 │       │   │   └── tools.py
+│       │   ├── common
+│       │   │   ├── __init__.py
+│       │   │   ├── run_id.py
+│       │   │   └── time.py
+│       │   ├── conductor_mvp
+│       │   │   ├── __init__.py
+│       │   │   ├── adapters
+│       │   │   │   ├── __init__.py
+│       │   │   │   └── workflow_loader.py
+│       │   │   ├── models.py
+│       │   │   ├── protocols.py
+│       │   │   ├── providers
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── artifact_store.py
+│       │   │   │   ├── clock.py
+│       │   │   │   ├── run_id.py
+│       │   │   │   └── validation_runner.py
+│       │   │   └── service.py
 │       │   ├── EXPERIMENTAL.md
 │       │   └── spike
 │       │       ├── __init__.py
 │       │       ├── adapters
 │       │       │   ├── __init__.py
 │       │       │   ├── command_filter.py
+│       │       │   ├── noop_prompt_handler.py
 │       │       │   ├── prompt_handler.py
 │       │       │   ├── prompt_parser.py
 │       │       │   └── run_id.py
@@ -537,7 +571,8 @@
 │       │       │   ├── event_writer_factory.py
 │       │       │   ├── event_writer.py
 │       │       │   ├── git_workspace.py
-│       │       │   └── pty_agent_runner.py
+│       │       │   ├── pty_agent_runner.py
+│       │       │   └── subprocess_agent_runner.py
 │       │       └── service.py
 │       ├── ai_text_processing
 │       │   ├── __init__.py
@@ -795,6 +830,11 @@
 │       │   ├── parse_tag.py
 │       │   └── v2_cleaning_scripts.py
 │       ├── runtime_assets
+│       │   ├── prompts
+│       │   │   ├── _catalog.yaml
+│       │   │   ├── daily_guidance.md
+│       │   │   ├── summarize.md
+│       │   │   └── translate.md
 │       │   └── registries
 │       │       └── providers
 │       │           ├── openai.jsonc
@@ -848,6 +888,8 @@
 ├── tests
 │   ├── agent_orchestration
 │   │   ├── test_codex_harness_tools.py
+│   │   ├── test_conductor_mvp_kernel.py
+│   │   ├── test_spike_command_builder.py
 │   │   └── test_spike_command_filter.py
 │   ├── ai_text_processing
 │   │   └── test_text_object.py
@@ -864,6 +906,8 @@
 │   │   ├── test_tnh_gen.py
 │   │   ├── test_token_count.py
 │   │   └── test_yt_dlp_live.py
+│   ├── configuration
+│   │   └── test_prompt_discovery.py
 │   ├── fixtures
 │   │   └── yt_dlp
 │   │       ├── ttml
@@ -949,4 +993,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-211 directories, 739 files
+217 directories, 777 files

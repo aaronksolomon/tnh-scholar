@@ -28,12 +28,31 @@
     │   │   │   └── workspace_locator.py
     │   │   ├── service.py
     │   │   └── tools.py
+    │   ├── common
+    │   │   ├── __init__.py
+    │   │   ├── run_id.py
+    │   │   └── time.py
+    │   ├── conductor_mvp
+    │   │   ├── __init__.py
+    │   │   ├── adapters
+    │   │   │   ├── __init__.py
+    │   │   │   └── workflow_loader.py
+    │   │   ├── models.py
+    │   │   ├── protocols.py
+    │   │   ├── providers
+    │   │   │   ├── __init__.py
+    │   │   │   ├── artifact_store.py
+    │   │   │   ├── clock.py
+    │   │   │   ├── run_id.py
+    │   │   │   └── validation_runner.py
+    │   │   └── service.py
     │   ├── EXPERIMENTAL.md
     │   └── spike
     │       ├── __init__.py
     │       ├── adapters
     │       │   ├── __init__.py
     │       │   ├── command_filter.py
+    │       │   ├── noop_prompt_handler.py
     │       │   ├── prompt_handler.py
     │       │   ├── prompt_parser.py
     │       │   └── run_id.py
@@ -48,7 +67,8 @@
     │       │   ├── event_writer_factory.py
     │       │   ├── event_writer.py
     │       │   ├── git_workspace.py
-    │       │   └── pty_agent_runner.py
+    │       │   ├── pty_agent_runner.py
+    │       │   └── subprocess_agent_runner.py
     │       └── service.py
     ├── ai_text_processing
     │   ├── __init__.py
@@ -355,4 +375,4 @@
         ├── extract_tags.py
         └── xml_processing.py
 
-77 directories, 279 files
+81 directories, 295 files
