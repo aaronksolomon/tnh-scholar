@@ -118,9 +118,7 @@ class LocalValidationRunner(ValidationRunnerProtocol):
 
     def _load_harness_report(self, cwd: Path) -> HarnessReport | None:
         path = cwd / "harness_report.json"
-        if not path.exists():
-            return None
-        return self._parse_harness_report(path)
+        return self._parse_harness_report(path) if path.exists() else None
 
     def _parse_harness_report(self, path: Path) -> HarnessReport | None:
         try:
@@ -147,6 +145,4 @@ class LocalValidationRunner(ValidationRunnerProtocol):
         current: HarnessReport | None,
         new_value: HarnessReport | None,
     ) -> HarnessReport | None:
-        if new_value is None:
-            return current
-        return new_value
+        return current if new_value is None else new_value
