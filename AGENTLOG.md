@@ -114,3 +114,76 @@ Resumed agent orchestration work to validate a Codex CLI execution path and alig
 - `/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`
 - `/architecture/agent-orchestration/notes/spike-testing-sequence.md`
 - `SPIKE_REPORT.md`
+
+---
+
+## [2026-02-09 22:47 PST] Agent Orchestration MVP Kernel Round 1 + Active-Code Dedup
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: oa04-mvp-kernel-implementation-round1
+**Human Collaborator**: phapman
+
+### Context
+Implemented the first code draft of OA04/OA04.1 MVP workflow execution in a new non-spike package, then performed a follow-up dedup pass across active agent-orchestration code (excluding spike modules).
+
+### Key Decisions
+- **Object-service alignment**: New conductor MVP code follows typed models/protocols/service/providers/adapters layering.
+- **Golden safety enforcement split**:
+  - Weak pre-run requirement in workflow validation (presence/reachability of `GATE` when goldens may be proposed).
+  - Strong runtime enforcement in kernel transitions (no success-to-stop path while golden gate is pending).
+- **Dedup scope**: Reuse moved to `agent_orchestration/common` (not global `utils`) to keep shared behavior domain-local.
+
+### Work Completed
+- [x] Added `conductor_mvp` package with typed workflow/opcode models, kernel service, protocols, providers, and workflow loader adapter.
+- [x] Implemented static workflow validation constraints:
+  - unique/valid step graph
+  - evaluate route/allowed-next-step constraints
+  - reachability checks
+  - weak generative-golden gate requirement.
+- [x] Implemented deterministic kernel opcode execution for:
+  - `RUN_AGENT`
+  - `RUN_VALIDATION`
+  - `EVALUATE`
+  - `GATE`
+  - `ROLLBACK`
+  - `STOP`
+- [x] Implemented runtime golden gate enforcement (pending golden proposals must pass approved gate before success stop).
+- [x] Added local validation runner support for builtin and script validators with harness report parsing/artifact capture hooks.
+- [x] Added targeted tests for MVP kernel behavior (`tests/agent_orchestration/test_conductor_mvp_kernel.py`).
+- [x] Performed active-code dedup for clock/run-id logic between `codex_harness` and `conductor_mvp` via new shared `agent_orchestration/common` helpers.
+
+### Discoveries & Insights
+- Mypy in this repo reports imported modules in new packages as `Any` until broader package/type-check coverage is in place; provider wrappers were kept explicit and validated in focused checks.
+- Duplicate low-level providers existed only in active `codex_harness` + `conductor_mvp`; spike duplicates were intentionally left unchanged.
+
+### Files Modified/Created
+- `src/tnh_scholar/agent_orchestration/conductor_mvp/__init__.py`: New MVP package exports.
+- `src/tnh_scholar/agent_orchestration/conductor_mvp/models.py`: Typed workflow, route, step, and result models.
+- `src/tnh_scholar/agent_orchestration/conductor_mvp/protocols.py`: Kernel collaborator protocols.
+- `src/tnh_scholar/agent_orchestration/conductor_mvp/service.py`: Workflow validator + deterministic kernel executor.
+- `src/tnh_scholar/agent_orchestration/conductor_mvp/adapters/workflow_loader.py`: YAML-to-typed workflow loader.
+- `src/tnh_scholar/agent_orchestration/conductor_mvp/providers/artifact_store.py`: Run artifact storage provider.
+- `src/tnh_scholar/agent_orchestration/conductor_mvp/providers/validation_runner.py`: Local validator runner.
+- `src/tnh_scholar/agent_orchestration/conductor_mvp/providers/clock.py`: Uses shared time helper.
+- `src/tnh_scholar/agent_orchestration/conductor_mvp/providers/run_id.py`: Uses shared run-id helper.
+- `tests/agent_orchestration/test_conductor_mvp_kernel.py`: New kernel tests.
+- `src/tnh_scholar/agent_orchestration/common/__init__.py`: Shared helper exports.
+- `src/tnh_scholar/agent_orchestration/common/time.py`: Shared local/UTC time helpers.
+- `src/tnh_scholar/agent_orchestration/common/run_id.py`: Shared run-id formatter helper.
+- `src/tnh_scholar/agent_orchestration/codex_harness/providers/clock.py`: Rewired to shared time helper.
+- `src/tnh_scholar/agent_orchestration/codex_harness/providers/run_id.py`: Rewired to shared run-id helper.
+
+### Validation Performed
+- `poetry run ruff check src/tnh_scholar/agent_orchestration/conductor_mvp tests/agent_orchestration/test_conductor_mvp_kernel.py`
+- `poetry run pytest tests/agent_orchestration/test_conductor_mvp_kernel.py -q`
+- `poetry run mypy src/tnh_scholar/agent_orchestration/conductor_mvp tests/agent_orchestration/test_conductor_mvp_kernel.py`
+- `poetry run ruff check src/tnh_scholar/agent_orchestration/common src/tnh_scholar/agent_orchestration/codex_harness/providers/clock.py src/tnh_scholar/agent_orchestration/codex_harness/providers/run_id.py src/tnh_scholar/agent_orchestration/conductor_mvp/providers/clock.py src/tnh_scholar/agent_orchestration/conductor_mvp/providers/run_id.py`
+- `poetry run mypy src/tnh_scholar/agent_orchestration/common src/tnh_scholar/agent_orchestration/codex_harness/providers/clock.py src/tnh_scholar/agent_orchestration/codex_harness/providers/run_id.py src/tnh_scholar/agent_orchestration/conductor_mvp/providers/clock.py src/tnh_scholar/agent_orchestration/conductor_mvp/providers/run_id.py`
+- `poetry run pytest tests/agent_orchestration/test_codex_harness_tools.py tests/agent_orchestration/test_conductor_mvp_kernel.py -q`
+
+### Next Steps
+- [ ] Begin OA04.1 MVP sequence step for concrete workflow definitions and kernel wiring into CLI surface.
+- [ ] Add tests for workflow loader edge cases and planner/gate routing invariants.
+
+### Open Questions
+- None in this implementation round.

@@ -17,6 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Agent Orchestration MVP Kernel (WIP / Developer Preview, not production-ready)** (2026-02-08 to 2026-02-10)
+  - Added OA04/OA04.1-aligned deterministic kernel MVP package (workflow models, schema validation, opcode execution service, providers, adapters)
+  - Implemented MVP opcode flow support for `RUN_AGENT`, `RUN_VALIDATION`, `EVALUATE`, `GATE`, `ROLLBACK`, `STOP`
+  - Added weak pre-run + strong runtime golden-gate enforcement for generated/proposed golden paths
+  - Added local validation runner support for builtin/script validators with harness report handling
+  - Added initial kernel test coverage
+  - Added active-code dedup for orchestration clock/run-id behavior via `agent_orchestration/common` shared helpers (spike code unchanged)
+  - Scope note: merged incrementally for ongoing development; not yet fully operational end-to-end
+  - Files: `src/tnh_scholar/agent_orchestration/conductor_mvp/`, `src/tnh_scholar/agent_orchestration/common/`, `src/tnh_scholar/agent_orchestration/codex_harness/providers/clock.py`, `src/tnh_scholar/agent_orchestration/codex_harness/providers/run_id.py`, `tests/agent_orchestration/test_conductor_mvp_kernel.py`
+
 - **yt-dlp Operational Hardening** (2026-02-02 to 2026-02-07)
   - Added yt-dlp environment inspection and ops check services (`yt_environment.py`, `ops_check.py`)
   - Added yt-dlp runtime setup script with JS runtime and curl_cffi support (`scripts/setup_ytdlp_runtime.py`)
