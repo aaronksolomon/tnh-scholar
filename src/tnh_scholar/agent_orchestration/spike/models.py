@@ -17,8 +17,8 @@ class SpikeDefaults:
 
     runs_root: Path = Path(".tnh-gen/runs")
     work_branch_prefix: str = "work"
-    default_timeout_seconds: int = 900
-    default_idle_timeout_seconds: int = 60
+    default_timeout_seconds: int = 600
+    default_idle_timeout_seconds: int = 600
     default_transcript_tail_lines: int = 200
     default_heartbeat_interval_seconds: int = 10
     default_output_event_max_chars: int = 2000
@@ -89,6 +89,7 @@ class SpikeParams(BaseModel):
     agent: str
     task: str | None = None
     prompt_id: str | None = None
+    response_path: Path | None = None
     timeout_seconds: int = Field(default_factory=lambda: SpikeDefaults().default_timeout_seconds)
     idle_timeout_seconds: int = Field(default_factory=lambda: SpikeDefaults().default_idle_timeout_seconds)
     transcript_tail_lines: int = Field(default_factory=lambda: SpikeDefaults().default_transcript_tail_lines)
@@ -156,6 +157,7 @@ class RunArtifactPaths(BaseModel):
     transcript_normalized: Path
     stdout_log: Path
     stderr_log: Path
+    response_path: Path
     git_pre: Path
     git_post: Path
     diff_patch: Path

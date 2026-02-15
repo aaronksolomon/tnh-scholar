@@ -4,7 +4,7 @@ description: "Table of contents for architecture"
 owner: ""
 author: ""
 status: processing
-created: "2026-02-09"
+created: "2026-02-15"
 auto_generated: true
 ---
 
@@ -15,6 +15,8 @@ auto_generated: true
 <!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
 **[Architecture Overview](overview.md)** - High-level conceptual view of TNH Scholar's layered, object-service oriented architecture with links to detailed design documents and ADRs.
+
+**[Agent Orchestration](agent-orchestration/index.md)** - Table of contents for architecture/agent-orchestration
 
 **[Ai Text Processing](ai-text-processing/index.md)** - Table of contents for architecture/ai-text-processing
 

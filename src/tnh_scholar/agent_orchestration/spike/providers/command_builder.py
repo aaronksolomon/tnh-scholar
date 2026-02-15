@@ -24,9 +24,26 @@ class AgentCommandBuilder(AgentCommandBuilderProtocol):
         return ["claude", "--print", task]
 
     def _codex_command(self, params: SpikeParams) -> list[str]:
-        raise NotImplementedError("codex CLI support is not implemented for the spike")
+        task = self._require_task(params)
+        response_path = self._require_response_path(params)
+        return [
+            "codex",
+            "exec",
+            "--json",
+            "--output-last-message",
+            str(response_path),
+            "--full-auto",
+            "-m",
+            "gpt-5.2-codex",
+            task,
+        ]
 
     def _require_task(self, params: SpikeParams) -> str:
         if params.task is None or not params.task.strip():
             raise ValueError("task is required for the spike runner")
         return params.task
+
+    def _require_response_path(self, params: SpikeParams) -> str:
+        if params.response_path is None:
+            raise ValueError("response_path is required for Codex CLI runs")
+        return str(params.response_path)

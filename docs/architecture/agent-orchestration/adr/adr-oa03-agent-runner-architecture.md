@@ -3,9 +3,9 @@ title: "ADR-OA03: Agent Runner Architecture"
 description: "Phase 1 architecture for agent execution — kernel + adapter pattern based on OA02 spike learnings"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: paused
+status: accepted
 created: "2026-01-21"
-updated: "2026-01-22"
+updated: "2026-02-07"
 parent_adr: "adr-oa01-agent-orchestration-strategy.md"
 ---
 
@@ -13,7 +13,7 @@ parent_adr: "adr-oa01-agent-orchestration-strategy.md"
 
 Phase 1 architecture for agent execution — establishing a durable runner architecture that separates cross-agent invariants (kernel) from surface-specific mechanics (adapters), based on evidence gathered in OA02.
 
-- **Status**: Paused
+- **Status**: Accepted *(changed from Paused 2026-02-07 — see Addendum)*
 - **Type**: Architecture ADR
 - **Date**: 2026-01-21
 - **Owner**: Aaron Solomon
@@ -465,3 +465,11 @@ OA02's status remains `accepted` (spike completed successfully). OA03 does not s
 **Status changed**: `proposed` → `paused`
 
 Agent orchestration work paused pending evaluation of Codex interface build costs and alternative approaches. This ADR and its decimal sub-ADRs (OA03.1, OA03.2) preserved as design reference for future work.
+
+### Addendum 2026-02-07: Work Resumed
+
+**Status changed**: `paused` → `accepted`
+
+Orchestration work resumed. The availability of Codex CLI (`codex exec` with `--json` output) provides a headless execution model analogous to Claude Code's `--print` mode, removing the API-based constraints that blocked OA03.2.
+
+ADR-OA03.2 (API-based Codex Runner) is superseded by ADR-OA03.3 (CLI-based Codex Runner). See ADR-OA01 Addendum 2026-02-07 for revised roadmap.

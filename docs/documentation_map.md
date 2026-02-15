@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-02-09"
+created: "2026-02-15"
 auto_generated: true
 ---
 
@@ -91,11 +91,17 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-OA02: Phase 0 Protocol Layer Spike](/architecture/agent-orchestration/adr/adr-oa02-phase-0-protocol-spike.md)
 - [ADR-OA03.1: Claude Code Runner](/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md)
 - [ADR-OA03.2: Codex Runner](/architecture/agent-orchestration/adr/adr-oa03.2-codex-runner.md)
+- [ADR-OA03.3: Codex CLI Runner](/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md)
 - [ADR-OA03: Agent Runner Architecture](/architecture/agent-orchestration/adr/adr-oa03-agent-runner-architecture.md)
+- [ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md)
+- [ADR-OA04: Workflow Schema + Opcode Semantics](/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
+- [ADR-OA05: Prompt Library Specification](/architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification.md)
+- [ADR-OA06: Planner Evaluator Contract](/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md)
 - [ADR-OS01: Object-Service Design Architecture V3](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
 - [ADR-PP01: Rapid Prototype Versioning Policy](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md)
 - [ADR-PT03: Prompt System Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
 - [ADR-PT04: Prompt System Refactor Plan (Revised)](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- [ADR-PT05: Prompt Platform Strategy](/architecture/prompt-system/adr/adr-pt05-prompt-platform-strategy.md)
 - [ADR-PV01: Provenance & Tracing Infrastructure Strategy](/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md)
 - [ADR-ST01.1: tnh-setup UI Design](/architecture/setup-tnh/adr/adr-st01.1-tnh-setup-ui-design.md)
 - [ADR-ST01: tnh-setup Runtime Hardening](/architecture/setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening.md)
@@ -117,6 +123,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-YF00: Early yt-fetch Transcript Decisions (Historical)](/architecture/ytt-fetch/adr/adr-yf00-early-decisions.md)
 - [ADR-YF01: YouTube Transcript Source Handling](/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md)
 - [ADR-YF02: YouTube Transcript Format Selection](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)
+- [Agent Orchestration Spike Testing Sequence](/architecture/agent-orchestration/notes/spike-testing-sequence.md)
 - [Architecture Overview](/architecture/overview.md)
 - [Audio Chunking Algorithm Design Document](/architecture/transcription/design/audio-chunking-design.md)
 - [Codex Harness End-to-End Test Report](/architecture/agent-orchestration/notes/codex-harness-e2e-report.md)

@@ -4,16 +4,16 @@ description: "Strategic architecture for coordinating external AI agents (Claude
 type: "strategy"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: accepted
+status: superseded
 created: "2026-01-14"
-updated: "2026-01-19"
+updated: "2026-02-07"
 ---
 
 # ADR-OA01: TNH-Conductor — Provenance-Driven AI Workflow Coordination
 
 Strategic architecture for coordinating external AI agents through bounded, auditable, human-supervised workflows.
 
-- **Status**: Accepted
+- **Status**: Superseded *(by ADR-OA01.1, 2026-02-07 — see Addendum)*
 - **Type**: Strategy ADR
 - **Date**: 2026-01-14
 - **Owner**: Aaron Solomon
@@ -1141,3 +1141,55 @@ tnh-conductor enables semi-autonomous progress without surrendering control. It 
 ---
 
 *This ADR establishes the strategic foundation for TNH-Scholar's agent coordination system: a prompt-program runtime enabling bounded, auditable, provenance-driven development workflows.*
+
+---
+
+## Addendums
+
+### Addendum 2026-02-07: Revised ADR Roadmap
+
+**Author**: Claude Opus 4.5
+
+#### Context
+
+The original roadmap (lines 1090-1104) specified OA03 as "Workflow Schema + Opcode Semantics". During Phase 0 implementation, OA03 was repurposed as "Agent Runner Architecture" to establish the kernel + adapter pattern for multi-agent execution — a prerequisite for workflow execution.
+
+Additionally, the Codex CLI is now available (`codex exec` with `--json` output), providing a headless execution model analogous to Claude Code's `--print` mode. This unblocks Codex integration via CLI rather than the API-first approach that was suspended in OA03.2.
+
+#### Revised Roadmap
+
+| ADR | Title | Scope | Status |
+|-----|-------|-------|--------|
+| **OA02** | Phase 0 Protocol Spike | PTY capture, heartbeat, kill/reap, capture contract | WIP |
+| **OA03** | Agent Runner Architecture | Kernel + Adapter pattern, runner contracts | Accepted |
+| **OA03.1** | Claude Code Runner | `--print` mode, stdout capture | Accepted |
+| **OA03.2** | Codex Runner (API) | Responses API approach | Superseded |
+| **OA03.3** | Codex CLI Runner | CLI-based execution via `codex exec` | Proposed |
+| **OA04** | Workflow Schema + Opcode Semantics | YAML format, opcode definitions, ROLLBACK semantics | — |
+| **OA05** | Prompt Library Specification | Prompt artifact format, versioning, template rendering | — |
+| **OA06** | Planner Evaluator Contract | Input/output schemas, contradiction checks, provenance window | — |
+| **OA07** | Diff-Policy + Safety Rails | Allowed/forbidden paths, dependency changes, escalation rules | — |
+| **OA08** | Prompt Regression Testing | Golden runs, classification drift detection (future) | — |
+
+#### Key Changes
+
+1. **OA03 repurposed**: Agent Runner Architecture (kernel + adapter pattern) instead of Workflow Schema
+2. **OA03.x sub-ADRs**: Per-agent runner specifications (Claude Code, Codex API, Codex CLI)
+3. **OA03.2 superseded**: API-first Codex approach superseded by CLI-based OA03.3
+4. **Roadmap shifted**: Workflow Schema becomes OA04; subsequent ADRs renumbered
+
+#### Work Resumption
+
+Orchestration work paused on 2026-01-27 is hereby resumed. The availability of Codex CLI removes the primary blocker (API constraints) that led to suspension.
+
+### Addendum 2026-02-07: Superseded by ADR-OA01.1
+
+**Status changed**: `accepted` → `superseded`
+
+This ADR is superseded by [ADR-OA01.1: Conductor Strategy v2](/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md), which incorporates additional architectural insights:
+
+- Mario Zechner's "CLI tools over MCP" principle
+- stdout/stderr as primary capture (PTY demoted to fallback)
+- "CLI opcodes" framing for agent tooling
+
+OA01 remains a valid historical record of the original strategy.
