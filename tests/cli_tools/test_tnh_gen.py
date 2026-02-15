@@ -202,7 +202,9 @@ def test_list_includes_warning_for_legacy_prompt(tmp_path, monkeypatch):
     assert payload["count"] == 1
     warnings = payload["prompts"][0]["warnings"]
     assert warnings, "Expected warning for legacy prompt with missing metadata"
-    assert "Expected YAML frontmatter keys" in warnings[0]
+    assert "Expected" in warnings[0]
+    assert "prompt" in warnings[0]
+    assert "key" in warnings[0]
     assert "invalid-metadata" in payload["prompts"][0]["tags"]
     assert "[warn]" in result.stderr
 
