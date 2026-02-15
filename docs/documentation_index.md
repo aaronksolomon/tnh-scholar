@@ -4,7 +4,7 @@ description: "Complete searchable index of TNH Scholar documentation with metada
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-02-09"
+created: "2026-02-15"
 auto_generated: true
 ---
 
@@ -19,7 +19,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | Title | Description | Created | Path |
 | --- | --- | --- | --- |
 | [Configuration](/getting-started/configuration.md) | TNH Scholar requires some initial configuration to function properly. This guide covers the essential configuration steps and options. | 2025-02-01 | `docs/getting-started/configuration.md` |
-| [Getting Started](/getting-started/index.md) | Table of contents for getting-started | 2026-02-09 | `docs/getting-started/index.md` |
+| [Getting Started](/getting-started/index.md) | Table of contents for getting-started | 2026-02-15 | `docs/getting-started/index.md` |
 | [Installation](/getting-started/installation.md) | Install instructions for TNH Scholar, a Python package for text processing and analysis, using `pip`. | 2025-02-01 | `docs/getting-started/installation.md` |
 | [Quick Start Guide](/getting-started/quick-start-guide.md) | TNH Scholar provides powerful text processing capabilities through several command-line tools. This guide will help you get started with the basic workflows. | 2025-02-01 | `docs/getting-started/quick-start-guide.md` |
 
@@ -29,7 +29,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | --- | --- | --- | --- |
 | [Best Practices](/user-guide/best-practices.md) | This guide outlines recommended practices for using TNH Scholar effectively. | 2025-02-01 | `docs/user-guide/best-practices.md` |
 | [TNH Scholar Prompt System](/user-guide/prompt-system.md) | This document describes the TNH Scholar Prompt System (formerly called patterns). The system allows for template-based prompting of AI interactions, with version control and concurrent access management. | 2025-01-19 | `docs/user-guide/prompt-system.md` |
-| [User Guide](/user-guide/index.md) | Table of contents for user-guide | 2026-02-09 | `docs/user-guide/index.md` |
+| [User Guide](/user-guide/index.md) | Table of contents for user-guide | 2026-02-15 | `docs/user-guide/index.md` |
 | [User Guide Overview](/user-guide/overview.md) | Practical guide for using TNH Scholar as a tool user or workflow designer, covering main workflows and how the pieces fit together. | 2025-12-02 | `docs/user-guide/overview.md` |
 
 ## Project
@@ -38,8 +38,8 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | --- | --- | --- | --- |
 | [Conceptual Architecture of TNH-Scholar](/project/conceptual-architecture.md) | High-level, implementation-agnostic view of TNH-Scholar’s layers, abstractions, and how they interact. | 2025-12-11 | `docs/project/conceptual-architecture.md` |
 | [Future Directions of TNH-Scholar](/project/future-directions.md) | Blue-sky exploration of potential long-term evolutions of TNH-Scholar built on the project’s philosophy and architecture. | 2025-12-11 | `docs/project/future-directions.md` |
-| [Project](/project/index.md) | Table of contents for project | 2026-02-09 | `docs/project/index.md` |
-| [Repo Root](/project/repo-root/index.md) | Table of contents for project/repo-root | 2026-02-09 | `docs/project/repo-root/index.md` |
+| [Project](/project/index.md) | Table of contents for project | 2026-02-15 | `docs/project/index.md` |
+| [Repo Root](/project/repo-root/index.md) | Table of contents for project/repo-root | 2026-02-15 | `docs/project/repo-root/index.md` |
 | [TNH Scholar CHANGELOG](/project/repo-root/changelog.md) | Chronological log of notable TNH Scholar changes. | 2025-02-28 | `docs/project/repo-root/changelog.md` |
 | [TNH Scholar CONTRIBUTING](/project/repo-root/contributing-root.md) | TNH Scholar is rapidly evolving, but we strive for a predictable, reproducible development workflow. | 2024-10-21 | `docs/project/repo-root/contributing-root.md` |
 | [TNH Scholar README](/project/repo-root/repo-readme.md) | TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models. | 2024-10-21 | `docs/project/repo-root/repo-readme.md` |
@@ -63,7 +63,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | Title | Description | Created | Path |
 | --- | --- | --- | --- |
 | [audio-transcribe](/cli-reference/audio-transcribe.md) | Command-line tool for audio transcription tasks. | 2025-01-21 | `docs/cli-reference/audio-transcribe.md` |
-| [CLI Reference](/cli-reference/index.md) | Table of contents for cli-reference | 2026-02-09 | `docs/cli-reference/index.md` |
+| [CLI Reference](/cli-reference/index.md) | Table of contents for cli-reference | 2026-02-15 | `docs/cli-reference/index.md` |
 | [Command Line Tools Overview](/cli-reference/overview.md) | TNH Scholar provides a suite of command-line tools designed to work together for text processing. Each tool focuses on specific tasks while maintaining consistent interfaces and behavior. This overview introduces the available tools and their primary functions. | 2025-02-01 | `docs/cli-reference/overview.md` |
 | [json-to-srt](/cli-reference/json-to-srt.md) | Convert JSONL transcription output (from audio-transcribe) into SRT subtitle files. | 2025-12-10 | `docs/cli-reference/json-to-srt.md` |
 | [nfmt](/cli-reference/nfmt.md) | `nfmt`, a newline formatting utility, standardizes line endings and spacing in text files. | 2025-02-01 | `docs/cli-reference/nfmt.md` |
@@ -84,23 +84,23 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 
 | Title | Description | Created | Path |
 | --- | --- | --- | --- |
-| [Adr](/architecture/ai-text-processing/adr/index.md) | Table of contents for architecture/ai-text-processing/adr | 2026-02-09 | `docs/architecture/ai-text-processing/adr/index.md` |
-| [Adr](/architecture/object-service/adr/index.md) | Table of contents for architecture/object-service/adr | 2026-02-09 | `docs/architecture/object-service/adr/index.md` |
-| [Adr](/architecture/video-processing/adr/index.md) | Table of contents for architecture/video-processing/adr | 2026-02-09 | `docs/architecture/video-processing/adr/index.md` |
-| [Adr](/architecture/configuration/adr/index.md) | Table of contents for architecture/configuration/adr | 2026-02-09 | `docs/architecture/configuration/adr/index.md` |
-| [Adr](/architecture/project-policies/adr/index.md) | Table of contents for architecture/project-policies/adr | 2026-02-09 | `docs/architecture/project-policies/adr/index.md` |
-| [Adr](/architecture/gen-ai-service/adr/index.md) | Table of contents for architecture/gen-ai-service/adr | 2026-02-09 | `docs/architecture/gen-ai-service/adr/index.md` |
-| [Adr](/architecture/transcription/adr/index.md) | Table of contents for architecture/transcription/adr | 2026-02-09 | `docs/architecture/transcription/adr/index.md` |
-| [Adr](/architecture/setup-tnh/adr/index.md) | Table of contents for architecture/setup-tnh/adr | 2026-02-09 | `docs/architecture/setup-tnh/adr/index.md` |
-| [Adr](/architecture/prompt-system/adr/index.md) | Table of contents for architecture/prompt-system/adr | 2026-02-09 | `docs/architecture/prompt-system/adr/index.md` |
-| [Adr](/architecture/ytt-fetch/adr/index.md) | Table of contents for architecture/ytt-fetch/adr | 2026-02-09 | `docs/architecture/ytt-fetch/adr/index.md` |
-| [Adr](/architecture/agent-orchestration/adr/index.md) | Table of contents for architecture/agent-orchestration/adr | 2026-02-09 | `docs/architecture/agent-orchestration/adr/index.md` |
-| [Adr](/architecture/jvb-viewer/adr/index.md) | Table of contents for architecture/jvb-viewer/adr | 2026-02-09 | `docs/architecture/jvb-viewer/adr/index.md` |
-| [Adr](/architecture/provenance/adr/index.md) | Table of contents for architecture/provenance/adr | 2026-02-09 | `docs/architecture/provenance/adr/index.md` |
-| [Adr](/architecture/knowledge-base/adr/index.md) | Table of contents for architecture/knowledge-base/adr | 2026-02-09 | `docs/architecture/knowledge-base/adr/index.md` |
-| [Adr](/architecture/tnh-gen/adr/index.md) | Table of contents for architecture/tnh-gen/adr | 2026-02-09 | `docs/architecture/tnh-gen/adr/index.md` |
-| [Adr](/architecture/docs-system/adr/index.md) | Table of contents for architecture/docs-system/adr | 2026-02-09 | `docs/architecture/docs-system/adr/index.md` |
-| [Adr](/architecture/metadata/adr/index.md) | Table of contents for architecture/metadata/adr | 2026-02-09 | `docs/architecture/metadata/adr/index.md` |
+| [Adr](/architecture/ai-text-processing/adr/index.md) | Table of contents for architecture/ai-text-processing/adr | 2026-02-15 | `docs/architecture/ai-text-processing/adr/index.md` |
+| [Adr](/architecture/object-service/adr/index.md) | Table of contents for architecture/object-service/adr | 2026-02-15 | `docs/architecture/object-service/adr/index.md` |
+| [Adr](/architecture/video-processing/adr/index.md) | Table of contents for architecture/video-processing/adr | 2026-02-15 | `docs/architecture/video-processing/adr/index.md` |
+| [Adr](/architecture/configuration/adr/index.md) | Table of contents for architecture/configuration/adr | 2026-02-15 | `docs/architecture/configuration/adr/index.md` |
+| [Adr](/architecture/project-policies/adr/index.md) | Table of contents for architecture/project-policies/adr | 2026-02-15 | `docs/architecture/project-policies/adr/index.md` |
+| [Adr](/architecture/gen-ai-service/adr/index.md) | Table of contents for architecture/gen-ai-service/adr | 2026-02-15 | `docs/architecture/gen-ai-service/adr/index.md` |
+| [Adr](/architecture/transcription/adr/index.md) | Table of contents for architecture/transcription/adr | 2026-02-15 | `docs/architecture/transcription/adr/index.md` |
+| [Adr](/architecture/setup-tnh/adr/index.md) | Table of contents for architecture/setup-tnh/adr | 2026-02-15 | `docs/architecture/setup-tnh/adr/index.md` |
+| [Adr](/architecture/prompt-system/adr/index.md) | Table of contents for architecture/prompt-system/adr | 2026-02-15 | `docs/architecture/prompt-system/adr/index.md` |
+| [Adr](/architecture/ytt-fetch/adr/index.md) | Table of contents for architecture/ytt-fetch/adr | 2026-02-15 | `docs/architecture/ytt-fetch/adr/index.md` |
+| [Adr](/architecture/agent-orchestration/adr/index.md) | Table of contents for architecture/agent-orchestration/adr | 2026-02-15 | `docs/architecture/agent-orchestration/adr/index.md` |
+| [Adr](/architecture/jvb-viewer/adr/index.md) | Table of contents for architecture/jvb-viewer/adr | 2026-02-15 | `docs/architecture/jvb-viewer/adr/index.md` |
+| [Adr](/architecture/provenance/adr/index.md) | Table of contents for architecture/provenance/adr | 2026-02-15 | `docs/architecture/provenance/adr/index.md` |
+| [Adr](/architecture/knowledge-base/adr/index.md) | Table of contents for architecture/knowledge-base/adr | 2026-02-15 | `docs/architecture/knowledge-base/adr/index.md` |
+| [Adr](/architecture/tnh-gen/adr/index.md) | Table of contents for architecture/tnh-gen/adr | 2026-02-15 | `docs/architecture/tnh-gen/adr/index.md` |
+| [Adr](/architecture/docs-system/adr/index.md) | Table of contents for architecture/docs-system/adr | 2026-02-15 | `docs/architecture/docs-system/adr/index.md` |
+| [Adr](/architecture/metadata/adr/index.md) | Table of contents for architecture/metadata/adr | 2026-02-15 | `docs/architecture/metadata/adr/index.md` |
 | [ADR-A01: Adopt Object-Service for GenAI Interactions](/architecture/gen-ai-service/adr/adr-a01-object-service-genai.md) | Standardizes GenAI interactions with an Object-Service pattern that separates domain shapes from provider orchestration. | 2025-11-15 | `docs/architecture/gen-ai-service/adr/adr-a01-object-service-genai.md` |
 | [ADR-A02: PatternCatalog Integration (V1)](/architecture/gen-ai-service/adr/adr-a02-patterncatalog-integration-v1.md) | Describes the V1 contract for plugging the legacy PatternCatalog into GenAI Service via rendered system prompts. | 2025-11-15 | `docs/architecture/gen-ai-service/adr/adr-a02-patterncatalog-integration-v1.md` |
 | [ADR-A08: Configuration / Parameters / Policy Taxonomy](/architecture/gen-ai-service/adr/adr-a08-config-params-policy-taxonomy.md) | Establishes the Config/Params/Policy taxonomy for GenAI Service to prevent parameter soup and clarify ownership. | 2025-11-15 | `docs/architecture/gen-ai-service/adr/adr-a08-config-params-policy-taxonomy.md` |
@@ -134,11 +134,17 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [ADR-OA02: Phase 0 Protocol Layer Spike](/architecture/agent-orchestration/adr/adr-oa02-phase-0-protocol-spike.md) | De-risking spike to prove headless agent capture and safety controls for tnh-conductor | 2026-01-19 | `docs/architecture/agent-orchestration/adr/adr-oa02-phase-0-protocol-spike.md` |
 | [ADR-OA03.1: Claude Code Runner](/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md) | Claude Code execution path — headless print mode only, no interactive/PTY automation | 2026-01-22 | `docs/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md` |
 | [ADR-OA03.2: Codex Runner](/architecture/agent-orchestration/adr/adr-oa03.2-codex-runner.md) | Codex execution path — API-first, tool-driven runner for implementation tasks | 2026-01-22 | `docs/architecture/agent-orchestration/adr/adr-oa03.2-codex-runner.md` |
+| [ADR-OA03.3: Codex CLI Runner](/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md) | Codex execution path via CLI — headless exec mode, superseding API-based approach | 2026-02-07 | `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md` |
 | [ADR-OA03: Agent Runner Architecture](/architecture/agent-orchestration/adr/adr-oa03-agent-runner-architecture.md) | Phase 1 architecture for agent execution — kernel + adapter pattern based on OA02 spike learnings | 2026-01-21 | `docs/architecture/agent-orchestration/adr/adr-oa03-agent-runner-architecture.md` |
+| [ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md) | Implementation-guide addendum for OA04 defining MVP execution flow, role split, and incremental build sequence. | 2026-02-10 | `docs/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md` |
+| [ADR-OA04: Workflow Schema + Opcode Semantics](/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md) | Defines the canonical workflow document format and execution semantics for tnh-conductor kernel opcodes. | 2026-02-09 | `docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md` |
+| [ADR-OA05: Prompt Library Specification](/architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification.md) | Defines prompt artifact schema, versioning, rendering, and catalog validation contracts for tnh-conductor prompt-program behavior. | 2026-02-09 | `docs/architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification.md` |
+| [ADR-OA06: Planner Evaluator Contract](/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md) | Defines planner evaluator I/O schemas, status derivation, contradiction rules, and deterministic decision vectors for EVALUATE steps. | 2026-02-09 | `docs/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md` |
 | [ADR-OS01: Object-Service Design Architecture V3](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md) | Establishes layered architecture for complex objects and API-backed services across TNH Scholar, defining clear boundaries between domain, service, and transport layers. | 2025-10-24 | `docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md` |
 | [ADR-PP01: Rapid Prototype Versioning Policy](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) | Establishes versioning policy for TNH Scholar during 0.x releases, allowing breaking changes in any release to enable fast iteration and architectural improvements. | 2025-12-06 | `docs/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md` |
 | [ADR-PT03: Prompt System Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) | Current as-built status of the TNH Scholar prompt system, documentation terminology standardization, and planned enhancements. | 2025-11-29 | `docs/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md` |
 | [ADR-PT04: Prompt System Refactor Plan (Revised)](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md) | Refactors the legacy pattern-based prompt system into a modular, object-service compliant PromptCatalog with validation, transport isolation, and clean dependency injection seams. | 2025-12-05 | `docs/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md` |
+| [ADR-PT05: Prompt Platform Strategy](/architecture/prompt-system/adr/adr-pt05-prompt-platform-strategy.md) | Establishes TNH Scholar's prompt platform architecture for multi-module prompt libraries, schema layering, and robust client integration. | 2026-02-15 | `docs/architecture/prompt-system/adr/adr-pt05-prompt-platform-strategy.md` |
 | [ADR-PV01: Provenance & Tracing Infrastructure Strategy](/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md) | Establishes unified cross-cutting infrastructure for tracking data lineage, request tracing, and operation provenance across all TNH Scholar layers | 2025-12-19 | `docs/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md` |
 | [ADR-ST01.1: tnh-setup UI Design](/architecture/setup-tnh/adr/adr-st01.1-tnh-setup-ui-design.md) | Design proposal for a polished, stylized CLI experience for tnh-setup. | 2026-02-03 | `docs/architecture/setup-tnh/adr/adr-st01.1-tnh-setup-ui-design.md` |
 | [ADR-ST01: tnh-setup Runtime Hardening](/architecture/setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening.md) | Harden tnh-setup to ensure yt-dlp runtime readiness and clearer environment verification. | 2026-02-02 | `docs/architecture/setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening.md` |
@@ -160,44 +166,45 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [ADR-YF00: Early yt-fetch Transcript Decisions (Historical)](/architecture/ytt-fetch/adr/adr-yf00-early-decisions.md) | Consolidates the original transcript ADR notes for yt-fetch before they were split into discrete records. | 2025-01-17 | `docs/architecture/ytt-fetch/adr/adr-yf00-early-decisions.md` |
 | [ADR-YF01: YouTube Transcript Source Handling](/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md) | Documents how yt-fetch prioritizes manual subtitles while accepting auto captions for maximum coverage. | 2025-01-21 | `docs/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md` |
 | [ADR-YF02: YouTube Transcript Format Selection](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md) | Locks yt-fetch to a single transcript format (initially VTT) for predictable downstream processing. | 2025-01-21 | `docs/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md` |
-| [Agent Orchestration](/architecture/agent-orchestration/index.md) | Table of contents for architecture/agent-orchestration | 2026-02-09 | `docs/architecture/agent-orchestration/index.md` |
-| [Ai Text Processing](/architecture/ai-text-processing/index.md) | Table of contents for architecture/ai-text-processing | 2026-02-09 | `docs/architecture/ai-text-processing/index.md` |
-| [Architecture](/architecture/index.md) | Table of contents for architecture | 2026-02-09 | `docs/architecture/index.md` |
+| [Agent Orchestration](/architecture/agent-orchestration/index.md) | Table of contents for architecture/agent-orchestration | 2026-02-15 | `docs/architecture/agent-orchestration/index.md` |
+| [Agent Orchestration Spike Testing Sequence](/architecture/agent-orchestration/notes/spike-testing-sequence.md) | Concise, unambiguous steps to run the Codex CLI spike in a sandbox worktree. | 2026-02-08 | `docs/architecture/agent-orchestration/notes/spike-testing-sequence.md` |
+| [Ai Text Processing](/architecture/ai-text-processing/index.md) | Table of contents for architecture/ai-text-processing | 2026-02-15 | `docs/architecture/ai-text-processing/index.md` |
+| [Architecture](/architecture/index.md) | Table of contents for architecture | 2026-02-15 | `docs/architecture/index.md` |
 | [Architecture Overview](/architecture/overview.md) | High-level conceptual view of TNH Scholar's layered, object-service oriented architecture with links to detailed design documents and ADRs. | 2025-12-02 | `docs/architecture/overview.md` |
 | [Audio Chunking Algorithm Design Document](/architecture/transcription/design/audio-chunking-design.md) | Design for splitting diarization segments into five-minute audio chunks using greedy accumulation and speaker-aware boundaries. | 2025-05-01 | `docs/architecture/transcription/design/audio-chunking-design.md` |
 | [Codex Harness End-to-End Test Report](/architecture/agent-orchestration/notes/codex-harness-e2e-report.md) | Operational notes and blockers for the Codex harness test flow | 2026-01-23 | `docs/architecture/agent-orchestration/notes/codex-harness-e2e-report.md` |
 | [Codex Harness Spike Findings](/architecture/agent-orchestration/notes/codex-harness-spike-findings.md) | Comprehensive findings from the Codex API harness spike - constraints, learnings, and recommendations | 2026-01-25 | `docs/architecture/agent-orchestration/notes/codex-harness-spike-findings.md` |
-| [Configuration](/architecture/configuration/index.md) | Table of contents for architecture/configuration | 2026-02-09 | `docs/architecture/configuration/index.md` |
-| [Design](/architecture/ai-text-processing/design/index.md) | Table of contents for architecture/ai-text-processing/design | 2026-02-09 | `docs/architecture/ai-text-processing/design/index.md` |
-| [Design](/architecture/gen-ai-service/design/index.md) | Table of contents for architecture/gen-ai-service/design | 2026-02-09 | `docs/architecture/gen-ai-service/design/index.md` |
-| [Design](/architecture/transcription/design/index.md) | Table of contents for architecture/transcription/design | 2026-02-09 | `docs/architecture/transcription/design/index.md` |
-| [Design](/architecture/setup-tnh/design/index.md) | Table of contents for architecture/setup-tnh/design | 2026-02-09 | `docs/architecture/setup-tnh/design/index.md` |
-| [Design](/architecture/utilities/design/index.md) | Table of contents for architecture/utilities/design | 2026-02-09 | `docs/architecture/utilities/design/index.md` |
-| [Design](/architecture/ytt-fetch/design/index.md) | Table of contents for architecture/ytt-fetch/design | 2026-02-09 | `docs/architecture/ytt-fetch/design/index.md` |
-| [Design](/architecture/jvb-viewer/design/index.md) | Table of contents for architecture/jvb-viewer/design | 2026-02-09 | `docs/architecture/jvb-viewer/design/index.md` |
-| [Design](/architecture/ui-ux/design/index.md) | Table of contents for architecture/ui-ux/design | 2026-02-09 | `docs/architecture/ui-ux/design/index.md` |
-| [Design](/architecture/docs-system/design/index.md) | Table of contents for architecture/docs-system/design | 2026-02-09 | `docs/architecture/docs-system/design/index.md` |
+| [Configuration](/architecture/configuration/index.md) | Table of contents for architecture/configuration | 2026-02-15 | `docs/architecture/configuration/index.md` |
+| [Design](/architecture/ai-text-processing/design/index.md) | Table of contents for architecture/ai-text-processing/design | 2026-02-15 | `docs/architecture/ai-text-processing/design/index.md` |
+| [Design](/architecture/gen-ai-service/design/index.md) | Table of contents for architecture/gen-ai-service/design | 2026-02-15 | `docs/architecture/gen-ai-service/design/index.md` |
+| [Design](/architecture/transcription/design/index.md) | Table of contents for architecture/transcription/design | 2026-02-15 | `docs/architecture/transcription/design/index.md` |
+| [Design](/architecture/setup-tnh/design/index.md) | Table of contents for architecture/setup-tnh/design | 2026-02-15 | `docs/architecture/setup-tnh/design/index.md` |
+| [Design](/architecture/utilities/design/index.md) | Table of contents for architecture/utilities/design | 2026-02-15 | `docs/architecture/utilities/design/index.md` |
+| [Design](/architecture/ytt-fetch/design/index.md) | Table of contents for architecture/ytt-fetch/design | 2026-02-15 | `docs/architecture/ytt-fetch/design/index.md` |
+| [Design](/architecture/jvb-viewer/design/index.md) | Table of contents for architecture/jvb-viewer/design | 2026-02-15 | `docs/architecture/jvb-viewer/design/index.md` |
+| [Design](/architecture/ui-ux/design/index.md) | Table of contents for architecture/ui-ux/design | 2026-02-15 | `docs/architecture/ui-ux/design/index.md` |
+| [Design](/architecture/docs-system/design/index.md) | Table of contents for architecture/docs-system/design | 2026-02-15 | `docs/architecture/docs-system/design/index.md` |
 | [Design Strategy: VS Code as UI/UX Platform for TNH Scholar](/architecture/ui-ux/design/vs-code-as-ui-platform.md) | --- | 2025-11-15 | `docs/architecture/ui-ux/design/vs-code-as-ui-platform.md` |
 | [Diarization Algorithms](/architecture/transcription/design/diarization-algorithms.md) | This document details the key algorithms in the diarization system, focusing on high-level design without implementation details. Each algorithm is presented with its inputs, outputs, and process flow. | 2025-05-01 | `docs/architecture/transcription/design/diarization-algorithms.md` |
 | [Diarization Chunker Module Design Strategy](/architecture/transcription/design/diarization-chunker-design.md) | I've analyzed the current system and PoC code to propose a modular, extensible design for integrating the diarization chunking functionality into your tnh-scholar project. | 2025-05-05 | `docs/architecture/transcription/design/diarization-chunker-design.md` |
 | [Diarization System Design](/architecture/transcription/design/diarization-system-design.md) | Detailed architecture for the diarization pipeline, covering segmentation, track extraction, and transcript remapping. | 2025-05-01 | `docs/architecture/transcription/design/diarization-system-design.md` |
-| [Docs System](/architecture/docs-system/index.md) | Table of contents for architecture/docs-system | 2026-02-09 | `docs/architecture/docs-system/index.md` |
+| [Docs System](/architecture/docs-system/index.md) | Table of contents for architecture/docs-system | 2026-02-15 | `docs/architecture/docs-system/index.md` |
 | [Documentation Design](/architecture/docs-system/design/documentation-design.md) | Reference for the documentation stack, covering tooling choices, information architecture, and publishing workflow. | 2025-01-19 | `docs/architecture/docs-system/design/documentation-design.md` |
-| [Gen Ai Service](/architecture/gen-ai-service/index.md) | Table of contents for architecture/gen-ai-service | 2026-02-09 | `docs/architecture/gen-ai-service/index.md` |
+| [Gen Ai Service](/architecture/gen-ai-service/index.md) | Table of contents for architecture/gen-ai-service | 2026-02-15 | `docs/architecture/gen-ai-service/index.md` |
 | [GenAI Service — Design Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md) | Strategy for unifying GenAI Service capabilities, personas, and phased releases. | 2025-11-15 | `docs/architecture/gen-ai-service/design/genai-service-design-strategy.md` |
 | [Generate Markdown Translation JSON Pairs](/architecture/jvb-viewer/design/generate-md-translation-json-pairs.md) | Instructions for producing paired Vietnamese-English Markdown JSON lines from scanned journal pages with strict formatting. | 2025-11-15 | `docs/architecture/jvb-viewer/design/generate-md-translation-json-pairs.md` |
 | [Generate Markdown Vietnamese](/architecture/jvb-viewer/design/generate-md-vietnamese.md) | Guidelines for rewriting Vietnamese journal pages into structured Markdown with one sentence per line and preserved metadata. | 2025-11-15 | `docs/architecture/jvb-viewer/design/generate-md-vietnamese.md` |
 | [Interval-to-Segment Mapping Algorithm](/architecture/transcription/design/interval-to-segment-mapping.md) | Algorithm for mapping chunk-relative transcription intervals back to diarization segments using overlap and proximity. | 2025-05-08 | `docs/architecture/transcription/design/interval-to-segment-mapping.md` |
-| [Jvb Viewer](/architecture/jvb-viewer/index.md) | Table of contents for architecture/jvb-viewer | 2026-02-09 | `docs/architecture/jvb-viewer/index.md` |
+| [Jvb Viewer](/architecture/jvb-viewer/index.md) | Table of contents for architecture/jvb-viewer | 2026-02-15 | `docs/architecture/jvb-viewer/index.md` |
 | [JVB Viewer — Version 2 Strategy & High‑Level Design](/architecture/jvb-viewer/design/jvb-viewer-v2-strategy.md) | Strategy for a projection-first VS Code-based viewer/editor that reconciles OCR outputs into a canonical JSON artifact. | 2025-11-15 | `docs/architecture/jvb-viewer/design/jvb-viewer-v2-strategy.md` |
-| [Knowledge Base](/architecture/knowledge-base/index.md) | Table of contents for architecture/knowledge-base | 2026-02-09 | `docs/architecture/knowledge-base/index.md` |
+| [Knowledge Base](/architecture/knowledge-base/index.md) | Table of contents for architecture/knowledge-base | 2026-02-15 | `docs/architecture/knowledge-base/index.md` |
 | [Language-Aware Chunking Orchestrator Notes](/architecture/transcription/design/language-aware-chunking-orchestrator-notes.md) | Working notes for extending the DiarizationChunker orchestrator with language-aware strategies. | 2025-06-24 | `docs/architecture/transcription/design/language-aware-chunking-orchestrator-notes.md` |
 | [LUÂN-HỒI](/architecture/jvb-viewer/design/luan-hoi.md) | Transcribed Markdown sample of the 'Luân-Hồi Một Thực-Thể' article used to validate viewer output. | 2025-11-15 | `docs/architecture/jvb-viewer/design/luan-hoi.md` |
-| [Metadata](/architecture/metadata/index.md) | Table of contents for architecture/metadata | 2026-02-09 | `docs/architecture/metadata/index.md` |
+| [Metadata](/architecture/metadata/index.md) | Table of contents for architecture/metadata | 2026-02-15 | `docs/architecture/metadata/index.md` |
 | [minimal but extensible setup tool for the prototyping phase](/architecture/setup-tnh/design/setup-tnh-minimal-extensible-tool.md) | Core Requirements: | 2025-01-21 | `docs/architecture/setup-tnh/design/setup-tnh-minimal-extensible-tool.md` |
 | [Modular Pipeline Design: Best Practices for Audio Transcription and Diarization](/architecture/transcription/design/modular-pipeline-best-practices.md) | This document summarizes a detailed design and refactoring discussion on building a clean, modular, and production-ready audio transcription pipeline, with a focus on diarization chunking and robust system structure. It includes architectural patterns, file organization, and code hygiene practices. | 2025-06-10 | `docs/architecture/transcription/design/modular-pipeline-best-practices.md` |
-| [Notes](/architecture/agent-orchestration/notes/index.md) | Table of contents for architecture/agent-orchestration/notes | 2026-02-09 | `docs/architecture/agent-orchestration/notes/index.md` |
-| [Object Service](/architecture/object-service/index.md) | Table of contents for architecture/object-service | 2026-02-09 | `docs/architecture/object-service/index.md` |
+| [Notes](/architecture/agent-orchestration/notes/index.md) | Table of contents for architecture/agent-orchestration/notes | 2026-02-15 | `docs/architecture/agent-orchestration/notes/index.md` |
+| [Object Service](/architecture/object-service/index.md) | Table of contents for architecture/object-service | 2026-02-15 | `docs/architecture/object-service/index.md` |
 | [Object-Service Design Gaps](/architecture/object-service/object-service-design-gaps.md) | Gaps, resolved items, and outstanding work needed to fully satisfy the Object-Service design blueprint. | 2025-10-24 | `docs/architecture/object-service/object-service-design-gaps.md` |
 | [Object-Service Design Overview](/architecture/object-service/object-service-design-overview.md) | High-level overview of TNH Scholar's layered architecture for complex objects and API-backed services. | 2025-11-29 | `docs/architecture/object-service/object-service-design-overview.md` |
 | [Object-Service Implementation Status](/architecture/object-service/object-service-implementation-status.md) | Implementation status, resolved gaps, and outstanding work for the Object-Service design architecture. | 2025-10-24 | `docs/architecture/object-service/object-service-implementation-status.md` |
@@ -205,10 +212,10 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [Package Version Checker Design Document](/architecture/utilities/design/package-version-checker-design.md) | Specification for a reusable package version checking utility with flexible strategies and clear reporting. | 2025-06-10 | `docs/architecture/utilities/design/package-version-checker-design.md` |
 | [Practical Language-Aware Chunking Design](/architecture/transcription/design/practical-language-aware-chunking.md) | Practical heuristics for detecting language changes during chunking when diarization output is noisy. | 2025-06-24 | `docs/architecture/transcription/design/practical-language-aware-chunking.md` |
 | [Project Policies](/architecture/project-policies/index.md) | Cross-cutting architectural policies and decisions affecting the entire TNH Scholar codebase | 2025-12-06 | `docs/architecture/project-policies/index.md` |
-| [Prompt System](/architecture/prompt-system/index.md) | Table of contents for architecture/prompt-system | 2026-02-09 | `docs/architecture/prompt-system/index.md` |
+| [Prompt System](/architecture/prompt-system/index.md) | Table of contents for architecture/prompt-system | 2026-02-15 | `docs/architecture/prompt-system/index.md` |
 | [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md) | Current and planned architecture for the TNH Scholar prompt system, including VS Code integration and PromptCatalog service design. | 2025-11-29 | `docs/architecture/prompt-system/prompt-system-architecture.md` |
 | [Provenance & Tracing Architecture](/architecture/provenance/index.md) | Cross-cutting infrastructure for tracking data lineage, request tracing, and reproducibility across TNH Scholar | 2025-12-19 | `docs/architecture/provenance/index.md` |
-| [Setup Tnh](/architecture/setup-tnh/index.md) | Table of contents for architecture/setup-tnh | 2026-02-09 | `docs/architecture/setup-tnh/index.md` |
+| [Setup Tnh](/architecture/setup-tnh/index.md) | Table of contents for architecture/setup-tnh | 2026-02-15 | `docs/architecture/setup-tnh/index.md` |
 | [Simplified Language-Aware Chunking Design](/architecture/transcription/design/language-aware-chunking-design.md) | Language-aware chunking strategy that augments diarization splits with practical language detection heuristics. | 2025-06-24 | `docs/architecture/transcription/design/language-aware-chunking-design.md` |
 | [Speaker Diarization Algorithm Design](/architecture/transcription/design/speaker-diarization-algorithm-design.md) | This document details the key algorithms referenced in the main diarization system design. Each algorithm is presented with a clear breakdown of its inputs, outputs, and processing steps. | 2025-05-01 | `docs/architecture/transcription/design/speaker-diarization-algorithm-design.md` |
 | [Speaker Diarization and Time-Mapped Transcription System Design](/architecture/transcription/design/speaker-diarization-time-mapped-design.md) | System design for mapping diarization outputs to speaker-specific transcriptions with accurate global timelines. | 2025-05-01 | `docs/architecture/transcription/design/speaker-diarization-time-mapped-design.md` |
@@ -219,22 +226,22 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [TNH-Gen CLI Architecture](/architecture/tnh-gen/index.md) | Unified command-line interface for TNH Scholar GenAI operations | 2025-12-07 | `docs/architecture/tnh-gen/index.md` |
 | [TNH-Scholar Agent Orchestration System](/architecture/agent-orchestration/system-design.md) | Comprehensive design document for the agent orchestration system | 2026-01-13 | `docs/architecture/agent-orchestration/system-design.md` |
 | [TNH‑Scholar Utilities Catalog](/architecture/utilities/design/utilities-catalog.md) | This catalog lists core utility modules used across the TNH‑Scholar codebase. It provides a quick reference for shared abstractions, their purpose, API highlights, and stability. All modules are currently in **Prototype** phase, with most stable in active use. | 2025-11-15 | `docs/architecture/utilities/design/utilities-catalog.md` |
-| [Transcription](/architecture/transcription/index.md) | Table of contents for architecture/transcription | 2026-02-09 | `docs/architecture/transcription/index.md` |
-| [Ui Ux](/architecture/ui-ux/index.md) | Table of contents for architecture/ui-ux | 2026-02-09 | `docs/architecture/ui-ux/index.md` |
-| [Utilities](/architecture/utilities/index.md) | Table of contents for architecture/utilities | 2026-02-09 | `docs/architecture/utilities/index.md` |
+| [Transcription](/architecture/transcription/index.md) | Table of contents for architecture/transcription | 2026-02-15 | `docs/architecture/transcription/index.md` |
+| [Ui Ux](/architecture/ui-ux/index.md) | Table of contents for architecture/ui-ux | 2026-02-15 | `docs/architecture/ui-ux/index.md` |
+| [Utilities](/architecture/utilities/index.md) | Table of contents for architecture/utilities | 2026-02-15 | `docs/architecture/utilities/index.md` |
 | [Versioning Policy Documentation Additions](/architecture/project-policies/versioning-policy-implementation-summary.md) | Summary of documentation updates to clarify rapid prototype versioning policy | 2025-12-06 | `docs/architecture/project-policies/versioning-policy-implementation-summary.md` |
-| [Video Processing](/architecture/video-processing/index.md) | Table of contents for architecture/video-processing | 2026-02-09 | `docs/architecture/video-processing/index.md` |
-| [Vs Code Integration](/architecture/ui-ux/vs-code-integration/index.md) | Table of contents for architecture/ui-ux/vs-code-integration | 2026-02-09 | `docs/architecture/ui-ux/vs-code-integration/index.md` |
+| [Video Processing](/architecture/video-processing/index.md) | Table of contents for architecture/video-processing | 2026-02-15 | `docs/architecture/video-processing/index.md` |
+| [Vs Code Integration](/architecture/ui-ux/vs-code-integration/index.md) | Table of contents for architecture/ui-ux/vs-code-integration | 2026-02-15 | `docs/architecture/ui-ux/vs-code-integration/index.md` |
 | [YouTube API vs yt-dlp Evaluation](/architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval.md) | Comparison of using the YouTube Data API versus yt-dlp for fetching Plum Village media assets. | 2025-01-21 | `docs/architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval.md` |
-| [Ytt Fetch](/architecture/ytt-fetch/index.md) | Table of contents for architecture/ytt-fetch | 2026-02-09 | `docs/architecture/ytt-fetch/index.md` |
+| [Ytt Fetch](/architecture/ytt-fetch/index.md) | Table of contents for architecture/ytt-fetch | 2026-02-15 | `docs/architecture/ytt-fetch/index.md` |
 
 ## Development
 
 | Title | Description | Created | Path |
 | --- | --- | --- | --- |
-| [2025 12 07 Reference](/development/incident-reports/2025-12-07-reference/index.md) | Table of contents for development/incident-reports/2025-12-07-reference | 2026-02-09 | `docs/development/incident-reports/2025-12-07-reference/index.md` |
+| [2025 12 07 Reference](/development/incident-reports/2025-12-07-reference/index.md) | Table of contents for development/incident-reports/2025-12-07-reference | 2026-02-15 | `docs/development/incident-reports/2025-12-07-reference/index.md` |
 | [Contributing to TNH Scholar (Prototype Phase)](/development/contributing-prototype-phase.md) | TNH Scholar is currently in rapid prototype phase, focusing on core functionality and basic usability. We welcome contributions that help validate and improve the prototype implementation. | 2025-01-19 | `docs/development/contributing-prototype-phase.md` |
-| [Development](/development/index.md) | Table of contents for development | 2026-02-09 | `docs/development/index.md` |
+| [Development](/development/index.md) | Table of contents for development | 2026-02-15 | `docs/development/index.md` |
 | [Development Documentation](/development/overview.md) | Landing page for contributor guides, design principles, and engineering practices for TNH Scholar. | 2025-12-03 | `docs/development/overview.md` |
 | [Fine Tuning Strategy](/development/fine-tuning-strategy.md) | Strategy outline and development plan for fine-tuning foundation models on Thich Nhat Hanh translations. | 2025-02-26 | `docs/development/fine-tuning-strategy.md` |
 | [Forensic Analysis: December 7, 2025 Git Data Loss Incident](/development/incident-reports/2025-12-07-reference/forensic-analysis.md) | Post-incident analysis detailing the stale-branch reset that temporarily orphaned prompt system work and the safeguards required to prevent recurrence. | 2025-12-08 | `docs/development/incident-reports/2025-12-07-reference/forensic-analysis.md` |
@@ -243,7 +250,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | [Implementation Summary: Git Safety Improvements](/development/incident-reports/2025-12-07-reference/implementation-summary.md) | Summary of remediation work completed after the 2025-12-07 git recovery incident. | 2025-12-08 | `docs/development/incident-reports/2025-12-07-reference/implementation-summary.md` |
 | [Improvements / Initial structure](/development/improvements-initial-structure.md) | Initial high-level view of the TNH Scholar ecosystem. | 2025-02-01 | `docs/development/improvements-initial-structure.md` |
 | [Incident Report: Git Recovery - December 7, 2025](/development/incident-reports/2025-12-07-git-recovery.md) | Post-mortem analysis of orphaned commits and successful recovery of prompt system implementation (ADR-PT04) | 2025-12-08 | `docs/development/incident-reports/2025-12-07-git-recovery.md` |
-| [Incident Reports](/development/incident-reports/index.md) | Table of contents for development/incident-reports | 2026-02-09 | `docs/development/incident-reports/index.md` |
+| [Incident Reports](/development/incident-reports/index.md) | Table of contents for development/incident-reports | 2026-02-15 | `docs/development/incident-reports/index.md` |
 | [Proposed Updates to Incident Report](/development/incident-reports/2025-12-07-reference/incident-report-updates.md) | Recommended edits to the December 7, 2025 incident report to capture the stale branch reset root cause and updated safeguards. | 2025-12-08 | `docs/development/incident-reports/2025-12-07-reference/incident-report-updates.md` |
 | [Release Workflow](/development/release-workflow.md) | Automated release process for TNH Scholar with biweekly cadence during rapid prototyping. | 2025-12-06 | `docs/development/release-workflow.md` |
 | [TNH Scholar Design Principles](/development/design-principles.md) | Architectural patterns, design philosophy, and system organization principles for TNH Scholar development. | 2025-11-29 | `docs/development/design-principles.md` |
@@ -257,7 +264,7 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | Title | Description | Created | Path |
 | --- | --- | --- | --- |
 | [ADR Template](/docs-ops/adr-template.md) | Reusable template for TNH Scholar architecture decision records. | 2025-02-27 | `docs/docs-ops/adr-template.md` |
-| [Docs Ops](/docs-ops/index.md) | Table of contents for docs-ops | 2026-02-09 | `docs/docs-ops/index.md` |
+| [Docs Ops](/docs-ops/index.md) | Table of contents for docs-ops | 2026-02-15 | `docs/docs-ops/index.md` |
 | [Markdown Standards](/docs-ops/markdown-standards.md) | House style, linting, and structure requirements for TNH Scholar documentation. | 2025-02-27 | `docs/docs-ops/markdown-standards.md` |
 | [MkDocs Strict Warning Backlog](/docs-ops/mkdocs-strict-warning-backlog.md) | Checklist to drive MkDocs builds to zero warnings in strict mode. | 2025-11-25 | `docs/docs-ops/mkdocs-strict-warning-backlog.md` |
 | [Preview TNH Scholar Theme](/docs-ops/preview-theme.md) | Quick guide to previewing the custom zen theme locally | 2025-12-02 | `docs/docs-ops/preview-theme.md` |
@@ -269,8 +276,8 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 | --- | --- | --- | --- |
 | [1-3 Word Queries](/research/gpt4o-search-query-testing/queries-1-3-words.md) | Prompt experiments for generating search query and passage pairs used to train retrieval models. | 2024-10-28 | `docs/research/gpt4o-search-query-testing/queries-1-3-words.md` |
 | [GPT Development Convos](/research/gpt_development_convos.md) | Link log of early GPT design, feasibility, and data processing conversations for the project. | 2024-10-23 | `docs/research/gpt_development_convos.md` |
-| [Gpt4O Search Query Testing](/research/gpt4o-search-query-testing/index.md) | Table of contents for research/gpt4o-search-query-testing | 2026-02-09 | `docs/research/gpt4o-search-query-testing/index.md` |
-| [Gpt4O Translation Experiments](/research/gpt4o-translation-experiments/index.md) | Table of contents for research/gpt4o-translation-experiments | 2026-02-09 | `docs/research/gpt4o-translation-experiments/index.md` |
+| [Gpt4O Search Query Testing](/research/gpt4o-search-query-testing/index.md) | Table of contents for research/gpt4o-search-query-testing | 2026-02-15 | `docs/research/gpt4o-search-query-testing/index.md` |
+| [Gpt4O Translation Experiments](/research/gpt4o-translation-experiments/index.md) | Table of contents for research/gpt4o-translation-experiments | 2026-02-15 | `docs/research/gpt4o-translation-experiments/index.md` |
 | [Passage Test](/research/gpt4o-translation-experiments/passage_test.md) | Spot-checks comparing GPT-4o translation outputs with bilingual baselines on short passages. | 2024-11-08 | `docs/research/gpt4o-translation-experiments/passage_test.md` |
 | [Preliminary Feasibility Study](/research/preliminary-feasibility-study.md) | Feasibility study exploring an interactive translation, search, and conversation system built on Thich Nhat Hanh’s teachings. | 2024-10-21 | `docs/research/preliminary-feasibility-study.md` |
 | [RAG Research Directions for TNH Scholar](/research/rag-research-directions.md) | Exploratory roadmap for retrieval-augmented generation (RAG) within the TNH Scholar project, with emphasis on multilingual Buddhist corpora and Plum Village practice contexts. | 2025-12-05 | `docs/research/rag-research-directions.md` |
