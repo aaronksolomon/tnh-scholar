@@ -146,6 +146,7 @@
 │   │   │   ├── adr
 │   │   │   │   ├── adr-pt03-prompt-system-status-roadmap.md
 │   │   │   │   ├── adr-pt04-prompt-system-refactor.md
+│   │   │   │   ├── adr-pt05-prompt-platform-strategy.md
 │   │   │   │   └── index.md
 │   │   │   ├── archive
 │   │   │   │   ├── adr
@@ -357,6 +358,7 @@
 │   │   ├── full_pipe1.ipynb
 │   │   ├── full_pipe2.ipynb
 │   │   ├── full_pipe3.ipynb
+│   │   ├── speaker_segments
 │   │   └── speech_detect.ipynb
 │   ├── html_viewing
 │   │   ├── tx_journal_to_html.ipynb
@@ -759,6 +761,10 @@
 │       │   │   ├── intents.py
 │       │   │   └── model_router.py
 │       │   ├── runtime_assets
+│       │   │   ├── patterns
+│       │   │   │   ├── fragments
+│       │   │   │   ├── system
+│       │   │   │   └── tasks
 │       │   │   └── policies
 │       │   │       ├── params
 │       │   │       │   └── config_params_policy.yaml
@@ -939,6 +945,7 @@
 │   │   ├── test_catalog_adapters.py
 │   │   ├── test_git_catalog.py
 │   │   ├── test_loader.py
+│   │   ├── test_mapper.py
 │   │   ├── test_models.py
 │   │   ├── test_renderer.py
 │   │   └── test_validator.py
@@ -993,4 +1000,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-217 directories, 777 files
+222 directories, 779 files

@@ -255,6 +255,10 @@
     │   │   ├── intents.py
     │   │   └── model_router.py
     │   ├── runtime_assets
+    │   │   ├── patterns
+    │   │   │   ├── fragments
+    │   │   │   ├── system
+    │   │   │   └── tasks
     │   │   └── policies
     │   │       ├── params
     │   │       │   └── config_params_policy.yaml
@@ -375,4 +379,4 @@
         ├── extract_tags.py
         └── xml_processing.py
 
-81 directories, 295 files
+85 directories, 295 files

@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration"
 owner: ""
 author: ""
 status: processing
-created: "2026-02-09"
+created: "2026-02-15"
 auto_generated: true
 ---
 
@@ -16,7 +16,9 @@ auto_generated: true
 
 **[TNH-Scholar Agent Orchestration System](system-design.md)** - Comprehensive design document for the agent orchestration system
 
-**[Agent Orchestration ADRs](adr/index.md)** - Table of contents for architecture/agent-orchestration/adr
+**[Adr](adr/index.md)** - Table of contents for architecture/agent-orchestration/adr
+
+**[Notes](notes/index.md)** - Table of contents for architecture/agent-orchestration/notes
 
 ---
 
