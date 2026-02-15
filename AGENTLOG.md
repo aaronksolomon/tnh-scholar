@@ -187,3 +187,75 @@ Implemented the first code draft of OA04/OA04.1 MVP workflow execution in a new 
 
 ### Open Questions
 - None in this implementation round.
+
+---
+
+## [2026-02-14 20:04 PST] PT05 Prompt Platform Round 1 Implementation + Hardening
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: pt05-e2e-implementation-round1
+**Human Collaborator**: phapman
+
+### Context
+Implemented PT05 prompt platform strategy end-to-end in the active prompt system codebase, with compatibility support for legacy metadata, namespace-first keying, deterministic validation rules, and expanded test coverage. Follow-up hardening focused on reviewer feedback for object-service clarity and safety.
+
+### Key Decisions
+- **Compatibility-first envelope adoption**: Keep legacy frontmatter loading paths operational while normalizing to PT05 envelope semantics (`prompt_id`, `role`, `output_contract`, namespaced keys).
+- **Uniform validator enforcement**: Enforce platform-level output mode and strict-input rules in `PromptValidator`, independent of client semantics.
+- **Catalog resilience**: Filesystem and git catalogs both use fallback metadata/warnings for invalid prompt artifacts (instead of failing hard at load time).
+- **Legacy mode containment**: Legacy `output_mode: structured` is accepted only as input and normalized to `json`; new model field typing is enum-based.
+- **Validation result invariants**: Keep `valid` for API ergonomics but derive it from `errors` as single source of truth.
+
+### Work Completed
+- [x] Added PT05-oriented prompt domain models and compatibility normalizers (`PromptOutputMode`, `PromptInputSpec`, `PromptOutputContract`, key/role/output sync behavior).
+- [x] Implemented immutable key reference support (`<canonical_key>.v<version>`) and namespace-aware path/key mapping in prompt mapper.
+- [x] Updated filesystem and git catalog adapters to:
+  - use namespace keys and immutable refs
+  - validate on load with warning-based fallback paths
+  - emit typed fallback metadata for invalid prompt artifacts.
+- [x] Implemented validator rules for:
+  - required envelope fields
+  - numeric versions
+  - strict input declarations
+  - `json` mode requiring `schema_ref`
+  - `artifacts` mode requiring artifact declarations.
+- [x] Refactored `PromptMetadata` sync logic into focused collaborators:
+  - `_sync_key_fields()`
+  - `_sync_role_fields()`
+  - `_sync_output_fields()`.
+- [x] Narrowed broad exception catches in catalog adapters to `(ValueError, pydantic.ValidationError)`.
+- [x] Updated `PromptValidationResult` to enforce `valid == (len(errors) == 0)` via model validator.
+- [x] Expanded and added tests across prompt system and dependent CLI/gen-ai flows, including new mapper-focused coverage.
+
+### Discoveries & Insights
+- Using path-relative canonical keys in adapters/mappers removed stem-collision risk and aligned catalog behavior with PT05 namespace goals.
+- Warning-based fallback behavior in both catalog adapters preserves usability during migration while still surfacing schema issues to callers.
+- Prompt system coverage is now strong on core PT05 logic, while transport/protocol modules remain lightly covered and can be expanded separately.
+
+### Files Modified/Created
+- `src/tnh_scholar/prompt_system/domain/models.py`: PT05 envelope/output/input models, compatibility sync helpers, validation-result invariant.
+- `src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`: Immutable ref parsing, namespace key mapping, metadata normalization.
+- `src/tnh_scholar/prompt_system/service/validator.py`: PT05 structural/contract enforcement.
+- `src/tnh_scholar/prompt_system/adapters/filesystem_catalog_adapter.py`: Typed fallback metadata, narrowed exception handling, module-level Frontmatter import.
+- `src/tnh_scholar/prompt_system/adapters/git_catalog_adapter.py`: Filesystem-parity fallback behavior + narrowed exception handling.
+- `tests/prompt_system/test_mapper.py`: New mapper test suite.
+- `tests/prompt_system/test_models.py`: Expanded model compatibility/invariant coverage.
+- `tests/prompt_system/test_validator.py`: Expanded PT05 validator rule coverage.
+- `tests/prompt_system/test_catalog_adapters.py`: Expanded filesystem fallback coverage.
+- `tests/prompt_system/test_git_catalog.py`: Expanded git adapter behavior coverage.
+- `tests/cli_tools/test_tnh_gen.py`: Updated warning assertion for envelope-era message semantics.
+
+### Validation Performed
+- `poetry run ruff check` on all changed prompt-system and test files.
+- `poetry run mypy` on changed prompt-system source modules.
+- `poetry run pytest tests/prompt_system -q`
+- `poetry run pytest tests/prompt_system --cov=tnh_scholar.prompt_system --cov-report=term-missing -q`
+- `poetry run pytest tests/cli_tools/test_tnh_gen.py tests/cli_tools/test_tnh_gen_coverage.py -q`
+- `poetry run pytest tests/gen_ai_service/test_policy_routing_safety.py tests/configuration/test_prompt_discovery.py -q`
+
+### Next Steps
+- [ ] Add PT05 follow-on implementation tasks for prompt namespace governance and schema reference resolution tooling.
+- [ ] Start OA05/OA06 integration pass against the new PT05 prompt contract surfaces.
+
+### Open Questions
+- None blocking this round.

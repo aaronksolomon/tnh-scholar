@@ -17,6 +17,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Prompt Platform PT05 Foundations (WIP / Developer Preview, not production-ready)** (2026-02-10 to 2026-02-14)
+  - Implemented PT05-aligned prompt envelope and metadata compatibility layer in prompt-system domain models
+  - Added namespace-first canonical key mapping and immutable prompt reference support (`<canonical_key>.v<version>`)
+  - Added PT05 validator enforcement for output modes, strict inputs, required envelope fields, and numeric version constraints
+  - Aligned filesystem + git catalog adapters to resilient fallback behavior with typed warnings/metadata for invalid prompt artifacts
+  - Added targeted hardening refinements:
+    - split metadata sync methods by concern (key, role, output)
+    - narrowed prompt parse exception handling to `ValueError` + `pydantic.ValidationError`
+    - enforced `PromptValidationResult.valid` invariant from error list
+  - Added substantial prompt-system test expansion (including new mapper suite) and updated dependent tnh-gen assertions
+  - Scope note: foundation is merged for incremental development and integration; full cross-subsystem prompt platform wiring remains in progress
+  - Files: `src/tnh_scholar/prompt_system/`, `tests/prompt_system/`, `tests/cli_tools/test_tnh_gen.py`
+
 - **Agent Orchestration MVP Kernel (WIP / Developer Preview, not production-ready)** (2026-02-08 to 2026-02-10)
   - Added OA04/OA04.1-aligned deterministic kernel MVP package (workflow models, schema validation, opcode execution service, providers, adapters)
   - Implemented MVP opcode flow support for `RUN_AGENT`, `RUN_VALIDATION`, `EVALUATE`, `GATE`, `ROLLBACK`, `STOP`
