@@ -146,6 +146,7 @@ class PromptValidator(PromptValidatorPort):
     def _validate_output_contract(self, prompt: Prompt, errors: list[ValidationIssue]) -> None:
         contract = prompt.metadata.output_contract
         if contract is None:
+            # Defensive guard for prompts built programmatically (outside mapper normalization).
             errors.append(
                 ValidationIssue(
                     level="error",

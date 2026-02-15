@@ -1,13 +1,10 @@
 from pathlib import Path
 
-import pytest
-
 from tnh_scholar.prompt_system.adapters.filesystem_catalog_adapter import (
     FilesystemPromptCatalog,
 )
-from tnh_scholar.prompt_system.config.prompt_catalog_config import PromptCatalogConfig
 from tnh_scholar.prompt_system.config.policy import ValidationPolicy
-from tnh_scholar.prompt_system.domain.models import PromptValidationResult
+from tnh_scholar.prompt_system.config.prompt_catalog_config import PromptCatalogConfig
 from tnh_scholar.prompt_system.mappers.prompt_mapper import PromptMapper
 from tnh_scholar.prompt_system.service.loader import PromptLoader
 from tnh_scholar.prompt_system.service.validator import PromptValidator
@@ -73,7 +70,17 @@ Second
 
 def test_mapper_split_handles_bom_and_delimiters():
     mapper = PromptMapper()
-    content = "\ufeff---\nkey: x\nname: x\nversion: 1.0.0\ndescription: d\ntask_type: t\nrequired_variables: []\n---\nBody"
+    content = (
+        "\ufeff---\n"
+        "key: x\n"
+        "name: x\n"
+        "version: 1.0.0\n"
+        "description: d\n"
+        "task_type: t\n"
+        "required_variables: []\n"
+        "---\n"
+        "Body"
+    )
     metadata, body = mapper._split_frontmatter(content)
     assert metadata["name"] == "x"
     assert body.strip() == "Body"
@@ -101,4 +108,27 @@ Hello
     assert prompt.metadata.required_variables == []
     assert any(
         "required_variables" in warning for warning in prompt.metadata.warnings
+    )
+
+
+def test_mapper_warns_on_invalid_output_contract_type():
+    mapper = PromptMapper()
+    content = """---
+key: simple
+name: Simple
+version: 1.0.0
+description: desc
+task_type: test
+required_variables: []
+output_contract: not-a-mapping
+---
+Hello
+"""
+
+    prompt = mapper.to_domain_prompt(content)
+
+    assert prompt.metadata.output_contract is not None
+    assert prompt.metadata.output_contract.mode.value == "text"
+    assert any(
+        "output_contract" in warning for warning in prompt.metadata.warnings
     )

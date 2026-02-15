@@ -222,4 +222,4 @@ class PromptValidationResult(BaseModel):
         return self
 
     def succeeded(self) -> bool:
-        return self.valid
+        return len(self.errors) == 0

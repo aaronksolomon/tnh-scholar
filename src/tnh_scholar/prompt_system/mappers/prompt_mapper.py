@@ -77,7 +77,10 @@ class PromptMapper:
             normalized, "default_variables", warnings, warn_on_missing=False
         )
         normalized["inputs"] = self._normalize_inputs(normalized)
-        normalized["output_contract"] = self._normalize_output_contract(normalized)
+        normalized["output_contract"] = self._normalize_output_contract(
+            normalized,
+            warnings,
+        )
         if warnings:
             normalized["warnings"] = warnings
         return normalized
@@ -147,16 +150,28 @@ class PromptMapper:
         )
         return normalized_inputs
 
-    def _normalize_output_contract(self, metadata_raw: dict[str, Any]) -> dict[str, Any]:
+    def _normalize_output_contract(
+        self,
+        metadata_raw: dict[str, Any],
+        warnings: list[str],
+    ) -> dict[str, Any]:
         raw_contract = metadata_raw.get("output_contract")
         if isinstance(raw_contract, dict):
             return self._normalized_contract_dict(raw_contract)
+        if raw_contract is not None:
+            warnings.append(
+                "Frontmatter field 'output_contract' invalid; expected mapping."
+            )
 
         legacy_mode = metadata_raw.get("output_mode")
         if legacy_mode in ["json", "structured"]:
             return {"mode": "json"}
         if legacy_mode == "artifacts":
             return {"mode": "artifacts", "artifacts": []}
+        if legacy_mode is not None:
+            warnings.append(
+                f"Frontmatter field 'output_mode' invalid; got '{legacy_mode}'. Defaulting to 'text'."
+            )
         return {"mode": "text"}
 
     def _normalized_contract_dict(self, raw_contract: dict[str, Any]) -> dict[str, Any]:

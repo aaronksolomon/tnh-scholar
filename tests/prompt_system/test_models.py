@@ -20,6 +20,15 @@ def test_validation_result_fails_when_errors_present():
     assert not result.succeeded()
 
 
+def test_validation_result_succeeded_tracks_mutated_errors():
+    result = PromptValidationResult(valid=True, errors=[])
+    assert result.succeeded()
+
+    result.errors.append(ValidationIssue(level="error", code="E1", message="oops"))
+
+    assert not result.succeeded()
+
+
 def test_render_params_defaults_are_empty():
     params = RenderParams()
     assert params.variables == {}

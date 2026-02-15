@@ -17,7 +17,7 @@ def make_prompt(version: str = "1.0.0", template: str = "Hi", required=None) -> 
 
 def test_validate_rejects_invalid_version():
     validator = PromptValidator(ValidationPolicy())
-    result = validator.validate(make_prompt(version="1"))
+    result = validator.validate(make_prompt(version="one"))
     assert not result.valid
     assert any(err.code == "INVALID_VERSION" for err in result.errors)
 

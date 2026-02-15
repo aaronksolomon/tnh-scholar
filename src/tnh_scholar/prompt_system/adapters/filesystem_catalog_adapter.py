@@ -4,11 +4,8 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Sequence
-from typing import cast
 
 from pydantic import ValidationError
-
-from tnh_scholar.metadata.metadata import Frontmatter
 
 from ..config.prompt_catalog_config import PromptCatalogConfig
 from ..domain.models import (
@@ -23,6 +20,7 @@ from ..service.loader import PromptLoader
 from ..transport.cache import CacheTransport, InMemoryCacheTransport
 from ..transport.filesystem import FilesystemTransport
 from ..transport.models import PromptFileRequest
+from .frontmatter_fallback import extract_best_effort_body
 
 logger = logging.getLogger(__name__)
 
@@ -125,20 +123,7 @@ class FilesystemPromptCatalog(PromptCatalogPort):
         )
 
     def _best_effort_body(self, content: str) -> str:
-        cleaned = content.lstrip("\ufeff\n\r\t ")
-        # Attempt to peel off frontmatter block even if metadata is empty/invalid.
-        try:
-            _, body = Frontmatter.extract(cleaned)
-            if body:
-                return cast(str, body).lstrip()
-        except Exception:
-            pass
-
-        if cleaned.startswith("---"):
-            parts = cleaned.split("---", 2)
-            if len(parts) == 3:
-                return parts[2].lstrip()
-        return cleaned
+        return extract_best_effort_body(content)
 
     def _log_warnings(self, key: str, warnings: Sequence[str]) -> None:
         """Surface prompt warnings to help with diagnostics."""

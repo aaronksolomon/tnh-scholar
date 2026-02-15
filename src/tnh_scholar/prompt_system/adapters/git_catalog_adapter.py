@@ -3,11 +3,8 @@
 import logging
 from collections.abc import Sequence
 from pathlib import Path
-from typing import cast
 
 from pydantic import ValidationError
-
-from tnh_scholar.metadata.metadata import Frontmatter
 
 from ..config.prompt_catalog_config import PromptCatalogConfig
 from ..domain.models import (
@@ -22,6 +19,7 @@ from ..service.loader import PromptLoader
 from ..transport.cache import CacheTransport, InMemoryCacheTransport
 from ..transport.git_client import GitTransportClient
 from ..transport.models import PromptFileRequest
+from .frontmatter_fallback import extract_best_effort_body
 
 logger = logging.getLogger(__name__)
 
@@ -53,47 +51,75 @@ class GitPromptCatalog(PromptCatalogPort):
         if cached := self._cache.get(cache_key):
             return cached
 
-        file_req = PromptFileRequest(
-            path=self._mapper.to_file_request(key, self._config.repository_path),
-            commit_sha=None,
-        )
+        file_req = self._build_file_request(key)
         file_resp = self._transport.read_file_at_commit(file_req)
-        try:
-            prompt = self._mapper.to_domain_prompt(file_resp.content, source_key=key)
-            warnings: list[str] = []
-        except (ValidationError, ValueError) as exc:
-            body = self._best_effort_body(file_resp.content)
-            fallback_metadata = self._fallback_metadata(key, reason=str(exc))
-            prompt = Prompt(
-                name=fallback_metadata.name,
-                version=fallback_metadata.version,
-                template=body,
-                metadata=fallback_metadata,
-            )
-            warnings = list(fallback_metadata.warnings)
-        else:
-            if self._config.validation_on_load and self._loader is not None:
-                validation = self._loader.validate(prompt)
-                if not validation.succeeded():
-                    fallback_metadata = self._fallback_metadata(
-                        key,
-                        reason=f"Invalid prompt: {validation.errors}",
-                    )
-                    prompt = Prompt(
-                        name=fallback_metadata.name,
-                        version=fallback_metadata.version,
-                        template=prompt.template,
-                        metadata=prompt.metadata.model_copy(
-                            update={"warnings": fallback_metadata.warnings}
-                        ),
-                    )
-            warnings = getattr(prompt.metadata, "warnings", []) or []
+        prompt, warnings = self._load_prompt_with_fallback(key, file_resp.content)
 
         if warnings:
             self._log_warnings(key, warnings)
 
         self._cache.set(cache_key, prompt, ttl_s=self._config.cache_ttl_s)
         return prompt
+
+    def _build_file_request(self, key: str) -> PromptFileRequest:
+        return PromptFileRequest(
+            path=self._mapper.to_file_request(key, self._config.repository_path),
+            commit_sha=None,
+        )
+
+    def _load_prompt_with_fallback(
+        self,
+        key: str,
+        content: str,
+    ) -> tuple[Prompt, list[str]]:
+        try:
+            prompt = self._mapper.to_domain_prompt(content, source_key=key)
+        except (ValidationError, ValueError) as exc:
+            return self._build_prompt_from_invalid_file(key, content, reason=str(exc))
+        return self._apply_loader_validation(key, prompt)
+
+    def _build_prompt_from_invalid_file(
+        self,
+        key: str,
+        content: str,
+        *,
+        reason: str,
+    ) -> tuple[Prompt, list[str]]:
+        body = self._best_effort_body(content)
+        fallback_metadata = self._fallback_metadata(key, reason=reason)
+        prompt = Prompt(
+            name=fallback_metadata.name,
+            version=fallback_metadata.version,
+            template=body,
+            metadata=fallback_metadata,
+        )
+        return prompt, list(fallback_metadata.warnings)
+
+    def _apply_loader_validation(self, key: str, prompt: Prompt) -> tuple[Prompt, list[str]]:
+        if not (self._config.validation_on_load and self._loader is not None):
+            return prompt, self._prompt_warnings(prompt)
+
+        validation = self._loader.validate(prompt)
+        if validation.succeeded():
+            return prompt, self._prompt_warnings(prompt)
+
+        fallback_metadata = self._fallback_metadata(
+            key,
+            reason=f"Invalid prompt: {validation.errors}",
+        )
+        updated_prompt = Prompt(
+            name=fallback_metadata.name,
+            version=fallback_metadata.version,
+            template=prompt.template,
+            metadata=prompt.metadata.model_copy(
+                update={"warnings": fallback_metadata.warnings}
+            ),
+        )
+        return updated_prompt, list(fallback_metadata.warnings)
+
+    def _prompt_warnings(self, prompt: Prompt) -> list[str]:
+        warnings = getattr(prompt.metadata, "warnings", []) or []
+        return list(warnings)
 
     def list(self) -> list[PromptMetadata]:
         files = self._transport.list_files(pattern="**/*.md")
@@ -133,20 +159,7 @@ class GitPromptCatalog(PromptCatalogPort):
         )
 
     def _best_effort_body(self, content: str) -> str:
-        cleaned = content.lstrip("\ufeff\n\r\t ")
-        # Attempt to peel off frontmatter block even if metadata is empty/invalid.
-        try:
-            _, body = Frontmatter.extract(cleaned)
-            if body:
-                return cast(str, body).lstrip()
-        except Exception:
-            pass
-
-        if cleaned.startswith("---"):
-            parts = cleaned.split("---", 2)
-            if len(parts) == 3:
-                return parts[2].lstrip()
-        return cleaned
+        return extract_best_effort_body(content)
 
     def _log_warnings(self, key: str, warnings: Sequence[str]) -> None:
         """Surface prompt warnings to help with diagnostics."""
