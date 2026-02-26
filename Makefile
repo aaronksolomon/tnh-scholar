@@ -14,13 +14,13 @@ setup:
 	pyenv install -s $(PYTHON_VERSION)
 	pyenv local $(PYTHON_VERSION)
 	$(POETRY) env use python
-	$(POETRY) install
+	$(POETRY) install --with local
 
 setup-dev:
 	pyenv install -s $(PYTHON_VERSION)
 	pyenv local $(PYTHON_VERSION)
 	$(POETRY) env use python
-	$(POETRY) install
+	$(POETRY) install --with local
 	$(POETRY) run python -m ipykernel install --user --name tnh-scholar --display-name "Python (tnh-scholar)"
 
 ytdlp-runtime:
@@ -29,7 +29,7 @@ ytdlp-runtime:
 build-all:
 	$(POETRY) self update
 	$(POETRY) update yt-dlp
-	$(POETRY) install
+	$(POETRY) install --with local
 	$(MAKE) ytdlp-runtime
 	$(MAKE) pipx-refresh
 	$(MAKE) docs-build
@@ -37,7 +37,7 @@ build-all:
 update:
 	$(POETRY) self update
 	$(POETRY) update
-	$(POETRY) install
+	$(POETRY) install --with local
 	$(POETRY) build
 	$(MAKE) pipx-build
 
