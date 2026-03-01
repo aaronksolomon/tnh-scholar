@@ -22,6 +22,12 @@ auto_generated: true
 
 **[ADR-TR04: AssemblyAI Service Implementation Improvements](adr-tr04-assemblyai-improvements.md)** - Refactors the AssemblyAI adapter to use the official SDK, richer options, and better error handling.
 
+**[ADR-TR05: Language-Aware Multilingual Transcription Engine](adr-tr05-language-aware-multilingual-transcription-engine.md)** - Adopts language-aware segmentation and merge-first orchestration for multilingual audio transcription and English subtitle generation.
+
+**[ADR-TR05.1: Speaker-Block Language Lock Default Strategy](adr-tr05.1-speaker-block-language-lock-default.md)** - Defines the default multilingual segmentation strategy as contiguous-speaker language locking with selective translation.
+
+**[ADR-TR05.2: MVP Service Scaffold for Multilingual Transcription](adr-tr05.2-mvp-service-scaffold.md)** - Defines the initial service, protocol, and model scaffold for the multilingual transcription MVP under audio_processing.
+
 ---
 
 *This file auto-generated.*
