@@ -282,6 +282,7 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Introduce typed service orchestrator + protocols (CLI becomes thin wrapper)
   - [ ] Extract audio source resolution into a typed resolver (yt_url/CSV/local file)
   - [ ] Replace dict options with Pydantic models (transcription + diarization params)
+  - [ ] Move logging bootstrap out of module import path so `audio-transcribe` modules are import-safe in tests and sandboxed environments
   - [ ] Add runtime preflight (yt-dlp inspector + ffmpeg availability); keep version checks ops-only
   - [ ] Migrate CLI to Typer with minimal surface (smoke tests only)
   - [ ] Add service-layer tests for all audio-transcribe use cases

@@ -4,6 +4,7 @@
 └── tnh_scholar
     ├── __init__.py
     ├── agent_orchestration
+    │   ├── EXPERIMENTAL.md
     │   ├── __init__.py
     │   ├── codex_harness
     │   │   ├── __init__.py
@@ -28,7 +29,9 @@
     │   │   │   └── workspace_locator.py
     │   │   ├── service.py
     │   │   └── tools.py
-    │   ├── EXPERIMENTAL.md
+    │   ├── common
+    │   ├── conductor_mvp
+    │   │   └── providers
     │   └── spike
     │       ├── __init__.py
     │       ├── adapters
@@ -45,8 +48,8 @@
     │       │   ├── artifact_writer.py
     │       │   ├── clock.py
     │       │   ├── command_builder.py
-    │       │   ├── event_writer_factory.py
     │       │   ├── event_writer.py
+    │       │   ├── event_writer_factory.py
     │       │   ├── git_workspace.py
     │       │   └── pty_agent_runner.py
     │       └── service.py
@@ -90,6 +93,9 @@
     │   │   ├── timeline_mapper.py
     │   │   ├── types.py
     │   │   └── viewer.py
+    │   ├── multilingual_models.py
+    │   ├── multilingual_protocols.py
+    │   ├── multilingual_service.py
     │   ├── timed_object
     │   │   ├── __init__.py
     │   │   └── timed_text.py
@@ -131,8 +137,8 @@
     │   │   └── nfmt.py
     │   ├── sent_split
     │   │   ├── __init__.py
-    │   │   ├── sent_split_bak.py
-    │   │   └── sent_split.py
+    │   │   ├── sent_split.py
+    │   │   └── sent_split_bak.py
     │   ├── srt_translate
     │   │   ├── __init__.py
     │   │   └── srt_translate.py
@@ -165,8 +171,8 @@
     │   │   └── types.py
     │   ├── tnh_setup
     │   │   ├── __init__.py
-    │   │   ├── tnh_setup_typer.py
     │   │   ├── tnh_setup.py
+    │   │   ├── tnh_setup_typer.py
     │   │   └── ui.py
     │   ├── tnh_tree.py
     │   ├── token_count
@@ -235,6 +241,10 @@
     │   │   ├── intents.py
     │   │   └── model_router.py
     │   ├── runtime_assets
+    │   │   ├── patterns
+    │   │   │   ├── fragments
+    │   │   │   ├── system
+    │   │   │   └── tasks
     │   │   └── policies
     │   │       ├── params
     │   │       │   └── config_params_policy.yaml
@@ -277,6 +287,7 @@
     │   ├── adapters
     │   │   ├── __init__.py
     │   │   ├── filesystem_catalog_adapter.py
+    │   │   ├── frontmatter_fallback.py
     │   │   └── git_catalog_adapter.py
     │   ├── config
     │   │   ├── __init__.py
@@ -343,9 +354,9 @@
     ├── video_processing
     │   ├── __init__.py
     │   ├── ops_check.py
+    │   ├── video_processing.py
     │   ├── video_processing_old1.py
     │   ├── video_processing_old2.py
-    │   ├── video_processing.py
     │   ├── yt_download_service.py
     │   ├── yt_environment.py
     │   ├── yt_preflight_report.py
@@ -355,4 +366,4 @@
         ├── extract_tags.py
         └── xml_processing.py
 
-77 directories, 279 files
+84 directories, 283 files
