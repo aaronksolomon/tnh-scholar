@@ -54,7 +54,7 @@ class ProviderBackedSegmentTranscriptionService(SegmentTranscriptionServiceProto
         )
 
     def _build_options(self, request: SegmentTranscriptionRequest) -> dict[str, Any] | None:
-        if request.source_language is None:
+        if not request.source_language:
             return None
         return {"language": request.source_language}
 
@@ -80,6 +80,13 @@ class SrtSegmentTranslationService(SegmentTranslationServiceProtocol):
         self,
         result: SegmentTranscriptionResult,
     ) -> SegmentTranscriptionResult:
+        if result.error_message is not None or not result.source_srt.strip():
+            return result.model_copy(
+                update={
+                    "translated_srt": result.source_srt,
+                    "translation_skipped": True,
+                }
+            )
         if self._should_skip_translation(result):
             return result.model_copy(
                 update={
@@ -128,6 +135,8 @@ class PassThroughSubtitleMergeService(SubtitleMergeServiceProtocol):
         self,
         results: list[SegmentTranscriptionResult],
     ) -> MergedSubtitleArtifact:
+        if not results:
+            raise ValueError("At least one segment result is required for merge.")
         first_result = results[0]
         final_english_srt = self._select_final_srt(first_result)
         return MergedSubtitleArtifact(

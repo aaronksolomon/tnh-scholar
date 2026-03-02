@@ -33,6 +33,7 @@ Usage:
 
 import logging
 import tempfile
+from functools import lru_cache
 from pathlib import Path
 
 import click
@@ -51,10 +52,6 @@ from .transcription_pipeline import TranscriptionPipeline
 from .version_check import check_ytd_version
 
 load_dotenv()
-setup_logging(
-    log_filepath=TNHContext.discover().user_root / "logs" / "audio_transcribe.log",
-    log_level=logging.INFO,
-)
 logger = get_child_logger(__name__)
 
 DEFAULT_OUTPUT_PATH = "./audio_transcriptions/transcript.txt"
@@ -65,6 +62,15 @@ DEFAULT_RESPONSE_FORMAT = "text"
 DEFAULT_CHUNK_DURATION = 120
 DEFAULT_MIN_CHUNK = 10
 VIDEO_EXTENSIONS = {".mp4", ".avi", ".mov", ".mkv", ".wmv"}
+
+
+@lru_cache(maxsize=1)
+def _configure_logging_once() -> None:
+    """Configure CLI logging when the command executes, not at import time."""
+    setup_logging(
+        log_filepath=TNHContext.discover().user_root / "logs" / "audio_transcribe.log",
+        log_level=logging.INFO,
+    )
 
 
 
@@ -360,6 +366,7 @@ def audio_transcribe(**kwargs):
     """
     CLI entry point for audio transcription.
     """
+    _configure_logging_once()
     try:
         config = AudioTranscribeConfig(**kwargs)
     except NoAudioSourceError as e:
