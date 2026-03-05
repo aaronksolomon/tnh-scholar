@@ -217,7 +217,7 @@ class PyannoteAdapter(SegmentAdapter):
             raw=jsr.model_dump(mode="json"),
         )
 
-    def failed_start(self):
+    def failed_start(self) -> DiarizationFailed:
         return DiarizationFailed(
             status="failed",
             job_id=None,
