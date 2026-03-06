@@ -31,10 +31,12 @@ def test_cli_build_config_sets_defaults(tmp_path: Path) -> None:
         translation_pattern=None,
         metadata_file=None,
         chars_per_caption=42,
+        use_speaker_blocks=False,
         source_srt_output=None,
         translated_srt_output=None,
         skip_translation=False,
         debug=False,
+        use_repo_sample=False,
     )
 
     config = cli._build_config(args)
@@ -42,6 +44,7 @@ def test_cli_build_config_sets_defaults(tmp_path: Path) -> None:
     assert config.provider is TranscriptionProvider.WHISPER
     assert config.source_srt_output == audio_file.resolve().with_suffix(".srt")
     assert config.translated_srt_output == audio_file.resolve().with_name("sample_en.srt")
+    assert config.use_speaker_blocks is False
 
 
 def test_cli_build_config_honors_skip_translation(tmp_path: Path) -> None:
@@ -58,10 +61,12 @@ def test_cli_build_config_honors_skip_translation(tmp_path: Path) -> None:
         translation_pattern=None,
         metadata_file=None,
         chars_per_caption=42,
+        use_speaker_blocks=False,
         source_srt_output=None,
         translated_srt_output=None,
         skip_translation=True,
         debug=False,
+        use_repo_sample=False,
     )
 
     config = cli._build_config(args)
@@ -85,10 +90,12 @@ def test_cli_build_config_preserves_explicit_translated_output(tmp_path: Path) -
         translation_pattern=None,
         metadata_file=None,
         chars_per_caption=42,
+        use_speaker_blocks=False,
         source_srt_output=None,
         translated_srt_output=translated_output,
         skip_translation=False,
         debug=False,
+        use_repo_sample=False,
     )
 
     config = cli._build_config(args)
@@ -111,10 +118,12 @@ def test_cli_build_config_resolves_metadata_file(tmp_path: Path) -> None:
         translation_pattern=None,
         metadata_file=metadata_file,
         chars_per_caption=42,
+        use_speaker_blocks=False,
         source_srt_output=None,
         translated_srt_output=None,
         skip_translation=False,
         debug=False,
+        use_repo_sample=False,
     )
 
     config = cli._build_config(args)
@@ -136,12 +145,42 @@ def test_cli_build_config_uses_target_language_suffix(tmp_path: Path) -> None:
         translation_pattern=None,
         metadata_file=None,
         chars_per_caption=42,
+        use_speaker_blocks=True,
         source_srt_output=None,
         translated_srt_output=None,
         skip_translation=False,
         debug=False,
+        use_repo_sample=False,
     )
 
     config = cli._build_config(args)
 
-    assert config.translated_srt_output == audio_file.resolve().with_name("sample_fr.srt")
+    assert config.source_srt_output == audio_file.resolve().with_name("sample_blocks.srt")
+    assert config.translated_srt_output == audio_file.resolve().with_name("sample_blocks_fr.srt")
+    assert config.use_speaker_blocks is True
+
+
+def test_cli_build_config_uses_repo_sample_when_requested() -> None:
+    module = _load_script_module()
+    cli = module.SubtitleWorkflowCli()
+    args = Namespace(
+        audio_file=None,
+        provider="whisper",
+        source_language=None,
+        target_language="en",
+        transcription_model=None,
+        translation_model=None,
+        translation_pattern=None,
+        metadata_file=None,
+        chars_per_caption=42,
+        use_speaker_blocks=False,
+        source_srt_output=None,
+        translated_srt_output=None,
+        skip_translation=False,
+        debug=False,
+        use_repo_sample=True,
+    )
+
+    config = cli._build_config(args)
+
+    assert config.audio_file == (Path(module.__file__).resolve().parents[1] / "tmp" / "happy-farm-day-1.mp3")
