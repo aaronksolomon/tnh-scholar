@@ -35,6 +35,7 @@ class SubtitleWorkflowConfig:
     translation_pattern: str | None
     metadata_file: Path | None
     chars_per_caption: int
+    use_speaker_blocks: bool
     debug: bool
 
 
@@ -70,6 +71,7 @@ class SubtitleWorkflow:
             metadata_file=self._config.metadata_file,
             chars_per_caption=self._config.chars_per_caption,
             skip_translation=self._config.translated_srt_output is None,
+            use_speaker_blocks=self._config.use_speaker_blocks,
         )
 
     def _write_text(self, output_path: Path, content: str) -> None:
@@ -99,7 +101,17 @@ class SubtitleWorkflowCli:
         parser = argparse.ArgumentParser(
             description="Generate a source SRT and optional translated SRT from a local audio file.",
         )
-        parser.add_argument("audio_file", type=Path, help="Path to a local audio file.")
+        parser.add_argument(
+            "audio_file",
+            type=Path,
+            nargs="?",
+            help="Path to a local audio file.",
+        )
+        parser.add_argument(
+            "--use-repo-sample",
+            action="store_true",
+            help="Use the repo sample audio file in tmp/happy-farm-day-1.mp3.",
+        )
         parser.add_argument(
             "--provider",
             choices=[provider.value for provider in TranscriptionProvider],
@@ -139,6 +151,11 @@ class SubtitleWorkflowCli:
             help="Caption width hint passed to provider-native SRT generation.",
         )
         parser.add_argument(
+            "--use-speaker-blocks",
+            action="store_true",
+            help="Run the opt-in speaker-block language-routing path.",
+        )
+        parser.add_argument(
             "--source-srt-output",
             type=Path,
             help="Output path for the source-language SRT.",
@@ -161,8 +178,8 @@ class SubtitleWorkflowCli:
         return parser.parse_args()
 
     def _build_config(self, args: argparse.Namespace) -> SubtitleWorkflowConfig:
-        audio_file = args.audio_file.resolve()
-        source_srt_output = args.source_srt_output or audio_file.with_suffix(".srt")
+        audio_file = self._resolve_audio_file(args)
+        source_srt_output = self._build_source_output(args, audio_file)
         translated_srt_output = self._build_translated_output(args, source_srt_output)
         return SubtitleWorkflowConfig(
             audio_file=audio_file,
@@ -176,8 +193,33 @@ class SubtitleWorkflowCli:
             translation_pattern=args.translation_pattern,
             metadata_file=args.metadata_file.resolve() if args.metadata_file else None,
             chars_per_caption=args.chars_per_caption,
+            use_speaker_blocks=args.use_speaker_blocks,
             debug=args.debug,
         )
+
+    def _resolve_audio_file(self, args: argparse.Namespace) -> Path:
+        if args.audio_file is not None:
+            return Path(args.audio_file).resolve()
+        if args.use_repo_sample:
+            return self._default_sample_audio_file()
+        raise SystemExit("Provide AUDIO_FILE or use --use-repo-sample.")
+
+    def _default_sample_audio_file(self) -> Path:
+        return Path(__file__).resolve().parents[1] / "tmp" / "happy-farm-day-1.mp3"
+
+    def _build_source_output(
+        self,
+        args: argparse.Namespace,
+        audio_file: Path,
+    ) -> Path:
+        if args.source_srt_output is not None:
+            return Path(args.source_srt_output)
+        if args.use_speaker_blocks:
+            return self._build_srt_path(audio_file, f"{audio_file.stem}_blocks")
+        return audio_file.with_suffix(".srt")
+
+    def _build_srt_path(self, path: Path, stem: str) -> Path:
+        return path.with_name(f"{stem}.srt")
 
     def _build_translated_output(
         self,
@@ -187,8 +229,11 @@ class SubtitleWorkflowCli:
         if args.skip_translation:
             return None
         if args.translated_srt_output is not None:
-            return args.translated_srt_output
-        return source_srt_output.with_stem(f"{source_srt_output.stem}_{args.target_language}")
+            return Path(args.translated_srt_output)
+        return self._build_srt_path(
+            source_srt_output,
+            f"{source_srt_output.stem}_{args.target_language}",
+        )
 
     def _configure_logging(self, debug: bool) -> None:
         log_level = logging.DEBUG if debug else logging.INFO

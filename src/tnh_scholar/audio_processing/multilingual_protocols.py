@@ -4,6 +4,7 @@ from typing import Protocol
 
 from tnh_scholar.audio_processing.multilingual_models import (
     MergedSubtitleArtifact,
+    MultilingualTranscriptionRequest,
     SegmentTranscriptionRequest,
     SegmentTranscriptionResult,
     SpeakerLanguageBlock,
@@ -13,7 +14,10 @@ from tnh_scholar.audio_processing.multilingual_models import (
 class LanguageSegmentationServiceProtocol(Protocol):
     """Build language-tagged speaker blocks for downstream routing."""
 
-    def build_blocks(self) -> list[SpeakerLanguageBlock]:
+    def build_blocks(
+        self,
+        request: MultilingualTranscriptionRequest,
+    ) -> list[SpeakerLanguageBlock]:
         """Return speaker blocks for multilingual processing."""
 
 

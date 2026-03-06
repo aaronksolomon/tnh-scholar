@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 from enum import Enum
+from io import BytesIO
 from pathlib import Path
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
+
+from tnh_scholar.audio_processing.diarization.models import DiarizedSegment
 
 
 class TranscriptionProvider(str, Enum):
@@ -42,7 +45,10 @@ class SpeakerLanguageBlock(BaseModel):
 class SegmentTranscriptionRequest(BaseModel):
     """Segment-level transcription request for provider-neutral orchestration."""
 
-    audio_file: Path
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    audio_file: Path | BytesIO
+    audio_file_extension: str | None = None
     provider: TranscriptionProvider
     source_language: str | None = None
     target_language: str = "en"
@@ -54,6 +60,7 @@ class SegmentTranscriptionResult(BaseModel):
     """Segment-level subtitle generation result."""
 
     provider: TranscriptionProvider
+    segment_start_ms: int = Field(default=0, ge=0)
     source_language: str | None = None
     target_language: str = "en"
     source_srt: str
@@ -76,6 +83,8 @@ class MergedSubtitleArtifact(BaseModel):
 class MultilingualTranscriptionRequest(BaseModel):
     """Top-level request for the multilingual transcription service."""
 
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     audio_file: Path
     provider: TranscriptionProvider = TranscriptionProvider.WHISPER
     source_language: str | None = None
@@ -87,3 +96,5 @@ class MultilingualTranscriptionRequest(BaseModel):
     chars_per_caption: int = Field(default=42, ge=1)
     artifact_retention: ArtifactRetention = ArtifactRetention.MINIMAL
     skip_translation: bool = False
+    use_speaker_blocks: bool = False
+    diarization_segments: list[DiarizedSegment] | None = None
