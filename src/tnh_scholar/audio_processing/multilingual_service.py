@@ -5,7 +5,10 @@ from pathlib import Path
 from typing import Any, Callable, cast
 
 from tnh_scholar.ai_text_processing import get_pattern
-from tnh_scholar.audio_processing.diarization.audio.handler import AudioHandler
+from tnh_scholar.audio_processing.audio_slice_utils import (
+    resolve_audio_format,
+    slice_audio_bytes,
+)
 from tnh_scholar.audio_processing.diarization.config import DiarizationConfig
 from tnh_scholar.audio_processing.diarization.models import (
     AugDiarizedSegment,
@@ -21,6 +24,7 @@ from tnh_scholar.audio_processing.diarization.strategies.language_probe import (
 from tnh_scholar.audio_processing.diarization.strategies.speaker_blocker import (
     group_speaker_blocks,
 )
+from tnh_scholar.audio_processing.language_utils import normalize_language_code
 from tnh_scholar.audio_processing.multilingual_models import (
     ArtifactRetention,
     LanguageDetectionResult,
@@ -48,30 +52,6 @@ from tnh_scholar.utils import TimeMs
 from tnh_scholar.utils import TNHAudioSegment as AudioSegment
 
 logger = get_logger(__name__)
-
-
-def _normalize_language_code(language: str | None) -> str | None:
-    if language is None:
-        return None
-    cleaned = language.strip().lower()
-    if not cleaned:
-        return None
-    primary_tag = cleaned.replace("_", "-").split("-", maxsplit=1)[0]
-    if len(primary_tag) == 2:
-        return primary_tag
-    match cleaned:
-        case "english":
-            return "en"
-        case "vietnamese":
-            return "vi"
-        case "chinese" | "mandarin" | "cantonese":
-            return "zh"
-        case "japanese":
-            return "ja"
-        case "korean":
-            return "ko"
-        case _:
-            return cleaned
 
 
 class ProviderBackedSegmentTranscriptionService(SegmentTranscriptionServiceProtocol):
@@ -106,7 +86,7 @@ class ProviderBackedSegmentTranscriptionService(SegmentTranscriptionServiceProto
 
     def _build_options(self, request: SegmentTranscriptionRequest) -> dict[str, Any] | None:
         options: dict[str, Any] = {}
-        normalized_language = _normalize_language_code(request.source_language)
+        normalized_language = normalize_language_code(request.source_language)
         if normalized_language is not None:
             options["language"] = normalized_language
         if isinstance(request.audio_file, BytesIO):
@@ -163,14 +143,14 @@ class SrtSegmentTranslationService(SegmentTranslationServiceProtocol):
     def _should_skip_translation(self, result: SegmentTranscriptionResult) -> bool:
         if self._skip_translation:
             return True
-        source_language = _normalize_language_code(result.source_language)
+        source_language = normalize_language_code(result.source_language)
         if source_language is None:
             return False
-        return source_language == _normalize_language_code(self._target_language)
+        return source_language == normalize_language_code(self._target_language)
 
     def _build_translator(self, source_language: str | None) -> SrtTranslator:
         return SrtTranslator(
-            source_language=_normalize_language_code(source_language),
+            source_language=normalize_language_code(source_language),
             target_language=self._target_language,
             pattern=self._load_pattern(),
             model=self._model,
@@ -196,7 +176,6 @@ class SpeakerBlockLanguageSegmentationService(LanguageSegmentationServiceProtoco
         detector: WhisperLanguageDetector | None = None,
     ) -> None:
         self._config = diarization_config or DiarizationConfig()
-        self._audio_handler = AudioHandler()
         self._probe = LanguageProbe(
             self._config,
             detector or WhisperLanguageDetector(),
@@ -236,16 +215,12 @@ class SpeakerBlockLanguageSegmentationService(LanguageSegmentationServiceProtoco
         block: SpeakerBlock,
         language_code: str,
     ) -> SpeakerLanguageBlock:
-        return SpeakerLanguageBlock(
-            speaker_label=block.speaker,
-            start_ms=int(block.start),
-            end_ms=int(block.end),
-            detection=LanguageDetectionResult(
-                language_code=language_code,
-                confidence=1.0,
-                detector_source="request",
-                is_reliable=True,
-            ),
+        return self._build_block(
+            block,
+            language_code,
+            detector_source="request",
+            confidence=1.0,
+            is_reliable=True,
             is_uncertain=False,
         )
 
@@ -257,15 +232,34 @@ class SpeakerBlockLanguageSegmentationService(LanguageSegmentationServiceProtoco
         block_audio = base_audio[int(block.start):int(block.end)]
         language_code = self._probe_language(block, block_audio)
         is_uncertain = language_code is None
+        return self._build_block(
+            block,
+            language_code,
+            detector_source="whisper-probe",
+            confidence=0.0 if is_uncertain else 0.75,
+            is_reliable=not is_uncertain,
+            is_uncertain=is_uncertain,
+        )
+
+    def _build_block(
+        self,
+        block: SpeakerBlock,
+        language_code: str | None,
+        *,
+        detector_source: str,
+        confidence: float,
+        is_reliable: bool,
+        is_uncertain: bool,
+    ) -> SpeakerLanguageBlock:
         return SpeakerLanguageBlock(
             speaker_label=block.speaker,
             start_ms=int(block.start),
             end_ms=int(block.end),
             detection=LanguageDetectionResult(
                 language_code=language_code,
-                confidence=self._resolve_confidence(language_code),
-                detector_source="whisper-probe",
-                is_reliable=not is_uncertain,
+                confidence=confidence,
+                detector_source=detector_source,
+                is_reliable=is_reliable,
             ),
             is_uncertain=is_uncertain,
         )
@@ -289,12 +283,7 @@ class SpeakerBlockLanguageSegmentationService(LanguageSegmentationServiceProtoco
         language = str(self._probe.segment_language(probe_segment))
         if language == "unknown":
             return None
-        return _normalize_language_code(language)
-
-    def _resolve_confidence(self, language_code: str | None) -> float:
-        if language_code is None:
-            return 0.0
-        return 0.75
+        return normalize_language_code(language)
 
 
 class PassThroughSubtitleMergeService(SubtitleMergeServiceProtocol):
@@ -414,7 +403,6 @@ class MultilingualTranscriptionService:
         ]
         | None = None,
     ) -> None:
-        self._audio_handler = AudioHandler()
         self._transcription_service = (
             transcription_service or ProviderBackedSegmentTranscriptionService()
         )
@@ -462,7 +450,7 @@ class MultilingualTranscriptionService:
     ) -> SegmentTranscriptionResult:
         segment_request = SegmentTranscriptionRequest(
             audio_file=self._slice_audio(request.audio_file, block, base_audio),
-            audio_file_extension=self._resolve_audio_format(request.audio_file),
+            audio_file_extension=resolve_audio_format(request.audio_file),
             provider=request.provider,
             source_language=block.detection.language_code,
             target_language=request.target_language,
@@ -486,15 +474,7 @@ class MultilingualTranscriptionService:
         block: SpeakerLanguageBlock,
         base_audio: AudioSegment,
     ) -> Any:
-        block_audio = base_audio[block.start_ms:block.end_ms]
-        export_format = self._resolve_audio_format(audio_file)
-        return self._audio_handler.export_audio_bytes(block_audio, format_str=export_format)
-
-    def _resolve_audio_format(self, audio_file: Path) -> str:
-        suffix = audio_file.suffix.lstrip(".").lower()
-        if suffix:
-            return suffix
-        return "wav"
+        return slice_audio_bytes(base_audio, block.start_ms, block.end_ms, audio_file)
 
     def _should_use_speaker_blocks(
         self,

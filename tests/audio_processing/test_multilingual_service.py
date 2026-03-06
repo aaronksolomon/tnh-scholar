@@ -5,7 +5,9 @@ import wave
 from io import BytesIO
 from pathlib import Path
 
+from tnh_scholar.audio_processing.audio_slice_utils import resolve_audio_format
 from tnh_scholar.audio_processing.diarization.models import DiarizedSegment
+from tnh_scholar.audio_processing.language_utils import normalize_language_code
 from tnh_scholar.audio_processing.multilingual_models import (
     ArtifactRetention,
     LanguageDetectionResult,
@@ -382,6 +384,18 @@ def test_provider_backed_transcription_normalizes_language_names() -> None:
     options = service._build_options(request)
 
     assert options == {"language": "vi", "file_extension": "wav"}
+
+
+def test_normalize_language_code_maps_common_aliases() -> None:
+    assert normalize_language_code("English") == "en"
+    assert normalize_language_code("vi-VN") == "vi"
+    assert normalize_language_code(" Cantonese ") == "zh"
+    assert normalize_language_code("") is None
+
+
+def test_resolve_audio_format_defaults_to_wav_without_suffix() -> None:
+    assert resolve_audio_format(Path("sample")) == "wav"
+    assert resolve_audio_format(Path("sample.MP3")) == "mp3"
 
 
 def test_multilingual_service_uses_injected_collaborators() -> None:
