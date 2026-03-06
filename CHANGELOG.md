@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Multilingual Audio Transcription MVP** (2026-03-05)
+  - Added MVP multilingual subtitle orchestration with typed request/result models, protocol seams, segment translation flow, speaker-block routing, and malformed-failure handling for block merge recovery
+  - Added Pyannote client/schema hardening and expanded diarization regression coverage for status parsing and client behavior
+  - Added focused script coverage for `transcribe_translate_srt`
+  - Files: `src/tnh_scholar/audio_processing/`, `scripts/transcribe_translate_srt.py`, `tests/audio_processing/`, `tests/test_transcribe_translate_srt_script.py`
+
 - **Prompt Platform PT05 Foundations (WIP / Developer Preview, not production-ready)** (2026-02-10 to 2026-02-14)
   - Implemented PT05-aligned prompt envelope and metadata compatibility layer in prompt-system domain models
   - Added namespace-first canonical key mapping and immutable prompt reference support (`<canonical_key>.v<version>`)

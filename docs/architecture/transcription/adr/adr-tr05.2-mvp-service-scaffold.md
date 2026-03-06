@@ -253,3 +253,52 @@ Those needs are real, but they should be scoped and documented separately from t
 - `/architecture/transcription/adr/adr-tr05.1-speaker-block-language-lock-default.md`
 - `/architecture/transcription/adr/adr-tr02-optimized-srt-design.md`
 - `/architecture/transcription/design/diarization-system-design.md`
+
+## Addendum 2026-03-02: MVP Implementation Scope and Deferred Hardening
+
+This addendum records the current implementation state of the MVP scaffold after the first multilingual service slices were completed.
+
+### Implemented in Current MVP
+
+The following core MVP behavior is now in place inside `src/tnh_scholar/audio_processing/`:
+
+- provider-neutral multilingual orchestration via `MultilingualTranscriptionService`
+- opt-in speaker-block routing for multilingual processing
+- per-block language-aware transcription routing
+- selective translation skip for English blocks
+- segment-local timestamp remap and merge into a final English SRT
+- partial-failure handling for failed blocks with valid fallback subtitle text
+- malformed failed-block skip behavior with warning logs emitted through the standard `tnh_scholar` logging system
+
+This means the core multilingual orchestration path described by this ADR now exists as working MVP code rather than only a design target.
+
+### Intentionally Reduced MVP Scope
+
+The following items remain intentionally reduced or simplified in the current MVP:
+
+- no live end-to-end integration test yet for the real pyannote-backed diarization path
+- no provider-comparison mode yet, even though both Whisper and AssemblyAI remain supported pathways
+- no persisted debug manifest or dropped-block artifact bundle in `ArtifactRetention.DEBUG`; debug visibility currently relies primarily on logs and tests
+- language confidence is still heuristic in the current speaker-block implementation rather than sourced from a richer provider-native confidence model
+- the older `diarization/strategies/language_based.py` path remains stale and is currently bypassed rather than fully rehabilitated
+
+These are known scope reductions, not accidental omissions.
+
+### Accepted MVP Technical Debt
+
+The current implementation accepts the following short-term technical debt in order to keep the MVP bounded:
+
+- real-world diarization dependencies are exercised mainly through service seams and test harnesses rather than full external integration runs
+- failed malformed blocks are dropped from the merged subtitle timeline rather than being materialized into a richer debug artifact model
+- block-level failure visibility is currently log-centric and not yet represented as a first-class exported manifest
+
+This debt is acceptable for the MVP because the core orchestration path is now testable, typed, and structurally aligned with the existing `audio_processing` package.
+
+### Follow-On Hardening Work
+
+The next hardening work after this MVP slice should focus on:
+
+- live integration validation of speaker-block mode against the real diarization stack
+- richer debug artifact retention for dropped, malformed, or uncertain blocks
+- stronger confidence modeling for language detection outcomes
+- targeted modernization of stale legacy language-aware strategy code where it can be cleanly brought back under the current service boundaries

@@ -259,3 +259,58 @@ Implemented PT05 prompt platform strategy end-to-end in the active prompt system
 
 ### Open Questions
 - None blocking this round.
+
+---
+
+## [2026-03-05 14:45 PST] Multilingual Transcription Wrap-Up Verification
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: multilingual-transcription-wrapup-and-pr-prep
+**Human Collaborator**: phapman
+
+### Context
+Wrapped the multilingual transcription branch work after the archive side-application utilities were split out of scope for this repository. Needed to verify the end-to-end test surface, run the standard local validation targets, and record the current branch state before moving toward a PR.
+
+### Key Decisions
+- **Keep repo scope tight**: removed the archive utility scripts from the TNH Scholar PR plan and treated them as a separate `utility-scripts` concern.
+- **Stabilize the modified test surface before PR prep**: fixed the multilingual warning-capture assertion to attach a handler directly to the namespaced logger instead of relying on `caplog` interception through the root logger.
+- **Document validation outcomes explicitly**: recorded that `make ci-check` now completes, while `make docs-build` still fails on pre-existing documentation warnings outside the transcription changes.
+
+### Work Completed
+- [x] Verified targeted multilingual + diarization tests for the TNH Scholar change set
+- [x] Fixed the blocking multilingual warning-capture test in `tests/audio_processing/test_multilingual_service.py`
+- [x] Ran `make ci-check` successfully after the test fix
+- [x] Ran `make docs-build` and captured remaining pre-existing docs failures for PR context
+- [x] Updated `CHANGELOG.md` and `AGENTLOG.md`
+
+### Discoveries & Insights
+- **`make ci-check` status**: passes after the test fix. Ruff lint, format, and mypy still emit many existing repo-wide findings, but they are non-blocking in this target by design.
+- **`make docs-build` status**: still fails in strict mode because of pre-existing docs issues unrelated to this change set:
+  - invalid or legacy frontmatter status values in many generated docs pages
+  - missing ADR targets in agent-orchestration docs
+  - broken same-page anchors in `docs/project/repo-root/todo-list.md`
+- **Tree drift**: `make ci-check` regenerates `project_directory_tree.txt`; that file is now part of the working tree drift to review before PR.
+
+### Files Modified/Created
+- `src/tnh_scholar/audio_processing/multilingual_models.py`: Typed multilingual request/result refinements.
+- `src/tnh_scholar/audio_processing/multilingual_protocols.py`: Protocol expansion for orchestration seams.
+- `src/tnh_scholar/audio_processing/multilingual_service.py`: MVP multilingual block routing, translation, merge, and malformed-block handling.
+- `src/tnh_scholar/audio_processing/diarization/pyannote_client.py`: Client hardening and response handling updates.
+- `src/tnh_scholar/audio_processing/diarization/pyannote_adapter.py`: Adapter alignment updates.
+- `src/tnh_scholar/audio_processing/diarization/pyannote_diarize.py`: Diarization wiring refinements.
+- `src/tnh_scholar/audio_processing/diarization/schemas.py`: Schema support for updated Pyannote payload/status handling.
+- `tests/audio_processing/test_multilingual_service.py`: Expanded multilingual service coverage and logger-capture fix.
+- `tests/audio_processing/test_multilingual_segmentation_harness.py`: Segmentation harness tests.
+- `tests/audio_processing/diarization/test_pyannote_client.py`: New Pyannote client coverage.
+- `tests/audio_processing/diarization/test_pyannote_diarize.py`: New diarization flow coverage.
+- `docs/architecture/transcription/adr/adr-tr05.2-mvp-service-scaffold.md`: ADR scaffold/status updates for the multilingual MVP path.
+- `CHANGELOG.md`: Added unreleased summary for multilingual transcription work.
+
+### Validation Performed
+- `poetry run pytest tests/test_transcribe_translate_srt_script.py tests/audio_processing/test_multilingual_models.py tests/audio_processing/test_multilingual_service.py tests/audio_processing/test_multilingual_segmentation_harness.py tests/audio_processing/diarization/test_schemas.py tests/audio_processing/diarization/test_pyannote_client.py tests/audio_processing/diarization/test_pyannote_diarize.py -q`
+- `poetry run pytest tests/audio_processing/test_multilingual_service.py::test_multilingual_service_logs_when_skipping_malformed_failed_block -q`
+- `make ci-check`
+- `make docs-build`
+
+### Open Questions
+- Decide whether to address the repo-wide docs strict-mode failures before this PR or to scope them into a separate documentation cleanup branch.
