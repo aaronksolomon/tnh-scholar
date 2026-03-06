@@ -6,8 +6,8 @@ from datetime import datetime, timezone
 
 
 def local_now() -> datetime:
-    """Return current local timestamp."""
-    return datetime.now()
+    """Return current local timestamp with timezone information."""
+    return datetime.now().astimezone()
 
 
 def utc_now() -> datetime:
