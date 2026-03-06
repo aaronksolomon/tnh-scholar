@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Annotated, Any, Literal, Optional, Union
 
-from pydantic import AnyUrl, BaseModel, ConfigDict, Field
+from pydantic import AnyUrl, BaseModel, ConfigDict, Field, field_validator
 
 
 # -----------------------------
@@ -21,6 +21,7 @@ class PollOutcome(str, Enum):
 
     
 class JobStatus(str, Enum):
+    CREATED = "created"
     SUCCEEDED = "succeeded"
     FAILED = "failed"
     PENDING = "pending"
@@ -111,6 +112,16 @@ class JobStatusResponse(BaseModel):
     # Client-side polling metadata
     polls: int = 0
     elapsed_s: float = 0.0
+
+    @field_validator("status", mode="before")
+    @classmethod
+    def normalize_created_status(cls, value: Any) -> Any:
+        """Normalize pyannote pre-running status to the existing domain contract."""
+        if isinstance(value, JobStatus):
+            value = value.value
+        if value == JobStatus.CREATED.value:
+            return JobStatus.PENDING.value
+        return value
 
 
 # -----------------------------

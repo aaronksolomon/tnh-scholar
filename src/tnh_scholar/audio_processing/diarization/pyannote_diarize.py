@@ -58,9 +58,12 @@ class PyannoteService(DiarizationService):
 
     def get_response(self, job_id: str, *, wait_until_complete: bool = False) -> DiarizationResponse:
         jsr: Optional[JobStatusResponse]
-        
-        jsr = self.client.poll_job_until_complete(job_id, wait_until_complete)
-        
+
+        jsr = self.client.poll_job_until_complete(
+            job_id,
+            wait_until_complete=wait_until_complete,
+        )
+
         return self.adapter.to_response(jsr)
 
     def generate(

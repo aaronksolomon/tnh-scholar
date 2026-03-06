@@ -22,7 +22,7 @@ import time
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Callable, Dict, Optional
 
 import requests
 from dotenv import load_dotenv
@@ -193,13 +193,17 @@ class PyannoteClient:
         logger.debug(f"Got upload URL for media ID: {media_id}")
         return upload_url
     
-    def _extract_response_info(self, response, response_type, error_msg):
+    def _extract_response_info(
+        self,
+        response: requests.Response,
+        response_type: str,
+        error_msg: str,
+    ) -> str:
         response.raise_for_status()
         info = response.json()
         if result := info.get(response_type):
-            return result
-        else:
-            raise ValueError(error_msg)
+            return str(result)
+        raise ValueError(error_msg)
     
     # -----------------------
     # Start job
@@ -224,14 +228,23 @@ class PyannoteClient:
             logger.error(f"Invalid API response: {e}")
             return None
 
-    def _send_payload(self, media_id, params):
+    def _send_payload(
+        self,
+        media_id: str,
+        params: Optional[DiarizationParams],
+    ) -> str:
         payload: Dict[str, Any] = {"url": media_id}
         if params:
             payload |= params.to_api_dict()
             logger.info(f"Starting diarization with params: {params}")
         logger.debug(f"Full payload: {payload}")
 
-        response = requests.post(self.config.diarize_endpoint, headers=self.headers, json=payload)
+        response = requests.post(
+            self.config.diarize_endpoint,
+            headers=self.headers,
+            json=payload,
+            timeout=self.network_timeout,
+        )
         job_id = self._extract_response_info(
             response, JOB_ID_FIELD, "API response missing job ID"
         )
@@ -267,7 +280,11 @@ class PyannoteClient:
         """
         try:
             endpoint = f"{self.config.job_status_endpoint}/{job_id}"
-            response = requests.get(endpoint, headers=self.headers)
+            response = requests.get(
+                endpoint,
+                headers=self.headers,
+                timeout=self.network_timeout,
+            )
             response.raise_for_status()
             result = response.json()
 
@@ -291,7 +308,12 @@ class PyannoteClient:
         Generic job polling helper for long-running async jobs.
         """
 
-        def __init__(self, status_fn, job_id: str, polling_config: PollingConfig):
+        def __init__(
+            self,
+            status_fn: Callable[[str], Optional[JobStatusResponse]],
+            job_id: str,
+            polling_config: PollingConfig,
+        ):
             self.status_fn = status_fn
             self.job_id = job_id
             self.polling_config = polling_config
