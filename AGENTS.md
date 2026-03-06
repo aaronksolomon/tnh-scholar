@@ -5,7 +5,7 @@ owner: ""
 author: "aaronksolomon, Claude Sonnet 4.5"
 status: current
 created: "2025-12-07"
-updated: "2026-01-01"
+updated: "2026-03-05"
 ---
 # AGENTS.md
 
@@ -141,6 +141,39 @@ pipx provides isolated environments per tool while making them globally accessib
 - Run `poetry install --with local && poetry run sourcery review --check <changed-files.py>` - Sourcery is in optional local group (platform-specific wheels)
 - Run `poetry run mypy` on changed .py files - fix all type errors
 - **PR size**: Keep PRs under ~600 LOC / 10 files for Sourcery bot review (150k char diff limit)
+
+**Small PR Workflow (Preferred):**
+
+Use descriptive sub-branches for incremental PRs within a feature area.
+
+Two valid patterns:
+
+```
+Independent PRs (branch from main):
+feat/multilingual-scaffold   → PR → merge
+feat/pyannote-hardening      → PR → merge
+
+Stacked PRs (branch from previous PR branch until merge):
+feat/multilingual-scaffold   → PR1
+feat/multilingual-service    (from scaffold) → PR2
+feat/multilingual-tests      (from service)  → PR3
+```
+
+Workflow per PR:
+
+1. Start from a **clean working tree**. Do not switch branches with unrelated uncommitted work present.
+2. Choose base branch:
+   - Independent PR: `main`
+   - Stacked PR: previous in-flight feature branch
+3. Update base branch, then create a descriptive feature branch: `git checkout -b feat/<feature>-<description>`
+4. Work → commit → `make ci-check` → push
+5. Create PR → review cycle (fix Sourcery/CI feedback, push follow-up commits)
+6. After merge, the **user** may delete the branch. Agents do not delete branches without explicit approval.
+7. For the next chunk:
+   - independent PR: repeat from `main`
+   - stacked PR: branch from the current top-of-stack branch until earlier PRs merge
+
+**Why:** Small PRs enable faster review, easier rollback, and stay within Sourcery's diff limits. Independent PRs reduce coupling. Stacked PRs preserve momentum when later work depends on earlier unmerged changes.
 
 **CI/CD:** GitHub Actions, all deps non-optional, 264 tests passing.
 
