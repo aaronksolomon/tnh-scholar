@@ -69,7 +69,7 @@ class SubprocessAgentRunner(AgentRunnerProtocol):
 
     def _start_process(self, command: list[str]) -> subprocess.Popen[bytes]:
         return subprocess.Popen(
-            command,
+            command,  # shell=False; command tokens come from internal AgentCommandBuilder.
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -100,10 +100,12 @@ class SubprocessAgentRunner(AgentRunnerProtocol):
         while True:
             state = self._apply_timeouts(process, start_time, timeout_seconds, idle_timeout_seconds, state)
             state = self._emit_heartbeat(state, heartbeat_interval_seconds, on_heartbeat)
-            if self._should_break(process, selector, state):
+            if state.termination != TerminationReason.completed:
+                break
+            if process.poll() is not None and not selector.get_map():
                 break
             state = self._read_and_handle(selector, process, prompt_handler, state, on_output)
-            if self._should_break(process, selector, state):
+            if state.termination != TerminationReason.completed:
                 break
         return (
             bytes(state.output),
@@ -132,25 +134,13 @@ class SubprocessAgentRunner(AgentRunnerProtocol):
             state = self._record_output(state, chunk, key.data, on_output)
             decision, termination = self._handle_prompt(chunk, prompt_handler, process)
             if termination != TerminationReason.completed:
-                return RunnerState(
-                    output=state.output,
-                    stdout=state.stdout,
-                    stderr=state.stderr,
-                    last_output=state.last_output,
-                    last_heartbeat=state.last_heartbeat,
+                return self._set_state(
+                    state,
                     decision=decision or state.decision,
                     termination=termination,
                 )
             if decision is not None:
-                state = RunnerState(
-                    output=state.output,
-                    stdout=state.stdout,
-                    stderr=state.stderr,
-                    last_output=state.last_output,
-                    last_heartbeat=state.last_heartbeat,
-                    decision=decision,
-                    termination=state.termination,
-                )
+                state = self._set_state(state, decision=decision)
         return state
 
     def _read_chunk(self, fileobj) -> bytes:
@@ -166,18 +156,12 @@ class SubprocessAgentRunner(AgentRunnerProtocol):
         state.output.extend(chunk)
         if stream_name == "stdout":
             state.stdout.extend(chunk)
-        else:
+        elif stream_name == "stderr":
             state.stderr.extend(chunk)
+        else:
+            raise ValueError(f"Unexpected stream_name {stream_name!r} in _record_output")
         self._emit_output(chunk, on_output)
-        return RunnerState(
-            output=state.output,
-            stdout=state.stdout,
-            stderr=state.stderr,
-            last_output=time.monotonic(),
-            last_heartbeat=state.last_heartbeat,
-            decision=state.decision,
-            termination=state.termination,
-        )
+        return self._set_state(state, last_output=time.monotonic())
 
     def _handle_prompt(
         self,
@@ -201,8 +185,11 @@ class SubprocessAgentRunner(AgentRunnerProtocol):
     def _send_response(self, process: subprocess.Popen[bytes], response_text: str) -> None:
         if process.stdin is None:
             return
-        process.stdin.write(response_text.encode())
-        process.stdin.flush()
+        try:
+            process.stdin.write(response_text.encode())
+            process.stdin.flush()
+        except (BrokenPipeError, OSError, ValueError):
+            return
 
     def _final_result(
         self,
@@ -230,12 +217,6 @@ class SubprocessAgentRunner(AgentRunnerProtocol):
         text = raw_output.decode(errors="ignore")
         return re.sub(r"\x1b\[[0-9;]*m", "", text)
 
-    def _timed_out(self, start_time: float, timeout_seconds: int) -> bool:
-        return time.monotonic() - start_time > timeout_seconds
-
-    def _idle_timed_out(self, last_output: float, idle_timeout_seconds: int) -> bool:
-        return time.monotonic() - last_output > idle_timeout_seconds
-
     def _init_state(self) -> RunnerState:
         now = time.monotonic()
         return RunnerState(
@@ -259,30 +240,10 @@ class SubprocessAgentRunner(AgentRunnerProtocol):
         if process.poll() is not None:
             return state
         reason = self._timeout_reason(start_time, state.last_output, timeout_seconds, idle_timeout_seconds)
-        if reason == TerminationReason.completed:
+        if reason is None:
             return state
         self._terminate(process)
-        return RunnerState(
-            output=state.output,
-            stdout=state.stdout,
-            stderr=state.stderr,
-            last_output=state.last_output,
-            last_heartbeat=state.last_heartbeat,
-            decision=state.decision,
-            termination=reason,
-        )
-
-    def _should_break(
-        self,
-        process: subprocess.Popen[bytes],
-        selector: selectors.DefaultSelector,
-        state: RunnerState,
-    ) -> bool:
-        if state.termination != TerminationReason.completed:
-            return True
-        if process.poll() is None:
-            return False
-        return not selector.get_map()
+        return self._set_state(state, termination=reason)
 
     def _timeout_reason(
         self,
@@ -290,15 +251,23 @@ class SubprocessAgentRunner(AgentRunnerProtocol):
         last_output: float,
         timeout_seconds: int,
         idle_timeout_seconds: int,
-    ) -> TerminationReason:
-        if self._timed_out(start_time, timeout_seconds):
+    ) -> TerminationReason | None:
+        now = time.monotonic()
+        if now - start_time > timeout_seconds:
             return TerminationReason.wall_clock_timeout
-        if self._idle_timed_out(last_output, idle_timeout_seconds):
+        if now - last_output > idle_timeout_seconds:
             return TerminationReason.idle_timeout
-        return TerminationReason.completed
+        return None
 
     def _terminate(self, process: subprocess.Popen[bytes]) -> None:
+        if process.poll() is not None:
+            return
         process.send_signal(signal.SIGTERM)
+        try:
+            process.wait(timeout=0.5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=0.5)
 
     def _emit_heartbeat(
         self,
@@ -312,15 +281,12 @@ class SubprocessAgentRunner(AgentRunnerProtocol):
         if now - state.last_heartbeat < heartbeat_interval_seconds:
             return state
         on_heartbeat()
-        return RunnerState(
-            output=state.output,
-            stdout=state.stdout,
-            stderr=state.stderr,
-            last_output=state.last_output,
-            last_heartbeat=now,
-            decision=state.decision,
-            termination=state.termination,
-        )
+        return self._set_state(state, last_heartbeat=now)
+
+    def _set_state(self, state: RunnerState, **changes: object) -> RunnerState:
+        for key, value in changes.items():
+            setattr(state, key, value)
+        return state
 
     def _emit_output(self, chunk: bytes, on_output: Callable[[str], None] | None) -> None:
         if on_output is None:

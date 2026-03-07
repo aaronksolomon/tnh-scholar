@@ -7,8 +7,6 @@ from datetime import datetime
 from functools import partial
 from pathlib import Path
 
-from tnh_scholar.logging_config import get_logger
-
 from tnh_scholar.agent_orchestration.spike.models import (
     AgentRunResult,
     GitStatusSnapshot,
@@ -33,6 +31,7 @@ from tnh_scholar.agent_orchestration.spike.protocols import (
     RunIdGeneratorProtocol,
     WorkspaceCaptureProtocol,
 )
+from tnh_scholar.logging_config import get_logger
 
 
 @dataclass(frozen=True)
@@ -57,7 +56,12 @@ class SpikeRunService:
         run_result = self._execute_agent(context, params, policy)
         git_post = self._capture_post(context, params)
         metadata = self._persist_metadata(context, params, git_pre, git_post, run_result)
-        self._finalize_workspace(context.base_branch, context.work_branch, policy, run_result.termination_reason)
+        self._finalize_workspace(
+            context.base_branch,
+            context.work_branch,
+            policy,
+            run_result.termination_reason,
+        )
         self._logger().info("spike-run-finished: %s", context.run_id)
         return metadata
 

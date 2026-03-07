@@ -79,7 +79,9 @@ class SpikePolicy(BaseModel):
     command_capture_patterns: list[str] = Field(default_factory=list)
     allow_response: str = Field(default_factory=lambda: SpikeDefaults().allow_response)
     block_response: str = Field(default_factory=lambda: SpikeDefaults().block_response)
-    output_event_max_chars: int = Field(default_factory=lambda: SpikeDefaults().default_output_event_max_chars)
+    output_event_max_chars: int = Field(
+        default_factory=lambda: SpikeDefaults().default_output_event_max_chars
+    )
     cleanup_on_failure: bool = True
 
 
