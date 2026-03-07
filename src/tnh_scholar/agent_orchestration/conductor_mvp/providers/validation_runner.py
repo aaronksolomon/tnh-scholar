@@ -1,4 +1,18 @@
-"""Local RUN_VALIDATION executor with artifact capture."""
+"""Local RUN_VALIDATION executor with artifact capture.
+
+TODO(agent-orch, high-priority): This provider still renders trusted validator
+execution specs into argv tuples for ``subprocess.run``. That is an acceptable
+short-term infrastructure boundary for PR #35, but it is not the intended
+end-state architecture for conductor MVP.
+
+Required follow-up:
+- replace ``ValidatorExecutionSpec.command: tuple[str, ...]`` with typed command
+  objects per validator family
+- move argv rendering into a final executor-only translation layer
+- eliminate naked command vectors from provider contracts entirely
+
+Do not treat the current implementation as the final security/architecture fix.
+"""
 
 from __future__ import annotations
 
@@ -124,6 +138,10 @@ class LocalValidationRunner(ValidationRunnerProtocol):
         artifacts: tuple[str, ...],
     ) -> ValidationRunResult:
         try:
+            # TODO(agent-orch, high-priority): Replace this argv tuple boundary
+            # with typed execution command objects plus a dedicated renderer at
+            # the final subprocess edge. Current safety relies on trusted
+            # resolver ownership, but the shape is still below repo standards.
             self._validate_command(command, cwd)
             process = subprocess.run(
                 list(command),

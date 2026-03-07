@@ -5,7 +5,7 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-02-01"
+updated: "2026-03-06"
 ---
 # TNH Scholar TODO List
 
@@ -58,6 +58,26 @@ This section organizes work into three priority levels based on criticality for 
 #### ✅ Pattern→Prompt Migration — *See [Archive](#patternprompt-migration-)*
 
 #### ✅ Provenance Format Refactor (YAML Frontmatter) — *See [Archive](#provenance-format-refactor-)*
+
+#### 🚨 Agent-Orch Conductor Validation Command Typing Hardening
+
+- **Status**: IN PROGRESS - high-priority follow-up before conductor MVP can be considered architecturally clean
+- **Priority**: HIGH (security posture + architecture compliance)
+- **Context**: PR #35 moved validator command authorship into trusted provider code, but [validation_runner.py](src/tnh_scholar/agent_orchestration/conductor_mvp/providers/validation_runner.py) still passes `tuple[str, ...]` argv vectors to `subprocess.run(...)`.
+- **Why This Matters**:
+  - raw argv tuples remain below the repo's typed object-service standard
+  - security review noise will persist until validator execution is modeled as typed command objects
+  - conductor MVP is not spike code, so this boundary must be brought up to standard
+- **Required Follow-Up**:
+  - [ ] Replace `ValidatorExecutionSpec.command: tuple[str, ...]` with typed execution command models
+  - [ ] Add a dedicated renderer/executor layer that translates typed command objects to argv only at the subprocess edge
+  - [ ] Remove naked command vectors from conductor provider protocols
+  - [ ] Re-run Sourcery/security review after the command model refactor
+- **Files in Scope**:
+  - `src/tnh_scholar/agent_orchestration/conductor_mvp/models.py`
+  - `src/tnh_scholar/agent_orchestration/conductor_mvp/protocols.py`
+  - `src/tnh_scholar/agent_orchestration/conductor_mvp/providers/validation_runner.py`
+  - `tests/agent_orchestration/test_conductor_mvp_kernel.py`
 
 #### 🔮 JVB VS Code Parallel Viewer (ADR-JVB02)
 
