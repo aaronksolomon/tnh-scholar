@@ -5,6 +5,8 @@ from __future__ import annotations
 import sys
 from dataclasses import dataclass
 
+import pytest
+
 from tnh_scholar.agent_orchestration.spike.models import (
     PromptAction,
     PromptHandlingOutcome,
@@ -64,7 +66,7 @@ def test_send_response_ignores_broken_pipe() -> None:
 
 
 def test_timeout_termination_returns_definitive_exit_code() -> None:
-    runner = SubprocessAgentRunner()
+    runner = SubprocessAgentRunner(allowed_executables=("claude", "codex", sys.executable))
     result = runner.run(
         command=[sys.executable, "-c", "import time; time.sleep(10)"],
         timeout_seconds=1,
@@ -77,3 +79,18 @@ def test_timeout_termination_returns_definitive_exit_code() -> None:
 
     assert result.termination_reason == TerminationReason.wall_clock_timeout
     assert result.exit_code is not None
+
+
+def test_runner_rejects_unsupported_executable() -> None:
+    runner = SubprocessAgentRunner()
+
+    with pytest.raises(ValueError, match="Unsupported agent executable"):
+        runner.run(
+            command=["python", "-c", "print('hello')"],
+            timeout_seconds=1,
+            idle_timeout_seconds=1,
+            heartbeat_interval_seconds=1,
+            prompt_handler=_IgnorePromptHandler(),
+            on_heartbeat=None,
+            on_output=None,
+        )

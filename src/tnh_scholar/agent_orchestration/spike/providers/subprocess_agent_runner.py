@@ -40,6 +40,8 @@ class RunnerState:
 class SubprocessAgentRunner(AgentRunnerProtocol):
     """Run agents via subprocess pipes and capture output."""
 
+    allowed_executables: tuple[str, ...] = ("claude", "codex")
+
     def run(
         self,
         *,
@@ -68,13 +70,21 @@ class SubprocessAgentRunner(AgentRunnerProtocol):
         return self._final_result(process, raw_output, stdout, stderr, termination, decision)
 
     def _start_process(self, command: list[str]) -> subprocess.Popen[bytes]:
+        self._validate_command(command)
         return subprocess.Popen(
-            command,  # shell=False; command tokens come from internal AgentCommandBuilder.
+            command,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             close_fds=True,
         )
+
+    def _validate_command(self, command: list[str]) -> None:
+        if not command:
+            raise ValueError("Agent command must not be empty.")
+        executable = command[0]
+        if executable not in self.allowed_executables:
+            raise ValueError(f"Unsupported agent executable: {executable}")
 
     def _build_selector(self, process: subprocess.Popen[bytes]) -> selectors.DefaultSelector:
         selector = selectors.DefaultSelector()
