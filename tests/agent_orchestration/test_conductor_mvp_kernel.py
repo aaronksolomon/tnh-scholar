@@ -28,6 +28,11 @@ from tnh_scholar.agent_orchestration.conductor_mvp.models import (
 from tnh_scholar.agent_orchestration.conductor_mvp.providers.artifact_store import (
     FileArtifactStore,
 )
+from tnh_scholar.agent_orchestration.conductor_mvp.providers.validation_runner import (
+    BuiltinCommandEntry,
+    LocalValidationRunner,
+    StaticBuiltinValidatorResolver,
+)
 from tnh_scholar.agent_orchestration.conductor_mvp.service import (
     ConductorKernelService,
     WorkflowValidationError,
@@ -270,3 +275,80 @@ def test_runtime_allows_success_when_path_includes_gate_after_goldens(tmp_path: 
     )
     result = service.run(workflow, tmp_path)
     assert result.last_step_id == "STOP"
+
+
+def test_validator_rejects_unsafe_route_to_non_rollback_step() -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w4",
+        version=1,
+        description="unsafe route must hit rollback",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                routes=[RouteRule(outcome=MechanicalOutcome.completed.value, target="evaluate")],
+            ),
+            EvaluateStep(
+                id="evaluate",
+                prompt="planner",
+                allowed_next_steps=["gate"],
+                routes=[
+                    RouteRule(outcome=PlannerStatus.success.value, target="gate"),
+                    RouteRule(outcome=PlannerStatus.partial.value, target="gate"),
+                    RouteRule(outcome=PlannerStatus.blocked.value, target="gate"),
+                    RouteRule(outcome=PlannerStatus.unsafe.value, target="gate"),
+                    RouteRule(outcome=PlannerStatus.needs_human.value, target="gate"),
+                ],
+            ),
+            GateStep(
+                id="gate",
+                gate="requires_approval",
+                routes=[
+                    RouteRule(outcome=GateOutcome.gate_approved.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_rejected.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_timed_out.value, target="STOP"),
+                ],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+
+    with pytest.raises(WorkflowValidationError, match="must target ROLLBACK"):
+        WorkflowValidator().validate(workflow)
+
+
+def test_local_validation_runner_captures_artifacts_to_run_dir(tmp_path: Path) -> None:
+    run_dir = tmp_path / "run"
+    run_dir.mkdir()
+    work_dir = tmp_path / "work"
+    work_dir.mkdir()
+    artifact_file = work_dir / "artifacts" / "report.txt"
+    artifact_file.parent.mkdir(parents=True)
+    artifact_file.write_text("ok", encoding="utf-8")
+
+    runner = LocalValidationRunner(
+        builtin_resolver=StaticBuiltinValidatorResolver(
+            entries=[BuiltinCommandEntry(name="tests", command=["python", "-c", "print('ok')"])]
+        )
+    )
+    step = RunValidationStep(
+        id="validate",
+        run=[
+            ScriptValidatorSpec(
+                id="script",
+                entrypoint=Path("/bin/sh"),
+                args=["-c", "printf ok"],
+                cwd=work_dir,
+                artifacts=["artifacts/*.txt"],
+            )
+        ],
+        routes=[],
+    )
+
+    result = runner.run(step, run_dir)
+
+    assert result.outcome == MechanicalOutcome.completed
+    captured = run_dir / "validation_artifacts" / "artifacts" / "report.txt"
+    assert captured.read_text(encoding="utf-8") == "ok"

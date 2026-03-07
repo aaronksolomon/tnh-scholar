@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from tnh_scholar.agent_orchestration.conductor_mvp.models import (
@@ -62,6 +62,13 @@ class WorkflowCatalog:
         """Return all declared transition targets for a step."""
         return [route.target for route in step.routes]
 
+    def route_target(self, step: StepDefinition, outcome_key: str, *, context: str) -> str:
+        """Return route target for an outcome or raise with context."""
+        for route in step.routes:
+            if route.outcome == outcome_key:
+                return route.target
+        raise WorkflowValidationError(f"{context} '{outcome_key}' in step: {step.id}")
+
 
 @dataclass(frozen=True)
 class WorkflowValidator:
@@ -120,21 +127,36 @@ class WorkflowValidator:
                 continue
             if route.target not in step.allowed_next_steps:
                 raise WorkflowValidationError(f"EVALUATE target not allowed in {step.id}: {route.target}")
-        self._validate_special_status_route(step, PlannerStatus.unsafe, Opcode.rollback)
-        self._validate_special_status_route(step, PlannerStatus.needs_human, Opcode.gate)
+        self._validate_special_status_route(
+            step,
+            PlannerStatus.unsafe,
+            Opcode.rollback,
+            catalog,
+        )
+        self._validate_special_status_route(
+            step,
+            PlannerStatus.needs_human,
+            Opcode.gate,
+            catalog,
+        )
 
     def _validate_special_status_route(
         self,
         step: EvaluateStep,
         status: PlannerStatus,
         expected_opcode: Opcode,
+        catalog: WorkflowCatalog,
     ) -> None:
-        target = self._route_target(step, status.value)
+        target = catalog.route_target(step, status.value, context="Route missing")
         if target == "STOP":
             return
-        if target in step.allowed_next_steps:
-            return
-        raise WorkflowValidationError(f"Invalid {status.value} route in {step.id}: {target}")
+        if target not in step.allowed_next_steps:
+            raise WorkflowValidationError(f"Invalid {status.value} route in {step.id}: {target}")
+        target_step = catalog.find_step(target)
+        if target_step.opcode != expected_opcode:
+            raise WorkflowValidationError(
+                f"{status.value} route in {step.id} must target {expected_opcode.value}: {target}"
+            )
 
     def _validate_reachability(self, workflow: WorkflowDefinition, catalog: WorkflowCatalog) -> None:
         reachable = self._reachable_step_ids(workflow.entry_step, catalog)
@@ -209,13 +231,6 @@ class WorkflowValidator:
             )
         return False
 
-    def _route_target(self, step: StepDefinition, outcome_key: str) -> str:
-        for route in step.routes:
-            if route.outcome == outcome_key:
-                route_target: str = route.target
-                return route_target
-        raise WorkflowValidationError(f"Route missing '{outcome_key}' in step: {step.id}")
-
     def _validate_target(self, workflow: WorkflowDefinition, target: str) -> None:
         if target == "STOP":
             return
@@ -256,35 +271,45 @@ class ConductorKernelService:
             step = catalog.find_step(state.current_step_id)
             if isinstance(step, StopStep):
                 return self._build_result(workflow, run_id, started_at, step.id, artifacts)
-            state = self._execute_step(step, state, run_dir)
+            state = self._execute_step(step, state, run_dir, catalog)
             self.artifact_store.write_text(artifacts.run_log, state.log_text())
 
-    def _execute_step(self, step: StepDefinition, state: "KernelState", run_dir: Path) -> "KernelState":
+    def _execute_step(
+        self,
+        step: StepDefinition,
+        state: "KernelState",
+        run_dir: Path,
+        catalog: WorkflowCatalog,
+    ) -> "KernelState":
         if isinstance(step, RunAgentStep):
             result = self.agent_runner.run(step, run_dir)
-            target = self._route_target(step, result.outcome.value)
+            target = catalog.route_target(step, result.outcome.value, context="No route for outcome")
             return state.advance(step.id, target)
         if isinstance(step, RunValidationStep):
             result = self.validation_runner.run(step, run_dir)
             pending_gate = state.pending_golden_gate
             if result.harness_report is not None and result.harness_report.proposed_goldens:
                 pending_gate = True
-            target = self._route_target(step, result.outcome.value)
+            target = catalog.route_target(step, result.outcome.value, context="No route for outcome")
             return state.advance(step.id, target, pending_gate=pending_gate)
         if isinstance(step, EvaluateStep):
             decision = self.planner_evaluator.evaluate(step, run_dir)
             self._validate_planner_next_step(step, decision.next_step)
-            target = self._route_target(step, decision.status.value)
+            target = catalog.route_target(step, decision.status.value, context="No route for outcome")
             self._enforce_runtime_golden_gate(state, decision.status, target)
             return state.advance(step.id, target)
         if isinstance(step, GateStep):
             outcome = self.gate_approver.decide(step, run_dir)
-            target = self._route_target(step, outcome.value)
+            target = catalog.route_target(step, outcome.value, context="No route for outcome")
             pending_gate = self._clear_pending_gate_if_approved(state.pending_golden_gate, outcome)
             return state.advance(step.id, target, pending_gate=pending_gate)
         if isinstance(step, RollbackStep):
             self.workspace.rollback(step)
-            target = self._route_target(step, MechanicalOutcome.completed.value)
+            target = catalog.route_target(
+                step,
+                MechanicalOutcome.completed.value,
+                context="No route for outcome",
+            )
             return state.advance(step.id, target)
         raise WorkflowValidationError(f"Unsupported step type: {step.id}")
 
@@ -308,13 +333,6 @@ class ConductorKernelService:
         if pending_gate and outcome == GateOutcome.gate_approved:
             return False
         return pending_gate
-
-    def _route_target(self, step: StepDefinition, outcome_key: str) -> str:
-        for route in step.routes:
-            if route.outcome == outcome_key:
-                route_target: str = route.target
-                return route_target
-        raise WorkflowValidationError(f"No route for outcome '{outcome_key}' in {step.id}")
 
     def _build_result(
         self,
@@ -350,18 +368,17 @@ class KernelState:
 
     current_step_id: str
     pending_golden_gate: bool = False
-    trace: list[str] | None = None
+    trace: list[str] = field(default_factory=list)
 
     def advance(self, step_id: str, next_step_id: str, pending_gate: bool | None = None) -> "KernelState":
         """Advance state with trace update."""
-        trace = self.trace or []
         new_pending = self.pending_golden_gate if pending_gate is None else pending_gate
         return KernelState(
             current_step_id=next_step_id,
             pending_golden_gate=new_pending,
-            trace=[*trace, f"{step_id}->{next_step_id}"],
+            trace=[*self.trace, f"{step_id}->{next_step_id}"],
         )
 
     def log_text(self) -> str:
         """Render trace log text."""
-        return "\n".join(self.trace or [])
+        return "\n".join(self.trace)

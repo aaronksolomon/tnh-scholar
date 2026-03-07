@@ -50,6 +50,7 @@ class LocalValidationRunner(ValidationRunnerProtocol):
     """Run validators via subprocess in the local worktree."""
 
     builtin_resolver: BuiltinValidatorResolverProtocol
+    artifacts_subdir: str = "validation_artifacts"
 
     def run(self, step: RunValidationStep, run_dir: Path) -> ValidationRunResult:
         """Execute all validators and aggregate outcome/report."""
@@ -68,10 +69,11 @@ class LocalValidationRunner(ValidationRunnerProtocol):
     ) -> ValidationRunResult:
         if isinstance(validator, BuiltinValidatorSpec):
             command = self.builtin_resolver.resolve(validator)
-            return self._run_command(command, run_dir, None, [])
+            return self._run_command(command, run_dir, run_dir, None, [])
         return self._run_command(
             [str(validator.entrypoint), *validator.args],
             validator.cwd or run_dir,
+            run_dir,
             validator.timeout_seconds,
             validator.artifacts,
         )
@@ -80,10 +82,12 @@ class LocalValidationRunner(ValidationRunnerProtocol):
         self,
         command: list[str],
         cwd: Path,
+        run_dir: Path,
         timeout_seconds: int | None,
         artifacts: list[str],
     ) -> ValidationRunResult:
         try:
+            self._validate_command(command, cwd)
             process = subprocess.run(
                 command,
                 cwd=cwd,
@@ -92,7 +96,7 @@ class LocalValidationRunner(ValidationRunnerProtocol):
                 text=True,
                 timeout=timeout_seconds,
             )
-            self._capture_artifacts(cwd, artifacts)
+            self._capture_artifacts(cwd, run_dir, artifacts)
             harness_report = self._load_harness_report(cwd)
             if process.returncode == 0:
                 return ValidationRunResult(
@@ -106,15 +110,28 @@ class LocalValidationRunner(ValidationRunnerProtocol):
         except subprocess.TimeoutExpired:
             return ValidationRunResult(outcome=MechanicalOutcome.killed_timeout)
 
-    def _capture_artifacts(self, cwd: Path, globs: list[str]) -> None:
+    def _validate_command(self, command: list[str], cwd: Path) -> None:
+        if not command:
+            raise ValueError("Validation command must not be empty.")
+        executable = Path(command[0])
+        if executable.is_absolute():
+            if not executable.exists():
+                raise ValueError(f"Validation executable does not exist: {executable}")
+            return
+        if executable.parent != Path("."):
+            candidate = (cwd / executable).resolve()
+            if not candidate.exists():
+                raise ValueError(f"Validation executable does not exist: {candidate}")
+
+    def _capture_artifacts(self, cwd: Path, run_dir: Path, globs: list[str]) -> None:
+        artifacts_root = run_dir / self.artifacts_subdir
         for pattern in globs:
             for path in cwd.glob(pattern):
                 if path.is_file():
                     relative_path = path.relative_to(cwd)
-                    destination = cwd / relative_path
+                    destination = artifacts_root / relative_path
                     destination.parent.mkdir(parents=True, exist_ok=True)
-                    if path != destination:
-                        shutil.copy2(path, destination)
+                    shutil.copy2(path, destination)
 
     def _load_harness_report(self, cwd: Path) -> HarnessReport | None:
         path = cwd / "harness_report.json"
