@@ -26,6 +26,32 @@ auto_generated: true
 
 **[ADR-OA03.2: Codex Runner](adr-oa03.2-codex-runner.md)** - Codex execution path — API-first, tool-driven runner for implementation tasks
 
+**[ADR-OA03.3: Codex CLI Runner](adr-oa03.3-codex-cli-runner.md)** - Codex execution path via CLI — headless exec mode with JSONL output capture, superseding the API-based approach
+
+**[ADR-OA04: Workflow Schema + Opcode Semantics](adr-oa04-workflow-schema-opcode-semantics.md)** - Defines the canonical workflow document format and execution semantics for tnh-conductor kernel opcodes
+
+**[ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence](adr-oa04.1-implementation-notes-mvp-buildout.md)** - Implementation-guide addendum for OA04 defining MVP execution flow, role split, and incremental build sequence
+
+**[ADR-OA04.2: Agent-Orch MVP Hardening and Compliance Plan](adr-oa04.2-mvp-hardening-compliance-plan.md)** - Audit findings and remediation plan for bringing the agent-orchestration walking skeleton up to TNH Scholar code standards
+
+**[ADR-OA05: Prompt Library Specification](adr-oa05-prompt-library-specification.md)** - Defines prompt artifact schema, versioning, rendering, and catalog validation contracts for tnh-conductor prompt-program behavior
+
+**[ADR-OA06: Planner Evaluator Contract](adr-oa06-planner-evaluator-contract.md)** - Defines planner evaluator I/O schemas, status derivation, contradiction rules, and deterministic decision vectors for EVALUATE steps
+
+**[ADR-OA07: MVP Runtime Architecture Strategy](adr-oa07-mvp-runtime-architecture-strategy.md)** - Defines the maintained modular runtime architecture strategy for the tnh-conductor walking skeleton, replacing prototype-era structure with TNH-compliant subsystem boundaries
+
+**[ADR-OA07.1: Kernel Runtime Design](adr-oa07.1-kernel-runtime-design.md)** - Defines the maintained kernel subsystem for tnh-conductor MVP, including package boundary, internal collaborators, and ownership of workflow execution semantics
+
+**[ADR-OA07.2: Runner Subsystem Design](adr-oa07.2-runner-subsystem-design.md)** - Defines the maintained runner subsystem for tnh-conductor MVP, including typed runner contracts, CLI runner boundaries, and shared execution substrate usage
+
+**[ADR-OA07.3: Validation Subsystem Design](adr-oa07.3-validation-subsystem-design.md)** - Defines the maintained validation subsystem for tnh-conductor MVP, including typed validator contracts, harness/report ownership, and the boundary to shared process execution
+
+**[ADR-OA07.4: Workspace and Run Artifact Subsystems](adr-oa07.4-workspace-and-run-artifact-subsystems.md)** - Defines the maintained workspace and run-artifact subsystems for tnh-conductor MVP, including ownership boundaries for git/worktree operations, rollback primitives, run directories, events, metadata, and persisted artifact records
+
+**[ADR-OA07.5: Reference Package Policy](adr-oa07.5-reference-package-policy.md)** - Defines how prototype and deprecated agent-orchestration packages are labeled, imported, documented, and eventually retired while the maintained MVP runtime is being built
+
+**[ADR-OA07.6: Execution Subsystem Design](adr-oa07.6-execution-subsystem-design.md)** - Defines the shared execution subsystem for tnh-conductor MVP, including typed process request/result contracts, cwd/env policy, timeout taxonomy, and the final argv rendering boundary
+
 ---
 
 *This file auto-generated.*

@@ -1208,7 +1208,7 @@ This strategy ADR establishes the foundation. Implementation details are capture
 | **ADR-OA04** | Workflow Schema + Opcode Semantics | YAML format, opcode definitions, ROLLBACK semantics |
 | **ADR-OA05** | Prompt Library Specification | Prompt artifact format, versioning, template rendering |
 | **ADR-OA06** | Planner Evaluator Contract | Input/output schemas, contradiction checks, provenance window |
-| **ADR-OA07** | Diff-Policy + Safety Rails | Allowed/forbidden paths, dependency changes, escalation rules |
+| **ADR-OA07** | MVP Runtime Architecture Strategy | Maintained runtime subsystem architecture for kernel, runners, validation, workspace, run artifacts, execution, and reference policy |
 | **ADR-OA08** | Prompt Regression Testing Harness | Golden runs, classification drift detection (future) |
 
 ### Historical / Superseded
@@ -1219,8 +1219,6 @@ This strategy ADR establishes the foundation. Implementation details are capture
 | **ADR-OA03.2** | API-Based Codex Runner | Superseded by ADR-OA03.3 (CLI approach) |
 
 Each ADR will be created as implementation progresses through the phases defined in this strategy.
-
----
 
 ## Related ADRs
 

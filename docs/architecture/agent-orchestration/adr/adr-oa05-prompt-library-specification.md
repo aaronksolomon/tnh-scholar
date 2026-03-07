@@ -270,7 +270,7 @@ Rejected: allows invalid prompt wiring to fail late during execution.
 
 ## Open Questions
 
-1. Should OA05 formalize profile-specific prompt selection (`smoke`, `overnight`, `release_candidate`) as catalog policy now, or defer to OA05.1?
+1. Should OA05 formalize profile-specific prompt selection (`smoke`, `overnight`, `release_candidate`) as catalog policy now, or defer to OA07.1?
 2. Should prompt deprecation policy include automatic replacement hints for workflow compilation errors?
 
 ---

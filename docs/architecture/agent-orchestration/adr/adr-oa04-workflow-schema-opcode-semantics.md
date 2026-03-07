@@ -616,4 +616,4 @@ Deferred: OA04 keeps step sequencing explicit and bounded. DAG expansion remains
 - [ADR-OA04.1: Implementation Notes](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md) — MVP build-out sequence and operational decisions
 - [ADR-OA05: Prompt Library Specification](/architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification.md) — Defines prompt artifact format; harness synthesis prompts are OA05 territory
 - [ADR-OA06: Planner Evaluator Contract](/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md) — Defines how planner interprets `harness_report.json`; OA04 only specifies artifact format
-- **ADR-OA07: Diff-Policy + Safety Rails** (planned) — Golden snapshot approval rules may be further detailed there
+- Diff-policy and safety-rail details may still need a dedicated follow-on ADR later, but that work is not assigned to `OA07`.
