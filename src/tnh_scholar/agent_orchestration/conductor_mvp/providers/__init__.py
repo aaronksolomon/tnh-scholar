@@ -7,13 +7,13 @@ from tnh_scholar.agent_orchestration.conductor_mvp.providers.clock import System
 from tnh_scholar.agent_orchestration.conductor_mvp.providers.run_id import TimestampRunIdGenerator
 from tnh_scholar.agent_orchestration.conductor_mvp.providers.validation_runner import (
     LocalValidationRunner,
-    StaticBuiltinValidatorResolver,
+    StaticValidatorResolver,
 )
 
 __all__ = [
     "FileArtifactStore",
     "LocalValidationRunner",
-    "StaticBuiltinValidatorResolver",
+    "StaticValidatorResolver",
     "SystemClock",
     "TimestampRunIdGenerator",
 ]

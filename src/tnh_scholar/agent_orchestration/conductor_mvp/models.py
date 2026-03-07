@@ -49,6 +49,20 @@ class GateOutcome(str, Enum):
     gate_timed_out = "gate_timed_out"
 
 
+class BuiltinValidatorName(str, Enum):
+    """Trusted builtin validator identifiers."""
+
+    tests = "tests"
+    lint = "lint"
+    typecheck = "typecheck"
+
+
+class HarnessValidatorName(str, Enum):
+    """Trusted generated harness validator identifiers."""
+
+    generated_harness = "generated_harness"
+
+
 class RouteRule(BaseModel):
     """Mapping from an outcome key to a next step target."""
 
@@ -86,24 +100,21 @@ class BuiltinValidatorSpec(BaseModel):
     """Builtin validator reference resolved by a provider."""
 
     kind: Literal["builtin"] = "builtin"
-    name: str
+    name: BuiltinValidatorName
 
 
-class ScriptValidatorSpec(BaseModel):
-    """Script validator declaration."""
+class HarnessValidatorSpec(BaseModel):
+    """Generated harness validator reference resolved by a provider."""
 
-    kind: Literal["script"] = "script"
-    id: str
-    entrypoint: Path
-    args: list[str] = Field(default_factory=list)
-    cwd: Path | None = None
+    kind: Literal["harness"] = "harness"
+    name: HarnessValidatorName
     artifacts: list[str] = Field(default_factory=list)
     timeout_seconds: int | None = None
     may_propose_goldens: bool = False
 
 
 ValidatorSpec = Annotated[
-    BuiltinValidatorSpec | ScriptValidatorSpec,
+    BuiltinValidatorSpec | HarnessValidatorSpec,
     Field(discriminator="kind"),
 ]
 
@@ -190,6 +201,15 @@ class AgentRunResult(BaseModel):
     """Agent step result returned by runner implementations."""
 
     outcome: MechanicalOutcome
+
+
+class ValidatorExecutionSpec(BaseModel):
+    """Trusted validator execution resolved by provider code."""
+
+    command: tuple[str, ...]
+    cwd: Path
+    artifacts: tuple[str, ...] = ()
+    timeout_seconds: int | None = None
 
 
 class ArtifactPaths(BaseModel):

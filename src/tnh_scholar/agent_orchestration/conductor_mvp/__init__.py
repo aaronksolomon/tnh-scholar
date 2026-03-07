@@ -5,6 +5,7 @@ from tnh_scholar.agent_orchestration.conductor_mvp.models import (
     BuiltinValidatorSpec,
     EvaluateStep,
     GateStep,
+    HarnessValidatorSpec,
     KernelRunResult,
     MechanicalOutcome,
     PlannerDecision,
@@ -12,8 +13,8 @@ from tnh_scholar.agent_orchestration.conductor_mvp.models import (
     RollbackStep,
     RunAgentStep,
     RunValidationStep,
-    ScriptValidatorSpec,
     StopStep,
+    ValidatorExecutionSpec,
     WorkflowDefinition,
 )
 from tnh_scholar.agent_orchestration.conductor_mvp.service import (
@@ -27,6 +28,7 @@ __all__ = [
     "ConductorKernelService",
     "EvaluateStep",
     "GateStep",
+    "HarnessValidatorSpec",
     "KernelRunResult",
     "MechanicalOutcome",
     "PlannerDecision",
@@ -34,8 +36,8 @@ __all__ = [
     "RollbackStep",
     "RunAgentStep",
     "RunValidationStep",
-    "ScriptValidatorSpec",
     "StopStep",
+    "ValidatorExecutionSpec",
     "WorkflowDefinition",
     "WorkflowValidationError",
 ]

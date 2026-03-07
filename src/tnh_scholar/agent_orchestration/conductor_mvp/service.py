@@ -10,6 +10,7 @@ from tnh_scholar.agent_orchestration.conductor_mvp.models import (
     EvaluateStep,
     GateOutcome,
     GateStep,
+    HarnessValidatorSpec,
     KernelRunResult,
     MechanicalOutcome,
     Opcode,
@@ -197,7 +198,7 @@ class WorkflowValidator:
             if not isinstance(step, RunValidationStep):
                 continue
             for validator in step.run:
-                if getattr(validator, "may_propose_goldens", False):
+                if isinstance(validator, HarnessValidatorSpec) and validator.may_propose_goldens:
                     return True
         return False
 

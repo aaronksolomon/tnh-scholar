@@ -10,17 +10,19 @@ import pytest
 
 from tnh_scholar.agent_orchestration.conductor_mvp.models import (
     AgentRunResult,
+    BuiltinValidatorName,
     BuiltinValidatorSpec,
     EvaluateStep,
     GateOutcome,
     GateStep,
+    HarnessValidatorName,
+    HarnessValidatorSpec,
     MechanicalOutcome,
     PlannerDecision,
     PlannerStatus,
     RouteRule,
     RunAgentStep,
     RunValidationStep,
-    ScriptValidatorSpec,
     StopStep,
     ValidationRunResult,
     WorkflowDefinition,
@@ -31,7 +33,7 @@ from tnh_scholar.agent_orchestration.conductor_mvp.providers.artifact_store impo
 from tnh_scholar.agent_orchestration.conductor_mvp.providers.validation_runner import (
     BuiltinCommandEntry,
     LocalValidationRunner,
-    StaticBuiltinValidatorResolver,
+    StaticValidatorResolver,
 )
 from tnh_scholar.agent_orchestration.conductor_mvp.service import (
     ConductorKernelService,
@@ -113,10 +115,9 @@ def _validation_step() -> RunValidationStep:
     return RunValidationStep(
         id="validate",
         run=[
-            BuiltinValidatorSpec(name="tests"),
-            ScriptValidatorSpec(
-                id="generated_harness",
-                entrypoint=Path("harness.py"),
+            BuiltinValidatorSpec(name=BuiltinValidatorName.tests),
+            HarnessValidatorSpec(
+                name=HarnessValidatorName.generated_harness,
                 may_propose_goldens=True,
             ),
         ],
@@ -322,25 +323,31 @@ def test_validator_rejects_unsafe_route_to_non_rollback_step() -> None:
 def test_local_validation_runner_captures_artifacts_to_run_dir(tmp_path: Path) -> None:
     run_dir = tmp_path / "run"
     run_dir.mkdir()
-    work_dir = tmp_path / "work"
-    work_dir.mkdir()
-    artifact_file = work_dir / "artifacts" / "report.txt"
-    artifact_file.parent.mkdir(parents=True)
-    artifact_file.write_text("ok", encoding="utf-8")
-
     runner = LocalValidationRunner(
-        builtin_resolver=StaticBuiltinValidatorResolver(
-            entries=[BuiltinCommandEntry(name="tests", command=["python", "-c", "print('ok')"])]
+        validator_resolver=StaticValidatorResolver(
+            entries=[
+                BuiltinCommandEntry(
+                    name=BuiltinValidatorName.tests,
+                    command=("python", "-c", "print('ok')"),
+                )
+            ]
         )
+    )
+    harness_script = run_dir / "generated_harness.py"
+    harness_script.write_text(
+        "from pathlib import Path\n"
+        "import sys\n\n"
+        "Path('artifacts').mkdir(exist_ok=True)\n"
+        "Path('artifacts/report.txt').write_text('ok', encoding='utf-8')\n"
+        "report_path = Path(sys.argv[2])\n"
+        "report_path.write_text('{\"proposed_goldens\": []}', encoding='utf-8')\n",
+        encoding="utf-8",
     )
     step = RunValidationStep(
         id="validate",
         run=[
-            ScriptValidatorSpec(
-                id="script",
-                entrypoint=Path("/bin/sh"),
-                args=["-c", "printf ok"],
-                cwd=work_dir,
+            HarnessValidatorSpec(
+                name=HarnessValidatorName.generated_harness,
                 artifacts=["artifacts/*.txt"],
             )
         ],

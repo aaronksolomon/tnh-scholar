@@ -5,51 +5,90 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 from pydantic import BaseModel, Field
 
 from tnh_scholar.agent_orchestration.conductor_mvp.models import (
+    BuiltinValidatorName,
     BuiltinValidatorSpec,
     HarnessReport,
+    HarnessValidatorName,
+    HarnessValidatorSpec,
     MechanicalOutcome,
     RunValidationStep,
-    ScriptValidatorSpec,
     ValidationRunResult,
+    ValidatorExecutionSpec,
 )
 from tnh_scholar.agent_orchestration.conductor_mvp.protocols import (
-    BuiltinValidatorResolverProtocol,
     ValidationRunnerProtocol,
+    ValidatorResolverProtocol,
 )
 
 
 class BuiltinCommandEntry(BaseModel):
     """Builtin validator command mapping entry."""
 
-    name: str
-    command: list[str] = Field(default_factory=list)
+    name: BuiltinValidatorName
+    command: tuple[str, ...] = Field(default_factory=tuple)
 
 
 @dataclass(frozen=True)
-class StaticBuiltinValidatorResolver(BuiltinValidatorResolverProtocol):
-    """Resolve builtin validator commands from a static mapping."""
+class StaticValidatorResolver(ValidatorResolverProtocol):
+    """Resolve trusted validator refs from code-owned mappings."""
 
     entries: list[BuiltinCommandEntry]
+    harness_script_name: str = "generated_harness.py"
+    harness_report_name: str = "harness_report.json"
 
-    def resolve(self, validator: BuiltinValidatorSpec) -> list[str]:
-        """Resolve command for builtin validator name."""
+    def resolve(
+        self,
+        validator: BuiltinValidatorSpec | HarnessValidatorSpec,
+        run_dir: Path,
+    ) -> ValidatorExecutionSpec:
+        """Resolve validator into a trusted execution spec."""
+        if isinstance(validator, BuiltinValidatorSpec):
+            return self._resolve_builtin(validator, run_dir)
+        return self._resolve_harness(validator, run_dir)
+
+    def _resolve_builtin(
+        self,
+        validator: BuiltinValidatorSpec,
+        run_dir: Path,
+    ) -> ValidatorExecutionSpec:
         for entry in self.entries:
             if entry.name == validator.name:
-                return entry.command
-        raise ValueError(f"Unknown builtin validator: {validator.name}")
+                return ValidatorExecutionSpec(command=entry.command, cwd=run_dir)
+        raise ValueError(f"Unknown builtin validator: {validator.name.value}")
+
+    def _resolve_harness(
+        self,
+        validator: HarnessValidatorSpec,
+        run_dir: Path,
+    ) -> ValidatorExecutionSpec:
+        match validator.name:
+            case HarnessValidatorName.generated_harness:
+                return ValidatorExecutionSpec(
+                    command=(
+                        sys.executable,
+                        str(run_dir / self.harness_script_name),
+                        "--report",
+                        self.harness_report_name,
+                    ),
+                    cwd=run_dir,
+                    artifacts=tuple(validator.artifacts),
+                    timeout_seconds=validator.timeout_seconds,
+                )
+        raise ValueError(f"Unsupported harness validator: {validator.name.value}")
 
 
 @dataclass(frozen=True)
 class LocalValidationRunner(ValidationRunnerProtocol):
     """Run validators via subprocess in the local worktree."""
 
-    builtin_resolver: BuiltinValidatorResolverProtocol
+    validator_resolver: ValidatorResolverProtocol
     artifacts_subdir: str = "validation_artifacts"
 
     def run(self, step: RunValidationStep, run_dir: Path) -> ValidationRunResult:
@@ -64,32 +103,30 @@ class LocalValidationRunner(ValidationRunnerProtocol):
 
     def _run_one(
         self,
-        validator: BuiltinValidatorSpec | ScriptValidatorSpec,
+        validator: BuiltinValidatorSpec | HarnessValidatorSpec,
         run_dir: Path,
     ) -> ValidationRunResult:
-        if isinstance(validator, BuiltinValidatorSpec):
-            command = self.builtin_resolver.resolve(validator)
-            return self._run_command(command, run_dir, run_dir, None, [])
+        execution = self.validator_resolver.resolve(validator, run_dir)
         return self._run_command(
-            [str(validator.entrypoint), *validator.args],
-            validator.cwd or run_dir,
+            execution.command,
+            execution.cwd,
             run_dir,
-            validator.timeout_seconds,
-            validator.artifacts,
+            execution.timeout_seconds,
+            execution.artifacts,
         )
 
     def _run_command(
         self,
-        command: list[str],
+        command: tuple[str, ...],
         cwd: Path,
         run_dir: Path,
         timeout_seconds: int | None,
-        artifacts: list[str],
+        artifacts: tuple[str, ...],
     ) -> ValidationRunResult:
         try:
             self._validate_command(command, cwd)
             process = subprocess.run(
-                command,
+                list(command),
                 cwd=cwd,
                 check=False,
                 capture_output=True,
@@ -110,7 +147,7 @@ class LocalValidationRunner(ValidationRunnerProtocol):
         except subprocess.TimeoutExpired:
             return ValidationRunResult(outcome=MechanicalOutcome.killed_timeout)
 
-    def _validate_command(self, command: list[str], cwd: Path) -> None:
+    def _validate_command(self, command: tuple[str, ...], cwd: Path) -> None:
         if not command:
             raise ValueError("Validation command must not be empty.")
         executable = Path(command[0])
@@ -123,7 +160,7 @@ class LocalValidationRunner(ValidationRunnerProtocol):
             if not candidate.exists():
                 raise ValueError(f"Validation executable does not exist: {candidate}")
 
-    def _capture_artifacts(self, cwd: Path, run_dir: Path, globs: list[str]) -> None:
+    def _capture_artifacts(self, cwd: Path, run_dir: Path, globs: tuple[str, ...]) -> None:
         artifacts_root = run_dir / self.artifacts_subdir
         for pattern in globs:
             for path in cwd.glob(pattern):

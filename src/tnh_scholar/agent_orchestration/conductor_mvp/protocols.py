@@ -12,11 +12,13 @@ from tnh_scholar.agent_orchestration.conductor_mvp.models import (
     EvaluateStep,
     GateOutcome,
     GateStep,
+    HarnessValidatorSpec,
     PlannerDecision,
     RollbackStep,
     RunAgentStep,
     RunValidationStep,
     ValidationRunResult,
+    ValidatorExecutionSpec,
 )
 
 
@@ -51,11 +53,15 @@ class AgentRunnerProtocol(Protocol):
         """Execute an agent step."""
 
 
-class BuiltinValidatorResolverProtocol(Protocol):
-    """Resolve builtin validator names to command lines."""
+class ValidatorResolverProtocol(Protocol):
+    """Resolve trusted validator refs to executable specs."""
 
-    def resolve(self, validator: BuiltinValidatorSpec) -> list[str]:
-        """Resolve builtin validator command."""
+    def resolve(
+        self,
+        validator: BuiltinValidatorSpec | HarnessValidatorSpec,
+        run_dir: Path,
+    ) -> ValidatorExecutionSpec:
+        """Resolve validator into a trusted execution spec."""
 
 
 class ValidationRunnerProtocol(Protocol):

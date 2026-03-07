@@ -10,8 +10,8 @@ import yaml
 
 from tnh_scholar.agent_orchestration.conductor_mvp.models import (
     BuiltinValidatorSpec,
+    HarnessValidatorSpec,
     RouteRule,
-    ScriptValidatorSpec,
     WorkflowDefinition,
 )
 
@@ -57,8 +57,8 @@ class YamlWorkflowLoader:
                 continue
             if isinstance(value, dict):
                 kind = value.get("kind")
-                if kind == "script":
-                    normalized.append(ScriptValidatorSpec.model_validate(value).model_dump())
+                if kind == "harness":
+                    normalized.append(HarnessValidatorSpec.model_validate(value).model_dump())
                     continue
                 if kind == "builtin":
                     normalized.append(BuiltinValidatorSpec.model_validate(value).model_dump())
