@@ -6,9 +6,9 @@ from typing import Optional
 
 import typer
 
-from tnh_scholar.agent_orchestration.spike.adapters.command_filter import RegexCommandFilter
-from tnh_scholar.agent_orchestration.spike.adapters.prompt_handler import RegexPromptHandler
-from tnh_scholar.agent_orchestration.spike.adapters.prompt_parser import RegexCommandPromptParser
+from tnh_scholar.agent_orchestration.spike.adapters.noop_prompt_handler import (
+    NoopPromptHandler,
+)
 from tnh_scholar.agent_orchestration.spike.adapters.run_id import TimestampRunIdGenerator
 from tnh_scholar.agent_orchestration.spike.models import (
     RunMetadata,
@@ -25,7 +25,9 @@ from tnh_scholar.agent_orchestration.spike.providers.clock import SystemClock
 from tnh_scholar.agent_orchestration.spike.providers.command_builder import AgentCommandBuilder
 from tnh_scholar.agent_orchestration.spike.providers.event_writer_factory import NdjsonEventWriterFactory
 from tnh_scholar.agent_orchestration.spike.providers.git_workspace import GitWorkspaceCapture
-from tnh_scholar.agent_orchestration.spike.providers.pty_agent_runner import PtyAgentRunner
+from tnh_scholar.agent_orchestration.spike.providers.subprocess_agent_runner import (
+    SubprocessAgentRunner,
+)
 from tnh_scholar.agent_orchestration.spike.service import SpikeRunService
 from tnh_scholar.logging_config import get_logger, setup_logging
 
@@ -91,24 +93,15 @@ def run_command(
 
 
 def _build_service(config: SpikeConfig, policy: SpikePolicy) -> SpikeRunService:
-    command_filter = RegexCommandFilter(patterns=tuple(policy.blocked_command_patterns))
-    parser = RegexCommandPromptParser(patterns=tuple(policy.command_capture_patterns))
-    prompt_handler = RegexPromptHandler(
-        parser=parser,
-        command_filter=command_filter,
-        interactive_patterns=tuple(policy.interactive_prompt_patterns),
-        allow_response=policy.allow_response,
-        block_response=policy.block_response,
-    )
     return SpikeRunService(
         clock=SystemClock(),
         run_id_generator=TimestampRunIdGenerator(),
-        agent_runner=PtyAgentRunner(),
+        agent_runner=SubprocessAgentRunner(),
         workspace=GitWorkspaceCapture(),
         artifact_writer=FileArtifactWriter(runs_root=config.runs_root),
         event_writer_factory=NdjsonEventWriterFactory(),
         command_builder=AgentCommandBuilder(),
-        prompt_handler=prompt_handler,
+        prompt_handler=NoopPromptHandler(),
     )
 
 
@@ -117,6 +110,7 @@ def _print_outputs(metadata: RunMetadata) -> None:
     typer.echo(str(artifacts.transcript_normalized))
     typer.echo(str(artifacts.transcript_raw))
     typer.echo(str(artifacts.diff_patch))
+    typer.echo(str(artifacts.response_path))
     typer.echo(str(artifacts.run_metadata))
     typer.echo(str(artifacts.events))
 
