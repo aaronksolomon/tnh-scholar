@@ -6627,13 +6627,16 @@ markers = {main = "extra == \"query\""}
 
 [[package]]
 name = "sourcery"
-version = "1.41.1"
+version = "1.43.0"
 description = "Magically refactor Python"
 optional = false
 python-versions = "*"
 groups = ["local"]
 files = [
-    {file = "sourcery-1.41.1-py2.py3-none-macosx_10_9_universal2.whl", hash = "sha256:9ecb7636301e9dea8934f897151e504127274ea60c7709a65bed7457850f994c"},
+    {file = "sourcery-1.43.0-py2.py3-none-macosx_10_9_x86_64.whl", hash = "sha256:6279f505406b9b3455dac2f9646c0e110fdc72857479dc05b788a2cfd28dfa4f"},
+    {file = "sourcery-1.43.0-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:89034e4a800294093614c8c01317e0b051c35d2e7abf089e78f1830984516e04"},
+    {file = "sourcery-1.43.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:a142fb1156dfc205752b546fd24cd6e6bd405ebd7aec1097c339ed0e05724dcd"},
+    {file = "sourcery-1.43.0-py2.py3-none-win_amd64.whl", hash = "sha256:2bd293af561261ffc0bccff82c9f764cd654247aaa29a0b46d4927e4711b0570"},
 ]
 
 [[package]]
@@ -8228,4 +8231,4 @@ query = ["beautifulsoup4", "ebooklib", "spacy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "46c84d289c71c01661eaa52985f5695db74820fa0031069f8af33bbdc76aacd3"
+content-hash = "275491a3d724d0f96d75ef9833786f325b6a6b8e7c269f2e72b00b97fa05c898"

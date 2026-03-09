@@ -98,7 +98,7 @@ md-dead-link-check = "^1.2.0"
 optional = true
 
 [tool.poetry.group.local.dependencies]
-sourcery = "^1.41.1"
+sourcery = ">=1.43.0"
 
 [tool.poetry.scripts]
 audio-transcribe = "tnh_scholar.cli_tools.audio_transcribe.audio_transcribe:main"
