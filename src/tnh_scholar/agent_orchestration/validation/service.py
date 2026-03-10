@@ -102,14 +102,14 @@ class HarnessReportLoader:
     report_name: str = "harness_report.json"
 
     def load(self, run_directory: Path) -> HarnessReport | None:
-        """Load a harness report if present and valid."""
+        """Load a harness report if present."""
         path = run_directory / self.report_name
         if not path.exists():
             return None
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
-            return None
+        except json.JSONDecodeError as error:
+            raise ValueError(f"Invalid harness report JSON: {path}") from error
         return HarnessReport.model_validate(payload)
 
 
@@ -135,7 +135,8 @@ class ValidationService(ValidationServiceProtocol):
                 self._to_validation_termination(execution_result.termination),
             )
             artifact_paths.extend(self._capture_artifacts(request.run_directory, spec))
-            latest_report = self.report_loader.load(request.run_directory)
+            latest_report, report_termination = self._load_report(request.run_directory)
+            termination = self._merge_termination(termination, report_termination)
             if latest_report is not None:
                 report = latest_report
         return ValidationResult(
@@ -166,13 +167,30 @@ class ValidationService(ValidationServiceProtocol):
         current: ValidationTermination,
         new_value: ValidationTermination,
     ) -> ValidationTermination:
-        if current == ValidationTermination.killed_timeout:
-            return current
-        if new_value == ValidationTermination.killed_timeout:
-            return new_value
-        if current == ValidationTermination.error or new_value == ValidationTermination.error:
-            return ValidationTermination.error
-        return current
+        return max(current, new_value, key=self._termination_rank)
+
+    def _termination_rank(self, value: ValidationTermination) -> int:
+        match value:
+            case ValidationTermination.completed:
+                return 0
+            case ValidationTermination.error:
+                return 1
+            case ValidationTermination.killed_policy:
+                return 2
+            case ValidationTermination.killed_idle:
+                return 3
+            case ValidationTermination.killed_timeout:
+                return 4
+        raise ValueError(f"Unsupported validation termination: {value}")
+
+    def _load_report(
+        self,
+        run_directory: Path,
+    ) -> tuple[HarnessReport | None, ValidationTermination]:
+        try:
+            return self.report_loader.load(run_directory), ValidationTermination.completed
+        except ValueError:
+            return None, ValidationTermination.error
 
     def _capture_artifacts(self, run_directory: Path, spec: ValidationSpec) -> list[Path]:
         if not isinstance(spec, HarnessValidationSpec):
