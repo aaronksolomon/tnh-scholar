@@ -5,6 +5,7 @@ from __future__ import annotations
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
+import json
 from pathlib import Path
 
 from tnh_scholar.agent_orchestration.execution import (
@@ -23,6 +24,7 @@ from tnh_scholar.agent_orchestration.kernel import (
     KernelRunService,
     PlannerDecision,
     PlannerStatus,
+    RollbackStep,
     RouteRule,
     RunAgentStep,
     RunValidationStep,
@@ -31,6 +33,7 @@ from tnh_scholar.agent_orchestration.kernel import (
     WorkflowValidationError,
     WorkflowValidator,
 )
+from tnh_scholar.agent_orchestration.kernel.adapters.workflow_loader import YamlWorkflowLoader
 from tnh_scholar.agent_orchestration.run_artifacts import FilesystemRunArtifactStore
 from tnh_scholar.agent_orchestration.runners import (
     RunnerResult,
@@ -111,6 +114,27 @@ class FixedGateApprover:
 
     def decide(self, step: GateStep, run_directory: Path) -> GateOutcome:
         return self.outcome
+
+
+@dataclass
+class RecordingWorkspace:
+    """Workspace double that records rollback calls."""
+
+    repo_root: Path
+    captured_run_ids: list[str] | None = None
+    rollback_calls: int = 0
+
+    def __post_init__(self) -> None:
+        if self.captured_run_ids is None:
+            self.captured_run_ids = []
+
+    def capture_pre_run(self, run_id: str) -> None:
+        if self.captured_run_ids is None:
+            self.captured_run_ids = []
+        self.captured_run_ids.append(run_id)
+
+    def rollback_pre_run(self) -> None:
+        self.rollback_calls += 1
 
 
 def test_execution_service_runs_cli_process(tmp_path: Path) -> None:
@@ -250,6 +274,13 @@ def _validation_step() -> RunValidationStep:
     )
 
 
+def _read_events(run_directory: Path) -> list[dict[str, str | None]]:
+    path = run_directory / "events.ndjson"
+    if not path.exists():
+        return []
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+
+
 @dataclass(frozen=True)
 class FixedValidationService:
     """Validation service with fixed result."""
@@ -316,3 +347,384 @@ def test_kernel_runtime_blocks_success_stop_until_gate_after_proposed_goldens(tm
     )
     with raises(WorkflowValidationError, match="must pass through GATE"):
         service.run(workflow, tmp_path)
+
+
+def test_kernel_runtime_blocks_indirect_stop_until_gate_after_proposed_goldens(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-indirect",
+        version=1,
+        description="runtime gate indirect",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="validate")],
+            ),
+            _validation_step(),
+            EvaluateStep(
+                id="evaluate",
+                prompt="planner",
+                allowed_next_steps=["finish", "gate"],
+                routes=[
+                    RouteRule(outcome=PlannerStatus.success.value, target="finish"),
+                    RouteRule(outcome=PlannerStatus.partial.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.blocked.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.unsafe.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.needs_human.value, target="gate"),
+                ],
+            ),
+            RunAgentStep(
+                id="finish",
+                agent="codex",
+                prompt="finalize",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="STOP")],
+            ),
+            GateStep(
+                id="gate",
+                gate="requires_approval",
+                routes=[
+                    RouteRule(outcome=GateOutcome.gate_approved.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_rejected.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_timed_out.value, target="STOP"),
+                ],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-1"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(
+            ValidationResult(
+                termination=ValidationTermination.completed,
+                harness_report={"proposed_goldens": ["x.png"]},
+            )
+        ),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success, next_step="finish")),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+    with raises(WorkflowValidationError, match="must pass through GATE"):
+        service.run(workflow, tmp_path)
+
+
+def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-approved",
+        version=1,
+        description="runtime gate approved",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="validate")],
+            ),
+            _validation_step(),
+            EvaluateStep(
+                id="evaluate",
+                prompt="planner",
+                allowed_next_steps=["gate", "STOP"],
+                routes=[
+                    RouteRule(outcome=PlannerStatus.success.value, target="gate"),
+                    RouteRule(outcome=PlannerStatus.partial.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.blocked.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.unsafe.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.needs_human.value, target="gate"),
+                ],
+            ),
+            GateStep(
+                id="gate",
+                gate="requires_approval",
+                routes=[
+                    RouteRule(outcome=GateOutcome.gate_approved.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_rejected.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_timed_out.value, target="STOP"),
+                ],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-approved"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(
+            ValidationResult(
+                termination=ValidationTermination.completed,
+                harness_report={"proposed_goldens": ["x.png"]},
+            )
+        ),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success, next_step="gate")),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+    result = service.run(workflow, tmp_path)
+    assert result.status.value == "completed"
+    assert result.last_step_id == "STOP"
+    events = _read_events(result.run_directory)
+    assert [event["step_id"] for event in events] == ["agent", "validate", "evaluate", "gate"]
+    assert [event["next_step_id"] for event in events] == ["validate", "evaluate", "gate", "STOP"]
+
+
+def test_kernel_runtime_completes_when_gate_rejected_after_proposed_goldens(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-rejected",
+        version=1,
+        description="runtime gate rejected",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="validate")],
+            ),
+            _validation_step(),
+            EvaluateStep(
+                id="evaluate",
+                prompt="planner",
+                allowed_next_steps=["gate", "STOP"],
+                routes=[
+                    RouteRule(outcome=PlannerStatus.success.value, target="gate"),
+                    RouteRule(outcome=PlannerStatus.partial.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.blocked.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.unsafe.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.needs_human.value, target="gate"),
+                ],
+            ),
+            GateStep(
+                id="gate",
+                gate="requires_approval",
+                routes=[
+                    RouteRule(outcome=GateOutcome.gate_approved.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_rejected.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_timed_out.value, target="STOP"),
+                ],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-rejected"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(
+            ValidationResult(
+                termination=ValidationTermination.completed,
+                harness_report={"proposed_goldens": ["x.png"]},
+            )
+        ),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success, next_step="gate")),
+        gate_approver=FixedGateApprover(GateOutcome.gate_rejected),
+        workflow_validator=WorkflowValidator(),
+    )
+    result = service.run(workflow, tmp_path)
+    assert result.status.value == "completed"
+    assert result.last_step_id == "STOP"
+
+
+def test_kernel_runtime_completes_when_gate_times_out_after_proposed_goldens(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-timed-out",
+        version=1,
+        description="runtime gate timed out",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="validate")],
+            ),
+            _validation_step(),
+            EvaluateStep(
+                id="evaluate",
+                prompt="planner",
+                allowed_next_steps=["gate", "STOP"],
+                routes=[
+                    RouteRule(outcome=PlannerStatus.success.value, target="gate"),
+                    RouteRule(outcome=PlannerStatus.partial.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.blocked.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.unsafe.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.needs_human.value, target="gate"),
+                ],
+            ),
+            GateStep(
+                id="gate",
+                gate="requires_approval",
+                routes=[
+                    RouteRule(outcome=GateOutcome.gate_approved.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_rejected.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_timed_out.value, target="STOP"),
+                ],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-timed-out"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(
+            ValidationResult(
+                termination=ValidationTermination.completed,
+                harness_report={"proposed_goldens": ["x.png"]},
+            )
+        ),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success, next_step="gate")),
+        gate_approver=FixedGateApprover(GateOutcome.gate_timed_out),
+        workflow_validator=WorkflowValidator(),
+    )
+    result = service.run(workflow, tmp_path)
+    assert result.status.value == "completed"
+    assert result.last_step_id == "STOP"
+
+
+def test_kernel_runtime_rejects_unknown_agent_identifier(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-agent",
+        version=1,
+        description="unknown agent",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codexx",
+                prompt="task",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-agent"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+    with raises(WorkflowValidationError, match="Unsupported agent identifier"):
+        service.run(workflow, tmp_path)
+
+
+def test_kernel_runtime_rejects_invalid_planner_next_step(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-invalid-next",
+        version=1,
+        description="invalid next step",
+        entry_step="evaluate",
+        steps=[
+            EvaluateStep(
+                id="evaluate",
+                prompt="planner",
+                allowed_next_steps=["gate"],
+                routes=[
+                    RouteRule(outcome=PlannerStatus.success.value, target="gate"),
+                    RouteRule(outcome=PlannerStatus.partial.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.blocked.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.unsafe.value, target="STOP"),
+                    RouteRule(outcome=PlannerStatus.needs_human.value, target="gate"),
+                ],
+            ),
+            GateStep(
+                id="gate",
+                gate="requires_approval",
+                routes=[
+                    RouteRule(outcome=GateOutcome.gate_approved.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_rejected.value, target="STOP"),
+                    RouteRule(outcome=GateOutcome.gate_timed_out.value, target="STOP"),
+                ],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-invalid-next"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success, next_step="STOP")),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+    with raises(WorkflowValidationError, match="Planner next_step not allowed"):
+        service.run(workflow, tmp_path)
+
+
+def test_kernel_runtime_executes_rollback_step(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-rollback",
+        version=1,
+        description="rollback runtime",
+        entry_step="rollback",
+        steps=[
+            RollbackStep(
+                id="rollback",
+                target="restore",
+                routes=[RouteRule(outcome="completed", target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    workspace = RecordingWorkspace(repo_root=tmp_path)
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-rollback"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=workspace,
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+    result = service.run(workflow, tmp_path)
+    assert workspace.rollback_calls == 1
+    assert result.status.value == "completed"
+    assert result.last_step_id == "STOP"
+
+
+def test_workflow_loader_rejects_unknown_validation_spec_kind(tmp_path: Path) -> None:
+    path = tmp_path / "workflow.yaml"
+    path.write_text(
+        "\n".join(
+            [
+                "workflow_id: w1",
+                "version: 1",
+                "description: bad kind",
+                "entry_step: validate",
+                "steps:",
+                "  - id: validate",
+                "    opcode: RUN_VALIDATION",
+                "    run:",
+                "      - kind: mystery",
+                "        name: nope",
+                "    routes:",
+                "      completed: STOP",
+                "  - id: STOP",
+                "    opcode: STOP",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    with raises(WorkflowValidationError, match="Unsupported validation spec kind"):
+        YamlWorkflowLoader().load(path)

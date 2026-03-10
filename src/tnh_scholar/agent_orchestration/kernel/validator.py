@@ -8,7 +8,6 @@ from tnh_scholar.agent_orchestration.kernel.catalog import WorkflowCatalog
 from tnh_scholar.agent_orchestration.kernel.errors import WorkflowValidationError
 from tnh_scholar.agent_orchestration.kernel.models import (
     EvaluateStep,
-    GateStep,
     Opcode,
     PlannerStatus,
     RunValidationStep,
@@ -24,15 +23,15 @@ class WorkflowValidator:
 
     def validate(self, workflow: WorkflowDefinition) -> None:
         catalog = WorkflowCatalog(workflow=workflow)
-        self._validate_entry_step(workflow)
+        self._validate_entry_step(workflow, catalog)
         self._validate_unique_step_ids(workflow)
         self._validate_routes(workflow, catalog)
         self._validate_evaluate_constraints(workflow, catalog)
         self._validate_reachability(workflow, catalog)
         self._validate_weak_golden_gate_requirement(workflow, catalog)
 
-    def _validate_entry_step(self, workflow: WorkflowDefinition) -> None:
-        self._step_exists(workflow, workflow.entry_step)
+    def _validate_entry_step(self, workflow: WorkflowDefinition, catalog: WorkflowCatalog) -> None:
+        self._validate_target(catalog, workflow.entry_step)
 
     def _validate_unique_step_ids(self, workflow: WorkflowDefinition) -> None:
         seen: set[str] = set()
@@ -48,7 +47,7 @@ class WorkflowValidator:
             if not step.routes:
                 raise WorkflowValidationError(f"Step requires routes: {step.id}")
             for target in catalog.transition_targets(step):
-                self._validate_target(workflow, target)
+                self._validate_target(catalog, target)
 
     def _validate_evaluate_constraints(
         self,
@@ -58,16 +57,26 @@ class WorkflowValidator:
         for step in workflow.steps:
             if not isinstance(step, EvaluateStep):
                 continue
-            if not step.allowed_next_steps:
-                raise WorkflowValidationError(f"EVALUATE missing allowed_next_steps: {step.id}")
-            for target in step.allowed_next_steps:
-                self._validate_target(workflow, target)
-            route_values = [route.outcome for route in step.routes]
-            for value in [status.value for status in PlannerStatus]:
-                if value not in route_values:
-                    raise WorkflowValidationError(f"EVALUATE route missing '{value}' in {step.id}")
+            self._validate_evaluate_allowed_next_steps(step, catalog)
+            self._validate_evaluate_status_coverage(step)
             self._validate_special_status_route(step, PlannerStatus.unsafe, Opcode.rollback, catalog)
             self._validate_special_status_route(step, PlannerStatus.needs_human, Opcode.gate, catalog)
+
+    def _validate_evaluate_allowed_next_steps(
+        self,
+        step: EvaluateStep,
+        catalog: WorkflowCatalog,
+    ) -> None:
+        if not step.allowed_next_steps:
+            raise WorkflowValidationError(f"EVALUATE missing allowed_next_steps: {step.id}")
+        for target in step.allowed_next_steps:
+            self._validate_target(catalog, target)
+
+    def _validate_evaluate_status_coverage(self, step: EvaluateStep) -> None:
+        route_values = [route.outcome for route in step.routes]
+        for value in [status.value for status in PlannerStatus]:
+            if value not in route_values:
+                raise WorkflowValidationError(f"EVALUATE route missing '{value}' in {step.id}")
 
     def _validate_special_status_route(
         self,
@@ -88,20 +97,7 @@ class WorkflowValidator:
             )
 
     def _validate_reachability(self, workflow: WorkflowDefinition, catalog: WorkflowCatalog) -> None:
-        queue = [workflow.entry_step]
-        visited: set[str] = set()
-        while queue:
-            current = queue.pop(0)
-            if current in visited:
-                continue
-            visited.add(current)
-            step = catalog.find_step(current)
-            for target in catalog.transition_targets(step):
-                if target == "STOP" and catalog.has_step_id("STOP"):
-                    queue.append("STOP")
-                    continue
-                if target != "STOP":
-                    queue.append(target)
+        visited = catalog.reachable_step_ids(workflow.entry_step)
         for step in workflow.steps:
             if step.id not in visited:
                 raise WorkflowValidationError(f"Unreachable step: {step.id}")
@@ -116,7 +112,7 @@ class WorkflowValidator:
         if not catalog.has_step_type(Opcode.gate):
             raise WorkflowValidationError("Generative harness flow requires a reachable GATE step.")
         for step in workflow.steps:
-            if isinstance(step, EvaluateStep) and self._step_path_contains_gate(step.id, catalog):
+            if isinstance(step, EvaluateStep) and catalog.path_contains_gate(step.id):
                 return
         raise WorkflowValidationError("No reachable GATE from evaluation path for golden proposals.")
 
@@ -129,29 +125,8 @@ class WorkflowValidator:
                     return True
         return False
 
-    def _step_path_contains_gate(self, start_step_id: str, catalog: WorkflowCatalog) -> bool:
-        queue = [start_step_id]
-        visited: set[str] = set()
-        while queue:
-            current = queue.pop(0)
-            if current in visited:
-                continue
-            visited.add(current)
-            step = catalog.find_step(current)
-            if isinstance(step, GateStep):
-                return True
-            queue.extend(
-                target for target in catalog.transition_targets(step) if target != "STOP"
-            )
-        return False
-
-    def _validate_target(self, workflow: WorkflowDefinition, target: str) -> None:
+    def _validate_target(self, catalog: WorkflowCatalog, target: str) -> None:
         if target == "STOP":
             return
-        self._step_exists(workflow, target)
-
-    def _step_exists(self, workflow: WorkflowDefinition, step_id: str) -> None:
-        for step in workflow.steps:
-            if step.id == step_id:
-                return
-        raise WorkflowValidationError(f"Missing step id: {step_id}")
+        if not catalog.has_step_id(target):
+            raise WorkflowValidationError(f"Missing step id: {target}")

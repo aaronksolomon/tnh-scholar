@@ -8,6 +8,7 @@ from typing import Any
 
 import yaml
 
+from tnh_scholar.agent_orchestration.kernel.errors import WorkflowValidationError
 from tnh_scholar.agent_orchestration.kernel.models import RouteRule, WorkflowDefinition
 from tnh_scholar.agent_orchestration.validation.models import (
     BuiltinValidationSpec,
@@ -57,4 +58,6 @@ class YamlWorkflowLoader:
                 continue
             if value.get("kind") == "builtin":
                 normalized.append(BuiltinValidationSpec.model_validate(value).model_dump())
+                continue
+            raise WorkflowValidationError(f"Unsupported validation spec kind: {value.get('kind')}")
         return normalized

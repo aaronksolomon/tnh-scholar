@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from tnh_scholar.agent_orchestration.kernel.models import GateOutcome
+
 
 @dataclass(frozen=True)
 class KernelState:
@@ -25,3 +27,21 @@ class KernelState:
     def log_text(self) -> str:
         """Render trace text."""
         return "\n".join(self.trace)
+
+    def with_pending_gate(self) -> "KernelState":
+        """Return a state with pending golden-gate approval."""
+        return KernelState(
+            current_step_id=self.current_step_id,
+            pending_golden_gate=True,
+            trace=[*self.trace],
+        )
+
+    def pending_gate_after_outcome(self, outcome: GateOutcome) -> bool:
+        """Return pending gate state after one gate decision."""
+        if self.pending_golden_gate and outcome in {
+            GateOutcome.gate_approved,
+            GateOutcome.gate_rejected,
+            GateOutcome.gate_timed_out,
+        }:
+            return False
+        return self.pending_golden_gate

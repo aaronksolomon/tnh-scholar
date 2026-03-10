@@ -38,10 +38,7 @@ from tnh_scholar.agent_orchestration.runners.models import (
     RunnerTaskRequest,
     RunnerTermination,
 )
-from tnh_scholar.agent_orchestration.validation.models import (
-    ValidationStepRequest,
-    ValidationTermination,
-)
+from tnh_scholar.agent_orchestration.validation.models import HarnessReport, ValidationStepRequest
 from tnh_scholar.agent_orchestration.validation.protocols import ValidationServiceProtocol
 
 
@@ -102,52 +99,102 @@ class KernelRunService:
         catalog: WorkflowCatalog,
     ) -> KernelState:
         if isinstance(step, RunAgentStep):
-            result = self.runner_service.run(
-                RunnerTaskRequest(
-                    agent_family=self._map_agent_family(step.agent),
-                    rendered_task_text=step.prompt,
-                    working_directory=run_directory,
-                    prompt_reference=step.prompt,
-                )
-            )
-            target = catalog.route_target(
-                step,
-                self._to_mechanical_outcome(result.termination).value,
-                context="No route for outcome",
-            )
-            return state.advance(step.id, target)
+            return self._handle_run_agent_step(step, state, run_directory, catalog)
         if isinstance(step, RunValidationStep):
-            result = self.validation_service.run(
-                ValidationStepRequest(validators=step.run, run_directory=run_directory)
-            )
-            pending_gate = state.pending_golden_gate
-            if result.harness_report is not None and result.harness_report.proposed_goldens:
-                pending_gate = True
-            target = catalog.route_target(step, result.termination.value, context="No route for outcome")
-            return state.advance(step.id, target, pending_gate=pending_gate)
+            return self._handle_run_validation_step(step, state, run_directory, catalog)
         if isinstance(step, EvaluateStep):
-            decision = self.planner_evaluator.evaluate(step, run_directory)
-            self._validate_planner_next_step(step, decision.next_step)
-            target = catalog.route_target(step, decision.status.value, context="No route for outcome")
-            self._enforce_runtime_golden_gate(state, decision.status, target)
-            return state.advance(step.id, target)
+            return self._handle_evaluate_step(step, state, run_directory, catalog)
         if isinstance(step, GateStep):
-            outcome = self.gate_approver.decide(step, run_directory)
-            target = catalog.route_target(step, outcome.value, context="No route for outcome")
-            pending_gate = self._clear_pending_gate_if_approved(state.pending_golden_gate, outcome)
-            return state.advance(step.id, target, pending_gate=pending_gate)
+            return self._handle_gate_step(step, state, run_directory, catalog)
         if isinstance(step, RollbackStep):
-            self.workspace.rollback_pre_run()
-            target = catalog.route_target(
-                step,
-                MechanicalOutcome.completed.value,
-                context="No route for outcome",
-            )
-            return state.advance(step.id, target)
+            return self._handle_rollback_step(step, state, catalog)
         raise WorkflowValidationError(f"Unsupported step type: {step.id}")
 
+    def _handle_run_agent_step(
+        self,
+        step: RunAgentStep,
+        state: KernelState,
+        run_directory: Path,
+        catalog: WorkflowCatalog,
+    ) -> KernelState:
+        result = self.runner_service.run(
+            RunnerTaskRequest(
+                agent_family=self._map_agent_family(step.agent),
+                rendered_task_text=step.prompt,
+                working_directory=run_directory,
+                prompt_reference=step.prompt,
+            )
+        )
+        target = catalog.route_target(
+            step,
+            self._to_mechanical_outcome(result.termination).value,
+            context="No route for outcome",
+        )
+        return state.advance(step.id, target)
+
+    def _handle_run_validation_step(
+        self,
+        step: RunValidationStep,
+        state: KernelState,
+        run_directory: Path,
+        catalog: WorkflowCatalog,
+    ) -> KernelState:
+        result = self.validation_service.run(
+            ValidationStepRequest(validators=step.run, run_directory=run_directory)
+        )
+        next_state = state
+        report = self._normalize_harness_report(result.harness_report)
+        if report is not None and report.proposed_goldens:
+            next_state = state.with_pending_gate()
+        target = catalog.route_target(step, result.termination.value, context="No route for outcome")
+        return next_state.advance(step.id, target, pending_gate=next_state.pending_golden_gate)
+
+    def _handle_evaluate_step(
+        self,
+        step: EvaluateStep,
+        state: KernelState,
+        run_directory: Path,
+        catalog: WorkflowCatalog,
+    ) -> KernelState:
+        decision = self.planner_evaluator.evaluate(step, run_directory)
+        self._validate_planner_next_step(step, decision.next_step)
+        target = catalog.route_target(step, decision.status.value, context="No route for outcome")
+        self._enforce_runtime_golden_gate(state, decision.status, target, catalog)
+        return state.advance(step.id, target)
+
+    def _handle_gate_step(
+        self,
+        step: GateStep,
+        state: KernelState,
+        run_directory: Path,
+        catalog: WorkflowCatalog,
+    ) -> KernelState:
+        outcome = self.gate_approver.decide(step, run_directory)
+        target = catalog.route_target(step, outcome.value, context="No route for outcome")
+        pending_gate = state.pending_gate_after_outcome(outcome)
+        return state.advance(step.id, target, pending_gate=pending_gate)
+
+    def _handle_rollback_step(
+        self,
+        step: RollbackStep,
+        state: KernelState,
+        catalog: WorkflowCatalog,
+    ) -> KernelState:
+        self.workspace.rollback_pre_run()
+        target = catalog.route_target(
+            step,
+            MechanicalOutcome.completed.value,
+            context="No route for outcome",
+        )
+        return state.advance(step.id, target)
+
     def _map_agent_family(self, agent: str) -> AgentFamily:
-        return AgentFamily.codex_cli if agent == "codex" else AgentFamily.claude_cli
+        match agent:
+            case "codex":
+                return AgentFamily.codex_cli
+            case "claude":
+                return AgentFamily.claude_cli
+        raise WorkflowValidationError(f"Unsupported agent identifier: {agent}")
 
     def _to_mechanical_outcome(self, termination: RunnerTermination) -> MechanicalOutcome:
         return MechanicalOutcome(termination.value)
@@ -158,15 +205,21 @@ class KernelRunService:
         if next_step not in step.allowed_next_steps:
             raise WorkflowValidationError(f"Planner next_step not allowed in {step.id}: {next_step}")
 
-    def _enforce_runtime_golden_gate(self, state: KernelState, status: PlannerStatus, target: str) -> None:
+    def _enforce_runtime_golden_gate(
+        self,
+        state: KernelState,
+        status: PlannerStatus,
+        target: str,
+        catalog: WorkflowCatalog,
+    ) -> None:
         if not state.pending_golden_gate or status != PlannerStatus.success:
             return
-        if target == "STOP":
+        if target == "STOP" or not catalog.path_contains_gate(target):
             raise WorkflowValidationError(
                 "Goldens proposed: success path must pass through GATE before STOP."
             )
 
-    def _clear_pending_gate_if_approved(self, pending_gate: bool, outcome: GateOutcome) -> bool:
-        if pending_gate and outcome == GateOutcome.gate_approved:
-            return False
-        return pending_gate
+    def _normalize_harness_report(self, report: HarnessReport | dict[str, object] | None) -> HarnessReport | None:
+        if report is None:
+            return None
+        return report if isinstance(report, HarnessReport) else HarnessReport.model_validate(report)
