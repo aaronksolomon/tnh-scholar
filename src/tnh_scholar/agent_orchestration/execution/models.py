@@ -35,10 +35,23 @@ class ExecutionOutputCapturePolicy(BaseModel):
 
 
 class TimeoutPolicy(BaseModel):
-    """Execution timeout settings."""
+    """Execution timeout settings.
 
-    wall_clock_seconds: int | None = None
-    idle_seconds: int | None = None
+    ``idle_seconds`` is reserved for future streaming/idleness enforcement.
+    The current subprocess service only enforces wall-clock timeouts.
+    """
+
+    wall_clock_seconds: int | None = Field(
+        default=None,
+        description="Maximum wall-clock runtime in seconds before termination.",
+    )
+    idle_seconds: int | None = Field(
+        default=None,
+        description=(
+            "Maximum allowed idle time in seconds before termination. "
+            "Reserved for future enforcement in the subprocess service."
+        ),
+    )
 
 
 class InheritParentEnvironmentPolicy(BaseModel):

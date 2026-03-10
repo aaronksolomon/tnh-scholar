@@ -9,10 +9,12 @@ from pathlib import Path
 
 from tnh_scholar.agent_orchestration.execution import (
     CliExecutableInvocation,
+    ExecutionOutputCapturePolicy,
     ExecutionRequest,
     ExecutionTermination,
     ExplicitEnvironmentPolicy,
     SubprocessExecutionService,
+    TimeoutPolicy,
 )
 from tnh_scholar.agent_orchestration.kernel import (
     EvaluateStep,
@@ -127,6 +129,31 @@ def test_execution_service_runs_cli_process(tmp_path: Path) -> None:
     assert result.stdout_text.strip() == "ok"
 
 
+def test_execution_service_honors_output_capture_policy(tmp_path: Path) -> None:
+    script = tmp_path / "echo.sh"
+    script.write_text("#!/bin/sh\necho out\necho err 1>&2\n", encoding="utf-8")
+    script.chmod(0o755)
+    service = SubprocessExecutionService()
+    result = service.run(
+        ExecutionRequest(
+            invocation=CliExecutableInvocation(executable=script),
+            working_directory=tmp_path,
+            environment_policy=ExplicitEnvironmentPolicy(values={}),
+            output_capture_policy=ExecutionOutputCapturePolicy(capture_stderr=False),
+        )
+    )
+    assert result.termination == ExecutionTermination.completed
+    assert result.stdout_text.strip() == "out"
+    assert result.stderr_text == ""
+
+
+def test_execution_timeout_policy_idle_seconds_is_documented_only() -> None:
+    policy = TimeoutPolicy(idle_seconds=5)
+    assert "Reserved for future enforcement" in str(
+        type(policy).model_fields["idle_seconds"].description
+    )
+
+
 def test_validation_service_executes_builtin_validator(tmp_path: Path) -> None:
     script = tmp_path / "validator.sh"
     script.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
@@ -148,6 +175,59 @@ def test_validation_service_executes_builtin_validator(tmp_path: Path) -> None:
         )
     )
     assert result.termination == ValidationTermination.completed
+
+
+def test_validation_service_preserves_killed_idle_outcome(tmp_path: Path) -> None:
+    script = tmp_path / "validator.sh"
+    script.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+    script.chmod(0o755)
+    service = ValidationService(
+        resolver=StaticValidatorResolver(
+            entries=[BuiltinCommandEntry(name=BuiltinValidatorId.tests, executable=script)]
+        ),
+        execution_service=SubprocessExecutionService(),
+        report_loader=__import__(
+            "tnh_scholar.agent_orchestration.validation.service",
+            fromlist=["HarnessReportLoader"],
+        ).HarnessReportLoader(),
+    )
+    merged = service._merge_termination(
+        ValidationTermination.completed,
+        ValidationTermination.killed_idle,
+    )
+    assert merged == ValidationTermination.killed_idle
+
+
+def test_validation_service_marks_invalid_harness_report_as_error(tmp_path: Path) -> None:
+    script = tmp_path / "generated_harness.py"
+    script.write_text(
+        "from pathlib import Path\nPath('harness_report.json').write_text('{', encoding='utf-8')\n",
+        encoding="utf-8",
+    )
+    service = ValidationService(
+        resolver=StaticValidatorResolver(entries=[]),
+        execution_service=SubprocessExecutionService(),
+        report_loader=__import__(
+            "tnh_scholar.agent_orchestration.validation.service",
+            fromlist=["HarnessReportLoader"],
+        ).HarnessReportLoader(),
+    )
+    result = service.run(
+        ValidationStepRequest(
+            validators=[
+                HarnessValidationSpec(name=GeneratedHarnessValidatorId.generated_harness)
+            ],
+            run_directory=tmp_path,
+        )
+    )
+    assert result.termination == ValidationTermination.error
+
+
+def test_run_artifact_store_creates_parent_directories(tmp_path: Path) -> None:
+    paths = FilesystemRunArtifactStore().create_run("run-1", tmp_path)
+    nested = paths.run_directory / "logs" / "nested" / "note.txt"
+    FilesystemRunArtifactStore().write_text(nested, "ok")
+    assert nested.read_text(encoding="utf-8") == "ok"
 
 
 def _validation_step() -> RunValidationStep:
