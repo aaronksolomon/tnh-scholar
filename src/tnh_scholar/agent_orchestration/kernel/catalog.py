@@ -2,10 +2,16 @@
 
 from __future__ import annotations
 
+from collections import deque
 from dataclasses import dataclass
 
 from tnh_scholar.agent_orchestration.kernel.errors import WorkflowValidationError
-from tnh_scholar.agent_orchestration.kernel.models import Opcode, StepDefinition, WorkflowDefinition
+from tnh_scholar.agent_orchestration.kernel.models import (
+    STOP_STEP_ID,
+    Opcode,
+    StepDefinition,
+    WorkflowDefinition,
+)
 
 
 @dataclass(frozen=True)
@@ -46,19 +52,19 @@ class WorkflowCatalog:
 
     def reachable_step_ids(self, start_id: str) -> set[str]:
         """Return the set of reachable step ids from one step."""
-        queue = [start_id]
+        queue: deque[str] = deque([start_id])
         visited: set[str] = set()
         while queue:
-            current = queue.pop(0)
+            current = queue.popleft()
             if current in visited:
                 continue
             visited.add(current)
             step = self.find_step(current)
             for target in self.transition_targets(step):
-                if target == "STOP" and self.has_step_id("STOP"):
-                    queue.append("STOP")
+                if target == STOP_STEP_ID and self.has_step_id(STOP_STEP_ID):
+                    queue.append(STOP_STEP_ID)
                     continue
-                if target != "STOP":
+                if target != STOP_STEP_ID:
                     queue.append(target)
         return visited
 

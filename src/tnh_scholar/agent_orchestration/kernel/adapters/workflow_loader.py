@@ -39,11 +39,15 @@ class YamlWorkflowLoader:
         return normalized
 
     def _normalize_routes(self, raw_routes: Any) -> list[dict[str, str]]:
+        if raw_routes is None:
+            return []
         if isinstance(raw_routes, list):
             return [RouteRule.model_validate(item).model_dump() for item in raw_routes]
         if isinstance(raw_routes, dict):
             return [RouteRule(outcome=key, target=value).model_dump() for key, value in raw_routes.items()]
-        return []
+        raise WorkflowValidationError(
+            f"Invalid routes configuration: expected a list or dict, got {type(raw_routes).__name__}"
+        )
 
     def _normalize_run_values(self, raw_run: Any) -> list[dict[str, Any]]:
         normalized: list[dict[str, Any]] = []

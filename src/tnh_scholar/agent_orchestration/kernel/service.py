@@ -8,6 +8,7 @@ from pathlib import Path
 from tnh_scholar.agent_orchestration.kernel.catalog import WorkflowCatalog
 from tnh_scholar.agent_orchestration.kernel.errors import WorkflowValidationError
 from tnh_scholar.agent_orchestration.kernel.models import (
+    STOP_STEP_ID,
     EvaluateStep,
     GateStep,
     KernelRunResult,
@@ -75,7 +76,7 @@ class KernelRunService:
             step = catalog.find_step(state.current_step_id)
             if isinstance(step, StopStep):
                 ended_at = self.clock.now()
-                self.artifact_store.write_text(paths.final_state_path, f"STOP:{step.id}")
+                self.artifact_store.write_text(paths.final_state_path, f"{STOP_STEP_ID}:{step.id}")
                 return KernelRunResult(
                     run_id=run_id,
                     workflow_id=workflow.workflow_id,
@@ -216,7 +217,7 @@ class KernelRunService:
     ) -> None:
         if not state.pending_golden_gate or status != PlannerStatus.success:
             return
-        if target == "STOP" or not catalog.path_contains_gate(target):
+        if target == STOP_STEP_ID or not catalog.path_contains_gate(target):
             raise WorkflowValidationError(
                 "Goldens proposed: success path must pass through GATE before STOP."
             )

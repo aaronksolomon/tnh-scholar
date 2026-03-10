@@ -11,6 +11,8 @@ from pydantic import BaseModel, Field
 
 from tnh_scholar.agent_orchestration.validation.models import ValidationSpec
 
+STOP_STEP_ID = "STOP"
+
 
 class Opcode(str, Enum):
     """Kernel opcode names."""
@@ -20,7 +22,7 @@ class Opcode(str, Enum):
     evaluate = "EVALUATE"
     gate = "GATE"
     rollback = "ROLLBACK"
-    stop = "STOP"
+    stop = STOP_STEP_ID
 
 
 class MechanicalOutcome(str, Enum):
