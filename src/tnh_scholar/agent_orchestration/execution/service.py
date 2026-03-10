@@ -16,7 +16,6 @@ from tnh_scholar.agent_orchestration.execution.models import (
     ExplicitEnvironmentPolicy,
     InheritParentEnvironmentPolicy,
     IsolatedEnvironmentPolicy,
-    PythonScriptInvocation,
 )
 
 

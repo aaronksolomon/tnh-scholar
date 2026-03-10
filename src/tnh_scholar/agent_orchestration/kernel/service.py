@@ -9,7 +9,6 @@ from tnh_scholar.agent_orchestration.kernel.catalog import WorkflowCatalog
 from tnh_scholar.agent_orchestration.kernel.errors import WorkflowValidationError
 from tnh_scholar.agent_orchestration.kernel.models import (
     EvaluateStep,
-    GateOutcome,
     GateStep,
     KernelRunResult,
     MechanicalOutcome,
@@ -17,8 +16,8 @@ from tnh_scholar.agent_orchestration.kernel.models import (
     RollbackStep,
     RunAgentStep,
     RunValidationStep,
-    StopStep,
     StepDefinition,
+    StopStep,
     WorkflowDefinition,
 )
 from tnh_scholar.agent_orchestration.kernel.protocols import (
@@ -38,7 +37,10 @@ from tnh_scholar.agent_orchestration.runners.models import (
     RunnerTaskRequest,
     RunnerTermination,
 )
-from tnh_scholar.agent_orchestration.validation.models import HarnessReport, ValidationStepRequest
+from tnh_scholar.agent_orchestration.validation.models import (
+    HarnessReport,
+    ValidationStepRequest,
+)
 from tnh_scholar.agent_orchestration.validation.protocols import ValidationServiceProtocol
 
 
@@ -219,7 +221,10 @@ class KernelRunService:
                 "Goldens proposed: success path must pass through GATE before STOP."
             )
 
-    def _normalize_harness_report(self, report: HarnessReport | dict[str, object] | None) -> HarnessReport | None:
+    def _normalize_harness_report(
+        self,
+        report: HarnessReport | dict[str, object] | None,
+    ) -> HarnessReport | None:
         if report is None:
             return None
         return report if isinstance(report, HarnessReport) else HarnessReport.model_validate(report)
