@@ -314,3 +314,81 @@ Wrapped the multilingual transcription branch work after the archive side-applic
 
 ### Open Questions
 - Decide whether to address the repo-wide docs strict-mode failures before this PR or to scope them into a separate documentation cleanup branch.
+
+## [2026-03-09 16:30 PST] OA07 Runtime Foundations and Kernel Delivery
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: oa07-runtime-implementation-and-pr-split
+**Human Collaborator**: phapman
+
+### Context
+Implemented the first maintained OA07 agent-orchestration runtime slice from the accepted ADR set, then delivered it through a split PR path after the initial combined PR exceeded Sourcery's practical review limit. Follow-up work addressed review comments, reconciled the stacked-PR merge path onto `main`, and cleaned up the local/remote git workspace.
+
+### Key Decisions
+- **Implement maintained packages directly from the ADRs**: build new `execution`, `validation`, `kernel`, `workspace`, `run_artifacts`, and `runners` packages instead of extending `spike/` or `conductor_mvp/` in place.
+- **Use typed subprocess boundaries**: centralize subprocess invocation under `execution/` with typed request/result models and `shell=False`.
+- **Split delivery by review surface, not by implementation chronology**: after the oversized PR exceeded Sourcery's diff ceiling, restack into runtime foundations first and kernel second.
+- **Treat repo-wide lint/type debt as baseline noise**: validate the OA07 slice with focused tests and changed-file checks, while recognizing `make ci-check` is intentionally non-blocking for existing repo-wide lint/format/mypy findings.
+- **Preserve docs/meta follow-ups outside the merged code path**: isolate AGENTS/TODO/workflow-note changes onto a separate docs branch/worktree after the OA07 code merged.
+
+### Work Completed
+- [x] Added maintained OA07 `execution/` subsystem with typed invocation, environment, timeout, and output-capture models/services.
+- [x] Added maintained OA07 `validation/` subsystem on top of `execution/`, including typed validator requests, harness report loading, termination aggregation, and result models.
+- [x] Added maintained OA07 `kernel/` subsystem with workflow models, loader, catalog, validator, state, and runtime service.
+- [x] Added maintained OA07 support boundaries for `workspace/`, `run_artifacts/`, and `runners/`.
+- [x] Added focused integration coverage in `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`.
+- [x] Addressed review follow-ups across both split PRs:
+  - output capture policy honored in execution service
+  - idle timeout explicitly documented as reserved/not enforced
+  - validation termination severity ordering fixed
+  - malformed harness JSON surfaced as an error outcome
+  - artifact-store parent directory creation hardened
+  - kernel agent mapping made fail-fast for unknown agent IDs
+  - runtime golden-gate enforcement hardened against indirect STOP bypass
+  - unknown loader route/validation shapes now fail fast
+  - shared STOP sentinel introduced in kernel code
+  - reachability traversal switched to deque-backed BFS.
+- [x] Split, opened, updated, and merged the OA07 PR stack:
+  - runtime foundations
+  - kernel runtime
+  - catch-up PR to land the stacked branch back onto `main`.
+- [x] Cleaned up merged OA07 branches/worktrees and restored a clean `main` checkout.
+- [x] Created a separate docs worktree/branch for remaining AGENTS/TODO/workflow-note updates.
+
+### Discoveries & Insights
+- **Sourcery limit is the real sizing constraint**: practical PR sizing in this repo should be driven by diff-character budget, not generic LOC/file-count heuristics.
+- **Stacked PR merges need explicit retargeting discipline**: when the top PR merges into the intermediate branch, a catch-up PR to `main` may still be required.
+- **`make ci-check` currently passes with heavy repo-wide noise**: Ruff, format, and mypy emit many existing findings but are non-blocking; pytest is the strongest immediate regression signal.
+- **The new OA07 slice is implementation-ready enough to land**: focused OA07 tests passed throughout review/fix iterations, and the code now aligns materially better with TNH object-service and typing expectations than the prototype paths.
+
+### Files Modified/Created
+- `src/tnh_scholar/agent_orchestration/execution/models.py`: Typed execution request/result models and timeout/output policy contracts.
+- `src/tnh_scholar/agent_orchestration/execution/service.py`: Trusted subprocess execution boundary with typed argv rendering and output handling.
+- `src/tnh_scholar/agent_orchestration/validation/models.py`: Typed validation request/result/harness models.
+- `src/tnh_scholar/agent_orchestration/validation/service.py`: Validation orchestration, harness report loading, and termination aggregation.
+- `src/tnh_scholar/agent_orchestration/kernel/models.py`: Maintained workflow/runtime models.
+- `src/tnh_scholar/agent_orchestration/kernel/adapters/workflow_loader.py`: Typed workflow normalization with fail-fast invalid structures.
+- `src/tnh_scholar/agent_orchestration/kernel/catalog.py`: Indexed lookup, routing, reachability, and gate-path helpers.
+- `src/tnh_scholar/agent_orchestration/kernel/state.py`: Encapsulated kernel state transitions including pending golden-gate handling.
+- `src/tnh_scholar/agent_orchestration/kernel/service.py`: Runtime dispatcher/handlers for maintained workflow execution.
+- `src/tnh_scholar/agent_orchestration/kernel/validator.py`: Maintained workflow invariants for reachability, route coverage, and gate constraints.
+- `src/tnh_scholar/agent_orchestration/run_artifacts/filesystem_store.py`: Filesystem artifact persistence hardening.
+- `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`: Typed run-artifact descriptors.
+- `src/tnh_scholar/agent_orchestration/workspace/models.py`: Typed workspace models.
+- `src/tnh_scholar/agent_orchestration/workspace/service.py`: Minimal maintained workspace implementation.
+- `src/tnh_scholar/agent_orchestration/runners/models.py`: Maintained runner contracts.
+- `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`: Focused maintained-runtime regression coverage.
+- `pyproject.toml`: Updated local Sourcery dependency policy to `>=1.43.0`.
+- `poetry.lock`: Refreshed Sourcery lock resolution.
+
+### Validation Performed
+- `poetry run python -m pytest tests/agent_orchestration/test_oa07_execution_validation_kernel.py -q`
+- `poetry run python -m pytest tests/agent_orchestration/test_conductor_mvp_kernel.py -q`
+- `poetry run sourcery review src/tnh_scholar/agent_orchestration/execution src/tnh_scholar/agent_orchestration/validation src/tnh_scholar/agent_orchestration/kernel src/tnh_scholar/agent_orchestration/runners src/tnh_scholar/agent_orchestration/workspace tests/agent_orchestration/test_oa07_execution_validation_kernel.py 2>&1`
+- `make ci-check`
+
+### Open Questions
+- Define and automate a diff-budgeted PR-check workflow keyed to Sourcery's practical `150k` diff-character ceiling.
+- Decide whether to log and commit the remaining docs/meta follow-up branch now or combine it with the forthcoming workflow-automation patch.
+
+---

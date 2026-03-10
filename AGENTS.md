@@ -138,7 +138,8 @@ pipx provides isolated environments per tool while making them globally accessib
 - Standard workflow: Feature branches → PR → merge
 - **Hotfix exception**: Critical bugs/security → direct to main with full CI validation (see AGENT_WORKFLOW.md Step 8)
 - Run `make ci-check` before creating PR - fixes all errors found
-- Run `poetry install --with local && poetry run sourcery review --check <changed-files.py>` - Sourcery is in optional local group (platform-specific wheels)
+- Run `poetry install --with local`
+- Run Sourcery as `poetry run sourcery review <paths> 2>&1` - use `review`, not `--help`; Sourcery is in optional `local` group
 - Run `poetry run mypy` on changed .py files - fix all type errors
 - **PR size**: Keep PRs under ~600 LOC / 10 files for Sourcery bot review (150k char diff limit)
 

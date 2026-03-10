@@ -59,25 +59,55 @@ This section organizes work into three priority levels based on criticality for 
 
 #### ✅ Provenance Format Refactor (YAML Frontmatter) — *See [Archive](#provenance-format-refactor-)*
 
-#### 🚨 Agent-Orch Conductor Validation Command Typing Hardening
+#### 🚨 Agent-Orch OA07 Runtime Implementation Sequence
 
-- **Status**: IN PROGRESS - high-priority follow-up before conductor MVP can be considered architecturally clean
-- **Priority**: HIGH (security posture + architecture compliance)
-- **Context**: PR #35 moved validator command authorship into trusted provider code, but [validation_runner.py](src/tnh_scholar/agent_orchestration/conductor_mvp/providers/validation_runner.py) still passes `tuple[str, ...]` argv vectors to `subprocess.run(...)`.
+- **Status**: IN PROGRESS - maintained execution/validation/kernel slice landed and tested
+- **Priority**: HIGH (foundation work for durable MVP)
+- **Context**: The accepted OA07 ADR set defines the maintained runtime architecture. The current `conductor_mvp/` and `spike/` code remains useful as migration source/reference, but should not receive forward-path feature growth.
 - **Why This Matters**:
-  - raw argv tuples remain below the repo's typed object-service standard
-  - security review noise will persist until validator execution is modeled as typed command objects
-  - conductor MVP is not spike code, so this boundary must be brought up to standard
-- **Required Follow-Up**:
-  - [ ] Replace `ValidatorExecutionSpec.command: tuple[str, ...]` with typed execution command models
-  - [ ] Add a dedicated renderer/executor layer that translates typed command objects to argv only at the subprocess edge
-  - [ ] Remove naked command vectors from conductor provider protocols
-  - [ ] Re-run Sourcery/security review after the command model refactor
-- **Files in Scope**:
-  - `src/tnh_scholar/agent_orchestration/conductor_mvp/models.py`
-  - `src/tnh_scholar/agent_orchestration/conductor_mvp/protocols.py`
-  - `src/tnh_scholar/agent_orchestration/conductor_mvp/providers/validation_runner.py`
-  - `tests/agent_orchestration/test_conductor_mvp_kernel.py`
+  - current implementation readiness is medium, but in-place extension readiness is low
+  - the highest-risk boundary is still subprocess execution and typed validation/runner contracts
+  - coding should proceed by subsystem extraction, not by continuing prototype package growth
+- **Implementation Order**:
+  - [x] Build `agent_orchestration/execution/`
+    - typed invocation families
+    - cwd/env/timeout policy
+    - termination/result taxonomy
+    - final argv rendering boundary
+  - [x] Build `agent_orchestration/validation/` on top of `execution/`
+    - preserve OA04 external YAML compatibility by normalizing source shapes into typed internal models
+    - migrate behavior out of `conductor_mvp/providers/validation_runner.py`
+  - [x] Extract `agent_orchestration/kernel/`
+    - `WorkflowCatalog`
+    - `WorkflowValidator`
+    - `KernelState`
+    - `KernelRunService`
+  - [x] Introduce `agent_orchestration/workspace/` and `agent_orchestration/run_artifacts/`
+    - move rollback/state capture and durable run record ownership out of prototype packages
+  - [ ] Migrate maintained runner behavior into `agent_orchestration/runners/`
+    - use `reference/spike/` only as reference material
+    - no new forward-path runner work in spike code
+- **Current Slice Completed**:
+  - Added maintained `execution/`, `validation/`, `kernel/`, `workspace/`, `run_artifacts/`, and `runners/` package scaffolding
+  - Added focused OA07 regression coverage and validated the new slice plus legacy `conductor_mvp` kernel tests
+  - Sourcery installed successfully via `poetry install --with local`, but the CLI currently hangs even for `--help`, so local Sourcery review remains blocked by Sourcery runtime behavior rather than repo config
+- **Migration Rules**:
+  - [ ] Do not add substantive new feature work to `conductor_mvp/`
+  - [ ] Do not add new forward-path implementation work to `spike/`
+  - [ ] Treat `conductor_mvp/` as a temporary migration-source package to be deleted after subsystem extraction
+  - [ ] Treat `codex_harness/` and `spike/` as reference packages during OA07 migration
+- **Initial Files in Scope**:
+  - `src/tnh_scholar/agent_orchestration/conductor_mvp/`
+  - `src/tnh_scholar/agent_orchestration/spike/`
+  - `src/tnh_scholar/agent_orchestration/common/`
+  - `tests/agent_orchestration/`
+  - `docs/architecture/agent-orchestration/adr/adr-oa07-mvp-runtime-architecture-strategy.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa07.1-kernel-runtime-design.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa07.2-runner-subsystem-design.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa07.3-validation-subsystem-design.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa07.4-workspace-and-run-artifact-subsystems.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa07.5-reference-package-policy.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa07.6-execution-subsystem-design.md`
 
 #### 🔮 JVB VS Code Parallel Viewer (ADR-JVB02)
 
