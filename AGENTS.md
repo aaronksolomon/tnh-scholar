@@ -5,7 +5,7 @@ owner: ""
 author: "aaronksolomon, Claude Sonnet 4.5"
 status: current
 created: "2025-12-07"
-updated: "2026-03-05"
+updated: "2026-03-09"
 ---
 # AGENTS.md
 
@@ -120,6 +120,7 @@ make format       # ruff format
 poetry run mypy src/
 make docs-verify  # MkDocs strict + validation
 make ci-check     # REQUIRED before PR - runs full CI suite locally
+make pr-check     # PR diff budget + changed-file check plan
 ```
 
 **CLI Tool Access:**
@@ -139,42 +140,60 @@ pipx provides isolated environments per tool while making them globally accessib
 - **Hotfix exception**: Critical bugs/security → direct to main with full CI validation (see AGENT_WORKFLOW.md Step 8)
 - Run `make ci-check` before creating PR - fixes all errors found
 - Run `poetry install --with local`
+- Run `make pr-check` before PR creation to size the diff against `origin/main`
 - Run Sourcery as `poetry run sourcery review <paths> 2>&1` - use `review`, not `--help`; Sourcery is in optional `local` group
 - Run `poetry run mypy` on changed .py files - fix all type errors
-- **PR size**: Keep PRs under ~600 LOC / 10 files for Sourcery bot review (150k char diff limit)
+- **PR size**: optimize for Sourcery diff budget, not LOC/file count
+  - preferred: `<120k` diff chars
+  - caution: `120k-150k` diff chars
+  - split required: `>=150k` diff chars
 
-**Small PR Workflow (Preferred):**
+**Diff-Budgeted PR Workflow (Preferred):**
 
-Use descriptive sub-branches for incremental PRs within a feature area.
+Use short-lived feature branches sized to one coherent architectural slice.
 
-Two valid patterns:
+Default pattern:
 
 ```
-Independent PRs (branch from main):
-feat/multilingual-scaffold   → PR → merge
-feat/pyannote-hardening      → PR → merge
+main → feat/<slice> → PR → merge
+```
 
-Stacked PRs (branch from previous PR branch until merge):
-feat/multilingual-scaffold   → PR1
-feat/multilingual-service    (from scaffold) → PR2
-feat/multilingual-tests      (from service)  → PR3
+Advanced pattern, only when later work truly depends on earlier unmerged work:
+
+```
+feat/<slice-a>           → PR1
+feat/<slice-b> from a    → PR2
+feat/<slice-c> from b    → PR3
 ```
 
 Workflow per PR:
 
 1. Start from a **clean working tree**. Do not switch branches with unrelated uncommitted work present.
 2. Choose base branch:
-   - Independent PR: `main`
-   - Stacked PR: previous in-flight feature branch
+   - default: `main`
+   - stacked: previous in-flight feature branch
 3. Update base branch, then create a descriptive feature branch: `git checkout -b feat/<feature>-<description>`
-4. Work → commit → `make ci-check` → push
-5. Create PR → review cycle (fix Sourcery/CI feedback, push follow-up commits)
-6. After merge, the **user** may delete the branch. Agents do not delete branches without explicit approval.
-7. For the next chunk:
-   - independent PR: repeat from `main`
-   - stacked PR: branch from the current top-of-stack branch until earlier PRs merge
+4. Work until one logical unit is done.
+5. Run `make pr-check`:
+   - if `<120k` diff chars: open PR
+   - if `120k-150k`: open PR only if the slice is still coherent and leave review-fix headroom
+   - if `>=150k`: split before opening PR
+6. Run the suggested changed-file checks:
+   - focused pytest targets
+   - `ruff` on changed `.py` files
+   - `mypy` on changed `.py` files
+   - `sourcery review <paths> 2>&1`
+7. Push branch, create PR, then do review/fix loops on the same branch.
+8. If stacked PRs are used:
+   - open PRs in order
+   - merge in order
+   - retarget or restack upper PRs after lower PRs merge
+   - optional: use separate git worktrees to avoid branch-switching risk
+9. Human interaction is still required after PR creation for Sourcery GitHub review and merge decisions.
+10. After merge, the **user** may delete the branch. Agents do not delete branches without explicit approval.
+11. For the next slice, restart from `main` unless a stacked dependency still exists.
 
-**Why:** Small PRs enable faster review, easier rollback, and stay within Sourcery's diff limits. Independent PRs reduce coupling. Stacked PRs preserve momentum when later work depends on earlier unmerged changes.
+**Why:** Sourcery's practical constraint is diff size. Diff-budgeted slices keep PRs reviewable without forcing arbitrary file-count or LOC caps. Stacked PRs and worktrees remain useful, but only when dependency ordering genuinely requires them.
 
 **CI/CD:** GitHub Actions, all deps non-optional, 264 tests passing.
 

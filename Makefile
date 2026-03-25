@@ -7,8 +7,10 @@ TNH_CLI_TOOLS = audio-transcribe tnh-gen ytt-fetch nfmt token-count tnh-setup tn
 SANDBOX_PATH ?= ../tnh-scholar-sandbox
 SANDBOX_BRANCH ?= feat/agent-orchestration-sandbox
 SANDBOX_SOURCE_REPO ?= .
+PR_BASE ?= origin/main
+PR_CHECK_ARGS ?=
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pipx-refresh build-all update sync-sandbox ytdlp-runtime
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check pipx-refresh build-all update sync-sandbox ytdlp-runtime
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -155,6 +157,10 @@ ci-check:
 	@echo ""
 	@echo "Note: Markdown lint (npx markdownlint) requires Node.js and is not included."
 	@echo "Run manually: npx markdownlint '**/*.md'"
+
+pr-check:
+	@echo "Evaluating PR readiness against $(PR_BASE)..."
+	$(POETRY) run python scripts/pr_readiness.py --base $(PR_BASE) $(PR_CHECK_ARGS)
 
 # Release management targets
 # Set DRY_RUN=1 to preview commands without executing (e.g., make release-patch DRY_RUN=1)

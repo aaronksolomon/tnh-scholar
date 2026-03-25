@@ -4,7 +4,7 @@ description: "Safe git practices for TNH Scholar development to prevent data los
 author: "Claude Sonnet 4.5"
 status: "current"
 created: "2025-12-07"
-updated: "2025-12-15"
+updated: "2026-03-09"
 owner: "Engineering"
 ---
 
@@ -90,9 +90,9 @@ git push -u origin <current-branch>
 
 ## Safe Workflow
 
-### Recommended Approach: Simple Feature Branches
+### Recommended Approach: Diff-Budgeted Feature Branches
 
-**Best practice**: Merge feature branches directly to main, avoiding complex multi-tier merge chains.
+**Best practice**: Build one coherent implementation slice at a time, size it against Sourcery's practical diff ceiling, and merge feature branches directly to main whenever possible.
 
 ```bash
 # Create feature branch from main
@@ -103,11 +103,17 @@ git checkout -b feature/my-feature
 # Push immediately - safety first!
 git push -u origin feature/my-feature
 
-# Work and commit
+# Work until one logical unit is done
 git add .
 git commit -m "feat: implement feature"
 
-# Push frequently
+# Evaluate PR readiness against origin/main
+make pr-check
+
+# Optional: run changed-file checks immediately from the same diff
+make pr-check PR_CHECK_ARGS="--run-checks --pytest-target tests/path/to/focused_test.py"
+
+# Push when the diff is reviewable
 git push
 
 # When ready: Create PR to main
@@ -120,12 +126,62 @@ git branch -d feature/my-feature
 git push origin --delete feature/my-feature
 ```
 
+**PR sizing rule**:
+
+- Preferred: `<120k` diff chars
+- Caution: `120k-150k` diff chars
+- Split required: `>=150k` diff chars
+
+`make pr-check` measures the actual git patch size and lists the changed-file checks to run:
+
+- `ruff` on changed `.py` files
+- `mypy` on changed `.py` files
+- `sourcery review <paths> 2>&1`
+- optional focused pytest targets supplied by the caller
+
 **Why this is safer**:
 
 - Simpler workflow = fewer opportunities for staleness errors
-- No intermediate version branches to keep in sync
+- The actual review bottleneck is controlled before PR creation
+- No unnecessary intermediate branches to keep in sync
 - Clear linear path: feature → main
 - Tags (not branches) preserve release points
+
+### Human-in-the-Loop Reality
+
+Sourcery's GitHub PR review still requires human-aware PR flow after branch push:
+
+- A human or agent can open the PR.
+- Sourcery review happens on GitHub after PR creation.
+- Review comments and merge decisions still require a normal PR cycle.
+
+There is no reliable way around that if the goal is to get the GitHub-side Sourcery review. The practical improvement is to make the **pre-PR loop** fast and predictable so the PR itself becomes a short review/fix loop rather than a discovery phase.
+
+### Optional Advanced Pattern: Stacked PRs with Worktrees
+
+Use this only when slice B truly depends on unmerged slice A.
+
+```bash
+# PR 1
+git checkout -b feat/slice-a
+git push -u origin feat/slice-a
+gh pr create --base main --head feat/slice-a
+
+# PR 2 in a separate worktree
+git worktree add ../tnh-scholar-slice-b feat/slice-a
+cd ../tnh-scholar-slice-b
+git checkout -b feat/slice-b
+make pr-check
+git push -u origin feat/slice-b
+gh pr create --base feat/slice-a --head feat/slice-b
+```
+
+Rules:
+
+- Open stacked PRs in order.
+- Merge stacked PRs in order.
+- After a lower PR merges, retarget or restack the upper PR immediately.
+- Prefer separate worktrees for stacked PRs to avoid branch-switching risk in a dirty checkout.
 
 ### Alternative: Multi-Tier Merges (More Complex)
 
