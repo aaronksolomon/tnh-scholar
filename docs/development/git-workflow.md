@@ -4,7 +4,7 @@ description: "Safe git practices for TNH Scholar development to prevent data los
 author: "Claude Sonnet 4.5"
 status: "current"
 created: "2025-12-07"
-updated: "2026-03-09"
+updated: "2026-03-25"
 owner: "Engineering"
 ---
 
