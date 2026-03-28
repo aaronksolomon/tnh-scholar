@@ -26,6 +26,24 @@ auto_generated: true
 
 **[ADR-OA03.2: Codex Runner](adr-oa03.2-codex-runner.md)** - Codex execution path — API-first, tool-driven runner for implementation tasks
 
+**[ADR-OA03.3: Codex CLI Runner](adr-oa03.3-codex-cli-runner.md)** - Codex execution path via CLI — headless exec mode, superseding API-based approach
+
+**[ADR-OA04: Workflow Schema + Opcode Semantics](adr-oa04-workflow-schema-opcode-semantics.md)** - Defines the canonical workflow document format and execution semantics for tnh-conductor kernel opcodes
+
+**[ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence](adr-oa04.1-implementation-notes-mvp-buildout.md)** - Implementation-guide addendum for OA04 defining MVP execution flow, role split, and incremental build sequence
+
+**[ADR-OA04.2: Runner Contract](adr-oa04.2-runner-contract.md)** - Defines the maintained RUN_AGENT request/result, artifact, and normalization contract for Claude CLI and Codex CLI adapters
+
+**[ADR-OA04.3: Provenance and Run-Artifact Contract](adr-oa04.3-provenance-run-artifact-contract.md)** - Defines the maintained run directory, artifact manifest, and event/provenance handoff contract for workflow execution
+
+**[ADR-OA04.4: Policy Enforcement Contract](adr-oa04.4-policy-enforcement-contract.md)** - Defines the shared permissibility model, native-control mapping boundary, and violation handling contract for workflow execution
+
+**[ADR-OA04.5: Harness Backend Contract](adr-oa04.5-harness-backend-contract.md)** - Defines the maintained backend contract for executing generated and predefined validation harnesses under RUN_VALIDATION
+
+**[ADR-OA05: Prompt Library Specification](adr-oa05-prompt-library-specification.md)** - Defines prompt artifact schema, versioning, rendering, and catalog validation contracts for tnh-conductor prompt-program behavior
+
+**[ADR-OA06: Planner Evaluator Contract](adr-oa06-planner-evaluator-contract.md)** - Defines planner evaluator I/O schemas, status derivation, contradiction rules, and deterministic decision vectors for EVALUATE steps
+
 ---
 
 *This file auto-generated.*

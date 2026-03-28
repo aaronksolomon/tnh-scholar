@@ -329,3 +329,37 @@ flowchart TB
 - [ADR-OA04: Workflow Schema + Opcode Semantics](/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
 - [ADR-OA05: Prompt Library Specification](/architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification.md)
 - [ADR-OA06: Planner Evaluator Contract](/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md)
+
+---
+
+## As-Built Notes & Addendums
+
+### Addendum 2026-03-27: OA04 Contract Family — Scaffolding Alignment Notes
+
+**Context**: OA04.2–OA04.5 were accepted 2026-03-27 as the contract layer between OA07 runtime foundations and forward-path implementation. A code review against the existing OA07 scaffolding at acceptance time revealed the following alignment gaps. These are expected and pre-planned — the ADRs were written before the scaffolding was filled in. Recording them here for implementer context.
+
+**Gap 1 — `RunEventRecord` is too thin (OA04.3 §6)**
+
+`run_artifacts/models.py` `RunEventRecord` currently has only `step_id` and `next_step_id`. OA04.3 requires `timestamp`, `run_id`, and `event_type` as required fields. Addressed in PR-2.
+
+**Gap 2 — `RunMetadata` is too thin (OA04.3 §3)**
+
+`run_artifacts/models.py` `RunMetadata` currently has only `run_id`, `workflow_id`, `started_at`. OA04.3 requires `workflow_version`, `artifacts_root`, `entry_step`; recommended optionals include `ended_at`, `last_step_id`, `termination`, `schema_versions`. Addressed in PR-2.
+
+**Gap 3 — No `StepManifest` model exists (OA04.3 §4–5)**
+
+`run_artifacts/` has no `StepManifest`, `ArtifactRole`, or `StepArtifactEntry` types. `FilesystemRunArtifactStore` creates the run directory and event log correctly, but has no manifest-writing capability. Addressed in PR-2.
+
+**Gap 4 — `PromptInteractionPolicy` stub conflicts with OA04.4 `ExecutionPolicy` (OA04.4 §1)**
+
+`runners/models.py` has a minimal `PromptInteractionPolicy(auto_approve: bool)` stub on `RunnerTaskRequest`. OA04.4 defines a richer five-dimension `ExecutionPolicy` model. These must not share a name or conflate roles. The stub should be retired and `RunnerTaskRequest.prompt_interaction_policy` re-pointed to the proper `ExecutionPolicy` reference. Addressed in PR-3.
+
+**Gap 5 — `validation/` package is empty (OA04.5)**
+
+`agent_orchestration/validation/__init__.py` exists but contains no models, protocols, or backends. The harness backend contract (backend family enum, request/result boundary, script backend) is entirely greenfield. Addressed in PR-5.
+
+**Gap 6 — `runners/` has no adapters subdirectory (OA04.2 §6)**
+
+`runners/` has `models.py` and `protocols.py` but no `adapters/` subpackage. Claude CLI and Codex CLI adapter implementations are fully absent. Addressed in PR-4.
+
+**Note on `final_state_path` naming**: `RunArtifactPaths.final_state_path` maps to `final_state.txt` in the current store, but OA04.3 §2 uses `final-state.txt` (hyphen). Minor — align during PR-2 if it does not break existing tests; otherwise note as a follow-up.

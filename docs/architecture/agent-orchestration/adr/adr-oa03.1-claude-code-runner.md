@@ -242,6 +242,8 @@ The runner normalizes Claude output to kernel-compatible artifacts:
 
 **Any non-parseable or interactive output → hard fail** (`blocked` or `unsafe`, `needs_human`).
 
+**Maintained runtime note**: The table above reflects earlier runner-surface language. Maintained runtime result and termination semantics are defined by [ADR-OA04.2](/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md) and [ADR-OA04.3](/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md).
+
 ---
 
 ## Permission & Safety
@@ -459,3 +461,17 @@ See parent ADR-OA03 addendum for context.
 **Status changed**: `paused` → `accepted`
 
 Orchestration work resumed. See parent ADR-OA03 addendum for context.
+
+### Addendum 2026-03-27: Maintained Runtime Contract Precedence
+
+**Context**: Later OA04 execution-contract ADRs froze maintained request/result, artifact, and policy semantics more precisely than this runner-surface ADR.
+
+**Decision**: This ADR remains authoritative for Claude CLI supported surfaces and capture posture. Maintained runtime contract details now follow the OA04 execution-contract family.
+
+Specifically:
+
+- OA04.x governs maintained request/result contracts and artifact lookup semantics.
+- Runner/kernel outcomes in maintained implementation are mechanical outcomes, not planner-semantic statuses.
+- Terms like `unsafe`, `blocked`, and `needs_human` remain planner/workflow semantics in maintained runtime.
+
+**Rationale**: Preserve the enduring Claude control-surface decision while preventing old spike-era wording from overriding newer maintained execution contracts.

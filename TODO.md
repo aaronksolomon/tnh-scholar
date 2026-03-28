@@ -11,7 +11,7 @@ updated: "2026-03-06"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-02-08 (Updated ADR-CF02 prompt discovery status)
+> **Last Updated**: 2026-03-27 (Added OA04 contract family PR sequence)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -101,13 +101,76 @@ This section organizes work into three priority levels based on criticality for 
   - `src/tnh_scholar/agent_orchestration/spike/`
   - `src/tnh_scholar/agent_orchestration/common/`
   - `tests/agent_orchestration/`
-  - `docs/architecture/agent-orchestration/adr/adr-oa07-mvp-runtime-architecture-strategy.md`
-  - `docs/architecture/agent-orchestration/adr/adr-oa07.1-kernel-runtime-design.md`
-  - `docs/architecture/agent-orchestration/adr/adr-oa07.2-runner-subsystem-design.md`
-  - `docs/architecture/agent-orchestration/adr/adr-oa07.3-validation-subsystem-design.md`
-  - `docs/architecture/agent-orchestration/adr/adr-oa07.4-workspace-and-run-artifact-subsystems.md`
-  - `docs/architecture/agent-orchestration/adr/adr-oa07.5-reference-package-policy.md`
-  - `docs/architecture/agent-orchestration/adr/adr-oa07.6-execution-subsystem-design.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa03-agent-runner-architecture.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md`
+
+#### 🚨 OA04 Contract Family — PR Sequence (in progress)
+
+- **Status**: NOT STARTED — ADRs written, green-lit for implementation 2026-03-27
+- **Context**: OA04.2–OA04.5 are the contract-layer ADRs sitting between the OA07 runtime foundations and the actual runner/policy/provenance implementations. They must be accepted before implementation begins. See implementation notes in [ADR-OA04.1 Addendum 2026-03-27](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md) for scaffolding alignment gaps.
+- **Dependency chain**:
+  - OA04.3 (run dir + manifests + evaluator evidence seam) → OA04.2 (runners normalize into canonical evidence)
+  - OA04.4 (policy taxonomy + requested/effective split) → OA04.2 (runner request carries typed requested policy)
+  - OA04.5 (harness backend) → `validation/` subsystem (extends empty package)
+  - OA04.2 (runner adapters) → milestone: first real agent invocations
+- **Implementation Notes (default choices for implementers)**:
+  - Apply OS01 pragmatically: add structure where it protects a real boundary or likely evolution seam, not just to mirror the taxonomy mechanically.
+  - Prefer moving maintained code toward the ADR contracts when the migration path is clean; do not preserve stub shapes just for short-term compatibility inside maintained packages.
+  - Treat `run_artifacts/` as the canonical evidence boundary. If a choice arises between storing data in runner-local files versus canonical artifact roles + manifests, choose canonical artifact roles + manifests.
+  - Keep evaluator assembly strict: evaluators read `metadata.json`, `events.ndjson`, `manifest.json`, and canonical artifact roles only. Do not add evaluator dependencies on adapter-local raw capture filenames.
+  - Keep manifests thin and stable. Put compact cross-step evidence in `evidence_summary`; put detailed per-step policy data in canonical `policy_summary.json`.
+  - Keep persistence ownership in `run_artifacts/`. Runner adapters and validation backends should return typed normalized outputs and artifact payloads; they should not own final manifest writing policy.
+  - Evolve existing maintained code where it already matches the target shape. In particular, refactor `validation/service.py` toward the script backend/resolver seam rather than replacing it wholesale.
+  - Expand `kernel/service.py` by extraction, not accretion. If per-step provenance writing starts to crowd the kernel, extract focused collaborators rather than growing one large procedural service.
+  - Use explicit mapper/normalizer classes whenever native CLI or harness output is translated into maintained models. Do not hide parsing, normalization, termination mapping, and persistence decisions in one adapter class.
+  - Keep policy taxonomy aligned with OS01: init-time settings/config, per-step requested policy, execution-time effective policy, persisted `PolicySummary`. Avoid “policy blob” models that mix those concerns.
+  - Do not add ceremony without benefit: avoid speculative service/factory layers, unnecessary mappers for nearly identical shapes, or package splits that do not improve testability, replaceability, or clarity.
+  - Existing thin models in `run_artifacts/`, `runners/`, and `validation/` are scaffolding, not target architecture. It is acceptable to break those internal shapes in favor of cleaner maintained contracts during this implementation sequence.
+- **PR Sequence**:
+  - [ ] **PR-1** `feat/oa04-contract-adrs` — ADR acceptance (docs only)
+    - Commit new OA04.2, OA04.3, OA04.4, OA04.5 files; mark all `accepted`
+    - Carry in already-modified OA03.1/OA03.3 addendums + OA04 update + index.md
+  - [ ] **PR-2** `feat/oa04.3-run-artifact-contract` — Run-artifact domain contract + store (medium)
+    - Expand `run_artifacts/models.py`: `RunMetadata`, `RunEventRecord`, `ArtifactRole` enum, `StepArtifactEntry`, `StepManifest`
+    - Add manifest-level `evidence_summary` with compact canonical evidence references
+    - Add canonical `policy_summary` artifact role for detailed requested/effective policy records
+    - Expand `run_artifacts/protocols.py`: `write_step_manifest`, `artifact_step_dir`, canonical artifact persistence APIs
+    - Update `run_artifacts/filesystem_store.py` to implement both
+    - Keep filesystem concerns behind the store; no evaluator-facing filename dependencies
+    - Tests for manifest writing, event stream fields, and canonical artifact-role lookup
+  - [ ] **PR-3** `feat/oa04.3-kernel-provenance-integration` — Kernel provenance integration (medium)
+    - Update kernel/runtime services to write enriched run metadata, canonical events, and per-step manifests
+    - Persist compact manifest summaries and canonical artifact references only; no adapter-local evidence lookup in evaluator assembly
+    - Capture workspace diff/status and policy summary references through canonical artifact roles
+    - Tests for manifest/event creation across `RUN_AGENT`, `RUN_VALIDATION`, `EVALUATE`, and `GATE`
+    - *Depends on PR-2*
+  - [ ] **PR-4** `feat/oa04.4-policy-contract` — Execution policy package (medium)
+    - New `agent_orchestration/execution_policy/` package
+    - `models.py`: `ExecutionPolicySettings`, `RequestedExecutionPolicy`, `EffectiveExecutionPolicy`, `PolicyViolationClass`, `PolicyViolation`, `PolicySummary`
+    - `assembly.py`: `ExecutionPolicyAssembler` for system settings → workflow → step requested policy → runtime override/effective policy derivation
+    - `protocols.py`: `ExecutionPolicyAssemblerProtocol`
+    - Update `runners/models.py`: retire `PromptInteractionPolicy` stub; link `RunnerTaskRequest` to `RequestedExecutionPolicy`
+    - Persist detailed `policy_summary.json` via canonical `policy_summary` artifact role; keep only compact summary data in manifests
+    - Tests for assembly precedence, requested/effective policy derivation, and hard-fail behavior
+    - *Can run in parallel with PR-3*
+  - [ ] **PR-5** `feat/oa04.2-runner-adapters` — Runner adapters (largest PR)
+    - Expand `runners/models.py`: `AdapterCapabilities` (capability declaration per OA04.2 §3a)
+    - Add explicit mapper/normalizer classes for native CLI output → maintained runner-domain models
+    - Add `runners/adapters/claude_cli.py`: `claude --print --output-format stream-json --permission-mode dontAsk`, stream-json parsing, normalization, termination mapping
+    - Add `runners/adapters/codex_cli.py`: `codex exec --json --output-last-message`, JSONL capture, normalization, termination mapping
+    - Adapters return typed normalized artifact payloads; canonical persistence is owned by `run_artifacts`
+    - Evaluators consume manifests and canonical artifact roles only, never runner-local raw capture files
+    - Tests for both adapters (subprocess mocking, normalization, mapper behavior, termination paths)
+    - *Depends on PR-2, PR-3, and PR-4*
+  - [ ] **PR-6** `feat/oa04.5-harness-backend` — Script harness backend (medium)
+    - Build out `agent_orchestration/validation/`: `BackendFamily` enum, `HarnessBackendRequest`, `HarnessBackendResult`, `HarnessBackendProtocol`
+    - `backends/script.py`: migrate from `conductor_mvp/providers/validation_runner.py`; normalize to `validation_report`/`validation_stdout`/`validation_stderr` artifact roles
+    - Add backend resolver seam, but defer `cli` and `web` implementation until a concrete maintained consumer exists
+    - Tests for script backend, resolver seam, and artifact role normalization
+    - *Depends on PR-2; independent of PR-4 and PR-5*
 
 #### 🔮 JVB VS Code Parallel Viewer (ADR-JVB02)
 
@@ -431,7 +494,7 @@ docs/architecture/jvb-viewer/adr/
 - **Status**: PARTIAL (old versions removed, utilities pending)
 - **Location**: [cli_tools/audio_transcribe/](src/tnh_scholar/cli_tools/audio_transcribe/)
 - **Tasks**:
-  - [x] Remove [audio_transcribe0.py](src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe0.py)
+  - [x] Remove legacy `audio_transcribe0.py`
   - [x] Remove audio_transcribe1.py
   - [x] Remove audio_transcribe2.py
   - [x] Keep only current version

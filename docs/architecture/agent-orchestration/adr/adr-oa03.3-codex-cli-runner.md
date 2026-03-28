@@ -188,6 +188,8 @@ class AgentRunResult:
     metadata: dict           # Agent-specific metadata (model, tokens, etc.)
 ```
 
+**Maintained runtime note**: The structure above is historical spike/adapter guidance. Maintained runtime result and termination semantics are defined by [ADR-OA04.2](/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md) and [ADR-OA04.3](/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md).
+
 ### Dual-Channel Output
 
 Consistent with OA01/OA03:
@@ -370,3 +372,17 @@ The Codex CLI spike passed all criteria with a successful 7-minute implementatio
 2. **Model Selection**: `-m gpt-5.2-codex` confirmed working and recommended for consistency.
 
 **Decision**: Proceed with full Codex CLI adapter implementation under OA03. Pattern validated as equivalent to Claude Code runner (OA03.1).
+
+### Addendum 2026-03-27: Maintained Runtime Contract Precedence
+
+**Context**: Later OA04 execution-contract ADRs froze maintained request/result, artifact, and policy semantics more precisely than this CLI-surface ADR.
+
+**Decision**: This ADR remains authoritative for Codex CLI supported surfaces and capture posture. Maintained runtime contract details now follow the OA04 execution-contract family.
+
+Specifically:
+
+- OA04.x governs maintained request/result contracts and artifact lookup semantics.
+- Runner/kernel outcomes in maintained implementation are mechanical outcomes, not planner-semantic statuses.
+- The `AgentRunResult` structure shown here is historical spike/adapter guidance, not the maintained runtime model.
+
+**Rationale**: Preserve the enduring Codex CLI surface decision while preventing older spike-shaped result modeling from overriding newer maintained execution contracts.

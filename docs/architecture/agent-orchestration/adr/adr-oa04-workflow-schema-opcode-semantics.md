@@ -291,25 +291,19 @@ Pre-run validation MUST enforce:
 
 ### 8. Artifact Conventions
 
-All run artifacts are written to a structured directory:
+All run artifacts are written under a structured run directory rooted at:
 
-```
+```text
 .tnh/run/<run_id>/
-├── transcript.md           # Agent session transcript
-├── diff.patch              # Git diff for this run
-├── harness/                # Generated harness code (if any)
-│   ├── harness.py
-│   └── fixtures/
-├── harness_report.json     # Structured validation results
-├── screenshots/            # Visual artifacts (if captured)
-└── logs/                   # Additional logs from validators
 ```
+
+The canonical maintained run-directory structure, step partitioning, manifests, and artifact-role lookup rules are defined by [ADR-OA04.3](/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md).
 
 **Conventions:**
 
 - `<run_id>` is a unique identifier for each workflow execution (e.g., timestamp + short hash).
 - Agents and harness writers MUST write generated code/specs to `.tnh/run/<run_id>/harness/`.
-- The kernel captures artifacts declared in `RUN_VALIDATION` entries and copies them to the run directory.
+- The kernel captures artifacts declared in `RUN_VALIDATION` entries and records them through the maintained artifact contract.
 - Artifact paths in reports should be relative to the run directory.
 
 ### 9. Harness Report Schema
@@ -617,3 +611,33 @@ Deferred: OA04 keeps step sequencing explicit and bounded. DAG expansion remains
 - [ADR-OA05: Prompt Library Specification](/architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification.md) — Defines prompt artifact format; harness synthesis prompts are OA05 territory
 - [ADR-OA06: Planner Evaluator Contract](/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md) — Defines how planner interprets `harness_report.json`; OA04 only specifies artifact format
 - **ADR-OA07: Diff-Policy + Safety Rails** (planned) — Golden snapshot approval rules may be further detailed there
+
+---
+
+## As-Built Notes & Addendums
+
+### Addendum 2026-03-26: OA04 Family Planning and Namespace Clarification
+
+**Context**: Implementation of the maintained runtime exposed a documentation gap. OA04 froze workflow schema and opcode semantics strongly enough to begin kernel work, but several execution-boundary contracts remained only implied across OA01.1, OA03.x, and OA04.1.
+
+**Decision**: The OA04 decimal family is explicitly clarified as the **workflow execution contract family**, not a narrower "schema-only" namespace.
+
+This means OA04 children may specify:
+
+- workflow document refinements,
+- opcode-adjacent runtime contracts,
+- artifact and provenance handoff boundaries,
+- other execution-facing contracts required to make OA04 implementable without changing OA01.1 strategy or OA03 control-surface decisions.
+
+The planned OA04 decimal sequence is:
+
+| ADR | Planned Scope |
+|-----|---------------|
+| `OA04.2` | Maintained `RUN_AGENT` runner contract |
+| `OA04.3` | Provenance and run-artifact contract |
+| `OA04.4` | Policy enforcement contract |
+| `OA04.5` | Harness backend contract |
+
+**Rationale**: These topics are all downstream of OA04 opcode execution and upstream of subsystem implementation. Placing them under OA04 keeps the family centered on execution contracts rather than proliferating new top-level namespaces.
+
+**Implementation Changes**: No code changes. Added [ADR-OA04.2](/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md), [ADR-OA04.3](/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md), [ADR-OA04.4](/architecture/agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract.md), and [ADR-OA04.5](/architecture/agent-orchestration/adr/adr-oa04.5-harness-backend-contract.md) as execution-contract refinements.
