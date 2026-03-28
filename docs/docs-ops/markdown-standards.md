@@ -121,12 +121,12 @@ draft/proposed → current → [deprecated] → [superseded/archived]
 - **Link formatting**:
   - **Use absolute links only** for internal documentation references. Absolute links are relative to the MkDocs root (`/docs` directory).
   - Example: `/architecture/overview.md` (resolves to `docs/architecture/overview.md` in the repository).
-  - Example: `/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md` (resolves to `docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md`).
+  - Example: `/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md` (resolves to `docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md`).
   - **Never use** relative links like `../architecture/overview.md` or paths that include `/docs/` in the link itself.
   - Always use absolute links starting with `/` not relative links to avoid broken references when files are moved or reorganized.
   - For external URLs, use full absolute URLs (e.g., `https://example.com`).
 - **Repository root file references**:
-  - When drafting documentation that links to tracked repository root files (e.g., `README.md`, `CONTRIBUTING.md`, `VERSIONING.md`), **always link to the generated copies** under `/project/repo-root/<name>.md`.
+  - When drafting documentation that links to tracked repository root files (e.g., `README.md`, `CONTRIBUTING.md`, `VERSIONING.md`), **always link to the generated copies** under paths such as `/project/repo-root/repo-readme.md` or `/project/repo-root/versioning.md`.
   - Example: Link to `/project/repo-root/versioning.md` instead of `/VERSIONING.md` to match MkDocs target paths and avoid later rewrites.
   - These generated files are created by `scripts/sync_root_docs.py` from the repository root originals.
 - **Adding new repository root files**:
@@ -166,12 +166,12 @@ When documenting superseded designs, archived ADRs, or earlier explorations, use
 ### Superseded ADRs
 
 - **[ADR-XX: Title](<docs-absolute-path>/archive/adr/adr-xx-title.md)** (YYYY-MM-DD)
-  *Status*: Superseded by [ADR-YY](/path/to/current-adr.md)
+  *Status*: Superseded by [ADR-DD02](/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
 
 ### Earlier Design Explorations
 
 - **[Design Doc Title](<docs-absolute-path>/archive/design-doc.md)** (YYYY-MM-DD)
-  *Status*: Replaced by [Current Doc](/path/to/current-doc.md)
+  *Status*: Replaced by [Current Doc](/architecture/docs-system/design/documentation-design.md)
 
 </details>
 ```

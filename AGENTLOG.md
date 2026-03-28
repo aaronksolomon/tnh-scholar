@@ -61,8 +61,8 @@ Resumed agent orchestration work after discovering Codex CLI availability. The C
 ### References
 
 - Commit 4f05b2c: "docs(agent-orch): Resume orchestration work with Codex CLI spike"
-- `/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md`
-- `/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`
+- [docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md](docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md](docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md)
 
 ---
 
@@ -111,8 +111,8 @@ Resumed agent orchestration work to validate a Codex CLI execution path and alig
 - Should the sandbox sync script manage Poetry install when `poetry.lock` changes?
 
 ### References
-- `/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`
-- `/architecture/agent-orchestration/notes/spike-testing-sequence.md`
+- [docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md](docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md)
+- [docs/architecture/agent-orchestration/notes/spike-testing-sequence.md](docs/architecture/agent-orchestration/notes/spike-testing-sequence.md)
 - `SPIKE_REPORT.md`
 
 ---

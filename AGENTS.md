@@ -9,13 +9,13 @@ updated: "2026-03-25"
 ---
 # AGENTS.md
 
-Agent brief for TNH Scholar. Keep this file terse. For rationale, recovery, and detailed git mechanics, see `/development/git-workflow.md`.
+Agent brief for TNH Scholar. Keep this file terse. For rationale, recovery, and detailed git mechanics, see [docs/development/git-workflow.md](docs/development/git-workflow.md).
 
 ## Read First
 
-- `/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md`
-- `/development/design-principles.md`
-- `/development/style-guide.md`
+- [docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md](docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
+- [docs/development/design-principles.md](docs/development/design-principles.md)
+- [docs/development/style-guide.md](docs/development/style-guide.md)
 
 ## Architecture
 
@@ -49,7 +49,7 @@ Rules:
 
 - Source refs: `` `src/file.py:42` ``
 - Doc cross-refs: absolute paths from `/docs`
-- Repo-root docs: `/project/repo-root/<name>.md`
+- Repo-root docs: use generated docs paths such as `/project/repo-root/repo-readme.md` or `/project/repo-root/versioning.md`
 - Markdown files: kebab-case, YAML front matter, absolute links only
 
 ## Git Rules
@@ -90,13 +90,13 @@ Default PR flow:
 2. Object-service is mandatory for GenAI code
 3. Pydantic typing is required
 4. ADRs are append-only; add addendums, do not rewrite decisions
-5. ADR status lifecycle matters; see `/docs-ops/adr-template.md` for template and lifecycle rules
+5. ADR status lifecycle matters; see [docs/docs-ops/adr-template.md](docs/docs-ops/adr-template.md) for template and lifecycle rules
 6. After a merged substantive PR, append an entry to `AGENTLOG.md` (format: `AGENTLOG_TEMPLATE.md`). When the file grows large: copy to `archive/agentlogs/AGENTLOG-[MM-DD-YY].md`, add a one-line summary to `archive/agentlogs/archive-index.md`, then reset `AGENTLOG.md` to an empty log with an archive reference line
 
 ## Docs and Context
 
-- Design/docs work: use `/docs-ops/adr-template.md`
-- System context: `/development/system-design.md`
-- Architecture map: `/architecture/overview.md`
+- Design/docs work: use [docs/docs-ops/adr-template.md](docs/docs-ops/adr-template.md)
+- System context: [docs/development/system-design.md](docs/development/system-design.md)
+- Architecture map: [docs/architecture/overview.md](docs/architecture/overview.md)
 - Active priorities: `TODO.md`
 - Recent session continuity: `AGENTLOG.md`
