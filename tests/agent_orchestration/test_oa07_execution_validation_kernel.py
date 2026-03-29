@@ -34,7 +34,10 @@ from tnh_scholar.agent_orchestration.kernel import (
     WorkflowValidator,
 )
 from tnh_scholar.agent_orchestration.kernel.adapters.workflow_loader import YamlWorkflowLoader
-from tnh_scholar.agent_orchestration.run_artifacts import FilesystemRunArtifactStore
+from tnh_scholar.agent_orchestration.run_artifacts import (
+    ArtifactRole,
+    FilesystemRunArtifactStore,
+)
 from tnh_scholar.agent_orchestration.runners import (
     RunnerResult,
     RunnerTaskRequest,
@@ -249,9 +252,16 @@ def test_validation_service_marks_invalid_harness_report_as_error(tmp_path: Path
 
 def test_run_artifact_store_creates_parent_directories(tmp_path: Path) -> None:
     paths = FilesystemRunArtifactStore().create_run("run-1", tmp_path)
-    nested = paths.run_directory / "logs" / "nested" / "note.txt"
-    FilesystemRunArtifactStore().write_text(nested, "ok")
-    assert nested.read_text(encoding="utf-8") == "ok"
+    entry = FilesystemRunArtifactStore().write_text_artifact(
+        paths=paths,
+        step_id="logs",
+        role=ArtifactRole.runner_metadata,
+        filename="nested/note.txt",
+        content="ok",
+        media_type="text/plain",
+        required=True,
+    )
+    assert (paths.run_directory / entry.path).read_text(encoding="utf-8") == "ok"
 
 
 def _validation_step() -> RunValidationStep:
@@ -473,6 +483,9 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     events = _read_events(result.run_directory)
     assert [event["step_id"] for event in events] == ["agent", "validate", "evaluate", "gate"]
     assert [event["next_step_id"] for event in events] == ["validate", "evaluate", "gate", "STOP"]
+    assert all(event["run_id"] == "run-approved" for event in events)
+    assert all(event["event_type"] == "step_completed" for event in events)
+    assert all(event["timestamp"] for event in events)
 
 
 def test_kernel_runtime_completes_when_gate_rejected_after_proposed_goldens(tmp_path: Path) -> None:
