@@ -2,393 +2,77 @@
 
 This file captures AI agent interactions, decisions, discoveries, and work performed on the TNH Scholar project. It provides historical context for continuity across sessions and helps human collaborators understand the evolution of the codebase.
 
-See AGENTLOG_TEMPLATE.md for structure and format.
+See [AGENTLOG_TEMPLATE.md](AGENTLOG_TEMPLATE.md) for structure and format.
 
 **Archive**: Older sessions are archived in [`archive/agentlogs/`](archive/agentlogs/) with a summary index at [`archive/agentlogs/archive-index.md`](archive/agentlogs/archive-index.md).
+Archived previous active log: [`archive/agentlogs/AGENTLOG-03-28-26.md`](archive/agentlogs/AGENTLOG-03-28-26.md).
 
 **Ordering**: Append new records at the end (chronological order from least to most recent).
 
 ---
 
-## [2026-02-07 22:22 PST] Agent Orchestration ADR Refresh + Codex CLI Strategy
-
-**Agent**: Claude Opus 4.5
-**Chat Reference**: agent-orchestration-resume
-**Human Collaborator**: Aaron
-
-### Context
-
-Resumed agent orchestration work after discovering Codex CLI availability. The CLI approach unblocks the API constraints that led to OA03.2 suspension. Incorporated Mario Zechner's "CLI tools over MCP" principle into conductor strategy.
-
-### Key Decisions
-
-- **Conductor Strategy v2 (ADR-OA01.1)**: stdout/stderr as primary capture mechanism, PTY demoted to fallback. CLI tools preferred over MCP for orchestration.
-- **Codex CLI Runner (ADR-OA03.3)**: Use `codex exec` with `--json`, `--output-last-message`, `--full-auto` flags. Matches Claude Code runner pattern from OA03.1.
-- **ADR Status Updates**: Superseded OA01 with OA01.1, superseded OA03.2 with OA03.3, resumed OA02 as WIP.
-
-### Work Completed
-
-- [x] Created ADR-OA01.1: Conductor Strategy v2 superseding OA01 (files: `docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md`)
-- [x] Created ADR-OA03.3: Codex CLI Runner superseding OA03.2 API approach (files: `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`)
-- [x] Updated ADR statuses: OA01 → superseded, OA02 → wip, OA03/OA03.1 → accepted, OA03.2 → superseded
-- [x] Archived earlier OA03.3 draft from branch for reference (files: `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-spike-2026-01-29.md`)
-- [x] Updated ADR roadmap in OA01 addendum
-
-### Discoveries & Insights
-
-- **CLI over API**: Codex CLI provides the same capabilities as the VS Code extension without the proprietary app server dependency.
-- **Capture parity**: Both Claude Code and Codex CLI support stdout/stderr capture, enabling unified runner architecture.
-
-### Files Modified/Created
-
-- `docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md`: New conductor strategy with CLI-first approach
-- `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`: Codex CLI runner specification
-- `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-spike-2026-01-29.md`: Archived earlier draft
-- `docs/architecture/agent-orchestration/adr/adr-oa01-agent-orchestration-strategy.md`: Status → superseded
-- `docs/architecture/agent-orchestration/adr/adr-oa02-phase-0-protocol-spike.md`: Status → wip
-- `docs/architecture/agent-orchestration/adr/adr-oa03-agent-runner-architecture.md`: Status → accepted
-- `docs/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md`: Status → accepted
-- `docs/architecture/agent-orchestration/adr/adr-oa03.2-codex-runner.md`: Status → superseded
-
-### Next Steps
-
-- [ ] Implement Codex CLI command builder in spike harness
-- [ ] Run spike test in sandbox worktree
-
-### Open Questions
-
-- None.
-### References
-
-- Commit 4f05b2c: "docs(agent-orch): Resume orchestration work with Codex CLI spike"
-- [docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md](docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md)
-- [docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md](docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md)
-
----
-
-## 2026-02-08 06:45 UTC Agent Orchestration Codex CLI Spike
+## [2026-03-28 20:53 PDT] OA04.3 Run-Artifact Contract First Coding Pass
 
 **Agent**: GPT-5 (Codex CLI)
-**Chat Reference**: codex-cli-spike-followthrough
+**Chat Reference**: oa04-pr-series-build-sequence
 **Human Collaborator**: phapman
 
 ### Context
-Resumed agent orchestration work to validate a Codex CLI execution path and align the spike harness with the Claude runner pattern. Needed a verified sandbox worktree testing sequence and a recorded spike run.
+Started the OA04 contract-family implementation sequence from `main` after the OA04 ADR set was locked down and the TODO plan was updated. The first coding slice targeted PR-2, `feat/oa04.3-run-artifact-contract`, with scope limited to the maintained run-artifact contract/store layer and only the minimum kernel compatibility updates required by that contract.
 
 ### Key Decisions
-- **CLI parity for spike**: Use headless CLI capture and align Codex artifacts with Claude runner patterns.
-- **Sandbox-first testing**: Use sync-sandbox workflow and run from a dedicated worktree to avoid dirty workspace failures.
+- **Start with PR-2, not PR-1**: PR-1 was already effectively represented by the docs-only OA04 acceptance commit on `main`, so coding began with the first implementation slice in TODO order.
+- **Keep PR-2 scoped to contract/store work**: expand `run_artifacts/` and add only the minimum kernel compatibility needed for richer metadata/event persistence, while deferring manifest-writing and fuller provenance assembly to PR-3.
+- **Treat ADR-OA04.3 as authoritative for `artifacts_root`**: persist the configured parent run-artifact directory, not the per-run `artifacts/` subtree.
+- **Preserve typed schema tokens**: keep uppercase `Opcode` values because they are the canonical OA04 workflow DSL tokens, while runtime status enums remain lowercase.
+- **Narrow the persistence boundary**: remove arbitrary write methods from the maintained run-artifact protocol and keep canonical persistence role-based.
 
 ### Work Completed
-- [x] Updated Codex CLI ADR with model pinning, MCP exclusion, and Claude parity guidance (`docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`)
-- [x] Implemented Codex CLI command builder, response artifact pathing, and subprocess runner (`src/tnh_scholar/agent_orchestration/spike/providers/command_builder.py`, `src/tnh_scholar/agent_orchestration/spike/providers/subprocess_agent_runner.py`, `src/tnh_scholar/agent_orchestration/spike/service.py`, `src/tnh_scholar/agent_orchestration/spike/models.py`)
-- [x] Switched spike CLI to subprocess runner and added response path output (`src/tnh_scholar/cli_tools/tnh_conductor_spike/tnh_conductor_spike.py`)
-- [x] Added command builder tests (`tests/agent_orchestration/test_spike_command_builder.py`)
-- [x] Documented spike testing sequence in orchestration notes (`docs/architecture/agent-orchestration/notes/spike-testing-sequence.md`)
-- [x] Ran Codex CLI spike in sandbox worktree and captured run artifacts (run id `20260208-063754`)
-- [x] Updated spike report with Codex run details (`SPIKE_REPORT.md`)
+- [x] Reviewed repo-local agent instructions, OS01 architecture guidance, design principles, style guide, OA04 ADR set, TODO implementation plan, system-design context, and recent AGENTLOG continuity before coding (files: `AGENTS.md`, `docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md`, `docs/development/design-principles.md`, `docs/development/style-guide.md`, `docs/architecture/agent-orchestration/adr/adr-oa04*.md`, `TODO.md`, `docs/architecture/agent-orchestration/system-design.md`, `AGENTLOG.md`)
+- [x] Created the implementation branch for the first OA04.3 code slice (branch: `feat/oa04.3-run-artifact-contract`)
+- [x] Expanded maintained run-artifact domain models for OA04.3, including canonical artifact roles, event types, evidence summaries, step artifact entries, manifests, and richer run metadata (files: `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`)
+- [x] Expanded the maintained run-artifact protocol and filesystem store for step directories, final-state persistence, manifest persistence, and role-based text/JSON artifact writing (files: `src/tnh_scholar/agent_orchestration/run_artifacts/protocols.py`, `src/tnh_scholar/agent_orchestration/run_artifacts/filesystem_store.py`, `src/tnh_scholar/agent_orchestration/run_artifacts/__init__.py`)
+- [x] Updated the maintained kernel only where required for the new contract, including richer run metadata, canonical event records, typed `Opcode.stop` usage, and removal of the prior `STOP_STEP_ID` module constant (files: `src/tnh_scholar/agent_orchestration/kernel/enums.py`, `src/tnh_scholar/agent_orchestration/kernel/models.py`, `src/tnh_scholar/agent_orchestration/kernel/service.py`, `src/tnh_scholar/agent_orchestration/kernel/catalog.py`, `src/tnh_scholar/agent_orchestration/kernel/validator.py`, `src/tnh_scholar/agent_orchestration/kernel/__init__.py`)
+- [x] Added focused OA04.3 run-artifact contract tests and updated maintained OA07 kernel tests for the new event shape and role-based artifact writing (files: `tests/agent_orchestration/test_run_artifacts_contract.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`)
+- [x] Performed a review/fix pass after independent feedback, tightening `artifacts_root`, typed contract fields, and the run-artifact persistence boundary without expanding into PR-3 scope.
 
 ### Discoveries & Insights
-- **Poetry sandbox setup required**: Running from the sandbox requires `poetry install` so the package is importable.
-- **Sync script behavior**: `scripts/sync-sandbox.sh` resets/cleans the worktree and applies a patch; uncommitted changes must be re-synced before each run.
+- **PR-1 is effectively landed already**: the accepted OA04 ADR family and TODO sequencing are already on `main`, so the first meaningful implementation branch is the OA04.3 contract/store slice.
+- **`artifacts_root` semantics are easy to misread**: the ADR defines it as the configured parent root (for example `.tnh/run/`), while step artifacts still belong under the per-run `artifacts/` subtree.
+- **Typed enum reuse across subsystems can create import cycles**: sharing kernel enums with run-artifact models required extracting them into a small dedicated `kernel/enums.py` module to preserve strong typing cleanly.
+- **Uppercase opcode values are intentional schema tokens**: they mirror the OA04 workflow document syntax and should not be normalized to match lowercase runtime status enums.
 
 ### Files Modified/Created
-- `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`: Tightened spike scope and parity constraints.
-- `src/tnh_scholar/agent_orchestration/spike/models.py`: Added response_path fields.
-- `src/tnh_scholar/agent_orchestration/spike/service.py`: Wired response artifact into command builder.
-- `src/tnh_scholar/agent_orchestration/spike/providers/command_builder.py`: Added Codex CLI command builder.
-- `src/tnh_scholar/agent_orchestration/spike/providers/subprocess_agent_runner.py`: New non-PTY runner.
-- `src/tnh_scholar/cli_tools/tnh_conductor_spike/tnh_conductor_spike.py`: Use subprocess runner, print response path.
-- `tests/agent_orchestration/test_spike_command_builder.py`: New unit tests.
-- `docs/architecture/agent-orchestration/notes/spike-testing-sequence.md`: Created concise sandbox test steps.
-- `SPIKE_REPORT.md`: Added Codex CLI run notes.
+- `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`: Expanded OA04.3 run metadata, event, artifact, evidence, and manifest models.
+- `src/tnh_scholar/agent_orchestration/run_artifacts/protocols.py`: Reworked maintained artifact-store protocol toward canonical role-based persistence.
+- `src/tnh_scholar/agent_orchestration/run_artifacts/filesystem_store.py`: Implemented run root/artifact directory separation, final-state persistence, manifest writing, and canonical artifact writes.
+- `src/tnh_scholar/agent_orchestration/run_artifacts/__init__.py`: Exported maintained run-artifact surface including the store protocol.
+- `src/tnh_scholar/agent_orchestration/kernel/enums.py`: New shared enum module for kernel schema/runtime enums.
+- `src/tnh_scholar/agent_orchestration/kernel/models.py`: Removed local enum definitions and `STOP_STEP_ID`; retained typed workflow models against shared enums.
+- `src/tnh_scholar/agent_orchestration/kernel/service.py`: Updated run metadata/event persistence and final-state writing for the maintained OA04.3 contract.
+- `src/tnh_scholar/agent_orchestration/kernel/catalog.py`: Updated STOP handling to use typed opcode value and tightened route typing.
+- `src/tnh_scholar/agent_orchestration/kernel/validator.py`: Updated STOP handling to use typed opcode value.
+- `src/tnh_scholar/agent_orchestration/kernel/__init__.py`: Re-exported shared kernel enums cleanly after enum extraction.
+- `tests/agent_orchestration/test_run_artifacts_contract.py`: Added direct OA04.3 contract coverage including final-state persistence and BaseModel JSON artifact handling.
+- `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`: Updated maintained kernel tests for richer event records and role-based artifact writes.
+
+### Validation Performed
+- `poetry run pytest tests/agent_orchestration/test_run_artifacts_contract.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py -q`
+- `poetry run ruff check src/tnh_scholar/agent_orchestration/kernel src/tnh_scholar/agent_orchestration/run_artifacts tests/agent_orchestration/test_run_artifacts_contract.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+- `poetry run mypy src/tnh_scholar/agent_orchestration/kernel src/tnh_scholar/agent_orchestration/run_artifacts tests/agent_orchestration/test_run_artifacts_contract.py`
 
 ### Next Steps
-- [ ] Decide whether to wire dependency reinstall into `scripts/sync-sandbox.sh` or keep manual.
-- [ ] Run `pytest tests/agent_orchestration/test_spike_command_builder.py` in sandbox for verification.
+- [ ] Review the current OA04.3 branch diff for any remaining PR-2 scope cleanup before commit.
+- [ ] Commit the OA04.3 run-artifact contract slice on `feat/oa04.3-run-artifact-contract`.
+- [ ] Begin PR-3 kernel provenance integration only after the PR-2 contract/store slice is considered stable.
 
 ### Open Questions
-- Should the sandbox sync script manage Poetry install when `poetry.lock` changes?
+- None in the current OA04.3 contract/store slice after the `artifacts_root` and opcode-style clarifications.
 
 ### References
-- [docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md](docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md)
-- [docs/architecture/agent-orchestration/notes/spike-testing-sequence.md](docs/architecture/agent-orchestration/notes/spike-testing-sequence.md)
-- `SPIKE_REPORT.md`
-
----
-
-## [2026-02-09 22:47 PST] Agent Orchestration MVP Kernel Round 1 + Active-Code Dedup
-
-**Agent**: GPT-5 (Codex CLI)
-**Chat Reference**: oa04-mvp-kernel-implementation-round1
-**Human Collaborator**: phapman
-
-### Context
-Implemented the first code draft of OA04/OA04.1 MVP workflow execution in a new non-spike package, then performed a follow-up dedup pass across active agent-orchestration code (excluding spike modules).
-
-### Key Decisions
-- **Object-service alignment**: New conductor MVP code follows typed models/protocols/service/providers/adapters layering.
-- **Golden safety enforcement split**:
-  - Weak pre-run requirement in workflow validation (presence/reachability of `GATE` when goldens may be proposed).
-  - Strong runtime enforcement in kernel transitions (no success-to-stop path while golden gate is pending).
-- **Dedup scope**: Reuse moved to `agent_orchestration/common` (not global `utils`) to keep shared behavior domain-local.
-
-### Work Completed
-- [x] Added `conductor_mvp` package with typed workflow/opcode models, kernel service, protocols, providers, and workflow loader adapter.
-- [x] Implemented static workflow validation constraints:
-  - unique/valid step graph
-  - evaluate route/allowed-next-step constraints
-  - reachability checks
-  - weak generative-golden gate requirement.
-- [x] Implemented deterministic kernel opcode execution for:
-  - `RUN_AGENT`
-  - `RUN_VALIDATION`
-  - `EVALUATE`
-  - `GATE`
-  - `ROLLBACK`
-  - `STOP`
-- [x] Implemented runtime golden gate enforcement (pending golden proposals must pass approved gate before success stop).
-- [x] Added local validation runner support for builtin and script validators with harness report parsing/artifact capture hooks.
-- [x] Added targeted tests for MVP kernel behavior (`tests/agent_orchestration/test_conductor_mvp_kernel.py`).
-- [x] Performed active-code dedup for clock/run-id logic between `codex_harness` and `conductor_mvp` via new shared `agent_orchestration/common` helpers.
-
-### Discoveries & Insights
-- Mypy in this repo reports imported modules in new packages as `Any` until broader package/type-check coverage is in place; provider wrappers were kept explicit and validated in focused checks.
-- Duplicate low-level providers existed only in active `codex_harness` + `conductor_mvp`; spike duplicates were intentionally left unchanged.
-
-### Files Modified/Created
-- `src/tnh_scholar/agent_orchestration/conductor_mvp/__init__.py`: New MVP package exports.
-- `src/tnh_scholar/agent_orchestration/conductor_mvp/models.py`: Typed workflow, route, step, and result models.
-- `src/tnh_scholar/agent_orchestration/conductor_mvp/protocols.py`: Kernel collaborator protocols.
-- `src/tnh_scholar/agent_orchestration/conductor_mvp/service.py`: Workflow validator + deterministic kernel executor.
-- `src/tnh_scholar/agent_orchestration/conductor_mvp/adapters/workflow_loader.py`: YAML-to-typed workflow loader.
-- `src/tnh_scholar/agent_orchestration/conductor_mvp/providers/artifact_store.py`: Run artifact storage provider.
-- `src/tnh_scholar/agent_orchestration/conductor_mvp/providers/validation_runner.py`: Local validator runner.
-- `src/tnh_scholar/agent_orchestration/conductor_mvp/providers/clock.py`: Uses shared time helper.
-- `src/tnh_scholar/agent_orchestration/conductor_mvp/providers/run_id.py`: Uses shared run-id helper.
-- `tests/agent_orchestration/test_conductor_mvp_kernel.py`: New kernel tests.
-- `src/tnh_scholar/agent_orchestration/common/__init__.py`: Shared helper exports.
-- `src/tnh_scholar/agent_orchestration/common/time.py`: Shared local/UTC time helpers.
-- `src/tnh_scholar/agent_orchestration/common/run_id.py`: Shared run-id formatter helper.
-- `src/tnh_scholar/agent_orchestration/codex_harness/providers/clock.py`: Rewired to shared time helper.
-- `src/tnh_scholar/agent_orchestration/codex_harness/providers/run_id.py`: Rewired to shared run-id helper.
-
-### Validation Performed
-- `poetry run ruff check src/tnh_scholar/agent_orchestration/conductor_mvp tests/agent_orchestration/test_conductor_mvp_kernel.py`
-- `poetry run pytest tests/agent_orchestration/test_conductor_mvp_kernel.py -q`
-- `poetry run mypy src/tnh_scholar/agent_orchestration/conductor_mvp tests/agent_orchestration/test_conductor_mvp_kernel.py`
-- `poetry run ruff check src/tnh_scholar/agent_orchestration/common src/tnh_scholar/agent_orchestration/codex_harness/providers/clock.py src/tnh_scholar/agent_orchestration/codex_harness/providers/run_id.py src/tnh_scholar/agent_orchestration/conductor_mvp/providers/clock.py src/tnh_scholar/agent_orchestration/conductor_mvp/providers/run_id.py`
-- `poetry run mypy src/tnh_scholar/agent_orchestration/common src/tnh_scholar/agent_orchestration/codex_harness/providers/clock.py src/tnh_scholar/agent_orchestration/codex_harness/providers/run_id.py src/tnh_scholar/agent_orchestration/conductor_mvp/providers/clock.py src/tnh_scholar/agent_orchestration/conductor_mvp/providers/run_id.py`
-- `poetry run pytest tests/agent_orchestration/test_codex_harness_tools.py tests/agent_orchestration/test_conductor_mvp_kernel.py -q`
-
-### Next Steps
-- [ ] Begin OA04.1 MVP sequence step for concrete workflow definitions and kernel wiring into CLI surface.
-- [ ] Add tests for workflow loader edge cases and planner/gate routing invariants.
-
-### Open Questions
-- None in this implementation round.
-
----
-
-## [2026-02-14 20:04 PST] PT05 Prompt Platform Round 1 Implementation + Hardening
-
-**Agent**: GPT-5 (Codex CLI)
-**Chat Reference**: pt05-e2e-implementation-round1
-**Human Collaborator**: phapman
-
-### Context
-Implemented PT05 prompt platform strategy end-to-end in the active prompt system codebase, with compatibility support for legacy metadata, namespace-first keying, deterministic validation rules, and expanded test coverage. Follow-up hardening focused on reviewer feedback for object-service clarity and safety.
-
-### Key Decisions
-- **Compatibility-first envelope adoption**: Keep legacy frontmatter loading paths operational while normalizing to PT05 envelope semantics (`prompt_id`, `role`, `output_contract`, namespaced keys).
-- **Uniform validator enforcement**: Enforce platform-level output mode and strict-input rules in `PromptValidator`, independent of client semantics.
-- **Catalog resilience**: Filesystem and git catalogs both use fallback metadata/warnings for invalid prompt artifacts (instead of failing hard at load time).
-- **Legacy mode containment**: Legacy `output_mode: structured` is accepted only as input and normalized to `json`; new model field typing is enum-based.
-- **Validation result invariants**: Keep `valid` for API ergonomics but derive it from `errors` as single source of truth.
-
-### Work Completed
-- [x] Added PT05-oriented prompt domain models and compatibility normalizers (`PromptOutputMode`, `PromptInputSpec`, `PromptOutputContract`, key/role/output sync behavior).
-- [x] Implemented immutable key reference support (`<canonical_key>.v<version>`) and namespace-aware path/key mapping in prompt mapper.
-- [x] Updated filesystem and git catalog adapters to:
-  - use namespace keys and immutable refs
-  - validate on load with warning-based fallback paths
-  - emit typed fallback metadata for invalid prompt artifacts.
-- [x] Implemented validator rules for:
-  - required envelope fields
-  - numeric versions
-  - strict input declarations
-  - `json` mode requiring `schema_ref`
-  - `artifacts` mode requiring artifact declarations.
-- [x] Refactored `PromptMetadata` sync logic into focused collaborators:
-  - `_sync_key_fields()`
-  - `_sync_role_fields()`
-  - `_sync_output_fields()`.
-- [x] Narrowed broad exception catches in catalog adapters to `(ValueError, pydantic.ValidationError)`.
-- [x] Updated `PromptValidationResult` to enforce `valid == (len(errors) == 0)` via model validator.
-- [x] Expanded and added tests across prompt system and dependent CLI/gen-ai flows, including new mapper-focused coverage.
-
-### Discoveries & Insights
-- Using path-relative canonical keys in adapters/mappers removed stem-collision risk and aligned catalog behavior with PT05 namespace goals.
-- Warning-based fallback behavior in both catalog adapters preserves usability during migration while still surfacing schema issues to callers.
-- Prompt system coverage is now strong on core PT05 logic, while transport/protocol modules remain lightly covered and can be expanded separately.
-
-### Files Modified/Created
-- `src/tnh_scholar/prompt_system/domain/models.py`: PT05 envelope/output/input models, compatibility sync helpers, validation-result invariant.
-- `src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`: Immutable ref parsing, namespace key mapping, metadata normalization.
-- `src/tnh_scholar/prompt_system/service/validator.py`: PT05 structural/contract enforcement.
-- `src/tnh_scholar/prompt_system/adapters/filesystem_catalog_adapter.py`: Typed fallback metadata, narrowed exception handling, module-level Frontmatter import.
-- `src/tnh_scholar/prompt_system/adapters/git_catalog_adapter.py`: Filesystem-parity fallback behavior + narrowed exception handling.
-- `tests/prompt_system/test_mapper.py`: New mapper test suite.
-- `tests/prompt_system/test_models.py`: Expanded model compatibility/invariant coverage.
-- `tests/prompt_system/test_validator.py`: Expanded PT05 validator rule coverage.
-- `tests/prompt_system/test_catalog_adapters.py`: Expanded filesystem fallback coverage.
-- `tests/prompt_system/test_git_catalog.py`: Expanded git adapter behavior coverage.
-- `tests/cli_tools/test_tnh_gen.py`: Updated warning assertion for envelope-era message semantics.
-
-### Validation Performed
-- `poetry run ruff check` on all changed prompt-system and test files.
-- `poetry run mypy` on changed prompt-system source modules.
-- `poetry run pytest tests/prompt_system -q`
-- `poetry run pytest tests/prompt_system --cov=tnh_scholar.prompt_system --cov-report=term-missing -q`
-- `poetry run pytest tests/cli_tools/test_tnh_gen.py tests/cli_tools/test_tnh_gen_coverage.py -q`
-- `poetry run pytest tests/gen_ai_service/test_policy_routing_safety.py tests/configuration/test_prompt_discovery.py -q`
-
-### Next Steps
-- [ ] Add PT05 follow-on implementation tasks for prompt namespace governance and schema reference resolution tooling.
-- [ ] Start OA05/OA06 integration pass against the new PT05 prompt contract surfaces.
-
-### Open Questions
-- None blocking this round.
-
----
-
-## [2026-03-05 14:45 PST] Multilingual Transcription Wrap-Up Verification
-
-**Agent**: GPT-5 (Codex CLI)
-**Chat Reference**: multilingual-transcription-wrapup-and-pr-prep
-**Human Collaborator**: phapman
-
-### Context
-Wrapped the multilingual transcription branch work after the archive side-application utilities were split out of scope for this repository. Needed to verify the end-to-end test surface, run the standard local validation targets, and record the current branch state before moving toward a PR.
-
-### Key Decisions
-- **Keep repo scope tight**: removed the archive utility scripts from the TNH Scholar PR plan and treated them as a separate `utility-scripts` concern.
-- **Stabilize the modified test surface before PR prep**: fixed the multilingual warning-capture assertion to attach a handler directly to the namespaced logger instead of relying on `caplog` interception through the root logger.
-- **Document validation outcomes explicitly**: recorded that `make ci-check` now completes, while `make docs-build` still fails on pre-existing documentation warnings outside the transcription changes.
-
-### Work Completed
-- [x] Verified targeted multilingual + diarization tests for the TNH Scholar change set
-- [x] Fixed the blocking multilingual warning-capture test in `tests/audio_processing/test_multilingual_service.py`
-- [x] Ran `make ci-check` successfully after the test fix
-- [x] Ran `make docs-build` and captured remaining pre-existing docs failures for PR context
-- [x] Updated `CHANGELOG.md` and `AGENTLOG.md`
-
-### Discoveries & Insights
-- **`make ci-check` status**: passes after the test fix. Ruff lint, format, and mypy still emit many existing repo-wide findings, but they are non-blocking in this target by design.
-- **`make docs-build` status**: still fails in strict mode because of pre-existing docs issues unrelated to this change set:
-  - invalid or legacy frontmatter status values in many generated docs pages
-  - missing ADR targets in agent-orchestration docs
-  - broken same-page anchors in `docs/project/repo-root/todo-list.md`
-- **Tree drift**: `make ci-check` regenerates `project_directory_tree.txt`; that file is now part of the working tree drift to review before PR.
-
-### Files Modified/Created
-- `src/tnh_scholar/audio_processing/multilingual_models.py`: Typed multilingual request/result refinements.
-- `src/tnh_scholar/audio_processing/multilingual_protocols.py`: Protocol expansion for orchestration seams.
-- `src/tnh_scholar/audio_processing/multilingual_service.py`: MVP multilingual block routing, translation, merge, and malformed-block handling.
-- `src/tnh_scholar/audio_processing/diarization/pyannote_client.py`: Client hardening and response handling updates.
-- `src/tnh_scholar/audio_processing/diarization/pyannote_adapter.py`: Adapter alignment updates.
-- `src/tnh_scholar/audio_processing/diarization/pyannote_diarize.py`: Diarization wiring refinements.
-- `src/tnh_scholar/audio_processing/diarization/schemas.py`: Schema support for updated Pyannote payload/status handling.
-- `tests/audio_processing/test_multilingual_service.py`: Expanded multilingual service coverage and logger-capture fix.
-- `tests/audio_processing/test_multilingual_segmentation_harness.py`: Segmentation harness tests.
-- `tests/audio_processing/diarization/test_pyannote_client.py`: New Pyannote client coverage.
-- `tests/audio_processing/diarization/test_pyannote_diarize.py`: New diarization flow coverage.
-- `docs/architecture/transcription/adr/adr-tr05.2-mvp-service-scaffold.md`: ADR scaffold/status updates for the multilingual MVP path.
-- `CHANGELOG.md`: Added unreleased summary for multilingual transcription work.
-
-### Validation Performed
-- `poetry run pytest tests/test_transcribe_translate_srt_script.py tests/audio_processing/test_multilingual_models.py tests/audio_processing/test_multilingual_service.py tests/audio_processing/test_multilingual_segmentation_harness.py tests/audio_processing/diarization/test_schemas.py tests/audio_processing/diarization/test_pyannote_client.py tests/audio_processing/diarization/test_pyannote_diarize.py -q`
-- `poetry run pytest tests/audio_processing/test_multilingual_service.py::test_multilingual_service_logs_when_skipping_malformed_failed_block -q`
-- `make ci-check`
-- `make docs-build`
-
-### Open Questions
-- Decide whether to address the repo-wide docs strict-mode failures before this PR or to scope them into a separate documentation cleanup branch.
-
-## [2026-03-09 16:30 PST] OA07 Runtime Foundations and Kernel Delivery
-
-**Agent**: GPT-5 (Codex CLI)
-**Chat Reference**: oa07-runtime-implementation-and-pr-split
-**Human Collaborator**: phapman
-
-### Context
-Implemented the first maintained OA07 agent-orchestration runtime slice from the accepted ADR set, then delivered it through a split PR path after the initial combined PR exceeded Sourcery's practical review limit. Follow-up work addressed review comments, reconciled the stacked-PR merge path onto `main`, and cleaned up the local/remote git workspace.
-
-### Key Decisions
-- **Implement maintained packages directly from the ADRs**: build new `execution`, `validation`, `kernel`, `workspace`, `run_artifacts`, and `runners` packages instead of extending `spike/` or `conductor_mvp/` in place.
-- **Use typed subprocess boundaries**: centralize subprocess invocation under `execution/` with typed request/result models and `shell=False`.
-- **Split delivery by review surface, not by implementation chronology**: after the oversized PR exceeded Sourcery's diff ceiling, restack into runtime foundations first and kernel second.
-- **Treat repo-wide lint/type debt as baseline noise**: validate the OA07 slice with focused tests and changed-file checks, while recognizing `make ci-check` is intentionally non-blocking for existing repo-wide lint/format/mypy findings.
-- **Preserve docs/meta follow-ups outside the merged code path**: isolate AGENTS/TODO/workflow-note changes onto a separate docs branch/worktree after the OA07 code merged.
-
-### Work Completed
-- [x] Added maintained OA07 `execution/` subsystem with typed invocation, environment, timeout, and output-capture models/services.
-- [x] Added maintained OA07 `validation/` subsystem on top of `execution/`, including typed validator requests, harness report loading, termination aggregation, and result models.
-- [x] Added maintained OA07 `kernel/` subsystem with workflow models, loader, catalog, validator, state, and runtime service.
-- [x] Added maintained OA07 support boundaries for `workspace/`, `run_artifacts/`, and `runners/`.
-- [x] Added focused integration coverage in `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`.
-- [x] Addressed review follow-ups across both split PRs:
-  - output capture policy honored in execution service
-  - idle timeout explicitly documented as reserved/not enforced
-  - validation termination severity ordering fixed
-  - malformed harness JSON surfaced as an error outcome
-  - artifact-store parent directory creation hardened
-  - kernel agent mapping made fail-fast for unknown agent IDs
-  - runtime golden-gate enforcement hardened against indirect STOP bypass
-  - unknown loader route/validation shapes now fail fast
-  - shared STOP sentinel introduced in kernel code
-  - reachability traversal switched to deque-backed BFS.
-- [x] Split, opened, updated, and merged the OA07 PR stack:
-  - runtime foundations
-  - kernel runtime
-  - catch-up PR to land the stacked branch back onto `main`.
-- [x] Cleaned up merged OA07 branches/worktrees and restored a clean `main` checkout.
-- [x] Created a separate docs worktree/branch for remaining AGENTS/TODO/workflow-note updates.
-
-### Discoveries & Insights
-- **Sourcery limit is the real sizing constraint**: practical PR sizing in this repo should be driven by diff-character budget, not generic LOC/file-count heuristics.
-- **Stacked PR merges need explicit retargeting discipline**: when the top PR merges into the intermediate branch, a catch-up PR to `main` may still be required.
-- **`make ci-check` currently passes with heavy repo-wide noise**: Ruff, format, and mypy emit many existing findings but are non-blocking; pytest is the strongest immediate regression signal.
-- **The new OA07 slice is implementation-ready enough to land**: focused OA07 tests passed throughout review/fix iterations, and the code now aligns materially better with TNH object-service and typing expectations than the prototype paths.
-
-### Files Modified/Created
-- `src/tnh_scholar/agent_orchestration/execution/models.py`: Typed execution request/result models and timeout/output policy contracts.
-- `src/tnh_scholar/agent_orchestration/execution/service.py`: Trusted subprocess execution boundary with typed argv rendering and output handling.
-- `src/tnh_scholar/agent_orchestration/validation/models.py`: Typed validation request/result/harness models.
-- `src/tnh_scholar/agent_orchestration/validation/service.py`: Validation orchestration, harness report loading, and termination aggregation.
-- `src/tnh_scholar/agent_orchestration/kernel/models.py`: Maintained workflow/runtime models.
-- `src/tnh_scholar/agent_orchestration/kernel/adapters/workflow_loader.py`: Typed workflow normalization with fail-fast invalid structures.
-- `src/tnh_scholar/agent_orchestration/kernel/catalog.py`: Indexed lookup, routing, reachability, and gate-path helpers.
-- `src/tnh_scholar/agent_orchestration/kernel/state.py`: Encapsulated kernel state transitions including pending golden-gate handling.
-- `src/tnh_scholar/agent_orchestration/kernel/service.py`: Runtime dispatcher/handlers for maintained workflow execution.
-- `src/tnh_scholar/agent_orchestration/kernel/validator.py`: Maintained workflow invariants for reachability, route coverage, and gate constraints.
-- `src/tnh_scholar/agent_orchestration/run_artifacts/filesystem_store.py`: Filesystem artifact persistence hardening.
-- `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`: Typed run-artifact descriptors.
-- `src/tnh_scholar/agent_orchestration/workspace/models.py`: Typed workspace models.
-- `src/tnh_scholar/agent_orchestration/workspace/service.py`: Minimal maintained workspace implementation.
-- `src/tnh_scholar/agent_orchestration/runners/models.py`: Maintained runner contracts.
-- `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`: Focused maintained-runtime regression coverage.
-- `pyproject.toml`: Updated local Sourcery dependency policy to `>=1.43.0`.
-- `poetry.lock`: Refreshed Sourcery lock resolution.
-
-### Validation Performed
-- `poetry run python -m pytest tests/agent_orchestration/test_oa07_execution_validation_kernel.py -q`
-- `poetry run python -m pytest tests/agent_orchestration/test_conductor_mvp_kernel.py -q`
-- `poetry run sourcery review src/tnh_scholar/agent_orchestration/execution src/tnh_scholar/agent_orchestration/validation src/tnh_scholar/agent_orchestration/kernel src/tnh_scholar/agent_orchestration/runners src/tnh_scholar/agent_orchestration/workspace tests/agent_orchestration/test_oa07_execution_validation_kernel.py 2>&1`
-- `make ci-check`
-
-### Open Questions
-- Define and automate a diff-budgeted PR-check workflow keyed to Sourcery's practical `150k` diff-character ceiling.
-- Decide whether to log and commit the remaining docs/meta follow-up branch now or combine it with the forthcoming workflow-automation patch.
+- [docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md](docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md](docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md](docs/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md)
+- [TODO.md](TODO.md)
 
 ---

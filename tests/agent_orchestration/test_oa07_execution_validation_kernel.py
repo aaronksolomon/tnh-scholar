@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -59,7 +60,7 @@ from tnh_scholar.agent_orchestration.workspace import NullWorkspaceService
 
 
 @contextmanager
-def raises(expected_exception: type[Exception], match: str) -> None:
+def raises(expected_exception: type[Exception], match: str) -> Generator[None, None, None]:
     """Minimal exception assertion helper without pytest dependency."""
 
     try:

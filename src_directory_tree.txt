@@ -4,7 +4,6 @@
 └── tnh_scholar
     ├── __init__.py
     ├── agent_orchestration
-    │   ├── EXPERIMENTAL.md
     │   ├── __init__.py
     │   ├── codex_harness
     │   │   ├── __init__.py
@@ -30,28 +29,82 @@
     │   │   ├── service.py
     │   │   └── tools.py
     │   ├── common
+    │   │   ├── __init__.py
+    │   │   ├── run_id.py
+    │   │   └── time.py
     │   ├── conductor_mvp
-    │   │   └── providers
-    │   └── spike
+    │   │   ├── __init__.py
+    │   │   ├── adapters
+    │   │   │   ├── __init__.py
+    │   │   │   └── workflow_loader.py
+    │   │   ├── models.py
+    │   │   ├── protocols.py
+    │   │   ├── providers
+    │   │   │   ├── __init__.py
+    │   │   │   ├── artifact_store.py
+    │   │   │   ├── clock.py
+    │   │   │   ├── run_id.py
+    │   │   │   └── validation_runner.py
+    │   │   └── service.py
+    │   ├── execution
+    │   │   ├── __init__.py
+    │   │   ├── models.py
+    │   │   └── service.py
+    │   ├── EXPERIMENTAL.md
+    │   ├── kernel
+    │   │   ├── __init__.py
+    │   │   ├── adapters
+    │   │   │   ├── __init__.py
+    │   │   │   └── workflow_loader.py
+    │   │   ├── catalog.py
+    │   │   ├── enums.py
+    │   │   ├── errors.py
+    │   │   ├── models.py
+    │   │   ├── protocols.py
+    │   │   ├── service.py
+    │   │   ├── state.py
+    │   │   └── validator.py
+    │   ├── run_artifacts
+    │   │   ├── __init__.py
+    │   │   ├── filesystem_store.py
+    │   │   ├── models.py
+    │   │   └── protocols.py
+    │   ├── runners
+    │   │   ├── __init__.py
+    │   │   ├── models.py
+    │   │   └── protocols.py
+    │   ├── spike
+    │   │   ├── __init__.py
+    │   │   ├── adapters
+    │   │   │   ├── __init__.py
+    │   │   │   ├── command_filter.py
+    │   │   │   ├── noop_prompt_handler.py
+    │   │   │   ├── prompt_handler.py
+    │   │   │   ├── prompt_parser.py
+    │   │   │   └── run_id.py
+    │   │   ├── models.py
+    │   │   ├── policy.py
+    │   │   ├── protocols.py
+    │   │   ├── providers
+    │   │   │   ├── __init__.py
+    │   │   │   ├── artifact_writer.py
+    │   │   │   ├── clock.py
+    │   │   │   ├── command_builder.py
+    │   │   │   ├── event_writer_factory.py
+    │   │   │   ├── event_writer.py
+    │   │   │   ├── git_workspace.py
+    │   │   │   ├── pty_agent_runner.py
+    │   │   │   └── subprocess_agent_runner.py
+    │   │   └── service.py
+    │   ├── validation
+    │   │   ├── __init__.py
+    │   │   ├── models.py
+    │   │   ├── protocols.py
+    │   │   └── service.py
+    │   └── workspace
     │       ├── __init__.py
-    │       ├── adapters
-    │       │   ├── __init__.py
-    │       │   ├── command_filter.py
-    │       │   ├── prompt_handler.py
-    │       │   ├── prompt_parser.py
-    │       │   └── run_id.py
     │       ├── models.py
-    │       ├── policy.py
     │       ├── protocols.py
-    │       ├── providers
-    │       │   ├── __init__.py
-    │       │   ├── artifact_writer.py
-    │       │   ├── clock.py
-    │       │   ├── command_builder.py
-    │       │   ├── event_writer.py
-    │       │   ├── event_writer_factory.py
-    │       │   ├── git_workspace.py
-    │       │   └── pty_agent_runner.py
     │       └── service.py
     ├── ai_text_processing
     │   ├── __init__.py
@@ -67,6 +120,7 @@
     ├── audio_processing
     │   ├── __init__.py
     │   ├── audio_legacy.py
+    │   ├── audio_slice_utils.py
     │   ├── diarization
     │   │   ├── __init__.py
     │   │   ├── _diarization_utils.py
@@ -93,6 +147,7 @@
     │   │   ├── timeline_mapper.py
     │   │   ├── types.py
     │   │   └── viewer.py
+    │   ├── language_utils.py
     │   ├── multilingual_models.py
     │   ├── multilingual_protocols.py
     │   ├── multilingual_service.py
@@ -137,8 +192,8 @@
     │   │   └── nfmt.py
     │   ├── sent_split
     │   │   ├── __init__.py
-    │   │   ├── sent_split.py
-    │   │   └── sent_split_bak.py
+    │   │   ├── sent_split_bak.py
+    │   │   └── sent_split.py
     │   ├── srt_translate
     │   │   ├── __init__.py
     │   │   └── srt_translate.py
@@ -171,8 +226,8 @@
     │   │   └── types.py
     │   ├── tnh_setup
     │   │   ├── __init__.py
-    │   │   ├── tnh_setup.py
     │   │   ├── tnh_setup_typer.py
+    │   │   ├── tnh_setup.py
     │   │   └── ui.py
     │   ├── tnh_tree.py
     │   ├── token_count
@@ -354,9 +409,9 @@
     ├── video_processing
     │   ├── __init__.py
     │   ├── ops_check.py
-    │   ├── video_processing.py
     │   ├── video_processing_old1.py
     │   ├── video_processing_old2.py
+    │   ├── video_processing.py
     │   ├── yt_download_service.py
     │   ├── yt_environment.py
     │   ├── yt_preflight_report.py
@@ -366,4 +421,4 @@
         ├── extract_tags.py
         └── xml_processing.py
 
-84 directories, 283 files
+92 directories, 330 files

@@ -1,34 +1,29 @@
 .
-├── AGENTLOG.md
-├── AGENTLOG_TEMPLATE.md
-├── AGENTS.md
 ├── AGENT_WORKFLOW.md
+├── AGENTLOG_TEMPLATE.md
+├── AGENTLOG.md
+├── AGENTS.md
+├── archive
+│   ├── agentlogs
+│   │   ├── AGENTLOG-01-01-26.md
+│   │   ├── AGENTLOG-01-09-26.md
+│   │   ├── AGENTLOG-01-19-26.md
+│   │   ├── AGENTLOG-03-28-26.md
+│   │   ├── AGENTLOG-12-07-25.md
+│   │   ├── AGENTLOG-12-10-25.md
+│   │   ├── AGENTLOG-12-11-25.md
+│   │   ├── AGENTLOG-12-13-25.md
+│   │   ├── AGENTLOG-12-23-25.md
+│   │   ├── AGENTLOG-12-31-25.md
+│   │   └── archive-index.md
+│   ├── ISSUE_DRAFT_archive_linking.md
+│   └── README.md
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
-├── DEV_SETUP.md
-├── LICENSE
-├── Makefile
-├── README.md
-├── SPIKE_REPORT.md
-├── TODO.md
-├── VERSIONING.md
-├── archive
-│   ├── ISSUE_DRAFT_archive_linking.md
-│   ├── README.md
-│   └── agentlogs
-│       ├── AGENTLOG-01-01-26.md
-│       ├── AGENTLOG-01-09-26.md
-│       ├── AGENTLOG-01-19-26.md
-│       ├── AGENTLOG-12-07-25.md
-│       ├── AGENTLOG-12-10-25.md
-│       ├── AGENTLOG-12-11-25.md
-│       ├── AGENTLOG-12-13-25.md
-│       ├── AGENTLOG-12-23-25.md
-│       ├── AGENTLOG-12-31-25.md
-│       └── archive-index.md
 ├── data
 │   └── books
 │       └── public_books
+├── DEV_SETUP.md
 ├── docs
 │   ├── api
 │   │   └── index.md
@@ -41,14 +36,25 @@
 │   │   │   │   ├── adr-oa03-agent-runner-architecture.md
 │   │   │   │   ├── adr-oa03.1-claude-code-runner.md
 │   │   │   │   ├── adr-oa03.2-codex-runner.md
+│   │   │   │   ├── adr-oa03.3-codex-cli-runner.md
+│   │   │   │   ├── adr-oa04-workflow-schema-opcode-semantics.md
+│   │   │   │   ├── adr-oa04.1-implementation-notes-mvp-buildout.md
+│   │   │   │   ├── adr-oa04.2-runner-contract.md
+│   │   │   │   ├── adr-oa04.3-provenance-run-artifact-contract.md
+│   │   │   │   ├── adr-oa04.4-policy-enforcement-contract.md
+│   │   │   │   ├── adr-oa04.5-harness-backend-contract.md
 │   │   │   │   ├── adr-oa05-prompt-library-specification.md
 │   │   │   │   ├── adr-oa06-planner-evaluator-contract.md
 │   │   │   │   └── index.md
+│   │   │   ├── archive
+│   │   │   │   └── adr-oa03.3-codex-cli-spike-2026-01-29.md
 │   │   │   ├── index.md
 │   │   │   ├── notes
 │   │   │   │   ├── codex-harness-e2e-report.md
 │   │   │   │   ├── codex-harness-spike-findings.md
-│   │   │   │   └── index.md
+│   │   │   │   ├── index.md
+│   │   │   │   ├── spike-testing-sequence.md
+│   │   │   │   └── vscode-1110-agent-features-research.md
 │   │   │   └── system-design.md
 │   │   ├── ai-text-processing
 │   │   │   ├── adr
@@ -148,12 +154,12 @@
 │   │   │   │   ├── adr-pt05-prompt-platform-strategy.md
 │   │   │   │   └── index.md
 │   │   │   ├── archive
-│   │   │   │   ├── README.md
 │   │   │   │   ├── adr
 │   │   │   │   │   ├── adr-pt01-pattern-access-strategy.md
 │   │   │   │   │   ├── adr-pt02-adopt-pattern-and-patterncatalog.md
 │   │   │   │   │   └── index.md
-│   │   │   │   └── core-pattern-architecture.md
+│   │   │   │   ├── core-pattern-architecture.md
+│   │   │   │   └── README.md
 │   │   │   ├── index.md
 │   │   │   └── prompt-system-architecture.md
 │   │   ├── provenance
@@ -244,8 +250,8 @@
 │   │       │   └── youtube-api-vs-yt-dlp-eval.md
 │   │       └── index.md
 │   ├── archive
-│   │   ├── README.md
-│   │   └── index-old.md
+│   │   ├── index-old.md
+│   │   └── README.md
 │   ├── cli-reference
 │   │   ├── archive
 │   │   │   ├── README.md
@@ -313,6 +319,9 @@
 │   │   ├── principles.md
 │   │   └── vision.md
 │   ├── research
+│   │   ├── gpt_4o_toc_tag_generation_testing
+│   │   │   └── Nov_2_testing_TOC_label_prompt.txt
+│   │   ├── gpt_development_convos.md
 │   │   ├── gpt4o-search-query-testing
 │   │   │   ├── index.md
 │   │   │   ├── queries-1-3-words.md
@@ -320,9 +329,6 @@
 │   │   ├── gpt4o-translation-experiments
 │   │   │   ├── index.md
 │   │   │   └── passage_test.md
-│   │   ├── gpt_4o_toc_tag_generation_testing
-│   │   │   └── Nov_2_testing_TOC_label_prompt.txt
-│   │   ├── gpt_development_convos.md
 │   │   ├── index.md
 │   │   ├── kb-design-document.md
 │   │   ├── metadata-summary-report.md
@@ -338,6 +344,8 @@
 │       └── prompt-system.md
 ├── docs_build_output.txt
 ├── evaluation
+├── LICENSE
+├── Makefile
 ├── mkdocs.yaml
 ├── mypy_errors.txt
 ├── notebook_management.ipynb
@@ -385,6 +393,7 @@
 │   │   └── test_sentence_splitting.ipynb
 │   ├── ocr_processing
 │   │   ├── ocr_hand_checking.ipynb
+│   │   ├── ocr_testing_asynch_batches.ipynb
 │   │   ├── ocr_testing.ipynb
 │   │   ├── ocr_testing1.ipynb
 │   │   ├── ocr_testing2.ipynb
@@ -392,8 +401,7 @@
 │   │   ├── ocr_testing4.ipynb
 │   │   ├── ocr_testing5.ipynb
 │   │   ├── ocr_testing6.ipynb
-│   │   ├── ocr_testing7.ipynb
-│   │   └── ocr_testing_asynch_batches.ipynb
+│   │   └── ocr_testing7.ipynb
 │   ├── query_text_generation
 │   │   ├── model_testing_prompt.txt
 │   │   └── prompt_sequence1.ipynb
@@ -412,19 +420,19 @@
 │   │   ├── test_patterns
 │   │   │   ├── default_line_translation.md
 │   │   │   ├── default_punctuate.md
-│   │   │   ├── default_section.md
 │   │   │   ├── default_section_old.md
+│   │   │   ├── default_section.md
 │   │   │   ├── default_xml_format.md
 │   │   │   ├── default_xml_paragraph_format.md
+│   │   │   ├── extract_wisdom_section.md
 │   │   │   ├── extract_wisdom1.md
 │   │   │   ├── extract_wisdom2.md
-│   │   │   ├── extract_wisdom_section.md
 │   │   │   ├── generate_markdown.md
 │   │   │   ├── generate_sections_en.md
 │   │   │   ├── generate_sections_multi_lang.md
 │   │   │   ├── identify_speakers.md
-│   │   │   ├── repair_markdown.md
 │   │   │   ├── repair_markdown_strategy.md
+│   │   │   ├── repair_markdown.md
 │   │   │   ├── simple_punctuate.md
 │   │   │   ├── simple_translate_paragraph_thay.md
 │   │   │   ├── special
@@ -479,6 +487,7 @@
 ├── poetry.toml
 ├── project_directory_tree.txt
 ├── pyproject.toml
+├── README.md
 ├── release_checklist.md
 ├── scripts
 │   ├── append_doc_map_to_index.py
@@ -491,25 +500,26 @@
 │   ├── generate_subdir_indexes.py
 │   ├── generate_tree.py
 │   ├── git-check-staleness.sh
+│   ├── pr_readiness.py
 │   ├── prep_notebooks.py
 │   ├── prepare_pypi_readme.py
 │   ├── setup_ytdlp_runtime.py
-│   ├── sync-sandbox.sh
 │   ├── sync_readme.py
 │   ├── sync_root_docs.py
+│   ├── sync-sandbox.sh
 │   ├── transcribe_translate_srt.py
 │   ├── update_index_doc_map.py
 │   ├── update_version.py
 │   ├── validate_markdown.py
 │   ├── verify_doc_links.py
 │   └── yt_dlp_ops_check.py
+├── SPIKE_REPORT.md
 ├── src
 │   ├── __init__.py
 │   ├── sitecustomize.py
 │   └── tnh_scholar
 │       ├── __init__.py
 │       ├── agent_orchestration
-│       │   ├── EXPERIMENTAL.md
 │       │   ├── __init__.py
 │       │   ├── codex_harness
 │       │   │   ├── __init__.py
@@ -535,28 +545,82 @@
 │       │   │   ├── service.py
 │       │   │   └── tools.py
 │       │   ├── common
+│       │   │   ├── __init__.py
+│       │   │   ├── run_id.py
+│       │   │   └── time.py
 │       │   ├── conductor_mvp
-│       │   │   └── providers
-│       │   └── spike
+│       │   │   ├── __init__.py
+│       │   │   ├── adapters
+│       │   │   │   ├── __init__.py
+│       │   │   │   └── workflow_loader.py
+│       │   │   ├── models.py
+│       │   │   ├── protocols.py
+│       │   │   ├── providers
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── artifact_store.py
+│       │   │   │   ├── clock.py
+│       │   │   │   ├── run_id.py
+│       │   │   │   └── validation_runner.py
+│       │   │   └── service.py
+│       │   ├── execution
+│       │   │   ├── __init__.py
+│       │   │   ├── models.py
+│       │   │   └── service.py
+│       │   ├── EXPERIMENTAL.md
+│       │   ├── kernel
+│       │   │   ├── __init__.py
+│       │   │   ├── adapters
+│       │   │   │   ├── __init__.py
+│       │   │   │   └── workflow_loader.py
+│       │   │   ├── catalog.py
+│       │   │   ├── enums.py
+│       │   │   ├── errors.py
+│       │   │   ├── models.py
+│       │   │   ├── protocols.py
+│       │   │   ├── service.py
+│       │   │   ├── state.py
+│       │   │   └── validator.py
+│       │   ├── run_artifacts
+│       │   │   ├── __init__.py
+│       │   │   ├── filesystem_store.py
+│       │   │   ├── models.py
+│       │   │   └── protocols.py
+│       │   ├── runners
+│       │   │   ├── __init__.py
+│       │   │   ├── models.py
+│       │   │   └── protocols.py
+│       │   ├── spike
+│       │   │   ├── __init__.py
+│       │   │   ├── adapters
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── command_filter.py
+│       │   │   │   ├── noop_prompt_handler.py
+│       │   │   │   ├── prompt_handler.py
+│       │   │   │   ├── prompt_parser.py
+│       │   │   │   └── run_id.py
+│       │   │   ├── models.py
+│       │   │   ├── policy.py
+│       │   │   ├── protocols.py
+│       │   │   ├── providers
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── artifact_writer.py
+│       │   │   │   ├── clock.py
+│       │   │   │   ├── command_builder.py
+│       │   │   │   ├── event_writer_factory.py
+│       │   │   │   ├── event_writer.py
+│       │   │   │   ├── git_workspace.py
+│       │   │   │   ├── pty_agent_runner.py
+│       │   │   │   └── subprocess_agent_runner.py
+│       │   │   └── service.py
+│       │   ├── validation
+│       │   │   ├── __init__.py
+│       │   │   ├── models.py
+│       │   │   ├── protocols.py
+│       │   │   └── service.py
+│       │   └── workspace
 │       │       ├── __init__.py
-│       │       ├── adapters
-│       │       │   ├── __init__.py
-│       │       │   ├── command_filter.py
-│       │       │   ├── prompt_handler.py
-│       │       │   ├── prompt_parser.py
-│       │       │   └── run_id.py
 │       │       ├── models.py
-│       │       ├── policy.py
 │       │       ├── protocols.py
-│       │       ├── providers
-│       │       │   ├── __init__.py
-│       │       │   ├── artifact_writer.py
-│       │       │   ├── clock.py
-│       │       │   ├── command_builder.py
-│       │       │   ├── event_writer.py
-│       │       │   ├── event_writer_factory.py
-│       │       │   ├── git_workspace.py
-│       │       │   └── pty_agent_runner.py
 │       │       └── service.py
 │       ├── ai_text_processing
 │       │   ├── __init__.py
@@ -572,6 +636,7 @@
 │       ├── audio_processing
 │       │   ├── __init__.py
 │       │   ├── audio_legacy.py
+│       │   ├── audio_slice_utils.py
 │       │   ├── diarization
 │       │   │   ├── __init__.py
 │       │   │   ├── _diarization_utils.py
@@ -598,6 +663,7 @@
 │       │   │   ├── timeline_mapper.py
 │       │   │   ├── types.py
 │       │   │   └── viewer.py
+│       │   ├── language_utils.py
 │       │   ├── multilingual_models.py
 │       │   ├── multilingual_protocols.py
 │       │   ├── multilingual_service.py
@@ -642,8 +708,8 @@
 │       │   │   └── nfmt.py
 │       │   ├── sent_split
 │       │   │   ├── __init__.py
-│       │   │   ├── sent_split.py
-│       │   │   └── sent_split_bak.py
+│       │   │   ├── sent_split_bak.py
+│       │   │   └── sent_split.py
 │       │   ├── srt_translate
 │       │   │   ├── __init__.py
 │       │   │   └── srt_translate.py
@@ -676,8 +742,8 @@
 │       │   │   └── types.py
 │       │   ├── tnh_setup
 │       │   │   ├── __init__.py
-│       │   │   ├── tnh_setup.py
 │       │   │   ├── tnh_setup_typer.py
+│       │   │   ├── tnh_setup.py
 │       │   │   └── ui.py
 │       │   ├── tnh_tree.py
 │       │   ├── token_count
@@ -865,9 +931,9 @@
 │       ├── video_processing
 │       │   ├── __init__.py
 │       │   ├── ops_check.py
-│       │   ├── video_processing.py
 │       │   ├── video_processing_old1.py
 │       │   ├── video_processing_old2.py
+│       │   ├── video_processing.py
 │       │   ├── yt_download_service.py
 │       │   ├── yt_environment.py
 │       │   ├── yt_preflight_report.py
@@ -880,13 +946,21 @@
 ├── tests
 │   ├── agent_orchestration
 │   │   ├── test_codex_harness_tools.py
-│   │   └── test_spike_command_filter.py
+│   │   ├── test_conductor_mvp_kernel.py
+│   │   ├── test_oa07_execution_validation_kernel.py
+│   │   ├── test_run_artifacts_contract.py
+│   │   ├── test_spike_command_builder.py
+│   │   ├── test_spike_command_filter.py
+│   │   └── test_subprocess_agent_runner.py
 │   ├── ai_text_processing
 │   │   └── test_text_object.py
 │   ├── audio_processing
 │   │   ├── diarization
+│   │   │   ├── test_pyannote_client.py
+│   │   │   ├── test_pyannote_diarize.py
 │   │   │   └── test_schemas.py
 │   │   ├── test_multilingual_models.py
+│   │   ├── test_multilingual_segmentation_harness.py
 │   │   ├── test_multilingual_service.py
 │   │   └── transcription
 │   │       ├── test_assemblyai_service_options.py
@@ -894,8 +968,8 @@
 │   ├── cli_tools
 │   │   ├── test_audio_transcribe_pipeline.py
 │   │   ├── test_other_clis.py
-│   │   ├── test_tnh_gen.py
 │   │   ├── test_tnh_gen_coverage.py
+│   │   ├── test_tnh_gen.py
 │   │   ├── test_token_count.py
 │   │   └── test_yt_dlp_live.py
 │   ├── configuration
@@ -947,8 +1021,10 @@
 │       ├── test_ops_check.py
 │       ├── test_ttml_extraction.py
 │       ├── test_video_processing_runtime_options.py
-│       ├── test_yt_environment.py
-│       └── test_yt_environment_remote_components.py
+│       ├── test_yt_environment_remote_components.py
+│       └── test_yt_environment.py
+├── TODO.md
+├── VERSIONING.md
 └── vscode-extension
     └── tnh-scholar
         ├── package-lock.json
@@ -985,4 +1061,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-220 directories, 766 files
+229 directories, 833 files
