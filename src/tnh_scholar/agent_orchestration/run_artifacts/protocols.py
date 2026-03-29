@@ -5,10 +5,15 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Protocol
 
+from pydantic import BaseModel
+
 from tnh_scholar.agent_orchestration.run_artifacts.models import (
+    ArtifactRole,
     RunArtifactPaths,
     RunEventRecord,
     RunMetadata,
+    StepArtifactEntry,
+    StepManifest,
 )
 
 
@@ -24,5 +29,38 @@ class RunArtifactStoreProtocol(Protocol):
     def append_event(self, event: RunEventRecord, paths: RunArtifactPaths) -> None:
         """Append one event record."""
 
-    def write_text(self, path: Path, content: str) -> None:
-        """Write arbitrary text artifact."""
+    def artifact_step_dir(self, step_id: str, paths: RunArtifactPaths) -> Path:
+        """Return the canonical artifact directory for one step."""
+
+    def write_step_manifest(self, manifest: StepManifest, paths: RunArtifactPaths) -> Path:
+        """Persist one step manifest and return its path."""
+
+    def write_final_state(self, final_state: str, paths: RunArtifactPaths) -> None:
+        """Persist the terminal workflow state summary."""
+
+    def write_text_artifact(
+        self,
+        *,
+        paths: RunArtifactPaths,
+        step_id: str,
+        role: ArtifactRole,
+        filename: str,
+        content: str,
+        media_type: str,
+        required: bool,
+        important: bool = False,
+    ) -> StepArtifactEntry:
+        """Write and register one text artifact."""
+
+    def write_json_artifact(
+        self,
+        *,
+        paths: RunArtifactPaths,
+        step_id: str,
+        role: ArtifactRole,
+        filename: str,
+        payload: BaseModel | dict[str, object],
+        required: bool,
+        important: bool = False,
+    ) -> StepArtifactEntry:
+        """Write and register one JSON artifact."""

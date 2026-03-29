@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from collections import deque
 from dataclasses import dataclass
+from typing import cast
 
 from tnh_scholar.agent_orchestration.kernel.errors import WorkflowValidationError
 from tnh_scholar.agent_orchestration.kernel.models import (
-    STOP_STEP_ID,
     Opcode,
     StepDefinition,
     WorkflowDefinition,
@@ -47,7 +47,7 @@ class WorkflowCatalog:
         """Return one transition target."""
         for route in step.routes:
             if route.outcome == outcome_key:
-                return route.target
+                return cast(str, route.target)
         raise WorkflowValidationError(f"{context} '{outcome_key}' in step: {step.id}")
 
     def reachable_step_ids(self, start_id: str) -> set[str]:
@@ -61,10 +61,10 @@ class WorkflowCatalog:
             visited.add(current)
             step = self.find_step(current)
             for target in self.transition_targets(step):
-                if target == STOP_STEP_ID and self.has_step_id(STOP_STEP_ID):
-                    queue.append(STOP_STEP_ID)
+                if target == Opcode.stop.value and self.has_step_id(Opcode.stop.value):
+                    queue.append(Opcode.stop.value)
                     continue
-                if target != STOP_STEP_ID:
+                if target != Opcode.stop.value:
                     queue.append(target)
         return visited
 
