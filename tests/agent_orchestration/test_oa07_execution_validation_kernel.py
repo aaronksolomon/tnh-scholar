@@ -550,7 +550,7 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
 
     assert agent_manifest.artifact_for_role(ArtifactRole.runner_metadata) is not None
     assert agent_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
-    assert agent_manifest.artifact_for_role(ArtifactRole.workspace_diff) is not None
+    assert agent_manifest.artifact_for_role(ArtifactRole.workspace_diff) is None
     runner_metadata = json.loads(
         (
             result.run_directory
@@ -613,7 +613,6 @@ def test_kernel_runtime_records_failed_step_provenance_when_runner_raises(tmp_pa
     assert [event["event_type"] for event in events] == [
         "step_started",
         "artifact_recorded",
-        "artifact_recorded",
         "step_failed",
     ]
 
@@ -621,7 +620,7 @@ def test_kernel_runtime_records_failed_step_provenance_when_runner_raises(tmp_pa
     assert manifest.termination.value == "error"
     assert "runner exploded" in manifest.evidence_summary.notes[0]
     assert manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
-    assert manifest.artifact_for_role(ArtifactRole.workspace_diff) is not None
+    assert manifest.artifact_for_role(ArtifactRole.workspace_diff) is None
 
 
 def test_kernel_runtime_completes_when_gate_rejected_after_proposed_goldens(tmp_path: Path) -> None:
@@ -850,6 +849,9 @@ def test_kernel_runtime_executes_rollback_step(tmp_path: Path) -> None:
     assert workspace.rollback_calls == 1
     assert result.status.value == "completed"
     assert result.last_step_id == "STOP"
+    rollback_manifest = _read_manifest(result.run_directory, "rollback")
+    assert rollback_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
+    assert rollback_manifest.artifact_for_role(ArtifactRole.workspace_diff) is not None
 
 
 def test_workflow_loader_rejects_unknown_validation_spec_kind(tmp_path: Path) -> None:

@@ -181,7 +181,7 @@ class KernelProvenanceRecorder:
         step_id: str,
         paths: RunArtifactPaths,
         run_directory: Path,
-    ) -> tuple[StepArtifactEntry, StepArtifactEntry]:
+    ) -> tuple[StepArtifactEntry, ...]:
         snapshot = self.workspace.snapshot(run_directory)
         diff_summary = self.workspace.diff_summary(run_directory)
         snapshot_payload = snapshot.model_copy(update={"diff_summary": diff_summary or snapshot.diff_summary})
@@ -193,6 +193,8 @@ class KernelProvenanceRecorder:
             payload=snapshot_payload,
             required=True,
         )
+        if not diff_summary:
+            return (status_entry,)
         diff_entry = self.artifact_store.write_text_artifact(
             paths=paths,
             step_id=step_id,
@@ -201,7 +203,7 @@ class KernelProvenanceRecorder:
             content=diff_summary,
             media_type="text/plain",
             required=False,
-            important=bool(diff_summary),
+            important=True,
         )
         return status_entry, diff_entry
 

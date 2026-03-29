@@ -10,6 +10,7 @@ from tnh_scholar.agent_orchestration.kernel.catalog import WorkflowCatalog
 from tnh_scholar.agent_orchestration.kernel.errors import WorkflowValidationError
 from tnh_scholar.agent_orchestration.kernel.models import (
     EvaluateStep,
+    GateOutcome,
     GateStep,
     KernelRunResult,
     MechanicalOutcome,
@@ -80,6 +81,12 @@ class KernelRunService:
             workspace=self.workspace,
             clock=self.clock,
         )
+        context = StepContext(
+            run_id=run_id,
+            paths=paths,
+            run_directory=paths.run_directory,
+            provenance=provenance,
+        )
         self.artifact_store.write_metadata(
             RunMetadata(
                 run_id=run_id,
@@ -97,17 +104,13 @@ class KernelRunService:
         while True:
             step = catalog.find_step(state.current_step_id)
             if isinstance(step, StopStep):
-                ended_at = self.clock.now()
-                self._write_terminal_metadata(
+                ended_at = self._terminate_run(
                     workflow=workflow,
-                    run_id=run_id,
+                    context=context,
                     started_at=started_at,
-                    ended_at=ended_at,
                     last_step_id=step.id,
                     termination=MechanicalOutcome.completed,
-                    paths=paths,
                 )
-                self.artifact_store.write_final_state(f"{Opcode.stop.value}:{step.id}", paths)
                 return KernelRunResult(
                     run_id=run_id,
                     workflow_id=workflow.workflow_id,
@@ -115,45 +118,40 @@ class KernelRunService:
                     ended_at=ended_at,
                     status=MechanicalOutcome.completed,
                     last_step_id=step.id,
-                    run_directory=paths.run_directory,
+                    run_directory=context.run_directory,
                 )
             step_started_at = self.clock.now()
-            provenance.record_step_started(run_id=run_id, step_id=step.id, paths=paths)
+            context.provenance.record_step_started(
+                run_id=context.run_id,
+                step_id=step.id,
+                paths=context.paths,
+            )
             try:
                 state = self._execute_step(
                     step=step,
                     state=state,
-                    run_id=run_id,
-                    paths=paths,
-                    run_directory=paths.run_directory,
+                    context=context,
                     catalog=catalog,
                     step_started_at=step_started_at,
-                    provenance=provenance,
                 )
             except Exception as error:
                 ended_at = self.clock.now()
-                provenance.record_failed_step(
-                    run_id=run_id,
+                context.provenance.record_failed_step(
+                    run_id=context.run_id,
                     step_id=step.id,
                     opcode=step.opcode,
                     started_at=step_started_at,
                     ended_at=ended_at,
-                    paths=paths,
-                    run_directory=paths.run_directory,
+                    paths=context.paths,
+                    run_directory=context.run_directory,
                     notes=(str(error),),
                 )
-                self._write_terminal_metadata(
+                self._terminate_run(
                     workflow=workflow,
-                    run_id=run_id,
+                    context=context,
                     started_at=started_at,
-                    ended_at=ended_at,
                     last_step_id=step.id,
                     termination=MechanicalOutcome.error,
-                    paths=paths,
-                )
-                self.artifact_store.write_final_state(
-                    f"{MechanicalOutcome.error.value}:{step.id}",
-                    paths,
                 )
                 raise
 
@@ -161,67 +159,49 @@ class KernelRunService:
         self,
         step: StepDefinition,
         state: KernelState,
-        run_id: str,
-        paths: RunArtifactPaths,
-        run_directory: Path,
+        context: StepContext,
         catalog: WorkflowCatalog,
         step_started_at: datetime,
-        provenance: KernelProvenanceRecorder,
     ) -> KernelState:
         if isinstance(step, RunAgentStep):
             return self._handle_run_agent_step(
                 step=step,
                 state=state,
-                run_id=run_id,
-                paths=paths,
-                run_directory=run_directory,
+                context=context,
                 catalog=catalog,
                 step_started_at=step_started_at,
-                provenance=provenance,
             )
         if isinstance(step, RunValidationStep):
             return self._handle_run_validation_step(
                 step=step,
                 state=state,
-                run_id=run_id,
-                paths=paths,
-                run_directory=run_directory,
+                context=context,
                 catalog=catalog,
                 step_started_at=step_started_at,
-                provenance=provenance,
             )
         if isinstance(step, EvaluateStep):
             return self._handle_evaluate_step(
                 step=step,
                 state=state,
-                run_id=run_id,
-                paths=paths,
-                run_directory=run_directory,
+                context=context,
                 catalog=catalog,
                 step_started_at=step_started_at,
-                provenance=provenance,
             )
         if isinstance(step, GateStep):
             return self._handle_gate_step(
                 step=step,
                 state=state,
-                run_id=run_id,
-                paths=paths,
-                run_directory=run_directory,
+                context=context,
                 catalog=catalog,
                 step_started_at=step_started_at,
-                provenance=provenance,
             )
         if isinstance(step, RollbackStep):
             return self._handle_rollback_step(
                 step=step,
                 state=state,
-                run_id=run_id,
-                paths=paths,
-                run_directory=run_directory,
+                context=context,
                 catalog=catalog,
                 step_started_at=step_started_at,
-                provenance=provenance,
             )
         raise WorkflowValidationError(f"Unsupported step type: {step.id}")
 
@@ -229,17 +209,14 @@ class KernelRunService:
         self,
         step: RunAgentStep,
         state: KernelState,
-        run_id: str,
-        paths: RunArtifactPaths,
-        run_directory: Path,
+        context: StepContext,
         catalog: WorkflowCatalog,
         step_started_at: datetime,
-        provenance: KernelProvenanceRecorder,
     ) -> KernelState:
         request = RunnerTaskRequest(
             agent_family=self._map_agent_family(step.agent),
             rendered_task_text=step.prompt,
-            working_directory=run_directory,
+            working_directory=context.run_directory,
             prompt_reference=step.prompt,
         )
         result = self.runner_service.run(request)
@@ -249,7 +226,7 @@ class KernelRunService:
             context="No route for outcome",
         )
         runner_metadata = self.artifact_store.write_json_artifact(
-            paths=paths,
+            paths=context.paths,
             step_id=step.id,
             role=ArtifactRole.runner_metadata,
             filename="runner_metadata.json",
@@ -260,17 +237,13 @@ class KernelRunService:
             ),
             required=True,
         )
-        provenance.record_step_manifest(
-            run_id=run_id,
-            step_id=step.id,
-            opcode=step.opcode,
+        self._record_step_completion(
+            step=step,
+            context=context,
+            target=target,
             termination=self._to_mechanical_outcome(result.termination),
             started_at=step_started_at,
-            ended_at=self.clock.now(),
-            paths=paths,
-            run_directory=run_directory,
             extra_artifacts=(runner_metadata,),
-            next_step_id=target,
         )
         return state.advance(step.id, target)
 
@@ -278,15 +251,12 @@ class KernelRunService:
         self,
         step: RunValidationStep,
         state: KernelState,
-        run_id: str,
-        paths: RunArtifactPaths,
-        run_directory: Path,
+        context: StepContext,
         catalog: WorkflowCatalog,
         step_started_at: datetime,
-        provenance: KernelProvenanceRecorder,
     ) -> KernelState:
         result = self.validation_service.run(
-            ValidationStepRequest(validators=step.run, run_directory=run_directory)
+            ValidationStepRequest(validators=step.run, run_directory=context.run_directory)
         )
         next_state = state
         report = self._normalize_harness_report(result.harness_report)
@@ -295,20 +265,16 @@ class KernelRunService:
         target = catalog.route_target(step, result.termination.value, context="No route for outcome")
         extra_artifacts = self._validation_artifacts(
             step_id=step.id,
-            paths=paths,
+            paths=context.paths,
             report=report,
         )
-        provenance.record_step_manifest(
-            run_id=run_id,
-            step_id=step.id,
-            opcode=step.opcode,
+        self._record_step_completion(
+            step=step,
+            context=context,
+            target=target,
             termination=MechanicalOutcome(result.termination.value),
             started_at=step_started_at,
-            ended_at=self.clock.now(),
-            paths=paths,
-            run_directory=run_directory,
             extra_artifacts=extra_artifacts,
-            next_step_id=target,
         )
         return next_state.advance(step.id, target, pending_gate=next_state.pending_golden_gate)
 
@@ -316,36 +282,29 @@ class KernelRunService:
         self,
         step: EvaluateStep,
         state: KernelState,
-        run_id: str,
-        paths: RunArtifactPaths,
-        run_directory: Path,
+        context: StepContext,
         catalog: WorkflowCatalog,
         step_started_at: datetime,
-        provenance: KernelProvenanceRecorder,
     ) -> KernelState:
-        decision = self.planner_evaluator.evaluate(step, run_directory)
+        decision = self.planner_evaluator.evaluate(step, context.run_directory)
         self._validate_planner_next_step(step, decision.next_step)
         target = catalog.route_target(step, decision.status.value, context="No route for outcome")
         self._enforce_runtime_golden_gate(state, decision.status, target, catalog)
         planner_artifact = self.artifact_store.write_json_artifact(
-            paths=paths,
+            paths=context.paths,
             step_id=step.id,
             role=ArtifactRole.planner_decision,
             filename="planner_decision.json",
             payload=decision,
             required=True,
         )
-        provenance.record_step_manifest(
-            run_id=run_id,
-            step_id=step.id,
-            opcode=step.opcode,
+        self._record_step_completion(
+            step=step,
+            context=context,
+            target=target,
             termination=decision.status,
             started_at=step_started_at,
-            ended_at=self.clock.now(),
-            paths=paths,
-            run_directory=run_directory,
             extra_artifacts=(planner_artifact,),
-            next_step_id=target,
         )
         return state.advance(step.id, target)
 
@@ -353,16 +312,17 @@ class KernelRunService:
         self,
         step: GateStep,
         state: KernelState,
-        run_id: str,
-        paths: RunArtifactPaths,
-        run_directory: Path,
+        context: StepContext,
         catalog: WorkflowCatalog,
         step_started_at: datetime,
-        provenance: KernelProvenanceRecorder,
     ) -> KernelState:
-        provenance.record_gate_requested(run_id=run_id, step_id=step.id, paths=paths)
+        context.provenance.record_gate_requested(
+            run_id=context.run_id,
+            step_id=step.id,
+            paths=context.paths,
+        )
         gate_request = self.artifact_store.write_json_artifact(
-            paths=paths,
+            paths=context.paths,
             step_id=step.id,
             role=ArtifactRole.gate_request,
             filename="gate_request.json",
@@ -372,10 +332,14 @@ class KernelRunService:
             ),
             required=True,
         )
-        outcome = self.gate_approver.decide(step, run_directory)
-        provenance.record_gate_resolved(run_id=run_id, step_id=step.id, paths=paths)
+        outcome = self.gate_approver.decide(step, context.run_directory)
+        context.provenance.record_gate_resolved(
+            run_id=context.run_id,
+            step_id=step.id,
+            paths=context.paths,
+        )
         gate_outcome = self.artifact_store.write_json_artifact(
-            paths=paths,
+            paths=context.paths,
             step_id=step.id,
             role=ArtifactRole.gate_outcome,
             filename="gate_outcome.json",
@@ -383,17 +347,13 @@ class KernelRunService:
             required=True,
         )
         target = catalog.route_target(step, outcome.value, context="No route for outcome")
-        provenance.record_step_manifest(
-            run_id=run_id,
-            step_id=step.id,
-            opcode=step.opcode,
+        self._record_step_completion(
+            step=step,
+            context=context,
+            target=target,
             termination=outcome,
             started_at=step_started_at,
-            ended_at=self.clock.now(),
-            paths=paths,
-            run_directory=run_directory,
             extra_artifacts=(gate_request, gate_outcome),
-            next_step_id=target,
         )
         pending_gate = state.pending_gate_after_outcome(outcome)
         return state.advance(step.id, target, pending_gate=pending_gate)
@@ -402,30 +362,27 @@ class KernelRunService:
         self,
         step: RollbackStep,
         state: KernelState,
-        run_id: str,
-        paths: RunArtifactPaths,
-        run_directory: Path,
+        context: StepContext,
         catalog: WorkflowCatalog,
         step_started_at: datetime,
-        provenance: KernelProvenanceRecorder,
     ) -> KernelState:
         self.workspace.rollback_pre_run()
-        provenance.record_rollback_completed(run_id=run_id, step_id=step.id, paths=paths)
+        context.provenance.record_rollback_completed(
+            run_id=context.run_id,
+            step_id=step.id,
+            paths=context.paths,
+        )
         target = catalog.route_target(
             step,
             MechanicalOutcome.completed.value,
             context="No route for outcome",
         )
-        provenance.record_step_manifest(
-            run_id=run_id,
-            step_id=step.id,
-            opcode=step.opcode,
+        self._record_step_completion(
+            step=step,
+            context=context,
+            target=target,
             termination=MechanicalOutcome.completed,
             started_at=step_started_at,
-            ended_at=self.clock.now(),
-            paths=paths,
-            run_directory=run_directory,
-            next_step_id=target,
         )
         return state.advance(step.id, target)
 
@@ -491,24 +448,77 @@ class KernelRunService:
         self,
         *,
         workflow: WorkflowDefinition,
-        run_id: str,
+        context: StepContext,
         started_at: datetime,
         ended_at: datetime,
         last_step_id: str,
         termination: MechanicalOutcome,
-        paths: RunArtifactPaths,
     ) -> None:
         self.artifact_store.write_metadata(
             RunMetadata(
-                run_id=run_id,
+                run_id=context.run_id,
                 workflow_id=workflow.workflow_id,
                 workflow_version=workflow.version,
                 started_at=started_at,
-                artifacts_root=paths.artifacts_root,
+                artifacts_root=context.paths.artifacts_root,
                 entry_step=workflow.entry_step,
                 ended_at=ended_at,
                 last_step_id=last_step_id,
                 termination=termination,
             ),
-            paths,
+            context.paths,
         )
+
+    def _record_step_completion(
+        self,
+        *,
+        step: StepDefinition,
+        context: StepContext,
+        target: str,
+        termination: MechanicalOutcome | PlannerStatus | GateOutcome,
+        started_at: datetime,
+        extra_artifacts: tuple[StepArtifactEntry, ...] = (),
+    ) -> None:
+        context.provenance.record_step_manifest(
+            run_id=context.run_id,
+            step_id=step.id,
+            opcode=step.opcode,
+            termination=termination,
+            started_at=started_at,
+            ended_at=self.clock.now(),
+            paths=context.paths,
+            run_directory=context.run_directory,
+            extra_artifacts=extra_artifacts,
+            next_step_id=target,
+        )
+
+    def _terminate_run(
+        self,
+        *,
+        workflow: WorkflowDefinition,
+        context: StepContext,
+        started_at: datetime,
+        last_step_id: str,
+        termination: MechanicalOutcome,
+    ) -> datetime:
+        ended_at: datetime = self.clock.now()
+        self._write_terminal_metadata(
+            workflow=workflow,
+            context=context,
+            started_at=started_at,
+            ended_at=ended_at,
+            last_step_id=last_step_id,
+            termination=termination,
+        )
+        self.artifact_store.write_final_state(f"{termination.value}:{last_step_id}", context.paths)
+        return ended_at
+
+
+@dataclass(frozen=True)
+class StepContext:
+    """Per-run step execution context."""
+
+    run_id: str
+    paths: RunArtifactPaths
+    run_directory: Path
+    provenance: KernelProvenanceRecorder
