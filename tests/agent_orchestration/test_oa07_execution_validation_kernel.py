@@ -38,6 +38,7 @@ from tnh_scholar.agent_orchestration.kernel.adapters.workflow_loader import Yaml
 from tnh_scholar.agent_orchestration.run_artifacts import (
     ArtifactRole,
     FilesystemRunArtifactStore,
+    StepManifest,
 )
 from tnh_scholar.agent_orchestration.runners import (
     RunnerResult,
@@ -57,6 +58,7 @@ from tnh_scholar.agent_orchestration.validation import (
     ValidationTermination,
 )
 from tnh_scholar.agent_orchestration.workspace import NullWorkspaceService
+from tnh_scholar.agent_orchestration.workspace.models import WorkspaceSnapshot
 
 
 @contextmanager
@@ -101,6 +103,16 @@ class SuccessRunner:
 
 
 @dataclass(frozen=True)
+class ExplodingRunner:
+    """Runner that raises during execution."""
+
+    message: str = "runner exploded"
+
+    def run(self, request: RunnerTaskRequest) -> RunnerResult:
+        raise RuntimeError(self.message)
+
+
+@dataclass(frozen=True)
 class FixedEvaluator:
     """Planner evaluator with fixed decision."""
 
@@ -139,6 +151,18 @@ class RecordingWorkspace:
 
     def rollback_pre_run(self) -> None:
         self.rollback_calls += 1
+
+    def snapshot(self, run_directory: Path) -> WorkspaceSnapshot:
+        return WorkspaceSnapshot(
+            repo_root=self.repo_root,
+            branch_name="test-branch",
+            is_dirty=self.rollback_calls > 0,
+            staged_count=0,
+            unstaged_count=1 if self.rollback_calls > 0 else 0,
+        )
+
+    def diff_summary(self, run_directory: Path) -> str:
+        return "rollback diff" if self.rollback_calls > 0 else ""
 
 
 def test_execution_service_runs_cli_process(tmp_path: Path) -> None:
@@ -292,6 +316,11 @@ def _read_events(run_directory: Path) -> list[dict[str, str | None]]:
     if not path.exists():
         return []
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+
+
+def _read_manifest(run_directory: Path, step_id: str) -> StepManifest:
+    path = run_directory / "artifacts" / step_id / "manifest.json"
+    return StepManifest.model_validate_json(path.read_text(encoding="utf-8"))
 
 
 @dataclass(frozen=True)
@@ -483,15 +512,116 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     result = service.run(workflow, tmp_path)
     assert result.status.value == "completed"
     assert result.last_step_id == "STOP"
+    metadata = json.loads((result.run_directory / "metadata.json").read_text(encoding="utf-8"))
+    assert metadata["last_step_id"] == "STOP"
+    assert metadata["termination"] == "completed"
+    assert metadata["ended_at"]
     events = _read_events(result.run_directory)
-    assert [event["step_id"] for event in events] == ["agent", "validate", "evaluate", "gate"]
-    assert [event["next_step_id"] for event in events] == ["validate", "evaluate", "gate", "STOP"]
+    assert [event["step_id"] for event in events if event["event_type"] == "step_started"] == [
+        "agent",
+        "validate",
+        "evaluate",
+        "gate",
+    ]
+    assert [event["step_id"] for event in events if event["event_type"] == "step_completed"] == [
+        "agent",
+        "validate",
+        "evaluate",
+        "gate",
+    ]
+    assert [event["next_step_id"] for event in events if event["event_type"] == "step_completed"] == [
+        "validate",
+        "evaluate",
+        "gate",
+        "STOP",
+    ]
     assert all(event["run_id"] == "run-approved" for event in events)
-    assert all(event["event_type"] == "step_completed" for event in events)
     for event in events:
         timestamp = event["timestamp"]
         assert timestamp is not None
         datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+    assert [event["event_type"] for event in events].count("gate_requested") == 1
+    assert [event["event_type"] for event in events].count("gate_resolved") == 1
+
+    agent_manifest = _read_manifest(result.run_directory, "agent")
+    validate_manifest = _read_manifest(result.run_directory, "validate")
+    evaluate_manifest = _read_manifest(result.run_directory, "evaluate")
+    gate_manifest = _read_manifest(result.run_directory, "gate")
+
+    assert agent_manifest.artifact_for_role(ArtifactRole.runner_metadata) is not None
+    assert agent_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
+    assert agent_manifest.artifact_for_role(ArtifactRole.workspace_diff) is not None
+    runner_metadata = json.loads(
+        (
+            result.run_directory
+            / agent_manifest.artifact_for_role(ArtifactRole.runner_metadata).path
+        ).read_text(encoding="utf-8")
+    )
+    assert "transcript_path" not in runner_metadata
+    assert "final_response_path" not in runner_metadata
+
+    assert validate_manifest.artifact_for_role(ArtifactRole.validation_report) is not None
+    assert validate_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
+
+    assert evaluate_manifest.artifact_for_role(ArtifactRole.planner_decision) is not None
+    assert evaluate_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
+
+    assert gate_manifest.artifact_for_role(ArtifactRole.gate_request) is not None
+    assert gate_manifest.artifact_for_role(ArtifactRole.gate_outcome) is not None
+    assert gate_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
+
+
+def test_kernel_runtime_records_failed_step_provenance_when_runner_raises(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-fail",
+        version=1,
+        description="runner failure",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-fail"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=ExplodingRunner(),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+
+    with raises(RuntimeError, match="runner exploded"):
+        service.run(workflow, tmp_path)
+
+    run_directory = tmp_path / "run-fail"
+    metadata = json.loads((run_directory / "metadata.json").read_text(encoding="utf-8"))
+    assert metadata["last_step_id"] == "agent"
+    assert metadata["termination"] == "error"
+
+    events = _read_events(run_directory)
+    assert [event["event_type"] for event in events] == [
+        "step_started",
+        "artifact_recorded",
+        "artifact_recorded",
+        "step_failed",
+    ]
+
+    manifest = _read_manifest(run_directory, "agent")
+    assert manifest.termination.value == "error"
+    assert "runner exploded" in manifest.evidence_summary.notes[0]
+    assert manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
+    assert manifest.artifact_for_role(ArtifactRole.workspace_diff) is not None
 
 
 def test_kernel_runtime_completes_when_gate_rejected_after_proposed_goldens(tmp_path: Path) -> None:

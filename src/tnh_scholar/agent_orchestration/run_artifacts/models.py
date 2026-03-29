@@ -9,10 +9,12 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from tnh_scholar.agent_orchestration.kernel.enums import (
+    AgentFamily,
     GateOutcome,
     MechanicalOutcome,
     Opcode,
     PlannerStatus,
+    RunnerTermination,
 )
 
 
@@ -120,6 +122,27 @@ class StepManifest(BaseModel):
             if artifact.role == role:
                 return artifact
         return None
+
+
+class RunnerMetadataArtifact(BaseModel):
+    """Canonical maintained runner metadata artifact."""
+
+    agent_family: AgentFamily
+    prompt_reference: str | None = None
+    termination: RunnerTermination
+
+
+class GateRequestArtifact(BaseModel):
+    """Canonical gate request artifact."""
+
+    gate: str
+    timeout_seconds: int | None = None
+
+
+class GateOutcomeArtifact(BaseModel):
+    """Canonical gate outcome artifact."""
+
+    outcome: GateOutcome
 
 
 class RunEventRecord(BaseModel):
