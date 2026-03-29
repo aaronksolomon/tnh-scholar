@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -34,7 +35,10 @@ from tnh_scholar.agent_orchestration.kernel import (
     WorkflowValidator,
 )
 from tnh_scholar.agent_orchestration.kernel.adapters.workflow_loader import YamlWorkflowLoader
-from tnh_scholar.agent_orchestration.run_artifacts import FilesystemRunArtifactStore
+from tnh_scholar.agent_orchestration.run_artifacts import (
+    ArtifactRole,
+    FilesystemRunArtifactStore,
+)
 from tnh_scholar.agent_orchestration.runners import (
     RunnerResult,
     RunnerTaskRequest,
@@ -56,7 +60,7 @@ from tnh_scholar.agent_orchestration.workspace import NullWorkspaceService
 
 
 @contextmanager
-def raises(expected_exception: type[Exception], match: str) -> None:
+def raises(expected_exception: type[Exception], match: str) -> Generator[None, None, None]:
     """Minimal exception assertion helper without pytest dependency."""
 
     try:
@@ -249,9 +253,18 @@ def test_validation_service_marks_invalid_harness_report_as_error(tmp_path: Path
 
 def test_run_artifact_store_creates_parent_directories(tmp_path: Path) -> None:
     paths = FilesystemRunArtifactStore().create_run("run-1", tmp_path)
-    nested = paths.run_directory / "logs" / "nested" / "note.txt"
-    FilesystemRunArtifactStore().write_text(nested, "ok")
-    assert nested.read_text(encoding="utf-8") == "ok"
+    entry = FilesystemRunArtifactStore().write_text_artifact(
+        paths=paths,
+        step_id="logs",
+        role=ArtifactRole.runner_metadata,
+        filename="nested/note.txt",
+        content="ok",
+        media_type="text/plain",
+        required=True,
+    )
+    assert (paths.run_directory / entry.path).read_text(encoding="utf-8") == "ok"
+    assert Path(entry.path) == Path("artifacts") / "logs" / "nested" / "note.txt"
+    assert (paths.run_directory / "artifacts").is_dir()
 
 
 def _validation_step() -> RunValidationStep:
@@ -473,6 +486,12 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     events = _read_events(result.run_directory)
     assert [event["step_id"] for event in events] == ["agent", "validate", "evaluate", "gate"]
     assert [event["next_step_id"] for event in events] == ["validate", "evaluate", "gate", "STOP"]
+    assert all(event["run_id"] == "run-approved" for event in events)
+    assert all(event["event_type"] == "step_completed" for event in events)
+    for event in events:
+        timestamp = event["timestamp"]
+        assert timestamp is not None
+        datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
 
 
 def test_kernel_runtime_completes_when_gate_rejected_after_proposed_goldens(tmp_path: Path) -> None:

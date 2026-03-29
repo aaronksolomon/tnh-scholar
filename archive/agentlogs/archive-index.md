@@ -6,6 +6,16 @@ This index provides quick summaries of archived agent session logs.
 
 ---
 
+## 2026-03-28 - OA07 Runtime Delivery and OA04.3 Run-Artifact Contract Start
+
+**File**: [`AGENTLOG-03-28-26.md`](AGENTLOG-03-28-26.md)
+
+**Major Work**:
+- Archived the active log after the OA07 maintained runtime delivery and follow-on OA04.3 contract kickoff.
+- Captured the transition from merged OA07 foundations into the first maintained OA04.3 run-artifact contract branch/work.
+
+---
+
 ## 2026-01-19 - Patterns→Prompts Migration Complete
 
 **File**: [`AGENTLOG-01-19-26.md`](AGENTLOG-01-19-26.md)

@@ -8,11 +8,11 @@ from pathlib import Path
 from tnh_scholar.agent_orchestration.kernel.catalog import WorkflowCatalog
 from tnh_scholar.agent_orchestration.kernel.errors import WorkflowValidationError
 from tnh_scholar.agent_orchestration.kernel.models import (
-    STOP_STEP_ID,
     EvaluateStep,
     GateStep,
     KernelRunResult,
     MechanicalOutcome,
+    Opcode,
     PlannerStatus,
     RollbackStep,
     RunAgentStep,
@@ -32,7 +32,11 @@ from tnh_scholar.agent_orchestration.kernel.protocols import (
 )
 from tnh_scholar.agent_orchestration.kernel.state import KernelState
 from tnh_scholar.agent_orchestration.kernel.validator import WorkflowValidator
-from tnh_scholar.agent_orchestration.run_artifacts.models import RunEventRecord, RunMetadata
+from tnh_scholar.agent_orchestration.run_artifacts.models import (
+    RunEventRecord,
+    RunEventType,
+    RunMetadata,
+)
 from tnh_scholar.agent_orchestration.runners.models import (
     AgentFamily,
     RunnerTaskRequest,
@@ -66,7 +70,14 @@ class KernelRunService:
         run_id = self.run_id_generator.next_id(started_at)
         paths = self.artifact_store.create_run(run_id, run_root)
         self.artifact_store.write_metadata(
-            RunMetadata(run_id=run_id, workflow_id=workflow.workflow_id, started_at=started_at),
+            RunMetadata(
+                run_id=run_id,
+                workflow_id=workflow.workflow_id,
+                workflow_version=workflow.version,
+                started_at=started_at,
+                artifacts_root=paths.artifacts_root,
+                entry_step=workflow.entry_step,
+            ),
             paths,
         )
         self.workspace.capture_pre_run(run_id)
@@ -76,7 +87,19 @@ class KernelRunService:
             step = catalog.find_step(state.current_step_id)
             if isinstance(step, StopStep):
                 ended_at = self.clock.now()
-                self.artifact_store.write_text(paths.final_state_path, f"{STOP_STEP_ID}:{step.id}")
+                final_metadata = RunMetadata(
+                    run_id=run_id,
+                    workflow_id=workflow.workflow_id,
+                    workflow_version=workflow.version,
+                    started_at=started_at,
+                    artifacts_root=paths.artifacts_root,
+                    entry_step=workflow.entry_step,
+                    ended_at=ended_at,
+                    last_step_id=step.id,
+                    termination=MechanicalOutcome.completed,
+                )
+                self.artifact_store.write_metadata(final_metadata, paths)
+                self.artifact_store.write_final_state(f"{Opcode.stop.value}:{step.id}", paths)
                 return KernelRunResult(
                     run_id=run_id,
                     workflow_id=workflow.workflow_id,
@@ -90,7 +113,13 @@ class KernelRunService:
             if state.trace:
                 last_step, next_step = state.trace[-1].split("->", maxsplit=1)
                 self.artifact_store.append_event(
-                    RunEventRecord(step_id=last_step, next_step_id=next_step),
+                    RunEventRecord(
+                        timestamp=self.clock.now(),
+                        run_id=run_id,
+                        step_id=last_step,
+                        event_type=RunEventType.step_completed,
+                        next_step_id=next_step,
+                    ),
                     paths,
                 )
 
@@ -217,7 +246,7 @@ class KernelRunService:
     ) -> None:
         if not state.pending_golden_gate or status != PlannerStatus.success:
             return
-        if target == STOP_STEP_ID or not catalog.path_contains_gate(target):
+        if target == Opcode.stop.value or not catalog.path_contains_gate(target):
             raise WorkflowValidationError(
                 "Goldens proposed: success path must pass through GATE before STOP."
             )

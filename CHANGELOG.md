@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **OA04.3 Run-Artifact Contract and Store** (2026-03-28)
+  - Expanded `run_artifacts/` with the full OA04.3 maintained contract: `RunArtifactPaths` (with `artifacts_root`), `RunMetadata`, `RunEventRecord`, `RunEventType`, `ArtifactRole`, `StepArtifactEntry`, `EvidenceSummary`, `EvidenceReference`, `StepManifest`
+  - Added `write_text_artifact` and `write_json_artifact` to `RunArtifactStoreProtocol` and `FilesystemRunArtifactStore`
+  - Extracted shared kernel enums (`Opcode`, `MechanicalOutcome`, `PlannerStatus`, `GateOutcome`) into `kernel/enums.py`
+  - Exported `RunArtifactStoreProtocol` from `run_artifacts` public API
+  - Added OA04.3 contract regression tests covering metadata fields, event stream, manifest artifact-role lookup, final-state persistence, and Pydantic JSON artifact path
+  - Files: `src/tnh_scholar/agent_orchestration/kernel/`, `src/tnh_scholar/agent_orchestration/run_artifacts/`, `tests/agent_orchestration/test_run_artifacts_contract.py`
+
 - **Multilingual Audio Transcription MVP** (2026-03-05)
   - Added MVP multilingual subtitle orchestration with typed request/result models, protocol seams, segment translation flow, speaker-block routing, and malformed-failure handling for block merge recovery
   - Added Pyannote client/schema hardening and expanded diarization regression coverage for status parsing and client behavior

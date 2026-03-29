@@ -11,7 +11,7 @@ updated: "2026-03-06"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-03-27 (Added OA04 contract family PR sequence)
+> **Last Updated**: 2026-03-28 (PR-2 OA04.3 run-artifact contract complete)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -133,7 +133,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] **PR-1** `feat/oa04-contract-adrs` — ADR acceptance (docs only)
     - Commit new OA04.2, OA04.3, OA04.4, OA04.5 files; mark all `accepted`
     - Carry in already-modified OA03.1/OA03.3 addendums + OA04 update + index.md
-  - [ ] **PR-2** `feat/oa04.3-run-artifact-contract` — Run-artifact domain contract + store (medium)
+  - [x] **PR-2** `feat/oa04.3-run-artifact-contract` — Run-artifact domain contract + store (medium)
     - Expand `run_artifacts/models.py`: `RunMetadata`, `RunEventRecord`, `ArtifactRole` enum, `StepArtifactEntry`, `StepManifest`
     - Add manifest-level `evidence_summary` with compact canonical evidence references
     - Add canonical `policy_summary` artifact role for detailed requested/effective policy records

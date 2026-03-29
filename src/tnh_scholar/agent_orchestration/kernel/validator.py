@@ -7,7 +7,6 @@ from dataclasses import dataclass
 from tnh_scholar.agent_orchestration.kernel.catalog import WorkflowCatalog
 from tnh_scholar.agent_orchestration.kernel.errors import WorkflowValidationError
 from tnh_scholar.agent_orchestration.kernel.models import (
-    STOP_STEP_ID,
     EvaluateStep,
     Opcode,
     PlannerStatus,
@@ -87,7 +86,7 @@ class WorkflowValidator:
         catalog: WorkflowCatalog,
     ) -> None:
         target = catalog.route_target(step, status.value, context="Route missing")
-        if target == STOP_STEP_ID:
+        if target == Opcode.stop.value:
             return
         if target not in step.allowed_next_steps:
             raise WorkflowValidationError(f"Invalid {status.value} route in {step.id}: {target}")
@@ -127,7 +126,7 @@ class WorkflowValidator:
         return False
 
     def _validate_target(self, catalog: WorkflowCatalog, target: str) -> None:
-        if target == STOP_STEP_ID:
+        if target == Opcode.stop.value:
             return
         if not catalog.has_step_id(target):
             raise WorkflowValidationError(f"Missing step id: {target}")
