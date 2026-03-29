@@ -263,6 +263,8 @@ def test_run_artifact_store_creates_parent_directories(tmp_path: Path) -> None:
         required=True,
     )
     assert (paths.run_directory / entry.path).read_text(encoding="utf-8") == "ok"
+    assert Path(entry.path) == Path("artifacts") / "logs" / "nested" / "note.txt"
+    assert (paths.run_directory / "artifacts").is_dir()
 
 
 def _validation_step() -> RunValidationStep:
@@ -486,7 +488,10 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     assert [event["next_step_id"] for event in events] == ["validate", "evaluate", "gate", "STOP"]
     assert all(event["run_id"] == "run-approved" for event in events)
     assert all(event["event_type"] == "step_completed" for event in events)
-    assert all(event["timestamp"] for event in events)
+    for event in events:
+        timestamp = event["timestamp"]
+        assert timestamp is not None
+        datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
 
 
 def test_kernel_runtime_completes_when_gate_rejected_after_proposed_goldens(tmp_path: Path) -> None:

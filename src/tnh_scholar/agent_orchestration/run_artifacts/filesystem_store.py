@@ -131,5 +131,5 @@ class FilesystemRunArtifactStore(RunArtifactStoreProtocol):
         if isinstance(payload, BaseModel):
             rendered = payload.model_dump_json(indent=2)
         else:
-            rendered = json.dumps(payload, indent=2, default=str)
+            rendered = json.dumps(payload, indent=2)
         path.write_text(rendered, encoding="utf-8")

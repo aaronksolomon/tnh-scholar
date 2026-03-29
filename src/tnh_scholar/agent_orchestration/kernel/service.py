@@ -87,6 +87,18 @@ class KernelRunService:
             step = catalog.find_step(state.current_step_id)
             if isinstance(step, StopStep):
                 ended_at = self.clock.now()
+                final_metadata = RunMetadata(
+                    run_id=run_id,
+                    workflow_id=workflow.workflow_id,
+                    workflow_version=workflow.version,
+                    started_at=started_at,
+                    artifacts_root=paths.artifacts_root,
+                    entry_step=workflow.entry_step,
+                    ended_at=ended_at,
+                    last_step_id=step.id,
+                    termination=MechanicalOutcome.completed,
+                )
+                self.artifact_store.write_metadata(final_metadata, paths)
                 self.artifact_store.write_final_state(f"{Opcode.stop.value}:{step.id}", paths)
                 return KernelRunResult(
                     run_id=run_id,

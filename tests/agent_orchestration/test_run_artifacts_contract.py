@@ -58,6 +58,16 @@ def test_run_artifact_store_writes_canonical_event_stream_fields(tmp_path: Path)
 
     store.append_event(
         RunEventRecord(
+            timestamp=datetime(2026, 3, 28, 1, 2, 2, tzinfo=timezone.utc),
+            run_id="run-2",
+            step_id="implement",
+            event_type=RunEventType.step_completed,
+            next_step_id="validate",
+        ),
+        paths,
+    )
+    store.append_event(
+        RunEventRecord(
             timestamp=datetime(2026, 3, 28, 1, 2, 3, tzinfo=timezone.utc),
             run_id="run-2",
             step_id="implement",
@@ -68,13 +78,27 @@ def test_run_artifact_store_writes_canonical_event_stream_fields(tmp_path: Path)
         paths,
     )
 
-    event = json.loads(paths.event_log_path.read_text(encoding="utf-8").strip())
-    assert event["run_id"] == "run-2"
-    assert event["step_id"] == "implement"
-    assert event["event_type"] == RunEventType.artifact_recorded.value
-    assert event["artifact_role"] == ArtifactRole.runner_transcript.value
-    assert event["artifact_path"] == "artifacts/implement/transcript.jsonl"
-    assert "timestamp" in event
+    raw_log = paths.event_log_path.read_text(encoding="utf-8").strip()
+    lines = [line for line in raw_log.splitlines() if line.strip()]
+    assert len(lines) == 2
+
+    events = [json.loads(line) for line in lines]
+    for event in events:
+        assert event["run_id"] == "run-2"
+        assert "timestamp" in event
+
+    artifact_events = [
+        event
+        for event in events
+        if event["event_type"] == RunEventType.artifact_recorded.value
+        and event.get("artifact_role") == ArtifactRole.runner_transcript.value
+    ]
+    assert len(artifact_events) == 1
+
+    artifact_event = artifact_events[0]
+    assert artifact_event is events[-1]
+    assert artifact_event["step_id"] == "implement"
+    assert artifact_event["artifact_path"] == "artifacts/implement/transcript.jsonl"
 
 
 def test_run_artifact_store_persists_manifest_and_canonical_artifacts(tmp_path: Path) -> None:
