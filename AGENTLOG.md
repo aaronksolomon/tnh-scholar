@@ -11,6 +11,62 @@ Archived previous active log: [`archive/agentlogs/AGENTLOG-03-28-26.md`](archive
 
 ---
 
+## [2026-03-28 22:34 PDT] OA04.3 Kernel Provenance Integration
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: oa04-pr-series-build-sequence
+**Human Collaborator**: phapman
+
+### Context
+Started the next TODO-ordered OA04 implementation slice after PR-2 merged to `main`. The branch for this work is `feat/oa04.3-kernel-provenance-integration`, scoped to PR-3: wiring the maintained kernel to emit the richer OA04.3 provenance contract through canonical run-artifact events, manifests, metadata, and evidence artifacts without pulling PR-4 policy-contract work forward.
+
+### Key Decisions
+- **Keep PR-3 focused on kernel provenance assembly**: use the maintained `run_artifacts/` layer from PR-2 and avoid inventing policy-summary persistence before PR-4 defines that contract.
+- **Record failure-path provenance as a first-class outcome**: a `step_started` event without a corresponding failure terminal record is not acceptable for this repo’s canonical evidence boundary, so each step now writes failure metadata, manifests, and `step_failed` events before re-raising.
+- **Persist typed artifact payloads, not ad hoc dicts**: introduce maintained Pydantic artifact models for runner metadata and gate request/outcome payloads to stay aligned with OS01 and the repo’s “no dict/literal sprawl” rule.
+- **Keep `run_artifacts/` lower-level than runners**: move `AgentFamily` and `RunnerTermination` into `kernel/enums.py` so canonical artifact models do not depend upward on `runners/`.
+
+### Work Completed
+- [x] Created and wired a new provenance collaborator for the kernel to record canonical step lifecycle events, gate events, rollback events, step manifests, and workspace evidence artifacts (files: `src/tnh_scholar/agent_orchestration/kernel/provenance.py`, `src/tnh_scholar/agent_orchestration/kernel/service.py`)
+- [x] Added maintained typed artifact payloads for canonical JSON evidence written by the kernel during agent and gate steps (files: `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`)
+- [x] Updated the kernel run path to write final metadata fields on success and failure, including `ended_at`, `last_step_id`, and terminal `termination`, alongside canonical final-state persistence (file: `src/tnh_scholar/agent_orchestration/kernel/service.py`)
+- [x] Removed app-layer dict payload assembly for canonical runner/gate artifacts and replaced it with typed models (files: `src/tnh_scholar/agent_orchestration/kernel/service.py`, `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`)
+- [x] Removed the `run_artifacts -> runners` layering violation by relocating shared runner-facing enums into the lower-level kernel enum module (files: `src/tnh_scholar/agent_orchestration/kernel/enums.py`, `src/tnh_scholar/agent_orchestration/runners/models.py`, `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`)
+- [x] Expanded maintained OA07 kernel tests to cover manifest contents, canonical event streams, timestamp shape, failure-path provenance, and the absence of raw runner-local file paths in canonical metadata artifacts (files: `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`)
+- [x] Tightened `KernelProvenanceRecorder` structure by extracting helper methods so the main manifest-recording path stays within repo function-size expectations (file: `src/tnh_scholar/agent_orchestration/kernel/provenance.py`)
+
+### Discoveries & Insights
+- **Failure-path provenance was a real contract gap**: without a step-level exception boundary, any runner/validator/planner/gate exception left behind only `step_started`, which is insufficient for evaluators and inconsistent with the OA04.3 event model.
+- **Canonical evidence should not expose adapter-local capture filenames**: removing raw `transcript_path` and `final_response_path` from `runner_metadata.json` keeps the maintained evidence boundary compact and discourages downstream coupling to runner-internal file layout.
+- **Typed persistence can still violate layering if the shared types live too high**: using runner enums directly from `run_artifacts/` looked clean locally but created the wrong dependency direction for upcoming adapter work.
+
+### Files Modified/Created
+- `src/tnh_scholar/agent_orchestration/kernel/provenance.py`: New kernel provenance recorder for canonical event, manifest, and artifact emission.
+- `src/tnh_scholar/agent_orchestration/kernel/service.py`: Wired provenance recording into the main execution path, success/failure metadata persistence, and typed canonical artifact writes.
+- `src/tnh_scholar/agent_orchestration/kernel/enums.py`: Added shared runner-facing enums to preserve lower-level dependency direction.
+- `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`: Added typed canonical artifact payload models and updated imports to shared enums.
+- `src/tnh_scholar/agent_orchestration/runners/models.py`: Switched runner models to import shared enums from `kernel/enums.py`.
+- `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`: Expanded provenance integration coverage for happy-path and failure-path kernel behavior.
+
+### Validation Performed
+- `poetry run pytest tests/agent_orchestration/test_oa07_execution_validation_kernel.py tests/agent_orchestration/test_run_artifacts_contract.py -q`
+- `poetry run ruff check src/tnh_scholar/agent_orchestration/kernel/enums.py src/tnh_scholar/agent_orchestration/kernel/provenance.py src/tnh_scholar/agent_orchestration/run_artifacts/models.py src/tnh_scholar/agent_orchestration/runners/models.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py tests/agent_orchestration/test_run_artifacts_contract.py`
+- `poetry run mypy src/tnh_scholar/agent_orchestration/kernel/enums.py src/tnh_scholar/agent_orchestration/kernel/provenance.py src/tnh_scholar/agent_orchestration/run_artifacts/models.py src/tnh_scholar/agent_orchestration/runners/models.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py tests/agent_orchestration/test_run_artifacts_contract.py`
+
+### Next Steps
+- [ ] Review the PR-3 diff one more time for scope discipline and TODO alignment.
+- [ ] Commit the kernel provenance integration slice on `feat/oa04.3-kernel-provenance-integration`.
+- [ ] Push the branch and open the PR once the diff and branch note are clean.
+
+### Open Questions
+- None in the current PR-3 slice after the failure-path and layering fixes.
+
+### References
+- [docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md](docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md](docs/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md](docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
+- [TODO.md](TODO.md)
+
 ## [2026-03-28 20:53 PDT] OA04.3 Run-Artifact Contract First Coding Pass
 
 **Agent**: GPT-5 (Codex CLI)

@@ -11,7 +11,7 @@ updated: "2026-03-06"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-03-28 (PR-2 OA04.3 run-artifact contract complete)
+> **Last Updated**: 2026-03-28 (PR-3 OA04.3 kernel provenance integration ready for review)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -141,7 +141,7 @@ This section organizes work into three priority levels based on criticality for 
     - Update `run_artifacts/filesystem_store.py` to implement both
     - Keep filesystem concerns behind the store; no evaluator-facing filename dependencies
     - Tests for manifest writing, event stream fields, and canonical artifact-role lookup
-  - [ ] **PR-3** `feat/oa04.3-kernel-provenance-integration` — Kernel provenance integration (medium)
+  - [x] **PR-3** `feat/oa04.3-kernel-provenance-integration` — Kernel provenance integration (medium)
     - Update kernel/runtime services to write enriched run metadata, canonical events, and per-step manifests
     - Persist compact manifest summaries and canonical artifact references only; no adapter-local evidence lookup in evaluator assembly
     - Capture workspace diff/status and policy summary references through canonical artifact roles
