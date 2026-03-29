@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **OA04.3 Kernel Provenance Integration** (2026-03-28)
+  - Added `kernel/provenance.py` to record canonical step lifecycle events, gate events, rollback events, manifests, and workspace evidence artifacts through the maintained run-artifact store
+  - Updated `KernelRunService` to persist terminal metadata fields (`ended_at`, `last_step_id`, `termination`) on both success and failure paths
+  - Added typed canonical artifact payloads for runner metadata and gate request/outcome artifacts, replacing ad hoc dict payload assembly in kernel app logic
+  - Moved `AgentFamily` and `RunnerTermination` into `kernel/enums.py` so canonical artifact models do not depend upward on `runners/`
+  - Expanded OA07 kernel tests to cover happy-path manifests/events, ISO timestamps, failure-path provenance, and canonical runner metadata shape
+  - Files: `src/tnh_scholar/agent_orchestration/kernel/`, `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`, `src/tnh_scholar/agent_orchestration/runners/models.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+
 - **OA04.3 Run-Artifact Contract and Store** (2026-03-28)
   - Expanded `run_artifacts/` with the full OA04.3 maintained contract: `RunArtifactPaths` (with `artifacts_root`), `RunMetadata`, `RunEventRecord`, `RunEventType`, `ArtifactRole`, `StepArtifactEntry`, `EvidenceSummary`, `EvidenceReference`, `StepManifest`
   - Added `write_text_artifact` and `write_json_artifact` to `RunArtifactStoreProtocol` and `FilesystemRunArtifactStore`

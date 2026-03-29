@@ -2,27 +2,11 @@
 
 from __future__ import annotations
 
-from enum import Enum
 from pathlib import Path
 
 from pydantic import BaseModel, Field
 
-
-class AgentFamily(str, Enum):
-    """Supported maintained runner families."""
-
-    claude_cli = "claude_cli"
-    codex_cli = "codex_cli"
-
-
-class RunnerTermination(str, Enum):
-    """Mechanical outcomes exposed to the kernel."""
-
-    completed = "completed"
-    error = "error"
-    killed_timeout = "killed_timeout"
-    killed_idle = "killed_idle"
-    killed_policy = "killed_policy"
+from tnh_scholar.agent_orchestration.kernel.enums import AgentFamily, RunnerTermination
 
 
 class PromptInteractionPolicy(BaseModel):
