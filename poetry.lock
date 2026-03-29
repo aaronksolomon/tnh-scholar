@@ -8231,4 +8231,4 @@ query = ["beautifulsoup4", "ebooklib", "spacy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "275491a3d724d0f96d75ef9833786f325b6a6b8e7c269f2e72b00b97fa05c898"
+content-hash = "e9afb74b3849b166fc439d1bcac9674709cac372fc3bd6ec357c92a4abcc071f"
