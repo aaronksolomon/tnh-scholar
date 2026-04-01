@@ -11,7 +11,7 @@ updated: "2026-03-06"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-03-28 (PR-3 OA04.3 kernel provenance integration ready for review)
+> **Last Updated**: 2026-03-31 (PR-4 OA04.4 policy contract ready for review)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -147,7 +147,7 @@ This section organizes work into three priority levels based on criticality for 
     - Capture workspace diff/status and policy summary references through canonical artifact roles
     - Tests for manifest/event creation across `RUN_AGENT`, `RUN_VALIDATION`, `EVALUATE`, and `GATE`
     - *Depends on PR-2*
-  - [ ] **PR-4** `feat/oa04.4-policy-contract` — Execution policy package (medium)
+  - [x] **PR-4** `feat/oa04.4-policy-contract` — Execution policy package (medium)
     - New `agent_orchestration/execution_policy/` package
     - `models.py`: `ExecutionPolicySettings`, `RequestedExecutionPolicy`, `EffectiveExecutionPolicy`, `PolicyViolationClass`, `PolicyViolation`, `PolicySummary`
     - `assembly.py`: `ExecutionPolicyAssembler` for system settings → workflow → step requested policy → runtime override/effective policy derivation

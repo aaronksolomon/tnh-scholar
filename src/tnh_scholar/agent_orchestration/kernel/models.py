@@ -30,6 +30,7 @@ class WorkflowDefaults(BaseModel):
     artifacts_dir: Path | None = None
     component_kind: str | None = None
     eval_profile: str | None = None
+    policy: str | None = None
 
 
 class BaseStep(BaseModel):
@@ -55,6 +56,7 @@ class RunValidationStep(BaseStep):
 
     opcode: Literal["RUN_VALIDATION"] = "RUN_VALIDATION"
     run: list[ValidationSpec]
+    policy: str | None = None
 
 
 class EvaluateStep(BaseStep):
@@ -63,6 +65,7 @@ class EvaluateStep(BaseStep):
     opcode: Literal["EVALUATE"] = "EVALUATE"
     prompt: str
     allowed_next_steps: list[str] = Field(default_factory=list)
+    policy: str | None = None
 
 
 class GateStep(BaseStep):
@@ -71,6 +74,7 @@ class GateStep(BaseStep):
     opcode: Literal["GATE"] = "GATE"
     gate: str
     timeout_seconds: int | None = None
+    policy: str | None = None
 
 
 class RollbackStep(BaseStep):
@@ -78,6 +82,7 @@ class RollbackStep(BaseStep):
 
     opcode: Literal["ROLLBACK"] = "ROLLBACK"
     target: str
+    policy: str | None = None
 
 
 class StopStep(BaseStep):

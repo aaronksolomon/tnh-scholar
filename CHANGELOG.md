@@ -17,6 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **OA04.4 Execution Policy Contract** (2026-03-31)
+  - Added a maintained `execution_policy/` package with typed settings, requested/effective policy models, stable violation classes, policy summaries, and a protocol/assembler boundary
+  - Replaced the runner-layer `PromptInteractionPolicy` stub with `RequestedExecutionPolicy` on `RunnerTaskRequest`
+  - Extended workflow/kernel policy references across executable step types and persisted canonical `policy_summary.json` artifacts for each executed step
+  - Added kernel-side hard-fail enforcement for maintained policy violations, including protected-branch workspace-write blocking and impossible empty write-scope detection
+  - Fixed requested/effective precedence so `allowed_paths=None` means inherit while `allowed_paths=()` means explicitly empty, including runtime-tightening behavior
+  - Introduced `shared_enums.py` to keep runner-facing enums below package initializers and avoid cross-package import cycles
+  - Added focused execution-policy contract tests plus kernel integration coverage for policy artifact persistence, non-agent step policy refs, protected-branch violations, and hard-fail behavior
+  - Files: `src/tnh_scholar/agent_orchestration/execution_policy/`, `src/tnh_scholar/agent_orchestration/shared_enums.py`, `src/tnh_scholar/agent_orchestration/kernel/`, `src/tnh_scholar/agent_orchestration/runners/`, `tests/agent_orchestration/test_execution_policy_contract.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+
 - **OA04.3 Kernel Provenance Integration** (2026-03-28)
   - Added `kernel/provenance.py` to record canonical step lifecycle events, gate events, rollback events, manifests, and workspace evidence artifacts through the maintained run-artifact store
   - Updated `KernelRunService` to persist terminal metadata fields (`ended_at`, `last_step_id`, `termination`) on both success and failure paths

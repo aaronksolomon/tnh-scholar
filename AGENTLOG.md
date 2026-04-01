@@ -11,6 +11,72 @@ Archived previous active log: [`archive/agentlogs/AGENTLOG-03-28-26.md`](archive
 
 ---
 
+## [2026-03-31 10:42 PDT] OA04.4 Policy Contract
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: oa04-pr-series-build-sequence
+**Human Collaborator**: phapman
+
+### Context
+Started the next TODO-ordered OA04 implementation slice from clean `main` on branch `feat/oa04.4-policy-contract`. The accepted target for this PR was ADR-OA04.4: add the maintained execution-policy package, replace the runner stub policy type, persist canonical `policy_summary` artifacts, and close the policy-contract gap before the runner-adapter PRs.
+
+### Key Decisions
+- **Keep PR-4 at the maintained policy boundary**: define typed settings/requested/effective/summary models plus an assembler and keep native flag mapping for adapter-local work in PR-5.
+- **Persist policy evidence for every executed step**: write `policy_summary.json` before dispatch so failure paths retain policy evidence instead of only happy-path manifests carrying it.
+- **Treat hard-fail behavior as part of PR-4, not a later follow-up**: kernel enforcement now raises on maintained hard violations instead of only persisting passive violation data.
+- **Represent inheritance explicitly**: `RequestedExecutionPolicy.allowed_paths=None` means inherit, while `allowed_paths=()` means intentionally empty scope.
+- **Keep shared runner enums below package initializers**: move `AgentFamily` and `RunnerTermination` into `shared_enums.py` so `runners/`, `run_artifacts/`, and `kernel/` can share them without package-init cycles.
+
+### Work Completed
+- [x] Added the maintained `execution_policy/` package with typed models, assembler logic, and protocol surface (files: `src/tnh_scholar/agent_orchestration/execution_policy/models.py`, `src/tnh_scholar/agent_orchestration/execution_policy/assembly.py`, `src/tnh_scholar/agent_orchestration/execution_policy/protocols.py`, `src/tnh_scholar/agent_orchestration/execution_policy/__init__.py`)
+- [x] Replaced `PromptInteractionPolicy` with `RequestedExecutionPolicy` on `RunnerTaskRequest` and updated maintained runner exports accordingly (files: `src/tnh_scholar/agent_orchestration/runners/models.py`, `src/tnh_scholar/agent_orchestration/runners/__init__.py`)
+- [x] Added `shared_enums.py` and rewired maintained imports so runner-facing enums no longer depend on package initializers (files: `src/tnh_scholar/agent_orchestration/shared_enums.py`, `src/tnh_scholar/agent_orchestration/kernel/enums.py`, `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`)
+- [x] Extended workflow/kernel policy references across executable step types and added workflow default policy support (file: `src/tnh_scholar/agent_orchestration/kernel/models.py`)
+- [x] Wired kernel policy assembly and canonical persistence so every executed step emits `policy_summary.json` and compact policy notes in manifest evidence (files: `src/tnh_scholar/agent_orchestration/kernel/service.py`, `src/tnh_scholar/agent_orchestration/kernel/provenance.py`)
+- [x] Implemented maintained hard-fail enforcement for protected-branch workspace-write violations and impossible empty write-scope violations before step dispatch (file: `src/tnh_scholar/agent_orchestration/kernel/service.py`)
+- [x] Added focused contract and integration tests for precedence, explicit-empty path semantics, approval tightening, non-agent step policy refs, protected-branch enforcement, and hard-fail behavior (files: `tests/agent_orchestration/test_execution_policy_contract.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`)
+
+### Discoveries & Insights
+- **Hard-fail behavior belonged in PR-4 scope**: simply persisting violations without kernel action left the policy contract incomplete relative to TODO and ADR-OA04.4.
+- **Policy precedence needed a real inherit sentinel**: tuple truthiness was insufficient for `allowed_paths`; explicit empty scope is semantically different from “no override.”
+- **Kernel policy evidence should survive failure**: persisting policy artifacts before dispatch keeps failure-path provenance inspectable and evaluator-safe.
+- **Package initializers remain a practical import-cycle hazard**: shared enums are cleaner in a thin module than behind a package `__init__` that eagerly imports services.
+
+### Files Modified/Created
+- `src/tnh_scholar/agent_orchestration/execution_policy/models.py`: Added maintained execution-policy contract models.
+- `src/tnh_scholar/agent_orchestration/execution_policy/assembly.py`: Implemented precedence, tightening, violation derivation, and unknown-reference failure.
+- `src/tnh_scholar/agent_orchestration/execution_policy/protocols.py`: Added execution-policy assembler protocol.
+- `src/tnh_scholar/agent_orchestration/execution_policy/__init__.py`: Exported maintained policy package surface.
+- `src/tnh_scholar/agent_orchestration/shared_enums.py`: New low-level shared runner enums module.
+- `src/tnh_scholar/agent_orchestration/kernel/models.py`: Added workflow default policy and step-level policy refs across executable step types.
+- `src/tnh_scholar/agent_orchestration/kernel/service.py`: Added policy assembly, persistence, hard-fail enforcement, and runner request propagation.
+- `src/tnh_scholar/agent_orchestration/kernel/provenance.py`: Preserved policy artifacts on failure-path manifests.
+- `src/tnh_scholar/agent_orchestration/kernel/enums.py`: Re-exported shared runner enums cleanly.
+- `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`: Switched runner-facing enum imports to the shared lower-level module.
+- `src/tnh_scholar/agent_orchestration/runners/models.py`: Replaced runner prompt policy stub with requested execution policy.
+- `src/tnh_scholar/agent_orchestration/runners/__init__.py`: Updated maintained runner exports.
+- `tests/agent_orchestration/test_execution_policy_contract.py`: Added direct PR-4 contract coverage.
+- `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`: Expanded kernel integration coverage for policy persistence and hard-fail enforcement.
+
+### Validation Performed
+- `poetry run pytest tests/agent_orchestration/test_execution_policy_contract.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py tests/agent_orchestration/test_run_artifacts_contract.py -q`
+- `poetry run ruff check src/tnh_scholar/agent_orchestration/execution_policy src/tnh_scholar/agent_orchestration/shared_enums.py src/tnh_scholar/agent_orchestration/kernel/service.py src/tnh_scholar/agent_orchestration/kernel/provenance.py src/tnh_scholar/agent_orchestration/kernel/models.py src/tnh_scholar/agent_orchestration/kernel/enums.py src/tnh_scholar/agent_orchestration/runners src/tnh_scholar/agent_orchestration/run_artifacts/models.py tests/agent_orchestration/test_execution_policy_contract.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+- `poetry run mypy src/tnh_scholar/agent_orchestration/execution_policy src/tnh_scholar/agent_orchestration/shared_enums.py src/tnh_scholar/agent_orchestration/kernel/service.py src/tnh_scholar/agent_orchestration/kernel/provenance.py src/tnh_scholar/agent_orchestration/kernel/models.py src/tnh_scholar/agent_orchestration/kernel/enums.py src/tnh_scholar/agent_orchestration/runners src/tnh_scholar/agent_orchestration/run_artifacts/models.py tests/agent_orchestration/test_execution_policy_contract.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+
+### Next Steps
+- [ ] Refresh generated tree files and run repo PR readiness checks for the PR-4 slice.
+- [ ] Commit `feat/oa04.4-policy-contract` with changelog/TODO/AGENTLOG updates.
+- [ ] Push the branch and open the PR for review.
+
+### Open Questions
+- None in the maintained PR-4 slice after the hard-fail, step-policy, and explicit-empty override fixes.
+
+### References
+- [docs/architecture/agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract.md](docs/architecture/agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md](docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md](docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md)
+- [TODO.md](TODO.md)
+
 ## [2026-03-28 22:34 PDT] OA04.3 Kernel Provenance Integration
 
 **Agent**: GPT-5 (Codex CLI)

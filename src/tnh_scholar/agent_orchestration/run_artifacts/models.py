@@ -9,13 +9,12 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from tnh_scholar.agent_orchestration.kernel.enums import (
-    AgentFamily,
     GateOutcome,
     MechanicalOutcome,
     Opcode,
     PlannerStatus,
-    RunnerTermination,
 )
+from tnh_scholar.agent_orchestration.shared_enums import AgentFamily, RunnerTermination
 
 
 class RunArtifactPaths(BaseModel):
