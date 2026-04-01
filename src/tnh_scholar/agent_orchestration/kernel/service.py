@@ -629,10 +629,18 @@ class KernelRunService:
         requested = summary.requested_policy
         effective = summary.effective_policy
         violation_count = len(summary.violations)
+        requested_execution = (
+            requested.execution_posture.value if requested.execution_posture is not None else "unset"
+        )
+        requested_network = (
+            requested.network_posture.value if requested.network_posture is not None else "unset"
+        )
+        requested_approval = (
+            requested.approval_posture.value if requested.approval_posture is not None else "unset"
+        )
         return (
             "policy:"
-            f" requested={requested.execution_posture or 'unset'}/{requested.network_posture or 'unset'}"
-            f"/{requested.approval_posture or 'unset'}"
+            f" requested={requested_execution}/{requested_network}/{requested_approval}"
             f" effective={effective.execution_posture.value}/{effective.network_posture.value}"
             f"/{effective.approval_posture.value}"
             f" violations={violation_count}"

@@ -166,7 +166,8 @@ class ExecutionPolicyAssembler:
         postures = [value for value in (requested, override) if value is not None]
         if not postures:
             return ApprovalPosture.fail_on_prompt
-        return min(postures, key=ranking.__getitem__)
+        fallback_rank = max(ranking.values(), default=0) + 1
+        return min(postures, key=lambda posture: ranking.get(posture, fallback_rank))
 
     def _tighten_allowed_paths(
         self,
