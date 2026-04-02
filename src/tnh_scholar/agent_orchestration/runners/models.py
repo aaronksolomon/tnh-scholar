@@ -6,13 +6,8 @@ from pathlib import Path
 
 from pydantic import BaseModel, Field
 
-from tnh_scholar.agent_orchestration.kernel.enums import AgentFamily, RunnerTermination
-
-
-class PromptInteractionPolicy(BaseModel):
-    """Prompt-handling policy for maintained runners."""
-
-    auto_approve: bool = False
+from tnh_scholar.agent_orchestration.execution_policy.models import RequestedExecutionPolicy
+from tnh_scholar.agent_orchestration.shared_enums import AgentFamily, RunnerTermination
 
 
 class RunnerTaskRequest(BaseModel):
@@ -22,9 +17,7 @@ class RunnerTaskRequest(BaseModel):
     rendered_task_text: str
     working_directory: Path
     prompt_reference: str | None = None
-    prompt_interaction_policy: PromptInteractionPolicy = Field(
-        default_factory=PromptInteractionPolicy
-    )
+    requested_policy: RequestedExecutionPolicy = Field(default_factory=RequestedExecutionPolicy)
 
 
 class RunnerResult(BaseModel):

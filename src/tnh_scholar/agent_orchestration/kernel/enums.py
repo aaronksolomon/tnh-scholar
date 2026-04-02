@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from enum import Enum
 
+from tnh_scholar.agent_orchestration.shared_enums import AgentFamily, RunnerTermination
+
 
 class Opcode(str, Enum):
     """Kernel opcode names.
@@ -47,18 +49,11 @@ class GateOutcome(str, Enum):
     gate_timed_out = "gate_timed_out"
 
 
-class AgentFamily(str, Enum):
-    """Supported maintained runner families."""
-
-    claude_cli = "claude_cli"
-    codex_cli = "codex_cli"
-
-
-class RunnerTermination(str, Enum):
-    """Mechanical outcomes exposed to the kernel by maintained runners."""
-
-    completed = "completed"
-    error = "error"
-    killed_timeout = "killed_timeout"
-    killed_idle = "killed_idle"
-    killed_policy = "killed_policy"
+__all__ = [
+    "AgentFamily",
+    "GateOutcome",
+    "MechanicalOutcome",
+    "Opcode",
+    "PlannerStatus",
+    "RunnerTermination",
+]

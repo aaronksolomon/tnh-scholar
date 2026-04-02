@@ -160,6 +160,7 @@ class KernelProvenanceRecorder:
         ended_at: datetime,
         paths: RunArtifactPaths,
         run_directory: Path,
+        extra_artifacts: tuple[StepArtifactEntry, ...] = (),
         notes: tuple[str, ...],
     ) -> None:
         """Persist the canonical failure manifest and event for one step."""
@@ -172,6 +173,7 @@ class KernelProvenanceRecorder:
             ended_at=ended_at,
             paths=paths,
             run_directory=run_directory,
+            extra_artifacts=extra_artifacts,
             notes=notes,
         )
 

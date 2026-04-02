@@ -18,6 +18,13 @@ from tnh_scholar.agent_orchestration.execution import (
     SubprocessExecutionService,
     TimeoutPolicy,
 )
+from tnh_scholar.agent_orchestration.execution_policy import (
+    ApprovalPosture,
+    ExecutionPolicySettings,
+    ExecutionPosture,
+    NetworkPosture,
+    RequestedExecutionPolicy,
+)
 from tnh_scholar.agent_orchestration.kernel import (
     EvaluateStep,
     GateOutcome,
@@ -35,6 +42,7 @@ from tnh_scholar.agent_orchestration.kernel import (
     WorkflowValidator,
 )
 from tnh_scholar.agent_orchestration.kernel.adapters.workflow_loader import YamlWorkflowLoader
+from tnh_scholar.agent_orchestration.kernel.models import WorkflowDefaults
 from tnh_scholar.agent_orchestration.run_artifacts import (
     ArtifactRole,
     FilesystemRunArtifactStore,
@@ -102,6 +110,17 @@ class SuccessRunner:
         return RunnerResult(termination=RunnerTermination.completed)
 
 
+@dataclass
+class RecordingRunner:
+    """Runner double that records the last request."""
+
+    last_request: RunnerTaskRequest | None = None
+
+    def run(self, request: RunnerTaskRequest) -> RunnerResult:
+        self.last_request = request
+        return RunnerResult(termination=RunnerTermination.completed)
+
+
 @dataclass(frozen=True)
 class ExplodingRunner:
     """Runner that raises during execution."""
@@ -163,6 +182,25 @@ class RecordingWorkspace:
 
     def diff_summary(self, run_directory: Path) -> str:
         return "rollback diff" if self.rollback_calls > 0 else ""
+
+
+@dataclass(frozen=True)
+class ProtectedBranchWorkspace:
+    """Workspace double exposing a protected branch."""
+
+    repo_root: Path
+
+    def capture_pre_run(self, run_id: str) -> None:
+        return None
+
+    def rollback_pre_run(self) -> None:
+        return None
+
+    def snapshot(self, run_directory: Path) -> WorkspaceSnapshot:
+        return WorkspaceSnapshot(repo_root=self.repo_root, branch_name="main")
+
+    def diff_summary(self, run_directory: Path) -> str:
+        return ""
 
 
 def test_execution_service_runs_cli_process(tmp_path: Path) -> None:
@@ -548,6 +586,7 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     evaluate_manifest = _read_manifest(result.run_directory, "evaluate")
     gate_manifest = _read_manifest(result.run_directory, "gate")
 
+    assert agent_manifest.artifact_for_role(ArtifactRole.policy_summary) is not None
     assert agent_manifest.artifact_for_role(ArtifactRole.runner_metadata) is not None
     assert agent_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
     assert agent_manifest.artifact_for_role(ArtifactRole.workspace_diff) is None
@@ -560,12 +599,15 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     assert "transcript_path" not in runner_metadata
     assert "final_response_path" not in runner_metadata
 
+    assert validate_manifest.artifact_for_role(ArtifactRole.policy_summary) is not None
     assert validate_manifest.artifact_for_role(ArtifactRole.validation_report) is not None
     assert validate_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
 
+    assert evaluate_manifest.artifact_for_role(ArtifactRole.policy_summary) is not None
     assert evaluate_manifest.artifact_for_role(ArtifactRole.planner_decision) is not None
     assert evaluate_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
 
+    assert gate_manifest.artifact_for_role(ArtifactRole.policy_summary) is not None
     assert gate_manifest.artifact_for_role(ArtifactRole.gate_request) is not None
     assert gate_manifest.artifact_for_role(ArtifactRole.gate_outcome) is not None
     assert gate_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
@@ -613,12 +655,14 @@ def test_kernel_runtime_records_failed_step_provenance_when_runner_raises(tmp_pa
     assert [event["event_type"] for event in events] == [
         "step_started",
         "artifact_recorded",
+        "artifact_recorded",
         "step_failed",
     ]
 
     manifest = _read_manifest(run_directory, "agent")
     assert manifest.termination.value == "error"
-    assert "runner exploded" in manifest.evidence_summary.notes[0]
+    assert any("runner exploded" in note for note in manifest.evidence_summary.notes)
+    assert manifest.artifact_for_role(ArtifactRole.policy_summary) is not None
     assert manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
     assert manifest.artifact_for_role(ArtifactRole.workspace_diff) is None
 
@@ -850,8 +894,217 @@ def test_kernel_runtime_executes_rollback_step(tmp_path: Path) -> None:
     assert result.status.value == "completed"
     assert result.last_step_id == "STOP"
     rollback_manifest = _read_manifest(result.run_directory, "rollback")
+    assert rollback_manifest.artifact_for_role(ArtifactRole.policy_summary) is not None
     assert rollback_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
     assert rollback_manifest.artifact_for_role(ArtifactRole.workspace_diff) is not None
+
+
+def test_kernel_runtime_persists_policy_summary_and_passes_requested_policy(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-policy",
+        version=1,
+        description="policy summary",
+        entry_step="agent",
+        defaults=WorkflowDefaults(policy="workflow.safe"),
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                policy="step.review_only",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    runner = RecordingRunner()
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-policy"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=runner,
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+        execution_policy_settings=ExecutionPolicySettings(
+            default_policy=RequestedExecutionPolicy(
+                execution_posture=ExecutionPosture.workspace_write,
+                network_posture=NetworkPosture.allow,
+                approval_posture=ApprovalPosture.bounded_auto_approve,
+            ),
+            named_policies={
+                "workflow.safe": RequestedExecutionPolicy(
+                    forbidden_operations=("git-push",),
+                ),
+                "step.review_only": RequestedExecutionPolicy(
+                    approval_posture=ApprovalPosture.deny_interactive,
+                ),
+            },
+            runtime_overrides=RequestedExecutionPolicy(
+                execution_posture=ExecutionPosture.read_only,
+                network_posture=NetworkPosture.deny,
+            ),
+        ),
+    )
+
+    result = service.run(workflow, tmp_path)
+
+    assert runner.last_request is not None
+    assert runner.last_request.requested_policy.policy_reference == "step.review_only"
+    assert runner.last_request.requested_policy.execution_posture == ExecutionPosture.workspace_write
+    manifest = _read_manifest(result.run_directory, "agent")
+    policy_entry = manifest.artifact_for_role(ArtifactRole.policy_summary)
+    assert policy_entry is not None
+    policy_summary = json.loads((result.run_directory / policy_entry.path).read_text(encoding="utf-8"))
+    assert policy_summary["requested_policy"]["policy_reference"] == "step.review_only"
+    assert policy_summary["effective_policy"]["execution_posture"] == "read_only"
+    assert policy_summary["effective_policy"]["network_posture"] == "deny"
+
+
+def test_kernel_runtime_applies_step_policy_reference_to_non_agent_steps(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-step-policy",
+        version=1,
+        description="step-level validation policy",
+        entry_step="validate",
+        steps=[
+            RunValidationStep(
+                id="validate",
+                run=[],
+                policy="step.validation_read_only",
+                routes=[RouteRule(outcome=ValidationTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-step-policy"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+        execution_policy_settings=ExecutionPolicySettings(
+            named_policies={
+                "step.validation_read_only": RequestedExecutionPolicy(
+                    execution_posture=ExecutionPosture.read_only,
+                    network_posture=NetworkPosture.deny,
+                )
+            }
+        ),
+    )
+
+    result = service.run(workflow, tmp_path)
+
+    manifest = _read_manifest(result.run_directory, "validate")
+    policy_entry = manifest.artifact_for_role(ArtifactRole.policy_summary)
+    assert policy_entry is not None
+    policy_summary = json.loads((result.run_directory / policy_entry.path).read_text(encoding="utf-8"))
+    assert policy_summary["requested_policy"]["policy_reference"] == "step.validation_read_only"
+
+
+def test_kernel_runtime_hard_fails_on_protected_branch_policy_violation(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-protected",
+        version=1,
+        description="protected branch violation",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                policy="step.workspace_write",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-protected"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=ProtectedBranchWorkspace(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+        execution_policy_settings=ExecutionPolicySettings(
+            named_policies={
+                "step.workspace_write": RequestedExecutionPolicy(
+                    execution_posture=ExecutionPosture.workspace_write,
+                )
+            }
+        ),
+    )
+
+    with raises(WorkflowValidationError, match="Policy violation"):
+        service.run(workflow, tmp_path)
+
+    run_directory = tmp_path / "run-protected"
+    metadata = json.loads((run_directory / "metadata.json").read_text(encoding="utf-8"))
+    assert metadata["termination"] == "error"
+    manifest = _read_manifest(run_directory, "agent")
+    policy_entry = manifest.artifact_for_role(ArtifactRole.policy_summary)
+    assert policy_entry is not None
+    policy_summary = json.loads((run_directory / policy_entry.path).read_text(encoding="utf-8"))
+    assert policy_summary["violations"][0]["violation_class"] == "protected_branch_violation"
+
+
+def test_kernel_runtime_hard_fails_on_empty_write_scope_policy_violation(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-empty-scope",
+        version=1,
+        description="empty write scope violation",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                policy="step.invalid_write_scope",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-empty-scope"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+        execution_policy_settings=ExecutionPolicySettings(
+            named_policies={
+                "step.invalid_write_scope": RequestedExecutionPolicy(
+                    execution_posture=ExecutionPosture.workspace_write,
+                    allowed_paths=(),
+                )
+            }
+        ),
+    )
+
+    with raises(WorkflowValidationError, match="Policy violation"):
+        service.run(workflow, tmp_path)
+
+    run_directory = tmp_path / "run-empty-scope"
+    manifest = _read_manifest(run_directory, "agent")
+    policy_entry = manifest.artifact_for_role(ArtifactRole.policy_summary)
+    assert policy_entry is not None
+    policy_summary = json.loads((run_directory / policy_entry.path).read_text(encoding="utf-8"))
+    assert policy_summary["violations"][0]["violation_class"] == "forbidden_path"
 
 
 def test_workflow_loader_rejects_unknown_validation_spec_kind(tmp_path: Path) -> None:
