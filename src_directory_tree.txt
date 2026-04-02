@@ -51,6 +51,11 @@
     │   │   ├── __init__.py
     │   │   ├── models.py
     │   │   └── service.py
+    │   ├── execution_policy
+    │   │   ├── __init__.py
+    │   │   ├── assembly.py
+    │   │   ├── models.py
+    │   │   └── protocols.py
     │   ├── kernel
     │   │   ├── __init__.py
     │   │   ├── adapters
@@ -74,6 +79,7 @@
     │   │   ├── __init__.py
     │   │   ├── models.py
     │   │   └── protocols.py
+    │   ├── shared_enums.py
     │   ├── spike
     │   │   ├── __init__.py
     │   │   ├── adapters
@@ -422,4 +428,4 @@
         ├── extract_tags.py
         └── xml_processing.py
 
-92 directories, 331 files
+93 directories, 336 files

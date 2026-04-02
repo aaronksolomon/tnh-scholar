@@ -569,6 +569,11 @@
 │       │   │   ├── __init__.py
 │       │   │   ├── models.py
 │       │   │   └── service.py
+│       │   ├── execution_policy
+│       │   │   ├── __init__.py
+│       │   │   ├── assembly.py
+│       │   │   ├── models.py
+│       │   │   └── protocols.py
 │       │   ├── kernel
 │       │   │   ├── __init__.py
 │       │   │   ├── adapters
@@ -592,6 +597,7 @@
 │       │   │   ├── __init__.py
 │       │   │   ├── models.py
 │       │   │   └── protocols.py
+│       │   ├── shared_enums.py
 │       │   ├── spike
 │       │   │   ├── __init__.py
 │       │   │   ├── adapters
@@ -950,6 +956,7 @@
 │   ├── agent_orchestration
 │   │   ├── test_codex_harness_tools.py
 │   │   ├── test_conductor_mvp_kernel.py
+│   │   ├── test_execution_policy_contract.py
 │   │   ├── test_oa07_execution_validation_kernel.py
 │   │   ├── test_run_artifacts_contract.py
 │   │   ├── test_spike_command_builder.py
@@ -1062,4 +1069,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-229 directories, 834 files
+230 directories, 840 files

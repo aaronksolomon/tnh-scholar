@@ -1,1 +1,1 @@
-"""Codex harness for OA03 control surface mapping."""
+"""Suspended Codex harness spike preserved as reference-only code."""

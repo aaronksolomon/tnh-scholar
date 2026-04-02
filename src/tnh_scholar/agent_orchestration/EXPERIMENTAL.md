@@ -6,6 +6,8 @@
 
 This module contains spike/exploratory code from Phase 0 protocol work (ADR-OA02). The code is **non-operational** and preserved for reference only.
 
+Reference-only experimental packages are intentionally excluded from normal typed maintenance gates until work resumes.
+
 ## Contents
 
 - `spike/` - Phase 0 conductor spike (Claude Code PTY automation exploration)

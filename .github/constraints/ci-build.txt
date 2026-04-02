@@ -1,1 +1,5 @@
+# Temporary CI build constraint:
+# setuptools 82 removed pkg_resources, which breaks older build backends used
+# in the whisper install path. Remove this once clean CI installs prove the
+# current openai-whisper release no longer depends on that compatibility shim.
 setuptools<82

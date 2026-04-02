@@ -1,1 +1,1 @@
-"""CLI entrypoint package for codex harness."""
+"""Suspended CLI package for the reference-only Codex harness spike."""
