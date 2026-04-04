@@ -1875,6 +1875,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -2179,6 +2187,118 @@
   
   
     <li class="md-nav__item">
+      <a href="../../architecture/agent-orchestration/adr/adr-oa04.2-runner-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.2: Runner Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.3: Provenance and Run-Artifact Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.4: Policy Enforcement Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/agent-orchestration/adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.5: Harness Backend Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
         
   
@@ -2247,6 +2367,8 @@
       
         
           
+        
+      
         
       
         
@@ -2374,6 +2496,34 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/agent-orchestration/notes/vscode-1110-agent-features-research/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VS Code 1.110 Agent Features Research
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--reference"></span>
   
 
   
@@ -9794,12 +9944,12 @@
 <li><strong>Link formatting</strong>:</li>
 <li><strong>Use absolute links only</strong> for internal documentation references. Absolute links are relative to the MkDocs root (<code>/docs</code> directory).</li>
 <li>Example: <code>/architecture/overview.md</code> (resolves to <code>docs/architecture/overview.md</code> in the repository).</li>
-<li>Example: <code>/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md</code> (resolves to <code>docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strat.md</code>).</li>
+<li>Example: <code>/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md</code> (resolves to <code>docs/architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md</code>).</li>
 <li><strong>Never use</strong> relative links like <code>../architecture/overview.md</code> or paths that include <code>/docs/</code> in the link itself.</li>
 <li>Always use absolute links starting with <code>/</code> not relative links to avoid broken references when files are moved or reorganized.</li>
 <li>For external URLs, use full absolute URLs (e.g., <code>https://example.com</code>).</li>
 <li><strong>Repository root file references</strong>:</li>
-<li>When drafting documentation that links to tracked repository root files (e.g., <code>README.md</code>, <code>CONTRIBUTING.md</code>, <code>VERSIONING.md</code>), <strong>always link to the generated copies</strong> under <code>/project/repo-root/&lt;name&gt;.md</code>.</li>
+<li>When drafting documentation that links to tracked repository root files (e.g., <code>README.md</code>, <code>CONTRIBUTING.md</code>, <code>VERSIONING.md</code>), <strong>always link to the generated copies</strong> under paths such as <code>/project/repo-root/repo-readme.md</code> or <code>/project/repo-root/versioning.md</code>.</li>
 <li>Example: Link to <code>/project/repo-root/versioning.md</code> instead of <code>/VERSIONING.md</code> to match MkDocs target paths and avoid later rewrites.</li>
 <li>These generated files are created by <code>scripts/sync_root_docs.py</code> from the repository root originals.</li>
 <li><strong>Adding new repository root files</strong>:</li>
@@ -9838,12 +9988,12 @@
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="gu">### Superseded ADRs</span>
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="k">-</span><span class="w"> </span><span class="gs">**[ADR-XX: Title](&lt;docs-absolute-path&gt;/archive/adr/adr-xx-title.md)**</span> (YYYY-MM-DD)
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  <span class="ge">*Status*</span>: Superseded by [<span class="nt">ADR-YY</span>](<span class="na">/path/to/current-adr.md</span>)
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  <span class="ge">*Status*</span>: Superseded by [<span class="nt">ADR-DD02</span>](<span class="na">/architecture/docs-system/adr/adr-dd02-main-content-nav.md</span>)
 </span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
 </span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="gu">### Earlier Design Explorations</span>
 </span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
 </span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="k">-</span><span class="w"> </span><span class="gs">**[Design Doc Title](&lt;docs-absolute-path&gt;/archive/design-doc.md)**</span> (YYYY-MM-DD)
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>  <span class="ge">*Status*</span>: Replaced by [<span class="nt">Current Doc</span>](<span class="na">/path/to/current-doc.md</span>)
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>  <span class="ge">*Status*</span>: Replaced by [<span class="nt">Current Doc</span>](<span class="na">/architecture/docs-system/design/documentation-design.md</span>)
 </span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
 </span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>&lt;/details&gt;
 </span></code></pre></div>

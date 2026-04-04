@@ -16,7 +16,7 @@
         <link rel="prev" href="../adr-oa04-workflow-schema-opcode-semantics/">
       
       
-        <link rel="next" href="../adr-oa05-prompt-library-specification/">
+        <link rel="next" href="../adr-oa04.2-runner-contract/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -1883,6 +1883,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -2470,10 +2478,146 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#as-built-notes-addendums" class="md-nav__link">
+    <span class="md-ellipsis">
+      As-Built Notes &amp; Addendums
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="As-Built Notes & Addendums">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#addendum-2026-03-27-oa04-contract-family-scaffolding-alignment-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-03-27: OA04 Contract Family — Scaffolding Alignment Notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.2-runner-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.2: Runner Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.3: Provenance and Run-Artifact Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.4: Policy Enforcement Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.5: Harness Backend Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
     </li>
   
 
@@ -2554,6 +2698,8 @@
       
         
           
+        
+      
         
       
         
@@ -2681,6 +2827,34 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/vscode-1110-agent-features-research/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VS Code 1.110 Agent Features Research
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--reference"></span>
   
 
   
@@ -10010,6 +10184,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#as-built-notes-addendums" class="md-nav__link">
+    <span class="md-ellipsis">
+      As-Built Notes &amp; Addendums
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="As-Built Notes & Addendums">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#addendum-2026-03-27-oa04-contract-family-scaffolding-alignment-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-03-27: OA04 Contract Family — Scaffolding Alignment Notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -10360,6 +10558,23 @@
 <li><a href="../adr-oa05-prompt-library-specification/">ADR-OA05: Prompt Library Specification</a></li>
 <li><a href="../adr-oa06-planner-evaluator-contract/">ADR-OA06: Planner Evaluator Contract</a></li>
 </ul>
+<hr />
+<h2 id="as-built-notes-addendums">As-Built Notes &amp; Addendums<a class="headerlink" href="#as-built-notes-addendums" title="Link to this section">&para;</a></h2>
+<h3 id="addendum-2026-03-27-oa04-contract-family-scaffolding-alignment-notes">Addendum 2026-03-27: OA04 Contract Family — Scaffolding Alignment Notes<a class="headerlink" href="#addendum-2026-03-27-oa04-contract-family-scaffolding-alignment-notes" title="Link to this section">&para;</a></h3>
+<p><strong>Context</strong>: OA04.2–OA04.5 were accepted 2026-03-27 as the contract layer between OA07 runtime foundations and forward-path implementation. A code review against the existing OA07 scaffolding at acceptance time revealed the following alignment gaps. These are expected and pre-planned — the ADRs were written before the scaffolding was filled in. Recording them here for implementer context.</p>
+<p><strong>Gap 1 — <code>RunEventRecord</code> is too thin (OA04.3 §6)</strong></p>
+<p><code>run_artifacts/models.py</code> <code>RunEventRecord</code> currently has only <code>step_id</code> and <code>next_step_id</code>. OA04.3 requires <code>timestamp</code>, <code>run_id</code>, and <code>event_type</code> as required fields. Addressed in PR-2.</p>
+<p><strong>Gap 2 — <code>RunMetadata</code> is too thin (OA04.3 §3)</strong></p>
+<p><code>run_artifacts/models.py</code> <code>RunMetadata</code> currently has only <code>run_id</code>, <code>workflow_id</code>, <code>started_at</code>. OA04.3 requires <code>workflow_version</code>, <code>artifacts_root</code>, <code>entry_step</code>; recommended optionals include <code>ended_at</code>, <code>last_step_id</code>, <code>termination</code>, <code>schema_versions</code>. Addressed in PR-2.</p>
+<p><strong>Gap 3 — No <code>StepManifest</code> model exists (OA04.3 §4–5)</strong></p>
+<p><code>run_artifacts/</code> has no <code>StepManifest</code>, <code>ArtifactRole</code>, or <code>StepArtifactEntry</code> types. <code>FilesystemRunArtifactStore</code> creates the run directory and event log correctly, but has no manifest-writing capability. Addressed in PR-2.</p>
+<p><strong>Gap 4 — <code>PromptInteractionPolicy</code> stub conflicts with OA04.4 <code>ExecutionPolicy</code> (OA04.4 §1)</strong></p>
+<p><code>runners/models.py</code> has a minimal <code>PromptInteractionPolicy(auto_approve: bool)</code> stub on <code>RunnerTaskRequest</code>. OA04.4 defines a richer five-dimension <code>ExecutionPolicy</code> model. These must not share a name or conflate roles. The stub should be retired and <code>RunnerTaskRequest.prompt_interaction_policy</code> re-pointed to the proper <code>ExecutionPolicy</code> reference. Addressed in PR-3.</p>
+<p><strong>Gap 5 — <code>validation/</code> package is empty (OA04.5)</strong></p>
+<p><code>agent_orchestration/validation/__init__.py</code> exists but contains no models, protocols, or backends. The harness backend contract (backend family enum, request/result boundary, script backend) is entirely greenfield. Addressed in PR-5.</p>
+<p><strong>Gap 6 — <code>runners/</code> has no adapters subdirectory (OA04.2 §6)</strong></p>
+<p><code>runners/</code> has <code>models.py</code> and <code>protocols.py</code> but no <code>adapters/</code> subpackage. Claude CLI and Codex CLI adapter implementations are fully absent. Addressed in PR-4.</p>
+<p><strong>Note on <code>final_state_path</code> naming</strong>: <code>RunArtifactPaths.final_state_path</code> maps to <code>final_state.txt</code> in the current store, but OA04.3 §2 uses <code>final-state.txt</code> (hyphen). Minor — align during PR-2 if it does not break existing tests; otherwise note as a follow-up.</p>
 
 
 

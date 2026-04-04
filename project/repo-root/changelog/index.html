@@ -2332,6 +2332,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -2636,6 +2644,118 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/adr/adr-oa04.2-runner-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.2: Runner Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.3: Provenance and Run-Artifact Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.4: Policy Enforcement Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.5: Harness Backend Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
         
   
@@ -2704,6 +2824,8 @@
       
         
           
+        
+      
         
       
         
@@ -2831,6 +2953,34 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/notes/vscode-1110-agent-features-research/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VS Code 1.110 Agent Features Research
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--reference"></span>
   
 
   
@@ -10343,7 +10493,63 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Multilingual Audio Transcription MVP</strong> (2026-03-05)</li>
+<li><strong>OA04.2 Runner Adapters</strong> (2026-04-03)</li>
+<li>Expanded the maintained <code>runners/</code> subsystem with adapter capability declarations, normalized transcript/final-response payloads, typed invocation metadata, and a delegating runner service</li>
+<li>Added execution-backed maintained adapters for headless Claude CLI and Codex CLI runs with explicit mapper/normalizer seams, mechanical termination mapping, and fail-fast rejection for unsupported policy guarantees</li>
+<li>Updated the kernel to persist canonical <code>runner_transcript</code>, <code>runner_final_response</code>, and richer <code>runner_metadata</code> artifacts from normalized runner results through the run-artifact store</li>
+<li>Clarified ADR-OA04.2 via addendum so maintained adapters return typed normalized payloads while canonical persistence remains owned by <code>run_artifacts/</code></li>
+<li>Added focused adapter tests for command mapping, normalization, unsupported-policy rejection, unknown adapter-family routing, and kernel integration coverage for canonical runner artifact persistence</li>
+<li>
+<p>Files: <code>src/tnh_scholar/agent_orchestration/runners/</code>, <code>src/tnh_scholar/agent_orchestration/kernel/service.py</code>, <code>src/tnh_scholar/agent_orchestration/run_artifacts/models.py</code>, <code>docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md</code>, <code>tests/agent_orchestration/test_runner_adapters.py</code>, <code>tests/agent_orchestration/test_oa07_execution_validation_kernel.py</code></p>
+</li>
+<li>
+<p><strong>Dependency Policy Refresh and Codex Spike Quarantine</strong> (2026-04-03)</p>
+</li>
+<li>Refreshed repository dependency policy inputs and CI build constraints to keep dependency resolution aligned with current project rules</li>
+<li>Updated <code>pyproject.toml</code> and <code>poetry.lock</code> as part of the dependency-policy maintenance pass</li>
+<li>Quarantined the suspended codex harness spike from active package/export paths while preserving the experimental context in <code>agent_orchestration/EXPERIMENTAL.md</code></li>
+<li>Refreshed generated repository tree snapshots to match the current structure</li>
+<li>
+<p>Files: <code>.github/constraints/ci-build.txt</code>, <code>.github/workflows/ci.yml</code>, <code>pyproject.toml</code>, <code>poetry.lock</code>, <code>src/tnh_scholar/agent_orchestration/EXPERIMENTAL.md</code>, <code>src/tnh_scholar/agent_orchestration/codex_harness/__init__.py</code>, <code>src/tnh_scholar/cli_tools/tnh_codex_harness/__init__.py</code>, <code>project_directory_tree.txt</code>, <code>src_directory_tree.txt</code></p>
+</li>
+<li>
+<p><strong>OA04.4 Execution Policy Contract</strong> (2026-03-31)</p>
+</li>
+<li>Added a maintained <code>execution_policy/</code> package with typed settings, requested/effective policy models, stable violation classes, policy summaries, and a protocol/assembler boundary</li>
+<li>Replaced the runner-layer <code>PromptInteractionPolicy</code> stub with <code>RequestedExecutionPolicy</code> on <code>RunnerTaskRequest</code></li>
+<li>Extended workflow/kernel policy references across executable step types and persisted canonical <code>policy_summary.json</code> artifacts for each executed step</li>
+<li>Added kernel-side hard-fail enforcement for maintained policy violations, including protected-branch workspace-write blocking and impossible empty write-scope detection</li>
+<li>Fixed requested/effective precedence so <code>allowed_paths=None</code> means inherit while <code>allowed_paths=()</code> means explicitly empty, including runtime-tightening behavior</li>
+<li>Introduced <code>shared_enums.py</code> to keep runner-facing enums below package initializers and avoid cross-package import cycles</li>
+<li>Added focused execution-policy contract tests plus kernel integration coverage for policy artifact persistence, non-agent step policy refs, protected-branch violations, and hard-fail behavior</li>
+<li>
+<p>Files: <code>src/tnh_scholar/agent_orchestration/execution_policy/</code>, <code>src/tnh_scholar/agent_orchestration/shared_enums.py</code>, <code>src/tnh_scholar/agent_orchestration/kernel/</code>, <code>src/tnh_scholar/agent_orchestration/runners/</code>, <code>tests/agent_orchestration/test_execution_policy_contract.py</code>, <code>tests/agent_orchestration/test_oa07_execution_validation_kernel.py</code></p>
+</li>
+<li>
+<p><strong>OA04.3 Kernel Provenance Integration</strong> (2026-03-28)</p>
+</li>
+<li>Added <code>kernel/provenance.py</code> to record canonical step lifecycle events, gate events, rollback events, manifests, and workspace evidence artifacts through the maintained run-artifact store</li>
+<li>Updated <code>KernelRunService</code> to persist terminal metadata fields (<code>ended_at</code>, <code>last_step_id</code>, <code>termination</code>) on both success and failure paths</li>
+<li>Added typed canonical artifact payloads for runner metadata and gate request/outcome artifacts, replacing ad hoc dict payload assembly in kernel app logic</li>
+<li>Moved <code>AgentFamily</code> and <code>RunnerTermination</code> into <code>kernel/enums.py</code> so canonical artifact models do not depend upward on <code>runners/</code></li>
+<li>Expanded OA07 kernel tests to cover happy-path manifests/events, ISO timestamps, failure-path provenance, and canonical runner metadata shape</li>
+<li>
+<p>Files: <code>src/tnh_scholar/agent_orchestration/kernel/</code>, <code>src/tnh_scholar/agent_orchestration/run_artifacts/models.py</code>, <code>src/tnh_scholar/agent_orchestration/runners/models.py</code>, <code>tests/agent_orchestration/test_oa07_execution_validation_kernel.py</code></p>
+</li>
+<li>
+<p><strong>OA04.3 Run-Artifact Contract and Store</strong> (2026-03-28)</p>
+</li>
+<li>Expanded <code>run_artifacts/</code> with the full OA04.3 maintained contract: <code>RunArtifactPaths</code> (with <code>artifacts_root</code>), <code>RunMetadata</code>, <code>RunEventRecord</code>, <code>RunEventType</code>, <code>ArtifactRole</code>, <code>StepArtifactEntry</code>, <code>EvidenceSummary</code>, <code>EvidenceReference</code>, <code>StepManifest</code></li>
+<li>Added <code>write_text_artifact</code> and <code>write_json_artifact</code> to <code>RunArtifactStoreProtocol</code> and <code>FilesystemRunArtifactStore</code></li>
+<li>Extracted shared kernel enums (<code>Opcode</code>, <code>MechanicalOutcome</code>, <code>PlannerStatus</code>, <code>GateOutcome</code>) into <code>kernel/enums.py</code></li>
+<li>Exported <code>RunArtifactStoreProtocol</code> from <code>run_artifacts</code> public API</li>
+<li>Added OA04.3 contract regression tests covering metadata fields, event stream, manifest artifact-role lookup, final-state persistence, and Pydantic JSON artifact path</li>
+<li>
+<p>Files: <code>src/tnh_scholar/agent_orchestration/kernel/</code>, <code>src/tnh_scholar/agent_orchestration/run_artifacts/</code>, <code>tests/agent_orchestration/test_run_artifacts_contract.py</code></p>
+</li>
+<li>
+<p><strong>Multilingual Audio Transcription MVP</strong> (2026-03-05)</p>
+</li>
 <li>Added MVP multilingual subtitle orchestration with typed request/result models, protocol seams, segment translation flow, speaker-block routing, and malformed-failure handling for block merge recovery</li>
 <li>Added Pyannote client/schema hardening and expanded diarization regression coverage for status parsing and client behavior</li>
 <li>Added focused script coverage for <code>transcribe_translate_srt</code></li>

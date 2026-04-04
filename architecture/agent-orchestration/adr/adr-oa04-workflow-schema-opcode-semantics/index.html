@@ -1883,6 +1883,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -2544,6 +2552,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#as-built-notes-addendums" class="md-nav__link">
+    <span class="md-ellipsis">
+      As-Built Notes &amp; Addendums
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="As-Built Notes & Addendums">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#addendum-2026-03-26-oa04-family-planning-and-namespace-clarification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-03-26: OA04 Family Planning and Namespace Clarification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2571,6 +2603,118 @@
   
   
     <span class="md-status md-status--wip"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.2-runner-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.2: Runner Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.3: Provenance and Run-Artifact Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.4: Policy Enforcement Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.5: Harness Backend Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -2656,6 +2800,8 @@
       
         
           
+        
+      
         
       
         
@@ -2783,6 +2929,34 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/vscode-1110-agent-features-research/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VS Code 1.110 Agent Features Research
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--reference"></span>
   
 
   
@@ -10214,6 +10388,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#as-built-notes-addendums" class="md-nav__link">
+    <span class="md-ellipsis">
+      As-Built Notes &amp; Addendums
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="As-Built Notes & Addendums">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#addendum-2026-03-26-oa04-family-planning-and-namespace-clarification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-03-26: OA04 Family Planning and Namespace Clarification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -10580,22 +10778,15 @@
 <li>Opcode-specific required fields exist.</li>
 </ol>
 <h3 id="8-artifact-conventions">8. Artifact Conventions<a class="headerlink" href="#8-artifact-conventions" title="Link to this section">&para;</a></h3>
-<p>All run artifacts are written to a structured directory:</p>
+<p>All run artifacts are written under a structured run directory rooted at:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>.tnh/run/&lt;run_id&gt;/
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>├── transcript.md           # Agent session transcript
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>├── diff.patch              # Git diff for this run
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>├── harness/                # Generated harness code (if any)
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>│   ├── harness.py
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│   └── fixtures/
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>├── harness_report.json     # Structured validation results
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>├── screenshots/            # Visual artifacts (if captured)
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>└── logs/                   # Additional logs from validators
 </span></code></pre></div>
+<p>The canonical maintained run-directory structure, step partitioning, manifests, and artifact-role lookup rules are defined by <a href="../adr-oa04.3-provenance-run-artifact-contract/">ADR-OA04.3</a>.</p>
 <p><strong>Conventions:</strong></p>
 <ul>
 <li><code>&lt;run_id&gt;</code> is a unique identifier for each workflow execution (e.g., timestamp + short hash).</li>
 <li>Agents and harness writers MUST write generated code/specs to <code>.tnh/run/&lt;run_id&gt;/harness/</code>.</li>
-<li>The kernel captures artifacts declared in <code>RUN_VALIDATION</code> entries and copies them to the run directory.</li>
+<li>The kernel captures artifacts declared in <code>RUN_VALIDATION</code> entries and records them through the maintained artifact contract.</li>
 <li>Artifact paths in reports should be relative to the run directory.</li>
 </ul>
 <h3 id="9-harness-report-schema">9. Harness Report Schema<a class="headerlink" href="#9-harness-report-schema" title="Link to this section">&para;</a></h3>
@@ -10990,6 +11181,47 @@
 <li><a href="../adr-oa06-planner-evaluator-contract/">ADR-OA06: Planner Evaluator Contract</a> — Defines how planner interprets <code>harness_report.json</code>; OA04 only specifies artifact format</li>
 <li><strong>ADR-OA07: Diff-Policy + Safety Rails</strong> (planned) — Golden snapshot approval rules may be further detailed there</li>
 </ul>
+<hr />
+<h2 id="as-built-notes-addendums">As-Built Notes &amp; Addendums<a class="headerlink" href="#as-built-notes-addendums" title="Link to this section">&para;</a></h2>
+<h3 id="addendum-2026-03-26-oa04-family-planning-and-namespace-clarification">Addendum 2026-03-26: OA04 Family Planning and Namespace Clarification<a class="headerlink" href="#addendum-2026-03-26-oa04-family-planning-and-namespace-clarification" title="Link to this section">&para;</a></h3>
+<p><strong>Context</strong>: Implementation of the maintained runtime exposed a documentation gap. OA04 froze workflow schema and opcode semantics strongly enough to begin kernel work, but several execution-boundary contracts remained only implied across OA01.1, OA03.x, and OA04.1.</p>
+<p><strong>Decision</strong>: The OA04 decimal family is explicitly clarified as the <strong>workflow execution contract family</strong>, not a narrower "schema-only" namespace.</p>
+<p>This means OA04 children may specify:</p>
+<ul>
+<li>workflow document refinements,</li>
+<li>opcode-adjacent runtime contracts,</li>
+<li>artifact and provenance handoff boundaries,</li>
+<li>other execution-facing contracts required to make OA04 implementable without changing OA01.1 strategy or OA03 control-surface decisions.</li>
+</ul>
+<p>The planned OA04 decimal sequence is:</p>
+<table>
+<thead>
+<tr>
+<th>ADR</th>
+<th>Planned Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OA04.2</code></td>
+<td>Maintained <code>RUN_AGENT</code> runner contract</td>
+</tr>
+<tr>
+<td><code>OA04.3</code></td>
+<td>Provenance and run-artifact contract</td>
+</tr>
+<tr>
+<td><code>OA04.4</code></td>
+<td>Policy enforcement contract</td>
+</tr>
+<tr>
+<td><code>OA04.5</code></td>
+<td>Harness backend contract</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rationale</strong>: These topics are all downstream of OA04 opcode execution and upstream of subsystem implementation. Placing them under OA04 keeps the family centered on execution contracts rather than proliferating new top-level namespaces.</p>
+<p><strong>Implementation Changes</strong>: No code changes. Added <a href="../adr-oa04.2-runner-contract/">ADR-OA04.2</a>, <a href="../adr-oa04.3-provenance-run-artifact-contract/">ADR-OA04.3</a>, <a href="../adr-oa04.4-policy-enforcement-contract/">ADR-OA04.4</a>, and <a href="../adr-oa04.5-harness-backend-contract/">ADR-OA04.5</a> as execution-contract refinements.</p>
 
 
 

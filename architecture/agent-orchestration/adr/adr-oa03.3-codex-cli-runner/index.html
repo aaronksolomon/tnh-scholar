@@ -1883,6 +1883,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -2520,6 +2528,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#addendum-2026-03-27-maintained-runtime-contract-precedence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-03-27: Maintained Runtime Contract Precedence
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2580,6 +2597,118 @@
   
   
     <span class="md-status md-status--wip"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.2-runner-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.2: Runner Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.3: Provenance and Run-Artifact Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.4: Policy Enforcement Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.5: Harness Backend Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -2665,6 +2794,8 @@
       
         
           
+        
+      
         
       
         
@@ -2792,6 +2923,34 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/vscode-1110-agent-features-research/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VS Code 1.110 Agent Features Research
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--reference"></span>
   
 
   
@@ -10227,6 +10386,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#addendum-2026-03-27-maintained-runtime-contract-precedence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-03-27: Maintained Runtime Contract Precedence
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10559,6 +10727,7 @@
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">duration_seconds</span><span class="p">:</span> <span class="nb">float</span>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span>           <span class="c1"># Agent-specific metadata (model, tokens, etc.)</span>
 </span></code></pre></div>
+<p><strong>Maintained runtime note</strong>: The structure above is historical spike/adapter guidance. Maintained runtime result and termination semantics are defined by <a href="../adr-oa04.2-runner-contract/">ADR-OA04.2</a> and <a href="../adr-oa04.3-provenance-run-artifact-contract/">ADR-OA04.3</a>.</p>
 <h3 id="dual-channel-output">Dual-Channel Output<a class="headerlink" href="#dual-channel-output" title="Link to this section">&para;</a></h3>
 <p>Consistent with OA01/OA03:</p>
 <table>
@@ -10824,6 +10993,16 @@
 1. <strong>JSONL Event Schema</strong>: Documented above. Events are typed with <code>item.started/completed/updated</code> wrappers.
 2. <strong>Model Selection</strong>: <code>-m gpt-5.2-codex</code> confirmed working and recommended for consistency.</p>
 <p><strong>Decision</strong>: Proceed with full Codex CLI adapter implementation under OA03. Pattern validated as equivalent to Claude Code runner (OA03.1).</p>
+<h3 id="addendum-2026-03-27-maintained-runtime-contract-precedence">Addendum 2026-03-27: Maintained Runtime Contract Precedence<a class="headerlink" href="#addendum-2026-03-27-maintained-runtime-contract-precedence" title="Link to this section">&para;</a></h3>
+<p><strong>Context</strong>: Later OA04 execution-contract ADRs froze maintained request/result, artifact, and policy semantics more precisely than this CLI-surface ADR.</p>
+<p><strong>Decision</strong>: This ADR remains authoritative for Codex CLI supported surfaces and capture posture. Maintained runtime contract details now follow the OA04 execution-contract family.</p>
+<p>Specifically:</p>
+<ul>
+<li>OA04.x governs maintained request/result contracts and artifact lookup semantics.</li>
+<li>Runner/kernel outcomes in maintained implementation are mechanical outcomes, not planner-semantic statuses.</li>
+<li>The <code>AgentRunResult</code> structure shown here is historical spike/adapter guidance, not the maintained runtime model.</li>
+</ul>
+<p><strong>Rationale</strong>: Preserve the enduring Codex CLI surface decision while preventing older spike-shaped result modeling from overriding newer maintained execution contracts.</p>
 
 
 

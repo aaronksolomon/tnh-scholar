@@ -1883,6 +1883,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -2605,6 +2613,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#addendum-2026-03-27-maintained-runtime-contract-precedence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-03-27: Maintained Runtime Contract Precedence
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2738,6 +2755,118 @@
   
   
     <li class="md-nav__item">
+      <a href="../adr-oa04.2-runner-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.2: Runner Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.3: Provenance and Run-Artifact Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.4: Policy Enforcement Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA04.5: Harness Backend Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../adr-oa05-prompt-library-specification/" class="md-nav__link">
         
   
@@ -2806,6 +2935,8 @@
       
         
           
+        
+      
         
       
         
@@ -2933,6 +3064,34 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/vscode-1110-agent-features-research/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VS Code 1.110 Agent Features Research
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--reference"></span>
   
 
   
@@ -10509,6 +10668,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#addendum-2026-03-27-maintained-runtime-contract-precedence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-03-27: Maintained Runtime Contract Precedence
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10930,6 +11098,7 @@
 </tbody>
 </table>
 <p><strong>Any non-parseable or interactive output → hard fail</strong> (<code>blocked</code> or <code>unsafe</code>, <code>needs_human</code>).</p>
+<p><strong>Maintained runtime note</strong>: The table above reflects earlier runner-surface language. Maintained runtime result and termination semantics are defined by <a href="../adr-oa04.2-runner-contract/">ADR-OA04.2</a> and <a href="../adr-oa04.3-provenance-run-artifact-contract/">ADR-OA04.3</a>.</p>
 <hr />
 <h2 id="permission-safety">Permission &amp; Safety<a class="headerlink" href="#permission-safety" title="Link to this section">&para;</a></h2>
 <h3 id="layered-approach">Layered Approach<a class="headerlink" href="#layered-approach" title="Link to this section">&para;</a></h3>
@@ -11223,6 +11392,16 @@
 <h3 id="addendum-2026-02-07-work-resumed">Addendum 2026-02-07: Work Resumed<a class="headerlink" href="#addendum-2026-02-07-work-resumed" title="Link to this section">&para;</a></h3>
 <p><strong>Status changed</strong>: <code>paused</code> → <code>accepted</code></p>
 <p>Orchestration work resumed. See parent ADR-OA03 addendum for context.</p>
+<h3 id="addendum-2026-03-27-maintained-runtime-contract-precedence">Addendum 2026-03-27: Maintained Runtime Contract Precedence<a class="headerlink" href="#addendum-2026-03-27-maintained-runtime-contract-precedence" title="Link to this section">&para;</a></h3>
+<p><strong>Context</strong>: Later OA04 execution-contract ADRs froze maintained request/result, artifact, and policy semantics more precisely than this runner-surface ADR.</p>
+<p><strong>Decision</strong>: This ADR remains authoritative for Claude CLI supported surfaces and capture posture. Maintained runtime contract details now follow the OA04 execution-contract family.</p>
+<p>Specifically:</p>
+<ul>
+<li>OA04.x governs maintained request/result contracts and artifact lookup semantics.</li>
+<li>Runner/kernel outcomes in maintained implementation are mechanical outcomes, not planner-semantic statuses.</li>
+<li>Terms like <code>unsafe</code>, <code>blocked</code>, and <code>needs_human</code> remain planner/workflow semantics in maintained runtime.</li>
+</ul>
+<p><strong>Rationale</strong>: Preserve the enduring Claude control-surface decision while preventing old spike-era wording from overriding newer maintained execution contracts.</p>
 
 
 
