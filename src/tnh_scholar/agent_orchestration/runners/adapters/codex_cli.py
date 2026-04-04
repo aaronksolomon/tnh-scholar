@@ -18,6 +18,7 @@ from tnh_scholar.agent_orchestration.execution_policy import (
     ExecutionPosture,
 )
 from tnh_scholar.agent_orchestration.runners.adapters._shared import (
+    build_transcript_artifact,
     resolve_executable_path,
     to_runner_termination,
 )
@@ -87,18 +88,28 @@ class CodexCliInvocationMapper:
         )
 
     def _approval_mode(self, request: RunnerTaskRequest) -> str:
-        posture = request.requested_policy.approval_posture
-        if posture in (ApprovalPosture.fail_on_prompt, ApprovalPosture.deny_interactive):
-            return "never"
-        if posture == ApprovalPosture.bounded_auto_approve:
-            return "on-failure"
-        return "never"
+        match request.requested_policy.approval_posture:
+            case None | ApprovalPosture.fail_on_prompt | ApprovalPosture.deny_interactive:
+                return "never"
+            case ApprovalPosture.bounded_auto_approve:
+                return "on-failure"
+            case _:
+                raise ValueError(
+                    "Unsupported approval posture for Codex CLI: "
+                    f"{request.requested_policy.approval_posture!r}"
+                )
 
     def _sandbox_mode(self, request: RunnerTaskRequest) -> str:
-        posture = request.requested_policy.execution_posture
-        if posture == ExecutionPosture.workspace_write:
-            return "workspace-write"
-        return "read-only"
+        match request.requested_policy.execution_posture:
+            case ExecutionPosture.workspace_write:
+                return "workspace-write"
+            case None | ExecutionPosture.read_only:
+                return "read-only"
+            case _:
+                raise ValueError(
+                    "Unsupported execution posture for Codex CLI: "
+                    f"{request.requested_policy.execution_posture!r}"
+                )
 
 
 @dataclass(frozen=True)
@@ -161,14 +172,7 @@ class CodexCliOutputNormalizer:
         return termination
 
     def _transcript(self, stdout_text: str) -> RunnerTextArtifact | None:
-        content = stdout_text.strip()
-        if not content:
-            return None
-        return RunnerTextArtifact(
-            filename="transcript.ndjson",
-            content=f"{content}\n",
-            media_type="application/x-ndjson",
-        )
+        return build_transcript_artifact(stdout_text)
 
     def _final_response(self, response_path: Path) -> RunnerTextArtifact | None:
         if not response_path.exists():

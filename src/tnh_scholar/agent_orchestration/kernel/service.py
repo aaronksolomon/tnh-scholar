@@ -586,18 +586,7 @@ class KernelRunService:
                 prompt_reference=request.prompt_reference,
                 termination=result.termination,
             )
-        return RunnerMetadataArtifact(
-            agent_family=metadata.agent_family,
-            invocation_mode=metadata.invocation_mode.value,
-            command=metadata.command,
-            working_directory=metadata.working_directory,
-            prompt_reference=metadata.prompt_reference,
-            started_at=metadata.started_at,
-            ended_at=metadata.ended_at,
-            exit_code=metadata.exit_code,
-            termination=metadata.termination,
-            capture_format=metadata.capture_format.value,
-        )
+        return RunnerMetadataArtifact.from_normalized_metadata(metadata)
 
     def _write_terminal_metadata(
         self,

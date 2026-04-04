@@ -144,6 +144,93 @@ def test_claude_cli_adapter_rejects_unsupported_network_policy(tmp_path: Path) -
         )
 
 
+def test_claude_cli_adapter_rejects_allowed_paths_policy(tmp_path: Path) -> None:
+    executable = tmp_path / "claude"
+    executable.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+    executable.chmod(0o755)
+    adapter = ClaudeCliRunnerAdapter(
+        execution_service=SubprocessExecutionService(),
+        executable=executable,
+    )
+
+    with pytest.raises(ValueError, match="allowed_paths"):
+        adapter.run(
+            RunnerTaskRequest(
+                agent_family=AgentFamily.claude_cli,
+                rendered_task_text="say hi",
+                working_directory=tmp_path,
+                requested_policy=RequestedExecutionPolicy(
+                    execution_posture=ExecutionPosture.workspace_write,
+                    allowed_paths=(tmp_path / "some_path",),
+                ),
+            )
+        )
+
+
+def test_claude_cli_adapter_rejects_forbidden_paths_policy(tmp_path: Path) -> None:
+    executable = tmp_path / "claude"
+    executable.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+    executable.chmod(0o755)
+    adapter = ClaudeCliRunnerAdapter(
+        execution_service=SubprocessExecutionService(),
+        executable=executable,
+    )
+
+    with pytest.raises(ValueError, match="forbidden_paths"):
+        adapter.run(
+            RunnerTaskRequest(
+                agent_family=AgentFamily.claude_cli,
+                rendered_task_text="say hi",
+                working_directory=tmp_path,
+                requested_policy=RequestedExecutionPolicy(
+                    execution_posture=ExecutionPosture.workspace_write,
+                    forbidden_paths=(tmp_path / "some_path",),
+                ),
+            )
+        )
+
+
+def test_claude_cli_adapter_rejects_forbidden_operations_policy(tmp_path: Path) -> None:
+    executable = tmp_path / "claude"
+    executable.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+    executable.chmod(0o755)
+    adapter = ClaudeCliRunnerAdapter(
+        execution_service=SubprocessExecutionService(),
+        executable=executable,
+    )
+
+    with pytest.raises(ValueError, match="forbidden_operations"):
+        adapter.run(
+            RunnerTaskRequest(
+                agent_family=AgentFamily.claude_cli,
+                rendered_task_text="say hi",
+                working_directory=tmp_path,
+                requested_policy=RequestedExecutionPolicy(
+                    execution_posture=ExecutionPosture.workspace_write,
+                    forbidden_operations=("write",),
+                ),
+            )
+        )
+
+
+def test_runner_adapter_rejects_non_executable_configured_path(tmp_path: Path) -> None:
+    executable = tmp_path / "claude"
+    executable.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+    adapter = ClaudeCliRunnerAdapter(
+        execution_service=SubprocessExecutionService(),
+        executable=executable,
+    )
+
+    with pytest.raises(OSError, match="not executable"):
+        adapter.run(
+            RunnerTaskRequest(
+                agent_family=AgentFamily.claude_cli,
+                rendered_task_text="say hi",
+                working_directory=tmp_path,
+            )
+        )
+
+
 def test_codex_cli_adapter_reads_final_response_and_maps_workspace_write(tmp_path: Path) -> None:
     executable = tmp_path / "codex"
     executable.write_text(

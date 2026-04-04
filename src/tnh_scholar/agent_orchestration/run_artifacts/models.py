@@ -137,6 +137,11 @@ class RunnerMetadataArtifact(BaseModel):
     termination: RunnerTermination
     capture_format: str | None = None
 
+    @classmethod
+    def from_normalized_metadata(cls, payload: BaseModel) -> "RunnerMetadataArtifact":
+        """Build the canonical artifact from one normalized runner metadata record."""
+        return cls.model_validate(payload.model_dump(mode="json"))
+
 
 class GateRequestArtifact(BaseModel):
     """Canonical gate request artifact."""

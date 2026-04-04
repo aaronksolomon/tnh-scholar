@@ -17,9 +17,9 @@ from tnh_scholar.agent_orchestration.execution import (
 from tnh_scholar.agent_orchestration.execution_policy import (
     ApprovalPosture,
     ExecutionPosture,
-    NetworkPosture,
 )
 from tnh_scholar.agent_orchestration.runners.adapters._shared import (
+    build_transcript_artifact,
     resolve_executable_path,
     to_runner_termination,
 )
@@ -54,9 +54,16 @@ class ClaudeCliInvocationMapper:
 
     def _validate_policy(self, request: RunnerTaskRequest) -> None:
         policy = request.requested_policy
-        if policy.execution_posture == ExecutionPosture.read_only:
-            raise ValueError("Claude CLI adapter cannot guarantee read_only execution posture.")
-        if policy.network_posture not in (None, NetworkPosture.allow):
+        match policy.execution_posture:
+            case None | ExecutionPosture.workspace_write:
+                pass
+            case ExecutionPosture.read_only:
+                raise ValueError("Claude CLI adapter cannot guarantee read_only execution posture.")
+            case _:
+                raise ValueError(
+                    f"Unsupported execution posture for Claude CLI: {policy.execution_posture!r}"
+                )
+        if policy.network_posture is not None:
             raise ValueError("Claude CLI adapter does not support native network posture controls.")
         if policy.allowed_paths not in (None, ()):
             raise ValueError("Claude CLI adapter does not support native allowed_paths constraints.")
@@ -78,10 +85,16 @@ class ClaudeCliInvocationMapper:
         )
 
     def _permission_mode(self, request: RunnerTaskRequest) -> str:
-        posture = request.requested_policy.approval_posture
-        if posture == ApprovalPosture.bounded_auto_approve:
-            return "acceptEdits"
-        return "dontAsk"
+        match request.requested_policy.approval_posture:
+            case None | ApprovalPosture.fail_on_prompt | ApprovalPosture.deny_interactive:
+                return "dontAsk"
+            case ApprovalPosture.bounded_auto_approve:
+                return "acceptEdits"
+            case _:
+                raise ValueError(
+                    "Unsupported approval posture for Claude CLI: "
+                    f"{request.requested_policy.approval_posture!r}"
+                )
 
 
 @dataclass(frozen=True)
@@ -133,14 +146,7 @@ class ClaudeCliOutputNormalizer:
         )
 
     def _transcript(self, stdout_text: str) -> RunnerTextArtifact | None:
-        content = stdout_text.strip()
-        if not content:
-            return None
-        return RunnerTextArtifact(
-            filename="transcript.ndjson",
-            content=f"{content}\n",
-            media_type="application/x-ndjson",
-        )
+        return build_transcript_artifact(stdout_text)
 
     def _final_response(self, stdout_text: str) -> RunnerTextArtifact | None:
         content = self._extract_final_response(stdout_text)
