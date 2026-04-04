@@ -11,7 +11,7 @@ updated: "2026-03-06"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-03 (PR-5 OA04.2 runner adapters ready for review)
+> **Last Updated**: 2026-04-03 (PR-5 OA04.2 runner adapters merged)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >

@@ -126,9 +126,11 @@ Started the next TODO-ordered OA04 implementation slice from clean `main` on bra
 - `poetry run mypy src/tnh_scholar/agent_orchestration/runners src/tnh_scholar/agent_orchestration/kernel/service.py tests/agent_orchestration/test_runner_adapters.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
 
 ### Next Steps
-- [ ] Run `make pr-check` and `make ci-check` for the PR-5 slice.
-- [ ] Commit `feat/oa04.2-runner-adapters` with changelog/TODO/AGENTLOG updates.
-- [ ] Push the branch and open the PR for review.
+- [x] Run `make pr-check` for the PR-5 slice.
+- [x] Run `make ci-check`; remaining failures were unrelated repo-wide lint/type debt outside the PR-5 slice.
+- [x] Commit `feat/oa04.2-runner-adapters` with changelog/TODO/AGENTLOG updates.
+- [x] Push the branch and open PR [#43](https://github.com/aaronksolomon/tnh-scholar/pull/43).
+- [x] Merge PR #43 to `main`.
 
 ### Open Questions
 - None in the maintained PR-5 slice after the adapter-boundary, policy-enforcement, and kernel-artifact cleanup passes.
