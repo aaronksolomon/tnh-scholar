@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Dependency Policy Refresh and Codex Spike Quarantine** (2026-04-03)
+  - Refreshed repository dependency policy inputs and CI build constraints to keep dependency resolution aligned with current project rules
+  - Updated `pyproject.toml` and `poetry.lock` as part of the dependency-policy maintenance pass
+  - Quarantined the suspended codex harness spike from active package/export paths while preserving the experimental context in `agent_orchestration/EXPERIMENTAL.md`
+  - Refreshed generated repository tree snapshots to match the current structure
+  - Files: `.github/constraints/ci-build.txt`, `.github/workflows/ci.yml`, `pyproject.toml`, `poetry.lock`, `src/tnh_scholar/agent_orchestration/EXPERIMENTAL.md`, `src/tnh_scholar/agent_orchestration/codex_harness/__init__.py`, `src/tnh_scholar/cli_tools/tnh_codex_harness/__init__.py`, `project_directory_tree.txt`, `src_directory_tree.txt`
+
 - **OA04.4 Execution Policy Contract** (2026-03-31)
   - Added a maintained `execution_policy/` package with typed settings, requested/effective policy models, stable violation classes, policy summaries, and a protocol/assembler boundary
   - Replaced the runner-layer `PromptInteractionPolicy` stub with `RequestedExecutionPolicy` on `RunnerTaskRequest`
