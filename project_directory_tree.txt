@@ -595,8 +595,14 @@
 │       │   │   └── protocols.py
 │       │   ├── runners
 │       │   │   ├── __init__.py
+│       │   │   ├── adapters
+│       │   │   │   ├── __init__.py
+│       │   │   │   ├── _shared.py
+│       │   │   │   ├── claude_cli.py
+│       │   │   │   └── codex_cli.py
 │       │   │   ├── models.py
-│       │   │   └── protocols.py
+│       │   │   ├── protocols.py
+│       │   │   └── service.py
 │       │   ├── shared_enums.py
 │       │   ├── spike
 │       │   │   ├── __init__.py
@@ -959,6 +965,7 @@
 │   │   ├── test_execution_policy_contract.py
 │   │   ├── test_oa07_execution_validation_kernel.py
 │   │   ├── test_run_artifacts_contract.py
+│   │   ├── test_runner_adapters.py
 │   │   ├── test_spike_command_builder.py
 │   │   ├── test_spike_command_filter.py
 │   │   └── test_subprocess_agent_runner.py
@@ -1069,4 +1076,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-230 directories, 840 files
+231 directories, 846 files

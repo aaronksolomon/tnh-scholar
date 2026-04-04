@@ -337,3 +337,18 @@ Rejected: likely to encode accidental contracts in code and make later provenanc
 
 - A future maintained result model may replace per-field artifact paths with a richer artifact-reference structure keyed by canonical role.
 - Native transcript preservation versus normalized sidecar generation may warrant a later addendum once real Claude/Codex runtime evidence accumulates.
+
+## Addendum 2026-04-03: Maintained Runner Payload Return Shape
+
+**Context**: The maintained OA04.3/OA04.4 runtime now owns canonical artifact persistence and manifest writing inside `run_artifacts/` and the kernel provenance layer. That made the earlier "result carries transcript/final-response paths" wording too filesystem-shaped for the maintained boundary.
+
+**Decision**: Maintained runner adapters now return:
+
+- mechanical termination,
+- typed normalized transcript/final-response payloads,
+- typed invocation metadata sufficient for canonical `runner_metadata.json`,
+- optional path fields only as transitional or native-capture hints.
+
+The kernel persists canonical `runner_transcript`, `runner_final_response`, and `runner_metadata` artifacts through the run-artifact store. Adapters do not own final manifest registration or canonical artifact layout.
+
+**Rationale**: This keeps persistence ownership aligned with OA04.3, preserves OS01 typing at the runner boundary, and avoids making evaluators depend on adapter-local filenames.

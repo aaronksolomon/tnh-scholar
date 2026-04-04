@@ -127,8 +127,20 @@ class RunnerMetadataArtifact(BaseModel):
     """Canonical maintained runner metadata artifact."""
 
     agent_family: AgentFamily
+    invocation_mode: str | None = None
+    command: tuple[str, ...] = Field(default_factory=tuple)
+    working_directory: Path | None = None
     prompt_reference: str | None = None
+    started_at: datetime | None = None
+    ended_at: datetime | None = None
+    exit_code: int | None = None
     termination: RunnerTermination
+    capture_format: str | None = None
+
+    @classmethod
+    def from_normalized_metadata(cls, payload: BaseModel) -> "RunnerMetadataArtifact":
+        """Build the canonical artifact from one normalized runner metadata record."""
+        return cls.model_validate(payload.model_dump(mode="json"))
 
 
 class GateRequestArtifact(BaseModel):

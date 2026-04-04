@@ -11,7 +11,7 @@ updated: "2026-03-06"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-03-31 (PR-4 OA04.4 policy contract ready for review)
+> **Last Updated**: 2026-04-03 (PR-5 OA04.2 runner adapters ready for review)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -156,7 +156,7 @@ This section organizes work into three priority levels based on criticality for 
     - Persist detailed `policy_summary.json` via canonical `policy_summary` artifact role; keep only compact summary data in manifests
     - Tests for assembly precedence, requested/effective policy derivation, and hard-fail behavior
     - *Can run in parallel with PR-3*
-  - [ ] **PR-5** `feat/oa04.2-runner-adapters` — Runner adapters (largest PR)
+  - [x] **PR-5** `feat/oa04.2-runner-adapters` — Runner adapters (largest PR)
     - Expand `runners/models.py`: `AdapterCapabilities` (capability declaration per OA04.2 §3a)
     - Add explicit mapper/normalizer classes for native CLI output → maintained runner-domain models
     - Add `runners/adapters/claude_cli.py`: `claude --print --output-format stream-json --permission-mode dontAsk`, stream-json parsing, normalization, termination mapping
