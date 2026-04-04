@@ -53,7 +53,7 @@ from tnh_scholar.agent_orchestration.run_artifacts.models import (
     RunnerMetadataArtifact,
     StepArtifactEntry,
 )
-from tnh_scholar.agent_orchestration.runners.models import RunnerTaskRequest
+from tnh_scholar.agent_orchestration.runners.models import RunnerResult, RunnerTaskRequest
 from tnh_scholar.agent_orchestration.shared_enums import AgentFamily, RunnerTermination
 from tnh_scholar.agent_orchestration.validation.models import (
     HarnessReport,
@@ -268,17 +268,11 @@ class KernelRunService:
             self._to_mechanical_outcome(result.termination).value,
             context="No route for outcome",
         )
-        runner_metadata = self.artifact_store.write_json_artifact(
-            paths=context.paths,
+        runner_artifacts = self._runner_artifacts(
             step_id=step.id,
-            role=ArtifactRole.runner_metadata,
-            filename="runner_metadata.json",
-            payload=RunnerMetadataArtifact(
-                agent_family=request.agent_family,
-                prompt_reference=request.prompt_reference,
-                termination=result.termination,
-            ),
-            required=True,
+            paths=context.paths,
+            request=request,
+            result=result,
         )
         self._record_step_completion(
             step=step,
@@ -286,7 +280,7 @@ class KernelRunService:
             target=target,
             termination=self._to_mechanical_outcome(result.termination),
             started_at=step_started_at,
-            extra_artifacts=(policy_record.artifact, runner_metadata),
+            extra_artifacts=(policy_record.artifact, *runner_artifacts),
             notes=(policy_record.note,),
         )
         return state.advance(step.id, target)
@@ -496,6 +490,114 @@ class KernelRunService:
             required=True,
         )
         return (artifact,)
+
+    def _runner_artifacts(
+        self,
+        *,
+        step_id: str,
+        paths: RunArtifactPaths,
+        request: RunnerTaskRequest,
+        result: RunnerResult,
+    ) -> tuple[StepArtifactEntry, ...]:
+        artifacts = [
+            artifact
+            for artifact in (
+                self._write_transcript_artifact(step_id=step_id, paths=paths, result=result),
+                self._write_final_response_artifact(step_id=step_id, paths=paths, result=result),
+                self._write_runner_metadata_artifact(
+                    step_id=step_id,
+                    paths=paths,
+                    request=request,
+                    result=result,
+                ),
+            )
+            if artifact is not None
+        ]
+        return tuple(artifacts)
+
+    def _write_transcript_artifact(
+        self,
+        *,
+        step_id: str,
+        paths: RunArtifactPaths,
+        result: RunnerResult,
+    ) -> StepArtifactEntry | None:
+        transcript = result.transcript
+        if transcript is None:
+            return None
+        return self.artifact_store.write_text_artifact(
+            paths=paths,
+            step_id=step_id,
+            role=ArtifactRole.runner_transcript,
+            filename=transcript.filename,
+            content=transcript.content,
+            media_type=transcript.media_type,
+            required=True,
+            important=True,
+        )
+
+    def _write_final_response_artifact(
+        self,
+        *,
+        step_id: str,
+        paths: RunArtifactPaths,
+        result: RunnerResult,
+    ) -> StepArtifactEntry | None:
+        final_response = result.final_response
+        if final_response is None:
+            return None
+        return self.artifact_store.write_text_artifact(
+            paths=paths,
+            step_id=step_id,
+            role=ArtifactRole.runner_final_response,
+            filename=final_response.filename,
+            content=final_response.content,
+            media_type=final_response.media_type,
+            required=True,
+            important=True,
+        )
+
+    def _write_runner_metadata_artifact(
+        self,
+        *,
+        step_id: str,
+        paths: RunArtifactPaths,
+        request: RunnerTaskRequest,
+        result: RunnerResult,
+    ) -> StepArtifactEntry:
+        return self.artifact_store.write_json_artifact(
+            paths=paths,
+            step_id=step_id,
+            role=ArtifactRole.runner_metadata,
+            filename="runner_metadata.json",
+            payload=self._runner_metadata(request, result),
+            required=True,
+        )
+
+    def _runner_metadata(
+        self,
+        request: RunnerTaskRequest,
+        result: RunnerResult,
+    ) -> RunnerMetadataArtifact:
+        metadata = result.metadata
+        if metadata is None:
+            return RunnerMetadataArtifact(
+                agent_family=request.agent_family,
+                prompt_reference=request.prompt_reference,
+                termination=result.termination,
+            )
+        return RunnerMetadataArtifact(
+            agent_family=metadata.agent_family,
+            invocation_mode=metadata.invocation_mode.value,
+            command=metadata.command,
+            working_directory=metadata.working_directory,
+            prompt_reference=metadata.prompt_reference,
+            started_at=metadata.started_at,
+            ended_at=metadata.ended_at,
+            exit_code=metadata.exit_code,
+            termination=metadata.termination,
+            capture_format=metadata.capture_format.value,
+        )
 
     def _write_terminal_metadata(
         self,

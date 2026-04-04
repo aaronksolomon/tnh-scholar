@@ -49,9 +49,13 @@ from tnh_scholar.agent_orchestration.run_artifacts import (
     StepManifest,
 )
 from tnh_scholar.agent_orchestration.runners import (
+    RunnerCaptureFormat,
+    RunnerInvocationMetadata,
+    RunnerInvocationMode,
     RunnerResult,
     RunnerTaskRequest,
     RunnerTermination,
+    RunnerTextArtifact,
 )
 from tnh_scholar.agent_orchestration.validation import (
     BuiltinCommandEntry,
@@ -119,6 +123,39 @@ class RecordingRunner:
     def run(self, request: RunnerTaskRequest) -> RunnerResult:
         self.last_request = request
         return RunnerResult(termination=RunnerTermination.completed)
+
+
+@dataclass(frozen=True)
+class ArtifactProducingRunner:
+    """Runner double that returns normalized transcript and response artifacts."""
+
+    def run(self, request: RunnerTaskRequest) -> RunnerResult:
+        timestamp = datetime(2026, 3, 31, 10, 0, tzinfo=timezone.utc)
+        return RunnerResult(
+            termination=RunnerTermination.completed,
+            metadata=RunnerInvocationMetadata(
+                agent_family=request.agent_family,
+                invocation_mode=RunnerInvocationMode.codex_exec,
+                command=("codex", "exec", request.rendered_task_text),
+                working_directory=request.working_directory,
+                prompt_reference=request.prompt_reference,
+                started_at=timestamp,
+                ended_at=timestamp,
+                exit_code=0,
+                termination=RunnerTermination.completed,
+                capture_format=RunnerCaptureFormat.ndjson,
+            ),
+            transcript=RunnerTextArtifact(
+                filename="transcript.ndjson",
+                content='{"type":"thread.started"}\n',
+                media_type="application/x-ndjson",
+            ),
+            final_response=RunnerTextArtifact(
+                filename="final_response.txt",
+                content="done\n",
+                media_type="text/plain",
+            ),
+        )
 
 
 @dataclass(frozen=True)
@@ -611,6 +648,56 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     assert gate_manifest.artifact_for_role(ArtifactRole.gate_request) is not None
     assert gate_manifest.artifact_for_role(ArtifactRole.gate_outcome) is not None
     assert gate_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
+
+
+def test_kernel_runtime_persists_runner_transcript_and_final_response(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-runner-artifacts",
+        version=1,
+        description="runner artifacts",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 31, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-runner-artifacts"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=ArtifactProducingRunner(),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+
+    result = service.run(workflow, tmp_path)
+    manifest = _read_manifest(result.run_directory, "agent")
+    transcript_entry = manifest.artifact_for_role(ArtifactRole.runner_transcript)
+    response_entry = manifest.artifact_for_role(ArtifactRole.runner_final_response)
+    metadata_entry = manifest.artifact_for_role(ArtifactRole.runner_metadata)
+
+    assert transcript_entry is not None
+    assert response_entry is not None
+    assert metadata_entry is not None
+    assert (result.run_directory / transcript_entry.path).read_text(encoding="utf-8").strip() == (
+        '{"type":"thread.started"}'
+    )
+    assert (result.run_directory / response_entry.path).read_text(encoding="utf-8").strip() == "done"
+
+    runner_metadata = json.loads((result.run_directory / metadata_entry.path).read_text(encoding="utf-8"))
+    assert runner_metadata["invocation_mode"] == "codex_exec"
+    assert runner_metadata["capture_format"] == "ndjson"
+    assert runner_metadata["command"] == ["codex", "exec", "task"]
 
 
 def test_kernel_runtime_records_failed_step_provenance_when_runner_raises(tmp_path: Path) -> None:

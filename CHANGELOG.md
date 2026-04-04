@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **OA04.2 Runner Adapters** (2026-04-03)
+  - Expanded the maintained `runners/` subsystem with adapter capability declarations, normalized transcript/final-response payloads, typed invocation metadata, and a delegating runner service
+  - Added execution-backed maintained adapters for headless Claude CLI and Codex CLI runs with explicit mapper/normalizer seams, mechanical termination mapping, and fail-fast rejection for unsupported policy guarantees
+  - Updated the kernel to persist canonical `runner_transcript`, `runner_final_response`, and richer `runner_metadata` artifacts from normalized runner results through the run-artifact store
+  - Clarified ADR-OA04.2 via addendum so maintained adapters return typed normalized payloads while canonical persistence remains owned by `run_artifacts/`
+  - Added focused adapter tests for command mapping, normalization, unsupported-policy rejection, unknown adapter-family routing, and kernel integration coverage for canonical runner artifact persistence
+  - Files: `src/tnh_scholar/agent_orchestration/runners/`, `src/tnh_scholar/agent_orchestration/kernel/service.py`, `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`, `docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md`, `tests/agent_orchestration/test_runner_adapters.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+
 - **Dependency Policy Refresh and Codex Spike Quarantine** (2026-04-03)
   - Refreshed repository dependency policy inputs and CI build constraints to keep dependency resolution aligned with current project rules
   - Updated `pyproject.toml` and `poetry.lock` as part of the dependency-policy maintenance pass

@@ -77,6 +77,68 @@ Started the next TODO-ordered OA04 implementation slice from clean `main` on bra
 - [docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md](docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md)
 - [TODO.md](TODO.md)
 
+## [2026-04-03 12:20 PDT] OA04.2 Runner Adapters
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: oa04-pr-series-build-sequence
+**Human Collaborator**: phapman
+
+### Context
+Started the next TODO-ordered OA04 implementation slice from clean `main` on branch `feat/oa04.2-runner-adapters`. The accepted target for this PR was ADR-OA04.2: replace thin runner scaffolding with maintained Claude/Codex CLI adapters, typed normalization at the adapter boundary, and canonical runner evidence flowing through the existing kernel/run-artifact layers.
+
+### Key Decisions
+- **Build adapters above the maintained execution subsystem**: use `execution/` as the only subprocess boundary instead of adding new raw subprocess logic inside `runners/`.
+- **Keep canonical persistence in the kernel/run-artifact boundary**: adapters return typed normalized transcript/final-response payloads and invocation metadata; the kernel persists canonical artifact roles and manifests.
+- **Fail fast on unsupported guarantees**: if a requested policy shape cannot be enforced natively by an adapter, raise instead of silently degrading.
+- **Clarify OA04.2 by addendum rather than bending code to stale wording**: the maintained boundary now prefers typed payload returns over adapter-owned artifact-path semantics.
+
+### Work Completed
+- [x] Expanded maintained runner-domain models with adapter capabilities, normalized text artifacts, and typed invocation metadata (file: `src/tnh_scholar/agent_orchestration/runners/models.py`)
+- [x] Added adapter and delegating-service seams for maintained runners (files: `src/tnh_scholar/agent_orchestration/runners/protocols.py`, `src/tnh_scholar/agent_orchestration/runners/service.py`, `src/tnh_scholar/agent_orchestration/runners/__init__.py`)
+- [x] Implemented execution-backed maintained adapters for Claude CLI and Codex CLI with explicit invocation mappers and output normalizers (files: `src/tnh_scholar/agent_orchestration/runners/adapters/claude_cli.py`, `src/tnh_scholar/agent_orchestration/runners/adapters/codex_cli.py`, `src/tnh_scholar/agent_orchestration/runners/adapters/_shared.py`, `src/tnh_scholar/agent_orchestration/runners/adapters/__init__.py`)
+- [x] Updated kernel runner handling so normalized runner outputs are persisted as canonical `runner_transcript`, `runner_final_response`, and richer `runner_metadata` artifacts (files: `src/tnh_scholar/agent_orchestration/kernel/service.py`, `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`)
+- [x] Added ADR-OA04.2 addendum clarifying the maintained payload-return shape and persistence ownership (file: `docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md`)
+- [x] Added focused adapter tests plus kernel integration coverage for canonical runner artifact persistence and failure paths (files: `tests/agent_orchestration/test_runner_adapters.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`)
+
+### Discoveries & Insights
+- **OA04.2’s earlier path-shaped wording needed a maintained-runtime clarification**: once PR-3 and PR-4 landed, adapter-returned payloads plus kernel-owned persistence were the cleaner contract.
+- **Capability declarations need real enforcement behind them**: approval and network posture handling could not be left as inert fields once adapters started advertising supported native controls.
+- **Kernel runner persistence was cleaner after extraction**: splitting transcript/final-response/metadata writes kept the service aligned with the repo’s function-size target while preserving the canonical artifact flow.
+
+### Files Modified/Created
+- `src/tnh_scholar/agent_orchestration/runners/models.py`: Added maintained runner capability, artifact, and metadata models.
+- `src/tnh_scholar/agent_orchestration/runners/protocols.py`: Added concrete runner-adapter protocol surface.
+- `src/tnh_scholar/agent_orchestration/runners/service.py`: Added delegating maintained runner service.
+- `src/tnh_scholar/agent_orchestration/runners/adapters/_shared.py`: Added shared executable resolution and termination mapping helpers.
+- `src/tnh_scholar/agent_orchestration/runners/adapters/claude_cli.py`: Added maintained Claude CLI invocation mapping and output normalization.
+- `src/tnh_scholar/agent_orchestration/runners/adapters/codex_cli.py`: Added maintained Codex CLI invocation mapping and output normalization.
+- `src/tnh_scholar/agent_orchestration/runners/adapters/__init__.py`: Exported maintained runner adapters.
+- `src/tnh_scholar/agent_orchestration/runners/__init__.py`: Exported the maintained runner subsystem surface.
+- `src/tnh_scholar/agent_orchestration/kernel/service.py`: Persisted normalized runner artifacts through canonical artifact roles.
+- `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`: Expanded canonical runner metadata artifact fields.
+- `docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md`: Added maintained-runtime clarification addendum.
+- `tests/agent_orchestration/test_runner_adapters.py`: Added adapter contract coverage for normalization, unsupported policy handling, and delegating service routing.
+- `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`: Added kernel coverage for canonical runner transcript/final-response persistence.
+
+### Validation Performed
+- `poetry run pytest tests/agent_orchestration/test_runner_adapters.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py -q`
+- `poetry run ruff check src/tnh_scholar/agent_orchestration/runners src/tnh_scholar/agent_orchestration/kernel/service.py tests/agent_orchestration/test_runner_adapters.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+- `poetry run mypy src/tnh_scholar/agent_orchestration/runners src/tnh_scholar/agent_orchestration/kernel/service.py tests/agent_orchestration/test_runner_adapters.py tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+
+### Next Steps
+- [ ] Run `make pr-check` and `make ci-check` for the PR-5 slice.
+- [ ] Commit `feat/oa04.2-runner-adapters` with changelog/TODO/AGENTLOG updates.
+- [ ] Push the branch and open the PR for review.
+
+### Open Questions
+- None in the maintained PR-5 slice after the adapter-boundary, policy-enforcement, and kernel-artifact cleanup passes.
+
+### References
+- [docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md](docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md](docs/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md](docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md)
+- [TODO.md](TODO.md)
+
 ## [2026-03-28 22:34 PDT] OA04.3 Kernel Provenance Integration
 
 **Agent**: GPT-5 (Codex CLI)

@@ -127,8 +127,15 @@ class RunnerMetadataArtifact(BaseModel):
     """Canonical maintained runner metadata artifact."""
 
     agent_family: AgentFamily
+    invocation_mode: str | None = None
+    command: tuple[str, ...] = Field(default_factory=tuple)
+    working_directory: Path | None = None
     prompt_reference: str | None = None
+    started_at: datetime | None = None
+    ended_at: datetime | None = None
+    exit_code: int | None = None
     termination: RunnerTermination
+    capture_format: str | None = None
 
 
 class GateRequestArtifact(BaseModel):
