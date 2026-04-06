@@ -181,3 +181,25 @@ def test_run_artifact_store_writes_json_artifact_from_pydantic_payload(tmp_path:
     persisted = json.loads((paths.run_directory / entry.path).read_text(encoding="utf-8"))
     assert persisted["requested_policy"]["execution_posture"] == "workspace-write"
     assert entry.media_type == "application/json"
+
+
+def test_run_artifact_store_copies_existing_file_artifact(tmp_path: Path) -> None:
+    store = FilesystemRunArtifactStore()
+    paths = store.create_run("run-6", tmp_path)
+    source = tmp_path / "fixture.txt"
+    source.write_text("fixture\n", encoding="utf-8")
+
+    entry = store.copy_file_artifact(
+        paths=paths,
+        step_id="validate",
+        role=ArtifactRole.harness_fixture,
+        filename="fixtures/fixture.txt",
+        source_path=source,
+        media_type="text/plain",
+        required=False,
+    )
+
+    assert entry.role == ArtifactRole.harness_fixture
+    assert str(entry.path).endswith("fixtures/fixture.txt")
+    assert entry.media_type == "text/plain"
+    assert (paths.run_directory / entry.path).read_text(encoding="utf-8") == "fixture\n"

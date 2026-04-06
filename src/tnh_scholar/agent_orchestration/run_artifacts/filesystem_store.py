@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -100,6 +101,30 @@ class FilesystemRunArtifactStore(RunArtifactStoreProtocol):
             artifact_path=artifact_path,
             role=role,
             media_type="application/json",
+            required=required,
+            important=important,
+        )
+
+    def copy_file_artifact(
+        self,
+        *,
+        paths: RunArtifactPaths,
+        step_id: str,
+        role: ArtifactRole,
+        filename: str,
+        source_path: Path,
+        media_type: str,
+        required: bool,
+        important: bool = False,
+    ) -> StepArtifactEntry:
+        artifact_path = self.artifact_step_dir(step_id, paths) / filename
+        artifact_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source_path, artifact_path)
+        return self._build_artifact_entry(
+            paths=paths,
+            artifact_path=artifact_path,
+            role=role,
+            media_type=media_type,
             required=required,
             important=important,
         )

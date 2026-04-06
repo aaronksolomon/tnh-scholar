@@ -72,6 +72,7 @@ class ArtifactRole(str, Enum):
     validation_report = "validation_report"
     validation_stdout = "validation_stdout"
     validation_stderr = "validation_stderr"
+    harness_fixture = "harness_fixture"
     planner_decision = "planner_decision"
     gate_request = "gate_request"
     gate_outcome = "gate_outcome"

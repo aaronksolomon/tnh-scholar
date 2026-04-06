@@ -8,6 +8,11 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field
 
+from tnh_scholar.agent_orchestration.execution.models import (
+    EnvironmentPolicy,
+    ExecutionOutputCapturePolicy,
+)
+
 
 class ValidationTermination(str, Enum):
     """Validation outcomes exposed to the kernel."""
@@ -31,6 +36,14 @@ class GeneratedHarnessValidatorId(str, Enum):
     """Trusted generated harness validator identifiers."""
 
     generated_harness = "generated_harness"
+
+
+class BackendFamily(str, Enum):
+    """Maintained harness backend families."""
+
+    script = "script"
+    cli = "cli"
+    web = "web"
 
 
 class BuiltinValidationSpec(BaseModel):
@@ -69,9 +82,53 @@ class HarnessReport(BaseModel):
     proposed_goldens: list[str] = Field(default_factory=list)
 
 
+class ValidationTextArtifact(BaseModel):
+    """Normalized text artifact returned by validation execution."""
+
+    filename: str
+    content: str
+    media_type: str
+
+
+class ValidationCapturedArtifact(BaseModel):
+    """Captured harness artifact awaiting canonical persistence."""
+
+    source_path: Path
+    relative_path: Path
+    media_type: str = "application/octet-stream"
+
+
+class HarnessBackendRequest(BaseModel):
+    """Backend-neutral harness execution request."""
+
+    backend_family: BackendFamily
+    executable: Path
+    entrypoint: Path | None = None
+    arguments: tuple[str, ...] = Field(default_factory=tuple)
+    working_directory: Path
+    artifact_patterns: tuple[str, ...] = Field(default_factory=tuple)
+    timeout_seconds: int | None = None
+    environment_policy: EnvironmentPolicy
+    output_capture_policy: ExecutionOutputCapturePolicy = Field(
+        default_factory=ExecutionOutputCapturePolicy
+    )
+
+
+class HarnessBackendResult(BaseModel):
+    """Normalized harness backend result."""
+
+    termination: ValidationTermination
+    harness_report: HarnessReport | None = None
+    stdout_artifact: ValidationTextArtifact | None = None
+    stderr_artifact: ValidationTextArtifact | None = None
+    captured_artifacts: list[ValidationCapturedArtifact] = Field(default_factory=list)
+
+
 class ValidationResult(BaseModel):
     """Validation result exposed to the kernel."""
 
     termination: ValidationTermination
     harness_report: HarnessReport | None = None
-    artifact_paths: list[Path] = Field(default_factory=list)
+    stdout_artifact: ValidationTextArtifact | None = None
+    stderr_artifact: ValidationTextArtifact | None = None
+    captured_artifacts: list[ValidationCapturedArtifact] = Field(default_factory=list)

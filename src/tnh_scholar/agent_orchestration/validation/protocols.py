@@ -7,17 +7,34 @@ from typing import Protocol
 
 from tnh_scholar.agent_orchestration.execution.models import ExecutionRequest
 from tnh_scholar.agent_orchestration.validation.models import (
+    BuiltinValidationSpec,
+    HarnessBackendRequest,
+    HarnessBackendResult,
+    HarnessValidationSpec,
     ValidationResult,
-    ValidationSpec,
     ValidationStepRequest,
 )
 
 
 class ValidatorResolverProtocol(Protocol):
-    """Resolve validation specs into execution requests."""
+    """Resolve builtin validators into execution requests."""
 
-    def resolve(self, spec: ValidationSpec, run_directory: Path) -> ExecutionRequest:
-        """Resolve one validator into a trusted execution request."""
+    def resolve(self, spec: BuiltinValidationSpec, run_directory: Path) -> ExecutionRequest:
+        """Resolve one builtin validator into a trusted execution request."""
+
+
+class HarnessBackendResolverProtocol(Protocol):
+    """Resolve harness validators into backend requests."""
+
+    def resolve(self, spec: HarnessValidationSpec, run_directory: Path) -> HarnessBackendRequest:
+        """Resolve one harness validator into a trusted backend request."""
+
+
+class HarnessBackendProtocol(Protocol):
+    """Execute one normalized harness backend request."""
+
+    def run(self, request: HarnessBackendRequest) -> HarnessBackendResult:
+        """Execute one harness request and normalize outputs."""
 
 
 class ValidationServiceProtocol(Protocol):

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -58,17 +59,26 @@ from tnh_scholar.agent_orchestration.runners import (
     RunnerTextArtifact,
 )
 from tnh_scholar.agent_orchestration.validation import (
+    BackendFamily,
     BuiltinCommandEntry,
     BuiltinValidationSpec,
     BuiltinValidatorId,
     GeneratedHarnessValidatorId,
+    HarnessBackendRegistry,
+    HarnessBackendRequest,
+    HarnessReportLoader,
     HarnessValidationSpec,
+    ScriptHarnessBackend,
+    StaticHarnessBackendResolver,
     StaticValidatorResolver,
+    ValidationCapturedArtifact,
     ValidationResult,
     ValidationService,
     ValidationStepRequest,
     ValidationTermination,
+    ValidationTextArtifact,
 )
+from tnh_scholar.agent_orchestration.validation.termination import merge_validation_termination
 from tnh_scholar.agent_orchestration.workspace import NullWorkspaceService
 from tnh_scholar.agent_orchestration.workspace.models import WorkspaceSnapshot
 
@@ -240,6 +250,22 @@ class ProtectedBranchWorkspace:
         return ""
 
 
+def _validation_service() -> ValidationService:
+    """Build the maintained validation service with the script backend."""
+
+    return ValidationService(
+        resolver=StaticValidatorResolver(entries=[]),
+        execution_service=SubprocessExecutionService(),
+        harness_resolver=StaticHarnessBackendResolver(),
+        backend_registry=HarnessBackendRegistry(
+            script_backend=ScriptHarnessBackend(
+                execution_service=SubprocessExecutionService(),
+                report_loader=HarnessReportLoader(),
+            )
+        ),
+    )
+
+
 def test_execution_service_runs_cli_process(tmp_path: Path) -> None:
     script = tmp_path / "echo.sh"
     script.write_text("#!/bin/sh\necho ok\n", encoding="utf-8")
@@ -285,15 +311,14 @@ def test_validation_service_executes_builtin_validator(tmp_path: Path) -> None:
     script = tmp_path / "validator.sh"
     script.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
     script.chmod(0o755)
+    service = _validation_service()
     service = ValidationService(
         resolver=StaticValidatorResolver(
             entries=[BuiltinCommandEntry(name=BuiltinValidatorId.tests, executable=script)]
         ),
-        execution_service=SubprocessExecutionService(),
-        report_loader=__import__(
-            "tnh_scholar.agent_orchestration.validation.service",
-            fromlist=["HarnessReportLoader"],
-        ).HarnessReportLoader(),
+        execution_service=service.execution_service,
+        harness_resolver=service.harness_resolver,
+        backend_registry=service.backend_registry,
     )
     result = service.run(
         ValidationStepRequest(
@@ -308,17 +333,16 @@ def test_validation_service_preserves_killed_idle_outcome(tmp_path: Path) -> Non
     script = tmp_path / "validator.sh"
     script.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
     script.chmod(0o755)
+    service = _validation_service()
     service = ValidationService(
         resolver=StaticValidatorResolver(
             entries=[BuiltinCommandEntry(name=BuiltinValidatorId.tests, executable=script)]
         ),
-        execution_service=SubprocessExecutionService(),
-        report_loader=__import__(
-            "tnh_scholar.agent_orchestration.validation.service",
-            fromlist=["HarnessReportLoader"],
-        ).HarnessReportLoader(),
+        execution_service=service.execution_service,
+        harness_resolver=service.harness_resolver,
+        backend_registry=service.backend_registry,
     )
-    merged = service._merge_termination(
+    merged = merge_validation_termination(
         ValidationTermination.completed,
         ValidationTermination.killed_idle,
     )
@@ -331,14 +355,7 @@ def test_validation_service_marks_invalid_harness_report_as_error(tmp_path: Path
         "from pathlib import Path\nPath('harness_report.json').write_text('{', encoding='utf-8')\n",
         encoding="utf-8",
     )
-    service = ValidationService(
-        resolver=StaticValidatorResolver(entries=[]),
-        execution_service=SubprocessExecutionService(),
-        report_loader=__import__(
-            "tnh_scholar.agent_orchestration.validation.service",
-            fromlist=["HarnessReportLoader"],
-        ).HarnessReportLoader(),
-    )
+    service = _validation_service()
     result = service.run(
         ValidationStepRequest(
             validators=[
@@ -348,6 +365,86 @@ def test_validation_service_marks_invalid_harness_report_as_error(tmp_path: Path
         )
     )
     assert result.termination == ValidationTermination.error
+
+
+def test_validation_service_merges_harness_outputs_across_multiple_validators(tmp_path: Path) -> None:
+    first = tmp_path / "generated_harness.py"
+    second = tmp_path / "second_harness.py"
+    fixture = tmp_path / "fixture.txt"
+    fixture.write_text("fixture\n", encoding="utf-8")
+    first.write_text(
+        "\n".join(
+            [
+                "from pathlib import Path",
+                "print('first out')",
+                (
+                    "Path('harness_report.json').write_text("
+                    "'{\"proposed_goldens\": [\"a.png\"]}', encoding='utf-8')"
+                ),
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    second.write_text(
+        "\n".join(
+            [
+                "from pathlib import Path",
+                "import sys",
+                "print('second out')",
+                "print('second err', file=sys.stderr)",
+                (
+                    "Path('harness_report.json').write_text("
+                    "'{\"proposed_goldens\": [\"b.png\"]}', encoding='utf-8')"
+                ),
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    backend = ScriptHarnessBackend(
+        execution_service=SubprocessExecutionService(),
+        report_loader=HarnessReportLoader(),
+    )
+    service = ValidationService(
+        resolver=StaticValidatorResolver(entries=[]),
+        execution_service=SubprocessExecutionService(),
+        harness_resolver=StaticHarnessBackendResolver(),
+        backend_registry=HarnessBackendRegistry(script_backend=backend),
+    )
+    service = ValidationService(
+        resolver=service.resolver,
+        execution_service=service.execution_service,
+        harness_resolver=_FixedHarnessResolver(
+            requests=(
+                _script_backend_request(tmp_path, first, artifacts=("fixture.txt",)),
+                _script_backend_request(tmp_path, second),
+            )
+        ),
+        backend_registry=service.backend_registry,
+    )
+
+    result = service.run(
+        ValidationStepRequest(
+            validators=[
+                HarnessValidationSpec(name=GeneratedHarnessValidatorId.generated_harness),
+                HarnessValidationSpec(name=GeneratedHarnessValidatorId.generated_harness),
+            ],
+            run_directory=tmp_path,
+        )
+    )
+
+    assert result.termination == ValidationTermination.completed
+    assert result.harness_report is not None
+    assert result.harness_report.proposed_goldens == ["a.png", "b.png"]
+    assert result.stdout_artifact is not None
+    assert "first out" in result.stdout_artifact.content
+    assert "second out" in result.stdout_artifact.content
+    assert result.stderr_artifact is not None
+    assert "second err" in result.stderr_artifact.content
+    assert len(result.captured_artifacts) == 1
+    assert result.captured_artifacts[0].relative_path == Path("fixture.txt")
 
 
 def test_run_artifact_store_creates_parent_directories(tmp_path: Path) -> None:
@@ -406,6 +503,41 @@ class FixedValidationService:
 
     def run(self, request: ValidationStepRequest) -> ValidationResult:
         return self.result
+
+
+@dataclass
+class _FixedHarnessResolver:
+    """Harness resolver double returning pre-seeded requests in order."""
+
+    requests: tuple[HarnessBackendRequest, ...]
+    cursor: int = 0
+
+    def resolve(
+        self,
+        spec: HarnessValidationSpec,
+        run_directory: Path,
+    ) -> HarnessBackendRequest:
+        del spec, run_directory
+        if self.cursor >= len(self.requests):
+            raise AssertionError("Harness resolver exhausted")
+        request = self.requests[self.cursor]
+        self.cursor += 1
+        return request
+
+
+def _script_backend_request(
+    run_directory: Path,
+    script_path: Path,
+    artifacts: tuple[str, ...] = (),
+) -> HarnessBackendRequest:
+    return HarnessBackendRequest(
+        backend_family=BackendFamily.script,
+        executable=Path(sys.executable),
+        entrypoint=script_path,
+        working_directory=run_directory,
+        artifact_patterns=artifacts,
+        environment_policy=ExplicitEnvironmentPolicy(values={}),
+    )
 
 
 def test_kernel_runtime_blocks_success_stop_until_gate_after_proposed_goldens(tmp_path: Path) -> None:
@@ -698,6 +830,107 @@ def test_kernel_runtime_persists_runner_transcript_and_final_response(tmp_path: 
     assert runner_metadata["invocation_mode"] == "codex_exec"
     assert runner_metadata["capture_format"] == "ndjson"
     assert runner_metadata["command"] == ["codex", "exec", "task"]
+
+
+def test_kernel_runtime_persists_validation_stdout_and_stderr(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-validation-artifacts",
+        version=1,
+        description="validation artifacts",
+        entry_step="validate",
+        steps=[
+            RunValidationStep(
+                id="validate",
+                run=[],
+                routes=[RouteRule(outcome=ValidationTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 4, 5, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-validation-artifacts"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(
+            ValidationResult(
+                termination=ValidationTermination.completed,
+                harness_report={"proposed_goldens": []},
+                stdout_artifact=ValidationTextArtifact(
+                    filename="validation_stdout.txt",
+                    content="validator out\n",
+                    media_type="text/plain",
+                ),
+                stderr_artifact=ValidationTextArtifact(
+                    filename="validation_stderr.txt",
+                    content="validator err\n",
+                    media_type="text/plain",
+                ),
+            )
+        ),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+
+    result = service.run(workflow, tmp_path)
+    manifest = _read_manifest(result.run_directory, "validate")
+    stdout_entry = manifest.artifact_for_role(ArtifactRole.validation_stdout)
+    stderr_entry = manifest.artifact_for_role(ArtifactRole.validation_stderr)
+
+    assert stdout_entry is not None
+    assert stderr_entry is not None
+    assert (result.run_directory / stdout_entry.path).read_text(encoding="utf-8") == "validator out\n"
+    assert (result.run_directory / stderr_entry.path).read_text(encoding="utf-8") == "validator err\n"
+
+
+def test_kernel_runtime_persists_captured_harness_fixtures(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-validation-fixtures",
+        version=1,
+        description="validation fixtures",
+        entry_step="validate",
+        steps=[
+            RunValidationStep(
+                id="validate",
+                run=[],
+                routes=[RouteRule(outcome=ValidationTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    fixture = tmp_path / "golden.txt"
+    fixture.write_text("golden\n", encoding="utf-8")
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 4, 5, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-validation-fixtures"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(
+            ValidationResult(
+                termination=ValidationTermination.completed,
+                captured_artifacts=[
+                    ValidationCapturedArtifact(
+                        source_path=fixture,
+                        relative_path=Path("golden.txt"),
+                        media_type="text/plain",
+                    )
+                ],
+            )
+        ),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+
+    result = service.run(workflow, tmp_path)
+    manifest = _read_manifest(result.run_directory, "validate")
+    fixture_entry = manifest.artifact_for_role(ArtifactRole.harness_fixture)
+
+    assert fixture_entry is not None
+    assert (result.run_directory / fixture_entry.path).read_text(encoding="utf-8") == "golden\n"
 
 
 def test_kernel_runtime_records_failed_step_provenance_when_runner_raises(tmp_path: Path) -> None:

@@ -64,3 +64,17 @@ class RunArtifactStoreProtocol(Protocol):
         important: bool = False,
     ) -> StepArtifactEntry:
         """Write and register one JSON artifact."""
+
+    def copy_file_artifact(
+        self,
+        *,
+        paths: RunArtifactPaths,
+        step_id: str,
+        role: ArtifactRole,
+        filename: str,
+        source_path: Path,
+        media_type: str,
+        required: bool,
+        important: bool = False,
+    ) -> StepArtifactEntry:
+        """Copy one existing file into canonical artifact storage."""
