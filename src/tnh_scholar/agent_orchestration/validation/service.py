@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-import shutil
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -13,26 +11,33 @@ from pydantic import BaseModel, Field
 from tnh_scholar.agent_orchestration.execution import (
     CliExecutableInvocation,
     ExecutionRequest,
-    ExecutionTermination,
     ExplicitEnvironmentPolicy,
-    PythonScriptInvocation,
     SubprocessExecutionService,
-    TimeoutPolicy,
 )
 from tnh_scholar.agent_orchestration.validation.models import (
+    BackendFamily,
     BuiltinValidationSpec,
     BuiltinValidatorId,
     GeneratedHarnessValidatorId,
+    HarnessBackendRequest,
+    HarnessBackendResult,
     HarnessReport,
     HarnessValidationSpec,
     ValidationResult,
     ValidationSpec,
     ValidationStepRequest,
     ValidationTermination,
+    ValidationTextArtifact,
 )
 from tnh_scholar.agent_orchestration.validation.protocols import (
+    HarnessBackendProtocol,
+    HarnessBackendResolverProtocol,
     ValidationServiceProtocol,
     ValidatorResolverProtocol,
+)
+from tnh_scholar.agent_orchestration.validation.termination import (
+    merge_validation_termination,
+    to_validation_termination,
 )
 
 
@@ -46,23 +51,12 @@ class BuiltinCommandEntry(BaseModel):
 
 @dataclass(frozen=True)
 class StaticValidatorResolver(ValidatorResolverProtocol):
-    """Resolve trusted validation specs into execution requests."""
+    """Resolve trusted builtin validators into execution requests."""
 
     entries: list[BuiltinCommandEntry]
-    harness_script_name: str = "generated_harness.py"
-    harness_report_name: str = "harness_report.json"
 
-    def resolve(self, spec: ValidationSpec, run_directory: Path) -> ExecutionRequest:
-        """Resolve a validation spec."""
-        if isinstance(spec, BuiltinValidationSpec):
-            return self._resolve_builtin(spec, run_directory)
-        return self._resolve_harness(spec, run_directory)
-
-    def _resolve_builtin(
-        self,
-        spec: BuiltinValidationSpec,
-        run_directory: Path,
-    ) -> ExecutionRequest:
+    def resolve(self, spec: BuiltinValidationSpec, run_directory: Path) -> ExecutionRequest:
+        """Resolve one builtin validation spec."""
         for entry in self.entries:
             if entry.name == spec.name:
                 return ExecutionRequest(
@@ -75,42 +69,44 @@ class StaticValidatorResolver(ValidatorResolverProtocol):
                 )
         raise ValueError(f"Unknown builtin validator: {spec.name.value}")
 
-    def _resolve_harness(
-        self,
-        spec: HarnessValidationSpec,
-        run_directory: Path,
-    ) -> ExecutionRequest:
+
+@dataclass(frozen=True)
+class StaticHarnessBackendResolver(HarnessBackendResolverProtocol):
+    """Resolve trusted harness validators into backend requests."""
+
+    harness_script_name: str = "generated_harness.py"
+    harness_report_name: str = "harness_report.json"
+
+    def resolve(self, spec: HarnessValidationSpec, run_directory: Path) -> HarnessBackendRequest:
+        """Resolve one harness validation spec."""
         match spec.name:
             case GeneratedHarnessValidatorId.generated_harness:
-                return ExecutionRequest(
-                    invocation=PythonScriptInvocation(
-                        interpreter=Path(sys.executable),
-                        script_path=run_directory / self.harness_script_name,
-                        arguments=("--report", self.harness_report_name),
-                    ),
+                return HarnessBackendRequest(
+                    backend_family=BackendFamily.script,
+                    executable=Path(sys.executable),
+                    entrypoint=run_directory / self.harness_script_name,
+                    arguments=("--report", self.harness_report_name),
                     working_directory=run_directory,
+                    artifact_patterns=tuple(spec.artifacts),
+                    timeout_seconds=spec.timeout_seconds,
                     environment_policy=ExplicitEnvironmentPolicy(values={}),
-                    timeout_policy=TimeoutPolicy(wall_clock_seconds=spec.timeout_seconds),
                 )
         raise ValueError(f"Unsupported harness validator: {spec.name.value}")
 
 
 @dataclass(frozen=True)
-class HarnessReportLoader:
-    """Load and normalize harness reports."""
+class HarnessBackendRegistry:
+    """Resolve maintained backend implementations by family."""
 
-    report_name: str = "harness_report.json"
+    script_backend: HarnessBackendProtocol
 
-    def load(self, run_directory: Path) -> HarnessReport | None:
-        """Load a harness report if present."""
-        path = run_directory / self.report_name
-        if not path.exists():
-            return None
-        try:
-            payload = json.loads(path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError as error:
-            raise ValueError(f"Invalid harness report JSON: {path}") from error
-        return HarnessReport.model_validate(payload)
+    def resolve(self, family: BackendFamily) -> HarnessBackendProtocol:
+        """Resolve one backend implementation."""
+        match family:
+            case BackendFamily.script:
+                return self.script_backend
+            case BackendFamily.cli | BackendFamily.web:
+                raise ValueError(f"Harness backend not implemented: {family.value}")
 
 
 @dataclass(frozen=True)
@@ -119,91 +115,112 @@ class ValidationService(ValidationServiceProtocol):
 
     resolver: ValidatorResolverProtocol
     execution_service: SubprocessExecutionService
-    report_loader: HarnessReportLoader
-    artifacts_subdir: str = "validation_artifacts"
+    harness_resolver: HarnessBackendResolverProtocol
+    backend_registry: HarnessBackendRegistry
 
     def run(self, request: ValidationStepRequest) -> ValidationResult:
         """Execute all validators in a step."""
-        termination = ValidationTermination.completed
-        report = None
-        artifact_paths: list[Path] = []
-        for spec in request.validators:
-            execution_request = self.resolver.resolve(spec, request.run_directory)
-            execution_result = self.execution_service.run(execution_request)
-            termination = self._merge_termination(
-                termination,
-                self._to_validation_termination(execution_result.termination),
+        return self._run_all_validators(request.validators, request.run_directory)
+
+    def _run_all_validators(
+        self,
+        validators: list[ValidationSpec],
+        run_directory: Path,
+    ) -> ValidationResult:
+        aggregate = ValidationResult(termination=ValidationTermination.completed)
+        for spec in validators:
+            aggregate = self._merge_result(
+                current=aggregate,
+                new_value=self._run_validator(spec, run_directory),
             )
-            artifact_paths.extend(self._capture_artifacts(request.run_directory, spec))
-            latest_report, report_termination = self._load_report(request.run_directory)
-            termination = self._merge_termination(termination, report_termination)
-            if latest_report is not None:
-                report = latest_report
+        return aggregate
+
+    def _run_validator(
+        self,
+        spec: ValidationSpec,
+        run_directory: Path,
+    ) -> HarnessBackendResult:
+        if isinstance(spec, BuiltinValidationSpec):
+            return self._run_builtin_validator(spec, run_directory)
+        return self._run_harness_validator(spec, run_directory)
+
+    def _run_builtin_validator(
+        self,
+        spec: BuiltinValidationSpec,
+        run_directory: Path,
+    ) -> HarnessBackendResult:
+        execution_request = self.resolver.resolve(spec, run_directory)
+        execution_result = self.execution_service.run(execution_request)
+        return HarnessBackendResult(termination=to_validation_termination(execution_result.termination))
+
+    def _run_harness_validator(
+        self,
+        spec: HarnessValidationSpec,
+        run_directory: Path,
+    ) -> HarnessBackendResult:
+        backend_request = self.harness_resolver.resolve(spec, run_directory)
+        backend = self.backend_registry.resolve(backend_request.backend_family)
+        return backend.run(backend_request)
+
+    def _merge_result(
+        self,
+        *,
+        current: ValidationResult,
+        new_value: HarnessBackendResult,
+    ) -> ValidationResult:
         return ValidationResult(
-            termination=termination,
-            harness_report=report,
-            artifact_paths=artifact_paths,
+            termination=merge_validation_termination(current.termination, new_value.termination),
+            harness_report=self._merge_report(current.harness_report, new_value.harness_report),
+            stdout_artifact=self._merge_text_artifact(
+                current=current.stdout_artifact,
+                new_value=new_value.stdout_artifact,
+                fallback_filename="validation_stdout.txt",
+            ),
+            stderr_artifact=self._merge_text_artifact(
+                current=current.stderr_artifact,
+                new_value=new_value.stderr_artifact,
+                fallback_filename="validation_stderr.txt",
+            ),
+            captured_artifacts=[*current.captured_artifacts, *new_value.captured_artifacts],
         )
 
-    def _to_validation_termination(
+    def _merge_report(
         self,
-        termination: ExecutionTermination,
-    ) -> ValidationTermination:
-        match termination:
-            case ExecutionTermination.completed:
-                return ValidationTermination.completed
-            case ExecutionTermination.non_zero_exit | ExecutionTermination.startup_failure:
-                return ValidationTermination.error
-            case ExecutionTermination.wall_clock_timeout:
-                return ValidationTermination.killed_timeout
-            case ExecutionTermination.idle_timeout:
-                return ValidationTermination.killed_idle
-            case ExecutionTermination.policy_kill:
-                return ValidationTermination.killed_policy
-        raise ValueError(f"Unsupported execution termination: {termination.value}")
+        current: HarnessReport | None,
+        new_value: HarnessReport | None,
+    ) -> HarnessReport | None:
+        if new_value is None:
+            return current
+        if current is None:
+            return new_value
+        merged_goldens = tuple(dict.fromkeys([*current.proposed_goldens, *new_value.proposed_goldens]))
+        return HarnessReport(proposed_goldens=list(merged_goldens))
 
-    def _merge_termination(
+    def _merge_text_artifact(
         self,
-        current: ValidationTermination,
-        new_value: ValidationTermination,
-    ) -> ValidationTermination:
-        return max(current, new_value, key=self._termination_rank)
+        *,
+        current: ValidationTextArtifact | None,
+        new_value: ValidationTextArtifact | None,
+        fallback_filename: str,
+    ) -> ValidationTextArtifact | None:
+        if new_value is None:
+            return current
+        if current is None:
+            return new_value
+        if current.media_type != new_value.media_type:
+            raise ValueError("Validation text artifacts must share a media type.")
+        combined = self._join_text(current.content, new_value.content)
+        return ValidationTextArtifact(
+            filename=fallback_filename,
+            content=combined,
+            media_type=current.media_type,
+        )
 
-    def _termination_rank(self, value: ValidationTermination) -> int:
-        match value:
-            case ValidationTermination.completed:
-                return 0
-            case ValidationTermination.error:
-                return 1
-            case ValidationTermination.killed_policy:
-                return 2
-            case ValidationTermination.killed_idle:
-                return 3
-            case ValidationTermination.killed_timeout:
-                return 4
-        raise ValueError(f"Unsupported validation termination: {value}")
-
-    def _load_report(
-        self,
-        run_directory: Path,
-    ) -> tuple[HarnessReport | None, ValidationTermination]:
-        try:
-            return self.report_loader.load(run_directory), ValidationTermination.completed
-        except ValueError:
-            return None, ValidationTermination.error
-
-    def _capture_artifacts(self, run_directory: Path, spec: ValidationSpec) -> list[Path]:
-        if not isinstance(spec, HarnessValidationSpec):
-            return []
-        root = run_directory / self.artifacts_subdir
-        captured: list[Path] = []
-        for pattern in spec.artifacts:
-            for path in run_directory.glob(pattern):
-                if not path.is_file():
-                    continue
-                relative = path.relative_to(run_directory)
-                destination = root / relative
-                destination.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(path, destination)
-                captured.append(destination)
-        return captured
+    def _join_text(self, current: str, new_value: str) -> str:
+        if not current:
+            return new_value
+        if not new_value:
+            return current
+        if current.endswith("\n"):
+            return f"{current}{new_value}"
+        return f"{current}\n{new_value}"

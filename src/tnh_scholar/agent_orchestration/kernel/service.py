@@ -57,7 +57,10 @@ from tnh_scholar.agent_orchestration.runners.models import RunnerResult, RunnerT
 from tnh_scholar.agent_orchestration.shared_enums import AgentFamily, RunnerTermination
 from tnh_scholar.agent_orchestration.validation.models import (
     HarnessReport,
+    ValidationCapturedArtifact,
+    ValidationResult,
     ValidationStepRequest,
+    ValidationTextArtifact,
 )
 from tnh_scholar.agent_orchestration.validation.protocols import ValidationServiceProtocol
 
@@ -298,14 +301,14 @@ class KernelRunService:
             ValidationStepRequest(validators=step.run, run_directory=context.run_directory)
         )
         next_state = state
-        report = self._normalize_harness_report(result.harness_report)
+        report = result.harness_report
         if report is not None and report.proposed_goldens:
             next_state = state.with_pending_gate()
         target = catalog.route_target(step, result.termination.value, context="No route for outcome")
         extra_artifacts = self._validation_artifacts(
             step_id=step.id,
             paths=context.paths,
-            report=report,
+            result=result,
         )
         self._record_step_completion(
             step=step,
@@ -464,24 +467,53 @@ class KernelRunService:
                 "Goldens proposed: success path must pass through GATE before STOP."
             )
 
-    def _normalize_harness_report(
-        self,
-        report: HarnessReport | dict[str, object] | None,
-    ) -> HarnessReport | None:
-        if report is None:
-            return None
-        return report if isinstance(report, HarnessReport) else HarnessReport.model_validate(report)
-
     def _validation_artifacts(
         self,
         *,
         step_id: str,
         paths: RunArtifactPaths,
-        report: HarnessReport | None,
+        result: ValidationResult,
     ) -> tuple[StepArtifactEntry, ...]:
+        artifacts = [
+            artifact
+            for artifact in (
+                self._write_validation_report_artifact(
+                    step_id=step_id,
+                    paths=paths,
+                    report=result.harness_report,
+                ),
+                self._write_validation_text_artifact(
+                    step_id=step_id,
+                    paths=paths,
+                    artifact=result.stdout_artifact,
+                    role=ArtifactRole.validation_stdout,
+                ),
+                self._write_validation_text_artifact(
+                    step_id=step_id,
+                    paths=paths,
+                    artifact=result.stderr_artifact,
+                    role=ArtifactRole.validation_stderr,
+                ),
+                *self._write_validation_captured_artifacts(
+                    step_id=step_id,
+                    paths=paths,
+                    captured_artifacts=result.captured_artifacts,
+                ),
+            )
+            if artifact is not None
+        ]
+        return tuple(artifacts)
+
+    def _write_validation_report_artifact(
+        self,
+        *,
+        step_id: str,
+        paths: RunArtifactPaths,
+        report: HarnessReport | None,
+    ) -> StepArtifactEntry | None:
         if report is None:
-            return ()
-        artifact = self.artifact_store.write_json_artifact(
+            return None
+        return self.artifact_store.write_json_artifact(
             paths=paths,
             step_id=step_id,
             role=ArtifactRole.validation_report,
@@ -489,7 +521,50 @@ class KernelRunService:
             payload=report,
             required=True,
         )
-        return (artifact,)
+
+    def _write_validation_text_artifact(
+        self,
+        *,
+        step_id: str,
+        paths: RunArtifactPaths,
+        artifact: ValidationTextArtifact | None,
+        role: ArtifactRole,
+    ) -> StepArtifactEntry | None:
+        if artifact is None:
+            return None
+        return self.artifact_store.write_text_artifact(
+            paths=paths,
+            step_id=step_id,
+            role=role,
+            filename=artifact.filename,
+            content=artifact.content,
+            media_type=artifact.media_type,
+            required=True,
+            important=True,
+        )
+
+    def _write_validation_captured_artifacts(
+        self,
+        *,
+        step_id: str,
+        paths: RunArtifactPaths,
+        captured_artifacts: list[ValidationCapturedArtifact],
+    ) -> tuple[StepArtifactEntry, ...]:
+        artifacts: list[StepArtifactEntry] = []
+        for captured_artifact in captured_artifacts:
+            filename = str(Path("fixtures") / captured_artifact.relative_path)
+            artifacts.append(
+                self.artifact_store.copy_file_artifact(
+                    paths=paths,
+                    step_id=step_id,
+                    role=ArtifactRole.harness_fixture,
+                    filename=filename,
+                    source_path=captured_artifact.source_path,
+                    media_type=captured_artifact.media_type,
+                    required=False,
+                )
+            )
+        return tuple(artifacts)
 
     def _runner_artifacts(
         self,
