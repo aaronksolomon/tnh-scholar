@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Agent Orchestration Bootstrap ADR Alignment** (2026-04-06)
+  - Added `ADR-OA07` and `ADR-OA07.1` to freeze the bootstrap safety model for worktree isolation, branch-scoped rollback, mutable workspace boundaries, and agent authority through review-ready PR creation
+  - Clarified the `OA04` family as workflow execution contracts and updated `OA04.1` to describe MVP runtime build order and the handoff to `OA07.x` for workspace-safety decisions
+  - Marked implemented OA04 decimal ADRs repo-consistently and refreshed orchestration ADR cross-references, TODO planning, and generated documentation indexes to match the current ADR map
+  - Files: `docs/architecture/agent-orchestration/adr/`, `TODO.md`, generated `docs/**/index.md`
+
 - **OA04.2 Runner Adapters** (2026-04-03)
   - Expanded the maintained `runners/` subsystem with adapter capability declarations, normalized transcript/final-response payloads, typed invocation metadata, and a delegating runner service
   - Added execution-backed maintained adapters for headless Claude CLI and Codex CLI runs with explicit mapper/normalizer seams, mechanical termination mapping, and fail-fast rejection for unsupported policy guarantees

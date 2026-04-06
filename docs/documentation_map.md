@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-02-09"
+created: "2026-04-06"
 auto_generated: true
 ---
 
@@ -91,11 +91,23 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-OA02: Phase 0 Protocol Layer Spike](/architecture/agent-orchestration/adr/adr-oa02-phase-0-protocol-spike.md)
 - [ADR-OA03.1: Claude Code Runner](/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md)
 - [ADR-OA03.2: Codex Runner](/architecture/agent-orchestration/adr/adr-oa03.2-codex-runner.md)
+- [ADR-OA03.3: Codex CLI Runner](/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md)
 - [ADR-OA03: Agent Runner Architecture](/architecture/agent-orchestration/adr/adr-oa03-agent-runner-architecture.md)
+- [ADR-OA04.1: MVP Runtime Build-Out Sequence](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md)
+- [ADR-OA04.2: Runner Contract](/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md)
+- [ADR-OA04.3: Provenance and Run-Artifact Contract](/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md)
+- [ADR-OA04.4: Policy Enforcement Contract](/architecture/agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract.md)
+- [ADR-OA04.5: Harness Backend Contract](/architecture/agent-orchestration/adr/adr-oa04.5-harness-backend-contract.md)
+- [ADR-OA04: Workflow Execution Contracts](/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
+- [ADR-OA05: Prompt Library Specification](/architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification.md)
+- [ADR-OA06: Planner Evaluator Contract](/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md)
+- [ADR-OA07.1: Worktree Lifecycle and Rollback](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md)
+- [ADR-OA07: Diff-Policy + Safety Rails](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md)
 - [ADR-OS01: Object-Service Design Architecture V3](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
 - [ADR-PP01: Rapid Prototype Versioning Policy](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md)
 - [ADR-PT03: Prompt System Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
 - [ADR-PT04: Prompt System Refactor Plan (Revised)](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- [ADR-PT05: Prompt Platform Strategy](/architecture/prompt-system/adr/adr-pt05-prompt-platform-strategy.md)
 - [ADR-PV01: Provenance & Tracing Infrastructure Strategy](/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md)
 - [ADR-ST01.1: tnh-setup UI Design](/architecture/setup-tnh/adr/adr-st01.1-tnh-setup-ui-design.md)
 - [ADR-ST01: tnh-setup Runtime Hardening](/architecture/setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening.md)
@@ -106,6 +118,9 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-TR02: Optimized SRT Generation Design](/architecture/transcription/adr/adr-tr02-optimized-srt-design.md)
 - [ADR-TR03: Standardizing Timestamps to Milliseconds](/architecture/transcription/adr/adr-tr03-ms-timestamps.md)
 - [ADR-TR04: AssemblyAI Service Implementation Improvements](/architecture/transcription/adr/adr-tr04-assemblyai-improvements.md)
+- [ADR-TR05.1: Speaker-Block Language Lock Default Strategy](/architecture/transcription/adr/adr-tr05.1-speaker-block-language-lock-default.md)
+- [ADR-TR05.2: MVP Service Scaffold for Multilingual Transcription](/architecture/transcription/adr/adr-tr05.2-mvp-service-scaffold.md)
+- [ADR-TR05: Language-Aware Multilingual Transcription Engine](/architecture/transcription/adr/adr-tr05-language-aware-multilingual-transcription-engine.md)
 - [ADR-VP01: Video Processing Return Types and Configuration](/architecture/video-processing/adr/adr-vp01-video-processing.md)
 - [ADR-VP02: yt-dlp Operational Strategy](/architecture/video-processing/adr/adr-vp02-ytdlp-operational-strategy.md)
 - [ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)](/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md)
@@ -117,6 +132,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-YF00: Early yt-fetch Transcript Decisions (Historical)](/architecture/ytt-fetch/adr/adr-yf00-early-decisions.md)
 - [ADR-YF01: YouTube Transcript Source Handling](/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md)
 - [ADR-YF02: YouTube Transcript Format Selection](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)
+- [Agent Orchestration Spike Testing Sequence](/architecture/agent-orchestration/notes/spike-testing-sequence.md)
 - [Architecture Overview](/architecture/overview.md)
 - [Audio Chunking Algorithm Design Document](/architecture/transcription/design/audio-chunking-design.md)
 - [Codex Harness End-to-End Test Report](/architecture/agent-orchestration/notes/codex-harness-e2e-report.md)
@@ -152,6 +168,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TNH-Scholar Agent Orchestration System](/architecture/agent-orchestration/system-design.md)
 - [TNH‑Scholar Utilities Catalog](/architecture/utilities/design/utilities-catalog.md)
 - [Versioning Policy Documentation Additions](/architecture/project-policies/versioning-policy-implementation-summary.md)
+- [VS Code 1.110 Agent Features Research](/architecture/agent-orchestration/notes/vscode-1110-agent-features-research.md)
 - [YouTube API vs yt-dlp Evaluation](/architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval.md)
 
 ## Development

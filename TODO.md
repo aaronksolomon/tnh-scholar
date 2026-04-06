@@ -84,7 +84,7 @@ This section organizes work into three priority levels based on criticality for 
     - `KernelRunService`
   - [x] Introduce `agent_orchestration/workspace/` and `agent_orchestration/run_artifacts/`
     - move rollback/state capture and durable run record ownership out of prototype packages
-  - [ ] Migrate maintained runner behavior into `agent_orchestration/runners/`
+  - [x] Migrate maintained runner behavior into `agent_orchestration/runners/`
     - use `reference/spike/` only as reference material
     - no new forward-path runner work in spike code
 - **Current Slice Completed**:
@@ -107,10 +107,66 @@ This section organizes work into three priority levels based on criticality for 
   - `docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md`
   - `docs/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md`
 
-#### 🚨 OA04 Contract Family — PR Sequence (in progress)
+#### 🚨 OA07.1 Bootstrap Worktree Slice
 
-- **Status**: NOT STARTED — ADRs written, green-lit for implementation 2026-03-27
-- **Context**: OA04.2–OA04.5 are the contract-layer ADRs sitting between the OA07 runtime foundations and the actual runner/policy/provenance implementations. They must be accepted before implementation begins. See implementation notes in [ADR-OA04.1 Addendum 2026-03-27](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md) for scaffolding alignment gaps.
+- **Status**: READY TO START
+- **Priority**: HIGHEST (next operational bootstrap slice)
+- **Context**: The maintained OA04.x runtime contracts are now substantial, but the system is not yet operational because mutable execution still lacks a real worktree boundary. Follow [ADR-OA07](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md) and [ADR-OA07.1](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md).
+- **Bootstrap Goal**:
+  - create a managed git worktree from a committed base ref
+  - run `RUN_AGENT` and `RUN_VALIDATION` against the worktree root
+  - keep canonical run artifacts in the run directory
+  - support `ROLLBACK(pre_run)` to recorded base state
+  - establish the headless path needed for later commit/push/PR automation
+- **Why This Is Next**:
+  - current kernel/workspace code is contract-shaped but not operational
+  - the run directory and mutable workspace are still conflated in the maintained path
+  - OA05/OA06 depth work should follow a live bootstrap loop, not precede it
+- **Recommended PR sizing**:
+  - Prefer **2 PRs** to stay comfortably under diff-size guidance
+  - A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work
+- **PR Sequence**:
+  - [ ] **PR-7** `feat/oa07.1-worktree-workspace-service` — Managed worktree boundary (medium)
+    - replace `NullWorkspaceService` as the forward-path maintained implementation with a real git-backed workspace service
+    - add typed workspace context models: `repo_root`, `worktree_path`, `branch_name`, `base_ref`, `base_sha`
+    - implement managed branch + worktree creation from committed base ref
+    - implement `capture_pre_run()` and `rollback_pre_run()` around recorded `base_sha`
+    - persist workspace context into canonical run artifacts or run metadata extension
+    - tests for worktree creation, recorded base state, and `ROLLBACK(pre_run)` semantics
+    - keep `NullWorkspaceService` only for tests or explicit non-operational contexts
+  - [ ] **PR-8** `feat/oa07.1-kernel-worktree-wiring` — Runtime separation of worktree and run dir (medium)
+    - update `KernelRunService` to distinguish canonical run-artifact paths from mutable execution workspace
+    - pass the worktree root as `working_directory` to runner and validation services
+    - keep manifests, events, policy summaries, and captured artifacts in the canonical run directory
+    - add regression tests proving `RUN_AGENT` and `RUN_VALIDATION` execute in the worktree, not the run-artifact directory
+    - add a minimal bootstrap harness/integration test covering create-worktree → execute-step → rollback
+- **Optional follow-on if PR-8 stays small enough**:
+  - [ ] **PR-9** `feat/oa07-bootstrap-headless-entry` — Minimal headless bootstrap entry point (small/medium)
+    - load one workflow
+    - create worktree context
+    - execute workflow end to end
+    - write canonical artifacts and final state
+    - no commit/push/PR behavior yet unless diff size remains modest
+- **Explicit deferrals for this slice**:
+  - [ ] commit/push/PR automation if it causes PR-7 or PR-8 to exceed preferred diff size
+  - [ ] strict OA05 compile-validation as a blocker for bootstrap
+  - [ ] full OA06 planner fixture/vector suite beyond the bootstrap path
+  - [ ] non-script harness backends
+  - [ ] stacked PR orchestration
+  - [ ] multi-agent mutable collaboration inside one worktree
+  - [ ] `pre_step` rollback and named checkpoints
+- **Files likely in scope**:
+  - `src/tnh_scholar/agent_orchestration/workspace/`
+  - `src/tnh_scholar/agent_orchestration/kernel/service.py`
+  - `src/tnh_scholar/agent_orchestration/run_artifacts/`
+  - `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+  - `docs/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md`
+  - `docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md`
+
+#### ✅ OA04 Contract Family — PR Sequence (Complete)
+
+- **Status**: COMPLETE — contract ADRs implemented in maintained code; bootstrap remains blocked on OA07.1 worktree execution
+- **Context**: OA04.2–OA04.5 are the contract-layer ADRs between the OA07 runtime foundations and the maintained runner/policy/provenance implementations. That contract family is now landed in code and should no longer be treated as pending. See implementation notes in [ADR-OA04.1 Addendum 2026-03-27](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md) for the original scaffolding gaps and [ADR-OA04.1 Addendum 2026-04-05](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md) for the bootstrap-first reprioritization.
 - **Dependency chain**:
   - OA04.3 (run dir + manifests + evaluator evidence seam) → OA04.2 (runners normalize into canonical evidence)
   - OA04.4 (policy taxonomy + requested/effective split) → OA04.2 (runner request carries typed requested policy)
@@ -130,8 +186,8 @@ This section organizes work into three priority levels based on criticality for 
   - Do not add ceremony without benefit: avoid speculative service/factory layers, unnecessary mappers for nearly identical shapes, or package splits that do not improve testability, replaceability, or clarity.
   - Existing thin models in `run_artifacts/`, `runners/`, and `validation/` are scaffolding, not target architecture. It is acceptable to break those internal shapes in favor of cleaner maintained contracts during this implementation sequence.
 - **PR Sequence**:
-  - [ ] **PR-1** `feat/oa04-contract-adrs` — ADR acceptance (docs only)
-    - Commit new OA04.2, OA04.3, OA04.4, OA04.5 files; mark all `accepted`
+  - [x] **PR-1** `feat/oa04-contract-adrs` — ADR acceptance (docs only)
+    - Commit new OA04.2, OA04.3, OA04.4, OA04.5 files; later implementation has since moved those decimal ADRs to `implemented`
     - Carry in already-modified OA03.1/OA03.3 addendums + OA04 update + index.md
   - [x] **PR-2** `feat/oa04.3-run-artifact-contract` — Run-artifact domain contract + store (medium)
     - Expand `run_artifacts/models.py`: `RunMetadata`, `RunEventRecord`, `ArtifactRole` enum, `StepArtifactEntry`, `StepManifest`
@@ -165,7 +221,7 @@ This section organizes work into three priority levels based on criticality for 
     - Evaluators consume manifests and canonical artifact roles only, never runner-local raw capture files
     - Tests for both adapters (subprocess mocking, normalization, mapper behavior, termination paths)
     - *Depends on PR-2, PR-3, and PR-4*
-  - [ ] **PR-6** `feat/oa04.5-harness-backend` — Script harness backend (medium)
+  - [x] **PR-6** `feat/oa04.5-harness-backend` — Script harness backend (medium)
     - Build out `agent_orchestration/validation/`: `BackendFamily` enum, `HarnessBackendRequest`, `HarnessBackendResult`, `HarnessBackendProtocol`
     - `backends/script.py`: migrate from `conductor_mvp/providers/validation_runner.py`; normalize to `validation_report`/`validation_stdout`/`validation_stderr` artifact roles
     - Add backend resolver seam, but defer `cli` and `web` implementation until a concrete maintained consumer exists

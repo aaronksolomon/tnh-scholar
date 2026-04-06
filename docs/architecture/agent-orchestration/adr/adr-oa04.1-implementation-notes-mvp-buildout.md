@@ -1,6 +1,6 @@
 ---
-title: "ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence"
-description: "Implementation-guide addendum for OA04 defining MVP execution flow, role split, and incremental build sequence."
+title: "ADR-OA04.1: MVP Runtime Build-Out Sequence"
+description: "Implementation-guide addendum for OA04 defining the MVP runtime build order, role split, and handoff to OA07 bootstrap workspace work."
 type: "implementation-guide"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.3, GPT-5 Codex, Claude Code"
@@ -13,9 +13,9 @@ related_adrs:
   - "adr-oa06-planner-evaluator-contract.md"
 ---
 
-# ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence
+# ADR-OA04.1: MVP Runtime Build-Out Sequence
 
-Implementation-guide addendum for OA04, defining expected operational flow and the incremental MVP build sequence.
+Implementation-guide addendum for OA04, defining expected MVP runtime flow, build order, and the handoff from execution contracts to OA07 bootstrap workspace work.
 
 - **Status**: WIP
 - **Type**: Implementation Guide
@@ -326,7 +326,7 @@ flowchart TB
 ## Related ADRs
 
 - [ADR-OA01.1: Conductor Strategy v2](/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md)
-- [ADR-OA04: Workflow Schema + Opcode Semantics](/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
+- [ADR-OA04: Workflow Execution Contracts](/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
 - [ADR-OA05: Prompt Library Specification](/architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification.md)
 - [ADR-OA06: Planner Evaluator Contract](/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md)
 
@@ -363,3 +363,61 @@ flowchart TB
 `runners/` has `models.py` and `protocols.py` but no `adapters/` subpackage. Claude CLI and Codex CLI adapter implementations are fully absent. Addressed in PR-4.
 
 **Note on `final_state_path` naming**: `RunArtifactPaths.final_state_path` maps to `final_state.txt` in the current store, but OA04.3 §2 uses `final-state.txt` (hyphen). Minor — align during PR-2 if it does not break existing tests; otherwise note as a follow-up.
+
+### Addendum 2026-04-05: Bootstrap-First Runtime Priority
+
+**Context**: The near-term product goal is operational bootstrap, not contract completeness in isolation. The maintained OA04.x runtime foundation is real and tested, but the fastest path to value is one end-to-end mutable workflow that can safely create a worktree, run an agent, validate, commit, push, and open or update a PR.
+
+**Decision**: Bootstrap implementation priority is clarified as follows:
+
+1. Land a real maintained workspace service that creates a dedicated git worktree and records `base_ref` / `base_sha`.
+2. Separate mutable worktree execution from the canonical run directory.
+3. Use that worktree boundary to implement `ROLLBACK(pre_run)` for unattended runs.
+4. Land one headless bootstrap entry point that can drive a single workflow end to end.
+5. Allow bootstrap agent authority to extend through commit, push, PR creation, PR update, and review-follow-up on the managed work branch, while keeping protected-branch merge human-only.
+
+**Bootstrap completion criteria**:
+
+- a managed worktree is created from a committed base ref,
+- `RUN_AGENT` and `RUN_VALIDATION` execute against the worktree root,
+- canonical run artifacts and provenance are written under the run directory,
+- the run can commit and push its work branch,
+- the run can open or update a PR,
+- `ROLLBACK(pre_run)` restores the managed branch/worktree to the recorded base state.
+
+**Deferrals to keep bootstrap fast**:
+
+- strict OA05 workflow-to-prompt compile validation as a bootstrap blocker,
+- full OA06 fixture/vector coverage beyond the bootstrap decision path,
+- non-script harness backends,
+- stacked PR orchestration,
+- multi-agent mutable collaboration inside one worktree,
+- `pre_step` rollback and named checkpoints.
+
+**Rationale**: The maintained runtime should become operational before the broader prompt-program surface is fully frozen. Once the system can safely create review-ready PRs inside isolated worktrees, OA05 and OA06 integration work can proceed against a live bootstrap loop rather than against abstract scaffolding.
+
+**Implementation Changes**: Documentation only. Added [ADR-OA07](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md) and [ADR-OA07.1](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md) to freeze the missing workspace-safety contract.
+
+**References**:
+
+- [ADR-OA04.2: Runner Contract](/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md)
+- [ADR-OA04.3: Provenance and Run-Artifact Contract](/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md)
+- [ADR-OA04.4: Policy Enforcement Contract](/architecture/agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract.md)
+- [ADR-OA07: Diff-Policy + Safety Rails](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md)
+- [ADR-OA07.1: Worktree Lifecycle and Rollback](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md)
+
+### Addendum 2026-04-06: OA04.1 to OA07.1 Handoff Clarification
+
+**Context**: The remaining bootstrap blocker is no longer in the OA04.x contract layer itself. The maintained runtime now has substantial execution contracts, but still lacks the mutable workspace boundary needed for operational use.
+
+**Decision**: OA04.1 is clarified as the MVP runtime build-order guide, not the sole home for every remaining bootstrap implementation detail.
+
+The current handoff is:
+
+- OA04.x freezes the runtime execution contracts,
+- OA04.1 records build order and reprioritization,
+- OA07/OA07.1 freeze the worktree, rollback, and bootstrap safety model required to make the runtime operational.
+
+**Rationale**: This makes developer navigation simpler. Contributors should not look for worktree semantics in the OA04 decimal family when those decisions now live in OA07.x.
+
+**Implementation Changes**: Documentation only. Clarified the family handoff and bootstrap dependency.

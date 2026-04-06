@@ -4,7 +4,7 @@ description: "Table of contents for architecture/transcription/adr"
 owner: ""
 author: ""
 status: processing
-created: "2026-02-09"
+created: "2026-04-06"
 auto_generated: true
 ---
 
@@ -26,7 +26,7 @@ auto_generated: true
 
 **[ADR-TR05.1: Speaker-Block Language Lock Default Strategy](adr-tr05.1-speaker-block-language-lock-default.md)** - Defines the default multilingual segmentation strategy as contiguous-speaker language locking with selective translation.
 
-**[ADR-TR05.2: MVP Service Scaffold for Multilingual Transcription](adr-tr05.2-mvp-service-scaffold.md)** - Defines the initial service, protocol, and model scaffold for the multilingual transcription MVP under audio_processing.
+**[ADR-TR05.2: MVP Service Scaffold for Multilingual Transcription](adr-tr05.2-mvp-service-scaffold.md)** - Defines an in-place refactor of the existing audio_processing stack for the multilingual transcription MVP.
 
 ---
 

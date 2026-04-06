@@ -286,6 +286,6 @@ Rejected: allows invalid prompt wiring to fail late during execution.
 ## Related ADRs
 
 - [ADR-OA01.1: TNH-Conductor Strategy v2](/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md)
-- [ADR-OA04: Workflow Schema + Opcode Semantics](/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
-- [ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md)
+- [ADR-OA04: Workflow Execution Contracts](/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
+- [ADR-OA04.1: MVP Runtime Build-Out Sequence](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md)
 - [ADR-OA06: Planner Evaluator Contract](/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md)

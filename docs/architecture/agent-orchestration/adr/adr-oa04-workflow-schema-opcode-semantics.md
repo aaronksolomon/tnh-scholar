@@ -1,6 +1,6 @@
 ---
-title: "ADR-OA04: Workflow Schema + Opcode Semantics"
-description: "Defines the canonical workflow document format and execution semantics for tnh-conductor kernel opcodes."
+title: "ADR-OA04: Workflow Execution Contracts"
+description: "Defines the canonical workflow document format, opcode semantics, and execution-contract foundation for tnh-conductor runtime implementation."
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT-5 Codex"
 status: wip
@@ -13,9 +13,9 @@ related_adrs:
   - "adr-oa06-planner-evaluator-contract.md"
 ---
 
-# ADR-OA04: Workflow Schema + Opcode Semantics
+# ADR-OA04: Workflow Execution Contracts
 
-Defines the canonical workflow document format and execution semantics for tnh-conductor kernel opcodes.
+Defines the canonical workflow document format, opcode semantics, and execution-contract foundation for tnh-conductor runtime implementation.
 
 - **Status**: WIP
 - **Type**: Component ADR
@@ -641,3 +641,23 @@ The planned OA04 decimal sequence is:
 **Rationale**: These topics are all downstream of OA04 opcode execution and upstream of subsystem implementation. Placing them under OA04 keeps the family centered on execution contracts rather than proliferating new top-level namespaces.
 
 **Implementation Changes**: No code changes. Added [ADR-OA04.2](/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md), [ADR-OA04.3](/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md), [ADR-OA04.4](/architecture/agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract.md), and [ADR-OA04.5](/architecture/agent-orchestration/adr/adr-oa04.5-harness-backend-contract.md) as execution-contract refinements.
+
+### Addendum 2026-04-06: Relationship to OA07 Bootstrap Safety
+
+**Context**: The current document family can read as if OA04 alone should carry the runtime to operational bootstrap. In practice, OA04 freezes the execution contracts, while the remaining bootstrap blocker sits at the workspace-safety boundary.
+
+**Decision**: OA04 remains the execution-contract family. It does not absorb worktree lifecycle, branch-scoped rollback, or bootstrap diff-policy decisions.
+
+Those bootstrap-operational concerns are frozen in:
+
+- [ADR-OA07: Diff-Policy + Safety Rails](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md)
+- [ADR-OA07.1: Worktree Lifecycle and Rollback](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md)
+
+**Rationale**: This keeps the architecture legible:
+
+- OA04.x = workflow execution contracts,
+- OA05 = prompt library,
+- OA06 = planner/evaluator,
+- OA07.x = bootstrap safety and mutable workspace operations.
+
+**Implementation Changes**: No code changes. Clarified document-family boundaries only.

@@ -4,7 +4,7 @@ description: "Defines the maintained RUN_AGENT request/result, artifact, and nor
 type: "design-detail"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT-5 Codex"
-status: accepted
+status: implemented
 created: "2026-03-26"
 parent_adr: "adr-oa04-workflow-schema-opcode-semantics.md"
 related_adrs:
@@ -19,7 +19,7 @@ related_adrs:
 
 Defines the maintained `RUN_AGENT` request/result, artifact, and normalization contract for Claude CLI and Codex CLI adapters.
 
-- **Status**: Accepted
+- **Status**: Implemented
 - **Type**: Design Detail
 - **Date**: 2026-03-26
 - **Owner**: Aaron Solomon

@@ -4,7 +4,7 @@ description: "Defines the maintained backend contract for executing generated an
 type: "design-detail"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT-5 Codex"
-status: accepted
+status: implemented
 created: "2026-03-27"
 parent_adr: "adr-oa04-workflow-schema-opcode-semantics.md"
 related_adrs:
@@ -18,7 +18,7 @@ related_adrs:
 
 Defines the maintained backend contract for executing generated and predefined validation harnesses under `RUN_VALIDATION`.
 
-- **Status**: Accepted
+- **Status**: Implemented
 - **Type**: Design Detail
 - **Date**: 2026-03-27
 - **Owner**: Aaron Solomon

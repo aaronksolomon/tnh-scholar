@@ -4,7 +4,7 @@ description: "Defines the maintained run directory, artifact manifest, and event
 type: "design-detail"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT-5 Codex"
-status: accepted
+status: implemented
 created: "2026-03-27"
 parent_adr: "adr-oa04-workflow-schema-opcode-semantics.md"
 related_adrs:
@@ -18,7 +18,7 @@ related_adrs:
 
 Defines the maintained run directory, artifact manifest, and event/provenance handoff contract for workflow execution.
 
-- **Status**: Accepted
+- **Status**: Implemented
 - **Type**: Design Detail
 - **Date**: 2026-03-27
 - **Owner**: Aaron Solomon

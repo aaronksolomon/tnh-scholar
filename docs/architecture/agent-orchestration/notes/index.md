@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration/notes"
 owner: ""
 author: ""
 status: processing
-created: "2026-02-09"
+created: "2026-04-06"
 auto_generated: true
 ---
 
@@ -17,6 +17,10 @@ auto_generated: true
 **[Codex Harness End-to-End Test Report](codex-harness-e2e-report.md)** - Operational notes and blockers for the Codex harness test flow
 
 **[Codex Harness Spike Findings](codex-harness-spike-findings.md)** - Comprehensive findings from the Codex API harness spike - constraints, learnings, and recommendations
+
+**[Agent Orchestration Spike Testing Sequence](spike-testing-sequence.md)** - Concise, unambiguous steps to run the Codex CLI spike in a sandbox worktree.
+
+**[VS Code 1.110 Agent Features Research](vscode-1110-agent-features-research.md)** - Research findings from VS Code February 2026 release — UI patterns and systems relevant to tnh-conductor
 
 ---
 
