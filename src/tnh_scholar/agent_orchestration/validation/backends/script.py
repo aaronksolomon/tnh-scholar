@@ -97,11 +97,15 @@ class ScriptHarnessBackend(HarnessBackendProtocol):
         patterns: tuple[str, ...],
     ) -> list[ValidationCapturedArtifact]:
         captured: list[ValidationCapturedArtifact] = []
+        seen_relatives: set[Path] = set()
         for pattern in patterns:
             for path in run_directory.glob(pattern):
                 if not path.is_file():
                     continue
                 relative = path.relative_to(run_directory)
+                if relative in seen_relatives:
+                    continue
+                seen_relatives.add(relative)
                 captured.append(
                     ValidationCapturedArtifact(
                         source_path=path,

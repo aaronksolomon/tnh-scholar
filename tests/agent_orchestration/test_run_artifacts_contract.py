@@ -200,4 +200,6 @@ def test_run_artifact_store_copies_existing_file_artifact(tmp_path: Path) -> Non
     )
 
     assert entry.role == ArtifactRole.harness_fixture
+    assert str(entry.path).endswith("fixtures/fixture.txt")
+    assert entry.media_type == "text/plain"
     assert (paths.run_directory / entry.path).read_text(encoding="utf-8") == "fixture\n"
