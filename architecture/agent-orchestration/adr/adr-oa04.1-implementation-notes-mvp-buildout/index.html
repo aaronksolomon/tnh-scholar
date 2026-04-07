@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Implementation-guide addendum for OA04 defining MVP execution flow, role split, and incremental build sequence.">
+        <meta name="description" content="Implementation-guide addendum for OA04 defining the MVP runtime build order, role split, and handoff to OA07 bootstrap workspace work.">
       
       
         <meta name="author" content="Aaron Solomon, GPT 5.3, GPT-5 Codex, Claude Code">
@@ -24,7 +24,7 @@
     
     
       
-        <title>ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence - TNH Scholar Documentation</title>
+        <title>ADR-OA04.1: MVP Runtime Build-Out Sequence - TNH Scholar Documentation</title>
       
     
     
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-oa041-implementation-notes-mvp-build-out-sequence" class="md-skip">
+        <a href="#adr-oa041-mvp-runtime-build-out-sequence" class="md-skip">
           Skip to content
         </a>
       
@@ -178,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence
+              ADR-OA04.1: MVP Runtime Build-Out Sequence
             
           </span>
         </div>
@@ -1891,6 +1891,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -2143,7 +2147,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-OA04: Workflow Schema + Opcode Semantics
+    ADR-OA04: Workflow Execution Contracts
   </span>
   
     
@@ -2180,7 +2184,7 @@
           
   
   <span class="md-ellipsis">
-    ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence
+    ADR-OA04.1: MVP Runtime Build-Out Sequence
   </span>
   
     
@@ -2198,7 +2202,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence
+    ADR-OA04.1: MVP Runtime Build-Out Sequence
   </span>
   
     
@@ -2497,6 +2501,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#addendum-2026-04-05-bootstrap-first-runtime-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-05: Bootstrap-First Runtime Priority
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#addendum-2026-04-06-oa041-to-oa071-handoff-clarification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-06: OA04.1 to OA07.1 Handoff Clarification
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2528,7 +2550,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2556,7 +2578,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2584,7 +2606,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2612,7 +2634,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2663,6 +2685,62 @@
   
   <span class="md-ellipsis">
     ADR-OA06: Planner Evaluator Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA07: Diff-Policy + Safety Rails
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA07.1: Worktree Lifecycle and Rollback
   </span>
   
     
@@ -10203,6 +10281,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#addendum-2026-04-05-bootstrap-first-runtime-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-05: Bootstrap-First Runtime Priority
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#addendum-2026-04-06-oa041-to-oa071-handoff-clarification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-06: OA04.1 to OA07.1 Handoff Clarification
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10226,8 +10322,8 @@
   
 
 
-<h1 id="adr-oa041-implementation-notes-mvp-build-out-sequence">ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence<a class="headerlink" href="#adr-oa041-implementation-notes-mvp-build-out-sequence" title="Link to this section">&para;</a></h1>
-<p>Implementation-guide addendum for OA04, defining expected operational flow and the incremental MVP build sequence.</p>
+<h1 id="adr-oa041-mvp-runtime-build-out-sequence">ADR-OA04.1: MVP Runtime Build-Out Sequence<a class="headerlink" href="#adr-oa041-mvp-runtime-build-out-sequence" title="Link to this section">&para;</a></h1>
+<p>Implementation-guide addendum for OA04, defining expected MVP runtime flow, build order, and the handoff from execution contracts to OA07 bootstrap workspace work.</p>
 <ul>
 <li><strong>Status</strong>: WIP</li>
 <li><strong>Type</strong>: Implementation Guide</li>
@@ -10554,7 +10650,7 @@
 <h2 id="related-adrs">Related ADRs<a class="headerlink" href="#related-adrs" title="Link to this section">&para;</a></h2>
 <ul>
 <li><a href="../adr-oa01.1-conductor-strategy-v2/">ADR-OA01.1: Conductor Strategy v2</a></li>
-<li><a href="../adr-oa04-workflow-schema-opcode-semantics/">ADR-OA04: Workflow Schema + Opcode Semantics</a></li>
+<li><a href="../adr-oa04-workflow-schema-opcode-semantics/">ADR-OA04: Workflow Execution Contracts</a></li>
 <li><a href="../adr-oa05-prompt-library-specification/">ADR-OA05: Prompt Library Specification</a></li>
 <li><a href="../adr-oa06-planner-evaluator-contract/">ADR-OA06: Planner Evaluator Contract</a></li>
 </ul>
@@ -10575,6 +10671,55 @@
 <p><strong>Gap 6 — <code>runners/</code> has no adapters subdirectory (OA04.2 §6)</strong></p>
 <p><code>runners/</code> has <code>models.py</code> and <code>protocols.py</code> but no <code>adapters/</code> subpackage. Claude CLI and Codex CLI adapter implementations are fully absent. Addressed in PR-4.</p>
 <p><strong>Note on <code>final_state_path</code> naming</strong>: <code>RunArtifactPaths.final_state_path</code> maps to <code>final_state.txt</code> in the current store, but OA04.3 §2 uses <code>final-state.txt</code> (hyphen). Minor — align during PR-2 if it does not break existing tests; otherwise note as a follow-up.</p>
+<h3 id="addendum-2026-04-05-bootstrap-first-runtime-priority">Addendum 2026-04-05: Bootstrap-First Runtime Priority<a class="headerlink" href="#addendum-2026-04-05-bootstrap-first-runtime-priority" title="Link to this section">&para;</a></h3>
+<p><strong>Context</strong>: The near-term product goal is operational bootstrap, not contract completeness in isolation. The maintained OA04.x runtime foundation is real and tested, but the fastest path to value is one end-to-end mutable workflow that can safely create a worktree, run an agent, validate, commit, push, and open or update a PR.</p>
+<p><strong>Decision</strong>: Bootstrap implementation priority is clarified as follows:</p>
+<ol>
+<li>Land a real maintained workspace service that creates a dedicated git worktree and records <code>base_ref</code> / <code>base_sha</code>.</li>
+<li>Separate mutable worktree execution from the canonical run directory.</li>
+<li>Use that worktree boundary to implement <code>ROLLBACK(pre_run)</code> for unattended runs.</li>
+<li>Land one headless bootstrap entry point that can drive a single workflow end to end.</li>
+<li>Allow bootstrap agent authority to extend through commit, push, PR creation, PR update, and review-follow-up on the managed work branch, while keeping protected-branch merge human-only.</li>
+</ol>
+<p><strong>Bootstrap completion criteria</strong>:</p>
+<ul>
+<li>a managed worktree is created from a committed base ref,</li>
+<li><code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> execute against the worktree root,</li>
+<li>canonical run artifacts and provenance are written under the run directory,</li>
+<li>the run can commit and push its work branch,</li>
+<li>the run can open or update a PR,</li>
+<li><code>ROLLBACK(pre_run)</code> restores the managed branch/worktree to the recorded base state.</li>
+</ul>
+<p><strong>Deferrals to keep bootstrap fast</strong>:</p>
+<ul>
+<li>strict OA05 workflow-to-prompt compile validation as a bootstrap blocker,</li>
+<li>full OA06 fixture/vector coverage beyond the bootstrap decision path,</li>
+<li>non-script harness backends,</li>
+<li>stacked PR orchestration,</li>
+<li>multi-agent mutable collaboration inside one worktree,</li>
+<li><code>pre_step</code> rollback and named checkpoints.</li>
+</ul>
+<p><strong>Rationale</strong>: The maintained runtime should become operational before the broader prompt-program surface is fully frozen. Once the system can safely create review-ready PRs inside isolated worktrees, OA05 and OA06 integration work can proceed against a live bootstrap loop rather than against abstract scaffolding.</p>
+<p><strong>Implementation Changes</strong>: Documentation only. Added <a href="../adr-oa07-diff-policy-safety-rails/">ADR-OA07</a> and <a href="../adr-oa07.1-worktree-lifecycle-and-rollback/">ADR-OA07.1</a> to freeze the missing workspace-safety contract.</p>
+<p><strong>References</strong>:</p>
+<ul>
+<li><a href="../adr-oa04.2-runner-contract/">ADR-OA04.2: Runner Contract</a></li>
+<li><a href="../adr-oa04.3-provenance-run-artifact-contract/">ADR-OA04.3: Provenance and Run-Artifact Contract</a></li>
+<li><a href="../adr-oa04.4-policy-enforcement-contract/">ADR-OA04.4: Policy Enforcement Contract</a></li>
+<li><a href="../adr-oa07-diff-policy-safety-rails/">ADR-OA07: Diff-Policy + Safety Rails</a></li>
+<li><a href="../adr-oa07.1-worktree-lifecycle-and-rollback/">ADR-OA07.1: Worktree Lifecycle and Rollback</a></li>
+</ul>
+<h3 id="addendum-2026-04-06-oa041-to-oa071-handoff-clarification">Addendum 2026-04-06: OA04.1 to OA07.1 Handoff Clarification<a class="headerlink" href="#addendum-2026-04-06-oa041-to-oa071-handoff-clarification" title="Link to this section">&para;</a></h3>
+<p><strong>Context</strong>: The remaining bootstrap blocker is no longer in the OA04.x contract layer itself. The maintained runtime now has substantial execution contracts, but still lacks the mutable workspace boundary needed for operational use.</p>
+<p><strong>Decision</strong>: OA04.1 is clarified as the MVP runtime build-order guide, not the sole home for every remaining bootstrap implementation detail.</p>
+<p>The current handoff is:</p>
+<ul>
+<li>OA04.x freezes the runtime execution contracts,</li>
+<li>OA04.1 records build order and reprioritization,</li>
+<li>OA07/OA07.1 freeze the worktree, rollback, and bootstrap safety model required to make the runtime operational.</li>
+</ul>
+<p><strong>Rationale</strong>: This makes developer navigation simpler. Contributors should not look for worktree semantics in the OA04 decimal family when those decisions now live in OA07.x.</p>
+<p><strong>Implementation Changes</strong>: Documentation only. Clarified the family handoff and bootstrap dependency.</p>
 
 
 

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Defines the canonical workflow document format and execution semantics for tnh-conductor kernel opcodes.">
+        <meta name="description" content="Defines the canonical workflow document format, opcode semantics, and execution-contract foundation for tnh-conductor runtime implementation.">
       
       
         <meta name="author" content="Aaron Solomon, GPT-5 Codex">
@@ -24,7 +24,7 @@
     
     
       
-        <title>ADR-OA04: Workflow Schema + Opcode Semantics - TNH Scholar Documentation</title>
+        <title>ADR-OA04: Workflow Execution Contracts - TNH Scholar Documentation</title>
       
     
     
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-oa04-workflow-schema-opcode-semantics" class="md-skip">
+        <a href="#adr-oa04-workflow-execution-contracts" class="md-skip">
           Skip to content
         </a>
       
@@ -178,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-OA04: Workflow Schema + Opcode Semantics
+              ADR-OA04: Workflow Execution Contracts
             
           </span>
         </div>
@@ -1891,6 +1891,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -2152,7 +2156,7 @@
           
   
   <span class="md-ellipsis">
-    ADR-OA04: Workflow Schema + Opcode Semantics
+    ADR-OA04: Workflow Execution Contracts
   </span>
   
     
@@ -2170,7 +2174,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-OA04: Workflow Schema + Opcode Semantics
+    ADR-OA04: Workflow Execution Contracts
   </span>
   
     
@@ -2571,6 +2575,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#addendum-2026-04-06-relationship-to-oa07-bootstrap-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-06: Relationship to OA07 Bootstrap Safety
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2596,7 +2609,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence
+    ADR-OA04.1: MVP Runtime Build-Out Sequence
   </span>
   
     
@@ -2630,7 +2643,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2658,7 +2671,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2686,7 +2699,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2714,7 +2727,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2765,6 +2778,62 @@
   
   <span class="md-ellipsis">
     ADR-OA06: Planner Evaluator Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA07: Diff-Policy + Safety Rails
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA07.1: Worktree Lifecycle and Rollback
   </span>
   
     
@@ -10407,6 +10476,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#addendum-2026-04-06-relationship-to-oa07-bootstrap-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-06: Relationship to OA07 Bootstrap Safety
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -10430,8 +10508,8 @@
   
 
 
-<h1 id="adr-oa04-workflow-schema-opcode-semantics">ADR-OA04: Workflow Schema + Opcode Semantics<a class="headerlink" href="#adr-oa04-workflow-schema-opcode-semantics" title="Link to this section">&para;</a></h1>
-<p>Defines the canonical workflow document format and execution semantics for tnh-conductor kernel opcodes.</p>
+<h1 id="adr-oa04-workflow-execution-contracts">ADR-OA04: Workflow Execution Contracts<a class="headerlink" href="#adr-oa04-workflow-execution-contracts" title="Link to this section">&para;</a></h1>
+<p>Defines the canonical workflow document format, opcode semantics, and execution-contract foundation for tnh-conductor runtime implementation.</p>
 <ul>
 <li><strong>Status</strong>: WIP</li>
 <li><strong>Type</strong>: Component ADR</li>
@@ -11222,6 +11300,22 @@
 </table>
 <p><strong>Rationale</strong>: These topics are all downstream of OA04 opcode execution and upstream of subsystem implementation. Placing them under OA04 keeps the family centered on execution contracts rather than proliferating new top-level namespaces.</p>
 <p><strong>Implementation Changes</strong>: No code changes. Added <a href="../adr-oa04.2-runner-contract/">ADR-OA04.2</a>, <a href="../adr-oa04.3-provenance-run-artifact-contract/">ADR-OA04.3</a>, <a href="../adr-oa04.4-policy-enforcement-contract/">ADR-OA04.4</a>, and <a href="../adr-oa04.5-harness-backend-contract/">ADR-OA04.5</a> as execution-contract refinements.</p>
+<h3 id="addendum-2026-04-06-relationship-to-oa07-bootstrap-safety">Addendum 2026-04-06: Relationship to OA07 Bootstrap Safety<a class="headerlink" href="#addendum-2026-04-06-relationship-to-oa07-bootstrap-safety" title="Link to this section">&para;</a></h3>
+<p><strong>Context</strong>: The current document family can read as if OA04 alone should carry the runtime to operational bootstrap. In practice, OA04 freezes the execution contracts, while the remaining bootstrap blocker sits at the workspace-safety boundary.</p>
+<p><strong>Decision</strong>: OA04 remains the execution-contract family. It does not absorb worktree lifecycle, branch-scoped rollback, or bootstrap diff-policy decisions.</p>
+<p>Those bootstrap-operational concerns are frozen in:</p>
+<ul>
+<li><a href="../adr-oa07-diff-policy-safety-rails/">ADR-OA07: Diff-Policy + Safety Rails</a></li>
+<li><a href="../adr-oa07.1-worktree-lifecycle-and-rollback/">ADR-OA07.1: Worktree Lifecycle and Rollback</a></li>
+</ul>
+<p><strong>Rationale</strong>: This keeps the architecture legible:</p>
+<ul>
+<li>OA04.x = workflow execution contracts,</li>
+<li>OA05 = prompt library,</li>
+<li>OA06 = planner/evaluator,</li>
+<li>OA07.x = bootstrap safety and mutable workspace operations.</li>
+</ul>
+<p><strong>Implementation Changes</strong>: No code changes. Clarified document-family boundaries only.</p>
 
 
 

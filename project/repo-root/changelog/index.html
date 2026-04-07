@@ -2340,6 +2340,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -2592,7 +2596,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-OA04: Workflow Schema + Opcode Semantics
+    ADR-OA04: Workflow Execution Contracts
   </span>
   
     
@@ -2620,7 +2624,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence
+    ADR-OA04.1: MVP Runtime Build-Out Sequence
   </span>
   
     
@@ -2654,7 +2658,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2682,7 +2686,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2710,7 +2714,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2738,7 +2742,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2789,6 +2793,62 @@
   
   <span class="md-ellipsis">
     ADR-OA06: Planner Evaluator Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA07: Diff-Policy + Safety Rails
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA07.1: Worktree Lifecycle and Rollback
   </span>
   
     
@@ -10493,7 +10553,16 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>OA04.2 Runner Adapters</strong> (2026-04-03)</li>
+<li><strong>Agent Orchestration Bootstrap ADR Alignment</strong> (2026-04-06)</li>
+<li>Added <code>ADR-OA07</code> and <code>ADR-OA07.1</code> to freeze the bootstrap safety model for worktree isolation, branch-scoped rollback, mutable workspace boundaries, and agent authority through review-ready PR creation</li>
+<li>Clarified the <code>OA04</code> family as workflow execution contracts and updated <code>OA04.1</code> to describe MVP runtime build order and the handoff to <code>OA07.x</code> for workspace-safety decisions</li>
+<li>Marked implemented OA04 decimal ADRs repo-consistently and refreshed orchestration ADR cross-references, TODO planning, and generated documentation indexes to match the current ADR map</li>
+<li>
+<p>Files: <code>docs/architecture/agent-orchestration/adr/</code>, <code>TODO.md</code>, generated <code>docs/**/index.md</code></p>
+</li>
+<li>
+<p><strong>OA04.2 Runner Adapters</strong> (2026-04-03)</p>
+</li>
 <li>Expanded the maintained <code>runners/</code> subsystem with adapter capability declarations, normalized transcript/final-response payloads, typed invocation metadata, and a delegating runner service</li>
 <li>Added execution-backed maintained adapters for headless Claude CLI and Codex CLI runs with explicit mapper/normalizer seams, mechanical termination mapping, and fail-fast rejection for unsupported policy guarantees</li>
 <li>Updated the kernel to persist canonical <code>runner_transcript</code>, <code>runner_final_response</code>, and richer <code>runner_metadata</code> artifacts from normalized runner results through the run-artifact store</li>

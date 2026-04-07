@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Strategy ADR defining a CLI-first VS Code integration built on the unified tnh-gen interface for extension v0.1.0.">
+        <meta name="description" content="Defines the bootstrap safety model for worktree isolation, branch-scoped rollback, and agent authority boundaries in maintained agent orchestration.">
       
       
-        <meta name="author" content="Aaron Solomon">
+        <meta name="author" content="Aaron Solomon, GPT-5 Codex">
       
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../adr-oa06-planner-evaluator-contract/">
       
       
-        <link rel="next" href="../adr-vsc02-tnh-gen-cli-implementation/">
+        <link rel="next" href="../adr-oa07.1-worktree-lifecycle-and-rollback/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0) - TNH Scholar Documentation</title>
+        <title>ADR-OA07: Diff-Policy + Safety Rails - TNH Scholar Documentation</title>
       
     
     
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-vsc01-vs-code-integration-strategy-tnh-scholar-extension-v010" class="md-skip">
+        <a href="#adr-oa07-diff-policy-safety-rails" class="md-skip">
           Skip to content
         </a>
       
@@ -178,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)
+              ADR-OA07: Diff-Policy + Safety Rails
             
           </span>
         </div>
@@ -1756,6 +1756,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1774,16 +1776,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../agent-orchestration/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1807,7 +1809,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_3">
             <span class="md-nav__icon md-icon"></span>
             Agent Orchestration
@@ -1823,7 +1825,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/system-design/" class="md-nav__link">
+      <a href="../../system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1848,6 +1850,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1894,16 +1898,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../agent-orchestration/adr/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1927,7 +1931,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_3_3">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -1943,7 +1947,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
+      <a href="../adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1971,7 +1975,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
+      <a href="../adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1999,7 +2003,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
+      <a href="../adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2027,7 +2031,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
+      <a href="../adr-oa03-agent-runner-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2055,7 +2059,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
+      <a href="../adr-oa03.1-claude-code-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2083,7 +2087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa03.2-codex-runner/" class="md-nav__link">
+      <a href="../adr-oa03.2-codex-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2111,7 +2115,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
+      <a href="../adr-oa03.3-codex-cli-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2139,7 +2143,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
+      <a href="../adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2167,7 +2171,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
+      <a href="../adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2195,7 +2199,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04.2-runner-contract/" class="md-nav__link">
+      <a href="../adr-oa04.2-runner-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2223,7 +2227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+      <a href="../adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2251,7 +2255,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+      <a href="../adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2279,7 +2283,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+      <a href="../adr-oa04.5-harness-backend-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2307,7 +2311,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
+      <a href="../adr-oa05-prompt-library-specification/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2335,7 +2339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
+      <a href="../adr-oa06-planner-evaluator-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2360,10 +2364,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ADR-OA07: Diff-Policy + Safety Rails
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -2379,6 +2410,188 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-bootstrap-authority-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Bootstrap Authority Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-workspace-isolation-is-kernel-control-plane-owned" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Workspace Isolation Is Kernel / Control-Plane Owned
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-bootstrap-rollback-is-branch-scoped" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Bootstrap Rollback Is Branch-Scoped
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-diff-policy-safety-rails" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Diff-Policy Safety Rails
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-provenance-requirements-for-workspace-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Provenance Requirements for Workspace Safety
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-use-the-run-artifact-directory-as-the-mutable-execution-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Use the run-artifact directory as the mutable execution directory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-run-agents-directly-in-the-main-working-tree-and-rely-on-commits-for-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Run agents directly in the main working tree and rely on commits for rollback
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-let-each-adapter-choose-its-own-isolation-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Let each adapter choose its own isolation model
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-adrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related ADRs
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2391,7 +2604,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+      <a href="../adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2453,7 +2666,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../agent-orchestration/notes/" class="md-nav__link ">
+            <a href="../../notes/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2493,7 +2706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/notes/codex-harness-e2e-report/" class="md-nav__link">
+      <a href="../../notes/codex-harness-e2e-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2521,7 +2734,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/notes/codex-harness-spike-findings/" class="md-nav__link">
+      <a href="../../notes/codex-harness-spike-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2549,7 +2762,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/notes/spike-testing-sequence/" class="md-nav__link">
+      <a href="../../notes/spike-testing-sequence/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2577,7 +2790,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/notes/vscode-1110-agent-features-research/" class="md-nav__link">
+      <a href="../../notes/vscode-1110-agent-features-research/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7143,8 +7356,6 @@
                 
   
   
-    
-  
   
   
     
@@ -7161,16 +7372,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_22" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_22" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../ui-ux/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7194,7 +7405,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_22_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_22_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_22">
             <span class="md-nav__icon md-icon"></span>
             Ui Ux
@@ -7230,7 +7441,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../design/" class="md-nav__link ">
+            <a href="../../../ui-ux/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7270,7 +7481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/vs-code-as-ui-platform/" class="md-nav__link">
+      <a href="../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7303,8 +7514,6 @@
                 
   
   
-    
-  
   
   
     
@@ -7329,16 +7538,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_22_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_22_3" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../ui-ux/vs-code-integration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7362,7 +7571,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_22_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_22_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_22_3">
             <span class="md-nav__icon md-icon"></span>
             Vs Code Integration
@@ -7375,37 +7584,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--accepted"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7421,581 +7603,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-context" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Context
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Context">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11-relationship-to-genai-service" class="md-nav__link">
-    <span class="md-ellipsis">
-      1.1 Relationship to GenAI Service
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-problem-motivation" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Problem / Motivation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-decision" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Decision
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Decision">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-core-architectural-boundary-cli-first-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.1 Core Architectural Boundary: CLI-First Integration
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-the-tnh-gen-cli-tool" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.2 The tnh-gen CLI Tool
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-the-tnh-gen-cli-core-capabilities" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.3 The tnh-gen CLI: Core Capabilities
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3.3 The tnh-gen CLI: Core Capabilities">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tnh-gen-list-discover-prompts" class="md-nav__link">
-    <span class="md-ellipsis">
-      tnh-gen list - Discover Prompts
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tnh-gen-run-execute-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      tnh-gen run - Execute Patterns
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tnh-gen-config-manage-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      tnh-gen config - Manage Configuration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-vs-code-extension-commands-v010" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.4 VS Code Extension Commands (v0.1.0)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3.4 VS Code Extension Commands (v0.1.0)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#command-1-tnh-scholar-run-prompt-on-active-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      Command 1: "TNH Scholar: Run Prompt on Active File"
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#command-2-tnh-scholar-refresh-prompt-catalog" class="md-nav__link">
-    <span class="md-ellipsis">
-      Command 2: "TNH Scholar: Refresh Prompt Catalog"
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-output-strategy-v010" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.5 Output Strategy (v0.1.0)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#36-error-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.6 Error Handling
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#37-promptcatalog-metadata-source-of-truth" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.7 PromptCatalog Metadata Source of Truth
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#38-workspace-configuration-discovery" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.8 Workspace Configuration Discovery
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-rationale" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Rationale
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Rationale">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-stability" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.1 Stability
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-replaceability" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.2 Replaceability
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#43-discoverability-ux" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.3 Discoverability &amp; UX
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#44-future-agent-compatibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.4 Future-Agent Compatibility
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#45-genai-service-parity" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.5 GenAI Service Parity
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#46-unified-cli-tnh-gen-replaces-tnh-fab" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.6 Unified CLI (tnh-gen replaces tnh-fab)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-alternatives-considered" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Alternatives Considered
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="5. Alternatives Considered">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#51-embedding-python-in-the-extension" class="md-nav__link">
-    <span class="md-ellipsis">
-      5.1 Embedding Python in the extension ❌
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#52-language-server-protocol-lsp" class="md-nav__link">
-    <span class="md-ellipsis">
-      5.2 Language Server Protocol (LSP) ❌
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#53-direct-http-service-v010" class="md-nav__link">
-    <span class="md-ellipsis">
-      5.3 Direct HTTP service (v0.1.0) ⏸️
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#54-direct-node-python-rpc" class="md-nav__link">
-    <span class="md-ellipsis">
-      5.4 Direct Node &lt;-&gt; Python RPC ❌
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-impact" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. Impact
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="6. Impact">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#on-developers" class="md-nav__link">
-    <span class="md-ellipsis">
-      On developers
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#on-codebase" class="md-nav__link">
-    <span class="md-ellipsis">
-      On codebase
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#on-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      On documentation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-phased-transport-evolution" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. Phased Transport Evolution
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="7. Phased Transport Evolution">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#v010-cli-current-adr" class="md-nav__link">
-    <span class="md-ellipsis">
-      v0.1.0: CLI (Current ADR) ✅
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#v020-add-http-service" class="md-nav__link">
-    <span class="md-ellipsis">
-      v0.2.0: Add HTTP Service 🔄
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#v100-hybrid-http-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      v1.0.0: Hybrid (HTTP + CLI) 🎯
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#v200-mcp-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      v2.0.0+: MCP Integration 🔮
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#8-prerequisites-dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      8. Prerequisites &amp; Dependencies
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="8. Prerequisites & Dependencies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#p0-blocking" class="md-nav__link">
-    <span class="md-ellipsis">
-      P0: Blocking
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#p1-high-priority" class="md-nav__link">
-    <span class="md-ellipsis">
-      P1: High Priority
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#9-follow-up-adrs" class="md-nav__link">
-    <span class="md-ellipsis">
-      9. Follow-up ADRs
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="9. Follow-up ADRs">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#adr-tg01-tnh-gen-cli-architecture-implemented" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-TG01: tnh-gen CLI Architecture ✅ Implemented
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-tg011-human-friendly-cli-defaults-implemented" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-TG01.1: Human-Friendly CLI Defaults ✅ Implemented
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-tg02-prompt-system-integration-implemented" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-TG02: Prompt System Integration ✅ Implemented
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc02-vs-code-extension-architecture-proposed" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC02: VS Code Extension Architecture 🟡 Proposed
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc05-vs-code-extension-implementation-future" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC05: VS Code Extension Implementation 🟢 Future
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc06-http-service-for-rich-ux-future-v020" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC06: HTTP Service for Rich UX 🟢 Future (v0.2.0)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc07-selection-level-transformations-future-v030" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC07: Selection-Level Transformations 🟢 Future (v0.3.0)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc08-batch-multi-file-operations-future-v040" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC08: Batch &amp; Multi-File Operations 🟢 Future (v0.4.0)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc09-agent-assisted-workflows-future-v200" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC09: Agent-Assisted Workflows 🔮 Future (v2.0.0+)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#10-decision-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      10. Decision Summary
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#11-acceptance-criteria-v010" class="md-nav__link">
-    <span class="md-ellipsis">
-      11. Acceptance Criteria (v0.1.0)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#12-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      12. Status
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#appendix-example-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      Appendix: Example Workflow
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -8008,7 +7615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8036,7 +7643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8064,7 +7671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-vsc03.1-findings/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8092,7 +7699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8120,7 +7727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10272,19 +9879,64 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-context" class="md-nav__link">
+  <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Context
+      Context
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Context">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#11-relationship-to-genai-service" class="md-nav__link">
+  <a href="#1-bootstrap-authority-model" class="md-nav__link">
     <span class="md-ellipsis">
-      1.1 Relationship to GenAI Service
+      1. Bootstrap Authority Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-workspace-isolation-is-kernel-control-plane-owned" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Workspace Isolation Is Kernel / Control-Plane Owned
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-bootstrap-rollback-is-branch-scoped" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Bootstrap Rollback Is Branch-Scoped
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-diff-policy-safety-rails" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Diff-Policy Safety Rails
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-provenance-requirements-for-workspace-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Provenance Requirements for Workspace Safety
     </span>
   </a>
   
@@ -10296,148 +9948,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-problem-motivation" class="md-nav__link">
+  <a href="#consequences" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Problem / Motivation
+      Consequences
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-decision" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Decision
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Decision">
+    <nav class="md-nav" aria-label="Consequences">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-core-architectural-boundary-cli-first-integration" class="md-nav__link">
+  <a href="#positive" class="md-nav__link">
     <span class="md-ellipsis">
-      3.1 Core Architectural Boundary: CLI-First Integration
+      Positive
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#32-the-tnh-gen-cli-tool" class="md-nav__link">
+  <a href="#negative" class="md-nav__link">
     <span class="md-ellipsis">
-      3.2 The tnh-gen CLI Tool
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-the-tnh-gen-cli-core-capabilities" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.3 The tnh-gen CLI: Core Capabilities
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3.3 The tnh-gen CLI: Core Capabilities">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tnh-gen-list-discover-prompts" class="md-nav__link">
-    <span class="md-ellipsis">
-      tnh-gen list - Discover Prompts
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tnh-gen-run-execute-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      tnh-gen run - Execute Patterns
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tnh-gen-config-manage-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      tnh-gen config - Manage Configuration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-vs-code-extension-commands-v010" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.4 VS Code Extension Commands (v0.1.0)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3.4 VS Code Extension Commands (v0.1.0)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#command-1-tnh-scholar-run-prompt-on-active-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      Command 1: "TNH Scholar: Run Prompt on Active File"
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#command-2-tnh-scholar-refresh-prompt-catalog" class="md-nav__link">
-    <span class="md-ellipsis">
-      Command 2: "TNH Scholar: Refresh Prompt Catalog"
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-output-strategy-v010" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.5 Output Strategy (v0.1.0)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#36-error-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.6 Error Handling
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#37-promptcatalog-metadata-source-of-truth" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.7 PromptCatalog Metadata Source of Truth
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#38-workspace-configuration-discovery" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.8 Workspace Configuration Discovery
+      Negative
     </span>
   </a>
   
@@ -10449,64 +9981,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-rationale" class="md-nav__link">
+  <a href="#alternatives-considered" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Rationale
+      Alternatives Considered
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4. Rationale">
+    <nav class="md-nav" aria-label="Alternatives Considered">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#41-stability" class="md-nav__link">
+  <a href="#a-use-the-run-artifact-directory-as-the-mutable-execution-directory" class="md-nav__link">
     <span class="md-ellipsis">
-      4.1 Stability
+      A. Use the run-artifact directory as the mutable execution directory
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#42-replaceability" class="md-nav__link">
+  <a href="#b-run-agents-directly-in-the-main-working-tree-and-rely-on-commits-for-rollback" class="md-nav__link">
     <span class="md-ellipsis">
-      4.2 Replaceability
+      B. Run agents directly in the main working tree and rely on commits for rollback
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#43-discoverability-ux" class="md-nav__link">
+  <a href="#c-let-each-adapter-choose-its-own-isolation-model" class="md-nav__link">
     <span class="md-ellipsis">
-      4.3 Discoverability &amp; UX
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#44-future-agent-compatibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.4 Future-Agent Compatibility
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#45-genai-service-parity" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.5 GenAI Service Parity
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#46-unified-cli-tnh-gen-replaces-tnh-fab" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.6 Unified CLI (tnh-gen replaces tnh-fab)
+      C. Let each adapter choose its own isolation model
     </span>
   </a>
   
@@ -10518,309 +10023,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-alternatives-considered" class="md-nav__link">
+  <a href="#open-questions" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Alternatives Considered
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="5. Alternatives Considered">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#51-embedding-python-in-the-extension" class="md-nav__link">
-    <span class="md-ellipsis">
-      5.1 Embedding Python in the extension ❌
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#52-language-server-protocol-lsp" class="md-nav__link">
-    <span class="md-ellipsis">
-      5.2 Language Server Protocol (LSP) ❌
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#53-direct-http-service-v010" class="md-nav__link">
-    <span class="md-ellipsis">
-      5.3 Direct HTTP service (v0.1.0) ⏸️
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#54-direct-node-python-rpc" class="md-nav__link">
-    <span class="md-ellipsis">
-      5.4 Direct Node &lt;-&gt; Python RPC ❌
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-impact" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. Impact
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="6. Impact">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#on-developers" class="md-nav__link">
-    <span class="md-ellipsis">
-      On developers
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#on-codebase" class="md-nav__link">
-    <span class="md-ellipsis">
-      On codebase
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#on-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      On documentation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-phased-transport-evolution" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. Phased Transport Evolution
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="7. Phased Transport Evolution">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#v010-cli-current-adr" class="md-nav__link">
-    <span class="md-ellipsis">
-      v0.1.0: CLI (Current ADR) ✅
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#v020-add-http-service" class="md-nav__link">
-    <span class="md-ellipsis">
-      v0.2.0: Add HTTP Service 🔄
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#v100-hybrid-http-cli" class="md-nav__link">
-    <span class="md-ellipsis">
-      v1.0.0: Hybrid (HTTP + CLI) 🎯
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#v200-mcp-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      v2.0.0+: MCP Integration 🔮
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#8-prerequisites-dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      8. Prerequisites &amp; Dependencies
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="8. Prerequisites & Dependencies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#p0-blocking" class="md-nav__link">
-    <span class="md-ellipsis">
-      P0: Blocking
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#p1-high-priority" class="md-nav__link">
-    <span class="md-ellipsis">
-      P1: High Priority
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#9-follow-up-adrs" class="md-nav__link">
-    <span class="md-ellipsis">
-      9. Follow-up ADRs
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="9. Follow-up ADRs">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#adr-tg01-tnh-gen-cli-architecture-implemented" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-TG01: tnh-gen CLI Architecture ✅ Implemented
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-tg011-human-friendly-cli-defaults-implemented" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-TG01.1: Human-Friendly CLI Defaults ✅ Implemented
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-tg02-prompt-system-integration-implemented" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-TG02: Prompt System Integration ✅ Implemented
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc02-vs-code-extension-architecture-proposed" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC02: VS Code Extension Architecture 🟡 Proposed
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc05-vs-code-extension-implementation-future" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC05: VS Code Extension Implementation 🟢 Future
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc06-http-service-for-rich-ux-future-v020" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC06: HTTP Service for Rich UX 🟢 Future (v0.2.0)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc07-selection-level-transformations-future-v030" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC07: Selection-Level Transformations 🟢 Future (v0.3.0)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc08-batch-multi-file-operations-future-v040" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC08: Batch &amp; Multi-File Operations 🟢 Future (v0.4.0)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adr-vsc09-agent-assisted-workflows-future-v200" class="md-nav__link">
-    <span class="md-ellipsis">
-      ADR-VSC09: Agent-Assisted Workflows 🔮 Future (v2.0.0+)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#10-decision-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      10. Decision Summary
+      Open Questions
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#11-acceptance-criteria-v010" class="md-nav__link">
+  <a href="#related-adrs" class="md-nav__link">
     <span class="md-ellipsis">
-      11. Acceptance Criteria (v0.1.0)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#12-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      12. Status
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#appendix-example-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      Appendix: Example Workflow
+      Related ADRs
     </span>
   </a>
   
@@ -10844,647 +10058,144 @@
   
 
 
-<h1 id="adr-vsc01-vs-code-integration-strategy-tnh-scholar-extension-v010">ADR-VSC01: VS Code Integration Strategy (TNH-Scholar Extension v0.1.0)<a class="headerlink" href="#adr-vsc01-vs-code-integration-strategy-tnh-scholar-extension-v010" title="Link to this section">&para;</a></h1>
-<p>Defines the CLI-first integration strategy for the TNH-Scholar VS Code extension v0.1.0, using <code>tnh-gen</code> as the sole interface into GenAI Service capabilities.</p>
+<h1 id="adr-oa07-diff-policy-safety-rails">ADR-OA07: Diff-Policy + Safety Rails<a class="headerlink" href="#adr-oa07-diff-policy-safety-rails" title="Link to this section">&para;</a></h1>
+<p>Defines the bootstrap safety model for worktree isolation, branch-scoped rollback, and agent authority boundaries in maintained agent orchestration.</p>
 <ul>
-<li><strong>Status:</strong> Accepted</li>
-<li><strong>Date:</strong> 2025-01-28</li>
-<li><strong>Updated:</strong> 2026-01-02</li>
-<li><strong>Owner:</strong> UI/UX Working Group</li>
-<li><strong>Author:</strong> Aaron Solomon</li>
-<li><strong>Tags:</strong> strategy, vscode, genai, architecture, integration</li>
-<li><strong>Context:</strong> Long-term TNH-Scholar UX roadmap; GenAIService maturity; PromptCatalog stability.</li>
-<li><strong>Related ADRs:</strong> <a href="../../../gen-ai-service/design/genai-service-design-strategy/">GenAI Service Strategy</a>, <a href="../../design/vs-code-as-ui-platform/">UI/UX Strategy: VS Code as Platform</a></li>
+<li><strong>Filename</strong>: <code>adr-oa07-diff-policy-safety-rails.md</code></li>
+<li><strong>Heading</strong>: <code># ADR-OA07: Diff-Policy + Safety Rails</code></li>
+<li><strong>Status</strong>: Proposed</li>
+<li><strong>Type</strong>: Design Detail</li>
+<li><strong>Date</strong>: 2026-04-05</li>
+<li><strong>Author</strong>: Aaron Solomon, GPT-5 Codex</li>
+<li><strong>Owner</strong>: aaronksolomon</li>
 </ul>
 <hr />
-<h2 id="1-context">1. Context<a class="headerlink" href="#1-context" title="Link to this section">&para;</a></h2>
-<p>TNH-Scholar is evolving into a multi-layer system with:</p>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
+<p><a href="../adr-oa01.1-conductor-strategy-v2/">ADR-OA01.1</a> reserves OA07 for diff-policy and safety-rail decisions. <a href="../adr-oa03-agent-runner-architecture/">ADR-OA03</a> recommends kernel-mandated worktrees, and <a href="../adr-oa04-workflow-schema-opcode-semantics/">ADR-OA04</a> plus <a href="../adr-oa04.1-implementation-notes-mvp-buildout/">ADR-OA04.1</a> assume worktree-scoped execution and <code>ROLLBACK(pre_run)</code> semantics.</p>
+<p>OA07 does not replace OA04. OA04.x freezes the execution-contract layer; OA07.x freezes the bootstrap safety and mutable-workspace operating model required to execute those contracts safely in practice.</p>
+<p>What remains unfrozen is the maintained contract for:</p>
 <ul>
-<li>a structured corpus,</li>
-<li>data-processing pipelines,</li>
-<li>a pattern/prompt-driven GenAIService,</li>
-<li>provenance-first transformations,</li>
-<li>and a growing collection of CLI tools and automation flows.</li>
+<li>the boundary between run artifacts and mutable execution workspace,</li>
+<li>the authority delegated to agents during bootstrap,</li>
+<li>the concrete rollback model for operational MVP runs,</li>
+<li>the diff-policy checks that make agent autonomy safe enough for routine PR creation.</li>
 </ul>
-<p>A next logical frontier is <strong>developer-facing integration</strong> within <strong>VS Code</strong>, enabling:</p>
+<p>This gap matters because the fastest path to bootstrap is not the full prompt-program/control-plane surface. It is one operational loop that can safely:</p>
 <ul>
-<li>fast interaction with patterns,</li>
-<li>file-level and selection-level transformations,</li>
-<li>agent-assisted workflows,</li>
-<li>clearer UX pathways for developers, researchers, and contributors,</li>
-<li>and eventually: semi-autonomous loops for corpus processing or code maintenance.</li>
+<li>create an isolated branch/worktree,</li>
+<li>let an agent edit, test, validate, commit, push, and open or update a PR,</li>
+<li>preserve enough provenance to review, recover, and iterate,</li>
+<li>keep merges to protected branches human-only.</li>
 </ul>
-<p>This ADR establishes the <strong>strategic foundation</strong> for VS Code integration and describes the intended shape of v0.1.0 of the TNH-Scholar VS Code Extension.</p>
-<p>It is <strong>not</strong> an implementation ADR — it defines the approach, boundaries, responsibilities, and rationale behind the first integration.</p>
-<h3 id="11-relationship-to-genai-service"><strong>1.1 Relationship to GenAI Service</strong><a class="headerlink" href="#11-relationship-to-genai-service" title="Link to this section">&para;</a></h3>
-<p>The GenAI Service (see <a href="../../../gen-ai-service/design/genai-service-design-strategy/">GenAI Service Strategy</a>) provides:</p>
-<ul>
-<li>Pattern-driven transformations via <code>GenAIService.generate()</code></li>
-<li>Rich domain model (<code>RenderRequest</code>, <code>CompletionEnvelope</code>, <code>PromptCatalog</code>)</li>
-<li>Provenance tracking, fingerprinting, policy enforcement</li>
-<li>Model routing, cost estimation, observability</li>
-</ul>
-<p>The VS Code extension is a <strong>consumer</strong> of GenAI Service capabilities, not a reimplementation. The CLI acts as a <strong>transport adapter</strong>, exposing GenAI Service functionality through a stable command-line interface.</p>
+<p>Without this contract, the maintained runtime risks conflating the canonical run directory with the mutable repository workspace, weakening rollback and making policy enforcement mostly descriptive rather than operational.</p>
 <hr />
-<h2 id="2-problem-motivation">2. Problem / Motivation<a class="headerlink" href="#2-problem-motivation" title="Link to this section">&para;</a></h2>
-<p>Developers and contributors currently:</p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
+<h3 id="1-bootstrap-authority-model">1. Bootstrap Authority Model<a class="headerlink" href="#1-bootstrap-authority-model" title="Link to this section">&para;</a></h3>
+<p>For bootstrap operation, agents are allowed to perform the following actions only on conductor-managed work branches and worktrees:</p>
 <ul>
-<li>run patterns via scattered CLI tools (<code>tnh-fab</code>, domain-specific scripts) or Python directly,</li>
-<li>manually open and inspect results,</li>
-<li>must jump between terminal + editor + documentation,</li>
-<li>have no discoverability for the PromptCatalog,</li>
-<li>cannot easily apply transformations to the currently open file or selection,</li>
-<li>lack real-time feedback during long-running operations.</li>
+<li>edit repository files,</li>
+<li>run tests and deterministic validation,</li>
+<li>create local commits,</li>
+<li>push their work branch,</li>
+<li>open or update a GitHub PR,</li>
+<li>respond to review comments and bot feedback on that PR.</li>
 </ul>
-<p>Desired improvements:</p>
+<p>Protected-branch merge remains human-only. Agent flows may advance a PR to review-ready state, but they may not merge to <code>main</code>, <code>master</code>, or any configured protected branch.</p>
+<p>Bootstrap prioritizes one active PR/worktree per workflow run. Stacked PR orchestration and multi-agent branch coordination are deferred.</p>
+<h3 id="2-workspace-isolation-is-kernel-control-plane-owned">2. Workspace Isolation Is Kernel / Control-Plane Owned<a class="headerlink" href="#2-workspace-isolation-is-kernel-control-plane-owned" title="Link to this section">&para;</a></h3>
+<p>All mutable orchestration runs that can change repository state MUST execute in a dedicated git worktree on a non-protected branch.</p>
+<p>The maintained meaning of <code>working_directory</code> in runner and validation contracts is:</p>
+<ul>
+<li>the repository worktree root used for mutable execution,</li>
+<li>not the canonical run-artifact directory,</li>
+<li>not an adapter-local scratch directory.</li>
+</ul>
+<p>Run artifacts and mutable workspace are distinct:</p>
+<ul>
+<li>the canonical run directory is the provenance and artifact boundary,</li>
+<li>the worktree is the mutable code-execution boundary.</li>
+</ul>
+<h3 id="3-bootstrap-rollback-is-branch-scoped">3. Bootstrap Rollback Is Branch-Scoped<a class="headerlink" href="#3-bootstrap-rollback-is-branch-scoped" title="Link to this section">&para;</a></h3>
+<p>The required <code>ROLLBACK(pre_run)</code> capability for bootstrap is defined as rollback to the recorded pre-run base commit for the managed worktree branch.</p>
+<p>For bootstrap, rollback semantics are branch-scoped rather than file-scoped:</p>
+<ul>
+<li><code>pre_run</code> MUST always be available,</li>
+<li><code>pre_run</code> resolves to the recorded <code>base_sha</code> for the worktree,</li>
+<li>rollback SHOULD prefer discarding and recreating the managed worktree from <code>base_sha</code> over ad hoc file restoration,</li>
+<li><code>pre_step</code> and named checkpoints remain deferred.</li>
+</ul>
+<p>This keeps rollback simple, deterministic, and compatible with one-PR-at-a-time operation.</p>
+<h3 id="4-diff-policy-safety-rails">4. Diff-Policy Safety Rails<a class="headerlink" href="#4-diff-policy-safety-rails" title="Link to this section">&para;</a></h3>
+<p>The maintained bootstrap runtime MUST enforce safety rails across both native runner controls and post-step kernel checks.</p>
+<p>Minimum enforced categories:</p>
+<ul>
+<li>protected-branch mutation is forbidden,</li>
+<li>edits outside allowed scope are forbidden when path policy is present,</li>
+<li>explicitly forbidden paths and operations are hard failures,</li>
+<li>dependency-manifest and lockfile changes must be explicitly allowed by policy or routed through review/gate handling,</li>
+<li>adapter inability to honor requested execution guarantees must fail fast rather than silently weakening policy.</li>
+</ul>
+<p>Safety-rail enforcement is allowed to tighten requested policy. It may not loosen it.</p>
+<h3 id="5-provenance-requirements-for-workspace-safety">5. Provenance Requirements for Workspace Safety<a class="headerlink" href="#5-provenance-requirements-for-workspace-safety" title="Link to this section">&para;</a></h3>
+<p>Each mutable run MUST persist enough workspace context to reconstruct the safety boundary for review and recovery.</p>
+<p>Bootstrap-required workspace context includes:</p>
+<ul>
+<li>repository root,</li>
+<li>worktree path,</li>
+<li>branch name,</li>
+<li><code>base_ref</code>,</li>
+<li><code>base_sha</code>.</li>
+</ul>
+<p>Recommended additional fields:</p>
+<ul>
+<li>current <code>head_sha</code>,</li>
+<li>PR number or URL,</li>
+<li>remote branch name.</li>
+</ul>
+<p>The canonical run directory remains the execution-source artifact set, but workspace identity must be traceable from that run directory.</p>
+<hr />
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Aligns the maintained runtime with the existing architecture intent in OA03 and OA04.</li>
+<li>Gives bootstrap a simple operational target: one worktree, one branch, one PR, one human merge.</li>
+<li>Makes rollback practical without requiring fine-grained undo machinery.</li>
+<li>Lets agents perform useful end-to-end development work while keeping protected-branch control with the human maintainer.</li>
+<li>Clarifies the missing boundary between canonical run artifacts and mutable repository state.</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Adds real workspace-management work to the control plane and runtime.</li>
+<li>Defers richer recovery semantics such as <code>pre_step</code> rollback and named checkpoints.</li>
+<li>Defers stacked-PR and multi-agent branch coordination even if later workflows need them.</li>
+<li>Requires repository/GitHub integration work beyond the current runner and artifact contracts.</li>
+</ul>
+<hr />
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Link to this section">&para;</a></h2>
+<h3 id="a-use-the-run-artifact-directory-as-the-mutable-execution-directory">A. Use the run-artifact directory as the mutable execution directory<a class="headerlink" href="#a-use-the-run-artifact-directory-as-the-mutable-execution-directory" title="Link to this section">&para;</a></h3>
+<p>Rejected: breaks the OA04.2 meaning of <code>working_directory</code>, weakens rollback, and confuses provenance with mutable state.</p>
+<h3 id="b-run-agents-directly-in-the-main-working-tree-and-rely-on-commits-for-rollback">B. Run agents directly in the main working tree and rely on commits for rollback<a class="headerlink" href="#b-run-agents-directly-in-the-main-working-tree-and-rely-on-commits-for-rollback" title="Link to this section">&para;</a></h3>
+<p>Rejected: too easy to contaminate ongoing human work, too hard to recover uncommitted or mixed changes, and misaligned with the existing worktree-first design intent.</p>
+<h3 id="c-let-each-adapter-choose-its-own-isolation-model">C. Let each adapter choose its own isolation model<a class="headerlink" href="#c-let-each-adapter-choose-its-own-isolation-model" title="Link to this section">&para;</a></h3>
+<p>Rejected for bootstrap: increases drift between agents and moves too much safety-critical behavior out of the kernel/control-plane boundary.</p>
+<hr />
+<h2 id="open-questions">Open Questions<a class="headerlink" href="#open-questions" title="Link to this section">&para;</a></h2>
 <ol>
-<li>
-<p><strong>Simple UX slice:</strong>
-   Selecting a prompt → running it → producing an output file → opening it automatically.</p>
-</li>
-<li>
-<p><strong>Discoverability:</strong>
-   QuickPick-like interfaces to browse prompt metadata (names, descriptions, tags, required variables).</p>
-</li>
-<li>
-<p><strong>Developer ergonomics:</strong>
-   Minimize friction; enable quick prototyping and evaluation of patterns.</p>
-</li>
-<li>
-<p><strong>Clear architecture seam:</strong>
-   VS Code should be a thin client — not aware of Python internals — and communicate via well-defined, stable interfaces.</p>
-</li>
-<li>
-<p><strong>Long-term extensibility:</strong>
-   Future support for:</p>
-</li>
-<li>selections and inline replacements,</li>
-<li>streaming token-by-token output,</li>
-<li>multi-file batch operations,</li>
-<li>progress feedback for long operations,</li>
-<li>agent-assisted loops,</li>
-<li>fully autonomous flows.</li>
-</ol>
-<p>This ADR sets the direction for achieving these goals.</p>
-<hr />
-<h2 id="3-decision">3. Decision<a class="headerlink" href="#3-decision" title="Link to this section">&para;</a></h2>
-<h3 id="31-core-architectural-boundary-cli-first-integration"><strong>3.1 Core Architectural Boundary: CLI-First Integration</strong><a class="headerlink" href="#31-core-architectural-boundary-cli-first-integration" title="Link to this section">&para;</a></h3>
-<p>The VS Code Extension will communicate with TNH-Scholar <strong>exclusively via a unified CLI interface</strong> in v0.1.0.</p>
-<p>The extension will <strong>not</strong>:</p>
-<ul>
-<li>import Python modules directly,</li>
-<li>embed Python interpreters,</li>
-<li>run Python LSP servers,</li>
-<li>invoke TNH-Scholar internals through ad hoc mechanisms.</li>
-</ul>
-<p>Instead, we define a <strong>stable CLI integration seam</strong> using the new <code>tnh-gen</code> command-line tool.</p>
-<p><strong>Rationale:</strong></p>
-<ul>
-<li><strong>Simplicity</strong>: CLI is the fastest path to shipping a working integration.</li>
-<li><strong>Stability</strong>: Isolates VS Code from Python implementation changes.</li>
-<li><strong>Testability</strong>: CLI can be tested independently of the extension.</li>
-<li><strong>Replaceability</strong>: Future transports (HTTP, MCP) can be added without breaking the extension contract.</li>
-</ul>
-<hr />
-<h3 id="32-the-tnh-gen-cli-tool"><strong>3.2 The <code>tnh-gen</code> CLI Tool</strong><a class="headerlink" href="#32-the-tnh-gen-cli-tool" title="Link to this section">&para;</a></h3>
-<p><code>tnh-gen</code> is a <strong>new, unified CLI</strong> that:</p>
-<ul>
-<li><strong>Replaces</strong> the legacy <code>tnh-fab</code> CLI and scattered domain-specific scripts.</li>
-<li><strong>Wraps</strong> the GenAI Service, exposing its rich feature set via command-line interface.</li>
-<li><strong>Serves</strong> as the public contract for VS Code integration.</li>
-</ul>
-<p><strong>Design Principles:</strong></p>
-<ol>
-<li><strong>GenAI Service parity</strong>: Match the GenAI Service's capabilities as closely as possible.</li>
-<li><strong>Flexible variable passing</strong>: Support both JSON file and inline parameter styles.</li>
-<li><strong>Rich metadata</strong>: Expose PromptCatalog metadata for discoverability.</li>
-<li><strong>Structured output</strong>: JSON-formatted responses for programmatic consumption.</li>
-<li><strong>Error taxonomy</strong>: Clear exit codes and error messages aligned with GenAI Service error types.</li>
-</ol>
-<hr />
-<h3 id="33-the-tnh-gen-cli-core-capabilities"><strong>3.3 The <code>tnh-gen</code> CLI: Core Capabilities</strong><a class="headerlink" href="#33-the-tnh-gen-cli-core-capabilities" title="Link to this section">&para;</a></h3>
-<p>The <code>tnh-gen</code> CLI provides three primary commands:</p>
-<h4 id="tnh-gen-list-discover-prompts"><strong><code>tnh-gen list</code></strong> - Discover Prompts<a class="headerlink" href="#tnh-gen-list-discover-prompts" title="Link to this section">&para;</a></h4>
-<p>Lists all available prompts with rich metadata (names, descriptions, tags, required variables).</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>tnh-gen<span class="w"> </span>list<span class="w"> </span>--api
-</span></code></pre></div>
-<p>Enables VS Code extension to build dynamic QuickPick interfaces without hardcoding prompt metadata.</p>
-<h4 id="tnh-gen-run-execute-patterns"><strong><code>tnh-gen run</code></strong> - Execute Patterns<a class="headerlink" href="#tnh-gen-run-execute-patterns" title="Link to this section">&para;</a></h4>
-<p>Executes a prompt pattern with flexible variable passing:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Inline variables (with --api for VS Code)</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--api<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_lang</span><span class="o">=</span>vi<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_lang</span><span class="o">=</span>en
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># JSON file variables (with --api for VS Code)</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--api<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span>--vars<span class="w"> </span>variables.json
-</span></code></pre></div>
-<p><strong>Key Features:</strong></p>
-<ul>
-<li>Supports both JSON file and inline parameter styles</li>
-<li>Auto-injects file content as <code>input_text</code> variable</li>
-<li>With <code>--api</code>: Outputs structured JSON for programmatic consumption</li>
-<li>Provides clear exit codes for error handling (0-5 per ADR-TG01)</li>
-<li>Generates provenance markers in output files (YAML frontmatter)</li>
-</ul>
-<h4 id="tnh-gen-config-manage-configuration"><strong><code>tnh-gen config</code></strong> - Manage Configuration<a class="headerlink" href="#tnh-gen-config-manage-configuration" title="Link to this section">&para;</a></h4>
-<p>Configuration discovery with precedence: CLI flags &gt; workspace &gt; user &gt; environment &gt; defaults.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>show
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>max_dollars<span class="w"> </span><span class="m">0</span>.25
-</span></code></pre></div>
-<p><strong>See ADR-VSC02 for complete CLI implementation details</strong> (command signatures, output schemas, error handling, etc.).</p>
-<hr />
-<h3 id="34-vs-code-extension-commands-v010"><strong>3.4 VS Code Extension Commands (v0.1.0)</strong><a class="headerlink" href="#34-vs-code-extension-commands-v010" title="Link to this section">&para;</a></h3>
-<p>The extension provides minimal commands that wrap <code>tnh-gen</code>:</p>
-<h4 id="command-1-tnh-scholar-run-prompt-on-active-file">Command 1: "TNH Scholar: Run Prompt on Active File"<a class="headerlink" href="#command-1-tnh-scholar-run-prompt-on-active-file" title="Link to this section">&para;</a></h4>
-<p>Workflow:</p>
-<ol>
-<li>Execute <code>tnh-gen list --api</code></li>
-<li>Show QuickPick with prompt names + descriptions</li>
-<li>For selected prompt, show input form for required variables</li>
-<li>Save active document to a temp file, then execute <code>tnh-gen run --api --prompt &lt;key&gt; --input-file &lt;temp_file&gt; --vars &lt;temp.json&gt;</code></li>
-<li>Parse JSON response</li>
-<li>Write output to <code>&lt;basename&gt;.&lt;prompt_key&gt;.&lt;ext&gt;</code></li>
-<li>Open output file in split editor</li>
-</ol>
-<h4 id="command-2-tnh-scholar-refresh-prompt-catalog">Command 2: "TNH Scholar: Refresh Prompt Catalog"<a class="headerlink" href="#command-2-tnh-scholar-refresh-prompt-catalog" title="Link to this section">&para;</a></h4>
-<ul>
-<li>Re-executes <code>tnh-gen list --api</code></li>
-<li>Clears extension cache</li>
-<li>Shows notification with prompt count</li>
-</ul>
-<p>This is a <strong>walking skeleton</strong>: minimal, end-to-end, testable.</p>
-<hr />
-<h3 id="35-output-strategy-v010"><strong>3.5 Output Strategy (v0.1.0)</strong><a class="headerlink" href="#35-output-strategy-v010" title="Link to this section">&para;</a></h3>
-<p><strong>File Naming:</strong></p>
-<p>Never overwrite the original file. Use deterministic naming:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&lt;basename&gt;.&lt;prompt_key&gt;.&lt;ext&gt;
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Examples:
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  teaching.md → teaching.translate.md
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  teaching.md → teaching.summarize.md
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  notes.txt → notes.extract_quotes.txt
-</span></code></pre></div>
-<p><strong>Provenance Markers:</strong></p>
-<p>GenAI Service automatically prepends provenance metadata to output files as YAML frontmatter:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nn">---</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">provenance</span><span class="p">:</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">translate</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0&quot;</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">fingerprint</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sha256:abc123...&quot;</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">correlation_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;01HQXYZ123ABC&quot;</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="nt">generated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-01-28T10:30:03Z&quot;</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nn">---</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="p p-Indicator">[</span><span class="nv">Generated content follows...</span><span class="p p-Indicator">]</span>
-</span></code></pre></div>
-<p><strong>Editor Integration:</strong></p>
-<ul>
-<li>Open output file automatically in split editor (right pane)</li>
-<li>Keep original file focused (left pane)</li>
-<li>Enable side-by-side comparison</li>
-</ul>
-<p><strong>Future:</strong> Diff view, inline replacements, overwrite confirmations (v0.2.0+).</p>
-<hr />
-<h3 id="36-error-handling"><strong>3.6 Error Handling</strong><a class="headerlink" href="#36-error-handling" title="Link to this section">&para;</a></h3>
-<p><strong>VS Code Extension Error Display:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Error Type</th>
-<th>Display Method</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Policy Error</td>
-<td>Error notification with budget/limit details</td>
-</tr>
-<tr>
-<td>Transport Error</td>
-<td>Error notification + "Check API key" hint</td>
-</tr>
-<tr>
-<td>Provider Error</td>
-<td>Error notification + "Try different model" hint</td>
-</tr>
-<tr>
-<td>Format Error</td>
-<td>Warning notification + save partial output with <code>.partial</code> suffix</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Partial Results:</strong></p>
-<p>If JSON parsing fails but text is available:</p>
-<ul>
-<li>Save to <code>&lt;basename&gt;.&lt;prompt_key&gt;.partial.&lt;ext&gt;</code></li>
-<li>Show warning notification</li>
-<li>Log full error to extension output channel</li>
-</ul>
-<p><strong>Logging:</strong></p>
-<p>All CLI invocations and responses are logged to the "TNH Scholar" output channel for debugging.</p>
-<hr />
-<h3 id="37-promptcatalog-metadata-source-of-truth"><strong>3.7 PromptCatalog Metadata Source of Truth</strong><a class="headerlink" href="#37-promptcatalog-metadata-source-of-truth" title="Link to this section">&para;</a></h3>
-<p>PromptCatalog (via <code>PromptsAdapter</code>) remains the <strong>only authoritative source</strong> for:</p>
-<ul>
-<li>Prompt keys and versions</li>
-<li>Human-readable names and descriptions</li>
-<li>Tags and categorization</li>
-<li>Required/optional variables</li>
-<li>Recommended filetypes</li>
-<li>Default model hints</li>
-<li>Expected output modes (text/json)</li>
-</ul>
-<p>The extension must <strong>never duplicate</strong> prompt metadata. All metadata is fetched dynamically via <code>tnh-gen list</code>.</p>
-<p><strong>Note:</strong> PromptCatalog metadata schema is defined in <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02</a>.</p>
-<hr />
-<h3 id="38-workspace-configuration-discovery"><strong>3.8 Workspace Configuration Discovery</strong><a class="headerlink" href="#38-workspace-configuration-discovery" title="Link to this section">&para;</a></h3>
-<p>For v0.1.0, the extension assumes <code>tnh-gen</code> is on <code>$PATH</code>.</p>
-<p><strong>Configuration Sources (per ADR-CF01):</strong></p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// .vscode/settings.json (workspace-level)</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;tnhScholar.cliPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/tnh-gen&quot;</span><span class="p">,</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">&quot;tnhScholar.promptDirectory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./prompts&quot;</span><span class="p">,</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">&quot;tnhScholar.defaultModel&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nt">&quot;tnhScholar.maxCostUsd&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">}</span>
-</span></code></pre></div>
-<p><strong>Future (v0.2.0+):</strong></p>
-<ul>
-<li>Auto-detect Poetry virtualenv</li>
-<li>Discover in-project venv</li>
-<li>Fallback to system Python</li>
-</ul>
-<p>See <a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/">ADR-CF01</a> for detailed configuration strategy.</p>
-<hr />
-<h2 id="4-rationale">4. Rationale<a class="headerlink" href="#4-rationale" title="Link to this section">&para;</a></h2>
-<h3 id="41-stability"><strong>4.1 Stability</strong><a class="headerlink" href="#41-stability" title="Link to this section">&para;</a></h3>
-<p>The CLI boundary isolates VS Code from Python implementation changes. The GenAI Service can refactor internals without breaking the extension.</p>
-<h3 id="42-replaceability"><strong>4.2 Replaceability</strong><a class="headerlink" href="#42-replaceability" title="Link to this section">&para;</a></h3>
-<p>The CLI is the <strong>v0.1.0 transport</strong>. Future versions can add:</p>
-<ul>
-<li><strong>HTTP/FastAPI service</strong> (v0.2.0) for streaming, progress updates, session management</li>
-<li><strong>Hybrid approach</strong> (v1.0.0) with HTTP preferred, CLI fallback</li>
-<li><strong>MCP integration</strong> (v2.0.0+) for agent-native workflows</li>
-</ul>
-<p>The extension can auto-detect and prefer faster transports while maintaining CLI compatibility.</p>
-<h3 id="43-discoverability-ux"><strong>4.3 Discoverability &amp; UX</strong><a class="headerlink" href="#43-discoverability-ux" title="Link to this section">&para;</a></h3>
-<p>Developers can browse prompt metadata without manual file digging. The QuickPick interface surfaces:</p>
-<ul>
-<li>Human-readable names (not just file paths)</li>
-<li>Descriptions (understanding prompt purpose)</li>
-<li>Tags (finding related patterns)</li>
-<li>Required variables (knowing what inputs are needed)</li>
-</ul>
-<h3 id="44-future-agent-compatibility"><strong>4.4 Future-Agent Compatibility</strong><a class="headerlink" href="#44-future-agent-compatibility" title="Link to this section">&para;</a></h3>
-<p>Agent loops require:</p>
-<ul>
-<li>Explicit boundaries (CLI provides clear input/output contract)</li>
-<li>Reproducible inputs/outputs (provenance + fingerprinting)</li>
-<li>Structured error handling (status envelopes + diagnostics)</li>
-</ul>
-<p>The CLI seam provides all three and maps cleanly to future MCP/agent protocols.</p>
-<h3 id="45-genai-service-parity"><strong>4.5 GenAI Service Parity</strong><a class="headerlink" href="#45-genai-service-parity" title="Link to this section">&para;</a></h3>
-<p>By matching GenAI Service's feature set (<code>tnh-gen</code> as a thin wrapper), we:</p>
-<ul>
-<li>Avoid impedance mismatch between Python API and CLI</li>
-<li>Enable future features (streaming, batch, policy overrides) without redesign</li>
-<li>Maintain consistency across consumption patterns (Python, CLI, VS Code)</li>
-</ul>
-<h3 id="46-unified-cli-tnh-gen-replaces-tnh-fab"><strong>4.6 Unified CLI (<code>tnh-gen</code> replaces <code>tnh-fab</code>)</strong><a class="headerlink" href="#46-unified-cli-tnh-gen-replaces-tnh-fab" title="Link to this section">&para;</a></h3>
-<p>Consolidating scattered CLI tools into <code>tnh-gen</code>:</p>
-<ul>
-<li>Reduces cognitive load (one tool to learn vs. many)</li>
-<li>Simplifies documentation and onboarding</li>
-<li>Provides consistent UX across all GenAI operations</li>
-<li>Enables future expansion (corpus management, validation, etc.)</li>
-</ul>
-<hr />
-<h2 id="5-alternatives-considered">5. Alternatives Considered<a class="headerlink" href="#5-alternatives-considered" title="Link to this section">&para;</a></h2>
-<h3 id="51-embedding-python-in-the-extension"><strong>5.1 Embedding Python in the extension</strong> ❌<a class="headerlink" href="#51-embedding-python-in-the-extension" title="Link to this section">&para;</a></h3>
-<p><strong>Approach:</strong> Use <code>python-shell</code> or <code>pyodide</code> to call GenAI Service directly from Node.js.</p>
-<p><strong>Rejected because:</strong></p>
-<ul>
-<li>Too fragile (Python environment discovery, virtualenv management)</li>
-<li>Platform-specific issues (different Python versions, missing dependencies)</li>
-<li>Not web-compatible (can't run in vscode.dev)</li>
-<li>High maintenance burden</li>
-</ul>
-<h3 id="52-language-server-protocol-lsp"><strong>5.2 Language Server Protocol (LSP)</strong> ❌<a class="headerlink" href="#52-language-server-protocol-lsp" title="Link to this section">&para;</a></h3>
-<p><strong>Approach:</strong> Implement TNH-Scholar as a language server.</p>
-<p><strong>Rejected because:</strong></p>
-<ul>
-<li>Protocol mismatch: LSP is designed for language features (diagnostics, hover, completion), not general compute</li>
-<li>Heavyweight: Requires persistent server + complex protocol implementation</li>
-<li>Limited discoverability: LSP doesn't have primitives for "list all patterns" or "apply transformation"</li>
-<li>Over-engineering for v0.1.0 needs</li>
-</ul>
-<h3 id="53-direct-http-service-v010"><strong>5.3 Direct HTTP service (v0.1.0)</strong> ⏸️<a class="headerlink" href="#53-direct-http-service-v010" title="Link to this section">&para;</a></h3>
-<p><strong>Approach:</strong> Launch FastAPI service, have extension call HTTP endpoints.</p>
-<p><strong>Deferred to v0.2.0 because:</strong></p>
-<ul>
-<li>Adds daemon management complexity</li>
-<li>Requires port management, health checks</li>
-<li>Higher setup friction for users</li>
-<li>CLI is simpler and sufficient for initial validation</li>
-</ul>
-<p><strong>Note:</strong> HTTP service is planned for v0.2.0 (see ADR-VSC02).</p>
-<h3 id="54-direct-node-python-rpc"><strong>5.4 Direct Node &lt;-&gt; Python RPC</strong> ❌<a class="headerlink" href="#54-direct-node-python-rpc" title="Link to this section">&para;</a></h3>
-<p><strong>Approach:</strong> Custom IPC/socket protocol between extension and Python service.</p>
-<p><strong>Rejected because:</strong></p>
-<ul>
-<li>Adds unnecessary coupling</li>
-<li>Reinvents HTTP without benefits</li>
-<li>Harder to test and debug than standard protocols</li>
-</ul>
-<hr />
-<h2 id="6-impact">6. Impact<a class="headerlink" href="#6-impact" title="Link to this section">&para;</a></h2>
-<h3 id="on-developers"><strong>On developers</strong><a class="headerlink" href="#on-developers" title="Link to this section">&para;</a></h3>
-<p>✅ <strong>Benefits:</strong></p>
-<ul>
-<li>Easy access to GenAI patterns from editor</li>
-<li>Intuitive prompt discovery and selection</li>
-<li>Automatic file handling and provenance</li>
-<li>Reduced context switching (terminal ↔ editor)</li>
-</ul>
-<p>⚠️ <strong>Considerations:</strong></p>
-<ul>
-<li>Must have <code>tnh-gen</code> installed and on PATH</li>
-<li>Initial setup requires API key configuration</li>
-</ul>
-<h3 id="on-codebase"><strong>On codebase</strong><a class="headerlink" href="#on-codebase" title="Link to this section">&para;</a></h3>
-<p>✅ <strong>Required Work:</strong></p>
-<ul>
-<li>Implement <code>tnh-gen</code> CLI (new)</li>
-<li>Expand <code>PromptsAdapter.introspect()</code> for rich metadata</li>
-<li>Define PromptCatalog metadata schema</li>
-<li>Create VS Code extension scaffold</li>
-</ul>
-<p>♻️ <strong>Refactoring:</strong></p>
-<ul>
-<li>Migrate <code>tnh-fab</code> functionality to <code>tnh-gen</code></li>
-<li>Deprecate legacy CLI tools</li>
-</ul>
-<h3 id="on-documentation"><strong>On documentation</strong><a class="headerlink" href="#on-documentation" title="Link to this section">&para;</a></h3>
-<p>📚 <strong>New Docs Required:</strong></p>
-<ul>
-<li><code>tnh-gen</code> CLI reference</li>
-<li>VS Code extension user guide</li>
-<li>Configuration guide</li>
-<li>Prompt authoring guide (for catalog contributors)</li>
-</ul>
-<hr />
-<h2 id="7-phased-transport-evolution">7. Phased Transport Evolution<a class="headerlink" href="#7-phased-transport-evolution" title="Link to this section">&para;</a></h2>
-<p>This ADR defines <strong>v0.1.0</strong> using CLI. Future versions will evolve the transport:</p>
-<h3 id="v010-cli-current-adr"><strong>v0.1.0: CLI (Current ADR)</strong> ✅<a class="headerlink" href="#v010-cli-current-adr" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Transport:</strong> <code>tnh-gen</code> CLI subprocess</li>
-<li><strong>Goal:</strong> Ship walking skeleton, validate UX</li>
-<li><strong>Scope:</strong> TypeScript extension + unit/integration tests</li>
-<li><strong>Capabilities:</strong> Basic file transformations, prompt discovery</li>
-<li><strong>Documentation/Packaging:</strong> Separate task after walking skeleton validation</li>
-</ul>
-<h3 id="v020-add-http-service"><strong>v0.2.0: Add HTTP Service</strong> 🔄<a class="headerlink" href="#v020-add-http-service" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Transport:</strong> FastAPI HTTP service (preferred) + CLI fallback</li>
-<li><strong>Goal:</strong> Rich UX with streaming, progress, sessions</li>
-<li><strong>Capabilities:</strong> Token-by-token output, real-time progress, conversation history</li>
-<li><strong>See:</strong> ADR-VSC02 for HTTP service design</li>
-</ul>
-<h3 id="v100-hybrid-http-cli"><strong>v1.0.0: Hybrid (HTTP + CLI)</strong> 🎯<a class="headerlink" href="#v100-hybrid-http-cli" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Transport:</strong> Auto-detect HTTP, gracefully fall back to CLI</li>
-<li><strong>Goal:</strong> Best UX when service available, always works offline</li>
-<li><strong>Capabilities:</strong> Full feature parity across transports</li>
-</ul>
-<h3 id="v200-mcp-integration"><strong>v2.0.0+: MCP Integration</strong> 🔮<a class="headerlink" href="#v200-mcp-integration" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Transport:</strong> Model Context Protocol for agent-native workflows</li>
-<li><strong>Goal:</strong> Enable semi-autonomous corpus processing loops</li>
-<li><strong>Capabilities:</strong> Multi-step agent chains, approval gates, batch orchestration</li>
-<li><strong>Timing:</strong> Evaluate when MCP ecosystem matures (2026+)</li>
-</ul>
-<hr />
-<h2 id="8-prerequisites-dependencies">8. Prerequisites &amp; Dependencies<a class="headerlink" href="#8-prerequisites-dependencies" title="Link to this section">&para;</a></h2>
-<p>Before implementing the VS Code extension, these must be completed:</p>
-<h3 id="p0-blocking"><strong>P0: Blocking</strong><a class="headerlink" href="#p0-blocking" title="Link to this section">&para;</a></h3>
-<ol>
-<li><strong>Implement <code>tnh-gen</code> CLI</strong> ✅ COMPLETE</li>
-<li><strong>ADR</strong>: <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01</a>, <a href="../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/">ADR-TG01.1</a></li>
-<li>Wrap GenAI Service with CLI interface</li>
-<li>Support JSON and inline variable passing (<code>--api</code> flag)</li>
-<li>Add to Poetry scripts as entry point</li>
-<li>
-<p><strong>Status</strong>: Implemented (v0.2.2+)</p>
-</li>
-<li>
-<p><strong>Define PromptCatalog Metadata Schema</strong> ✅ COMPLETE</p>
-</li>
-<li><strong>ADR</strong>: <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02</a></li>
-<li>Formalize metadata fields (name, description, tags, required_variables, optional_variables)</li>
-<li>Extend <code>PromptsAdapter.introspect()</code> to return metadata</li>
-<li>Create metadata validation</li>
-<li>
-<p><strong>Status</strong>: Implemented in tnh-gen CLI</p>
-</li>
-<li>
-<p><strong>Define Configuration Strategy</strong> ✅ COMPLETE</p>
-</li>
-<li><strong>ADR</strong>: <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01</a> §4 (Configuration)</li>
-<li>Specify config file formats and locations</li>
-<li>Define precedence rules (CLI flags &gt; workspace &gt; user &gt; env &gt; defaults)</li>
-<li>Handle API key discovery and secrets management</li>
-<li><strong>Status</strong>: Implemented in tnh-gen CLI</li>
-</ol>
-<h3 id="p1-high-priority"><strong>P1: High Priority</strong><a class="headerlink" href="#p1-high-priority" title="Link to this section">&para;</a></h3>
-<ol>
-<li><strong>Create Error Taxonomy Mapping</strong></li>
-<li>Map GenAI Service errors to CLI exit codes</li>
-<li>Define JSON error response schema</li>
-<li>
-<p>Document error handling best practices</p>
-</li>
-<li>
-<p><strong>Define Output File Format Strategy</strong></p>
-</li>
-<li>Specify provenance marker format</li>
-<li>Define file extension mapping rules</li>
-<li>Handle special cases (JSON output, binary formats)</li>
+<li>Should bootstrap branch naming be frozen in this ADR family, or left to implementation config?</li>
+<li>Should PR lifecycle events become canonical run events in a later OA07 decimal ADR, or remain metadata/artifact-only at first?</li>
+<li>Should dependency-file policy be modeled as first-class structured policy, or start as a conventional path-based rule?</li>
 </ol>
 <hr />
-<h2 id="9-follow-up-adrs">9. Follow-up ADRs<a class="headerlink" href="#9-follow-up-adrs" title="Link to this section">&para;</a></h2>
-<p>The following ADRs will detail implementation:</p>
-<h3 id="adr-tg01-tnh-gen-cli-architecture-implemented"><strong>ADR-TG01: <code>tnh-gen</code> CLI Architecture</strong> ✅ Implemented<a class="headerlink" href="#adr-tg01-tnh-gen-cli-architecture-implemented" title="Link to this section">&para;</a></h3>
-<p><strong>Status:</strong> Implemented (see <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01</a>)</p>
-<p><strong>Satisfied prerequisites:</strong>
-- CLI implementation with <code>--api</code> flag for machine-readable output
-- Configuration strategy (precedence, file formats, API keys)
-- Error handling and exit codes (0-5 taxonomy)
-- Provenance generation</p>
-<h3 id="adr-tg011-human-friendly-cli-defaults-implemented"><strong>ADR-TG01.1: Human-Friendly CLI Defaults</strong> ✅ Implemented<a class="headerlink" href="#adr-tg011-human-friendly-cli-defaults-implemented" title="Link to this section">&para;</a></h3>
-<p><strong>Status:</strong> Implemented (see <a href="../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/">ADR-TG01.1</a>)</p>
-<p><strong>Satisfied prerequisites:</strong>
-- <code>--api</code> flag for VS Code integration (JSON output)
-- Human-friendly defaults for interactive use</p>
-<h3 id="adr-tg02-prompt-system-integration-implemented"><strong>ADR-TG02: Prompt System Integration</strong> ✅ Implemented<a class="headerlink" href="#adr-tg02-prompt-system-integration-implemented" title="Link to this section">&para;</a></h3>
-<p><strong>Status:</strong> Implemented (see <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02</a>)</p>
-<p><strong>Satisfied prerequisites:</strong>
-- PromptCatalog metadata schema (required_variables, optional_variables, tags, etc.)
-- PromptsAdapter integration
-- Variable precedence rules</p>
-<h3 id="adr-vsc02-vs-code-extension-architecture-proposed"><strong>ADR-VSC02: VS Code Extension Architecture</strong> 🟡 Proposed<a class="headerlink" href="#adr-vsc02-vs-code-extension-architecture-proposed" title="Link to this section">&para;</a></h3>
-<p><strong>Status:</strong> Proposed (see <a href="../adr-vsc02-tnh-gen-cli-implementation/">adr-vsc02-tnh-gen-cli-implementation.md</a>)</p>
-<p><strong>Scope:</strong> TypeScript extension architecture consuming tnh-gen CLI</p>
-<h3 id="adr-vsc05-vs-code-extension-implementation-future"><strong>ADR-VSC05: VS Code Extension Implementation</strong> 🟢 Future<a class="headerlink" href="#adr-vsc05-vs-code-extension-implementation-future" title="Link to this section">&para;</a></h3>
-<p><strong>Scope:</strong></p>
+<h2 id="related-adrs">Related ADRs<a class="headerlink" href="#related-adrs" title="Link to this section">&para;</a></h2>
 <ul>
-<li>Extension architecture and command structure</li>
-<li>QuickPick UI implementation</li>
-<li>Variable input forms (dynamic based on prompt metadata)</li>
-<li>File output handling and editor integration</li>
-<li>Error display and notification strategy</li>
-<li>Extension settings and preferences</li>
-<li>Testing strategy (unit, integration, E2E)</li>
+<li><a href="../adr-oa01.1-conductor-strategy-v2/">ADR-OA01.1: Conductor Strategy v2</a></li>
+<li><a href="../adr-oa03-agent-runner-architecture/">ADR-OA03: Agent Runner Architecture</a></li>
+<li><a href="../adr-oa04-workflow-schema-opcode-semantics/">ADR-OA04: Workflow Execution Contracts</a></li>
+<li><a href="../adr-oa04.1-implementation-notes-mvp-buildout/">ADR-OA04.1: MVP Runtime Build-Out Sequence</a></li>
+<li><a href="../adr-oa04.2-runner-contract/">ADR-OA04.2: Runner Contract</a></li>
+<li><a href="../adr-oa04.3-provenance-run-artifact-contract/">ADR-OA04.3: Provenance and Run-Artifact Contract</a></li>
+<li><a href="../adr-oa04.4-policy-enforcement-contract/">ADR-OA04.4: Policy Enforcement Contract</a></li>
 </ul>
-<h3 id="adr-vsc06-http-service-for-rich-ux-future-v020"><strong>ADR-VSC06: HTTP Service for Rich UX</strong> 🟢 Future (v0.2.0)<a class="headerlink" href="#adr-vsc06-http-service-for-rich-ux-future-v020" title="Link to this section">&para;</a></h3>
-<p><strong>Scope:</strong></p>
-<ul>
-<li>FastAPI service architecture</li>
-<li>API endpoint design (REST, SSE for streaming)</li>
-<li>Auto-start mechanism from VS Code extension</li>
-<li>Health checks and daemon management</li>
-<li>Session management for multi-turn conversations</li>
-<li>Hybrid transport strategy (HTTP preferred, CLI fallback)</li>
-</ul>
-<h3 id="adr-vsc07-selection-level-transformations-future-v030"><strong>ADR-VSC07: Selection-Level Transformations</strong> 🟢 Future (v0.3.0)<a class="headerlink" href="#adr-vsc07-selection-level-transformations-future-v030" title="Link to this section">&para;</a></h3>
-<p><strong>Scope:</strong></p>
-<ul>
-<li>Inline text replacement</li>
-<li>Diff view and preview</li>
-<li>Undo/redo integration</li>
-<li>Multi-cursor support</li>
-</ul>
-<h3 id="adr-vsc08-batch-multi-file-operations-future-v040"><strong>ADR-VSC08: Batch &amp; Multi-File Operations</strong> 🟢 Future (v0.4.0)<a class="headerlink" href="#adr-vsc08-batch-multi-file-operations-future-v040" title="Link to this section">&para;</a></h3>
-<p><strong>Scope:</strong></p>
-<ul>
-<li>Bulk pattern application</li>
-<li>Progress tracking</li>
-<li>Cancellation and retry</li>
-<li>Result aggregation</li>
-</ul>
-<h3 id="adr-vsc09-agent-assisted-workflows-future-v200"><strong>ADR-VSC09: Agent-Assisted Workflows</strong> 🔮 Future (v2.0.0+)<a class="headerlink" href="#adr-vsc09-agent-assisted-workflows-future-v200" title="Link to this section">&para;</a></h3>
-<p><strong>Scope:</strong></p>
-<ul>
-<li>MCP integration</li>
-<li>Approval gates and human-in-the-loop</li>
-<li>Semi-autonomous corpus processing</li>
-<li>Audit logging and provenance chains</li>
-</ul>
-<hr />
-<h2 id="10-decision-summary">10. Decision Summary<a class="headerlink" href="#10-decision-summary" title="Link to this section">&para;</a></h2>
-<p>TNH-Scholar will integrate with VS Code via a <strong>minimal, stable CLI boundary</strong> using the new <strong><code>tnh-gen</code></strong> unified CLI tool.</p>
-<p><strong>v0.1.0 Walking Skeleton:</strong></p>
-<ul>
-<li><code>tnh-gen list</code> — Discover prompts with rich metadata</li>
-<li><code>tnh-gen run</code> — Execute patterns with flexible variable passing</li>
-<li><code>tnh-gen config</code> — Manage configuration</li>
-</ul>
-<p><strong>Key Principles:</strong></p>
-<ul>
-<li>✅ CLI-first for simplicity (v0.1.0)</li>
-<li>✅ GenAI Service feature parity (match rich domain model)</li>
-<li>✅ Flexible variable passing (JSON file + inline params)</li>
-<li>✅ Rich error handling (structured responses, exit codes)</li>
-<li>✅ Provenance-first (automatic markers, fingerprinting)</li>
-<li>✅ Transport evolution path (CLI → HTTP → Hybrid → MCP)</li>
-<li>✅ Unified CLI (<code>tnh-gen</code> replaces <code>tnh-fab</code>)</li>
-</ul>
-<p>The extension acts as a <strong>thin client</strong>, delegating all GenAI logic to the CLI/service layer.</p>
-<hr />
-<h2 id="11-acceptance-criteria-v010">11. Acceptance Criteria (v0.1.0)<a class="headerlink" href="#11-acceptance-criteria-v010" title="Link to this section">&para;</a></h2>
-<p><strong>CLI Implementation:</strong></p>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>tnh-gen list --api</code> returns prompt metadata ✅ (ADR-TG01.1)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> supports JSON file variable passing ✅ (ADR-TG02)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> supports inline <code>--var</code> parameter passing ✅ (ADR-TG02)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>tnh-gen run</code> injects <code>--input-file</code> content as variable ✅ (ADR-TG02)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CLI outputs structured JSON with <code>--api</code> flag ✅ (ADR-TG01.1)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CLI exits with appropriate error codes (0-5) ✅ (ADR-TG01)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CLI respects configuration precedence ✅ (ADR-CF01)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <code>tnh-gen</code> is installable via Poetry scripts ✅ (v0.2.2+)</li>
-</ul>
-<p><strong>VS Code Extension:</strong></p>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> "Run Prompt on Active File" command works end-to-end</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> QuickPick shows prompt names + descriptions</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Variable input form dynamically adapts to selected prompt</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Output file opens automatically in split editor</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Errors display user-friendly notifications</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Extension logs CLI invocations to output channel</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Extension respects workspace configuration</li>
-</ul>
-<p><strong>Documentation:</strong></p>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>tnh-gen</code> CLI reference published</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> VS Code extension user guide published</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Configuration guide published</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Migration guide from <code>tnh-fab</code> published</li>
-</ul>
-<hr />
-<h2 id="12-status">12. Status<a class="headerlink" href="#12-status" title="Link to this section">&para;</a></h2>
-<p><strong>Current:</strong> Proposed (awaiting approval)</p>
-<p><strong>Prerequisites Complete:</strong></p>
-<ol>
-<li>✅ ADR-TG01: <code>tnh-gen</code> CLI architecture (implemented v0.2.2+)</li>
-<li>✅ ADR-TG01.1: <code>--api</code> flag for machine-readable output (implemented)</li>
-<li>✅ ADR-TG02: Prompt system integration (implemented)</li>
-<li>✅ ADR-CF01: Configuration strategy (accepted)</li>
-</ol>
-<p><strong>Next Steps:</strong></p>
-<ol>
-<li>🟡 Review and approve ADR-VSC01 (this document) + ADR-VSC02</li>
-<li>🟡 Implement VS Code extension (walking skeleton)</li>
-<li>🟢 Ship v0.1.0</li>
-</ol>
-<hr />
-<h2 id="appendix-example-workflow">Appendix: Example Workflow<a class="headerlink" href="#appendix-example-workflow" title="Link to this section">&para;</a></h2>
-<p><strong>User Story:</strong> Developer wants to translate a Vietnamese teaching to English.</p>
-<ol>
-<li>Open <code>teaching.md</code> in VS Code</li>
-<li>Cmd+Shift+P → "TNH Scholar: Run Prompt on Active File"</li>
-<li>QuickPick shows:</li>
-</ol>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Vietnamese-English Translation
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Translate Vietnamese dharma texts to English
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Tags: translation, dharma
-</span></code></pre></div>
-<ol>
-<li>User selects "Vietnamese-English Translation"</li>
-<li>Extension shows input form:</li>
-</ol>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Source Language: [vi]
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Target Language: [en]
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Context (optional): [Dharma talk on mindfulness]
-</span></code></pre></div>
-<ol>
-<li>User fills form, clicks "Run"</li>
-<li>Extension executes:</li>
-</ol>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--api<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_lang</span><span class="o">=</span>vi<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_lang</span><span class="o">=</span>en<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">context</span><span class="o">=</span><span class="s2">&quot;Dharma talk on mindfulness&quot;</span>
-</span></code></pre></div>
-<ol>
-<li>Output file <code>teaching.translate.md</code> opens in split pane with provenance header</li>
-<li>Success notification: "Translation completed (gpt-4o, $0.08, 3.4s)"</li>
-</ol>
-<p><strong>Developer experience:</strong> 10 seconds from intent to result, zero context switching.</p>
 
 
 

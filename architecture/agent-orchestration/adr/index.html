@@ -1889,6 +1889,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -2141,7 +2145,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-OA04: Workflow Schema + Opcode Semantics
+    ADR-OA04: Workflow Execution Contracts
   </span>
   
     
@@ -2169,7 +2173,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence
+    ADR-OA04.1: MVP Runtime Build-Out Sequence
   </span>
   
     
@@ -2203,7 +2207,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2231,7 +2235,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2259,7 +2263,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2287,7 +2291,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2338,6 +2342,62 @@
   
   <span class="md-ellipsis">
     ADR-OA06: Planner Evaluator Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA07: Diff-Policy + Safety Rails
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA07.1: Worktree Lifecycle and Rollback
   </span>
   
     
@@ -9628,14 +9688,16 @@
 <p><strong><a href="adr-oa03.1-claude-code-runner/">ADR-OA03.1: Claude Code Runner</a></strong> - Claude Code execution path — headless print mode only, no interactive/PTY automation</p>
 <p><strong><a href="adr-oa03.2-codex-runner/">ADR-OA03.2: Codex Runner</a></strong> - Codex execution path — API-first, tool-driven runner for implementation tasks</p>
 <p><strong><a href="adr-oa03.3-codex-cli-runner/">ADR-OA03.3: Codex CLI Runner</a></strong> - Codex execution path via CLI — headless exec mode, superseding API-based approach</p>
-<p><strong><a href="adr-oa04-workflow-schema-opcode-semantics/">ADR-OA04: Workflow Schema + Opcode Semantics</a></strong> - Defines the canonical workflow document format and execution semantics for tnh-conductor kernel opcodes.</p>
-<p><strong><a href="adr-oa04.1-implementation-notes-mvp-buildout/">ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence</a></strong> - Implementation-guide addendum for OA04 defining MVP execution flow, role split, and incremental build sequence.</p>
+<p><strong><a href="adr-oa04-workflow-schema-opcode-semantics/">ADR-OA04: Workflow Execution Contracts</a></strong> - Defines the canonical workflow document format, opcode semantics, and execution-contract foundation for tnh-conductor runtime implementation.</p>
+<p><strong><a href="adr-oa04.1-implementation-notes-mvp-buildout/">ADR-OA04.1: MVP Runtime Build-Out Sequence</a></strong> - Implementation-guide addendum for OA04 defining the MVP runtime build order, role split, and handoff to OA07 bootstrap workspace work.</p>
 <p><strong><a href="adr-oa04.2-runner-contract/">ADR-OA04.2: Runner Contract</a></strong> - Defines the maintained RUN_AGENT request/result, artifact, and normalization contract for Claude CLI and Codex CLI adapters.</p>
 <p><strong><a href="adr-oa04.3-provenance-run-artifact-contract/">ADR-OA04.3: Provenance and Run-Artifact Contract</a></strong> - Defines the maintained run directory, artifact manifest, and event/provenance handoff contract for workflow execution.</p>
 <p><strong><a href="adr-oa04.4-policy-enforcement-contract/">ADR-OA04.4: Policy Enforcement Contract</a></strong> - Defines the shared permissibility model, native-control mapping boundary, and violation handling contract for workflow execution.</p>
 <p><strong><a href="adr-oa04.5-harness-backend-contract/">ADR-OA04.5: Harness Backend Contract</a></strong> - Defines the maintained backend contract for executing generated and predefined validation harnesses under RUN_VALIDATION.</p>
 <p><strong><a href="adr-oa05-prompt-library-specification/">ADR-OA05: Prompt Library Specification</a></strong> - Defines prompt artifact schema, versioning, rendering, and catalog validation contracts for tnh-conductor prompt-program behavior.</p>
 <p><strong><a href="adr-oa06-planner-evaluator-contract/">ADR-OA06: Planner Evaluator Contract</a></strong> - Defines planner evaluator I/O schemas, status derivation, contradiction rules, and deterministic decision vectors for EVALUATE steps.</p>
+<p><strong><a href="adr-oa07-diff-policy-safety-rails/">ADR-OA07: Diff-Policy + Safety Rails</a></strong> - Defines the bootstrap safety model for worktree isolation, branch-scoped rollback, and agent authority boundaries in maintained agent orchestration.</p>
+<p><strong><a href="adr-oa07.1-worktree-lifecycle-and-rollback/">ADR-OA07.1: Worktree Lifecycle and Rollback</a></strong> - Bootstrap implementation guide for managed worktree creation, run-directory separation, and branch-scoped rollback in maintained agent orchestration.</p>
 <hr />
 <p><em>This file auto-generated.</em></p>
 

@@ -1299,9 +1299,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#oa04-contract-family-pr-sequence-in-progress" class="md-nav__link">
+  <a href="#oa071-bootstrap-worktree-slice" class="md-nav__link">
     <span class="md-ellipsis">
-      🚨 OA04 Contract Family — PR Sequence (in progress)
+      🚨 OA07.1 Bootstrap Worktree Slice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oa04-contract-family-pr-sequence-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ OA04 Contract Family — PR Sequence (Complete)
     </span>
   </a>
   
@@ -2466,6 +2475,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -2718,7 +2731,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-OA04: Workflow Schema + Opcode Semantics
+    ADR-OA04: Workflow Execution Contracts
   </span>
   
     
@@ -2746,7 +2759,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-OA04.1: Implementation Notes - MVP Build-Out Sequence
+    ADR-OA04.1: MVP Runtime Build-Out Sequence
   </span>
   
     
@@ -2780,7 +2793,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2808,7 +2821,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2836,7 +2849,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2864,7 +2877,7 @@
     
   
   
-    <span class="md-status md-status--accepted"></span>
+    <span class="md-status md-status--implemented"></span>
   
 
   
@@ -2915,6 +2928,62 @@
   
   <span class="md-ellipsis">
     ADR-OA06: Planner Evaluator Contract
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA07: Diff-Policy + Safety Rails
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA07.1: Worktree Lifecycle and Rollback
   </span>
   
     
@@ -10268,9 +10337,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#oa04-contract-family-pr-sequence-in-progress" class="md-nav__link">
+  <a href="#oa071-bootstrap-worktree-slice" class="md-nav__link">
     <span class="md-ellipsis">
-      🚨 OA04 Contract Family — PR Sequence (in progress)
+      🚨 OA07.1 Bootstrap Worktree Slice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oa04-contract-family-pr-sequence-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ OA04 Contract Family — PR Sequence (Complete)
     </span>
   </a>
   
@@ -10741,7 +10819,7 @@
 <h1 id="tnh-scholar-todo-list">TNH Scholar TODO List<a class="headerlink" href="#tnh-scholar-todo-list" title="Link to this section">&para;</a></h1>
 <p>Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.</p>
 <blockquote>
-<p><strong>Last Updated</strong>: 2026-04-03 (PR-5 OA04.2 runner adapters ready for review)
+<p><strong>Last Updated</strong>: 2026-04-03 (PR-5 OA04.2 runner adapters merged)
 <strong>Version</strong>: 0.3.1 (Alpha)
 <strong>Status</strong>: Active Development - Bootstrap path complete, production hardening phase</p>
 <p><strong>Style Note</strong>: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
@@ -10806,7 +10884,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li>move rollback/state capture and durable run record ownership out of prototype packages</li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Migrate maintained runner behavior into <code>agent_orchestration/runners/</code><ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Migrate maintained runner behavior into <code>agent_orchestration/runners/</code><ul>
 <li>use <code>reference/spike/</code> only as reference material</li>
 <li>no new forward-path runner work in spike code</li>
 </ul>
@@ -10831,10 +10909,72 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li><code>docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md</code></li>
 <li><code>docs/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md</code></li>
 </ul>
-<h4 id="oa04-contract-family-pr-sequence-in-progress">🚨 OA04 Contract Family — PR Sequence (in progress)<a class="headerlink" href="#oa04-contract-family-pr-sequence-in-progress" title="Link to this section">&para;</a></h4>
+<h4 id="oa071-bootstrap-worktree-slice">🚨 OA07.1 Bootstrap Worktree Slice<a class="headerlink" href="#oa071-bootstrap-worktree-slice" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: NOT STARTED — ADRs written, green-lit for implementation 2026-03-27</li>
-<li><strong>Context</strong>: OA04.2–OA04.5 are the contract-layer ADRs sitting between the OA07 runtime foundations and the actual runner/policy/provenance implementations. They must be accepted before implementation begins. See implementation notes in <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md">ADR-OA04.1 Addendum 2026-03-27</a> for scaffolding alignment gaps.</li>
+<li><strong>Status</strong>: READY TO START</li>
+<li><strong>Priority</strong>: HIGHEST (next operational bootstrap slice)</li>
+<li><strong>Context</strong>: The maintained OA04.x runtime contracts are now substantial, but the system is not yet operational because mutable execution still lacks a real worktree boundary. Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md">ADR-OA07</a> and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md">ADR-OA07.1</a>.</li>
+<li><strong>Bootstrap Goal</strong>:</li>
+<li>create a managed git worktree from a committed base ref</li>
+<li>run <code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> against the worktree root</li>
+<li>keep canonical run artifacts in the run directory</li>
+<li>support <code>ROLLBACK(pre_run)</code> to recorded base state</li>
+<li>establish the headless path needed for later commit/push/PR automation</li>
+<li><strong>Why This Is Next</strong>:</li>
+<li>current kernel/workspace code is contract-shaped but not operational</li>
+<li>the run directory and mutable workspace are still conflated in the maintained path</li>
+<li>OA05/OA06 depth work should follow a live bootstrap loop, not precede it</li>
+<li><strong>Recommended PR sizing</strong>:</li>
+<li>Prefer <strong>2 PRs</strong> to stay comfortably under diff-size guidance</li>
+<li>A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work</li>
+<li><strong>PR Sequence</strong>:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-7</strong> <code>feat/oa07.1-worktree-workspace-service</code> — Managed worktree boundary (medium)<ul>
+<li>replace <code>NullWorkspaceService</code> as the forward-path maintained implementation with a real git-backed workspace service</li>
+<li>add typed workspace context models: <code>repo_root</code>, <code>worktree_path</code>, <code>branch_name</code>, <code>base_ref</code>, <code>base_sha</code></li>
+<li>implement managed branch + worktree creation from committed base ref</li>
+<li>implement <code>capture_pre_run()</code> and <code>rollback_pre_run()</code> around recorded <code>base_sha</code></li>
+<li>persist workspace context into canonical run artifacts or run metadata extension</li>
+<li>tests for worktree creation, recorded base state, and <code>ROLLBACK(pre_run)</code> semantics</li>
+<li>keep <code>NullWorkspaceService</code> only for tests or explicit non-operational contexts</li>
+</ul>
+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-8</strong> <code>feat/oa07.1-kernel-worktree-wiring</code> — Runtime separation of worktree and run dir (medium)<ul>
+<li>update <code>KernelRunService</code> to distinguish canonical run-artifact paths from mutable execution workspace</li>
+<li>pass the worktree root as <code>working_directory</code> to runner and validation services</li>
+<li>keep manifests, events, policy summaries, and captured artifacts in the canonical run directory</li>
+<li>add regression tests proving <code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> execute in the worktree, not the run-artifact directory</li>
+<li>add a minimal bootstrap harness/integration test covering create-worktree → execute-step → rollback</li>
+</ul>
+</li>
+<li><strong>Optional follow-on if PR-8 stays small enough</strong>:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-9</strong> <code>feat/oa07-bootstrap-headless-entry</code> — Minimal headless bootstrap entry point (small/medium)<ul>
+<li>load one workflow</li>
+<li>create worktree context</li>
+<li>execute workflow end to end</li>
+<li>write canonical artifacts and final state</li>
+<li>no commit/push/PR behavior yet unless diff size remains modest</li>
+</ul>
+</li>
+<li><strong>Explicit deferrals for this slice</strong>:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> commit/push/PR automation if it causes PR-7 or PR-8 to exceed preferred diff size</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> strict OA05 compile-validation as a blocker for bootstrap</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> full OA06 planner fixture/vector suite beyond the bootstrap path</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> non-script harness backends</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> stacked PR orchestration</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> multi-agent mutable collaboration inside one worktree</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>pre_step</code> rollback and named checkpoints</li>
+<li><strong>Files likely in scope</strong>:</li>
+<li><code>src/tnh_scholar/agent_orchestration/workspace/</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/kernel/service.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/run_artifacts/</code></li>
+<li><code>tests/agent_orchestration/test_oa07_execution_validation_kernel.py</code></li>
+<li><code>docs/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md</code></li>
+<li><code>docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md</code></li>
+</ul>
+<h4 id="oa04-contract-family-pr-sequence-complete">✅ OA04 Contract Family — PR Sequence (Complete)<a class="headerlink" href="#oa04-contract-family-pr-sequence-complete" title="Link to this section">&para;</a></h4>
+<ul class="task-list">
+<li><strong>Status</strong>: COMPLETE — contract ADRs implemented in maintained code; bootstrap remains blocked on OA07.1 worktree execution</li>
+<li><strong>Context</strong>: OA04.2–OA04.5 are the contract-layer ADRs between the OA07 runtime foundations and the maintained runner/policy/provenance implementations. That contract family is now landed in code and should no longer be treated as pending. See implementation notes in <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md">ADR-OA04.1 Addendum 2026-03-27</a> for the original scaffolding gaps and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md">ADR-OA04.1 Addendum 2026-04-05</a> for the bootstrap-first reprioritization.</li>
 <li><strong>Dependency chain</strong>:</li>
 <li>OA04.3 (run dir + manifests + evaluator evidence seam) → OA04.2 (runners normalize into canonical evidence)</li>
 <li>OA04.4 (policy taxonomy + requested/effective split) → OA04.2 (runner request carries typed requested policy)</li>
@@ -10854,8 +10994,8 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li>Do not add ceremony without benefit: avoid speculative service/factory layers, unnecessary mappers for nearly identical shapes, or package splits that do not improve testability, replaceability, or clarity.</li>
 <li>Existing thin models in <code>run_artifacts/</code>, <code>runners/</code>, and <code>validation/</code> are scaffolding, not target architecture. It is acceptable to break those internal shapes in favor of cleaner maintained contracts during this implementation sequence.</li>
 <li><strong>PR Sequence</strong>:</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-1</strong> <code>feat/oa04-contract-adrs</code> — ADR acceptance (docs only)<ul>
-<li>Commit new OA04.2, OA04.3, OA04.4, OA04.5 files; mark all <code>accepted</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>PR-1</strong> <code>feat/oa04-contract-adrs</code> — ADR acceptance (docs only)<ul>
+<li>Commit new OA04.2, OA04.3, OA04.4, OA04.5 files; later implementation has since moved those decimal ADRs to <code>implemented</code></li>
 <li>Carry in already-modified OA03.1/OA03.3 addendums + OA04 update + index.md</li>
 </ul>
 </li>
@@ -10899,7 +11039,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li><em>Depends on PR-2, PR-3, and PR-4</em></li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-6</strong> <code>feat/oa04.5-harness-backend</code> — Script harness backend (medium)<ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>PR-6</strong> <code>feat/oa04.5-harness-backend</code> — Script harness backend (medium)<ul>
 <li>Build out <code>agent_orchestration/validation/</code>: <code>BackendFamily</code> enum, <code>HarnessBackendRequest</code>, <code>HarnessBackendResult</code>, <code>HarnessBackendProtocol</code></li>
 <li><code>backends/script.py</code>: migrate from <code>conductor_mvp/providers/validation_runner.py</code>; normalize to <code>validation_report</code>/<code>validation_stdout</code>/<code>validation_stderr</code> artifact roles</li>
 <li>Add backend resolver seam, but defer <code>cli</code> and <code>web</code> implementation until a concrete maintained consumer exists</li>
