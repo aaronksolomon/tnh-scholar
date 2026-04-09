@@ -421,3 +421,21 @@ The current handoff is:
 **Rationale**: This makes developer navigation simpler. Contributors should not look for worktree semantics in the OA04 decimal family when those decisions now live in OA07.x.
 
 **Implementation Changes**: Documentation only. Clarified the family handoff and bootstrap dependency.
+
+### Addendum 2026-04-06: Runtime Bootstrap MVP Clarification
+
+**Context**: The bootstrap-first addendum above described the end goal as safely creating review-ready PRs inside isolated worktrees. That remains the broader OA07 authority envelope, but it is too aggressive as the minimum bar for the first operational runtime milestone.
+
+**Decision**: The first runtime bootstrap milestone is clarified as:
+
+- real managed worktree creation from committed `base_ref` / `base_sha`,
+- mutable-step execution against the worktree root,
+- canonical artifacts and provenance written to the run directory,
+- `ROLLBACK(pre_run)` by restoring the managed worktree to recorded base state,
+- one maintained local/headless entry point.
+
+Commit/push/PR automation is treated as the immediate OA07 follow-on after that runtime loop exists, not as a blocker for the first operational bootstrap slice.
+
+**Rationale**: This preserves the bootstrap-fast path without weakening the structural target. The system becomes operational as soon as it can run a real isolated mutable workflow safely; review automation can then build directly on the same worktree and provenance boundary.
+
+**Implementation Changes**: Documentation only. Clarified the minimum bootstrap milestone and its relationship to later review automation.

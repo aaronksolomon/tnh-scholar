@@ -126,27 +126,27 @@ This section organizes work into three priority levels based on criticality for 
   - Prefer **2 PRs** to stay comfortably under diff-size guidance
   - A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work
 - **PR Sequence**:
-  - [ ] **PR-7** `feat/oa07.1-worktree-workspace-service` — Managed worktree boundary (medium)
+  - [ ] **PR-7** `feat/oa07.1-worktree-workspace-service` — Worktree runtime boundary (medium)
     - replace `NullWorkspaceService` as the forward-path maintained implementation with a real git-backed workspace service
     - add typed workspace context models: `repo_root`, `worktree_path`, `branch_name`, `base_ref`, `base_sha`
     - implement managed branch + worktree creation from committed base ref
-    - implement `capture_pre_run()` and `rollback_pre_run()` around recorded `base_sha`
+    - update the workspace protocol so pre-run setup returns structured workspace context and does not rely on the run directory as the workspace handle
+    - pass the worktree root as `working_directory` to runner and validation services for mutable steps
+    - implement `ROLLBACK(pre_run)` by discarding and recreating the managed worktree from recorded `base_sha`
     - persist workspace context into canonical run artifacts or run metadata extension
-    - tests for worktree creation, recorded base state, and `ROLLBACK(pre_run)` semantics
+    - tests for worktree creation, mutable-step execution in the worktree root, recorded base state, and `ROLLBACK(pre_run)` semantics
     - keep `NullWorkspaceService` only for tests or explicit non-operational contexts
-  - [ ] **PR-8** `feat/oa07.1-kernel-worktree-wiring` — Runtime separation of worktree and run dir (medium)
-    - update `KernelRunService` to distinguish canonical run-artifact paths from mutable execution workspace
-    - pass the worktree root as `working_directory` to runner and validation services
-    - keep manifests, events, policy summaries, and captured artifacts in the canonical run directory
-    - add regression tests proving `RUN_AGENT` and `RUN_VALIDATION` execute in the worktree, not the run-artifact directory
-    - add a minimal bootstrap harness/integration test covering create-worktree → execute-step → rollback
-- **Optional follow-on if PR-8 stays small enough**:
-  - [ ] **PR-9** `feat/oa07-bootstrap-headless-entry` — Minimal headless bootstrap entry point (small/medium)
+  - [ ] **PR-8** `feat/oa07-bootstrap-headless-entry` — Maintained headless bootstrap entry (small/medium)
     - load one workflow
     - create worktree context
     - execute workflow end to end
     - write canonical artifacts and final state
-    - no commit/push/PR behavior yet unless diff size remains modest
+    - keep the initial entry local/headless; no GitHub automation required
+  - [ ] **PR-9** `feat/oa07-review-automation` — Commit/push/PR automation (optional, small/medium)
+    - create local commits on the managed branch
+    - push the work branch
+    - open or update a PR
+    - keep protected-branch merge human-only
 - **Explicit deferrals for this slice**:
   - [ ] commit/push/PR automation if it causes PR-7 or PR-8 to exceed preferred diff size
   - [ ] strict OA05 compile-validation as a blocker for bootstrap

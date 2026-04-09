@@ -37,7 +37,7 @@ Bootstrap implementation guide for managed worktree creation, run-directory sepa
 - what `ROLLBACK(pre_run)` means operationally,
 - what constitutes bootstrap completion.
 
-The goal is to reach an operational MVP quickly. That means the first maintained implementation should optimize for one reliable, reviewable workflow loop rather than for maximal flexibility.
+The goal is to reach an operational MVP quickly. That means the first maintained implementation should optimize for one reliable local/headless workflow loop rather than for maximal flexibility or immediate GitHub automation.
 
 ---
 
@@ -74,22 +74,36 @@ The worktree path MUST NOT be nested under the canonical run directory.
 
 The maintained `working_directory` passed to runners and validation backends MUST be the worktree root.
 
-### 3. Bootstrap Lifecycle
+### 3. Runtime Bootstrap MVP
 
-The bootstrap lifecycle should be:
+The first operational milestone for OA07.1 is a maintained local/headless runtime loop.
+
+That runtime bootstrap MVP should:
 
 1. Resolve `base_ref` for the run.
 2. Resolve the corresponding committed `base_sha`.
 3. Create a managed branch for the run from `base_sha`.
 4. Create a dedicated worktree for that branch.
 5. Persist workspace context into the canonical run directory.
-6. Execute workflow steps against the worktree root.
+6. Execute mutable workflow steps against the worktree root.
 7. Persist canonical artifacts, manifests, and events into the run directory.
-8. If the workflow authorizes PR actions, push the branch and open or update the PR.
+8. Support `ROLLBACK(pre_run)` by restoring the managed worktree to `base_sha`.
+9. Return final state and provenance through one maintained headless entry point.
 
 Bootstrap should not require the operator's current working tree to be clean, provided the conductor creates a separate worktree from an explicit committed base ref.
 
-### 4. Rollback Semantics
+### 4. Review Automation Follow-On
+
+Once the runtime bootstrap MVP exists, the next OA07-aligned follow-on may extend the same managed branch/worktree flow to:
+
+- create local commits,
+- push the managed work branch,
+- open or update a GitHub PR,
+- respond to PR review or bot feedback.
+
+This follow-on remains inside the OA07 authority envelope. Protected-branch merge stays human-only.
+
+### 5. Rollback Semantics
 
 For bootstrap, `ROLLBACK(pre_run)` means:
 
@@ -105,21 +119,28 @@ This choice is deliberate:
 
 `pre_step` and `checkpoint:<id>` remain deferred.
 
-### 5. Bootstrap Completion Criteria
+### 6. Completion Criteria
 
-The bootstrap milestone is complete when one maintained headless flow can:
+Runtime bootstrap MVP is complete when one maintained headless flow can:
 
 - create a managed worktree from a committed base ref,
+- materialize and persist explicit workspace context before mutable execution,
 - run a workflow with `RUN_AGENT`, `RUN_VALIDATION`, and optional `EVALUATE`/`GATE`,
-- write canonical run artifacts and provenance,
-- commit and push the work branch,
-- open or update a PR,
-- perform `ROLLBACK(pre_run)` by restoring the managed worktree to the recorded base state.
+- pass the worktree root as `working_directory` for mutable step execution,
+- write canonical run artifacts and provenance to the run directory,
+- perform `ROLLBACK(pre_run)` by discarding and recreating the managed worktree at the recorded base state.
 
-### 6. Explicit Deferrals
+Review automation follow-on is complete when that same flow can additionally:
 
-The following are deferred beyond bootstrap:
+- create local commits on the managed branch,
+- push the work branch,
+- open or update a PR.
 
+### 7. Explicit Deferrals Beyond Runtime Bootstrap MVP
+
+The following are deferred beyond the first runtime bootstrap milestone:
+
+- commit/push/PR automation if it does not fit cleanly in the initial implementation slice,
 - stacked PR orchestration,
 - multiple mutable agents sharing one branch/worktree,
 - named checkpoints,
@@ -143,7 +164,7 @@ The following are deferred beyond bootstrap:
 
 - Leaves some planned flexibility explicitly out of the first operational slice.
 - Requires follow-on ADR work if stacked PRs or shared multi-agent worktrees become first-class.
-- Adds Git/GitHub lifecycle work to the bootstrap path.
+- Adds Git lifecycle work to the bootstrap path and leaves GitHub automation as a near follow-on.
 
 ---
 
@@ -157,9 +178,9 @@ Rejected: too slow for the stated goal. Bootstrap should land an operational dev
 
 Rejected: higher complexity than the bootstrap target needs.
 
-### C. Treat PR creation and update as out-of-band manual work
+### C. Require PR creation and update in the first runtime milestone
 
-Rejected for bootstrap: the operational target is specifically to let the agent reach review-ready PR state.
+Rejected: this would slow the first operational slice unnecessarily. GitHub automation remains inside the OA07 authority envelope, but it does not need to block the first worktree-isolated runtime loop.
 
 ---
 

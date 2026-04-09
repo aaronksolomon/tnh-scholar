@@ -23,6 +23,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Marked implemented OA04 decimal ADRs repo-consistently and refreshed orchestration ADR cross-references, TODO planning, and generated documentation indexes to match the current ADR map
   - Files: `docs/architecture/agent-orchestration/adr/`, `TODO.md`, generated `docs/**/index.md`
 
+- **Agent Orchestration Runtime Bootstrap Clarification** (2026-04-08)
+  - Tightened `OA07` and `OA07.1` so the first bootstrap milestone is a maintained local/headless runtime loop with real worktree-root mutable execution and discard/recreate `ROLLBACK(pre_run)`
+  - Split the roadmap cleanly into `PR-7` worktree runtime boundary, `PR-8` headless bootstrap entry, and optional later review automation
+  - Added the focused `OA07.1 PR-7 Worktree Runtime Boundary Plan` note and aligned `TODO.md` with the updated implementation seam
+  - Files: `docs/architecture/agent-orchestration/adr/`, `docs/architecture/agent-orchestration/notes/`, `TODO.md`
+
 - **OA04.2 Runner Adapters** (2026-04-03)
   - Expanded the maintained `runners/` subsystem with adapter capability declarations, normalized transcript/final-response payloads, typed invocation metadata, and a delegating runner service
   - Added execution-backed maintained adapters for headless Claude CLI and Codex CLI runs with explicit mapper/normalizer seams, mechanical termination mapping, and fail-fast rejection for unsupported policy guarantees
