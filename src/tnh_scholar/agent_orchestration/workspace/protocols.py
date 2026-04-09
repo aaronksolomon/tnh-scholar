@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Protocol
 
 from tnh_scholar.agent_orchestration.workspace.models import WorkspaceContext, WorkspaceSnapshot
