@@ -214,6 +214,10 @@ class RecordingWorkspace:
         if self.worktree_path is None:
             self.worktree_path = self.repo_root / "workspace"
 
+    def planned_worktree_path(self, run_id: str) -> Path | None:
+        del run_id
+        return self.worktree_path
+
     def prepare_pre_run(self, run_id: str) -> WorkspaceContext:
         if self.captured_run_ids is None:
             self.captured_run_ids = []
@@ -260,6 +264,10 @@ class ProtectedBranchWorkspace:
     """Workspace double exposing a protected branch."""
 
     repo_root: Path
+
+    def planned_worktree_path(self, run_id: str) -> Path | None:
+        del run_id
+        return self.repo_root / "protected-worktree"
 
     def prepare_pre_run(self, run_id: str) -> WorkspaceContext:
         del run_id

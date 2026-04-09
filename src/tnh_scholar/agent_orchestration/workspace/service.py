@@ -18,26 +18,18 @@ class NullWorkspaceService(WorkspaceServiceProtocol):
 
     repo_root: Path
 
+    def planned_worktree_path(self, run_id: str) -> Path | None:
+        """Return no managed worktree path."""
+        del run_id
+        return None
+
     def prepare_pre_run(self, run_id: str) -> WorkspaceContext:
         """Return a stable no-op workspace context."""
-        return WorkspaceContext(
-            repo_root=self.repo_root,
-            worktree_path=self.repo_root,
-            branch_name="",
-            base_ref="",
-            base_sha="",
-            run_id=run_id,
-        )
+        return self._empty_context(run_id=run_id)
 
     def rollback_pre_run(self) -> WorkspaceContext:
         """Return the stable no-op workspace context."""
-        return WorkspaceContext(
-            repo_root=self.repo_root,
-            worktree_path=self.repo_root,
-            branch_name="",
-            base_ref="",
-            base_sha="",
-        )
+        return self._empty_context()
 
     def current_context(self) -> WorkspaceContext | None:
         """Return no managed workspace context."""
@@ -51,6 +43,16 @@ class NullWorkspaceService(WorkspaceServiceProtocol):
         """Return a stable empty diff summary."""
         return ""
 
+    def _empty_context(self, run_id: str | None = None) -> WorkspaceContext:
+        return WorkspaceContext(
+            repo_root=self.repo_root,
+            worktree_path=self.repo_root,
+            branch_name="",
+            base_ref="",
+            base_sha="",
+            run_id=run_id,
+        )
+
 
 @dataclass
 class GitWorktreeWorkspaceService(WorkspaceServiceProtocol):
@@ -62,11 +64,17 @@ class GitWorktreeWorkspaceService(WorkspaceServiceProtocol):
     branch_prefix: str = "tnh/run-"
     current_context_value: WorkspaceContext | None = field(default=None, init=False)
 
+    def planned_worktree_path(self, run_id: str) -> Path | None:
+        """Return the managed worktree path for one run."""
+        return self.workspace_root / run_id
+
     def prepare_pre_run(self, run_id: str) -> WorkspaceContext:
         """Create the managed worktree and record its base state."""
         base_sha = self._git_stdout("rev-parse", self.base_ref)
         branch_name = self._branch_name(run_id)
-        worktree_path = self.workspace_root / run_id
+        worktree_path = self.planned_worktree_path(run_id)
+        if worktree_path is None:
+            raise RuntimeError("Managed worktree path is required for git worktree service.")
         self._ensure_workspace_root()
         self._create_worktree(branch_name=branch_name, worktree_path=worktree_path, base_ref=base_sha)
         context = WorkspaceContext(

@@ -66,7 +66,7 @@ from tnh_scholar.agent_orchestration.validation.protocols import ValidationServi
 from tnh_scholar.agent_orchestration.workspace.models import RollbackTarget, WorkspaceContext
 
 
-@dataclass(frozen=True)
+@dataclass
 class StepContext:
     """Per-run step execution context."""
 
@@ -111,11 +111,17 @@ class KernelRunService:
         started_at = self.clock.now()
         run_id = self.run_id_generator.next_id(started_at)
         paths = self.artifact_store.create_run(run_id, run_root)
+        planned_worktree_path = self.workspace.planned_worktree_path(run_id)
+        if planned_worktree_path is not None:
+            self._validate_workspace_boundary(
+                run_directory=paths.run_directory,
+                worktree_path=planned_worktree_path,
+            )
         workspace_context = self.workspace.prepare_pre_run(run_id)
         if self.workspace.current_context() is not None:
             self._validate_workspace_boundary(
                 run_directory=paths.run_directory,
-                workspace_context=workspace_context,
+                worktree_path=workspace_context.worktree_path,
             )
         provenance = KernelProvenanceRecorder(
             artifact_store=self.artifact_store,
@@ -430,8 +436,7 @@ class KernelRunService:
         rollback_target = RollbackTarget(step.target)
         if rollback_target is not RollbackTarget.pre_run:
             raise WorkflowValidationError(f"Unsupported rollback target: {step.target}")
-        workspace_context = self.workspace.rollback_pre_run()
-        object.__setattr__(context, "workspace_context", workspace_context)
+        context.workspace_context = self.workspace.rollback_pre_run()
         context.provenance.record_rollback_completed(
             run_id=context.run_id,
             step_id=step.id,
@@ -854,10 +859,10 @@ class KernelRunService:
         self,
         *,
         run_directory: Path,
-        workspace_context: WorkspaceContext,
+        worktree_path: Path,
     ) -> None:
         run_directory_resolved = run_directory.resolve()
-        worktree_path_resolved = workspace_context.worktree_path.resolve()
+        worktree_path_resolved = worktree_path.resolve()
         if (
             worktree_path_resolved == run_directory_resolved
             or run_directory_resolved in worktree_path_resolved.parents

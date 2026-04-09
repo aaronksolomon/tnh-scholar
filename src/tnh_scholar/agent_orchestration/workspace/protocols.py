@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Protocol
 
 from tnh_scholar.agent_orchestration.workspace.models import WorkspaceContext, WorkspaceSnapshot
@@ -9,6 +10,9 @@ from tnh_scholar.agent_orchestration.workspace.models import WorkspaceContext, W
 
 class WorkspaceServiceProtocol(Protocol):
     """Workspace safety and rollback operations."""
+
+    def planned_worktree_path(self, run_id: str) -> Path | None:
+        """Return the planned worktree path for one run, if managed."""
 
     def prepare_pre_run(self, run_id: str) -> WorkspaceContext:
         """Create and persist the pre-run workspace context."""
