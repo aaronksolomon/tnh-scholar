@@ -45,9 +45,11 @@ What remains unfrozen is the maintained contract for:
 This gap matters because the fastest path to bootstrap is not the full prompt-program/control-plane surface. It is one operational loop that can safely:
 
 - create an isolated branch/worktree,
-- let an agent edit, test, validate, commit, push, and open or update a PR,
+- let an agent edit, test, and validate inside that worktree,
 - preserve enough provenance to review, recover, and iterate,
 - keep merges to protected branches human-only.
+
+The full OA07 bootstrap authority envelope includes commit, push, and PR update actions. The first runtime bootstrap milestone does not need to exercise every action in that envelope immediately, provided the worktree-isolated mutable loop is real and later review automation can build directly on it.
 
 Without this contract, the maintained runtime risks conflating the canonical run directory with the mutable repository workspace, weakening rollback and making policy enforcement mostly descriptive rather than operational.
 
@@ -55,7 +57,7 @@ Without this contract, the maintained runtime risks conflating the canonical run
 
 ## Decision
 
-### 1. Bootstrap Authority Model
+### 1. Bootstrap Authority Envelope
 
 For bootstrap operation, agents are allowed to perform the following actions only on conductor-managed work branches and worktrees:
 
@@ -67,6 +69,8 @@ For bootstrap operation, agents are allowed to perform the following actions onl
 - respond to review comments and bot feedback on that PR.
 
 Protected-branch merge remains human-only. Agent flows may advance a PR to review-ready state, but they may not merge to `main`, `master`, or any configured protected branch.
+
+These actions define the allowed bootstrap authority envelope, not the minimum bar for the first operational runtime milestone. A maintained local/headless loop may land first, followed by commit/push/PR automation in a later OA07 implementation slice.
 
 Bootstrap prioritizes one active PR/worktree per workflow run. Stacked PR orchestration and multi-agent branch coordination are deferred.
 
@@ -139,7 +143,7 @@ The canonical run directory remains the execution-source artifact set, but works
 ### Positive
 
 - Aligns the maintained runtime with the existing architecture intent in OA03 and OA04.
-- Gives bootstrap a simple operational target: one worktree, one branch, one PR, one human merge.
+- Gives bootstrap a simple operational target: one worktree, one branch, and a clear path to one PR with human-only merge.
 - Makes rollback practical without requiring fine-grained undo machinery.
 - Lets agents perform useful end-to-end development work while keeping protected-branch control with the human maintainer.
 - Clarifies the missing boundary between canonical run artifacts and mutable repository state.
