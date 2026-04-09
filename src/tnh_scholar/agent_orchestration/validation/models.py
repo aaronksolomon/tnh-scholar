@@ -73,7 +73,7 @@ class ValidationStepRequest(BaseModel):
     """Kernel-facing validation step request."""
 
     validators: list[ValidationSpec]
-    run_directory: Path
+    working_directory: Path
 
 
 class HarnessReport(BaseModel):

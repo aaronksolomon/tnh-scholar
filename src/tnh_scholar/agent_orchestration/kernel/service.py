@@ -63,6 +63,7 @@ from tnh_scholar.agent_orchestration.validation.models import (
     ValidationTextArtifact,
 )
 from tnh_scholar.agent_orchestration.validation.protocols import ValidationServiceProtocol
+from tnh_scholar.agent_orchestration.workspace.models import RollbackTarget, WorkspaceContext
 
 
 @dataclass(frozen=True)
@@ -72,6 +73,7 @@ class StepContext:
     run_id: str
     paths: RunArtifactPaths
     run_directory: Path
+    workspace_context: WorkspaceContext
     provenance: KernelProvenanceRecorder
     workflow_policy_ref: str | None = None
 
@@ -109,6 +111,12 @@ class KernelRunService:
         started_at = self.clock.now()
         run_id = self.run_id_generator.next_id(started_at)
         paths = self.artifact_store.create_run(run_id, run_root)
+        workspace_context = self.workspace.prepare_pre_run(run_id)
+        if self.workspace.current_context() is not None:
+            self._validate_workspace_boundary(
+                run_directory=paths.run_directory,
+                workspace_context=workspace_context,
+            )
         provenance = KernelProvenanceRecorder(
             artifact_store=self.artifact_store,
             workspace=self.workspace,
@@ -118,6 +126,7 @@ class KernelRunService:
             run_id=run_id,
             paths=paths,
             run_directory=paths.run_directory,
+            workspace_context=workspace_context,
             provenance=provenance,
             workflow_policy_ref=workflow.defaults.policy if workflow.defaults is not None else None,
         )
@@ -129,10 +138,10 @@ class KernelRunService:
                 started_at=started_at,
                 artifacts_root=paths.artifacts_root,
                 entry_step=workflow.entry_step,
+                workspace_context=workspace_context,
             ),
             paths,
         )
-        self.workspace.capture_pre_run(run_id)
         state = KernelState(current_step_id=workflow.entry_step)
         catalog = WorkflowCatalog(workflow=workflow)
         while True:
@@ -179,7 +188,6 @@ class KernelRunService:
                     started_at=step_started_at,
                     ended_at=ended_at,
                     paths=context.paths,
-                    run_directory=context.run_directory,
                     extra_artifacts=(policy_record.artifact,),
                     notes=(policy_record.note, str(error)),
                 )
@@ -202,52 +210,54 @@ class KernelRunService:
         policy_record: StepPolicyRecord,
     ) -> KernelState:
         self._enforce_policy(policy_record)
-        if isinstance(step, RunAgentStep):
-            return self._handle_run_agent_step(
-                step=step,
-                state=state,
-                context=context,
-                catalog=catalog,
-                step_started_at=step_started_at,
-                policy_record=policy_record,
-            )
-        if isinstance(step, RunValidationStep):
-            return self._handle_run_validation_step(
-                step=step,
-                state=state,
-                context=context,
-                catalog=catalog,
-                step_started_at=step_started_at,
-                policy_record=policy_record,
-            )
-        if isinstance(step, EvaluateStep):
-            return self._handle_evaluate_step(
-                step=step,
-                state=state,
-                context=context,
-                catalog=catalog,
-                step_started_at=step_started_at,
-                policy_record=policy_record,
-            )
-        if isinstance(step, GateStep):
-            return self._handle_gate_step(
-                step=step,
-                state=state,
-                context=context,
-                catalog=catalog,
-                step_started_at=step_started_at,
-                policy_record=policy_record,
-            )
-        if isinstance(step, RollbackStep):
-            return self._handle_rollback_step(
-                step=step,
-                state=state,
-                context=context,
-                catalog=catalog,
-                step_started_at=step_started_at,
-                policy_record=policy_record,
-            )
-        raise WorkflowValidationError(f"Unsupported step type: {step.id}")
+        match step:
+            case RunAgentStep():
+                return self._handle_run_agent_step(
+                    step=step,
+                    state=state,
+                    context=context,
+                    catalog=catalog,
+                    step_started_at=step_started_at,
+                    policy_record=policy_record,
+                )
+            case RunValidationStep():
+                return self._handle_run_validation_step(
+                    step=step,
+                    state=state,
+                    context=context,
+                    catalog=catalog,
+                    step_started_at=step_started_at,
+                    policy_record=policy_record,
+                )
+            case EvaluateStep():
+                return self._handle_evaluate_step(
+                    step=step,
+                    state=state,
+                    context=context,
+                    catalog=catalog,
+                    step_started_at=step_started_at,
+                    policy_record=policy_record,
+                )
+            case GateStep():
+                return self._handle_gate_step(
+                    step=step,
+                    state=state,
+                    context=context,
+                    catalog=catalog,
+                    step_started_at=step_started_at,
+                    policy_record=policy_record,
+                )
+            case RollbackStep():
+                return self._handle_rollback_step(
+                    step=step,
+                    state=state,
+                    context=context,
+                    catalog=catalog,
+                    step_started_at=step_started_at,
+                    policy_record=policy_record,
+                )
+            case _:
+                raise WorkflowValidationError(f"Unsupported step type: {step.id}")
 
     def _handle_run_agent_step(
         self,
@@ -261,7 +271,7 @@ class KernelRunService:
         request = RunnerTaskRequest(
             agent_family=self._map_agent_family(step.agent),
             rendered_task_text=step.prompt,
-            working_directory=context.run_directory,
+            working_directory=context.workspace_context.worktree_path,
             prompt_reference=step.prompt,
             requested_policy=policy_record.summary.requested_policy,
         )
@@ -298,7 +308,10 @@ class KernelRunService:
         policy_record: StepPolicyRecord,
     ) -> KernelState:
         result = self.validation_service.run(
-            ValidationStepRequest(validators=step.run, run_directory=context.run_directory)
+            ValidationStepRequest(
+                validators=step.run,
+                working_directory=context.workspace_context.worktree_path,
+            )
         )
         next_state = state
         report = result.harness_report
@@ -414,7 +427,11 @@ class KernelRunService:
         step_started_at: datetime,
         policy_record: StepPolicyRecord,
     ) -> KernelState:
-        self.workspace.rollback_pre_run()
+        rollback_target = RollbackTarget(step.target)
+        if rollback_target is not RollbackTarget.pre_run:
+            raise WorkflowValidationError(f"Unsupported rollback target: {step.target}")
+        workspace_context = self.workspace.rollback_pre_run()
+        object.__setattr__(context, "workspace_context", workspace_context)
         context.provenance.record_rollback_completed(
             run_id=context.run_id,
             step_id=step.id,
@@ -681,6 +698,7 @@ class KernelRunService:
                 started_at=started_at,
                 artifacts_root=context.paths.artifacts_root,
                 entry_step=workflow.entry_step,
+                workspace_context=context.workspace_context,
                 ended_at=ended_at,
                 last_step_id=last_step_id,
                 termination=termination,
@@ -707,7 +725,6 @@ class KernelRunService:
             started_at=started_at,
             ended_at=self.clock.now(),
             paths=context.paths,
-            run_directory=context.run_directory,
             extra_artifacts=extra_artifacts,
             notes=notes,
             next_step_id=target,
@@ -764,7 +781,7 @@ class KernelRunService:
         summary: PolicySummary,
         context: StepContext,
     ) -> PolicySummary:
-        snapshot = self.workspace.snapshot(context.run_directory)
+        snapshot = self.workspace.snapshot()
         violations = list(summary.violations)
         if (
             summary.effective_policy.execution_posture == ExecutionPosture.workspace_write
@@ -832,3 +849,20 @@ class KernelRunService:
         )
         self.artifact_store.write_final_state(f"{termination.value}:{last_step_id}", context.paths)
         return ended_at
+
+    def _validate_workspace_boundary(
+        self,
+        *,
+        run_directory: Path,
+        workspace_context: WorkspaceContext,
+    ) -> None:
+        run_directory_resolved = run_directory.resolve()
+        worktree_path_resolved = workspace_context.worktree_path.resolve()
+        if (
+            worktree_path_resolved == run_directory_resolved
+            or run_directory_resolved in worktree_path_resolved.parents
+            or worktree_path_resolved in run_directory_resolved.parents
+        ):
+            raise WorkflowValidationError(
+                "Managed worktree path and canonical run directory must remain distinct."
+            )

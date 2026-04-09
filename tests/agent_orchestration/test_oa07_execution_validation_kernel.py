@@ -80,7 +80,7 @@ from tnh_scholar.agent_orchestration.validation import (
 )
 from tnh_scholar.agent_orchestration.validation.termination import merge_validation_termination
 from tnh_scholar.agent_orchestration.workspace import NullWorkspaceService
-from tnh_scholar.agent_orchestration.workspace.models import WorkspaceSnapshot
+from tnh_scholar.agent_orchestration.workspace.models import WorkspaceContext, WorkspaceSnapshot
 
 
 @contextmanager
@@ -203,31 +203,55 @@ class RecordingWorkspace:
     """Workspace double that records rollback calls."""
 
     repo_root: Path
+    worktree_path: Path | None = None
     captured_run_ids: list[str] | None = None
     rollback_calls: int = 0
+    current: WorkspaceContext | None = None
 
     def __post_init__(self) -> None:
         if self.captured_run_ids is None:
             self.captured_run_ids = []
+        if self.worktree_path is None:
+            self.worktree_path = self.repo_root / "workspace"
 
-    def capture_pre_run(self, run_id: str) -> None:
+    def prepare_pre_run(self, run_id: str) -> WorkspaceContext:
         if self.captured_run_ids is None:
             self.captured_run_ids = []
         self.captured_run_ids.append(run_id)
-
-    def rollback_pre_run(self) -> None:
-        self.rollback_calls += 1
-
-    def snapshot(self, run_directory: Path) -> WorkspaceSnapshot:
-        return WorkspaceSnapshot(
+        self.current = WorkspaceContext(
             repo_root=self.repo_root,
+            worktree_path=self.worktree_path or self.repo_root,
             branch_name="test-branch",
+            base_ref="HEAD",
+            base_sha="abc123",
+            run_id=run_id,
+        )
+        return self.current
+
+    def rollback_pre_run(self) -> WorkspaceContext:
+        self.rollback_calls += 1
+        if self.current is None:
+            return self.prepare_pre_run("rollback")
+        self.current = self.current.model_copy(update={"head_sha": "rolled-back-sha"})
+        return self.current
+
+    def current_context(self) -> WorkspaceContext | None:
+        return self.current
+
+    def snapshot(self) -> WorkspaceSnapshot:
+        context = self.current or self.prepare_pre_run("snapshot")
+        return WorkspaceSnapshot(
+            repo_root=context.repo_root,
+            worktree_path=context.worktree_path,
+            branch_name=context.branch_name,
+            base_ref=context.base_ref,
+            base_sha=context.base_sha,
             is_dirty=self.rollback_calls > 0,
             staged_count=0,
             unstaged_count=1 if self.rollback_calls > 0 else 0,
         )
 
-    def diff_summary(self, run_directory: Path) -> str:
+    def diff_summary(self) -> str:
         return "rollback diff" if self.rollback_calls > 0 else ""
 
 
@@ -237,16 +261,30 @@ class ProtectedBranchWorkspace:
 
     repo_root: Path
 
-    def capture_pre_run(self, run_id: str) -> None:
-        return None
+    def prepare_pre_run(self, run_id: str) -> WorkspaceContext:
+        del run_id
+        return WorkspaceContext(
+            repo_root=self.repo_root,
+            worktree_path=self.repo_root / "protected-worktree",
+            branch_name="main",
+            base_ref="HEAD",
+            base_sha="abc123",
+        )
 
-    def rollback_pre_run(self) -> None:
-        return None
+    def rollback_pre_run(self) -> WorkspaceContext:
+        return self.prepare_pre_run("rollback")
 
-    def snapshot(self, run_directory: Path) -> WorkspaceSnapshot:
-        return WorkspaceSnapshot(repo_root=self.repo_root, branch_name="main")
+    def current_context(self) -> WorkspaceContext | None:
+        return self.prepare_pre_run("current")
 
-    def diff_summary(self, run_directory: Path) -> str:
+    def snapshot(self) -> WorkspaceSnapshot:
+        return WorkspaceSnapshot(
+            repo_root=self.repo_root,
+            worktree_path=self.repo_root / "protected-worktree",
+            branch_name="main",
+        )
+
+    def diff_summary(self) -> str:
         return ""
 
 
@@ -323,7 +361,7 @@ def test_validation_service_executes_builtin_validator(tmp_path: Path) -> None:
     result = service.run(
         ValidationStepRequest(
             validators=[BuiltinValidationSpec(name=BuiltinValidatorId.tests)],
-            run_directory=tmp_path,
+            working_directory=tmp_path,
         )
     )
     assert result.termination == ValidationTermination.completed
@@ -361,7 +399,7 @@ def test_validation_service_marks_invalid_harness_report_as_error(tmp_path: Path
             validators=[
                 HarnessValidationSpec(name=GeneratedHarnessValidatorId.generated_harness)
             ],
-            run_directory=tmp_path,
+            working_directory=tmp_path,
         )
     )
     assert result.termination == ValidationTermination.error
@@ -431,7 +469,7 @@ def test_validation_service_merges_harness_outputs_across_multiple_validators(tm
                 HarnessValidationSpec(name=GeneratedHarnessValidatorId.generated_harness),
                 HarnessValidationSpec(name=GeneratedHarnessValidatorId.generated_harness),
             ],
-            run_directory=tmp_path,
+            working_directory=tmp_path,
         )
     )
 
@@ -502,6 +540,19 @@ class FixedValidationService:
     result: ValidationResult
 
     def run(self, request: ValidationStepRequest) -> ValidationResult:
+        del request
+        return self.result
+
+
+@dataclass
+class RecordingValidationService:
+    """Validation service double that records the last request."""
+
+    result: ValidationResult
+    last_request: ValidationStepRequest | None = None
+
+    def run(self, request: ValidationStepRequest) -> ValidationResult:
+        self.last_request = request
         return self.result
 
 
@@ -723,6 +774,8 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     assert metadata["last_step_id"] == "STOP"
     assert metadata["termination"] == "completed"
     assert metadata["ended_at"]
+    assert metadata["workspace_context"]["repo_root"] == str(tmp_path)
+    assert metadata["workspace_context"]["worktree_path"] == str(tmp_path)
     events = _read_events(result.run_directory)
     assert [event["step_id"] for event in events if event["event_type"] == "step_started"] == [
         "agent",
@@ -780,6 +833,104 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     assert gate_manifest.artifact_for_role(ArtifactRole.gate_request) is not None
     assert gate_manifest.artifact_for_role(ArtifactRole.gate_outcome) is not None
     assert gate_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
+
+
+def test_kernel_runtime_uses_worktree_root_for_mutable_steps(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-worktree-root",
+        version=1,
+        description="mutable execution uses worktree",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="validate")],
+            ),
+            RunValidationStep(
+                id="validate",
+                run=[],
+                routes=[RouteRule(outcome=ValidationTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    worktree_root = tmp_path / "managed-worktree"
+    runner = RecordingRunner()
+    validation = RecordingValidationService(
+        ValidationResult(termination=ValidationTermination.completed)
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-worktree-root"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=RecordingWorkspace(repo_root=tmp_path, worktree_path=worktree_root),
+        runner_service=runner,
+        validation_service=validation,
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+
+    result = service.run(workflow, tmp_path)
+
+    assert runner.last_request is not None
+    assert runner.last_request.working_directory == worktree_root
+    assert validation.last_request is not None
+    assert validation.last_request.working_directory == worktree_root
+    metadata = json.loads((result.run_directory / "metadata.json").read_text(encoding="utf-8"))
+    assert metadata["workspace_context"]["worktree_path"] == str(worktree_root)
+
+
+def test_kernel_runtime_rejects_worktree_nested_under_run_directory(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-invalid-boundary",
+        version=1,
+        description="invalid worktree boundary",
+        entry_step="STOP",
+        steps=[StopStep(id="STOP")],
+    )
+    nested_worktree = tmp_path / "run-invalid" / "nested-worktree"
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-invalid"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=RecordingWorkspace(repo_root=tmp_path, worktree_path=nested_worktree),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+
+    with raises(WorkflowValidationError, match="must remain distinct"):
+        service.run(workflow, tmp_path)
+
+
+def test_kernel_runtime_rejects_run_directory_nested_under_worktree(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-invalid-boundary-parent",
+        version=1,
+        description="invalid worktree boundary parent",
+        entry_step="STOP",
+        steps=[StopStep(id="STOP")],
+    )
+    worktree_root = tmp_path
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-parent"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=RecordingWorkspace(repo_root=tmp_path, worktree_path=worktree_root),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+
+    with raises(WorkflowValidationError, match="must remain distinct"):
+        service.run(workflow, tmp_path)
 
 
 def test_kernel_runtime_persists_runner_transcript_and_final_response(tmp_path: Path) -> None:
@@ -1191,7 +1342,7 @@ def test_kernel_runtime_executes_rollback_step(tmp_path: Path) -> None:
         steps=[
             RollbackStep(
                 id="rollback",
-                target="restore",
+                target="pre_run",
                 routes=[RouteRule(outcome="completed", target="STOP")],
             ),
             StopStep(id="STOP"),
@@ -1213,10 +1364,43 @@ def test_kernel_runtime_executes_rollback_step(tmp_path: Path) -> None:
     assert workspace.rollback_calls == 1
     assert result.status.value == "completed"
     assert result.last_step_id == "STOP"
+    metadata = json.loads((result.run_directory / "metadata.json").read_text(encoding="utf-8"))
+    assert metadata["workspace_context"]["head_sha"] == "rolled-back-sha"
     rollback_manifest = _read_manifest(result.run_directory, "rollback")
     assert rollback_manifest.artifact_for_role(ArtifactRole.policy_summary) is not None
     assert rollback_manifest.artifact_for_role(ArtifactRole.workspace_status) is not None
     assert rollback_manifest.artifact_for_role(ArtifactRole.workspace_diff) is not None
+
+
+def test_kernel_runtime_rejects_unknown_rollback_target(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-invalid-rollback",
+        version=1,
+        description="invalid rollback target",
+        entry_step="rollback",
+        steps=[
+            RollbackStep(
+                id="rollback",
+                target="restore",
+                routes=[RouteRule(outcome="completed", target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-invalid-rollback"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=RecordingWorkspace(repo_root=tmp_path),
+        runner_service=SuccessRunner(),
+        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+    )
+
+    with raises(ValueError, match="RollbackTarget"):
+        service.run(workflow, tmp_path)
 
 
 def test_kernel_runtime_persists_policy_summary_and_passes_requested_policy(tmp_path: Path) -> None:

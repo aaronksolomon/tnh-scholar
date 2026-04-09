@@ -55,7 +55,7 @@ class StaticValidatorResolver(ValidatorResolverProtocol):
 
     entries: list[BuiltinCommandEntry]
 
-    def resolve(self, spec: BuiltinValidationSpec, run_directory: Path) -> ExecutionRequest:
+    def resolve(self, spec: BuiltinValidationSpec, working_directory: Path) -> ExecutionRequest:
         """Resolve one builtin validation spec."""
         for entry in self.entries:
             if entry.name == spec.name:
@@ -64,7 +64,7 @@ class StaticValidatorResolver(ValidatorResolverProtocol):
                         executable=entry.executable,
                         arguments=entry.arguments,
                     ),
-                    working_directory=run_directory,
+                    working_directory=working_directory,
                     environment_policy=ExplicitEnvironmentPolicy(values={}),
                 )
         raise ValueError(f"Unknown builtin validator: {spec.name.value}")
@@ -77,16 +77,16 @@ class StaticHarnessBackendResolver(HarnessBackendResolverProtocol):
     harness_script_name: str = "generated_harness.py"
     harness_report_name: str = "harness_report.json"
 
-    def resolve(self, spec: HarnessValidationSpec, run_directory: Path) -> HarnessBackendRequest:
+    def resolve(self, spec: HarnessValidationSpec, working_directory: Path) -> HarnessBackendRequest:
         """Resolve one harness validation spec."""
         match spec.name:
             case GeneratedHarnessValidatorId.generated_harness:
                 return HarnessBackendRequest(
                     backend_family=BackendFamily.script,
                     executable=Path(sys.executable),
-                    entrypoint=run_directory / self.harness_script_name,
+                    entrypoint=working_directory / self.harness_script_name,
                     arguments=("--report", self.harness_report_name),
-                    working_directory=run_directory,
+                    working_directory=working_directory,
                     artifact_patterns=tuple(spec.artifacts),
                     timeout_seconds=spec.timeout_seconds,
                     environment_policy=ExplicitEnvironmentPolicy(values={}),
@@ -120,45 +120,45 @@ class ValidationService(ValidationServiceProtocol):
 
     def run(self, request: ValidationStepRequest) -> ValidationResult:
         """Execute all validators in a step."""
-        return self._run_all_validators(request.validators, request.run_directory)
+        return self._run_all_validators(request.validators, request.working_directory)
 
     def _run_all_validators(
         self,
         validators: list[ValidationSpec],
-        run_directory: Path,
+        working_directory: Path,
     ) -> ValidationResult:
         aggregate = ValidationResult(termination=ValidationTermination.completed)
         for spec in validators:
             aggregate = self._merge_result(
                 current=aggregate,
-                new_value=self._run_validator(spec, run_directory),
+                new_value=self._run_validator(spec, working_directory),
             )
         return aggregate
 
     def _run_validator(
         self,
         spec: ValidationSpec,
-        run_directory: Path,
+        working_directory: Path,
     ) -> HarnessBackendResult:
         if isinstance(spec, BuiltinValidationSpec):
-            return self._run_builtin_validator(spec, run_directory)
-        return self._run_harness_validator(spec, run_directory)
+            return self._run_builtin_validator(spec, working_directory)
+        return self._run_harness_validator(spec, working_directory)
 
     def _run_builtin_validator(
         self,
         spec: BuiltinValidationSpec,
-        run_directory: Path,
+        working_directory: Path,
     ) -> HarnessBackendResult:
-        execution_request = self.resolver.resolve(spec, run_directory)
+        execution_request = self.resolver.resolve(spec, working_directory)
         execution_result = self.execution_service.run(execution_request)
         return HarnessBackendResult(termination=to_validation_termination(execution_result.termination))
 
     def _run_harness_validator(
         self,
         spec: HarnessValidationSpec,
-        run_directory: Path,
+        working_directory: Path,
     ) -> HarnessBackendResult:
-        backend_request = self.harness_resolver.resolve(spec, run_directory)
+        backend_request = self.harness_resolver.resolve(spec, working_directory)
         backend = self.backend_registry.resolve(backend_request.backend_family)
         return backend.run(backend_request)
 

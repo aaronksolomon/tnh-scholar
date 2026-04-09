@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **OA07.1 Worktree Runtime Boundary** (2026-04-08)
+  - Added a maintained `WorkspaceContext` model and expanded the workspace contract so mutable runs have explicit worktree identity, base ref/SHA, and context-backed snapshot/diff semantics
+  - Added `GitWorktreeWorkspaceService` with managed worktree creation from committed base refs and `ROLLBACK(pre_run)` implemented by discarding and recreating the worktree at recorded base state
+  - Updated the kernel so `RUN_AGENT` and `RUN_VALIDATION` execute against the managed worktree root while canonical artifacts and provenance remain under the run directory
+  - Persisted workspace context into run metadata, tightened workspace-boundary validation, and wired rollback target handling through the maintained kernel path
+  - Updated validation contracts from `run_directory` to mutable-step `working_directory` and added real temp-repo tests for worktree lifecycle plus kernel regressions for worktree-root execution, rollback metadata refresh, and boundary guards
+  - Files: `src/tnh_scholar/agent_orchestration/workspace/`, `src/tnh_scholar/agent_orchestration/kernel/`, `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`, `src/tnh_scholar/agent_orchestration/validation/`, `tests/agent_orchestration/test_workspace_service.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+
 - **Agent Orchestration Bootstrap ADR Alignment** (2026-04-06)
   - Added `ADR-OA07` and `ADR-OA07.1` to freeze the bootstrap safety model for worktree isolation, branch-scoped rollback, mutable workspace boundaries, and agent authority through review-ready PR creation
   - Clarified the `OA04` family as workflow execution contracts and updated `OA04.1` to describe MVP runtime build order and the handoff to `OA07.x` for workspace-safety decisions
