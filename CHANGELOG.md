@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Updated the GitHub Actions `PIP_CONSTRAINT` environment variable to use `${{ github.workspace }}` so the CI setuptools cap resolves from a stable absolute workspace path rather than a relative shell cwd
   - Files: `.github/workflows/ci.yml`
 
+- **Docs Strict-Build Warning Cleanup** (2026-04-08)
+  - Removed the repo-root docs link from the OA07.1 worktree plan note and converted the OA03.3 archived draft reference to plain repository-path text so strict MkDocs builds no longer warn on those links
+  - Files: `docs/architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan.md`, `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`
+
 - **OA07.1 Worktree Runtime Boundary** (2026-04-08)
   - Added a maintained `WorkspaceContext` model and expanded the workspace contract so mutable runs have explicit worktree identity, base ref/SHA, and context-backed snapshot/diff semantics
   - Added `GitWorktreeWorkspaceService` with managed worktree creation from committed base refs and `ROLLBACK(pre_run)` implemented by discarding and recreating the worktree at recorded base state

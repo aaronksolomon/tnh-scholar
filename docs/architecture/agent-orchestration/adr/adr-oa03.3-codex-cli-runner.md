@@ -322,7 +322,7 @@ OA03.2's status is `superseded`. This ADR (OA03.3) provides the viable Codex exe
 
 ## Archived Versions
 
-- [adr-oa03.3-codex-cli-spike-2026-01-29.md](/architecture/agent-orchestration/archive/adr-oa03.3-codex-cli-spike-2026-01-29.md) — Earlier draft from branch (preserved for reference)
+- `docs/architecture/agent-orchestration/archive/adr-oa03.3-codex-cli-spike-2026-01-29.md` — Earlier draft from branch (preserved for repository reference; excluded from published docs)
 
 ---
 
