@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **CI Constraint Path Hardening** (2026-04-08)
+  - Updated the GitHub Actions `PIP_CONSTRAINT` environment variable to use `${{ github.workspace }}` so the CI setuptools cap resolves from a stable absolute workspace path rather than a relative shell cwd
+  - Files: `.github/workflows/ci.yml`
+
 - **OA07.1 Worktree Runtime Boundary** (2026-04-08)
   - Added a maintained `WorkspaceContext` model and expanded the workspace contract so mutable runs have explicit worktree identity, base ref/SHA, and context-backed snapshot/diff semantics
   - Added `GitWorktreeWorkspaceService` with managed worktree creation from committed base refs and `ROLLBACK(pre_run)` implemented by discarding and recreating the worktree at recorded base state
