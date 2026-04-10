@@ -4,7 +4,7 @@ description: "Table of contents for architecture/project-policies/adr"
 owner: ""
 author: ""
 status: processing
-created: "2026-04-06"
+created: "2026-04-10"
 auto_generated: true
 ---
 

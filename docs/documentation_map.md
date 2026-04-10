@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-04-06"
+created: "2026-04-10"
 auto_generated: true
 ---
 
@@ -151,6 +151,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [LUÂN-HỒI](/architecture/jvb-viewer/design/luan-hoi.md)
 - [minimal but extensible setup tool for the prototyping phase](/architecture/setup-tnh/design/setup-tnh-minimal-extensible-tool.md)
 - [Modular Pipeline Design: Best Practices for Audio Transcription and Diarization](/architecture/transcription/design/modular-pipeline-best-practices.md)
+- [OA07.1 PR-7 Worktree Runtime Boundary Plan](/architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan.md)
 - [Object-Service Design Gaps](/architecture/object-service/object-service-design-gaps.md)
 - [Object-Service Design Overview](/architecture/object-service/object-service-design-overview.md)
 - [Object-Service Implementation Status](/architecture/object-service/object-service-implementation-status.md)
