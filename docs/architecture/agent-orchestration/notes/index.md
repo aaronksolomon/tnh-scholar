@@ -14,6 +14,10 @@ auto_generated: true
 
 <!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
+**[Architecture Blueprint](architecture-blueprint.md)** - High-level blueprint of the agent orchestration system, its maintained core subsystems, and the current flow of control
+
+**[Bootstrap Direction Design Memo](bootstrap-direction-design-memo.md)** - Directional memo for agent orchestration design after the bootstrap threshold.
+
 **[Codex Harness End-to-End Test Report](codex-harness-e2e-report.md)** - Operational notes and blockers for the Codex harness test flow
 
 **[Codex Harness Spike Findings](codex-harness-spike-findings.md)** - Comprehensive findings from the Codex API harness spike - constraints, learnings, and recommendations
