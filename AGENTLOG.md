@@ -11,6 +11,51 @@ Archived previous active log: [`archive/agentlogs/AGENTLOG-03-28-26.md`](archive
 
 ---
 
+## [2026-04-09 00:05 PDT] OA07.1 Worktree Runtime Boundary Merge Wrap-Up
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: PR #45 follow-up / merge wrap-up
+**Human Collaborator**: phapman
+
+### Context
+PR #45 (`feat/oa07.1-worktree-workspace-service`) was merged to `main`, but one local docs-only follow-up commit still needed to be carried over. This wrap-up synced that strict-docs fix onto clean `main`, checked the affected OA07.1 planning and OA03.3 historical-reference docs, and captured the merged slice in the agent log per repo policy.
+
+### Key Decisions
+- **Land the missing docs fix directly on clean `main`**: cherry-pick the local strict-docs cleanup instead of reopening a feature branch, since the substantive PR was already merged.
+- **Keep the docs follow-up narrow**: preserve the OA07.1 plan-note wording fix and replace the OA03.3 archive hyperlink with repository-path text rather than touching generated docs indexes again.
+- **Use a temporary clean main worktree**: avoid mixing post-merge cleanup with the dirty local feature worktree that still contains generated docs drift.
+
+### Work Completed
+- [x] Fetched/pruned remote refs, confirmed PR #45 merged on `origin/main`, and identified the one unmerged local follow-up commit `66623da4` (files: local git history, `CHANGELOG.md`, `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`, `docs/architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan.md`)
+- [x] Created a temporary clean `main` worktree, fast-forwarded it to `origin/main`, and cherry-picked the strict-docs warning cleanup as `ce1ed92b` (files: temporary `/tmp/tnh-scholar-main-sync` worktree)
+- [x] Rechecked the OA07.1 plan note and the OA03.3 archived-reference section to confirm the intended post-merge docs state (files: `docs/architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan.md`, `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`)
+- [x] Appended the required merged-PR continuity record to `AGENTLOG.md` (files: `AGENTLOG.md`)
+
+### Discoveries & Insights
+- **PR #45 merged without the final docs-only cleanup**: the merged branch head on `origin/main` stopped at the workflow/code follow-ups, while the strict-docs fix existed only in the local feature branch.
+- **The OA07.1 TODO-link warning fix is simple and correct**: replacing the repo-root docs link with plain `TODO.md` text is the cleanest published-docs-safe choice.
+- **The remaining OA03.3 docs warning was just an excluded archive link**: converting it to plain repository-path text preserves the historical pointer without tripping MkDocs strict mode.
+
+### Files Modified/Created
+- `CHANGELOG.md`: Carries the docs strict-build warning cleanup entry now applied on `main`.
+- `docs/architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan.md`: Uses plain `TODO.md` text instead of a published-docs-broken repo-root link.
+- `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`: Replaces the excluded archive hyperlink with repository-path text for historical reference.
+- `AGENTLOG.md`: Added this merge wrap-up entry for PR #45 continuity.
+
+### Next Steps
+- [ ] Run `poetry run mkdocs build --strict` from clean `main` and confirm the two known warnings are gone.
+- [ ] Push the clean-main wrap-up commit(s) to `origin/main`.
+- [ ] Delete the no-longer-needed local `feat/oa07.1-worktree-workspace-service` branch once the wrap-up is fully landed.
+
+### Open Questions
+- None for the merged OA07.1 slice if strict docs pass after the final cherry-picked cleanup.
+
+### References
+- [docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md](docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md)
+- [docs/architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan.md](docs/architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md](docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md)
+- [CHANGELOG.md](CHANGELOG.md)
+
 ## [2026-03-31 10:42 PDT] OA04.4 Policy Contract
 
 **Agent**: GPT-5 (Codex CLI)
