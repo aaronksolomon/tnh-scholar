@@ -3031,6 +3031,8 @@
       
         
       
+        
+      
     
     
     
@@ -3144,6 +3146,34 @@
   
   <span class="md-ellipsis">
     OA07.1 PR-7 Worktree Runtime Boundary Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/notes/oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OA07.1 PR-8 Bootstrap Headless Entry Plan
   </span>
   
     
@@ -10941,9 +10971,9 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 </ul>
 <h4 id="oa071-bootstrap-worktree-slice">🚨 OA07.1 Bootstrap Worktree Slice<a class="headerlink" href="#oa071-bootstrap-worktree-slice" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: READY TO START</li>
+<li><strong>Status</strong>: IN PROGRESS — PR-7 complete; PR-8 is the next bootstrap slice</li>
 <li><strong>Priority</strong>: HIGHEST (next operational bootstrap slice)</li>
-<li><strong>Context</strong>: The maintained OA04.x runtime contracts are now substantial, but the system is not yet operational because mutable execution still lacks a real worktree boundary. Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md">ADR-OA07</a> and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md">ADR-OA07.1</a>.</li>
+<li><strong>Context</strong>: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary. Bootstrap is no longer blocked on workspace isolation; it is now blocked on adding one maintained headless entry point that drives the runtime end to end. Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md">ADR-OA07</a> and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md">ADR-OA07.1</a>.</li>
 <li><strong>Bootstrap Goal</strong>:</li>
 <li>create a managed git worktree from a committed base ref</li>
 <li>run <code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> against the worktree root</li>
@@ -10951,14 +10981,14 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li>support <code>ROLLBACK(pre_run)</code> to recorded base state</li>
 <li>establish the headless path needed for later commit/push/PR automation</li>
 <li><strong>Why This Is Next</strong>:</li>
-<li>current kernel/workspace code is contract-shaped but not operational</li>
-<li>the run directory and mutable workspace are still conflated in the maintained path</li>
+<li>the worktree runtime boundary is now implemented, but there is still no maintained headless app-layer entry</li>
+<li>the system needs one clean end-to-end path that loads a workflow and drives the maintained kernel in real operation</li>
 <li>OA05/OA06 depth work should follow a live bootstrap loop, not precede it</li>
 <li><strong>Recommended PR sizing</strong>:</li>
 <li>Prefer <strong>2 PRs</strong> to stay comfortably under diff-size guidance</li>
 <li>A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work</li>
 <li><strong>PR Sequence</strong>:</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-7</strong> <code>feat/oa07.1-worktree-workspace-service</code> — Worktree runtime boundary (medium)<ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>PR-7</strong> <code>feat/oa07.1-worktree-workspace-service</code> — Worktree runtime boundary (medium)<ul>
 <li>replace <code>NullWorkspaceService</code> as the forward-path maintained implementation with a real git-backed workspace service</li>
 <li>add typed workspace context models: <code>repo_root</code>, <code>worktree_path</code>, <code>branch_name</code>, <code>base_ref</code>, <code>base_sha</code></li>
 <li>implement managed branch + worktree creation from committed base ref</li>
@@ -10970,7 +11000,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li>keep <code>NullWorkspaceService</code> only for tests or explicit non-operational contexts</li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-8</strong> <code>feat/oa07-bootstrap-headless-entry</code> — Maintained headless bootstrap entry (small/medium)<ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-8</strong> <code>feat/oa07-bootstrap-headless-entry</code> — Maintained headless bootstrap entry (small/medium, next)<ul>
 <li>load one workflow</li>
 <li>create worktree context</li>
 <li>execute workflow end to end</li>

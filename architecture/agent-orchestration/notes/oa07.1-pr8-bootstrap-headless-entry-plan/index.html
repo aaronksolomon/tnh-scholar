@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Focused refactor of ai_text_processing module to support tnh-gen CLI release: TextObject robustness, GenAI Service integration, and basic prompt system adoption">
+        <meta name="description" content="Detailed implementation workplan for the maintained local/headless bootstrap entry that loads one workflow, creates a managed worktree context, and drives the maintained OA07.1 kernel end to end.">
       
       
-        <meta name="author" content="Aaron Solomon, Claude Sonnet 4.5">
+        <meta name="author" content="OpenAI GPT-5 Codex">
       
       
       
-        <link rel="prev" href="../adr-at02-sectioning-textobject/">
+        <link rel="prev" href="../oa07.1-pr7-worktree-workspace-plan/">
       
       
-        <link rel="next" href="../adr-at03.1-transition-plan/">
+        <link rel="next" href="../spike-testing-sequence/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen - TNH Scholar Documentation</title>
+        <title>OA07.1 PR-8 Bootstrap Headless Entry Plan - TNH Scholar Documentation</title>
       
     
     
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-at03-minimal-ai-text-processing-refactor-for-tnh-gen" class="md-skip">
+        <a href="#oa071-pr-8-bootstrap-headless-entry-plan" class="md-skip">
           Skip to content
         </a>
       
@@ -178,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen
+              OA07.1 PR-8 Bootstrap Headless Entry Plan
             
           </span>
         </div>
@@ -1756,6 +1756,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1774,16 +1776,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../agent-orchestration/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1807,7 +1809,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_3">
             <span class="md-nav__icon md-icon"></span>
             Agent Orchestration
@@ -1823,7 +1825,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/system-design/" class="md-nav__link">
+      <a href="../../system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1903,7 +1905,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../agent-orchestration/adr/" class="md-nav__link ">
+            <a href="../../adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1943,7 +1945,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
+      <a href="../../adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1971,7 +1973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
+      <a href="../../adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1999,7 +2001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
+      <a href="../../adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2027,7 +2029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
+      <a href="../../adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2055,7 +2057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
+      <a href="../../adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2083,7 +2085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa03.2-codex-runner/" class="md-nav__link">
+      <a href="../../adr/adr-oa03.2-codex-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2111,7 +2113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
+      <a href="../../adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2139,7 +2141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
+      <a href="../../adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2167,7 +2169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
+      <a href="../../adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2195,7 +2197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04.2-runner-contract/" class="md-nav__link">
+      <a href="../../adr/adr-oa04.2-runner-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2223,7 +2225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+      <a href="../../adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2251,7 +2253,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+      <a href="../../adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2279,7 +2281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+      <a href="../../adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2307,7 +2309,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
+      <a href="../../adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2335,7 +2337,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
+      <a href="../../adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2363,7 +2365,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+      <a href="../../adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2391,7 +2393,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+      <a href="../../adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2424,6 +2426,8 @@
                 
   
   
+    
+  
   
   
     
@@ -2448,16 +2452,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_4" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../agent-orchestration/notes/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2481,7 +2485,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_3_4">
             <span class="md-nav__icon md-icon"></span>
             Notes
@@ -2497,7 +2501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/notes/codex-harness-e2e-report/" class="md-nav__link">
+      <a href="../codex-harness-e2e-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2525,7 +2529,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/notes/codex-harness-spike-findings/" class="md-nav__link">
+      <a href="../codex-harness-spike-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2553,7 +2557,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+      <a href="../oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2578,10 +2582,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../agent-orchestration/notes/oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    OA07.1 PR-8 Bootstrap Headless Entry Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -2597,6 +2628,260 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#standards-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standards Check
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pr-8-goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      PR-8 Goal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-code-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Code Reality
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proposed-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proposed Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proposed Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-a-maintained-application-layer-bootstrap-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Add a maintained application-layer bootstrap package
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-use-explicit-typed-config-and-params" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Use explicit typed config and params
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-keep-kernel-contracts-unchanged-where-possible" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Keep kernel contracts unchanged where possible
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-add-deterministic-bootstrap-defaults-for-planner-and-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Add deterministic bootstrap defaults for planner and gate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-provide-interpreter-backed-builtin-validator-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Provide interpreter-backed builtin validator mappings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-default-bootstrap-execution-policy-to-real-mutable-worktree-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Default bootstrap execution policy to real mutable worktree use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-add-one-maintained-cli-entry-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Add one maintained CLI entry point
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-file-touches" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expected File Touches
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Plan
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Plan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-real-worktree-bootstrap-service-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Real worktree bootstrap service test
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-thin-cli-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Thin CLI test
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-changed-file-checks-after-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Changed-file checks after implementation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risks-and-watchpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risks and Watchpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Risks and Watchpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cli-bloat-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. CLI bloat risk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-policy-mismatch-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Policy mismatch risk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-overreaching-into-oa06-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Overreaching into OA06 risk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-repo-surface-creep-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Repo-surface creep risk
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Sequence
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exit-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exit Criteria
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#non-goals-for-this-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Goals For This Document
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2609,7 +2894,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/notes/spike-testing-sequence/" class="md-nav__link">
+      <a href="../spike-testing-sequence/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2637,7 +2922,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../agent-orchestration/notes/vscode-1110-agent-features-research/" class="md-nav__link">
+      <a href="../vscode-1110-agent-features-research/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2681,7 +2966,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../../../ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2706,10 +2991,8 @@
                 
   
   
-    
   
   
-  
     
     
       
@@ -2720,11 +3003,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5" >
         
           
           <label class="md-nav__link" for="__nav_9_5" id="__nav_9_5_label" tabindex="0">
@@ -2738,7 +3021,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_5">
             <span class="md-nav__icon md-icon"></span>
             AI Text Processing
@@ -2749,8 +3032,6 @@
                 
   
   
-    
-  
   
   
     
@@ -2777,16 +3058,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5_1" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../ai-text-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2810,7 +3091,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_5_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_5_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_5_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -2826,7 +3107,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-at01-ai-text-processing/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2854,7 +3135,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-at02-sectioning-textobject/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2879,37 +3160,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--proposed"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2925,428 +3179,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#executive-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Executive Summary
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Context">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#the-release-blocker" class="md-nav__link">
-    <span class="md-ellipsis">
-      The Release Blocker
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#critical-pain-points-blocking-tnh-gen" class="md-nav__link">
-    <span class="md-ellipsis">
-      Critical Pain Points (Blocking tnh-gen)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#non-critical-issues-deferred-to-at04" class="md-nav__link">
-    <span class="md-ellipsis">
-      Non-Critical Issues (Deferred to AT04)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scope-constraints" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scope Constraints
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#design-drivers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Design Drivers
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decision
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Decision">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tier-0-textobjectnumberedtext-robustness-new" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 0: TextObject/NumberedText Robustness (NEW)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Tier 0: TextObject/NumberedText Robustness (NEW)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#01-section-boundary-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      0.1 Section Boundary Validation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#02-metadata-merging-fixes" class="md-nav__link">
-    <span class="md-ellipsis">
-      0.2 Metadata Merging Fixes
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-1-minimal-object-service-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 1: Minimal Object-Service Patterns
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Tier 1: Minimal Object-Service Patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11-simple-error-hierarchy" class="md-nav__link">
-    <span class="md-ellipsis">
-      1.1 Simple Error Hierarchy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12-minimal-adapter-for-genai-service" class="md-nav__link">
-    <span class="md-ellipsis">
-      1.2 Minimal Adapter for GenAI Service
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-2-genai-service-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 2: GenAI Service Integration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Tier 2: GenAI Service Integration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21-update-existing-processors" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.1 Update Existing Processors
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-simple-factory-function" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.2 Simple Factory Function
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-3-basic-prompt-system-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 3: Basic Prompt System Integration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Tier 3: Basic Prompt System Integration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-migrate-key-prompts-to-catalog" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.1 Migrate Key Prompts to Catalog
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-keep-task-mapping-simple" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.2 Keep Task Mapping Simple
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#migration-strategy-1-2-weeks" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration Strategy (1-2 Weeks)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Migration Strategy (1-2 Weeks)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#phase-1-textobject-robustness-days-1-3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 1: TextObject Robustness (Days 1-3)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-2-genai-service-integration-days-4-6" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 2: GenAI Service Integration (Days 4-6)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-3-prompt-migration-days-7-9" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 3: Prompt Migration (Days 7-9)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-4-integration-testing-days-10-12" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 4: Integration &amp; Testing (Days 10-12)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#consequences" class="md-nav__link">
-    <span class="md-ellipsis">
-      Consequences
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Consequences">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#positive" class="md-nav__link">
-    <span class="md-ellipsis">
-      Positive
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#negative" class="md-nav__link">
-    <span class="md-ellipsis">
-      Negative
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#risks-mitigations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Risks &amp; Mitigations
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#alternatives-considered" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternatives Considered
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Alternatives Considered">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#alternative-1-wait-for-at04-full-platform" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 1: Wait for AT04 Full Platform
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternative-2-skip-refactor-ship-current-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 2: Skip Refactor, Ship Current Code
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternative-3-minimal-patch-only-no-genai-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Alternative 3: Minimal Patch Only (No GenAI Integration)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationship-to-adr-at04" class="md-nav__link">
-    <span class="md-ellipsis">
-      Relationship to ADR-AT04
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#success-criteria" class="md-nav__link">
-    <span class="md-ellipsis">
-      Success Criteria
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="References">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#related-adrs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Related ADRs
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#external-resources" class="md-nav__link">
-    <span class="md-ellipsis">
-      External Resources
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -3359,7 +3191,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-at03.1-transition-plan/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3387,7 +3219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-at03.2-numberedtext-validation/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3415,7 +3247,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-at03.3-textobject-robustness/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3443,7 +3275,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3501,7 +3333,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../design/" class="md-nav__link ">
+            <a href="../../../ai-text-processing/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3541,7 +3373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/textobject-original-design/" class="md-nav__link">
+      <a href="../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3569,7 +3401,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/textobject-system-design/" class="md-nav__link">
+      <a href="../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10179,304 +10011,100 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#executive-summary" class="md-nav__link">
+  <a href="#standards-check" class="md-nav__link">
     <span class="md-ellipsis">
-      Executive Summary
+      Standards Check
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
+  <a href="#pr-8-goal" class="md-nav__link">
     <span class="md-ellipsis">
-      Context
+      PR-8 Goal
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Context">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#the-release-blocker" class="md-nav__link">
-    <span class="md-ellipsis">
-      The Release Blocker
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#critical-pain-points-blocking-tnh-gen" class="md-nav__link">
-    <span class="md-ellipsis">
-      Critical Pain Points (Blocking tnh-gen)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#non-critical-issues-deferred-to-at04" class="md-nav__link">
-    <span class="md-ellipsis">
-      Non-Critical Issues (Deferred to AT04)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scope-constraints" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scope Constraints
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#design-drivers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Design Drivers
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision" class="md-nav__link">
+  <a href="#current-code-reality" class="md-nav__link">
     <span class="md-ellipsis">
-      Decision
+      Current Code Reality
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Decision">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tier-0-textobjectnumberedtext-robustness-new" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 0: TextObject/NumberedText Robustness (NEW)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Tier 0: TextObject/NumberedText Robustness (NEW)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#01-section-boundary-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      0.1 Section Boundary Validation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#02-metadata-merging-fixes" class="md-nav__link">
-    <span class="md-ellipsis">
-      0.2 Metadata Merging Fixes
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-1-minimal-object-service-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 1: Minimal Object-Service Patterns
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Tier 1: Minimal Object-Service Patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#11-simple-error-hierarchy" class="md-nav__link">
-    <span class="md-ellipsis">
-      1.1 Simple Error Hierarchy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#12-minimal-adapter-for-genai-service" class="md-nav__link">
-    <span class="md-ellipsis">
-      1.2 Minimal Adapter for GenAI Service
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-2-genai-service-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 2: GenAI Service Integration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Tier 2: GenAI Service Integration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21-update-existing-processors" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.1 Update Existing Processors
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-simple-factory-function" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.2 Simple Factory Function
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tier-3-basic-prompt-system-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tier 3: Basic Prompt System Integration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Tier 3: Basic Prompt System Integration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-migrate-key-prompts-to-catalog" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.1 Migrate Key Prompts to Catalog
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-keep-task-mapping-simple" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.2 Keep Task Mapping Simple
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#migration-strategy-1-2-weeks" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration Strategy (1-2 Weeks)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Migration Strategy (1-2 Weeks)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#phase-1-textobject-robustness-days-1-3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 1: TextObject Robustness (Days 1-3)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-2-genai-service-integration-days-4-6" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 2: GenAI Service Integration (Days 4-6)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-3-prompt-migration-days-7-9" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 3: Prompt Migration (Days 7-9)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-4-integration-testing-days-10-12" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 4: Integration &amp; Testing (Days 10-12)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#consequences" class="md-nav__link">
+  <a href="#proposed-design" class="md-nav__link">
     <span class="md-ellipsis">
-      Consequences
+      Proposed Design
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Consequences">
+    <nav class="md-nav" aria-label="Proposed Design">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#positive" class="md-nav__link">
+  <a href="#1-add-a-maintained-application-layer-bootstrap-package" class="md-nav__link">
     <span class="md-ellipsis">
-      Positive
+      1. Add a maintained application-layer bootstrap package
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#negative" class="md-nav__link">
+  <a href="#2-use-explicit-typed-config-and-params" class="md-nav__link">
     <span class="md-ellipsis">
-      Negative
+      2. Use explicit typed config and params
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#risks-mitigations" class="md-nav__link">
+  <a href="#3-keep-kernel-contracts-unchanged-where-possible" class="md-nav__link">
     <span class="md-ellipsis">
-      Risks &amp; Mitigations
+      3. Keep kernel contracts unchanged where possible
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-add-deterministic-bootstrap-defaults-for-planner-and-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Add deterministic bootstrap defaults for planner and gate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-provide-interpreter-backed-builtin-validator-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Provide interpreter-backed builtin validator mappings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-default-bootstrap-execution-policy-to-real-mutable-worktree-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Default bootstrap execution policy to real mutable worktree use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-add-one-maintained-cli-entry-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Add one maintained CLI entry point
     </span>
   </a>
   
@@ -10488,37 +10116,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#alternatives-considered" class="md-nav__link">
+  <a href="#expected-file-touches" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternatives Considered
+      Expected File Touches
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Alternatives Considered">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Plan
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Plan">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#alternative-1-wait-for-at04-full-platform" class="md-nav__link">
+  <a href="#1-real-worktree-bootstrap-service-test" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternative 1: Wait for AT04 Full Platform
+      1. Real worktree bootstrap service test
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#alternative-2-skip-refactor-ship-current-code" class="md-nav__link">
+  <a href="#2-thin-cli-test" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternative 2: Skip Refactor, Ship Current Code
+      2. Thin CLI test
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#alternative-3-minimal-patch-only-no-genai-integration" class="md-nav__link">
+  <a href="#3-changed-file-checks-after-implementation" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternative 3: Minimal Patch Only (No GenAI Integration)
+      3. Changed-file checks after implementation
     </span>
   </a>
   
@@ -10530,46 +10167,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#relationship-to-adr-at04" class="md-nav__link">
+  <a href="#risks-and-watchpoints" class="md-nav__link">
     <span class="md-ellipsis">
-      Relationship to ADR-AT04
+      Risks and Watchpoints
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#success-criteria" class="md-nav__link">
-    <span class="md-ellipsis">
-      Success Criteria
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="References">
+    <nav class="md-nav" aria-label="Risks and Watchpoints">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#related-adrs" class="md-nav__link">
+  <a href="#1-cli-bloat-risk" class="md-nav__link">
     <span class="md-ellipsis">
-      Related ADRs
+      1. CLI bloat risk
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#external-resources" class="md-nav__link">
+  <a href="#2-policy-mismatch-risk" class="md-nav__link">
     <span class="md-ellipsis">
-      External Resources
+      2. Policy mismatch risk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-overreaching-into-oa06-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Overreaching into OA06 risk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-repo-surface-creep-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Repo-surface creep risk
     </span>
   </a>
   
@@ -10577,6 +10214,33 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Sequence
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exit-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exit Criteria
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#non-goals-for-this-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Goals For This Document
+    </span>
+  </a>
   
 </li>
       
@@ -10598,600 +10262,309 @@
   
 
 
-<h1 id="adr-at03-minimal-ai-text-processing-refactor-for-tnh-gen">ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen<a class="headerlink" href="#adr-at03-minimal-ai-text-processing-refactor-for-tnh-gen" title="Link to this section">&para;</a></h1>
-<p>This ADR defines a <strong>minimal viable refactor</strong> of the <code>ai_text_processing</code> module to support the tnh-gen CLI release (ADR-TG01). It focuses on TextObject robustness, GenAI Service integration, and basic prompt system adoption—without implementing the full platform architecture proposed in ADR-AT04.</p>
+<h1 id="oa071-pr-8-bootstrap-headless-entry-plan">OA07.1 PR-8 Bootstrap Headless Entry Plan<a class="headerlink" href="#oa071-pr-8-bootstrap-headless-entry-plan" title="Link to this section">&para;</a></h1>
+<p>Purpose: define the implementation plan for <code>PR-8</code> in <code>TODO.md</code>: one maintained local/headless entry point that loads a workflow, creates a managed worktree context, executes the maintained kernel end to end, and returns canonical run outputs without pulling GitHub review automation into the bootstrap slice.</p>
+<p>This note is intentionally detailed so the implementation can be reviewed against repo standards before coding starts.</p>
+<h2 id="standards-check">Standards Check<a class="headerlink" href="#standards-check" title="Link to this section">&para;</a></h2>
+<p>The implementation plan below is constrained by the current project rules in:</p>
 <ul>
-<li><strong>Status</strong>: Proposed</li>
-<li><strong>Date</strong>: 2025-12-07</li>
-<li><strong>Updated</strong>: 2025-12-12</li>
-<li><strong>Owner</strong>: Aaron Solomon</li>
-<li><strong>Author</strong>: Aaron Solomon, Claude Sonnet 4.5</li>
+<li><a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/">ADR-OS01</a></li>
+<li><a href="../../../../development/design-principles/">Design Principles</a></li>
+<li><a href="../../../../development/style-guide/">Style Guide</a></li>
+<li><a href="../../../../development/git-workflow/">Git Workflow &amp; Safety Guide</a></li>
+<li><a href="../../adr/adr-oa07-diff-policy-safety-rails/">ADR-OA07</a></li>
+<li><a href="../../adr/adr-oa07.1-worktree-lifecycle-and-rollback/">ADR-OA07.1</a></li>
 </ul>
-<h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Link to this section">&para;</a></h2>
-<p><strong>Problem</strong>: tnh-gen CLI (ADR-TG01) is blocked pending robust ai_text_processing, but the full AT04 platform (13-17 weeks) would delay the release significantly.</p>
-<p><strong>Solution</strong>: Implement a focused 1-2 week refactor that:</p>
-<ol>
-<li>Fixes critical TextObject/NumberedText bugs (section boundary validation, metadata propagation)</li>
-<li>Integrates GenAI Service (removes direct OpenAI SDK calls, adds provenance)</li>
-<li>Adopts basic prompt system (load prompts from catalog, variable substitution)</li>
-<li>Provides structured error handling for tnh-gen CLI exit codes</li>
-</ol>
-<p><strong>Scope Constraint</strong>: This ADR explicitly <strong>does NOT</strong> implement AT04's Task Orchestration, Context Propagation Graph, Strategy Catalog, Validation Loops, or Experimentation Harness. Those capabilities are deferred to AT04's phased implementation.</p>
-<p><strong>Relationship to AT04</strong>: This refactor establishes the <strong>foundation</strong> that AT04 builds upon. The TextObject improvements, GenAI Service integration, and prompt system adoption are prerequisites for AT04's platform architecture (as noted in AT04 §5 "Migration from AT03").</p>
-<h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
-<h3 id="the-release-blocker">The Release Blocker<a class="headerlink" href="#the-release-blocker" title="Link to this section">&para;</a></h3>
-<p>The tnh-gen CLI (ADR-TG01) requires a functional ai_text_processing module to:</p>
+<p>The main standards implications are:</p>
 <ul>
-<li>Execute prompts from the catalog with variable substitution</li>
-<li>Return structured results with provenance tracking</li>
-<li>Raise structured exceptions that map to CLI exit codes</li>
-<li>Support batch processing of multiple files</li>
+<li>application-layer entry points must stay thin and call typed services rather than accumulate orchestration logic inline,</li>
+<li>domain/service orchestration belongs in typed services and protocols, with infrastructure isolated behind adapters,</li>
+<li>no dict-shaped ad hoc app logic,</li>
+<li>config-at-init and params-per-call should be explicit,</li>
+<li>mutable execution must stay in the managed worktree root, while canonical provenance stays in the run directory,</li>
+<li>git safety rules prohibit destructive cleanup shortcuts; the bootstrap path must rely on the managed worktree lifecycle already landed in <code>PR-7</code>.</li>
 </ul>
-<p>However, the current <code>ai_text_processing</code> module suffers from critical issues that block tnh-gen:</p>
-<h3 id="critical-pain-points-blocking-tnh-gen">Critical Pain Points (Blocking tnh-gen)<a class="headerlink" href="#critical-pain-points-blocking-tnh-gen" title="Link to this section">&para;</a></h3>
+<h2 id="pr-8-goal">PR-8 Goal<a class="headerlink" href="#pr-8-goal" title="Link to this section">&para;</a></h2>
+<p><code>PR-8</code> should land exactly one maintained operational loop:</p>
 <ol>
-<li><strong>TextObject Brittleness</strong>:</li>
-<li>Implicit end_line calculation produces off-by-one errors</li>
-<li>No validation for section gaps/overlaps</li>
-<li>
-<p>Metadata propagation bugs during merging</p>
-</li>
-<li>
-<p><strong>Direct OpenAI Dependencies</strong>:</p>
-</li>
-<li>Direct SDK calls scattered in <code>openai_process_interface.py</code>, <code>line_translator.py</code></li>
-<li>No response fingerprinting for provenance</li>
-<li>
-<p>Cannot route through GenAI Service policies (budget limits, rate limiting)</p>
-</li>
-<li>
-<p><strong>Hard-Coded Prompts</strong>:</p>
-</li>
-<li>Prompts in <code>prompts.py</code> as Python strings</li>
-<li>No versioning or variable validation</li>
-<li>
-<p>Cannot leverage tnh-gen's prompt catalog integration</p>
-</li>
-<li>
-<p><strong>Unstructured Errors</strong>:</p>
-</li>
-<li>Generic exceptions don't map to tnh-gen's exit codes</li>
-<li>No distinction between PolicyError, TransportError, etc.</li>
+<li>load one workflow definition from disk,</li>
+<li>compose the maintained kernel dependencies,</li>
+<li>create the managed worktree context from a committed base ref,</li>
+<li>execute the workflow end to end,</li>
+<li>leave canonical artifacts, metadata, manifests, events, and final state in the run directory,</li>
+<li>return a stable machine-readable run summary from one local/headless entry point.</li>
 </ol>
-<h3 id="non-critical-issues-deferred-to-at04">Non-Critical Issues (Deferred to AT04)<a class="headerlink" href="#non-critical-issues-deferred-to-at04" title="Link to this section">&para;</a></h3>
-<p>These issues exist but are <strong>not blockers</strong> for tnh-gen and are addressed in AT04:</p>
-<ol>
-<li><strong>No Context Propagation</strong>: Documents processed in isolation, no cross-section context (AT04 Phase 1)</li>
-<li><strong>No Strategy Polymorphism</strong>: Single hard-coded sectioning approach (AT04 Phase 2)</li>
-<li><strong>No Validation Loops</strong>: No quality gates to catch translation drift (AT04 Phase 3)</li>
-<li><strong>No Experimentation Harness</strong>: Cannot compare strategies quantitatively (AT04 Phase 4)</li>
-<li><strong>No Cross-Document Coherence</strong>: Multi-document works lack terminology consistency (AT04 Phase 5)</li>
-</ol>
-<h3 id="scope-constraints">Scope Constraints<a class="headerlink" href="#scope-constraints" title="Link to this section">&para;</a></h3>
-<p><strong>What This ADR Implements</strong> (1-2 weeks):</p>
+<p>Out of scope:</p>
 <ul>
-<li>✅ <strong>Tier 0</strong>: TextObject/NumberedText robustness fixes</li>
-<li>✅ <strong>Tier 1</strong>: Basic object-service patterns (minimal protocols/adapters for GenAI/Prompts)</li>
-<li>✅ <strong>Tier 2</strong>: GenAI Service integration (remove direct OpenAI calls)</li>
-<li>✅ <strong>Tier 3</strong>: Basic prompt system adoption (load from catalog, variable substitution)</li>
-<li>✅ <strong>Error Handling</strong>: Structured exceptions for tnh-gen CLI</li>
+<li>commit creation,</li>
+<li>push,</li>
+<li>PR open/update,</li>
+<li>richer OA05 prompt-library integration,</li>
+<li>deeper OA06 planner intelligence beyond a bootstrap-safe deterministic default,</li>
+<li>additional rollback checkpoints beyond <code>pre_run</code>.</li>
 </ul>
-<p><strong>What This ADR Does NOT Implement</strong> (Deferred to AT04):</p>
+<h2 id="current-code-reality">Current Code Reality<a class="headerlink" href="#current-code-reality" title="Link to this section">&para;</a></h2>
+<p><code>PR-7</code> landed the workspace runtime boundary, but the maintained codebase still has no real composition root for the OA07.1 path.</p>
+<p>What already exists:</p>
 <ul>
-<li>❌ Task Orchestration Layer (AT04 Phase 1)</li>
-<li>❌ Context Propagation Graph (AT04 Phase 1)</li>
-<li>❌ Strategy Catalog &amp; Polymorphism (AT04 Phase 2)</li>
-<li>❌ Validation Loops (AT04 Phase 3)</li>
-<li>❌ Experimentation Harness (AT04 Phase 4)</li>
-<li>❌ Cross-Document Coherence (AT04 Phase 5)</li>
+<li><code>src/tnh_scholar/agent_orchestration/kernel/service.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/kernel/adapters/workflow_loader.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/workspace/service.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/runners/adapters/codex_cli.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/runners/adapters/claude_cli.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/validation/service.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/run_artifacts/filesystem_store.py</code></li>
 </ul>
-<h3 id="design-drivers">Design Drivers<a class="headerlink" href="#design-drivers" title="Link to this section">&para;</a></h3>
-<ol>
-<li><strong>Unblock tnh-gen</strong>: Minimal changes to enable CLI release</li>
-<li><strong>Foundation for AT04</strong>: Implement prerequisites (TextObject, GenAI, Prompts) that AT04 builds upon</li>
-<li><strong>Avoid Over-Engineering</strong>: Keep current sectioning/translation strategies as-is (no strategy catalog)</li>
-<li><strong>Testability</strong>: Add basic tests for TextObject validation and GenAI integration</li>
-<li><strong>Incremental Migration</strong>: Maintain backwards compatibility during refactor</li>
-</ol>
-<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
-<h3 id="tier-0-textobjectnumberedtext-robustness-new">Tier 0: TextObject/NumberedText Robustness (NEW)<a class="headerlink" href="#tier-0-textobjectnumberedtext-robustness-new" title="Link to this section">&para;</a></h3>
-<p>Fix critical bugs in TextObject that cause section boundary errors:</p>
-<h4 id="01-section-boundary-validation">0.1 Section Boundary Validation<a class="headerlink" href="#01-section-boundary-validation" title="Link to this section">&para;</a></h4>
-<p>Add validation methods to detect and report boundary errors:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># text_object.py</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nd">@dataclass</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">SectionValidationError</span><span class="p">:</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Error found in section boundaries.&quot;&quot;&quot;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">error_type</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># &#39;gap&#39;, &#39;overlap&#39;, &#39;out_of_bounds&#39;</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">section_index</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">expected_start</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">actual_start</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">NumberedText</span><span class="p">:</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Immutable container for numbered text lines.&quot;&quot;&quot;</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate_section_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SectionValidationError</span><span class="p">]:</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate section boundaries for gaps, overlaps, out-of-bounds.</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="sd">            List of validation errors (empty if valid)</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>            <span class="k">return</span> <span class="n">errors</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">section</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">):</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>            <span class="c1"># Check start_line is within bounds</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>            <span class="k">if</span> <span class="n">section</span><span class="o">.</span><span class="n">start_line</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">section</span><span class="o">.</span><span class="n">start_line</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">):</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>                    <span class="n">error_type</span><span class="o">=</span><span class="s1">&#39;out_of_bounds&#39;</span><span class="p">,</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>                    <span class="n">section_index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>                    <span class="n">expected_start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>                    <span class="n">actual_start</span><span class="o">=</span><span class="n">section</span><span class="o">.</span><span class="n">start_line</span><span class="p">,</span>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Section </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> start_line </span><span class="si">{</span><span class="n">section</span><span class="o">.</span><span class="n">start_line</span><span class="si">}</span><span class="s2"> out of bounds [1, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span><span class="si">}</span><span class="s2">]&quot;</span>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>                <span class="p">))</span>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>                <span class="k">continue</span>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>            <span class="c1"># Calculate implicit end_line</span>
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>            <span class="n">end_line</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">start_line</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>                <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>                <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span>
-</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>            <span class="p">)</span>
-</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>
-</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>            <span class="c1"># Check for gaps (expected_start != actual_start)</span>
-</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>                <span class="n">expected_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_implicit_end_line</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>                <span class="k">if</span> <span class="n">section</span><span class="o">.</span><span class="n">start_line</span> <span class="o">!=</span> <span class="n">expected_start</span><span class="p">:</span>
-</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a>                    <span class="n">error_type</span> <span class="o">=</span> <span class="s1">&#39;gap&#39;</span> <span class="k">if</span> <span class="n">section</span><span class="o">.</span><span class="n">start_line</span> <span class="o">&gt;</span> <span class="n">expected_start</span> <span class="k">else</span> <span class="s1">&#39;overlap&#39;</span>
-</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a>                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SectionValidationError</span><span class="p">(</span>
-</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a>                        <span class="n">error_type</span><span class="o">=</span><span class="n">error_type</span><span class="p">,</span>
-</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a>                        <span class="n">section_index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
-</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a>                        <span class="n">expected_start</span><span class="o">=</span><span class="n">expected_start</span><span class="p">,</span>
-</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a>                        <span class="n">actual_start</span><span class="o">=</span><span class="n">section</span><span class="o">.</span><span class="n">start_line</span><span class="p">,</span>
-</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a>                        <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Section </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="n">error_type</span><span class="si">}</span><span class="s2">: expected start </span><span class="si">{</span><span class="n">expected_start</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">section</span><span class="o">.</span><span class="n">start_line</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a>                    <span class="p">))</span>
-</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a>
-</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a>        <span class="k">return</span> <span class="n">errors</span>
-</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a>
-</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_coverage_report</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get coverage statistics for debugging.</span>
-</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a>
-</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="sd">            Dict with coverage info: total_lines, covered_lines, gaps, overlaps</span>
-</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66" href="#__codelineno-0-66"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67" href="#__codelineno-0-67"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
-</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68" href="#__codelineno-0-68"></a>            <span class="k">return</span> <span class="p">{</span>
-</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69" href="#__codelineno-0-69"></a>                <span class="s1">&#39;total_lines&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">),</span>
-</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70" href="#__codelineno-0-70"></a>                <span class="s1">&#39;covered_lines&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71" href="#__codelineno-0-71"></a>                <span class="s1">&#39;coverage_pct&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-</span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72" href="#__codelineno-0-72"></a>                <span class="s1">&#39;gaps&#39;</span><span class="p">:</span> <span class="p">[],</span>
-</span><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73" href="#__codelineno-0-73"></a>                <span class="s1">&#39;overlaps&#39;</span><span class="p">:</span> <span class="p">[]</span>
-</span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74" href="#__codelineno-0-74"></a>            <span class="p">}</span>
-</span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75" href="#__codelineno-0-75"></a>
-</span><span id="__span-0-76"><a id="__codelineno-0-76" name="__codelineno-0-76" href="#__codelineno-0-76"></a>        <span class="n">covered</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-</span><span id="__span-0-77"><a id="__codelineno-0-77" name="__codelineno-0-77" href="#__codelineno-0-77"></a>        <span class="n">gaps</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-0-78"><a id="__codelineno-0-78" name="__codelineno-0-78" href="#__codelineno-0-78"></a>        <span class="n">overlaps</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79" href="#__codelineno-0-79"></a>
-</span><span id="__span-0-80"><a id="__codelineno-0-80" name="__codelineno-0-80" href="#__codelineno-0-80"></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">section</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">):</span>
-</span><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81" href="#__codelineno-0-81"></a>            <span class="n">start</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">start_line</span>
-</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82" href="#__codelineno-0-82"></a>            <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">start_line</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span>
-</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83" href="#__codelineno-0-83"></a>
-</span><span id="__span-0-84"><a id="__codelineno-0-84" name="__codelineno-0-84" href="#__codelineno-0-84"></a>            <span class="n">section_lines</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-</span><span id="__span-0-85"><a id="__codelineno-0-85" name="__codelineno-0-85" href="#__codelineno-0-85"></a>
-</span><span id="__span-0-86"><a id="__codelineno-0-86" name="__codelineno-0-86" href="#__codelineno-0-86"></a>            <span class="c1"># Check for overlaps</span>
-</span><span id="__span-0-87"><a id="__codelineno-0-87" name="__codelineno-0-87" href="#__codelineno-0-87"></a>            <span class="n">overlap</span> <span class="o">=</span> <span class="n">covered</span> <span class="o">&amp;</span> <span class="n">section_lines</span>
-</span><span id="__span-0-88"><a id="__codelineno-0-88" name="__codelineno-0-88" href="#__codelineno-0-88"></a>            <span class="k">if</span> <span class="n">overlap</span><span class="p">:</span>
-</span><span id="__span-0-89"><a id="__codelineno-0-89" name="__codelineno-0-89" href="#__codelineno-0-89"></a>                <span class="n">overlaps</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-</span><span id="__span-0-90"><a id="__codelineno-0-90" name="__codelineno-0-90" href="#__codelineno-0-90"></a>                    <span class="s1">&#39;section_index&#39;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span>
-</span><span id="__span-0-91"><a id="__codelineno-0-91" name="__codelineno-0-91" href="#__codelineno-0-91"></a>                    <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">overlap</span><span class="p">)</span>
-</span><span id="__span-0-92"><a id="__codelineno-0-92" name="__codelineno-0-92" href="#__codelineno-0-92"></a>                <span class="p">})</span>
-</span><span id="__span-0-93"><a id="__codelineno-0-93" name="__codelineno-0-93" href="#__codelineno-0-93"></a>
-</span><span id="__span-0-94"><a id="__codelineno-0-94" name="__codelineno-0-94" href="#__codelineno-0-94"></a>            <span class="n">covered</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">section_lines</span><span class="p">)</span>
-</span><span id="__span-0-95"><a id="__codelineno-0-95" name="__codelineno-0-95" href="#__codelineno-0-95"></a>
-</span><span id="__span-0-96"><a id="__codelineno-0-96" name="__codelineno-0-96" href="#__codelineno-0-96"></a>        <span class="c1"># Check for gaps</span>
-</span><span id="__span-0-97"><a id="__codelineno-0-97" name="__codelineno-0-97" href="#__codelineno-0-97"></a>        <span class="n">all_lines</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-</span><span id="__span-0-98"><a id="__codelineno-0-98" name="__codelineno-0-98" href="#__codelineno-0-98"></a>        <span class="n">gap_lines</span> <span class="o">=</span> <span class="n">all_lines</span> <span class="o">-</span> <span class="n">covered</span>
-</span><span id="__span-0-99"><a id="__codelineno-0-99" name="__codelineno-0-99" href="#__codelineno-0-99"></a>        <span class="k">if</span> <span class="n">gap_lines</span><span class="p">:</span>
-</span><span id="__span-0-100"><a id="__codelineno-0-100" name="__codelineno-0-100" href="#__codelineno-0-100"></a>            <span class="n">gaps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">gap_lines</span><span class="p">))</span>
-</span><span id="__span-0-101"><a id="__codelineno-0-101" name="__codelineno-0-101" href="#__codelineno-0-101"></a>
-</span><span id="__span-0-102"><a id="__codelineno-0-102" name="__codelineno-0-102" href="#__codelineno-0-102"></a>        <span class="k">return</span> <span class="p">{</span>
-</span><span id="__span-0-103"><a id="__codelineno-0-103" name="__codelineno-0-103" href="#__codelineno-0-103"></a>            <span class="s1">&#39;total_lines&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">),</span>
-</span><span id="__span-0-104"><a id="__codelineno-0-104" name="__codelineno-0-104" href="#__codelineno-0-104"></a>            <span class="s1">&#39;covered_lines&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">covered</span><span class="p">),</span>
-</span><span id="__span-0-105"><a id="__codelineno-0-105" name="__codelineno-0-105" href="#__codelineno-0-105"></a>            <span class="s1">&#39;coverage_pct&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">covered</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lines</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-106"><a id="__codelineno-0-106" name="__codelineno-0-106" href="#__codelineno-0-106"></a>            <span class="s1">&#39;gaps&#39;</span><span class="p">:</span> <span class="n">gaps</span><span class="p">,</span>
-</span><span id="__span-0-107"><a id="__codelineno-0-107" name="__codelineno-0-107" href="#__codelineno-0-107"></a>            <span class="s1">&#39;overlaps&#39;</span><span class="p">:</span> <span class="n">overlaps</span>
-</span><span id="__span-0-108"><a id="__codelineno-0-108" name="__codelineno-0-108" href="#__codelineno-0-108"></a>        <span class="p">}</span>
-</span></code></pre></div>
-<h4 id="02-metadata-merging-fixes">0.2 Metadata Merging Fixes<a class="headerlink" href="#02-metadata-merging-fixes" title="Link to this section">&para;</a></h4>
-<p>Fix metadata propagation bugs in <code>merge_metadata()</code>:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># text_object.py</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">TextObject</span><span class="p">:</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Mutable state container for text processing.&quot;&quot;&quot;</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">merge_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s1">&#39;TextObject&#39;</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;preserve&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Merge metadata from another TextObject.</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="sd">        Args:</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="sd">            other: TextObject to merge metadata from</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="sd">            strategy: &#39;preserve&#39; (keep existing), &#39;update&#39; (overwrite), &#39;combine&#39; (merge dicts)</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        <span class="k">if</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;preserve&#39;</span><span class="p">:</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>            <span class="c1"># Only add keys that don&#39;t exist</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="k">elif</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;update&#39;</span><span class="p">:</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>            <span class="c1"># Overwrite all keys</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="k">elif</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;combine&#39;</span><span class="p">:</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>            <span class="c1"># Merge dictionaries deeply</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>                    <span class="c1"># Deep merge dicts</span>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="o">**</span><span class="n">value</span><span class="p">}</span>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>                <span class="k">else</span><span class="p">:</span>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid merge strategy: </span><span class="si">{</span><span class="n">strategy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span></code></pre></div>
-<h3 id="tier-1-minimal-object-service-patterns">Tier 1: Minimal Object-Service Patterns<a class="headerlink" href="#tier-1-minimal-object-service-patterns" title="Link to this section">&para;</a></h3>
-<p><strong>Scope</strong>: Keep it minimal—only what's needed for GenAI/Prompt integration. Avoid full domain modeling.</p>
-<h4 id="11-simple-error-hierarchy">1.1 Simple Error Hierarchy<a class="headerlink" href="#11-simple-error-hierarchy" title="Link to this section">&para;</a></h4>
-<p>Add structured exceptions for tnh-gen CLI exit code mapping:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># exceptions.py</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">AITextProcessingError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Base exception for ai_text_processing module.&quot;&quot;&quot;</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="k">pass</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">SectionBoundaryError</span><span class="p">(</span><span class="n">AITextProcessingError</span><span class="p">):</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Section boundaries have gaps, overlaps, or out-of-bounds errors.&quot;&quot;&quot;</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SectionValidationError</span><span class="p">]):</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="n">errors</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Section boundary validation failed: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="si">}</span><span class="s2"> errors&quot;</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">PromptRenderError</span><span class="p">(</span><span class="n">AITextProcessingError</span><span class="p">):</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Failed to render prompt template.&quot;&quot;&quot;</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="k">pass</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="k">class</span><span class="w"> </span><span class="nc">ProcessingError</span><span class="p">(</span><span class="n">AITextProcessingError</span><span class="p">):</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic processing failure (wraps GenAI Service errors).&quot;&quot;&quot;</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    <span class="k">pass</span>
-</span></code></pre></div>
-<h4 id="12-minimal-adapter-for-genai-service">1.2 Minimal Adapter for GenAI Service<a class="headerlink" href="#12-minimal-adapter-for-genai-service" title="Link to this section">&para;</a></h4>
-<p>Wrap GenAI Service to isolate direct dependency:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># genai_wrapper.py</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.services.genai_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenAIService</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptsAdapter</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessingError</span><span class="p">,</span> <span class="n">PromptRenderError</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">GenAIWrapper</span><span class="p">:</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimal wrapper for GenAI Service integration.&quot;&quot;&quot;</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">genai_service</span><span class="p">:</span> <span class="n">GenAIService</span><span class="p">,</span> <span class="n">prompts_adapter</span><span class="p">:</span> <span class="n">PromptsAdapter</span><span class="p">):</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_genai</span> <span class="o">=</span> <span class="n">genai_service</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_prompts</span> <span class="o">=</span> <span class="n">prompts_adapter</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">render_and_execute</span><span class="p">(</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>        <span class="n">prompt_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>        <span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>        <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Render prompt and execute via GenAI Service.</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="sd">        Args:</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="sd">            prompt_key: Key for prompt in catalog</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="sd">            variables: Template variables</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="sd">            model: Optional model override</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="sd">        Returns:</span>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="sd">            Tuple of (result_text, metadata_dict)</span>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="sd">        Raises:</span>
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="sd">            PromptRenderError: Prompt rendering failed</span>
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="sd">            ProcessingError: GenAI execution failed</span>
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>            <span class="c1"># Render prompt</span>
-</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>            <span class="n">rendered</span><span class="p">,</span> <span class="n">fingerprint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prompts</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
-</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>                <span class="n">RenderRequest</span><span class="p">(</span>
-</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>                    <span class="n">instruction_key</span><span class="o">=</span><span class="n">prompt_key</span><span class="p">,</span>
-</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>                    <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span>
-</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>                    <span class="n">user_input</span><span class="o">=</span><span class="n">variables</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>                <span class="p">)</span>
-</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>            <span class="p">)</span>
-</span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>            <span class="k">raise</span> <span class="n">PromptRenderError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to render prompt &#39;</span><span class="si">{</span><span class="n">prompt_key</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
-</span><span id="__span-3-44"><a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>
-</span><span id="__span-3-45"><a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="__span-3-46"><a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>            <span class="c1"># Execute via GenAI</span>
-</span><span id="__span-3-47"><a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_genai</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-</span><span id="__span-3-48"><a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>                <span class="n">messages</span><span class="o">=</span><span class="n">rendered</span><span class="o">.</span><span class="n">messages</span><span class="p">,</span>
-</span><span id="__span-3-49"><a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>                <span class="n">model</span><span class="o">=</span><span class="n">model</span> <span class="ow">or</span> <span class="n">rendered</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
-</span><span id="__span-3-50"><a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>                <span class="n">response_format</span><span class="o">=</span><span class="n">rendered</span><span class="o">.</span><span class="n">response_format</span>
-</span><span id="__span-3-51"><a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>            <span class="p">)</span>
-</span><span id="__span-3-52"><a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="__span-3-53"><a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>            <span class="k">raise</span> <span class="n">ProcessingError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GenAI execution failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
-</span><span id="__span-3-54"><a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>
-</span><span id="__span-3-55"><a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a>        <span class="c1"># Build metadata</span>
-</span><span id="__span-3-56"><a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="__span-3-57"><a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>            <span class="s1">&#39;prompt_key&#39;</span><span class="p">:</span> <span class="n">prompt_key</span><span class="p">,</span>
-</span><span id="__span-3-58"><a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>            <span class="s1">&#39;prompt_fingerprint&#39;</span><span class="p">:</span> <span class="n">fingerprint</span><span class="p">,</span>
-</span><span id="__span-3-59"><a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a>            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
-</span><span id="__span-3-60"><a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a>            <span class="s1">&#39;usage&#39;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span> <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">usage</span> <span class="k">else</span> <span class="p">{},</span>
-</span><span id="__span-3-61"><a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a>            <span class="s1">&#39;latency_ms&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s1">&#39;latency_ms&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="__span-3-62"><a id="__codelineno-3-62" name="__codelineno-3-62" href="#__codelineno-3-62"></a>        <span class="p">}</span>
-</span><span id="__span-3-63"><a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a>
-</span><span id="__span-3-64"><a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a>        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span>
-</span></code></pre></div>
-<h3 id="tier-2-genai-service-integration">Tier 2: GenAI Service Integration<a class="headerlink" href="#tier-2-genai-service-integration" title="Link to this section">&para;</a></h3>
-<p><strong>Scope</strong>: Replace direct OpenAI SDK calls with GenAI Service. Keep existing processor logic.</p>
-<h4 id="21-update-existing-processors">2.1 Update Existing Processors<a class="headerlink" href="#21-update-existing-processors" title="Link to this section">&para;</a></h4>
-<p>Update <code>line_translator.py</code> and other processors to use <code>GenAIWrapper</code>:</p>
-<p><strong>Before (current):</strong></p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># line_translator.py (CURRENT - uses direct OpenAI)</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">TRANSLATION_PROMPT</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">translate_section</span><span class="p">(</span><span class="n">section_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_lang</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Translate section using OpenAI.&quot;&quot;&quot;</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">prompt</span> <span class="o">=</span> <span class="n">TRANSLATION_PROMPT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        <span class="n">target_language</span><span class="o">=</span><span class="n">target_lang</span><span class="p">,</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="n">input_text</span><span class="o">=</span><span class="n">section_text</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="p">)</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">ChatCompletion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">,</span>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}]</span>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="p">)</span>
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span>
-</span></code></pre></div>
-<p><strong>After (refactored):</strong></p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># line_translator.py (REFACTORED - uses GenAIWrapper)</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">.genai_wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenAIWrapper</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessingError</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">translate_section</span><span class="p">(</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">section_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">target_lang</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">genai</span><span class="p">:</span> <span class="n">GenAIWrapper</span><span class="p">,</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Translate section using GenAI Service.</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="sd">    Args:</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="sd">        section_text: Text to translate</span>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="sd">        target_lang: Target language code</span>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="sd">        genai: GenAI wrapper instance</span>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="sd">        model: Optional model override</span>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="sd">    Returns:</span>
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="sd">        Tuple of (translated_text, metadata)</span>
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>
-</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="sd">    Raises:</span>
-</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="sd">        ProcessingError: Translation failed</span>
-</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>        <span class="s1">&#39;input_text&#39;</span><span class="p">:</span> <span class="n">section_text</span><span class="p">,</span>
-</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>        <span class="s1">&#39;target_language&#39;</span><span class="p">:</span> <span class="n">target_lang</span>
-</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>    <span class="p">}</span>
-</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>
-</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    <span class="n">result_text</span><span class="p">,</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">genai</span><span class="o">.</span><span class="n">render_and_execute</span><span class="p">(</span>
-</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>        <span class="n">prompt_key</span><span class="o">=</span><span class="s1">&#39;translation&#39;</span><span class="p">,</span>
-</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>        <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span>
-</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>        <span class="n">model</span><span class="o">=</span><span class="n">model</span>
-</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>    <span class="p">)</span>
-</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>
-</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>    <span class="k">return</span> <span class="n">result_text</span><span class="p">,</span> <span class="n">metadata</span>
-</span></code></pre></div>
-<h4 id="22-simple-factory-function">2.2 Simple Factory Function<a class="headerlink" href="#22-simple-factory-function" title="Link to this section">&para;</a></h4>
-<p>Add factory to create configured GenAI wrapper:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># factory.py</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.services.genai_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenAIService</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptsAdapter</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">.genai_wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenAIWrapper</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">create_genai_wrapper</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">GenAIWrapper</span><span class="p">:</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create configured GenAI wrapper.</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="sd">    Returns:</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="sd">        GenAIWrapper ready for use</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="c1"># Initialize from environment/config</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="n">genai_service</span> <span class="o">=</span> <span class="n">GenAIService</span><span class="o">.</span><span class="n">from_env</span><span class="p">()</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>    <span class="n">prompts_adapter</span> <span class="o">=</span> <span class="n">PromptsAdapter</span><span class="o">.</span><span class="n">from_env</span><span class="p">()</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>    <span class="k">return</span> <span class="n">GenAIWrapper</span><span class="p">(</span><span class="n">genai_service</span><span class="p">,</span> <span class="n">prompts_adapter</span><span class="p">)</span>
-</span></code></pre></div>
-<h3 id="tier-3-basic-prompt-system-integration">Tier 3: Basic Prompt System Integration<a class="headerlink" href="#tier-3-basic-prompt-system-integration" title="Link to this section">&para;</a></h3>
-<p><strong>Scope</strong>: Migrate prompts to catalog, use PromptsAdapter for rendering. No complex task mapping.</p>
-<h4 id="31-migrate-key-prompts-to-catalog">3.1 Migrate Key Prompts to Catalog<a class="headerlink" href="#31-migrate-key-prompts-to-catalog" title="Link to this section">&para;</a></h4>
-<p>Move prompts from <code>prompts.py</code> to prompt catalog:</p>
-<p><strong>Before (current):</strong></p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># prompts.py (LEGACY - to be deprecated)</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">TRANSLATION_PROMPT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="s2">Translate the following text to </span><span class="si">{target_language}</span><span class="s2">:</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="si">{input_text}</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s2">&quot;&quot;&quot;</span>
-</span></code></pre></div>
-<p><strong>After (in prompt catalog):</strong></p>
-<div class="language-markdown highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gu">&lt;!-- prompts/translation.md --&gt;</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="gu">---</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>name: translation
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>version: 1.0
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>description: Translate text to target language
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>required_variables: [input_text, target_language]
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>default_model: gpt-4o
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>output_mode: text
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="gu">tags: [translation, text-processing]</span>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="gu">---</span>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>Translate the following text to {{target_language}}:
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>{{input_text}}
-</span></code></pre></div>
-<h4 id="32-keep-task-mapping-simple">3.2 Keep Task Mapping Simple<a class="headerlink" href="#32-keep-task-mapping-simple" title="Link to this section">&para;</a></h4>
-<p>No complex PromptCatalogPort—just pass prompt keys directly:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Processors call GenAIWrapper with explicit prompt keys</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">result</span><span class="p">,</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">genai</span><span class="o">.</span><span class="n">render_and_execute</span><span class="p">(</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="n">prompt_key</span><span class="o">=</span><span class="s1">&#39;translation&#39;</span><span class="p">,</span>  <span class="c1"># Direct key reference</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">variables</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;input_text&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;target_language&#39;</span><span class="p">:</span> <span class="s1">&#39;en&#39;</span><span class="p">},</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">model</span><span class="o">=</span><span class="s1">&#39;gpt-4o&#39;</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="p">)</span>
-</span></code></pre></div>
-<p><strong>Rationale</strong>: Avoid premature abstraction. AT04 will add strategy catalog later.</p>
-<h3 id="migration-strategy-1-2-weeks">Migration Strategy (1-2 Weeks)<a class="headerlink" href="#migration-strategy-1-2-weeks" title="Link to this section">&para;</a></h3>
-<h4 id="phase-1-textobject-robustness-days-1-3">Phase 1: TextObject Robustness (Days 1-3)<a class="headerlink" href="#phase-1-textobject-robustness-days-1-3" title="Link to this section">&para;</a></h4>
-<ol>
-<li>Add <code>validate_section_boundaries()</code> to <code>NumberedText</code></li>
-<li>Add <code>get_coverage_report()</code> for debugging</li>
-<li>Fix <code>merge_metadata()</code> bugs in <code>TextObject</code></li>
-<li>Add unit tests for validation methods</li>
-<li><strong>Deliverable</strong>: TextObject tests pass, section validation working</li>
-</ol>
-<h4 id="phase-2-genai-service-integration-days-4-6">Phase 2: GenAI Service Integration (Days 4-6)<a class="headerlink" href="#phase-2-genai-service-integration-days-4-6" title="Link to this section">&para;</a></h4>
-<ol>
-<li>Create <code>GenAIWrapper</code> class with <code>render_and_execute()</code></li>
-<li>Add <code>exceptions.py</code> with error hierarchy</li>
-<li>Create <code>factory.py</code> with <code>create_genai_wrapper()</code></li>
-<li>Update <code>line_translator.py</code> to use wrapper (keep function signature compatible)</li>
-<li>Remove direct OpenAI imports</li>
-<li><strong>Deliverable</strong>: No direct OpenAI SDK calls, provenance metadata captured</li>
-</ol>
-<h4 id="phase-3-prompt-migration-days-7-9">Phase 3: Prompt Migration (Days 7-9)<a class="headerlink" href="#phase-3-prompt-migration-days-7-9" title="Link to this section">&para;</a></h4>
-<ol>
-<li>Migrate 3-5 key prompts to catalog (<code>translation</code>, <code>sectioning</code>, <code>summarization</code>)</li>
-<li>Update processors to use prompt keys instead of <code>prompts.py</code> strings</li>
-<li>Add deprecation warning to <code>prompts.py</code></li>
-<li>Test prompt rendering with PromptsAdapter</li>
-<li><strong>Deliverable</strong>: Key prompts loaded from catalog</li>
-</ol>
-<h4 id="phase-4-integration-testing-days-10-12">Phase 4: Integration &amp; Testing (Days 10-12)<a class="headerlink" href="#phase-4-integration-testing-days-10-12" title="Link to this section">&para;</a></h4>
-<ol>
-<li>Integration tests for full workflows (sectioning → translation)</li>
-<li>Test tnh-gen CLI with refactored module</li>
-<li>Verify error handling maps to CLI exit codes</li>
-<li>Documentation updates (migration guide for consumers)</li>
-<li><strong>Deliverable</strong>: tnh-gen CLI functional with robust ai_text_processing</li>
-</ol>
-<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
-<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
+<p>What is still missing:</p>
 <ul>
-<li><strong>Unblocks tnh-gen</strong>: Enables CLI release in 1-2 weeks instead of waiting 13-17 weeks for AT04</li>
-<li><strong>Foundation for AT04</strong>: TextObject robustness, GenAI integration, and prompt adoption are AT04 prerequisites</li>
-<li><strong>Provenance Tracking</strong>: Response fingerprinting from GenAI Service supports audit trails</li>
-<li><strong>Structured Errors</strong>: Exception hierarchy maps to tnh-gen CLI exit codes for better UX</li>
-<li><strong>Reduced Technical Debt</strong>: Removes direct OpenAI SDK dependencies</li>
-<li><strong>Testability</strong>: GenAIWrapper enables mocking for unit tests</li>
-<li><strong>Prompt Versioning</strong>: Basic prompt catalog integration enables future strategy work</li>
+<li>one maintained application-layer service that wires those pieces together,</li>
+<li>one maintained CLI entry point for local/headless execution,</li>
+<li>one stable bootstrap configuration model,</li>
+<li>one stable result model for the headless entry surface,</li>
+<li>a real end-to-end test that exercises the maintained composition using the real git worktree service.</li>
 </ul>
-<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
+<h2 id="proposed-design">Proposed Design<a class="headerlink" href="#proposed-design" title="Link to this section">&para;</a></h2>
+<h3 id="1-add-a-maintained-application-layer-bootstrap-package">1. Add a maintained application-layer bootstrap package<a class="headerlink" href="#1-add-a-maintained-application-layer-bootstrap-package" title="Link to this section">&para;</a></h3>
+<p>Create a new thin application-layer package under:</p>
 <ul>
-<li><strong>Minimal Abstraction</strong>: No full object-service patterns (ports/adapters) to avoid over-engineering</li>
-<li><strong>Limited Scope</strong>: Does not solve context fragmentation, strategy polymorphism, or validation loops (deferred to AT04)</li>
-<li><strong>Function Signature Changes</strong>: Processors now require GenAIWrapper parameter (breaking change)</li>
-<li><strong>Incomplete Migration</strong>: Some prompts may remain in <code>prompts.py</code> temporarily</li>
+<li><code>src/tnh_scholar/agent_orchestration/app/</code></li>
 </ul>
-<h3 id="risks-mitigations">Risks &amp; Mitigations<a class="headerlink" href="#risks-mitigations" title="Link to this section">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Risk</th>
-<th>Impact</th>
-<th>Mitigation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Scope creep</strong></td>
-<td>Refactor takes longer than 2 weeks</td>
-<td>Strict scope: only TextObject, GenAI, and basic prompts. No strategy catalog.</td>
-</tr>
-<tr>
-<td><strong>Breaking changes</strong></td>
-<td>Consumers of ai_text_processing break</td>
-<td>Keep backwards-compatible wrappers for key functions during transition.</td>
-</tr>
-<tr>
-<td><strong>Technical debt</strong></td>
-<td>Minimal patterns accumulate debt</td>
-<td>Document relationship to AT04; plan full migration path.</td>
-</tr>
-<tr>
-<td><strong>Testing gaps</strong></td>
-<td>Bugs slip through</td>
-<td>Add unit tests for TextObject validation, GenAIWrapper integration.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Link to this section">&para;</a></h2>
-<h3 id="alternative-1-wait-for-at04-full-platform">Alternative 1: Wait for AT04 Full Platform<a class="headerlink" href="#alternative-1-wait-for-at04-full-platform" title="Link to this section">&para;</a></h3>
-<p><strong>Approach</strong>: Block tnh-gen release until AT04's complete platform (13-17 weeks) is ready.</p>
-<p><strong>Rejected</strong>: Delays tnh-gen release significantly. AT04's Task Orchestration, Context Graph, and Strategy Catalog are not needed for basic CLI functionality.</p>
-<h3 id="alternative-2-skip-refactor-ship-current-code">Alternative 2: Skip Refactor, Ship Current Code<a class="headerlink" href="#alternative-2-skip-refactor-ship-current-code" title="Link to this section">&para;</a></h3>
-<p><strong>Approach</strong>: Ship tnh-gen with current ai_text_processing (direct OpenAI calls, hard-coded prompts).</p>
-<p><strong>Rejected</strong>: TextObject brittleness causes section boundary errors. No provenance tracking. Would accumulate more technical debt.</p>
-<h3 id="alternative-3-minimal-patch-only-no-genai-integration">Alternative 3: Minimal Patch Only (No GenAI Integration)<a class="headerlink" href="#alternative-3-minimal-patch-only-no-genai-integration" title="Link to this section">&para;</a></h3>
-<p><strong>Approach</strong>: Fix only TextObject bugs, defer GenAI and Prompt integration.</p>
-<p><strong>Rejected</strong>: Misses opportunity to remove OpenAI dependencies and enable provenance. GenAI integration is straightforward and valuable.</p>
-<h2 id="relationship-to-adr-at04">Relationship to ADR-AT04<a class="headerlink" href="#relationship-to-adr-at04" title="Link to this section">&para;</a></h2>
-<p>This ADR implements <strong>Phase 0.5</strong> of the AT04 roadmap:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>ADR-AT03 (this doc)          →  ADR-AT04 Full Platform
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>─────────────────────────────────────────────────────────
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>✅ TextObject robustness      →  Context Propagation Graph
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>✅ GenAI Service integration  →  Task Orchestration Layer
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>✅ Basic prompt adoption      →  Strategy Catalog &amp; Polymorphism
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>✅ Error handling             →  Validation Loops
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>                              →  Experimentation Harness
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>                              →  Cross-Document Coherence
+<p>Planned contents:</p>
+<ul>
+<li><code>models.py</code></li>
+<li><code>service.py</code></li>
+<li><code>__init__.py</code></li>
+</ul>
+<p>Reasoning:</p>
+<ul>
+<li>This keeps the CLI thin, which matches ADR-OS01 and the repo’s “thin app / orchestration in service layer” guidance.</li>
+<li>It prevents the maintained CLI from becoming an ad hoc dependency assembler with mixed parsing, config, and runtime logic.</li>
+</ul>
+<h3 id="2-use-explicit-typed-config-and-params">2. Use explicit typed config and params<a class="headerlink" href="#2-use-explicit-typed-config-and-params" title="Link to this section">&para;</a></h3>
+<p>Planned models:</p>
+<ul>
+<li><code>HeadlessBootstrapConfig</code></li>
+<li><code>HeadlessBootstrapParams</code></li>
+<li><code>HeadlessBootstrapResult</code></li>
+</ul>
+<p>Expected responsibilities:</p>
+<ul>
+<li><code>HeadlessBootstrapConfig</code>: construction-time values such as <code>repo_root</code>, <code>runs_root</code>, <code>workspace_root</code>, <code>base_ref</code>, branch prefix, optional runner executable overrides, and bootstrap-safe planner/gate defaults.</li>
+<li><code>HeadlessBootstrapParams</code>: per-call inputs such as the workflow path to load.</li>
+<li><code>HeadlessBootstrapResult</code>: stable summary fields such as <code>run_id</code>, <code>workflow_id</code>, <code>status</code>, <code>run_directory</code>, <code>metadata_path</code>, <code>final_state_path</code>, and the persisted <code>workspace_context</code>.</li>
+</ul>
+<p>This follows the project’s Settings/Config/Params split without overbuilding an environment-settings layer before it is needed.</p>
+<h3 id="3-keep-kernel-contracts-unchanged-where-possible">3. Keep kernel contracts unchanged where possible<a class="headerlink" href="#3-keep-kernel-contracts-unchanged-where-possible" title="Link to this section">&para;</a></h3>
+<p>The preferred <code>PR-8</code> shape is composition, not another contract rewrite.</p>
+<p>The application service should assemble the existing maintained collaborators:</p>
+<ul>
+<li><code>YamlWorkflowLoader</code></li>
+<li><code>KernelRunService</code></li>
+<li><code>FilesystemRunArtifactStore</code></li>
+<li><code>GitWorktreeWorkspaceService</code></li>
+<li><code>DelegatingRunnerService</code></li>
+<li><code>ValidationService</code></li>
+</ul>
+<p>New code should avoid widening the kernel surface unless an actual bootstrap blocker appears during implementation.</p>
+<h3 id="4-add-deterministic-bootstrap-defaults-for-planner-and-gate">4. Add deterministic bootstrap defaults for planner and gate<a class="headerlink" href="#4-add-deterministic-bootstrap-defaults-for-planner-and-gate" title="Link to this section">&para;</a></h3>
+<p>The maintained kernel requires <code>PlannerEvaluatorProtocol</code> and <code>GateApproverProtocol</code>, but <code>PR-8</code> does not need full OA06 sophistication.</p>
+<p>Plan:</p>
+<ul>
+<li>provide a deterministic bootstrap evaluator that returns a typed <code>PlannerDecision</code>,</li>
+<li>provide a deterministic bootstrap gate approver that returns a typed <code>GateOutcome</code>,</li>
+<li>keep both in the application layer unless reuse pressure makes a separate package clearly worth it.</li>
+</ul>
+<p>Bootstrap-safe defaults:</p>
+<ul>
+<li>planner default: <code>PlannerStatus.success</code></li>
+<li>planner <code>next_step</code>: <code>None</code> unless explicitly overridden later</li>
+<li>gate default: <code>GateOutcome.gate_approved</code></li>
+</ul>
+<p>Rationale:</p>
+<ul>
+<li>this satisfies the maintained kernel contract,</li>
+<li>keeps bootstrap local/headless,</li>
+<li>avoids pretending OA06 is complete,</li>
+<li>preserves the later path to replace these defaults with richer evaluator/gate implementations without reworking the CLI surface.</li>
+</ul>
+<h3 id="5-provide-interpreter-backed-builtin-validator-mappings">5. Provide interpreter-backed builtin validator mappings<a class="headerlink" href="#5-provide-interpreter-backed-builtin-validator-mappings" title="Link to this section">&para;</a></h3>
+<p>The maintained validation service already supports builtin validator identifiers, but <code>PR-8</code> needs a maintained resolver mapping for actual bootstrap runs.</p>
+<p>Planned approach:</p>
+<ul>
+<li>resolve builtin validators to <code>sys.executable -m ...</code> style commands,</li>
+<li>avoid shell execution,</li>
+<li>keep the mapping typed via <code>BuiltinCommandEntry</code>.</li>
+</ul>
+<p>Initial planned mappings:</p>
+<ul>
+<li><code>tests</code> -&gt; <code>python -m unittest discover -s tests -p test_*.py -q</code></li>
+<li><code>lint</code> -&gt; <code>python -m ruff check .</code></li>
+<li><code>typecheck</code> -&gt; <code>python -m mypy src</code></li>
+</ul>
+<p>Reasoning:</p>
+<ul>
+<li>avoids relying on shell aliases,</li>
+<li>keeps execution service constraints intact,</li>
+<li>works with the repo’s typed execution subsystem,</li>
+<li>stays local/headless.</li>
+</ul>
+<h3 id="6-default-bootstrap-execution-policy-to-real-mutable-worktree-use">6. Default bootstrap execution policy to real mutable worktree use<a class="headerlink" href="#6-default-bootstrap-execution-policy-to-real-mutable-worktree-use" title="Link to this section">&para;</a></h3>
+<p>The bootstrap entry must actually permit mutable execution in the managed worktree.</p>
+<p>Plan:</p>
+<ul>
+<li>assemble <code>ExecutionPolicySettings</code> in the application service,</li>
+<li>default the bootstrap run to <code>workspace_write</code>,</li>
+<li>include a non-empty allowed path scope rooted at the managed workspace root so policy validation does not fail before execution,</li>
+<li>keep approval posture headless-safe.</li>
+</ul>
+<p>Important nuance:</p>
+<ul>
+<li>this plan is for the bootstrap application surface only,</li>
+<li>it should not silently weaken the existing policy contract,</li>
+<li>if policy composition proves more nuanced during implementation, the fix should stay typed and explicit rather than falling back to literals or adapter-local hacks.</li>
+</ul>
+<h3 id="7-add-one-maintained-cli-entry-point">7. Add one maintained CLI entry point<a class="headerlink" href="#7-add-one-maintained-cli-entry-point" title="Link to this section">&para;</a></h3>
+<p>Create a new CLI package:</p>
+<ul>
+<li><code>src/tnh_scholar/cli_tools/tnh_conductor/</code></li>
+</ul>
+<p>Planned files:</p>
+<ul>
+<li><code>__init__.py</code></li>
+<li><code>tnh_conductor.py</code></li>
+</ul>
+<p>Planned command shape:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>tnh-conductor run --workflow &lt;path&gt; [--repo-root &lt;path&gt;] [--runs-root &lt;path&gt;] [--workspace-root &lt;path&gt;] [--base-ref &lt;ref&gt;]
 </span></code></pre></div>
-<p><strong>AT03 is not wasted work</strong>—it's the foundation AT04 builds on (as stated in AT04 §5 "Migration from AT03").</p>
-<p><strong>Key Differences</strong>:</p>
+<p>Planned behavior:</p>
 <ul>
-<li><strong>AT03</strong>: Minimal changes to unblock tnh-gen (1-2 weeks)</li>
-<li><strong>AT04</strong>: Comprehensive platform for strategy experimentation, context fidelity, evaluation (13-17 weeks)</li>
+<li>load one workflow,</li>
+<li>run the application bootstrap service,</li>
+<li>emit a concise machine-readable summary to stdout,</li>
+<li>exit non-zero on bootstrap failure.</li>
 </ul>
-<p><strong>Migration Path</strong>: After tnh-gen release, AT04 implementation can proceed incrementally without disrupting the CLI.</p>
-<h2 id="success-criteria">Success Criteria<a class="headerlink" href="#success-criteria" title="Link to this section">&para;</a></h2>
-<p>This ADR succeeds if:</p>
+<p>This is the maintained replacement for “there is no headless entry point yet”. It should not inherit the spike CLI’s architecture or names beyond what is genuinely useful.</p>
+<h2 id="expected-file-touches">Expected File Touches<a class="headerlink" href="#expected-file-touches" title="Link to this section">&para;</a></h2>
+<p>Primary new code:</p>
+<ul>
+<li><code>src/tnh_scholar/agent_orchestration/app/__init__.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/app/models.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/app/service.py</code></li>
+<li><code>src/tnh_scholar/cli_tools/tnh_conductor/__init__.py</code></li>
+<li><code>src/tnh_scholar/cli_tools/tnh_conductor/tnh_conductor.py</code></li>
+</ul>
+<p>Likely supporting changes:</p>
+<ul>
+<li><code>pyproject.toml</code></li>
+</ul>
+<p>Tests:</p>
+<ul>
+<li>new maintained bootstrap service test under <code>tests/agent_orchestration/</code></li>
+<li>new CLI test under <code>tests/cli_tools/</code></li>
+</ul>
+<p>Potential minor export updates if needed:</p>
+<ul>
+<li><code>src/tnh_scholar/agent_orchestration/__init__.py</code></li>
+<li><code>src/tnh_scholar/cli_tools/__init__.py</code></li>
+</ul>
+<h2 id="testing-plan">Testing Plan<a class="headerlink" href="#testing-plan" title="Link to this section">&para;</a></h2>
+<h3 id="1-real-worktree-bootstrap-service-test">1. Real worktree bootstrap service test<a class="headerlink" href="#1-real-worktree-bootstrap-service-test" title="Link to this section">&para;</a></h3>
+<p>Add one focused test that:</p>
 <ol>
-<li><strong>tnh-gen CLI functional</strong>: Can execute prompts from catalog with provenance</li>
-<li><strong>Section validation working</strong>: <code>validate_section_boundaries()</code> catches gaps/overlaps</li>
-<li><strong>No direct OpenAI calls</strong>: All AI requests go through GenAI Service</li>
-<li><strong>Structured errors</strong>: Exceptions map to tnh-gen exit codes (PolicyError, TransportError, etc.)</li>
-<li><strong>Timeline met</strong>: Deliverables completed in 10-12 working days</li>
-<li><strong>Tests pass</strong>: Unit tests for TextObject validation, GenAIWrapper integration</li>
-<li><strong>AT04-ready</strong>: Foundation in place for Task Orchestration, Context Graph, Strategy Catalog</li>
+<li>creates a temporary git repo,</li>
+<li>commits a base state,</li>
+<li>writes a minimal workflow YAML,</li>
+<li>uses the real <code>GitWorktreeWorkspaceService</code>,</li>
+<li>uses a stubbed headless Codex executable,</li>
+<li>runs the maintained bootstrap service,</li>
+<li>asserts:</li>
+<li>the run completes,</li>
+<li>metadata includes the persisted workspace context,</li>
+<li>the worktree path is distinct from the run directory,</li>
+<li>canonical artifacts exist,</li>
+<li>mutable output landed in the worktree, not the run directory root.</li>
 </ol>
-<h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
-<h3 id="related-adrs">Related ADRs<a class="headerlink" href="#related-adrs" title="Link to this section">&para;</a></h3>
+<p>This is the main proof that <code>PR-8</code> actually creates the missing operational loop.</p>
+<h3 id="2-thin-cli-test">2. Thin CLI test<a class="headerlink" href="#2-thin-cli-test" title="Link to this section">&para;</a></h3>
+<p>Add one CLI test that:</p>
 <ul>
-<li><strong><a href="../adr-at04-ai-text-processing-platform-strat/">ADR-AT04: AI Text Processing Strategy</a></strong> - Full platform architecture (builds on AT03)</li>
-<li><strong><a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/">ADR-TG01: CLI Architecture</a></strong> - tnh-gen CLI (primary consumer)</li>
-<li><strong><a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/">ADR-TG02: Prompt Integration</a></strong> - CLI ↔ prompt system integration</li>
-<li><strong><a href="../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/">ADR-A13: GenAI Service</a></strong> - GenAI service architecture</li>
-<li><strong><a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/">ADR-PT04: Prompt System Refactor</a></strong> - Prompt system architecture</li>
-<li><strong><a href="../adr-at01-ai-text-processing/">ADR-AT01: AI Text Processing Pipeline</a></strong> - Original text processing design</li>
-<li><strong><a href="../adr-at02-sectioning-textobject/">ADR-AT02: TextObject Architecture</a></strong> - TextObject historical context</li>
+<li>invokes the new <code>tnh-conductor run</code> entry point,</li>
+<li>passes explicit repo/workflow/stub executable paths,</li>
+<li>asserts successful exit,</li>
+<li>parses the emitted summary,</li>
+<li>confirms it points at the expected run metadata/final state.</li>
 </ul>
-<h3 id="external-resources">External Resources<a class="headerlink" href="#external-resources" title="Link to this section">&para;</a></h3>
+<p>This keeps CLI coverage aligned with the maintained entry point without depending on real Codex/Claude binaries in test.</p>
+<h3 id="3-changed-file-checks-after-implementation">3. Changed-file checks after implementation<a class="headerlink" href="#3-changed-file-checks-after-implementation" title="Link to this section">&para;</a></h3>
+<p>Before considering the slice done:</p>
 <ul>
-<li><a href="https://github.com/anthropics/tnh-scholar">GenAI Service Documentation</a> - Integration guide</li>
-<li><a href="https://github.com/anthropics/tnh-scholar">Prompt System Documentation</a> - Catalog structure</li>
+<li>run focused tests for the new bootstrap modules,</li>
+<li>run the changed-file checks recommended by <code>make pr-check</code>,</li>
+<li>run broader project checks only if the diff or touched surfaces justify it.</li>
 </ul>
-<hr />
-<p><strong>Approval Path</strong>: Architecture review → Implementation → Testing → tnh-gen Release</p>
-<p><em>This ADR defines the minimal viable refactor that enables tnh-gen CLI release while establishing the foundation for ADR-AT04's comprehensive platform architecture.</em></p>
+<h2 id="risks-and-watchpoints">Risks and Watchpoints<a class="headerlink" href="#risks-and-watchpoints" title="Link to this section">&para;</a></h2>
+<h3 id="1-cli-bloat-risk">1. CLI bloat risk<a class="headerlink" href="#1-cli-bloat-risk" title="Link to this section">&para;</a></h3>
+<p>The easiest mistake is to put all bootstrap wiring directly in the CLI module.</p>
+<p>Mitigation:</p>
+<ul>
+<li>keep CLI argument parsing and stdout formatting in the CLI,</li>
+<li>keep runtime assembly in the application service.</li>
+</ul>
+<h3 id="2-policy-mismatch-risk">2. Policy mismatch risk<a class="headerlink" href="#2-policy-mismatch-risk" title="Link to this section">&para;</a></h3>
+<p>The kernel’s policy assembly has real constraints around <code>workspace_write</code> and <code>allowed_paths</code>.</p>
+<p>Mitigation:</p>
+<ul>
+<li>make the bootstrap default policy explicit in typed config,</li>
+<li>prove it in the end-to-end bootstrap test,</li>
+<li>avoid patching around policy failures inside runner adapters.</li>
+</ul>
+<h3 id="3-overreaching-into-oa06-risk">3. Overreaching into OA06 risk<a class="headerlink" href="#3-overreaching-into-oa06-risk" title="Link to this section">&para;</a></h3>
+<p>It would be easy to overbuild evaluator/gate behavior while chasing “complete” runtime fidelity.</p>
+<p>Mitigation:</p>
+<ul>
+<li>keep deterministic bootstrap defaults,</li>
+<li>document them clearly in code and tests,</li>
+<li>defer richer evaluator intelligence to the intended follow-on work.</li>
+</ul>
+<h3 id="4-repo-surface-creep-risk">4. Repo-surface creep risk<a class="headerlink" href="#4-repo-surface-creep-risk" title="Link to this section">&para;</a></h3>
+<p>Adding the CLI may tempt broader documentation or packaging cleanup in the same slice.</p>
+<p>Mitigation:</p>
+<ul>
+<li>keep <code>PR-8</code> centered on the maintained bootstrap path only,</li>
+<li>avoid unrelated docs cleanup or review automation work in the same implementation.</li>
+</ul>
+<h2 id="implementation-sequence">Implementation Sequence<a class="headerlink" href="#implementation-sequence" title="Link to this section">&para;</a></h2>
+<p>Recommended coding order:</p>
+<ol>
+<li>Add typed application-layer models.</li>
+<li>Implement the bootstrap service and deterministic planner/gate collaborators.</li>
+<li>Wire maintained runner, validation, artifact, loader, and workspace dependencies in that service.</li>
+<li>Add the thin <code>tnh-conductor</code> CLI.</li>
+<li>Register the script entry in <code>pyproject.toml</code>.</li>
+<li>Add the real-worktree bootstrap service test.</li>
+<li>Add the CLI test.</li>
+<li>Run focused validation and adjust only if the tests expose a real contract gap.</li>
+</ol>
+<p>This order keeps the first proof point in the service layer and makes the CLI a small final wrapper, not the driver of the design.</p>
+<h2 id="exit-criteria">Exit Criteria<a class="headerlink" href="#exit-criteria" title="Link to this section">&para;</a></h2>
+<p><code>PR-8</code> should be considered done when:</p>
+<ul>
+<li>the repo contains one maintained local/headless <code>tnh-conductor</code> entry point,</li>
+<li>that entry point loads one workflow definition from disk,</li>
+<li>it composes the maintained kernel with the real worktree service,</li>
+<li>it executes a workflow end to end and returns a stable typed summary,</li>
+<li>canonical run metadata, manifests, events, and final state are written to the run directory,</li>
+<li>the bootstrap path is covered by at least one real-worktree service test and one CLI test,</li>
+<li>no PR-9 review automation behavior has been smuggled into the slice.</li>
+</ul>
+<h2 id="non-goals-for-this-document">Non-Goals For This Document<a class="headerlink" href="#non-goals-for-this-document" title="Link to this section">&para;</a></h2>
+<p>This note is a coding workplan only. It does not:</p>
+<ul>
+<li>approve implementation details beyond the planned slice,</li>
+<li>change any ADR authority,</li>
+<li>replace later design decisions for OA05, OA06, or OA07 review automation,</li>
+<li>authorize destructive git operations outside the repo’s safety rules.</li>
+</ul>
 
 
 
