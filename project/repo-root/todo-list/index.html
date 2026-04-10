@@ -3029,6 +3029,8 @@
       
         
       
+        
+      
     
     
     
@@ -3120,6 +3122,34 @@
   
   
     <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OA07.1 PR-7 Worktree Runtime Boundary Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
   
 
   
@@ -10928,31 +10958,31 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li>Prefer <strong>2 PRs</strong> to stay comfortably under diff-size guidance</li>
 <li>A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work</li>
 <li><strong>PR Sequence</strong>:</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-7</strong> <code>feat/oa07.1-worktree-workspace-service</code> — Managed worktree boundary (medium)<ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-7</strong> <code>feat/oa07.1-worktree-workspace-service</code> — Worktree runtime boundary (medium)<ul>
 <li>replace <code>NullWorkspaceService</code> as the forward-path maintained implementation with a real git-backed workspace service</li>
 <li>add typed workspace context models: <code>repo_root</code>, <code>worktree_path</code>, <code>branch_name</code>, <code>base_ref</code>, <code>base_sha</code></li>
 <li>implement managed branch + worktree creation from committed base ref</li>
-<li>implement <code>capture_pre_run()</code> and <code>rollback_pre_run()</code> around recorded <code>base_sha</code></li>
+<li>update the workspace protocol so pre-run setup returns structured workspace context and does not rely on the run directory as the workspace handle</li>
+<li>pass the worktree root as <code>working_directory</code> to runner and validation services for mutable steps</li>
+<li>implement <code>ROLLBACK(pre_run)</code> by discarding and recreating the managed worktree from recorded <code>base_sha</code></li>
 <li>persist workspace context into canonical run artifacts or run metadata extension</li>
-<li>tests for worktree creation, recorded base state, and <code>ROLLBACK(pre_run)</code> semantics</li>
+<li>tests for worktree creation, mutable-step execution in the worktree root, recorded base state, and <code>ROLLBACK(pre_run)</code> semantics</li>
 <li>keep <code>NullWorkspaceService</code> only for tests or explicit non-operational contexts</li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-8</strong> <code>feat/oa07.1-kernel-worktree-wiring</code> — Runtime separation of worktree and run dir (medium)<ul>
-<li>update <code>KernelRunService</code> to distinguish canonical run-artifact paths from mutable execution workspace</li>
-<li>pass the worktree root as <code>working_directory</code> to runner and validation services</li>
-<li>keep manifests, events, policy summaries, and captured artifacts in the canonical run directory</li>
-<li>add regression tests proving <code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> execute in the worktree, not the run-artifact directory</li>
-<li>add a minimal bootstrap harness/integration test covering create-worktree → execute-step → rollback</li>
-</ul>
-</li>
-<li><strong>Optional follow-on if PR-8 stays small enough</strong>:</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-9</strong> <code>feat/oa07-bootstrap-headless-entry</code> — Minimal headless bootstrap entry point (small/medium)<ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-8</strong> <code>feat/oa07-bootstrap-headless-entry</code> — Maintained headless bootstrap entry (small/medium)<ul>
 <li>load one workflow</li>
 <li>create worktree context</li>
 <li>execute workflow end to end</li>
 <li>write canonical artifacts and final state</li>
-<li>no commit/push/PR behavior yet unless diff size remains modest</li>
+<li>keep the initial entry local/headless; no GitHub automation required</li>
+</ul>
+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-9</strong> <code>feat/oa07-review-automation</code> — Commit/push/PR automation (optional, small/medium)<ul>
+<li>create local commits on the managed branch</li>
+<li>push the work branch</li>
+<li>open or update a PR</li>
+<li>keep protected-branch merge human-only</li>
 </ul>
 </li>
 <li><strong>Explicit deferrals for this slice</strong>:</li>

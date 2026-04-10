@@ -2446,9 +2446,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-bootstrap-authority-model" class="md-nav__link">
+  <a href="#1-bootstrap-authority-envelope" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Bootstrap Authority Model
+      1. Bootstrap Authority Envelope
     </span>
   </a>
   
@@ -2654,6 +2654,8 @@
       
         
       
+        
+      
     
     
     
@@ -2745,6 +2747,34 @@
   
   
     <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OA07.1 PR-7 Worktree Runtime Boundary Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
   
 
   
@@ -9898,9 +9928,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-bootstrap-authority-model" class="md-nav__link">
+  <a href="#1-bootstrap-authority-envelope" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Bootstrap Authority Model
+      1. Bootstrap Authority Envelope
     </span>
   </a>
   
@@ -10083,14 +10113,15 @@
 <p>This gap matters because the fastest path to bootstrap is not the full prompt-program/control-plane surface. It is one operational loop that can safely:</p>
 <ul>
 <li>create an isolated branch/worktree,</li>
-<li>let an agent edit, test, validate, commit, push, and open or update a PR,</li>
+<li>let an agent edit, test, and validate inside that worktree,</li>
 <li>preserve enough provenance to review, recover, and iterate,</li>
 <li>keep merges to protected branches human-only.</li>
 </ul>
+<p>The full OA07 bootstrap authority envelope includes commit, push, and PR update actions. The first runtime bootstrap milestone does not need to exercise every action in that envelope immediately, provided the worktree-isolated mutable loop is real and later review automation can build directly on it.</p>
 <p>Without this contract, the maintained runtime risks conflating the canonical run directory with the mutable repository workspace, weakening rollback and making policy enforcement mostly descriptive rather than operational.</p>
 <hr />
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
-<h3 id="1-bootstrap-authority-model">1. Bootstrap Authority Model<a class="headerlink" href="#1-bootstrap-authority-model" title="Link to this section">&para;</a></h3>
+<h3 id="1-bootstrap-authority-envelope">1. Bootstrap Authority Envelope<a class="headerlink" href="#1-bootstrap-authority-envelope" title="Link to this section">&para;</a></h3>
 <p>For bootstrap operation, agents are allowed to perform the following actions only on conductor-managed work branches and worktrees:</p>
 <ul>
 <li>edit repository files,</li>
@@ -10101,6 +10132,7 @@
 <li>respond to review comments and bot feedback on that PR.</li>
 </ul>
 <p>Protected-branch merge remains human-only. Agent flows may advance a PR to review-ready state, but they may not merge to <code>main</code>, <code>master</code>, or any configured protected branch.</p>
+<p>These actions define the allowed bootstrap authority envelope, not the minimum bar for the first operational runtime milestone. A maintained local/headless loop may land first, followed by commit/push/PR automation in a later OA07 implementation slice.</p>
 <p>Bootstrap prioritizes one active PR/worktree per workflow run. Stacked PR orchestration and multi-agent branch coordination are deferred.</p>
 <h3 id="2-workspace-isolation-is-kernel-control-plane-owned">2. Workspace Isolation Is Kernel / Control-Plane Owned<a class="headerlink" href="#2-workspace-isolation-is-kernel-control-plane-owned" title="Link to this section">&para;</a></h3>
 <p>All mutable orchestration runs that can change repository state MUST execute in a dedicated git worktree on a non-protected branch.</p>
@@ -10158,7 +10190,7 @@
 <h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
 <ul>
 <li>Aligns the maintained runtime with the existing architecture intent in OA03 and OA04.</li>
-<li>Gives bootstrap a simple operational target: one worktree, one branch, one PR, one human merge.</li>
+<li>Gives bootstrap a simple operational target: one worktree, one branch, and a clear path to one PR with human-only merge.</li>
 <li>Makes rollback practical without requiring fine-grained undo machinery.</li>
 <li>Lets agents perform useful end-to-end development work while keeping protected-branch control with the human maintainer.</li>
 <li>Clarifies the missing boundary between canonical run artifacts and mutable repository state.</li>

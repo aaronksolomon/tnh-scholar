@@ -2894,6 +2894,8 @@
       
         
       
+        
+      
     
     
     
@@ -2985,6 +2987,34 @@
   
   
     <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OA07.1 PR-7 Worktree Runtime Boundary Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
   
 
   
@@ -10553,12 +10583,46 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Agent Orchestration Bootstrap ADR Alignment</strong> (2026-04-06)</li>
+<li><strong>CI Constraint Path Hardening</strong> (2026-04-08)</li>
+<li>Updated the GitHub Actions <code>PIP_CONSTRAINT</code> environment variable to use <code>${{ github.workspace }}</code> so the CI setuptools cap resolves from a stable absolute workspace path rather than a relative shell cwd</li>
+<li>
+<p>Files: <code>.github/workflows/ci.yml</code></p>
+</li>
+<li>
+<p><strong>Docs Strict-Build Warning Cleanup</strong> (2026-04-08)</p>
+</li>
+<li>Removed the repo-root docs link from the OA07.1 worktree plan note and converted the OA03.3 archived draft reference to plain repository-path text so strict MkDocs builds no longer warn on those links</li>
+<li>
+<p>Files: <code>docs/architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan.md</code>, <code>docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md</code></p>
+</li>
+<li>
+<p><strong>OA07.1 Worktree Runtime Boundary</strong> (2026-04-08)</p>
+</li>
+<li>Added a maintained <code>WorkspaceContext</code> model and expanded the workspace contract so mutable runs have explicit worktree identity, base ref/SHA, and context-backed snapshot/diff semantics</li>
+<li>Added <code>GitWorktreeWorkspaceService</code> with managed worktree creation from committed base refs and <code>ROLLBACK(pre_run)</code> implemented by discarding and recreating the worktree at recorded base state</li>
+<li>Updated the kernel so <code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> execute against the managed worktree root while canonical artifacts and provenance remain under the run directory</li>
+<li>Persisted workspace context into run metadata, tightened workspace-boundary validation, and wired rollback target handling through the maintained kernel path</li>
+<li>Updated validation contracts from <code>run_directory</code> to mutable-step <code>working_directory</code> and added real temp-repo tests for worktree lifecycle plus kernel regressions for worktree-root execution, rollback metadata refresh, and boundary guards</li>
+<li>
+<p>Files: <code>src/tnh_scholar/agent_orchestration/workspace/</code>, <code>src/tnh_scholar/agent_orchestration/kernel/</code>, <code>src/tnh_scholar/agent_orchestration/run_artifacts/models.py</code>, <code>src/tnh_scholar/agent_orchestration/validation/</code>, <code>tests/agent_orchestration/test_workspace_service.py</code>, <code>tests/agent_orchestration/test_oa07_execution_validation_kernel.py</code></p>
+</li>
+<li>
+<p><strong>Agent Orchestration Bootstrap ADR Alignment</strong> (2026-04-06)</p>
+</li>
 <li>Added <code>ADR-OA07</code> and <code>ADR-OA07.1</code> to freeze the bootstrap safety model for worktree isolation, branch-scoped rollback, mutable workspace boundaries, and agent authority through review-ready PR creation</li>
 <li>Clarified the <code>OA04</code> family as workflow execution contracts and updated <code>OA04.1</code> to describe MVP runtime build order and the handoff to <code>OA07.x</code> for workspace-safety decisions</li>
 <li>Marked implemented OA04 decimal ADRs repo-consistently and refreshed orchestration ADR cross-references, TODO planning, and generated documentation indexes to match the current ADR map</li>
 <li>
 <p>Files: <code>docs/architecture/agent-orchestration/adr/</code>, <code>TODO.md</code>, generated <code>docs/**/index.md</code></p>
+</li>
+<li>
+<p><strong>Agent Orchestration Runtime Bootstrap Clarification</strong> (2026-04-08)</p>
+</li>
+<li>Tightened <code>OA07</code> and <code>OA07.1</code> so the first bootstrap milestone is a maintained local/headless runtime loop with real worktree-root mutable execution and discard/recreate <code>ROLLBACK(pre_run)</code></li>
+<li>Split the roadmap cleanly into <code>PR-7</code> worktree runtime boundary, <code>PR-8</code> headless bootstrap entry, and optional later review automation</li>
+<li>Added the focused <code>OA07.1 PR-7 Worktree Runtime Boundary Plan</code> note and aligned <code>TODO.md</code> with the updated implementation seam</li>
+<li>
+<p>Files: <code>docs/architecture/agent-orchestration/adr/</code>, <code>docs/architecture/agent-orchestration/notes/</code>, <code>TODO.md</code></p>
 </li>
 <li>
 <p><strong>OA04.2 Runner Adapters</strong> (2026-04-03)</p>

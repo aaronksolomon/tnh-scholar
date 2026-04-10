@@ -2492,36 +2492,45 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-bootstrap-lifecycle" class="md-nav__link">
+  <a href="#3-runtime-bootstrap-mvp" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Bootstrap Lifecycle
+      3. Runtime Bootstrap MVP
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-rollback-semantics" class="md-nav__link">
+  <a href="#4-review-automation-follow-on" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Rollback Semantics
+      4. Review Automation Follow-On
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-bootstrap-completion-criteria" class="md-nav__link">
+  <a href="#5-rollback-semantics" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Bootstrap Completion Criteria
+      5. Rollback Semantics
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-explicit-deferrals" class="md-nav__link">
+  <a href="#6-completion-criteria" class="md-nav__link">
     <span class="md-ellipsis">
-      6. Explicit Deferrals
+      6. Completion Criteria
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-explicit-deferrals-beyond-runtime-bootstrap-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Explicit Deferrals Beyond Runtime Bootstrap MVP
     </span>
   </a>
   
@@ -2594,9 +2603,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#c-treat-pr-creation-and-update-as-out-of-band-manual-work" class="md-nav__link">
+  <a href="#c-require-pr-creation-and-update-in-the-first-runtime-milestone" class="md-nav__link">
     <span class="md-ellipsis">
-      C. Treat PR creation and update as out-of-band manual work
+      C. Require PR creation and update in the first runtime milestone
     </span>
   </a>
   
@@ -2653,6 +2662,8 @@
       
         
           
+        
+      
         
       
         
@@ -2754,6 +2765,34 @@
   
   
     <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OA07.1 PR-7 Worktree Runtime Boundary Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
   
 
   
@@ -9925,36 +9964,45 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-bootstrap-lifecycle" class="md-nav__link">
+  <a href="#3-runtime-bootstrap-mvp" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Bootstrap Lifecycle
+      3. Runtime Bootstrap MVP
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-rollback-semantics" class="md-nav__link">
+  <a href="#4-review-automation-follow-on" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Rollback Semantics
+      4. Review Automation Follow-On
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-bootstrap-completion-criteria" class="md-nav__link">
+  <a href="#5-rollback-semantics" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Bootstrap Completion Criteria
+      5. Rollback Semantics
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-explicit-deferrals" class="md-nav__link">
+  <a href="#6-completion-criteria" class="md-nav__link">
     <span class="md-ellipsis">
-      6. Explicit Deferrals
+      6. Completion Criteria
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-explicit-deferrals-beyond-runtime-bootstrap-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Explicit Deferrals Beyond Runtime Bootstrap MVP
     </span>
   </a>
   
@@ -10027,9 +10075,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#c-treat-pr-creation-and-update-as-out-of-band-manual-work" class="md-nav__link">
+  <a href="#c-require-pr-creation-and-update-in-the-first-runtime-milestone" class="md-nav__link">
     <span class="md-ellipsis">
-      C. Treat PR creation and update as out-of-band manual work
+      C. Require PR creation and update in the first runtime milestone
     </span>
   </a>
   
@@ -10096,7 +10144,7 @@
 <li>what <code>ROLLBACK(pre_run)</code> means operationally,</li>
 <li>what constitutes bootstrap completion.</li>
 </ul>
-<p>The goal is to reach an operational MVP quickly. That means the first maintained implementation should optimize for one reliable, reviewable workflow loop rather than for maximal flexibility.</p>
+<p>The goal is to reach an operational MVP quickly. That means the first maintained implementation should optimize for one reliable local/headless workflow loop rather than for maximal flexibility or immediate GitHub automation.</p>
 <hr />
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
 <h3 id="1-bootstrap-workspace-context">1. Bootstrap Workspace Context<a class="headerlink" href="#1-bootstrap-workspace-context" title="Link to this section">&para;</a></h3>
@@ -10124,20 +10172,31 @@
 </ul>
 <p>The worktree path MUST NOT be nested under the canonical run directory.</p>
 <p>The maintained <code>working_directory</code> passed to runners and validation backends MUST be the worktree root.</p>
-<h3 id="3-bootstrap-lifecycle">3. Bootstrap Lifecycle<a class="headerlink" href="#3-bootstrap-lifecycle" title="Link to this section">&para;</a></h3>
-<p>The bootstrap lifecycle should be:</p>
+<h3 id="3-runtime-bootstrap-mvp">3. Runtime Bootstrap MVP<a class="headerlink" href="#3-runtime-bootstrap-mvp" title="Link to this section">&para;</a></h3>
+<p>The first operational milestone for OA07.1 is a maintained local/headless runtime loop.</p>
+<p>That runtime bootstrap MVP should:</p>
 <ol>
 <li>Resolve <code>base_ref</code> for the run.</li>
 <li>Resolve the corresponding committed <code>base_sha</code>.</li>
 <li>Create a managed branch for the run from <code>base_sha</code>.</li>
 <li>Create a dedicated worktree for that branch.</li>
 <li>Persist workspace context into the canonical run directory.</li>
-<li>Execute workflow steps against the worktree root.</li>
+<li>Execute mutable workflow steps against the worktree root.</li>
 <li>Persist canonical artifacts, manifests, and events into the run directory.</li>
-<li>If the workflow authorizes PR actions, push the branch and open or update the PR.</li>
+<li>Support <code>ROLLBACK(pre_run)</code> by restoring the managed worktree to <code>base_sha</code>.</li>
+<li>Return final state and provenance through one maintained headless entry point.</li>
 </ol>
 <p>Bootstrap should not require the operator's current working tree to be clean, provided the conductor creates a separate worktree from an explicit committed base ref.</p>
-<h3 id="4-rollback-semantics">4. Rollback Semantics<a class="headerlink" href="#4-rollback-semantics" title="Link to this section">&para;</a></h3>
+<h3 id="4-review-automation-follow-on">4. Review Automation Follow-On<a class="headerlink" href="#4-review-automation-follow-on" title="Link to this section">&para;</a></h3>
+<p>Once the runtime bootstrap MVP exists, the next OA07-aligned follow-on may extend the same managed branch/worktree flow to:</p>
+<ul>
+<li>create local commits,</li>
+<li>push the managed work branch,</li>
+<li>open or update a GitHub PR,</li>
+<li>respond to PR review or bot feedback.</li>
+</ul>
+<p>This follow-on remains inside the OA07 authority envelope. Protected-branch merge stays human-only.</p>
+<h3 id="5-rollback-semantics">5. Rollback Semantics<a class="headerlink" href="#5-rollback-semantics" title="Link to this section">&para;</a></h3>
 <p>For bootstrap, <code>ROLLBACK(pre_run)</code> means:</p>
 <ul>
 <li>the run records <code>base_sha</code> before any mutable step,</li>
@@ -10151,19 +10210,26 @@
 <li>it matches the one-PR-at-a-time bootstrap model.</li>
 </ul>
 <p><code>pre_step</code> and <code>checkpoint:&lt;id&gt;</code> remain deferred.</p>
-<h3 id="5-bootstrap-completion-criteria">5. Bootstrap Completion Criteria<a class="headerlink" href="#5-bootstrap-completion-criteria" title="Link to this section">&para;</a></h3>
-<p>The bootstrap milestone is complete when one maintained headless flow can:</p>
+<h3 id="6-completion-criteria">6. Completion Criteria<a class="headerlink" href="#6-completion-criteria" title="Link to this section">&para;</a></h3>
+<p>Runtime bootstrap MVP is complete when one maintained headless flow can:</p>
 <ul>
 <li>create a managed worktree from a committed base ref,</li>
+<li>materialize and persist explicit workspace context before mutable execution,</li>
 <li>run a workflow with <code>RUN_AGENT</code>, <code>RUN_VALIDATION</code>, and optional <code>EVALUATE</code>/<code>GATE</code>,</li>
-<li>write canonical run artifacts and provenance,</li>
-<li>commit and push the work branch,</li>
-<li>open or update a PR,</li>
-<li>perform <code>ROLLBACK(pre_run)</code> by restoring the managed worktree to the recorded base state.</li>
+<li>pass the worktree root as <code>working_directory</code> for mutable step execution,</li>
+<li>write canonical run artifacts and provenance to the run directory,</li>
+<li>perform <code>ROLLBACK(pre_run)</code> by discarding and recreating the managed worktree at the recorded base state.</li>
 </ul>
-<h3 id="6-explicit-deferrals">6. Explicit Deferrals<a class="headerlink" href="#6-explicit-deferrals" title="Link to this section">&para;</a></h3>
-<p>The following are deferred beyond bootstrap:</p>
+<p>Review automation follow-on is complete when that same flow can additionally:</p>
 <ul>
+<li>create local commits on the managed branch,</li>
+<li>push the work branch,</li>
+<li>open or update a PR.</li>
+</ul>
+<h3 id="7-explicit-deferrals-beyond-runtime-bootstrap-mvp">7. Explicit Deferrals Beyond Runtime Bootstrap MVP<a class="headerlink" href="#7-explicit-deferrals-beyond-runtime-bootstrap-mvp" title="Link to this section">&para;</a></h3>
+<p>The following are deferred beyond the first runtime bootstrap milestone:</p>
+<ul>
+<li>commit/push/PR automation if it does not fit cleanly in the initial implementation slice,</li>
 <li>stacked PR orchestration,</li>
 <li>multiple mutable agents sharing one branch/worktree,</li>
 <li>named checkpoints,</li>
@@ -10185,7 +10251,7 @@
 <ul>
 <li>Leaves some planned flexibility explicitly out of the first operational slice.</li>
 <li>Requires follow-on ADR work if stacked PRs or shared multi-agent worktrees become first-class.</li>
-<li>Adds Git/GitHub lifecycle work to the bootstrap path.</li>
+<li>Adds Git lifecycle work to the bootstrap path and leaves GitHub automation as a near follow-on.</li>
 </ul>
 <hr />
 <h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Link to this section">&para;</a></h2>
@@ -10193,8 +10259,8 @@
 <p>Rejected: too slow for the stated goal. Bootstrap should land an operational development loop first, then deepen the prompt-program surface using the working system.</p>
 <h3 id="b-support-pre_step-rollback-in-the-first-operational-slice">B. Support <code>pre_step</code> rollback in the first operational slice<a class="headerlink" href="#b-support-pre_step-rollback-in-the-first-operational-slice" title="Link to this section">&para;</a></h3>
 <p>Rejected: higher complexity than the bootstrap target needs.</p>
-<h3 id="c-treat-pr-creation-and-update-as-out-of-band-manual-work">C. Treat PR creation and update as out-of-band manual work<a class="headerlink" href="#c-treat-pr-creation-and-update-as-out-of-band-manual-work" title="Link to this section">&para;</a></h3>
-<p>Rejected for bootstrap: the operational target is specifically to let the agent reach review-ready PR state.</p>
+<h3 id="c-require-pr-creation-and-update-in-the-first-runtime-milestone">C. Require PR creation and update in the first runtime milestone<a class="headerlink" href="#c-require-pr-creation-and-update-in-the-first-runtime-milestone" title="Link to this section">&para;</a></h3>
+<p>Rejected: this would slow the first operational slice unnecessarily. GitHub automation remains inside the OA07 authority envelope, but it does not need to block the first worktree-isolated runtime loop.</p>
 <hr />
 <h2 id="open-questions">Open Questions<a class="headerlink" href="#open-questions" title="Link to this section">&para;</a></h2>
 <ol>

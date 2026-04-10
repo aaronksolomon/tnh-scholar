@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Operational notes and blockers for the Codex harness test flow">
+        <meta name="description" content="Refined implementation plan for the first OA07.1 bootstrap slice: a real git-backed workspace service, worktree-root execution for mutable steps, and pre-run rollback.">
       
       
-        <meta name="author" content="GPT-5 (Codex CLI)">
+        <meta name="author" content="Aaron Solomon, GPT-5 Codex">
       
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../codex-harness-spike-findings/">
       
       
-        <link rel="next" href="../codex-harness-spike-findings/">
+        <link rel="next" href="../spike-testing-sequence/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Codex Harness End-to-End Test Report - TNH Scholar Documentation</title>
+        <title>OA07.1 PR-7 Worktree Runtime Boundary Plan - TNH Scholar Documentation</title>
       
     
     
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#codex-harness-end-to-end-test-report" class="md-skip">
+        <a href="#oa071-pr-7-worktree-runtime-boundary-plan" class="md-skip">
           Skip to content
         </a>
       
@@ -178,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Codex Harness End-to-End Test Report
+              OA07.1 PR-7 Worktree Runtime Boundary Plan
             
           </span>
         </div>
@@ -2496,37 +2496,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Codex Harness End-to-End Test Report
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--draft"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../codex-harness-e2e-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2542,89 +2515,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#current-state" class="md-nav__link">
-    <span class="md-ellipsis">
-      Current State
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-worked" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Worked
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-blockers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Blockers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#operational-gotchas" class="md-nav__link">
-    <span class="md-ellipsis">
-      Operational Gotchas
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      Recommended Next Steps
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2662,10 +2552,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    OA07.1 PR-7 Worktree Runtime Boundary Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -2681,6 +2598,140 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-code-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Code Reality
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proposed-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proposed Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proposed Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-a-typed-workspace-context-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Add a typed workspace context model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-split-workspace-setup-from-workspace-observation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Split workspace setup from workspace observation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-keep-nullworkspaceservice-add-gitworktreeworkspaceservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Keep NullWorkspaceService, add GitWorktreeWorkspaceService
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-persist-workspace-context-as-canonical-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Persist workspace context as canonical evidence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-include-minimal-mutable-step-rewiring-in-pr-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Include Minimal Mutable-Step Rewiring In PR-7
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-file-touches" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expected File Touches
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Plan
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risks-to-watch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risks To Watch
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exit-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exit Criteria
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -9810,63 +9861,114 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
+  <a href="#scope" class="md-nav__link">
     <span class="md-ellipsis">
-      Context
+      Scope
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-state" class="md-nav__link">
+  <a href="#current-code-reality" class="md-nav__link">
     <span class="md-ellipsis">
-      Current State
+      Current Code Reality
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-worked" class="md-nav__link">
+  <a href="#proposed-design" class="md-nav__link">
     <span class="md-ellipsis">
-      What Worked
+      Proposed Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proposed Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-a-typed-workspace-context-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Add a typed workspace context model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-split-workspace-setup-from-workspace-observation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Split workspace setup from workspace observation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-keep-nullworkspaceservice-add-gitworktreeworkspaceservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Keep NullWorkspaceService, add GitWorktreeWorkspaceService
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-persist-workspace-context-as-canonical-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Persist workspace context as canonical evidence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-include-minimal-mutable-step-rewiring-in-pr-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Include Minimal Mutable-Step Rewiring In PR-7
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-file-touches" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expected File Touches
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-blockers" class="md-nav__link">
+  <a href="#testing-plan" class="md-nav__link">
     <span class="md-ellipsis">
-      Key Blockers
+      Testing Plan
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#operational-gotchas" class="md-nav__link">
+  <a href="#risks-to-watch" class="md-nav__link">
     <span class="md-ellipsis">
-      Operational Gotchas
+      Risks To Watch
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#recommended-next-steps" class="md-nav__link">
+  <a href="#exit-criteria" class="md-nav__link">
     <span class="md-ellipsis">
-      Recommended Next Steps
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
+      Exit Criteria
     </span>
   </a>
   
@@ -9890,44 +9992,157 @@
   
 
 
-<h1 id="codex-harness-end-to-end-test-report">Codex Harness End-to-End Test Report<a class="headerlink" href="#codex-harness-end-to-end-test-report" title="Link to this section">&para;</a></h1>
-<h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
-<p>We stood up a minimal Codex harness to validate a full tool-calling loop (read/search/apply/run tests) against the repo. This report captures what worked, what blocked, and the practical gotchas to help other agents reproduce and extend the test.</p>
-<h2 id="current-state">Current State<a class="headerlink" href="#current-state" title="Link to this section">&para;</a></h2>
+<h1 id="oa071-pr-7-worktree-runtime-boundary-plan">OA07.1 PR-7 Worktree Runtime Boundary Plan<a class="headerlink" href="#oa071-pr-7-worktree-runtime-boundary-plan" title="Link to this section">&para;</a></h1>
+<p>Purpose: turn the current placeholder <code>workspace/</code> package into a maintained git-backed workspace boundary that lands the runtime bootstrap MVP in <a href="../../adr/adr-oa07-diff-policy-safety-rails/">ADR-OA07</a> and <a href="../../adr/adr-oa07.1-worktree-lifecycle-and-rollback/">ADR-OA07.1</a>: real managed worktrees, mutable-step execution in the worktree root, and <code>ROLLBACK(pre_run)</code> against recorded base state.</p>
+<h2 id="scope">Scope<a class="headerlink" href="#scope" title="Link to this section">&para;</a></h2>
+<p>This note covers <code>PR-7</code> from <code>TODO.md</code>:</p>
 <ul>
-<li>Harness runs via <code>tnh-codex-harness</code> (Typer CLI) and writes artifacts under <code>.tnh-codex/runs/&lt;timestamp&gt;/</code>.</li>
-<li>Tool calls are executed successfully (read/search), but final structured output is often missing.</li>
-<li>The run ends "blocked" when no final JSON response is produced after tool rounds.</li>
+<li>implement a real maintained workspace service,</li>
+<li>create a managed branch + worktree from a committed base ref,</li>
+<li>record pre-run workspace context including <code>base_ref</code> and <code>base_sha</code>,</li>
+<li>run <code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> against the worktree root,</li>
+<li>make <code>ROLLBACK(pre_run)</code> restore the managed worktree to that recorded base state,</li>
+<li>persist workspace context as canonical run evidence.</li>
 </ul>
-<h2 id="what-worked">What Worked<a class="headerlink" href="#what-worked" title="Link to this section">&para;</a></h2>
+<p>Out of scope for this PR:</p>
 <ul>
-<li>Tools executed with real outputs and filesystem access.</li>
-<li>Sandbox patch sync updates code without committing or switching branches.</li>
-<li>Codex runs can be executed from the sandbox with a copied <code>.env</code>.</li>
+<li>commit/push/PR automation,</li>
+<li><code>pre_step</code> rollback and named checkpoints.</li>
 </ul>
-<h2 id="key-blockers">Key Blockers<a class="headerlink" href="#key-blockers" title="Link to this section">&para;</a></h2>
+<h2 id="current-code-reality">Current Code Reality<a class="headerlink" href="#current-code-reality" title="Link to this section">&para;</a></h2>
+<p>The maintained workspace layer is still a stub:</p>
+<ul>
+<li><code>src/tnh_scholar/agent_orchestration/workspace/models.py</code> only has <code>RollbackTarget</code> and a thin <code>WorkspaceSnapshot</code>.</li>
+<li><code>src/tnh_scholar/agent_orchestration/workspace/protocols.py</code> exposes <code>capture_pre_run(run_id) -&gt; None</code> and <code>rollback_pre_run() -&gt; None</code>, which is too narrow for managed worktree creation.</li>
+<li><code>src/tnh_scholar/agent_orchestration/workspace/service.py</code> contains only <code>NullWorkspaceService</code>.</li>
+</ul>
+<p>The kernel already depends on the workspace service at the right lifecycle moments:</p>
+<ul>
+<li><code>src/tnh_scholar/agent_orchestration/kernel/service.py:135</code> calls <code>capture_pre_run()</code>,</li>
+<li><code>src/tnh_scholar/agent_orchestration/kernel/service.py:417</code> calls <code>rollback_pre_run()</code>,</li>
+<li><code>src/tnh_scholar/agent_orchestration/kernel/service.py:767</code> uses <code>snapshot()</code> for runtime policy guards,</li>
+<li><code>src/tnh_scholar/agent_orchestration/kernel/provenance.py:187</code> persists workspace snapshot and diff artifacts.</li>
+</ul>
+<p>That means PR-7 can stay reasonably small, but it cannot remain fully isolated to <code>workspace/</code>. The protocol must be widened so the kernel can receive and persist real workspace context.</p>
+<h2 id="proposed-design">Proposed Design<a class="headerlink" href="#proposed-design" title="Link to this section">&para;</a></h2>
+<h3 id="1-add-a-typed-workspace-context-model">1. Add a typed workspace context model<a class="headerlink" href="#1-add-a-typed-workspace-context-model" title="Link to this section">&para;</a></h3>
+<p>Introduce a canonical model such as <code>WorkspaceContext</code> with at least:</p>
+<ul>
+<li><code>repo_root: Path</code></li>
+<li><code>worktree_path: Path</code></li>
+<li><code>branch_name: str</code></li>
+<li><code>base_ref: str</code></li>
+<li><code>base_sha: str</code></li>
+</ul>
+<p>Recommended additions:</p>
+<ul>
+<li><code>head_sha: str | None</code></li>
+<li><code>run_id: str</code></li>
+<li><code>created_at: datetime | None</code></li>
+</ul>
+<p>This is the minimum state needed to:</p>
+<ul>
+<li>reconstruct the mutable execution boundary,</li>
+<li>enforce protected-branch rules accurately,</li>
+<li>restore <code>pre_run</code>,</li>
+<li>persist reviewable provenance.</li>
+</ul>
+<h3 id="2-split-workspace-setup-from-workspace-observation">2. Split workspace setup from workspace observation<a class="headerlink" href="#2-split-workspace-setup-from-workspace-observation" title="Link to this section">&para;</a></h3>
+<p>The current <code>capture_pre_run(run_id)</code> method mixes two concerns:</p>
+<ul>
+<li>creating the operational workspace boundary,</li>
+<li>capturing rollback state.</li>
+</ul>
+<p>For PR-7 the protocol should instead make setup explicit and center the workspace API on <code>WorkspaceContext</code>, not on the run-artifact directory. One reasonable shape:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">prepare_pre_run</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">run_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkspaceContext</span><span class="p">:</span> <span class="o">...</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">rollback_pre_run</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">WorkspaceContext</span><span class="p">:</span> <span class="o">...</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">current_context</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">WorkspaceContext</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">snapshot</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">WorkspaceSnapshot</span><span class="p">:</span> <span class="o">...</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">diff_summary</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Equivalent naming is fine, but the important contract change is:</p>
+<ul>
+<li>pre-run setup must return structured context,</li>
+<li>rollback must operate on stored context rather than implicit local state only.</li>
+</ul>
+<h3 id="3-keep-nullworkspaceservice-add-gitworktreeworkspaceservice">3. Keep <code>NullWorkspaceService</code>, add <code>GitWorktreeWorkspaceService</code><a class="headerlink" href="#3-keep-nullworkspaceservice-add-gitworktreeworkspaceservice" title="Link to this section">&para;</a></h3>
+<p><code>NullWorkspaceService</code> should remain for tests and explicit non-operational contexts.</p>
+<p>Add a maintained git-backed implementation that:</p>
 <ol>
-<li><strong>No final output text</strong>: The model often emits tool calls only. Without a final JSON response, parsing fails.</li>
-<li><strong>Responses API limitations</strong>: <code>response_format</code> and <code>temperature</code> are rejected, so schema enforcement must use the <code>text</code> config.</li>
-<li><strong>Sandbox hygiene</strong>: Sync resets remove <code>.env</code>, so credentials must be copied after sync.</li>
+<li>Resolves a committed base ref from configuration.</li>
+<li>Records <code>base_sha</code> via git rev-parse.</li>
+<li>Creates a conductor-managed branch name for the run.</li>
+<li>Creates a dedicated git worktree under a stable workspace root.</li>
+<li>Stores the resulting <code>WorkspaceContext</code> in-memory for the run lifecycle.</li>
+<li>On rollback, discards and recreates that worktree at <code>base_sha</code>.</li>
 </ol>
-<h2 id="operational-gotchas">Operational Gotchas<a class="headerlink" href="#operational-gotchas" title="Link to this section">&para;</a></h2>
+<p>PR-7 should prefer a simple deterministic branch naming scheme over configurability:</p>
 <ul>
-<li>Run <code>make sync-sandbox</code> from the source repo root, not inside the sandbox.</li>
-<li>After sync, copy <code>.env</code> to sandbox before running the harness.</li>
-<li>CLI is <code>tnh-codex-harness</code> with <code>--task</code>; there is no <code>run</code> subcommand.</li>
+<li>example: <code>tnh/run-&lt;run_id&gt;</code></li>
 </ul>
-<h2 id="recommended-next-steps">Recommended Next Steps<a class="headerlink" href="#recommended-next-steps" title="Link to this section">&para;</a></h2>
-<ol>
-<li>Enforce structured output with <code>text</code> JSON schema in the Responses API.</li>
-<li>Persist tool results into artifacts for easier debugging.</li>
-<li>Add a termination rule when tool calls repeat without final output.</li>
-</ol>
-<h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
+<p>Branch naming can move to config later if needed.</p>
+<h3 id="4-persist-workspace-context-as-canonical-evidence">4. Persist workspace context as canonical evidence<a class="headerlink" href="#4-persist-workspace-context-as-canonical-evidence" title="Link to this section">&para;</a></h3>
+<p>PR-7 should add a typed artifact payload for workspace context rather than burying this state in ad hoc JSON.</p>
+<p>Preferred options:</p>
 <ul>
-<li><code>/architecture/agent-orchestration/adr/adr-oa03-agent-runner-architecture.md</code></li>
-<li><code>/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md</code></li>
-<li><code>SPIKE_REPORT.md</code></li>
+<li>extend <code>src/tnh_scholar/agent_orchestration/run_artifacts/models.py</code> with a dedicated <code>WorkspaceContextArtifact</code>,</li>
+<li>add a matching canonical artifact role such as <code>workspace_context</code>.</li>
+</ul>
+<p>This artifact should be written once during run setup and reused by later review/debugging flows.</p>
+<h3 id="5-include-minimal-mutable-step-rewiring-in-pr-7">5. Include Minimal Mutable-Step Rewiring In PR-7<a class="headerlink" href="#5-include-minimal-mutable-step-rewiring-in-pr-7" title="Link to this section">&para;</a></h3>
+<p>PR-7 should update <code>src/tnh_scholar/agent_orchestration/kernel/service.py:261</code> and <code>src/tnh_scholar/agent_orchestration/kernel/service.py:294</code> so <code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> execute against the worktree root.
+This is the smallest aligned seam:</p>
+<ul>
+<li>the workspace service becomes real,</li>
+<li>mutable execution actually moves into the worktree,</li>
+<li>artifact/manifests/events remain in the canonical run directory,</li>
+<li>PR-8 can focus on the headless entry point rather than another protocol break.</li>
+</ul>
+<h2 id="expected-file-touches">Expected File Touches<a class="headerlink" href="#expected-file-touches" title="Link to this section">&para;</a></h2>
+<p>Primary:</p>
+<ul>
+<li><code>src/tnh_scholar/agent_orchestration/workspace/models.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/workspace/protocols.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/workspace/service.py</code></li>
+</ul>
+<p>Kernel/provenance/run-artifact touches:</p>
+<ul>
+<li><code>src/tnh_scholar/agent_orchestration/kernel/service.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/kernel/provenance.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/run_artifacts/models.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/run_artifacts/protocols.py</code></li>
+<li><code>src/tnh_scholar/agent_orchestration/run_artifacts/filesystem_store.py</code></li>
+</ul>
+<p>Tests:</p>
+<ul>
+<li><code>tests/agent_orchestration/test_oa07_execution_validation_kernel.py</code></li>
+<li>likely a new focused workspace service test module under <code>/tests/agent_orchestration/</code></li>
+</ul>
+<h2 id="testing-plan">Testing Plan<a class="headerlink" href="#testing-plan" title="Link to this section">&para;</a></h2>
+<p>Minimum tests for PR-7:</p>
+<ol>
+<li>Workspace service creates a worktree from a committed base ref and records <code>base_sha</code>.</li>
+<li><code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> receive the worktree root as <code>working_directory</code>.</li>
+<li>Rollback discards and recreates the worktree at the recorded <code>base_sha</code>.</li>
+<li>Kernel run setup persists workspace context as canonical evidence.</li>
+<li>Protected-branch guard still works, now against real workspace context.</li>
+</ol>
+<p>Tests should use temporary local git repositories rather than mocking git entirely. The feature is mostly git lifecycle, so fake-only tests would miss the important failure modes.</p>
+<h2 id="risks-to-watch">Risks To Watch<a class="headerlink" href="#risks-to-watch" title="Link to this section">&para;</a></h2>
+<ul>
+<li>Git subprocess surface can sprawl quickly. Keep one small helper layer rather than scattering raw command assembly across the service.</li>
+<li>If the protocol returns too little context now, PR-8 will immediately need another breaking change.</li>
+<li>If <code>working_directory</code> is not moved to the worktree in PR-7, the docs and implementation will still disagree after the slice lands.</li>
+</ul>
+<h2 id="exit-criteria">Exit Criteria<a class="headerlink" href="#exit-criteria" title="Link to this section">&para;</a></h2>
+<p>PR-7 is done when:</p>
+<ul>
+<li>the maintained runtime can create a real managed worktree for a run,</li>
+<li>the workspace service records <code>repo_root</code>, <code>worktree_path</code>, <code>branch_name</code>, <code>base_ref</code>, and <code>base_sha</code>,</li>
+<li><code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> execute against the worktree root,</li>
+<li><code>ROLLBACK(pre_run)</code> restores that worktree to recorded base state by discard/recreate,</li>
+<li>workspace context is persisted as canonical run evidence,</li>
+<li>the kernel and tests can use <code>GitWorktreeWorkspaceService</code> as the forward-path maintained implementation.</li>
 </ul>
 
 
