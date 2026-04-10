@@ -109,9 +109,9 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 🚨 OA07.1 Bootstrap Worktree Slice
 
-- **Status**: READY TO START
+- **Status**: IN PROGRESS — PR-7 complete; PR-8 is the next bootstrap slice
 - **Priority**: HIGHEST (next operational bootstrap slice)
-- **Context**: The maintained OA04.x runtime contracts are now substantial, but the system is not yet operational because mutable execution still lacks a real worktree boundary. Follow [ADR-OA07](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md) and [ADR-OA07.1](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md).
+- **Context**: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary. Bootstrap is no longer blocked on workspace isolation; it is now blocked on adding one maintained headless entry point that drives the runtime end to end. Follow [ADR-OA07](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md) and [ADR-OA07.1](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md).
 - **Bootstrap Goal**:
   - create a managed git worktree from a committed base ref
   - run `RUN_AGENT` and `RUN_VALIDATION` against the worktree root
@@ -119,14 +119,14 @@ This section organizes work into three priority levels based on criticality for 
   - support `ROLLBACK(pre_run)` to recorded base state
   - establish the headless path needed for later commit/push/PR automation
 - **Why This Is Next**:
-  - current kernel/workspace code is contract-shaped but not operational
-  - the run directory and mutable workspace are still conflated in the maintained path
+  - the worktree runtime boundary is now implemented, but there is still no maintained headless app-layer entry
+  - the system needs one clean end-to-end path that loads a workflow and drives the maintained kernel in real operation
   - OA05/OA06 depth work should follow a live bootstrap loop, not precede it
 - **Recommended PR sizing**:
   - Prefer **2 PRs** to stay comfortably under diff-size guidance
   - A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work
 - **PR Sequence**:
-  - [ ] **PR-7** `feat/oa07.1-worktree-workspace-service` — Worktree runtime boundary (medium)
+  - [x] **PR-7** `feat/oa07.1-worktree-workspace-service` — Worktree runtime boundary (medium)
     - replace `NullWorkspaceService` as the forward-path maintained implementation with a real git-backed workspace service
     - add typed workspace context models: `repo_root`, `worktree_path`, `branch_name`, `base_ref`, `base_sha`
     - implement managed branch + worktree creation from committed base ref
@@ -136,7 +136,7 @@ This section organizes work into three priority levels based on criticality for 
     - persist workspace context into canonical run artifacts or run metadata extension
     - tests for worktree creation, mutable-step execution in the worktree root, recorded base state, and `ROLLBACK(pre_run)` semantics
     - keep `NullWorkspaceService` only for tests or explicit non-operational contexts
-  - [ ] **PR-8** `feat/oa07-bootstrap-headless-entry` — Maintained headless bootstrap entry (small/medium)
+  - [ ] **PR-8** `feat/oa07-bootstrap-headless-entry` — Maintained headless bootstrap entry (small/medium, next)
     - load one workflow
     - create worktree context
     - execute workflow end to end
