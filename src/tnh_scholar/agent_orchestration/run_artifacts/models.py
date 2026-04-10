@@ -15,6 +15,7 @@ from tnh_scholar.agent_orchestration.kernel.enums import (
     PlannerStatus,
 )
 from tnh_scholar.agent_orchestration.shared_enums import AgentFamily, RunnerTermination
+from tnh_scholar.agent_orchestration.workspace.models import WorkspaceContext
 
 
 class RunArtifactPaths(BaseModel):
@@ -44,6 +45,7 @@ class RunMetadata(BaseModel):
     started_at: datetime
     artifacts_root: Path
     entry_step: str
+    workspace_context: WorkspaceContext | None = None
     ended_at: datetime | None = None
     last_step_id: str | None = None
     termination: MechanicalOutcome | None = None

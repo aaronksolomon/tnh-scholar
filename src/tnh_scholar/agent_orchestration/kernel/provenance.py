@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from pathlib import Path
 
 from tnh_scholar.agent_orchestration.kernel.enums import (
     GateOutcome,
@@ -119,7 +118,6 @@ class KernelProvenanceRecorder:
         started_at: datetime,
         ended_at: datetime,
         paths: RunArtifactPaths,
-        run_directory: Path,
         extra_artifacts: tuple[StepArtifactEntry, ...] = (),
         notes: tuple[str, ...] = (),
         next_step_id: str | None = None,
@@ -128,7 +126,6 @@ class KernelProvenanceRecorder:
         workspace_artifacts = self._write_workspace_artifacts(
             step_id=step_id,
             paths=paths,
-            run_directory=run_directory,
         )
         artifacts = (*extra_artifacts, *workspace_artifacts)
         self._build_and_write_manifest(
@@ -159,7 +156,6 @@ class KernelProvenanceRecorder:
         started_at: datetime,
         ended_at: datetime,
         paths: RunArtifactPaths,
-        run_directory: Path,
         extra_artifacts: tuple[StepArtifactEntry, ...] = (),
         notes: tuple[str, ...],
     ) -> None:
@@ -172,7 +168,6 @@ class KernelProvenanceRecorder:
             started_at=started_at,
             ended_at=ended_at,
             paths=paths,
-            run_directory=run_directory,
             extra_artifacts=extra_artifacts,
             notes=notes,
         )
@@ -182,19 +177,17 @@ class KernelProvenanceRecorder:
         *,
         step_id: str,
         paths: RunArtifactPaths,
-        run_directory: Path,
     ) -> tuple[StepArtifactEntry, ...]:
-        snapshot = self.workspace.snapshot(run_directory)
-        diff_summary = self.workspace.diff_summary(run_directory)
-        snapshot_payload = snapshot.model_copy(update={"diff_summary": diff_summary or snapshot.diff_summary})
+        snapshot = self.workspace.snapshot()
         status_entry = self.artifact_store.write_json_artifact(
             paths=paths,
             step_id=step_id,
             role=ArtifactRole.workspace_status,
             filename="workspace_status.json",
-            payload=snapshot_payload,
+            payload=snapshot,
             required=True,
         )
+        diff_summary = snapshot.diff_summary or self.workspace.diff_summary()
         if not diff_summary:
             return (status_entry,)
         diff_entry = self.artifact_store.write_text_artifact(

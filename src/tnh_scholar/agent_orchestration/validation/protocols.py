@@ -19,14 +19,14 @@ from tnh_scholar.agent_orchestration.validation.models import (
 class ValidatorResolverProtocol(Protocol):
     """Resolve builtin validators into execution requests."""
 
-    def resolve(self, spec: BuiltinValidationSpec, run_directory: Path) -> ExecutionRequest:
+    def resolve(self, spec: BuiltinValidationSpec, working_directory: Path) -> ExecutionRequest:
         """Resolve one builtin validator into a trusted execution request."""
 
 
 class HarnessBackendResolverProtocol(Protocol):
     """Resolve harness validators into backend requests."""
 
-    def resolve(self, spec: HarnessValidationSpec, run_directory: Path) -> HarnessBackendRequest:
+    def resolve(self, spec: HarnessValidationSpec, working_directory: Path) -> HarnessBackendRequest:
         """Resolve one harness validator into a trusted backend request."""
 
 
