@@ -4,12 +4,19 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
+from pathlib import Path
+from typing import Protocol
 
 from tnh_scholar.agent_orchestration.app.models import HeadlessBootstrapConfig
 from tnh_scholar.agent_orchestration.common.run_id import strftime_run_id
 from tnh_scholar.agent_orchestration.common.time import utc_now
 from tnh_scholar.agent_orchestration.execution import SubprocessExecutionService
-from tnh_scholar.agent_orchestration.kernel import KernelRunService
+from tnh_scholar.agent_orchestration.kernel import GateOutcome, KernelRunService, PlannerDecision
+from tnh_scholar.agent_orchestration.kernel.models import EvaluateStep, GateStep
+from tnh_scholar.agent_orchestration.kernel.protocols import (
+    GateApproverProtocol,
+    PlannerEvaluatorProtocol,
+)
 from tnh_scholar.agent_orchestration.kernel.validator import WorkflowValidator
 from tnh_scholar.agent_orchestration.run_artifacts import FilesystemRunArtifactStore
 from tnh_scholar.agent_orchestration.runners import DelegatingRunnerService
@@ -50,6 +57,13 @@ class BootstrapKernelBundle:
 
     kernel_service: KernelRunService
     workspace_service: GitWorktreeWorkspaceService
+
+
+class BootstrapKernelFactoryProtocol(Protocol):
+    """Build one maintained bootstrap kernel bundle."""
+
+    def build(self) -> BootstrapKernelBundle:
+        """Return the fully assembled maintained bootstrap bundle."""
 
 
 @dataclass(frozen=True)
@@ -109,10 +123,10 @@ class BootstrapKernelFactory:
 
 
 @dataclass(frozen=True)
-class _UnsupportedPlannerEvaluator:
+class _UnsupportedPlannerEvaluator(PlannerEvaluatorProtocol):
     """Fail closed until the maintained evaluator surface is implemented."""
 
-    def evaluate(self, step: object, run_directory: object) -> object:
+    def evaluate(self, step: EvaluateStep, run_directory: Path) -> PlannerDecision:
         del step, run_directory
         raise NotImplementedError(
             "Maintained headless bootstrap does not yet support EVALUATE. "
@@ -121,10 +135,10 @@ class _UnsupportedPlannerEvaluator:
 
 
 @dataclass(frozen=True)
-class _UnsupportedGateApprover:
+class _UnsupportedGateApprover(GateApproverProtocol):
     """Fail closed until the maintained gate approval surface is implemented."""
 
-    def decide(self, step: object, run_directory: object) -> object:
+    def decide(self, step: GateStep, run_directory: Path) -> GateOutcome:
         del step, run_directory
         raise NotImplementedError(
             "Maintained headless bootstrap does not yet support GATE. "

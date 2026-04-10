@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from tnh_scholar.agent_orchestration.app.factory import (
     BootstrapKernelBundle,
     BootstrapKernelFactory,
+    BootstrapKernelFactoryProtocol,
 )
 from tnh_scholar.agent_orchestration.app.models import (
     HeadlessBootstrapConfig,
@@ -24,7 +25,7 @@ class HeadlessBootstrapService:
 
     config: HeadlessBootstrapConfig
     workflow_loader: YamlWorkflowLoader = field(default_factory=YamlWorkflowLoader)
-    kernel_factory: BootstrapKernelFactory | None = None
+    kernel_factory: BootstrapKernelFactoryProtocol | None = None
 
     def run(self, params: HeadlessBootstrapParams) -> HeadlessBootstrapResult:
         """Execute one maintained headless bootstrap run."""
@@ -52,7 +53,7 @@ class HeadlessBootstrapService:
         unsupported = [
             str(step.opcode)
             for step in workflow.steps
-            if str(step.opcode) in {Opcode.evaluate.value, Opcode.gate.value}
+            if step.opcode in {Opcode.evaluate, Opcode.gate}
         ]
         if unsupported:
             joined = ", ".join(unsupported)
