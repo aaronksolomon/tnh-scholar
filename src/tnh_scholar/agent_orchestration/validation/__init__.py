@@ -4,6 +4,7 @@ from tnh_scholar.agent_orchestration.validation.backends import (
     HarnessReportLoader,
     ScriptHarnessBackend,
 )
+from tnh_scholar.agent_orchestration.validation.errors import ValidationArtifactMergeError
 from tnh_scholar.agent_orchestration.validation.models import (
     BackendFamily,
     BuiltinValidationSpec,
@@ -38,6 +39,7 @@ __all__ = [
     "HarnessBackendRequest",
     "HarnessBackendResult",
     "HarnessReport",
+    "ValidationArtifactMergeError",
     "ScriptHarnessBackend",
     "HarnessValidationSpec",
     "HarnessReportLoader",

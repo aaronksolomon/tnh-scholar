@@ -67,6 +67,11 @@ class ExplicitEnvironmentPolicy(BaseModel):
     kind: Literal["explicit"] = "explicit"
     values: dict[str, str] = Field(default_factory=dict)
 
+    @classmethod
+    def empty(cls) -> "ExplicitEnvironmentPolicy":
+        """Return an explicit empty environment policy."""
+        return cls()
+
 
 class IsolatedEnvironmentPolicy(BaseModel):
     """Start from an empty environment and allowlist values."""
