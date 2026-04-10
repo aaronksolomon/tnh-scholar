@@ -129,6 +129,8 @@ class KernelRunResult(BaseModel):
     status: MechanicalOutcome
     last_step_id: str
     run_directory: Path
+    metadata_path: Path
+    final_state_path: Path
 
 
 __all__ = [

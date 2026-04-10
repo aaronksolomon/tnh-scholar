@@ -12,6 +12,7 @@ from tnh_scholar.agent_orchestration.execution.models import (
     PythonScriptInvocation,
     TimeoutPolicy,
 )
+from tnh_scholar.agent_orchestration.execution.protocols import ExecutionServiceProtocol
 from tnh_scholar.agent_orchestration.execution.service import SubprocessExecutionService
 
 __all__ = [
@@ -19,6 +20,7 @@ __all__ = [
     "ExecutionOutputCapturePolicy",
     "ExecutionRequest",
     "ExecutionResult",
+    "ExecutionServiceProtocol",
     "ExecutionTermination",
     "ExplicitEnvironmentPolicy",
     "InheritParentEnvironmentPolicy",

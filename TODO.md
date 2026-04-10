@@ -109,7 +109,7 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 🚨 OA07.1 Bootstrap Worktree Slice
 
-- **Status**: IN PROGRESS — PR-7 complete; PR-8 is the next bootstrap slice
+- **Status**: IN PROGRESS — PR-7 complete; PR-8 implemented on branch and pending PR
 - **Priority**: HIGHEST (next operational bootstrap slice)
 - **Context**: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary. Bootstrap is no longer blocked on workspace isolation; it is now blocked on adding one maintained headless entry point that drives the runtime end to end. Follow [ADR-OA07](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md) and [ADR-OA07.1](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md).
 - **Bootstrap Goal**:
@@ -136,7 +136,7 @@ This section organizes work into three priority levels based on criticality for 
     - persist workspace context into canonical run artifacts or run metadata extension
     - tests for worktree creation, mutable-step execution in the worktree root, recorded base state, and `ROLLBACK(pre_run)` semantics
     - keep `NullWorkspaceService` only for tests or explicit non-operational contexts
-  - [ ] **PR-8** `feat/oa07-bootstrap-headless-entry` — Maintained headless bootstrap entry (small/medium, next)
+  - [x] **PR-8** `feat/oa07-bootstrap-headless-entry` — Maintained headless bootstrap entry (small/medium, next)
     - load one workflow
     - create worktree context
     - execute workflow end to end

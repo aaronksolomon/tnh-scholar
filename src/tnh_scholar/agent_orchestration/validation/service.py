@@ -11,9 +11,10 @@ from pydantic import BaseModel, Field
 from tnh_scholar.agent_orchestration.execution import (
     CliExecutableInvocation,
     ExecutionRequest,
+    ExecutionServiceProtocol,
     ExplicitEnvironmentPolicy,
-    SubprocessExecutionService,
 )
+from tnh_scholar.agent_orchestration.validation.errors import ValidationArtifactMergeError
 from tnh_scholar.agent_orchestration.validation.models import (
     BackendFamily,
     BuiltinValidationSpec,
@@ -31,6 +32,7 @@ from tnh_scholar.agent_orchestration.validation.models import (
 )
 from tnh_scholar.agent_orchestration.validation.protocols import (
     HarnessBackendProtocol,
+    HarnessBackendRegistryProtocol,
     HarnessBackendResolverProtocol,
     ValidationServiceProtocol,
     ValidatorResolverProtocol,
@@ -65,7 +67,7 @@ class StaticValidatorResolver(ValidatorResolverProtocol):
                         arguments=entry.arguments,
                     ),
                     working_directory=working_directory,
-                    environment_policy=ExplicitEnvironmentPolicy(values={}),
+                    environment_policy=ExplicitEnvironmentPolicy.empty(),
                 )
         raise ValueError(f"Unknown builtin validator: {spec.name.value}")
 
@@ -89,9 +91,10 @@ class StaticHarnessBackendResolver(HarnessBackendResolverProtocol):
                     working_directory=working_directory,
                     artifact_patterns=tuple(spec.artifacts),
                     timeout_seconds=spec.timeout_seconds,
-                    environment_policy=ExplicitEnvironmentPolicy(values={}),
+                    environment_policy=ExplicitEnvironmentPolicy.empty(),
                 )
-        raise ValueError(f"Unsupported harness validator: {spec.name.value}")
+            case _:
+                raise ValueError(f"Unsupported harness validator: {spec.name.value}")
 
 
 @dataclass(frozen=True)
@@ -114,9 +117,9 @@ class ValidationService(ValidationServiceProtocol):
     """Execute validation steps using the execution subsystem."""
 
     resolver: ValidatorResolverProtocol
-    execution_service: SubprocessExecutionService
+    execution_service: ExecutionServiceProtocol
     harness_resolver: HarnessBackendResolverProtocol
-    backend_registry: HarnessBackendRegistry
+    backend_registry: HarnessBackendRegistryProtocol
 
     def run(self, request: ValidationStepRequest) -> ValidationResult:
         """Execute all validators in a step."""
@@ -208,7 +211,9 @@ class ValidationService(ValidationServiceProtocol):
         if current is None:
             return new_value
         if current.media_type != new_value.media_type:
-            raise ValueError("Validation text artifacts must share a media type.")
+            raise ValidationArtifactMergeError(
+                "Validation text artifacts must share a media type."
+            )
         combined = self._join_text(current.content, new_value.content)
         return ValidationTextArtifact(
             filename=fallback_filename,

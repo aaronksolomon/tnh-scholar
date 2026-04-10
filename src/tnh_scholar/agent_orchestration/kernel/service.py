@@ -168,6 +168,8 @@ class KernelRunService:
                     status=MechanicalOutcome.completed,
                     last_step_id=step.id,
                     run_directory=context.run_directory,
+                    metadata_path=paths.metadata_path,
+                    final_state_path=paths.final_state_path,
                 )
             step_started_at = self.clock.now()
             policy_record = self._persist_step_policy(step=step, context=context)

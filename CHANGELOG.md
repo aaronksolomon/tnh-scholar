@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **OA07.1 Maintained Headless Bootstrap Entry** (2026-04-09)
+  - Added a maintained `tnh-conductor` CLI and app-layer bootstrap path that loads one workflow, composes the real worktree-backed kernel runtime, and returns canonical run metadata/final-state paths
+  - Added an explicit bootstrap runtime profile for builtin validator mappings and mutable execution policy, while keeping `EVALUATE` and `GATE` fail-closed until real maintained semantic-control implementations land
+  - Added typed execution and validation protocol seams plus focused regressions for happy-path bootstrap, unsupported semantic-step rejection, `ROLLBACK(pre_run)`, agent failure terminal metadata, and default CLI storage roots
+  - Files: `src/tnh_scholar/agent_orchestration/app/`, `src/tnh_scholar/cli_tools/tnh_conductor/`, `src/tnh_scholar/agent_orchestration/execution/`, `src/tnh_scholar/agent_orchestration/validation/`, `src/tnh_scholar/agent_orchestration/kernel/`, `tests/agent_orchestration/test_headless_bootstrap_service.py`, `tests/cli_tools/test_tnh_conductor.py`, `pyproject.toml`
+
 - **CI Constraint Path Hardening** (2026-04-08)
   - Updated the GitHub Actions `PIP_CONSTRAINT` environment variable to use `${{ github.workspace }}` so the CI setuptools cap resolves from a stable absolute workspace path rather than a relative shell cwd
   - Files: `.github/workflows/ci.yml`

@@ -37,6 +37,13 @@ class HarnessBackendProtocol(Protocol):
         """Execute one harness request and normalize outputs."""
 
 
+class HarnessBackendRegistryProtocol(Protocol):
+    """Resolve one backend implementation for a harness family."""
+
+    def resolve(self, family: object) -> HarnessBackendProtocol:
+        """Return the backend implementation for one harness family."""
+
+
 class ValidationServiceProtocol(Protocol):
     """Execute a validation step."""
 
