@@ -6,30 +6,32 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Table of contents for architecture/ai-text-processing/adr">
+        <meta name="description" content="High-level blueprint of the agent orchestration system, its maintained core subsystems, and the current flow of control.">
       
+      
+        <meta name="author" content="aaronksolomon, Codex">
       
       
       
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="adr-at01-ai-text-processing/">
+        <link rel="next" href="../bootstrap-direction-design-memo/">
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
     
     
       
-        <title>Adr - TNH Scholar Documentation</title>
+        <title>Architecture Blueprint - TNH Scholar Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.a40c8224.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,11 +50,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../stylesheets/tnh-zen.css">
+      <link rel="stylesheet" href="../../../../stylesheets/tnh-zen.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -120,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr" class="md-skip">
+        <a href="#architecture-blueprint" class="md-skip">
           Skip to content
         </a>
       
@@ -156,7 +158,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -176,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Adr
+              Architecture Blueprint
             
           </span>
         </div>
@@ -265,7 +267,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -295,7 +297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -346,7 +348,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../getting-started/" class="md-nav__link ">
+            <a href="../../../../getting-started/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -386,7 +388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../getting-started/configuration/" class="md-nav__link">
+      <a href="../../../../getting-started/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -414,7 +416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../getting-started/installation/" class="md-nav__link">
+      <a href="../../../../getting-started/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -442,7 +444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../getting-started/quick-start-guide/" class="md-nav__link">
+      <a href="../../../../getting-started/quick-start-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -501,7 +503,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../user-guide/" class="md-nav__link ">
+            <a href="../../../../user-guide/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -541,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../user-guide/best-practices/" class="md-nav__link">
+      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -569,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../user-guide/overview/" class="md-nav__link">
+      <a href="../../../../user-guide/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -597,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../user-guide/prompt-system/" class="md-nav__link">
+      <a href="../../../../user-guide/prompt-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -660,7 +662,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../project/" class="md-nav__link ">
+            <a href="../../../../project/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -700,7 +702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/conceptual-architecture/" class="md-nav__link">
+      <a href="../../../../project/conceptual-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -728,7 +730,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/future-directions/" class="md-nav__link">
+      <a href="../../../../project/future-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -756,7 +758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/philosophy/" class="md-nav__link">
+      <a href="../../../../project/philosophy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -784,7 +786,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/principles/" class="md-nav__link">
+      <a href="../../../../project/principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -812,7 +814,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/vision/" class="md-nav__link">
+      <a href="../../../../project/vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -867,7 +869,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../community/" class="md-nav__link ">
+            <a href="../../../../community/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -907,7 +909,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../community/parallax-overview/" class="md-nav__link">
+      <a href="../../../../community/parallax-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -974,7 +976,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../project/repo-root/" class="md-nav__link ">
+            <a href="../../../../project/repo-root/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1014,7 +1016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/changelog/" class="md-nav__link">
+      <a href="../../../../project/repo-root/changelog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1042,7 +1044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/contributing-root/" class="md-nav__link">
+      <a href="../../../../project/repo-root/contributing-root/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1070,7 +1072,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
+      <a href="../../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1098,7 +1100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/release_checklist/" class="md-nav__link">
+      <a href="../../../../project/repo-root/release_checklist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1126,7 +1128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/repo-readme/" class="md-nav__link">
+      <a href="../../../../project/repo-root/repo-readme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1154,7 +1156,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/todo-list/" class="md-nav__link">
+      <a href="../../../../project/repo-root/todo-list/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1182,7 +1184,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project/repo-root/versioning/" class="md-nav__link">
+      <a href="../../../../project/repo-root/versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1255,7 +1257,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cli-reference/" class="md-nav__link ">
+            <a href="../../../../cli-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1295,7 +1297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/audio-transcribe/" class="md-nav__link">
+      <a href="../../../../cli-reference/audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1323,7 +1325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/json-to-srt/" class="md-nav__link">
+      <a href="../../../../cli-reference/json-to-srt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1351,7 +1353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/nfmt/" class="md-nav__link">
+      <a href="../../../../cli-reference/nfmt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1379,7 +1381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/overview/" class="md-nav__link">
+      <a href="../../../../cli-reference/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1407,7 +1409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/sent-split/" class="md-nav__link">
+      <a href="../../../../cli-reference/sent-split/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1435,7 +1437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/srt-translate/" class="md-nav__link">
+      <a href="../../../../cli-reference/srt-translate/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1463,7 +1465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/tnh-gen/" class="md-nav__link">
+      <a href="../../../../cli-reference/tnh-gen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1491,7 +1493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/tnh-setup/" class="md-nav__link">
+      <a href="../../../../cli-reference/tnh-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1519,7 +1521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/token-count/" class="md-nav__link">
+      <a href="../../../../cli-reference/token-count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1547,7 +1549,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cli-reference/ytt-fetch/" class="md-nav__link">
+      <a href="../../../../cli-reference/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1582,7 +1584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../api/" class="md-nav__link">
+      <a href="../../../../api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1689,7 +1691,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1729,7 +1731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../overview/" class="md-nav__link">
+      <a href="../../../overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1754,6 +1756,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1772,16 +1776,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../agent-orchestration/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1805,7 +1809,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_3">
             <span class="md-nav__icon md-icon"></span>
             Agent Orchestration
@@ -1821,7 +1825,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/system-design/" class="md-nav__link">
+      <a href="../../system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1901,7 +1905,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../agent-orchestration/adr/" class="md-nav__link ">
+            <a href="../../adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1941,7 +1945,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
+      <a href="../../adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1969,7 +1973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
+      <a href="../../adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1997,7 +2001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
+      <a href="../../adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2025,7 +2029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
+      <a href="../../adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2053,7 +2057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
+      <a href="../../adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2081,7 +2085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa03.2-codex-runner/" class="md-nav__link">
+      <a href="../../adr/adr-oa03.2-codex-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2109,7 +2113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
+      <a href="../../adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2137,7 +2141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
+      <a href="../../adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2165,7 +2169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
+      <a href="../../adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2193,7 +2197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa04.2-runner-contract/" class="md-nav__link">
+      <a href="../../adr/adr-oa04.2-runner-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2221,7 +2225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+      <a href="../../adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2249,7 +2253,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+      <a href="../../adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2277,7 +2281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+      <a href="../../adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2305,7 +2309,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
+      <a href="../../adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2333,7 +2337,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
+      <a href="../../adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2361,7 +2365,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+      <a href="../../adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2389,7 +2393,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+      <a href="../../adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2422,6 +2426,8 @@
                 
   
   
+    
+  
   
   
     
@@ -2450,16 +2456,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_4" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../agent-orchestration/notes/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2483,7 +2489,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_3_4">
             <span class="md-nav__icon md-icon"></span>
             Notes
@@ -2496,10 +2502,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../agent-orchestration/notes/architecture-blueprint/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Architecture Blueprint
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -2515,6 +2548,260 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purpose
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#orientation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Orientation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-thesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Thesis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architectural-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architectural Layers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintained-core-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintained Core Systems
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintained Core Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-headless-application-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Headless Application Surface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-kernel-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Kernel Runtime
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-workspace-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Workspace Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-runner-subsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Runner Subsystem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-validation-subsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Validation Subsystem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-artifact-and-provenance-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Artifact and Provenance Boundary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-execution-policy-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Execution Policy Layer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-level-flow-of-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      High-Level Flow of Control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-execution-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step Execution Model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidence-and-boundary-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evidence and Boundary Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evidence and Boundary Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#canonical-run-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Canonical Run Directory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managed-worktree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Managed Worktree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-maintained-blueprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Maintained Blueprint
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintained-versus-non-maintained-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintained Versus Non-Maintained Areas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintained Versus Non-Maintained Areas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-maintained-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Maintained Line
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference-spike-or-transitional-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference, Spike, or Transitional Areas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-blueprint-suggests-for-design-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      What This Blueprint Suggests for Design Evaluation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suggested-reading-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Suggested Reading Order
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#closing-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      Closing View
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2527,7 +2814,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/notes/bootstrap-direction-design-memo/" class="md-nav__link">
+      <a href="../bootstrap-direction-design-memo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2555,7 +2842,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/notes/codex-harness-e2e-report/" class="md-nav__link">
+      <a href="../codex-harness-e2e-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2583,7 +2870,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/notes/codex-harness-spike-findings/" class="md-nav__link">
+      <a href="../codex-harness-spike-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2611,7 +2898,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+      <a href="../oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2639,7 +2926,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/notes/oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
+      <a href="../oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2667,7 +2954,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/notes/spike-testing-sequence/" class="md-nav__link">
+      <a href="../spike-testing-sequence/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2695,7 +2982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../agent-orchestration/notes/vscode-1110-agent-features-research/" class="md-nav__link">
+      <a href="../vscode-1110-agent-features-research/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2739,7 +3026,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../../ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2764,10 +3051,8 @@
                 
   
   
-    
   
   
-  
     
     
       
@@ -2778,11 +3063,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5" >
         
           
           <label class="md-nav__link" for="__nav_9_5" id="__nav_9_5_label" tabindex="0">
@@ -2796,7 +3081,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_5">
             <span class="md-nav__icon md-icon"></span>
             AI Text Processing
@@ -2807,8 +3092,6 @@
                 
   
   
-    
-  
   
   
     
@@ -2835,16 +3118,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_5_1" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../../../ai-text-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2862,13 +3145,13 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_9_5_1" id="__nav_9_5_1_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_9_5_1" id="__nav_9_5_1_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_5_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_5_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_5_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -2884,7 +3167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="adr-at01-ai-text-processing/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2912,7 +3195,7 @@
   
   
     <li class="md-nav__item">
-      <a href="adr-at02-sectioning-textobject/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2940,7 +3223,7 @@
   
   
     <li class="md-nav__item">
-      <a href="adr-at03-object-service-refactor/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2968,7 +3251,7 @@
   
   
     <li class="md-nav__item">
-      <a href="adr-at03.1-transition-plan/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2996,7 +3279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="adr-at03.2-numberedtext-validation/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3024,7 +3307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="adr-at03.3-textobject-robustness/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3052,7 +3335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3110,7 +3393,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../design/" class="md-nav__link ">
+            <a href="../../../ai-text-processing/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3150,7 +3433,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../design/textobject-original-design/" class="md-nav__link">
+      <a href="../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3178,7 +3461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../design/textobject-system-design/" class="md-nav__link">
+      <a href="../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3244,7 +3527,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../configuration/" class="md-nav__link ">
+            <a href="../../../configuration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3284,7 +3567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../configuration/tnh-configuration-management/" class="md-nav__link">
+      <a href="../../../configuration/tnh-configuration-management/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3334,7 +3617,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../configuration/adr/" class="md-nav__link ">
+            <a href="../../../configuration/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3374,7 +3657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
+      <a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3402,7 +3685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../configuration/adr/adr-cf02-prompt-catalog-discovery/" class="md-nav__link">
+      <a href="../../../configuration/adr/adr-cf02-prompt-catalog-discovery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3468,7 +3751,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../docs-system/" class="md-nav__link ">
+            <a href="../../../docs-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3534,7 +3817,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../docs-system/adr/" class="md-nav__link ">
+            <a href="../../../docs-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3574,7 +3857,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3602,7 +3885,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3630,7 +3913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3658,7 +3941,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3714,7 +3997,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../docs-system/design/" class="md-nav__link ">
+            <a href="../../../docs-system/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3754,7 +4037,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-system/design/documentation-design/" class="md-nav__link">
+      <a href="../../../docs-system/design/documentation-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3798,7 +4081,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/" class="md-nav__link">
+      <a href="../../../gen-ai-service/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3905,7 +4188,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../gen-ai-service/adr/" class="md-nav__link ">
+            <a href="../../../gen-ai-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3945,7 +4228,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3973,7 +4256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4001,7 +4284,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4029,7 +4312,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4057,7 +4340,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4085,7 +4368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4113,7 +4396,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4141,7 +4424,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4169,7 +4452,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4197,7 +4480,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4255,7 +4538,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../gen-ai-service/design/" class="md-nav__link ">
+            <a href="../../../gen-ai-service/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4295,7 +4578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
+      <a href="../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4323,7 +4606,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
+      <a href="../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4389,7 +4672,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../jvb-viewer/" class="md-nav__link ">
+            <a href="../../../jvb-viewer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4451,7 +4734,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../jvb-viewer/adr/" class="md-nav__link ">
+            <a href="../../../jvb-viewer/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4491,7 +4774,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
+      <a href="../../../jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4519,7 +4802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
+      <a href="../../../jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4581,7 +4864,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../jvb-viewer/design/" class="md-nav__link ">
+            <a href="../../../jvb-viewer/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4621,7 +4904,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4649,7 +4932,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4677,7 +4960,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4705,7 +4988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4769,7 +5052,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../knowledge-base/" class="md-nav__link ">
+            <a href="../../../knowledge-base/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4829,7 +5112,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../knowledge-base/adr/" class="md-nav__link ">
+            <a href="../../../knowledge-base/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4869,7 +5152,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
+      <a href="../../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4933,7 +5216,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metadata/" class="md-nav__link ">
+            <a href="../../../metadata/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4995,7 +5278,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../metadata/adr/" class="md-nav__link ">
+            <a href="../../../metadata/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5035,7 +5318,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
+      <a href="../../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5063,7 +5346,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
+      <a href="../../../metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5133,7 +5416,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../object-service/" class="md-nav__link ">
+            <a href="../../../object-service/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5173,7 +5456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../object-service/object-service-design-gaps/" class="md-nav__link">
+      <a href="../../../object-service/object-service-design-gaps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5201,7 +5484,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../object-service/object-service-design-overview/" class="md-nav__link">
+      <a href="../../../object-service/object-service-design-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5229,7 +5512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../object-service/object-service-implementation-status/" class="md-nav__link">
+      <a href="../../../object-service/object-service-implementation-status/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5277,7 +5560,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../object-service/adr/" class="md-nav__link ">
+            <a href="../../../object-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5317,7 +5600,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
+      <a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5383,7 +5666,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../project-policies/" class="md-nav__link ">
+            <a href="../../../project-policies/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5423,7 +5706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
+      <a href="../../../project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5471,7 +5754,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../project-policies/adr/" class="md-nav__link ">
+            <a href="../../../project-policies/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5511,7 +5794,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
+      <a href="../../../project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5577,7 +5860,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../prompt-system/" class="md-nav__link ">
+            <a href="../../../prompt-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5617,7 +5900,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../prompt-system/prompt-system-architecture/" class="md-nav__link">
+      <a href="../../../prompt-system/prompt-system-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5669,7 +5952,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../prompt-system/adr/" class="md-nav__link ">
+            <a href="../../../prompt-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5709,7 +5992,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
+      <a href="../../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5737,7 +6020,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
+      <a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5765,7 +6048,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../prompt-system/adr/adr-pt05-prompt-platform-strategy/" class="md-nav__link">
+      <a href="../../../prompt-system/adr/adr-pt05-prompt-platform-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5809,7 +6092,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../provenance/" class="md-nav__link">
+      <a href="../../../provenance/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5896,7 +6179,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../provenance/adr/" class="md-nav__link ">
+            <a href="../../../provenance/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5936,7 +6219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
+      <a href="../../../provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6002,7 +6285,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../setup-tnh/" class="md-nav__link ">
+            <a href="../../../setup-tnh/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6064,7 +6347,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../setup-tnh/adr/" class="md-nav__link ">
+            <a href="../../../setup-tnh/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6104,7 +6387,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening/" class="md-nav__link">
+      <a href="../../../setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6132,7 +6415,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../setup-tnh/adr/adr-st01.1-tnh-setup-ui-design/" class="md-nav__link">
+      <a href="../../../setup-tnh/adr/adr-st01.1-tnh-setup-ui-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6188,7 +6471,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../setup-tnh/design/" class="md-nav__link ">
+            <a href="../../../setup-tnh/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6228,7 +6511,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
+      <a href="../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6272,7 +6555,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tnh-gen/" class="md-nav__link">
+      <a href="../../../tnh-gen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6356,7 +6639,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../tnh-gen/adr/" class="md-nav__link ">
+            <a href="../../../tnh-gen/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6396,7 +6679,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
+      <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6424,7 +6707,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
+      <a href="../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6452,7 +6735,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
+      <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6518,7 +6801,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../transcription/" class="md-nav__link ">
+            <a href="../../../transcription/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6590,7 +6873,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../transcription/adr/" class="md-nav__link ">
+            <a href="../../../transcription/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6630,7 +6913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6658,7 +6941,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6686,7 +6969,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6714,7 +6997,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6742,7 +7025,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/adr/adr-tr05-language-aware-multilingual-transcription-engine/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr05-language-aware-multilingual-transcription-engine/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6770,7 +7053,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/adr/adr-tr05.1-speaker-block-language-lock-default/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr05.1-speaker-block-language-lock-default/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6798,7 +7081,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/adr/adr-tr05.2-mvp-service-scaffold/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr05.2-mvp-service-scaffold/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6876,7 +7159,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../transcription/design/" class="md-nav__link ">
+            <a href="../../../transcription/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6916,7 +7199,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/audio-chunking-design/" class="md-nav__link">
+      <a href="../../../transcription/design/audio-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6944,7 +7227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/diarization-algorithms/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-algorithms/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6972,7 +7255,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/diarization-chunker-design/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-chunker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7000,7 +7283,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/diarization-system-design/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7028,7 +7311,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
+      <a href="../../../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7056,7 +7339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/language-aware-chunking-design/" class="md-nav__link">
+      <a href="../../../transcription/design/language-aware-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7084,7 +7367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
+      <a href="../../../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7112,7 +7395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
+      <a href="../../../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7140,7 +7423,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
+      <a href="../../../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7168,7 +7451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
+      <a href="../../../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7196,7 +7479,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
+      <a href="../../../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7224,7 +7507,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../transcription/design/timelinemapper-design/" class="md-nav__link">
+      <a href="../../../transcription/design/timelinemapper-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7290,7 +7573,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../ui-ux/" class="md-nav__link ">
+            <a href="../../../ui-ux/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7350,7 +7633,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../ui-ux/design/" class="md-nav__link ">
+            <a href="../../../ui-ux/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7390,7 +7673,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
+      <a href="../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7456,7 +7739,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../ui-ux/vs-code-integration/" class="md-nav__link ">
+            <a href="../../../ui-ux/vs-code-integration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7496,7 +7779,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7524,7 +7807,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7552,7 +7835,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7580,7 +7863,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7608,7 +7891,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7636,7 +7919,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7700,7 +7983,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../utilities/" class="md-nav__link ">
+            <a href="../../../utilities/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7762,7 +8045,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../utilities/design/" class="md-nav__link ">
+            <a href="../../../utilities/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7802,7 +8085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utilities/design/package-version-checker-design/" class="md-nav__link">
+      <a href="../../../utilities/design/package-version-checker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7830,7 +8113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utilities/design/utilities-catalog/" class="md-nav__link">
+      <a href="../../../utilities/design/utilities-catalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7894,7 +8177,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../video-processing/" class="md-nav__link ">
+            <a href="../../../video-processing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7956,7 +8239,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../video-processing/adr/" class="md-nav__link ">
+            <a href="../../../video-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7996,7 +8279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+      <a href="../../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8024,7 +8307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../video-processing/adr/adr-vp02-ytdlp-operational-strategy/" class="md-nav__link">
+      <a href="../../../video-processing/adr/adr-vp02-ytdlp-operational-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8068,7 +8351,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ytt-fetch/" class="md-nav__link">
+      <a href="../../../ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8161,7 +8444,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../ytt-fetch/adr/" class="md-nav__link ">
+            <a href="../../../ytt-fetch/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8201,7 +8484,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8229,7 +8512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8257,7 +8540,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8313,7 +8596,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../ytt-fetch/design/" class="md-nav__link ">
+            <a href="../../../ytt-fetch/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8353,7 +8636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
+      <a href="../../../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8446,7 +8729,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../development/" class="md-nav__link ">
+            <a href="../../../../development/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8486,7 +8769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/contributing-prototype-phase/" class="md-nav__link">
+      <a href="../../../../development/contributing-prototype-phase/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8514,7 +8797,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/design-principles/" class="md-nav__link">
+      <a href="../../../../development/design-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8542,7 +8825,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/fine-tuning-strategy/" class="md-nav__link">
+      <a href="../../../../development/fine-tuning-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8570,7 +8853,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/git-workflow/" class="md-nav__link">
+      <a href="../../../../development/git-workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8598,7 +8881,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
+      <a href="../../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8626,7 +8909,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/improvements-initial-structure/" class="md-nav__link">
+      <a href="../../../../development/improvements-initial-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8654,7 +8937,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/overview/" class="md-nav__link">
+      <a href="../../../../development/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8682,7 +8965,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/release-workflow/" class="md-nav__link">
+      <a href="../../../../development/release-workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8710,7 +8993,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/style-guide/" class="md-nav__link">
+      <a href="../../../../development/style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8738,7 +9021,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/system-design/" class="md-nav__link">
+      <a href="../../../../development/system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8766,7 +9049,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/yt-dlp-ops-check/" class="md-nav__link">
+      <a href="../../../../development/yt-dlp-ops-check/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8818,7 +9101,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../development/incident-reports/" class="md-nav__link ">
+            <a href="../../../../development/incident-reports/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8858,7 +9141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8886,7 +9169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/incident-reports/tag-v0.2.0-correction-plan/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/tag-v0.2.0-correction-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8938,7 +9221,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
+            <a href="../../../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8978,7 +9261,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9006,7 +9289,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9034,7 +9317,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9113,7 +9396,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-ops/" class="md-nav__link ">
+            <a href="../../../../docs-ops/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9153,7 +9436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-ops/adr-template/" class="md-nav__link">
+      <a href="../../../../docs-ops/adr-template/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9181,7 +9464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-ops/markdown-standards/" class="md-nav__link">
+      <a href="../../../../docs-ops/markdown-standards/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9209,7 +9492,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
+      <a href="../../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9237,7 +9520,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-ops/preview-theme/" class="md-nav__link">
+      <a href="../../../../docs-ops/preview-theme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9265,7 +9548,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-ops/theme-design/" class="md-nav__link">
+      <a href="../../../../docs-ops/theme-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9334,7 +9617,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../research/" class="md-nav__link ">
+            <a href="../../../../research/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9374,7 +9657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/gpt_development_convos/" class="md-nav__link">
+      <a href="../../../../research/gpt_development_convos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9402,7 +9685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/kb-design-document/" class="md-nav__link">
+      <a href="../../../../research/kb-design-document/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9430,7 +9713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/metadata-summary-report/" class="md-nav__link">
+      <a href="../../../../research/metadata-summary-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9458,7 +9741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/preliminary-feasibility-study/" class="md-nav__link">
+      <a href="../../../../research/preliminary-feasibility-study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9486,7 +9769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/rag-research-directions/" class="md-nav__link">
+      <a href="../../../../research/rag-research-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9514,7 +9797,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/siap-methodology/" class="md-nav__link">
+      <a href="../../../../research/siap-methodology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9562,7 +9845,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
+            <a href="../../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9602,7 +9885,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
+      <a href="../../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9658,7 +9941,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
+            <a href="../../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9698,7 +9981,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
+      <a href="../../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9741,7 +10024,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../documentation_index/" class="md-nav__link">
+      <a href="../../../../documentation_index/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9781,6 +10064,248 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purpose
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#orientation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Orientation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-thesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Thesis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architectural-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architectural Layers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintained-core-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintained Core Systems
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintained Core Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-headless-application-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Headless Application Surface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-kernel-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Kernel Runtime
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-workspace-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Workspace Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-runner-subsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Runner Subsystem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-validation-subsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Validation Subsystem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-artifact-and-provenance-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Artifact and Provenance Boundary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-execution-policy-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Execution Policy Layer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-level-flow-of-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      High-Level Flow of Control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-execution-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step Execution Model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidence-and-boundary-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evidence and Boundary Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evidence and Boundary Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#canonical-run-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Canonical Run Directory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managed-worktree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Managed Worktree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-maintained-blueprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Maintained Blueprint
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintained-versus-non-maintained-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintained Versus Non-Maintained Areas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintained Versus Non-Maintained Areas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-maintained-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Maintained Line
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference-spike-or-transitional-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference, Spike, or Transitional Areas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-blueprint-suggests-for-design-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      What This Blueprint Suggests for Design Evaluation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suggested-reading-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Suggested Reading Order
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#closing-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      Closing View
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -9797,19 +10322,344 @@
   
 
 
-<h1 id="adr">Adr<a class="headerlink" href="#adr" title="Link to this section">&para;</a></h1>
-<p><strong>Table of Contents</strong>:</p>
-<!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
-
-<p><strong><a href="adr-at01-ai-text-processing/">ADR-AT01: AI Text Processing Pipeline Redesign</a></strong> - Defines the modular TextObject pipeline, metadata handling, and configuration strategy for AI processing.</p>
-<p><strong><a href="adr-at02-sectioning-textobject/">ADR-AT02: TextObject Architecture Decision Records</a></strong> - Captures the historical TextObject design comparisons and links to the original/new design documents.</p>
-<p><strong><a href="adr-at03-object-service-refactor/">ADR-AT03: Minimal AI Text Processing Refactor for tnh-gen</a></strong> - Focused refactor of ai_text_processing module to support tnh-gen CLI release: TextObject robustness, GenAI Service integration, and basic prompt system adoption</p>
-<p><strong><a href="adr-at03.1-transition-plan/">ADR-AT03.1: AT03→AT04 Transition Plan</a></strong> - Phased transition strategy: minimal refactor (AT03) for tnh-gen release, followed by comprehensive platform (AT04)</p>
-<p><strong><a href="adr-at03.2-numberedtext-validation/">ADR-AT03.2: NumberedText Section Boundary Validation</a></strong> - Adds robust validation, coverage reporting, and gap/overlap detection to NumberedText to support reliable sectioning in ai_text_processing</p>
-<p><strong><a href="adr-at03.3-textobject-robustness/">ADR-AT03.3: TextObject Robustness and Metadata Management</a></strong> - Fixes metadata propagation bugs, enhances section validation, and adds merge strategies to TextObject for reliable ai_text_processing workflows</p>
-<p><strong><a href="adr-at04-ai-text-processing-platform-strat/">ADR-AT04: AI Text Processing Platform Strategy</a></strong> - Platform architecture for extensible, evaluation-driven text processing with strategy polymorphism and context fidelity</p>
-<hr />
-<p><em>This file auto-generated.</em></p>
+<h1 id="architecture-blueprint">Architecture Blueprint<a class="headerlink" href="#architecture-blueprint" title="Link to this section">&para;</a></h1>
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Link to this section">&para;</a></h2>
+<p>This note is a high-level architecture blueprint for new designers and engineers working in TNH Scholar agent orchestration.</p>
+<p>It is meant to make system evaluation and directional planning faster by answering three questions:</p>
+<ol>
+<li>what the system is trying to be,</li>
+<li>which parts are the current maintained core,</li>
+<li>how control and evidence actually flow through the runtime today.</li>
+</ol>
+<p>This note is not an ADR and does not freeze design decisions. It should be read alongside the direction memo at <a href="../bootstrap-direction-design-memo/">/docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md</a>.</p>
+<h2 id="orientation">Orientation<a class="headerlink" href="#orientation" title="Link to this section">&para;</a></h2>
+<p>The architectural center of gravity comes from four sources:</p>
+<ul>
+<li><a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/">/docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md</a></li>
+<li><a href="../../adr/adr-oa01.1-conductor-strategy-v2/">/docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md</a></li>
+<li><a href="../../adr/adr-oa04-workflow-schema-opcode-semantics/">/docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md</a></li>
+<li><a href="../../adr/adr-oa07.1-worktree-lifecycle-and-rollback/">/docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md</a></li>
+</ul>
+<p>The short version:</p>
+<ul>
+<li>the system is a prompt-program runtime, not an autonomous agent shell,</li>
+<li>the kernel owns execution, capture, policy enforcement, and provenance,</li>
+<li>semantic judgment belongs in <code>EVALUATE</code> and <code>GATE</code>, not in ad hoc app logic,</li>
+<li>mutable execution must happen in a managed git worktree, not in the canonical run-artifact directory,</li>
+<li>bootstrap is the first strategic threshold because it makes the system operational rather than preparatory.</li>
+</ul>
+<h2 id="system-thesis">System Thesis<a class="headerlink" href="#system-thesis" title="Link to this section">&para;</a></h2>
+<p>At a high level, agent orchestration is trying to do this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>workflow definition + prompts + policies
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                |
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                v
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>      deterministic kernel execution
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                |
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                v
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a> managed workspace + agent runs + validation
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                |
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                v
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a> canonical artifacts + provenance + reviewable result
+</span></code></pre></div>
+<p>The design intent is that English-defined workflows and prompts determine behavior, while code provides the execution substrate:</p>
+<ul>
+<li>workflow loading,</li>
+<li>step routing,</li>
+<li>policy assembly and hard-failure checks,</li>
+<li>agent invocation,</li>
+<li>validation execution,</li>
+<li>workspace lifecycle,</li>
+<li>artifact persistence,</li>
+<li>provenance capture.</li>
+</ul>
+<h2 id="architectural-layers">Architectural Layers<a class="headerlink" href="#architectural-layers" title="Link to this section">&para;</a></h2>
+<p>The current maintained path follows the OS01 split:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Application / CLI
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  -&gt; thin bootstrap service and composition root
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Domain orchestration
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  -&gt; kernel workflow execution and subsystem protocols
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Infrastructure adapters
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  -&gt; git worktree service, CLI runner adapters, filesystem artifact store,
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>     subprocess execution, validation backends
+</span></code></pre></div>
+<p>In practical repo terms:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Responsibility</th>
+<th>Primary modules</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application</td>
+<td>headless entry surface, typed config, runtime profile assembly</td>
+<td><code>src/tnh_scholar/agent_orchestration/app/</code>, <code>src/tnh_scholar/cli_tools/tnh_conductor/</code></td>
+</tr>
+<tr>
+<td>Domain orchestration</td>
+<td>workflow execution, step semantics, routing, policy/provenance coordination</td>
+<td><code>src/tnh_scholar/agent_orchestration/kernel/</code></td>
+</tr>
+<tr>
+<td>Workspace boundary</td>
+<td>managed worktree lifecycle and rollback</td>
+<td><code>src/tnh_scholar/agent_orchestration/workspace/</code></td>
+</tr>
+<tr>
+<td>Agent execution</td>
+<td>agent-neutral runner service and CLI-specific adapters</td>
+<td><code>src/tnh_scholar/agent_orchestration/runners/</code></td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>builtin validators, generated harness execution, harness report merging</td>
+<td><code>src/tnh_scholar/agent_orchestration/validation/</code></td>
+</tr>
+<tr>
+<td>Policy assembly</td>
+<td>requested versus effective execution policy and hard violations</td>
+<td><code>src/tnh_scholar/agent_orchestration/execution_policy/</code></td>
+</tr>
+<tr>
+<td>Artifact persistence</td>
+<td>canonical run directory, manifests, event log, terminal metadata</td>
+<td><code>src/tnh_scholar/agent_orchestration/run_artifacts/</code></td>
+</tr>
+<tr>
+<td>Execution substrate</td>
+<td>subprocess execution and low-level invocation shaping</td>
+<td><code>src/tnh_scholar/agent_orchestration/execution/</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="maintained-core-systems">Maintained Core Systems<a class="headerlink" href="#maintained-core-systems" title="Link to this section">&para;</a></h2>
+<h3 id="1-headless-application-surface">1. Headless Application Surface<a class="headerlink" href="#1-headless-application-surface" title="Link to this section">&para;</a></h3>
+<p>The current maintained entry point is <code>tnh-conductor</code>.</p>
+<p>Its job is intentionally small:</p>
+<ul>
+<li>accept one workflow path and repo-root context,</li>
+<li>choose the bootstrap runtime profile,</li>
+<li>construct typed bootstrap config,</li>
+<li>invoke one maintained service,</li>
+<li>emit a typed run summary.</li>
+</ul>
+<p>This is the current bootstrap composition root, not the place where workflow semantics should accumulate.</p>
+<h3 id="2-kernel-runtime">2. Kernel Runtime<a class="headerlink" href="#2-kernel-runtime" title="Link to this section">&para;</a></h3>
+<p>The kernel is the main orchestration engine.</p>
+<p>It owns:</p>
+<ul>
+<li>workflow validation,</li>
+<li>run creation and run-id generation,</li>
+<li>per-step execution,</li>
+<li>deterministic route resolution,</li>
+<li>policy summary persistence and hard-failure checks,</li>
+<li>artifact recording,</li>
+<li>terminal metadata and final-state persistence.</li>
+</ul>
+<p>Conceptually, the kernel is the narrow waist of the system. Almost every major subsystem meets there.</p>
+<h3 id="3-workspace-service">3. Workspace Service<a class="headerlink" href="#3-workspace-service" title="Link to this section">&para;</a></h3>
+<p>The workspace service is the mutable repository boundary.</p>
+<p>The maintained git-backed implementation:</p>
+<ul>
+<li>resolves <code>base_ref</code> to <code>base_sha</code>,</li>
+<li>creates a managed branch,</li>
+<li>creates a dedicated git worktree,</li>
+<li>records workspace context,</li>
+<li>provides workspace snapshots and diff summaries,</li>
+<li>implements <code>ROLLBACK(pre_run)</code> by discarding and recreating the worktree at <code>base_sha</code>.</li>
+</ul>
+<p>This is the key OA07.1 safety boundary. The worktree is where code changes happen. It is not the artifact store.</p>
+<h3 id="4-runner-subsystem">4. Runner Subsystem<a class="headerlink" href="#4-runner-subsystem" title="Link to this section">&para;</a></h3>
+<p>The runner subsystem normalizes CLI-facing agent execution.</p>
+<p>Its shape is:</p>
+<ul>
+<li>a delegating runner service,</li>
+<li>agent-neutral request and result models,</li>
+<li>CLI-specific adapters for Codex and Claude,</li>
+<li>normalized output back to the kernel.</li>
+</ul>
+<p>The kernel should not know the details of Codex CLI flags or Claude CLI capture formats. Adapters absorb that variance.</p>
+<h3 id="5-validation-subsystem">5. Validation Subsystem<a class="headerlink" href="#5-validation-subsystem" title="Link to this section">&para;</a></h3>
+<p>The validation subsystem executes deterministic checks after or between agent steps.</p>
+<p>It currently supports:</p>
+<ul>
+<li>builtin validator identifiers mapped to trusted local commands,</li>
+<li>generated harness execution through a script backend,</li>
+<li>structured harness report loading,</li>
+<li>stdout, stderr, and captured-artifact aggregation.</li>
+</ul>
+<p>This is the maintained mechanism for test and harness evidence. It is part of the refinement loop, not an afterthought.</p>
+<h3 id="6-artifact-and-provenance-boundary">6. Artifact and Provenance Boundary<a class="headerlink" href="#6-artifact-and-provenance-boundary" title="Link to this section">&para;</a></h3>
+<p>The artifact subsystem creates the canonical run directory and step manifests.</p>
+<p>This boundary matters because later evaluation and review should resolve evidence through canonical roles and manifests rather than incidental filenames.</p>
+<p>The maintained run directory shape is:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&lt;runs_root&gt;/&lt;run_id&gt;/
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  metadata.json
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  final-state.txt
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  events.ndjson
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  artifacts/
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    &lt;step_id&gt;/
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>      manifest.json
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>      ...
+</span></code></pre></div>
+<h3 id="7-execution-policy-layer">7. Execution Policy Layer<a class="headerlink" href="#7-execution-policy-layer" title="Link to this section">&para;</a></h3>
+<p>The execution policy layer assembles requested and effective policy and records violations before a step runs.</p>
+<p>Right now the strongest enforced runtime guard is simple and important:</p>
+<ul>
+<li>mutable execution on protected branches is a hard violation.</li>
+</ul>
+<p>This layer is where future path policy, capability tightening, and safety enforcement will continue to concentrate.</p>
+<h2 id="high-level-flow-of-control">High-Level Flow of Control<a class="headerlink" href="#high-level-flow-of-control" title="Link to this section">&para;</a></h2>
+<p>The current maintained bootstrap path works like this:</p>
+<ol>
+<li>A user or higher-level tool invokes <code>tnh-conductor run --workflow &lt;path&gt; --repo-root &lt;path&gt;</code>.</li>
+<li>The CLI builds storage config and the explicit bootstrap runtime profile.</li>
+<li><code>HeadlessBootstrapService</code> loads the workflow document.</li>
+<li>The bootstrap service rejects unsupported semantic-control steps early. Today that means <code>EVALUATE</code> and <code>GATE</code> fail closed in the maintained bootstrap entry.</li>
+<li>The bootstrap factory assembles the maintained kernel bundle:</li>
+<li>kernel service,</li>
+<li>git worktree workspace service,</li>
+<li>filesystem artifact store,</li>
+<li>delegating runner service,</li>
+<li>validation service,</li>
+<li>workflow validator,</li>
+<li>temporary fail-closed evaluator and gate collaborators.</li>
+<li>The kernel validates the workflow and creates a new canonical run directory.</li>
+<li>Before mutable execution, the workspace service creates a managed branch and worktree from the committed base ref and returns <code>WorkspaceContext</code>.</li>
+<li>The kernel writes run metadata including workspace context into the canonical run directory.</li>
+<li>For each workflow step, the kernel:</li>
+<li>assembles and persists policy summary,</li>
+<li>enforces hard policy violations,</li>
+<li>dispatches the step by opcode,</li>
+<li>records step artifacts and manifest entries,</li>
+<li>appends provenance events,</li>
+<li>routes deterministically to the next step.</li>
+<li>When the workflow reaches <code>STOP</code>, or when it fails terminally, the kernel writes terminal metadata and <code>final-state.txt</code>.</li>
+<li>The headless app service returns a typed summary including run paths and workspace context.</li>
+</ol>
+<h2 id="step-execution-model">Step Execution Model<a class="headerlink" href="#step-execution-model" title="Link to this section">&para;</a></h2>
+<p>The kernel currently understands six opcodes conceptually:</p>
+<ul>
+<li><code>RUN_AGENT</code></li>
+<li><code>RUN_VALIDATION</code></li>
+<li><code>EVALUATE</code></li>
+<li><code>GATE</code></li>
+<li><code>ROLLBACK</code></li>
+<li><code>STOP</code></li>
+</ul>
+<p>The current maintained bootstrap slice supports a smaller operational subset:</p>
+<ul>
+<li><code>RUN_AGENT</code></li>
+<li><code>RUN_VALIDATION</code></li>
+<li><code>ROLLBACK(pre_run)</code></li>
+<li><code>STOP</code></li>
+</ul>
+<p>Bootstrap intentionally fails closed on:</p>
+<ul>
+<li><code>EVALUATE</code></li>
+<li><code>GATE</code></li>
+</ul>
+<p>That is an important current-state fact for designers: the semantic control surface is architecturally central, but not yet part of the maintained bootstrap entry path.</p>
+<h2 id="evidence-and-boundary-model">Evidence and Boundary Model<a class="headerlink" href="#evidence-and-boundary-model" title="Link to this section">&para;</a></h2>
+<p>There are two major runtime boundaries that must remain distinct.</p>
+<h3 id="canonical-run-directory">Canonical Run Directory<a class="headerlink" href="#canonical-run-directory" title="Link to this section">&para;</a></h3>
+<p>This is the durable execution record.</p>
+<p>It contains:</p>
+<ul>
+<li>run metadata,</li>
+<li>final state,</li>
+<li>ordered events,</li>
+<li>step manifests,</li>
+<li>canonical artifacts by role.</li>
+</ul>
+<p>Consumers should resolve evidence from manifests and artifact roles, not by guessing filenames.</p>
+<h3 id="managed-worktree">Managed Worktree<a class="headerlink" href="#managed-worktree" title="Link to this section">&para;</a></h3>
+<p>This is the mutable execution boundary.</p>
+<p>It contains:</p>
+<ul>
+<li>the checked-out repository state for the run,</li>
+<li>agent edits,</li>
+<li>validator execution context,</li>
+<li>rollback target state through the recorded base commit.</li>
+</ul>
+<p>The system is healthier when these boundaries stay clean:</p>
+<ul>
+<li>the run directory is for review, provenance, and later evaluation,</li>
+<li>the worktree is for mutation and execution.</li>
+</ul>
+<h2 id="current-maintained-blueprint">Current Maintained Blueprint<a class="headerlink" href="#current-maintained-blueprint" title="Link to this section">&para;</a></h2>
+<p>If a new engineer wants the shortest accurate picture of the system today, it is this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>tnh-conductor CLI
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  -&gt; HeadlessBootstrapService
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    -&gt; BootstrapKernelFactory
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>      -&gt; KernelRunService
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        -&gt; GitWorktreeWorkspaceService
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        -&gt; DelegatingRunnerService
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>          -&gt; Codex CLI adapter / Claude CLI adapter
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        -&gt; ValidationService
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>          -&gt; builtin command resolver / harness backend
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        -&gt; FilesystemRunArtifactStore
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        -&gt; ExecutionPolicyAssembler
+</span></code></pre></div>
+<p>This is the maintained vertical slice that now matters most.</p>
+<h2 id="maintained-versus-non-maintained-areas">Maintained Versus Non-Maintained Areas<a class="headerlink" href="#maintained-versus-non-maintained-areas" title="Link to this section">&para;</a></h2>
+<p>New design work should distinguish clearly between the current maintained bootstrap line and older or reference-only areas.</p>
+<h3 id="primary-maintained-line">Primary Maintained Line<a class="headerlink" href="#primary-maintained-line" title="Link to this section">&para;</a></h3>
+<ul>
+<li><code>app/</code></li>
+<li><code>kernel/</code></li>
+<li><code>workspace/</code></li>
+<li><code>runners/</code></li>
+<li><code>validation/</code></li>
+<li><code>run_artifacts/</code></li>
+<li><code>execution_policy/</code></li>
+<li><code>execution/</code></li>
+<li><code>cli_tools/tnh_conductor/</code></li>
+</ul>
+<h3 id="reference-spike-or-transitional-areas">Reference, Spike, or Transitional Areas<a class="headerlink" href="#reference-spike-or-transitional-areas" title="Link to this section">&para;</a></h3>
+<ul>
+<li><code>spike/</code> is preserved exploratory code from earlier protocol work.</li>
+<li><code>codex_harness/</code> is a paused spike surface, not the maintained bootstrap runtime.</li>
+<li><code>cli_tools/tnh_conductor_spike/</code> is a spike CLI, not the maintained entry point.</li>
+<li><code>conductor_mvp/</code> represents an earlier orchestration line and is useful for historical context and tests, but it is not the preferred current entry surface for bootstrap work.</li>
+</ul>
+<p>This distinction matters because architectural evaluation can get muddy if reference-only lines are treated as equal to the maintained runtime.</p>
+<h2 id="what-this-blueprint-suggests-for-design-evaluation">What This Blueprint Suggests for Design Evaluation<a class="headerlink" href="#what-this-blueprint-suggests-for-design-evaluation" title="Link to this section">&para;</a></h2>
+<p>When evaluating proposed work, the first questions should be:</p>
+<ol>
+<li>does this strengthen the real maintained bootstrap line, or only add architecture around it,</li>
+<li>which boundary is it changing: app, kernel, workspace, runners, validation, policy, or artifacts,</li>
+<li>does it preserve the run-directory versus worktree separation,</li>
+<li>does it improve the system's eventual ability to do long-horizon, repository-native engineering work,</li>
+<li>is it a bootstrap-critical addition, or a follow-on surface that should wait until the maintained loop is exercised more.</li>
+</ol>
+<p>That lens keeps this blueprint aligned with the direction memo instead of turning it into another abstract subsystem catalog.</p>
+<h2 id="suggested-reading-order">Suggested Reading Order<a class="headerlink" href="#suggested-reading-order" title="Link to this section">&para;</a></h2>
+<p>For fast onboarding, read in this order:</p>
+<ol>
+<li><a href="../bootstrap-direction-design-memo/">/docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md</a></li>
+<li><a href="../../adr/adr-oa01.1-conductor-strategy-v2/">/docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md</a></li>
+<li><a href="../../adr/adr-oa04-workflow-schema-opcode-semantics/">/docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md</a></li>
+<li><a href="../../adr/adr-oa04.2-runner-contract/">/docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md</a></li>
+<li><a href="../../adr/adr-oa04.3-provenance-run-artifact-contract/">/docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md</a></li>
+<li><a href="../../adr/adr-oa06-planner-evaluator-contract/">/docs/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md</a></li>
+<li><a href="../../adr/adr-oa07-diff-policy-safety-rails/">/docs/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md</a></li>
+<li><a href="../../adr/adr-oa07.1-worktree-lifecycle-and-rollback/">/docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md</a></li>
+</ol>
+<h2 id="closing-view">Closing View<a class="headerlink" href="#closing-view" title="Link to this section">&para;</a></h2>
+<p>The most important thing to understand is that the architecture is no longer just a conceptual conductor diagram.</p>
+<p>It now has a real maintained spine:</p>
+<ul>
+<li>one headless CLI,</li>
+<li>one thin app-layer bootstrap service,</li>
+<li>one deterministic kernel,</li>
+<li>one canonical artifact contract,</li>
+<li>one managed worktree boundary,</li>
+<li>one normalized runner and validation path.</li>
+</ul>
+<p>That spine is still intentionally incomplete on semantic control, prompt-library runtime depth, and PR automation. But it is now coherent enough that future design work can be judged against a real executable architecture rather than against a theoretical platform.</p>
 
 
 
@@ -9906,10 +10756,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
       
     
   </body>

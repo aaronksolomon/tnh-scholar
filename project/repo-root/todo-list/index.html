@@ -3033,6 +3033,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -3076,6 +3080,62 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/notes/architecture-blueprint/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Blueprint
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/notes/bootstrap-direction-design-memo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap Direction Design Memo
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -10971,7 +11031,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 </ul>
 <h4 id="oa071-bootstrap-worktree-slice">🚨 OA07.1 Bootstrap Worktree Slice<a class="headerlink" href="#oa071-bootstrap-worktree-slice" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: IN PROGRESS — PR-7 complete; PR-8 is the next bootstrap slice</li>
+<li><strong>Status</strong>: IN PROGRESS — PR-7 complete; PR-8 implemented on branch and pending PR</li>
 <li><strong>Priority</strong>: HIGHEST (next operational bootstrap slice)</li>
 <li><strong>Context</strong>: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary. Bootstrap is no longer blocked on workspace isolation; it is now blocked on adding one maintained headless entry point that drives the runtime end to end. Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md">ADR-OA07</a> and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md">ADR-OA07.1</a>.</li>
 <li><strong>Bootstrap Goal</strong>:</li>
@@ -11000,7 +11060,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li>keep <code>NullWorkspaceService</code> only for tests or explicit non-operational contexts</li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-8</strong> <code>feat/oa07-bootstrap-headless-entry</code> — Maintained headless bootstrap entry (small/medium, next)<ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>PR-8</strong> <code>feat/oa07-bootstrap-headless-entry</code> — Maintained headless bootstrap entry (small/medium, next)<ul>
 <li>load one workflow</li>
 <li>create worktree context</li>
 <li>execute workflow end to end</li>
