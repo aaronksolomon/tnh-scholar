@@ -1,0 +1,36 @@
+workflow_id: bootstrap_proof_generic
+version: 1
+description: Generic maintained bootstrap proof workflow for one narrow repository task.
+entry_step: implement
+steps:
+  - id: implement
+    opcode: RUN_AGENT
+    agent: codex
+    prompt: |
+      Read and follow the current bootstrap proof task brief at:
+      docs/architecture/agent-orchestration/bootstrap-proof/current-task-brief.md
+
+      Implement that task in the current repository worktree.
+      Do not commit, push, or open a pull request.
+    routes:
+      completed: validate
+      error: STOP
+      killed_timeout: STOP
+      killed_idle: STOP
+      killed_policy: STOP
+
+  - id: validate
+    opcode: RUN_VALIDATION
+    run:
+      - tests
+      - lint
+    routes:
+      completed: STOP
+      error: STOP
+      killed_timeout: STOP
+      killed_idle: STOP
+      killed_policy: STOP
+
+  - id: STOP
+    opcode: STOP
+    reason: Bootstrap proof run finished.
