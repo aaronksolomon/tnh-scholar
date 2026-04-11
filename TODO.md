@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-03-06"
+updated: "2026-04-10"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-03 (PR-5 OA04.2 runner adapters merged)
+> **Last Updated**: 2026-04-10 (PR-8 merged; bootstrap-proof slice next)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -109,9 +109,9 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 🚨 OA07.1 Bootstrap Worktree Slice
 
-- **Status**: IN PROGRESS — PR-7 complete; PR-8 implemented on branch and pending PR
-- **Priority**: HIGHEST (next operational bootstrap slice)
-- **Context**: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary. Bootstrap is no longer blocked on workspace isolation; it is now blocked on adding one maintained headless entry point that drives the runtime end to end. Follow [ADR-OA07](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md) and [ADR-OA07.1](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md).
+- **Status**: IN PROGRESS — PR-7 and PR-8 are merged on `main`; bootstrap-proof workflow slice is next
+- **Priority**: HIGHEST (prove real maintained bootstrap usefulness)
+- **Context**: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary and the maintained headless entry path. Bootstrap is no longer blocked on substrate. The next blocker is proving one useful repo-native workflow through the maintained path. Follow [ADR-OA07](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md) and [ADR-OA07.1](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md).
 - **Bootstrap Goal**:
   - create a managed git worktree from a committed base ref
   - run `RUN_AGENT` and `RUN_VALIDATION` against the worktree root
@@ -119,9 +119,9 @@ This section organizes work into three priority levels based on criticality for 
   - support `ROLLBACK(pre_run)` to recorded base state
   - establish the headless path needed for later commit/push/PR automation
 - **Why This Is Next**:
-  - the worktree runtime boundary is now implemented, but there is still no maintained headless app-layer entry
-  - the system needs one clean end-to-end path that loads a workflow and drives the maintained kernel in real operation
-  - OA05/OA06 depth work should follow a live bootstrap loop, not precede it
+  - the worktree runtime boundary and maintained headless app-layer entry are now implemented on `main`
+  - the system still needs one clean end-to-end proof that it can complete a useful repo task through the maintained path
+  - OA05/OA06 depth work should follow a live bootstrap proof, not precede it
 - **Recommended PR sizing**:
   - Prefer **2 PRs** to stay comfortably under diff-size guidance
   - A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work
@@ -142,6 +142,11 @@ This section organizes work into three priority levels based on criticality for 
     - execute workflow end to end
     - write canonical artifacts and final state
     - keep the initial entry local/headless; no GitHub automation required
+  - [ ] **Bootstrap Proof** `feat/oa07-bootstrap-proof-workflow` — Real repo-task bootstrap proof (small/medium, next)
+    - add one maintained workflow definition for a narrow useful repository task
+    - exercise the current maintained subset: `RUN_AGENT`, `RUN_VALIDATION`, `STOP`, with `ROLLBACK(pre_run)` available only as fallback
+    - prove the run yields a reviewable repo diff plus canonical metadata, manifests, events, and final state
+    - keep semantic-control depth and review automation out of scope unless they become true blockers
   - [ ] **PR-9** `feat/oa07-review-automation` — Commit/push/PR automation (optional, small/medium)
     - create local commits on the managed branch
     - push the work branch
@@ -151,6 +156,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] commit/push/PR automation if it causes PR-7 or PR-8 to exceed preferred diff size
   - [ ] strict OA05 compile-validation as a blocker for bootstrap
   - [ ] full OA06 planner fixture/vector suite beyond the bootstrap path
+  - [ ] maintained `EVALUATE` / `GATE` support before the first useful bootstrap proof
   - [ ] non-script harness backends
   - [ ] stacked PR orchestration
   - [ ] multi-agent mutable collaboration inside one worktree

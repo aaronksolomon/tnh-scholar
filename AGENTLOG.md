@@ -307,3 +307,62 @@ Started the OA04 contract-family implementation sequence from `main` after the O
 - [TODO.md](TODO.md)
 
 ---
+
+## [2026-04-10 21:08 PDT] OA07.1 Maintained Headless Bootstrap Entry Merge Follow-Through
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: oa07.1 bootstrap merge wrap-up / next-slice planning
+**Human Collaborator**: phapman
+
+### Context
+PR #46 (`feat/oa07-bootstrap-headless-entry`) was merged to `main`, completing the maintained headless bootstrap entry slice. Follow-on work then cleaned local branch state, restored and published the agent-orchestration orientation notes on `main`, and clarified the roadmap position after PR-8: the next blocker is not more runtime substrate or PR automation, but proving one useful repo-native task through the maintained path.
+
+### Key Decisions
+- **Treat PR-8 as operational substrate, not final bootstrap proof**: the maintained headless path now exists, but bootstrap should only be considered reached after one useful repository task runs through it end to end.
+- **Keep rollback minimal and last-resort**: the expected normal path is validate, correct, and revalidate; `ROLLBACK(pre_run)` remains a fallback reset rather than a routine loop mechanism.
+- **Do not promote this to a new strategy ADR yet**: record the correction-first / rollback-last posture in the direction memo instead of adding an OA01.x follow-on and creating design bloat.
+- **Move the next slice ahead of PR-9 review automation**: a bootstrap-proof workflow is more important than commit/push/PR automation until the maintained loop demonstrates useful work.
+
+### Work Completed
+- [x] Confirmed PR #46 merged to `origin/main` and reconciled local branch cleanup around the recovered non-force push path used during review-fix follow-up (branches involved: `feat/oa07-bootstrap-headless-entry`, `backup/oa07-bootstrap-amended`)
+- [x] Restored the parked design memo into agent-orchestration notes, normalized it with front matter, shortened the filename, and promoted it from draft framing to current directional guidance (file: `docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md`)
+- [x] Added a new architecture blueprint note that summarizes maintained subsystems, current flow of control, and maintained-versus-reference package boundaries for new designers/engineers (file: `docs/architecture/agent-orchestration/notes/architecture-blueprint.md`)
+- [x] Updated the direction memo with an explicit correction-first / rollback-last section to guide future OA07 design work (file: `docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md`)
+- [x] Updated the agent-orchestration notes index to include the new design-orientation notes (file: `docs/architecture/agent-orchestration/notes/index.md`)
+- [x] Committed and pushed the note set directly on `main` as `fbae2824` (`docs(agent-orch): add design orientation notes`)
+- [x] Updated `TODO.md` so OA07.1 now reflects PR-7 and PR-8 merged on `main`, with a bootstrap-proof repo-task workflow slice explicitly ahead of optional PR-9 review automation (file: `TODO.md`)
+- [x] Appended this continuity record as required after the merged substantive PR (file: `AGENTLOG.md`)
+
+### Discoveries & Insights
+- **The maintained bootstrap path is real but intentionally narrow**: `tnh-conductor` now exercises the maintained worktree-backed kernel end to end, but the entry path still fails closed on maintained `EVALUATE` and `GATE`.
+- **The real next question is usefulness, not more substrate**: the system has enough maintained boundary work to attempt a genuine repo-native task, and that test should happen before more review automation or rollback elaboration.
+- **Rollback already has the right shape for bootstrap**: `ROLLBACK(pre_run)` is a whole-run worktree reset and should stay minimal unless empirical use proves otherwise.
+- **Direction notes materially help continuity now**: the architecture blueprint plus direction memo reduce re-orientation cost for both agents and humans entering OA07 follow-on design work.
+
+### Files Modified/Created
+- `docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md`: Published directional memo and added correction-first / rollback-last guidance.
+- `docs/architecture/agent-orchestration/notes/architecture-blueprint.md`: New high-level maintained architecture blueprint.
+- `docs/architecture/agent-orchestration/notes/index.md`: Added entries for the new notes.
+- `TODO.md`: Updated OA07.1 status and next-slice sequencing after PR-8 merge.
+- `AGENTLOG.md`: Added this merged-PR continuity entry.
+
+### Validation Performed
+- `make pr-check`
+- `git fetch --prune origin`
+- local branch ancestry and merge-state checks for the recovered OA07.1 branch state
+
+### Next Steps
+- [ ] Choose one narrow repo-native task that fits the current maintained subset (`RUN_AGENT`, `RUN_VALIDATION`, `STOP`) and define it as the bootstrap-proof slice.
+- [ ] Prefer a task with deterministic validation and a clearly reviewable diff over anything requiring immediate evaluator/gate expansion.
+- [ ] Keep PR-9 review automation deferred unless the bootstrap-proof attempt reveals that commit/push/PR handling is the real blocking seam.
+
+### Open Questions
+- Which first repo-native task best balances usefulness, deterministic validation, and low need for semantic control: a small `tnh-gen` CLI enhancement, a contained typing/refactor task, or a docs/ops-quality task with strong local checks?
+
+### References
+- [docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md](docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md)
+- [docs/architecture/agent-orchestration/notes/architecture-blueprint.md](docs/architecture/agent-orchestration/notes/architecture-blueprint.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md](docs/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md)
+- [docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md](docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md)
+- [CHANGELOG.md](CHANGELOG.md)
+- [TODO.md](TODO.md)
