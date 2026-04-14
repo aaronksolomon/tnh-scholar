@@ -6,32 +6,32 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Plan for the first generic maintained bootstrap-proof workflow, aligned with the existing agent development workflow but constrained by the current headless runtime.">
+        <meta name="description" content="Consolidated report on direct headless Codex communication experiments, observed errors, and the currently viable invocation pathway.">
       
       
-        <meta name="author" content="OpenAI GPT-5 Codex">
+        <meta name="author" content="Codex">
       
       
       
-        <link rel="prev" href="../codex-harness-spike-findings/">
+        <link rel="prev" href="../codex-headless-communication-experiment-plan/">
       
       
-        <link rel="next" href="../oa07.1-pr7-worktree-workspace-plan/">
+        <link rel="next" href="../spike-testing-sequence/">
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
     
     
       
-        <title>OA07 Bootstrap Proof Workflow Plan - TNH Scholar Documentation</title>
+        <title>Codex Headless Communication Report - TNH Scholar Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.a40c8224.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -50,11 +50,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../stylesheets/tnh-zen.css">
+      <link rel="stylesheet" href="../../../../../stylesheets/tnh-zen.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#oa07-bootstrap-proof-workflow-plan" class="md-skip">
+        <a href="#codex-headless-communication-report" class="md-skip">
           Skip to content
         </a>
       
@@ -158,7 +158,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -178,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              OA07 Bootstrap Proof Workflow Plan
+              Codex Headless Communication Report
             
           </span>
         </div>
@@ -267,7 +267,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -297,7 +297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -348,7 +348,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../getting-started/" class="md-nav__link ">
+            <a href="../../../../../getting-started/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -388,7 +388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/configuration/" class="md-nav__link">
+      <a href="../../../../../getting-started/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -416,7 +416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/installation/" class="md-nav__link">
+      <a href="../../../../../getting-started/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -444,7 +444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting-started/quick-start-guide/" class="md-nav__link">
+      <a href="../../../../../getting-started/quick-start-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -503,7 +503,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../user-guide/" class="md-nav__link ">
+            <a href="../../../../../user-guide/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -543,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
+      <a href="../../../../../user-guide/best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -571,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/overview/" class="md-nav__link">
+      <a href="../../../../../user-guide/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -599,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../user-guide/prompt-system/" class="md-nav__link">
+      <a href="../../../../../user-guide/prompt-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -662,7 +662,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../project/" class="md-nav__link ">
+            <a href="../../../../../project/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -702,7 +702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/conceptual-architecture/" class="md-nav__link">
+      <a href="../../../../../project/conceptual-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -730,7 +730,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/future-directions/" class="md-nav__link">
+      <a href="../../../../../project/future-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -758,7 +758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/philosophy/" class="md-nav__link">
+      <a href="../../../../../project/philosophy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -786,7 +786,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/principles/" class="md-nav__link">
+      <a href="../../../../../project/principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -814,7 +814,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/vision/" class="md-nav__link">
+      <a href="../../../../../project/vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -869,7 +869,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../community/" class="md-nav__link ">
+            <a href="../../../../../community/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -909,7 +909,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../community/parallax-overview/" class="md-nav__link">
+      <a href="../../../../../community/parallax-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -976,7 +976,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../project/repo-root/" class="md-nav__link ">
+            <a href="../../../../../project/repo-root/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1016,7 +1016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/changelog/" class="md-nav__link">
+      <a href="../../../../../project/repo-root/changelog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1044,7 +1044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/contributing-root/" class="md-nav__link">
+      <a href="../../../../../project/repo-root/contributing-root/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1072,7 +1072,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
+      <a href="../../../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1100,7 +1100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/release_checklist/" class="md-nav__link">
+      <a href="../../../../../project/repo-root/release_checklist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1128,7 +1128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/repo-readme/" class="md-nav__link">
+      <a href="../../../../../project/repo-root/repo-readme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1156,7 +1156,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/todo-list/" class="md-nav__link">
+      <a href="../../../../../project/repo-root/todo-list/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1184,7 +1184,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project/repo-root/versioning/" class="md-nav__link">
+      <a href="../../../../../project/repo-root/versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1257,7 +1257,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../cli-reference/" class="md-nav__link ">
+            <a href="../../../../../cli-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1297,7 +1297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/audio-transcribe/" class="md-nav__link">
+      <a href="../../../../../cli-reference/audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1325,7 +1325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/json-to-srt/" class="md-nav__link">
+      <a href="../../../../../cli-reference/json-to-srt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1353,7 +1353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/nfmt/" class="md-nav__link">
+      <a href="../../../../../cli-reference/nfmt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1381,7 +1381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/overview/" class="md-nav__link">
+      <a href="../../../../../cli-reference/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1409,7 +1409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/sent-split/" class="md-nav__link">
+      <a href="../../../../../cli-reference/sent-split/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1437,7 +1437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/srt-translate/" class="md-nav__link">
+      <a href="../../../../../cli-reference/srt-translate/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1465,7 +1465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/tnh-gen/" class="md-nav__link">
+      <a href="../../../../../cli-reference/tnh-gen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1493,7 +1493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/tnh-setup/" class="md-nav__link">
+      <a href="../../../../../cli-reference/tnh-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1521,7 +1521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/token-count/" class="md-nav__link">
+      <a href="../../../../../cli-reference/token-count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1549,7 +1549,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../cli-reference/ytt-fetch/" class="md-nav__link">
+      <a href="../../../../../cli-reference/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1584,7 +1584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../api/" class="md-nav__link">
+      <a href="../../../../../api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1691,7 +1691,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../" class="md-nav__link ">
+            <a href="../../../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1731,7 +1731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../overview/" class="md-nav__link">
+      <a href="../../../../overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1787,7 +1787,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1827,7 +1827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../system-design/" class="md-nav__link">
+      <a href="../../../system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1895,6 +1895,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1907,7 +1913,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../adr/" class="md-nav__link ">
+            <a href="../../../adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1947,7 +1953,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
+      <a href="../../../adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1975,7 +1981,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
+      <a href="../../../adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2003,7 +2009,91 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
+      <a href="../../../adr/adr-oa01.2-conceptual-spike-orientation-based-supervisory-orchestration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA01.2: Conceptual Spike for Orientation-Based Supervisory Orchestration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/adr-oa01.3-conceptual-spike-practical-approach/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA01.3: Practical Approach for the Orientation-Based Conceptual Spike
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/adr-oa01.4-headless-agent-communication-functional-spike/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA01.4: Headless Agent Communication Functional Spike
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2031,7 +2121,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
+      <a href="../../../adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2059,7 +2149,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
+      <a href="../../../adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2087,7 +2177,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa03.2-codex-runner/" class="md-nav__link">
+      <a href="../../../adr/adr-oa03.2-codex-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2115,7 +2205,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
+      <a href="../../../adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2143,7 +2233,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
+      <a href="../../../adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2171,7 +2261,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
+      <a href="../../../adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2199,7 +2289,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04.2-runner-contract/" class="md-nav__link">
+      <a href="../../../adr/adr-oa04.2-runner-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2227,7 +2317,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+      <a href="../../../adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2255,7 +2345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+      <a href="../../../adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2283,7 +2373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+      <a href="../../../adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2311,7 +2401,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
+      <a href="../../../adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2339,7 +2429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
+      <a href="../../../adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2367,7 +2457,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+      <a href="../../../adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2395,7 +2485,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+      <a href="../../../adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2453,7 +2543,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../bootstrap-proof/" class="md-nav__link ">
+            <a href="../../../bootstrap-proof/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2493,7 +2583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../bootstrap-proof/current-task-brief/" class="md-nav__link">
+      <a href="../../../bootstrap-proof/current-task-brief/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2521,7 +2611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../bootstrap-proof/run-bootstrap-proof/" class="md-nav__link">
+      <a href="../../../bootstrap-proof/run-bootstrap-proof/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2573,16 +2663,6 @@
       
         
       
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
     
     
     
@@ -2595,7 +2675,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2634,8 +2714,70 @@
   
   
   
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../design/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_3_5_2" id="__nav_9_3_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_3_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../architecture-blueprint/" class="md-nav__link">
+      <a href="../../design/architecture-blueprint/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2663,11 +2805,119 @@
   
   
     <li class="md-nav__item">
-      <a href="../bootstrap-direction-design-memo/" class="md-nav__link">
+      <a href="../../design/bootstrap-direction-design-memo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Bootstrap Direction Design Memo
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5_3" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Experiments
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_3_5_3" id="__nav_9_3_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_3_5_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9_3_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Experiments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootstrap-proof-run-result/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap Proof Run Result
   </span>
   
     
@@ -2744,6 +2994,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../codex-headless-communication-experiment-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Codex Headless Communication Experiment Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -2760,7 +3038,7 @@
           
   
   <span class="md-ellipsis">
-    OA07 Bootstrap Proof Workflow Plan
+    Codex Headless Communication Report
   </span>
   
     
@@ -2778,7 +3056,7 @@
         
   
   <span class="md-ellipsis">
-    OA07 Bootstrap Proof Workflow Plan
+    Codex Headless Communication Report
   </span>
   
     
@@ -2807,136 +3085,73 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-this-note-exists" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
-      Why This Note Exists
+      Summary
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#design-anchor" class="md-nav__link">
+  <a href="#what-was-tested" class="md-nav__link">
     <span class="md-ellipsis">
-      Design Anchor
+      What Was Tested
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-maintained-runtime-reality" class="md-nav__link">
+  <a href="#results" class="md-nav__link">
     <span class="md-ellipsis">
-      Current Maintained Runtime Reality
+      Results
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-the-first-proof-should-actually-demonstrate" class="md-nav__link">
-    <span class="md-ellipsis">
-      What The First Proof Should Actually Demonstrate
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generic-workflow-requirement" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generic Workflow Requirement
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-generic-proof-shape" class="md-nav__link">
-    <span class="md-ellipsis">
-      Recommended Generic Proof Shape
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#task-brief-convention" class="md-nav__link">
-    <span class="md-ellipsis">
-      Task Brief Convention
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#validation-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Validation Strategy
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-operator-assets" class="md-nav__link">
-    <span class="md-ellipsis">
-      Recommended Operator Assets
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#operator-command" class="md-nav__link">
-    <span class="md-ellipsis">
-      Operator Command
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-needs-to-be-planned-versus-built" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Needs To Be Planned Versus Built
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="What Needs To Be Planned Versus Built">
+    <nav class="md-nav" aria-label="Results">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-workflow-shape" class="md-nav__link">
+  <a href="#1-default-authenticated-home-is-usable" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Workflow Shape
+      1. Default Authenticated Home Is Usable
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-task-brief-convention" class="md-nav__link">
+  <a href="#2-isolated-codex_home-reduced-some-noise-but-broke-authentication" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Task Brief Convention
+      2. Isolated CODEX_HOME Reduced Some Noise but Broke Authentication
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-validation-posture" class="md-nav__link">
+  <a href="#3-stdout-and-stderr-separation-is-the-key-cleanup-move" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Validation Posture
+      3. stdout and stderr Separation Is the Key Cleanup Move
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-proof-success-criteria" class="md-nav__link">
+  <a href="#4-user-shell-context-is-cleaner-than-tool-launched-context" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Proof Success Criteria
+      4. User-Shell Context Is Cleaner Than Tool-Launched Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-a-tiny-wrapper-script-works-but-it-does-not-eliminate-environment-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. A Tiny Wrapper Script Works, But It Does Not Eliminate Environment Effects
     </span>
   </a>
   
@@ -2948,45 +3163,114 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-should-stay-out-of-scope" class="md-nav__link">
+  <a href="#practical-interpretation" class="md-nav__link">
     <span class="md-ellipsis">
-      What Should Stay Out Of Scope
+      Practical Interpretation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#mapping-to-the-existing-agent-workflow" class="md-nav__link">
+  <a href="#documented-vs-observed-matrix" class="md-nav__link">
     <span class="md-ellipsis">
-      Mapping To The Existing Agent Workflow
+      Documented-vs-Observed Matrix
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#recommended-next-slice" class="md-nav__link">
+  <a href="#error-classes-observed" class="md-nav__link">
     <span class="md-ellipsis">
-      Recommended Next Slice
+      Error Classes Observed
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Classes Observed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-local-state-database-migration-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Local State Database Migration Warnings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-plugin-manifest-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Plugin Manifest Warnings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-shell-snapshot-cleanup-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Shell Snapshot Cleanup Warnings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-ephemeral-thread-backfill-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      D. Ephemeral Thread Backfill Warning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-isolated-state-authentication-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      E. Isolated-State Authentication Failure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-recommendation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Recommendation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#acceptance-criteria-for-this-planning-note" class="md-nav__link">
+  <a href="#do-we-need-configuration-work" class="md-nav__link">
     <span class="md-ellipsis">
-      Acceptance Criteria For This Planning Note
+      Do We Need Configuration Work?
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#practical-recommendation" class="md-nav__link">
+  <a href="#what-this-means-for-further-experiments" class="md-nav__link">
     <span class="md-ellipsis">
-      Practical Recommendation
+      What This Means for Further Experiments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
     </span>
   </a>
   
@@ -2996,62 +3280,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    OA07.1 PR-7 Worktree Runtime Boundary Plan
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--current"></span>
-  
-
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    OA07.1 PR-8 Bootstrap Headless Entry Plan
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--current"></span>
-  
-
-  
-
-      </a>
     </li>
   
 
@@ -3085,6 +3313,78 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../plans/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Plans
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_3_5_4" id="__nav_9_3_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_3_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Plans
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
               
                 
   
@@ -3092,7 +3392,249 @@
   
   
     <li class="md-nav__item">
-      <a href="../vscode-1110-agent-features-research/" class="md-nav__link">
+      <a href="../../plans/oa07-bootstrap-proof-workflow-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OA07 Bootstrap Proof Workflow Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plans/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OA07.1 PR-7 Worktree Runtime Boundary Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plans/oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OA07.1 PR-8 Bootstrap Headless Entry Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../research/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_3_5_5" id="__nav_9_3_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_3_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/codex-headless-communication-research-directions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Codex Headless Communication Research Directions
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/codex-headless-research-memo-for-engineer-agents/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Codex Headless Research Memo for Engineer Agents
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/codex-official-docs-reference-summary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Codex Official Docs Reference Summary
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/vscode-1110-agent-features-research/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3129,6 +3671,14 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
               
                 
   
@@ -3136,7 +3686,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/" class="md-nav__link">
+      <a href="../../../../ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3237,7 +3787,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ai-text-processing/adr/" class="md-nav__link ">
+            <a href="../../../../ai-text-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3277,7 +3827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
+      <a href="../../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3305,7 +3855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
+      <a href="../../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3333,7 +3883,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
+      <a href="../../../../ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3361,7 +3911,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
+      <a href="../../../../ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3389,7 +3939,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
+      <a href="../../../../ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3417,7 +3967,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
+      <a href="../../../../ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3445,7 +3995,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
+      <a href="../../../../ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3503,7 +4053,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ai-text-processing/design/" class="md-nav__link ">
+            <a href="../../../../ai-text-processing/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3543,7 +4093,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
+      <a href="../../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3571,7 +4121,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
+      <a href="../../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3637,7 +4187,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../configuration/" class="md-nav__link ">
+            <a href="../../../../configuration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3677,7 +4227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../configuration/tnh-configuration-management/" class="md-nav__link">
+      <a href="../../../../configuration/tnh-configuration-management/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3727,7 +4277,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../configuration/adr/" class="md-nav__link ">
+            <a href="../../../../configuration/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3767,7 +4317,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
+      <a href="../../../../configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3795,7 +4345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../configuration/adr/adr-cf02-prompt-catalog-discovery/" class="md-nav__link">
+      <a href="../../../../configuration/adr/adr-cf02-prompt-catalog-discovery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3861,7 +4411,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/" class="md-nav__link ">
+            <a href="../../../../docs-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3927,7 +4477,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/adr/" class="md-nav__link ">
+            <a href="../../../../docs-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3967,7 +4517,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
+      <a href="../../../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3995,7 +4545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
+      <a href="../../../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4023,7 +4573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
+      <a href="../../../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4051,7 +4601,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
+      <a href="../../../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4107,7 +4657,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../docs-system/design/" class="md-nav__link ">
+            <a href="../../../../docs-system/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4147,7 +4697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docs-system/design/documentation-design/" class="md-nav__link">
+      <a href="../../../../docs-system/design/documentation-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4191,7 +4741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4298,7 +4848,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../gen-ai-service/adr/" class="md-nav__link ">
+            <a href="../../../../gen-ai-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4338,7 +4888,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4366,7 +4916,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4394,7 +4944,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4422,7 +4972,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4450,7 +5000,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4478,7 +5028,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4506,7 +5056,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4534,7 +5084,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4562,7 +5112,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4590,7 +5140,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4648,7 +5198,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../gen-ai-service/design/" class="md-nav__link ">
+            <a href="../../../../gen-ai-service/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4688,7 +5238,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4716,7 +5266,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
+      <a href="../../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4782,7 +5332,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../jvb-viewer/" class="md-nav__link ">
+            <a href="../../../../jvb-viewer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4844,7 +5394,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../jvb-viewer/adr/" class="md-nav__link ">
+            <a href="../../../../jvb-viewer/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4884,7 +5434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
+      <a href="../../../../jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4912,7 +5462,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
+      <a href="../../../../jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4974,7 +5524,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../jvb-viewer/design/" class="md-nav__link ">
+            <a href="../../../../jvb-viewer/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5014,7 +5564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
+      <a href="../../../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5042,7 +5592,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
+      <a href="../../../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5070,7 +5620,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
+      <a href="../../../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5098,7 +5648,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
+      <a href="../../../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5162,7 +5712,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../knowledge-base/" class="md-nav__link ">
+            <a href="../../../../knowledge-base/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5222,7 +5772,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../knowledge-base/adr/" class="md-nav__link ">
+            <a href="../../../../knowledge-base/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5262,7 +5812,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
+      <a href="../../../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5326,7 +5876,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metadata/" class="md-nav__link ">
+            <a href="../../../../metadata/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5388,7 +5938,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../metadata/adr/" class="md-nav__link ">
+            <a href="../../../../metadata/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5428,7 +5978,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
+      <a href="../../../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5456,7 +6006,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
+      <a href="../../../../metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5526,7 +6076,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../object-service/" class="md-nav__link ">
+            <a href="../../../../object-service/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5566,7 +6116,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-design-gaps/" class="md-nav__link">
+      <a href="../../../../object-service/object-service-design-gaps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5594,7 +6144,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-design-overview/" class="md-nav__link">
+      <a href="../../../../object-service/object-service-design-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5622,7 +6172,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/object-service-implementation-status/" class="md-nav__link">
+      <a href="../../../../object-service/object-service-implementation-status/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5670,7 +6220,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../object-service/adr/" class="md-nav__link ">
+            <a href="../../../../object-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5710,7 +6260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
+      <a href="../../../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5776,7 +6326,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../project-policies/" class="md-nav__link ">
+            <a href="../../../../project-policies/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5816,7 +6366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
+      <a href="../../../../project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5864,7 +6414,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../project-policies/adr/" class="md-nav__link ">
+            <a href="../../../../project-policies/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5904,7 +6454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
+      <a href="../../../../project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5970,7 +6520,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../prompt-system/" class="md-nav__link ">
+            <a href="../../../../prompt-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6010,7 +6560,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/prompt-system-architecture/" class="md-nav__link">
+      <a href="../../../../prompt-system/prompt-system-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6062,7 +6612,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../prompt-system/adr/" class="md-nav__link ">
+            <a href="../../../../prompt-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6102,7 +6652,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
+      <a href="../../../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6130,7 +6680,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
+      <a href="../../../../prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6158,7 +6708,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../prompt-system/adr/adr-pt05-prompt-platform-strategy/" class="md-nav__link">
+      <a href="../../../../prompt-system/adr/adr-pt05-prompt-platform-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6202,7 +6752,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../provenance/" class="md-nav__link">
+      <a href="../../../../provenance/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6289,7 +6839,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../provenance/adr/" class="md-nav__link ">
+            <a href="../../../../provenance/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6329,7 +6879,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
+      <a href="../../../../provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6395,7 +6945,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../setup-tnh/" class="md-nav__link ">
+            <a href="../../../../setup-tnh/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6457,7 +7007,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../setup-tnh/adr/" class="md-nav__link ">
+            <a href="../../../../setup-tnh/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6497,7 +7047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening/" class="md-nav__link">
+      <a href="../../../../setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6525,7 +7075,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../setup-tnh/adr/adr-st01.1-tnh-setup-ui-design/" class="md-nav__link">
+      <a href="../../../../setup-tnh/adr/adr-st01.1-tnh-setup-ui-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6581,7 +7131,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../setup-tnh/design/" class="md-nav__link ">
+            <a href="../../../../setup-tnh/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6621,7 +7171,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
+      <a href="../../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6665,7 +7215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/" class="md-nav__link">
+      <a href="../../../../tnh-gen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6749,7 +7299,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../tnh-gen/adr/" class="md-nav__link ">
+            <a href="../../../../tnh-gen/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6789,7 +7339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
+      <a href="../../../../tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6817,7 +7367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
+      <a href="../../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6845,7 +7395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
+      <a href="../../../../tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6911,7 +7461,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../transcription/" class="md-nav__link ">
+            <a href="../../../../transcription/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6983,7 +7533,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../transcription/adr/" class="md-nav__link ">
+            <a href="../../../../transcription/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7023,7 +7573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
+      <a href="../../../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7051,7 +7601,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
+      <a href="../../../../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7079,7 +7629,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
+      <a href="../../../../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7107,7 +7657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+      <a href="../../../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7135,7 +7685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr05-language-aware-multilingual-transcription-engine/" class="md-nav__link">
+      <a href="../../../../transcription/adr/adr-tr05-language-aware-multilingual-transcription-engine/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7163,7 +7713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr05.1-speaker-block-language-lock-default/" class="md-nav__link">
+      <a href="../../../../transcription/adr/adr-tr05.1-speaker-block-language-lock-default/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7191,7 +7741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/adr/adr-tr05.2-mvp-service-scaffold/" class="md-nav__link">
+      <a href="../../../../transcription/adr/adr-tr05.2-mvp-service-scaffold/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7269,7 +7819,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../transcription/design/" class="md-nav__link ">
+            <a href="../../../../transcription/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7309,7 +7859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/audio-chunking-design/" class="md-nav__link">
+      <a href="../../../../transcription/design/audio-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7337,7 +7887,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/diarization-algorithms/" class="md-nav__link">
+      <a href="../../../../transcription/design/diarization-algorithms/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7365,7 +7915,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/diarization-chunker-design/" class="md-nav__link">
+      <a href="../../../../transcription/design/diarization-chunker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7393,7 +7943,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/diarization-system-design/" class="md-nav__link">
+      <a href="../../../../transcription/design/diarization-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7421,7 +7971,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
+      <a href="../../../../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7449,7 +7999,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/language-aware-chunking-design/" class="md-nav__link">
+      <a href="../../../../transcription/design/language-aware-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7477,7 +8027,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
+      <a href="../../../../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7505,7 +8055,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
+      <a href="../../../../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7533,7 +8083,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
+      <a href="../../../../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7561,7 +8111,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
+      <a href="../../../../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7589,7 +8139,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
+      <a href="../../../../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7617,7 +8167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../transcription/design/timelinemapper-design/" class="md-nav__link">
+      <a href="../../../../transcription/design/timelinemapper-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7683,7 +8233,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/" class="md-nav__link ">
+            <a href="../../../../ui-ux/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7743,7 +8293,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/design/" class="md-nav__link ">
+            <a href="../../../../ui-ux/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7783,7 +8333,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
+      <a href="../../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7849,7 +8399,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ui-ux/vs-code-integration/" class="md-nav__link ">
+            <a href="../../../../ui-ux/vs-code-integration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7889,7 +8439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
+      <a href="../../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7917,7 +8467,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
+      <a href="../../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7945,7 +8495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
+      <a href="../../../../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7973,7 +8523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
+      <a href="../../../../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8001,7 +8551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
+      <a href="../../../../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8029,7 +8579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
+      <a href="../../../../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8093,7 +8643,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../utilities/" class="md-nav__link ">
+            <a href="../../../../utilities/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8155,7 +8705,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../utilities/design/" class="md-nav__link ">
+            <a href="../../../../utilities/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8195,7 +8745,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../utilities/design/package-version-checker-design/" class="md-nav__link">
+      <a href="../../../../utilities/design/package-version-checker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8223,7 +8773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../utilities/design/utilities-catalog/" class="md-nav__link">
+      <a href="../../../../utilities/design/utilities-catalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8287,7 +8837,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../video-processing/" class="md-nav__link ">
+            <a href="../../../../video-processing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8349,7 +8899,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../video-processing/adr/" class="md-nav__link ">
+            <a href="../../../../video-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8389,7 +8939,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+      <a href="../../../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8417,7 +8967,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../video-processing/adr/adr-vp02-ytdlp-operational-strategy/" class="md-nav__link">
+      <a href="../../../../video-processing/adr/adr-vp02-ytdlp-operational-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8461,7 +9011,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/" class="md-nav__link">
+      <a href="../../../../ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8554,7 +9104,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ytt-fetch/adr/" class="md-nav__link ">
+            <a href="../../../../ytt-fetch/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8594,7 +9144,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
+      <a href="../../../../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8622,7 +9172,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
+      <a href="../../../../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8650,7 +9200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
+      <a href="../../../../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8706,7 +9256,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../ytt-fetch/design/" class="md-nav__link ">
+            <a href="../../../../ytt-fetch/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8746,7 +9296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
+      <a href="../../../../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8839,7 +9389,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../development/" class="md-nav__link ">
+            <a href="../../../../../development/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8879,7 +9429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/contributing-prototype-phase/" class="md-nav__link">
+      <a href="../../../../../development/contributing-prototype-phase/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8907,7 +9457,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/design-principles/" class="md-nav__link">
+      <a href="../../../../../development/design-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8935,7 +9485,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/fine-tuning-strategy/" class="md-nav__link">
+      <a href="../../../../../development/fine-tuning-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8963,7 +9513,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/git-workflow/" class="md-nav__link">
+      <a href="../../../../../development/git-workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8991,7 +9541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
+      <a href="../../../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9019,7 +9569,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/improvements-initial-structure/" class="md-nav__link">
+      <a href="../../../../../development/improvements-initial-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9047,7 +9597,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/overview/" class="md-nav__link">
+      <a href="../../../../../development/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9075,7 +9625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/release-workflow/" class="md-nav__link">
+      <a href="../../../../../development/release-workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9103,7 +9653,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/style-guide/" class="md-nav__link">
+      <a href="../../../../../development/style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9131,7 +9681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/system-design/" class="md-nav__link">
+      <a href="../../../../../development/system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9159,7 +9709,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/yt-dlp-ops-check/" class="md-nav__link">
+      <a href="../../../../../development/yt-dlp-ops-check/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9211,7 +9761,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../development/incident-reports/" class="md-nav__link ">
+            <a href="../../../../../development/incident-reports/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9251,7 +9801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
+      <a href="../../../../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9279,7 +9829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/tag-v0.2.0-correction-plan/" class="md-nav__link">
+      <a href="../../../../../development/incident-reports/tag-v0.2.0-correction-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9331,7 +9881,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
+            <a href="../../../../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9371,7 +9921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
+      <a href="../../../../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9399,7 +9949,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
+      <a href="../../../../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9427,7 +9977,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
+      <a href="../../../../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9506,7 +10056,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../docs-ops/" class="md-nav__link ">
+            <a href="../../../../../docs-ops/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9546,7 +10096,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/adr-template/" class="md-nav__link">
+      <a href="../../../../../docs-ops/adr-template/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9574,7 +10124,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/markdown-standards/" class="md-nav__link">
+      <a href="../../../../../docs-ops/markdown-standards/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9602,7 +10152,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
+      <a href="../../../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9630,7 +10180,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/preview-theme/" class="md-nav__link">
+      <a href="../../../../../docs-ops/preview-theme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9658,7 +10208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-ops/theme-design/" class="md-nav__link">
+      <a href="../../../../../docs-ops/theme-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9727,7 +10277,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/" class="md-nav__link ">
+            <a href="../../../../../research/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9767,7 +10317,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt_development_convos/" class="md-nav__link">
+      <a href="../../../../../research/gpt_development_convos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9795,7 +10345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/kb-design-document/" class="md-nav__link">
+      <a href="../../../../../research/kb-design-document/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9823,7 +10373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/metadata-summary-report/" class="md-nav__link">
+      <a href="../../../../../research/metadata-summary-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9851,7 +10401,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/preliminary-feasibility-study/" class="md-nav__link">
+      <a href="../../../../../research/preliminary-feasibility-study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9879,7 +10429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/rag-research-directions/" class="md-nav__link">
+      <a href="../../../../../research/rag-research-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9907,7 +10457,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/siap-methodology/" class="md-nav__link">
+      <a href="../../../../../research/siap-methodology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9955,7 +10505,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
+            <a href="../../../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9995,7 +10545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
+      <a href="../../../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10051,7 +10601,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
+            <a href="../../../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -10091,7 +10641,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
+      <a href="../../../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10134,7 +10684,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../documentation_index/" class="md-nav__link">
+      <a href="../../../../../documentation_index/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10181,136 +10731,73 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-this-note-exists" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
-      Why This Note Exists
+      Summary
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#design-anchor" class="md-nav__link">
+  <a href="#what-was-tested" class="md-nav__link">
     <span class="md-ellipsis">
-      Design Anchor
+      What Was Tested
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-maintained-runtime-reality" class="md-nav__link">
+  <a href="#results" class="md-nav__link">
     <span class="md-ellipsis">
-      Current Maintained Runtime Reality
+      Results
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-the-first-proof-should-actually-demonstrate" class="md-nav__link">
-    <span class="md-ellipsis">
-      What The First Proof Should Actually Demonstrate
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generic-workflow-requirement" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generic Workflow Requirement
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-generic-proof-shape" class="md-nav__link">
-    <span class="md-ellipsis">
-      Recommended Generic Proof Shape
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#task-brief-convention" class="md-nav__link">
-    <span class="md-ellipsis">
-      Task Brief Convention
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#validation-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Validation Strategy
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-operator-assets" class="md-nav__link">
-    <span class="md-ellipsis">
-      Recommended Operator Assets
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#operator-command" class="md-nav__link">
-    <span class="md-ellipsis">
-      Operator Command
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-needs-to-be-planned-versus-built" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Needs To Be Planned Versus Built
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="What Needs To Be Planned Versus Built">
+    <nav class="md-nav" aria-label="Results">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-workflow-shape" class="md-nav__link">
+  <a href="#1-default-authenticated-home-is-usable" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Workflow Shape
+      1. Default Authenticated Home Is Usable
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-task-brief-convention" class="md-nav__link">
+  <a href="#2-isolated-codex_home-reduced-some-noise-but-broke-authentication" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Task Brief Convention
+      2. Isolated CODEX_HOME Reduced Some Noise but Broke Authentication
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-validation-posture" class="md-nav__link">
+  <a href="#3-stdout-and-stderr-separation-is-the-key-cleanup-move" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Validation Posture
+      3. stdout and stderr Separation Is the Key Cleanup Move
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-proof-success-criteria" class="md-nav__link">
+  <a href="#4-user-shell-context-is-cleaner-than-tool-launched-context" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Proof Success Criteria
+      4. User-Shell Context Is Cleaner Than Tool-Launched Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-a-tiny-wrapper-script-works-but-it-does-not-eliminate-environment-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. A Tiny Wrapper Script Works, But It Does Not Eliminate Environment Effects
     </span>
   </a>
   
@@ -10322,45 +10809,114 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-should-stay-out-of-scope" class="md-nav__link">
+  <a href="#practical-interpretation" class="md-nav__link">
     <span class="md-ellipsis">
-      What Should Stay Out Of Scope
+      Practical Interpretation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#mapping-to-the-existing-agent-workflow" class="md-nav__link">
+  <a href="#documented-vs-observed-matrix" class="md-nav__link">
     <span class="md-ellipsis">
-      Mapping To The Existing Agent Workflow
+      Documented-vs-Observed Matrix
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#recommended-next-slice" class="md-nav__link">
+  <a href="#error-classes-observed" class="md-nav__link">
     <span class="md-ellipsis">
-      Recommended Next Slice
+      Error Classes Observed
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Classes Observed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-local-state-database-migration-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Local State Database Migration Warnings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-plugin-manifest-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Plugin Manifest Warnings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-shell-snapshot-cleanup-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Shell Snapshot Cleanup Warnings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-ephemeral-thread-backfill-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      D. Ephemeral Thread Backfill Warning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-isolated-state-authentication-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      E. Isolated-State Authentication Failure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-recommendation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Recommendation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#acceptance-criteria-for-this-planning-note" class="md-nav__link">
+  <a href="#do-we-need-configuration-work" class="md-nav__link">
     <span class="md-ellipsis">
-      Acceptance Criteria For This Planning Note
+      Do We Need Configuration Work?
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#practical-recommendation" class="md-nav__link">
+  <a href="#what-this-means-for-further-experiments" class="md-nav__link">
     <span class="md-ellipsis">
-      Practical Recommendation
+      What This Means for Further Experiments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
     </span>
   </a>
   
@@ -10384,277 +10940,325 @@
   
 
 
-<h1 id="oa07-bootstrap-proof-workflow-plan">OA07 Bootstrap Proof Workflow Plan<a class="headerlink" href="#oa07-bootstrap-proof-workflow-plan" title="Link to this section">&para;</a></h1>
-<p>Purpose: define the next planning slice after PR-8. The goal is not more runtime substrate. The goal is to prove that the maintained headless path can complete one useful repository task through a generic workflow shape that is recognizably aligned with the existing <code>AGENT_WORKFLOW.md</code>.</p>
-<p>This note is intentionally about the workflow shape and operator plan, not about one task-specific implementation diff.</p>
-<h2 id="why-this-note-exists">Why This Note Exists<a class="headerlink" href="#why-this-note-exists" title="Link to this section">&para;</a></h2>
-<p>PR-8 established a maintained local/headless entry point:</p>
+<h1 id="codex-headless-communication-report">Codex Headless Communication Report<a class="headerlink" href="#codex-headless-communication-report" title="Link to this section">&para;</a></h1>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">&para;</a></h2>
+<p>A viable headless Codex communication path was found.</p>
+<p>The working path is:</p>
 <ul>
-<li><code>tnh-conductor</code></li>
-<li>a thin bootstrap app layer</li>
-<li>a maintained kernel</li>
-<li>a managed git worktree boundary</li>
-<li>canonical artifacts, manifests, metadata, and final state</li>
+<li>use the existing authenticated default Codex home under <code>~/.codex</code>,</li>
+<li>run with <code>--ephemeral</code>,</li>
+<li>and separate <code>stdout</code> from <code>stderr</code>.</li>
 </ul>
-<p>That is necessary, but it is still only substrate.</p>
-<p>The next strategic question is:</p>
-<p>Can the maintained runtime complete one useful repo-native task through a generic orchestration workflow rather than only through test scaffolding?</p>
-<h2 id="design-anchor">Design Anchor<a class="headerlink" href="#design-anchor" title="Link to this section">&para;</a></h2>
-<p>This plan should mimic the existing repo workflow in <code>AGENT_WORKFLOW.md</code>, not invent a detached conductor-only pattern.</p>
-<p>That matters because the desired direction is not “make a special workflow for one task.” It is “begin expressing the existing development process through the maintained orchestration path.”</p>
-<p>The first proof should therefore preserve these high-level ideas from the existing workflow:</p>
+<p>Under that pattern, Codex can return clean machine-readable JSON on <code>stdout</code> while most startup and environment noise is confined to <code>stderr</code>.</p>
+<p>This is enough to support further <code>OA01.4</code> experimentation.</p>
+<p>The most important conceptual finding is simple:</p>
 <ul>
-<li>a task is identified before execution,</li>
-<li>implementation is the primary machine-executed phase,</li>
-<li>deterministic validation happens after implementation,</li>
-<li>human review still happens outside the automated loop,</li>
-<li>failures should usually lead to correction, not rollback.</li>
+<li>headless collaboration is not useless,</li>
+<li>the communication path is viable,</li>
+<li>and the main issue is channel cleanliness rather than inability to collaborate.</li>
 </ul>
-<p>However, the first maintained proof cannot yet mirror the full <code>AGENT_WORKFLOW.md</code> loop mechanically, because the maintained runtime does not yet support the full semantic-control layer.</p>
-<h2 id="current-maintained-runtime-reality">Current Maintained Runtime Reality<a class="headerlink" href="#current-maintained-runtime-reality" title="Link to this section">&para;</a></h2>
-<p>The current maintained runtime can honestly support:</p>
-<ul>
-<li>loading one YAML workflow from disk via <code>src/tnh_scholar/agent_orchestration/kernel/adapters/workflow_loader.py</code></li>
-<li><code>RUN_AGENT</code></li>
-<li><code>RUN_VALIDATION</code></li>
-<li><code>ROLLBACK(pre_run)</code></li>
-<li><code>STOP</code></li>
-<li>managed worktree execution</li>
-<li>canonical run artifacts and provenance capture</li>
-</ul>
-<p>The current maintained runtime does <strong>not</strong> yet support a real generic correction loop in the same way that <code>AGENT_WORKFLOW.md</code> describes, because:</p>
-<ul>
-<li>the maintained headless entry fails closed on <code>EVALUATE</code> and <code>GATE</code></li>
-<li><code>RUN_AGENT.prompt</code> is still a static string in <code>src/tnh_scholar/agent_orchestration/kernel/models.py</code></li>
-<li>there is no maintained task-parameter rendering layer yet</li>
-<li>there is no maintained prompt-library execution layer in the bootstrap entry</li>
-<li><code>RUN_VALIDATION</code> currently supports builtins and generated harnesses, but not an arbitrary task-defined validation command set</li>
-</ul>
-<p>That means the first bootstrap proof should mimic the <strong>center</strong> of the existing workflow, not the full loop.</p>
-<h2 id="what-the-first-proof-should-actually-demonstrate">What The First Proof Should Actually Demonstrate<a class="headerlink" href="#what-the-first-proof-should-actually-demonstrate" title="Link to this section">&para;</a></h2>
-<p>The first bootstrap proof should show that the maintained path can do all of the following in one run:</p>
+<h2 id="what-was-tested">What Was Tested<a class="headerlink" href="#what-was-tested" title="Link to this section">&para;</a></h2>
+<p>The experiments focused on four questions:</p>
 <ol>
-<li>start from a committed base ref,</li>
-<li>create a managed worktree,</li>
-<li>execute one real coding task against this repository,</li>
-<li>run deterministic validation,</li>
-<li>persist canonical metadata, events, manifests, and terminal state,</li>
-<li>leave behind a reviewable diff in the managed worktree,</li>
-<li>allow the human to decide whether the result is worth promoting into the normal git review flow.</li>
+<li>Can Codex be reached reliably in headless mode at all?</li>
+<li>Can startup noise be reduced or isolated?</li>
+<li>Can a real review task produce usable output through a repeatable interface?</li>
+<li>Does Codex behave differently when run from a more user-shell-like path?</li>
 </ol>
-<p>That is enough to count as bootstrap proof.</p>
-<p>It is <strong>not</strong> necessary for the first proof to show:</p>
+<p>The main trials were:</p>
 <ul>
-<li>semantic evaluator routing,</li>
-<li>gate approvals,</li>
-<li>commit/push/PR automation,</li>
-<li>prompt-catalog compilation,</li>
-<li>multi-agent collaboration,</li>
-<li>iterative fix loops inside one run.</li>
+<li>default authenticated invocation with a trivial <code>ACK</code> prompt,</li>
+<li>isolated <code>CODEX_HOME</code> invocation with a trivial <code>ACK</code> prompt,</li>
+<li>authenticated invocation with explicit <code>stdout</code> and <code>stderr</code> separation,</li>
+<li>authenticated invocation with a real ADR review task and explicit <code>stdout</code> and <code>stderr</code> separation,</li>
+<li>a direct user-shell run of the same <code>ACK</code> command,</li>
+<li>and a repo-local wrapper-script invocation of both <code>ACK</code> and a real review task.</li>
 </ul>
-<h2 id="generic-workflow-requirement">Generic Workflow Requirement<a class="headerlink" href="#generic-workflow-requirement" title="Link to this section">&para;</a></h2>
-<p>The workflow itself should stay generic.</p>
-<p>That means:</p>
+<h2 id="results">Results<a class="headerlink" href="#results" title="Link to this section">&para;</a></h2>
+<h3 id="1-default-authenticated-home-is-usable">1. Default Authenticated Home Is Usable<a class="headerlink" href="#1-default-authenticated-home-is-usable" title="Link to this section">&para;</a></h3>
+<p>Using the installed Codex CLI against the default authenticated home succeeded for both a trivial handshake and a real review task.</p>
+<p>Evidence:</p>
 <ul>
-<li>do not create a one-off workflow whose only meaning is “implement <code>--prompt-dir</code>”</li>
-<li>do not encode a task slug, file list, or one-off validation command directly into the workflow shape</li>
-<li>keep the workflow close to the existing development loop: implement, validate, stop</li>
+<li>handshake output: <code>tmp/codex-stdout.jsonl</code></li>
+<li>review output: <code>tmp/codex-review-stdout.jsonl</code></li>
 </ul>
-<p>The task-specific part should live outside the workflow body.</p>
-<h2 id="recommended-generic-proof-shape">Recommended Generic Proof Shape<a class="headerlink" href="#recommended-generic-proof-shape" title="Link to this section">&para;</a></h2>
-<p>The first maintained proof workflow should use a minimal generic shape like this:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">workflow_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bootstrap_proof_generic</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generic maintained bootstrap proof workflow for one narrow repo task.</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nt">entry_step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">implement</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">steps</span><span class="p">:</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">implement</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">opcode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RUN_AGENT</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">agent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codex</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">prompt</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="no">Read the bootstrap proof task brief at the standard repository path.</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">      </span><span class="no">Implement only that task.</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="no">Run local checks before finishing when practical.</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="no">Do not commit, push, or open a PR.</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="nt">routes</span><span class="p">:</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="nt">completed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">validate</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="nt">error</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">      </span><span class="nt">killed_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">      </span><span class="nt">killed_idle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">      </span><span class="nt">killed_policy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">validate</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="nt">opcode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RUN_VALIDATION</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="nt">run</span><span class="p">:</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tests</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lint</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">    </span><span class="nt">routes</span><span class="p">:</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">      </span><span class="nt">completed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">      </span><span class="nt">error</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">      </span><span class="nt">killed_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">      </span><span class="nt">killed_idle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">      </span><span class="nt">killed_policy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">    </span><span class="nt">opcode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STOP</span>
+<p>The review task produced concrete findings about <code>OA01.4</code>, so this was not only a connectivity test.</p>
+<h3 id="2-isolated-codex_home-reduced-some-noise-but-broke-authentication">2. Isolated <code>CODEX_HOME</code> Reduced Some Noise but Broke Authentication<a class="headerlink" href="#2-isolated-codex_home-reduced-some-noise-but-broke-authentication" title="Link to this section">&para;</a></h3>
+<p>Running with an isolated repo-local <code>CODEX_HOME</code> removed the broken local state-db warnings, but the invocation then failed with authentication errors.</p>
+<p>Observed sequence:</p>
+<ul>
+<li>initial websocket retries with temporary server-side <code>500</code> errors,</li>
+<li>fallback to HTTP,</li>
+<li>then repeated <code>401 Unauthorized</code> responses because the isolated state did not carry usable auth.</li>
+</ul>
+<p>This means isolated state is not currently a drop-in cleanup solution.</p>
+<h3 id="3-stdout-and-stderr-separation-is-the-key-cleanup-move">3. <code>stdout</code> and <code>stderr</code> Separation Is the Key Cleanup Move<a class="headerlink" href="#3-stdout-and-stderr-separation-is-the-key-cleanup-move" title="Link to this section">&para;</a></h3>
+<p>Separating output streams was the most useful cleanup improvement.</p>
+<p>When run as:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>codex<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--json<span class="w"> </span>--ephemeral<span class="w"> </span>...<span class="w"> </span>&gt;<span class="w"> </span>useful.jsonl<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>diagnostics.log
 </span></code></pre></div>
-<p>This is generic in structure:</p>
+<p>the result is:</p>
 <ul>
-<li>one implementation step,</li>
-<li>one deterministic validation step,</li>
-<li>one terminal stop.</li>
+<li>clean JSON event stream on <code>stdout</code>,</li>
+<li>noisy but ignorable startup/runtime diagnostics on <code>stderr</code>.</li>
 </ul>
-<p>The task-specific material moves into a separate task brief.</p>
-<h2 id="task-brief-convention">Task Brief Convention<a class="headerlink" href="#task-brief-convention" title="Link to this section">&para;</a></h2>
-<p>Because the maintained runtime does not yet render task parameters into prompts, a generic workflow needs one stable convention for task discovery.</p>
-<p>The simplest viable convention is:</p>
+<p>This is the strongest practical outcome from the experiments.</p>
+<h3 id="4-user-shell-context-is-cleaner-than-tool-launched-context">4. User-Shell Context Is Cleaner Than Tool-Launched Context<a class="headerlink" href="#4-user-shell-context-is-cleaner-than-tool-launched-context" title="Link to this section">&para;</a></h3>
+<p>The same <code>ACK</code> command run from the user's own shell produced a cleaner result than my tool-launched runs:</p>
 <ul>
-<li>the workflow prompt tells the agent to read one checked-in task brief at a standard path</li>
-<li>the operator updates that task brief before the run</li>
-<li>the workflow itself remains unchanged across different proof tasks</li>
+<li>clean JSON on <code>stdout</code>,</li>
+<li>empty <code>stderr</code>.</li>
 </ul>
-<p>Recommended shape:</p>
+<p>Evidence:</p>
 <ul>
-<li>one repo path reserved for the current bootstrap-proof task brief</li>
-<li>the brief contains:</li>
-<li>task objective</li>
-<li>scope boundaries</li>
-<li>files likely in scope</li>
-<li>acceptance criteria</li>
-<li>preferred validation expectations</li>
-<li>explicit “do not” rules</li>
+<li>user-shell output: <code>tmp/codex-user-stdout.jsonl</code></li>
+<li>user-shell stderr: <code>tmp/codex-user-stderr.log</code></li>
 </ul>
-<p>This keeps task specificity out of the workflow while avoiding premature prompt-program tooling.</p>
-<h2 id="validation-strategy">Validation Strategy<a class="headerlink" href="#validation-strategy" title="Link to this section">&para;</a></h2>
-<p>Validation is the hardest genericity constraint in the current maintained runtime.</p>
-<p>Today the bootstrap profile maps builtin validator IDs in <code>src/tnh_scholar/agent_orchestration/app/profile.py</code>:</p>
+<p>This strongly suggests Codex expects a more normal user-shell environment than the live coding-agent tool environment naturally provides.</p>
+<h3 id="5-a-tiny-wrapper-script-works-but-it-does-not-eliminate-environment-effects">5. A Tiny Wrapper Script Works, But It Does Not Eliminate Environment Effects<a class="headerlink" href="#5-a-tiny-wrapper-script-works-but-it-does-not-eliminate-environment-effects" title="Link to this section">&para;</a></h3>
+<p>A repo-local wrapper script was added at <code>scripts/codex_ephemeral_exec.py</code>.</p>
+<p>It successfully:</p>
 <ul>
-<li><code>tests</code></li>
-<li><code>lint</code></li>
-<li><code>typecheck</code></li>
+<li>ran <code>ACK</code>,</li>
+<li>ran a real review task,</li>
+<li>captured <code>stdout</code> and <code>stderr</code>,</li>
+<li>and extracted a final message summary.</li>
 </ul>
-<p>Those are runtime-profile choices, not workflow-specific commands.</p>
-<p>This leads to one important planning rule:</p>
-<p>The first proof task should be chosen so that broad maintained validation is acceptable.</p>
-<p>That is why a narrow repo task like <code>tnh-gen --prompt-dir</code> is attractive:</p>
+<p>Evidence:</p>
 <ul>
-<li>it is small enough to validate deterministically,</li>
-<li>it is useful product work,</li>
-<li>and it should be able to live under broad repo hygiene checks better than a large architectural task.</li>
+<li>wrapper <code>ACK</code> summary/output: <code>tmp/codex-script-stdout.jsonl</code></li>
+<li>wrapper review output: <code>tmp/codex-script-review-stdout.jsonl</code></li>
 </ul>
-<p>If the broad builtins prove too expensive or too noisy, the next change should still preserve a generic workflow by introducing a generic proof-validation profile, not by making the workflow task-specific.</p>
-<h2 id="recommended-operator-assets">Recommended Operator Assets<a class="headerlink" href="#recommended-operator-assets" title="Link to this section">&para;</a></h2>
-<p>Before the first proof run, the repo should contain:</p>
+<p>But the wrapper did not remove the noisy warnings when launched from this live agent environment. That confirms the wrapper is useful for normalization, not for magically reproducing a true user shell.</p>
+<h2 id="practical-interpretation">Practical Interpretation<a class="headerlink" href="#practical-interpretation" title="Link to this section">&para;</a></h2>
+<p>These experiments separated two questions clearly:</p>
+<ul>
+<li>can headless collaboration happen,</li>
+<li>and can it happen through a clean enough channel?</li>
+</ul>
+<p>The first answer is now yes.</p>
+<p>The second answer is also provisionally yes, but with an important qualifier:</p>
+<ul>
+<li>the cleanest current path is user-shell-like execution,</li>
+<li>while live agent execution can still work if <code>stdout</code> and <code>stderr</code> are separated.</li>
+</ul>
+<h2 id="documented-vs-observed-matrix">Documented-vs-Observed Matrix<a class="headerlink" href="#documented-vs-observed-matrix" title="Link to this section">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Documented / expected</th>
+<th>Observed here</th>
+<th>Confidence</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Headless execution</td>
+<td><code>codex exec</code> is the official non-interactive surface</td>
+<td>Confirmed usable for <code>ACK</code> and real review prompts</td>
+<td>High</td>
+<td>This is the main viable path</td>
+</tr>
+<tr>
+<td>Authenticated default home</td>
+<td>Expected to carry normal user auth and state</td>
+<td>Required for successful headless runs in these experiments</td>
+<td>High</td>
+<td>Default <code>~/.codex</code> works</td>
+</tr>
+<tr>
+<td>Isolated repo-local Codex home</td>
+<td>Plausibly useful for cleaner isolation</td>
+<td>Reduced some state noise but failed with <code>401 Unauthorized</code></td>
+<td>High</td>
+<td>Isolation without auth is not viable</td>
+</tr>
+<tr>
+<td><code>--ephemeral</code> mode</td>
+<td>Expected to reduce persistence</td>
+<td>Works and still returns usable output</td>
+<td>High</td>
+<td>Adds harmless backfill warning</td>
+</tr>
+<tr>
+<td><code>stdout</code> / <code>stderr</code> separation</td>
+<td>Not a Codex feature, but standard CLI pattern</td>
+<td>Strongly improves usability by isolating collaboration output</td>
+<td>High</td>
+<td>Best cleanup move so far</td>
+</tr>
+<tr>
+<td>Repo root working directory</td>
+<td>Expected to pick up repo context</td>
+<td>Returned <code>AGENTS.md</code> when asked for instruction filename</td>
+<td>Medium</td>
+<td>Inference depends on Codex's self-report</td>
+</tr>
+<tr>
+<td>Nested subdirectory inside repo</td>
+<td>Expected to still resolve repo context</td>
+<td>Also returned <code>AGENTS.md</code></td>
+<td>Medium</td>
+<td>Suggests upward repo discovery works</td>
+</tr>
+<tr>
+<td>Outside-repo context</td>
+<td>Expected not to see repo-local guidance</td>
+<td>Returned <code>NONE</code> and inspected <code>/tmp</code> instead</td>
+<td>Medium</td>
+<td>Good boundary-condition result</td>
+</tr>
+<tr>
+<td>User shell vs live agent execution</td>
+<td>Expected to differ in ambient state and permissions</td>
+<td>User shell was much cleaner; live agent path remained noisy but usable</td>
+<td>High</td>
+<td>Context matters materially</td>
+</tr>
+<tr>
+<td>Repo-local wrapper script</td>
+<td>Expected to normalize invocation only</td>
+<td>Worked for <code>ACK</code> and real review, but did not remove environment noise</td>
+<td>High</td>
+<td>Useful helper, not a full solution</td>
+</tr>
+<tr>
+<td>Planning / multi-agent surfaces</td>
+<td>Not yet directly tested behaviorally</td>
+<td><code>features list</code> exposes <code>multi_agent</code> as stable <code>true</code>; <code>collaboration_modes</code> shows removed <code>true</code></td>
+<td>Low</td>
+<td>Visible surface exists, behavior still untested</td>
+</tr>
+</tbody>
+</table>
+<h2 id="error-classes-observed">Error Classes Observed<a class="headerlink" href="#error-classes-observed" title="Link to this section">&para;</a></h2>
+<h3 id="a-local-state-database-migration-warnings">A. Local State Database Migration Warnings<a class="headerlink" href="#a-local-state-database-migration-warnings" title="Link to this section">&para;</a></h3>
+<p>Observed on the authenticated default home:</p>
+<ul>
+<li><code>failed to open state db at /Users/phapman/.codex/state_5.sqlite: migration 24 was previously applied but is missing in the resolved migrations</code></li>
+<li><code>state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back</code></li>
+</ul>
+<p>Interpretation:</p>
+<ul>
+<li>the local Codex state database appears to be from an older or different internal migration set</li>
+<li>Codex continues operating by falling back rather than failing hard</li>
+<li>this is noisy but not currently fatal for headless use</li>
+</ul>
+<p>Implication:</p>
+<ul>
+<li>this likely indicates a local Codex installation or state mismatch that could be cleaned up later</li>
+<li>it is not a blocker for immediate experimentation</li>
+</ul>
+<h3 id="b-plugin-manifest-warnings">B. Plugin Manifest Warnings<a class="headerlink" href="#b-plugin-manifest-warnings" title="Link to this section">&para;</a></h3>
+<p>Observed repeatedly:</p>
+<ul>
+<li><code>ignoring interface.defaultPrompt: prompt must be at most 128 characters</code></li>
+</ul>
+<p>Interpretation:</p>
+<ul>
+<li>curated or installed plugin metadata under <code>~/.codex/.tmp/plugins/</code> contains manifests with overlong default prompts</li>
+<li>Codex logs the issue repeatedly during startup or plugin scanning</li>
+</ul>
+<p>Implication:</p>
+<ul>
+<li>this appears to be upstream or CLI-environment noise, not project-specific failure</li>
+<li>it is currently harmless but very noisy</li>
+</ul>
+<h3 id="c-shell-snapshot-cleanup-warnings">C. Shell Snapshot Cleanup Warnings<a class="headerlink" href="#c-shell-snapshot-cleanup-warnings" title="Link to this section">&para;</a></h3>
+<p>Observed:</p>
+<ul>
+<li>failed deletion of shell snapshot temp files with <code>No such file or directory</code></li>
+</ul>
+<p>Interpretation:</p>
+<ul>
+<li>cleanup logic is attempting to remove temp snapshot files that are already gone</li>
+</ul>
+<p>Implication:</p>
+<ul>
+<li>harmless noise</li>
+</ul>
+<h3 id="d-ephemeral-thread-backfill-warning">D. Ephemeral Thread Backfill Warning<a class="headerlink" href="#d-ephemeral-thread-backfill-warning" title="Link to this section">&para;</a></h3>
+<p>Observed after successful runs:</p>
+<ul>
+<li><code>ephemeral threads do not support includeTurns</code></li>
+</ul>
+<p>Interpretation:</p>
+<ul>
+<li>Codex tries to backfill richer turn history even though ephemeral mode does not persist the session in the same way</li>
+</ul>
+<p>Implication:</p>
+<ul>
+<li>harmless for current purposes</li>
+<li>another reason to treat <code>stdout</code> as the primary usable channel</li>
+</ul>
+<h3 id="e-isolated-state-authentication-failure">E. Isolated-State Authentication Failure<a class="headerlink" href="#e-isolated-state-authentication-failure" title="Link to this section">&para;</a></h3>
+<p>Observed under repo-local <code>CODEX_HOME</code>:</p>
+<ul>
+<li>websocket <code>500 Internal Server Error</code> during retries</li>
+<li>fallback to HTTP</li>
+<li>repeated <code>401 Unauthorized: Missing bearer or basic authentication in header</code></li>
+</ul>
+<p>Interpretation:</p>
+<ul>
+<li>repo-local isolated state lacks the authentication material used by the default home</li>
+<li>server-side transient websocket errors may also be present, but the decisive blocker was missing auth</li>
+</ul>
+<p>Implication:</p>
+<ul>
+<li>a truly isolated state path would require explicit auth setup</li>
+<li>this is possible future work, but not required for current spike progress</li>
+</ul>
+<h2 id="current-recommendation">Current Recommendation<a class="headerlink" href="#current-recommendation" title="Link to this section">&para;</a></h2>
+<p>For ongoing <code>OA01.4</code> experiments, the best current path is:</p>
 <ol>
-<li>one generic bootstrap-proof workflow YAML</li>
-<li>one current bootstrap-proof task brief at a stable path</li>
-<li>one short operator note with the run command and success criteria</li>
+<li>keep the authenticated default <code>~/.codex</code> home,</li>
+<li>always use <code>--ephemeral</code>,</li>
+<li>always separate <code>stdout</code> and <code>stderr</code>,</li>
+<li>treat <code>stdout</code> as the collaboration channel,</li>
+<li>treat <code>stderr</code> as diagnostics only.</li>
 </ol>
-<p>This is enough to run the maintained headless path honestly.</p>
-<p>It is not necessary to build a full prompt catalog or workflow registry first.</p>
-<h2 id="operator-command">Operator Command<a class="headerlink" href="#operator-command" title="Link to this section">&para;</a></h2>
-<p>The operator path should be explicit and stable.</p>
-<p>Recommended command shape:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>tnh-conductor<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--workflow<span class="w"> </span>&lt;generic-proof-workflow-path&gt;<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--repo-root<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>--base-ref<span class="w"> </span>main
-</span></code></pre></div>
-<p>Optional executable overrides can still be provided if needed, but they should not be the central story.</p>
-<p>The operator note should document:</p>
+<p>In other words, prefer operational isolation over full state isolation.</p>
+<p>When possible, prefer a user-shell-like launch context over an artificial tool or sandbox context.</p>
+<h2 id="do-we-need-configuration-work">Do We Need Configuration Work?<a class="headerlink" href="#do-we-need-configuration-work" title="Link to this section">&para;</a></h2>
+<p>Possibly, but not as an immediate prerequisite.</p>
+<p>What may eventually be worth cleaning up:</p>
 <ul>
-<li>the workflow path</li>
-<li>the task brief path</li>
-<li>the run command</li>
-<li>where to inspect canonical run artifacts</li>
-<li>where the managed worktree will appear</li>
-<li>what counts as proof success</li>
+<li>stale or mismatched local Codex state database</li>
+<li>noisy plugin metadata under <code>~/.codex/.tmp/plugins/</code></li>
+<li>a more explicit authenticated isolated-state setup, if the project later wants reproducible repo-local Codex environments</li>
 </ul>
-<h2 id="what-needs-to-be-planned-versus-built">What Needs To Be Planned Versus Built<a class="headerlink" href="#what-needs-to-be-planned-versus-built" title="Link to this section">&para;</a></h2>
-<p>The bootstrap-proof slice needs planning in four areas.</p>
-<h3 id="1-workflow-shape">1. Workflow Shape<a class="headerlink" href="#1-workflow-shape" title="Link to this section">&para;</a></h3>
-<p>This is mostly a design decision:</p>
+<p>What is not required right now:</p>
 <ul>
-<li>keep the workflow generic</li>
-<li>keep it close to the current real development pattern</li>
-<li>avoid semantic-control features that are not yet maintained</li>
+<li>fixing all Codex local warnings before continuing experiments</li>
 </ul>
-<h3 id="2-task-brief-convention">2. Task Brief Convention<a class="headerlink" href="#2-task-brief-convention" title="Link to this section">&para;</a></h3>
-<p>This is the missing bridge between “generic workflow” and “real task.”</p>
-<p>Without a stable task-brief convention, the workflow will drift into being task-specific.</p>
-<h3 id="3-validation-posture">3. Validation Posture<a class="headerlink" href="#3-validation-posture" title="Link to this section">&para;</a></h3>
-<p>This is the main practical constraint.</p>
-<p>We need to decide whether the first proof can succeed under the current broad builtin validation profile, or whether a generic proof-validation profile is required first.</p>
-<h3 id="4-proof-success-criteria">4. Proof Success Criteria<a class="headerlink" href="#4-proof-success-criteria" title="Link to this section">&para;</a></h3>
-<p>The run should only count as bootstrap proof if it produces:</p>
+<p>The communication path is already usable enough without that cleanup.</p>
+<h2 id="what-this-means-for-further-experiments">What This Means for Further Experiments<a class="headerlink" href="#what-this-means-for-further-experiments" title="Link to this section">&para;</a></h2>
+<p>The immediate next step is not broader architecture. It is careful research and experimentation around the conditions that make Codex behave "as if run by the user."</p>
+<p>That likely includes:</p>
 <ul>
-<li>a useful repository diff,</li>
-<li>green deterministic validation,</li>
-<li>canonical artifacts,</li>
-<li>and a reviewable result that a human would plausibly carry forward.</li>
+<li>authentication and credential location,</li>
+<li>persistence and state handling under <code>~/.codex</code>,</li>
+<li>plugin loading behavior,</li>
+<li>home-directory and shell expectations,</li>
+<li>and what permissions are required for a repo-local helper to preserve user-shell behavior.</li>
 </ul>
-<h2 id="what-should-stay-out-of-scope">What Should Stay Out Of Scope<a class="headerlink" href="#what-should-stay-out-of-scope" title="Link to this section">&para;</a></h2>
-<p>To stay aligned with the direction memo, this proof slice should not expand into:</p>
+<p>The most likely-success avenues now appear to be:</p>
+<ol>
+<li>continue user-shell-mimic experiments rather than isolated-home experiments,</li>
+<li>build out the matrix with a few more rows before adding more code,</li>
+<li>test one narrow planning or multi-agent surface that already appears in the feature set,</li>
+<li>and defer any dangerous-mode or stronger-permission experiments until the normal path is better understood.</li>
+</ol>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Link to this section">&para;</a></h2>
+<p>The experiments support a clear outcome:</p>
 <ul>
-<li>maintained <code>EVALUATE</code></li>
-<li>maintained <code>GATE</code></li>
-<li>multi-step correction routing</li>
-<li>commit/push/PR automation</li>
-<li>prompt-library infrastructure</li>
-<li>richer rollback design</li>
+<li>headless Codex communication is viable,</li>
+<li>the main challenge is noisy local CLI/runtime behavior,</li>
+<li>and that noise can be managed well enough for continued experimentation by using ephemeral runs and separating <code>stdout</code> from <code>stderr</code>.</li>
 </ul>
-<p>Those may come later, but they are not needed to prove the maintained path is useful.</p>
-<h2 id="mapping-to-the-existing-agent-workflow">Mapping To The Existing Agent Workflow<a class="headerlink" href="#mapping-to-the-existing-agent-workflow" title="Link to this section">&para;</a></h2>
-<p>The first maintained proof should be understood as a compressed subset of the existing <code>AGENT_WORKFLOW.md</code>.</p>
-<p>Approximate mapping:</p>
-<ul>
-<li>Task Discovery:
-  handled by the human before the run, via the task brief</li>
-<li>Initial Design / Design Review:
-  handled before the run, outside the maintained runtime</li>
-<li>Implementation:
-  mapped to one <code>RUN_AGENT</code></li>
-<li>Deterministic validation:
-  mapped to one <code>RUN_VALIDATION</code></li>
-<li>Human review and follow-up:
-  handled after the run, outside the maintained runtime</li>
-</ul>
-<p>So the first proof is not “the whole workflow is automated.”</p>
-<p>It is:</p>
-<p>The maintained orchestration path can now execute the implementation-and-validation core of the real workflow against a real repo task.</p>
-<h2 id="recommended-next-slice">Recommended Next Slice<a class="headerlink" href="#recommended-next-slice" title="Link to this section">&para;</a></h2>
-<p>The next implementation slice should be planned as:</p>
-<ul>
-<li>add the generic bootstrap-proof workflow file</li>
-<li>add the task-brief convention and first task brief</li>
-<li>add the operator run note</li>
-<li>run the proof against one narrow repo-native task</li>
-<li>inspect the run artifacts and resulting worktree</li>
-</ul>
-<p>Only after that run should the project decide whether the next missing lever is:</p>
-<ul>
-<li>a generic correction loop,</li>
-<li>a better validation profile,</li>
-<li>or PR automation.</li>
-</ul>
-<h2 id="acceptance-criteria-for-this-planning-note">Acceptance Criteria For This Planning Note<a class="headerlink" href="#acceptance-criteria-for-this-planning-note" title="Link to this section">&para;</a></h2>
-<p>This planning note is successful if it establishes agreement on the following:</p>
-<ul>
-<li>the first proof workflow should be generic, not task-tailored</li>
-<li>the first proof should mimic the existing agent workflow only at the implementation-and-validation core</li>
-<li>the task-specific content should live in a task brief, not in the workflow body</li>
-<li>the maintained headless CLI is necessary but not sufficient by itself</li>
-<li>no large prompt/workflow tooling build-out is required before attempting the first proof run</li>
-</ul>
-<h2 id="practical-recommendation">Practical Recommendation<a class="headerlink" href="#practical-recommendation" title="Link to this section">&para;</a></h2>
-<p>Use <code>tnh-gen --prompt-dir</code> as the first task candidate, but do <strong>not</strong> bake that task into the workflow.</p>
-<p>Instead:</p>
-<ul>
-<li>keep one generic bootstrap-proof workflow,</li>
-<li>write one task brief for the <code>--prompt-dir</code> task,</li>
-<li>run the maintained headless CLI against that pair,</li>
-<li>and judge the result by the artifacts, validation, and usefulness of the resulting diff.</li>
-</ul>
+<p>That is sufficient to continue the communication-focused <code>OA01.4</code> spike.</p>
 
 
 
@@ -10751,10 +11355,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
       
     
   </body>

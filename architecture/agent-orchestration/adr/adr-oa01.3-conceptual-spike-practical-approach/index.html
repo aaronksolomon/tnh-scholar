@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Operational notes and blockers for the Codex harness test flow">
+        <meta name="description" content="Practical approach for testing the OA01.2 orientation-based collaboration hypothesis with minimal new code and explicit prerequisite spike work.">
       
       
-        <meta name="author" content="GPT-5 (Codex CLI)">
+        <meta name="author" content="Aaron Solomon, Codex">
       
       
       
-        <link rel="prev" href="../bootstrap-direction-design-memo/">
+        <link rel="prev" href="../adr-oa01.2-conceptual-spike-orientation-based-supervisory-orchestration/">
       
       
-        <link rel="next" href="../codex-harness-spike-findings/">
+        <link rel="next" href="../adr-oa01.4-headless-agent-communication-functional-spike/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Codex Harness End-to-End Test Report - TNH Scholar Documentation</title>
+        <title>ADR-OA01.3: Practical Approach for the Orientation-Based Conceptual Spike - TNH Scholar Documentation</title>
       
     
     
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#codex-harness-end-to-end-test-report" class="md-skip">
+        <a href="#adr-oa013-practical-approach-for-the-orientation-based-conceptual-spike" class="md-skip">
           Skip to content
         </a>
       
@@ -178,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Codex Harness End-to-End Test Report
+              ADR-OA01.3: Practical Approach for the Orientation-Based Conceptual Spike
             
           </span>
         </div>
@@ -1852,6 +1852,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1895,19 +1897,25 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_3" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../adr/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1931,7 +1939,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_3_3">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -1947,7 +1955,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
+      <a href="../adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1975,7 +1983,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
+      <a href="../adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2003,7 +2011,303 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
+      <a href="../adr-oa01.2-conceptual-spike-orientation-based-supervisory-orchestration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA01.2: Conceptual Spike for Orientation-Based Supervisory Orchestration
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ADR-OA01.3: Practical Approach for the Orientation-Based Conceptual Spike
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA01.3: Practical Approach for the Orientation-Based Conceptual Spike
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-prerequisite-functional-spike-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Prerequisite Functional Spike Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-conceptual-spike-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Conceptual Spike Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-comparative-review-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Comparative Review Layer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#artifact-guidance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Artifact Guidance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimal-operation-set-beneath-the-supervisor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minimal Operation Set Beneath the Supervisor
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reuse-guidance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reuse Guidance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#codebase-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Codebase Approach
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#out-of-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Out of Scope
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Standard
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa01.4-headless-agent-communication-functional-spike/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-OA01.4: Headless Agent Communication Functional Spike
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2031,7 +2335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
+      <a href="../adr-oa03-agent-runner-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2059,7 +2363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
+      <a href="../adr-oa03.1-claude-code-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2087,7 +2391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa03.2-codex-runner/" class="md-nav__link">
+      <a href="../adr-oa03.2-codex-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2115,7 +2419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
+      <a href="../adr-oa03.3-codex-cli-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2143,7 +2447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
+      <a href="../adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2171,7 +2475,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
+      <a href="../adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2199,7 +2503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04.2-runner-contract/" class="md-nav__link">
+      <a href="../adr-oa04.2-runner-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2227,7 +2531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+      <a href="../adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2255,7 +2559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+      <a href="../adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2283,7 +2587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+      <a href="../adr-oa04.5-harness-backend-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2311,7 +2615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
+      <a href="../adr-oa05-prompt-library-specification/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2339,7 +2643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
+      <a href="../adr-oa06-planner-evaluator-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2367,7 +2671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+      <a href="../adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2395,7 +2699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+      <a href="../adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2554,8 +2858,6 @@
                 
   
   
-    
-  
   
   
     
@@ -2573,29 +2875,19 @@
       
         
       
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../notes/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2619,7 +2911,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_3_5">
             <span class="md-nav__icon md-icon"></span>
             Notes
@@ -2634,8 +2926,70 @@
   
   
   
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5_2" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../notes/design/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_3_5_2" id="__nav_9_3_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_3_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../architecture-blueprint/" class="md-nav__link">
+      <a href="../../notes/design/architecture-blueprint/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2663,7 +3017,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../bootstrap-direction-design-memo/" class="md-nav__link">
+      <a href="../../notes/design/bootstrap-direction-design-memo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2684,41 +3038,120 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
               
                 
   
   
+  
+  
     
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
+    
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
+        
+          
+        
       
         
       
+        
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5_3" >
+        
           
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../notes/experiments/" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
-    Codex Harness End-to-End Test Report
+    Experiments
   </span>
   
     
   
   
-    <span class="md-status md-status--draft"></span>
+    <span class="md-status md-status--processing"></span>
   
 
   
 
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_3_5_3" id="__nav_9_3_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_3_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Experiments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/experiments/bootstrap-proof-run-result/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap Proof Run Result
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/experiments/codex-harness-e2e-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2734,89 +3167,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
-    <span class="md-ellipsis">
-      Context
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#current-state" class="md-nav__link">
-    <span class="md-ellipsis">
-      Current State
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-worked" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Worked
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-blockers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Blockers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#operational-gotchas" class="md-nav__link">
-    <span class="md-ellipsis">
-      Operational Gotchas
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      Recommended Next Steps
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2829,7 +3179,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../codex-harness-spike-findings/" class="md-nav__link">
+      <a href="../../notes/experiments/codex-harness-spike-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2857,7 +3207,163 @@
   
   
     <li class="md-nav__item">
-      <a href="../oa07-bootstrap-proof-workflow-plan/" class="md-nav__link">
+      <a href="../../notes/experiments/codex-headless-communication-experiment-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Codex Headless Communication Experiment Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/experiments/codex-headless-communication-report/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Codex Headless Communication Report
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/experiments/spike-testing-sequence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agent Orchestration Spike Testing Sequence
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../notes/plans/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Plans
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_3_5_4" id="__nav_9_3_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_3_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Plans
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/plans/oa07-bootstrap-proof-workflow-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2885,7 +3391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+      <a href="../../notes/plans/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2913,7 +3419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
+      <a href="../../notes/plans/oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2934,6 +3440,80 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../notes/research/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Research
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--processing"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_3_5_5" id="__nav_9_3_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_3_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Research
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
               
                 
   
@@ -2941,11 +3521,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-testing-sequence/" class="md-nav__link">
+      <a href="../../notes/research/codex-headless-communication-research-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Agent Orchestration Spike Testing Sequence
+    Codex Headless Communication Research Directions
   </span>
   
     
@@ -2969,7 +3549,63 @@
   
   
     <li class="md-nav__item">
-      <a href="../vscode-1110-agent-features-research/" class="md-nav__link">
+      <a href="../../notes/research/codex-headless-research-memo-for-engineer-agents/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Codex Headless Research Memo for Engineer Agents
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/research/codex-official-docs-reference-summary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Codex Official Docs Reference Summary
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/research/vscode-1110-agent-features-research/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2985,6 +3621,14 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -10067,54 +10711,156 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-state" class="md-nav__link">
+  <a href="#problem" class="md-nav__link">
     <span class="md-ellipsis">
-      Current State
+      Problem
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-worked" class="md-nav__link">
+  <a href="#decision" class="md-nav__link">
     <span class="md-ellipsis">
-      What Worked
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-prerequisite-functional-spike-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Prerequisite Functional Spike Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-conceptual-spike-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Conceptual Spike Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-comparative-review-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Comparative Review Layer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#artifact-guidance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Artifact Guidance
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-blockers" class="md-nav__link">
+  <a href="#minimal-operation-set-beneath-the-supervisor" class="md-nav__link">
     <span class="md-ellipsis">
-      Key Blockers
+      Minimal Operation Set Beneath the Supervisor
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#operational-gotchas" class="md-nav__link">
+  <a href="#reuse-guidance" class="md-nav__link">
     <span class="md-ellipsis">
-      Operational Gotchas
+      Reuse Guidance
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#recommended-next-steps" class="md-nav__link">
+  <a href="#codebase-approach" class="md-nav__link">
     <span class="md-ellipsis">
-      Recommended Next Steps
+      Codebase Approach
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
+  <a href="#out-of-scope" class="md-nav__link">
     <span class="md-ellipsis">
-      References
+      Out of Scope
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Standard
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
     </span>
   </a>
   
@@ -10138,44 +10884,167 @@
   
 
 
-<h1 id="codex-harness-end-to-end-test-report">Codex Harness End-to-End Test Report<a class="headerlink" href="#codex-harness-end-to-end-test-report" title="Link to this section">&para;</a></h1>
+<h1 id="adr-oa013-practical-approach-for-the-orientation-based-conceptual-spike">ADR-OA01.3: Practical Approach for the Orientation-Based Conceptual Spike<a class="headerlink" href="#adr-oa013-practical-approach-for-the-orientation-based-conceptual-spike" title="Link to this section">&para;</a></h1>
+<p>Practical guide for how to test the <code>OA01.2</code> orientation-based collaboration hypothesis without prematurely rebuilding the orchestration stack.</p>
+<ul>
+<li><strong>Status</strong>: Proposed</li>
+<li><strong>Type</strong>: Implementation Guide ADR</li>
+<li><strong>Date</strong>: 2026-04-11</li>
+<li><strong>Owner</strong>: Aaron Solomon</li>
+<li><strong>Author</strong>: Aaron Solomon, Codex</li>
+<li><strong>Parent</strong>: <a href="../adr-oa01.2-conceptual-spike-orientation-based-supervisory-orchestration/">ADR-OA01.2</a></li>
+</ul>
+<hr />
 <h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
-<p>We stood up a minimal Codex harness to validate a full tool-calling loop (read/search/apply/run tests) against the repo. This report captures what worked, what blocked, and the practical gotchas to help other agents reproduce and extend the test.</p>
-<h2 id="current-state">Current State<a class="headerlink" href="#current-state" title="Link to this section">&para;</a></h2>
+<p><code>OA01.2</code> establishes a strategic reset: test whether orientation-based supervisory collaboration is a more viable control model than the prior engine-first direction.</p>
+<p>The immediate need is not a new permanent orchestration architecture. The immediate need is a practical way to run the conceptual spike cleanly enough that the project can learn from it.</p>
+<p>That means:</p>
 <ul>
-<li>Harness runs via <code>tnh-codex-harness</code> (Typer CLI) and writes artifacts under <code>.tnh-codex/runs/&lt;timestamp&gt;/</code>.</li>
-<li>Tool calls are executed successfully (read/search), but final structured output is often missing.</li>
-<li>The run ends "blocked" when no final JSON response is produced after tool rounds.</li>
+<li>keeping the first implementation thin,</li>
+<li>avoiding broad new framework work,</li>
+<li>reusing substrate only where it clearly helps,</li>
+<li>and recognizing that some narrower functional spike work must happen first to make the conceptual spike executable at all.</li>
 </ul>
-<h2 id="what-worked">What Worked<a class="headerlink" href="#what-worked" title="Link to this section">&para;</a></h2>
+<p>The most immediate prerequisite is headless worker communication. If the project cannot reliably send a structured collaborator brief to a worker agent and inspect what comes back, the supervisory orientation model cannot be meaningfully tested.</p>
+<h2 id="problem">Problem<a class="headerlink" href="#problem" title="Link to this section">&para;</a></h2>
+<p>Without a practical approach, the project risks falling into one of two failure modes:</p>
 <ul>
-<li>Tools executed with real outputs and filesystem access.</li>
-<li>Sandbox patch sync updates code without committing or switching branches.</li>
-<li>Codex runs can be executed from the sandbox with a copied <code>.env</code>.</li>
+<li>returning to broad infrastructure-first implementation before the conceptual model is tested,</li>
+<li>or keeping the idea so abstract that it never reaches a meaningful repo task comparison.</li>
 </ul>
-<h2 id="key-blockers">Key Blockers<a class="headerlink" href="#key-blockers" title="Link to this section">&para;</a></h2>
-<ol>
-<li><strong>No final output text</strong>: The model often emits tool calls only. Without a final JSON response, parsing fails.</li>
-<li><strong>Responses API limitations</strong>: <code>response_format</code> and <code>temperature</code> are rejected, so schema enforcement must use the <code>text</code> config.</li>
-<li><strong>Sandbox hygiene</strong>: Sync resets remove <code>.env</code>, so credentials must be copied after sync.</li>
-</ol>
-<h2 id="operational-gotchas">Operational Gotchas<a class="headerlink" href="#operational-gotchas" title="Link to this section">&para;</a></h2>
+<p>The conceptual spike therefore needs a small practical frame that names:</p>
 <ul>
-<li>Run <code>make sync-sandbox</code> from the source repo root, not inside the sandbox.</li>
-<li>After sync, copy <code>.env</code> to sandbox before running the harness.</li>
-<li>CLI is <code>tnh-codex-harness</code> with <code>--task</code>; there is no <code>run</code> subcommand.</li>
+<li>what must exist first,</li>
+<li>what the first spike materials might be,</li>
+<li>what parts of the current codebase may be reused,</li>
+<li>and what should remain out of scope until evidence justifies more buildout.</li>
 </ul>
-<h2 id="recommended-next-steps">Recommended Next Steps<a class="headerlink" href="#recommended-next-steps" title="Link to this section">&para;</a></h2>
-<ol>
-<li>Enforce structured output with <code>text</code> JSON schema in the Responses API.</li>
-<li>Persist tool results into artifacts for easier debugging.</li>
-<li>Add a termination rule when tool calls repeat without final output.</li>
-</ol>
-<h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
+<p>The <code>OA01.2</code> conceptual spike will be approached in three layers, with the smallest viable footprint.</p>
+<h3 id="1-prerequisite-functional-spike-layer">1. Prerequisite Functional Spike Layer<a class="headerlink" href="#1-prerequisite-functional-spike-layer" title="Link to this section">&para;</a></h3>
+<p>Before the supervisory concept is evaluated, the project should prove a minimal ability to:</p>
 <ul>
-<li><code>/architecture/agent-orchestration/adr/adr-oa03-agent-runner-architecture.md</code></li>
-<li><code>/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md</code></li>
-<li><code>SPIKE_REPORT.md</code></li>
+<li>launch a worker agent from the local environment,</li>
+<li>pass a bounded task brief,</li>
+<li>capture enough output and diagnostics to understand what happened,</li>
+<li>and preserve workspace and evidence state for review.</li>
+</ul>
+<p>This layer is not the point of the new architecture. It is a prerequisite spike that makes the conceptual spike runnable.</p>
+<p>The first prerequisite focus should be headless agent communication compatibility and diagnosability:</p>
+<ul>
+<li>executable discovery,</li>
+<li>capability or contract probing,</li>
+<li>minimal communication invocation,</li>
+<li>returned-text capture,</li>
+<li>and legible failure reporting.</li>
+</ul>
+<h3 id="2-conceptual-spike-layer">2. Conceptual Spike Layer<a class="headerlink" href="#2-conceptual-spike-layer" title="Link to this section">&para;</a></h3>
+<p>Once bounded worker execution is good enough to support real testing, the project should evaluate whether a supervisor choosing orientations produces better engineering progress than simpler direct-agent use.</p>
+<p>The first conceptual spike should use a very small practical orientation set:</p>
+<ul>
+<li>implementation,</li>
+<li>repair,</li>
+<li>design review,</li>
+<li>evaluation.</li>
+</ul>
+<p>These orientations should be expressed in English documents or playbook-style guidance, not in a new workflow language.</p>
+<h3 id="3-comparative-review-layer">3. Comparative Review Layer<a class="headerlink" href="#3-comparative-review-layer" title="Link to this section">&para;</a></h3>
+<p>The spike should be judged by running a small number of real repo tasks through two comparison modes:</p>
+<ul>
+<li>a simpler direct-agent baseline,</li>
+<li>and an orientation-supervised approach.</li>
+</ul>
+<p>The goal is not formal measurement. The goal is to produce enough evidence for an expert judgment about whether the orientation model creates better task framing, decomposition, follow-through, and adaptation.</p>
+<h2 id="artifact-guidance">Artifact Guidance<a class="headerlink" href="#artifact-guidance" title="Link to this section">&para;</a></h2>
+<p>The first practical spike should prefer the smallest artifact set that still makes learning possible.</p>
+<p>At minimum, the project likely needs:</p>
+<ul>
+<li>some form of supervisory guidance,</li>
+<li>some form of orientation definition,</li>
+<li>at least one real repo task brief,</li>
+<li>and a lightweight way to capture what happened.</li>
+</ul>
+<p>The exact shape of those artifacts should remain open during the spike. They do not need to begin as a polished or stable system. If a looser document, prompt, or operator note is sufficient to run a useful comparison, that is acceptable.</p>
+<h2 id="minimal-operation-set-beneath-the-supervisor">Minimal Operation Set Beneath the Supervisor<a class="headerlink" href="#minimal-operation-set-beneath-the-supervisor" title="Link to this section">&para;</a></h2>
+<p>The conceptual spike should assume a very small bounded operation set beneath the supervisor.</p>
+<p>The initial operation set should be limited to actions close to:</p>
+<ul>
+<li>inspect context,</li>
+<li>run worker agent,</li>
+<li>run validation,</li>
+<li>summarize evidence,</li>
+<li>and stop or hand back to human review.</li>
+</ul>
+<p>This list is intentionally small. It is guidance, not a final contract. If the spike needs richer or differently shaped operations, that should be discovered through use rather than assumed up front.</p>
+<h2 id="reuse-guidance">Reuse Guidance<a class="headerlink" href="#reuse-guidance" title="Link to this section">&para;</a></h2>
+<p>The conceptual spike may reuse clearly separable substrate from the current codebase when that reduces spike cost without pulling prior architecture assumptions back in through the side door.</p>
+<p>Reasonable reuse candidates include:</p>
+<ul>
+<li>worktree and workspace helpers,</li>
+<li>lightweight validation execution,</li>
+<li>artifact writing utilities,</li>
+<li>and repo inspection helpers.</li>
+</ul>
+<p>Reuse should remain opportunistic, not mandatory. The spike should not be forced to route itself through the current workflow kernel just because that code exists.</p>
+<h2 id="codebase-approach">Codebase Approach<a class="headerlink" href="#codebase-approach" title="Link to this section">&para;</a></h2>
+<p>The spike should continue within the existing documentation and architecture space for now.</p>
+<p>The project should <strong>not</strong> create a parallel long-lived “v2” doc universe or a broad replacement package before the conceptual direction is tested.</p>
+<p>If code is written for the spike, it should stay visibly experimental, narrow in scope, and easy to discard or condense later.</p>
+<p>That means:</p>
+<ul>
+<li>prefer new spike-local documents before new framework modules,</li>
+<li>prefer thin helper code before new orchestration subsystems,</li>
+<li>and prefer explicit temporary seams over speculative abstractions.</li>
+</ul>
+<p>The project should optimize for trying multiple plausible supervisory shapes quickly. The value of the spike comes partly from learning through several approaches, mostly expressed in English and mostly executed through strong external coding agents, rather than from selecting one architecture too early.</p>
+<h2 id="out-of-scope">Out of Scope<a class="headerlink" href="#out-of-scope" title="Link to this section">&para;</a></h2>
+<p>This practical approach intentionally does not authorize:</p>
+<ul>
+<li>a new workflow DSL,</li>
+<li>a general supervisor runtime,</li>
+<li>a new persistent state machine,</li>
+<li>broad prompt-library infrastructure,</li>
+<li>a final runner-abstraction platform,</li>
+<li>or a replacement of the current orchestration codebase.</li>
+</ul>
+<p>Those may become appropriate later, but only if the conceptual spike produces evidence that they are worth building.</p>
+<h2 id="evaluation-standard">Evaluation Standard<a class="headerlink" href="#evaluation-standard" title="Link to this section">&para;</a></h2>
+<p>The practical spike is successful if it produces credible evidence for the <code>OA01.2</code> question while keeping code investment small, reversible, and exploratory.</p>
+<p>The main evaluation questions are:</p>
+<ul>
+<li>did the prerequisite communication spike make bounded worker collaboration legible and usable,</li>
+<li>did the orientation framing improve real repo-task progress compared with simpler direct-agent use,</li>
+<li>and did the spike reveal what thinner substrate is actually necessary?</li>
+</ul>
+<p>Evaluation remains primarily qualitative and based on expert engineering judgment.</p>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
+<ul>
+<li>keeps the project moving without another infrastructure-first detour,</li>
+<li>makes headless agent communication a prerequisite rather than the architectural center,</li>
+<li>creates a practical bridge from <code>OA01.2</code> to executable spike work,</li>
+<li>and protects the project from premature parallel architecture buildout.</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
+<ul>
+<li>leaves some implementation ambiguity in place by design,</li>
+<li>may reuse current substrate unevenly,</li>
+<li>and may require discarding some spike-local code or documents later if the direction changes.</li>
+</ul>
+<h2 id="open-questions">Open Questions<a class="headerlink" href="#open-questions" title="Link to this section">&para;</a></h2>
+<ul>
+<li>What is the smallest headless communication layer that is good enough for the spike?</li>
+<li>Should the first comparison case be an implementation task, a repair task, or both?</li>
+<li>How much of the current maintained conductor path is worth reusing before it starts shaping the spike too strongly?</li>
+<li>What is the cleanest place to keep any spike-local helper code if the project writes some?</li>
+</ul>
+<h2 id="rationale">Rationale<a class="headerlink" href="#rationale" title="Link to this section">&para;</a></h2>
+<p>The practical danger after <code>OA01.2</code> is to mistake strategic clarity for implementation readiness.</p>
+<p>This ADR avoids that mistake by defining a narrow path from concept to test:</p>
+<ul>
+<li>first make headless worker communication usable enough to support the spike,</li>
+<li>then test orientation-based supervision on real tasks through fast iteration,</li>
+<li>then decide what architecture, if any, has earned deeper implementation.</li>
 </ul>
 
 
