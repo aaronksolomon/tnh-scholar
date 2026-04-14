@@ -19,16 +19,16 @@ It is meant to make system evaluation and directional planning faster by answeri
 2. which parts are the current maintained core,
 3. how control and evidence actually flow through the runtime today.
 
-This note is not an ADR and does not freeze design decisions. It should be read alongside the direction memo at [/docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md](/docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md).
+This note is not an ADR and does not freeze design decisions. It should be read alongside the direction memo at [/docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md](/architecture/agent-orchestration/notes/design/bootstrap-direction-design-memo.md).
 
 ## Orientation
 
 The architectural center of gravity comes from four sources:
 
-- [/docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md](/docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
-- [/docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md](/docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md)
-- [/docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md](/docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
-- [/docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md](/docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md)
+- [/docs/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md)
+- [/docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md](/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md)
+- [/docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md](/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
+- [/docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md)
 
 The short version:
 
@@ -344,14 +344,14 @@ That lens keeps this blueprint aligned with the direction memo instead of turnin
 
 For fast onboarding, read in this order:
 
-1. [/docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md](/docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md)
-2. [/docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md](/docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md)
-3. [/docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md](/docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
-4. [/docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md](/docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md)
-5. [/docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md](/docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md)
-6. [/docs/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md](/docs/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md)
-7. [/docs/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md](/docs/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md)
-8. [/docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md](/docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md)
+1. [/docs/architecture/agent-orchestration/notes/bootstrap-direction-design-memo.md](/architecture/agent-orchestration/notes/design/bootstrap-direction-design-memo.md)
+2. [/docs/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md](/architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2.md)
+3. [/docs/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md](/architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics.md)
+4. [/docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md](/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md)
+5. [/docs/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md](/architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract.md)
+6. [/docs/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md](/architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract.md)
+7. [/docs/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md)
+8. [/docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md)
 
 ## Closing View
 

@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration/adr"
 owner: ""
 author: ""
 status: processing
-created: "2026-04-10"
+created: "2026-04-13"
 auto_generated: true
 ---
 
@@ -17,6 +17,12 @@ auto_generated: true
 **[ADR-OA01: TNH-Conductor — Provenance-Driven AI Workflow Coordination](adr-oa01-agent-orchestration-strategy.md)** - Strategic architecture for coordinating external AI agents (Claude Code, Codex) through bounded, auditable, human-supervised workflows
 
 **[ADR-OA01.1: TNH-Conductor — Provenance-Driven AI Workflow Coordination (v2)](adr-oa01.1-conductor-strategy-v2.md)** - Strategic architecture for coordinating external AI agents through bounded, auditable, human-supervised workflows with CLI opcode tooling
+
+**[ADR-OA01.2: Conceptual Spike for Orientation-Based Supervisory Orchestration](adr-oa01.2-conceptual-spike-orientation-based-supervisory-orchestration.md)** - Strategy-level spike direction for testing orientation-based supervisory orchestration as an alternative to engine-first workflow control.
+
+**[ADR-OA01.3: Practical Approach for the Orientation-Based Conceptual Spike](adr-oa01.3-conceptual-spike-practical-approach.md)** - Practical approach for testing the OA01.2 orientation-based collaboration hypothesis with minimal new code and explicit prerequisite spike work.
+
+**[ADR-OA01.4: Headless Agent Communication Functional Spike](adr-oa01.4-headless-agent-communication-functional-spike.md)** - Prerequisite functional spike for proving that structured headless communication between supervising and worker agents can happen simply and repeatably enough to support the OA01.2 conceptual spike.
 
 **[ADR-OA02: Phase 0 Protocol Layer Spike](adr-oa02-phase-0-protocol-spike.md)** - De-risking spike to prove headless agent capture and safety controls for tnh-conductor
 
