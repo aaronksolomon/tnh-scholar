@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration/bootstrap-p
 owner: ""
 author: ""
 status: processing
-created: "2026-04-13"
+created: "2026-04-14"
 auto_generated: true
 ---
 

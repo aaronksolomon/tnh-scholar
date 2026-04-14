@@ -20,6 +20,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--prompt", required=True)
     parser.add_argument("--stdout-path", required=True)
     parser.add_argument("--stderr-path", required=True)
+    parser.add_argument("--profile")
     parser.add_argument(
         "--codex-path",
         default=(
@@ -28,7 +29,9 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument("--cwd")
-    parser.add_argument("--model", default="gpt-5.2-codex")
+    parser.add_argument("--model")
+    parser.add_argument("--enable-feature", action="append", default=[])
+    parser.add_argument("--disable-feature", action="append", default=[])
     return parser.parse_args()
 
 
@@ -43,16 +46,23 @@ def run_codex(args: argparse.Namespace) -> int:
         "exec",
         "--json",
         "--ephemeral",
-        "-m",
-        args.model,
-        args.prompt,
     ]
+    if args.profile:
+        command.extend(["-p", args.profile])
+    for feature in args.enable_feature:
+        command.extend(["--enable", feature])
+    for feature in args.disable_feature:
+        command.extend(["--disable", feature])
+    if args.model:
+        command.extend(["-m", args.model])
+    command.append(args.prompt)
     with stdout_path.open("w", encoding="utf-8") as stdout_file:
         with stderr_path.open("w", encoding="utf-8") as stderr_file:
             completed = subprocess.run(
                 command,
                 check=False,
                 cwd=args.cwd,
+                stdin=subprocess.DEVNULL,
                 stdout=stdout_file,
                 stderr=stderr_file,
                 text=True,

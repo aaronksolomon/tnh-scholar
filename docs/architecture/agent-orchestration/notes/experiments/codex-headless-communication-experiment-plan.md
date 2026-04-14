@@ -5,14 +5,14 @@ owner: ""
 author: "Codex"
 status: current
 created: "2026-04-12"
-updated: "2026-04-12"
+updated: "2026-04-14"
 ---
 
 # Codex Headless Communication Experiment Plan
 
 ## Purpose
 
-Define the next round of Codex headless communication experiments in a way that is practical, narrow, and grounded in the results already observed.
+Define the next rounds of Codex headless communication experiments in a way that is practical, narrow, sequential, and grounded in the results already observed.
 
 This plan takes useful inputs from:
 
@@ -23,14 +23,16 @@ The research memo is treated as an input, not as a decision document.
 
 ## Current Baseline
 
-The current working baseline is:
+The current best machine-oriented baseline is:
 
 - use `codex exec` as the headless surface,
 - use the authenticated default `~/.codex` home,
+- use repo-local profile `collab`,
 - use `--ephemeral`,
-- and separate `stdout` from `stderr`.
+- separate `stdout` from `stderr`,
+- and disable `plugins` plus `shell_snapshot` when the goal is a cleaner event channel.
 
-This path is already viable enough for further experiments.
+This path is viable enough for further experiments, but it is not yet endorsed as the long-term operating mode.
 
 ## Adopted Directions
 
@@ -75,6 +77,14 @@ Adopt the memo's bias toward narrow collaboration patterns and away from early b
 Reason:
 
 This aligns with `OA01.4` and with the current stage of uncertainty.
+
+### 5. Prefer More Meaningful User-Shell Experiments Over More Noise Tuning
+
+Adopt a bias toward user-shell supervisory experiments before doing much more local wrapper optimization.
+
+Reason:
+
+The main unknown is no longer whether Codex can be called. The main unknown is whether native collaborative behavior is genuinely useful for the direction now being explored.
 
 ## On Hold
 
@@ -132,45 +142,145 @@ This would block useful experimentation unnecessarily. The current authenticated
 
 ## Next Experiments
 
-The next round should stay small.
+The next rounds should stay sequential and small.
 
-### A. Context Comparison
+### Experiment 1. Baseline Establishment
 
-Run the same simple prompt through:
+Status:
 
-- direct user shell,
-- repo-local wrapper script from live agent execution,
-- and any close user-shell variant available here.
+- completed
 
-Goal:
+What it covered:
 
-Identify which context differences actually matter for cleanliness and reliability.
+- headless reachability
+- stream separation
+- real review usefulness
+- user-shell cleanliness
+- wrapper usefulness
+- repo-local config viability
+- native subagent availability
+- first noise-reduction levers
 
-### B. Real Task Small Review
+Primary output:
 
-Run one or two tiny real review or critique prompts with the established baseline path.
+- [Codex Headless Communication Report](/architecture/agent-orchestration/notes/experiments/codex-headless-communication-report.md)
 
-Goal:
-
-Confirm that the viable path remains useful beyond `ACK`.
-
-### C. Minimal Matrix Draft
-
-Start a small documented-vs-observed matrix with only the most important rows:
-
-- auth,
-- persistence,
-- config,
-- working directory,
-- `AGENTS.md`,
-- and shell context.
+### Experiment 2. Surface-Cost Comparison
 
 Goal:
 
-Create a disciplined reference without turning it into a large artifact.
+Understand the likely cost of suppressing noisy surfaces before treating the lower-noise path as a design win.
+
+Sub-experiments:
+
+#### 2.1 Plugins Cost
+
+Compare one small but meaningful task under:
+
+- baseline path
+- `--disable plugins`
+
+Question:
+
+- what useful behavior, if any, disappears when plugins are disabled?
+
+#### 2.2 Shell Snapshot Cost
+
+Compare one small but meaningful task under:
+
+- baseline path
+- `--disable shell_snapshot`
+
+Question:
+
+- does disabling shell snapshots reduce useful environment/context behavior, or only suppress noise?
+
+#### 2.3 Persistence / State Cost
+
+Observe whether the persistent state warning appears correlated with any degraded useful behavior during a slightly longer task.
+
+Question:
+
+- is the state DB issue merely noisy, or operationally relevant?
+
+### Experiment 3. User-Shell Supervisory Trial
+
+Goal:
+
+Run a more meaningful Codex session from the user's shell, with explicit permission to use native subagents, and see how far the native collaboration surface goes before custom orchestration is introduced.
+
+Shape:
+
+- launch from the user's shell
+- provide a clear supervisory objective
+- allow native subagent use
+- include stop conditions and output expectations
+
+Questions:
+
+- does the supervisory mode feel meaningfully stronger than thin wrapper-led task execution?
+- what native coordination behavior appears without additional structure?
+- what artifacts are actually useful for human review afterward?
+
+Status:
+
+- first round completed
+
+What was learned:
+
+- the supervisor did produce useful delegated work and a stronger synthesis than a likely straight-line pass
+- the initial inherited subagent spawn mode failed with a parent-rollout fork error
+- explicit-context retry worked
+- the result suggests promise, but not a clean workflow yet
+
+Immediate implication:
+
+- the next comparison should not assume inherited subagent context is dependable
+- and the next design-review comparison should be narrower and more controlled
+
+### Experiment 4. Paired Design-Review Comparison
+
+Goal:
+
+Test the real question more cleanly: does supervised native collaboration beat a direct single-agent pass on the same review task?
+
+Shape:
+
+- same day
+- same file set
+- same brief
+- same time budget
+- same output scorecard
+
+Arms:
+
+- Arm A: one direct `codex exec` design-review pass
+- Arm B: one shell-launched supervisor with at most 2 subagent calls
+
+Constraint:
+
+- use one orientation only: `Design Review`
+- do not widen into broader runner or architecture work during the trial
+- use explicit subagent context if inherited context remains unreliable
+### Experiment 5. Thin Launcher Refinement
+
+Goal:
+
+Only after the paired comparison, decide whether the wrapper should become a slightly more intentional launcher surface for future orchestration agents.
+
+Possible additions:
+
+- `--prompt-file`
+- stable output-path conventions
+- optional event filtering
+
+Constraint:
+
+- keep this thin
+- do not build a larger orchestration substrate yet
 
 ## Working Principle
 
 The project should continue to optimize for rapid learning through small experiments, not for premature system design.
 
-The immediate task is to understand the real communication path well enough to keep collaborating with Codex headlessly in a controlled and repeatable way.
+The next meaningful question is not "can Codex be launched?" That has already been answered. The next meaningful question is whether a user-launched supervisory Codex session, using native collaboration features, is good enough to inform the emerging collaboration-oriented direction before more local tooling is built.

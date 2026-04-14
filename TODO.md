@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-04-10"
+updated: "2026-04-13"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-10 (PR-8 merged; bootstrap-proof slice next)
+> **Last Updated**: 2026-04-13 (headless communication docs refreshed; bootstrap-proof slice still next)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -122,6 +122,8 @@ This section organizes work into three priority levels based on criticality for 
   - the worktree runtime boundary and maintained headless app-layer entry are now implemented on `main`
   - the system still needs one clean end-to-end proof that it can complete a useful repo task through the maintained path
   - OA05/OA06 depth work should follow a live bootstrap proof, not precede it
+- **Recent related docs work**:
+  - documented the current low-noise Codex headless path, native subagent confirmation, and first supervisory shell-trial findings in `/docs/architecture/agent-orchestration/notes/experiments/` and `/docs/architecture/agent-orchestration/supervisory-shell-trial/`
 - **Recommended PR sizing**:
   - Prefer **2 PRs** to stay comfortably under diff-size guidance
   - A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work

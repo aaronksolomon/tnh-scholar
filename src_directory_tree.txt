@@ -6,6 +6,12 @@
     ├── agent_orchestration
     │   ├── EXPERIMENTAL.md
     │   ├── __init__.py
+    │   ├── app
+    │   │   ├── __init__.py
+    │   │   ├── factory.py
+    │   │   ├── models.py
+    │   │   ├── profile.py
+    │   │   └── service.py
     │   ├── codex_harness
     │   │   ├── __init__.py
     │   │   ├── adapters
@@ -50,6 +56,7 @@
     │   ├── execution
     │   │   ├── __init__.py
     │   │   ├── models.py
+    │   │   ├── protocols.py
     │   │   └── service.py
     │   ├── execution_policy
     │   │   ├── __init__.py
@@ -111,9 +118,14 @@
     │   │   └── service.py
     │   ├── validation
     │   │   ├── __init__.py
+    │   │   ├── backends
+    │   │   │   ├── __init__.py
+    │   │   │   └── script.py
+    │   │   ├── errors.py
     │   │   ├── models.py
     │   │   ├── protocols.py
-    │   │   └── service.py
+    │   │   ├── service.py
+    │   │   └── termination.py
     │   └── workspace
     │       ├── __init__.py
     │       ├── models.py
@@ -213,6 +225,9 @@
     │   ├── tnh_codex_harness
     │   │   ├── __init__.py
     │   │   └── tnh_codex_harness.py
+    │   ├── tnh_conductor
+    │   │   ├── __init__.py
+    │   │   └── tnh_conductor.py
     │   ├── tnh_conductor_spike
     │   │   ├── __init__.py
     │   │   └── tnh_conductor_spike.py
@@ -434,4 +449,4 @@
         ├── extract_tags.py
         └── xml_processing.py
 
-94 directories, 341 files
+97 directories, 353 files

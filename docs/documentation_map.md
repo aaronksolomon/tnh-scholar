@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-04-13"
+created: "2026-04-14"
 auto_generated: true
 ---
 
@@ -149,6 +149,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [Codex Headless Research Memo for Engineer Agents](/architecture/agent-orchestration/notes/research/codex-headless-research-memo-for-engineer-agents.md)
 - [Codex Official Docs Reference Summary](/architecture/agent-orchestration/notes/research/codex-official-docs-reference-summary.md)
 - [Current Bootstrap Proof Task Brief](/architecture/agent-orchestration/bootstrap-proof/current-task-brief.md)
+- [Current Supervisory Task Brief](/architecture/agent-orchestration/supervisory-shell-trial/current-supervisory-task-brief.md)
 - [Design Strategy: VS Code as UI/UX Platform for TNH Scholar](/architecture/ui-ux/design/vs-code-as-ui-platform.md)
 - [Diarization Algorithms](/architecture/transcription/design/diarization-algorithms.md)
 - [Diarization Chunker Module Design Strategy](/architecture/transcription/design/diarization-chunker-design.md)
@@ -174,9 +175,11 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [Practical Language-Aware Chunking Design](/architecture/transcription/design/practical-language-aware-chunking.md)
 - [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)
 - [Run Bootstrap Proof](/architecture/agent-orchestration/bootstrap-proof/run-bootstrap-proof.md)
+- [Run Supervisory Shell Trial](/architecture/agent-orchestration/supervisory-shell-trial/run-supervisory-shell-trial.md)
 - [Simplified Language-Aware Chunking Design](/architecture/transcription/design/language-aware-chunking-design.md)
 - [Speaker Diarization Algorithm Design](/architecture/transcription/design/speaker-diarization-algorithm-design.md)
 - [Speaker Diarization and Time-Mapped Transcription System Design](/architecture/transcription/design/speaker-diarization-time-mapped-design.md)
+- [Supervisory Team Workflow Contract](/architecture/agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract.md)
 - [TextObject Original Design](/architecture/ai-text-processing/design/textobject-original-design.md)
 - [TextObject System Design Document](/architecture/ai-text-processing/design/textobject-system-design.md)
 - [TimelineMapper Design Document](/architecture/transcription/design/timelinemapper-design.md)

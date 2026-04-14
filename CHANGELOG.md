@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Codex Headless Experiment Docs Refresh** (2026-04-13)
+  - Expanded the headless communication report and experiment plan with native subagent findings, low-noise execution guidance, and a clearer next-experiment sequence
+  - Added supervisory shell-trial operator docs plus a repo-local Codex profile and wrapper-script options used by the documented experiment path
+  - Refreshed tracked directory-tree snapshots to capture the newly documented repo structure
+  - Files: `docs/architecture/agent-orchestration/notes/experiments/`, `docs/architecture/agent-orchestration/supervisory-shell-trial/`, `.codex/config.toml`, `scripts/codex_ephemeral_exec.py`, `project_directory_tree.txt`, `src_directory_tree.txt`
+
 - **OA07.1 Maintained Headless Bootstrap Entry** (2026-04-09)
   - Added a maintained `tnh-conductor` CLI and app-layer bootstrap path that loads one workflow, composes the real worktree-backed kernel runtime, and returns canonical run metadata/final-state paths
   - Added an explicit bootstrap runtime profile for builtin validator mappings and mutable execution policy, while keeping `EVALUATE` and `GATE` fail-closed until real maintained semantic-control implementations land
