@@ -18,8 +18,11 @@ This plan takes useful inputs from:
 
 - [Codex Headless Communication Report](/architecture/agent-orchestration/notes/experiments/codex-headless-communication-report.md)
 - [Codex Headless Research Memo for Engineer Agents](/architecture/agent-orchestration/notes/research/codex-headless-research-memo-for-engineer-agents.md)
+- [OA01.x Spike Experiment Register](/architecture/agent-orchestration/notes/experiments/oa01x-spike-experiment-register.md)
 
 The research memo is treated as an input, not as a decision document.
+
+The cloud-generated direction docs are preserved as experimental artifacts only. They are not maintained planning authority for the current spike.
 
 ## Current Baseline
 
@@ -33,6 +36,25 @@ The current best machine-oriented baseline is:
 - and disable `plugins` plus `shell_snapshot` when the goal is a cleaner event channel.
 
 This path is viable enough for further experiments, but it is not yet endorsed as the long-term operating mode.
+
+## Current Scope
+
+The current spike scope is narrower than a general orchestration program.
+
+Active focus:
+
+- headless execution patterns,
+- native subagent invocation and evidence capture,
+- simple supervisor vs direct-agent comparison,
+- and minimal operator-facing artifacts.
+
+Explicitly not active right now:
+
+- economics,
+- broad topology exploration,
+- large benchmark programs,
+- cross-provider portfolio design,
+- and broad overnight scale architecture.
 
 ## Adopted Directions
 
@@ -78,7 +100,18 @@ Reason:
 
 This aligns with `OA01.4` and with the current stage of uncertainty.
 
-### 5. Prefer More Meaningful User-Shell Experiments Over More Noise Tuning
+### 5. Keep the Spike Decisive Rather Than Expansive
+
+Adopt a narrow success question:
+
+- is headless subagent work viable enough for TNH Scholar,
+- or are existing direct agent workflows the better practical path for now?
+
+Reason:
+
+This is the real decision boundary for the current spike.
+
+### 6. Prefer More Meaningful User-Shell Experiments Over More Noise Tuning
 
 Adopt a bias toward user-shell supervisory experiments before doing much more local wrapper optimization.
 
