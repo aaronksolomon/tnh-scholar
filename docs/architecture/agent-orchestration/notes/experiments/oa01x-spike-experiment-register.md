@@ -77,7 +77,11 @@ Focus:
 
 Status:
 
-- in progress
+- completed
+
+Primary references:
+
+- [SPIKE-02 Execution Context Comparison](/architecture/agent-orchestration/notes/experiments/spike-02-execution-context-comparison.md)
 
 ### `SPIKE-03` Native Subagent Smoke Test
 
@@ -94,7 +98,11 @@ Focus:
 
 Status:
 
-- partially completed
+- completed
+
+Primary references:
+
+- [SPIKE-03 Native Subagent Smoke Test](/architecture/agent-orchestration/notes/experiments/spike-03-native-subagent-smoke-test.md)
 
 ### `SPIKE-04` Narrow Supervisory Comparison
 
@@ -111,7 +119,11 @@ Focus:
 
 Status:
 
-- next
+- completed
+
+Primary references:
+
+- [SPIKE-04 Narrow Supervisory Comparison](/architecture/agent-orchestration/notes/experiments/spike-04-narrow-supervisory-comparison.md)
 
 ### `SPIKE-05` Minimum Review Artifact Set
 
@@ -129,7 +141,11 @@ Focus:
 
 Status:
 
-- next
+- completed
+
+Primary references:
+
+- [SPIKE-05 Minimum Review Artifact Set](/architecture/agent-orchestration/notes/experiments/spike-05-minimum-review-artifact-set.md)
 
 ## Current Recommendation
 
