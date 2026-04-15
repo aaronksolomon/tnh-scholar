@@ -72,6 +72,8 @@ poetry install --with local
 poetry run sourcery review <paths> 2>&1
 ```
 
+Docs-only changes: run `make docs-build`; if it passes, push directly to `main` (no PR required during rapid-prototype phase). Do not create new indexes or edit auto generated indexes. Indexes are auto built.
+
 Default PR flow:
 - `main -> feat/<slice> -> PR -> merge`
 - Run `make pr-check` before opening a PR

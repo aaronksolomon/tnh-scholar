@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration"
 owner: ""
 author: ""
 status: processing
-created: "2026-04-14"
+created: "2026-04-15"
 auto_generated: true
 ---
 
@@ -21,6 +21,8 @@ auto_generated: true
 **[Bootstrap Proof](bootstrap-proof/index.md)** - Table of contents for architecture/agent-orchestration/bootstrap-proof
 
 **[Notes](notes/index.md)** - Table of contents for architecture/agent-orchestration/notes
+
+**[Supervisory Shell Trial](supervisory-shell-trial/index.md)** - Table of contents for architecture/agent-orchestration/supervisory-shell-trial
 
 ---
 
