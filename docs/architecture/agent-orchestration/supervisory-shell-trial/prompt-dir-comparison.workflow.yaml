@@ -1,0 +1,35 @@
+workflow_id: prompt_dir_comparison
+version: 1
+description: Kernel-mediated comparison workflow for the tnh-gen --prompt-dir task.
+entry_step: implement
+steps:
+  - id: implement
+    opcode: RUN_AGENT
+    agent: codex
+    prompt: |
+      Read and follow this task brief:
+      docs/architecture/agent-orchestration/supervisory-shell-trial/prompt-dir-task-brief.md
+
+      Implement the task in the current repository worktree.
+      Do not commit, push, or open a pull request.
+    routes:
+      completed: validate
+      error: STOP
+      killed_timeout: STOP
+      killed_idle: STOP
+      killed_policy: STOP
+
+  - id: validate
+    opcode: RUN_VALIDATION
+    run:
+      - tests
+    routes:
+      completed: STOP
+      error: STOP
+      killed_timeout: STOP
+      killed_idle: STOP
+      killed_policy: STOP
+
+  - id: STOP
+    opcode: STOP
+    reason: Prompt-dir comparison workflow finished.

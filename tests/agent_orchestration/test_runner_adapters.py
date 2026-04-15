@@ -280,51 +280,35 @@ def test_codex_cli_adapter_reads_final_response_and_maps_workspace_write(tmp_pat
     assert result.final_response is not None
     assert result.final_response.content.strip() == "codex final"
     assert result.metadata is not None
+    assert "--ephemeral" in result.metadata.command
     assert "--sandbox" in result.metadata.command
     assert "workspace-write" in result.metadata.command
-    assert "--ask-for-approval" in result.metadata.command
-    assert "never" in result.metadata.command
     assert result.metadata.invocation_mode == RunnerInvocationMode.codex_exec
 
 
-def test_codex_cli_adapter_maps_bounded_auto_approve_to_native_approval_mode(
+def test_codex_cli_adapter_rejects_bounded_auto_approve(
     tmp_path: Path,
 ) -> None:
     executable = tmp_path / "codex"
-    executable.write_text(
-        "#!/bin/sh\n"
-        "while [ $# -gt 0 ]; do\n"
-        "  if [ \"$1\" = \"--output-last-message\" ]; then\n"
-        "    printf 'codex\\n' > \"$2\"\n"
-        "    shift 2\n"
-        "  else\n"
-        "    shift\n"
-        "  fi\n"
-        "done\n"
-        "printf '%s\\n' '{\"type\":\"thread.started\"}'\n",
-        encoding="utf-8",
-    )
+    executable.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
     executable.chmod(0o755)
     adapter = CodexCliRunnerAdapter(
         execution_service=SubprocessExecutionService(),
         executable=executable,
     )
 
-    result = adapter.run(
-        RunnerTaskRequest(
-            agent_family=AgentFamily.codex_cli,
-            rendered_task_text="do work",
-            working_directory=tmp_path,
-            requested_policy=RequestedExecutionPolicy(
-                execution_posture=ExecutionPosture.workspace_write,
-                approval_posture=ApprovalPosture.bounded_auto_approve,
-            ),
+    with pytest.raises(ValueError, match="bounded_auto_approve"):
+        adapter.run(
+            RunnerTaskRequest(
+                agent_family=AgentFamily.codex_cli,
+                rendered_task_text="do work",
+                working_directory=tmp_path,
+                requested_policy=RequestedExecutionPolicy(
+                    execution_posture=ExecutionPosture.workspace_write,
+                    approval_posture=ApprovalPosture.bounded_auto_approve,
+                ),
+            )
         )
-    )
-
-    assert result.metadata is not None
-    assert "--ask-for-approval" in result.metadata.command
-    assert "on-failure" in result.metadata.command
 
 
 def test_codex_cli_adapter_returns_error_when_final_response_is_missing(tmp_path: Path) -> None:

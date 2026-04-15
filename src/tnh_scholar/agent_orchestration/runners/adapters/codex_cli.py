@@ -71,33 +71,24 @@ class CodexCliInvocationMapper:
             raise ValueError(
                 "Codex CLI adapter does not support native forbidden_operations constraints."
             )
+        if policy.approval_posture == ApprovalPosture.bounded_auto_approve:
+            raise ValueError(
+                "Codex CLI adapter does not support native bounded_auto_approve controls."
+            )
 
     def _arguments_for(self, request: RunnerTaskRequest, response_path: Path) -> tuple[str, ...]:
         return (
             "exec",
             "--json",
+            "--ephemeral",
             "--output-last-message",
             str(response_path),
-            "--ask-for-approval",
-            self._approval_mode(request),
             "--sandbox",
             self._sandbox_mode(request),
             "-m",
             self.model_name,
             request.rendered_task_text,
         )
-
-    def _approval_mode(self, request: RunnerTaskRequest) -> str:
-        match request.requested_policy.approval_posture:
-            case None | ApprovalPosture.fail_on_prompt | ApprovalPosture.deny_interactive:
-                return "never"
-            case ApprovalPosture.bounded_auto_approve:
-                return "on-failure"
-            case _:
-                raise ValueError(
-                    "Unsupported approval posture for Codex CLI: "
-                    f"{request.requested_policy.approval_posture!r}"
-                )
 
     def _sandbox_mode(self, request: RunnerTaskRequest) -> str:
         match request.requested_policy.execution_posture:
@@ -207,7 +198,7 @@ class CodexCliRunnerAdapter(RunnerAdapterProtocol):
             supports_read_only=True,
             supports_structured_event_stream=True,
             supports_final_response_file=True,
-            supports_native_approval_controls=True,
+            supports_native_approval_controls=False,
         )
 
     def run(self, request: RunnerTaskRequest) -> RunnerResult:
