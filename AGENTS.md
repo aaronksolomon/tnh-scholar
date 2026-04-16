@@ -82,6 +82,7 @@ Default PR flow:
 - Split required: `>=150k`
 - Run the changed-file checks suggested by `make pr-check`
 - Run `make ci-check` before PR creation
+- Do not run `git add`/`git commit` or other index-writing git operations in parallel; `.git/index.lock` races can scramble commit boundaries
 - Update `CHANGELOG.md` and `TODO.md` after commits, before push
 - Stacked PRs/worktrees are optional, only for true dependency chains
 - Sourcery GitHub review still requires normal PR/human review after PR creation
