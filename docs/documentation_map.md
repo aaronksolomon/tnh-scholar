@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-04-15"
+created: "2026-04-16"
 auto_generated: true
 ---
 
@@ -178,8 +178,10 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [OpenAI Interface Migration Plan](/architecture/gen-ai-service/design/openai-interface-migration-plan.md)
 - [Package Version Checker Design Document](/architecture/utilities/design/package-version-checker-design.md)
 - [Practical Language-Aware Chunking Design](/architecture/transcription/design/practical-language-aware-chunking.md)
+- [Prompt Dir Task Brief](/architecture/agent-orchestration/supervisory-shell-trial/prompt-dir-task-brief.md)
 - [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)
 - [Run Bootstrap Proof](/architecture/agent-orchestration/bootstrap-proof/run-bootstrap-proof.md)
+- [Run Prompt Dir Comparison](/architecture/agent-orchestration/supervisory-shell-trial/run-prompt-dir-comparison.md)
 - [Run Supervisory Shell Trial](/architecture/agent-orchestration/supervisory-shell-trial/run-supervisory-shell-trial.md)
 - [Simplified Language-Aware Chunking Design](/architecture/transcription/design/language-aware-chunking-design.md)
 - [Speaker Diarization Algorithm Design](/architecture/transcription/design/speaker-diarization-algorithm-design.md)
@@ -188,7 +190,11 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [SPIKE-03 Native Subagent Smoke Test](/architecture/agent-orchestration/notes/experiments/spike-03-native-subagent-smoke-test.md)
 - [SPIKE-04 Narrow Supervisory Comparison](/architecture/agent-orchestration/notes/experiments/spike-04-narrow-supervisory-comparison.md)
 - [SPIKE-05 Minimum Review Artifact Set](/architecture/agent-orchestration/notes/experiments/spike-05-minimum-review-artifact-set.md)
+- [SPIKE-06 Native Codex CLI Baseline](/architecture/agent-orchestration/notes/experiments/spike-06-native-codex-cli-baseline.md)
+- [SPIKE-07 Codex Home State Dependency](/architecture/agent-orchestration/notes/experiments/spike-07-codex-home-state-dependency.md)
+- [SPIKE-08 Launch Context Environment Contamination](/architecture/agent-orchestration/notes/experiments/spike-08-launch-context-env-contamination.md)
 - [Supervisory Team Workflow Contract](/architecture/agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract.md)
+- [Supervisory Team Workflow Contract V2](/architecture/agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract-v2.md)
 - [TextObject Original Design](/architecture/ai-text-processing/design/textobject-original-design.md)
 - [TextObject System Design Document](/architecture/ai-text-processing/design/textobject-system-design.md)
 - [TimelineMapper Design Document](/architecture/transcription/design/timelinemapper-design.md)

@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration/notes/exper
 owner: ""
 author: ""
 status: processing
-created: "2026-04-15"
+created: "2026-04-16"
 auto_generated: true
 ---
 
@@ -35,6 +35,12 @@ auto_generated: true
 **[SPIKE-04 Narrow Supervisory Comparison](spike-04-narrow-supervisory-comparison.md)** - Lightweight comparison note between a direct single-agent pass and the existing supervisory shell run on the same bounded OA01.x design-review task.
 
 **[SPIKE-05 Minimum Review Artifact Set](spike-05-minimum-review-artifact-set.md)** - Lightweight result note defining the smallest artifact bundle that still made the OA01.x spike runs understandable and reviewable.
+
+**[SPIKE-06 Native Codex CLI Baseline](spike-06-native-codex-cli-baseline.md)** - Baseline validation of the standalone native Codex CLI before running the prompt-dir orchestration comparison.
+
+**[SPIKE-07 Codex Home State Dependency](spike-07-codex-home-state-dependency.md)** - Differential experiment on which HOME-scoped Codex state is required for a successful headless invocation and which state only affects startup noise.
+
+**[SPIKE-08 Launch Context Environment Contamination](spike-08-launch-context-env-contamination.md)** - Differential experiment on whether Codex-on-Codex launch noise comes from PTY shape or from inherited execution environment contamination.
 
 **[Agent Orchestration Spike Testing Sequence](spike-testing-sequence.md)** - Concise, unambiguous steps to run the Codex CLI spike in a sandbox worktree.
 

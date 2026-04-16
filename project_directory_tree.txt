@@ -72,11 +72,25 @@
 │   │   │   │   │   └── index.md
 │   │   │   │   ├── experiments
 │   │   │   │   │   ├── bootstrap-proof-run-result.md
+│   │   │   │   │   ├── cloud-run-artifacts
+│   │   │   │   │   │   ├── index.md
+│   │   │   │   │   │   ├── oa01x-experimental-directions-and-experiment-catalog.md
+│   │   │   │   │   │   ├── oa01x-experimental-directions-atlas.md
+│   │   │   │   │   │   └── oa1x-experimental-directions-matrix.md
 │   │   │   │   │   ├── codex-harness-e2e-report.md
 │   │   │   │   │   ├── codex-harness-spike-findings.md
 │   │   │   │   │   ├── codex-headless-communication-experiment-plan.md
 │   │   │   │   │   ├── codex-headless-communication-report.md
 │   │   │   │   │   ├── index.md
+│   │   │   │   │   ├── oa01x-cloud-direction-generation-comparison-result.md
+│   │   │   │   │   ├── oa01x-spike-experiment-register.md
+│   │   │   │   │   ├── spike-02-execution-context-comparison.md
+│   │   │   │   │   ├── spike-03-native-subagent-smoke-test.md
+│   │   │   │   │   ├── spike-04-narrow-supervisory-comparison.md
+│   │   │   │   │   ├── spike-05-minimum-review-artifact-set.md
+│   │   │   │   │   ├── spike-06-native-codex-cli-baseline.md
+│   │   │   │   │   ├── spike-07-codex-home-state-dependency.md
+│   │   │   │   │   ├── spike-08-launch-context-env-contamination.md
 │   │   │   │   │   └── spike-testing-sequence.md
 │   │   │   │   ├── index.md
 │   │   │   │   ├── plans
@@ -92,7 +106,12 @@
 │   │   │   │       └── vscode-1110-agent-features-research.md
 │   │   │   ├── supervisory-shell-trial
 │   │   │   │   ├── current-supervisory-task-brief.md
+│   │   │   │   ├── index.md
+│   │   │   │   ├── prompt-dir-comparison.workflow.yaml
+│   │   │   │   ├── prompt-dir-task-brief.md
+│   │   │   │   ├── run-prompt-dir-comparison.md
 │   │   │   │   ├── run-supervisory-shell-trial.md
+│   │   │   │   ├── supervisory-team-workflow-contract-v2.md
 │   │   │   │   └── supervisory-team-workflow-contract.md
 │   │   │   └── system-design.md
 │   │   ├── ai-text-processing
@@ -1128,4 +1147,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-240 directories, 889 files
+241 directories, 907 files
