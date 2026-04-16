@@ -42,6 +42,8 @@ auto_generated: true
 
 **[SPIKE-08 Launch Context Environment Contamination](spike-08-launch-context-env-contamination.md)** - Differential experiment on whether Codex-on-Codex launch noise comes from PTY shape or from inherited execution environment contamination.
 
+**[SPIKE-09 Prompt Dir Three-Arm Comparison](spike-09-prompt-dir-three-arm-comparison.md)** - Comparison of direct Codex, supervisory Codex, and kernel-mediated orchestration on the same bounded `tnh-gen --prompt-dir` implementation task.
+
 **[Agent Orchestration Spike Testing Sequence](spike-testing-sequence.md)** - Concise, unambiguous steps to run the Codex CLI spike in a sandbox worktree.
 
 **[Cloud Run Artifacts](cloud-run-artifacts/index.md)** - Table of contents for architecture/agent-orchestration/notes/experiments/cloud-run-artifacts

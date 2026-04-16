@@ -5,7 +5,7 @@ owner: ""
 author: "Codex"
 status: current
 created: "2026-04-14"
-updated: "2026-04-14"
+updated: "2026-04-16"
 related_adrs:
   - "/docs/architecture/agent-orchestration/adr/adr-oa01.2-conceptual-spike-orientation-based-supervisory-orchestration.md"
   - "/docs/architecture/agent-orchestration/adr/adr-oa01.3-conceptual-spike-practical-approach.md"
@@ -211,6 +211,27 @@ Status:
 Primary references:
 
 - [SPIKE-08 Launch Context Environment Contamination](/architecture/agent-orchestration/notes/experiments/spike-08-launch-context-env-contamination.md)
+
+### `SPIKE-09` Prompt Dir Three-Arm Comparison
+
+Question:
+
+On the same bounded implementation task, how do direct Codex, supervisory Codex, and kernel-mediated orchestration compare in practical usefulness and behavior?
+
+Focus:
+
+- same task brief across all three arms
+- same sanitized launch surface for shell-based Codex runs
+- direct versus supervisor-with-subagents versus conductor-managed execution
+- overlap, uniqueness, validation quality, and coordination overhead
+
+Status:
+
+- completed
+
+Primary references:
+
+- [SPIKE-09 Prompt Dir Three-Arm Comparison](/architecture/agent-orchestration/notes/experiments/spike-09-prompt-dir-three-arm-comparison.md)
 
 ## Current Recommendation
 

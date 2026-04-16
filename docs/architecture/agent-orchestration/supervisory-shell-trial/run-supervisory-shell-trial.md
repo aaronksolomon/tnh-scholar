@@ -41,7 +41,6 @@ Run from the repo root in your shell:
   | tee tmp/supervisory-shell-trial-stdout.jsonl
 ```
 
-
 This form preserves real-time terminal output while still capturing both streams to files.
 
 ## What To Inspect

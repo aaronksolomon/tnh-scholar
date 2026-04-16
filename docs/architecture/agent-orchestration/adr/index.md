@@ -42,6 +42,8 @@ auto_generated: true
 
 **[ADR-OA04.3: Provenance and Run-Artifact Contract](adr-oa04.3-provenance-run-artifact-contract.md)** - Defines the maintained run directory, artifact manifest, and event/provenance handoff contract for workflow execution.
 
+**[ADR-OA04.3.1: Run Transparency and State Reporting](adr-oa04.3.1-run-transparency-and-state-reporting.md)** - Adds a maintained operator-facing status contract on top of the OA04.3 run-artifact model for live monitoring of headless workflow runs.
+
 **[ADR-OA04.4: Policy Enforcement Contract](adr-oa04.4-policy-enforcement-contract.md)** - Defines the shared permissibility model, native-control mapping boundary, and violation handling contract for workflow execution.
 
 **[ADR-OA04.5: Harness Backend Contract](adr-oa04.5-harness-backend-contract.md)** - Defines the maintained backend contract for executing generated and predefined validation harnesses under RUN_VALIDATION.
