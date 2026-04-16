@@ -147,6 +147,71 @@ Primary references:
 
 - [SPIKE-05 Minimum Review Artifact Set](/architecture/agent-orchestration/notes/experiments/spike-05-minimum-review-artifact-set.md)
 
+### `SPIKE-06` Native Codex CLI Baseline
+
+Question:
+
+Does the standalone native Codex CLI support the baseline headless and kernel-mediated flows cleanly enough to proceed to the larger prompt-dir comparison?
+
+Focus:
+
+- native CLI version and help surface
+- direct `codex exec` JSONL smoke test
+- maintained runner/conductor tests
+- no-edit `tnh-conductor` ACK workflow
+- managed worktree cleanliness
+
+Status:
+
+- completed
+
+Primary references:
+
+- [SPIKE-06 Native Codex CLI Baseline](/architecture/agent-orchestration/notes/experiments/spike-06-native-codex-cli-baseline.md)
+
+### `SPIKE-07` Codex Home State Dependency
+
+Question:
+
+What `HOME`-scoped Codex state is required for a successful scripted headless invocation, and which state only affects startup noise?
+
+Focus:
+
+- minimum viable `~/.codex` content
+- config profile dependency
+- auth dependency
+- plugin cache dependency
+- distinction between success-critical state and noise-inducing state
+
+Status:
+
+- completed
+
+Primary references:
+
+- [SPIKE-07 Codex Home State Dependency](/architecture/agent-orchestration/notes/experiments/spike-07-codex-home-state-dependency.md)
+
+### `SPIKE-08` Launch Context Environment Contamination
+
+Question:
+
+When Codex launches another Codex process, is noisy startup behavior caused mainly by PTY shape or by inherited execution environment contamination?
+
+Focus:
+
+- PTY versus non-PTY launch comparison
+- inherited environment versus curated user-like environment
+- real Terminal.app user-shell baseline
+- practical clean-launch policy for Codex-on-Codex runs
+
+Status:
+
+- completed
+
+Primary references:
+
+- [SPIKE-08 Launch Context Environment Contamination](/architecture/agent-orchestration/notes/experiments/spike-08-launch-context-env-contamination.md)
+
 ## Current Recommendation
 
 Run these experiments sequentially and keep the documentation light.
@@ -155,4 +220,6 @@ The immediate goal is not to design a mature orchestration program. The immediat
 
 - headless agent communication is easy enough,
 - native subagent use is viable enough,
-- and a simple supervisory pattern is actually better than working directly within existing agent bounds.
+- a simple supervisory pattern is actually better than working directly within existing agent bounds,
+- the scripted Codex launch surface is understood well enough to avoid chasing false shell-state explanations,
+- and launched Codex runs should use a curated user-like environment rather than inherited parent agent environment.

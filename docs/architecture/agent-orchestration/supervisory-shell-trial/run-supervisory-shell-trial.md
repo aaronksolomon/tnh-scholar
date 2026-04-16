@@ -36,26 +36,11 @@ Run from the repo root in your shell:
   --json \
   --ephemeral \
   -p collab \
-  "Read docs/architecture/agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract.md and docs/architecture/agent-orchestration/supervisory-shell-trial/current-supervisory-task-brief.md. Follow them precisely. Use native subagents for the substantive work. Do not do the substantive evaluation directly yourself. Use no more than 5 subagent calls." \
+  "Read docs/architecture/agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract.md and docs/architecture/agent-orchestration/supervisory-shell-trial/current-supervisory-task-brief.md. Follow them precisely. Use native subagents for the substantive work. Do not do the substantive evaluation directly yourself. Use no more than 10 subagent calls." \
   2> >(tee tmp/supervisory-shell-trial-stderr.log >&2) \
   | tee tmp/supervisory-shell-trial-stdout.jsonl
 ```
 
-## Lower-Noise Variant
-
-If the goal is a cleaner machine-readable channel rather than maximum native surface exposure:
-
-```bash
-'/Users/phapman/.vscode/extensions/openai.chatgpt-26.406.31014-darwin-arm64/bin/macos-aarch64/codex' exec \
-  --json \
-  --ephemeral \
-  -p collab \
-  --disable plugins \
-  --disable shell_snapshot \
-  "Read docs/architecture/agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract.md and docs/architecture/agent-orchestration/supervisory-shell-trial/current-supervisory-task-brief.md. Follow them precisely. Use native subagents for the substantive work. Do not do the substantive evaluation directly yourself. Use no more than 5 subagent calls." \
-  2> >(tee tmp/supervisory-shell-trial-stderr.log >&2) \
-  | tee tmp/supervisory-shell-trial-stdout.jsonl
-```
 
 This form preserves real-time terminal output while still capturing both streams to files.
 
