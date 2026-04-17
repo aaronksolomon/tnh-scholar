@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from concurrent.futures import ThreadPoolExecutor, TimeoutError
+from concurrent.futures import Future, ThreadPoolExecutor, TimeoutError
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -113,6 +113,11 @@ class KernelRunService:
         default_factory=ExecutionPolicyAssembler
     )
     heartbeat_interval_seconds: float = 30.0
+    heartbeat_executor: ThreadPoolExecutor = field(
+        default_factory=lambda: ThreadPoolExecutor(max_workers=1),
+        repr=False,
+        compare=False,
+    )
 
     def run(self, workflow: WorkflowDefinition, run_root: Path) -> KernelRunResult:
         """Execute a workflow and return summary."""
@@ -838,26 +843,25 @@ class KernelRunService:
         active_runner_family: AgentFamily | None = None,
         last_completed_step_id: str | None = None,
     ) -> T:
-        with ThreadPoolExecutor(max_workers=1) as executor:
-            future = executor.submit(operation)
-            while True:
-                try:
-                    return future.result(timeout=self.heartbeat_interval_seconds)
-                except TimeoutError:
-                    self._write_run_status(
-                        context=context,
-                        lifecycle_state=RunLifecycleState.running,
-                        current_step_id=step_id,
-                        last_completed_step_id=last_completed_step_id,
-                        active_opcode=active_opcode,
-                        active_runner_family=active_runner_family,
-                    )
-                    context.provenance.record_status_updated(
-                        run_id=context.run_id,
-                        step_id=step_id,
-                        lifecycle_state=RunLifecycleState.running,
-                        paths=context.paths,
-                    )
+        future: Future[T] = self.heartbeat_executor.submit(operation)
+        while True:
+            try:
+                return future.result(timeout=self.heartbeat_interval_seconds)
+            except TimeoutError:
+                self._write_run_status(
+                    context=context,
+                    lifecycle_state=RunLifecycleState.running,
+                    current_step_id=step_id,
+                    last_completed_step_id=last_completed_step_id,
+                    active_opcode=active_opcode,
+                    active_runner_family=active_runner_family,
+                )
+                context.provenance.record_status_updated(
+                    run_id=context.run_id,
+                    step_id=step_id,
+                    lifecycle_state=RunLifecycleState.running,
+                    paths=context.paths,
+                )
 
     def _write_run_status(
         self,

@@ -83,6 +83,26 @@ def test_run_artifact_store_writes_live_status_contract(tmp_path: Path) -> None:
     assert payload["worktree_path"] == str(tmp_path / "worktree")
 
 
+def test_run_artifact_store_reads_live_status_via_canonical_path(tmp_path: Path) -> None:
+    store = FilesystemRunArtifactStore()
+    paths = store.create_run("run-status-read", tmp_path)
+    status = RunStatus(
+        run_id="run-status-read",
+        workflow_id="workflow-b",
+        started_at=datetime(2026, 4, 16, 2, 0, tzinfo=timezone.utc),
+        updated_at=datetime(2026, 4, 16, 2, 1, tzinfo=timezone.utc),
+        lifecycle_state=RunLifecycleState.completed,
+        current_step_id="STOP",
+        last_completed_step_id="validate",
+        elapsed_seconds=60,
+    )
+
+    store.write_status(status, paths)
+
+    assert store.status_path_for_run("run-status-read", tmp_path) == paths.status_path
+    assert store.read_status("run-status-read", tmp_path) == status
+
+
 def test_run_artifact_store_writes_canonical_event_stream_fields(tmp_path: Path) -> None:
     store = FilesystemRunArtifactStore()
     paths = store.create_run("run-2", tmp_path)

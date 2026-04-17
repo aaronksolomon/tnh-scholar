@@ -14,7 +14,9 @@ from tnh_scholar.agent_orchestration.app import (
     HeadlessStorageConfig,
     build_bootstrap_runtime_profile,
 )
-from tnh_scholar.agent_orchestration.run_artifacts import RunStatus
+from tnh_scholar.agent_orchestration.run_artifacts import FilesystemRunArtifactStore
+
+STATUS_STORE = FilesystemRunArtifactStore()
 
 app = typer.Typer(
     name="tnh-conductor",
@@ -138,7 +140,7 @@ def status_command(
     resolved_repo_root = repo_root.resolve()
     default_storage = HeadlessStorageConfig.for_repo_root(resolved_repo_root)
     resolved_runs_root = default_storage.runs_root if runs_root is None else runs_root
-    status_path = resolved_runs_root / run_id / "status.json"
+    status_path = STATUS_STORE.status_path_for_run(run_id, resolved_runs_root)
     if not status_path.exists():
         typer.echo(
             f"Run status not found for '{run_id}' at {status_path}.",
@@ -146,7 +148,7 @@ def status_command(
         )
         raise typer.Exit(code=1)
     try:
-        status = RunStatus.model_validate_json(status_path.read_text(encoding="utf-8"))
+        status = STATUS_STORE.read_status(run_id, resolved_runs_root)
     except Exception as error:
         typer.echo(f"Failed to read run status for '{run_id}': {error}", err=True)
         raise typer.Exit(code=1) from error
