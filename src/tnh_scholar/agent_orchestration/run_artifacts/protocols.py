@@ -12,6 +12,7 @@ from tnh_scholar.agent_orchestration.run_artifacts.models import (
     RunArtifactPaths,
     RunEventRecord,
     RunMetadata,
+    RunStatus,
     StepArtifactEntry,
     StepManifest,
 )
@@ -25,6 +26,9 @@ class RunArtifactStoreProtocol(Protocol):
 
     def write_metadata(self, metadata: RunMetadata, paths: RunArtifactPaths) -> None:
         """Persist run metadata."""
+
+    def write_status(self, status: RunStatus, paths: RunArtifactPaths) -> None:
+        """Persist live run status."""
 
     def append_event(self, event: RunEventRecord, paths: RunArtifactPaths) -> None:
         """Append one event record."""

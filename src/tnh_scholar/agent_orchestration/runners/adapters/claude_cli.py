@@ -11,6 +11,7 @@ from tnh_scholar.agent_orchestration.execution import (
     CliExecutableInvocation,
     ExecutionRequest,
     ExecutionResult,
+    ExecutionTermination,
     InheritParentEnvironmentPolicy,
     SubprocessExecutionService,
 )
@@ -77,6 +78,7 @@ class ClaudeCliInvocationMapper:
     def _arguments_for(self, request: RunnerTaskRequest) -> tuple[str, ...]:
         return (
             "--print",
+            "--verbose",
             "--output-format",
             "stream-json",
             "--permission-mode",
@@ -114,7 +116,7 @@ class ClaudeCliOutputNormalizer:
         termination = to_runner_termination(execution_result.termination)
         transcript = self._transcript(execution_result.stdout_text)
         final_response = self._final_response(execution_result.stdout_text)
-        if execution_result.termination.value == "completed" and transcript is None:
+        if execution_result.termination == ExecutionTermination.completed and transcript is None:
             termination = RunnerTermination.error
         return RunnerResult(
             termination=termination,

@@ -16,7 +16,9 @@ from tnh_scholar.agent_orchestration.run_artifacts import (
     FilesystemRunArtifactStore,
     RunEventRecord,
     RunEventType,
+    RunLifecycleState,
     RunMetadata,
+    RunStatus,
     StepManifest,
 )
 
@@ -50,6 +52,35 @@ def test_run_artifact_store_writes_oa043_metadata_contract(tmp_path: Path) -> No
     assert payload["entry_step"] == "design"
     assert payload["artifacts_root"] == str(tmp_path)
     assert payload["termination"] == MechanicalOutcome.completed.value
+
+
+def test_run_artifact_store_writes_live_status_contract(tmp_path: Path) -> None:
+    store = FilesystemRunArtifactStore()
+    paths = store.create_run("run-status", tmp_path)
+    status = RunStatus(
+        run_id="run-status",
+        workflow_id="workflow-a",
+        started_at=datetime(2026, 4, 16, 1, 0, tzinfo=timezone.utc),
+        updated_at=datetime(2026, 4, 16, 1, 1, tzinfo=timezone.utc),
+        lifecycle_state=RunLifecycleState.running,
+        current_step_id="implement",
+        last_completed_step_id="design",
+        active_opcode=Opcode.run_agent,
+        worktree_path=tmp_path / "worktree",
+        last_route_target="validate",
+        elapsed_seconds=60,
+    )
+
+    store.write_status(status, paths)
+
+    payload = json.loads(paths.status_path.read_text(encoding="utf-8"))
+    assert payload["run_id"] == "run-status"
+    assert payload["workflow_id"] == "workflow-a"
+    assert payload["lifecycle_state"] == RunLifecycleState.running.value
+    assert payload["current_step_id"] == "implement"
+    assert payload["last_completed_step_id"] == "design"
+    assert payload["active_opcode"] == Opcode.run_agent.value
+    assert payload["worktree_path"] == str(tmp_path / "worktree")
 
 
 def test_run_artifact_store_writes_canonical_event_stream_fields(tmp_path: Path) -> None:

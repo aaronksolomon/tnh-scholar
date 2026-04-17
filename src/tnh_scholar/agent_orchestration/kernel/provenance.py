@@ -23,9 +23,11 @@ from tnh_scholar.agent_orchestration.run_artifacts.models import (
     RunArtifactPaths,
     RunEventRecord,
     RunEventType,
+    RunLifecycleState,
     StepArtifactEntry,
     StepManifest,
 )
+from tnh_scholar.agent_orchestration.shared_enums import AgentFamily
 
 
 @dataclass(frozen=True)
@@ -35,6 +37,23 @@ class KernelProvenanceRecorder:
     artifact_store: RunArtifactStoreProtocol
     workspace: WorkspaceServiceProtocol
     clock: ClockProtocol
+
+    def record_status_updated(
+        self,
+        *,
+        run_id: str,
+        step_id: str,
+        lifecycle_state: RunLifecycleState,
+        paths: RunArtifactPaths,
+    ) -> None:
+        """Append the canonical status-updated event."""
+        self._append_event(
+            run_id=run_id,
+            step_id=step_id,
+            event_type=RunEventType.status_updated,
+            lifecycle_state=lifecycle_state,
+            paths=paths,
+        )
 
     def record_step_started(
         self,
@@ -88,6 +107,91 @@ class KernelProvenanceRecorder:
                 event_type=RunEventType.gate_resolved,
             ),
             paths,
+        )
+
+    def record_runner_started(
+        self,
+        *,
+        run_id: str,
+        step_id: str,
+        runner_family: AgentFamily,
+        paths: RunArtifactPaths,
+    ) -> None:
+        """Append the canonical runner-started event."""
+        self._append_event(
+            run_id=run_id,
+            step_id=step_id,
+            event_type=RunEventType.runner_started,
+            runner_family=runner_family,
+            paths=paths,
+        )
+
+    def record_runner_completed(
+        self,
+        *,
+        run_id: str,
+        step_id: str,
+        runner_family: AgentFamily,
+        paths: RunArtifactPaths,
+    ) -> None:
+        """Append the canonical runner-completed event."""
+        self._append_event(
+            run_id=run_id,
+            step_id=step_id,
+            event_type=RunEventType.runner_completed,
+            runner_family=runner_family,
+            paths=paths,
+        )
+
+    def record_route_selected(
+        self,
+        *,
+        run_id: str,
+        step_id: str,
+        next_step_id: str,
+        opcode: Opcode,
+        paths: RunArtifactPaths,
+    ) -> None:
+        """Append the canonical route-selected event."""
+        self._append_event(
+            run_id=run_id,
+            step_id=step_id,
+            event_type=RunEventType.route_selected,
+            next_step_id=next_step_id,
+            opcode=opcode,
+            paths=paths,
+        )
+
+    def record_step_waiting(
+        self,
+        *,
+        run_id: str,
+        step_id: str,
+        paths: RunArtifactPaths,
+    ) -> None:
+        """Append the canonical step-waiting event."""
+        self._append_event(
+            run_id=run_id,
+            step_id=step_id,
+            event_type=RunEventType.step_waiting,
+            lifecycle_state=RunLifecycleState.waiting,
+            paths=paths,
+        )
+
+    def record_step_blocked(
+        self,
+        *,
+        run_id: str,
+        step_id: str,
+        paths: RunArtifactPaths,
+    ) -> None:
+        """Append the canonical step-blocked event."""
+        self._append_event(
+            run_id=run_id,
+            step_id=step_id,
+            event_type=RunEventType.step_blocked,
+            lifecycle_state=RunLifecycleState.blocked,
+            paths=paths,
         )
 
     def record_rollback_completed(
@@ -275,6 +379,32 @@ class KernelProvenanceRecorder:
                 step_id=step_id,
                 event_type=self._completion_event_type(termination),
                 next_step_id=next_step_id,
+            ),
+            paths,
+        )
+
+    def _append_event(
+        self,
+        *,
+        run_id: str,
+        step_id: str,
+        event_type: RunEventType,
+        paths: RunArtifactPaths,
+        next_step_id: str | None = None,
+        opcode: Opcode | None = None,
+        runner_family: AgentFamily | None = None,
+        lifecycle_state: RunLifecycleState | None = None,
+    ) -> None:
+        self.artifact_store.append_event(
+            RunEventRecord(
+                timestamp=self.clock.now(),
+                run_id=run_id,
+                step_id=step_id,
+                event_type=event_type,
+                next_step_id=next_step_id,
+                opcode=opcode,
+                runner_family=runner_family,
+                lifecycle_state=lifecycle_state,
             ),
             paths,
         )

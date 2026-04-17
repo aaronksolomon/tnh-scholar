@@ -62,9 +62,10 @@ def test_claude_cli_adapter_normalizes_stdout_to_runner_artifacts(tmp_path: Path
     assert result.final_response.content.strip() == "done from claude"
     assert result.metadata is not None
     assert result.metadata.invocation_mode == RunnerInvocationMode.claude_print
-    assert result.metadata.command[:5] == (
+    assert result.metadata.command[:6] == (
         str(executable),
         "--print",
+        "--verbose",
         "--output-format",
         "stream-json",
         "--permission-mode",

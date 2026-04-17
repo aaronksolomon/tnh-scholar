@@ -13,6 +13,7 @@ from tnh_scholar.agent_orchestration.execution import (
     ExecutionRequest,
     ExecutionServiceProtocol,
     ExplicitEnvironmentPolicy,
+    InheritParentEnvironmentPolicy,
 )
 from tnh_scholar.agent_orchestration.validation.errors import ValidationArtifactMergeError
 from tnh_scholar.agent_orchestration.validation.models import (
@@ -49,6 +50,9 @@ class BuiltinCommandEntry(BaseModel):
     name: BuiltinValidatorId
     executable: Path
     arguments: tuple[str, ...] = Field(default_factory=tuple)
+    environment_policy: ExplicitEnvironmentPolicy | InheritParentEnvironmentPolicy = Field(
+        default_factory=ExplicitEnvironmentPolicy.empty
+    )
 
 
 @dataclass(frozen=True)
@@ -67,7 +71,7 @@ class StaticValidatorResolver(ValidatorResolverProtocol):
                         arguments=entry.arguments,
                     ),
                     working_directory=working_directory,
-                    environment_policy=ExplicitEnvironmentPolicy.empty(),
+                    environment_policy=entry.environment_policy,
                 )
         raise ValueError(f"Unknown builtin validator: {spec.name.value}")
 
@@ -154,7 +158,31 @@ class ValidationService(ValidationServiceProtocol):
     ) -> HarnessBackendResult:
         execution_request = self.resolver.resolve(spec, working_directory)
         execution_result = self.execution_service.run(execution_request)
-        return HarnessBackendResult(termination=to_validation_termination(execution_result.termination))
+        return HarnessBackendResult(
+            termination=to_validation_termination(execution_result.termination),
+            stdout_artifact=self._builtin_text_artifact(
+                filename="validation_stdout.txt",
+                content=execution_result.stdout_text,
+            ),
+            stderr_artifact=self._builtin_text_artifact(
+                filename="validation_stderr.txt",
+                content=execution_result.stderr_text,
+            ),
+        )
+
+    def _builtin_text_artifact(
+        self,
+        *,
+        filename: str,
+        content: str,
+    ) -> ValidationTextArtifact | None:
+        if not content:
+            return None
+        return ValidationTextArtifact(
+            filename=filename,
+            content=content,
+            media_type="text/plain",
+        )
 
     def _run_harness_validator(
         self,

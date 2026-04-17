@@ -26,6 +26,7 @@ class RunArtifactPaths(BaseModel):
     artifacts_directory: Path
     event_log_path: Path
     metadata_path: Path
+    status_path: Path
     final_state_path: Path
 
 
@@ -52,6 +53,38 @@ class RunMetadata(BaseModel):
     schema_versions: tuple[SchemaVersionRecord, ...] = Field(default_factory=tuple)
 
 
+class RunLifecycleState(str, Enum):
+    """Bounded operator-facing lifecycle state for one run."""
+
+    running = "running"
+    waiting = "waiting"
+    blocked = "blocked"
+    failed = "failed"
+    completed = "completed"
+
+
+class RunStatus(BaseModel):
+    """Live operator-facing status for one workflow run."""
+
+    run_id: str
+    workflow_id: str
+    started_at: datetime
+    updated_at: datetime
+    lifecycle_state: RunLifecycleState
+    current_step_id: str | None = None
+    last_completed_step_id: str | None = None
+    active_opcode: Opcode | None = None
+    active_runner_family: AgentFamily | None = None
+    worktree_path: Path | None = None
+    last_route_target: str | None = None
+    termination: MechanicalOutcome | None = None
+    active_attempt: int | None = None
+    elapsed_seconds: int | None = None
+    last_artifact_write: Path | None = None
+    blocking_reason: str | None = None
+    operator_note: str | None = None
+
+
 class RunEventType(str, Enum):
     """Canonical event types for one workflow run."""
 
@@ -62,6 +95,12 @@ class RunEventType(str, Enum):
     gate_requested = "gate_requested"
     gate_resolved = "gate_resolved"
     rollback_completed = "rollback_completed"
+    runner_started = "runner_started"
+    runner_completed = "runner_completed"
+    route_selected = "route_selected"
+    step_waiting = "step_waiting"
+    step_blocked = "step_blocked"
+    status_updated = "status_updated"
 
 
 class ArtifactRole(str, Enum):
@@ -167,5 +206,8 @@ class RunEventRecord(BaseModel):
     step_id: str
     event_type: RunEventType
     next_step_id: str | None = None
+    opcode: Opcode | None = None
+    runner_family: AgentFamily | None = None
+    lifecycle_state: RunLifecycleState | None = None
     artifact_role: ArtifactRole | None = None
     artifact_path: Path | None = None
