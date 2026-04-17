@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration/adr"
 owner: ""
 author: ""
 status: processing
-created: "2026-04-16"
+created: "2026-04-17"
 auto_generated: true
 ---
 
@@ -51,6 +51,8 @@ auto_generated: true
 **[ADR-OA05: Prompt Library Specification](adr-oa05-prompt-library-specification.md)** - Defines prompt artifact schema, versioning, rendering, and catalog validation contracts for tnh-conductor prompt-program behavior.
 
 **[ADR-OA06: Planner Evaluator Contract](adr-oa06-planner-evaluator-contract.md)** - Defines planner evaluator I/O schemas, status derivation, contradiction rules, and deterministic decision vectors for EVALUATE steps.
+
+**[ADR-OA06.1: Evaluator-Directed Revision Loop](adr-oa06.1-evaluator-directed-revision-loop.md)** - Defines a bounded maintained review-to-revision loop for conductor workflows so review and validation artifacts can drive one deterministic refinement pass.
 
 **[ADR-OA07: Diff-Policy + Safety Rails](adr-oa07-diff-policy-safety-rails.md)** - Defines the bootstrap safety model for worktree isolation, branch-scoped rollback, and agent authority boundaries in maintained agent orchestration.
 
