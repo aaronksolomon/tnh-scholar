@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+from concurrent.futures import Future, ThreadPoolExecutor, TimeoutError
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
+from typing import Callable, TypeVar
 
 from tnh_scholar.agent_orchestration.execution_policy import (
     ExecutionPolicyAssembler,
@@ -49,8 +51,10 @@ from tnh_scholar.agent_orchestration.run_artifacts.models import (
     GateOutcomeArtifact,
     GateRequestArtifact,
     RunArtifactPaths,
+    RunLifecycleState,
     RunMetadata,
     RunnerMetadataArtifact,
+    RunStatus,
     StepArtifactEntry,
 )
 from tnh_scholar.agent_orchestration.runners.models import RunnerResult, RunnerTaskRequest
@@ -65,14 +69,18 @@ from tnh_scholar.agent_orchestration.validation.models import (
 from tnh_scholar.agent_orchestration.validation.protocols import ValidationServiceProtocol
 from tnh_scholar.agent_orchestration.workspace.models import RollbackTarget, WorkspaceContext
 
+T = TypeVar("T")
+
 
 @dataclass
 class StepContext:
     """Per-run step execution context."""
 
     run_id: str
+    workflow_id: str
     paths: RunArtifactPaths
     run_directory: Path
+    started_at: datetime
     workspace_context: WorkspaceContext
     provenance: KernelProvenanceRecorder
     workflow_policy_ref: str | None = None
@@ -104,6 +112,12 @@ class KernelRunService:
     execution_policy_assembler: ExecutionPolicyAssemblerProtocol = field(
         default_factory=ExecutionPolicyAssembler
     )
+    heartbeat_interval_seconds: float = 30.0
+    heartbeat_executor: ThreadPoolExecutor = field(
+        default_factory=lambda: ThreadPoolExecutor(max_workers=1),
+        repr=False,
+        compare=False,
+    )
 
     def run(self, workflow: WorkflowDefinition, run_root: Path) -> KernelRunResult:
         """Execute a workflow and return summary."""
@@ -130,8 +144,10 @@ class KernelRunService:
         )
         context = StepContext(
             run_id=run_id,
+            workflow_id=workflow.workflow_id,
             paths=paths,
             run_directory=paths.run_directory,
+            started_at=started_at,
             workspace_context=workspace_context,
             provenance=provenance,
             workflow_policy_ref=workflow.defaults.policy if workflow.defaults is not None else None,
@@ -147,6 +163,11 @@ class KernelRunService:
                 workspace_context=workspace_context,
             ),
             paths,
+        )
+        self._write_run_status(
+            context=context,
+            lifecycle_state=RunLifecycleState.running,
+            current_step_id=workflow.entry_step,
         )
         state = KernelState(current_step_id=workflow.entry_step)
         catalog = WorkflowCatalog(workflow=workflow)
@@ -169,13 +190,28 @@ class KernelRunService:
                     last_step_id=step.id,
                     run_directory=context.run_directory,
                     metadata_path=paths.metadata_path,
+                    status_path=paths.status_path,
                     final_state_path=paths.final_state_path,
                 )
             step_started_at = self.clock.now()
             policy_record = self._persist_step_policy(step=step, context=context)
+            self._write_run_status(
+                context=context,
+                lifecycle_state=RunLifecycleState.running,
+                current_step_id=step.id,
+                last_completed_step_id=self._last_completed_step_id(state),
+                active_opcode=step.opcode,
+                active_runner_family=self._step_runner_family(step),
+            )
             context.provenance.record_step_started(
                 run_id=context.run_id,
                 step_id=step.id,
+                paths=context.paths,
+            )
+            context.provenance.record_status_updated(
+                run_id=context.run_id,
+                step_id=step.id,
+                lifecycle_state=RunLifecycleState.running,
                 paths=context.paths,
             )
             try:
@@ -283,11 +319,37 @@ class KernelRunService:
             prompt_reference=step.prompt,
             requested_policy=policy_record.summary.requested_policy,
         )
-        result = self.runner_service.run(request)
+        context.provenance.record_runner_started(
+            run_id=context.run_id,
+            step_id=step.id,
+            runner_family=request.agent_family,
+            paths=context.paths,
+        )
+        result = self._run_with_step_heartbeat(
+            context=context,
+            step_id=step.id,
+            active_opcode=step.opcode,
+            active_runner_family=request.agent_family,
+            last_completed_step_id=self._last_completed_step_id(state),
+            operation=lambda: self.runner_service.run(request),
+        )
+        context.provenance.record_runner_completed(
+            run_id=context.run_id,
+            step_id=step.id,
+            runner_family=request.agent_family,
+            paths=context.paths,
+        )
         target = catalog.route_target(
             step,
             self._to_mechanical_outcome(result.termination).value,
             context="No route for outcome",
+        )
+        context.provenance.record_route_selected(
+            run_id=context.run_id,
+            step_id=step.id,
+            next_step_id=target,
+            opcode=step.opcode,
+            paths=context.paths,
         )
         runner_artifacts = self._runner_artifacts(
             step_id=step.id,
@@ -315,17 +377,30 @@ class KernelRunService:
         step_started_at: datetime,
         policy_record: StepPolicyRecord,
     ) -> KernelState:
-        result = self.validation_service.run(
-            ValidationStepRequest(
-                validators=step.run,
-                working_directory=context.workspace_context.worktree_path,
-            )
+        result = self._run_with_step_heartbeat(
+            context=context,
+            step_id=step.id,
+            active_opcode=step.opcode,
+            last_completed_step_id=self._last_completed_step_id(state),
+            operation=lambda: self.validation_service.run(
+                ValidationStepRequest(
+                    validators=step.run,
+                    working_directory=context.workspace_context.worktree_path,
+                )
+            ),
         )
         next_state = state
         report = result.harness_report
         if report is not None and report.proposed_goldens:
             next_state = state.with_pending_gate()
         target = catalog.route_target(step, result.termination.value, context="No route for outcome")
+        context.provenance.record_route_selected(
+            run_id=context.run_id,
+            step_id=step.id,
+            next_step_id=target,
+            opcode=step.opcode,
+            paths=context.paths,
+        )
         extra_artifacts = self._validation_artifacts(
             step_id=step.id,
             paths=context.paths,
@@ -354,6 +429,12 @@ class KernelRunService:
         decision = self.planner_evaluator.evaluate(step, context.run_directory)
         self._validate_planner_next_step(step, decision.next_step)
         target = catalog.route_target(step, decision.status.value, context="No route for outcome")
+        if decision.status in {PlannerStatus.blocked, PlannerStatus.needs_human, PlannerStatus.unsafe}:
+            context.provenance.record_step_blocked(
+                run_id=context.run_id,
+                step_id=step.id,
+                paths=context.paths,
+            )
         self._enforce_runtime_golden_gate(state, decision.status, target, catalog)
         planner_artifact = self.artifact_store.write_json_artifact(
             paths=context.paths,
@@ -362,6 +443,13 @@ class KernelRunService:
             filename="planner_decision.json",
             payload=decision,
             required=True,
+        )
+        context.provenance.record_route_selected(
+            run_id=context.run_id,
+            step_id=step.id,
+            next_step_id=target,
+            opcode=step.opcode,
+            paths=context.paths,
         )
         self._record_step_completion(
             step=step,
@@ -386,6 +474,24 @@ class KernelRunService:
         context.provenance.record_gate_requested(
             run_id=context.run_id,
             step_id=step.id,
+            paths=context.paths,
+        )
+        context.provenance.record_step_waiting(
+            run_id=context.run_id,
+            step_id=step.id,
+            paths=context.paths,
+        )
+        self._write_run_status(
+            context=context,
+            lifecycle_state=RunLifecycleState.waiting,
+            current_step_id=step.id,
+            last_completed_step_id=self._last_completed_step_id(state),
+            active_opcode=step.opcode,
+        )
+        context.provenance.record_status_updated(
+            run_id=context.run_id,
+            step_id=step.id,
+            lifecycle_state=RunLifecycleState.waiting,
             paths=context.paths,
         )
         gate_request = self.artifact_store.write_json_artifact(
@@ -414,6 +520,13 @@ class KernelRunService:
             required=True,
         )
         target = catalog.route_target(step, outcome.value, context="No route for outcome")
+        context.provenance.record_route_selected(
+            run_id=context.run_id,
+            step_id=step.id,
+            next_step_id=target,
+            opcode=step.opcode,
+            paths=context.paths,
+        )
         self._record_step_completion(
             step=step,
             context=context,
@@ -448,6 +561,13 @@ class KernelRunService:
             step,
             MechanicalOutcome.completed.value,
             context="No route for outcome",
+        )
+        context.provenance.record_route_selected(
+            run_id=context.run_id,
+            step_id=step.id,
+            next_step_id=target,
+            opcode=step.opcode,
+            paths=context.paths,
         )
         self._record_step_completion(
             step=step,
@@ -713,6 +833,71 @@ class KernelRunService:
             context.paths,
         )
 
+    def _run_with_step_heartbeat(
+        self,
+        *,
+        context: StepContext,
+        step_id: str,
+        active_opcode: Opcode,
+        operation: Callable[[], T],
+        active_runner_family: AgentFamily | None = None,
+        last_completed_step_id: str | None = None,
+    ) -> T:
+        future: Future[T] = self.heartbeat_executor.submit(operation)
+        while True:
+            try:
+                return future.result(timeout=self.heartbeat_interval_seconds)
+            except TimeoutError:
+                self._write_run_status(
+                    context=context,
+                    lifecycle_state=RunLifecycleState.running,
+                    current_step_id=step_id,
+                    last_completed_step_id=last_completed_step_id,
+                    active_opcode=active_opcode,
+                    active_runner_family=active_runner_family,
+                )
+                context.provenance.record_status_updated(
+                    run_id=context.run_id,
+                    step_id=step_id,
+                    lifecycle_state=RunLifecycleState.running,
+                    paths=context.paths,
+                )
+
+    def _write_run_status(
+        self,
+        *,
+        context: StepContext,
+        lifecycle_state: RunLifecycleState,
+        current_step_id: str | None,
+        last_completed_step_id: str | None = None,
+        active_opcode: Opcode | None = None,
+        active_runner_family: AgentFamily | None = None,
+        last_route_target: str | None = None,
+        termination: MechanicalOutcome | None = None,
+        blocking_reason: str | None = None,
+    ) -> None:
+        updated_at = self.clock.now()
+        elapsed_seconds = max(int((updated_at - context.started_at).total_seconds()), 0)
+        self.artifact_store.write_status(
+            RunStatus(
+                run_id=context.run_id,
+                workflow_id=context.workflow_id,
+                started_at=context.started_at,
+                updated_at=updated_at,
+                lifecycle_state=lifecycle_state,
+                current_step_id=current_step_id,
+                last_completed_step_id=last_completed_step_id,
+                active_opcode=active_opcode,
+                active_runner_family=active_runner_family,
+                worktree_path=context.workspace_context.worktree_path,
+                last_route_target=last_route_target,
+                termination=termination,
+                elapsed_seconds=elapsed_seconds,
+                blocking_reason=blocking_reason,
+            ),
+            context.paths,
+        )
+
     def _record_step_completion(
         self,
         *,
@@ -724,6 +909,22 @@ class KernelRunService:
         extra_artifacts: tuple[StepArtifactEntry, ...] = (),
         notes: tuple[str, ...] = (),
     ) -> None:
+        lifecycle_state = self._step_lifecycle_state(termination)
+        self._write_run_status(
+            context=context,
+            lifecycle_state=lifecycle_state,
+            current_step_id=target,
+            last_completed_step_id=step.id,
+            last_route_target=target,
+            termination=termination if isinstance(termination, MechanicalOutcome) else None,
+            blocking_reason=self._blocking_reason(termination),
+        )
+        context.provenance.record_status_updated(
+            run_id=context.run_id,
+            step_id=step.id,
+            lifecycle_state=lifecycle_state,
+            paths=context.paths,
+        )
         context.provenance.record_step_manifest(
             run_id=context.run_id,
             step_id=step.id,
@@ -736,6 +937,44 @@ class KernelRunService:
             notes=notes,
             next_step_id=target,
         )
+
+    def _last_completed_step_id(self, state: KernelState) -> str | None:
+        if not state.trace:
+            return None
+        # KernelState.trace currently stores entries as "<step_id>-><next_step_id>".
+        last_entry = str(state.trace[-1])
+        return last_entry.split("->", maxsplit=1)[0]
+
+    def _step_runner_family(self, step: StepDefinition) -> AgentFamily | None:
+        if isinstance(step, RunAgentStep):
+            return self._map_agent_family(step.agent)
+        return None
+
+    def _step_lifecycle_state(
+        self,
+        termination: MechanicalOutcome | PlannerStatus | GateOutcome,
+    ) -> RunLifecycleState:
+        if termination == MechanicalOutcome.error:
+            return RunLifecycleState.failed
+        if isinstance(termination, PlannerStatus) and termination in {
+            PlannerStatus.blocked,
+            PlannerStatus.needs_human,
+            PlannerStatus.unsafe,
+        }:
+            return RunLifecycleState.blocked
+        return RunLifecycleState.running
+
+    def _blocking_reason(
+        self,
+        termination: MechanicalOutcome | PlannerStatus | GateOutcome,
+    ) -> str | None:
+        if isinstance(termination, PlannerStatus) and termination in {
+            PlannerStatus.blocked,
+            PlannerStatus.needs_human,
+            PlannerStatus.unsafe,
+        }:
+            return str(termination.value)
+        return None
 
     def _persist_step_policy(
         self,
@@ -846,6 +1085,11 @@ class KernelRunService:
         termination: MechanicalOutcome,
     ) -> datetime:
         ended_at: datetime = self.clock.now()
+        lifecycle_state = (
+            RunLifecycleState.completed
+            if termination == MechanicalOutcome.completed
+            else RunLifecycleState.failed
+        )
         self._write_terminal_metadata(
             workflow=workflow,
             context=context,
@@ -853,6 +1097,19 @@ class KernelRunService:
             ended_at=ended_at,
             last_step_id=last_step_id,
             termination=termination,
+        )
+        self._write_run_status(
+            context=context,
+            lifecycle_state=lifecycle_state,
+            current_step_id=last_step_id,
+            last_completed_step_id=last_step_id,
+            termination=termination,
+        )
+        context.provenance.record_status_updated(
+            run_id=context.run_id,
+            step_id=last_step_id,
+            lifecycle_state=lifecycle_state,
+            paths=context.paths,
         )
         self.artifact_store.write_final_state(f"{termination.value}:{last_step_id}", context.paths)
         return ended_at

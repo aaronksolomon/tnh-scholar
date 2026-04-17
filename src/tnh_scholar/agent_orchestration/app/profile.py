@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
-import sys
 from dataclasses import dataclass
 from pathlib import Path
+from shutil import which
 
 from tnh_scholar.agent_orchestration.app.models import (
     HeadlessPolicyConfig,
     HeadlessValidationConfig,
 )
+from tnh_scholar.agent_orchestration.execution import InheritParentEnvironmentPolicy
 from tnh_scholar.agent_orchestration.execution_policy import (
     ApprovalPosture,
     ExecutionPolicySettings,
@@ -38,28 +39,44 @@ def build_bootstrap_runtime_profile() -> BootstrapRuntimeProfile:
                 default_policy=RequestedExecutionPolicy(
                     execution_posture=ExecutionPosture.workspace_write,
                     approval_posture=ApprovalPosture.fail_on_prompt,
-                )
+                ),
+                named_policies={
+                    "step.review_assist": RequestedExecutionPolicy(
+                        execution_posture=ExecutionPosture.workspace_write,
+                        approval_posture=ApprovalPosture.bounded_auto_approve,
+                    )
+                },
             )
         ),
     )
 
 
 def _bootstrap_builtin_commands() -> tuple[BuiltinCommandEntry, ...]:
-    interpreter = Path(sys.executable)
+    poetry_executable = _resolve_required_cli("poetry")
     return (
         BuiltinCommandEntry(
             name=BuiltinValidatorId.tests,
-            executable=interpreter,
-            arguments=("-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py", "-q"),
+            executable=poetry_executable,
+            arguments=("run", "pytest"),
+            environment_policy=InheritParentEnvironmentPolicy(),
         ),
         BuiltinCommandEntry(
             name=BuiltinValidatorId.lint,
-            executable=interpreter,
-            arguments=("-m", "ruff", "check", "."),
+            executable=poetry_executable,
+            arguments=("run", "ruff", "check", "."),
+            environment_policy=InheritParentEnvironmentPolicy(),
         ),
         BuiltinCommandEntry(
             name=BuiltinValidatorId.typecheck,
-            executable=interpreter,
-            arguments=("-m", "mypy", "src"),
+            executable=poetry_executable,
+            arguments=("run", "mypy", "src"),
+            environment_policy=InheritParentEnvironmentPolicy(),
         ),
     )
+
+
+def _resolve_required_cli(name: str) -> Path:
+    resolved = which(name)
+    if resolved is None:
+        raise RuntimeError(f"Required CLI executable not found in PATH: {name}")
+    return Path(resolved)

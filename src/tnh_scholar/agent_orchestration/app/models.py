@@ -72,5 +72,6 @@ class HeadlessBootstrapResult(BaseModel):
     status: str
     run_directory: Path
     metadata_path: Path
+    status_path: Path
     final_state_path: Path
     workspace_context: WorkspaceContext | None = None

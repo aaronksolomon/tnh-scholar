@@ -130,6 +130,7 @@ class KernelRunResult(BaseModel):
     last_step_id: str
     run_directory: Path
     metadata_path: Path
+    status_path: Path
     final_state_path: Path
 
 

@@ -15,6 +15,7 @@ from tnh_scholar.agent_orchestration.app import (
     HeadlessStorageConfig,
     build_bootstrap_runtime_profile,
 )
+from tnh_scholar.agent_orchestration.execution_policy import ApprovalPosture, ExecutionPosture
 from tnh_scholar.agent_orchestration.run_artifacts.models import ArtifactRole, StepManifest
 
 
@@ -292,6 +293,7 @@ def test_headless_bootstrap_service_runs_workflow_in_managed_worktree(tmp_path: 
 
     assert result.status == "completed"
     assert result.metadata_path.exists()
+    assert result.status_path.exists()
     assert result.final_state_path.exists()
     assert result.workspace_context is not None
     assert result.workspace_context.worktree_path != result.run_directory
@@ -302,8 +304,11 @@ def test_headless_bootstrap_service_runs_workflow_in_managed_worktree(tmp_path: 
     assert not (result.run_directory / "bootstrap-output.txt").exists()
 
     metadata = json.loads(result.metadata_path.read_text(encoding="utf-8"))
+    status = json.loads(result.status_path.read_text(encoding="utf-8"))
     assert metadata["workflow_id"] == "bootstrap-workflow"
     assert metadata["termination"] == "completed"
+    assert status["lifecycle_state"] == "completed"
+    assert status["termination"] == "completed"
     assert metadata["workspace_context"]["base_ref"] == "main"
     assert metadata["workspace_context"]["worktree_path"] == str(
         result.workspace_context.worktree_path
@@ -337,6 +342,21 @@ def test_headless_bootstrap_service_rejects_evaluate_and_gate_steps(tmp_path: Pa
         assert "EVALUATE" in str(error)
         return
     raise AssertionError("Expected bootstrap service to reject EVALUATE step")
+
+
+def test_bootstrap_runtime_profile_exposes_review_policy_and_poetry_validators() -> None:
+    runtime_profile = build_bootstrap_runtime_profile()
+
+    review_policy = runtime_profile.policy.execution_policy_settings.named_policies["step.review_assist"]
+    assert review_policy.execution_posture == ExecutionPosture.workspace_write
+    assert review_policy.approval_posture == ApprovalPosture.bounded_auto_approve
+
+    builtin_entries = {
+        entry.name.value: entry for entry in runtime_profile.validation.builtin_commands
+    }
+    assert builtin_entries["tests"].arguments[:2] == ("run", "pytest")
+    assert builtin_entries["lint"].arguments[:2] == ("run", "ruff")
+    assert builtin_entries["typecheck"].arguments[:2] == ("run", "mypy")
 
 
 def test_headless_bootstrap_service_rejects_gate_steps(tmp_path: Path) -> None:

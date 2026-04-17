@@ -39,6 +39,7 @@ class HeadlessBootstrapService:
             status=run_result.status.value,
             run_directory=run_result.run_directory,
             metadata_path=run_result.metadata_path,
+            status_path=run_result.status_path,
             final_state_path=run_result.final_state_path,
             workspace_context=bundle.workspace_service.current_context(),
         )

@@ -14,6 +14,7 @@ from tnh_scholar.agent_orchestration.run_artifacts.models import (
     RunArtifactPaths,
     RunEventRecord,
     RunMetadata,
+    RunStatus,
     StepArtifactEntry,
     StepManifest,
 )
@@ -35,11 +36,22 @@ class FilesystemRunArtifactStore(RunArtifactStoreProtocol):
             artifacts_directory=artifacts_directory,
             event_log_path=run_directory / "events.ndjson",
             metadata_path=run_directory / "metadata.json",
+            status_path=run_directory / "status.json",
             final_state_path=run_directory / "final-state.txt",
         )
 
     def write_metadata(self, metadata: RunMetadata, paths: RunArtifactPaths) -> None:
         self._write_json(paths.metadata_path, metadata)
+
+    def status_path_for_run(self, run_id: str, root_directory: Path) -> Path:
+        return root_directory / run_id / "status.json"
+
+    def write_status(self, status: RunStatus, paths: RunArtifactPaths) -> None:
+        self._write_json(paths.status_path, status)
+
+    def read_status(self, run_id: str, root_directory: Path) -> RunStatus:
+        status_path = self.status_path_for_run(run_id, root_directory)
+        return RunStatus.model_validate_json(status_path.read_text(encoding="utf-8"))
 
     def append_event(self, event: RunEventRecord, paths: RunArtifactPaths) -> None:
         with paths.event_log_path.open("a", encoding="utf-8") as handle:

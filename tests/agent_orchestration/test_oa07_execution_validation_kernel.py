@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import json
 import sys
+import time
 from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import cast
 
 from tnh_scholar.agent_orchestration.execution import (
     CliExecutableInvocation,
@@ -31,6 +33,7 @@ from tnh_scholar.agent_orchestration.kernel import (
     GateOutcome,
     GateStep,
     KernelRunService,
+    MechanicalOutcome,
     PlannerDecision,
     PlannerStatus,
     RollbackStep,
@@ -176,6 +179,18 @@ class ExplodingRunner:
 
     def run(self, request: RunnerTaskRequest) -> RunnerResult:
         raise RuntimeError(self.message)
+
+
+@dataclass(frozen=True)
+class SlowSuccessRunner:
+    """Runner double that completes after a short delay."""
+
+    delay_seconds: float
+
+    def run(self, request: RunnerTaskRequest) -> RunnerResult:
+        del request
+        time.sleep(self.delay_seconds)
+        return RunnerResult(termination=RunnerTermination.completed)
 
 
 @dataclass(frozen=True)
@@ -375,6 +390,39 @@ def test_validation_service_executes_builtin_validator(tmp_path: Path) -> None:
     assert result.termination == ValidationTermination.completed
 
 
+def test_validation_service_captures_builtin_stdout_and_stderr(tmp_path: Path) -> None:
+    script = tmp_path / "validator.sh"
+    script.write_text(
+        "#!/bin/sh\n"
+        "echo builtin out\n"
+        "echo builtin err 1>&2\n",
+        encoding="utf-8",
+    )
+    script.chmod(0o755)
+    service = _validation_service()
+    service = ValidationService(
+        resolver=StaticValidatorResolver(
+            entries=[BuiltinCommandEntry(name=BuiltinValidatorId.tests, executable=script)]
+        ),
+        execution_service=service.execution_service,
+        harness_resolver=service.harness_resolver,
+        backend_registry=service.backend_registry,
+    )
+
+    result = service.run(
+        ValidationStepRequest(
+            validators=[BuiltinValidationSpec(name=BuiltinValidatorId.tests)],
+            working_directory=tmp_path,
+        )
+    )
+
+    assert result.termination == ValidationTermination.completed
+    assert result.stdout_artifact is not None
+    assert result.stdout_artifact.content == "builtin out\n"
+    assert result.stderr_artifact is not None
+    assert result.stderr_artifact.content == "builtin err\n"
+
+
 def test_validation_service_preserves_killed_idle_outcome(tmp_path: Path) -> None:
     script = tmp_path / "validator.sh"
     script.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
@@ -539,6 +587,11 @@ def _read_events(run_directory: Path) -> list[dict[str, str | None]]:
 def _read_manifest(run_directory: Path, step_id: str) -> StepManifest:
     path = run_directory / "artifacts" / step_id / "manifest.json"
     return StepManifest.model_validate_json(path.read_text(encoding="utf-8"))
+
+
+def _read_status(run_directory: Path) -> dict[str, object]:
+    path = run_directory / "status.json"
+    return cast(dict[str, object], json.loads(path.read_text(encoding="utf-8")))
 
 
 @dataclass(frozen=True)
@@ -778,12 +831,19 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     result = service.run(workflow, tmp_path)
     assert result.status.value == "completed"
     assert result.last_step_id == "STOP"
+    assert result.status_path == result.run_directory / "status.json"
     metadata = json.loads((result.run_directory / "metadata.json").read_text(encoding="utf-8"))
     assert metadata["last_step_id"] == "STOP"
     assert metadata["termination"] == "completed"
     assert metadata["ended_at"]
     assert metadata["workspace_context"]["repo_root"] == str(tmp_path)
     assert metadata["workspace_context"]["worktree_path"] == str(tmp_path)
+    status = _read_status(result.run_directory)
+    assert status["lifecycle_state"] == "completed"
+    assert status["current_step_id"] == "STOP"
+    assert status["last_completed_step_id"] == "STOP"
+    assert status["termination"] == "completed"
+    assert status["worktree_path"] == str(tmp_path)
     events = _read_events(result.run_directory)
     assert [event["step_id"] for event in events if event["event_type"] == "step_started"] == [
         "agent",
@@ -810,6 +870,11 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
         datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
     assert [event["event_type"] for event in events].count("gate_requested") == 1
     assert [event["event_type"] for event in events].count("gate_resolved") == 1
+    assert [event["event_type"] for event in events].count("runner_started") == 1
+    assert [event["event_type"] for event in events].count("runner_completed") == 1
+    assert [event["event_type"] for event in events].count("route_selected") == 4
+    assert [event["event_type"] for event in events].count("status_updated") >= 5
+    assert [event["event_type"] for event in events].count("step_waiting") == 1
 
     agent_manifest = _read_manifest(result.run_directory, "agent")
     validate_manifest = _read_manifest(result.run_directory, "validate")
@@ -914,6 +979,44 @@ def test_kernel_runtime_rejects_worktree_nested_under_run_directory(tmp_path: Pa
 
     with raises(WorkflowValidationError, match="must remain distinct"):
         service.run(workflow, tmp_path)
+
+
+def test_kernel_runtime_emits_periodic_status_updates_during_long_runner_step(tmp_path: Path) -> None:
+    workflow = WorkflowDefinition(
+        workflow_id="w-heartbeat",
+        version=1,
+        description="heartbeat during long runner step",
+        entry_step="agent",
+        steps=[
+            RunAgentStep(
+                id="agent",
+                agent="codex",
+                prompt="task",
+                routes=[RouteRule(outcome=RunnerTermination.completed.value, target="STOP")],
+            ),
+            StopStep(id="STOP"),
+        ],
+    )
+    service = KernelRunService(
+        clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
+        run_id_generator=FixedRunId("run-heartbeat"),
+        artifact_store=FilesystemRunArtifactStore(),
+        workspace=NullWorkspaceService(repo_root=tmp_path),
+        runner_service=SlowSuccessRunner(delay_seconds=0.05),
+        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
+        gate_approver=FixedGateApprover(GateOutcome.gate_approved),
+        workflow_validator=WorkflowValidator(),
+        heartbeat_interval_seconds=0.01,
+    )
+
+    result = service.run(workflow, tmp_path)
+
+    assert result.status == MechanicalOutcome.completed
+    events = _read_events(result.run_directory)
+    assert [event["event_type"] for event in events].count("runner_started") == 1
+    assert [event["event_type"] for event in events].count("runner_completed") == 1
+    assert [event["event_type"] for event in events].count("status_updated") >= 3
 
 
 def test_kernel_runtime_rejects_run_directory_nested_under_worktree(tmp_path: Path) -> None:
@@ -1129,13 +1232,21 @@ def test_kernel_runtime_records_failed_step_provenance_when_runner_raises(tmp_pa
     metadata = json.loads((run_directory / "metadata.json").read_text(encoding="utf-8"))
     assert metadata["last_step_id"] == "agent"
     assert metadata["termination"] == "error"
+    status = _read_status(run_directory)
+    assert status["lifecycle_state"] == "failed"
+    assert status["current_step_id"] == "agent"
+    assert status["last_completed_step_id"] == "agent"
+    assert status["termination"] == "error"
 
     events = _read_events(run_directory)
     assert [event["event_type"] for event in events] == [
         "step_started",
+        "status_updated",
+        "runner_started",
         "artifact_recorded",
         "artifact_recorded",
         "step_failed",
+        "status_updated",
     ]
 
     manifest = _read_manifest(run_directory, "agent")
