@@ -10,6 +10,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import cast
 
 from tnh_scholar.agent_orchestration.execution import (
     CliExecutableInvocation,
@@ -590,7 +591,7 @@ def _read_manifest(run_directory: Path, step_id: str) -> StepManifest:
 
 def _read_status(run_directory: Path) -> dict[str, object]:
     path = run_directory / "status.json"
-    return json.loads(path.read_text(encoding="utf-8"))
+    return cast(dict[str, object], json.loads(path.read_text(encoding="utf-8")))
 
 
 @dataclass(frozen=True)

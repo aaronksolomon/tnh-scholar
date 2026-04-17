@@ -938,7 +938,8 @@ class KernelRunService:
         if not state.trace:
             return None
         # KernelState.trace currently stores entries as "<step_id>-><next_step_id>".
-        return state.trace[-1].split("->", maxsplit=1)[0]
+        last_entry = str(state.trace[-1])
+        return last_entry.split("->", maxsplit=1)[0]
 
     def _step_runner_family(self, step: StepDefinition) -> AgentFamily | None:
         if isinstance(step, RunAgentStep):
@@ -968,7 +969,7 @@ class KernelRunService:
             PlannerStatus.needs_human,
             PlannerStatus.unsafe,
         }:
-            return termination.value
+            return str(termination.value)
         return None
 
     def _persist_step_policy(
