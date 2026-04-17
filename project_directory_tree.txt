@@ -50,10 +50,12 @@
 │   │   │   │   ├── adr-oa04.1-implementation-notes-mvp-buildout.md
 │   │   │   │   ├── adr-oa04.2-runner-contract.md
 │   │   │   │   ├── adr-oa04.3-provenance-run-artifact-contract.md
+│   │   │   │   ├── adr-oa04.3.1-run-transparency-and-state-reporting.md
 │   │   │   │   ├── adr-oa04.4-policy-enforcement-contract.md
 │   │   │   │   ├── adr-oa04.5-harness-backend-contract.md
 │   │   │   │   ├── adr-oa05-prompt-library-specification.md
 │   │   │   │   ├── adr-oa06-planner-evaluator-contract.md
+│   │   │   │   ├── adr-oa06.1-evaluator-directed-revision-loop.md
 │   │   │   │   ├── adr-oa07-diff-policy-safety-rails.md
 │   │   │   │   ├── adr-oa07.1-worktree-lifecycle-and-rollback.md
 │   │   │   │   └── index.md
@@ -91,6 +93,7 @@
 │   │   │   │   │   ├── spike-06-native-codex-cli-baseline.md
 │   │   │   │   │   ├── spike-07-codex-home-state-dependency.md
 │   │   │   │   │   ├── spike-08-launch-context-env-contamination.md
+│   │   │   │   │   ├── spike-09-prompt-dir-three-arm-comparison.md
 │   │   │   │   │   └── spike-testing-sequence.md
 │   │   │   │   ├── index.md
 │   │   │   │   ├── plans
@@ -99,6 +102,7 @@
 │   │   │   │   │   ├── oa07.1-pr7-worktree-workspace-plan.md
 │   │   │   │   │   └── oa07.1-pr8-bootstrap-headless-entry-plan.md
 │   │   │   │   └── research
+│   │   │   │       ├── agent-orchestration-collaboration-paradigms.md
 │   │   │   │       ├── codex-headless-communication-research-directions.md
 │   │   │   │       ├── codex-headless-research-memo-for-engineer-agents.md
 │   │   │   │       ├── codex-official-docs-reference-summary.md
@@ -245,7 +249,10 @@
 │   │   │   │       ├── README.md
 │   │   │   │       ├── tnh-fab-cli-spec.md
 │   │   │   │       └── tnh-fab-design-document.md
-│   │   │   └── index.md
+│   │   │   ├── index.md
+│   │   │   └── notes
+│   │   │       ├── index.md
+│   │   │       └── tnh-gen-robustness-review-2026-04.md
 │   │   ├── transcription
 │   │   │   ├── adr
 │   │   │   │   ├── adr-tr01-assemblyai-integration.md
@@ -1147,4 +1154,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-241 directories, 907 files
+242 directories, 913 files
