@@ -16,7 +16,7 @@
         <link rel="prev" href="../adr-tg01.1-human-friendly-defaults/">
       
       
-        <link rel="next" href="../../notes/">
+        <link rel="next" href="../adr-tg03-completion-contract/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -7844,6 +7844,8 @@
       
         
       
+        
+      
     
     
     
@@ -8206,10 +8208,47 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-04-16-catalog-health-aggregation-and-warning-suppression" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-16: Catalog Health Aggregation and Warning Suppression
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-tg03-completion-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TG03: Completion Contract and Adapter Diagnostics
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
     </li>
   
 
@@ -11820,6 +11859,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-04-16-catalog-health-aggregation-and-warning-suppression" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-16: Catalog Health Aggregation and Warning Suppression
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -12110,6 +12158,37 @@
 <li><a href="https://jinja.palletsprojects.com/">Jinja2 Template Syntax</a></li>
 <li><a href="https://docs.pydantic.dev/">Pydantic Validation</a></li>
 </ul>
+<hr />
+<h2 id="addendum-2026-04-16-catalog-health-aggregation-and-warning-suppression">Addendum 2026-04-16: Catalog Health Aggregation and Warning Suppression<a class="headerlink" href="#addendum-2026-04-16-catalog-health-aggregation-and-warning-suppression" title="Link to this section">&para;</a></h2>
+<p><strong>Context</strong>: Issue #49. <code>PromptsAdapter</code> validates every prompt in the catalog on initialization and emits per-prompt validation warnings inline to stderr as they are encountered. For a catalog with many bundled prompts, this produces large volumes of noise (<code>output_mode: text</code> invalid, missing required frontmatter keys, JSON schema errors) even for unrelated operations like <code>tnh-gen list --keys-only</code>. There is no batching, no severity tier distinction, no quiet path, and no way to distinguish "prompt is broken and unusable" from "prompt uses an older schema field."</p>
+<p><strong>Decision</strong>:</p>
+<p><strong>1. Aggregated <code>CatalogHealth</code> report</strong></p>
+<p>Catalog loading collects validation issues into a structured <code>CatalogHealth</code> object instead of emitting inline stderr messages. Fields:</p>
+<ul>
+<li><code>errors: list[CatalogIssue]</code> — prompts that could not be loaded or rendered (missing required fields, parse failure). These prompts are excluded from the working catalog.</li>
+<li><code>warnings: list[CatalogIssue]</code> — prompts with non-fatal metadata issues (deprecated field name, optional field absent, schema version mismatch). These prompts remain in the working catalog.</li>
+</ul>
+<p>Each <code>CatalogIssue</code> carries: <code>prompt_key</code>, <code>issue_type</code> (enum), <code>message</code>.</p>
+<p><strong>2. Severity tiers</strong></p>
+<ul>
+<li><code>ERROR</code>-level issues surface in stderr as a single summary line after catalog loading completes:
+  <code>[tnh-gen] 3 prompts failed to load. Run 'tnh-gen config show --catalog-health' for details.</code></li>
+<li><code>WARNING</code>-level issues are <strong>not</strong> emitted to stderr during normal operation.</li>
+</ul>
+<p><strong>3. <code>tnh-gen config show --catalog-health</code></strong></p>
+<p>A new flag on the <code>config show</code> subcommand emits the full <code>CatalogHealth</code> JSON report. This is the only way to see complete validation details. In <code>--api</code> mode, the report is a structured JSON object.</p>
+<p><strong>4. Quiet and API mode behavior</strong></p>
+<ul>
+<li><code>--quiet</code> mode: all catalog health output (including the <code>ERROR</code> summary line) is suppressed from stderr.</li>
+<li><code>--api</code> mode: the error-level summary (count only) is included as a field in the root response envelope, not emitted to stderr. Example: <code>"catalog_errors": 3</code>.</li>
+</ul>
+<p><strong>Rationale</strong>: Stderr is for invocation failures. Catalog health is an operational/environmental status that should be queryable on demand rather than ambient. Separating these surfaces makes normal CLI and agent output readable, while keeping catalog diagnostics fully accessible via an explicit query.</p>
+<p><strong>Status</strong>: Accepted</p>
+<p><strong>Implementation Files</strong>:
+- <code>src/tnh_scholar/gen_ai_service/prompts/</code> (adapter, loader — replace inline stderr with <code>CatalogHealth</code> accumulation)
+- <code>src/tnh_scholar/cli_tools/tnh_gen/commands/config.py</code> (add <code>--catalog-health</code> flag)
+- <code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py</code> (suppress or surface summary per mode)</p>
+<p><strong>Related</strong>: <a href="../adr-tg01-cli-architecture/">ADR-TG01</a> §5 (error handling), <a href="../../notes/tnh-gen-robustness-review-2026-04/">tnh-gen Robustness Review 2026-04</a></p>
 <hr />
 <p><em>This ADR implements prompt system integration patterns from ADR-PT04 §8.2.</em></p>
 

@@ -6,30 +6,32 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="TNH Scholar requires some initial configuration to function properly. This guide covers the essential configuration steps and options.">
+        <meta name="description" content="Introduce a FAILED terminal state in the completion envelope and structured adapter diagnostics for observable, reliable generation results">
+      
+      
+        <meta name="author" content="Aaron Solomon, Claude Sonnet 4.6">
       
       
       
-      
-        <link rel="prev" href="../">
-      
-      
-        <link rel="next" href="../installation/">
+        <link rel="prev" href="../adr-tg02-prompt-integration/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+        <link rel="next" href="../../notes/">
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
     
     
       
-        <title>Configuration - TNH Scholar Documentation</title>
+        <title>ADR-TG03: Completion Contract and Adapter Diagnostics - TNH Scholar Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a40c8224.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,11 +50,11 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../stylesheets/tnh-zen.css">
+      <link rel="stylesheet" href="../../../../stylesheets/tnh-zen.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -120,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#configuration" class="md-skip">
+        <a href="#adr-tg03-completion-contract-and-adapter-diagnostics" class="md-skip">
           Skip to content
         </a>
       
@@ -156,7 +158,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -176,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Configuration
+              ADR-TG03: Completion Contract and Adapter Diagnostics
             
           </span>
         </div>
@@ -265,7 +267,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -295,7 +297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -319,8 +321,6 @@
       
   
   
-    
-  
   
   
     
@@ -339,16 +339,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../../getting-started/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -372,7 +372,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Getting Started
@@ -385,37 +385,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Configuration
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--current"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../../getting-started/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -431,110 +404,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#environment-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environment Setup
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Environment Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#openai-api-key" class="md-nav__link">
-    <span class="md-ellipsis">
-      OpenAI API Key
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#directory-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Directory Structure
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#prompt-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prompt Configuration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Prompt Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#prompt-directory" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prompt Directory
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#default-prompts" class="md-nav__link">
-    <span class="md-ellipsis">
-      Default Prompts
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuration File
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#initial-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Initial Setup
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -547,7 +416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/" class="md-nav__link">
+      <a href="../../../../getting-started/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -575,7 +444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../quick-start-guide/" class="md-nav__link">
+      <a href="../../../../getting-started/quick-start-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -634,7 +503,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../user-guide/" class="md-nav__link ">
+            <a href="../../../../user-guide/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -674,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user-guide/best-practices/" class="md-nav__link">
+      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -702,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user-guide/overview/" class="md-nav__link">
+      <a href="../../../../user-guide/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -730,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user-guide/prompt-system/" class="md-nav__link">
+      <a href="../../../../user-guide/prompt-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -793,7 +662,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../project/" class="md-nav__link ">
+            <a href="../../../../project/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -833,7 +702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/conceptual-architecture/" class="md-nav__link">
+      <a href="../../../../project/conceptual-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -861,7 +730,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/future-directions/" class="md-nav__link">
+      <a href="../../../../project/future-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -889,7 +758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/philosophy/" class="md-nav__link">
+      <a href="../../../../project/philosophy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -917,7 +786,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/principles/" class="md-nav__link">
+      <a href="../../../../project/principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -945,7 +814,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/vision/" class="md-nav__link">
+      <a href="../../../../project/vision/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1000,7 +869,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../community/" class="md-nav__link ">
+            <a href="../../../../community/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1040,7 +909,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../community/parallax-overview/" class="md-nav__link">
+      <a href="../../../../community/parallax-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1107,7 +976,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../project/repo-root/" class="md-nav__link ">
+            <a href="../../../../project/repo-root/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1147,7 +1016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/changelog/" class="md-nav__link">
+      <a href="../../../../project/repo-root/changelog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1175,7 +1044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/contributing-root/" class="md-nav__link">
+      <a href="../../../../project/repo-root/contributing-root/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1203,7 +1072,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/dev-setup-guide/" class="md-nav__link">
+      <a href="../../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1231,7 +1100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/release_checklist/" class="md-nav__link">
+      <a href="../../../../project/repo-root/release_checklist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1259,7 +1128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/repo-readme/" class="md-nav__link">
+      <a href="../../../../project/repo-root/repo-readme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1287,7 +1156,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/todo-list/" class="md-nav__link">
+      <a href="../../../../project/repo-root/todo-list/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1315,7 +1184,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../project/repo-root/versioning/" class="md-nav__link">
+      <a href="../../../../project/repo-root/versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1388,7 +1257,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../cli-reference/" class="md-nav__link ">
+            <a href="../../../../cli-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1428,7 +1297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/audio-transcribe/" class="md-nav__link">
+      <a href="../../../../cli-reference/audio-transcribe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1456,7 +1325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/json-to-srt/" class="md-nav__link">
+      <a href="../../../../cli-reference/json-to-srt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1484,7 +1353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/nfmt/" class="md-nav__link">
+      <a href="../../../../cli-reference/nfmt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1512,7 +1381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/overview/" class="md-nav__link">
+      <a href="../../../../cli-reference/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1540,7 +1409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/sent-split/" class="md-nav__link">
+      <a href="../../../../cli-reference/sent-split/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1568,7 +1437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/srt-translate/" class="md-nav__link">
+      <a href="../../../../cli-reference/srt-translate/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1596,7 +1465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/tnh-gen/" class="md-nav__link">
+      <a href="../../../../cli-reference/tnh-gen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1624,7 +1493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/tnh-setup/" class="md-nav__link">
+      <a href="../../../../cli-reference/tnh-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1652,7 +1521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/token-count/" class="md-nav__link">
+      <a href="../../../../cli-reference/token-count/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1680,7 +1549,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli-reference/ytt-fetch/" class="md-nav__link">
+      <a href="../../../../cli-reference/ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1715,7 +1584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/" class="md-nav__link">
+      <a href="../../../../api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1739,8 +1608,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -1811,16 +1682,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/" class="md-nav__link ">
+            <a href="../../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1844,7 +1715,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             Architecture
@@ -1860,7 +1731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/overview/" class="md-nav__link">
+      <a href="../../../overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1916,7 +1787,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/agent-orchestration/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -1956,7 +1827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/system-design/" class="md-nav__link">
+      <a href="../../../agent-orchestration/system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2046,7 +1917,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/agent-orchestration/adr/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2086,7 +1957,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2114,7 +1985,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2142,7 +2013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa01.2-conceptual-spike-orientation-based-supervisory-orchestration/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa01.2-conceptual-spike-orientation-based-supervisory-orchestration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2170,7 +2041,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa01.3-conceptual-spike-practical-approach/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa01.3-conceptual-spike-practical-approach/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2198,7 +2069,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa01.4-headless-agent-communication-functional-spike/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa01.4-headless-agent-communication-functional-spike/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2226,7 +2097,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2254,7 +2125,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2282,7 +2153,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2310,7 +2181,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa03.2-codex-runner/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa03.2-codex-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2338,7 +2209,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2366,7 +2237,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2394,7 +2265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2422,7 +2293,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa04.2-runner-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.2-runner-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2450,7 +2321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2478,7 +2349,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa04.3.1-run-transparency-and-state-reporting/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.3.1-run-transparency-and-state-reporting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2506,7 +2377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2534,7 +2405,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2562,7 +2433,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2590,7 +2461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2618,7 +2489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa06.1-evaluator-directed-revision-loop/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa06.1-evaluator-directed-revision-loop/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2646,7 +2517,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2674,7 +2545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2732,7 +2603,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/agent-orchestration/bootstrap-proof/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/bootstrap-proof/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2772,7 +2643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/bootstrap-proof/current-task-brief/" class="md-nav__link">
+      <a href="../../../agent-orchestration/bootstrap-proof/current-task-brief/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2800,7 +2671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/bootstrap-proof/run-bootstrap-proof/" class="md-nav__link">
+      <a href="../../../agent-orchestration/bootstrap-proof/run-bootstrap-proof/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2862,7 +2733,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/agent-orchestration/notes/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2924,7 +2795,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/agent-orchestration/notes/design/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2964,7 +2835,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/design/architecture-blueprint/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/design/architecture-blueprint/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2992,7 +2863,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/design/bootstrap-direction-design-memo/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/design/bootstrap-direction-design-memo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3080,7 +2951,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/agent-orchestration/notes/experiments/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/experiments/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3120,7 +2991,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/bootstrap-proof-run-result/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/bootstrap-proof-run-result/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3148,7 +3019,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/codex-harness-e2e-report/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/codex-harness-e2e-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3176,7 +3047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/codex-harness-spike-findings/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/codex-harness-spike-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3204,7 +3075,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/codex-headless-communication-experiment-plan/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/codex-headless-communication-experiment-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3232,7 +3103,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/codex-headless-communication-report/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/codex-headless-communication-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3260,7 +3131,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/oa01x-cloud-direction-generation-comparison-result/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/oa01x-cloud-direction-generation-comparison-result/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3288,7 +3159,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/oa01x-spike-experiment-register/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/oa01x-spike-experiment-register/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3316,7 +3187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/spike-02-execution-context-comparison/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-02-execution-context-comparison/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3344,7 +3215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/spike-03-native-subagent-smoke-test/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-03-native-subagent-smoke-test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3372,7 +3243,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/spike-04-narrow-supervisory-comparison/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-04-narrow-supervisory-comparison/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3400,7 +3271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/spike-05-minimum-review-artifact-set/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-05-minimum-review-artifact-set/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3428,7 +3299,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/spike-06-native-codex-cli-baseline/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-06-native-codex-cli-baseline/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3456,7 +3327,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/spike-07-codex-home-state-dependency/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-07-codex-home-state-dependency/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3484,7 +3355,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/spike-08-launch-context-env-contamination/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-08-launch-context-env-contamination/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3512,7 +3383,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/spike-09-prompt-dir-three-arm-comparison/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-09-prompt-dir-three-arm-comparison/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3540,7 +3411,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/spike-testing-sequence/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-testing-sequence/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3592,7 +3463,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/agent-orchestration/notes/experiments/cloud-run-artifacts/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/experiments/cloud-run-artifacts/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3632,7 +3503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/cloud-run-artifacts/oa01x-experimental-directions-and-experiment-catalog/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/cloud-run-artifacts/oa01x-experimental-directions-and-experiment-catalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3660,7 +3531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/cloud-run-artifacts/oa01x-experimental-directions-atlas/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/cloud-run-artifacts/oa01x-experimental-directions-atlas/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3688,7 +3559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/experiments/cloud-run-artifacts/oa1x-experimental-directions-matrix/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/cloud-run-artifacts/oa1x-experimental-directions-matrix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3756,7 +3627,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/agent-orchestration/notes/plans/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/plans/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3796,7 +3667,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/plans/oa07-bootstrap-proof-workflow-plan/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/plans/oa07-bootstrap-proof-workflow-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3824,7 +3695,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/plans/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/plans/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3852,7 +3723,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/plans/oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/plans/oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3916,7 +3787,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/agent-orchestration/notes/research/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/research/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3956,7 +3827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/research/agent-orchestration-collaboration-paradigms/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/research/agent-orchestration-collaboration-paradigms/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3984,7 +3855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/research/codex-headless-communication-research-directions/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/research/codex-headless-communication-research-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4012,7 +3883,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/research/codex-headless-research-memo-for-engineer-agents/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/research/codex-headless-research-memo-for-engineer-agents/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4040,7 +3911,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/research/codex-official-docs-reference-summary/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/research/codex-official-docs-reference-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4068,7 +3939,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/notes/research/vscode-1110-agent-features-research/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/research/vscode-1110-agent-features-research/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4142,7 +4013,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/agent-orchestration/supervisory-shell-trial/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/supervisory-shell-trial/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4182,7 +4053,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/supervisory-shell-trial/current-supervisory-task-brief/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/current-supervisory-task-brief/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4210,7 +4081,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/supervisory-shell-trial/prompt-dir-task-brief/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/prompt-dir-task-brief/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4238,7 +4109,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/supervisory-shell-trial/run-prompt-dir-comparison/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/run-prompt-dir-comparison/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4266,7 +4137,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/supervisory-shell-trial/run-supervisory-shell-trial/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/run-supervisory-shell-trial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4294,7 +4165,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract-v2/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract-v2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4322,7 +4193,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4366,7 +4237,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/" class="md-nav__link">
+      <a href="../../../ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4467,7 +4338,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/ai-text-processing/adr/" class="md-nav__link ">
+            <a href="../../../ai-text-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4507,7 +4378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4535,7 +4406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4563,7 +4434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4591,7 +4462,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4619,7 +4490,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4647,7 +4518,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4675,7 +4546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4733,7 +4604,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/ai-text-processing/design/" class="md-nav__link ">
+            <a href="../../../ai-text-processing/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4773,7 +4644,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/design/textobject-original-design/" class="md-nav__link">
+      <a href="../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4801,7 +4672,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ai-text-processing/design/textobject-system-design/" class="md-nav__link">
+      <a href="../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4867,7 +4738,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/configuration/" class="md-nav__link ">
+            <a href="../../../configuration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4907,7 +4778,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/configuration/tnh-configuration-management/" class="md-nav__link">
+      <a href="../../../configuration/tnh-configuration-management/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4957,7 +4828,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/configuration/adr/" class="md-nav__link ">
+            <a href="../../../configuration/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -4997,7 +4868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
+      <a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5025,7 +4896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/configuration/adr/adr-cf02-prompt-catalog-discovery/" class="md-nav__link">
+      <a href="../../../configuration/adr/adr-cf02-prompt-catalog-discovery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5091,7 +4962,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/docs-system/" class="md-nav__link ">
+            <a href="../../../docs-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5157,7 +5028,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/docs-system/adr/" class="md-nav__link ">
+            <a href="../../../docs-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5197,7 +5068,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5225,7 +5096,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5253,7 +5124,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5281,7 +5152,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5337,7 +5208,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/docs-system/design/" class="md-nav__link ">
+            <a href="../../../docs-system/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5377,7 +5248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/docs-system/design/documentation-design/" class="md-nav__link">
+      <a href="../../../docs-system/design/documentation-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5421,7 +5292,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/" class="md-nav__link">
+      <a href="../../../gen-ai-service/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5528,7 +5399,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/gen-ai-service/adr/" class="md-nav__link ">
+            <a href="../../../gen-ai-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5568,7 +5439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5596,7 +5467,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5624,7 +5495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5652,7 +5523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5680,7 +5551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5708,7 +5579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5736,7 +5607,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5764,7 +5635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5792,7 +5663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5820,7 +5691,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5878,7 +5749,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/gen-ai-service/design/" class="md-nav__link ">
+            <a href="../../../gen-ai-service/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5918,7 +5789,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
+      <a href="../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5946,7 +5817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
+      <a href="../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6012,7 +5883,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/jvb-viewer/" class="md-nav__link ">
+            <a href="../../../jvb-viewer/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6074,7 +5945,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/jvb-viewer/adr/" class="md-nav__link ">
+            <a href="../../../jvb-viewer/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6114,7 +5985,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
+      <a href="../../../jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6142,7 +6013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
+      <a href="../../../jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6204,7 +6075,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/jvb-viewer/design/" class="md-nav__link ">
+            <a href="../../../jvb-viewer/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6244,7 +6115,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6272,7 +6143,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6300,7 +6171,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6328,7 +6199,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/jvb-viewer/design/luan-hoi/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6392,7 +6263,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/knowledge-base/" class="md-nav__link ">
+            <a href="../../../knowledge-base/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6452,7 +6323,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/knowledge-base/adr/" class="md-nav__link ">
+            <a href="../../../knowledge-base/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6492,7 +6363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
+      <a href="../../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6556,7 +6427,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/metadata/" class="md-nav__link ">
+            <a href="../../../metadata/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6618,7 +6489,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/metadata/adr/" class="md-nav__link ">
+            <a href="../../../metadata/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6658,7 +6529,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
+      <a href="../../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6686,7 +6557,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
+      <a href="../../../metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6756,7 +6627,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/object-service/" class="md-nav__link ">
+            <a href="../../../object-service/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6796,7 +6667,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/object-service/object-service-design-gaps/" class="md-nav__link">
+      <a href="../../../object-service/object-service-design-gaps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6824,7 +6695,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/object-service/object-service-design-overview/" class="md-nav__link">
+      <a href="../../../object-service/object-service-design-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6852,7 +6723,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/object-service/object-service-implementation-status/" class="md-nav__link">
+      <a href="../../../object-service/object-service-implementation-status/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -6900,7 +6771,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/object-service/adr/" class="md-nav__link ">
+            <a href="../../../object-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -6940,7 +6811,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
+      <a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7006,7 +6877,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/project-policies/" class="md-nav__link ">
+            <a href="../../../project-policies/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7046,7 +6917,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
+      <a href="../../../project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7094,7 +6965,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/project-policies/adr/" class="md-nav__link ">
+            <a href="../../../project-policies/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7134,7 +7005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
+      <a href="../../../project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7200,7 +7071,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/prompt-system/" class="md-nav__link ">
+            <a href="../../../prompt-system/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7240,7 +7111,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/prompt-system/prompt-system-architecture/" class="md-nav__link">
+      <a href="../../../prompt-system/prompt-system-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7292,7 +7163,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/prompt-system/adr/" class="md-nav__link ">
+            <a href="../../../prompt-system/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7332,7 +7203,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
+      <a href="../../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7360,7 +7231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
+      <a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7388,7 +7259,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/prompt-system/adr/adr-pt05-prompt-platform-strategy/" class="md-nav__link">
+      <a href="../../../prompt-system/adr/adr-pt05-prompt-platform-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7432,7 +7303,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/provenance/" class="md-nav__link">
+      <a href="../../../provenance/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7519,7 +7390,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/provenance/adr/" class="md-nav__link ">
+            <a href="../../../provenance/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7559,7 +7430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
+      <a href="../../../provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7625,7 +7496,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/setup-tnh/" class="md-nav__link ">
+            <a href="../../../setup-tnh/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7687,7 +7558,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/setup-tnh/adr/" class="md-nav__link ">
+            <a href="../../../setup-tnh/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7727,7 +7598,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening/" class="md-nav__link">
+      <a href="../../../setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7755,7 +7626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/setup-tnh/adr/adr-st01.1-tnh-setup-ui-design/" class="md-nav__link">
+      <a href="../../../setup-tnh/adr/adr-st01.1-tnh-setup-ui-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7811,7 +7682,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/setup-tnh/design/" class="md-nav__link ">
+            <a href="../../../setup-tnh/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -7851,7 +7722,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
+      <a href="../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7895,7 +7766,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/tnh-gen/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -7913,8 +7784,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -7925,11 +7798,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20" checked>
         
           
           <label class="md-nav__link" for="__nav_9_20" id="__nav_9_20_label" tabindex="0">
@@ -7943,7 +7816,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_20_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_20_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_20">
             <span class="md-nav__icon md-icon"></span>
             Tnh Gen
@@ -7954,6 +7827,8 @@
                 
   
   
+    
+  
   
   
     
@@ -7974,16 +7849,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20_1" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/tnh-gen/adr/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8007,7 +7882,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_20_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_20_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_20_1">
             <span class="md-nav__icon md-icon"></span>
             Adr
@@ -8023,7 +7898,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
+      <a href="../adr-tg01-cli-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8051,7 +7926,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/tnh-gen/adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
+      <a href="../adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8079,7 +7954,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
+      <a href="../adr-tg02-prompt-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8104,10 +7979,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../architecture/tnh-gen/adr/adr-tg03-completion-contract/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ADR-TG03: Completion Contract and Adapter Diagnostics
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -8123,6 +8025,257 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#adr-editing-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADR Editing Policy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-providerstatusfailed" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Add ProviderStatus.FAILED
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-structured-failurereason-on-providerresponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Structured FailureReason on ProviderResponse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-harden-adapter-extraction-in-openai_adapterpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Harden Adapter Extraction in openai_adapter.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-make-post_check-a-real-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Make post_check() a Real Gate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-failure-path-in-runpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Failure Path in run.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-adapterdiagnostics-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. AdapterDiagnostics Record
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-flow-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Flow Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-1-reuse-incomplete-for-empty-with-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 1: Reuse INCOMPLETE for empty-with-tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-2-treat-empty-result-as-a-retryable-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 2: Treat empty result as a retryable warning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-3-detect-empty-results-only-in-post_check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 3: Detect empty results only in post_check()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#as-built-notes-addendums" class="md-nav__link">
+    <span class="md-ellipsis">
+      As-Built Notes &amp; Addendums
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -8163,7 +8316,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/tnh-gen/notes/" class="md-nav__link ">
+            <a href="../../notes/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8203,7 +8356,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/tnh-gen/notes/tnh-gen-robustness-review-2026-04/" class="md-nav__link">
+      <a href="../../notes/tnh-gen-robustness-review-2026-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8269,7 +8422,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/transcription/" class="md-nav__link ">
+            <a href="../../../transcription/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8341,7 +8494,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/transcription/adr/" class="md-nav__link ">
+            <a href="../../../transcription/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8381,7 +8534,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8409,7 +8562,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8437,7 +8590,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8465,7 +8618,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8493,7 +8646,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr05-language-aware-multilingual-transcription-engine/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr05-language-aware-multilingual-transcription-engine/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8521,7 +8674,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr05.1-speaker-block-language-lock-default/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr05.1-speaker-block-language-lock-default/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8549,7 +8702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/adr/adr-tr05.2-mvp-service-scaffold/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr05.2-mvp-service-scaffold/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8627,7 +8780,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/transcription/design/" class="md-nav__link ">
+            <a href="../../../transcription/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8667,7 +8820,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/audio-chunking-design/" class="md-nav__link">
+      <a href="../../../transcription/design/audio-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8695,7 +8848,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/diarization-algorithms/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-algorithms/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8723,7 +8876,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/diarization-chunker-design/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-chunker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8751,7 +8904,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/diarization-system-design/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8779,7 +8932,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/interval-to-segment-mapping/" class="md-nav__link">
+      <a href="../../../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8807,7 +8960,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/language-aware-chunking-design/" class="md-nav__link">
+      <a href="../../../transcription/design/language-aware-chunking-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8835,7 +8988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
+      <a href="../../../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8863,7 +9016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
+      <a href="../../../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8891,7 +9044,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/practical-language-aware-chunking/" class="md-nav__link">
+      <a href="../../../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8919,7 +9072,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
+      <a href="../../../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8947,7 +9100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
+      <a href="../../../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8975,7 +9128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/transcription/design/timelinemapper-design/" class="md-nav__link">
+      <a href="../../../transcription/design/timelinemapper-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9041,7 +9194,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/ui-ux/" class="md-nav__link ">
+            <a href="../../../ui-ux/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9101,7 +9254,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/ui-ux/design/" class="md-nav__link ">
+            <a href="../../../ui-ux/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9141,7 +9294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
+      <a href="../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9207,7 +9360,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/ui-ux/vs-code-integration/" class="md-nav__link ">
+            <a href="../../../ui-ux/vs-code-integration/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9247,7 +9400,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9275,7 +9428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9303,7 +9456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9331,7 +9484,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9359,7 +9512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9387,7 +9540,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9451,7 +9604,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/utilities/" class="md-nav__link ">
+            <a href="../../../utilities/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9513,7 +9666,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/utilities/design/" class="md-nav__link ">
+            <a href="../../../utilities/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9553,7 +9706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/utilities/design/package-version-checker-design/" class="md-nav__link">
+      <a href="../../../utilities/design/package-version-checker-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9581,7 +9734,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/utilities/design/utilities-catalog/" class="md-nav__link">
+      <a href="../../../utilities/design/utilities-catalog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9645,7 +9798,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/video-processing/" class="md-nav__link ">
+            <a href="../../../video-processing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9707,7 +9860,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/video-processing/adr/" class="md-nav__link ">
+            <a href="../../../video-processing/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9747,7 +9900,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+      <a href="../../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9775,7 +9928,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/video-processing/adr/adr-vp02-ytdlp-operational-strategy/" class="md-nav__link">
+      <a href="../../../video-processing/adr/adr-vp02-ytdlp-operational-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9819,7 +9972,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ytt-fetch/" class="md-nav__link">
+      <a href="../../../ytt-fetch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9912,7 +10065,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/ytt-fetch/adr/" class="md-nav__link ">
+            <a href="../../../ytt-fetch/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -9952,7 +10105,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -9980,7 +10133,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10008,7 +10161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10064,7 +10217,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../architecture/ytt-fetch/design/" class="md-nav__link ">
+            <a href="../../../ytt-fetch/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -10104,7 +10257,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
+      <a href="../../../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10197,7 +10350,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../development/" class="md-nav__link ">
+            <a href="../../../../development/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -10237,7 +10390,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/contributing-prototype-phase/" class="md-nav__link">
+      <a href="../../../../development/contributing-prototype-phase/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10265,7 +10418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/design-principles/" class="md-nav__link">
+      <a href="../../../../development/design-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10293,7 +10446,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/fine-tuning-strategy/" class="md-nav__link">
+      <a href="../../../../development/fine-tuning-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10321,7 +10474,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/git-workflow/" class="md-nav__link">
+      <a href="../../../../development/git-workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10349,7 +10502,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/human-ai-software-engineering-principles/" class="md-nav__link">
+      <a href="../../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10377,7 +10530,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/improvements-initial-structure/" class="md-nav__link">
+      <a href="../../../../development/improvements-initial-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10405,7 +10558,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/overview/" class="md-nav__link">
+      <a href="../../../../development/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10433,7 +10586,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/release-workflow/" class="md-nav__link">
+      <a href="../../../../development/release-workflow/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10461,7 +10614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/style-guide/" class="md-nav__link">
+      <a href="../../../../development/style-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10489,7 +10642,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/system-design/" class="md-nav__link">
+      <a href="../../../../development/system-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10517,7 +10670,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/yt-dlp-ops-check/" class="md-nav__link">
+      <a href="../../../../development/yt-dlp-ops-check/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10569,7 +10722,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../development/incident-reports/" class="md-nav__link ">
+            <a href="../../../../development/incident-reports/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -10609,7 +10762,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10637,7 +10790,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/incident-reports/tag-v0.2.0-correction-plan/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/tag-v0.2.0-correction-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10689,7 +10842,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
+            <a href="../../../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -10729,7 +10882,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10757,7 +10910,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10785,7 +10938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10864,7 +11017,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../docs-ops/" class="md-nav__link ">
+            <a href="../../../../docs-ops/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -10904,7 +11057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-ops/adr-template/" class="md-nav__link">
+      <a href="../../../../docs-ops/adr-template/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10932,7 +11085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-ops/markdown-standards/" class="md-nav__link">
+      <a href="../../../../docs-ops/markdown-standards/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10960,7 +11113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
+      <a href="../../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -10988,7 +11141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-ops/preview-theme/" class="md-nav__link">
+      <a href="../../../../docs-ops/preview-theme/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11016,7 +11169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docs-ops/theme-design/" class="md-nav__link">
+      <a href="../../../../docs-ops/theme-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11085,7 +11238,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../research/" class="md-nav__link ">
+            <a href="../../../../research/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -11125,7 +11278,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/gpt_development_convos/" class="md-nav__link">
+      <a href="../../../../research/gpt_development_convos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11153,7 +11306,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/kb-design-document/" class="md-nav__link">
+      <a href="../../../../research/kb-design-document/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11181,7 +11334,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/metadata-summary-report/" class="md-nav__link">
+      <a href="../../../../research/metadata-summary-report/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11209,7 +11362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/preliminary-feasibility-study/" class="md-nav__link">
+      <a href="../../../../research/preliminary-feasibility-study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11237,7 +11390,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/rag-research-directions/" class="md-nav__link">
+      <a href="../../../../research/rag-research-directions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11265,7 +11418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/siap-methodology/" class="md-nav__link">
+      <a href="../../../../research/siap-methodology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11313,7 +11466,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../research/gpt4o-search-query-testing/" class="md-nav__link ">
+            <a href="../../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -11353,7 +11506,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
+      <a href="../../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11409,7 +11562,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../research/gpt4o-translation-experiments/" class="md-nav__link ">
+            <a href="../../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -11449,7 +11602,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
+      <a href="../../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11492,7 +11645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../documentation_index/" class="md-nav__link">
+      <a href="../../../../documentation_index/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11539,28 +11692,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#environment-setup" class="md-nav__link">
+  <a href="#adr-editing-policy" class="md-nav__link">
     <span class="md-ellipsis">
-      Environment Setup
+      ADR Editing Policy
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Environment Setup">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Context">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#openai-api-key" class="md-nav__link">
+  <a href="#current-state" class="md-nav__link">
     <span class="md-ellipsis">
-      OpenAI API Key
+      Current State
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#directory-structure" class="md-nav__link">
+  <a href="#problem" class="md-nav__link">
     <span class="md-ellipsis">
-      Directory Structure
+      Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope
     </span>
   </a>
   
@@ -11572,28 +11743,73 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prompt-configuration" class="md-nav__link">
+  <a href="#decision" class="md-nav__link">
     <span class="md-ellipsis">
-      Prompt Configuration
+      Decision
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Prompt Configuration">
+    <nav class="md-nav" aria-label="Decision">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#prompt-directory" class="md-nav__link">
+  <a href="#1-add-providerstatusfailed" class="md-nav__link">
     <span class="md-ellipsis">
-      Prompt Directory
+      1. Add ProviderStatus.FAILED
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#default-prompts" class="md-nav__link">
+  <a href="#2-structured-failurereason-on-providerresponse" class="md-nav__link">
     <span class="md-ellipsis">
-      Default Prompts
+      2. Structured FailureReason on ProviderResponse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-harden-adapter-extraction-in-openai_adapterpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Harden Adapter Extraction in openai_adapter.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-make-post_check-a-real-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Make post_check() a Real Gate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-failure-path-in-runpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Failure Path in run.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-adapterdiagnostics-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. AdapterDiagnostics Record
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-flow-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Flow Summary
     </span>
   </a>
   
@@ -11605,18 +11821,102 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration-file" class="md-nav__link">
+  <a href="#consequences" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuration File
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-1-reuse-incomplete-for-empty-with-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 1: Reuse INCOMPLETE for empty-with-tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-2-treat-empty-result-as-a-retryable-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 2: Treat empty result as a retryable warning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-3-detect-empty-results-only-in-post_check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 3: Detect empty results only in post_check()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#initial-setup" class="md-nav__link">
+  <a href="#references" class="md-nav__link">
     <span class="md-ellipsis">
-      Initial Setup
+      References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#as-built-notes-addendums" class="md-nav__link">
+    <span class="md-ellipsis">
+      As-Built Notes &amp; Addendums
     </span>
   </a>
   
@@ -11640,84 +11940,185 @@
   
 
 
-<h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Link to this section">&para;</a></h1>
-<p>TNH Scholar requires some initial configuration to function properly. This guide covers the essential configuration steps and options.</p>
-<h2 id="environment-setup">Environment Setup<a class="headerlink" href="#environment-setup" title="Link to this section">&para;</a></h2>
-<h3 id="openai-api-key">OpenAI API Key<a class="headerlink" href="#openai-api-key" title="Link to this section">&para;</a></h3>
-<p>TNH Scholar's AI functionality requires an OpenAI API key. To configure this:</p>
-<ol>
-<li>Obtain an API key from <a href="https://platform.openai.com/api-keys">OpenAI's platform</a></li>
-<li>Set the environment variable:</li>
-</ol>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Linux/Mac</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s1">&#39;your-api-key-here&#39;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Windows</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nb">set</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span>your-api-key-here
-</span></code></pre></div>
-<p>In development configuration (where you have downloaded the tnh-scholar repository) you can also use a <code>.env</code> file in your project directory:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">OPENAI_API_KEY</span><span class="o">=</span>your-api-key-here
-</span></code></pre></div>
-<h3 id="directory-structure">Directory Structure<a class="headerlink" href="#directory-structure" title="Link to this section">&para;</a></h3>
-<p>TNH Scholar creates and uses the following directory structure:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>~/.config/tnh_scholar/
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── prompts/          # Prompt storage
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>└── logs/            # Log files
-</span></code></pre></div>
-<h2 id="prompt-configuration">Prompt Configuration<a class="headerlink" href="#prompt-configuration" title="Link to this section">&para;</a></h2>
-<h3 id="prompt-directory">Prompt Directory<a class="headerlink" href="#prompt-directory" title="Link to this section">&para;</a></h3>
-<p>Prompts can be stored in:</p>
-<ol>
-<li>Default location: <code>~/.config/tnh_scholar/prompts/</code></li>
-<li>Custom location specified by <code>TNH_PROMPT_DIR</code> environment variable</li>
-</ol>
-<p>To use a custom prompt directory:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TNH_PROMPT_DIR</span><span class="o">=</span>/path/to/prompts
-</span></code></pre></div>
-<h3 id="default-prompts">Default Prompts<a class="headerlink" href="#default-prompts" title="Link to this section">&para;</a></h3>
-<p>The system includes several default prompts:</p>
+<h1 id="adr-tg03-completion-contract-and-adapter-diagnostics">ADR-TG03: Completion Contract and Adapter Diagnostics<a class="headerlink" href="#adr-tg03-completion-contract-and-adapter-diagnostics" title="Link to this section">&para;</a></h1>
+<p>Establishes a three-state completion contract (<code>OK</code> / <code>INCOMPLETE</code> / <code>FAILED</code>) and a structured adapter diagnostics record, so that empty or unextractable generation results are explicitly represented as failures at every layer — adapter, safety gate, run command, and API output — rather than silently passed as successes.</p>
 <ul>
-<li>default_punctuate.md</li>
-<li>default_section.md</li>
-<li>default_line_translation.md</li>
-<li>default_xml_format.md</li>
-<li>default_xml_paragraph_format.md</li>
+<li><strong>Filename</strong>: <code>adr-tg03-completion-contract.md</code></li>
+<li><strong>Status</strong>: Proposed</li>
+<li><strong>Date</strong>: 2026-04-16</li>
+<li><strong>Authors</strong>: Aaron Solomon, Claude Sonnet 4.6</li>
+<li><strong>Owner</strong>: aaronksolomon</li>
 </ul>
-<p>These can be downloaded during setup or manually added later.</p>
-<h2 id="configuration-file">Configuration File<a class="headerlink" href="#configuration-file" title="Link to this section">&para;</a></h2>
-<p>The system looks for configuration in this order:</p>
-<ol>
-<li>Command line arguments</li>
-<li>Environment variables</li>
-<li>Workspace config: <code>./.tnh-gen.json</code> (or <code>.vscode/tnh-scholar.json</code>)</li>
-<li>User-level config: <code>~/.config/tnh-scholar/tnh-gen.json</code></li>
-</ol>
-<p>Example configuration file:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&quot;prompt_catalog_dir&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/prompts&quot;</span><span class="p">,</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">&quot;default_model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-5-mini&quot;</span><span class="p">,</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">&quot;max_dollars&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10</span><span class="p">,</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">&quot;max_input_chars&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">120000</span><span class="p">,</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">&quot;default_temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">&quot;api_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-...&quot;</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">}</span>
+<hr />
+<h2 id="adr-editing-policy">ADR Editing Policy<a class="headerlink" href="#adr-editing-policy" title="Link to this section">&para;</a></h2>
+<p><strong>Status</strong>: <code>proposed</code> — this ADR is in the design loop and may be freely revised.</p>
+<hr />
+<h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
+<h3 id="current-state">Current State<a class="headerlink" href="#current-state" title="Link to this section">&para;</a></h3>
+<p>The <code>tnh-gen</code> generation pipeline has a two-state completion model:</p>
+<ul>
+<li><code>ProviderStatus.OK</code> — usable text was extracted</li>
+<li><code>ProviderStatus.INCOMPLETE</code> — text was extracted but the completion was cut off (e.g., <code>finish_reason == "length"</code>)</li>
+</ul>
+<p>No <code>FAILED</code> state exists. Every API call that completes without a network or HTTP error is treated as a success.</p>
+<p>This creates a structural gap across four layers:</p>
+<p><strong>Adapter layer</strong> (<code>gen_ai_service/providers/openai_adapter.py</code>): extracts <code>choices[0].message.content or ""</code>. For models that use structured content parts (e.g., gpt-5 reasoning paths), <code>message.content</code> may be <code>None</code> even when <code>completion_tokens &gt; 0</code> and <code>finish_reason == "stop"</code>. The adapter has no detection path for this condition and returns <code>ProviderStatus.OK</code> with <code>text = ""</code>.</p>
+<p><strong>Safety gate</strong> (<code>gen_ai_service/safety/safety_gate.py</code>): <code>post_check()</code> is documented as a stub. It appends <code>"empty-result"</code> as a warning tag on the completion envelope but does not change <code>status</code> or raise. The docstring explicitly notes this is "stubbed for now."</p>
+<p><strong>Run command</strong> (<code>cli_tools/tnh_gen/commands/run.py</code>): <code>_build_success_payload()</code> always emits <code>"status": "succeeded"</code>. <code>_emit_run_output()</code> calls <code>write_output_file()</code> unconditionally — so an empty <code>result_text</code> produces a provenance-only output file with <code>"status": "succeeded"</code> in the API payload and exit code <code>0</code>.</p>
+<p><strong>Provenance records</strong>: Capture model, tokens, finish_reason, estimated cost. Do not capture which response field was read, what content parts were present, or any classification of why text was absent. When a trace fails, the provenance record is insufficient to diagnose it.</p>
+<h3 id="problem">Problem<a class="headerlink" href="#problem" title="Link to this section">&para;</a></h3>
+<p>Orchestrators and CI pipelines that trust exit code or the <code>"status"</code> field are silently deceived when a generation produces no usable text. The failure is invisible. Additionally, as new model generations (gpt-5, gpt-5.4) depart from the <code>choices[0].message.content</code> response shape, the number of undetected empty-result failures is expected to increase.</p>
+<h3 id="scope">Scope<a class="headerlink" href="#scope" title="Link to this section">&para;</a></h3>
+<p>Issues: #47 (gpt-5 empty text), #48 (empty result reported as success), #52 (insufficient diagnostics).</p>
+<p>Related: <a href="../adr-tg01-cli-architecture/">ADR-TG01</a> §5 (error handling), <a href="../adr-tg01.1-human-friendly-defaults/">ADR-TG01.1</a> (API payload contract).</p>
+<hr />
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
+<h3 id="1-add-providerstatusfailed">1. Add <code>ProviderStatus.FAILED</code><a class="headerlink" href="#1-add-providerstatusfailed" title="Link to this section">&para;</a></h3>
+<p>Add a third terminal <code>ProviderStatus</code> value:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ProviderStatus.OK         — usable text extracted
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ProviderStatus.INCOMPLETE — text extracted but completion was truncated
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ProviderStatus.FAILED     — API call completed but no usable text could be extracted
 </span></code></pre></div>
-<h2 id="initial-setup">Initial Setup<a class="headerlink" href="#initial-setup" title="Link to this section">&para;</a></h2>
-<p>The <code>tnh-setup</code> command automates configuration:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Full setup</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>tnh-setup
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Skip specific steps</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>tnh-setup<span class="w"> </span>--skip-env<span class="w">        </span><span class="c1"># Skip API key check</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>tnh-setup<span class="w"> </span>--skip-prompts<span class="w">   </span><span class="c1"># Skip prompt download</span>
+<p><code>FAILED</code> is semantically distinct from <code>INCOMPLETE</code>: <code>INCOMPLETE</code> means "text exists but was cut off"; <code>FAILED</code> means "no text was produced or none could be extracted."</p>
+<hr />
+<h3 id="2-structured-failurereason-on-providerresponse">2. Structured <code>FailureReason</code> on <code>ProviderResponse</code><a class="headerlink" href="#2-structured-failurereason-on-providerresponse" title="Link to this section">&para;</a></h3>
+<p>Add a <code>failure_reason</code> field to <code>ProviderResponse</code> (populated when <code>status == FAILED</code>):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>FailureReason.EMPTY_CONTENT_WITH_TOKENS   — content field was empty/null but tokens were consumed
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>FailureReason.CONTENT_FIELD_MISSING       — expected content field absent from response shape
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>FailureReason.UNSUPPORTED_RESPONSE_SHAPE  — response structure not recognized by adapter
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>FailureReason.CONTENT_EXTRACTION_ERROR    — exception during content extraction
 </span></code></pre></div>
-<p>This will:</p>
+<p><code>failure_reason</code> is <code>None</code> when <code>status == OK</code> or <code>INCOMPLETE</code>.</p>
+<hr />
+<h3 id="3-harden-adapter-extraction-in-openai_adapterpy">3. Harden Adapter Extraction in <code>openai_adapter.py</code><a class="headerlink" href="#3-harden-adapter-extraction-in-openai_adapterpy" title="Link to this section">&para;</a></h3>
+<p>The <code>from_openai_response()</code> method gains two detection branches before returning:</p>
+<p><strong>Branch A — empty content with tokens</strong>:
+If <code>text == ""</code> and <code>completion_tokens &gt; 0</code>, set <code>status = FAILED</code>, <code>failure_reason = EMPTY_CONTENT_WITH_TOKENS</code>. Do not return <code>OK</code>.</p>
+<p><strong>Branch B — content field absent</strong>:
+If <code>choices[0].message</code> is present but <code>.content</code> is <code>None</code> and <code>completion_tokens == 0</code>, set <code>status = FAILED</code>, <code>failure_reason = CONTENT_FIELD_MISSING</code>.</p>
+<p><strong>Branch C — unexpected response shape</strong>:
+If <code>choices</code> is empty or the response structure does not conform to the expected schema, set <code>status = FAILED</code>, <code>failure_reason = UNSUPPORTED_RESPONSE_SHAPE</code>.</p>
+<p>These branches are checked before the current <code>or ""</code> fallback, which is removed.</p>
+<hr />
+<h3 id="4-make-post_check-a-real-gate">4. Make <code>post_check()</code> a Real Gate<a class="headerlink" href="#4-make-post_check-a-real-gate" title="Link to this section">&para;</a></h3>
+<p><code>safety_gate.py</code> <code>post_check()</code> is promoted from stub to enforcement:</p>
+<ul>
+<li>If <code>completion.status == FAILED</code>: raise <code>GenerationFailed(failure_reason=completion.failure_reason)</code>.</li>
+<li><code>GenerationFailed</code> is a new exception in <code>gen_ai_service/exceptions.py</code>, carrying <code>failure_reason</code> and the full <code>CompletionEnvelope</code> for caller inspection.</li>
+<li><code>post_check()</code> does not need to re-derive empty-text detection — it delegates to the status already set by the adapter.</li>
+</ul>
+<hr />
+<h3 id="5-failure-path-in-runpy">5. Failure Path in <code>run.py</code><a class="headerlink" href="#5-failure-path-in-runpy" title="Link to this section">&para;</a></h3>
+<p><code>_emit_run_output()</code> catches <code>GenerationFailed</code> and:</p>
+<ul>
+<li>Emits <code>"status": "failed"</code> in the API payload.</li>
+<li>Includes <code>"failure_reason"</code> as a structured field (the <code>FailureReason</code> string value).</li>
+<li>Writes <strong>no output file</strong>.</li>
+<li>Exits non-zero (exit code <code>1</code>, consistent with existing error handling in ADR-TG01 §5).</li>
+</ul>
+<p>In <code>--api</code> mode, the failure payload follows the existing error envelope schema from ADR-TG01.1, extended with <code>failure_reason</code>.</p>
+<hr />
+<h3 id="6-adapterdiagnostics-record">6. <code>AdapterDiagnostics</code> Record<a class="headerlink" href="#6-adapterdiagnostics-record" title="Link to this section">&para;</a></h3>
+<p>Add an optional <code>adapter_diagnostics: AdapterDiagnostics | None</code> field to <code>ProviderResponse</code>. Populated on any non-<code>OK</code> status. Fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>content_source</code></td>
+<td><code>str</code></td>
+<td>Response field path that was read (e.g., <code>"choices[0].message.content"</code>)</td>
+</tr>
+<tr>
+<td><code>content_part_count</code></td>
+<td><code>int \| None</code></td>
+<td>Number of parts in the content array, if parts-style response</td>
+</tr>
+<tr>
+<td><code>raw_finish_reason</code></td>
+<td><code>str</code></td>
+<td>Raw finish_reason string before mapping to internal enum</td>
+</tr>
+<tr>
+<td><code>extraction_notes</code></td>
+<td><code>str</code></td>
+<td>Free-form adapter notes on what was found vs. expected</td>
+</tr>
+</tbody>
+</table>
+<p><code>AdapterDiagnostics</code> is included in provenance output when <code>--api</code> mode is active and <code>status != OK</code>. It is omitted from human-mode output to avoid verbosity.</p>
+<hr />
+<h3 id="data-flow-summary">Data Flow Summary<a class="headerlink" href="#data-flow-summary" title="Link to this section">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>openai_adapter.from_openai_response()
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  → sets ProviderStatus.FAILED + FailureReason + AdapterDiagnostics
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  ↓
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>safety_gate.post_check()
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  → raises GenerationFailed if FAILED
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  ↓
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>run._emit_run_output()
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  → catches GenerationFailed
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  → emits {&quot;status&quot;: &quot;failed&quot;, &quot;failure_reason&quot;: &quot;...&quot;}
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  → no file write, exit code 1
+</span></code></pre></div>
+<hr />
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
+<ul>
+<li>Empty results are explicitly represented as failures at every layer.</li>
+<li>Orchestrators get reliable exit codes and machine-readable <code>failure_reason</code> fields.</li>
+<li>Adapter failures caused by new model response shapes are diagnosable from provenance alone, without replaying the API call.</li>
+<li><code>post_check()</code> stub is replaced by real enforcement, closing the gap noted in its own docstring.</li>
+<li>The two-branch distinction (<code>INCOMPLETE</code> vs. <code>FAILED</code>) is clearer than the current single-state model.</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
+<ul>
+<li><code>GenerationFailed</code> is a new exception type. All callers of <code>GenAIService.generate()</code> that do not currently handle it will get an unhandled exception — this is a breaking change requiring callers to be audited and updated.</li>
+<li>Adding <code>AdapterDiagnostics</code> to <code>ProviderResponse</code> increases verbosity in <code>--api</code> provenance output for failed calls.</li>
+<li>The <code>FailureReason</code> enum is a new contract surface that must be kept stable across model updates.</li>
+</ul>
+<hr />
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Link to this section">&para;</a></h2>
+<h3 id="alternative-1-reuse-incomplete-for-empty-with-tokens">Alternative 1: Reuse <code>INCOMPLETE</code> for empty-with-tokens<a class="headerlink" href="#alternative-1-reuse-incomplete-for-empty-with-tokens" title="Link to this section">&para;</a></h3>
+<p><strong>Approach</strong>: Map empty content with tokens to <code>INCOMPLETE</code> rather than introducing <code>FAILED</code>.</p>
+<p><strong>Rejected</strong>: <code>INCOMPLETE</code> semantically means "text exists but was truncated." Empty-with-tokens is a categorically different condition — the model responded but the adapter could not extract content. Conflating them obscures the root cause in diagnostics.</p>
+<h3 id="alternative-2-treat-empty-result-as-a-retryable-warning">Alternative 2: Treat empty result as a retryable warning<a class="headerlink" href="#alternative-2-treat-empty-result-as-a-retryable-warning" title="Link to this section">&para;</a></h3>
+<p><strong>Approach</strong>: On empty result, set a warning flag and allow callers to decide whether to retry or fail.</p>
+<p><strong>Rejected</strong>: The current behavior of writing provenance-only output files and emitting <code>"status": "succeeded"</code> is the direct cause of silent orchestration failures (#48). A retry-or-warn approach does not fix that — it defers the decision to callers who may not implement the check.</p>
+<h3 id="alternative-3-detect-empty-results-only-in-post_check">Alternative 3: Detect empty results only in <code>post_check()</code><a class="headerlink" href="#alternative-3-detect-empty-results-only-in-post_check" title="Link to this section">&para;</a></h3>
+<p><strong>Approach</strong>: Leave the adapter unchanged; detect empty text in <code>safety_gate.post_check()</code>.</p>
+<p><strong>Rejected</strong>: The adapter has the full response object and is the correct place to distinguish <em>why</em> content is absent (missing field vs. empty string vs. unexpected shape). <code>post_check()</code> sees only the extracted <code>CompletionEnvelope</code> and cannot reconstruct this information. Adapter-level detection produces richer diagnostics.</p>
+<hr />
+<h2 id="open-questions">Open Questions<a class="headerlink" href="#open-questions" title="Link to this section">&para;</a></h2>
 <ol>
-<li>Create necessary directories</li>
-<li>Offer to download default prompts</li>
-<li>Check for OpenAI API key</li>
-<li>Set up basic configuration</li>
+<li>
+<p><strong><code>FailureReason</code> extensibility</strong>: Should <code>FailureReason</code> be a <code>str</code>-typed enum (open-ended, extensible by new adapters) or a closed <code>IntEnum</code>? Open-ended is more forward-compatible as new model families are added.</p>
+</li>
+<li>
+<p><strong>Retry integration</strong>: Should <code>GenerationFailed</code> carry a <code>retryable: bool</code> hint? Some failure reasons (e.g., <code>CONTENT_EXTRACTION_ERROR</code> due to a transient parse issue) may be retryable; others (<code>UNSUPPORTED_RESPONSE_SHAPE</code>) are not.</p>
+</li>
+<li>
+<p><strong>Anthropic adapter parity</strong>: The same hardening should eventually be applied to the Anthropic/Claude adapter. Should TG03 scope that now, or defer to a separate ADR once the OpenAI path is proven?</p>
+</li>
+<li>
+<p><strong>Provenance file on FAILED</strong>: Currently decided: no output file on <code>FAILED</code>. Should there be an option to write a provenance-only "failure record" file for audit purposes? This would make the failure visible in the filesystem without creating the impression of a successful generation.</p>
+</li>
 </ol>
+<hr />
+<h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
+<ul>
+<li><a href="../adr-tg01-cli-architecture/">ADR-TG01: CLI Architecture</a> — error handling, exit codes, API payload contract</li>
+<li><a href="../adr-tg01.1-human-friendly-defaults/">ADR-TG01.1: Human-Friendly CLI Defaults</a> — <code>--api</code> flag, payload structure</li>
+<li><a href="../../notes/tnh-gen-robustness-review-2026-04/">tnh-gen Robustness Review 2026-04</a> — issue analysis and improvement recommendations</li>
+<li>GitHub issues: #47, #48, #52, #54 (tracker)</li>
+</ul>
+<hr />
+<h2 id="as-built-notes-addendums">As-Built Notes &amp; Addendums<a class="headerlink" href="#as-built-notes-addendums" title="Link to this section">&para;</a></h2>
+<p><em>No addendums yet — ADR is in proposed state.</em></p>
 
 
 
@@ -11814,10 +12215,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.60a45f97.min.js"></script>
       
     
   </body>

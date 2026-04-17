@@ -7844,6 +7844,8 @@
       
         
       
+        
+      
     
     
     
@@ -8591,6 +8593,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-04-16-a-forwarded-run-flag-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-16-A: Forwarded Run Flag Aliases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-04-16-b-frontmatter-aware-run-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-16-B: Frontmatter-Aware Run Pipeline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-04-16-c-budget-gate-ux-actionable-error-on-safetyblocked" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-16-C: Budget Gate UX — Actionable Error on SafetyBlocked
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -8646,6 +8675,34 @@
   
   
     <span class="md-status md-status--implemented"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-tg03-completion-contract/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ADR-TG03: Completion Contract and Adapter Diagnostics
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
   
 
   
@@ -12702,6 +12759,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-04-16-a-forwarded-run-flag-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-16-A: Forwarded Run Flag Aliases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-04-16-b-frontmatter-aware-run-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-16-B: Frontmatter-Aware Run Pipeline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-04-16-c-budget-gate-ux-actionable-error-on-safetyblocked" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-16-C: Budget Gate UX — Actionable Error on SafetyBlocked
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -13451,6 +13535,66 @@ Updated configuration precedence order (highest to lowest):
 - <code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:26</code> (add flag)
 - <code>src/tnh_scholar/cli_tools/tnh_gen/config_loader.py</code> (handle override)
 - <code>docs/cli-reference/tnh-gen.md</code> (update documentation)</p>
+<hr />
+<h2 id="addendum-2026-04-16-a-forwarded-run-flag-aliases">Addendum 2026-04-16-A: Forwarded Run Flag Aliases<a class="headerlink" href="#addendum-2026-04-16-a-forwarded-run-flag-aliases" title="Link to this section">&para;</a></h2>
+<p><strong>Context</strong>: Issues #51 and #55. Natural invocations like <code>tnh-gen run --config path/to/cfg.json</code> fail with "No such option" because <code>--config</code>, <code>--api</code>, and <code>--prompt-dir</code> live on the root callback (§2.2), not on the <code>run</code> subcommand. For scripted and orchestration callers, this requires prior knowledge of flag placement that is not surfaced by <code>--help</code> on <code>run</code> alone.</p>
+<p><strong>Decision</strong>: Accept <code>--config</code>, <code>--api</code>, and <code>--prompt-dir</code> as forwarded aliases on the <code>run</code> subcommand. When these flags appear on <code>run</code>, they are passed to the root context initialization path before <code>run</code> execution begins — no behavioral change, only placement flexibility. The root callback remains the canonical and documented location.</p>
+<p>Additionally, when Typer emits a "No such option" error for a root-level flag that was placed after a subcommand, the error message is augmented with a corrected invocation hint:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>Error: No such option: --config
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>Hint: --config is a global flag. Try: tnh-gen --config PATH run ...
+</span></code></pre></div>
+<p><strong>Rationale</strong>: The root-vs-subcommand flag split (§2.2) is intentional and correct for interactive use. Aliases preserve that design while removing a usability cliff for scripted/agent callers. Corrected invocation hints reduce the debugging cycle for new users and orchestration tooling.</p>
+<p><strong>Status</strong>: Accepted</p>
+<p><strong>Implementation Files</strong>:
+- <code>src/tnh_scholar/cli_tools/tnh_gen/commands/run.py</code> (add forwarded aliases)
+- <code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py</code> (error message hook)</p>
+<hr />
+<h2 id="addendum-2026-04-16-b-frontmatter-aware-run-pipeline">Addendum 2026-04-16-B: Frontmatter-Aware Run Pipeline<a class="headerlink" href="#addendum-2026-04-16-b-frontmatter-aware-run-pipeline" title="Link to this section">&para;</a></h2>
+<p><strong>Context</strong>: Issue #25. The <code>run</code> command passes raw file content — including YAML frontmatter — to the AI model. <code>write_output_file()</code> prepends a fresh provenance-only frontmatter block unconditionally, destroying any original document metadata (ADR title, date, author, etc.). A <code>Frontmatter</code> class already exists at <code>src/tnh_scholar/metadata/metadata.py</code> and is used throughout the codebase (<code>text_object</code>, <code>prompt_system</code>, <code>srt_translate</code>), but is not wired into the <code>tnh-gen</code> run pipeline.</p>
+<p><strong>Decision</strong>: Add a frontmatter-aware step to the run pipeline:</p>
+<ol>
+<li><code>_read_input_text()</code> calls <code>Frontmatter.extract(raw_content)</code> → returns <code>(clean_body: str, original_metadata: dict | None)</code>.</li>
+<li><code>clean_body</code> (frontmatter stripped) is passed to the AI. <code>original_metadata</code> is carried through the pipeline.</li>
+<li><code>write_output_file()</code> receives <code>original_metadata</code> and merges it with the generated provenance block:</li>
+<li>Original metadata keys are preserved.</li>
+<li>Provenance-specific keys (<code>tnh_scholar_generated</code>, <code>prompt_key</code>, <code>trace_id</code>, <code>generated_at</code>, etc.) are appended or overwrite matching keys.</li>
+<li>If the input has no frontmatter (<code>original_metadata is None</code>), behavior is identical to the current implementation — this change is backward-compatible.</li>
+</ol>
+<p><strong>Rationale</strong>: Input documents in the TNH Scholar corpus routinely carry YAML frontmatter (ADRs, translated articles, dharma texts with publication metadata). Stripping and destroying that metadata during AI processing is a data loss bug. Reusing the existing <code>Frontmatter</code> class is a minimal, consistent fix that avoids introducing new parsing logic.</p>
+<p><strong>Status</strong>: Accepted</p>
+<p><strong>Implementation Files</strong>:
+- <code>src/tnh_scholar/cli_tools/tnh_gen/commands/run.py</code> (extract + carry metadata)
+- <code>src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py</code> (merge on write)</p>
+<hr />
+<h2 id="addendum-2026-04-16-c-budget-gate-ux-actionable-error-on-safetyblocked">Addendum 2026-04-16-C: Budget Gate UX — Actionable Error on SafetyBlocked<a class="headerlink" href="#addendum-2026-04-16-c-budget-gate-ux-actionable-error-on-safetyblocked" title="Link to this section">&para;</a></h2>
+<p><strong>Context</strong>: Issue #51 (partial). When <code>SafetyBlocked</code> fires due to a budget limit, the current error message states the estimated cost and budget value as a plain string but provides no guidance on how to raise the limit. Scripted and orchestration callers have no machine-readable field to distinguish a budget block from other failure types.</p>
+<p><strong>Decision</strong>:</p>
+<ol>
+<li>When <code>SafetyBlocked</code> is raised for a budget reason, the human-readable error message includes:</li>
+<li>Estimated cost of the blocked request.</li>
+<li>Current budget limit.</li>
+<li>The exact config key (<code>budget_limit</code>) and CLI pattern needed to raise it.</li>
+</ol>
+<p>Example:
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>SafetyBlocked: Estimated cost $0.042 exceeds budget $0.020.
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>To raise the limit: tnh-gen --config &#39;{&quot;budget_limit&quot;: 0.10}&#39; run ...
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>Or set budget_limit in your workspace config.
+</span></code></pre></div></p>
+<ol>
+<li>In <code>--api</code> mode, the error envelope includes structured fields:
+   <div class="language-json highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="p">{</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;blocked&quot;</span><span class="p">,</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">  </span><span class="nt">&quot;blocked_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;budget&quot;</span><span class="p">,</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">  </span><span class="nt">&quot;estimated_cost&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.042</span><span class="p">,</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">  </span><span class="nt">&quot;budget_limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.020</span>
+</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="p">}</span>
+</span></code></pre></div></li>
+</ol>
+<p><strong>Rationale</strong>: A budget block is a recoverable condition — the user simply needs to know how to adjust the limit. Embedding that guidance in the error avoids a debugging round-trip to documentation. Structured fields in API mode enable orchestrators to programmatically detect and respond to budget blocks without string parsing.</p>
+<p><strong>Status</strong>: Accepted</p>
+<p><strong>Implementation Files</strong>:
+- <code>src/tnh_scholar/gen_ai_service/safety/safety_gate.py</code> (richer error construction)
+- <code>src/tnh_scholar/cli_tools/tnh_gen/commands/run.py</code> (format budget block for API payload)</p>
 <hr />
 <p><strong>Approval Path</strong>: Architecture review → Implementation → Testing → Documentation</p>
 
