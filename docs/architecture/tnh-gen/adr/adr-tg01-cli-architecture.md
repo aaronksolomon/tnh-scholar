@@ -879,4 +879,88 @@ Updated configuration precedence order (highest to lowest):
 
 ---
 
+## Addendum 2026-04-16-A: Forwarded Run Flag Aliases
+
+**Context**: Issues #51 and #55. Natural invocations like `tnh-gen run --config path/to/cfg.json` fail with "No such option" because `--config`, `--api`, and `--prompt-dir` live on the root callback (§2.2), not on the `run` subcommand. For scripted and orchestration callers, this requires prior knowledge of flag placement that is not surfaced by `--help` on `run` alone.
+
+**Decision**: Accept `--config`, `--api`, and `--prompt-dir` as forwarded aliases on the `run` subcommand. When these flags appear on `run`, they are passed to the root context initialization path before `run` execution begins — no behavioral change, only placement flexibility. The root callback remains the canonical and documented location.
+
+Additionally, when Typer emits a "No such option" error for a root-level flag that was placed after a subcommand, the error message is augmented with a corrected invocation hint:
+
+```
+Error: No such option: --config
+Hint: --config is a global flag. Try: tnh-gen --config PATH run ...
+```
+
+**Rationale**: The root-vs-subcommand flag split (§2.2) is intentional and correct for interactive use. Aliases preserve that design while removing a usability cliff for scripted/agent callers. Corrected invocation hints reduce the debugging cycle for new users and orchestration tooling.
+
+**Status**: Accepted
+
+**Implementation Files**:
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py` (add forwarded aliases)
+- `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py` (error message hook)
+
+---
+
+## Addendum 2026-04-16-B: Frontmatter-Aware Run Pipeline
+
+**Context**: Issue #25. The `run` command passes raw file content — including YAML frontmatter — to the AI model. `write_output_file()` prepends a fresh provenance-only frontmatter block unconditionally, destroying any original document metadata (ADR title, date, author, etc.). A `Frontmatter` class already exists at `src/tnh_scholar/metadata/metadata.py` and is used throughout the codebase (`text_object`, `prompt_system`, `srt_translate`), but is not wired into the `tnh-gen` run pipeline.
+
+**Decision**: Add a frontmatter-aware step to the run pipeline:
+
+1. `_read_input_text()` calls `Frontmatter.extract(raw_content)` → returns `(clean_body: str, original_metadata: dict | None)`.
+2. `clean_body` (frontmatter stripped) is passed to the AI. `original_metadata` is carried through the pipeline.
+3. `write_output_file()` receives `original_metadata` and merges it with the generated provenance block:
+   - Original metadata keys are preserved.
+   - Provenance-specific keys (`tnh_scholar_generated`, `prompt_key`, `trace_id`, `generated_at`, etc.) are appended or overwrite matching keys.
+4. If the input has no frontmatter (`original_metadata is None`), behavior is identical to the current implementation — this change is backward-compatible.
+
+**Rationale**: Input documents in the TNH Scholar corpus routinely carry YAML frontmatter (ADRs, translated articles, dharma texts with publication metadata). Stripping and destroying that metadata during AI processing is a data loss bug. Reusing the existing `Frontmatter` class is a minimal, consistent fix that avoids introducing new parsing logic.
+
+**Status**: Accepted
+
+**Implementation Files**:
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py` (extract + carry metadata)
+- `src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py` (merge on write)
+
+---
+
+## Addendum 2026-04-16-C: Budget Gate UX — Actionable Error on SafetyBlocked
+
+**Context**: Issue #51 (partial). When `SafetyBlocked` fires due to a budget limit, the current error message states the estimated cost and budget value as a plain string but provides no guidance on how to raise the limit. Scripted and orchestration callers have no machine-readable field to distinguish a budget block from other failure types.
+
+**Decision**:
+
+1. When `SafetyBlocked` is raised for a budget reason, the human-readable error message includes:
+   - Estimated cost of the blocked request.
+   - Current budget limit.
+   - The exact config key (`budget_limit`) and CLI pattern needed to raise it.
+
+   Example:
+   ```
+   SafetyBlocked: Estimated cost $0.042 exceeds budget $0.020.
+   To raise the limit: tnh-gen --config '{"budget_limit": 0.10}' run ...
+   Or set budget_limit in your workspace config.
+   ```
+
+2. In `--api` mode, the error envelope includes structured fields:
+   ```json
+   {
+     "status": "blocked",
+     "blocked_reason": "budget",
+     "estimated_cost": 0.042,
+     "budget_limit": 0.020
+   }
+   ```
+
+**Rationale**: A budget block is a recoverable condition — the user simply needs to know how to adjust the limit. Embedding that guidance in the error avoids a debugging round-trip to documentation. Structured fields in API mode enable orchestrators to programmatically detect and respond to budget blocks without string parsing.
+
+**Status**: Accepted
+
+**Implementation Files**:
+- `src/tnh_scholar/gen_ai_service/safety/safety_gate.py` (richer error construction)
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py` (format budget block for API payload)
+
+---
+
 **Approval Path**: Architecture review → Implementation → Testing → Documentation

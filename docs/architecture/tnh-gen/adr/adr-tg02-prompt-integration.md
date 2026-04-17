@@ -270,4 +270,47 @@ CLI flags override config file values (see ADR-TG01 §4 for precedence).
 
 ---
 
+## Addendum 2026-04-16: Catalog Health Aggregation and Warning Suppression
+
+**Context**: Issue #49. `PromptsAdapter` validates every prompt in the catalog on initialization and emits per-prompt validation warnings inline to stderr as they are encountered. For a catalog with many bundled prompts, this produces large volumes of noise (`output_mode: text` invalid, missing required frontmatter keys, JSON schema errors) even for unrelated operations like `tnh-gen list --keys-only`. There is no batching, no severity tier distinction, no quiet path, and no way to distinguish "prompt is broken and unusable" from "prompt uses an older schema field."
+
+**Decision**:
+
+**1. Aggregated `CatalogHealth` report**
+
+Catalog loading collects validation issues into a structured `CatalogHealth` object instead of emitting inline stderr messages. Fields:
+
+- `errors: list[CatalogIssue]` — prompts that could not be loaded or rendered (missing required fields, parse failure). These prompts are excluded from the working catalog.
+- `warnings: list[CatalogIssue]` — prompts with non-fatal metadata issues (deprecated field name, optional field absent, schema version mismatch). These prompts remain in the working catalog.
+
+Each `CatalogIssue` carries: `prompt_key`, `issue_type` (enum), `message`.
+
+**2. Severity tiers**
+
+- `ERROR`-level issues surface in stderr as a single summary line after catalog loading completes:
+  `[tnh-gen] 3 prompts failed to load. Run 'tnh-gen config show --catalog-health' for details.`
+- `WARNING`-level issues are **not** emitted to stderr during normal operation.
+
+**3. `tnh-gen config show --catalog-health`**
+
+A new flag on the `config show` subcommand emits the full `CatalogHealth` JSON report. This is the only way to see complete validation details. In `--api` mode, the report is a structured JSON object.
+
+**4. Quiet and API mode behavior**
+
+- `--quiet` mode: all catalog health output (including the `ERROR` summary line) is suppressed from stderr.
+- `--api` mode: the error-level summary (count only) is included as a field in the root response envelope, not emitted to stderr. Example: `"catalog_errors": 3`.
+
+**Rationale**: Stderr is for invocation failures. Catalog health is an operational/environmental status that should be queryable on demand rather than ambient. Separating these surfaces makes normal CLI and agent output readable, while keeping catalog diagnostics fully accessible via an explicit query.
+
+**Status**: Accepted
+
+**Implementation Files**:
+- `src/tnh_scholar/gen_ai_service/prompts/` (adapter, loader — replace inline stderr with `CatalogHealth` accumulation)
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/config.py` (add `--catalog-health` flag)
+- `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py` (suppress or surface summary per mode)
+
+**Related**: [ADR-TG01](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) §5 (error handling), [tnh-gen Robustness Review 2026-04](/architecture/tnh-gen/notes/tnh-gen-robustness-review-2026-04.md)
+
+---
+
 *This ADR implements prompt system integration patterns from ADR-PT04 §8.2.*

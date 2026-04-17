@@ -20,6 +20,8 @@ auto_generated: true
 
 **[ADR-TG02: TNH-Gen CLI Prompt System Integration](adr-tg02-prompt-integration.md)** - Integration pattern for tnh-gen CLI with prompt system via PromptsAdapter
 
+**[ADR-TG03: Completion Contract and Adapter Diagnostics](adr-tg03-completion-contract.md)** - Introduce FAILED terminal state and structured adapter diagnostics for reliable, observable generation results
+
 ---
 
 *This file auto-generated.*
