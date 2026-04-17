@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration/notes/resea
 owner: ""
 author: ""
 status: processing
-created: "2026-04-16"
+created: "2026-04-17"
 auto_generated: true
 ---
 
@@ -13,6 +13,8 @@ auto_generated: true
 **Table of Contents**:
 
 <!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+
+**[Agent Orchestration Collaboration Paradigms](agent-orchestration-collaboration-paradigms.md)** - Blue-sky research note framing the orchestration problem space for multi-agent coding and design collaboration across time, scope, and model families.
 
 **[Codex Headless Communication Research Directions](codex-headless-communication-research-directions.md)** - Brief next-step research directions following the first successful headless Codex communication experiments.
 

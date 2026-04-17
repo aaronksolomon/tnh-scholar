@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration"
 owner: ""
 author: ""
 status: processing
-created: "2026-04-16"
+created: "2026-04-17"
 auto_generated: true
 ---
 
