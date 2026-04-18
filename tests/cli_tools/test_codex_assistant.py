@@ -19,6 +19,7 @@ def test_codex_assistant_run_uses_sanitized_env_and_returns_summary(
     cwd.mkdir()
     codex_path = tmp_path / "codex"
     codex_path.write_text("", encoding="utf-8")
+    codex_path.chmod(0o755)
 
     captured: dict[str, object] = {}
 
@@ -90,6 +91,7 @@ def test_codex_assistant_run_can_inherit_env(tmp_path: Path, monkeypatch) -> Non
     cwd.mkdir()
     codex_path = tmp_path / "codex"
     codex_path.write_text("", encoding="utf-8")
+    codex_path.chmod(0o755)
 
     captured_env: dict[str, str] | None = None
 
@@ -127,3 +129,73 @@ def test_codex_assistant_run_can_inherit_env(tmp_path: Path, monkeypatch) -> Non
 
     assert result.exit_code == 0, result.output
     assert captured_env is None
+
+
+def test_codex_assistant_run_without_json_omits_final_message(tmp_path: Path, monkeypatch) -> None:
+    cwd = tmp_path / "repo"
+    cwd.mkdir()
+    codex_path = tmp_path / "codex"
+    codex_path.write_text("", encoding="utf-8")
+    codex_path.chmod(0o755)
+
+    captured: dict[str, object] = {}
+
+    def fake_run(
+        command: tuple[str, ...],
+        *,
+        check: bool,
+        cwd: Path,
+        env: dict[str, str] | None,
+        stdin,
+        stdout,
+        stderr,
+        text: bool,
+    ) -> subprocess.CompletedProcess[str]:
+        del check, cwd, env, stdin, stderr, text
+        captured["command"] = command
+        stdout.write("plain text output\n")
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(codex_assistant.subprocess, "run", fake_run)
+
+    result = runner.invoke(
+        codex_assistant.app,
+        [
+            "--prompt",
+            "Return ACK",
+            "--cwd",
+            str(cwd),
+            "--codex-executable",
+            str(codex_path),
+            "--no-json",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.stdout)
+    assert payload["final_message"] is None
+    assert "--json" not in captured["command"]
+    assert Path(payload["stdout_path"]).read_text(encoding="utf-8") == "plain text output\n"
+
+
+def test_codex_assistant_rejects_non_executable_path(tmp_path: Path) -> None:
+    cwd = tmp_path / "repo"
+    cwd.mkdir()
+    codex_path = tmp_path / "codex"
+    codex_path.write_text("", encoding="utf-8")
+    codex_path.chmod(0o644)
+
+    result = runner.invoke(
+        codex_assistant.app,
+        [
+            "--prompt",
+            "Return ACK",
+            "--cwd",
+            str(cwd),
+            "--codex-executable",
+            str(codex_path),
+        ],
+    )
+
+    assert result.exit_code != 0
+    assert "not executable" in result.stderr

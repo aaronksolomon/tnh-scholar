@@ -59,12 +59,34 @@ class CodexAssistantPaths:
     stderr_path: Path
 
 
+def _validate_codex_executable(path: Path) -> Path:
+    if not path.exists():
+        raise typer.BadParameter(f"Codex executable does not exist: {path}")
+    if not path.is_file():
+        raise typer.BadParameter(f"Codex executable is not a file: {path}")
+    if not os.access(path, os.X_OK):
+        raise typer.BadParameter(f"Codex executable is not executable: {path}")
+    return path
+
+
 def _default_codex_executable() -> Path:
-    preferred = Path("/opt/homebrew/bin/codex")
-    if preferred.exists():
-        return preferred
+    env_override = os.environ.get("CODEX_EXECUTABLE") or os.environ.get(
+        "CODEX_ASSISTANT_EXECUTABLE"
+    )
+    candidates: list[Path] = []
+    if env_override:
+        candidates.append(Path(env_override).expanduser())
+    candidates.extend(
+        [
+            Path("/opt/homebrew/bin/codex"),
+            Path("/usr/local/bin/codex"),
+        ]
+    )
+    for candidate in candidates:
+        if candidate.exists():
+            return _validate_codex_executable(candidate)
     if resolved := shutil.which("codex"):
-        return Path(resolved)
+        return _validate_codex_executable(Path(resolved))
     raise typer.BadParameter(
         "Unable to locate Codex executable. Install Codex or pass --codex-executable."
     )
@@ -152,7 +174,8 @@ def _read_final_message(
         return message or None
     if not json_output or not stdout_path.exists():
         return None
-    for line in reversed(stdout_path.read_text(encoding="utf-8").splitlines()):
+
+    for line in _iter_lines_reverse(stdout_path):
         stripped = line.strip()
         if not stripped:
             continue
@@ -167,6 +190,29 @@ def _read_final_message(
                 if isinstance(text, str) and text.strip():
                     return text.strip()
     return None
+
+
+def _iter_lines_reverse(path: Path, chunk_size: int = 8192) -> list[str]:
+    lines: list[str] = []
+    with path.open("rb") as handle:
+        handle.seek(0, os.SEEK_END)
+        position = handle.tell()
+        remainder = b""
+        while position > 0:
+            read_size = min(chunk_size, position)
+            position -= read_size
+            handle.seek(position)
+            chunk = handle.read(read_size)
+            parts = (chunk + remainder).splitlines()
+            if position > 0:
+                remainder = parts[0]
+                parts = parts[1:]
+            else:
+                remainder = b""
+            lines.extend(part.decode("utf-8", errors="replace") for part in reversed(parts))
+        if remainder:
+            lines.append(remainder.decode("utf-8", errors="replace"))
+    return lines
 
 
 @app.command("run")
@@ -236,7 +282,11 @@ def run_command(
 ) -> None:
     """Run one local Codex worker invocation and emit a JSON summary."""
     resolved_cwd = cwd.resolve()
-    resolved_codex = _default_codex_executable() if codex_executable is None else codex_executable.resolve()
+    resolved_codex = (
+        _default_codex_executable()
+        if codex_executable is None
+        else _validate_codex_executable(codex_executable.resolve())
+    )
     if not resolved_cwd.exists():
         raise typer.BadParameter(f"Working directory does not exist: {resolved_cwd}")
     paths = _resolve_capture_paths(
@@ -261,6 +311,8 @@ def run_command(
     env = None if inherit_env else _sanitized_env(resolved_cwd)
     with paths.stdout_path.open("w", encoding="utf-8") as stdout_file:
         with paths.stderr_path.open("w", encoding="utf-8") as stderr_file:
+            # `command` is an argv tuple and `shell=False`, so prompt text is
+            # passed as a single argument rather than shell-interpreted.
             completed = subprocess.run(
                 command,
                 check=False,
