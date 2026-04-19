@@ -1,10 +1,24 @@
 from __future__ import annotations
 
+from datetime import UTC, datetime
+
 import pytest
 
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams, apply_policy
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
-from tnh_scholar.gen_ai_service.models.domain import CompletionResult, Message, RenderedPrompt, Role
+from tnh_scholar.gen_ai_service.models.domain import (
+    AdapterDiagnostics,
+    CompletionEnvelope,
+    CompletionFailure,
+    CompletionOutcomeStatus,
+    CompletionResult,
+    FailureReason,
+    Fingerprint,
+    Message,
+    Provenance,
+    RenderedPrompt,
+    Role,
+)
 from tnh_scholar.gen_ai_service.models.errors import SafetyBlocked
 from tnh_scholar.gen_ai_service.routing.model_router import select_provider_and_model
 from tnh_scholar.gen_ai_service.safety import safety_gate
@@ -266,5 +280,41 @@ def test_safety_gate_post_check_warns_on_empty_result():
         model="gpt-test",
         provider="openai",
     )
-    warnings = safety_gate.post_check(result)
-    assert "empty-result" in warnings
+    assert safety_gate.post_check(result) == []
+
+
+def test_safety_gate_post_check_ignores_failed_envelope():
+    envelope = CompletionEnvelope(
+        outcome=CompletionOutcomeStatus.FAILED,
+        result=None,
+        failure=CompletionFailure(
+            reason=FailureReason.EMPTY_CONTENT_WITH_TOKENS,
+            message="no text",
+            retryable=False,
+            adapter_diagnostics=AdapterDiagnostics(
+                content_source="choices[0].message.content",
+                content_part_count=None,
+                raw_finish_reason="stop",
+                extraction_notes="empty",
+            ),
+        ),
+        provenance=Provenance(
+            provider="openai",
+            model="gpt-test",
+            sdk_version=None,
+            started_at=datetime.now(UTC),
+            finished_at=datetime.now(UTC),
+            attempt_count=1,
+            fingerprint=Fingerprint(
+                prompt_key="k",
+                prompt_name="n",
+                prompt_base_path="/tmp",
+                prompt_content_hash="abc",
+                variables_hash="def",
+                user_string_hash="ghi",
+            ),
+        ),
+        warnings=[],
+    )
+
+    assert safety_gate.post_check(envelope) == []

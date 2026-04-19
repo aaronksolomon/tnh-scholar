@@ -10,6 +10,8 @@ Connected modules:
   - safety.safety_gate
 """
 
+from typing import Literal
+
 from tnh_scholar.exceptions import TnhScholarError
 
 
@@ -19,6 +21,19 @@ class PatternNotFound(TnhScholarError):
 
 class SafetyBlocked(TnhScholarError):
     """Raised when content fails safety validation."""
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        blocked_reason: Literal["budget"] | None = None,
+        estimated_cost: float | None = None,
+        max_dollars: float | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.blocked_reason = blocked_reason
+        self.estimated_cost = estimated_cost
+        self.max_dollars = max_dollars
 
 
 class RoutingError(TnhScholarError):

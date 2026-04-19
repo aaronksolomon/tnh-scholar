@@ -122,6 +122,7 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
 
     assert apply_calls == [("study-plan", None)]
     assert select_calls and select_calls[0][2] is settings
+    assert envelope.outcome.value == "succeeded"
 
     assert len(dummy_client.requests) == 1
     provider_request = dummy_client.requests[0]

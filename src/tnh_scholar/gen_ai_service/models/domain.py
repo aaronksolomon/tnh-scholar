@@ -39,7 +39,7 @@ from typing import Any, List, Literal, Mapping, Optional, Union
 from openai.types.chat.chat_completion_content_part_param import (
     ChatCompletionContentPartParam,
 )
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 # TODO: Consolidate RenderVars into a shared GenAI types module to avoid duplication.
 # V1 Requirement (ADR-A02) to avoid passing raw dicts
@@ -82,6 +82,26 @@ class Usage(BaseModel):
     total_tokens: int
 
 
+class CompletionOutcomeStatus(str, Enum):
+    SUCCEEDED = "succeeded"
+    INCOMPLETE = "incomplete"
+    FAILED = "failed"
+
+
+class FailureReason(str, Enum):
+    EMPTY_CONTENT_WITH_TOKENS = "empty_content_with_tokens"
+    CONTENT_FIELD_MISSING = "content_field_missing"
+    UNSUPPORTED_RESPONSE_SHAPE = "unsupported_response_shape"
+    CONTENT_EXTRACTION_ERROR = "content_extraction_error"
+
+
+class AdapterDiagnostics(BaseModel):
+    content_source: str
+    content_part_count: int | None = None
+    raw_finish_reason: str | None = None
+    extraction_notes: str | None = None
+
+
 class CompletionResult(BaseModel):
     text: str
     usage: Usage | None
@@ -101,11 +121,39 @@ class Provenance(BaseModel):
     fingerprint: Fingerprint
 
 
+class CompletionFailure(BaseModel):
+    reason: FailureReason
+    message: str
+    retryable: bool = False
+    adapter_diagnostics: AdapterDiagnostics | None = None
+
+
 class CompletionEnvelope(BaseModel):
+    outcome: CompletionOutcomeStatus
     result: CompletionResult | None = None
+    failure: CompletionFailure | None = None
     provenance: Provenance
-    policy_applied: dict
+    policy_applied: dict[str, Any] = Field(default_factory=dict)
     warnings: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _validate_outcome(self) -> "CompletionEnvelope":
+        if self.outcome is CompletionOutcomeStatus.SUCCEEDED:
+            if self.result is None:
+                raise ValueError("succeeded envelopes require result")
+            if self.failure is not None:
+                raise ValueError("succeeded envelopes cannot include failure")
+        elif self.outcome is CompletionOutcomeStatus.INCOMPLETE:
+            if self.result is None:
+                raise ValueError("incomplete envelopes require result")
+            if self.failure is not None:
+                raise ValueError("incomplete envelopes cannot include failure")
+        elif self.outcome is CompletionOutcomeStatus.FAILED:
+            if self.result is not None:
+                raise ValueError("failed envelopes cannot include result")
+            if self.failure is None:
+                raise ValueError("failed envelopes require failure")
+        return self
 
 
 class Role(str, Enum):

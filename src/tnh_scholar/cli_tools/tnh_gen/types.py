@@ -148,15 +148,45 @@ class RunProvenancePayload(TypedDict):
     schema_version: str
 
 
-class RunSuccessPayload(TypedDict):
-    status: str
-    result: RunResultPayload
+class RunAdapterDiagnosticsPayload(TypedDict):
+    content_source: str
+    content_part_count: int | None
+    raw_finish_reason: str | None
+    extraction_notes: str | None
+
+
+class RunFailurePayload(TypedDict):
+    reason: str
+    message: str
+    retryable: bool
+    adapter_diagnostics: RunAdapterDiagnosticsPayload | None
+
+
+class RunBasePayload(TypedDict):
     provenance: RunProvenancePayload
-    warnings: list[str] | None
+    warnings: list[str]
     prompt_warnings: list[str]
     policy_applied: PolicyApplied
     sources: list[str]
     trace_id: str
+
+
+class RunSuccessPayload(RunBasePayload):
+    status: Literal["succeeded"]
+    result: RunResultPayload
+
+
+class RunIncompletePayload(RunBasePayload):
+    status: Literal["incomplete"]
+    result: RunResultPayload
+
+
+class RunFailedPayload(RunBasePayload):
+    status: Literal["failed"]
+    failure: RunFailurePayload
+
+
+RunOutcomePayload = RunSuccessPayload | RunIncompletePayload | RunFailedPayload
 
 
 class VersionPayload(TypedDict):

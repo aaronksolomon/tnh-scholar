@@ -1,7 +1,7 @@
 import re
 from collections.abc import MutableMapping
 from copy import deepcopy
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterator, List, Mapping, Optional, Union
 
@@ -44,6 +44,7 @@ class Metadata(MutableMapping):
     # Type processors at class level
     _type_processors = {
         Path: lambda p: path_as_str(p),
+        date: lambda d: d.isoformat(),
         datetime: lambda d: d.isoformat(),
     }
 
