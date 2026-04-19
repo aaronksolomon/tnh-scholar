@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **tnh-gen Completion Outcome and Run Robustness** (2026-04-18)
+  - Added typed completion outcomes, structured failure payloads, and adapter diagnostics across the GenAI service and `tnh-gen run`
+  - Hardened the OpenAI adapter against empty, missing, and unsupported response shapes instead of silently returning success-shaped empty text
+  - Updated `tnh-gen run` to branch on succeeded/incomplete/failed outcomes, preserve input frontmatter in output files, and support direct `--prompt-dir` forwarding for one-off runs
+  - Added focused regression coverage for adapter failure mapping, failed/incomplete run behavior, budget blocking, and frontmatter/provenance handling
+  - Files: `src/tnh_scholar/gen_ai_service/`, `src/tnh_scholar/cli_tools/tnh_gen/`, `src/tnh_scholar/metadata/metadata.py`, `tests/gen_ai_service/`, `tests/cli_tools/test_tnh_gen*.py`
+
 - **Codex Headless Experiment Docs Refresh** (2026-04-13)
   - Expanded the headless communication report and experiment plan with native subagent findings, low-noise execution guidance, and a clearer next-experiment sequence
   - Added supervisory shell-trial operator docs plus a repo-local Codex profile and wrapper-script options used by the documented experiment path

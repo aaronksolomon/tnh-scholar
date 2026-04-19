@@ -109,16 +109,12 @@ class GenAIService:
             attempt_count=response.attempts,
         )
 
-        envelope = provider_to_completion(
+        return provider_to_completion(
             response,
             provenance=provenance,
             policy_applied=_build_policy_applied(selection.routing_reason, safety_report),
             warnings=list(safety_report.warnings),
         )
-
-        post_warnings = safety_gate.post_check(envelope.result)
-        envelope.warnings.extend(post_warnings)
-        return envelope
 
 
 def _build_policy_applied(

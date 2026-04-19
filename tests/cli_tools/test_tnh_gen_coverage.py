@@ -36,12 +36,14 @@ from tnh_scholar.cli_tools.tnh_gen.state import ListOutputFormat, OutputFormat, 
 from tnh_scholar.exceptions import ConfigurationError, ExternalServiceError, ValidationError
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionEnvelope,
+    CompletionOutcomeStatus,
     CompletionResult,
     Fingerprint,
     Provenance,
     Usage,
 )
 from tnh_scholar.gen_ai_service.models.errors import ProviderError
+from tnh_scholar.metadata import Metadata
 from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
 runner = CliRunner(mix_stderr=False)
@@ -79,6 +81,7 @@ def _envelope_with_warnings() -> CompletionEnvelope:
     started = datetime.now()
     finished = started
     return CompletionEnvelope(
+        outcome=CompletionOutcomeStatus.SUCCEEDED,
         result=CompletionResult(
             text="generated text",
             usage=Usage(prompt_tokens=1, completion_tokens=1, total_tokens=2),
@@ -412,15 +415,13 @@ def test_initialize_service_uses_factory_overrides():
 
 
 def test_emit_warnings_respects_quiet(capsys):
-    metadata = _prompt_metadata(warnings=["metadata-warning"])
-    run_module._emit_warnings(_envelope_with_warnings(), metadata, quiet=True)
+    run_module._emit_warnings(_envelope_with_warnings(), quiet=True, api=False)
     captured = capsys.readouterr()
     assert captured.err == ""
 
 
 def test_emit_warnings_outputs_to_stderr(capsys):
-    metadata = _prompt_metadata(warnings=["metadata-warning"])
-    run_module._emit_warnings(_envelope_with_warnings(), metadata, quiet=False)
+    run_module._emit_warnings(_envelope_with_warnings(), quiet=False, api=False)
     captured = capsys.readouterr()
     assert "[warn]" in captured.err
 
@@ -539,6 +540,49 @@ def test_provenance_yaml_roundtrip(tmp_path):
     assert payload["generated_at"].endswith("Z")
     assert payload["schema_version"] == "1.0"
     assert body.lstrip("\n") == "plain text"
+
+
+def test_provenance_merges_source_metadata_and_preserves_it_without_provenance(tmp_path):
+    output_file = tmp_path / "output.txt"
+    envelope = _envelope_with_warnings()
+    source_metadata = Metadata({"source": "draft", "prompt_key": "user-value"})
+    provenance_module.write_output_file(
+        output_file,
+        result_text="plain text",
+        envelope=envelope,
+        source_metadata=source_metadata,
+        trace_id="trace",
+        prompt_version=None,
+        include_provenance=True,
+    )
+
+    written = output_file.read_text(encoding="utf-8")
+    header, body = written.split("---\n", 2)[1:]
+    payload = yaml.safe_load(header)
+
+    assert payload["source"] == "draft"
+    assert payload["prompt_key"] == envelope.provenance.fingerprint.prompt_key
+    assert payload["tnh_scholar_generated"] is True
+    assert body.lstrip("\n") == "plain text"
+
+    plain_output = tmp_path / "plain.txt"
+    provenance_module.write_output_file(
+        plain_output,
+        result_text="plain text",
+        envelope=envelope,
+        source_metadata=source_metadata,
+        trace_id="trace",
+        prompt_version=None,
+        include_provenance=False,
+    )
+
+    plain_written = plain_output.read_text(encoding="utf-8")
+    plain_header, plain_body = plain_written.split("---\n", 2)[1:]
+    plain_payload = yaml.safe_load(plain_header)
+
+    assert plain_payload["source"] == "draft"
+    assert "tnh_scholar_generated" not in plain_payload
+    assert plain_body.lstrip("\n") == "plain text"
 
 
 def test_main_dispatch_calls_app(monkeypatch):
