@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Introduce a FAILED terminal state in the completion envelope and structured adapter diagnostics for observable, reliable generation results">
+        <meta name="description" content="Normalize transport failure states into a typed domain outcome envelope and structured adapter diagnostics for observable, reliable generation results">
       
       
         <meta name="author" content="Aaron Solomon, Claude Sonnet 4.6">
@@ -24,7 +24,7 @@
     
     
       
-        <title>ADR-TG03: Completion Contract and Adapter Diagnostics - TNH Scholar Documentation</title>
+        <title>ADR-TG03: Typed Completion Outcome and Adapter Diagnostics - TNH Scholar Documentation</title>
       
     
     
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-tg03-completion-contract-and-adapter-diagnostics" class="md-skip">
+        <a href="#adr-tg03-typed-completion-outcome-and-adapter-diagnostics" class="md-skip">
           Skip to content
         </a>
       
@@ -178,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-TG03: Completion Contract and Adapter Diagnostics
+              ADR-TG03: Typed Completion Outcome and Adapter Diagnostics
             
           </span>
         </div>
@@ -7995,7 +7995,7 @@
           
   
   <span class="md-ellipsis">
-    ADR-TG03: Completion Contract and Adapter Diagnostics
+    ADR-TG03: Typed Completion Outcome and Adapter Diagnostics
   </span>
   
     
@@ -8013,7 +8013,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-TG03: Completion Contract and Adapter Diagnostics
+    ADR-TG03: Typed Completion Outcome and Adapter Diagnostics
   </span>
   
     
@@ -8103,9 +8103,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-add-providerstatusfailed" class="md-nav__link">
+  <a href="#1-normalize-transport-status-into-a-typed-domain-outcome" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Add ProviderStatus.FAILED
+      1. Normalize Transport Status Into a Typed Domain Outcome
     </span>
   </a>
   
@@ -8130,9 +8130,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-make-post_check-a-real-gate" class="md-nav__link">
+  <a href="#4-keep-post_check-as-a-compatibility-hook-not-an-outcome-gate" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Make post_check() a Real Gate
+      4. Keep post_check() as a Compatibility Hook, Not an Outcome Gate
     </span>
   </a>
   
@@ -8223,18 +8223,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#alternative-2-treat-empty-result-as-a-retryable-warning" class="md-nav__link">
+  <a href="#alternative-2-represent-failure-only-as-an-exception" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternative 2: Treat empty result as a retryable warning
+      Alternative 2: Represent failure only as an exception
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#alternative-3-detect-empty-results-only-in-post_check" class="md-nav__link">
+  <a href="#alternative-3-treat-empty-result-as-a-retryable-warning" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternative 3: Detect empty results only in post_check()
+      Alternative 3: Treat empty result as a retryable warning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-4-detect-empty-results-only-in-post_check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 4: Detect empty results only in post_check()
     </span>
   </a>
   
@@ -8304,6 +8313,8 @@
       
         
       
+        
+      
     
     
     
@@ -8347,6 +8358,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/tnh-gen-implementation-plan-2026-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-gen Implementation Plan — April 2026
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -11753,9 +11792,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-add-providerstatusfailed" class="md-nav__link">
+  <a href="#1-normalize-transport-status-into-a-typed-domain-outcome" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Add ProviderStatus.FAILED
+      1. Normalize Transport Status Into a Typed Domain Outcome
     </span>
   </a>
   
@@ -11780,9 +11819,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-make-post_check-a-real-gate" class="md-nav__link">
+  <a href="#4-keep-post_check-as-a-compatibility-hook-not-an-outcome-gate" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Make post_check() a Real Gate
+      4. Keep post_check() as a Compatibility Hook, Not an Outcome Gate
     </span>
   </a>
   
@@ -11873,18 +11912,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#alternative-2-treat-empty-result-as-a-retryable-warning" class="md-nav__link">
+  <a href="#alternative-2-represent-failure-only-as-an-exception" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternative 2: Treat empty result as a retryable warning
+      Alternative 2: Represent failure only as an exception
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#alternative-3-detect-empty-results-only-in-post_check" class="md-nav__link">
+  <a href="#alternative-3-treat-empty-result-as-a-retryable-warning" class="md-nav__link">
     <span class="md-ellipsis">
-      Alternative 3: Detect empty results only in post_check()
+      Alternative 3: Treat empty result as a retryable warning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-4-detect-empty-results-only-in-post_check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative 4: Detect empty results only in post_check()
     </span>
   </a>
   
@@ -11940,8 +11988,8 @@
   
 
 
-<h1 id="adr-tg03-completion-contract-and-adapter-diagnostics">ADR-TG03: Completion Contract and Adapter Diagnostics<a class="headerlink" href="#adr-tg03-completion-contract-and-adapter-diagnostics" title="Link to this section">&para;</a></h1>
-<p>Establishes a three-state completion contract (<code>OK</code> / <code>INCOMPLETE</code> / <code>FAILED</code>) and a structured adapter diagnostics record, so that empty or unextractable generation results are explicitly represented as failures at every layer — adapter, safety gate, run command, and API output — rather than silently passed as successes.</p>
+<h1 id="adr-tg03-typed-completion-outcome-and-adapter-diagnostics">ADR-TG03: Typed Completion Outcome and Adapter Diagnostics<a class="headerlink" href="#adr-tg03-typed-completion-outcome-and-adapter-diagnostics" title="Link to this section">&para;</a></h1>
+<p>Establishes a typed domain outcome contract for generation results and a structured adapter diagnostics record, so that empty or unextractable generation results are explicitly represented as failures at every layer — adapter, mapper, service, run command, and API output — rather than silently passed as successes.</p>
 <ul>
 <li><strong>Filename</strong>: <code>adr-tg03-completion-contract.md</code></li>
 <li><strong>Status</strong>: Proposed</li>
@@ -11955,40 +12003,71 @@
 <hr />
 <h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
 <h3 id="current-state">Current State<a class="headerlink" href="#current-state" title="Link to this section">&para;</a></h3>
-<p>The <code>tnh-gen</code> generation pipeline has a two-state completion model:</p>
+<p>The <code>tnh-gen</code> generation pipeline currently has an inconsistent status model across layers:</p>
 <ul>
 <li><code>ProviderStatus.OK</code> — usable text was extracted</li>
 <li><code>ProviderStatus.INCOMPLETE</code> — text was extracted but the completion was cut off (e.g., <code>finish_reason == "length"</code>)</li>
+<li><code>ProviderStatus.FAILED</code> — already exists in transport models but is not meaningfully produced or propagated</li>
 </ul>
-<p>No <code>FAILED</code> state exists. Every API call that completes without a network or HTTP error is treated as a success.</p>
 <p>This creates a structural gap across four layers:</p>
 <p><strong>Adapter layer</strong> (<code>gen_ai_service/providers/openai_adapter.py</code>): extracts <code>choices[0].message.content or ""</code>. For models that use structured content parts (e.g., gpt-5 reasoning paths), <code>message.content</code> may be <code>None</code> even when <code>completion_tokens &gt; 0</code> and <code>finish_reason == "stop"</code>. The adapter has no detection path for this condition and returns <code>ProviderStatus.OK</code> with <code>text = ""</code>.</p>
-<p><strong>Safety gate</strong> (<code>gen_ai_service/safety/safety_gate.py</code>): <code>post_check()</code> is documented as a stub. It appends <code>"empty-result"</code> as a warning tag on the completion envelope but does not change <code>status</code> or raise. The docstring explicitly notes this is "stubbed for now."</p>
+<p><strong>Mapper/domain layer</strong> (<code>gen_ai_service/mappers/completion_mapper.py</code>, <code>gen_ai_service/models/domain.py</code>): transport status is flattened into warnings on <code>CompletionEnvelope</code>. The domain envelope has <code>result</code>, <code>provenance</code>, <code>policy_applied</code>, and <code>warnings</code>, but no typed success/failure outcome or failure payload.</p>
+<p><strong>Safety gate</strong> (<code>gen_ai_service/safety/safety_gate.py</code>): <code>post_check()</code> is documented as a stub. It appends <code>"empty-result"</code> as a warning tag on the completion envelope but does not change the envelope shape or block output.</p>
 <p><strong>Run command</strong> (<code>cli_tools/tnh_gen/commands/run.py</code>): <code>_build_success_payload()</code> always emits <code>"status": "succeeded"</code>. <code>_emit_run_output()</code> calls <code>write_output_file()</code> unconditionally — so an empty <code>result_text</code> produces a provenance-only output file with <code>"status": "succeeded"</code> in the API payload and exit code <code>0</code>.</p>
 <p><strong>Provenance records</strong>: Capture model, tokens, finish_reason, estimated cost. Do not capture which response field was read, what content parts were present, or any classification of why text was absent. When a trace fails, the provenance record is insufficient to diagnose it.</p>
 <h3 id="problem">Problem<a class="headerlink" href="#problem" title="Link to this section">&para;</a></h3>
 <p>Orchestrators and CI pipelines that trust exit code or the <code>"status"</code> field are silently deceived when a generation produces no usable text. The failure is invisible. Additionally, as new model generations (gpt-5, gpt-5.4) depart from the <code>choices[0].message.content</code> response shape, the number of undetected empty-result failures is expected to increase.</p>
+<p>The deeper architectural problem is not just missing failure detection; it is that success/failure semantics live partly in transport enums, partly in warning strings, and partly in ad hoc CLI payload construction. That violates the object-service rule that canonical behavior should be represented in typed domain models, not reconstructed in app glue.</p>
 <h3 id="scope">Scope<a class="headerlink" href="#scope" title="Link to this section">&para;</a></h3>
 <p>Issues: #47 (gpt-5 empty text), #48 (empty result reported as success), #52 (insufficient diagnostics).</p>
 <p>Related: <a href="../adr-tg01-cli-architecture/">ADR-TG01</a> §5 (error handling), <a href="../adr-tg01.1-human-friendly-defaults/">ADR-TG01.1</a> (API payload contract).</p>
 <hr />
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
-<h3 id="1-add-providerstatusfailed">1. Add <code>ProviderStatus.FAILED</code><a class="headerlink" href="#1-add-providerstatusfailed" title="Link to this section">&para;</a></h3>
-<p>Add a third terminal <code>ProviderStatus</code> value:</p>
+<h3 id="1-normalize-transport-status-into-a-typed-domain-outcome">1. Normalize Transport Status Into a Typed Domain Outcome<a class="headerlink" href="#1-normalize-transport-status-into-a-typed-domain-outcome" title="Link to this section">&para;</a></h3>
+<p>Keep transport-layer <code>ProviderStatus</code> values as the provider-seam contract:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ProviderStatus.OK         — usable text extracted
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ProviderStatus.INCOMPLETE — text extracted but completion was truncated
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ProviderStatus.FAILED     — API call completed but no usable text could be extracted
 </span></code></pre></div>
-<p><code>FAILED</code> is semantically distinct from <code>INCOMPLETE</code>: <code>INCOMPLETE</code> means "text exists but was cut off"; <code>FAILED</code> means "no text was produced or none could be extracted."</p>
+<p>But stop treating those transport values as the application contract. Instead, <code>CompletionEnvelope</code> becomes a typed domain envelope with explicit outcome state:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CompletionOutcomeStatus</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">SUCCEEDED</span> <span class="o">=</span> <span class="s2">&quot;succeeded&quot;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">INCOMPLETE</span> <span class="o">=</span> <span class="s2">&quot;incomplete&quot;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">FAILED</span> <span class="o">=</span> <span class="s2">&quot;failed&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">CompletionFailure</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">reason</span><span class="p">:</span> <span class="n">FailureReason</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">retryable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">adapter_diagnostics</span><span class="p">:</span> <span class="n">AdapterDiagnostics</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="k">class</span><span class="w"> </span><span class="nc">CompletionEnvelope</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="n">outcome</span><span class="p">:</span> <span class="n">CompletionOutcomeStatus</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="n">result</span><span class="p">:</span> <span class="n">CompletionResult</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="n">failure</span><span class="p">:</span> <span class="n">CompletionFailure</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="n">policy_applied</span><span class="p">:</span> <span class="nb">dict</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    <span class="n">warnings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Mapping rules:</p>
+<ul>
+<li><code>ProviderStatus.OK</code> → <code>CompletionOutcomeStatus.SUCCEEDED</code></li>
+<li><code>ProviderStatus.INCOMPLETE</code> → <code>CompletionOutcomeStatus.INCOMPLETE</code></li>
+<li><code>ProviderStatus.FAILED</code> → <code>CompletionOutcomeStatus.FAILED</code></li>
+</ul>
+<p><code>FAILED</code> remains semantically distinct from <code>INCOMPLETE</code>: <code>INCOMPLETE</code> means "usable text exists but was cut off"; <code>FAILED</code> means "no usable text was produced or extracted."</p>
 <hr />
 <h3 id="2-structured-failurereason-on-providerresponse">2. Structured <code>FailureReason</code> on <code>ProviderResponse</code><a class="headerlink" href="#2-structured-failurereason-on-providerresponse" title="Link to this section">&para;</a></h3>
 <p>Add a <code>failure_reason</code> field to <code>ProviderResponse</code> (populated when <code>status == FAILED</code>):</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>FailureReason.EMPTY_CONTENT_WITH_TOKENS   — content field was empty/null but tokens were consumed
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>FailureReason.CONTENT_FIELD_MISSING       — expected content field absent from response shape
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>FailureReason.UNSUPPORTED_RESPONSE_SHAPE  — response structure not recognized by adapter
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>FailureReason.CONTENT_EXTRACTION_ERROR    — exception during content extraction
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>FailureReason.EMPTY_CONTENT_WITH_TOKENS   — content field was empty/null but tokens were consumed
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>FailureReason.CONTENT_FIELD_MISSING       — expected content field absent from response shape
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>FailureReason.UNSUPPORTED_RESPONSE_SHAPE  — response structure not recognized by adapter
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>FailureReason.CONTENT_EXTRACTION_ERROR    — exception during content extraction
 </span></code></pre></div>
 <p><code>failure_reason</code> is <code>None</code> when <code>status == OK</code> or <code>INCOMPLETE</code>.</p>
+<p>This keeps root-cause classification at the adapter boundary, where the raw provider response is still available.</p>
 <hr />
 <h3 id="3-harden-adapter-extraction-in-openai_adapterpy">3. Harden Adapter Extraction in <code>openai_adapter.py</code><a class="headerlink" href="#3-harden-adapter-extraction-in-openai_adapterpy" title="Link to this section">&para;</a></h3>
 <p>The <code>from_openai_response()</code> method gains two detection branches before returning:</p>
@@ -12000,23 +12079,38 @@ If <code>choices[0].message</code> is present but <code>.content</code> is <code
 If <code>choices</code> is empty or the response structure does not conform to the expected schema, set <code>status = FAILED</code>, <code>failure_reason = UNSUPPORTED_RESPONSE_SHAPE</code>.</p>
 <p>These branches are checked before the current <code>or ""</code> fallback, which is removed.</p>
 <hr />
-<h3 id="4-make-post_check-a-real-gate">4. Make <code>post_check()</code> a Real Gate<a class="headerlink" href="#4-make-post_check-a-real-gate" title="Link to this section">&para;</a></h3>
-<p><code>safety_gate.py</code> <code>post_check()</code> is promoted from stub to enforcement:</p>
+<h3 id="4-keep-post_check-as-a-compatibility-hook-not-an-outcome-gate">4. Keep <code>post_check()</code> as a Compatibility Hook, Not an Outcome Gate<a class="headerlink" href="#4-keep-post_check-as-a-compatibility-hook-not-an-outcome-gate" title="Link to this section">&para;</a></h3>
+<p>The typed <code>CompletionEnvelope</code> is now the only authoritative success/failure contract. <code>safety_gate.py</code> <code>post_check()</code> remains available as a future policy hook, but it does not append soft warnings or reinterpret adapter outcomes:</p>
 <ul>
-<li>If <code>completion.status == FAILED</code>: raise <code>GenerationFailed(failure_reason=completion.failure_reason)</code>.</li>
-<li><code>GenerationFailed</code> is a new exception in <code>gen_ai_service/exceptions.py</code>, carrying <code>failure_reason</code> and the full <code>CompletionEnvelope</code> for caller inspection.</li>
-<li><code>post_check()</code> does not need to re-derive empty-text detection — it delegates to the status already set by the adapter.</li>
+<li>If <code>envelope.outcome == FAILED</code>, callers trust that terminal state directly.</li>
+<li>If <code>envelope.outcome == INCOMPLETE</code>, callers may surface warnings already attached elsewhere, but <code>post_check()</code> does not rewrite the outcome.</li>
+<li><code>post_check()</code> does not re-derive empty-text detection; it trusts the adapter/mapper path that already classified the response.</li>
+<li><code>run.py</code> branches directly on <code>envelope.outcome</code>; <code>service.generate()</code> does not mutate the envelope after mapping.</li>
 </ul>
 <hr />
 <h3 id="5-failure-path-in-runpy">5. Failure Path in <code>run.py</code><a class="headerlink" href="#5-failure-path-in-runpy" title="Link to this section">&para;</a></h3>
-<p><code>_emit_run_output()</code> catches <code>GenerationFailed</code> and:</p>
+<p><code>run.py</code> switches from "always build success payload, then maybe error later" to branching directly on the typed domain envelope:</p>
 <ul>
-<li>Emits <code>"status": "failed"</code> in the API payload.</li>
-<li>Includes <code>"failure_reason"</code> as a structured field (the <code>FailureReason</code> string value).</li>
-<li>Writes <strong>no output file</strong>.</li>
-<li>Exits non-zero (exit code <code>1</code>, consistent with existing error handling in ADR-TG01 §5).</li>
+<li>When <code>envelope.outcome == SUCCEEDED</code>: emit <code>"status": "succeeded"</code> and permit file output.</li>
+<li>When <code>envelope.outcome == INCOMPLETE</code>: emit <code>"status": "incomplete"</code> with result + warnings, and permit output according to CLI policy.</li>
+<li>When <code>envelope.outcome == FAILED</code>: emit <code>"status": "failed"</code> plus a typed <code>failure</code> object, write <strong>no output file</strong>, and exit non-zero.</li>
 </ul>
-<p>In <code>--api</code> mode, the failure payload follows the existing error envelope schema from ADR-TG01.1, extended with <code>failure_reason</code>.</p>
+<p>In <code>--api</code> mode, the payload follows the existing envelope contract from ADR-TG01.1, extended with a structured <code>failure</code> object rather than a single flat <code>failure_reason</code> field:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;failed&quot;</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;failure&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">&quot;reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;empty_content_with_tokens&quot;</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Provider returned no extractable text after consuming completion tokens.&quot;</span><span class="p">,</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nt">&quot;retryable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">&quot;adapter_diagnostics&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">      </span><span class="nt">&quot;content_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;choices[0].message.content&quot;</span><span class="p">,</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">      </span><span class="nt">&quot;content_part_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">      </span><span class="nt">&quot;raw_finish_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stop&quot;</span><span class="p">,</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">      </span><span class="nt">&quot;extraction_notes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;message.content was null; completion_tokens=128&quot;</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="p">}</span>
+</span></code></pre></div>
 <hr />
 <h3 id="6-adapterdiagnostics-record">6. <code>AdapterDiagnostics</code> Record<a class="headerlink" href="#6-adapterdiagnostics-record" title="Link to this section">&para;</a></h3>
 <p>Add an optional <code>adapter_diagnostics: AdapterDiagnostics | None</code> field to <code>ProviderResponse</code>. Populated on any non-<code>OK</code> status. Fields:</p>
@@ -12051,34 +12145,37 @@ If <code>choices</code> is empty or the response structure does not conform to t
 </tr>
 </tbody>
 </table>
-<p><code>AdapterDiagnostics</code> is included in provenance output when <code>--api</code> mode is active and <code>status != OK</code>. It is omitted from human-mode output to avoid verbosity.</p>
+<p><code>AdapterDiagnostics</code> is included in API-mode output when <code>outcome != SUCCEEDED</code>. It is omitted from default human output to avoid verbosity.</p>
 <hr />
 <h3 id="data-flow-summary">Data Flow Summary<a class="headerlink" href="#data-flow-summary" title="Link to this section">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>openai_adapter.from_openai_response()
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  → sets ProviderStatus.FAILED + FailureReason + AdapterDiagnostics
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  ↓
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>safety_gate.post_check()
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  → raises GenerationFailed if FAILED
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  ↓
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>run._emit_run_output()
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  → catches GenerationFailed
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  → emits {&quot;status&quot;: &quot;failed&quot;, &quot;failure_reason&quot;: &quot;...&quot;}
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  → no file write, exit code 1
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>openai_adapter.from_openai_response()
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  → sets ProviderStatus.FAILED + FailureReason + AdapterDiagnostics
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  ↓
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>completion_mapper.provider_to_completion()
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  → maps transport status into CompletionEnvelope(outcome=FAILED, failure=...)
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  ↓
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>service.generate()
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  → returns typed CompletionEnvelope without flattening failure into warnings
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  ↓
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>run command
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  → branches on envelope.outcome
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>  → emits {&quot;status&quot;: &quot;failed&quot;, &quot;failure&quot;: {...}}
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  → no file write, exit code 1
 </span></code></pre></div>
 <hr />
 <h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
 <h3 id="positive">Positive<a class="headerlink" href="#positive" title="Link to this section">&para;</a></h3>
 <ul>
 <li>Empty results are explicitly represented as failures at every layer.</li>
-<li>Orchestrators get reliable exit codes and machine-readable <code>failure_reason</code> fields.</li>
+<li>Orchestrators get reliable exit codes and machine-readable typed <code>failure</code> payloads.</li>
 <li>Adapter failures caused by new model response shapes are diagnosable from provenance alone, without replaying the API call.</li>
-<li><code>post_check()</code> stub is replaced by real enforcement, closing the gap noted in its own docstring.</li>
-<li>The two-branch distinction (<code>INCOMPLETE</code> vs. <code>FAILED</code>) is clearer than the current single-state model.</li>
+<li><code>post_check()</code> no longer introduces soft warning noise that can contradict the typed outcome contract.</li>
+<li>The distinction between transport status and domain outcome becomes explicit instead of leaking through warning strings and CLI dict assembly.</li>
 </ul>
 <h3 id="negative">Negative<a class="headerlink" href="#negative" title="Link to this section">&para;</a></h3>
 <ul>
-<li><code>GenerationFailed</code> is a new exception type. All callers of <code>GenAIService.generate()</code> that do not currently handle it will get an unhandled exception — this is a breaking change requiring callers to be audited and updated.</li>
-<li>Adding <code>AdapterDiagnostics</code> to <code>ProviderResponse</code> increases verbosity in <code>--api</code> provenance output for failed calls.</li>
+<li><code>CompletionEnvelope</code> is a breaking contract change for all typed callers of <code>GenAIService.generate()</code> and related helpers.</li>
+<li>Adding <code>AdapterDiagnostics</code> to failed API output increases payload size and complexity.</li>
 <li>The <code>FailureReason</code> enum is a new contract surface that must be kept stable across model updates.</li>
 </ul>
 <hr />
@@ -12086,10 +12183,13 @@ If <code>choices</code> is empty or the response structure does not conform to t
 <h3 id="alternative-1-reuse-incomplete-for-empty-with-tokens">Alternative 1: Reuse <code>INCOMPLETE</code> for empty-with-tokens<a class="headerlink" href="#alternative-1-reuse-incomplete-for-empty-with-tokens" title="Link to this section">&para;</a></h3>
 <p><strong>Approach</strong>: Map empty content with tokens to <code>INCOMPLETE</code> rather than introducing <code>FAILED</code>.</p>
 <p><strong>Rejected</strong>: <code>INCOMPLETE</code> semantically means "text exists but was truncated." Empty-with-tokens is a categorically different condition — the model responded but the adapter could not extract content. Conflating them obscures the root cause in diagnostics.</p>
-<h3 id="alternative-2-treat-empty-result-as-a-retryable-warning">Alternative 2: Treat empty result as a retryable warning<a class="headerlink" href="#alternative-2-treat-empty-result-as-a-retryable-warning" title="Link to this section">&para;</a></h3>
+<h3 id="alternative-2-represent-failure-only-as-an-exception">Alternative 2: Represent failure only as an exception<a class="headerlink" href="#alternative-2-represent-failure-only-as-an-exception" title="Link to this section">&para;</a></h3>
+<p><strong>Approach</strong>: Keep the domain envelope success-shaped and signal empty-result failures exclusively by raising <code>GenerationFailed</code>.</p>
+<p><strong>Rejected</strong>: Exceptions are appropriate for transport and policy faults, but a provider-completed call that produced no usable text is still a typed business outcome. Encoding that state only in control flow would keep failure semantics out of the domain model and preserve the current split between typed service behavior and ad hoc CLI payload assembly.</p>
+<h3 id="alternative-3-treat-empty-result-as-a-retryable-warning">Alternative 3: Treat empty result as a retryable warning<a class="headerlink" href="#alternative-3-treat-empty-result-as-a-retryable-warning" title="Link to this section">&para;</a></h3>
 <p><strong>Approach</strong>: On empty result, set a warning flag and allow callers to decide whether to retry or fail.</p>
 <p><strong>Rejected</strong>: The current behavior of writing provenance-only output files and emitting <code>"status": "succeeded"</code> is the direct cause of silent orchestration failures (#48). A retry-or-warn approach does not fix that — it defers the decision to callers who may not implement the check.</p>
-<h3 id="alternative-3-detect-empty-results-only-in-post_check">Alternative 3: Detect empty results only in <code>post_check()</code><a class="headerlink" href="#alternative-3-detect-empty-results-only-in-post_check" title="Link to this section">&para;</a></h3>
+<h3 id="alternative-4-detect-empty-results-only-in-post_check">Alternative 4: Detect empty results only in <code>post_check()</code><a class="headerlink" href="#alternative-4-detect-empty-results-only-in-post_check" title="Link to this section">&para;</a></h3>
 <p><strong>Approach</strong>: Leave the adapter unchanged; detect empty text in <code>safety_gate.post_check()</code>.</p>
 <p><strong>Rejected</strong>: The adapter has the full response object and is the correct place to distinguish <em>why</em> content is absent (missing field vs. empty string vs. unexpected shape). <code>post_check()</code> sees only the extracted <code>CompletionEnvelope</code> and cannot reconstruct this information. Adapter-level detection produces richer diagnostics.</p>
 <hr />
@@ -12099,7 +12199,7 @@ If <code>choices</code> is empty or the response structure does not conform to t
 <p><strong><code>FailureReason</code> extensibility</strong>: Should <code>FailureReason</code> be a <code>str</code>-typed enum (open-ended, extensible by new adapters) or a closed <code>IntEnum</code>? Open-ended is more forward-compatible as new model families are added.</p>
 </li>
 <li>
-<p><strong>Retry integration</strong>: Should <code>GenerationFailed</code> carry a <code>retryable: bool</code> hint? Some failure reasons (e.g., <code>CONTENT_EXTRACTION_ERROR</code> due to a transient parse issue) may be retryable; others (<code>UNSUPPORTED_RESPONSE_SHAPE</code>) are not.</p>
+<p><strong>Retry integration</strong>: Should <code>CompletionFailure.retryable</code> be inferred centrally from <code>FailureReason</code>, or set adapter-by-adapter? Some failure reasons (e.g., <code>CONTENT_EXTRACTION_ERROR</code> due to a transient parse issue) may be retryable; others (<code>UNSUPPORTED_RESPONSE_SHAPE</code>) are not.</p>
 </li>
 <li>
 <p><strong>Anthropic adapter parity</strong>: The same hardening should eventually be applied to the Anthropic/Claude adapter. Should TG03 scope that now, or defer to a separate ADR once the OpenAI path is proven?</p>

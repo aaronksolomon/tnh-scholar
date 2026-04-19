@@ -6,15 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Strategy for unifying GenAI Service capabilities, personas, and phased releases.">
+        <meta name="description" content="Brief phased implementation plan for the tnh-gen robustness and contract work identified in the April 2026 review.">
       
+      
+        <meta name="author" content="Aaron Solomon, OpenAI Codex">
       
       
       
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../openai-interface-migration-plan/">
+        <link rel="next" href="../tnh-gen-robustness-review-2026-04/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -22,7 +24,7 @@
     
     
       
-        <title>GenAI Service — Design Strategy - TNH Scholar Documentation</title>
+        <title>tnh-gen Implementation Plan — April 2026 - TNH Scholar Documentation</title>
       
     
     
@@ -120,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#genai-service-design-strategy" class="md-skip">
+        <a href="#tnh-gen-implementation-plan-april-2026" class="md-skip">
           Skip to content
         </a>
       
@@ -176,7 +178,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GenAI Service — Design Strategy
+              tnh-gen Implementation Plan — April 2026
             
           </span>
         </div>
@@ -5290,7 +5292,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../../../gen-ai-service/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5315,10 +5317,8 @@
                 
   
   
-    
   
   
-  
     
     
       
@@ -5329,11 +5329,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_9" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_9" >
         
           
           <label class="md-nav__link" for="__nav_9_9" id="__nav_9_9_label" tabindex="0">
@@ -5347,7 +5347,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_9_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_9">
             <span class="md-nav__icon md-icon"></span>
             GenAI Service
@@ -5399,7 +5399,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../adr/" class="md-nav__link ">
+            <a href="../../../gen-ai-service/adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5439,7 +5439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-a01-object-service-genai/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5467,7 +5467,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5495,7 +5495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5523,7 +5523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-a09-v1-simplified/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5551,7 +5551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5579,7 +5579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5607,7 +5607,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5635,7 +5635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-a14-file-based-registry-system/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5663,7 +5663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5691,7 +5691,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5724,8 +5724,6 @@
                 
   
   
-    
-  
   
   
     
@@ -5742,16 +5740,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_9_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_9_2" >
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../gen-ai-service/design/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -5775,7 +5773,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_9_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_9_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_9_2">
             <span class="md-nav__icon md-icon"></span>
             Design
@@ -5788,37 +5786,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    GenAI Service — Design Strategy
-  </span>
-  
-    
-  
-  
-    <span class="md-status md-status--current"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5834,239 +5805,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-purpose" class="md-nav__link">
-    <span class="md-ellipsis">
-      1) Purpose
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-scope-v1" class="md-nav__link">
-    <span class="md-ellipsis">
-      2) Scope (v1)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-design-principles" class="md-nav__link">
-    <span class="md-ellipsis">
-      3) Design Principles
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#31-configuration-taxonomy-config-vs-params-vs-policy" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.1) Configuration Taxonomy (Config vs Params vs Policy)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-high-level-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      4) High-Level Architecture
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-request-lifecycle-v1" class="md-nav__link">
-    <span class="md-ellipsis">
-      5) Request Lifecycle (v1)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-provider-abstraction" class="md-nav__link">
-    <span class="md-ellipsis">
-      6) Provider Abstraction
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6a-response-envelope" class="md-nav__link">
-    <span class="md-ellipsis">
-      6a) Response Envelope
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-patterncatalog-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      7) PatternCatalog Integration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="7) PatternCatalog Integration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#v1-implementation-note-reuse-existing-tnhscholar-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      V1 implementation note — reuse existing TNH‑Scholar patterns
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#service-flow-using-introspect" class="md-nav__link">
-    <span class="md-ellipsis">
-      Service flow using introspect
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#8-safety-policy-split-across-configpolicyparams" class="md-nav__link">
-    <span class="md-ellipsis">
-      8) Safety &amp; Policy (split across Config/Policy/Params)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#9-observability" class="md-nav__link">
-    <span class="md-ellipsis">
-      9) Observability
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#9a-observation-seam-observer-clocktimer" class="md-nav__link">
-    <span class="md-ellipsis">
-      9a) Observation Seam (Observer + Clock/Timer)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#v1-decisions-deferrals" class="md-nav__link">
-    <span class="md-ellipsis">
-      V1 Decisions &amp; Deferrals
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#10-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      10) Configuration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#11-testing-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      11) Testing Strategy
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#12-migration-plan-from-openai_interfacepy" class="md-nav__link">
-    <span class="md-ellipsis">
-      12) Migration Plan (from openai_interface.py)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#13-roadmap-post-v1" class="md-nav__link">
-    <span class="md-ellipsis">
-      13) Roadmap (post-v1)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#14-deliverables-v1-walking-skeleton" class="md-nav__link">
-    <span class="md-ellipsis">
-      14) Deliverables (v1 Walking Skeleton)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#15-rationale-trade-offs" class="md-nav__link">
-    <span class="md-ellipsis">
-      15) Rationale &amp; Trade-offs
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#16-open-existing-items-for-adrs" class="md-nav__link">
-    <span class="md-ellipsis">
-      16) Open / Existing Items for ADRs
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#17-acceptance-for-v1" class="md-nav__link">
-    <span class="md-ellipsis">
-      17) Acceptance for v1
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -6079,7 +5817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../openai-interface-migration-plan/" class="md-nav__link">
+      <a href="../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8028,7 +7766,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8046,8 +7784,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -8058,11 +7798,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20" checked>
         
           
           <label class="md-nav__link" for="__nav_9_20" id="__nav_9_20_label" tabindex="0">
@@ -8076,7 +7816,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_20_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_20_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_20">
             <span class="md-nav__icon md-icon"></span>
             Tnh Gen
@@ -8116,7 +7856,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../tnh-gen/adr/" class="md-nav__link ">
+            <a href="../../adr/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8156,7 +7896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
+      <a href="../../adr/adr-tg01-cli-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8184,7 +7924,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
+      <a href="../../adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8212,7 +7952,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
+      <a href="../../adr/adr-tg02-prompt-integration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8240,7 +7980,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/adr/adr-tg03-completion-contract/" class="md-nav__link">
+      <a href="../../adr/adr-tg03-completion-contract/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -8273,6 +8013,8 @@
                 
   
   
+    
+  
   
   
     
@@ -8289,16 +8031,16 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20_2" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../tnh-gen/notes/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -8322,7 +8064,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_20_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_20_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_20_2">
             <span class="md-nav__icon md-icon"></span>
             Notes
@@ -8335,10 +8077,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../tnh-gen/notes/tnh-gen-implementation-plan-2026-04/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    tnh-gen Implementation Plan — April 2026
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -8354,6 +8123,149 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Goals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase Sequence
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase Sequence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-typed-completion-outcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Typed Completion Outcome
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-run-command-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Run Command Contract
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-cli-ergonomics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: CLI Ergonomics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-frontmatter-preservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Frontmatter Preservation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-catalog-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5: Catalog Health
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-delivery-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommended Delivery Order
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validation Gates
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#done-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Done Criteria
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -8366,7 +8278,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tnh-gen/notes/tnh-gen-robustness-review-2026-04/" class="md-nav__link">
+      <a href="../tnh-gen-robustness-review-2026-04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -11702,100 +11614,73 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-purpose" class="md-nav__link">
+  <a href="#goals" class="md-nav__link">
     <span class="md-ellipsis">
-      1) Purpose
+      Goals
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-scope-v1" class="md-nav__link">
+  <a href="#scope" class="md-nav__link">
     <span class="md-ellipsis">
-      2) Scope (v1)
+      Scope
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-design-principles" class="md-nav__link">
+  <a href="#phase-sequence" class="md-nav__link">
     <span class="md-ellipsis">
-      3) Design Principles
+      Phase Sequence
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#31-configuration-taxonomy-config-vs-params-vs-policy" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.1) Configuration Taxonomy (Config vs Params vs Policy)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-high-level-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      4) High-Level Architecture
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-request-lifecycle-v1" class="md-nav__link">
-    <span class="md-ellipsis">
-      5) Request Lifecycle (v1)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-provider-abstraction" class="md-nav__link">
-    <span class="md-ellipsis">
-      6) Provider Abstraction
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6a-response-envelope" class="md-nav__link">
-    <span class="md-ellipsis">
-      6a) Response Envelope
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-patterncatalog-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      7) PatternCatalog Integration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="7) PatternCatalog Integration">
+    <nav class="md-nav" aria-label="Phase Sequence">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#v1-implementation-note-reuse-existing-tnhscholar-patterns" class="md-nav__link">
+  <a href="#phase-1-typed-completion-outcome" class="md-nav__link">
     <span class="md-ellipsis">
-      V1 implementation note — reuse existing TNH‑Scholar patterns
+      Phase 1: Typed Completion Outcome
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#service-flow-using-introspect" class="md-nav__link">
+  <a href="#phase-2-run-command-contract" class="md-nav__link">
     <span class="md-ellipsis">
-      Service flow using introspect
+      Phase 2: Run Command Contract
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-cli-ergonomics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: CLI Ergonomics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-frontmatter-preservation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Frontmatter Preservation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-catalog-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5: Catalog Health
     </span>
   </a>
   
@@ -11807,108 +11692,45 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-safety-policy-split-across-configpolicyparams" class="md-nav__link">
+  <a href="#recommended-delivery-order" class="md-nav__link">
     <span class="md-ellipsis">
-      8) Safety &amp; Policy (split across Config/Policy/Params)
+      Recommended Delivery Order
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#9-observability" class="md-nav__link">
+  <a href="#validation-gates" class="md-nav__link">
     <span class="md-ellipsis">
-      9) Observability
+      Validation Gates
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#9a-observation-seam-observer-clocktimer" class="md-nav__link">
+  <a href="#risks" class="md-nav__link">
     <span class="md-ellipsis">
-      9a) Observation Seam (Observer + Clock/Timer)
+      Risks
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#v1-decisions-deferrals" class="md-nav__link">
+  <a href="#done-criteria" class="md-nav__link">
     <span class="md-ellipsis">
-      V1 Decisions &amp; Deferrals
+      Done Criteria
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#10-configuration" class="md-nav__link">
+  <a href="#references" class="md-nav__link">
     <span class="md-ellipsis">
-      10) Configuration
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#11-testing-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      11) Testing Strategy
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#12-migration-plan-from-openai_interfacepy" class="md-nav__link">
-    <span class="md-ellipsis">
-      12) Migration Plan (from openai_interface.py)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#13-roadmap-post-v1" class="md-nav__link">
-    <span class="md-ellipsis">
-      13) Roadmap (post-v1)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#14-deliverables-v1-walking-skeleton" class="md-nav__link">
-    <span class="md-ellipsis">
-      14) Deliverables (v1 Walking Skeleton)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#15-rationale-trade-offs" class="md-nav__link">
-    <span class="md-ellipsis">
-      15) Rationale &amp; Trade-offs
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#16-open-existing-items-for-adrs" class="md-nav__link">
-    <span class="md-ellipsis">
-      16) Open / Existing Items for ADRs
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#17-acceptance-for-v1" class="md-nav__link">
-    <span class="md-ellipsis">
-      17) Acceptance for v1
+      References
     </span>
   </a>
   
@@ -11932,425 +11754,196 @@
   
 
 
-<h1 id="genai-service-design-strategy">GenAI Service — Design Strategy<a class="headerlink" href="#genai-service-design-strategy" title="Link to this section">&para;</a></h1>
-<p>Strategy for unifying GenAI Service capabilities, personas, and phased releases.</p>
-<p><strong>Status:</strong> Accepted
-<strong>Date</strong> 9-30-2025
-<strong>Audience:</strong> TNH Scholar core developers<br />
-<strong>Doc type:</strong> Strategy (pre-ADR)<br />
-<strong>Related:</strong> ADR-P02 Pattern &amp; PatternCatalog (artifact vs service), Object-Service Blueprint, Human-AI Coding Principles</p>
+<h1 id="tnh-gen-implementation-plan-april-2026">tnh-gen Implementation Plan — April 2026<a class="headerlink" href="#tnh-gen-implementation-plan-april-2026" title="Link to this section">&para;</a></h1>
+<p>Brief execution plan for the <code>tnh-gen</code> robustness work identified in the April 16, 2026 review and refined by the related ADR updates.</p>
+<p>This plan is intentionally short. It is for sequencing and execution control, not for restating the ADRs.</p>
 <hr />
-<h2 id="1-purpose">1) Purpose<a class="headerlink" href="#1-purpose" title="Link to this section">&para;</a></h2>
-<p>Create a <strong>modular, observable, policy-aware GenAI Service</strong> that:</p>
-<ul>
-<li>Powers <strong>single-message</strong> text workflows now (translation, summarization, extraction),</li>
-<li>Adds <strong>image-assisted</strong> prompts (vision-in) as a first-class option,</li>
-<li>Establishes <strong>stable domain shapes</strong> and <strong>provider-agnostic seams</strong> to later support Anthropic and others,</li>
-<li>Enforces <strong>budget, safety, and determinism</strong> (via PatternCatalog + fingerprinting),</li>
-<li>Is small enough to ship immediately, yet extensible to streaming, batching, A/B routing, and tools.</li>
-</ul>
-<hr />
-<h2 id="2-scope-v1">2) Scope (v1)<a class="headerlink" href="#2-scope-v1" title="Link to this section">&para;</a></h2>
-<ul>
-<li><strong>In scope</strong></li>
-<li>Single request → single response (text or JSON text); optional image attachments</li>
-<li>Model controls (temp/top_p/max_tokens), caps (max_dollars, max_tokens)</li>
-<li><strong>PatternCatalog</strong> integration (template resolution, fingerprint)</li>
-<li>Policy gates (pre/post), redacted structured logging, basic metrics &amp; usage accounting</li>
-<li>
-<p>Provider abstraction (OpenAIAdapter v1; AnthropicAdapter skeleton)</p>
-</li>
-<li>
-<p><strong>Out of scope (for v1)</strong></p>
-</li>
-<li>Conversation memory, RAG orchestration, tool/function calling flows</li>
-<li>Long-running batch runners; complex schedulers</li>
-<li>Multi-provider federation/ensembles (kept as seam)</li>
-</ul>
-<hr />
-<h2 id="3-design-principles">3) Design Principles<a class="headerlink" href="#3-design-principles" title="Link to this section">&para;</a></h2>
+<h2 id="goals">Goals<a class="headerlink" href="#goals" title="Link to this section">&para;</a></h2>
 <ol>
-<li><strong>Object Service</strong>: single public entry point (<code>generate</code>) with strict, typed domain models.  </li>
-<li><strong>Transport vs Domain</strong>: domain is pure and immutable; adapters handle all wire formats.  </li>
-<li><strong>Determinism</strong>: render with <strong>PatternCatalog</strong> + <strong>PatternFingerprint</strong> for reproducibility &amp; cache keys.  </li>
-<li><strong>Policy-first</strong>: cost/time guards, safety scans, JSON validation before/after provider calls.  </li>
-<li><strong>Provider-agnostic by construction</strong>: a <code>ProviderClient</code> protocol + adapters per vendor.  </li>
-<li><strong>Observability by default</strong>: correlation IDs, structured logs, metrics; redact at the boundary.  </li>
-<li><strong>Walking skeleton</strong>: ship minimal viable flow; evolve behind stable interfaces.  </li>
-<li><strong>Testability</strong>: pure helpers, narrow adapters, golden prompt snapshots, contract tests.</li>
+<li>Make completion success/failure semantics reliable for human and agent callers.</li>
+<li>Preserve input document frontmatter through the <code>run</code> pipeline.</li>
+<li>Reduce CLI friction for delegated/scripted use.</li>
+<li>Separate catalog-health noise from invocation failures.</li>
 </ol>
-<h2 id="31-configuration-taxonomy-config-vs-params-vs-policy">3.1) Configuration Taxonomy (Config vs Params vs Policy)<a class="headerlink" href="#31-configuration-taxonomy-config-vs-params-vs-policy" title="Link to this section">&para;</a></h2>
-<p>To align with the Object-Service Blueprint and avoid parameter soup, split concerns explicitly (ADR-A08 will formalize details):</p>
-<ul>
-<li><strong>Config</strong> (construction-time, stable): credentials, timeouts, price table, default routing.</li>
-<li><strong>Params</strong> (per-call inputs): pattern reference, variables, images.</li>
-<li><strong>Policy</strong> (behavioral toggles): budgets, output mode, model behavior caps, media limits.</li>
-</ul>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># ai_service/config.py</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">GenAIServiceConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">organization_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">base_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">default_timeout_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">60.0</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">price_table_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;v1&quot;</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># ai_service/domain.py</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">class</span><span class="w"> </span><span class="nc">CompletionParams</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">top_p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">max_output_tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">output_mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">model_hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="k">class</span><span class="w"> </span><span class="nc">CompletionRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">pattern</span><span class="p">:</span> <span class="n">PatternRef</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="n">images</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MediaAttachment</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">params</span><span class="p">:</span> <span class="n">CompletionParams</span>
-</span></code></pre></div>
 <hr />
-<h2 id="4-high-level-architecture">4) High-Level Architecture<a class="headerlink" href="#4-high-level-architecture" title="Link to this section">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>app (callers)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>▼
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>GenAIService (Application / Orchestrator)
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>├─ PatternCatalog (resolve+render+fingerprint)   ← ADR-002
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>├─ SafetyGate (pre/post checks)
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>├─ ModelRouter (intent → provider+model)
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>├─ RateLimiter &amp; RetryPolicy
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>├─ UsageAccounting
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>├─ Tracer &amp; Metrics
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>└─ ProviderClient (protocol)
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    ├─ OpenAIAdapter (v1)
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    └─ AnthropicAdapter (skeleton)
-</span></code></pre></div>
-<p>Transport boundary:
-CompletionRequest (domain) ──render + policy──▶ ProviderRequest (transport) ──▶ ProviderClient</p>
-<p><strong>Domain Models (immutables):</strong></p>
+<h2 id="scope">Scope<a class="headerlink" href="#scope" title="Link to this section">&para;</a></h2>
+<p>In scope:</p>
 <ul>
-<li><code>PatternRef</code> (id/version), <code>RenderedPattern</code> (text, metadata, fingerprint)  </li>
-<li><code>MediaAttachment</code> (Path/bytes, mime, dims)  </li>
-<li><code>ModelHint</code> (name, temperature, max_output_tokens, top_p)  </li>
-<li><code>SafetyPolicy</code> (max_input_chars, max_dollars, allow_image, redact_logs)  </li>
-<li><code>CompletionRequest</code> (patternRef/variables or direct text, images, model hint, output mode)  </li>
-<li><code>CompletionResult</code> (text/json_obj, model, usage, latency_ms, warnings, correlation_id)  </li>
-<li><code>ProviderRequest</code> / <code>ProviderResponse</code> (transport-layer normalized shapes)</li>
+<li>Typed completion outcome envelope and adapter diagnostics</li>
+<li><code>tnh-gen run</code> success/failure/output behavior</li>
+<li><code>--prompt-dir</code> and forwarded run aliases</li>
+<li>Budget-block UX improvements</li>
+<li>Frontmatter-aware read/write pipeline</li>
+<li>Catalog health aggregation and suppression behavior</li>
+</ul>
+<p>Out of scope for this slice:</p>
+<ul>
+<li>Broad prompt-system redesign beyond catalog health surfacing</li>
+<li>Anthropic/provider-parity work outside the OpenAI path</li>
+<li>Registry-data maintenance except where needed for local verification</li>
 </ul>
 <hr />
-<h2 id="5-request-lifecycle-v1">5) Request Lifecycle (v1)<a class="headerlink" href="#5-request-lifecycle-v1" title="Link to this section">&para;</a></h2>
+<h2 id="phase-sequence">Phase Sequence<a class="headerlink" href="#phase-sequence" title="Link to this section">&para;</a></h2>
+<h3 id="phase-1-typed-completion-outcome">Phase 1: Typed Completion Outcome<a class="headerlink" href="#phase-1-typed-completion-outcome" title="Link to this section">&para;</a></h3>
+<p>Objective: establish the canonical domain contract before changing CLI behavior.</p>
+<p>Primary files:</p>
+<ul>
+<li><code>src/tnh_scholar/gen_ai_service/models/transport.py</code></li>
+<li><code>src/tnh_scholar/gen_ai_service/models/domain.py</code></li>
+<li><code>src/tnh_scholar/gen_ai_service/mappers/completion_mapper.py</code></li>
+<li><code>src/tnh_scholar/gen_ai_service/providers/openai_adapter.py</code></li>
+<li><code>src/tnh_scholar/gen_ai_service/safety/safety_gate.py</code></li>
+</ul>
+<p>Deliverables:</p>
+<ul>
+<li><code>failure_reason</code> and <code>adapter_diagnostics</code> on <code>ProviderResponse</code></li>
+<li><code>CompletionEnvelope(outcome, result, failure, provenance, warnings, policy_applied)</code></li>
+<li>OpenAI adapter hardening for empty-content-with-tokens and unsupported response shapes</li>
+<li>Mapper logic that preserves failure as typed domain state instead of warning-only degradation</li>
+</ul>
+<p>Verification:</p>
+<ul>
+<li>Unit tests for transport-to-domain mapping</li>
+<li>Adapter tests for empty-content and malformed-shape cases</li>
+<li>No CLI behavior changes yet beyond preserving typed outcome</li>
+</ul>
+<h3 id="phase-2-run-command-contract">Phase 2: Run Command Contract<a class="headerlink" href="#phase-2-run-command-contract" title="Link to this section">&para;</a></h3>
+<p>Objective: make <code>tnh-gen run</code> honor the typed outcome envelope.</p>
+<p>Primary files:</p>
+<ul>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/commands/run.py</code></li>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/types.py</code></li>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/errors.py</code></li>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py</code></li>
+</ul>
+<p>Deliverables:</p>
+<ul>
+<li>Success path only for <code>outcome == succeeded</code></li>
+<li>Explicit API payloads for <code>succeeded</code>, <code>incomplete</code>, and <code>failed</code></li>
+<li>No output-file writes on failed completion outcomes</li>
+<li>Agent-safe stdout/stderr behavior in <code>--api</code> mode</li>
+</ul>
+<p>Verification:</p>
+<ul>
+<li>CLI tests for exit codes and payloads</li>
+<li>Regression check: failed provider completion must exit non-zero</li>
+<li>Regression check: no provenance-only success file on failure</li>
+</ul>
+<h3 id="phase-3-cli-ergonomics">Phase 3: CLI Ergonomics<a class="headerlink" href="#phase-3-cli-ergonomics" title="Link to this section">&para;</a></h3>
+<p>Objective: remove known invocation cliffs for delegated callers.</p>
+<p>Primary files:</p>
+<ul>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py</code></li>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/commands/run.py</code></li>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/config_loader.py</code></li>
+</ul>
+<p>Deliverables:</p>
+<ul>
+<li>Global <code>--prompt-dir</code></li>
+<li>Forwarded <code>run</code> aliases for <code>--config</code>, <code>--api</code>, and <code>--prompt-dir</code></li>
+<li>Actionable budget-block diagnostics using <code>max_dollars</code></li>
+</ul>
+<p>Verification:</p>
+<ul>
+<li>CLI parsing tests for canonical and forwarded forms</li>
+<li>Budget-block API payload test</li>
+<li>Help-text/examples updated to canonical agent-safe form</li>
+</ul>
+<h3 id="phase-4-frontmatter-preservation">Phase 4: Frontmatter Preservation<a class="headerlink" href="#phase-4-frontmatter-preservation" title="Link to this section">&para;</a></h3>
+<p>Objective: preserve existing document metadata while keeping provenance authoritative.</p>
+<p>Primary files:</p>
+<ul>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/commands/run.py</code></li>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py</code></li>
+<li><code>src/tnh_scholar/metadata/metadata.py</code> only if helper gaps appear</li>
+</ul>
+<p>Deliverables:</p>
+<ul>
+<li>Input parsing through <code>Frontmatter.extract()</code></li>
+<li>Body-only prompt injection</li>
+<li>Output merge using typed metadata plus provenance keys</li>
+</ul>
+<p>Verification:</p>
+<ul>
+<li>Golden tests for input-with-frontmatter and input-without-frontmatter</li>
+<li>Regression check that original non-provenance keys survive round-trip</li>
+</ul>
+<h3 id="phase-5-catalog-health">Phase 5: Catalog Health<a class="headerlink" href="#phase-5-catalog-health" title="Link to this section">&para;</a></h3>
+<p>Objective: move prompt-catalog issues out of ambient invocation stderr.</p>
+<p>Primary files:</p>
+<ul>
+<li><code>src/tnh_scholar/gen_ai_service/pattern_catalog/adapters/prompts_adapter.py</code></li>
+<li><code>src/tnh_scholar/prompt_system/adapters/filesystem_catalog_adapter.py</code></li>
+<li><code>src/tnh_scholar/prompt_system/adapters/git_catalog_adapter.py</code></li>
+<li><code>src/tnh_scholar/prompt_system/service/loader.py</code></li>
+<li><code>src/tnh_scholar/cli_tools/tnh_gen/commands/config.py</code></li>
+</ul>
+<p>Deliverables:</p>
+<ul>
+<li>Aggregated <code>CatalogHealth</code></li>
+<li>Severity split between fatal and non-fatal prompt issues</li>
+<li><code>config show --catalog-health</code></li>
+<li><code>--quiet</code> and <code>--api</code> behavior aligned with ADR-TG02 addendum</li>
+</ul>
+<p>Verification:</p>
+<ul>
+<li>Catalog-load tests with mixed valid/invalid prompts</li>
+<li>CLI tests confirming warning suppression and explicit health reporting</li>
+</ul>
+<hr />
+<h2 id="recommended-delivery-order">Recommended Delivery Order<a class="headerlink" href="#recommended-delivery-order" title="Link to this section">&para;</a></h2>
 <ol>
-<li><strong>Assemble Request</strong></li>
-<li>Caller provides <code>PatternRef</code> + <code>variables</code> (preferred) <em>or</em> raw text (escape hatch),</li>
-<li>Optional images as <code>MediaAttachment[]</code>,</li>
-<li>
-<p><code>CompletionParams</code> (includes model override fields) + <code>BudgetPolicy</code>/<code>MediaPolicy</code>.</p>
-</li>
-<li>
-<p><strong>Introspect + Render Pattern</strong></p>
-</li>
-<li><code>PatternCatalog.introspect(id, version?) → PatternMeta</code></li>
-<li><code>PatternCatalog.render(id, version?, variables) → RenderedPattern</code></li>
-<li>
-<p>Compute <code>fingerprint = sha256(rendered_text + metadata)</code></p>
-</li>
-<li>
-<p><strong>Routing (select provider/model)</strong></p>
-</li>
-<li><code>ModelRouter</code> chooses <code>(provider, model)</code> using precedence: <strong>override → pattern default → global default</strong></li>
-<li>Guardrail planning: ensure required capabilities (e.g., vision-in) are supported by the candidate.</li>
-<li>
-<p>Produce a short <code>RoutingDecision.reason</code> for diagnostics.</p>
-</li>
-<li>
-<p><strong>Pre-Flight Safety &amp; Policy (model-aware)</strong></p>
-</li>
-<li>Estimate tokens/cost <strong>for the selected provider/model</strong> via pricing tables; <strong>fail fast</strong> if <code>&gt; max_dollars</code></li>
-<li>Enforce <code>SecurityConfig.max_input_chars</code>, required variables</li>
-<li>
-<p>Optional PII scrubbing for logs (never mutate payload)</p>
-</li>
-<li>
-<p><strong>Build Provider Request &amp; Call</strong></p>
-</li>
-<li>Build a <strong>ProviderRequest</strong> from rendered text + params/policy + routing decision via helper</li>
-<li>
-<p>Call <code>ProviderClient.generate(provider_request)</code> with retry policy (retry 429/5xx with jitter)</p>
-<div class="language-text highlight"><pre><span></span><code>```python
-    def _build_provider_request(self, req: CompletionRequest, rendered: RenderedPattern, routing: RoutingDecision) -&gt; ProviderRequest:
-        # v1 enforces a fixed temperature to improve determinism
-        return ProviderRequest(
-            input_text=rendered.text,
-            images=req.images,
-            model=routing.model,
-            temperature=0.2,
-            max_output_tokens=req.params.max_output_tokens,
-            top_p=req.params.top_p,
-            output_mode=req.params.output_mode,
-            correlation_id=req.correlation_id or generate_ulid(),
-        )
-```
-</code></pre></div>
-</li>
-<li>
-<p><strong>Post-Flight</strong></p>
-</li>
-<li>Parse/validate output; for JSON mode, schema-validate</li>
-<li>If JSON parse fails → return text + <code>warnings=["json-parse-failed"]</code></li>
-<li>
-<p>Update usage accounting; log redacted trace; emit metrics</p>
-<p>The service uses an injected Observer to demarcate phases (render, route, call, parse). Timing is measured in the Observer; the service may read the provider-call span’s duration to populate result latency.</p>
-</li>
-<li>
-<p><strong>Return</strong></p>
-</li>
-<li><code>CompletionResponse</code> (status envelope) with <code>result</code>, <code>provenance</code>, <code>correlation_id</code>, usage, warnings</li>
+<li>Phase 1</li>
+<li>Phase 2</li>
+<li>Phase 3 and Phase 4 in parallel</li>
+<li>Phase 5</li>
+<li>Docs and final command-reference cleanup</li>
 </ol>
-<p><strong>Routing notes (v1):</strong></p>
-<p>For v1 we keep routing deterministic and simple. Precedence is <strong>consumer override → PatternMeta.default_model_hint → global default</strong>. Two immediate guardrails are applied: (a) if images are present, chosen model must support vision-in; (b) if estimated tokens exceed model context, fail fast. Future work (ADR-A04) will add capability filtering, budget/latency heuristics, and optional fallbacks.</p>
-<hr />
-<h2 id="6-provider-abstraction">6) Provider Abstraction<a class="headerlink" href="#6-provider-abstraction" title="Link to this section">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">ProviderRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">input_text</span><span class="p">:</span> <span class="nb">str</span>                  <span class="c1"># Rendered prompt (post-pattern)</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">images</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MediaAttachment</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">max_output_tokens</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">top_p</span><span class="p">:</span> <span class="nb">float</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">output_mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">correlation_id</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">system_text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># System message population deferred in v1; PatternCatalog may emit `system_text` later.</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">ProviderResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="n">usage</span><span class="p">:</span> <span class="n">UsageInfo</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    <span class="n">finish_reason</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>    <span class="n">raw_response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="k">class</span><span class="w"> </span><span class="nc">ProviderClient</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">ProviderRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProviderResponse</span><span class="p">:</span> <span class="o">...</span>
-</span></code></pre></div>
-<h2 id="6a-response-envelope">6a) Response Envelope<a class="headerlink" href="#6a-response-envelope" title="Link to this section">&para;</a></h2>
-<p>Adopt a standard status envelope so callers can uniformly handle success/failure and partials.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Envelope</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">status</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;pending&quot;</span><span class="p">,</span> <span class="s2">&quot;running&quot;</span><span class="p">,</span> <span class="s2">&quot;succeeded&quot;</span><span class="p">,</span> <span class="s2">&quot;failed&quot;</span><span class="p">,</span> <span class="s2">&quot;timeout&quot;</span><span class="p">]</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">error</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">provenance</span><span class="p">:</span> <span class="s2">&quot;Provenance&quot;</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">CompletionResult</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">json_obj</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">usage</span><span class="p">:</span> <span class="n">UsageInfo</span>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">latency_ms</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">warnings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="k">class</span><span class="w"> </span><span class="nc">CompletionResponse</span><span class="p">(</span><span class="n">Envelope</span><span class="p">):</span>
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    <span class="n">result</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CompletionResult</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Only present on success</span>
-</span></code></pre></div>
-<hr />
-<h2 id="7-patterncatalog-integration">7) PatternCatalog Integration<a class="headerlink" href="#7-patterncatalog-integration" title="Link to this section">&para;</a></h2>
+<p>Rationale:</p>
 <ul>
-<li>Terminology: Patterns are the artifacts; PatternCatalog is the managing service (see ADR-002).</li>
-<li>Responsibilities</li>
-<li><code>introspect(ref)</code> yields <code>PatternMeta</code> (task kind, default model hint, expected output mode)</li>
-<li>Pattern lookup (id → content, metadata), Jinja2 render with strict var checks</li>
-<li>Fingerprint (rendered_text + metadata) for cache keys and observability</li>
-<li>Optional template lint: length bounds, forbidden substrings, required headers</li>
-<li>Interfaces</li>
-<li>render(ref, variables) -&gt; RenderedPattern</li>
-<li>introspect(ref) -&gt; PatternMeta (task kind, default model caps, expected output mode)</li>
-</ul>
-<h3 id="v1-implementation-note-reuse-existing-tnhscholar-patterns">V1 implementation note — reuse existing TNH‑Scholar patterns<a class="headerlink" href="#v1-implementation-note-reuse-existing-tnhscholar-patterns" title="Link to this section">&para;</a></h3>
-<p>For V1 we will <em>wrap</em> the existing module <code>ai_text_processing.patterns</code> to provide the <code>PatternCatalog</code> API, avoiding a disruptive migration.</p>
-<ul>
-<li>Wrapper: <code>ai_service/patterns_adapter.py</code> exposes <code>render()</code> and <code>introspect()</code> by delegating to the current TNH‑Scholar pattern system.</li>
-<li>Mapping: existing pattern IDs and variable names are preserved; the adapter raises strict errors on missing variables.</li>
-<li>Fingerprint: compute <code>sha256(rendered_text + metadata_json)</code> in the adapter (non‑breaking to upstream code).</li>
-<li>Ownership: no changes to <code>ai_text_processing.patterns</code> in V1; a dedicated ADR will cover converging the two systems post‑V1.</li>
-<li>Test plan: golden renders compare adapter output to the legacy <code>ai_text_processing.patterns</code> output for a fixed set of patterns.</li>
-</ul>
-<h3 id="service-flow-using-introspect">Service flow using introspect<a class="headerlink" href="#service-flow-using-introspect" title="Link to this section">&para;</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">pattern_meta</span> <span class="o">=</span> <span class="n">PatternCatalog</span><span class="o">.</span><span class="n">introspect</span><span class="p">(</span><span class="n">pattern_ref</span><span class="p">)</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">rendered</span> <span class="o">=</span> <span class="n">PatternCatalog</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">pattern_ref</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">fingerprint</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="n">rendered</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="n">rendered</span><span class="o">.</span><span class="n">metadata_json</span><span class="p">)</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Routing influenced by introspection</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">intent</span> <span class="o">=</span> <span class="n">pattern_meta</span><span class="o">.</span><span class="n">task_kind</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">provider</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">ModelRouter</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">intent</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="n">CompletionParams</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Validate expected output mode from pattern vs request</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="k">assert</span> <span class="n">pattern_meta</span><span class="o">.</span><span class="n">output_mode</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">)</span>
-</span></code></pre></div>
-<hr />
-<h2 id="8-safety-policy-split-across-configpolicyparams">8) Safety &amp; Policy (split across Config/Policy/Params)<a class="headerlink" href="#8-safety-policy-split-across-configpolicyparams" title="Link to this section">&para;</a></h2>
-<ul>
-<li>Input size guard via <code>SecurityConfig.max_input_chars</code></li>
-<li>Budget guard via <code>BudgetPolicy.max_dollars</code></li>
-<li>Optional PII redaction for logs via <code>SecurityConfig.redact_pii</code></li>
-<li>Media limits via <code>MediaPolicy</code> (count/MB), optional EXIF strip</li>
-<li>Post-flight:</li>
-<li>Output JSON schema (when requested)</li>
-<li>Optional content filters (basic profanity/PII detection for display surfaces)</li>
-<li>Error taxonomy:</li>
-<li>PolicyError (budget/size/validation)</li>
-<li>TransportError (HTTP/SDK)</li>
-<li>ProviderError (non-retryable)</li>
-<li>FormatError (JSON parsing/validation)</li>
+<li>The typed outcome envelope is the dependency for reliable CLI behavior.</li>
+<li>Frontmatter work is independent of the completion contract once the <code>run</code> command structure is stable.</li>
+<li>Catalog health is isolated and should not block the core success/failure repair.</li>
 </ul>
 <hr />
-<h2 id="9-observability">9) Observability<a class="headerlink" href="#9-observability" title="Link to this section">&para;</a></h2>
+<h2 id="validation-gates">Validation Gates<a class="headerlink" href="#validation-gates" title="Link to this section">&para;</a></h2>
+<p>Per implementation PR or slice:</p>
 <ul>
-<li>Tracing: correlation_id (ULID), pattern_id, pattern_fingerprint, provider, model, attempts, latency</li>
-<li>Logging: single structured line per phase (render → policy → call → parse) with redaction</li>
-<li>Metrics:</li>
-<li>llm_calls_total{provider, model, intent, outcome}</li>
-<li>llm_latency_ms_bucket{provider, model, intent}</li>
-<li>llm_retries_total{provider, model}</li>
-<li>llm_dollars_total{provider, model}</li>
-<li>Usage accounting: prompt/completion tokens and $ per call + rolling window counters</li>
+<li>Run changed-file tests first</li>
+<li>Run <code>make docs-build</code> for any docs updates</li>
+<li>Run <code>make pr-check</code> before PR creation</li>
+<li>Run <code>make ci-check</code> before final merge</li>
 </ul>
-<p><strong>Provenance (aligned with tracing):</strong></p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Provenance</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span>            <span class="c1"># e.g., &quot;openai&quot;</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">correlation_id</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">pattern_id</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">pattern_fingerprint</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">started_at</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">completed_at</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">schema_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;1.0&quot;</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="c1"># Optional (v1.1+): provider_request_id, routing_reason, retry_count, policy_version</span>
-</span></code></pre></div>
-<h2 id="9a-observation-seam-observer-clocktimer">9a) Observation Seam (Observer + Clock/Timer)<a class="headerlink" href="#9a-observation-seam-observer-clocktimer" title="Link to this section">&para;</a></h2>
-<p>We establish an observation seam now so the service never performs low-level timing or unit conversions. The service emits phase events; an injected Observer (with a Clock/Timer) measures and records durations. Default implementations can be no-ops.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">Any</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">Clock</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">now_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>  <span class="c1"># monotonic milliseconds</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">ObsSpan</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ObsSpan&quot;</span><span class="p">:</span> <span class="o">...</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">tb</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    <span class="nd">@property</span>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">duration_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">Observer</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">fields</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ObsSpan</span><span class="p">:</span> <span class="o">...</span>
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
-</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="k">class</span><span class="w"> </span><span class="nc">NoOpClock</span><span class="p">:</span>
-</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">now_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>  <span class="c1"># placeholder monotonic clock</span>
-</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>        <span class="k">return</span> <span class="mi">0</span>
-</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>
-</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="k">class</span><span class="w"> </span><span class="nc">NoOpSpan</span><span class="p">:</span>
-</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NoOpSpan&quot;</span><span class="p">:</span>
-</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>        <span class="k">return</span> <span class="bp">self</span>
-</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">tb</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>        <span class="k">pass</span>
-</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>    <span class="nd">@property</span>
-</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">duration_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>        <span class="k">return</span> <span class="mi">0</span>
-</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>
-</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="k">class</span><span class="w"> </span><span class="nc">NoOpObserver</span><span class="p">:</span>
-</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">fields</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ObsSpan</span><span class="p">:</span>
-</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>        <span class="k">return</span> <span class="n">NoOpSpan</span><span class="p">()</span>
-</span></code></pre></div>
-<p>The concrete implementation (e.g., BasicObserver) can wrap time.perf_counter_ns() or OpenTelemetry without changing GenAIService.</p>
-<hr />
-<h2 id="v1-decisions-deferrals">V1 Decisions &amp; Deferrals<a class="headerlink" href="#v1-decisions-deferrals" title="Link to this section">&para;</a></h2>
+<p>Recommended focused test areas:</p>
 <ul>
-<li>System message handling deferred: PatternCatalog may later render <code>system_text</code>, but v1 renders <code>user_text</code> only.  </li>
-<li>Fingerprinting scope: hooks and comments only in v1 (observability), no cache lookup yet.  </li>
-<li>Pricing: use a static, good‑enough price table in config; move to dynamic registry later.  </li>
-<li>Policy ownership: service‑level only in v1; per‑request overrides deferred to v2.</li>
+<li><code>tests/gen_ai_service/</code></li>
+<li><code>tests/cli_tools/tnh_gen/</code></li>
+<li>Prompt catalog adapter tests</li>
 </ul>
 <hr />
-<h2 id="10-configuration">10) Configuration<a class="headerlink" href="#10-configuration" title="Link to this section">&para;</a></h2>
+<h2 id="risks">Risks<a class="headerlink" href="#risks" title="Link to this section">&para;</a></h2>
 <ul>
-<li><strong>GenAIServiceConfig</strong>: credentials (OpenAI/Anthropic), base URLs, default timeout, price table version</li>
-<li><strong>RoutingPolicy</strong>: intent → (provider, model) mapping; guardrails</li>
-<li><strong>SecurityConfig</strong>: redaction and input-size bounds</li>
-<li><strong>BudgetPolicy</strong>: per-call or default budget caps</li>
-<li>Retry/backoff policy</li>
-<li>Secrets: env or Secret Manager; keys never logged; redact in traces.</li>
+<li>The typed <code>CompletionEnvelope</code> change is a breaking contract for internal callers and helper utilities.</li>
+<li>CLI output tests may need broad fixture refresh once <code>failed</code> and <code>incomplete</code> become explicit payload states.</li>
+<li>Catalog health work can sprawl into prompt-system cleanup if not kept bounded to reporting surfaces.</li>
 </ul>
 <hr />
-<h2 id="11-testing-strategy">11) Testing Strategy<a class="headerlink" href="#11-testing-strategy" title="Link to this section">&para;</a></h2>
+<h2 id="done-criteria">Done Criteria<a class="headerlink" href="#done-criteria" title="Link to this section">&para;</a></h2>
 <ul>
-<li>Unit (pure): Pattern rendering, fingerprint determinism, cost estimator, router decisions, safety gates</li>
-<li>Adapter (mocked): Wire payloads, error mapping, usage extraction</li>
-<li>Contract (opt-in live): Minimal smoke gated by RUN_LIVE=1</li>
-<li>Golden tests: Snapshot rendered prompts (hash), schema-valid JSON outputs for fixed seeds</li>
-<li>Property tests: Renderer never exceeds size limits; required vars enforced</li>
+<li>A provider-completed empty result is represented as a typed failure end-to-end.</li>
+<li><code>tnh-gen --api run ...</code> provides a stable machine-readable contract for success, incomplete, and failed outcomes.</li>
+<li>Failed completions do not write success-shaped output files.</li>
+<li>Input frontmatter is preserved across <code>run</code>.</li>
+<li>Prompt catalog issues are queryable explicitly and no longer flood normal stderr.</li>
 </ul>
 <hr />
-<h2 id="12-migration-plan-from-openai_interfacepy">12) Migration Plan (from openai_interface.py)<a class="headerlink" href="#12-migration-plan-from-openai_interfacepy" title="Link to this section">&para;</a></h2>
-<p>This project is in <strong>0.x prototyping</strong>. We will refactor callers to use <code>GenAIService.generate()</code> directly; <strong>no backward compatibility shims</strong> are required. Provenance fields (pattern id, fingerprint, correlation id) will be included from the start to enable future reproducibility, even though we do not aim to recreate results during early prototyping.</p>
-<p><strong>PatternCatalog V1 migration</strong>: The <code>PatternCatalog</code> used by <code>GenAIService</code> is a thin wrapper over the existing <code>ai_text_processing.patterns</code> module. Callers migrate to <code>GenAIService.generate()</code> without changing pattern IDs/variables; the adapter handles rendering, metadata, and fingerprinting.</p>
-<hr />
-<h2 id="13-roadmap-post-v1">13) Roadmap (post-v1)<a class="headerlink" href="#13-roadmap-post-v1" title="Link to this section">&para;</a></h2>
+<h2 id="references">References<a class="headerlink" href="#references" title="Link to this section">&para;</a></h2>
 <ul>
-<li>Streaming responses; token-level handlers</li>
-<li>Batch jobs with idempotency keys; resumable on failure</li>
-<li>A/B routing &amp; canaries (per intent)</li>
-<li>Cache (pattern_fingerprint + variables + model) with TTL and budget heuristics</li>
-<li>Tool/function calling seam in domain layer</li>
-<li>Richer safety (semantic jailbreak detection, content classifiers)</li>
-<li>Multi-provider policy (price/perf aware router; automatic failover)</li>
+<li><a href="../../adr/adr-tg01-cli-architecture/">ADR-TG01: CLI Architecture</a></li>
+<li><a href="../../adr/adr-tg02-prompt-integration/">ADR-TG02: Prompt System Integration</a></li>
+<li><a href="../../adr/adr-tg03-completion-contract/">ADR-TG03: Typed Completion Outcome and Adapter Diagnostics</a></li>
+<li><a href="../tnh-gen-robustness-review-2026-04/">tnh-gen Robustness Review — April 2026</a></li>
 </ul>
-<hr />
-<h2 id="14-deliverables-v1-walking-skeleton">14) Deliverables (v1 Walking Skeleton)<a class="headerlink" href="#14-deliverables-v1-walking-skeleton" title="Link to this section">&para;</a></h2>
-<ul>
-<li>ai_service/domain.py: dataclasses (PatternRef, ModelHint, MediaAttachment, CompletionRequest/Result)</li>
-<li>ai_service/policy.py: SafetyPolicy, pre/post gates, pricing estimator</li>
-<li>ai_service/patterns_adapter.py: Thin wrapper around <code>ai_text_processing.patterns</code> exposing <code>PatternCatalog</code> (<code>render</code>, <code>introspect</code>, <code>fingerprint</code>).</li>
-<li>ai_service/patterns.py: Facade/typing for <code>PatternCatalog</code>; may later switch the backing implementation without affecting callers.</li>
-<li>ai_service/router.py: ModelRouter (intent → provider/model)</li>
-<li>ai_service/providers/base.py: ProviderClient protocol, ProviderRequest/ProviderResponse</li>
-<li>ai_service/providers/openai_adapter.py: concrete OpenAI adapter</li>
-<li>ai_service/service.py: GenAIService.generate() orchestration</li>
-<li>ai_service/obs.py: tracer, metrics, usage accounting</li>
-<li>tests/…: golden renders, adapter mocks, policy tests</li>
-</ul>
-<hr />
-<h2 id="15-rationale-trade-offs">15) Rationale &amp; Trade-offs<a class="headerlink" href="#15-rationale-trade-offs" title="Link to this section">&para;</a></h2>
-<ul>
-<li>Why single entrypoint? Centralized policy/observability, simple testing.  </li>
-<li>Why fingerprint? Reproducibility, cache keys, transparent science.  </li>
-<li>Why strict shapes? Easier refactors, provider swaps, and property testing.  </li>
-<li>Why not tools/RAG now? Keeps v1 small, ships value, preserves clean seams.  </li>
-<li>Why ProviderRequest object? Eliminates parameter soup, creates a stable transport boundary to adapters.  </li>
-<li>Service-level policy ownership in v1; per-request deferred.</li>
-<li>Fingerprinting used for observability only in v1.  </li>
-<li>Static price table used initially; dynamic pricing planned.</li>
-</ul>
-<hr />
-<h2 id="16-open-existing-items-for-adrs">16) Open / Existing Items for ADRs<a class="headerlink" href="#16-open-existing-items-for-adrs" title="Link to this section">&para;</a></h2>
-<ul>
-<li>ADR-A01: Object-Service adoption &amp; domain shapes  </li>
-<li>ADR-A02: PatternCatalog integration &amp; fingerprinting semantics (ref ADR-002)  </li>
-<li>ADR-A03: Safety policy (limits, PII redaction, JSON schema validation)  </li>
-<li>ADR-A04: Model routing rules &amp; provider guardrails  </li>
-<li>ADR-A05: Observability contract (logs/metrics/retention/redaction)  </li>
-<li>ADR-A06: Error taxonomy &amp; retry/backoff policy  </li>
-<li>ADR-A07: Image attachment policy (limits, EXIF, mime support)  </li>
-<li>ADR-A08: Config vs Params vs Policy taxonomy (ownership, precedence, defaults)</li>
-<li>ADR-A09: V1 Simplified Implementation Pathway</li>
-<li>ADR-A10: Unify <code>ai_text_processing.patterns</code> with <code>PatternCatalog</code> (adapter → consolidation plan, deprecation policy)</li>
-<li>ADR-A11: Minor model and parameters fix</li>
-</ul>
-<hr />
-<h2 id="17-acceptance-for-v1">17) Acceptance for v1<a class="headerlink" href="#17-acceptance-for-v1" title="Link to this section">&para;</a></h2>
-<ul>
-<li>Deterministic prompt rendering via PatternCatalog + fingerprint  </li>
-<li>Policy gates enforce caps; clear error taxonomy  </li>
-<li>OpenAIAdapter returns normalized CompletionResponse (status envelope + result)  </li>
-<li>Observability: correlation IDs, structured logs, basic metrics  </li>
-<li>AnthropicAdapter skeleton builds cleanly (provider-agnostic seam proven)  </li>
-</ul>
-<hr />
 
 
 

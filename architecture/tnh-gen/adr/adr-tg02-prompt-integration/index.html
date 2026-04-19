@@ -8237,7 +8237,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-TG03: Completion Contract and Adapter Diagnostics
+    ADR-TG03: Typed Completion Outcome and Adapter Diagnostics
   </span>
   
     
@@ -8273,6 +8273,8 @@
       
         
           
+        
+      
         
       
         
@@ -8320,6 +8322,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/tnh-gen-implementation-plan-2026-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-gen Implementation Plan — April 2026
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -12160,7 +12190,7 @@
 </ul>
 <hr />
 <h2 id="addendum-2026-04-16-catalog-health-aggregation-and-warning-suppression">Addendum 2026-04-16: Catalog Health Aggregation and Warning Suppression<a class="headerlink" href="#addendum-2026-04-16-catalog-health-aggregation-and-warning-suppression" title="Link to this section">&para;</a></h2>
-<p><strong>Context</strong>: Issue #49. <code>PromptsAdapter</code> validates every prompt in the catalog on initialization and emits per-prompt validation warnings inline to stderr as they are encountered. For a catalog with many bundled prompts, this produces large volumes of noise (<code>output_mode: text</code> invalid, missing required frontmatter keys, JSON schema errors) even for unrelated operations like <code>tnh-gen list --keys-only</code>. There is no batching, no severity tier distinction, no quiet path, and no way to distinguish "prompt is broken and unusable" from "prompt uses an older schema field."</p>
+<p><strong>Context</strong>: Issue #49. <code>PromptsAdapter</code> and the underlying catalog adapters validate prompts during catalog access/loading and emit per-prompt validation warnings through logging as they are encountered. For a catalog with many bundled prompts, this produces large volumes of noise (<code>output_mode: text</code> invalid, missing required frontmatter keys, JSON schema errors) even for unrelated operations like <code>tnh-gen list --keys-only</code>. There is no batching, no severity tier distinction, no quiet path, and no way to distinguish "prompt is broken and unusable" from "prompt uses an older schema field."</p>
 <p><strong>Decision</strong>:</p>
 <p><strong>1. Aggregated <code>CatalogHealth</code> report</strong></p>
 <p>Catalog loading collects validation issues into a structured <code>CatalogHealth</code> object instead of emitting inline stderr messages. Fields:</p>
@@ -12185,7 +12215,9 @@
 <p><strong>Rationale</strong>: Stderr is for invocation failures. Catalog health is an operational/environmental status that should be queryable on demand rather than ambient. Separating these surfaces makes normal CLI and agent output readable, while keeping catalog diagnostics fully accessible via an explicit query.</p>
 <p><strong>Status</strong>: Accepted</p>
 <p><strong>Implementation Files</strong>:
-- <code>src/tnh_scholar/gen_ai_service/prompts/</code> (adapter, loader — replace inline stderr with <code>CatalogHealth</code> accumulation)
+- <code>src/tnh_scholar/gen_ai_service/pattern_catalog/adapters/prompts_adapter.py</code> (surface aggregate catalog health instead of ambient warnings)
+- <code>src/tnh_scholar/prompt_system/adapters/*_catalog_adapter.py</code> (replace per-prompt warning logs with <code>CatalogHealth</code> accumulation)
+- <code>src/tnh_scholar/prompt_system/service/loader.py</code> (classify validation issues by severity)
 - <code>src/tnh_scholar/cli_tools/tnh_gen/commands/config.py</code> (add <code>--catalog-health</code> flag)
 - <code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py</code> (suppress or surface summary per mode)</p>
 <p><strong>Related</strong>: <a href="../adr-tg01-cli-architecture/">ADR-TG01</a> §5 (error handling), <a href="../../notes/tnh-gen-robustness-review-2026-04/">tnh-gen Robustness Review 2026-04</a></p>

@@ -8620,6 +8620,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-04-16-d-agent-safe-invocation-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-16-D: Agent-Safe Invocation Profile
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -8696,7 +8705,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-TG03: Completion Contract and Adapter Diagnostics
+    ADR-TG03: Typed Completion Outcome and Adapter Diagnostics
   </span>
   
     
@@ -8732,6 +8741,8 @@
       
         
           
+        
+      
         
       
         
@@ -8779,6 +8790,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/tnh-gen-implementation-plan-2026-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-gen Implementation Plan — April 2026
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -12786,6 +12825,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-04-16-d-agent-safe-invocation-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addendum 2026-04-16-D: Agent-Safe Invocation Profile
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -13553,12 +13601,12 @@ Updated configuration precedence order (highest to lowest):
 <p><strong>Context</strong>: Issue #25. The <code>run</code> command passes raw file content — including YAML frontmatter — to the AI model. <code>write_output_file()</code> prepends a fresh provenance-only frontmatter block unconditionally, destroying any original document metadata (ADR title, date, author, etc.). A <code>Frontmatter</code> class already exists at <code>src/tnh_scholar/metadata/metadata.py</code> and is used throughout the codebase (<code>text_object</code>, <code>prompt_system</code>, <code>srt_translate</code>), but is not wired into the <code>tnh-gen</code> run pipeline.</p>
 <p><strong>Decision</strong>: Add a frontmatter-aware step to the run pipeline:</p>
 <ol>
-<li><code>_read_input_text()</code> calls <code>Frontmatter.extract(raw_content)</code> → returns <code>(clean_body: str, original_metadata: dict | None)</code>.</li>
-<li><code>clean_body</code> (frontmatter stripped) is passed to the AI. <code>original_metadata</code> is carried through the pipeline.</li>
+<li><code>_read_input_text()</code> calls <code>Frontmatter.extract(raw_content)</code> → returns <code>(original_metadata: Metadata, clean_body: str)</code>.</li>
+<li><code>clean_body</code> (frontmatter stripped) is passed to the AI. <code>original_metadata</code> is carried through the pipeline as a typed metadata object, not a raw dict.</li>
 <li><code>write_output_file()</code> receives <code>original_metadata</code> and merges it with the generated provenance block:</li>
 <li>Original metadata keys are preserved.</li>
 <li>Provenance-specific keys (<code>tnh_scholar_generated</code>, <code>prompt_key</code>, <code>trace_id</code>, <code>generated_at</code>, etc.) are appended or overwrite matching keys.</li>
-<li>If the input has no frontmatter (<code>original_metadata is None</code>), behavior is identical to the current implementation — this change is backward-compatible.</li>
+<li>If the input has no frontmatter (<code>original_metadata</code> is empty), behavior is identical to the current implementation — this change is backward-compatible.</li>
 </ol>
 <p><strong>Rationale</strong>: Input documents in the TNH Scholar corpus routinely carry YAML frontmatter (ADRs, translated articles, dharma texts with publication metadata). Stripping and destroying that metadata during AI processing is a data loss bug. Reusing the existing <code>Frontmatter</code> class is a minimal, consistent fix that avoids introducing new parsing logic.</p>
 <p><strong>Status</strong>: Accepted</p>
@@ -13573,12 +13621,12 @@ Updated configuration precedence order (highest to lowest):
 <li>When <code>SafetyBlocked</code> is raised for a budget reason, the human-readable error message includes:</li>
 <li>Estimated cost of the blocked request.</li>
 <li>Current budget limit.</li>
-<li>The exact config key (<code>budget_limit</code>) and CLI pattern needed to raise it.</li>
+<li>The exact config key (<code>max_dollars</code>) and a valid CLI/config path for raising it.</li>
 </ol>
 <p>Example:
    <div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>SafetyBlocked: Estimated cost $0.042 exceeds budget $0.020.
-</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>To raise the limit: tnh-gen --config &#39;{&quot;budget_limit&quot;: 0.10}&#39; run ...
-</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>Or set budget_limit in your workspace config.
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>Raise max_dollars in config, for example:
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>tnh-gen config set --workspace max_dollars 0.10
 </span></code></pre></div></p>
 <ol>
 <li>In <code>--api</code> mode, the error envelope includes structured fields:
@@ -13586,7 +13634,7 @@ Updated configuration precedence order (highest to lowest):
 </span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;blocked&quot;</span><span class="p">,</span>
 </span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">  </span><span class="nt">&quot;blocked_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;budget&quot;</span><span class="p">,</span>
 </span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">  </span><span class="nt">&quot;estimated_cost&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.042</span><span class="p">,</span>
-</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">  </span><span class="nt">&quot;budget_limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.020</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">  </span><span class="nt">&quot;max_dollars&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.020</span>
 </span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="p">}</span>
 </span></code></pre></div></li>
 </ol>
@@ -13595,6 +13643,26 @@ Updated configuration precedence order (highest to lowest):
 <p><strong>Implementation Files</strong>:
 - <code>src/tnh_scholar/gen_ai_service/safety/safety_gate.py</code> (richer error construction)
 - <code>src/tnh_scholar/cli_tools/tnh_gen/commands/run.py</code> (format budget block for API payload)</p>
+<hr />
+<h2 id="addendum-2026-04-16-d-agent-safe-invocation-profile">Addendum 2026-04-16-D: Agent-Safe Invocation Profile<a class="headerlink" href="#addendum-2026-04-16-d-agent-safe-invocation-profile" title="Link to this section">&para;</a></h2>
+<p><strong>Context</strong>: Issue #55. <code>tnh-gen</code> is now used as a delegated/scripted worker, not only as an interactive human CLI. The tool needs one documented invocation profile that minimizes ambiguity around stdout/stderr, exit codes, and flag placement.</p>
+<p><strong>Decision</strong>: Standardize an "agent-safe" invocation profile for automation and orchestration:</p>
+<ol>
+<li>Use <code>--api</code> for all machine-consumed calls.</li>
+<li>Prefer global/session flags before the subcommand in canonical examples:
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>tnh-gen<span class="w"> </span>--api<span class="w"> </span>--config<span class="w"> </span>/path/to/config.json<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>KEY<span class="w"> </span>--input-file<span class="w"> </span>INPUT.md
+</span></code></pre></div></li>
+<li>Stdout contains exactly one machine-readable response payload.</li>
+<li>Stderr is reserved for non-payload diagnostics and may be ignored by callers unless the exit code is non-zero.</li>
+<li>Exit code semantics remain the authoritative success/failure signal.</li>
+<li>A provider-completed call that produces no usable text must exit non-zero and emit <code>status: "failed"</code> in API mode.</li>
+</ol>
+<p><strong>Rationale</strong>: Orchestration systems need a narrow contract. This profile does not remove human-friendly behavior; it defines the stable subset that scripted callers can trust.</p>
+<p><strong>Status</strong>: Accepted</p>
+<p><strong>Implementation Files</strong>:
+- <code>docs/cli-reference/tnh-gen.md</code> (document agent-safe usage)
+- <code>src/tnh_scholar/cli_tools/tnh_gen/commands/run.py</code> (ensure stdout/stderr/exit behavior matches contract)
+- <code>src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py</code> (examples/help text)</p>
 <hr />
 <p><strong>Approval Path</strong>: Architecture review → Implementation → Testing → Documentation</p>
 

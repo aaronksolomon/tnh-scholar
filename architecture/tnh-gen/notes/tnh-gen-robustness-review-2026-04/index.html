@@ -13,7 +13,7 @@
       
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../tnh-gen-implementation-plan-2026-04/">
       
       
         <link rel="next" href="../../../transcription/">
@@ -7984,7 +7984,7 @@
         
   
   <span class="md-ellipsis">
-    ADR-TG03: Completion Contract and Adapter Diagnostics
+    ADR-TG03: Typed Completion Outcome and Adapter Diagnostics
   </span>
   
     
@@ -8022,6 +8022,8 @@
       
         
           
+        
+      
         
       
         
@@ -8069,6 +8071,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tnh-gen-implementation-plan-2026-04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    tnh-gen Implementation Plan — April 2026
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -8157,9 +8187,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#theme-1-no-failed-completion-contract-issues-47-48-52" class="md-nav__link">
+  <a href="#theme-1-no-typed-domain-failure-contract-issues-47-48-52" class="md-nav__link">
     <span class="md-ellipsis">
-      Theme 1: No FAILED Completion Contract (Issues #47, #48, #52)
+      Theme 1: No Typed Domain Failure Contract (Issues #47, #48, #52)
     </span>
   </a>
   
@@ -11585,9 +11615,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#theme-1-no-failed-completion-contract-issues-47-48-52" class="md-nav__link">
+  <a href="#theme-1-no-typed-domain-failure-contract-issues-47-48-52" class="md-nav__link">
     <span class="md-ellipsis">
-      Theme 1: No FAILED Completion Contract (Issues #47, #48, #52)
+      Theme 1: No Typed Domain Failure Contract (Issues #47, #48, #52)
     </span>
   </a>
   
@@ -11756,11 +11786,11 @@
 <hr />
 <h2 id="architectural-analysis">Architectural Analysis<a class="headerlink" href="#architectural-analysis" title="Link to this section">&para;</a></h2>
 <p>The issues cluster into five structural themes. Each theme spans multiple issues — addressing only one issue in isolation would leave the underlying gap intact.</p>
-<h3 id="theme-1-no-failed-completion-contract-issues-47-48-52">Theme 1: No FAILED Completion Contract (Issues #47, #48, #52)<a class="headerlink" href="#theme-1-no-failed-completion-contract-issues-47-48-52" title="Link to this section">&para;</a></h3>
-<p><strong>Current state</strong>: <code>ProviderStatus</code> has two terminal values: <code>OK</code> and <code>INCOMPLETE</code>. The safety gate's <code>post_check()</code> is documented as a stub; it appends an <code>"empty-result"</code> warning but does not change status. <code>_build_success_payload()</code> in <code>run.py</code> always emits <code>"status": "succeeded"</code>. The <code>openai_adapter.py</code> extracts <code>choices[0].message.content or ""</code> with no detection path for content-absent-with-tokens.</p>
-<p><strong>Structural gap</strong>: A completed API call that returns empty text with nonzero <code>completion_tokens</code> is unrepresentable as a failure anywhere in the stack. The provider, the safety gate, and the run command each silently pass it through.</p>
-<p><strong>Structural improvement needed</strong>: A third terminal <code>ProviderStatus.FAILED</code> with a structured <code>failure_reason</code> field, propagated through <code>CompletionEnvelope</code> to <code>post_check()</code> and then to <code>_emit_run_output()</code>. The <code>post_check()</code> stub needs to become a real gate: empty text with <code>completion_tokens &gt; 0</code> should set <code>FAILED</code> and block file write and success status emission.</p>
-<p>Files touched: <code>gen_ai_service/providers/openai_adapter.py</code>, <code>gen_ai_service/safety/safety_gate.py</code>, <code>gen_ai_service/models.py</code> (CompletionEnvelope), <code>cli_tools/tnh_gen/commands/run.py</code>.</p>
+<h3 id="theme-1-no-typed-domain-failure-contract-issues-47-48-52">Theme 1: No Typed Domain Failure Contract (Issues #47, #48, #52)<a class="headerlink" href="#theme-1-no-typed-domain-failure-contract-issues-47-48-52" title="Link to this section">&para;</a></h3>
+<p><strong>Current state</strong>: <code>ProviderStatus</code> already includes <code>FAILED</code> at the transport layer, but the rest of the pipeline behaves as if it does not exist. The safety gate's <code>post_check()</code> is documented as a stub; it appends an <code>"empty-result"</code> warning but does not change envelope shape. <code>_build_success_payload()</code> in <code>run.py</code> always emits <code>"status": "succeeded"</code>. <code>openai_adapter.py</code> extracts <code>choices[0].message.content or ""</code> with no detection path for content-absent-with-tokens.</p>
+<p><strong>Structural gap</strong>: A completed API call that returns empty text with nonzero <code>completion_tokens</code> is not represented as a typed failure in the domain layer. Transport state, warning strings, and CLI payload assembly disagree about what happened.</p>
+<p><strong>Structural improvement needed</strong>: Keep <code>ProviderStatus.FAILED</code> at the transport seam, but add a typed domain failure envelope: <code>CompletionEnvelope(outcome, result, failure, provenance, ...)</code>. A structured <code>failure_reason</code> should be set on <code>ProviderResponse</code>, mapped into a typed <code>CompletionFailure</code>, and carried all the way to CLI/API output. The safety gate should stop treating this as a soft warning, and <code>run.py</code> should branch on typed envelope outcome rather than always constructing a success payload.</p>
+<p>Files touched: <code>gen_ai_service/providers/openai_adapter.py</code>, <code>gen_ai_service/models/transport.py</code>, <code>gen_ai_service/models/domain.py</code>, <code>gen_ai_service/mappers/completion_mapper.py</code>, <code>gen_ai_service/safety/safety_gate.py</code>, <code>cli_tools/tnh_gen/commands/run.py</code>.</p>
 <p>This single change closes #47 and #48 and substantially reduces the diagnostic gap in #52.</p>
 <hr />
 <h3 id="theme-2-adapter-diagnostics-are-opaque-issue-52">Theme 2: Adapter Diagnostics Are Opaque (Issue #52)<a class="headerlink" href="#theme-2-adapter-diagnostics-are-opaque-issue-52" title="Link to this section">&para;</a></h3>
@@ -11790,7 +11820,7 @@
 <p>Files touched: <code>cli_tools/tnh_gen/tnh_gen.py</code>, <code>cli_tools/tnh_gen/config_loader.py</code>, <code>cli_tools/tnh_gen/commands/run.py</code>, ADR-TG01 (addendum).</p>
 <hr />
 <h3 id="theme-4-catalog-warning-architecture-issue-49">Theme 4: Catalog Warning Architecture (Issue #49)<a class="headerlink" href="#theme-4-catalog-warning-architecture-issue-49" title="Link to this section">&para;</a></h3>
-<p><strong>Current state</strong>: <code>PromptsAdapter</code> validates every prompt in the catalog on initialization. Validation failures (invalid <code>output_mode</code>, missing required frontmatter keys, schema errors) are emitted individually to stderr as they are encountered. There is no batching, no suppression option, no distinction between "prompt is broken and unusable" and "prompt uses an older schema that still executes," and no quiet path even when <code>--quiet</code> is passed.</p>
+<p><strong>Current state</strong>: <code>PromptsAdapter</code> validates prompts during catalog access/loading, not just at process startup, and prompt warnings are logged individually as each prompt is loaded. In default CLI execution those logs typically surface on stderr. There is no batching, no suppression option, no distinction between "prompt is broken and unusable" and "prompt uses an older schema that still executes," and no quiet path even when <code>--quiet</code> is passed.</p>
 <p><strong>Structural gap</strong>: For a catalog with many bundled prompts, the warning volume overwhelms stderr even for an unrelated operation like <code>tnh-gen list --keys-only</code>. The warnings look identical to runtime errors. Agents and CI pipelines cannot distinguish environmental noise from actual failures.</p>
 <p><strong>Structural improvement needed</strong>: Separate catalog validation health from per-invocation stderr output.</p>
 <ol>
@@ -11799,7 +11829,7 @@
 <li><strong>Severity tiers</strong>: Distinguish <code>ERROR</code> (prompt is unusable) from <code>WARNING</code> (prompt has non-critical metadata issues). Only <code>ERROR</code>-level catalog problems should surface in normal stderr.</li>
 <li><strong>Respect <code>--quiet</code></strong>: In quiet mode, suppress all catalog health output.</li>
 </ol>
-<p>Files touched: <code>gen_ai_service/prompts/</code> (adapter and loader), <code>cli_tools/tnh_gen/tnh_gen.py</code>, <code>cli_tools/tnh_gen/commands/</code> (config subcommand).</p>
+<p>Files touched: <code>gen_ai_service/pattern_catalog/adapters/prompts_adapter.py</code>, <code>prompt_system/adapters/*_catalog_adapter.py</code>, <code>prompt_system/service/loader.py</code>, <code>cli_tools/tnh_gen/tnh_gen.py</code>, <code>cli_tools/tnh_gen/commands/config.py</code>.</p>
 <hr />
 <h3 id="theme-5-frontmatter-blindness-in-the-run-pipeline-issue-25">Theme 5: Frontmatter Blindness in the Run Pipeline (Issue #25)<a class="headerlink" href="#theme-5-frontmatter-blindness-in-the-run-pipeline-issue-25" title="Link to this section">&para;</a></h3>
 <p><strong>Current state</strong>: <code>_read_input_text()</code> is <code>path.read_text()</code> — it passes raw file content including any YAML frontmatter to the model. <code>write_output_file()</code> prepends a fresh provenance-only frontmatter block unconditionally. Any original YAML frontmatter in the input (ADR metadata, article metadata, etc.) is destroyed and the model may generate unintended content based on it.</p>
@@ -11820,7 +11850,7 @@
 <p><strong>Registry data (#50)</strong>: Add <code>gpt-5.4</code> to <code>src/tnh_scholar/runtime_assets/registries/providers/openai.jsonc</code>; update <code>last_updated</code> to current date. Separately, evaluate whether registry staleness warnings belong at <code>WARNING</code> log level rather than stderr by default, since they are environmental noise for users who are not managing the registry.</p>
 </li>
 <li>
-<p><strong>gpt-5 adapter extraction path (#47, partial)</strong>: Even before the full FAILED contract is built, <code>from_openai_response()</code> can be hardened to detect <code>text == ""</code> with <code>completion_tokens &gt; 0</code> and return an <code>INCOMPLETE</code> response with a descriptive <code>incomplete_reason</code>. This is a one-function change that improves observability immediately.</p>
+<p><strong>gpt-5 adapter extraction path (#47, partial)</strong>: Even before the full typed failure-envelope contract is built, <code>from_openai_response()</code> can be hardened to detect <code>text == ""</code> with <code>completion_tokens &gt; 0</code> and return a <code>FAILED</code> transport response with a descriptive <code>failure_reason</code>. This is a one-function change that improves observability immediately and aligns with the existing transport enum.</p>
 </li>
 </ul>
 <hr />
@@ -11844,7 +11874,7 @@
 </tr>
 <tr>
 <td>2</td>
-<td>FAILED completion contract</td>
+<td>Typed failure envelope + outcome mapping</td>
 <td>#47, #48, #52</td>
 <td>Adapter hardening provides the signal</td>
 </tr>
@@ -11899,7 +11929,7 @@
 </thead>
 <tbody>
 <tr>
-<td>FAILED completion contract + adapter diagnostics</td>
+<td>Typed failure envelope + adapter diagnostics</td>
 <td>New ADR (TG03 or GenAI Service ADR addendum)</td>
 </tr>
 <tr>
