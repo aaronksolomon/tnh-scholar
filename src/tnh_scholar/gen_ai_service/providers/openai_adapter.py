@@ -26,6 +26,7 @@ TODOs for Hardening:
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, cast
 
 from openai.types.chat.chat_completion import ChatCompletion
@@ -57,6 +58,15 @@ class OpenAIChatCompletionRequest(BaseModel):
     max_completion_tokens: int
     seed: Optional[int] = None
     response_format: Optional[type[BaseModel]] = None
+
+
+@dataclass(frozen=True)
+class ContentExtractionResult:
+    payload: TextPayload | None
+    failure_reason: FailureReason | None
+    extraction_notes: str | None
+    content_part_count: int | None
+    raw_finish_reason: str | None
 
 
 def _finish_reason_from_raw(raw_finish_reason: Any) -> FinishReason:
@@ -181,9 +191,9 @@ def _usage_from_openai_response(response: ChatCompletion) -> tuple[ProviderStatu
     if usage_obj is None:
         return ProviderStatus.INCOMPLETE, "missing usage metadata", None, None
 
-    prompt_tokens = getattr(usage_obj, "prompt_tokens", None)
-    completion_tokens = getattr(usage_obj, "completion_tokens", None)
     provider_usage = _provider_usage_from_response_usage(usage_obj)
+    prompt_tokens = provider_usage.tokens_in
+    completion_tokens = provider_usage.tokens_out
     if prompt_tokens is None or completion_tokens is None:
         return (
             ProviderStatus.INCOMPLETE,
@@ -199,132 +209,76 @@ def _raw_content_missing(message: Any) -> bool:
     return raw_content is None or raw_content == ""
 
 
-def _content_failure_response(
-    *,
-    provider: str,
-    model: str,
-    attempts: int,
-    usage: ProviderUsage | None,
-    content_part_count: int | None,
-    raw_finish_reason: Any,
-    failure_reason: FailureReason,
-    extraction_notes: str,
-) -> ProviderResponse:
-    return _failed_response(
-        provider=provider,
-        model=model,
-        attempts=attempts,
-        usage=usage,
-        failure_reason=failure_reason,
-        content_source="choices[0].message.content",
-        content_part_count=content_part_count,
-        raw_finish_reason=str(raw_finish_reason) if raw_finish_reason is not None else None,
-        extraction_notes=extraction_notes,
-    )
-
-
 def _extract_content_and_finish_reason(
     *,
     message: Any,
     choice: Any,
-    provider: str,
-    model: str,
-    attempts: int,
-    usage: ProviderUsage | None,
     completion_tokens: int | None,
-) -> tuple[TextPayload, ProviderStatus, str | None] | ProviderResponse:
+) -> ContentExtractionResult:
     raw_finish_reason = getattr(choice, "finish_reason", None)
+    raw_finish_reason_value = str(raw_finish_reason) if raw_finish_reason is not None else None
     text, content_part_count = _content_from_message(message)
     parsed_obj = getattr(message, "parsed", None)
     parsed_value = parsed_obj if isinstance(parsed_obj, BaseModel) else None
     if parsed_value is not None:
-        return (
-            TextPayload(
+        return ContentExtractionResult(
+            payload=TextPayload(
                 text=text or "",
                 finish_reason=_finish_reason_from_raw(raw_finish_reason),
                 parsed=parsed_value,
             ),
-            ProviderStatus.OK if usage is not None else ProviderStatus.INCOMPLETE,
-            None if usage is not None else "missing usage metadata",
+            failure_reason=None,
+            extraction_notes=None,
+            content_part_count=content_part_count,
+            raw_finish_reason=raw_finish_reason_value,
         )
 
     if text is None:
-        return _content_failure_response(
-            provider=provider,
-            model=model,
-            attempts=attempts,
-            usage=usage,
-            content_part_count=content_part_count,
-            raw_finish_reason=raw_finish_reason,
+        return ContentExtractionResult(
+            payload=None,
             failure_reason=FailureReason.CONTENT_FIELD_MISSING,
             extraction_notes="message.content was missing",
+            content_part_count=content_part_count,
+            raw_finish_reason=raw_finish_reason_value,
         )
 
     if text != "":
-        return (
-            TextPayload(
+        return ContentExtractionResult(
+            payload=TextPayload(
                 text=text,
                 finish_reason=_finish_reason_from_raw(raw_finish_reason),
                 parsed=None,
             ),
-            ProviderStatus.OK if usage is not None else ProviderStatus.INCOMPLETE,
-            None if usage is not None else "missing usage metadata",
+            failure_reason=None,
+            extraction_notes=None,
+            content_part_count=content_part_count,
+            raw_finish_reason=raw_finish_reason_value,
         )
 
     if completion_tokens is not None and completion_tokens > 0:
-        return _content_failure_response(
-            provider=provider,
-            model=model,
-            attempts=attempts,
-            usage=usage,
-            content_part_count=content_part_count,
-            raw_finish_reason=raw_finish_reason,
+        return ContentExtractionResult(
+            payload=None,
             failure_reason=FailureReason.EMPTY_CONTENT_WITH_TOKENS,
             extraction_notes=f"message.content was empty; completion_tokens={completion_tokens}",
+            content_part_count=content_part_count,
+            raw_finish_reason=raw_finish_reason_value,
         )
 
     if _raw_content_missing(message):
-        return _content_failure_response(
-            provider=provider,
-            model=model,
-            attempts=attempts,
-            usage=usage,
-            content_part_count=content_part_count,
-            raw_finish_reason=raw_finish_reason,
+        return ContentExtractionResult(
+            payload=None,
             failure_reason=FailureReason.CONTENT_FIELD_MISSING,
             extraction_notes="message.content was empty with no completion tokens",
+            content_part_count=content_part_count,
+            raw_finish_reason=raw_finish_reason_value,
         )
 
-    return _content_failure_response(
-        provider=provider,
-        model=model,
-        attempts=attempts,
-        usage=usage,
-        content_part_count=content_part_count,
-        raw_finish_reason=raw_finish_reason,
+    return ContentExtractionResult(
+        payload=None,
         failure_reason=FailureReason.UNSUPPORTED_RESPONSE_SHAPE,
         extraction_notes=f"unsupported content type: {type(getattr(message, 'content', None)).__name__}",
-    )
-
-
-def _build_success_response(
-    *,
-    provider: str,
-    model: str,
-    attempts: int,
-    payload: TextPayload,
-    status: ProviderStatus,
-    usage: ProviderUsage | None,
-    incomplete_reason: str | None,
-) -> ProviderResponse:
-    return ProviderResponse(
-        provider=provider,
-        model=model,
-        status=status,
-        attempts=attempts,
-        payload=payload,
-        usage=usage,
-        incomplete_reason=incomplete_reason,
+        content_part_count=content_part_count,
+        raw_finish_reason=raw_finish_reason_value,
     )
 
 
@@ -471,25 +425,30 @@ class OpenAIAdapter:
             status, incomplete_reason, provider_usage, completion_tokens = _usage_from_openai_response(
                 response
             )
-            extracted = _extract_content_and_finish_reason(
+            extraction = _extract_content_and_finish_reason(
                 message=message,
                 choice=choice,
-                provider=provider,
-                model=model,
-                attempts=attempts,
-                usage=provider_usage,
                 completion_tokens=completion_tokens,
             )
-            if isinstance(extracted, ProviderResponse):
-                return extracted
+            if extraction.payload is None:
+                return _failed_response(
+                    provider=provider,
+                    model=model,
+                    attempts=attempts,
+                    usage=provider_usage,
+                    failure_reason=extraction.failure_reason or FailureReason.CONTENT_EXTRACTION_ERROR,
+                    content_source="choices[0].message.content",
+                    content_part_count=extraction.content_part_count,
+                    raw_finish_reason=extraction.raw_finish_reason,
+                    extraction_notes=extraction.extraction_notes or "unknown content extraction failure",
+                )
 
-            payload, _, _ = extracted
-            return _build_success_response(
+            return ProviderResponse(
                 provider=provider,
                 model=model,
-                attempts=attempts,
-                payload=payload,
                 status=status,
+                attempts=attempts,
+                payload=extraction.payload,
                 usage=provider_usage,
                 incomplete_reason=incomplete_reason,
             )

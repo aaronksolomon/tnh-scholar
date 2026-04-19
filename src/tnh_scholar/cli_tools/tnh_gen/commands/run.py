@@ -100,6 +100,7 @@ class RunContext:
     trace_id: str
     model_override: str | None
     intent: str | None
+    quiet: bool
     output_format: OutputFormat | None
     output_file: Path | None
     include_provenance: bool
@@ -315,6 +316,7 @@ def _prepare_run_context(
         trace_id=trace_id,
         model_override=model,
         intent=intent,
+        quiet=ctx.quiet,
         output_format=output_format or ctx.output_format,
         output_file=output_file,
         include_provenance=not no_provenance,
@@ -470,7 +472,7 @@ def _emit_warnings(
 
 def _emit_catalog_health_summary(context: RunContext, api: bool) -> None:
     """Emit a single fatal catalog-health summary in human mode."""
-    if api or ctx.quiet:
+    if api or context.quiet:
         return
     health_getter = getattr(context.service.catalog, "catalog_health", None)
     if not callable(health_getter):
