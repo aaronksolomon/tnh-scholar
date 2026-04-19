@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Optional
 
@@ -22,12 +24,36 @@ app = typer.Typer(
 )
 
 
+@contextmanager
+def _override_prompt_dir_env(prompt_dir: Path | None):
+    """Temporarily override `TNH_PROMPT_DIR` for the current CLI invocation."""
+    if prompt_dir is None:
+        yield
+        return
+
+    original_prompt_dir = os.environ.get("TNH_PROMPT_DIR")
+    os.environ["TNH_PROMPT_DIR"] = str(prompt_dir)
+    try:
+        yield
+    finally:
+        if original_prompt_dir is None:
+            os.environ.pop("TNH_PROMPT_DIR", None)
+        else:
+            os.environ["TNH_PROMPT_DIR"] = original_prompt_dir
+
+
 @app.callback()
 def cli_callback(
+    click_ctx: typer.Context,
     config: Optional[Path] = typer.Option(
         None,
         "--config",
         help="Path to config file that overrides user/workspace config.",
+    ),
+    prompt_dir: Path | None = typer.Option(
+        None,
+        "--prompt-dir",
+        help="Override the prompt catalog directory for this invocation.",
     ),
     format: OutputFormat | None = typer.Option(
         None,
@@ -51,11 +77,13 @@ def cli_callback(
     Examples:
       tnh-gen list
       tnh-gen --api list
+      tnh-gen --prompt-dir ./prompts list
       tnh-gen run --prompt daily --input-file notes.md
       tnh-gen --api run --prompt daily --input-file notes.md
 
     Args:
         config: Optional path to an explicit config file.
+        prompt_dir: Optional prompt catalog directory override.
         format: Output format override for commands.
         api: Whether to emit machine-readable API contract output.
         quiet: Whether to suppress non-error output.
@@ -66,6 +94,10 @@ def cli_callback(
     # Load environment variables from a .env file so settings (e.g., API keys)
     # are available before config and service initialization.
     load_dotenv(dotenv_path=find_dotenv(usecwd=True) or None)
+
+    prompt_dir_scope = _override_prompt_dir_env(prompt_dir)
+    prompt_dir_scope.__enter__()
+    click_ctx.call_on_close(lambda: prompt_dir_scope.__exit__(None, None, None))
 
     ctx.config_path = config
     ctx.output_format = format

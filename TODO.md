@@ -11,7 +11,7 @@ updated: "2026-04-13"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-13 (headless communication docs refreshed; bootstrap-proof slice still next)
+> **Last Updated**: 2026-04-18 (tnh-gen completion/run robustness slice landed; bootstrap-proof workflow still next)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -285,9 +285,9 @@ docs/architecture/jvb-viewer/adr/
 - **M3**: Structure cues — columns, heading levels, emphasis flags captured and rendered
 - **M4**: Beta — section-level navigation, export HTML, light theming
 
-#### 🔮 Add `--prompt-dir` Global Flag to tnh-gen
+#### ✅ Add `--prompt-dir` Global Flag to tnh-gen — *Completed 2026-04-18*
 
-- **Status**: NOT STARTED
+- **Status**: COMPLETE
 - **Priority**: HIGH (improves tnh-gen UX for one-off operations and testing)
 - **Estimate**: 1-2 hours
 - **Context**: Users need convenient way to override prompt catalog directory for one-off CLI calls without setting environment variables or creating temp config files
@@ -297,10 +297,10 @@ docs/architecture/jvb-viewer/adr/
   - Environment variable: `TNH_PROMPT_DIR=/path tnh-gen list` (awkward)
   - Temp config file: `tnh-gen --config /tmp/config.yaml list` (verbose)
 - **Deliverables**:
-  - [ ] Add `--prompt-dir` flag to `cli_callback()` in `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:26`
-  - [ ] Update `config_loader.py` to handle prompt directory override at CLI precedence level
-  - [ ] Update `ConfigData` type to accept `prompt_catalog_dir` override
-  - [ ] Add unit tests for flag precedence (CLI flag > workspace > user > env)
+  - [x] Add `--prompt-dir` flag to `cli_callback()` in `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py:26`
+  - [x] Update `config_loader.py` to handle prompt directory override at CLI precedence level
+  - [x] Update `ConfigData` type to accept `prompt_catalog_dir` override
+  - [x] Add unit tests for flag precedence (CLI flag > workspace > user > env)
   - [ ] Update help text and CLI reference documentation
   - [ ] Update `docs/cli-reference/tnh-gen.md` global flags section
 - **Files to Modify**:

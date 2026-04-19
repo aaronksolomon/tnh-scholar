@@ -19,7 +19,9 @@ from tnh_scholar.gen_ai_service.config.registry import (
 )
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.models.domain import (
+    CompletionEnvelope,
     CompletionResult,
+    CompletionOutcomeStatus,
     Message,
     RenderedPrompt,
     Role,
@@ -137,7 +139,12 @@ def pre_check(
         selection.max_output_tokens,
     )
     if estimated_cost > settings.max_dollars:
-        raise SafetyBlocked(f"Estimated cost {estimated_cost:.4f} exceeds budget {settings.max_dollars:.4f}")
+        raise SafetyBlocked(
+            f"Estimated cost {estimated_cost:.4f} exceeds budget {settings.max_dollars:.4f}",
+            blocked_reason="budget",
+            estimated_cost=estimated_cost,
+            max_dollars=settings.max_dollars,
+        )
 
     if prompt_metadata and prompt_metadata.safety_level == "sensitive":
         warnings.append("prompt-metadata: sensitive content")
@@ -150,21 +157,11 @@ def pre_check(
     )
 
 
-def post_check(result: CompletionResult | None) -> list[str]:
+def post_check(result: CompletionResult | CompletionEnvelope | None) -> list[str]:
+    """Compatibility hook retained for future post-generation policy checks.
+
+    Typed completion outcome is now authoritative. Empty-text detection is owned
+    by the adapter/mapper path, so this hook intentionally avoids adding soft
+    warnings that could contradict `CompletionEnvelope.outcome`.
     """
-    Post-generation validation hooks (stubbed for now).
-
-    Args:
-        result: CompletionResult or None when provider response missing.
-
-    Returns:
-        List of warning codes (empty when no issues detected).
-    """
-    warnings: list[str] = []
-    if result is None:
-        return warnings
-
-    if not result.text:
-        warnings.append("empty-result")
-
-    return warnings
+    return []

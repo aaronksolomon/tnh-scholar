@@ -104,17 +104,20 @@ def load_config(
     *,
     cwd: Path | None = None,
     overrides: ConfigData | None = None,
+    prompt_dir: Path | None = None,
 ) -> tuple[CLIConfig, ConfigMeta]:
     """Load CLI configuration with clear precedence and metadata.
 
     The effective config is built in this order: defaults/env → user config →
-    workspace config → explicit config_path → CLI overrides. Overrides that are
-    `None` are ignored to avoid clobbering previous values.
+    workspace config → explicit config_path → CLI overrides → explicit
+    prompt_dir override. Overrides that are `None` are ignored to avoid
+    clobbering previous values.
 
     Args:
         config_path: Optional explicit config file to load.
         cwd: Working directory for resolving workspace config paths.
         overrides: In-memory override values (e.g., CLI flags).
+        prompt_dir: Optional prompt catalog directory override.
 
     Returns:
         Tuple of validated `CLIConfig` and metadata containing the source list.
@@ -159,6 +162,10 @@ def load_config(
             if key in base and value is not None:
                 base[key] = value
         sources.append("cli-overrides")
+
+    if prompt_dir is not None:
+        base["prompt_catalog_dir"] = prompt_dir
+        sources.append("cli-prompt-dir")
 
     meta: ConfigMeta = {"sources": sources, "config_files": config_files}
     return CLIConfig.model_validate(base), meta

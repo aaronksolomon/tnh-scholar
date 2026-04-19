@@ -14,7 +14,7 @@ from typing import Any, Dict, List, Optional, Type
 
 from pydantic import BaseModel
 
-from .domain import Message
+from .domain import AdapterDiagnostics, FailureReason, Message
 
 
 class ProviderName(str):
@@ -32,12 +32,14 @@ class ProviderRequest(BaseModel):
     seed: Optional[int] = None
     response_format: Optional[Type[BaseModel]] = None
 
+
 class ProviderStatus(str, Enum):
     OK = "ok"
     INCOMPLETE = "incomplete"
     FAILED = "failed"
     FILTERED = "filtered"
     RATE_LIMITED = "rate_limited"
+
 
 class FinishReason(str, Enum):
     STOP = "stop"
@@ -61,6 +63,7 @@ class ErrorInfo(BaseModel):
     code: Optional[str] = None
     retry_after_s: Optional[float] = None
 
+
 class ProviderUsage(BaseModel):
     """Transport-level usage (provider-agnostic, not domain)."""
     tokens_in: Optional[int] = None          # aka prompt/input tokens
@@ -79,6 +82,7 @@ class TextPayload(BaseModel):
     finish_reason: Optional[FinishReason] = None
     parsed: Optional[BaseModel] = None
 
+
 class ProviderResponse(BaseModel):
     """Normalized provider response.
 
@@ -95,5 +99,6 @@ class ProviderResponse(BaseModel):
     payload: Optional[TextPayload] = None
     usage: Optional[ProviderUsage] = None
     error: Optional[ErrorInfo] = None
+    failure_reason: Optional[FailureReason] = None
+    adapter_diagnostics: Optional[AdapterDiagnostics] = None
     incomplete_reason: Optional[str] = None
-    

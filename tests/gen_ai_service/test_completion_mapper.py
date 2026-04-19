@@ -3,7 +3,16 @@ from __future__ import annotations
 from datetime import UTC, datetime
 
 from tnh_scholar.gen_ai_service.mappers.completion_mapper import provider_to_completion
-from tnh_scholar.gen_ai_service.models.domain import CompletionResult, Fingerprint, Provenance, Usage
+from tnh_scholar.gen_ai_service.models.domain import (
+    AdapterDiagnostics,
+    CompletionFailure,
+    CompletionOutcomeStatus,
+    CompletionResult,
+    FailureReason,
+    Fingerprint,
+    Provenance,
+    Usage,
+)
 from tnh_scholar.gen_ai_service.models.transport import (
     ErrorInfo,
     ErrorKind,
@@ -43,11 +52,22 @@ def test_provider_error_is_mapped_to_envelope():
         payload=None,
         usage=None,
         error=ErrorInfo(kind=ErrorKind.PROVIDER, message="backend failure", code="500"),
+        failure_reason=FailureReason.CONTENT_EXTRACTION_ERROR,
+        adapter_diagnostics=AdapterDiagnostics(
+            content_source="choices[0].message.content",
+            content_part_count=None,
+            raw_finish_reason="stop",
+            extraction_notes="adapter could not parse content",
+        ),
     )
 
     envelope = provider_to_completion(resp, provenance=_provenance())
 
+    assert envelope.outcome == CompletionOutcomeStatus.FAILED
     assert envelope.result is None
+    assert isinstance(envelope.failure, CompletionFailure)
+    assert envelope.failure.reason == FailureReason.CONTENT_EXTRACTION_ERROR
+    assert envelope.failure.adapter_diagnostics is not None
     assert any("provider-status" in w for w in envelope.warnings)
     assert envelope.policy_applied["provider_error_message"] == "backend failure"
 
@@ -64,7 +84,48 @@ def test_provider_response_maps_usage_and_finish_reason():
 
     envelope = provider_to_completion(resp, provenance=_provenance())
 
+    assert envelope.outcome == CompletionOutcomeStatus.SUCCEEDED
     assert isinstance(envelope.result, CompletionResult)
     assert isinstance(envelope.result.usage, Usage)
     assert envelope.result.finish_reason == FinishReason.STOP
     assert envelope.result.usage.total_tokens == 15
+
+
+def test_payloadless_incomplete_response_is_normalized_to_failed():
+    resp = ProviderResponse(
+        provider="openai",
+        model="gpt-test",
+        status=ProviderStatus.INCOMPLETE,
+        attempts=1,
+        payload=None,
+        usage=None,
+        incomplete_reason="missing usage metadata",
+    )
+
+    envelope = provider_to_completion(resp, provenance=_provenance())
+
+    assert envelope.outcome == CompletionOutcomeStatus.FAILED
+    assert envelope.result is None
+    assert envelope.failure is not None
+    assert envelope.failure.reason == FailureReason.CONTENT_FIELD_MISSING
+    assert "provider-missing-payload" in envelope.warnings
+
+
+def test_rate_limited_response_is_normalized_to_failed():
+    resp = ProviderResponse(
+        provider="openai",
+        model="gpt-test",
+        status=ProviderStatus.RATE_LIMITED,
+        attempts=1,
+        payload=None,
+        usage=None,
+        error=ErrorInfo(kind=ErrorKind.RATE_LIMIT, message="too many requests", code="429"),
+    )
+
+    envelope = provider_to_completion(resp, provenance=_provenance())
+
+    assert envelope.outcome == CompletionOutcomeStatus.FAILED
+    assert envelope.result is None
+    assert envelope.failure is not None
+    assert envelope.failure.reason == FailureReason.CONTENT_EXTRACTION_ERROR
+    assert envelope.policy_applied["provider_error_code"] == "429"
