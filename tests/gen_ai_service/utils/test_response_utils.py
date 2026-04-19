@@ -9,6 +9,7 @@ from pydantic import BaseModel
 
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionEnvelope,
+    CompletionOutcomeStatus,
     CompletionResult,
     Fingerprint,
     Provenance,
@@ -34,6 +35,7 @@ class SampleModel(BaseModel):
 def _create_test_envelope(text: str = "Test response") -> CompletionEnvelope:
     """Helper to create a test envelope."""
     return CompletionEnvelope(
+        outcome=CompletionOutcomeStatus.SUCCEEDED,
         result=CompletionResult(
             text=text,
             usage=Usage(prompt_tokens=10, completion_tokens=5, total_tokens=15),
@@ -72,6 +74,7 @@ def test_extract_text():
 def test_extract_text_no_result():
     """Test extracting text when envelope has no result."""
     envelope = CompletionEnvelope.model_construct(
+        outcome=CompletionOutcomeStatus.FAILED,
         result=None,
         provenance=None,
         policy_applied={},
@@ -162,6 +165,7 @@ def test_extract_provenance():
 def test_extract_provenance_no_provenance():
     """Test extracting provenance when none exists."""
     envelope = CompletionEnvelope.model_construct(
+        outcome=CompletionOutcomeStatus.SUCCEEDED,
         result=_create_test_envelope().result,
         provenance=None,
         policy_applied={},
@@ -208,6 +212,7 @@ def test_is_successful_with_object():
 def test_is_successful_no_result():
     """Test checking success when no result."""
     envelope = CompletionEnvelope.model_construct(
+        outcome=CompletionOutcomeStatus.FAILED,
         result=None,
         provenance=None,
         policy_applied={},
