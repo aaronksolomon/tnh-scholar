@@ -35,15 +35,15 @@ auto_generated: false
 
 The issues cluster into five structural themes. Each theme spans multiple issues — addressing only one issue in isolation would leave the underlying gap intact.
 
-### Theme 1: No FAILED Completion Contract (Issues #47, #48, #52)
+### Theme 1: No Typed Domain Failure Contract (Issues #47, #48, #52)
 
-**Current state**: `ProviderStatus` has two terminal values: `OK` and `INCOMPLETE`. The safety gate's `post_check()` is documented as a stub; it appends an `"empty-result"` warning but does not change status. `_build_success_payload()` in `run.py` always emits `"status": "succeeded"`. The `openai_adapter.py` extracts `choices[0].message.content or ""` with no detection path for content-absent-with-tokens.
+**Current state**: `ProviderStatus` already includes `FAILED` at the transport layer, but the rest of the pipeline behaves as if it does not exist. The safety gate's `post_check()` is documented as a stub; it appends an `"empty-result"` warning but does not change envelope shape. `_build_success_payload()` in `run.py` always emits `"status": "succeeded"`. `openai_adapter.py` extracts `choices[0].message.content or ""` with no detection path for content-absent-with-tokens.
 
-**Structural gap**: A completed API call that returns empty text with nonzero `completion_tokens` is unrepresentable as a failure anywhere in the stack. The provider, the safety gate, and the run command each silently pass it through.
+**Structural gap**: A completed API call that returns empty text with nonzero `completion_tokens` is not represented as a typed failure in the domain layer. Transport state, warning strings, and CLI payload assembly disagree about what happened.
 
-**Structural improvement needed**: A third terminal `ProviderStatus.FAILED` with a structured `failure_reason` field, propagated through `CompletionEnvelope` to `post_check()` and then to `_emit_run_output()`. The `post_check()` stub needs to become a real gate: empty text with `completion_tokens > 0` should set `FAILED` and block file write and success status emission.
+**Structural improvement needed**: Keep `ProviderStatus.FAILED` at the transport seam, but add a typed domain failure envelope: `CompletionEnvelope(outcome, result, failure, provenance, ...)`. A structured `failure_reason` should be set on `ProviderResponse`, mapped into a typed `CompletionFailure`, and carried all the way to CLI/API output. The safety gate should stop treating this as a soft warning, and `run.py` should branch on typed envelope outcome rather than always constructing a success payload.
 
-Files touched: `gen_ai_service/providers/openai_adapter.py`, `gen_ai_service/safety/safety_gate.py`, `gen_ai_service/models.py` (CompletionEnvelope), `cli_tools/tnh_gen/commands/run.py`.
+Files touched: `gen_ai_service/providers/openai_adapter.py`, `gen_ai_service/models/transport.py`, `gen_ai_service/models/domain.py`, `gen_ai_service/mappers/completion_mapper.py`, `gen_ai_service/safety/safety_gate.py`, `cli_tools/tnh_gen/commands/run.py`.
 
 This single change closes #47 and #48 and substantially reduces the diagnostic gap in #52.
 
@@ -83,7 +83,7 @@ Files touched: `cli_tools/tnh_gen/tnh_gen.py`, `cli_tools/tnh_gen/config_loader.
 
 ### Theme 4: Catalog Warning Architecture (Issue #49)
 
-**Current state**: `PromptsAdapter` validates every prompt in the catalog on initialization. Validation failures (invalid `output_mode`, missing required frontmatter keys, schema errors) are emitted individually to stderr as they are encountered. There is no batching, no suppression option, no distinction between "prompt is broken and unusable" and "prompt uses an older schema that still executes," and no quiet path even when `--quiet` is passed.
+**Current state**: `PromptsAdapter` validates prompts during catalog access/loading, not just at process startup, and prompt warnings are logged individually as each prompt is loaded. In default CLI execution those logs typically surface on stderr. There is no batching, no suppression option, no distinction between "prompt is broken and unusable" and "prompt uses an older schema that still executes," and no quiet path even when `--quiet` is passed.
 
 **Structural gap**: For a catalog with many bundled prompts, the warning volume overwhelms stderr even for an unrelated operation like `tnh-gen list --keys-only`. The warnings look identical to runtime errors. Agents and CI pipelines cannot distinguish environmental noise from actual failures.
 
@@ -94,7 +94,7 @@ Files touched: `cli_tools/tnh_gen/tnh_gen.py`, `cli_tools/tnh_gen/config_loader.
 3. **Severity tiers**: Distinguish `ERROR` (prompt is unusable) from `WARNING` (prompt has non-critical metadata issues). Only `ERROR`-level catalog problems should surface in normal stderr.
 4. **Respect `--quiet`**: In quiet mode, suppress all catalog health output.
 
-Files touched: `gen_ai_service/prompts/` (adapter and loader), `cli_tools/tnh_gen/tnh_gen.py`, `cli_tools/tnh_gen/commands/` (config subcommand).
+Files touched: `gen_ai_service/pattern_catalog/adapters/prompts_adapter.py`, `prompt_system/adapters/*_catalog_adapter.py`, `prompt_system/service/loader.py`, `cli_tools/tnh_gen/tnh_gen.py`, `cli_tools/tnh_gen/commands/config.py`.
 
 ---
 
@@ -122,7 +122,7 @@ The following are data or configuration corrections that can be applied independ
 
 - **Registry data (#50)**: Add `gpt-5.4` to `src/tnh_scholar/runtime_assets/registries/providers/openai.jsonc`; update `last_updated` to current date. Separately, evaluate whether registry staleness warnings belong at `WARNING` log level rather than stderr by default, since they are environmental noise for users who are not managing the registry.
 
-- **gpt-5 adapter extraction path (#47, partial)**: Even before the full FAILED contract is built, `from_openai_response()` can be hardened to detect `text == ""` with `completion_tokens > 0` and return an `INCOMPLETE` response with a descriptive `incomplete_reason`. This is a one-function change that improves observability immediately.
+- **gpt-5 adapter extraction path (#47, partial)**: Even before the full typed failure-envelope contract is built, `from_openai_response()` can be hardened to detect `text == ""` with `completion_tokens > 0` and return a `FAILED` transport response with a descriptive `failure_reason`. This is a one-function change that improves observability immediately and aligns with the existing transport enum.
 
 ---
 
@@ -133,7 +133,7 @@ The themes have dependencies. A reasonable execution order:
 | Priority | Theme | Issues Closed | Prerequisite |
 |----------|-------|---------------|--------------|
 | 1 | Adapter hardening (partial #47 fix) | #47 (partial) | None — contained to one function |
-| 2 | FAILED completion contract | #47, #48, #52 | Adapter hardening provides the signal |
+| 2 | Typed failure envelope + outcome mapping | #47, #48, #52 | Adapter hardening provides the signal |
 | 3 | Implement `--prompt-dir` (accepted ADR) | #53 | None — already designed |
 | 4 | Forwarded run aliases + budget UX | #51, #55 (partial) | None |
 | 5 | Catalog warning aggregation | #49 | None |
@@ -151,7 +151,7 @@ The following themes are new enough to warrant new ADR entries or addendums:
 
 | Theme | Recommendation |
 |-------|---------------|
-| FAILED completion contract + adapter diagnostics | New ADR (TG03 or GenAI Service ADR addendum) |
+| Typed failure envelope + adapter diagnostics | New ADR (TG03 or GenAI Service ADR addendum) |
 | `--prompt-dir` implementation | ADR-TG01 addendum update (already accepted; mark implemented) |
 | Forwarded run aliases | ADR-TG01 addendum (design decision: accept or reject the forwarding pattern) |
 | Catalog warning aggregation | ADR-TG02 addendum (prompt integration behavior) |

@@ -4,7 +4,7 @@ description: "Table of contents for architecture/tnh-gen/adr"
 owner: ""
 author: ""
 status: processing
-created: "2026-04-17"
+created: "2026-04-19"
 auto_generated: true
 ---
 
@@ -20,7 +20,7 @@ auto_generated: true
 
 **[ADR-TG02: TNH-Gen CLI Prompt System Integration](adr-tg02-prompt-integration.md)** - Integration pattern for tnh-gen CLI with prompt system via PromptsAdapter
 
-**[ADR-TG03: Completion Contract and Adapter Diagnostics](adr-tg03-completion-contract.md)** - Introduce FAILED terminal state and structured adapter diagnostics for reliable, observable generation results
+**[ADR-TG03: Typed Completion Outcome and Adapter Diagnostics](adr-tg03-completion-contract.md)** - Normalize transport failure states into a typed domain outcome envelope and structured adapter diagnostics for observable, reliable generation results
 
 ---
 

@@ -908,12 +908,12 @@ Hint: --config is a global flag. Try: tnh-gen --config PATH run ...
 
 **Decision**: Add a frontmatter-aware step to the run pipeline:
 
-1. `_read_input_text()` calls `Frontmatter.extract(raw_content)` → returns `(clean_body: str, original_metadata: dict | None)`.
-2. `clean_body` (frontmatter stripped) is passed to the AI. `original_metadata` is carried through the pipeline.
+1. `_read_input_text()` calls `Frontmatter.extract(raw_content)` → returns `(original_metadata: Metadata, clean_body: str)`.
+2. `clean_body` (frontmatter stripped) is passed to the AI. `original_metadata` is carried through the pipeline as a typed metadata object, not a raw dict.
 3. `write_output_file()` receives `original_metadata` and merges it with the generated provenance block:
    - Original metadata keys are preserved.
    - Provenance-specific keys (`tnh_scholar_generated`, `prompt_key`, `trace_id`, `generated_at`, etc.) are appended or overwrite matching keys.
-4. If the input has no frontmatter (`original_metadata is None`), behavior is identical to the current implementation — this change is backward-compatible.
+4. If the input has no frontmatter (`original_metadata` is empty), behavior is identical to the current implementation — this change is backward-compatible.
 
 **Rationale**: Input documents in the TNH Scholar corpus routinely carry YAML frontmatter (ADRs, translated articles, dharma texts with publication metadata). Stripping and destroying that metadata during AI processing is a data loss bug. Reusing the existing `Frontmatter` class is a minimal, consistent fix that avoids introducing new parsing logic.
 
@@ -934,13 +934,13 @@ Hint: --config is a global flag. Try: tnh-gen --config PATH run ...
 1. When `SafetyBlocked` is raised for a budget reason, the human-readable error message includes:
    - Estimated cost of the blocked request.
    - Current budget limit.
-   - The exact config key (`budget_limit`) and CLI pattern needed to raise it.
+   - The exact config key (`max_dollars`) and a valid CLI/config path for raising it.
 
    Example:
    ```
    SafetyBlocked: Estimated cost $0.042 exceeds budget $0.020.
-   To raise the limit: tnh-gen --config '{"budget_limit": 0.10}' run ...
-   Or set budget_limit in your workspace config.
+   Raise max_dollars in config, for example:
+   tnh-gen config set --workspace max_dollars 0.10
    ```
 
 2. In `--api` mode, the error envelope includes structured fields:
@@ -949,7 +949,7 @@ Hint: --config is a global flag. Try: tnh-gen --config PATH run ...
      "status": "blocked",
      "blocked_reason": "budget",
      "estimated_cost": 0.042,
-     "budget_limit": 0.020
+     "max_dollars": 0.020
    }
    ```
 
@@ -960,6 +960,33 @@ Hint: --config is a global flag. Try: tnh-gen --config PATH run ...
 **Implementation Files**:
 - `src/tnh_scholar/gen_ai_service/safety/safety_gate.py` (richer error construction)
 - `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py` (format budget block for API payload)
+
+---
+
+## Addendum 2026-04-16-D: Agent-Safe Invocation Profile
+
+**Context**: Issue #55. `tnh-gen` is now used as a delegated/scripted worker, not only as an interactive human CLI. The tool needs one documented invocation profile that minimizes ambiguity around stdout/stderr, exit codes, and flag placement.
+
+**Decision**: Standardize an "agent-safe" invocation profile for automation and orchestration:
+
+1. Use `--api` for all machine-consumed calls.
+2. Prefer global/session flags before the subcommand in canonical examples:
+   ```bash
+   tnh-gen --api --config /path/to/config.json run --prompt KEY --input-file INPUT.md
+   ```
+3. Stdout contains exactly one machine-readable response payload.
+4. Stderr is reserved for non-payload diagnostics and may be ignored by callers unless the exit code is non-zero.
+5. Exit code semantics remain the authoritative success/failure signal.
+6. A provider-completed call that produces no usable text must exit non-zero and emit `status: "failed"` in API mode.
+
+**Rationale**: Orchestration systems need a narrow contract. This profile does not remove human-friendly behavior; it defines the stable subset that scripted callers can trust.
+
+**Status**: Accepted
+
+**Implementation Files**:
+- `docs/cli-reference/tnh-gen.md` (document agent-safe usage)
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py` (ensure stdout/stderr/exit behavior matches contract)
+- `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py` (examples/help text)
 
 ---
 

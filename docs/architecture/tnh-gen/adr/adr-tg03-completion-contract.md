@@ -1,6 +1,6 @@
 ---
-title: "ADR-TG03: Completion Contract and Adapter Diagnostics"
-description: "Introduce a FAILED terminal state in the completion envelope and structured adapter diagnostics for observable, reliable generation results"
+title: "ADR-TG03: Typed Completion Outcome and Adapter Diagnostics"
+description: "Normalize transport failure states into a typed domain outcome envelope and structured adapter diagnostics for observable, reliable generation results"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.6"
 status: proposed
@@ -8,9 +8,9 @@ created: "2026-04-16"
 related_adrs: ["adr-tg01-cli-architecture.md", "adr-tg02-prompt-integration.md"]
 ---
 
-# ADR-TG03: Completion Contract and Adapter Diagnostics
+# ADR-TG03: Typed Completion Outcome and Adapter Diagnostics
 
-Establishes a three-state completion contract (`OK` / `INCOMPLETE` / `FAILED`) and a structured adapter diagnostics record, so that empty or unextractable generation results are explicitly represented as failures at every layer — adapter, safety gate, run command, and API output — rather than silently passed as successes.
+Establishes a typed domain outcome contract for generation results and a structured adapter diagnostics record, so that empty or unextractable generation results are explicitly represented as failures at every layer — adapter, mapper, service, run command, and API output — rather than silently passed as successes.
 
 - **Filename**: `adr-tg03-completion-contract.md`
 - **Status**: Proposed
@@ -30,18 +30,19 @@ Establishes a three-state completion contract (`OK` / `INCOMPLETE` / `FAILED`) a
 
 ### Current State
 
-The `tnh-gen` generation pipeline has a two-state completion model:
+The `tnh-gen` generation pipeline currently has an inconsistent status model across layers:
 
 - `ProviderStatus.OK` — usable text was extracted
 - `ProviderStatus.INCOMPLETE` — text was extracted but the completion was cut off (e.g., `finish_reason == "length"`)
-
-No `FAILED` state exists. Every API call that completes without a network or HTTP error is treated as a success.
+- `ProviderStatus.FAILED` — already exists in transport models but is not meaningfully produced or propagated
 
 This creates a structural gap across four layers:
 
 **Adapter layer** (`gen_ai_service/providers/openai_adapter.py`): extracts `choices[0].message.content or ""`. For models that use structured content parts (e.g., gpt-5 reasoning paths), `message.content` may be `None` even when `completion_tokens > 0` and `finish_reason == "stop"`. The adapter has no detection path for this condition and returns `ProviderStatus.OK` with `text = ""`.
 
-**Safety gate** (`gen_ai_service/safety/safety_gate.py`): `post_check()` is documented as a stub. It appends `"empty-result"` as a warning tag on the completion envelope but does not change `status` or raise. The docstring explicitly notes this is "stubbed for now."
+**Mapper/domain layer** (`gen_ai_service/mappers/completion_mapper.py`, `gen_ai_service/models/domain.py`): transport status is flattened into warnings on `CompletionEnvelope`. The domain envelope has `result`, `provenance`, `policy_applied`, and `warnings`, but no typed success/failure outcome or failure payload.
+
+**Safety gate** (`gen_ai_service/safety/safety_gate.py`): `post_check()` is documented as a stub. It appends `"empty-result"` as a warning tag on the completion envelope but does not change the envelope shape or block output.
 
 **Run command** (`cli_tools/tnh_gen/commands/run.py`): `_build_success_payload()` always emits `"status": "succeeded"`. `_emit_run_output()` calls `write_output_file()` unconditionally — so an empty `result_text` produces a provenance-only output file with `"status": "succeeded"` in the API payload and exit code `0`.
 
@@ -50,6 +51,8 @@ This creates a structural gap across four layers:
 ### Problem
 
 Orchestrators and CI pipelines that trust exit code or the `"status"` field are silently deceived when a generation produces no usable text. The failure is invisible. Additionally, as new model generations (gpt-5, gpt-5.4) depart from the `choices[0].message.content` response shape, the number of undetected empty-result failures is expected to increase.
+
+The deeper architectural problem is not just missing failure detection; it is that success/failure semantics live partly in transport enums, partly in warning strings, and partly in ad hoc CLI payload construction. That violates the object-service rule that canonical behavior should be represented in typed domain models, not reconstructed in app glue.
 
 ### Scope
 
@@ -61,9 +64,9 @@ Related: [ADR-TG01](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) §5 
 
 ## Decision
 
-### 1. Add `ProviderStatus.FAILED`
+### 1. Normalize Transport Status Into a Typed Domain Outcome
 
-Add a third terminal `ProviderStatus` value:
+Keep transport-layer `ProviderStatus` values as the provider-seam contract:
 
 ```
 ProviderStatus.OK         — usable text extracted
@@ -71,7 +74,38 @@ ProviderStatus.INCOMPLETE — text extracted but completion was truncated
 ProviderStatus.FAILED     — API call completed but no usable text could be extracted
 ```
 
-`FAILED` is semantically distinct from `INCOMPLETE`: `INCOMPLETE` means "text exists but was cut off"; `FAILED` means "no text was produced or none could be extracted."
+But stop treating those transport values as the application contract. Instead, `CompletionEnvelope` becomes a typed domain envelope with explicit outcome state:
+
+```python
+class CompletionOutcomeStatus(str, Enum):
+    SUCCEEDED = "succeeded"
+    INCOMPLETE = "incomplete"
+    FAILED = "failed"
+
+
+class CompletionFailure(BaseModel):
+    reason: FailureReason
+    message: str
+    retryable: bool = False
+    adapter_diagnostics: AdapterDiagnostics | None = None
+
+
+class CompletionEnvelope(BaseModel):
+    outcome: CompletionOutcomeStatus
+    result: CompletionResult | None = None
+    failure: CompletionFailure | None = None
+    provenance: Provenance
+    policy_applied: dict
+    warnings: list[str] = Field(default_factory=list)
+```
+
+Mapping rules:
+
+- `ProviderStatus.OK` → `CompletionOutcomeStatus.SUCCEEDED`
+- `ProviderStatus.INCOMPLETE` → `CompletionOutcomeStatus.INCOMPLETE`
+- `ProviderStatus.FAILED` → `CompletionOutcomeStatus.FAILED`
+
+`FAILED` remains semantically distinct from `INCOMPLETE`: `INCOMPLETE` means "usable text exists but was cut off"; `FAILED` means "no usable text was produced or extracted."
 
 ---
 
@@ -87,6 +121,8 @@ FailureReason.CONTENT_EXTRACTION_ERROR    — exception during content extractio
 ```
 
 `failure_reason` is `None` when `status == OK` or `INCOMPLETE`.
+
+This keeps root-cause classification at the adapter boundary, where the raw provider response is still available.
 
 ---
 
@@ -107,26 +143,43 @@ These branches are checked before the current `or ""` fallback, which is removed
 
 ---
 
-### 4. Make `post_check()` a Real Gate
+### 4. Keep `post_check()` as a Compatibility Hook, Not an Outcome Gate
 
-`safety_gate.py` `post_check()` is promoted from stub to enforcement:
+The typed `CompletionEnvelope` is now the only authoritative success/failure contract. `safety_gate.py` `post_check()` remains available as a future policy hook, but it does not append soft warnings or reinterpret adapter outcomes:
 
-- If `completion.status == FAILED`: raise `GenerationFailed(failure_reason=completion.failure_reason)`.
-- `GenerationFailed` is a new exception in `gen_ai_service/exceptions.py`, carrying `failure_reason` and the full `CompletionEnvelope` for caller inspection.
-- `post_check()` does not need to re-derive empty-text detection — it delegates to the status already set by the adapter.
+- If `envelope.outcome == FAILED`, callers trust that terminal state directly.
+- If `envelope.outcome == INCOMPLETE`, callers may surface warnings already attached elsewhere, but `post_check()` does not rewrite the outcome.
+- `post_check()` does not re-derive empty-text detection; it trusts the adapter/mapper path that already classified the response.
+- `run.py` branches directly on `envelope.outcome`; `service.generate()` does not mutate the envelope after mapping.
 
 ---
 
 ### 5. Failure Path in `run.py`
 
-`_emit_run_output()` catches `GenerationFailed` and:
+`run.py` switches from "always build success payload, then maybe error later" to branching directly on the typed domain envelope:
 
-- Emits `"status": "failed"` in the API payload.
-- Includes `"failure_reason"` as a structured field (the `FailureReason` string value).
-- Writes **no output file**.
-- Exits non-zero (exit code `1`, consistent with existing error handling in ADR-TG01 §5).
+- When `envelope.outcome == SUCCEEDED`: emit `"status": "succeeded"` and permit file output.
+- When `envelope.outcome == INCOMPLETE`: emit `"status": "incomplete"` with result + warnings, and permit output according to CLI policy.
+- When `envelope.outcome == FAILED`: emit `"status": "failed"` plus a typed `failure` object, write **no output file**, and exit non-zero.
 
-In `--api` mode, the failure payload follows the existing error envelope schema from ADR-TG01.1, extended with `failure_reason`.
+In `--api` mode, the payload follows the existing envelope contract from ADR-TG01.1, extended with a structured `failure` object rather than a single flat `failure_reason` field:
+
+```json
+{
+  "status": "failed",
+  "failure": {
+    "reason": "empty_content_with_tokens",
+    "message": "Provider returned no extractable text after consuming completion tokens.",
+    "retryable": false,
+    "adapter_diagnostics": {
+      "content_source": "choices[0].message.content",
+      "content_part_count": null,
+      "raw_finish_reason": "stop",
+      "extraction_notes": "message.content was null; completion_tokens=128"
+    }
+  }
+}
+```
 
 ---
 
@@ -141,7 +194,7 @@ Add an optional `adapter_diagnostics: AdapterDiagnostics | None` field to `Provi
 | `raw_finish_reason` | `str` | Raw finish_reason string before mapping to internal enum |
 | `extraction_notes` | `str` | Free-form adapter notes on what was found vs. expected |
 
-`AdapterDiagnostics` is included in provenance output when `--api` mode is active and `status != OK`. It is omitted from human-mode output to avoid verbosity.
+`AdapterDiagnostics` is included in API-mode output when `outcome != SUCCEEDED`. It is omitted from default human output to avoid verbosity.
 
 ---
 
@@ -151,12 +204,15 @@ Add an optional `adapter_diagnostics: AdapterDiagnostics | None` field to `Provi
 openai_adapter.from_openai_response()
   → sets ProviderStatus.FAILED + FailureReason + AdapterDiagnostics
   ↓
-safety_gate.post_check()
-  → raises GenerationFailed if FAILED
+completion_mapper.provider_to_completion()
+  → maps transport status into CompletionEnvelope(outcome=FAILED, failure=...)
   ↓
-run._emit_run_output()
-  → catches GenerationFailed
-  → emits {"status": "failed", "failure_reason": "..."}
+service.generate()
+  → returns typed CompletionEnvelope without flattening failure into warnings
+  ↓
+run command
+  → branches on envelope.outcome
+  → emits {"status": "failed", "failure": {...}}
   → no file write, exit code 1
 ```
 
@@ -167,15 +223,15 @@ run._emit_run_output()
 ### Positive
 
 - Empty results are explicitly represented as failures at every layer.
-- Orchestrators get reliable exit codes and machine-readable `failure_reason` fields.
+- Orchestrators get reliable exit codes and machine-readable typed `failure` payloads.
 - Adapter failures caused by new model response shapes are diagnosable from provenance alone, without replaying the API call.
-- `post_check()` stub is replaced by real enforcement, closing the gap noted in its own docstring.
-- The two-branch distinction (`INCOMPLETE` vs. `FAILED`) is clearer than the current single-state model.
+- `post_check()` no longer introduces soft warning noise that can contradict the typed outcome contract.
+- The distinction between transport status and domain outcome becomes explicit instead of leaking through warning strings and CLI dict assembly.
 
 ### Negative
 
-- `GenerationFailed` is a new exception type. All callers of `GenAIService.generate()` that do not currently handle it will get an unhandled exception — this is a breaking change requiring callers to be audited and updated.
-- Adding `AdapterDiagnostics` to `ProviderResponse` increases verbosity in `--api` provenance output for failed calls.
+- `CompletionEnvelope` is a breaking contract change for all typed callers of `GenAIService.generate()` and related helpers.
+- Adding `AdapterDiagnostics` to failed API output increases payload size and complexity.
 - The `FailureReason` enum is a new contract surface that must be kept stable across model updates.
 
 ---
@@ -188,13 +244,19 @@ run._emit_run_output()
 
 **Rejected**: `INCOMPLETE` semantically means "text exists but was truncated." Empty-with-tokens is a categorically different condition — the model responded but the adapter could not extract content. Conflating them obscures the root cause in diagnostics.
 
-### Alternative 2: Treat empty result as a retryable warning
+### Alternative 2: Represent failure only as an exception
+
+**Approach**: Keep the domain envelope success-shaped and signal empty-result failures exclusively by raising `GenerationFailed`.
+
+**Rejected**: Exceptions are appropriate for transport and policy faults, but a provider-completed call that produced no usable text is still a typed business outcome. Encoding that state only in control flow would keep failure semantics out of the domain model and preserve the current split between typed service behavior and ad hoc CLI payload assembly.
+
+### Alternative 3: Treat empty result as a retryable warning
 
 **Approach**: On empty result, set a warning flag and allow callers to decide whether to retry or fail.
 
 **Rejected**: The current behavior of writing provenance-only output files and emitting `"status": "succeeded"` is the direct cause of silent orchestration failures (#48). A retry-or-warn approach does not fix that — it defers the decision to callers who may not implement the check.
 
-### Alternative 3: Detect empty results only in `post_check()`
+### Alternative 4: Detect empty results only in `post_check()`
 
 **Approach**: Leave the adapter unchanged; detect empty text in `safety_gate.post_check()`.
 
@@ -206,7 +268,7 @@ run._emit_run_output()
 
 1. **`FailureReason` extensibility**: Should `FailureReason` be a `str`-typed enum (open-ended, extensible by new adapters) or a closed `IntEnum`? Open-ended is more forward-compatible as new model families are added.
 
-2. **Retry integration**: Should `GenerationFailed` carry a `retryable: bool` hint? Some failure reasons (e.g., `CONTENT_EXTRACTION_ERROR` due to a transient parse issue) may be retryable; others (`UNSUPPORTED_RESPONSE_SHAPE`) are not.
+2. **Retry integration**: Should `CompletionFailure.retryable` be inferred centrally from `FailureReason`, or set adapter-by-adapter? Some failure reasons (e.g., `CONTENT_EXTRACTION_ERROR` due to a transient parse issue) may be retryable; others (`UNSUPPORTED_RESPONSE_SHAPE`) are not.
 
 3. **Anthropic adapter parity**: The same hardening should eventually be applied to the Anthropic/Claude adapter. Should TG03 scope that now, or defer to a separate ADR once the OpenAI path is proven?
 

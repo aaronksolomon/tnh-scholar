@@ -272,7 +272,7 @@ CLI flags override config file values (see ADR-TG01 §4 for precedence).
 
 ## Addendum 2026-04-16: Catalog Health Aggregation and Warning Suppression
 
-**Context**: Issue #49. `PromptsAdapter` validates every prompt in the catalog on initialization and emits per-prompt validation warnings inline to stderr as they are encountered. For a catalog with many bundled prompts, this produces large volumes of noise (`output_mode: text` invalid, missing required frontmatter keys, JSON schema errors) even for unrelated operations like `tnh-gen list --keys-only`. There is no batching, no severity tier distinction, no quiet path, and no way to distinguish "prompt is broken and unusable" from "prompt uses an older schema field."
+**Context**: Issue #49. `PromptsAdapter` and the underlying catalog adapters validate prompts during catalog access/loading and emit per-prompt validation warnings through logging as they are encountered. For a catalog with many bundled prompts, this produces large volumes of noise (`output_mode: text` invalid, missing required frontmatter keys, JSON schema errors) even for unrelated operations like `tnh-gen list --keys-only`. There is no batching, no severity tier distinction, no quiet path, and no way to distinguish "prompt is broken and unusable" from "prompt uses an older schema field."
 
 **Decision**:
 
@@ -305,7 +305,9 @@ A new flag on the `config show` subcommand emits the full `CatalogHealth` JSON r
 **Status**: Accepted
 
 **Implementation Files**:
-- `src/tnh_scholar/gen_ai_service/prompts/` (adapter, loader — replace inline stderr with `CatalogHealth` accumulation)
+- `src/tnh_scholar/gen_ai_service/pattern_catalog/adapters/prompts_adapter.py` (surface aggregate catalog health instead of ambient warnings)
+- `src/tnh_scholar/prompt_system/adapters/*_catalog_adapter.py` (replace per-prompt warning logs with `CatalogHealth` accumulation)
+- `src/tnh_scholar/prompt_system/service/loader.py` (classify validation issues by severity)
 - `src/tnh_scholar/cli_tools/tnh_gen/commands/config.py` (add `--catalog-health` flag)
 - `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py` (suppress or surface summary per mode)
 
