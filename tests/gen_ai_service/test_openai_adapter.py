@@ -4,8 +4,8 @@ from types import SimpleNamespace
 
 from pydantic import BaseModel
 
-from tnh_scholar.gen_ai_service.models.domain import AdapterDiagnostics, FailureReason
-from tnh_scholar.gen_ai_service.models.transport import ProviderStatus
+from tnh_scholar.gen_ai_service.models.domain import AdapterDiagnostics, FailureReason, Message
+from tnh_scholar.gen_ai_service.models.transport import ProviderRequest, ProviderStatus
 from tnh_scholar.gen_ai_service.providers.openai_adapter import OpenAIAdapter
 
 
@@ -52,7 +52,10 @@ def test_openai_adapter_marks_empty_content_with_tokens_as_failed():
     assert provider_response.failure_reason == FailureReason.EMPTY_CONTENT_WITH_TOKENS
     assert provider_response.payload is None
     assert isinstance(provider_response.adapter_diagnostics, AdapterDiagnostics)
-    assert provider_response.adapter_diagnostics.extraction_notes == "message.content was empty; completion_tokens=9"
+    assert (
+        provider_response.adapter_diagnostics.extraction_notes
+        == "message.content was empty; completion_tokens=9"
+    )
 
 
 def test_openai_adapter_marks_missing_content_without_tokens_as_failed():
@@ -114,3 +117,37 @@ def test_openai_adapter_keeps_parsed_structured_output_successful():
     assert provider_response.failure_reason is None
     assert provider_response.payload is not None
     assert provider_response.payload.parsed == _ParsedStub(value="ok")
+
+
+def test_openai_adapter_uses_minimal_reasoning_for_legacy_gpt5_models():
+    adapter = OpenAIAdapter()
+    request = ProviderRequest(
+        provider="openai",
+        model="gpt-5",
+        system="sys",
+        messages=[Message(role="user", content="Return ACK")],
+        temperature=0.2,
+        max_output_tokens=64,
+    )
+
+    openai_request = adapter.to_openai_request(request)
+
+    assert openai_request.temperature is None
+    assert openai_request.reasoning_effort == "minimal"
+
+
+def test_openai_adapter_keeps_temperature_for_gpt54():
+    adapter = OpenAIAdapter()
+    request = ProviderRequest(
+        provider="openai",
+        model="gpt-5.4",
+        system="sys",
+        messages=[Message(role="user", content="Return ACK")],
+        temperature=0.2,
+        max_output_tokens=64,
+    )
+
+    openai_request = adapter.to_openai_request(request)
+
+    assert openai_request.temperature == 0.2
+    assert openai_request.reasoning_effort is None
