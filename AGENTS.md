@@ -57,6 +57,7 @@ Rules:
 - Versioning is `0.x`: breaking changes are allowed; prefer clean breaks
 - Pre-commit hooks are disabled: `core.hookspath=/dev/null`
 - `git rebase` and `git push --force-with-lease` require full confirmation protocol: explain the operation, show exact commands, state consequences and risks, explain recovery, then wait for explicit "yes"
+- Branch and worktree removal require explicit user approval plus a non-loss check: verify merged state or another retained reference before deleting anything
 - Forbidden entirely (user-only, never AI): `reset --hard/soft/mixed`, `push --force`, `branch -D`, `clean -fd`, `checkout -- .`, `restore` with destructive flags, `filter-branch`
 - NEVER stash untracked files; commit them to a temp branch if needed
 - Commit `poetry.lock` when dependency changes require it

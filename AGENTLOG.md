@@ -366,3 +366,53 @@ PR #46 (`feat/oa07-bootstrap-headless-entry`) was merged to `main`, completing t
 - [docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md](docs/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md)
 - [CHANGELOG.md](CHANGELOG.md)
 - [TODO.md](TODO.md)
+
+## [2026-04-20 15:55 PDT] tnh-gen Robustness and GPT-5 Compatibility Merge Wrap-Up
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: tnh-gen robustness and GPT-5 follow-up
+**Human Collaborator**: phapman
+
+### Context
+PRs #58, #59, and #60 were merged to `main` to harden `tnh-gen` for orchestration use. The series covered typed completion outcomes, frontmatter-safe run behavior, prompt catalog health reporting, and GPT-5 / GPT-5.4 request-response compatibility. This wrap-up records the merged state plus the remaining architectural follow-up around registry-driven OpenAI request profiles.
+
+### Key Decisions
+- **Land the compatibility fix as a narrow provider bugfix**: restore GPT-5-family and GPT-5.4 behavior in the OpenAI adapter/client now, without blocking on a broader registry capability refactor.
+- **Keep the next hardening step explicit**: track registry-driven request profiles as follow-up work rather than letting adapter-local model-prefix logic silently become permanent architecture.
+- **Leave partially addressed registry freshness concerns open**: current-model support is fixed, but broader registry/pricing freshness still needs separate follow-up.
+
+### Work Completed
+- [x] Merged PR #58 to add typed completion outcomes, adapter diagnostics, robust failed/incomplete run handling, and frontmatter-preserving provenance writes.
+- [x] Merged PR #59 to add prompt catalog health aggregation plus `tnh-gen list` / `tnh-gen config show --catalog-health` reporting.
+- [x] Merged PR #60 to add `gpt-5.4` registry support and GPT-5-family request shaping compatible with current OpenAI behavior.
+- [x] Added a TODO follow-up for registry-driven OpenAI request profiles and documented the same architectural follow-up at the top of the OpenAI adapter.
+- [x] Appended this merged-series continuity record as required after the substantive PR sequence.
+
+### Discoveries & Insights
+- **The tnh-gen robustness failures were a coherent series, not isolated bugs**: completion contract, catalog health, CLI ergonomics, and provider compatibility all mattered to delegated-worker viability.
+- **GPT-5 compatibility is fixed but still adapter-local**: the current behavior is correct for now, but future model-family controls should come from typed registry/request-profile metadata rather than string matching in the adapter.
+- **Catalog-health aggregation materially improved operator signal**: moving away from ambient warning spam made both human and agent-facing execution paths clearer.
+
+### Files Modified/Created
+- `src/tnh_scholar/gen_ai_service/`: Completion-envelope, mapper, service, and OpenAI provider hardening merged through PRs #58 and #60.
+- `src/tnh_scholar/cli_tools/tnh_gen/`: Run-path and catalog-health CLI updates merged through PRs #58 and #59.
+- `src/tnh_scholar/prompt_system/`: Catalog-health accumulation and reporting support merged through PR #59.
+- `TODO.md`: Added the registry-driven OpenAI request-profile follow-up.
+- `AGENTLOG.md`: Added this merged-series continuity entry.
+
+### Validation Performed
+- Focused pytest / ruff / readiness checks were run and passed in the PR worktrees before merge for PRs #58, #59, and #60.
+- Live golden validation on `gpt-5.4` succeeded for an exact `ACK` prompt and an ADR-review prompt before PR #60 merged.
+
+### Next Steps
+- [ ] Move OpenAI model-specific request shaping into registry-driven request-profile metadata.
+- [ ] Decide which resolved `tnh-gen` robustness issues can be closed now and which should stay open for remaining follow-up.
+- [ ] Remove obsolete local feature branches and worktrees only after explicit approval and non-loss checks.
+
+### Open Questions
+- What typed registry shape best expresses provider/model request constraints without turning the registry into an ad hoc adapter policy blob?
+
+### References
+- [CHANGELOG.md](CHANGELOG.md)
+- [TODO.md](TODO.md)
+- [src/tnh_scholar/gen_ai_service/providers/openai_adapter.py](src/tnh_scholar/gen_ai_service/providers/openai_adapter.py)

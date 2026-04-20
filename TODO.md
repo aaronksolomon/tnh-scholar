@@ -11,7 +11,7 @@ updated: "2026-04-20"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-20 (tnh-gen GPT-5.4 compatibility patch ready; bootstrap-proof workflow still next)
+> **Last Updated**: 2026-04-20 (tnh-gen GPT-5.4 compatibility merged; registry-driven OpenAI request shaping follow-up added)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -33,6 +33,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 5. 🚧 Prompt Catalog Safety - manifest validation + schema docs (P2, critical infrastructure)
 6. 🚧 Knowledge Base Implementation (P2, design complete)
 7. 🚧 Expand Test Coverage to 50%+ (P2)
+8. 🚧 OpenAI registry-driven request profiles for model-specific controls (P2, follow-up hardening)
 
 **For completed items**: See [Archive](#recently-completed-tasks-archive) section at end.
 

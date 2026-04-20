@@ -166,6 +166,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Repository Workflow Guardrail Clarification** (2026-04-20)
+  - Added an explicit branch/worktree removal rule to `AGENTS.md`: deletion now requires user approval plus a non-loss verification check before cleanup
+  - Recorded the follow-up architectural direction for OpenAI model request handling in `TODO.md` and the OpenAI adapter module note so the GPT-5 compatibility fix remains a narrow bugfix rather than silent long-term architecture
+  - Files: `AGENTS.md`, `TODO.md`, `src/tnh_scholar/gen_ai_service/providers/openai_adapter.py`, `AGENTLOG.md`
+
 - **ADR-OA03.2 Codex Runner Suspended** (2026-01-25)
   - Spike revealed API constraints: model produces tool calls without final text output
   - VS Code Codex extension uses client-side orchestration (different architecture than API-first approach)
