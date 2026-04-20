@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Assistant CLI Wrappers and SPIKE-10 Comparison Setup** (2026-04-20)
+  - Added a minimal `claude-assistant` CLI entry point parallel to `codex-assistant` for explicit external worker runs with captured stdout/stderr and final-message extraction
+  - Added focused regression coverage for the new Claude wrapper and preserved the existing Codex wrapper checks
+  - Added SPIKE-10 experiment planning, task-brief, workflow, and operator docs for comparing direct Codex, native subagents, explicit assistant-CLI workers, and the maintained `tnh-conductor` path on the same bounded task
+  - Files: `src/tnh_scholar/cli_tools/claude_assistant/`, `tests/cli_tools/test_claude_assistant.py`, `docs/architecture/agent-orchestration/notes/experiments/`, `pyproject.toml`
+
 - **tnh-gen GPT-5 Family Compatibility Refresh** (2026-04-20)
   - Added `gpt-5.4` to the OpenAI registry asset so `tnh-gen` can route and cost GPT-5.4 requests without configuration failures
   - Updated the OpenAI provider seam to omit unsupported temperature overrides for legacy GPT-5-family models and to request minimal reasoning effort so short text completions do not spend the full token budget on reasoning only

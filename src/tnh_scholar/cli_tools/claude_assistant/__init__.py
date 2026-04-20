@@ -1,0 +1,1 @@
+"""Claude assistant CLI package."""

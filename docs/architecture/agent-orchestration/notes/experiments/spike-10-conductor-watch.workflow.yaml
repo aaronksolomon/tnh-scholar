@@ -1,0 +1,55 @@
+workflow_id: spike_10_conductor_watch
+version: 1
+description: Maintained kernel comparison workflow for SPIKE-10 conductor watch task.
+entry_step: implement
+steps:
+  - id: implement
+    opcode: RUN_AGENT
+    agent: codex
+    prompt: |
+      Implement live operator monitoring for `tnh-conductor status`.
+
+      Goal:
+      - add a watch mode so operators can monitor one run until it reaches a
+        terminal lifecycle state without manually rerunning the command
+
+      Expected behavior:
+      - add `--watch` to `tnh-conductor status`
+      - add a configurable polling interval flag
+      - when `--watch` is enabled, print status snapshots repeatedly until the
+        run reaches a terminal state
+      - terminal states should include at least `completed`, `failed`, and
+        `blocked`
+      - preserve the current one-shot status behavior when `--watch` is not
+        supplied
+      - keep output machine-readable JSON, one snapshot per line
+
+      Likely files:
+      - `src/tnh_scholar/cli_tools/tnh_conductor/tnh_conductor.py`
+      - `tests/cli_tools/test_tnh_conductor.py`
+
+      Validation:
+      - run `poetry run pytest tests/cli_tools/test_tnh_conductor.py`
+
+      Do not commit, push, or open a pull request.
+    routes:
+      completed: validate
+      error: STOP
+      killed_timeout: STOP
+      killed_idle: STOP
+      killed_policy: STOP
+
+  - id: validate
+    opcode: RUN_VALIDATION
+    run:
+      - tests
+    routes:
+      completed: STOP
+      error: STOP
+      killed_timeout: STOP
+      killed_idle: STOP
+      killed_policy: STOP
+
+  - id: STOP
+    opcode: STOP
+    reason: SPIKE-10 conductor watch workflow finished.
