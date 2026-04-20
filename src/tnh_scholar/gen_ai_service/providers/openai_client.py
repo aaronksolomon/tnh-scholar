@@ -66,10 +66,13 @@ class OpenAIClient(ProviderClient):
         request_kwargs = dict(
             model=openai_request.model,
             messages=openai_request.messages,
-            temperature=openai_request.temperature,
             max_completion_tokens=openai_request.max_completion_tokens,
             seed=openai_request.seed,
         )
+        if openai_request.temperature is not None:
+            request_kwargs["temperature"] = openai_request.temperature
+        if openai_request.reasoning_effort is not None:
+            request_kwargs["reasoning_effort"] = openai_request.reasoning_effort
 
         if openai_request.response_format is not None:
             return self._client.beta.chat.completions.parse(

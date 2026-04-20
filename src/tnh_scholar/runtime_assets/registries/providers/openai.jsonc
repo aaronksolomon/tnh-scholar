@@ -3,7 +3,7 @@
   "$schema": "./schema.json",
   "schema_version": "1.0",
   "provider": "openai",
-  "last_updated": "2026-01-01",
+  "last_updated": "2026-04-20",
   "source_url": "https://openai.com/api/pricing/",
   "update_method": "manual",
   "pricing_tier": "standard",
@@ -113,6 +113,30 @@
       "released": "2024-11-20",
       "deprecated": false,
       "aliases": ["gpt-5-latest", "gpt-5-chat-latest"]
+    },
+
+    "gpt-5.4": {
+      "display_name": "GPT-5.4",
+      "family": "gpt-5",
+      "capabilities": {
+        "vision": true,
+        "structured_output": true,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 200000,
+      "max_output_tokens": 16384,
+      "pricing_tiers": {
+        "standard": {
+          "input_per_1k": 0.00125,
+          "output_per_1k": 0.01,
+          "cached_input_per_1k": 0.000125
+        }
+      },
+      "training_cutoff": "2025-10",
+      "released": "2026-03-05",
+      "deprecated": false,
+      "aliases": ["gpt-5.4-latest"]
     },
 
     "gpt-4o-mini": {

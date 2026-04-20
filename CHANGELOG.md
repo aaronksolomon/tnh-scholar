@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **tnh-gen GPT-5 Family Compatibility Refresh** (2026-04-20)
+  - Added `gpt-5.4` to the OpenAI registry asset so `tnh-gen` can route and cost GPT-5.4 requests without configuration failures
+  - Updated the OpenAI provider seam to omit unsupported temperature overrides for legacy GPT-5-family models and to request minimal reasoning effort so short text completions do not spend the full token budget on reasoning only
+  - Added focused provider and registry regressions plus live golden validation for exact `ACK` output and an ADR-review task on `gpt-5.4`
+  - Files: `src/tnh_scholar/gen_ai_service/providers/`, `src/tnh_scholar/runtime_assets/registries/providers/openai.jsonc`, `tests/gen_ai_service/test_openai_*.py`, `tests/gen_ai_service/test_registry_loader.py`
+
 - **tnh-gen Prompt Catalog Health and Config Reporting** (2026-04-19)
   - Added typed prompt catalog health models and adapter accumulation so filesystem and git-backed prompt catalogs report parse, validation, and metadata issues without per-prompt warning spam
   - Updated `tnh-gen list` to emit a single human summary for catalog load failures and to include `catalog_errors` in API output

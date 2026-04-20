@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-04-19"
+updated: "2026-04-20"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-19 (tnh-gen catalog health/config slice ready; bootstrap-proof workflow still next)
+> **Last Updated**: 2026-04-20 (tnh-gen GPT-5.4 compatibility patch ready; bootstrap-proof workflow still next)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >

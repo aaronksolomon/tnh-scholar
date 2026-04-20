@@ -38,8 +38,8 @@ from pydantic import BaseModel
 from tnh_scholar.gen_ai_service.models.domain import Message
 from tnh_scholar.gen_ai_service.models.transport import (
     AdapterDiagnostics,
-    FinishReason,
     FailureReason,
+    FinishReason,
     ProviderRequest,
     ProviderResponse,
     ProviderStatus,
@@ -49,14 +49,16 @@ from tnh_scholar.gen_ai_service.models.transport import (
 
 ADAPTER_COMPAT_VERSION = "2025-10-31"
 PINNED_OPENAI_SDK = "2.15.0"
+_LEGACY_GPT5_PREFIXES = ("gpt-5", "gpt-5-mini", "gpt-5-nano")
 
 
 class OpenAIChatCompletionRequest(BaseModel):
     model: str
     messages: List[ChatCompletionMessageParam]
-    temperature: float
+    temperature: float | None
     max_completion_tokens: int
     seed: Optional[int] = None
+    reasoning_effort: str | None = None
     response_format: Optional[type[BaseModel]] = None
 
 
@@ -67,6 +69,22 @@ class ContentExtractionResult:
     extraction_notes: str | None
     content_part_count: int | None
     raw_finish_reason: str | None
+
+
+def _is_legacy_gpt5_model(model: str) -> bool:
+    return any(model == prefix or model.startswith(f"{prefix}-") for prefix in _LEGACY_GPT5_PREFIXES)
+
+
+def _temperature_for_model(model: str, temperature: float | None) -> float | None:
+    if _is_legacy_gpt5_model(model):
+        return None
+    return temperature
+
+
+def _reasoning_effort_for_model(model: str) -> str | None:
+    if _is_legacy_gpt5_model(model):
+        return "minimal"
+    return None
 
 
 def _finish_reason_from_raw(raw_finish_reason: Any) -> FinishReason:
@@ -186,7 +204,9 @@ def _validate_response_structure(
     return choice, message
 
 
-def _usage_from_openai_response(response: ChatCompletion) -> tuple[ProviderStatus, str | None, ProviderUsage | None, int | None]:
+def _usage_from_openai_response(
+    response: ChatCompletion,
+) -> tuple[ProviderStatus, str | None, ProviderUsage | None, int | None]:
     usage_obj = getattr(response, "usage", None)
     if usage_obj is None:
         return ProviderStatus.INCOMPLETE, "missing usage metadata", None, None
@@ -351,9 +371,10 @@ class OpenAIAdapter:
         return OpenAIChatCompletionRequest(
             model=req.model,
             messages=messages,
-            temperature=req.temperature,
+            temperature=_temperature_for_model(req.model, req.temperature),
             max_completion_tokens=req.max_output_tokens,
             seed=req.seed,
+            reasoning_effort=_reasoning_effort_for_model(req.model),
             response_format=req.response_format,
         )
 
