@@ -49,6 +49,7 @@ from tnh_scholar.gen_ai_service.models.transport import (
 
 ADAPTER_COMPAT_VERSION = "2025-10-31"
 PINNED_OPENAI_SDK = "2.15.0"
+_LEGACY_GPT5_PREFIXES = ("gpt-5", "gpt-5-mini", "gpt-5-nano")
 
 
 class OpenAIChatCompletionRequest(BaseModel):
@@ -71,17 +72,10 @@ class ContentExtractionResult:
 
 
 def _is_legacy_gpt5_model(model: str) -> bool:
-    return (
-        model == "gpt-5"
-        or model.startswith("gpt-5-")
-        or model == "gpt-5-mini"
-        or model.startswith("gpt-5-mini-")
-        or model == "gpt-5-nano"
-        or model.startswith("gpt-5-nano-")
-    )
+    return any(model == prefix or model.startswith(f"{prefix}-") for prefix in _LEGACY_GPT5_PREFIXES)
 
 
-def _temperature_for_model(model: str, temperature: float) -> float | None:
+def _temperature_for_model(model: str, temperature: float | None) -> float | None:
     if _is_legacy_gpt5_model(model):
         return None
     return temperature
