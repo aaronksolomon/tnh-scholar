@@ -3392,6 +3392,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -3640,6 +3648,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/notes/experiments/run-spike-10-agent-coordination-comparison/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Run SPIKE-10 Agent Coordination Comparison
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../architecture/agent-orchestration/notes/experiments/spike-02-execution-context-comparison/" class="md-nav__link">
         
   
@@ -3864,6 +3900,90 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SPIKE-10 Agent Coordination Comparison Plan
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-result/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SPIKE-10 Agent Coordination Comparison Result
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-orchestration/notes/experiments/spike-10-conductor-watch-task-brief/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SPIKE-10 Conductor Watch Task Brief
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../architecture/agent-orchestration/notes/experiments/spike-testing-sequence/" class="md-nav__link">
         
   
@@ -3911,7 +4031,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5_3_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_5_3_22" >
         
           
           
@@ -3934,14 +4054,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_9_3_5_3_18" id="__nav_9_3_5_3_18_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_9_3_5_3_22" id="__nav_9_3_5_3_22_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_9_3_5_3_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9_3_5_3_18">
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_9_3_5_3_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_3_5_3_22">
             <span class="md-nav__icon md-icon"></span>
             Cloud Run Artifacts
           </label>
@@ -12327,7 +12447,54 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Codex Headless Experiment Docs Refresh</strong> (2026-04-13)</li>
+<li><strong>SPIKE-10 Agent Coordination Comparison Result</strong> (2026-04-20)</li>
+<li>Recorded the five-arm SPIKE-10 result note for the shared <code>tnh-conductor status --watch</code> task across direct Codex, native subagents, explicit <code>codex-assistant</code>, explicit <code>claude-assistant</code>, and the maintained <code>tnh-conductor</code> path</li>
+<li>Captured the main recommendation to keep <code>tnh-conductor</code> as the primary coordination substrate while treating direct Codex as the baseline and the assistant CLIs as experimental worker seams</li>
+<li>Clarified that the current comparison excludes a live <code>tnh-gen</code> evaluator because maintained agent-orch code does not yet wire that supervisory seam</li>
+<li>
+<p>Files: <code>docs/architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-result.md</code></p>
+</li>
+<li>
+<p><strong>Assistant CLI Wrappers and SPIKE-10 Comparison Setup</strong> (2026-04-20)</p>
+</li>
+<li>Added a minimal <code>claude-assistant</code> CLI entry point parallel to <code>codex-assistant</code> for explicit external worker runs with captured stdout/stderr and final-message extraction</li>
+<li>Added focused regression coverage for the new Claude wrapper and preserved the existing Codex wrapper checks</li>
+<li>Added SPIKE-10 experiment planning, task-brief, workflow, and operator docs for comparing direct Codex, native subagents, explicit assistant-CLI workers, and the maintained <code>tnh-conductor</code> path on the same bounded task</li>
+<li>
+<p>Files: <code>src/tnh_scholar/cli_tools/claude_assistant/</code>, <code>tests/cli_tools/test_claude_assistant.py</code>, <code>docs/architecture/agent-orchestration/notes/experiments/</code>, <code>pyproject.toml</code></p>
+</li>
+<li>
+<p><strong>tnh-gen GPT-5 Family Compatibility Refresh</strong> (2026-04-20)</p>
+</li>
+<li>Added <code>gpt-5.4</code> to the OpenAI registry asset so <code>tnh-gen</code> can route and cost GPT-5.4 requests without configuration failures</li>
+<li>Updated the OpenAI provider seam to omit unsupported temperature overrides for legacy GPT-5-family models and to request minimal reasoning effort so short text completions do not spend the full token budget on reasoning only</li>
+<li>Added focused provider and registry regressions plus live golden validation for exact <code>ACK</code> output and an ADR-review task on <code>gpt-5.4</code></li>
+<li>
+<p>Files: <code>src/tnh_scholar/gen_ai_service/providers/</code>, <code>src/tnh_scholar/runtime_assets/registries/providers/openai.jsonc</code>, <code>tests/gen_ai_service/test_openai_*.py</code>, <code>tests/gen_ai_service/test_registry_loader.py</code></p>
+</li>
+<li>
+<p><strong>tnh-gen Prompt Catalog Health and Config Reporting</strong> (2026-04-19)</p>
+</li>
+<li>Added typed prompt catalog health models and adapter accumulation so filesystem and git-backed prompt catalogs report parse, validation, and metadata issues without per-prompt warning spam</li>
+<li>Updated <code>tnh-gen list</code> to emit a single human summary for catalog load failures and to include <code>catalog_errors</code> in API output</li>
+<li>Added <code>tnh-gen config show --catalog-health</code> for structured catalog diagnostics sourced through the shared prompts adapter</li>
+<li>Added focused regression coverage for filesystem/git catalog health accumulation and the new CLI reporting paths</li>
+<li>
+<p>Files: <code>src/tnh_scholar/prompt_system/</code>, <code>src/tnh_scholar/gen_ai_service/pattern_catalog/adapters/prompts_adapter.py</code>, <code>src/tnh_scholar/cli_tools/tnh_gen/commands/{config,list}.py</code>, <code>src/tnh_scholar/cli_tools/tnh_gen/types.py</code>, <code>tests/prompt_system/</code>, <code>tests/cli_tools/test_tnh_gen.py</code></p>
+</li>
+<li>
+<p><strong>tnh-gen Completion Outcome and Run Robustness</strong> (2026-04-18)</p>
+</li>
+<li>Added typed completion outcomes, structured failure payloads, and adapter diagnostics across the GenAI service and <code>tnh-gen run</code></li>
+<li>Hardened the OpenAI adapter against empty, missing, and unsupported response shapes instead of silently returning success-shaped empty text</li>
+<li>Updated <code>tnh-gen run</code> to branch on succeeded/incomplete/failed outcomes, preserve input frontmatter in output files, and support direct <code>--prompt-dir</code> forwarding for one-off runs</li>
+<li>Added focused regression coverage for adapter failure mapping, failed/incomplete run behavior, budget blocking, and frontmatter/provenance handling</li>
+<li>
+<p>Files: <code>src/tnh_scholar/gen_ai_service/</code>, <code>src/tnh_scholar/cli_tools/tnh_gen/</code>, <code>src/tnh_scholar/metadata/metadata.py</code>, <code>tests/gen_ai_service/</code>, <code>tests/cli_tools/test_tnh_gen*.py</code></p>
+</li>
+<li>
+<p><strong>Codex Headless Experiment Docs Refresh</strong> (2026-04-13)</p>
+</li>
 <li>Expanded the headless communication report and experiment plan with native subagent findings, low-noise execution guidance, and a clearer next-experiment sequence</li>
 <li>Added supervisory shell-trial operator docs plus a repo-local Codex profile and wrapper-script options used by the documented experiment path</li>
 <li>Refreshed tracked directory-tree snapshots to capture the newly documented repo structure</li>
@@ -12506,7 +12673,15 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <h3 id="changed">Changed<a class="headerlink" href="#changed" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>ADR-OA03.2 Codex Runner Suspended</strong> (2026-01-25)</li>
+<li><strong>Repository Workflow Guardrail Clarification</strong> (2026-04-20)</li>
+<li>Added an explicit branch/worktree removal rule to <code>AGENTS.md</code>: deletion now requires user approval plus a non-loss verification check before cleanup</li>
+<li>Recorded the follow-up architectural direction for OpenAI model request handling in <code>TODO.md</code> and the OpenAI adapter module note so the GPT-5 compatibility fix remains a narrow bugfix rather than silent long-term architecture</li>
+<li>
+<p>Files: <code>AGENTS.md</code>, <code>TODO.md</code>, <code>src/tnh_scholar/gen_ai_service/providers/openai_adapter.py</code>, <code>AGENTLOG.md</code></p>
+</li>
+<li>
+<p><strong>ADR-OA03.2 Codex Runner Suspended</strong> (2026-01-25)</p>
+</li>
 <li>Spike revealed API constraints: model produces tool calls without final text output</li>
 <li>VS Code Codex extension uses client-side orchestration (different architecture than API-first approach)</li>
 <li>Added suspension addendum with findings and conditions for resumption</li>
