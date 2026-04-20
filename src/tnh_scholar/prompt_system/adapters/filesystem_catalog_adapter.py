@@ -94,13 +94,13 @@ class FilesystemPromptCatalog(PromptCatalogPort):
             )
             warnings = list(fallback_metadata.warnings)
         else:
-            warnings = self._validated_prompt_warnings(key, prompt, health)
+            warnings = self._apply_validation_warnings(key, prompt, health)
 
         if warnings:
             health.warnings.extend(self._loader.warning_issues(key, warnings))
         return prompt
 
-    def _validated_prompt_warnings(
+    def _apply_validation_warnings(
         self,
         key: str,
         prompt: Prompt,
