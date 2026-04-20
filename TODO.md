@@ -124,6 +124,7 @@ This section organizes work into three priority levels based on criticality for 
   - OA05/OA06 depth work should follow a live bootstrap proof, not precede it
 - **Recent related docs work**:
   - documented the current low-noise Codex headless path, native subagent confirmation, and first supervisory shell-trial findings in `/docs/architecture/agent-orchestration/notes/experiments/` and `/docs/architecture/agent-orchestration/supervisory-shell-trial/`
+  - SPIKE-10 comparison result now records the current practical recommendation: keep `tnh-conductor` as the main coordination substrate, harden native subagent launch reliability, and treat `codex-assistant` / `claude-assistant` worker paths as experimental until runtime bootstrap and auth are dependable
 - **Recommended PR sizing**:
   - Prefer **2 PRs** to stay comfortably under diff-size guidance
   - A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work
@@ -159,6 +160,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] strict OA05 compile-validation as a blocker for bootstrap
   - [ ] full OA06 planner fixture/vector suite beyond the bootstrap path
   - [ ] maintained `EVALUATE` / `GATE` support before the first useful bootstrap proof
+  - [ ] maintained `tnh-gen` evaluator or review-agent integration before the current orchestrator comparison proves out the control-surface path
   - [ ] non-script harness backends
   - [ ] stacked PR orchestration
   - [ ] multi-agent mutable collaboration inside one worktree

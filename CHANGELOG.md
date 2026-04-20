@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **SPIKE-10 Agent Coordination Comparison Result** (2026-04-20)
+  - Recorded the five-arm SPIKE-10 result note for the shared `tnh-conductor status --watch` task across direct Codex, native subagents, explicit `codex-assistant`, explicit `claude-assistant`, and the maintained `tnh-conductor` path
+  - Captured the main recommendation to keep `tnh-conductor` as the primary coordination substrate while treating direct Codex as the baseline and the assistant CLIs as experimental worker seams
+  - Clarified that the current comparison excludes a live `tnh-gen` evaluator because maintained agent-orch code does not yet wire that supervisory seam
+  - Files: `docs/architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-result.md`
+
 - **Assistant CLI Wrappers and SPIKE-10 Comparison Setup** (2026-04-20)
   - Added a minimal `claude-assistant` CLI entry point parallel to `codex-assistant` for explicit external worker runs with captured stdout/stderr and final-message extraction
   - Added focused regression coverage for the new Claude wrapper and preserved the existing Codex wrapper checks

@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-04-19"
+created: "2026-04-20"
 auto_generated: true
 ---
 
@@ -186,6 +186,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)
 - [Run Bootstrap Proof](/architecture/agent-orchestration/bootstrap-proof/run-bootstrap-proof.md)
 - [Run Prompt Dir Comparison](/architecture/agent-orchestration/supervisory-shell-trial/run-prompt-dir-comparison.md)
+- [Run SPIKE-10 Agent Coordination Comparison](/architecture/agent-orchestration/notes/experiments/run-spike-10-agent-coordination-comparison.md)
 - [Run Supervisory Shell Trial](/architecture/agent-orchestration/supervisory-shell-trial/run-supervisory-shell-trial.md)
 - [Simplified Language-Aware Chunking Design](/architecture/transcription/design/language-aware-chunking-design.md)
 - [Speaker Diarization Algorithm Design](/architecture/transcription/design/speaker-diarization-algorithm-design.md)
@@ -198,6 +199,9 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [SPIKE-07 Codex Home State Dependency](/architecture/agent-orchestration/notes/experiments/spike-07-codex-home-state-dependency.md)
 - [SPIKE-08 Launch Context Environment Contamination](/architecture/agent-orchestration/notes/experiments/spike-08-launch-context-env-contamination.md)
 - [SPIKE-09 Prompt Dir Three-Arm Comparison](/architecture/agent-orchestration/notes/experiments/spike-09-prompt-dir-three-arm-comparison.md)
+- [SPIKE-10 Agent Coordination Comparison Plan](/architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-plan.md)
+- [SPIKE-10 Agent Coordination Comparison Result](/architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-result.md)
+- [SPIKE-10 Conductor Watch Task Brief](/architecture/agent-orchestration/notes/experiments/spike-10-conductor-watch-task-brief.md)
 - [Supervisory Team Workflow Contract](/architecture/agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract.md)
 - [Supervisory Team Workflow Contract V2](/architecture/agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract-v2.md)
 - [TextObject Original Design](/architecture/ai-text-processing/design/textobject-original-design.md)

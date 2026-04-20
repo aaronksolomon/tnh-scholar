@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration/notes/exper
 owner: ""
 author: ""
 status: processing
-created: "2026-04-17"
+created: "2026-04-20"
 auto_generated: true
 ---
 
@@ -28,6 +28,8 @@ auto_generated: true
 
 **[OA01.x Spike Experiment Register](oa01x-spike-experiment-register.md)** - Minimal maintained experiment register for the current OA01.x spike, limited to headless execution patterns, native subagent viability, and low-overhead operator-facing artifacts.
 
+**[Run SPIKE-10 Agent Coordination Comparison](run-spike-10-agent-coordination-comparison.md)** - Operator note for the five-arm SPIKE-10 comparison using direct Codex, native subagents, explicit Codex and Claude assistant CLIs, and the existing tnh-conductor path.
+
 **[SPIKE-02 Execution Context Comparison](spike-02-execution-context-comparison.md)** - Lightweight result note comparing headless Codex execution contexts for noise, reliability, and practical usability.
 
 **[SPIKE-03 Native Subagent Smoke Test](spike-03-native-subagent-smoke-test.md)** - Lightweight result note on whether native headless subagent behavior can be observed and captured clearly enough for the OA01.x spike.
@@ -43,6 +45,12 @@ auto_generated: true
 **[SPIKE-08 Launch Context Environment Contamination](spike-08-launch-context-env-contamination.md)** - Differential experiment on whether Codex-on-Codex launch noise comes from PTY shape or from inherited execution environment contamination.
 
 **[SPIKE-09 Prompt Dir Three-Arm Comparison](spike-09-prompt-dir-three-arm-comparison.md)** - Comparison of direct Codex, supervisory Codex, and kernel-mediated orchestration on the same bounded `tnh-gen --prompt-dir` implementation task.
+
+**[SPIKE-10 Agent Coordination Comparison Plan](spike-10-agent-coordination-comparison-plan.md)** - Next comparison plan covering native Codex delegation, explicit external workers, Claude worker invocation, and tnh-gen review/process roles.
+
+**[SPIKE-10 Agent Coordination Comparison Result](spike-10-agent-coordination-comparison-result.md)** - Five-arm comparison of direct Codex, native subagents, explicit Codex and Claude assistant CLIs, and the existing tnh-conductor orchestration path on the same bounded implementation task.
+
+**[SPIKE-10 Conductor Watch Task Brief](spike-10-conductor-watch-task-brief.md)** - Medium bounded implementation task for comparing agent-coordination arms on live operator visibility in tnh-conductor.
 
 **[Agent Orchestration Spike Testing Sequence](spike-testing-sequence.md)** - Concise, unambiguous steps to run the Codex CLI spike in a sandbox worktree.
 

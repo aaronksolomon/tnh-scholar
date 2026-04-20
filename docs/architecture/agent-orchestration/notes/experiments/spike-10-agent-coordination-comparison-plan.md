@@ -10,6 +10,8 @@ updated: "2026-04-20"
 
 # SPIKE-10 Agent Coordination Comparison Plan
 
+This note defines the comparison arms, task shape, and measurement lens for the SPIKE-10 coordination experiment.
+
 ## Experiment ID
 
 `SPIKE-10`
