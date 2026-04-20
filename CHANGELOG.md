@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **tnh-gen Prompt Catalog Health and Config Reporting** (2026-04-19)
+  - Added typed prompt catalog health models and adapter accumulation so filesystem and git-backed prompt catalogs report parse, validation, and metadata issues without per-prompt warning spam
+  - Updated `tnh-gen list` to emit a single human summary for catalog load failures and to include `catalog_errors` in API output
+  - Added `tnh-gen config show --catalog-health` for structured catalog diagnostics sourced through the shared prompts adapter
+  - Added focused regression coverage for filesystem/git catalog health accumulation and the new CLI reporting paths
+  - Files: `src/tnh_scholar/prompt_system/`, `src/tnh_scholar/gen_ai_service/pattern_catalog/adapters/prompts_adapter.py`, `src/tnh_scholar/cli_tools/tnh_gen/commands/{config,list}.py`, `src/tnh_scholar/cli_tools/tnh_gen/types.py`, `tests/prompt_system/`, `tests/cli_tools/test_tnh_gen.py`
+
 - **tnh-gen Completion Outcome and Run Robustness** (2026-04-18)
   - Added typed completion outcomes, structured failure payloads, and adapter diagnostics across the GenAI service and `tnh-gen run`
   - Hardened the OpenAI adapter against empty, missing, and unsupported response shapes instead of silently returning success-shaped empty text

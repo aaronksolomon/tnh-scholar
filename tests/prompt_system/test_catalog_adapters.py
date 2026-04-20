@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 
 from tnh_scholar.prompt_system.adapters.filesystem_catalog_adapter import (
@@ -97,8 +96,7 @@ def test_filesystem_catalog_get_accepts_immutable_reference(tmp_path: Path):
     assert prompt.metadata.canonical_key() == "agent-orch/planner/evaluate"
 
 
-def test_filesystem_catalog_falls_back_on_invalid_frontmatter(tmp_path: Path, caplog):
-    caplog.set_level(logging.WARNING)
+def test_filesystem_catalog_falls_back_on_invalid_frontmatter(tmp_path: Path):
     (tmp_path / "legacy.md").write_text(
         ("---\n# invalid frontmatter body\n---\nLegacy body\n"),
         encoding="utf-8",
@@ -113,7 +111,9 @@ def test_filesystem_catalog_falls_back_on_invalid_frontmatter(tmp_path: Path, ca
     assert prompt.metadata.version == "0.0.0-invalid"
     assert "legacy" in prompt.metadata.warnings[0]
     assert prompt.template == "Legacy body\n"
-    assert any("Prompt 'legacy' warning" in message for message in caplog.messages)
+    health = catalog.catalog_health()
+    assert health.error_count == 1
+    assert health.warning_count == 1
 
 
 def test_filesystem_catalog_falls_back_on_validation_errors(tmp_path: Path):
@@ -140,6 +140,9 @@ output_contract:
 
     assert prompt.template.strip() == "{{ result }}"
     assert any("Invalid prompt" in warning for warning in prompt.metadata.warnings)
+    health = catalog.catalog_health()
+    assert health.error_count == 1
+    assert health.warning_count == 1
 
 
 def test_filesystem_catalog_best_effort_body_without_frontmatter_block(tmp_path: Path):

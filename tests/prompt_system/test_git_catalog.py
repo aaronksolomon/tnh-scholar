@@ -208,6 +208,9 @@ output_contract:
     assert prompt.metadata.version == "1"
     assert prompt.template.strip() == "{{ result }}"
     assert any("Invalid prompt" in warning for warning in prompt.metadata.warnings)
+    health = catalog.catalog_health()
+    assert health.error_count == 1
+    assert health.warning_count == 1
 
 
 def test_git_catalog_refresh_invalidates_changed_keys(tmp_path: Path, monkeypatch):
@@ -252,3 +255,60 @@ def test_git_catalog_refresh_invalidates_changed_keys(tmp_path: Path, monkeypatc
 
     assert len(invalidated) == 1
     assert invalidated[0].startswith("agent-orch/planner/evaluate@")
+
+
+def test_git_catalog_refresh_clears_stale_catalog_health(tmp_path: Path, monkeypatch):
+    repo_path = tmp_path / "repo"
+    repo_path.mkdir()
+    _init_git_repo(repo_path)
+    (repo_path / "bad-json.md").write_text(
+        """---
+key: bad-json
+name: bad-json
+version: 1
+description: desc
+role: planner
+output_contract:
+  mode: json
+---
+{{ result }}
+""",
+        encoding="utf-8",
+    )
+    subprocess.run(["git", "add", "."], cwd=repo_path, check=True)
+    subprocess.run(
+        ["git", "commit", "-m", "add invalid prompt"],
+        cwd=repo_path,
+        check=True,
+        stdout=subprocess.PIPE,
+    )
+
+    transport_config = GitTransportConfig(repository_path=repo_path, auto_pull=False)
+    mapper = PromptMapper()
+    validator = PromptValidator(ValidationPolicy())
+    loader = PromptLoader(validator)
+    transport = GitTransportClient(config=transport_config, mapper=mapper)
+    catalog_config = PromptCatalogConfig(repository_path=repo_path, enable_git_refresh=False)
+    catalog = GitPromptCatalog(
+        config=catalog_config,
+        transport=transport,
+        loader=loader,
+        mapper=mapper,
+    )
+
+    catalog.get("bad-json")
+    health = catalog.catalog_health()
+    assert health.error_count == 1
+    assert health.warning_count == 1
+
+    monkeypatch.setattr(
+        transport,
+        "pull_latest",
+        lambda: SimpleNamespace(changed_files=["bad-json.md"]),
+    )
+
+    catalog.refresh()
+
+    refreshed_health = catalog.catalog_health()
+    assert refreshed_health.error_count == 0
+    assert refreshed_health.warning_count == 0

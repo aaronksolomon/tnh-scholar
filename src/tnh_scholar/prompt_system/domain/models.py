@@ -223,3 +223,36 @@ class PromptValidationResult(BaseModel):
 
     def succeeded(self) -> bool:
         return len(self.errors) == 0
+
+
+class CatalogIssueType(str, Enum):
+    """Catalog health issue classifications."""
+
+    FRONTMATTER_PARSE_ERROR = "frontmatter_parse_error"
+    VALIDATION_ERROR = "validation_error"
+    METADATA_WARNING = "metadata_warning"
+
+
+class CatalogIssue(BaseModel):
+    """Single prompt catalog health issue."""
+
+    prompt_key: str
+    issue_type: CatalogIssueType
+    message: str
+
+
+class CatalogHealth(BaseModel):
+    """Aggregated prompt catalog health report."""
+
+    errors: list[CatalogIssue] = Field(default_factory=list)
+    warnings: list[CatalogIssue] = Field(default_factory=list)
+
+    @property
+    def error_count(self) -> int:
+        """Return the number of fatal prompt issues."""
+        return len(self.errors)
+
+    @property
+    def warning_count(self) -> int:
+        """Return the number of non-fatal prompt issues."""
+        return len(self.warnings)

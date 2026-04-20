@@ -30,6 +30,7 @@ from tnh_scholar.cli_tools.tnh_gen.types import (
     ConfigUpdatePayload,
     ConfigValuePayload,
 )
+from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import PromptsAdapter
 
 app = typer.Typer(help="Inspect and edit tnh-gen configuration.")
 
@@ -78,12 +79,13 @@ def _format_config_text(overrides: ConfigData) -> str:
 
 
 def _build_config_data_entry(key: ConfigKey, value: ConfigValue) -> ConfigData:
+    _assert_config_key_supported(key)
     return cast(ConfigData, {key: value})
 
 
 def _build_config_value_payload(key: ConfigKey, value: ConfigValue, trace_id: str) -> ConfigValuePayload:
-    payload: dict[str, object] = {"trace_id": trace_id, key: value}
-    return cast(ConfigValuePayload, payload)
+    _assert_config_key_supported(key)
+    return cast(ConfigValuePayload, {"trace_id": trace_id, key: value})
 
 
 def _build_config_update(key: ConfigKey, value: str | float | int) -> ConfigData:
@@ -91,7 +93,13 @@ def _build_config_update(key: ConfigKey, value: str | float | int) -> ConfigData
 
 
 def _get_config_value(config: ConfigData, key: ConfigKey) -> ConfigValue:
+    _assert_config_key_supported(key)
     return cast(ConfigValue, config.get(key))
+
+
+def _assert_config_key_supported(key: ConfigKey) -> None:
+    if key not in available_keys():
+        raise ValueError(f"Unhandled ConfigKey: {key!r}")
 
 
 def _render_config_response(
@@ -119,6 +127,28 @@ def _render_config_response(
 
 
 def _render_show_config(trace_id: str, format_override: OutputFormat | None) -> str:
+    return _render_show_config_with_health(trace_id, format_override, catalog_health=False)
+
+
+def _catalog_health_payload(prompts_base: Path | None) -> dict[str, object]:
+    if prompts_base is None:
+        raise ValueError("No prompt catalog directory configured (set TNH_PROMPT_DIR or config).")
+    adapter = PromptsAdapter(prompts_base=prompts_base.expanduser())
+    health = adapter.scan_catalog_health()
+    return {
+        "errors": [issue.model_dump(mode="json") for issue in health.errors],
+        "warnings": [issue.model_dump(mode="json") for issue in health.warnings],
+        "error_count": health.error_count,
+        "warning_count": health.warning_count,
+    }
+
+
+def _render_show_config_with_health(
+    trace_id: str,
+    format_override: OutputFormat | None,
+    *,
+    catalog_health: bool,
+) -> str:
     config, meta = load_config(ctx.config_path)
     config_dump = cast(ConfigData, config.model_dump(mode="json"))
     api_payload: ConfigShowPayload = {
@@ -128,10 +158,18 @@ def _render_show_config(trace_id: str, format_override: OutputFormat | None) -> 
         "trace_id": trace_id,
     }
     overrides = load_config_overrides(ctx.config_path)
+    human_payload: object = overrides
+    text_fallback = _format_config_text(overrides)
+    if catalog_health:
+        health_payload = _catalog_health_payload(config.prompt_catalog_dir)
+        api_payload["catalog_health"] = health_payload
+        api_payload["catalog_errors"] = health_payload["error_count"]
+        human_payload = api_payload
+        text_fallback = None
     return _render_config_response(
         api_payload=cast(Mapping[str, object], api_payload),
-        human_payload=overrides,
-        text_fallback=_format_config_text(overrides),
+        human_payload=human_payload,
+        text_fallback=text_fallback,
         format_override=format_override,
     )
 
@@ -188,6 +226,11 @@ def _render_config_keys(keys: list[str], trace_id: str) -> str:
 
 @app.command("show")
 def show_config(
+    catalog_health: bool = typer.Option(
+        False,
+        "--catalog-health",
+        help="Include aggregated prompt catalog health in the response.",
+    ),
     format: OutputFormat | None = typer.Option(
         None,
         "--format",
@@ -202,7 +245,7 @@ def show_config(
     """
     trace_id = uuid4().hex
     try:
-        typer.echo(_render_show_config(trace_id, format))
+        typer.echo(_render_show_config_with_health(trace_id, format, catalog_health=catalog_health))
     except Exception as exc:  # noqa: BLE001
         exit_with_error(exc, trace_id=trace_id, format_override=format)
 
