@@ -79,41 +79,13 @@ def _format_config_text(overrides: ConfigData) -> str:
 
 
 def _build_config_data_entry(key: ConfigKey, value: ConfigValue) -> ConfigData:
-    match key:
-        case "prompt_catalog_dir":
-            return {"prompt_catalog_dir": value}
-        case "default_model":
-            return {"default_model": value}
-        case "max_dollars":
-            return {"max_dollars": value}
-        case "max_input_chars":
-            return {"max_input_chars": value}
-        case "default_temperature":
-            return {"default_temperature": value}
-        case "api_key":
-            return {"api_key": value}
-        case "cli_path":
-            return {"cli_path": value}
+    _assert_config_key_supported(key)
+    return cast(ConfigData, {key: value})
 
 
 def _build_config_value_payload(key: ConfigKey, value: ConfigValue, trace_id: str) -> ConfigValuePayload:
-    payload: ConfigValuePayload = {"trace_id": trace_id}
-    match key:
-        case "prompt_catalog_dir":
-            payload["prompt_catalog_dir"] = value
-        case "default_model":
-            payload["default_model"] = value
-        case "max_dollars":
-            payload["max_dollars"] = value
-        case "max_input_chars":
-            payload["max_input_chars"] = value
-        case "default_temperature":
-            payload["default_temperature"] = value
-        case "api_key":
-            payload["api_key"] = value
-        case "cli_path":
-            payload["cli_path"] = value
-    return payload
+    _assert_config_key_supported(key)
+    return cast(ConfigValuePayload, {"trace_id": trace_id, key: value})
 
 
 def _build_config_update(key: ConfigKey, value: str | float | int) -> ConfigData:
@@ -121,21 +93,13 @@ def _build_config_update(key: ConfigKey, value: str | float | int) -> ConfigData
 
 
 def _get_config_value(config: ConfigData, key: ConfigKey) -> ConfigValue:
-    match key:
-        case "prompt_catalog_dir":
-            return config.get("prompt_catalog_dir")
-        case "default_model":
-            return config.get("default_model")
-        case "max_dollars":
-            return config.get("max_dollars")
-        case "max_input_chars":
-            return config.get("max_input_chars")
-        case "default_temperature":
-            return config.get("default_temperature")
-        case "api_key":
-            return config.get("api_key")
-        case "cli_path":
-            return config.get("cli_path")
+    _assert_config_key_supported(key)
+    return cast(ConfigValue, config.get(key))
+
+
+def _assert_config_key_supported(key: ConfigKey) -> None:
+    if key not in available_keys():
+        raise ValueError(f"Unhandled ConfigKey: {key!r}")
 
 
 def _render_config_response(
@@ -170,8 +134,7 @@ def _catalog_health_payload(prompts_base: Path | None) -> dict[str, object]:
     if prompts_base is None:
         raise ValueError("No prompt catalog directory configured (set TNH_PROMPT_DIR or config).")
     adapter = PromptsAdapter(prompts_base=prompts_base.expanduser())
-    adapter.list_all()
-    health = adapter.catalog_health()
+    health = adapter.scan_catalog_health()
     return {
         "errors": [issue.model_dump(mode="json") for issue in health.errors],
         "warnings": [issue.model_dump(mode="json") for issue in health.warnings],

@@ -121,6 +121,11 @@ class PromptsAdapter:
         """Expose aggregated prompt catalog health."""
         return self._catalog.catalog_health()
 
+    def scan_catalog_health(self) -> CatalogHealth:
+        """Rebuild and return catalog health from current prompt sources."""
+        _: list[PromptMetadata] = self.list_all()
+        return self._catalog.catalog_health()
+
     # ---- Internals ----
 
     def _build_fingerprint(

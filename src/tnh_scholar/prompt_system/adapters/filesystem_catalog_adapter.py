@@ -52,13 +52,40 @@ class FilesystemPromptCatalog(PromptCatalogPort):
         file_path = self._mapper.to_file_request(key, self._config.repository_path)
         request = PromptFileRequest(path=file_path, commit_sha=None)
         file_resp = self._transport.read_file(request)
+        prompt = self._load_prompt_from_content(key, file_resp.content, health=self._health)
+        self._cache.set(cache_key, prompt, ttl_s=self._config.cache_ttl_s)
+        return prompt
+
+    def list(self) -> list[PromptMetadata]:
+        files = self._transport.list_files(self._config.repository_path, pattern="**/*.md")
+        health = CatalogHealth()
+        prompts = []
+        for path in files:
+            key = self._mapper.to_key_from_path(path, self._config.repository_path)
+            request = PromptFileRequest(
+                path=self._mapper.to_file_request(key, self._config.repository_path),
+                commit_sha=None,
+            )
+            file_resp = self._transport.read_file(request)
+            prompt = self._load_prompt_from_content(key, file_resp.content, health=health)
+            self._cache.set(self._make_cache_key(key), prompt, ttl_s=self._config.cache_ttl_s)
+            prompts.append(prompt)
+        self._health = health
+        return [p.metadata for p in prompts]
+
+    def _load_prompt_from_content(
+        self,
+        key: str,
+        content: str,
+        *,
+        health: CatalogHealth,
+    ) -> Prompt:
         try:
-            prompt = self._mapper.to_domain_prompt(file_resp.content, source_key=key)
-            warnings: list[str] = []
+            prompt = self._mapper.to_domain_prompt(content, source_key=key)
         except (ValidationError, ValueError) as exc:
-            body = self._best_effort_body(file_resp.content)
+            body = self._best_effort_body(content)
             fallback_metadata = self._fallback_metadata(key, reason=str(exc))
-            self._health.errors.append(self._loader.parse_error_issue(key, str(exc)))
+            health.errors.append(self._loader.parse_error_issue(key, str(exc)))
             prompt = Prompt(
                 name=fallback_metadata.name,
                 version=fallback_metadata.version,
@@ -67,42 +94,34 @@ class FilesystemPromptCatalog(PromptCatalogPort):
             )
             warnings = list(fallback_metadata.warnings)
         else:
-            if self._config.validation_on_load:
-                validation = self._loader.validate(prompt)
-                if not validation.succeeded():
-                    self._health.errors.extend(self._loader.validation_issues(key, validation))
-                    fallback_metadata = self._fallback_metadata(
-                        key,
-                        reason=f"Invalid prompt: {validation.errors}",
-                    )
-                    prompt = Prompt(
-                        name=fallback_metadata.name,
-                        version=fallback_metadata.version,
-                        template=prompt.template,
-                        metadata=prompt.metadata.model_copy(
-                            update={"warnings": fallback_metadata.warnings}
-                        ),
-                    )
-                    warnings = list(fallback_metadata.warnings)
-                else:
-                    warnings = getattr(prompt.metadata, "warnings", []) or []
-            else:
-                warnings = getattr(prompt.metadata, "warnings", []) or []
+            warnings = self._validated_prompt_warnings(key, prompt, health)
 
         if warnings:
-            self._health.warnings.extend(self._loader.warning_issues(key, warnings))
-
-        self._cache.set(cache_key, prompt, ttl_s=self._config.cache_ttl_s)
+            health.warnings.extend(self._loader.warning_issues(key, warnings))
         return prompt
 
-    def list(self) -> list[PromptMetadata]:
-        files = self._transport.list_files(self._config.repository_path, pattern="**/*.md")
-        prompts = []
-        for path in files:
-            key = self._mapper.to_key_from_path(path, self._config.repository_path)
-            prompt = self.get(key)
-            prompts.append(prompt)
-        return [p.metadata for p in prompts]
+    def _validated_prompt_warnings(
+        self,
+        key: str,
+        prompt: Prompt,
+        health: CatalogHealth,
+    ) -> list[str]:
+        if not self._config.validation_on_load:
+            return list(getattr(prompt.metadata, "warnings", []) or [])
+
+        validation = self._loader.validate(prompt)
+        if validation.succeeded():
+            return list(getattr(prompt.metadata, "warnings", []) or [])
+
+        health.errors.extend(self._loader.validation_issues(key, validation))
+        fallback_metadata = self._fallback_metadata(
+            key,
+            reason=f"Invalid prompt: {validation.errors}",
+        )
+        prompt.metadata = prompt.metadata.model_copy(
+            update={"warnings": fallback_metadata.warnings}
+        )
+        return list(fallback_metadata.warnings)
 
     def _make_cache_key(self, prompt_key: str) -> str:
         return f"{prompt_key}@filesystem"
