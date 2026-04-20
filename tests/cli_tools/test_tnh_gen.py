@@ -7,18 +7,18 @@ from pathlib import Path
 from textwrap import dedent
 from typing import Any
 
-from typer.testing import CliRunner
 import yaml
+from typer.testing import CliRunner
 
 from tnh_scholar.cli_tools.tnh_gen import tnh_gen
 from tnh_scholar.cli_tools.tnh_gen.commands import run as run_module
-from tnh_scholar.cli_tools.tnh_gen.errors import ExitCode
 from tnh_scholar.cli_tools.tnh_gen.config_loader import CLIConfig
+from tnh_scholar.cli_tools.tnh_gen.errors import ExitCode
 from tnh_scholar.cli_tools.tnh_gen.state import ctx as cli_ctx
 from tnh_scholar.gen_ai_service.models.domain import (
     AdapterDiagnostics,
-    CompletionFailure,
     CompletionEnvelope,
+    CompletionFailure,
     CompletionOutcomeStatus,
     CompletionResult,
     FailureReason,
@@ -26,8 +26,8 @@ from tnh_scholar.gen_ai_service.models.domain import (
     Provenance,
     Usage,
 )
-from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import PromptsAdapter
 from tnh_scholar.gen_ai_service.models.errors import SafetyBlocked
+from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import PromptsAdapter
 from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
 runner = CliRunner(mix_stderr=False)
@@ -197,7 +197,7 @@ def test_list_keys_only_emits_warning_for_legacy_prompt(tmp_path, monkeypatch):
 
     assert result.exit_code == 0
     assert result.stdout.strip() == "legacy"
-    assert "[warn]" in result.stderr
+    assert "prompts failed to load" in result.stderr
 
 
 def test_list_includes_warning_for_legacy_prompt(tmp_path, monkeypatch):
@@ -216,7 +216,8 @@ def test_list_includes_warning_for_legacy_prompt(tmp_path, monkeypatch):
     assert "prompt" in warnings[0]
     assert "key" in warnings[0]
     assert "invalid-metadata" in payload["prompts"][0]["tags"]
-    assert "[warn]" in result.stderr
+    assert payload["catalog_errors"] == 1
+    assert result.stderr == ""
 
 
 def test_list_prompts_filters_by_tag_and_search(tmp_path, monkeypatch):
@@ -977,7 +978,7 @@ def test_run_api_failed_completion_returns_failure_payload_without_file(tmp_path
 
 
 def test_run_api_budget_block_returns_structured_payload(tmp_path, monkeypatch):
-    prompt_dir = _write_prompt(tmp_path)
+    _write_prompt(tmp_path)
     input_file = tmp_path / "input.txt"
     input_file.write_text("file-input", encoding="utf-8")
 
@@ -1024,7 +1025,7 @@ def test_run_api_budget_block_returns_structured_payload(tmp_path, monkeypatch):
 
 
 def test_run_human_budget_block_reports_actionable_text(tmp_path, monkeypatch):
-    prompt_dir = _write_prompt(tmp_path)
+    _write_prompt(tmp_path)
     input_file = tmp_path / "input.txt"
     input_file.write_text("file-input", encoding="utf-8")
 
@@ -1334,6 +1335,21 @@ def test_config_show_human_outputs_text(tmp_path, monkeypatch):
 
     assert result.exit_code == 0, result.output
     assert "default_model: gpt-4o-mini" in result.stdout
+
+
+def test_config_show_catalog_health_outputs_report(tmp_path, monkeypatch):
+    prompt_dir = _write_legacy_prompt(tmp_path)
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+
+    result = runner.invoke(tnh_gen.app, ["--api", "config", "show", "--catalog-health"])
+
+    assert result.exit_code == 0, result.output
+    assert result.stderr == ""
+    payload = json.loads(result.stdout)
+    assert payload["catalog_health"]["error_count"] == 1
+    assert payload["catalog_health"]["warning_count"] == 1
+    assert payload["catalog_health"]["errors"][0]["prompt_key"] == "legacy"
 
 
 def test_config_get_human_outputs_yaml(tmp_path, monkeypatch):

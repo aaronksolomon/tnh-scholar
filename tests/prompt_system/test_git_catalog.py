@@ -208,6 +208,9 @@ output_contract:
     assert prompt.metadata.version == "1"
     assert prompt.template.strip() == "{{ result }}"
     assert any("Invalid prompt" in warning for warning in prompt.metadata.warnings)
+    health = catalog.catalog_health()
+    assert health.error_count == 1
+    assert health.warning_count == 1
 
 
 def test_git_catalog_refresh_invalidates_changed_keys(tmp_path: Path, monkeypatch):

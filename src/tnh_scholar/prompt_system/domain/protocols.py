@@ -2,7 +2,14 @@
 
 from typing import Protocol
 
-from .models import Prompt, PromptMetadata, PromptValidationResult, RenderedPrompt, RenderParams
+from .models import (
+    CatalogHealth,
+    Prompt,
+    PromptMetadata,
+    PromptValidationResult,
+    RenderedPrompt,
+    RenderParams,
+)
 
 
 class PromptCatalogPort(Protocol):
@@ -14,6 +21,10 @@ class PromptCatalogPort(Protocol):
 
     def list(self) -> list[PromptMetadata]:
         """List available prompts."""
+        ...
+
+    def catalog_health(self) -> CatalogHealth:
+        """Return aggregated catalog health information."""
         ...
 
 
@@ -35,4 +46,3 @@ class PromptValidatorPort(Protocol):
     def validate_render(self, prompt: Prompt, params: RenderParams) -> PromptValidationResult:
         """Validate render inputs against prompt requirements."""
         ...
-

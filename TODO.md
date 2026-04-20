@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-04-13"
+updated: "2026-04-19"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-18 (tnh-gen completion/run robustness slice landed; bootstrap-proof workflow still next)
+> **Last Updated**: 2026-04-19 (tnh-gen catalog health/config slice ready; bootstrap-proof workflow still next)
 > **Version**: 0.3.1 (Alpha)
 > **Status**: Active Development - Bootstrap path complete, production hardening phase
 >
@@ -29,11 +29,10 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 1. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
 2. 🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)
 3. 🔮 Finish ytt-fetch robustness hardening (P1, reliability)
-4. 🔮 Add `--prompt-dir` Global Flag to tnh-gen (P1, minor)
-5. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
-6. 🚧 Prompt Catalog Safety - error handling, validation (P2, critical infrastructure)
-7. 🚧 Knowledge Base Implementation (P2, design complete)
-8. 🚧 Expand Test Coverage to 50%+ (P2)
+4. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
+5. 🚧 Prompt Catalog Safety - manifest validation + schema docs (P2, critical infrastructure)
+6. 🚧 Knowledge Base Implementation (P2, design complete)
+7. 🚧 Expand Test Coverage to 50%+ (P2)
 
 **For completed items**: See [Archive](#recently-completed-tasks-archive) section at end.
 
@@ -584,14 +583,15 @@ docs/architecture/jvb-viewer/adr/
 
 #### 🚧 Prompt Catalog Safety
 
-- **Status**: NOT STARTED
+- **Status**: IN PROGRESS
 - **Priority**: HIGH (critical infrastructure)
-- **Problem**: Adapter doesn't handle missing keys or invalid front-matter gracefully
+- **Problem**: Catalog health reporting is now in place, but the prompt platform still needs stronger manifest/schema guarantees and clearer operator docs
 - **Tasks**:
+  - [x] Aggregate catalog parse/validation issues into typed health reports
+  - [x] Surface catalog health through `tnh-gen list` and `tnh-gen config show --catalog-health`
   - [ ] Add manifest validation
-  - [ ] Implement caching
   - [ ] Better error messages (unknown prompt, hash mismatch)
-  - [ ] Front-matter validation
+  - [ ] Front-matter/schema validation guidance
   - [ ] Document prompt schema
 
 #### 🚧 Knowledge Base Implementation

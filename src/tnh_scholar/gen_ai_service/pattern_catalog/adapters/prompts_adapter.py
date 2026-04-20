@@ -28,7 +28,7 @@ from tnh_scholar.prompt_system.adapters.filesystem_catalog_adapter import (
 from tnh_scholar.prompt_system.config.policy import PromptRenderPolicy, ValidationPolicy
 from tnh_scholar.prompt_system.config.prompt_catalog_config import PromptCatalogConfig
 from tnh_scholar.prompt_system.config.settings import PromptSystemSettings
-from tnh_scholar.prompt_system.domain.models import Prompt, PromptMetadata, RenderParams
+from tnh_scholar.prompt_system.domain.models import CatalogHealth, Prompt, PromptMetadata, RenderParams
 from tnh_scholar.prompt_system.domain.protocols import (
     PromptCatalogPort,
     PromptRendererPort,
@@ -116,6 +116,10 @@ class PromptsAdapter:
         """Get detailed metadata for a prompt (ADR-VSC02 requirement for CLI/VS Code)."""
         prompt = self._catalog.get(prompt_key)
         return prompt.metadata
+
+    def catalog_health(self) -> CatalogHealth:
+        """Expose aggregated prompt catalog health."""
+        return self._catalog.catalog_health()
 
     # ---- Internals ----
 

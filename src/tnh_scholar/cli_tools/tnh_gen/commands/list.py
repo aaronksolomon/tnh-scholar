@@ -17,7 +17,7 @@ from tnh_scholar.cli_tools.tnh_gen.types import (
     ListHumanPayload,
 )
 from tnh_scholar.gen_ai_service.pattern_catalog.adapters.prompts_adapter import PromptsAdapter
-from tnh_scholar.prompt_system.domain.models import PromptMetadata
+from tnh_scholar.prompt_system.domain.models import CatalogHealth, PromptMetadata
 
 app = typer.Typer(help="List available prompts with metadata.", invoke_without_command=True)
 
@@ -90,8 +90,12 @@ def _build_entries(prompts: Iterable[PromptMetadata]) -> list[dict[str, object]]
     return [_normalize_prompt(prompt) for prompt in prompts]
 
 
-def _to_api_payload(entries: list[dict[str, object]], sources: list[str]) -> ListApiPayload:
-    return {
+def _to_api_payload(
+    entries: list[dict[str, object]],
+    sources: list[str],
+    catalog_health: CatalogHealth,
+) -> ListApiPayload:
+    payload: ListApiPayload = {
         "prompts": [
             {
                 "key": cast(str, entry["key"]),
@@ -111,6 +115,9 @@ def _to_api_payload(entries: list[dict[str, object]], sources: list[str]) -> Lis
         "count": len(entries),
         "sources": sources,
     }
+    if catalog_health.error_count > 0:
+        payload["catalog_errors"] = catalog_health.error_count
+    return payload
 
 
 def _to_human_payload(entries: list[dict[str, object]]) -> ListHumanPayload:
@@ -133,22 +140,22 @@ def _to_human_payload(entries: list[dict[str, object]]) -> ListHumanPayload:
     }
 
 
-def _emit_prompt_warnings(prompts: Iterable[PromptMetadata]) -> None:
-    """Emit warning hints to stderr for prompts missing proper frontmatter."""
-    if ctx.quiet:
+def _emit_catalog_health_summary(catalog_health: CatalogHealth) -> None:
+    """Emit a single fatal catalog-health summary in human mode."""
+    if ctx.quiet or ctx.api or catalog_health.error_count == 0:
         return
-    for prompt in prompts:
-        if getattr(prompt, "warnings", []):
-            typer.echo(
-                f"[warn] Prompt '{prompt.key}' missing/invalid frontmatter. {_EXPECTED_FRONTMATTER}",
-                err=True,
-            )
+    typer.echo(
+        f"[tnh-gen] {catalog_health.error_count} prompts failed to load. "
+        "Run 'tnh-gen config show --catalog-health' for details.",
+        err=True,
+    )
 
 
 def _render_list(
     *,
     prompts: list[PromptMetadata],
     sources: list[str],
+    catalog_health: CatalogHealth,
     fmt: ListOutputFormat,
     api: bool,
     keys_only: bool,
@@ -175,7 +182,7 @@ def _render_list(
         typer.echo(format_table(headers, rows))
         return
 
-    payload = _to_api_payload(entries, sources) if api else _to_human_payload(entries)
+    payload = _to_api_payload(entries, sources, catalog_health) if api else _to_human_payload(entries)
     typer.echo(render_output(payload, fmt))
 
 
@@ -203,12 +210,13 @@ def _list_prompts_impl(
     config, meta = load_config(ctx.config_path)
     adapter = _build_adapter(config.prompt_catalog_dir)
     prompts = list(_apply_filters(adapter.list_all(), tag, search))
-
-    _emit_prompt_warnings(prompts)
+    catalog_health = adapter.catalog_health()
+    _emit_catalog_health_summary(catalog_health)
     if keys_only:
         _render_list(
             prompts=prompts,
             sources=meta["sources"],
+            catalog_health=catalog_health,
             fmt=ListOutputFormat.text,
             api=ctx.api,
             keys_only=True,
@@ -219,6 +227,7 @@ def _list_prompts_impl(
     _render_list(
         prompts=prompts,
         sources=meta["sources"],
+        catalog_health=catalog_health,
         fmt=fmt,
         api=ctx.api,
         keys_only=False,

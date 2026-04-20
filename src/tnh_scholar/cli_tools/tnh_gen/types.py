@@ -47,6 +47,8 @@ class ConfigShowPayload(TypedDict):
     config: ConfigData
     sources: list[str]
     config_files: list[str]
+    catalog_health: NotRequired[dict[str, object]]
+    catalog_errors: NotRequired[int]
     trace_id: str
 
 
@@ -121,6 +123,7 @@ class ListApiPayload(TypedDict):
     prompts: list[ListApiEntry]
     count: int
     sources: list[str]
+    catalog_errors: NotRequired[int]
 
 
 class RunUsagePayload(TypedDict):

@@ -1,13 +1,14 @@
 """Git-backed prompt catalog adapter."""
 
-import logging
-from collections.abc import Sequence
+from __future__ import annotations
+
 from pathlib import Path
 
 from pydantic import ValidationError
 
 from ..config.prompt_catalog_config import PromptCatalogConfig
 from ..domain.models import (
+    CatalogHealth,
     Prompt,
     PromptMetadata,
     PromptOutputContract,
@@ -20,8 +21,6 @@ from ..transport.cache import CacheTransport, InMemoryCacheTransport
 from ..transport.git_client import GitTransportClient
 from ..transport.models import PromptFileRequest
 from .frontmatter_fallback import extract_best_effort_body
-
-logger = logging.getLogger(__name__)
 
 
 class GitPromptCatalog(PromptCatalogPort):
@@ -45,6 +44,7 @@ class GitPromptCatalog(PromptCatalogPort):
         self._loader = loader
         self._cache = cache or InMemoryCacheTransport(default_ttl_s=config.cache_ttl_s)
         self._mapper = mapper or PromptMapper()
+        self._health = CatalogHealth()
 
     def get(self, key: str) -> Prompt:
         cache_key = self._make_cache_key(key)
@@ -56,7 +56,7 @@ class GitPromptCatalog(PromptCatalogPort):
         prompt, warnings = self._load_prompt_with_fallback(key, file_resp.content)
 
         if warnings:
-            self._log_warnings(key, warnings)
+            self._health.warnings.extend(self._loader.warning_issues(key, warnings))
 
         self._cache.set(cache_key, prompt, ttl_s=self._config.cache_ttl_s)
         return prompt
@@ -87,6 +87,7 @@ class GitPromptCatalog(PromptCatalogPort):
     ) -> tuple[Prompt, list[str]]:
         body = self._best_effort_body(content)
         fallback_metadata = self._fallback_metadata(key, reason=reason)
+        self._health.errors.append(self._loader.parse_error_issue(key, reason))
         prompt = Prompt(
             name=fallback_metadata.name,
             version=fallback_metadata.version,
@@ -103,6 +104,7 @@ class GitPromptCatalog(PromptCatalogPort):
         if validation.succeeded():
             return prompt, self._prompt_warnings(prompt)
 
+        self._health.errors.extend(self._loader.validation_issues(key, validation))
         fallback_metadata = self._fallback_metadata(
             key,
             reason=f"Invalid prompt: {validation.errors}",
@@ -136,12 +138,19 @@ class GitPromptCatalog(PromptCatalogPort):
             key = self._mapper.to_key_from_path(changed_path, self._config.repository_path)
             self._cache.invalidate(self._make_cache_key(key))
 
+    def catalog_health(self) -> CatalogHealth:
+        """Return the accumulated catalog health report."""
+        return self._health.model_copy(deep=True)
+
     def _make_cache_key(self, prompt_key: str) -> str:
         commit = self._transport.get_current_commit()
         return f"{prompt_key}@{commit[:8]}"
 
     def _fallback_metadata(self, key: str, *, reason: str) -> PromptMetadata:
-        warning = f"Missing or invalid frontmatter for prompt '{key}': {reason}. {self._EXPECTED_FRONTMATTER}"
+        warning = (
+            f"Missing or invalid frontmatter for prompt '{key}': {reason}. "
+            f"{self._EXPECTED_FRONTMATTER}"
+        )
         return PromptMetadata(
             prompt_id=key,
             key=key,
@@ -160,8 +169,3 @@ class GitPromptCatalog(PromptCatalogPort):
 
     def _best_effort_body(self, content: str) -> str:
         return extract_best_effort_body(content)
-
-    def _log_warnings(self, key: str, warnings: Sequence[str]) -> None:
-        """Surface prompt warnings to help with diagnostics."""
-        for warning in warnings:
-            logger.warning("Prompt '%s' warning: %s", key, warning)
