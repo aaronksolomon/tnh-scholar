@@ -1,5 +1,6 @@
 import argparse
 import importlib.util
+import shlex
 import shutil
 import subprocess
 import sys
@@ -29,6 +30,7 @@ class SetupResult:
     curl_status: CurlCffiStatus
     config_written: bool
     errors: tuple[str, ...]
+    warnings: tuple[str, ...]
 
     def ok(self) -> bool:
         return not self.errors
@@ -79,7 +81,11 @@ class RuntimeSetup:
     def brew_available(self) -> bool:
         return self.which("brew") is not None
 
-    def install_js_runtime(self, assume_yes: bool, no_input: bool) -> tuple[RuntimeDetection | None, list[str]]:
+    def install_js_runtime(
+        self,
+        assume_yes: bool,
+        no_input: bool,
+    ) -> tuple[RuntimeDetection | None, list[str]]:
         if runtime := self.find_js_runtime():
             print("JS runtime detected.")
             return runtime, []
@@ -129,33 +135,66 @@ class RuntimeSetup:
         return ["curl_cffi not installed."]
 
     def _install_command(self) -> str:
-        root = self.repo_root()
         if self.which("pipx"):
             return "pipx inject tnh-scholar curl_cffi"
-        if self.which("poetry") and (root / "pyproject.toml").exists():
-            return "poetry run python -m pip install curl_cffi"
-        return "python -m pip install curl_cffi"
+        return f"{sys.executable} -m pip install curl_cffi"
 
     def _fallback_install_command(self) -> str:
-        root = self.repo_root()
-        if self.which("poetry") and (root / "pyproject.toml").exists():
-            return "poetry run python -m pip install curl_cffi"
-        return "python -m pip install curl_cffi"
+        return f"{sys.executable} -m pip install curl_cffi"
 
     def _run_install_command(self, install_cmd: str) -> subprocess.CompletedProcess[str]:
         if install_cmd.startswith("pipx "):
             try:
                 return self.runner(
-                    install_cmd.split(" "),
+                    shlex.split(install_cmd),
                     env=self._pipx_env(),
                     check=False,
                 )
             except FileNotFoundError:
                 return self._failed_process()
         try:
-            return self.runner(install_cmd.split(" "), check=False)
+            args = shlex.split(install_cmd)
+            result = self.runner(
+                args,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if self._is_missing_pip_result(args, result):
+                return self._retry_after_ensurepip(args)
+            return result
         except FileNotFoundError:
             return self._failed_process()
+
+    def _is_missing_pip_result(
+        self,
+        args: list[str],
+        result: subprocess.CompletedProcess[str],
+    ) -> bool:
+        if result.returncode == 0:
+            return False
+        if len(args) < 3:
+            return False
+        if args[0] != sys.executable or args[1:3] != ["-m", "pip"]:
+            return False
+        return "No module named pip" in (result.stderr or "")
+
+    def _retry_after_ensurepip(self, args: list[str]) -> subprocess.CompletedProcess[str]:
+        print("pip not available in current env. Bootstrapping with ensurepip.")
+        ensurepip_result = self.runner(
+            [sys.executable, "-m", "ensurepip", "--upgrade"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if ensurepip_result.returncode != 0:
+            return ensurepip_result
+        return self.runner(
+            args,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
 
     def _install_failure_message(self, install_cmd: str) -> str:
         if install_cmd.startswith("pipx "):
@@ -225,27 +264,31 @@ def _build_setup() -> RuntimeSetup:
     )
 
 
-def _run_steps(setup: RuntimeSetup, assume_yes: bool, no_input: bool) -> tuple[RuntimeDetection | None, list[str]]:
+def _run_steps(
+    setup: RuntimeSetup,
+    assume_yes: bool,
+    no_input: bool,
+) -> tuple[RuntimeDetection | None, list[str], list[str]]:
     runtime, runtime_errors = setup.install_js_runtime(assume_yes, no_input)
-    curl_errors = setup.install_curl_cffi(assume_yes, no_input)
-    errors = runtime_errors + curl_errors
-    return runtime, errors
+    curl_warnings = setup.install_curl_cffi(assume_yes, no_input)
+    return runtime, runtime_errors, curl_warnings
 
 
 def run_setup(assume_yes: bool, no_input: bool) -> SetupResult:
     setup = _build_setup()
     print("yt-dlp runtime setup")
-    runtime, errors = _run_steps(setup, assume_yes, no_input)
+    runtime, errors, warnings = _run_steps(setup, assume_yes, no_input)
     curl_status = setup.curl_status()
     config_written, config_errors = _write_config_if_possible(setup, runtime, curl_status)
     errors.extend(config_errors)
     setup.print_status(runtime, curl_status)
-    _print_done(errors)
+    _print_done(errors, warnings)
     return SetupResult(
         js_runtime=runtime,
         curl_status=curl_status,
         config_written=config_written,
         errors=tuple(errors),
+        warnings=tuple(warnings),
     )
 
 
@@ -261,8 +304,10 @@ def _write_config_if_possible(
     return wrote, [message] if message else []
 
 
-def _print_done(errors: list[str]) -> None:
+def _print_done(errors: list[str], warnings: list[str]) -> None:
     if errors:
+        print("Done with errors.")
+    elif warnings:
         print("Done with warnings.")
     else:
         print("Done.")

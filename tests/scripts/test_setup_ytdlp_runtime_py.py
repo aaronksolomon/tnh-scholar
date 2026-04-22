@@ -1,7 +1,8 @@
+import importlib.util
+import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-import importlib.util
-import sys
 
 import pytest
 
@@ -67,14 +68,22 @@ def test_install_js_runtime_missing_no_brew() -> None:
 
 
 def test_install_curl_cffi_current_env(monkeypatch: pytest.MonkeyPatch) -> None:
-    setup = runtime.RuntimeSetup(runner=lambda *a, **k: FakeResult(), which=lambda _: None, input_func=lambda _: "")
+    setup = runtime.RuntimeSetup(
+        runner=lambda *a, **k: FakeResult(),
+        which=lambda _: None,
+        input_func=lambda _: "",
+    )
     monkeypatch.setattr(setup, "python_has_curl_cffi", lambda: True)
     errors = setup.install_curl_cffi(assume_yes=False, no_input=False)
     assert errors == []
 
 
 def test_install_curl_cffi_pipx_env(monkeypatch: pytest.MonkeyPatch) -> None:
-    setup = runtime.RuntimeSetup(runner=lambda *a, **k: FakeResult(), which=lambda _: "/usr/bin/pipx", input_func=lambda _: "")
+    setup = runtime.RuntimeSetup(
+        runner=lambda *a, **k: FakeResult(),
+        which=lambda _: "/usr/bin/pipx",
+        input_func=lambda _: "",
+    )
     monkeypatch.setattr(setup, "python_has_curl_cffi", lambda: False)
     monkeypatch.setattr(setup, "pipx_has_curl_cffi", lambda: True)
     errors = setup.install_curl_cffi(assume_yes=False, no_input=False)
@@ -82,7 +91,11 @@ def test_install_curl_cffi_pipx_env(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 def test_install_curl_cffi_declined(monkeypatch: pytest.MonkeyPatch) -> None:
-    setup = runtime.RuntimeSetup(runner=lambda *a, **k: FakeResult(), which=lambda _: None, input_func=lambda _: "n")
+    setup = runtime.RuntimeSetup(
+        runner=lambda *a, **k: FakeResult(),
+        which=lambda _: None,
+        input_func=lambda _: "n",
+    )
     monkeypatch.setattr(setup, "python_has_curl_cffi", lambda: False)
     monkeypatch.setattr(setup, "pipx_has_curl_cffi", lambda: False)
     errors = setup.install_curl_cffi(assume_yes=False, no_input=False)
@@ -95,16 +108,93 @@ def test_install_curl_cffi_pipx_missing_binary(monkeypatch: pytest.MonkeyPatch) 
             raise FileNotFoundError("pipx")
         return FakeResult()
 
-    setup = runtime.RuntimeSetup(runner=runner, which=lambda _: "/usr/bin/pipx", input_func=lambda _: "y")
+    setup = runtime.RuntimeSetup(
+        runner=runner,
+        which=lambda _: "/usr/bin/pipx",
+        input_func=lambda _: "y",
+    )
     monkeypatch.setattr(setup, "python_has_curl_cffi", lambda: False)
     monkeypatch.setattr(setup, "pipx_has_curl_cffi", lambda: False)
     errors = setup.install_curl_cffi(assume_yes=True, no_input=False)
     assert errors == []
 
 
+def test_run_setup_treats_curl_cffi_gap_as_warning(monkeypatch: pytest.MonkeyPatch) -> None:
+    @dataclass
+    class FakeSetup:
+        def install_js_runtime(self, assume_yes, no_input):
+            return runtime.RuntimeDetection("node", Path("/usr/bin/node")), []
+
+        def install_curl_cffi(self, assume_yes, no_input):
+            return ["curl_cffi not installed."]
+
+        def curl_status(self):
+            return runtime.CurlCffiStatus(current_env=False, pipx_env=False)
+
+        def write_config(self, runtime_detection, curl_status):
+            return True, None
+
+        def print_status(self, runtime_detection, curl_status):
+            return None
+
+    monkeypatch.setattr(runtime, "_build_setup", lambda: FakeSetup())
+    result = runtime.run_setup(assume_yes=True, no_input=False)
+
+    assert result.ok() is True
+    assert result.warnings == ("curl_cffi not installed.",)
+
+
+def test_run_install_command_bootstraps_pip_with_ensurepip() -> None:
+    calls: list[list[str]] = []
+
+    def runner(cmd, check=False, capture_output=False, text=False, **kwargs):
+        calls.append(cmd)
+        if cmd == [sys.executable, "-m", "pip", "install", "curl_cffi"]:
+            if len([call for call in calls if call == cmd]) == 1:
+                return subprocess.CompletedProcess(
+                    args=cmd,
+                    returncode=1,
+                    stdout="",
+                    stderr="No module named pip",
+                )
+            return subprocess.CompletedProcess(
+                args=cmd,
+                returncode=0,
+                stdout="installed",
+                stderr="",
+            )
+        if cmd == [sys.executable, "-m", "ensurepip", "--upgrade"]:
+            return subprocess.CompletedProcess(
+                args=cmd,
+                returncode=0,
+                stdout="bootstrapped",
+                stderr="",
+            )
+        return subprocess.CompletedProcess(args=cmd, returncode=0, stdout="", stderr="")
+
+    setup = runtime.RuntimeSetup(
+        runner=runner,
+        which=lambda _: None,
+        input_func=lambda _: "y",
+    )
+
+    result = setup._run_install_command(f"{sys.executable} -m pip install curl_cffi")
+
+    assert result.returncode == 0
+    assert calls == [
+        [sys.executable, "-m", "pip", "install", "curl_cffi"],
+        [sys.executable, "-m", "ensurepip", "--upgrade"],
+        [sys.executable, "-m", "pip", "install", "curl_cffi"],
+    ]
+
+
 def test_write_config_with_impersonate(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("HOME", str(tmp_path))
-    setup = runtime.RuntimeSetup(runner=lambda *a, **k: FakeResult(), which=lambda _: None, input_func=lambda _: "")
+    setup = runtime.RuntimeSetup(
+        runner=lambda *a, **k: FakeResult(),
+        which=lambda _: None,
+        input_func=lambda _: "",
+    )
     runtime_detection = runtime.RuntimeDetection(name="node", path=Path("/usr/bin/node"))
     curl_status = runtime.CurlCffiStatus(current_env=True, pipx_env=False)
 

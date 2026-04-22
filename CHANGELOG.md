@@ -184,6 +184,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **yt-dlp Runtime Setup Build Fix** (2026-04-21)
+  - Fixed `scripts/setup_ytdlp_runtime.py` so `make ytdlp-runtime` and `make build-all` no longer fail just because `curl_cffi` is unavailable in the active Poetry environment
+  - Switched the fallback installer to the active interpreter, added `ensurepip` bootstrapping when `pip` is missing, and kept missing `curl_cffi` as a non-fatal warning when JS runtime/config setup still succeeds
+  - Added focused regression coverage for non-fatal `curl_cffi` warnings and the missing-`pip` bootstrap path
+  - Files: `scripts/setup_ytdlp_runtime.py`, `tests/scripts/test_setup_ytdlp_runtime_py.py`
+
 - **audio-transcribe Structured Transcript Output Fix** (2026-04-21)
   - Fixed the `audio-transcribe` CLI crash when the transcription pipeline returns structured transcript records instead of plain strings
   - Normalized CLI output so transcript writes and stdout rendering accept both legacy string entries and the current dict-shaped pipeline results, while skipping failed chunks cleanly
