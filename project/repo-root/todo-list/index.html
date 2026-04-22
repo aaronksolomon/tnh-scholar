@@ -12821,6 +12821,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li><strong>Recent related docs work</strong>:</li>
 <li>documented the current low-noise Codex headless path, native subagent confirmation, and first supervisory shell-trial findings in <code>/docs/architecture/agent-orchestration/notes/experiments/</code> and <code>/docs/architecture/agent-orchestration/supervisory-shell-trial/</code></li>
 <li>SPIKE-10 comparison result now records the current practical recommendation: keep <code>tnh-conductor</code> as the main coordination substrate, harden native subagent launch reliability, and treat <code>codex-assistant</code> / <code>claude-assistant</code> worker paths as experimental until runtime bootstrap and auth are dependable</li>
+<li>direct-vs-conductor follow-up review selected the direct-arm <code>tnh-conductor status --watch</code> implementation as the merge candidate while preserving the maintained conductor run as the bootstrap-viability proof</li>
 <li><strong>Recommended PR sizing</strong>:</li>
 <li>Prefer <strong>2 PRs</strong> to stay comfortably under diff-size guidance</li>
 <li>A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work</li>

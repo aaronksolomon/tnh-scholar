@@ -12447,7 +12447,16 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>SPIKE-10 Agent Coordination Comparison Result</strong> (2026-04-20)</li>
+<li><strong><code>tnh-conductor status --watch</code> Live Monitoring</strong> (2026-04-21)</li>
+<li>Added <code>--watch</code> and <code>--poll-interval-seconds</code> to <code>tnh-conductor status</code> so operators can stream machine-readable JSON status snapshots until a run reaches a terminal lifecycle state</li>
+<li>Preserved the existing one-shot status output when watch mode is not enabled</li>
+<li>Added focused CLI regression coverage for repeated polling through completion and immediate stop on blocked runs</li>
+<li>
+<p>Files: <code>src/tnh_scholar/cli_tools/tnh_conductor/tnh_conductor.py</code>, <code>tests/cli_tools/test_tnh_conductor.py</code></p>
+</li>
+<li>
+<p><strong>SPIKE-10 Agent Coordination Comparison Result</strong> (2026-04-20)</p>
+</li>
 <li>Recorded the five-arm SPIKE-10 result note for the shared <code>tnh-conductor status --watch</code> task across direct Codex, native subagents, explicit <code>codex-assistant</code>, explicit <code>claude-assistant</code>, and the maintained <code>tnh-conductor</code> path</li>
 <li>Captured the main recommendation to keep <code>tnh-conductor</code> as the primary coordination substrate while treating direct Codex as the baseline and the assistant CLIs as experimental worker seams</li>
 <li>Clarified that the current comparison excludes a live <code>tnh-gen</code> evaluator because maintained agent-orch code does not yet wire that supervisory seam</li>

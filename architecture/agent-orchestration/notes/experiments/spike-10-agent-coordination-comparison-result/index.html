@@ -3628,6 +3628,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Comparison Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#follow-up-code-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Follow-up code comparison:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -11817,6 +11832,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Comparison Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#follow-up-code-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Follow-up code comparison:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -12125,6 +12155,13 @@
 <li>validation routing</li>
 </ul>
 <p>That is the main reason to keep investing in it even though the direct arm remains cleaner on a small task.</p>
+<h3 id="follow-up-code-comparison">Follow-up code comparison:<a class="headerlink" href="#follow-up-code-comparison" title="Link to this section">&para;</a></h3>
+<ul>
+<li>the direct arm and the <code>tnh-conductor</code> implementation arm both used the same Codex CLI execution family (<code>codex exec --ephemeral</code>)</li>
+<li>the code quality of the direct arm had minor but noticeable quality edges in implementation. </li>
+<li>the small code-quality edge for the direct arm therefore looks more like a prompt and entrypoint-context difference than a runner-surface difference</li>
+<li>in practice, that points to workflow prompt packaging and worker context as the next hardening opportunity for <code>tnh-conductor</code></li>
+</ul>
 <h2 id="what-this-says-about-tnh-gen">What This Says About <code>tnh-gen</code><a class="headerlink" href="#what-this-says-about-tnh-gen" title="Link to this section">&para;</a></h2>
 <p>This comparison should not be read as evidence against using <code>tnh-gen</code>.</p>
 <p>It says something narrower:</p>
