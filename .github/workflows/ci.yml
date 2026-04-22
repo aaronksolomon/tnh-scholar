@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]
 
 jobs:
   lint-and-type-check:
@@ -56,6 +56,7 @@ jobs:
             git diff --stat -- project_directory_tree.txt src_directory_tree.txt
             git diff -- project_directory_tree.txt src_directory_tree.txt
           fi
+        continue-on-error: true
 
       - name: Ruff lint
         run: poetry run ruff check . || echo "⚠️ Ruff linting found issues (non-blocking)"
@@ -70,6 +71,7 @@ jobs:
         continue-on-error: true
 
       - name: Run tests
+        if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'full-ci')
         run: poetry run pytest --maxfail=1 --cov=tnh_scholar --cov-report=term-missing
 
       - name: Markdown lint
@@ -78,3 +80,4 @@ jobs:
 
       - name: Verify README ↔ docs/index.md sync
         run: poetry run python scripts/sync_readme.py
+        continue-on-error: true

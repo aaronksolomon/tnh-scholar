@@ -184,6 +184,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Prototype CI Churn Reduction** (2026-04-21)
+  - Narrowed GitHub CI triggers to `main` only and made the full pytest step opt-in for PRs via the `full-ci` label
+  - Preserved full test execution on pushes to `main` after merge while keeping prototype PRs lightweight by default
+  - Made directory-tree drift and README/docs sync informational rather than blocking during prototype churn
+  - Files: `.github/workflows/ci.yml`
+
 - **yt-dlp Freshness-Gated Health Check** (2026-04-21)
   - Added `scripts/update_health_check.py`, passive `make update-health-check`, and explicit `make health-check`
   - Wired the passive status gate into `make ci-check`, `make build-all`, and `make update`
