@@ -95,3 +95,49 @@ def test_ops_check_empty_urls(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError):
         runner.run()
+
+
+def test_ops_check_emits_progress_events(tmp_path: Path) -> None:
+    urls_path = tmp_path / "urls.txt"
+    _write_urls(urls_path, "u1\nu2\n")
+    events: list[tuple[object, ...]] = []
+
+    @dataclass
+    class RecordingReporter:
+        def on_run_started(self, total_urls: int) -> None:
+            events.append(("run_started", total_urls))
+
+        def on_url_started(self, index: int, total_urls: int, url: str) -> None:
+            events.append(("url_started", index, total_urls, url))
+
+        def on_url_succeeded(self, index: int, total_urls: int, url: str) -> None:
+            events.append(("url_succeeded", index, total_urls, url))
+
+        def on_url_failed(self, index: int, total_urls: int, url: str, reason: str) -> None:
+            events.append(("url_failed", index, total_urls, url, reason))
+
+        def on_run_finished(self, report) -> None:
+            events.append(("run_finished", report.successes, len(report.failures)))
+
+    config = OpsCheckConfig(
+        urls_path=urls_path,
+        url_limit=None,
+        output_dir=tmp_path / "out",
+    )
+    runner = OpsCheckRunner(
+        downloader=StubDownloader(audio_bytes=b"data"),
+        config=config,
+        reporter=RecordingReporter(),
+    )
+
+    report = runner.run()
+
+    assert report.successes == 2
+    assert events == [
+        ("run_started", 2),
+        ("url_started", 0, 2, "u1"),
+        ("url_succeeded", 0, 2, "u1"),
+        ("url_started", 1, 2, "u2"),
+        ("url_succeeded", 1, 2, "u2"),
+        ("run_finished", 2, 0),
+    ]

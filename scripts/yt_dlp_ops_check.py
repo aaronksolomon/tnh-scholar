@@ -3,6 +3,10 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
+from rich.console import Console
+from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.progress import TaskID
+
 from tnh_scholar.video_processing.ops_check import OpsCheckConfig, OpsCheckRunner
 from tnh_scholar.video_processing.video_processing import DLPDownloader
 
@@ -14,6 +18,62 @@ class OpsRunConfig:
     urls_path: Path
     url_limit: int | None
     output_dir: Path
+
+
+@dataclass
+class OpsProgressUI:
+    console: Console
+    total_urls: int = 0
+    progress: Progress | None = None
+    task_id: TaskID | None = None
+
+    @classmethod
+    def create(cls) -> "OpsProgressUI":
+        return cls(console=Console())
+
+    def on_run_started(self, total_urls: int) -> None:
+        self.total_urls = total_urls
+        self.console.print("[bold blue]yt-dlp ops check[/bold blue]")
+        self.console.print(f"Validation URLs: {total_urls}")
+        self.progress = Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            console=self.console,
+            transient=False,
+        )
+        self.progress.start()
+        self.task_id = self.progress.add_task("Preparing live checks...", total=None)
+
+    def on_url_started(self, index: int, total_urls: int, url: str) -> None:
+        self._update_progress(
+            f"[{index + 1}/{total_urls}] Checking {self._short_url(url)}"
+        )
+
+    def on_url_succeeded(self, index: int, total_urls: int, url: str) -> None:
+        self.console.print(
+            f"[green][OK][/green] [{index + 1}/{total_urls}] {self._short_url(url)}"
+        )
+
+    def on_url_failed(self, index: int, total_urls: int, url: str, reason: str) -> None:
+        self.console.print(
+            f"[red][FAIL][/red] [{index + 1}/{total_urls}] {self._short_url(url)} :: {reason}"
+        )
+
+    def on_run_finished(self, report) -> None:
+        if self.progress is not None:
+            self.progress.stop()
+        self.console.print(
+            "[bold]Completed[/bold] "
+            f"(successes={report.successes}, failures={len(report.failures)})"
+        )
+
+    def _update_progress(self, description: str) -> None:
+        if self.progress is None or self.task_id is None:
+            return
+        self.progress.update(self.task_id, description=description)
+
+    def _short_url(self, url: str) -> str:
+        return url if len(url) <= 80 else url[:77] + "..."
 
 
 def _build_config() -> OpsRunConfig:
@@ -42,6 +102,7 @@ def _parse_limit(value: str | None) -> int | None:
 
 
 def _run_ops(config: OpsRunConfig) -> tuple[int, str]:
+    progress_ui = OpsProgressUI.create()
     runner = OpsCheckRunner(
         downloader=DLPDownloader(),
         config=OpsCheckConfig(
@@ -49,6 +110,7 @@ def _run_ops(config: OpsRunConfig) -> tuple[int, str]:
             url_limit=config.url_limit,
             output_dir=config.output_dir,
         ),
+        reporter=progress_ui,
     )
     report = runner.run()
     output = _format_report(report)
