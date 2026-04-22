@@ -2,11 +2,15 @@ from __future__ import annotations
 
 import json
 import subprocess
+from collections.abc import Iterator
+from datetime import datetime, timezone
 from pathlib import Path
 from textwrap import dedent
 
 from typer.testing import CliRunner
 
+from tnh_scholar.agent_orchestration.kernel.enums import Opcode
+from tnh_scholar.agent_orchestration.run_artifacts import RunLifecycleState, RunStatus
 from tnh_scholar.cli_tools.tnh_conductor import tnh_conductor
 
 runner = CliRunner(mix_stderr=False)
@@ -221,3 +225,190 @@ def test_tnh_conductor_status_fails_for_missing_run(tmp_path: Path) -> None:
 
     assert result.exit_code == 1
     assert "Run status not found" in result.stderr
+
+
+def test_tnh_conductor_status_watch_outputs_jsonl_until_completed(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    repo_root = _init_repo(tmp_path)
+    runs_root = tmp_path / "runs"
+    run_id = "watch-run"
+    paths = tnh_conductor.STATUS_STORE.create_run(run_id, runs_root)
+
+    emitted_statuses = iter(
+        (
+            _build_status(
+                run_id=run_id,
+                workflow_id="watch-workflow",
+                lifecycle_state=RunLifecycleState.running,
+                updated_second=1,
+            ),
+            _build_status(
+                run_id=run_id,
+                workflow_id="watch-workflow",
+                lifecycle_state=RunLifecycleState.waiting,
+                updated_second=2,
+            ),
+            _build_status(
+                run_id=run_id,
+                workflow_id="watch-workflow",
+                lifecycle_state=RunLifecycleState.completed,
+                updated_second=3,
+            ),
+        )
+    )
+    sleep_calls: list[float] = []
+    tnh_conductor.STATUS_STORE.write_status(
+        _build_status(
+            run_id=run_id,
+            workflow_id="watch-workflow",
+            lifecycle_state=RunLifecycleState.running,
+            updated_second=0,
+        ),
+        paths,
+    )
+
+    monkeypatch.setattr(
+        type(tnh_conductor.STATUS_STORE),
+        "read_status",
+        lambda _, requested_run_id, requested_root: _next_status(
+            emitted_statuses,
+            requested_run_id=requested_run_id,
+            requested_root=requested_root,
+            expected_run_id=run_id,
+            expected_root=runs_root,
+        ),
+    )
+    monkeypatch.setattr(tnh_conductor.time, "sleep", sleep_calls.append)
+
+    result = runner.invoke(
+        tnh_conductor.app,
+        [
+            "status",
+            run_id,
+            "--repo-root",
+            str(repo_root),
+            "--runs-root",
+            str(runs_root),
+            "--watch",
+            "--poll-interval-seconds",
+            "0.25",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    payloads = [json.loads(line) for line in result.stdout.splitlines()]
+    assert [payload["lifecycle_state"] for payload in payloads] == [
+        RunLifecycleState.running.value,
+        RunLifecycleState.waiting.value,
+        RunLifecycleState.completed.value,
+    ]
+    assert sleep_calls == [0.25, 0.25]
+
+
+def test_tnh_conductor_status_watch_stops_when_blocked(monkeypatch, tmp_path: Path) -> None:
+    repo_root = _init_repo(tmp_path)
+    runs_root = tmp_path / "runs"
+    run_id = "blocked-run"
+    paths = tnh_conductor.STATUS_STORE.create_run(run_id, runs_root)
+
+    emitted_statuses = iter(
+        (
+            _build_status(
+                run_id=run_id,
+                workflow_id="watch-workflow",
+                lifecycle_state=RunLifecycleState.running,
+                updated_second=1,
+            ),
+            _build_status(
+                run_id=run_id,
+                workflow_id="watch-workflow",
+                lifecycle_state=RunLifecycleState.blocked,
+                updated_second=2,
+                blocking_reason="needs_human",
+            ),
+        )
+    )
+    sleep_calls: list[float] = []
+    tnh_conductor.STATUS_STORE.write_status(
+        _build_status(
+            run_id=run_id,
+            workflow_id="watch-workflow",
+            lifecycle_state=RunLifecycleState.running,
+            updated_second=0,
+        ),
+        paths,
+    )
+
+    monkeypatch.setattr(
+        type(tnh_conductor.STATUS_STORE),
+        "read_status",
+        lambda _, requested_run_id, requested_root: _next_status(
+            emitted_statuses,
+            requested_run_id=requested_run_id,
+            requested_root=requested_root,
+            expected_run_id=run_id,
+            expected_root=runs_root,
+        ),
+    )
+    monkeypatch.setattr(tnh_conductor.time, "sleep", sleep_calls.append)
+
+    result = runner.invoke(
+        tnh_conductor.app,
+        [
+            "status",
+            run_id,
+            "--repo-root",
+            str(repo_root),
+            "--runs-root",
+            str(runs_root),
+            "--watch",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    payloads = [json.loads(line) for line in result.stdout.splitlines()]
+    assert [payload["lifecycle_state"] for payload in payloads] == [
+        RunLifecycleState.running.value,
+        RunLifecycleState.blocked.value,
+    ]
+    assert payloads[-1]["blocking_reason"] == "needs_human"
+    assert sleep_calls == [1.0]
+
+
+def _build_status(
+    *,
+    run_id: str,
+    workflow_id: str,
+    lifecycle_state: RunLifecycleState,
+    updated_second: int,
+    blocking_reason: str | None = None,
+) -> RunStatus:
+    """Build one typed CLI status snapshot fixture."""
+    return RunStatus(
+        run_id=run_id,
+        workflow_id=workflow_id,
+        started_at=datetime(2026, 4, 20, 12, 0, tzinfo=timezone.utc),
+        updated_at=datetime(2026, 4, 20, 12, 0, updated_second, tzinfo=timezone.utc),
+        lifecycle_state=lifecycle_state,
+        current_step_id="implement",
+        last_completed_step_id="design",
+        active_opcode=Opcode.run_agent,
+        elapsed_seconds=updated_second,
+        blocking_reason=blocking_reason,
+    )
+
+
+def _next_status(
+    statuses: Iterator[RunStatus],
+    *,
+    requested_run_id: str,
+    requested_root: Path,
+    expected_run_id: str,
+    expected_root: Path,
+) -> RunStatus:
+    """Return the next mocked status and validate the CLI call contract."""
+    assert requested_run_id == expected_run_id
+    assert requested_root == expected_root
+    return next(statuses)

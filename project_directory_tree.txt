@@ -86,6 +86,7 @@
 │   │   │   │   │   ├── index.md
 │   │   │   │   │   ├── oa01x-cloud-direction-generation-comparison-result.md
 │   │   │   │   │   ├── oa01x-spike-experiment-register.md
+│   │   │   │   │   ├── run-spike-10-agent-coordination-comparison.md
 │   │   │   │   │   ├── spike-02-execution-context-comparison.md
 │   │   │   │   │   ├── spike-03-native-subagent-smoke-test.md
 │   │   │   │   │   ├── spike-04-narrow-supervisory-comparison.md
@@ -94,6 +95,10 @@
 │   │   │   │   │   ├── spike-07-codex-home-state-dependency.md
 │   │   │   │   │   ├── spike-08-launch-context-env-contamination.md
 │   │   │   │   │   ├── spike-09-prompt-dir-three-arm-comparison.md
+│   │   │   │   │   ├── spike-10-agent-coordination-comparison-plan.md
+│   │   │   │   │   ├── spike-10-agent-coordination-comparison-result.md
+│   │   │   │   │   ├── spike-10-conductor-watch-task-brief.md
+│   │   │   │   │   ├── spike-10-conductor-watch.workflow.yaml
 │   │   │   │   │   └── spike-testing-sequence.md
 │   │   │   │   ├── index.md
 │   │   │   │   ├── plans
@@ -243,6 +248,7 @@
 │   │   │   │   ├── adr-tg01-cli-architecture.md
 │   │   │   │   ├── adr-tg01.1-human-friendly-defaults.md
 │   │   │   │   ├── adr-tg02-prompt-integration.md
+│   │   │   │   ├── adr-tg03-completion-contract.md
 │   │   │   │   └── index.md
 │   │   │   ├── design
 │   │   │   │   └── archive
@@ -252,6 +258,7 @@
 │   │   │   ├── index.md
 │   │   │   └── notes
 │   │   │       ├── index.md
+│   │   │       ├── tnh-gen-implementation-plan-2026-04.md
 │   │   │       └── tnh-gen-robustness-review-2026-04.md
 │   │   ├── transcription
 │   │   │   ├── adr
@@ -786,6 +793,12 @@
 │       │   │   ├── transcription_pipeline.py
 │       │   │   ├── validate.py
 │       │   │   └── version_check.py
+│       │   ├── claude_assistant
+│       │   │   ├── __init__.py
+│       │   │   └── claude_assistant.py
+│       │   ├── codex_assistant
+│       │   │   ├── __init__.py
+│       │   │   └── codex_assistant.py
 │       │   ├── json_to_srt
 │       │   │   ├── __init__.py
 │       │   │   ├── json_to_srt.py
@@ -1061,6 +1074,8 @@
 │   │       └── test_transcription_service_factory.py
 │   ├── cli_tools
 │   │   ├── test_audio_transcribe_pipeline.py
+│   │   ├── test_claude_assistant.py
+│   │   ├── test_codex_assistant.py
 │   │   ├── test_other_clis.py
 │   │   ├── test_tnh_conductor.py
 │   │   ├── test_tnh_gen.py
@@ -1081,6 +1096,8 @@
 │   │   │       ├── __init__.py
 │   │   │       └── test_jsonc_parser.py
 │   │   ├── test_completion_mapper.py
+│   │   ├── test_openai_adapter.py
+│   │   ├── test_openai_client.py
 │   │   ├── test_policy_routing_safety.py
 │   │   ├── test_registry_loader.py
 │   │   ├── test_registry_staleness.py
@@ -1154,4 +1171,4 @@
         │       └── path_utils.ts
         └── tsconfig.json
 
-242 directories, 913 files
+244 directories, 928 files

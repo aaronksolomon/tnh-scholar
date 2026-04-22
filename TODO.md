@@ -125,6 +125,7 @@ This section organizes work into three priority levels based on criticality for 
 - **Recent related docs work**:
   - documented the current low-noise Codex headless path, native subagent confirmation, and first supervisory shell-trial findings in `/docs/architecture/agent-orchestration/notes/experiments/` and `/docs/architecture/agent-orchestration/supervisory-shell-trial/`
   - SPIKE-10 comparison result now records the current practical recommendation: keep `tnh-conductor` as the main coordination substrate, harden native subagent launch reliability, and treat `codex-assistant` / `claude-assistant` worker paths as experimental until runtime bootstrap and auth are dependable
+  - direct-vs-conductor follow-up review selected the direct-arm `tnh-conductor status --watch` implementation as the merge candidate while preserving the maintained conductor run as the bootstrap-viability proof
 - **Recommended PR sizing**:
   - Prefer **2 PRs** to stay comfortably under diff-size guidance
   - A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work

@@ -287,6 +287,13 @@ Existing agent-orch was best on control surface.
 
 That is the main reason to keep investing in it even though the direct arm remains cleaner on a small task.
 
+### Follow-up code comparison:
+
+- the direct arm and the `tnh-conductor` implementation arm both used the same Codex CLI execution family (`codex exec --ephemeral`)
+- the code quality of the direct arm had minor but noticeable quality edges in implementation. 
+- the small code-quality edge for the direct arm therefore looks more like a prompt and entrypoint-context difference than a runner-surface difference
+- in practice, that points to workflow prompt packaging and worker context as the next hardening opportunity for `tnh-conductor`
+
 ## What This Says About `tnh-gen`
 
 This comparison should not be read as evidence against using `tnh-gen`.

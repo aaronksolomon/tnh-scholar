@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time
 from pathlib import Path
 
 import typer
@@ -14,7 +15,11 @@ from tnh_scholar.agent_orchestration.app import (
     HeadlessStorageConfig,
     build_bootstrap_runtime_profile,
 )
-from tnh_scholar.agent_orchestration.run_artifacts import FilesystemRunArtifactStore
+from tnh_scholar.agent_orchestration.run_artifacts import (
+    FilesystemRunArtifactStore,
+    RunLifecycleState,
+    RunStatus,
+)
 
 STATUS_STORE = FilesystemRunArtifactStore()
 
@@ -135,24 +140,89 @@ def status_command(
         resolve_path=True,
         help="Optional override for the canonical runs root.",
     ),
+    watch: bool = typer.Option(
+        False,
+        "--watch",
+        help="Poll and print status snapshots until the run reaches a terminal state.",
+    ),
+    poll_interval_seconds: float = typer.Option(
+        1.0,
+        "--poll-interval-seconds",
+        help="Polling interval in seconds when --watch is enabled.",
+    ),
 ) -> None:
     """Read the maintained live status artifact for one run."""
     resolved_repo_root = repo_root.resolve()
     default_storage = HeadlessStorageConfig.for_repo_root(resolved_repo_root)
     resolved_runs_root = default_storage.runs_root if runs_root is None else runs_root
+    _validate_poll_interval(poll_interval_seconds)
+    _assert_status_exists(run_id, resolved_runs_root)
+    if not watch:
+        _emit_status_snapshot(_read_status_or_exit(run_id, resolved_runs_root))
+        return
+    _watch_status(
+        run_id=run_id,
+        resolved_runs_root=resolved_runs_root,
+        poll_interval_seconds=poll_interval_seconds,
+    )
+
+
+def _validate_poll_interval(poll_interval_seconds: float) -> None:
+    """Reject non-positive polling intervals."""
+    if poll_interval_seconds > 0:
+        return
+    typer.echo("Poll interval must be greater than 0 seconds.", err=True)
+    raise typer.Exit(code=1)
+
+
+def _assert_status_exists(run_id: str, resolved_runs_root: Path) -> None:
+    """Fail fast when the canonical status artifact does not exist."""
     status_path = STATUS_STORE.status_path_for_run(run_id, resolved_runs_root)
-    if not status_path.exists():
-        typer.echo(
-            f"Run status not found for '{run_id}' at {status_path}.",
-            err=True,
-        )
-        raise typer.Exit(code=1)
+    if status_path.exists():
+        return
+    typer.echo(
+        f"Run status not found for '{run_id}' at {status_path}.",
+        err=True,
+    )
+    raise typer.Exit(code=1)
+
+
+def _read_status_or_exit(run_id: str, resolved_runs_root: Path) -> RunStatus:
+    """Read one live status snapshot or exit with a stable CLI error."""
     try:
-        status = STATUS_STORE.read_status(run_id, resolved_runs_root)
+        return STATUS_STORE.read_status(run_id, resolved_runs_root)
     except Exception as error:
         typer.echo(f"Failed to read run status for '{run_id}': {error}", err=True)
         raise typer.Exit(code=1) from error
+
+
+def _emit_status_snapshot(status: RunStatus) -> None:
+    """Print one machine-readable status snapshot."""
     typer.echo(status.model_dump_json())
+
+
+def _watch_status(
+    *,
+    run_id: str,
+    resolved_runs_root: Path,
+    poll_interval_seconds: float,
+) -> None:
+    """Poll status until the run reaches a terminal lifecycle state."""
+    while True:
+        status = _read_status_or_exit(run_id, resolved_runs_root)
+        _emit_status_snapshot(status)
+        if _is_terminal_lifecycle_state(status.lifecycle_state):
+            return
+        time.sleep(poll_interval_seconds)
+
+
+def _is_terminal_lifecycle_state(lifecycle_state: RunLifecycleState) -> bool:
+    """Return whether a lifecycle state should stop watch mode."""
+    return lifecycle_state in (
+        RunLifecycleState.completed,
+        RunLifecycleState.failed,
+        RunLifecycleState.blocked,
+    )
 
 
 def main() -> None:
