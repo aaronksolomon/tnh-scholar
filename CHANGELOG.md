@@ -184,6 +184,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **yt-dlp Freshness-Gated Health Check** (2026-04-21)
+  - Added `scripts/update_health_check.py`, passive `make update-health-check`, and explicit `make health-check`
+  - Wired the passive status gate into `make ci-check`, `make build-all`, and `make update`
+  - The passive gate now warns when the last yt-dlp ops run is older than 10 days and fails when it is older than 30 days, while `make health-check` remains the explicit live execution path
+  - Added focused regression coverage for fresh status, stale warning, expiry failure, and explicit run-now state persistence
+  - Files: `scripts/update_health_check.py`, `tests/scripts/test_update_health_check_py.py`, `Makefile`, `docs/development/yt-dlp-ops-check.md`, `TODO.md`
+
 - **yt-dlp Runtime Setup Build Fix** (2026-04-21)
   - Fixed `scripts/setup_ytdlp_runtime.py` so `make ytdlp-runtime` and `make build-all` no longer fail just because `curl_cffi` is unavailable in the active Poetry environment
   - Switched the fallback installer to the active interpreter, added `ensurepip` bootstrapping when `pip` is missing, and kept missing `curl_cffi` as a non-fatal warning when JS runtime/config setup still succeeds

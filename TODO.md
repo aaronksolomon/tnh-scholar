@@ -340,6 +340,7 @@ docs/architecture/jvb-viewer/adr/
 - **Monthly Ops Trigger**:
   - [x] Add cron-ready ops check script + validation URL list
   - [x] Document monthly cron usage and log locations
+  - [x] Add freshness-gated local status wrapper for active repo use (`make update-health-check`) plus explicit `make health-check` execution
   - [ ] Add failure notification workflow (issue creation or alerting)
 - **Acceptance Criteria**:
   - [ ] Coverage for all yt-dlp entry points + error paths
