@@ -321,8 +321,8 @@ def _normalize_transcript_entry(transcript_entry: Any) -> str | None:
         return transcript_entry.strip() or None
 
     if not isinstance(transcript_entry, dict):
-        entry_type = type(transcript_entry).__name__
-        raise TypeError(f"Unsupported transcript entry type: {entry_type}")
+        _log_unsupported_transcript_entry(transcript_entry)
+        return None
 
     transcript_text = transcript_entry.get("transcript")
     if transcript_text is None:
@@ -330,8 +330,8 @@ def _normalize_transcript_entry(transcript_entry: Any) -> str | None:
         return None
 
     if not isinstance(transcript_text, str):
-        entry_type = type(transcript_text).__name__
-        raise TypeError(f"Transcript text must be a string, got: {entry_type}")
+        _log_invalid_transcript_text(transcript_text)
+        return None
 
     return transcript_text.strip() or None
 
@@ -341,6 +341,24 @@ def _log_failed_transcript_chunk(transcript_entry: dict[Any, Any]) -> None:
     error_detail = transcript_entry.get("error")
     if error_detail:
         logger.warning("Skipping failed transcript chunk: %s", error_detail)
+        return
+
+    logger.warning(
+        "Skipping failed transcript chunk without error details: %r",
+        transcript_entry,
+    )
+
+
+def _log_unsupported_transcript_entry(transcript_entry: Any) -> None:
+    """Emit a warning for malformed transcript entries."""
+    entry_type = type(transcript_entry).__name__
+    logger.warning("Skipping unsupported transcript entry type: %s", entry_type)
+
+
+def _log_invalid_transcript_text(transcript_text: Any) -> None:
+    """Emit a warning for malformed transcript text payloads."""
+    entry_type = type(transcript_text).__name__
+    logger.warning("Skipping transcript entry with non-string text: %s", entry_type)
 
 @click.command()
 @click.option(
