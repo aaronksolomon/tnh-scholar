@@ -416,3 +416,52 @@ PRs #58, #59, and #60 were merged to `main` to harden `tnh-gen` for orchestratio
 - [CHANGELOG.md](CHANGELOG.md)
 - [TODO.md](TODO.md)
 - [src/tnh_scholar/gen_ai_service/providers/openai_adapter.py](src/tnh_scholar/gen_ai_service/providers/openai_adapter.py)
+
+## [2026-04-21 12:08 PDT] SPIKE-10 Status Watch Merge and Cleanup
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: spike-10 recovery / PR #61 merge wrap-up
+**Human Collaborator**: phapman
+
+### Context
+Recovered the final SPIKE-10 state after a lost thread, compared the direct and maintained conductor implementations for `tnh-conductor status --watch`, landed the direct-arm variant through PR #61, and then cleaned the local SPIKE-10 worktrees and run artifacts. This follow-up docs pass records the bootstrap milestone and the workflow rules exercised during cleanup and PR handling.
+
+### Key Decisions
+- **Treat the maintained conductor run as the milestone proof**: even though the direct arm produced the slightly cleaner merge candidate, the important result is that the maintained worktree-backed path produced viable code for the same bounded task.
+- **Attribute the small quality gap to framing, not runtime family**: both runs read `AGENTS.md` and used the same Codex CLI execution family, so the main difference is prompt and entrypoint context rather than the underlying runner.
+- **Shift from experimentation to release prep**: after the bootstrap-proof merge, clean the SPIKE-10 artifacts and move toward `0.4.0` prototype-alpha packaging and documentation rather than more comparison churn first.
+
+### Work Completed
+- [x] Recovered SPIKE-10 state from commits, worktrees, and conductor run artifacts; identified the maintained conductor implementation and the direct-arm merge candidate (files: `.tnh-conductor/runs/20260420T215817Z/`, `.tnh-conductor/worktrees/20260420T215817Z/`, `tmp/spike-10/20260420T215652Z/`)
+- [x] Added a short SPIKE-10 result-note follow-up capturing the shared Codex CLI execution surface and the prompt-framing explanation for the small quality gap (files: `docs/architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-result.md`)
+- [x] Landed `tnh-conductor status --watch`, addressed review feedback, handled transient watch-read retry behavior, and merged PR #61 (files: `src/tnh_scholar/cli_tools/tnh_conductor/tnh_conductor.py`, `tests/cli_tools/test_tnh_conductor.py`, `CHANGELOG.md`, `TODO.md`, `project_directory_tree.txt`, `src_directory_tree.txt`)
+- [x] Removed merged local SPIKE-10 branches, worktrees, and run artifacts after non-loss verification (files: `tmp/spike-10/`, `.tnh-conductor/runs/20260420T203210Z/`, `.tnh-conductor/runs/20260420T215817Z/`)
+- [x] Updated workflow and release-prep docs after the merge and cleanup pass (files: `AGENTS.md`, `TODO.md`, `CHANGELOG.md`, `AGENTLOG.md`)
+
+### Discoveries & Insights
+- **Bootstrap viability is now demonstrated**: the maintained `tnh-conductor` path produced a usable bounded implementation that was good enough to inform and validate the final merged feature.
+- **External delegation paths remain fragile**: native subagent and external assistant paths were confounded by fork/runtime/auth issues, which makes them useful experimental seams but poor defaults.
+- **Cleanup discipline matters for orchestration work**: explicit non-loss checks before branch and worktree deletion are necessary because conductor-managed runs leave behind both git refs and durable artifact directories.
+
+### Files Modified/Created
+- `docs/architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-result.md`: Added the terse shared-runtime follow-up note.
+- `src/tnh_scholar/cli_tools/tnh_conductor/tnh_conductor.py`: Added `status --watch` polling and transient read retry behavior.
+- `tests/cli_tools/test_tnh_conductor.py`: Added regression coverage for watch-mode polling, terminal states, and transient read races.
+- `AGENTS.md`: Clarified default PR handling and `git branch -D` rules.
+- `TODO.md`: Reframed top-level status around the bootstrap milestone and `0.4.0` release prep.
+- `CHANGELOG.md`: Recorded the docs and workflow clarification follow-up.
+- `AGENTLOG.md`: Added this merge-wrap and cleanup entry.
+
+### Next Steps
+- [ ] Decide the exact `0.4.0` scope and release-note framing for `tnh-conductor` as a prototype-alpha bootstrap tool.
+- [ ] Prune or archive any remaining non-SPIKE temporary worktrees and directories that are no longer needed for active work.
+- [ ] Package the remaining cleanup work into one or more docs-only or release-prep slices before changing the version number.
+
+### Open Questions
+- Should `0.4.0` ship with `tnh-conductor` positioned only as a local prototype-alpha CLI, or should the release also include packaging and entrypoint cleanup beyond the current bootstrap proof?
+
+### References
+- [docs/architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-result.md](docs/architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-result.md)
+- [CHANGELOG.md](CHANGELOG.md)
+- [TODO.md](TODO.md)
+- [PR #61](https://github.com/aaronksolomon/tnh-scholar/pull/61)

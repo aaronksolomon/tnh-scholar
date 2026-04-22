@@ -5,15 +5,15 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-04-20"
+updated: "2026-04-21"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-20 (tnh-gen GPT-5.4 compatibility merged; registry-driven OpenAI request shaping follow-up added)
-> **Version**: 0.3.1 (Alpha)
-> **Status**: Active Development - Bootstrap path complete, production hardening phase
+> **Last Updated**: 2026-04-21 (`tnh-conductor status --watch` merged; bootstrap milestone confirmed; release-prep cleanup next)
+> **Version**: 0.3.1 (Alpha; preparing 0.4.0 bootstrap release)
+> **Status**: Active Development - bootstrap viable, release-prep and cleanup phase
 >
 > **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 > Use `####` (h4) for task headers within priority sections.
@@ -24,16 +24,19 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 **Bootstrap Path Status**: ✅ **COMPLETE** — VS Code integration working, AI-assisted development enabled.
 
+**Agent-Orch Bootstrap Status**: ✅ **USABLE PROTOTYPE** — the maintained `tnh-conductor` path has now produced and landed a bounded repo-native implementation through the worktree-backed headless path.
+
 **Next Steps**:
 
-1. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
-2. 🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)
-3. 🔮 Finish ytt-fetch robustness hardening (P1, reliability)
-4. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
-5. 🚧 Prompt Catalog Safety - manifest validation + schema docs (P2, critical infrastructure)
-6. 🚧 Knowledge Base Implementation (P2, design complete)
-7. 🚧 Expand Test Coverage to 50%+ (P2)
-8. 🚧 OpenAI registry-driven request profiles for model-specific controls (P2, follow-up hardening)
+1. 🚧 Prepare `0.4.0` bootstrap release framing for `tnh-conductor` prototype alpha
+2. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
+3. 🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)
+4. 🔮 Finish ytt-fetch robustness hardening (P1, reliability)
+5. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
+6. 🚧 Prompt Catalog Safety - manifest validation + schema docs (P2, critical infrastructure)
+7. 🚧 Knowledge Base Implementation (P2, design complete)
+8. 🚧 Expand Test Coverage to 50%+ (P2)
+9. 🚧 OpenAI registry-driven request profiles for model-specific controls (P2, follow-up hardening)
 
 **For completed items**: See [Archive](#recently-completed-tasks-archive) section at end.
 
@@ -109,7 +112,7 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 🚨 OA07.1 Bootstrap Worktree Slice
 
-- **Status**: IN PROGRESS — PR-7 and PR-8 are merged on `main`; bootstrap-proof workflow slice is next
+- **Status**: MILESTONE REACHED — PR-7 and PR-8 are merged on `main`, and the first bounded bootstrap-proof workflow outcome is now landed through `tnh-conductor status --watch`
 - **Priority**: HIGHEST (prove real maintained bootstrap usefulness)
 - **Context**: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary and the maintained headless entry path. Bootstrap is no longer blocked on substrate. The next blocker is proving one useful repo-native workflow through the maintained path. Follow [ADR-OA07](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md) and [ADR-OA07.1](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md).
 - **Bootstrap Goal**:
@@ -126,6 +129,7 @@ This section organizes work into three priority levels based on criticality for 
   - documented the current low-noise Codex headless path, native subagent confirmation, and first supervisory shell-trial findings in `/docs/architecture/agent-orchestration/notes/experiments/` and `/docs/architecture/agent-orchestration/supervisory-shell-trial/`
   - SPIKE-10 comparison result now records the current practical recommendation: keep `tnh-conductor` as the main coordination substrate, harden native subagent launch reliability, and treat `codex-assistant` / `claude-assistant` worker paths as experimental until runtime bootstrap and auth are dependable
   - direct-vs-conductor follow-up review selected the direct-arm `tnh-conductor status --watch` implementation as the merge candidate while preserving the maintained conductor run as the bootstrap-viability proof
+  - next focus is release-prep cleanup and packaging for a `0.4.0` prototype-alpha `tnh-conductor` milestone, not more orchestration-path comparison spikes first
 - **Recommended PR sizing**:
   - Prefer **2 PRs** to stay comfortably under diff-size guidance
   - A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work
@@ -146,11 +150,15 @@ This section organizes work into three priority levels based on criticality for 
     - execute workflow end to end
     - write canonical artifacts and final state
     - keep the initial entry local/headless; no GitHub automation required
-  - [ ] **Bootstrap Proof** `feat/oa07-bootstrap-proof-workflow` — Real repo-task bootstrap proof (small/medium, next)
+  - [x] **Bootstrap Proof** `feat/tnh-conductor-status-watch` — Real repo-task bootstrap proof (small/medium)
     - add one maintained workflow definition for a narrow useful repository task
     - exercise the current maintained subset: `RUN_AGENT`, `RUN_VALIDATION`, `STOP`, with `ROLLBACK(pre_run)` available only as fallback
     - prove the run yields a reviewable repo diff plus canonical metadata, manifests, events, and final state
     - keep semantic-control depth and review automation out of scope unless they become true blockers
+  - [ ] **Release Prep** `feat/oa07-bootstrap-release-prep` — Prototype-alpha cleanup and packaging (small/medium, next)
+    - document the bootstrap milestone and known limitations clearly
+    - prune stale temporary artifacts and clarify operator workflow defaults
+    - decide exact `0.4.0` scope before version bump and release notes
   - [ ] **PR-9** `feat/oa07-review-automation` — Commit/push/PR automation (optional, small/medium)
     - create local commits on the managed branch
     - push the work branch

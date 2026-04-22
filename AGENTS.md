@@ -5,7 +5,7 @@ owner: ""
 author: "aaronksolomon, Claude Sonnet 4.5"
 status: current
 created: "2025-12-07"
-updated: "2026-03-25"
+updated: "2026-04-21"
 ---
 # AGENTS.md
 
@@ -58,7 +58,8 @@ Rules:
 - Pre-commit hooks are disabled: `core.hookspath=/dev/null`
 - `git rebase` and `git push --force-with-lease` require full confirmation protocol: explain the operation, show exact commands, state consequences and risks, explain recovery, then wait for explicit "yes"
 - Branch and worktree removal require explicit user approval plus a non-loss check: verify merged state or another retained reference before deleting anything
-- Forbidden entirely (user-only, never AI): `reset --hard/soft/mixed`, `push --force`, `branch -D`, `clean -fd`, `checkout -- .`, `restore` with destructive flags, `filter-branch`
+- `git branch -D` is allowed only with explicit user approval plus the same non-loss check used for any branch deletion
+- Forbidden entirely (user-only, never AI): `reset --hard/soft/mixed`, `push --force`, `clean -fd`, `checkout -- .`, `restore` with destructive flags, `filter-branch`
 - NEVER stash untracked files; commit them to a temp branch if needed
 - Commit `poetry.lock` when dependency changes require it
 
@@ -77,6 +78,7 @@ Docs-only changes: run `make docs-build`; if it passes, push directly to `main` 
 
 Default PR flow:
 - `main -> feat/<slice> -> PR -> merge`
+- Open a normal PR by default; use a draft PR only when the user explicitly asks for draft status or the work is intentionally not review-ready
 - Run `make pr-check` before opening a PR
 - Preferred diff size: `<120k` chars
 - Caution: `120k-150k`

@@ -184,6 +184,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Workflow and Release-Prep Documentation Clarification** (2026-04-21)
+  - Clarified in `AGENTS.md` that normal PRs are the default workflow and that `git branch -D` is allowed only with explicit approval plus non-loss verification
+  - Updated `TODO.md` release framing to mark the maintained `tnh-conductor` bootstrap path as a usable prototype and to put `0.4.0` release-prep cleanup first in the queue
+  - Files: `AGENTS.md`, `TODO.md`
+
 - **Repository Workflow Guardrail Clarification** (2026-04-20)
   - Added an explicit branch/worktree removal rule to `AGENTS.md`: deletion now requires user approval plus a non-loss verification check before cleanup
   - Recorded the follow-up architectural direction for OpenAI model request handling in `TODO.md` and the OpenAI adapter module note so the GPT-5 compatibility fix remains a narrow bugfix rather than silent long-term architecture
