@@ -475,6 +475,18 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Migrate CLI to Typer with minimal surface (smoke tests only)
   - [ ] Add service-layer tests for all audio-transcribe use cases
 
+#### 🚧 Fully Usable audio-transcribe Hardening Path (P2)
+
+- **Status**: NOT STARTED
+- **Goal**: Make `audio-transcribe` safe for routine real-world use by eliminating stack dumps from expected fault paths and hardening the tool against edge-case and provider-shape failures.
+- **Tasks**:
+  - [ ] Build a full-spectrum regression matrix covering local files, YouTube URLs, CSV input, diarization on/off, Whisper, and AssemblyAI
+  - [ ] Add end-to-end CLI regression coverage for normal runs plus representative operator workflows used in practice
+  - [ ] Add fault-injection coverage for provider shape drift, empty/partial transcript results, chunk-level failures, file-write failures, temp-dir cleanup failures, and missing dependency/runtime preconditions
+  - [ ] Ensure expected runtime faults exit with user-facing errors instead of Python tracebacks
+  - [ ] Capture and preserve real-world reproductions as named regression fixtures/cases whenever a live failure is found
+  - [ ] Run a post-hardening soak pass against representative real inputs before the next minor release
+
 #### ⏸️ Agent Orchestration - Codex Runner (ADR-OA03.2)
 
 - **Status**: TABLED (2026-01-25)

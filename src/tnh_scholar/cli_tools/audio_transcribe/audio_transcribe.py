@@ -35,6 +35,7 @@ import logging
 import tempfile
 from functools import lru_cache
 from pathlib import Path
+from typing import Any
 
 import click
 from dotenv import load_dotenv
@@ -128,9 +129,9 @@ class AudioTranscribeApp:
             transcription_options=self.transcription_options,
         )
         self._echo_settings()
-        transcripts: list[str] = pipeline.run()
-        self._write_transcript(transcripts)
-        self._print_transcripts(transcripts)
+        transcript_texts = _normalize_transcript_texts(pipeline.run())
+        self._write_transcript(transcript_texts)
+        self._print_transcripts(transcript_texts)
         self._cleanup_temp_dir()
 
     def _cleanup_temp_dir(self) -> None:
@@ -230,7 +231,7 @@ class AudioTranscribeApp:
         click.echo(f"Re-using existing downloaded audio file: {download_file}")
         return download_file
 
-    def _extract_yt_audio(self, dl, download_path):
+    def _extract_yt_audio(self, dl: Any, download_path: Path) -> Path:
         video_data = dl.get_audio(
                 self.yt_url,
                 start=self.start_time,
@@ -299,6 +300,65 @@ class AudioTranscribeApp:
         """
         for i, text in enumerate(transcripts, 1):
             print(f"\n--- Transcript chunk {i} ---\n{text}\n")
+
+
+def _normalize_transcript_texts(transcripts: list[Any] | None) -> list[str]:
+    """Normalize pipeline transcript output into printable text chunks."""
+    if transcripts is None:
+        raise RuntimeError("Transcription pipeline returned no transcript output.")
+
+    transcript_texts: list[str] = []
+    for transcript_entry in transcripts:
+        normalized_text = _normalize_transcript_entry(transcript_entry)
+        if normalized_text:
+            transcript_texts.append(normalized_text)
+    return transcript_texts
+
+
+def _normalize_transcript_entry(transcript_entry: Any) -> str | None:
+    """Convert one pipeline transcript entry into plain text for CLI output."""
+    if isinstance(transcript_entry, str):
+        return transcript_entry.strip() or None
+
+    if not isinstance(transcript_entry, dict):
+        _log_unsupported_transcript_entry(transcript_entry)
+        return None
+
+    transcript_text = transcript_entry.get("transcript")
+    if transcript_text is None:
+        _log_failed_transcript_chunk(transcript_entry)
+        return None
+
+    if not isinstance(transcript_text, str):
+        _log_invalid_transcript_text(transcript_text)
+        return None
+
+    return transcript_text.strip() or None
+
+
+def _log_failed_transcript_chunk(transcript_entry: dict[Any, Any]) -> None:
+    """Emit a warning when a transcript chunk failed upstream."""
+    error_detail = transcript_entry.get("error")
+    if error_detail:
+        logger.warning("Skipping failed transcript chunk: %s", error_detail)
+        return
+
+    logger.warning(
+        "Skipping failed transcript chunk without error details: %r",
+        transcript_entry,
+    )
+
+
+def _log_unsupported_transcript_entry(transcript_entry: Any) -> None:
+    """Emit a warning for malformed transcript entries."""
+    entry_type = type(transcript_entry).__name__
+    logger.warning("Skipping unsupported transcript entry type: %s", entry_type)
+
+
+def _log_invalid_transcript_text(transcript_text: Any) -> None:
+    """Emit a warning for malformed transcript text payloads."""
+    entry_type = type(transcript_text).__name__
+    logger.warning("Skipping transcript entry with non-string text: %s", entry_type)
 
 @click.command()
 @click.option(
