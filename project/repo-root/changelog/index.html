@@ -12682,7 +12682,15 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <h3 id="changed">Changed<a class="headerlink" href="#changed" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Repository Workflow Guardrail Clarification</strong> (2026-04-20)</li>
+<li><strong>Workflow and Release-Prep Documentation Clarification</strong> (2026-04-21)</li>
+<li>Clarified in <code>AGENTS.md</code> that normal PRs are the default workflow and that <code>git branch -D</code> is allowed only with explicit approval plus non-loss verification</li>
+<li>Updated <code>TODO.md</code> release framing to mark the maintained <code>tnh-conductor</code> bootstrap path as a usable prototype and to put <code>0.4.0</code> release-prep cleanup first in the queue</li>
+<li>
+<p>Files: <code>AGENTS.md</code>, <code>TODO.md</code></p>
+</li>
+<li>
+<p><strong>Repository Workflow Guardrail Clarification</strong> (2026-04-20)</p>
+</li>
 <li>Added an explicit branch/worktree removal rule to <code>AGENTS.md</code>: deletion now requires user approval plus a non-loss verification check before cleanup</li>
 <li>Recorded the follow-up architectural direction for OpenAI model request handling in <code>TODO.md</code> and the OpenAI adapter module note so the GPT-5 compatibility fix remains a narrow bugfix rather than silent long-term architecture</li>
 <li>

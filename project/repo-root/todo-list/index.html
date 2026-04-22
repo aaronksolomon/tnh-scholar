@@ -12713,17 +12713,19 @@
 <h1 id="tnh-scholar-todo-list">TNH Scholar TODO List<a class="headerlink" href="#tnh-scholar-todo-list" title="Link to this section">&para;</a></h1>
 <p>Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.</p>
 <blockquote>
-<p><strong>Last Updated</strong>: 2026-04-20 (tnh-gen GPT-5.4 compatibility merged; registry-driven OpenAI request shaping follow-up added)
-<strong>Version</strong>: 0.3.1 (Alpha)
-<strong>Status</strong>: Active Development - Bootstrap path complete, production hardening phase</p>
+<p><strong>Last Updated</strong>: 2026-04-21 (<code>tnh-conductor status --watch</code> merged; bootstrap milestone confirmed; release-prep cleanup next)
+<strong>Version</strong>: 0.3.1 (Alpha; preparing 0.4.0 bootstrap release)
+<strong>Status</strong>: Active Development - bootstrap viable, release-prep and cleanup phase</p>
 <p><strong>Style Note</strong>: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 Use <code>####</code> (h4) for task headers within priority sections.</p>
 </blockquote>
 <hr />
 <h2 id="progress-summary">Progress Summary<a class="headerlink" href="#progress-summary" title="Link to this section">&para;</a></h2>
 <p><strong>Bootstrap Path Status</strong>: ✅ <strong>COMPLETE</strong> — VS Code integration working, AI-assisted development enabled.</p>
+<p><strong>Agent-Orch Bootstrap Status</strong>: ✅ <strong>USABLE PROTOTYPE</strong> — the maintained <code>tnh-conductor</code> path has now produced and landed a bounded repo-native implementation through the worktree-backed headless path.</p>
 <p><strong>Next Steps</strong>:</p>
 <ol>
+<li>🚧 Prepare <code>0.4.0</code> bootstrap release framing for <code>tnh-conductor</code> prototype alpha</li>
 <li>🔮 <strong>JVB VS Code Parallel Viewer</strong> (P1, design phase) — ADR-JVB02 strategy + UI-UX design</li>
 <li>🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)</li>
 <li>🔮 Finish ytt-fetch robustness hardening (P1, reliability)</li>
@@ -12805,7 +12807,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 </ul>
 <h4 id="oa071-bootstrap-worktree-slice">🚨 OA07.1 Bootstrap Worktree Slice<a class="headerlink" href="#oa071-bootstrap-worktree-slice" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: IN PROGRESS — PR-7 and PR-8 are merged on <code>main</code>; bootstrap-proof workflow slice is next</li>
+<li><strong>Status</strong>: MILESTONE REACHED — PR-7 and PR-8 are merged on <code>main</code>, and the first bounded bootstrap-proof workflow outcome is now landed through <code>tnh-conductor status --watch</code></li>
 <li><strong>Priority</strong>: HIGHEST (prove real maintained bootstrap usefulness)</li>
 <li><strong>Context</strong>: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary and the maintained headless entry path. Bootstrap is no longer blocked on substrate. The next blocker is proving one useful repo-native workflow through the maintained path. Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md">ADR-OA07</a> and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md">ADR-OA07.1</a>.</li>
 <li><strong>Bootstrap Goal</strong>:</li>
@@ -12822,6 +12824,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li>documented the current low-noise Codex headless path, native subagent confirmation, and first supervisory shell-trial findings in <code>/docs/architecture/agent-orchestration/notes/experiments/</code> and <code>/docs/architecture/agent-orchestration/supervisory-shell-trial/</code></li>
 <li>SPIKE-10 comparison result now records the current practical recommendation: keep <code>tnh-conductor</code> as the main coordination substrate, harden native subagent launch reliability, and treat <code>codex-assistant</code> / <code>claude-assistant</code> worker paths as experimental until runtime bootstrap and auth are dependable</li>
 <li>direct-vs-conductor follow-up review selected the direct-arm <code>tnh-conductor status --watch</code> implementation as the merge candidate while preserving the maintained conductor run as the bootstrap-viability proof</li>
+<li>next focus is release-prep cleanup and packaging for a <code>0.4.0</code> prototype-alpha <code>tnh-conductor</code> milestone, not more orchestration-path comparison spikes first</li>
 <li><strong>Recommended PR sizing</strong>:</li>
 <li>Prefer <strong>2 PRs</strong> to stay comfortably under diff-size guidance</li>
 <li>A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work</li>
@@ -12846,11 +12849,17 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li>keep the initial entry local/headless; no GitHub automation required</li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Bootstrap Proof</strong> <code>feat/oa07-bootstrap-proof-workflow</code> — Real repo-task bootstrap proof (small/medium, next)<ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Bootstrap Proof</strong> <code>feat/tnh-conductor-status-watch</code> — Real repo-task bootstrap proof (small/medium)<ul>
 <li>add one maintained workflow definition for a narrow useful repository task</li>
 <li>exercise the current maintained subset: <code>RUN_AGENT</code>, <code>RUN_VALIDATION</code>, <code>STOP</code>, with <code>ROLLBACK(pre_run)</code> available only as fallback</li>
 <li>prove the run yields a reviewable repo diff plus canonical metadata, manifests, events, and final state</li>
 <li>keep semantic-control depth and review automation out of scope unless they become true blockers</li>
+</ul>
+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Release Prep</strong> <code>feat/oa07-bootstrap-release-prep</code> — Prototype-alpha cleanup and packaging (small/medium, next)<ul>
+<li>document the bootstrap milestone and known limitations clearly</li>
+<li>prune stale temporary artifacts and clarify operator workflow defaults</li>
+<li>decide exact <code>0.4.0</code> scope before version bump and release notes</li>
 </ul>
 </li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>PR-9</strong> <code>feat/oa07-review-automation</code> — Commit/push/PR automation (optional, small/medium)<ul>
