@@ -46,6 +46,25 @@ class OpsCheckProgressReporter(Protocol):
         """Called when the full ops check completes."""
 
 
+class _NoOpOpsCheckProgressReporter:
+    """Default progress reporter when no live UI is attached."""
+
+    def on_run_started(self, total_urls: int) -> None:
+        return None
+
+    def on_url_started(self, index: int, total_urls: int, url: str) -> None:
+        return None
+
+    def on_url_succeeded(self, index: int, total_urls: int, url: str) -> None:
+        return None
+
+    def on_url_failed(self, index: int, total_urls: int, url: str, reason: str) -> None:
+        return None
+
+    def on_run_finished(self, report: OpsCheckReport) -> None:
+        return None
+
+
 class OpsCheckRunner:
     def __init__(
         self,
@@ -55,27 +74,27 @@ class OpsCheckRunner:
     ) -> None:
         self._downloader = downloader
         self._config = config
-        self._reporter = reporter
+        self._reporter: OpsCheckProgressReporter = reporter or _NoOpOpsCheckProgressReporter()
 
     def run(self) -> OpsCheckReport:
         urls = self._load_urls(self._config.urls_path)
         urls = self._limit_urls(urls, self._config.url_limit)
         total_urls = len(urls)
         self._config.output_dir.mkdir(parents=True, exist_ok=True)
-        self._emit_run_started(total_urls)
+        self._reporter.on_run_started(total_urls)
         failures: list[OpsCheckFailure] = []
         successes = 0
         for index, url in enumerate(urls):
-            self._emit_url_started(index, total_urls, url)
+            self._reporter.on_url_started(index, total_urls, url)
             result = self._check_url(url, index)
             if result is None:
                 successes += 1
-                self._emit_url_succeeded(index, total_urls, url)
+                self._reporter.on_url_succeeded(index, total_urls, url)
             else:
                 failures.append(result)
-                self._emit_url_failed(index, total_urls, url, result.reason)
+                self._reporter.on_url_failed(index, total_urls, url, result.reason)
         report = OpsCheckReport(successes=successes, failures=tuple(failures))
-        self._emit_run_finished(report)
+        self._reporter.on_run_finished(report)
         return report
 
     def _load_urls(self, path: Path) -> list[str]:
@@ -114,23 +133,3 @@ class OpsCheckRunner:
     def _cleanup_audio(self, audio: VideoAudio) -> None:
         if audio.filepath and audio.filepath.exists():
             audio.filepath.unlink()
-
-    def _emit_run_started(self, total_urls: int) -> None:
-        if self._reporter is not None:
-            self._reporter.on_run_started(total_urls)
-
-    def _emit_url_started(self, index: int, total_urls: int, url: str) -> None:
-        if self._reporter is not None:
-            self._reporter.on_url_started(index, total_urls, url)
-
-    def _emit_url_succeeded(self, index: int, total_urls: int, url: str) -> None:
-        if self._reporter is not None:
-            self._reporter.on_url_succeeded(index, total_urls, url)
-
-    def _emit_url_failed(self, index: int, total_urls: int, url: str, reason: str) -> None:
-        if self._reporter is not None:
-            self._reporter.on_url_failed(index, total_urls, url, reason)
-
-    def _emit_run_finished(self, report: OpsCheckReport) -> None:
-        if self._reporter is not None:
-            self._reporter.on_run_finished(report)

@@ -140,6 +140,9 @@ class RuntimeSetup:
         return f"{sys.executable} -m pip install curl_cffi"
 
     def _fallback_install_command(self) -> str:
+        return self._python_install_command()
+
+    def _python_install_command(self) -> str:
         return f"{sys.executable} -m pip install curl_cffi"
 
     def _run_install_command(self, install_cmd: str) -> subprocess.CompletedProcess[str]:
@@ -199,8 +202,6 @@ class RuntimeSetup:
     def _install_failure_message(self, install_cmd: str) -> str:
         if install_cmd.startswith("pipx "):
             return "curl_cffi install failed (pipx). Check pipx is installed and PIPX_LOG_DIR permissions."
-        if install_cmd.startswith("poetry "):
-            return "curl_cffi install failed (poetry). Run 'poetry run python -m pip install curl_cffi'."
         return "curl_cffi install failed"
 
     def _failed_process(self) -> subprocess.CompletedProcess[str]:
@@ -306,6 +307,9 @@ def _write_config_if_possible(
 
 def _print_done(errors: list[str], warnings: list[str]) -> None:
     if errors:
+        if warnings:
+            print("Done with errors and warnings.")
+            return
         print("Done with errors.")
     elif warnings:
         print("Done with warnings.")

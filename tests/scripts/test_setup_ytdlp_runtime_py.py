@@ -188,6 +188,42 @@ def test_run_install_command_bootstraps_pip_with_ensurepip() -> None:
     ]
 
 
+def test_run_install_command_returns_failed_ensurepip_process() -> None:
+    calls: list[list[str]] = []
+
+    def runner(cmd, check=False, capture_output=False, text=False, **kwargs):
+        calls.append(cmd)
+        if cmd == [sys.executable, "-m", "pip", "install", "curl_cffi"]:
+            return subprocess.CompletedProcess(
+                args=cmd,
+                returncode=1,
+                stdout="",
+                stderr="No module named pip",
+            )
+        if cmd == [sys.executable, "-m", "ensurepip", "--upgrade"]:
+            return subprocess.CompletedProcess(
+                args=cmd,
+                returncode=2,
+                stdout="",
+                stderr="ensurepip failed",
+            )
+        return subprocess.CompletedProcess(args=cmd, returncode=0, stdout="", stderr="")
+
+    setup = runtime.RuntimeSetup(
+        runner=runner,
+        which=lambda _: None,
+        input_func=lambda _: "y",
+    )
+
+    result = setup._run_install_command(f"{sys.executable} -m pip install curl_cffi")
+
+    assert result.returncode == 2
+    assert calls == [
+        [sys.executable, "-m", "pip", "install", "curl_cffi"],
+        [sys.executable, "-m", "ensurepip", "--upgrade"],
+    ]
+
+
 def test_write_config_with_impersonate(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("HOME", str(tmp_path))
     setup = runtime.RuntimeSetup(

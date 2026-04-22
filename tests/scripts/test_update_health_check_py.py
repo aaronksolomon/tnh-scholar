@@ -1,6 +1,7 @@
 import importlib.util
 import subprocess
 import sys
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 
@@ -36,9 +37,13 @@ def _write_status(status_path: Path, last_run_at: str, exit_code: int) -> None:
     )
 
 
+def _fixed_now() -> datetime:
+    return datetime(2026, 4, 21, 12, 0, tzinfo=UTC)
+
+
 def test_check_status_succeeds_when_fresh(tmp_path: Path) -> None:
     status_path = tmp_path / "status.json"
-    _write_status(status_path, "2026-04-21T12:00:00+00:00", 0)
+    _write_status(status_path, (_fixed_now() - timedelta(days=1)).isoformat(), 0)
     paths = health_check.HealthCheckPaths(
         repo_root=tmp_path,
         status_path=status_path,
@@ -47,6 +52,7 @@ def test_check_status_succeeds_when_fresh(tmp_path: Path) -> None:
     service = health_check.UpdateHealthCheckService(
         paths=paths,
         runner=lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("runner should not be called")),
+        now_provider=_fixed_now,
     )
 
     outcome = service.check_status(warn_after_days=10, fail_after_days=30)
@@ -58,7 +64,7 @@ def test_check_status_succeeds_when_fresh(tmp_path: Path) -> None:
 
 def test_check_status_warns_when_stale_but_not_expired(tmp_path: Path) -> None:
     status_path = tmp_path / "status.json"
-    _write_status(status_path, "2026-04-05T12:00:00+00:00", 0)
+    _write_status(status_path, (_fixed_now() - timedelta(days=15)).isoformat(), 0)
     paths = health_check.HealthCheckPaths(
         repo_root=tmp_path,
         status_path=status_path,
@@ -67,6 +73,7 @@ def test_check_status_warns_when_stale_but_not_expired(tmp_path: Path) -> None:
     service = health_check.UpdateHealthCheckService(
         paths=paths,
         runner=lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("runner should not be called")),
+        now_provider=_fixed_now,
     )
 
     outcome = service.check_status(warn_after_days=10, fail_after_days=30)
@@ -78,7 +85,7 @@ def test_check_status_warns_when_stale_but_not_expired(tmp_path: Path) -> None:
 
 def test_check_status_fails_when_too_old(tmp_path: Path) -> None:
     status_path = tmp_path / "status.json"
-    _write_status(status_path, "2026-03-01T12:00:00+00:00", 0)
+    _write_status(status_path, (_fixed_now() - timedelta(days=60)).isoformat(), 0)
     paths = health_check.HealthCheckPaths(
         repo_root=tmp_path,
         status_path=status_path,
@@ -87,6 +94,7 @@ def test_check_status_fails_when_too_old(tmp_path: Path) -> None:
     service = health_check.UpdateHealthCheckService(
         paths=paths,
         runner=lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("runner should not be called")),
+        now_provider=_fixed_now,
     )
 
     outcome = service.check_status(warn_after_days=10, fail_after_days=30)
@@ -105,6 +113,7 @@ def test_check_status_warns_when_status_missing(tmp_path: Path) -> None:
     service = health_check.UpdateHealthCheckService(
         paths=paths,
         runner=lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("runner should not be called")),
+        now_provider=_fixed_now,
     )
 
     outcome = service.check_status(warn_after_days=10, fail_after_days=30)
@@ -126,7 +135,11 @@ def test_run_now_executes_and_persists_success(tmp_path: Path) -> None:
         status_path=tmp_path / "status.json",
         yt_dlp_script_path=tmp_path / "scripts" / "yt_dlp_ops_check.py",
     )
-    service = health_check.UpdateHealthCheckService(paths=paths, runner=runner)
+    service = health_check.UpdateHealthCheckService(
+        paths=paths,
+        runner=runner,
+        now_provider=_fixed_now,
+    )
 
     outcome = service.run_now(recommended_interval_days=10)
 
@@ -150,7 +163,11 @@ def test_run_now_executes_and_persists_failure(tmp_path: Path) -> None:
         status_path=tmp_path / "status.json",
         yt_dlp_script_path=tmp_path / "scripts" / "yt_dlp_ops_check.py",
     )
-    service = health_check.UpdateHealthCheckService(paths=paths, runner=runner)
+    service = health_check.UpdateHealthCheckService(
+        paths=paths,
+        runner=runner,
+        now_provider=_fixed_now,
+    )
 
     outcome = service.run_now(recommended_interval_days=10)
 

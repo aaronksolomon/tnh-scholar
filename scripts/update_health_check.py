@@ -8,6 +8,8 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Callable
 
+NowProvider = Callable[[], datetime]
+
 
 @dataclass(frozen=True)
 class CheckRecord:
@@ -17,9 +19,7 @@ class CheckRecord:
     recommended_interval_days: int
 
 
-@dataclass(frozen=True)
-class HealthCheckState:
-    checks: dict[str, CheckRecord]
+CheckState = dict[str, CheckRecord]
 
 
 @dataclass(frozen=True)
@@ -44,13 +44,17 @@ class HealthCheckDefaults:
     check_name: str = "yt_dlp_ops_check"
 
 
+DEFAULTS = HealthCheckDefaults()
+
+
 @dataclass
 class UpdateHealthCheckService:
     paths: HealthCheckPaths
     runner: Callable[..., subprocess.CompletedProcess[str]]
+    now_provider: NowProvider = lambda: datetime.now(UTC)
 
     def check_status(self, warn_after_days: int, fail_after_days: int) -> CheckOutcome:
-        record = self._load_state().checks.get(HealthCheckDefaults().check_name)
+        record = self._load_state().get(DEFAULTS.check_name)
         return self._build_status_outcome(record, warn_after_days, fail_after_days)
 
     def run_now(self, recommended_interval_days: int) -> CheckOutcome:
@@ -60,33 +64,32 @@ class UpdateHealthCheckService:
         )
         return self._run_yt_dlp_ops_check(state, defaults)
 
-    def _load_state(self) -> HealthCheckState:
+    def _load_state(self) -> CheckState:
         if not self.paths.status_path.exists():
-            return HealthCheckState(checks={})
+            return {}
         try:
             raw_state = json.loads(self.paths.status_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
-            return HealthCheckState(checks={})
+            return {}
         raw_checks = raw_state.get("checks", {})
-        checks = {
+        return {
             name: self._build_record(raw_record)
             for name, raw_record in raw_checks.items()
             if isinstance(raw_record, dict)
         }
-        return HealthCheckState(checks=checks)
 
     def _build_record(self, raw_record: dict[str, object]) -> CheckRecord:
+        def read_optional_str(key: str) -> str | None:
+            value = raw_record.get(key)
+            return value if isinstance(value, str) else None
+
         last_exit_code = raw_record.get("last_exit_code")
         return CheckRecord(
-            last_run_at=self._read_optional_str(raw_record, "last_run_at"),
-            last_success_at=self._read_optional_str(raw_record, "last_success_at"),
+            last_run_at=read_optional_str("last_run_at"),
+            last_success_at=read_optional_str("last_success_at"),
             last_exit_code=last_exit_code if isinstance(last_exit_code, int) else None,
             recommended_interval_days=self._read_recommended_interval(raw_record),
         )
-
-    def _read_optional_str(self, raw_record: dict[str, object], key: str) -> str | None:
-        value = raw_record.get(key)
-        return value if isinstance(value, str) else None
 
     def _read_recommended_interval(self, raw_record: dict[str, object]) -> int:
         value = raw_record.get("recommended_interval_days")
@@ -95,7 +98,7 @@ class UpdateHealthCheckService:
         legacy_value = raw_record.get("stale_after_days")
         if isinstance(legacy_value, int) and legacy_value > 0:
             return legacy_value
-        return HealthCheckDefaults().recommended_interval_days
+        return DEFAULTS.recommended_interval_days
 
     def _build_status_outcome(
         self,
@@ -112,22 +115,25 @@ class UpdateHealthCheckService:
             summary = "yt-dlp health check status unreadable; run `make health-check`."
             print(summary)
             return CheckOutcome(ran=False, success=True, summary=summary)
-        age = datetime.now(UTC) - last_run_at
+        age = self.now_provider() - last_run_at
         if age >= timedelta(days=fail_after_days):
-            summary = self._status_summary(
-                "yt-dlp health check too old; failing until rerun.",
-                record,
+            summary = (
+                "yt-dlp health check too old; failing until rerun. "
+                f"last run: {record.last_run_at}, exit_code: {record.last_exit_code}."
             )
             print(summary)
             return CheckOutcome(ran=False, success=False, summary=summary)
         if age >= timedelta(days=warn_after_days):
-            summary = self._status_summary(
-                "yt-dlp health check stale; rerun soon with `make health-check`.",
-                record,
+            summary = (
+                "yt-dlp health check stale; rerun soon with `make health-check`. "
+                f"last run: {record.last_run_at}, exit_code: {record.last_exit_code}."
             )
             print(summary)
             return CheckOutcome(ran=False, success=True, summary=summary)
-        summary = self._status_summary("yt-dlp health check fresh.", record)
+        summary = (
+            f"yt-dlp health check fresh. last run: {record.last_run_at}, "
+            f"exit_code: {record.last_exit_code}."
+        )
         print(summary)
         return CheckOutcome(ran=False, success=True, summary=summary)
 
@@ -138,15 +144,9 @@ class UpdateHealthCheckService:
             return None
         return parsed if parsed.tzinfo is not None else parsed.replace(tzinfo=UTC)
 
-    def _status_summary(self, prefix: str, record: CheckRecord) -> str:
-        return (
-            f"{prefix} last run: {record.last_run_at}, "
-            f"exit_code: {record.last_exit_code}."
-        )
-
     def _run_yt_dlp_ops_check(
         self,
-        state: HealthCheckState,
+        state: CheckState,
         defaults: HealthCheckDefaults,
     ) -> CheckOutcome:
         print("Running yt-dlp live ops check.")
@@ -166,25 +166,25 @@ class UpdateHealthCheckService:
 
     def _updated_state(
         self,
-        state: HealthCheckState,
+        state: CheckState,
         defaults: HealthCheckDefaults,
         exit_code: int,
-    ) -> HealthCheckState:
-        now = datetime.now(UTC).isoformat()
-        previous = state.checks.get(defaults.check_name)
+    ) -> CheckState:
+        now = self.now_provider().isoformat()
+        previous = state.get(defaults.check_name)
         last_success_at = previous.last_success_at if previous is not None else None
         if exit_code == 0:
             last_success_at = now
-        updated_checks = dict(state.checks)
+        updated_checks = dict(state)
         updated_checks[defaults.check_name] = CheckRecord(
             last_run_at=now,
             last_success_at=last_success_at,
             last_exit_code=exit_code,
             recommended_interval_days=defaults.recommended_interval_days,
         )
-        return HealthCheckState(checks=updated_checks)
+        return updated_checks
 
-    def _write_state(self, state: HealthCheckState) -> None:
+    def _write_state(self, state: CheckState) -> None:
         self.paths.status_path.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             "checks": {
@@ -194,7 +194,7 @@ class UpdateHealthCheckService:
                     "last_exit_code": record.last_exit_code,
                     "recommended_interval_days": record.recommended_interval_days,
                 }
-                for name, record in state.checks.items()
+                for name, record in state.items()
             }
         }
         self.paths.status_path.write_text(
@@ -244,15 +244,15 @@ def main() -> None:
     defaults = HealthCheckDefaults(
         recommended_interval_days=_read_positive_int(
             "TNH_YT_DLP_RECOMMENDED_INTERVAL_DAYS",
-            HealthCheckDefaults().recommended_interval_days,
+            DEFAULTS.recommended_interval_days,
         ),
         warn_after_days=_read_positive_int(
             "TNH_HEALTH_WARN_AFTER_DAYS",
-            HealthCheckDefaults().warn_after_days,
+            DEFAULTS.warn_after_days,
         ),
         fail_after_days=_read_positive_int(
             "TNH_HEALTH_FAIL_AFTER_DAYS",
-            HealthCheckDefaults().fail_after_days,
+            DEFAULTS.fail_after_days,
         ),
     )
     service = UpdateHealthCheckService(
