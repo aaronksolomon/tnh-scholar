@@ -377,6 +377,80 @@ def test_tnh_conductor_status_watch_stops_when_blocked(monkeypatch, tmp_path: Pa
     assert sleep_calls == [1.0]
 
 
+def test_tnh_conductor_status_watch_retries_transient_read_failure(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    repo_root = _init_repo(tmp_path)
+    runs_root = tmp_path / "runs"
+    run_id = "retry-run"
+    paths = tnh_conductor.STATUS_STORE.create_run(run_id, runs_root)
+
+    emitted_statuses = iter(
+        (
+            ValueError("transient parse failure"),
+            _build_status(
+                run_id=run_id,
+                workflow_id="watch-workflow",
+                lifecycle_state=RunLifecycleState.running,
+                updated_second=1,
+            ),
+            _build_status(
+                run_id=run_id,
+                workflow_id="watch-workflow",
+                lifecycle_state=RunLifecycleState.completed,
+                updated_second=2,
+            ),
+        )
+    )
+    sleep_calls: list[float] = []
+    tnh_conductor.STATUS_STORE.write_status(
+        _build_status(
+            run_id=run_id,
+            workflow_id="watch-workflow",
+            lifecycle_state=RunLifecycleState.running,
+            updated_second=0,
+        ),
+        paths,
+    )
+
+    monkeypatch.setattr(
+        type(tnh_conductor.STATUS_STORE),
+        "read_status",
+        lambda _, requested_run_id, requested_root: _next_status_or_error(
+            emitted_statuses,
+            requested_run_id=requested_run_id,
+            requested_root=requested_root,
+            expected_run_id=run_id,
+            expected_root=runs_root,
+        ),
+    )
+    monkeypatch.setattr(tnh_conductor.time, "sleep", sleep_calls.append)
+
+    result = runner.invoke(
+        tnh_conductor.app,
+        [
+            "status",
+            run_id,
+            "--repo-root",
+            str(repo_root),
+            "--runs-root",
+            str(runs_root),
+            "--watch",
+            "--poll-interval-seconds",
+            "0.25",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    payloads = [json.loads(line) for line in result.stdout.splitlines()]
+    assert [payload["lifecycle_state"] for payload in payloads] == [
+        RunLifecycleState.running.value,
+        RunLifecycleState.completed.value,
+    ]
+    assert sleep_calls == [0.1, 0.25]
+
+
 def _build_status(
     *,
     run_id: str,
@@ -412,3 +486,20 @@ def _next_status(
     assert requested_run_id == expected_run_id
     assert requested_root == expected_root
     return next(statuses)
+
+
+def _next_status_or_error(
+    statuses: Iterator[RunStatus | Exception],
+    *,
+    requested_run_id: str,
+    requested_root: Path,
+    expected_run_id: str,
+    expected_root: Path,
+) -> RunStatus:
+    """Return the next mocked status or raise one transient read error."""
+    assert requested_run_id == expected_run_id
+    assert requested_root == expected_root
+    next_item = next(statuses)
+    if isinstance(next_item, Exception):
+        raise next_item
+    return next_item

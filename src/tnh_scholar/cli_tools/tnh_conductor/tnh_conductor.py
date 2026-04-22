@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 
 import typer
+from pydantic import ValidationError
 
 from tnh_scholar.agent_orchestration.app import (
     HeadlessBootstrapConfig,
@@ -197,8 +198,26 @@ def _watch_status(
         RunLifecycleState.failed,
         RunLifecycleState.blocked,
     }
+    transient_status_read_errors = (OSError, ValueError, ValidationError)
+    max_read_attempts = 3
+    retry_interval_seconds = min(poll_interval_seconds, 0.1)
     while True:
-        status = _read_status_or_exit(run_id, resolved_runs_root)
+        status_path = STATUS_STORE.status_path_for_run(run_id, resolved_runs_root)
+        if not status_path.exists():
+            typer.echo(
+                f"Run status not found for '{run_id}' at {status_path}.",
+                err=True,
+            )
+            raise typer.Exit(code=1)
+        for attempt_index in range(max_read_attempts):
+            try:
+                status = STATUS_STORE.read_status(run_id, resolved_runs_root)
+                break
+            except transient_status_read_errors as error:
+                if attempt_index == max_read_attempts - 1:
+                    typer.echo(f"Failed to read run status for '{run_id}': {error}", err=True)
+                    raise typer.Exit(code=1) from error
+                time.sleep(retry_interval_seconds * (attempt_index + 1))
         typer.echo(status.model_dump_json())
         if status.lifecycle_state in terminal_lifecycle_states:
             return
