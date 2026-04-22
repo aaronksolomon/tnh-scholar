@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`tnh-conductor status --watch` Live Monitoring** (2026-04-21)
+  - Added `--watch` and `--poll-interval-seconds` to `tnh-conductor status` so operators can stream machine-readable JSON status snapshots until a run reaches a terminal lifecycle state
+  - Preserved the existing one-shot status output when watch mode is not enabled
+  - Added focused CLI regression coverage for repeated polling through completion and immediate stop on blocked runs
+  - Files: `src/tnh_scholar/cli_tools/tnh_conductor/tnh_conductor.py`, `tests/cli_tools/test_tnh_conductor.py`
+
 - **SPIKE-10 Agent Coordination Comparison Result** (2026-04-20)
   - Recorded the five-arm SPIKE-10 result note for the shared `tnh-conductor status --watch` task across direct Codex, native subagents, explicit `codex-assistant`, explicit `claude-assistant`, and the maintained `tnh-conductor` path
   - Captured the main recommendation to keep `tnh-conductor` as the primary coordination substrate while treating direct Codex as the baseline and the assistant CLIs as experimental worker seams
