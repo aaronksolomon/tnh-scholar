@@ -10,7 +10,7 @@ SANDBOX_SOURCE_REPO ?= .
 PR_BASE ?= origin/main
 PR_CHECK_ARGS ?=
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check pipx-refresh build-all update sync-sandbox ytdlp-runtime
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -28,11 +28,18 @@ setup-dev:
 ytdlp-runtime:
 	$(POETRY) run python scripts/setup_ytdlp_runtime.py --yes
 
+update-health-check:
+	$(POETRY) run python scripts/update_health_check.py
+
+health-check:
+	$(POETRY) run python scripts/update_health_check.py --run-now
+
 build-all:
 	$(POETRY) self update
 	$(POETRY) update yt-dlp
 	$(POETRY) install
 	$(MAKE) ytdlp-runtime
+	$(MAKE) update-health-check
 	$(MAKE) pipx-refresh
 	$(MAKE) docs-build
 
@@ -40,6 +47,7 @@ update:
 	$(POETRY) self update
 	$(POETRY) update
 	$(POETRY) install
+	$(MAKE) update-health-check
 	$(POETRY) build
 	$(MAKE) pipx-build
 
@@ -127,7 +135,10 @@ ci-check:
 	@echo "Running CI checks locally..."
 	@echo "========================================="
 	@echo ""
-	@echo "📁 [1/6] Verifying directory trees..."
+	@echo "🌐 [1/7] Checking health-check freshness..."
+	@$(MAKE) update-health-check
+	@echo ""
+	@echo "📁 [2/7] Verifying directory trees..."
 	@$(POETRY) run python scripts/generate_tree.py
 	@if ! git diff --quiet -- project_directory_tree.txt src_directory_tree.txt; then \
 		echo "⚠️  Directory tree drift detected:"; \
@@ -136,19 +147,19 @@ ci-check:
 		echo "✅ Directory trees are up to date"; \
 	fi
 	@echo ""
-	@echo "🔍 [2/6] Running ruff lint..."
+	@echo "🔍 [3/7] Running ruff lint..."
 	@$(POETRY) run ruff check . && echo "✅ Ruff lint passed" || echo "⚠️  Ruff lint found issues (non-blocking)"
 	@echo ""
-	@echo "✨ [3/6] Checking ruff format..."
+	@echo "✨ [4/7] Checking ruff format..."
 	@$(POETRY) run ruff format --check . && echo "✅ Ruff format passed" || echo "⚠️  Ruff format check found issues (non-blocking)"
 	@echo ""
-	@echo "🔎 [4/6] Running type checks..."
+	@echo "🔎 [5/7] Running type checks..."
 	@$(POETRY) run mypy src/ && echo "✅ Type checking passed" || echo "⚠️  Type checking found issues (non-blocking)"
 	@echo ""
-	@echo "🧪 [5/6] Running tests..."
+	@echo "🧪 [6/7] Running tests..."
 	@$(POETRY) run pytest --maxfail=1 --cov=tnh_scholar --cov-report=term-missing
 	@echo ""
-	@echo "📝 [6/6] Verifying README ↔ docs/index.md sync..."
+	@echo "📝 [7/7] Verifying README ↔ docs/index.md sync..."
 	@$(POETRY) run python scripts/sync_readme.py && echo "✅ README sync verified"
 	@echo ""
 	@echo "========================================="

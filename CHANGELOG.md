@@ -184,6 +184,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Prototype CI Churn Reduction** (2026-04-21)
+  - Narrowed GitHub CI triggers to `main` only and made the full pytest step opt-in for PRs via the `full-ci` label
+  - Preserved full test execution on pushes to `main` after merge while keeping prototype PRs lightweight by default
+  - Made directory-tree drift and README/docs sync informational rather than blocking during prototype churn
+  - Files: `.github/workflows/ci.yml`
+
+- **yt-dlp Freshness-Gated Health Check** (2026-04-21)
+  - Added `scripts/update_health_check.py`, passive `make update-health-check`, and explicit `make health-check`
+  - Wired the passive status gate into `make ci-check`, `make build-all`, and `make update`
+  - The passive gate now warns when the last yt-dlp ops run is older than 10 days and fails when it is older than 30 days, while `make health-check` remains the explicit live execution path
+  - Added focused regression coverage for fresh status, stale warning, expiry failure, and explicit run-now state persistence
+  - Files: `scripts/update_health_check.py`, `tests/scripts/test_update_health_check_py.py`, `Makefile`, `docs/development/yt-dlp-ops-check.md`, `TODO.md`
+
+- **yt-dlp Runtime Setup Build Fix** (2026-04-21)
+  - Fixed `scripts/setup_ytdlp_runtime.py` so `make ytdlp-runtime` and `make build-all` no longer fail just because `curl_cffi` is unavailable in the active Poetry environment
+  - Switched the fallback installer to the active interpreter, added `ensurepip` bootstrapping when `pip` is missing, and kept missing `curl_cffi` as a non-fatal warning when JS runtime/config setup still succeeds
+  - Added focused regression coverage for non-fatal `curl_cffi` warnings and the missing-`pip` bootstrap path
+  - Files: `scripts/setup_ytdlp_runtime.py`, `tests/scripts/test_setup_ytdlp_runtime_py.py`
+
 - **audio-transcribe Structured Transcript Output Fix** (2026-04-21)
   - Fixed the `audio-transcribe` CLI crash when the transcription pipeline returns structured transcript records instead of plain strings
   - Normalized CLI output so transcript writes and stdout rendering accept both legacy string entries and the current dict-shaped pipeline results, while skipping failed chunks cleanly
