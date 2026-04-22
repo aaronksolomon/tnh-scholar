@@ -11696,27 +11696,41 @@
 
 <h1 id="yt-dlp-ops-check">yt-dlp Ops Check<a class="headerlink" href="#yt-dlp-ops-check" title="Link to this section">&para;</a></h1>
 <p>Run a local, monthly integration check for yt-dlp to catch upstream breakage without GitHub Actions noise.</p>
+<p>The repo now also includes a freshness-gated status wrapper for active local development:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>scripts/update_health_check.py
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>make<span class="w"> </span>update-health-check
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>make<span class="w"> </span>health-check
+</span></code></pre></div>
+<p><code>make update-health-check</code> is the passive status gate used by <code>make ci-check</code>, <code>make build-all</code>, and <code>make update</code>:</p>
+<ul>
+<li>warns when the last yt-dlp ops run is older than 10 days</li>
+<li>fails when the last yt-dlp ops run is older than 30 days</li>
+<li>does not run the live suite automatically</li>
+</ul>
+<p><code>make health-check</code> explicitly runs the live yt-dlp ops suite now and updates the status file. Thresholds can be configured with <code>TNH_HEALTH_WARN_AFTER_DAYS</code>, <code>TNH_HEALTH_FAIL_AFTER_DAYS</code>, and <code>TNH_YT_DLP_RECOMMENDED_INTERVAL_DAYS</code>.</p>
 <h2 id="script">Script<a class="headerlink" href="#script" title="Link to this section">&para;</a></h2>
 <p>Use:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>scripts/yt_dlp_ops_check.py
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>scripts/yt_dlp_ops_check.py
 </span></code></pre></div>
 <p>This runs a live ops check and appends logs to <code>logs/yt_dlp_ops_check.log</code>.</p>
+<p>The freshness-gated wrapper records status in:</p>
+<p><code>logs/update_health_check_status.json</code></p>
 <p>Optional overrides:</p>
 <ul>
 <li><code>TNH_YT_URLS_PATH=/path/to/validation_urls.txt</code> to use a custom URL list.</li>
 <li><code>TNH_YT_URL_LIMIT=2</code> to limit the number of URLs for a quick run.</li>
 </ul>
 <h2 id="cron-example">Cron example<a class="headerlink" href="#cron-example" title="Link to this section">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Weekly on Mondays at 9:00 AM</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="m">0</span><span class="w"> </span><span class="m">9</span><span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span><span class="m">1</span><span class="w"> </span>/usr/bin/env<span class="w"> </span>bash<span class="w"> </span>-lc<span class="w"> </span><span class="s2">&quot;cd /path/to/tnh-scholar &amp;&amp; python scripts/yt_dlp_ops_check.py&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Weekly on Mondays at 9:00 AM</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="m">0</span><span class="w"> </span><span class="m">9</span><span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span><span class="m">1</span><span class="w"> </span>/usr/bin/env<span class="w"> </span>bash<span class="w"> </span>-lc<span class="w"> </span><span class="s2">&quot;cd /path/to/tnh-scholar &amp;&amp; python scripts/yt_dlp_ops_check.py&quot;</span>
 </span></code></pre></div>
 <h2 id="url-list">URL list<a class="headerlink" href="#url-list" title="Link to this section">&para;</a></h2>
 <p>Edit the live test URLs at:</p>
 <p><code>tests/fixtures/yt_dlp/validation_urls.txt</code></p>
 <h2 id="runtime-setup">Runtime setup<a class="headerlink" href="#runtime-setup" title="Link to this section">&para;</a></h2>
 <p>Use the helper script or Makefile target:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>scripts/setup_ytdlp_runtime.py<span class="w"> </span>--yes
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>make<span class="w"> </span>ytdlp-runtime
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>scripts/setup_ytdlp_runtime.py<span class="w"> </span>--yes
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>make<span class="w"> </span>ytdlp-runtime
 </span></code></pre></div>
 
 

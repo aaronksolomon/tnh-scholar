@@ -1404,6 +1404,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#fully-usable-audio-transcribe-hardening-path-p2" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚧 Fully Usable audio-transcribe Hardening Path (P2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#agent-orchestration-codex-runner-adr-oa032" class="md-nav__link">
     <span class="md-ellipsis">
       ⏸️ Agent Orchestration - Codex Runner (ADR-OA03.2)
@@ -12336,6 +12345,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#fully-usable-audio-transcribe-hardening-path-p2" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚧 Fully Usable audio-transcribe Hardening Path (P2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#agent-orchestration-codex-runner-adr-oa032" class="md-nav__link">
     <span class="md-ellipsis">
       ⏸️ Agent Orchestration - Codex Runner (ADR-OA03.2)
@@ -13054,6 +13072,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li><strong>Monthly Ops Trigger</strong>:</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Add cron-ready ops check script + validation URL list</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Document monthly cron usage and log locations</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Add freshness-gated local status wrapper for active repo use (<code>make update-health-check</code>) plus explicit <code>make health-check</code> execution</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add failure notification workflow (issue creation or alerting)</li>
 <li><strong>Acceptance Criteria</strong>:</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Coverage for all yt-dlp entry points + error paths</li>
@@ -13223,6 +13242,18 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add runtime preflight (yt-dlp inspector + ffmpeg availability); keep version checks ops-only</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Migrate CLI to Typer with minimal surface (smoke tests only)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add service-layer tests for all audio-transcribe use cases</li>
+</ul>
+<h4 id="fully-usable-audio-transcribe-hardening-path-p2">🚧 Fully Usable audio-transcribe Hardening Path (P2)<a class="headerlink" href="#fully-usable-audio-transcribe-hardening-path-p2" title="Link to this section">&para;</a></h4>
+<ul class="task-list">
+<li><strong>Status</strong>: NOT STARTED</li>
+<li><strong>Goal</strong>: Make <code>audio-transcribe</code> safe for routine real-world use by eliminating stack dumps from expected fault paths and hardening the tool against edge-case and provider-shape failures.</li>
+<li><strong>Tasks</strong>:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Build a full-spectrum regression matrix covering local files, YouTube URLs, CSV input, diarization on/off, Whisper, and AssemblyAI</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add end-to-end CLI regression coverage for normal runs plus representative operator workflows used in practice</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add fault-injection coverage for provider shape drift, empty/partial transcript results, chunk-level failures, file-write failures, temp-dir cleanup failures, and missing dependency/runtime preconditions</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Ensure expected runtime faults exit with user-facing errors instead of Python tracebacks</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Capture and preserve real-world reproductions as named regression fixtures/cases whenever a live failure is found</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Run a post-hardening soak pass against representative real inputs before the next minor release</li>
 </ul>
 <h4 id="agent-orchestration-codex-runner-adr-oa032">⏸️ Agent Orchestration - Codex Runner (ADR-OA03.2)<a class="headerlink" href="#agent-orchestration-codex-runner-adr-oa032" title="Link to this section">&para;</a></h4>
 <ul>

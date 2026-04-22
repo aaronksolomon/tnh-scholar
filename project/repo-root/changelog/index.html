@@ -12682,7 +12682,44 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <h3 id="changed">Changed<a class="headerlink" href="#changed" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Workflow and Release-Prep Documentation Clarification</strong> (2026-04-21)</li>
+<li><strong>Prototype CI Churn Reduction</strong> (2026-04-21)</li>
+<li>Narrowed GitHub CI triggers to <code>main</code> only and made the full pytest step opt-in for PRs via the <code>full-ci</code> label</li>
+<li>Preserved full test execution on pushes to <code>main</code> after merge while keeping prototype PRs lightweight by default</li>
+<li>Made directory-tree drift and README/docs sync informational rather than blocking during prototype churn</li>
+<li>
+<p>Files: <code>.github/workflows/ci.yml</code></p>
+</li>
+<li>
+<p><strong>yt-dlp Freshness-Gated Health Check</strong> (2026-04-21)</p>
+</li>
+<li>Added <code>scripts/update_health_check.py</code>, passive <code>make update-health-check</code>, and explicit <code>make health-check</code></li>
+<li>Wired the passive status gate into <code>make ci-check</code>, <code>make build-all</code>, and <code>make update</code></li>
+<li>The passive gate now warns when the last yt-dlp ops run is older than 10 days and fails when it is older than 30 days, while <code>make health-check</code> remains the explicit live execution path</li>
+<li>Added focused regression coverage for fresh status, stale warning, expiry failure, and explicit run-now state persistence</li>
+<li>
+<p>Files: <code>scripts/update_health_check.py</code>, <code>tests/scripts/test_update_health_check_py.py</code>, <code>Makefile</code>, <code>docs/development/yt-dlp-ops-check.md</code>, <code>TODO.md</code></p>
+</li>
+<li>
+<p><strong>yt-dlp Runtime Setup Build Fix</strong> (2026-04-21)</p>
+</li>
+<li>Fixed <code>scripts/setup_ytdlp_runtime.py</code> so <code>make ytdlp-runtime</code> and <code>make build-all</code> no longer fail just because <code>curl_cffi</code> is unavailable in the active Poetry environment</li>
+<li>Switched the fallback installer to the active interpreter, added <code>ensurepip</code> bootstrapping when <code>pip</code> is missing, and kept missing <code>curl_cffi</code> as a non-fatal warning when JS runtime/config setup still succeeds</li>
+<li>Added focused regression coverage for non-fatal <code>curl_cffi</code> warnings and the missing-<code>pip</code> bootstrap path</li>
+<li>
+<p>Files: <code>scripts/setup_ytdlp_runtime.py</code>, <code>tests/scripts/test_setup_ytdlp_runtime_py.py</code></p>
+</li>
+<li>
+<p><strong>audio-transcribe Structured Transcript Output Fix</strong> (2026-04-21)</p>
+</li>
+<li>Fixed the <code>audio-transcribe</code> CLI crash when the transcription pipeline returns structured transcript records instead of plain strings</li>
+<li>Normalized CLI output so transcript writes and stdout rendering accept both legacy string entries and the current dict-shaped pipeline results, while skipping failed chunks cleanly</li>
+<li>Added focused regression coverage for the structured transcript normalization path</li>
+<li>
+<p>Files: <code>src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py</code>, <code>tests/cli_tools/test_audio_transcribe.py</code></p>
+</li>
+<li>
+<p><strong>Workflow and Release-Prep Documentation Clarification</strong> (2026-04-21)</p>
+</li>
 <li>Clarified in <code>AGENTS.md</code> that normal PRs are the default workflow and that <code>git branch -D</code> is allowed only with explicit approval plus non-loss verification</li>
 <li>Updated <code>TODO.md</code> release framing to mark the maintained <code>tnh-conductor</code> bootstrap path as a usable prototype and to put <code>0.4.0</code> release-prep cleanup first in the queue</li>
 <li>
