@@ -184,6 +184,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **audio-transcribe Structured Transcript Output Fix** (2026-04-21)
+  - Fixed the `audio-transcribe` CLI crash when the transcription pipeline returns structured transcript records instead of plain strings
+  - Normalized CLI output so transcript writes and stdout rendering accept both legacy string entries and the current dict-shaped pipeline results, while skipping failed chunks cleanly
+  - Added focused regression coverage for the structured transcript normalization path
+  - Files: `src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py`, `tests/cli_tools/test_audio_transcribe.py`
+
 - **Workflow and Release-Prep Documentation Clarification** (2026-04-21)
   - Clarified in `AGENTS.md` that normal PRs are the default workflow and that `git branch -D` is allowed only with explicit approval plus non-loss verification
   - Updated `TODO.md` release framing to mark the maintained `tnh-conductor` bootstrap path as a usable prototype and to put `0.4.0` release-prep cleanup first in the queue
