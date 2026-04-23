@@ -1,7 +1,8 @@
 ---
 title: TNH Scholar
-description: Comprehensive documentation for TNH Scholar, an AI-driven project exploring,
-  processing, and translating the teachings of Thich Nhat Hanh.
+description: "Open-source, AI-assisted tools for studying, translating, and engaging\
+  \ with the teachings of Th\xEDch Nh\u1EA5t H\u1EA1nh, the Plum Village community,\
+  \ and the canonical Buddhist sources they draw from."
 owner: Documentation Working Group
 author: Documentation Working Group
 status: current
@@ -23,6 +24,8 @@ TNH Scholar is intended as a long-term effort to support the **living Plum Villa
 - Support **cross-lingual research** with support for Vietnamese, English, French, Chinese, Pāli, Sanskrit, Tibetan, and other sources.
 - Enable **rich interactive environments** like bilingual readers combining scans, text, translations, and audio.
 - Enable **human-supervised AI workflows** for corpus processing, translation, and evaluation.
+- Engage with **current Plum Village dharma teachers** as the living continuation of the tradition, extending the corpus beyond Thây's legacy to the broader teaching community.
+- Reach toward **historical canonical sources** — Pāli suttas, Tibetan texts, Sanskrit originals — that form the deeper roots from which the modern teachings grow.
 
 This work is envisioned on a **multi-year to multi-decade timescale**. The CLI tools and GenAI Service in this repository are the **early infrastructure** for that larger arc.
 
