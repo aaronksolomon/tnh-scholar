@@ -35,7 +35,7 @@ This directory contains documentation for developers contributing to TNH Scholar
 
 ## Getting Started as a Contributor
 
-1. **Set up your development environment** - See [`DEV_SETUP.md`](/project/repo-root/dev-setup-guide.md) for Python, Poetry, and dependency installation
+1. **Set up your development environment** - See `DEV_SETUP.md` in the repo root for Python, Poetry, and dependency installation
 2. Read [contributing-prototype-phase.md](/development/contributing-prototype-phase.md) for contribution guidelines
 3. **Understand versioning policy** - Review [ADR-PP01](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) for breaking change expectations
 4. Review [design-principles.md](/development/design-principles.md) to understand our approach
@@ -48,5 +48,5 @@ TNH Scholar embraces human-AI collaborative development. See [human-ai-software-
 ## Related Documentation
 
 - [Project Vision & Philosophy](/project/vision.md) - Project goals and philosophy
-- [Architecture](/architecture/overview.md) - Technical architecture documentation
+- [Architecture](/architecture/index.md) - Technical architecture documentation
 - [Docs Operations](/docs-ops/markdown-standards.md) - Documentation standards and templates

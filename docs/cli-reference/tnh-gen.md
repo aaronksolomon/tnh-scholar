@@ -45,11 +45,10 @@ tnh-gen run --prompt translate \
   --var target_lang=en
 
 # Get machine-readable output for scripts
-tnh-gen run --prompt translate \
+tnh-gen --api run --prompt translate \
   --input-file teaching.md \
   --var source_lang=vi \
-  --var target_lang=en \
-  --api
+  --var target_lang=en
 ```
 
 ## Global Flags
@@ -59,9 +58,21 @@ These flags work with all commands:
 ```bash
 --api              # Enable machine-readable API contract output (JSON)
 --format FORMAT    # Output format: json, yaml, text, table
+--prompt-dir PATH  # Override the prompt catalog directory
+--config PATH      # Override config file location
 --quiet, -q        # Suppress non-error output
 --no-color         # Disable colored terminal output
---config PATH      # Override config file location
+```
+
+**Important**: Global flags must come BEFORE the subcommand:
+
+```bash
+# Correct
+tnh-gen --api list
+tnh-gen --prompt-dir ./prompts run --prompt translate ...
+
+# Incorrect (will not work)
+tnh-gen list --api
 ```
 
 ### Output Modes
@@ -94,15 +105,15 @@ tnh-gen list
 # → Simplified text format with descriptions
 
 # API mode (JSON contract)
-tnh-gen list --api
+tnh-gen --api list
 # → Full metadata as JSON
 
 # API mode with YAML serialization
-tnh-gen list --api --format yaml
+tnh-gen --api --format yaml list
 # → Full metadata as YAML
 
 # Human-friendly table
-tnh-gen list --format table
+tnh-gen --format table list
 # → Simplified table format
 ```
 
@@ -124,9 +135,9 @@ tnh-gen list [OPTIONS]
 --tag TAG          # Filter by tag (repeatable)
 --search QUERY     # Search in names/descriptions (case-insensitive)
 --keys-only        # Output only prompt keys (one per line)
---format FORMAT    # Output format: text (default), json, yaml, table
---api              # Enable API mode with full metadata
 ```
+
+Note: `--format` and `--api` are global flags that must come before `list`.
 
 #### Human-Friendly Output (Default)
 
@@ -158,7 +169,7 @@ summarize - Summarize Teaching
 #### API Output
 
 ```bash
-$ tnh-gen list --api
+$ tnh-gen --api list
 {
   "prompts": [
     {
@@ -186,7 +197,7 @@ $ tnh-gen list --api
 #### Table Format
 
 ```bash
-$ tnh-gen list --format table
+$ tnh-gen --format table list
 KEY         NAME                               TAGS                  MODEL
 translate   Vietnamese-English Translation     translation, dharma   gpt-4o
 summarize   Summarize Teaching                 summarization         gpt-4o-mini
@@ -258,10 +269,10 @@ tnh-gen run --prompt KEY [OPTIONS]
 
 ```bash
 --output-file PATH       # Write result to file
---format FORMAT          # Output format: text (default), json
 --no-provenance          # Omit provenance markers from output
---api                    # Enable API mode with full metadata
 ```
+
+Note: `--format` and `--api` are global flags that must come before `run`.
 
 #### Variable Precedence
 
@@ -299,7 +310,7 @@ $ tnh-gen run --prompt translate --input-file teaching.md --var source_lang=vi -
 #### API Output
 
 ```bash
-$ tnh-gen run --prompt translate --input-file teaching.md --var source_lang=vi --var target_lang=en --api
+$ tnh-gen --api run --prompt translate --input-file teaching.md --var source_lang=vi --var target_lang=en
 {
   "status": "succeeded",
   "result": {
@@ -378,9 +389,8 @@ tnh-gen run --prompt translate \
   --output-file teaching.translate.md
 
 # JSON output for scripting
-tnh-gen run --prompt extract_quotes \
-  --input-file teaching.md \
-  --api > output.json
+tnh-gen --api run --prompt extract_quotes \
+  --input-file teaching.md > output.json
 ```
 
 ---
@@ -449,7 +459,7 @@ max_dollars: 0.10
 #### API Output
 
 ```bash
-$ tnh-gen config show --api
+$ tnh-gen --api config show
 {
   "config": {
     "prompt_catalog_dir": "/custom/path",
@@ -480,7 +490,7 @@ $ tnh-gen config show --api
 tnh-gen config show
 
 # Show all configuration with sources (API mode)
-tnh-gen config show --api
+tnh-gen --api config show
 
 # Get specific value
 tnh-gen config get default_model
@@ -516,7 +526,7 @@ Python 3.12.4 on darwin
 #### API Output
 
 ```bash
-$ tnh-gen version --api
+$ tnh-gen --api version
 {
   "tnh_scholar": "0.2.2",
   "tnh_gen": "0.2.2",
@@ -560,7 +570,7 @@ Suggestion: Run 'tnh-gen list' to see available prompts, or check your prompt ke
 #### API Error
 
 ```bash
-$ tnh-gen run --prompt missing_prompt --input-file test.md --api
+$ tnh-gen --api run --prompt missing_prompt --input-file test.md
 # stdout:
 {
   "status": "failed",

@@ -104,10 +104,12 @@ make release-minor
 
 **Use for**:
 
-- New features that maintain backward compatibility
+- New features or significant capability additions
 - Significant documentation reorganization
 - New CLI commands or subcommands
 - Major improvements to existing features
+
+**Note**: During 0.x rapid prototype phase, minor releases may include breaking changes. See [ADR-PP01](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md).
 
 **⚠️ Documentation Review Required**: Minor releases with new features require manual review of user-facing documentation to catch docs issues. See Step 1.5 below.
 
@@ -132,11 +134,11 @@ make release-major
 Choose the appropriate version bump:
 
 ```bash
-make release-patch   # For 0.1.4 → 0.1.5
+make release-patch   # e.g., 0.3.0 → 0.3.1
 # OR
-make release-minor   # For 0.1.4 → 0.2.0
+make release-minor   # e.g., 0.3.0 → 0.4.0
 # OR
-make release-major   # For 0.1.4 → 1.0.0
+make release-major   # e.g., 0.3.0 → 1.0.0
 ```
 
 **What happens**:
@@ -145,13 +147,13 @@ make release-major   # For 0.1.4 → 1.0.0
 - Updates `TODO.md` version header to match
 - Displays next steps
 
-**Example output**:
+**Example output** (version numbers will reflect your current release):
 
 ```plaintext
 🚀 Bumping patch version (0.x.Y -> 0.x.Y+1)...
-Bumping version from 0.1.4 to 0.1.5
-📝 Updating version to 0.1.5 in TODO.md...
-✅ Version updated to 0.1.5
+Bumping version from 0.3.0 to 0.3.1
+📝 Updating version to 0.3.1 in TODO.md...
+✅ Version updated to 0.3.1
 
 Next steps:
   1. Review user-facing documentation (see Step 1.5 below for minor/major releases)

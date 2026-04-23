@@ -10,6 +10,8 @@ created: "2025-02-01"
 
 High-level system design describing the cyclical AI processing architecture powering TNH Scholar.
 
+> **Historical Context**: This document describes an early architectural vision emphasizing cyclical training/fine-tuning loops. Current development focuses on prompt-based CLI workflows (`tnh-gen`, `audio-transcribe`) and the prompt system. This remains a useful reference for long-term design intent but does not reflect all current implementation priorities. See the [Architecture index](/architecture/index.md) and ADRs for current decisions.
+
 > **Terminology Note**: This document uses historical "Pattern" terminology. In current TNH Scholar documentation, "Pattern" has been replaced with "Prompt" to align with industry standards. See [ADR-DD03](/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md) for details.
 >
 > When reading this document: "Pattern-based processing" → "Prompt-based processing"
