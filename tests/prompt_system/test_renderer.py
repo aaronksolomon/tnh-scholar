@@ -5,7 +5,11 @@ from tnh_scholar.prompt_system.domain.models import Prompt, PromptMetadata, Rend
 from tnh_scholar.prompt_system.service.renderer import PromptRenderer
 
 
-def make_prompt(template: str, required: list[str] | None = None, metadata_extra: dict | None = None) -> Prompt:
+def make_prompt(
+    template: str,
+    required: list[str] | None = None,
+    metadata_extra: dict | None = None,
+) -> Prompt:
     metadata = PromptMetadata(
         key="test",
         name="test",

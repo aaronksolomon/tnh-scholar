@@ -4,14 +4,15 @@ import importlib
 
 from click.testing import CliRunner
 
-nfmt_module = importlib.import_module("tnh_scholar.cli_tools.nfmt.nfmt")
-srt_translate_module = importlib.import_module("tnh_scholar.cli_tools.srt_translate.srt_translate")
-sent_split_module = importlib.import_module("tnh_scholar.cli_tools.sent_split.sent_split")
 from tnh_scholar.cli_tools.json_to_srt.json_to_srt import JsonlToSrtConverter, json_to_srt
 from tnh_scholar.cli_tools.nfmt.nfmt import nfmt
 from tnh_scholar.cli_tools.sent_split.sent_split import sent_split
 from tnh_scholar.cli_tools.srt_translate.srt_translate import SrtTranslator, srt_translate
 from tnh_scholar.cli_tools.token_count.token_count import token_count_cli
+
+nfmt_module = importlib.import_module("tnh_scholar.cli_tools.nfmt.nfmt")
+srt_translate_module = importlib.import_module("tnh_scholar.cli_tools.srt_translate.srt_translate")
+sent_split_module = importlib.import_module("tnh_scholar.cli_tools.sent_split.sent_split")
 
 
 def test_nfmt_happy_path():
@@ -25,7 +26,9 @@ def test_nfmt_happy_path():
 def test_nfmt_failure(monkeypatch):
     runner = CliRunner()
     monkeypatch.setattr(
-        nfmt_module, "normalize_newlines", lambda *_: (_ for _ in ()).throw(ValueError("bad"))
+        nfmt_module,
+        "normalize_newlines",
+        lambda *_: (_ for _ in ()).throw(ValueError("bad")),
     )
 
     result = runner.invoke(nfmt, [], input="text")
@@ -77,7 +80,9 @@ def test_json_to_srt_happy_path(monkeypatch):
 def test_json_to_srt_failure(monkeypatch):
     runner = CliRunner()
     monkeypatch.setattr(
-        JsonlToSrtConverter, "convert", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom"))
+        JsonlToSrtConverter,
+        "convert",
+        lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom")),
     )
 
     result = runner.invoke(json_to_srt, [], input="{}")

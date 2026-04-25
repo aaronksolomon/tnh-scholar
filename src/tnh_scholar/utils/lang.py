@@ -27,7 +27,7 @@ def get_language_code_from_text(text: str) -> str:
     sample = _get_sample_text(text)
 
     try:
-        return detect(sample)
+        return str(detect(sample))
     except LangDetectException:
         logger.warning("Language could not be detected in get_language().")
         return "un"
@@ -37,9 +37,9 @@ def get_language_name_from_text(text: str) -> str:
     return get_language_from_code(get_language_code_from_text(text))
 
 
-def get_language_from_code(code: str):
+def get_language_from_code(code: str) -> str:
     if language := pycountry.languages.get(alpha_2=code):
-        return language.name
+        return str(language.name)
     logger.warning(f"No language name found for code: {code}")
     return "Unknown"
 

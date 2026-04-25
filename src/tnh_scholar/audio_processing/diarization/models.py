@@ -1,5 +1,5 @@
 from io import BytesIO
-from typing import List, Optional
+from typing import Any, List, Optional
 
 from pydantic import BaseModel
 
@@ -46,7 +46,7 @@ class DiarizedSegment(BaseModel):
 
     @property
     def duration_sec(self) -> float:
-        return self.duration.to_seconds()
+        return float(self.duration.to_seconds())
     
     # ------------------------------------------------------------------- #
     # IMPLEMENTATION NOTE
@@ -63,16 +63,15 @@ class DiarizedSegment(BaseModel):
         return self.end
     
     @property
-    def mapped_start(self):
+    def mapped_start(self) -> int:
         """Downstream registry field set by the audio handler"""
-        return self.start if self.audio_map_start is None else self.audio_map_start
+        return int(self.start if self.audio_map_start is None else self.audio_map_start)
     
     @property
-    def mapped_end(self):
+    def mapped_end(self) -> int:
         if self.audio_map_start is None:
-            return self.end 
-        else:
-            return self.audio_map_start + int(self.duration) 
+            return int(self.end)
+        return int(self.audio_map_start + int(self.duration))
     
     def normalize(self) -> None:
         """Normalize the duration of the segment to be nonzero and validate start/end values."""
@@ -202,7 +201,7 @@ class DiarizationChunk(BaseModel):
     
     @property
     def total_duration_sec(self) -> float:
-        return convert_ms_to_sec(self.total_duration)
+        return float(convert_ms_to_sec(self.total_duration))
 
     @property
     def total_duration_time(self) -> "TimeMs":
@@ -235,13 +234,13 @@ class SpeakerBlock(BaseModel):
 
     @property
     def duration_sec(self) -> float:
-        return self.duration.to_seconds()
+        return float(self.duration.to_seconds())
 
     @property
     def segment_count(self) -> int:
         return len(self.segments)
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         """custom serializer for SpeakerBlock with validation."""
         # Validate speaker
         if not isinstance(self.speaker, str) or not self.speaker:

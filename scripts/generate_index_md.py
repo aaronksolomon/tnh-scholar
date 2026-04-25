@@ -96,14 +96,19 @@ def regenerate_full() -> str:
     """Legacy behavior: regenerate the entire index."""
     front_matter = {
         "title": "TNH Scholar Documentation",
-        "description": "Comprehensive documentation for TNH Scholar, an AI-driven project exploring the teachings of Thich Nhat Hanh.",
+        "description": (
+            "Comprehensive documentation for TNH Scholar, an AI-driven project "
+            "exploring the teachings of Thich Nhat Hanh."
+        ),
         "auto_generated": True,
     }
     fm = "---\n" + yaml.safe_dump(front_matter, sort_keys=False).rstrip() + "\n---\n\n"
     intro = (
         "# TNH Scholar Documentation\n\n"
-        "Welcome to the TNH Scholar documentation. This page maps all available documentation organized by topic.\n\n"
-        "TNH Scholar is an AI-driven project exploring, processing, and translating the teachings of Thich Nhat Hanh "
+        "Welcome to the TNH Scholar documentation. This page maps all "
+        "available documentation organized by topic.\n\n"
+        "TNH Scholar is an AI-driven project exploring, processing, and "
+        "translating the teachings of Thich Nhat Hanh "
         "and the Plum Village community through natural language processing and machine learning.\n\n"
         f"{MAP_HEADING}\n\n"
     )

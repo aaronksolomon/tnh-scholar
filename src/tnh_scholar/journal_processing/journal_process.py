@@ -5,7 +5,7 @@ from datetime import datetime
 from math import floor
 from pathlib import Path
 from types import SimpleNamespace
-from typing import Any, Callable, List, Sequence, TypedDict
+from typing import Any, Callable, List, Sequence, TypedDict, cast
 
 from tnh_scholar.gen_ai_service.adapters.simple_completion import simple_completion
 from tnh_scholar.gen_ai_service.utils.token_utils import token_count
@@ -34,6 +34,18 @@ DEFAULT_MODEL_SETTINGS: dict[str, ModelSettings] = {
 }
 
 logger = logging.getLogger("journal_process")
+
+
+def _identity_text(text: object) -> str:
+    """Return a text payload as a string."""
+    return str(text)
+
+
+def _translation_prompt(section_info: object) -> str:
+    """Format one section translation prompt."""
+    title = getattr(section_info, "title", "")
+    content = getattr(section_info, "content", "")
+    return f"Translate this section with title '{title}':\n{content}"
 
 
 def generate_messages(
@@ -343,7 +355,7 @@ def unwrap_all_lines(pages):
 
 
 # code to process and validate journal sections
-def validate_and_clean_data(data, schema) -> dict:
+def validate_and_clean_data(data, schema) -> dict:  # noqa: C901
     """
     Recursively validate and clean AI-generated data to fit the given schema.
     Any missing fields are filled with defaults, and extra fields are ignored.
@@ -356,7 +368,7 @@ def validate_and_clean_data(data, schema) -> dict:
         dict: The cleaned data adhering to the schema.
     """
 
-    def clean_value(value, field_schema):
+    def clean_value(value, field_schema):  # noqa: C901
         """
         Clean a single value based on its schema, attempting type conversions where necessary.
         """
@@ -425,7 +437,7 @@ def validate_and_clean_data(data, schema) -> dict:
     # Handle the top-level object
     if schema["type"] == "object":
         cleaned_data = clean_object(data, schema)
-        return cleaned_data
+        return cast(dict[Any, Any], cleaned_data)
     else:
         raise ValueError("Top-level schema must be of type 'object'.")
 
@@ -549,7 +561,8 @@ def batch_section(
     input_xml_path: Path, batch_jsonl: Path, system_message, journal_name
 ) -> str:
     """
-    Splits the journal content into sections using GPT, with retries for both starting and completing the batch.
+    Split journal content into sections using GPT, with retries for
+    starting and completing the batch.
     """
     try:
         logger.info(
@@ -559,9 +572,8 @@ def batch_section(
         journal_pages = read_str_from_file(input_xml_path)
 
         # Create GPT messages for sectioning
-        user_message_wrapper = lambda text: f"{text}"
         messages = generate_messages(
-            system_message, user_message_wrapper, [journal_pages]
+            system_message, _identity_text, [journal_pages]
         )
 
         # Create JSONL file for batch processing
@@ -609,7 +621,10 @@ def batch_translate(
     Saves the translated content back to XML.
     """
     logger.info(
-        f"Starting translation batch for journal '{journal_name}':\n\twith file: {input_xml_path}\n\tmetadata: {metadata_path}"
+        "Starting translation batch for journal '%s':\n\twith file: %s\n\tmetadata: %s",
+        journal_name,
+        input_xml_path,
+        metadata_path,
     )
 
     # Data initialization:
@@ -726,11 +741,8 @@ def send_data_for_tx_batch(
     """
     try:
         # Generate all messages using the generate_messages function
-        user_message_wrapper = (
-            lambda section_info: f"Translate this section with title '{section_info.title}':\n{section_info.content}"
-        )
         messages = generate_messages(
-            system_message, user_message_wrapper, section_data_to_send
+            system_message, _translation_prompt, section_data_to_send
         )
 
         if immediate:
@@ -861,7 +873,10 @@ def deserialize_json(serialized_data: str) -> dict:
 
     try:
         # Convert the JSON string into a dictionary
-        return json.loads(serialized_data)
+        payload = json.loads(serialized_data)
+        if not isinstance(payload, dict):
+            raise ValueError("JSON payload must deserialize to a dictionary.")
+        return cast(dict[Any, Any], payload)
     except json.JSONDecodeError as e:
         logger.error(f"Failed to deserialize JSON: {e}")
         raise

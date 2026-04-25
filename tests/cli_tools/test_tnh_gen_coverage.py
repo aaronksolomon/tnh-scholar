@@ -455,7 +455,11 @@ def test_output_policy_paths():
         default_format=OutputFormat.text,
     )
     assert fmt_override == OutputFormat.yaml
-    fmt = policy_module.resolve_output_format(api=True, format_override=None, default_format=OutputFormat.yaml)
+    fmt = policy_module.resolve_output_format(
+        api=True,
+        format_override=None,
+        default_format=OutputFormat.yaml,
+    )
     assert fmt == OutputFormat.json
 
     ctx_format = SimpleNamespace(value="invalid")
@@ -641,7 +645,10 @@ def test_default_service_factory_builds_service(monkeypatch):
 
     monkeypatch.setattr(factory_module, "GenAIService", _FakeService)
     factory = factory_module.DefaultServiceFactory()
-    service = factory.create_genai_service(CLIConfig(default_model="gpt-4o"), factory_module.ServiceOverrides())
+    service = factory.create_genai_service(
+        CLIConfig(default_model="gpt-4o"),
+        factory_module.ServiceOverrides(),
+    )
 
     assert isinstance(service, _FakeService)
     assert captured["settings"].default_model == "gpt-4o"

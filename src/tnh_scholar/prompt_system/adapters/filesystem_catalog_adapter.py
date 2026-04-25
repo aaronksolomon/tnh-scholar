@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import builtins
+
 from pydantic import ValidationError
 
 from ..config.prompt_catalog_config import PromptCatalogConfig
@@ -105,7 +107,7 @@ class FilesystemPromptCatalog(PromptCatalogPort):
         key: str,
         prompt: Prompt,
         health: CatalogHealth,
-    ) -> list[str]:
+    ) -> builtins.list[str]:
         if not self._config.validation_on_load:
             return list(getattr(prompt.metadata, "warnings", []) or [])
 

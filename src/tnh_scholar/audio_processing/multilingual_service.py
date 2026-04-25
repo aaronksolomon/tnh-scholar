@@ -4,7 +4,7 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any, Callable, cast
 
-from tnh_scholar.ai_text_processing import get_pattern
+from tnh_scholar.ai_text_processing import Prompt, get_pattern
 from tnh_scholar.audio_processing.audio_slice_utils import (
     resolve_audio_format,
     slice_audio_bytes,
@@ -146,7 +146,8 @@ class SrtSegmentTranslationService(SegmentTranslationServiceProtocol):
         source_language = normalize_language_code(result.source_language)
         if source_language is None:
             return False
-        return source_language == normalize_language_code(self._target_language)
+        target_language = normalize_language_code(self._target_language)
+        return target_language is not None and source_language == target_language
 
     def _build_translator(self, source_language: str | None) -> SrtTranslator:
         return SrtTranslator(
@@ -157,7 +158,7 @@ class SrtSegmentTranslationService(SegmentTranslationServiceProtocol):
             metadata=self._load_metadata(),
         )
 
-    def _load_pattern(self) -> Any:
+    def _load_pattern(self) -> Prompt | None:
         return get_pattern(self._pattern_name) if self._pattern_name is not None else None
 
     def _load_metadata(self) -> Metadata | None:
@@ -283,7 +284,8 @@ class SpeakerBlockLanguageSegmentationService(LanguageSegmentationServiceProtoco
         language = str(self._probe.segment_language(probe_segment))
         if language == "unknown":
             return None
-        return normalize_language_code(language)
+        normalized_language = normalize_language_code(language)
+        return str(normalized_language) if normalized_language is not None else None
 
 
 class PassThroughSubtitleMergeService(SubtitleMergeServiceProtocol):

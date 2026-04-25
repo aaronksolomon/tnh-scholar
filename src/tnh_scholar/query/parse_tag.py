@@ -5,6 +5,15 @@ from typing import Union
 from bs4 import BeautifulSoup, NavigableString, Tag
 
 
+def _matches_attribute_pattern(value: object, pattern: str) -> bool:
+    """Return whether an attribute value matches a regex pattern."""
+    if isinstance(value, list):
+        return any(re.match(pattern, item) for item in value)
+    if isinstance(value, str):
+        return re.match(pattern, value) is not None
+    return False
+
+
 def extract_tags_by_attributes(
     soup: BeautifulSoup, tags_with_attributes: dict[str, dict]
 ) -> dict[tuple[str, tuple], list[BeautifulSoup]]:
@@ -24,7 +33,8 @@ def extract_tags_by_attributes(
 
     tags_with_attributes : dict
         A dictionary where keys are the tag names (e.g., 'p', 'span') and values are
-        attribute dictionaries that filter the tags. For example, {'p': {}, 'span': {'class': 'italic'}}.
+        attribute dictionaries that filter the tags. For example,
+        {'p': {}, 'span': {'class': 'italic'}}.
         - To search for a tag without any attribute filters, provide an empty dictionary `{}`.
 
     Returns:
@@ -32,13 +42,17 @@ def extract_tags_by_attributes(
     dict
         A dictionary where each key is a tuple `(tag, attribute_values)`:
             - `tag`: The HTML tag name (e.g., 'p', 'span').
-            - `attribute_values`: A tuple of key-value pairs representing the tag's attributes (e.g., `(('class', 'italic'),)`).
+            - `attribute_values`: A tuple of key-value pairs representing the tag's
+              attributes (e.g., `(('class', 'italic'),)`).
               If no attributes were specified, the tuple will be empty `()`.
         The corresponding value is a list of BeautifulSoup tag elements that matched the search criteria.
 
     Example:
     --------
-    >>> soup = BeautifulSoup('<p>This is a paragraph.</p><span class="italic">Italic text</span>', 'html.parser')
+    >>> soup = BeautifulSoup(
+    ...     '<p>This is a paragraph.</p><span class="italic">Italic text</span>',
+    ...     'html.parser',
+    ... )
     >>> tags_to_find = {'p': {}, 'span': {'class': 'italic'}}
     >>> extracted = extract_tags_by_attributes(soup, tags_to_find)
     >>> for (tag, attributes), matches in extracted.items():
@@ -50,7 +64,7 @@ def extract_tags_by_attributes(
     Found 1 span tags with attributes (('class', 'italic'),).
     """
 
-    extracted_tags = {}
+    extracted_tags: dict[tuple[str, tuple], list[BeautifulSoup]] = {}
 
     # Loop over each tag and attribute specification
     for tag, attributes in tags_with_attributes.items():
@@ -119,7 +133,7 @@ def get_all_attribute_values(soup: BeautifulSoup, tag: str) -> dict[str, set[str
     >>> get_all_attribute_values(soup, 'p')
     {'class': {'text', 'highlight'}, 'id': {'para1', 'para2'}, 'style': {'color:red;', 'color:blue;'}}
     """
-    attributes_with_values = {}
+    attributes_with_values: dict[str, set[str]] = {}
 
     # Find all instances of the specified tag
     for element in soup.find_all(tag):
@@ -145,7 +159,8 @@ def remove_all_tags_with_attribute(
     """
     Remove unwanted tags with specific attributes from a BeautifulSoup object.
 
-    This function removes tags with a specific attribute (e.g., 'class') that matches a regular expression pattern.
+    This function removes tags with a specific attribute (e.g., 'class')
+    that matches a regular expression pattern.
 
 
     Parameters:
@@ -157,8 +172,9 @@ def remove_all_tags_with_attribute(
         The attribute name to match (e.g., 'class', 'id'). If None, no attribute filtering is done.
 
     attr_value_pattern : str, optional
-        A regular expression pattern to match attribute values. Only tags whose specified attribute
-        matches this pattern will be removed. If None, the function removes all tags with the specified attribute.
+        A regular expression pattern to match attribute values. Only tags whose
+        specified attribute matches this pattern will be removed. If None, the
+        function removes all tags with the specified attribute.
 
     Returns:
     --------
@@ -181,11 +197,7 @@ def remove_all_tags_with_attribute(
         if attr_name in element.attrs:
             if attr_value_pattern:
                 attr_value = element[attr_name]
-                if isinstance(attr_value, list):
-                    # Check if any value in the list matches the pattern
-                    if any(re.match(attr_value_pattern, val) for val in attr_value):
-                        tags_to_remove.append(element)
-                elif re.match(attr_value_pattern, attr_value):
+                if _matches_attribute_pattern(attr_value, attr_value_pattern):
                     tags_to_remove.append(element)
         elif not attr_name:
             # If no attribute is specified, remove the entire tag
@@ -205,7 +217,8 @@ def remove_tags_with_attribute(
     """
     Remove a specific tags with specific attributes from a BeautifulSoup object.
 
-    This function removes tags with a specific attribute (e.g., 'class') that matches a regular expression pattern.
+    This function removes tags with a specific attribute (e.g., 'class')
+    that matches a regular expression pattern.
 
 
     Parameters:
@@ -213,14 +226,16 @@ def remove_tags_with_attribute(
     soup : BeautifulSoup
         The parsed HTML content to clean.
 
-    tag_list : the list of tags to remove if matching attribute is found; if a single string, then this string is split into tags.
+    tag_list : the list of tags to remove if matching attribute is found; if a
+        single string is provided, it is split into tag names.
 
     attr_name : str
         The attribute name to match (e.g., 'class', 'id'). If None, no attribute filtering is done.
 
     attr_value_pattern : str, optional
-        A regular expression pattern to match attribute values. Only tags whose specified attribute
-        matches this pattern will be removed. If None, the function removes all tags with the specified attribute.
+        A regular expression pattern to match attribute values. Only tags whose
+        specified attribute matches this pattern will be removed. If None, the
+        function removes all tags with the specified attribute.
 
     Returns:
     --------
@@ -246,11 +261,7 @@ def remove_tags_with_attribute(
         if attr_name in element.attrs:
             if attr_value_pattern:
                 attr_value = element[attr_name]
-                if isinstance(attr_value, list):
-                    # Check if any value in the list matches the pattern
-                    if any(re.match(attr_value_pattern, val) for val in attr_value):
-                        tags_to_remove.append(element)
-                elif re.match(attr_value_pattern, attr_value):
+                if _matches_attribute_pattern(attr_value, attr_value_pattern):
                     tags_to_remove.append(element)
         elif not attr_name:
             # If no attribute is specified, remove the entire tag
@@ -452,7 +463,8 @@ def tag_has_descendants(tag) -> bool:
 
 def remove_empty_tags(soup: BeautifulSoup, tag_list) -> None:
     """
-    Remove empty tags from a BeautifulSoup object based on a specified list or space-separated string of tag names.
+    Remove empty tags from a BeautifulSoup object based on a specified list or
+    space-separated string of tag names.
 
     This function examines each specified tag and checks if it is empty (contains no visible text).
     If a tag contains only nested elements (i.e., descendants) but no visible text, it will be unwrapped
@@ -490,7 +502,8 @@ def remove_empty_tags(soup: BeautifulSoup, tag_list) -> None:
     - The function operates in place, meaning it directly modifies the `soup` object passed to it.
     - Tags with descendants but no visible text are unwrapped rather than removed, ensuring that nested
       content remains intact.
-    - Useful for cleaning up HTML or XML content by removing purely empty elements without affecting structure.
+    - Useful for cleaning up HTML or XML content by removing purely empty
+      elements without affecting structure.
     """
 
     # Ensure tag_list is a list, even if passed as a space-separated string
@@ -544,7 +557,8 @@ def unwrap_redundant_tags(soup: BeautifulSoup, tag_list) -> None:
 
     Notes:
     ------
-    - This function only unwraps tags that contain no attributes and have a single child with identical text content.
+    - This function only unwraps tags that contain no attributes and have a
+      single child with identical text content.
     - The function operates in place, meaning it directly modifies the `soup` object passed to it.
     """
     if isinstance(tag_list, str):

@@ -7,8 +7,14 @@ from typing import Any
 
 from openai import OpenAI
 
-from tnh_scholar.agent_orchestration.codex_harness.models import CodexRequest, CodexResponseText
-from tnh_scholar.agent_orchestration.codex_harness.protocols import ResponsesClientProtocol, ToolRegistryProtocol
+from tnh_scholar.agent_orchestration.codex_harness.models import (
+    CodexRequest,
+    CodexResponseText,
+)
+from tnh_scholar.agent_orchestration.codex_harness.protocols import (
+    ResponsesClientProtocol,
+    ToolRegistryProtocol,
+)
 from tnh_scholar.agent_orchestration.codex_harness.tools import (
     ToolCall,
     ToolDefinition,
@@ -42,7 +48,7 @@ class OpenAIResponsesClient(ResponsesClientProtocol):
     def _extract_text(self, response: Any) -> str:
         output_text = getattr(response, "output_text", None)
         if output_text:
-            return output_text
+            return str(output_text)
         output = getattr(response, "output", [])
         chunks: list[str] = []
         for item in output:
@@ -58,10 +64,15 @@ class OpenAIResponsesClient(ResponsesClientProtocol):
     def _serialize_response(self, response: Any) -> str:
         dump = getattr(response, "model_dump_json", None)
         if callable(dump):
-            return dump(indent=2)
+            return str(dump(indent=2))
         return str(response)
 
-    def _create_response(self, client: OpenAI, request: CodexRequest, tools: list[dict]) -> Any:
+    def _create_response(
+        self,
+        client: OpenAI,
+        request: CodexRequest,
+        tools: list[dict[str, object]],
+    ) -> Any:
         input_payload = [
             {"role": message.role, "content": message.content}
             for message in request.messages
@@ -82,8 +93,8 @@ class OpenAIResponsesClient(ResponsesClientProtocol):
         client: OpenAI,
         request: CodexRequest,
         previous_response_id: str,
-        tool_outputs: list[dict],
-        tools: list[dict],
+        tool_outputs: list[dict[str, object]],
+        tools: list[dict[str, object]],
     ) -> Any:
         input_items = list(tool_outputs)
         input_items.append(
@@ -104,8 +115,8 @@ class OpenAIResponsesClient(ResponsesClientProtocol):
             payload["temperature"] = request.temperature
         return client.responses.create(**payload)
 
-    def _build_tools(self, definitions: list[ToolDefinition]) -> list[dict]:
-        payloads = []
+    def _build_tools(self, definitions: list[ToolDefinition]) -> list[dict[str, object]]:
+        payloads: list[dict[str, object]] = []
         for definition in definitions:
             payloads.append(
                 {
@@ -136,14 +147,14 @@ class OpenAIResponsesClient(ResponsesClientProtocol):
         self,
         tool_registry: ToolRegistryProtocol,
         tool_calls: list[ToolCall],
-    ) -> list[dict]:
-        outputs: list[dict] = []
+    ) -> list[dict[str, object]]:
+        outputs: list[dict[str, object]] = []
         for call in tool_calls:
             result = tool_registry.execute(call)
             outputs.append(self._tool_output_item(result))
         return outputs
 
-    def _tool_output_item(self, result: ToolResult) -> dict:
+    def _tool_output_item(self, result: ToolResult) -> dict[str, object]:
         return {
             "type": "function_call_output",
             "call_id": result.call_id,

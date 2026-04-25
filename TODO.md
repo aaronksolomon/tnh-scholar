@@ -11,9 +11,9 @@ updated: "2026-04-25"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-25 (release-prep docs sweep complete; indexes regenerated; release validation follow-up next)
+> **Last Updated**: 2026-04-25 (release-prep docs sweep and repo-wide lint/type cleanup complete; release validation follow-up next)
 > **Version**: 0.3.1 (Alpha; preparing 0.4.0 bootstrap release)
-> **Status**: Active Development - bootstrap viable, release-prep and cleanup phase
+> **Status**: Active Development - bootstrap viable, release validation and packaging phase
 >
 > **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 > Use `####` (h4) for task headers within priority sections.
@@ -38,6 +38,11 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 8. 🚧 Knowledge Base Implementation (P2, design complete)
 9. 🚧 Expand Test Coverage with refreshed baseline and current gaps (P2)
 10. 🚧 OpenAI registry-driven request profiles for model-specific controls (P2, follow-up hardening)
+
+**Recent release hardening completed**:
+
+- ✅ Repo-wide Ruff backlog reduced to zero; `make lint` now passes
+- ✅ Repo-wide mypy backlog reduced to zero; `make type-check` now passes
 
 **For completed items**: See [Archive](#recently-completed-tasks-archive) section at end.
 

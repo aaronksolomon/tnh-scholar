@@ -83,7 +83,7 @@ class SrtTranslator:
 
     def entries_to_numbered_text(self, entries: List[SrtEntry]) -> str:
         """Convert SRT entries to numbered text for TextObject."""
-        lines = []
+        lines: list[str] = []
         lines.extend(f"{entry.text}" for entry in entries)
         return "\n".join(lines)
 

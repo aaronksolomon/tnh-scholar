@@ -18,56 +18,46 @@ INDEX_PATH = DOCS_DIR / "index.md"
 DOC_MAP_PATH = DOCS_DIR / "documentation_map.md"
 
 
-def main() -> None:
-    """Update docs/index.md with documentation map content."""
-    if not INDEX_PATH.exists() or not DOC_MAP_PATH.exists():
-        print("Error: index.md or documentation_map.md not found")
-        return
-
-    # Read the base index.md
-    index_content = INDEX_PATH.read_text()
-
-    # Read documentation_map.md and extract content (skip frontmatter and title)
-    doc_map_content = DOC_MAP_PATH.read_text()
+def extract_doc_map_content(doc_map_content: str) -> str:
+    """Return documentation map content without front matter or title."""
     lines = doc_map_content.splitlines()
-
-    # Skip frontmatter
     start_idx = 0
     if lines and lines[0].strip() == "---":
-        for idx in range(1, len(lines)):
-            if lines[idx].strip() == "---":
+        for idx, line in enumerate(lines[1:], start=1):
+            if line.strip() == "---":
                 start_idx = idx + 1
                 break
 
-    # Skip empty lines and the "# Documentation Map" title
     while start_idx < len(lines):
         line = lines[start_idx].strip()
         if line and not line.startswith("# Documentation Map"):
             break
         start_idx += 1
 
-    # Get the content to append (everything after frontmatter and title)
-    map_content_lines = lines[start_idx:]
-    map_content = "\n".join(map_content_lines)
+    return "\n".join(lines[start_idx:])
 
-    # Find where the Documentation Map section starts in index.md
+
+def replace_index_map(index_content: str, map_content: str) -> str:
+    """Replace or append the Documentation Map section."""
     index_lines = index_content.splitlines()
-    doc_map_start = None
-
     for idx, line in enumerate(index_lines):
         if line.strip() == "## Documentation Map":
-            doc_map_start = idx
-            break
+            before_map = "\n".join(index_lines[:idx])
+            return before_map.rstrip() + "\n\n## Documentation Map\n\n" + map_content + "\n"
+    return index_content.rstrip() + "\n\n## Documentation Map\n\n" + map_content + "\n"
 
-    if doc_map_start is None:
-        # No Documentation Map section found, append at end
-        combined = index_content.rstrip() + "\n\n## Documentation Map\n\n" + map_content + "\n"
-    else:
-        # Replace everything from Documentation Map section onwards
-        before_map = "\n".join(index_lines[:doc_map_start])
-        combined = before_map.rstrip() + "\n\n## Documentation Map\n\n" + map_content + "\n"
 
-    # Write the combined content back to source index.md
+def main() -> None:
+    """Update docs/index.md with documentation map content."""
+    if not INDEX_PATH.exists() or not DOC_MAP_PATH.exists():
+        print("Error: index.md or documentation_map.md not found")
+        return
+
+    index_content = INDEX_PATH.read_text()
+    doc_map_content = DOC_MAP_PATH.read_text()
+    map_content = extract_doc_map_content(doc_map_content)
+    combined = replace_index_map(index_content, map_content)
+
     INDEX_PATH.write_text(combined)
     print(f"Updated {INDEX_PATH.relative_to(ROOT)} with documentation map")
 

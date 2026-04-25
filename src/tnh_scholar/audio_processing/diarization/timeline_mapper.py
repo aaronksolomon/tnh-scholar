@@ -183,7 +183,7 @@ class TimelineMapper:
             overlap_start = max(unit.start_ms, segment.mapped_start)
             overlap_end = min(unit.end_ms, segment.mapped_end)
             
-            return max(0, overlap_end - overlap_start)
+            return int(max(0, overlap_end - overlap_start))
         
         def _find_proximal_segments(
             self, 

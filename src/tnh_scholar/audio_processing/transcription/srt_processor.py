@@ -95,7 +95,7 @@ class SRTProcessor:
         if self.config.use_pysrt:
             return self._generate_with_pysrt(timed_text)
         
-        srt_parts = []
+        srt_parts: list[str] = []
         srt_parts.extend(
             self._generate_entry(
                 entry, 
@@ -188,7 +188,7 @@ class SRTProcessor:
         def __init__(self, srt_content: str):
             self.lines = srt_content.splitlines()
             self.current_index = 0
-            self.timed_segments = []
+            self.timed_segments: list[TimedTextUnit] = []
 
         def parse(self) -> TimedText:
             while self.current_index < len(self.lines):
@@ -333,4 +333,4 @@ class SRTProcessor:
                 text = self.config.speaker_format.format(
                     speaker=segment.speaker, text=text)
             subs.append(pysrt.SubRipItem(index=i, start=start, end=end, text=text))
-        return subs.to_string()
+        return str(subs.to_string())

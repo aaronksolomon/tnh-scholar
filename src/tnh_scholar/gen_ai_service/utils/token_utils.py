@@ -130,7 +130,7 @@ class EncodingProvider:
             return self._fallback_encoding
 
         try:
-            resolved = tiktoken.encoding_for_model(model)
+            resolved = cast(_EncodingLike, tiktoken.encoding_for_model(model))
         except KeyError:
             resolved = self._resolve_registry_encoding(model)
             if resolved is None:
@@ -140,7 +140,10 @@ class EncodingProvider:
                     self._policy.default_encoding,
                 )
                 try:
-                    resolved = tiktoken.get_encoding(self._policy.default_encoding)
+                    resolved = cast(
+                        _EncodingLike,
+                        tiktoken.get_encoding(self._policy.default_encoding),
+                    )
                 except Exception as exc:
                     logger.warning(
                         "Failed to load %s encoding, using fallback: %s",

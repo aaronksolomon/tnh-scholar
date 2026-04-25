@@ -14,6 +14,8 @@ from supabase import Client, create_client
 from tnh_scholar.ai_text_processing import Prompt
 from tnh_scholar.exceptions import ConfigurationError
 
+Credentials = dict[str, str]
+
 
 class CredentialsManager:
     def __init__(self):
@@ -148,7 +150,7 @@ class PatternRepository:
         ids = self.vector_store.add_texts(
             texts=[pattern.instructions], metadatas=[pattern_data["metadata"]]
         )
-        return ids[0]
+        return str(ids[0])
 
     def search_patterns(self, query: str, limit: int = 10) -> List[Dict]:
         """Search patterns using semantic similarity."""
@@ -159,7 +161,7 @@ class PatternRepository:
         ]
 
 
-def get_credentials():
+def get_credentials() -> Credentials:
     """
     Retrieve credentials from either Streamlit secrets (production) or .env file (development).
 
@@ -169,93 +171,115 @@ def get_credentials():
     # Try to get credentials from Streamlit first (production)
     try:
         return {
-            "SUPABASE_URL": st.secrets["SUPABASE_URL"],
-            "SUPABASE_KEY": st.secrets["SUPABASE_KEY"],
-            "OPENAI_KEY": st.secrets["OPENAI_KEY"],
+            "SUPABASE_URL": str(st.secrets["SUPABASE_URL"]),
+            "SUPABASE_KEY": str(st.secrets["SUPABASE_KEY"]),
+            "OPENAI_KEY": str(st.secrets["OPENAI_KEY"]),
         }
     # If not running in Streamlit cloud, load from .env
     except Exception:
         load_dotenv()
         return {
-            "SUPABASE_URL": os.getenv("SUPABASE_URL"),
-            "SUPABASE_KEY": os.getenv("SUPABASE_KEY"),
-            "OPENAI_KEY": os.getenv("OPENAI_KEY"),
+            "SUPABASE_URL": os.getenv("SUPABASE_URL") or "",
+            "SUPABASE_KEY": os.getenv("SUPABASE_KEY") or "",
+            "OPENAI_KEY": os.getenv("OPENAI_KEY") or "",
         }
 
 
-def main():
-    st.set_page_config(page_title="Pattern Library", layout="wide")
-    st.title("AI Pattern Library")
-
-    # Initialize repository with credentials
+def _build_repository() -> PatternRepository:
     credentials = get_credentials()
-    repo = PatternRepository(
+    return PatternRepository(
         credentials["SUPABASE_URL"],
         credentials["SUPABASE_KEY"],
         credentials["OPENAI_KEY"],
     )
 
-    # Sidebar for upload
+
+def _render_single_pattern_upload(repo: PatternRepository) -> None:
+    uploaded_file = st.file_uploader("Upload Pattern (.md)", type=["md"])
+    if uploaded_file is None:
+        return
+
+    content = uploaded_file.read().decode()
+    pattern = Prompt(name=Path(uploaded_file.name).stem, instructions=content)
+    if st.button("Share Pattern"):
+        pattern_id = repo.add_pattern(pattern)
+        st.success(f"Pattern shared! ID: {pattern_id}")
+
+
+def _render_repository_import(repo: PatternRepository) -> None:
+    repo_url = st.text_input("Git Repository URL")
+    if not repo_url or not st.button("Import Repository"):
+        return
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        try:
+            git.Repo.clone_from(repo_url, tmpdir)
+            pattern_files = Path(tmpdir).glob("**/*.md")
+
+            for file in pattern_files:
+                pattern = Prompt(name=file.stem, instructions=file.read_text())
+                repo.add_pattern(pattern)
+
+            st.success("Repository imported successfully!")
+        except Exception as e:
+            st.error(f"Failed to import: {str(e)}")
+
+
+def _render_sidebar(repo: PatternRepository) -> None:
     with st.sidebar:
         st.header("Share Patterns")
 
         upload_type = st.radio("Upload Type", ["Single Pattern", "Git Repository"])
 
         if upload_type == "Single Pattern":
-            if uploaded_file := st.file_uploader("Upload Pattern (.md)", type=["md"]):
-                content = uploaded_file.read().decode()
-                pattern = Prompt(
-                    name=Path(uploaded_file.name).stem, instructions=content
-                )
-                if st.button("Share Pattern"):
-                    pattern_id = repo.add_pattern(pattern)
-                    st.success(f"Pattern shared! ID: {pattern_id}")
-
+            _render_single_pattern_upload(repo)
         else:
-            repo_url = st.text_input("Git Repository URL")
-            if repo_url and st.button("Import Repository"):
-                with tempfile.TemporaryDirectory() as tmpdir:
-                    try:
-                        git.Repo.clone_from(repo_url, tmpdir)
-                        pattern_files = Path(tmpdir).glob("**/*.md")
+            _render_repository_import(repo)
 
-                        for file in pattern_files:
-                            pattern = Prompt(
-                                name=file.stem, instructions=file.read_text()
-                            )
-                            repo.add_pattern(pattern)
 
-                        st.success("Repository imported successfully!")
-                    except Exception as e:
-                        st.error(f"Failed to import: {str(e)}")
+def _render_search_tab(repo: PatternRepository) -> None:
+    query = st.text_input("Search patterns...")
+    if not query:
+        return
+
+    results = repo.search_patterns(query)
+    for result in results:
+        score = float(result["score"])
+        with st.expander(f"{result['metadata']['name']} ({score:.2f})"):
+            st.markdown(str(result["pattern"]))
+
+
+def _render_browse_tab(repo: PatternRepository) -> None:
+    page = st.number_input("Page", min_value=1, value=1)
+    patterns_per_page = 10
+
+    patterns = (
+        repo.supabase.table("patterns")
+        .select("*")
+        .range((page - 1) * patterns_per_page, page * patterns_per_page)
+        .execute()
+    )
+
+    for pattern in patterns.data:
+        with st.expander(pattern["metadata"]["name"]):
+            st.markdown(pattern["content"])
+
+
+def main() -> None:
+    st.set_page_config(page_title="Pattern Library", layout="wide")
+    st.title("AI Pattern Library")
+
+    repo = _build_repository()
+    _render_sidebar(repo)
 
     # Main content area
     tab1, tab2 = st.tabs(["Search Patterns", "Browse"])
 
     with tab1:
-        if query := st.text_input("Search patterns..."):
-            results = repo.search_patterns(query)
-            for result in results:
-                with st.expander(
-                    f"{result['metadata']['name']} ({result['score']:.2f})"
-                ):
-                    st.markdown(result["pattern"])
+        _render_search_tab(repo)
 
     with tab2:
-        # Simple pagination for browsing
-        page = st.number_input("Page", min_value=1, value=1)
-        patterns_per_page = 10
-
-        patterns = (
-            repo.supabase.table("patterns")
-            .select("*")
-            .range((page - 1) * patterns_per_page, page * patterns_per_page)
-            .execute()
-        )
-
-        for pattern in patterns.data:
-            with st.expander(pattern["metadata"]["name"]):
-                st.markdown(pattern["content"])
+        _render_browse_tab(repo)
 
 
 if __name__ == "__main__":

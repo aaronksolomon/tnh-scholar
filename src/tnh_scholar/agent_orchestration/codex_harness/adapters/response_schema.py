@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from tnh_scholar.agent_orchestration.codex_harness.models import CodexStructuredOutput
 

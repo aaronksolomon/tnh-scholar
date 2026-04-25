@@ -14,6 +14,47 @@ import sys
 from datetime import date
 
 
+def initialize_categories() -> dict[str, list[str]]:
+    """Return empty changelog categories."""
+    return {
+        "Added": [],
+        "Changed": [],
+        "Fixed": [],
+        "Documentation": [],
+        "Infrastructure": [],
+        "Other": [],
+    }
+
+
+def category_from_prefix(commit: str) -> str | None:
+    """Return category for conventional commit prefixes."""
+    if commit.startswith(("feat:", "add:")):
+        return "Added"
+    if commit.startswith("fix:"):
+        return "Fixed"
+    if commit.startswith("docs:"):
+        return "Documentation"
+    if commit.startswith(("chore:", "build:", "ci:")):
+        return "Infrastructure"
+    if commit.startswith(("refactor:", "perf:")):
+        return "Changed"
+    return None
+
+
+def category_from_content(commit: str) -> str:
+    """Return best-effort category for non-conventional commits."""
+    commit_lower = commit.lower()
+    if any(word in commit_lower for word in ["add", "new", "implement", "create"]):
+        return "Added"
+    if any(word in commit_lower for word in ["fix", "resolve", "correct"]):
+        return "Fixed"
+    if any(word in commit_lower for word in ["update", "change", "refactor"]):
+        return "Changed"
+    if any(word in commit_lower for word in ["doc", "readme", "changelog"]):
+        return "Documentation"
+    return "Other"
+
+
 def get_last_tag():
     """Get the most recent git tag."""
     result = subprocess.run(
@@ -35,53 +76,15 @@ def get_commits_since_tag(tag):
 
 def categorize_commits(commits):
     """Categorize commits by type (feat, fix, docs, chore, etc.)."""
-    categories = {
-        "Added": [],
-        "Changed": [],
-        "Fixed": [],
-        "Documentation": [],
-        "Infrastructure": [],
-        "Other": [],
-    }
+    categories = initialize_categories()
 
     for commit in commits:
-        # Skip merge commits
         if commit.startswith("Merge "):
             continue
 
-        # Categorize by conventional commit prefix
-        if commit.startswith("feat:") or commit.startswith("add:"):
-            categories["Added"].append(commit)
-        elif commit.startswith("fix:"):
-            categories["Fixed"].append(commit)
-        elif commit.startswith("docs:"):
-            categories["Documentation"].append(commit)
-        elif (
-            commit.startswith("chore:")
-            or commit.startswith("build:")
-            or commit.startswith("ci:")
-        ):
-            categories["Infrastructure"].append(commit)
-        elif commit.startswith("refactor:") or commit.startswith("perf:"):
-            categories["Changed"].append(commit)
-        else:
-            # Check for common patterns without conventional commit prefix
-            commit_lower = commit.lower()
-            if any(
-                word in commit_lower
-                for word in ["add", "new", "implement", "create"]
-            ):
-                categories["Added"].append(commit)
-            elif any(word in commit_lower for word in ["fix", "resolve", "correct"]):
-                categories["Fixed"].append(commit)
-            elif any(word in commit_lower for word in ["update", "change", "refactor"]):
-                categories["Changed"].append(commit)
-            elif any(word in commit_lower for word in ["doc", "readme", "changelog"]):
-                categories["Documentation"].append(commit)
-            else:
-                categories["Other"].append(commit)
+        category = category_from_prefix(commit) or category_from_content(commit)
+        categories[category].append(commit)
 
-    # Remove empty categories
     return {k: v for k, v in categories.items() if v}
 
 

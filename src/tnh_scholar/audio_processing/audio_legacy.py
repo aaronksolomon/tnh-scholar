@@ -2,10 +2,9 @@ import os
 import warnings
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple, cast
 
 import numpy as np
-from git import Optional
 from pydub import AudioSegment
 from pydub.silence import detect_nonsilent
 
@@ -45,8 +44,10 @@ class Boundary:
 
 
 def detect_whisper_boundaries(
-    audio_file: Path, model_size: str = "tiny", language: str = None
-) -> List[Boundary]:
+    audio_file: Path,
+    model_size: str = "tiny",
+    language: Optional[str] = None,
+) -> Tuple[List[Boundary], Dict[str, Any]]:
     """
     Detect sentence boundaries using a Whisper model.
 
@@ -98,7 +99,7 @@ def detect_silence_boundaries(
     min_silence_len: int = MIN_SILENCE_LENGTH,
     silence_thresh: int = SILENCE_DBFS_THRESHOLD,
     max_duration: int = MAX_DURATION_MS,
-) -> Tuple[List[Boundary], Dict]:
+) -> List[Boundary]:
     """
     Detect boundaries (start/end times) based on silence detection.
 
@@ -189,7 +190,6 @@ def split_audio_at_boundaries(
             logger.info(f"Deleting existing file: {file}")
             file.unlink()
 
-    chunk_start = 0  # Start time for the first chunk in ms
     chunk_count = 1
     current_chunk = AudioSegment.empty()
 
@@ -209,7 +209,11 @@ def split_audio_at_boundaries(
         segment = audio[segment_start_ms:segment_end_ms]
 
         logger.debug(
-            f"Boundary index: {idx}, segment_start: {segment_start_ms / 1000}, segment_end: {segment_end_ms / 1000}, duration: {segment.duration_seconds}"
+            "Boundary index: %s, segment_start: %s, segment_end: %s, duration: %s",
+            idx,
+            segment_start_ms / 1000,
+            segment_end_ms / 1000,
+            segment.duration_seconds,
         )
         logger.debug(f"Current chunk Duration (s): {current_chunk.duration_seconds}")
 
@@ -447,7 +451,7 @@ def whisper_model_transcribe(
                 input_source = str(input_source)
 
             # Call the original transcribe function
-            return model.transcribe(input_source, *args, **kwargs)
+            return cast(Dict[str, Any], model.transcribe(input_source, *args, **kwargs))
         finally:
             # Restore original stdout
             # sys.stdout = original_stdout

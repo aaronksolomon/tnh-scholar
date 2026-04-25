@@ -6,7 +6,6 @@ This module provides a command line interface for downloading video transcripts
 in specified languages. It uses yt-dlp for video info extraction.
 """
 
-import os
 import sys
 from pathlib import Path
 from typing import Optional

@@ -93,6 +93,119 @@ def replace_links(text: str, replacements: dict[str, str]) -> str:
     return LINK_PATTERN.sub(repl, text)
 
 
+def classify_target(
+    md_file: Path,
+    target: str,
+    docs_root: Path,
+) -> tuple[str | None, LinkIssue | None]:
+    """Return a normalized lookup target or an immediate issue."""
+    target_no_fragment = normalize_target(target)
+    if not target_no_fragment:
+        return None, None
+    if "project/repo-root/" in target_no_fragment:
+        return None, None
+
+    suffix = Path(target_no_fragment).suffix
+    if suffix and suffix.lower() != ".md":
+        return None, None
+
+    target_is_absolute = target.startswith("/")
+    rel_candidate = (md_file.parent / target_no_fragment).resolve()
+    abs_candidate = docs_root / target_no_fragment
+    if target_is_absolute and abs_candidate.is_file():
+        return None, None
+
+    if not target_is_absolute and docs_root in rel_candidate.parents and rel_candidate.is_file():
+        rel_to_docs = rel_candidate.relative_to(docs_root).as_posix()
+        fixed = f"/{rel_to_docs}"
+        return None, LinkIssue(
+            file=md_file,
+            original=target,
+            fixed=fixed,
+            reason="normalize to absolute",
+        )
+
+    normalized_target = target_no_fragment
+    if normalized_target.startswith("docs/"):
+        normalized_target = normalized_target[len("docs/") :]
+    return normalized_target, None
+
+
+def resolve_missing_target(
+    md_file: Path,
+    target: str,
+    normalized_target: str,
+    basename_index: dict[str, list[Path]],
+    docs_root: Path,
+) -> LinkIssue:
+    """Resolve a missing markdown target against basename index."""
+    basename = Path(normalized_target).name
+    candidates = basename_index.get(basename, [])
+    if len(candidates) == 1:
+        candidate_rel = candidates[0].relative_to(docs_root).as_posix()
+        return LinkIssue(
+            file=md_file,
+            original=target,
+            fixed=f"/{candidate_rel}",
+            reason="auto-fix (unique filename match)",
+        )
+    if len(candidates) > 1:
+        return LinkIssue(
+            file=md_file,
+            original=target,
+            fixed=None,
+            reason=f"ambiguous ({len(candidates)} matches for {basename})",
+        )
+    return LinkIssue(
+        file=md_file,
+        original=target,
+        fixed=None,
+        reason="no matching filename in docs/",
+    )
+
+
+def inspect_file_links(
+    md_file: Path,
+    docs_root: Path,
+    basename_index: dict[str, list[Path]],
+    debug: bool,
+) -> tuple[list[LinkIssue], dict[str, str], int]:
+    """Inspect one markdown file and return issues, replacements, and link count."""
+    raw_text = md_file.read_text(encoding="utf-8")
+    text = strip_code(raw_text)
+    issues: list[LinkIssue] = []
+    replacements: dict[str, str] = {}
+    total_links = 0
+
+    for match in LINK_PATTERN.finditer(text):
+        target = match.group(2)
+        if is_external(target) or target.startswith("#"):
+            continue
+
+        total_links += 1
+        normalized_target, immediate_issue = classify_target(md_file, target, docs_root)
+        if normalized_target is None and immediate_issue is None:
+            total_links -= 1
+            continue
+        if immediate_issue is not None:
+            issues.append(immediate_issue)
+            if immediate_issue.fixed:
+                replacements[target] = immediate_issue.fixed
+            continue
+
+        issue = resolve_missing_target(
+            md_file, target, normalized_target, basename_index, docs_root
+        )
+        issues.append(issue)
+        if issue.fixed:
+            replacements[target] = issue.fixed
+            continue
+        if debug:
+            print(f"[debug] unresolved link in {md_file}: {target} -> {issue.reason}")
+
+    return issues, replacements, total_links
+
+
 def find_link_issues(
     docs_root: Path, apply: bool, verbose: bool, debug: bool = False
 ) -> tuple[list[LinkIssue], list[Path], int, int, int, set[Path]]:
@@ -105,97 +218,18 @@ def find_link_issues(
     auto_fix_files: set[Path] = set()
 
     for md_file in iter_markdown_files(docs_root):
-        raw_text = md_file.read_text(encoding="utf-8")
-        text = strip_code(raw_text)
-        replacements: dict[str, str] = {}
-        for match in LINK_PATTERN.finditer(text):
-            label, target = match.group(1), match.group(2)
-            if is_external(target) or target.startswith("#"):
-                continue
-
-            target_no_fragment = normalize_target(target)
-            if not target_no_fragment:
-                continue
-
-            # Accept repo-root mirrors as-is; they are synced docs.
-            if "project/repo-root/" in target_no_fragment:
-                continue
-
-            # Only validate markdown targets; skip other extensions (e.g., evidence .txt).
-            suffix = Path(target_no_fragment).suffix
-            if suffix and suffix.lower() != ".md":
-                continue
-
-            total_links += 1
-
-            target_is_absolute = target.startswith("/")
-            rel_candidate = (md_file.parent / target_no_fragment).resolve()
-            abs_candidate = docs_root / target_no_fragment
-
-            # Absolute links that resolve are fine as-is.
-            if target_is_absolute and abs_candidate.is_file():
-                continue
-
-            # Relative links that resolve should be normalized to absolute.
-            if not target_is_absolute and docs_root in rel_candidate.parents and rel_candidate.is_file():
-                rel_to_docs = rel_candidate.relative_to(docs_root).as_posix()
-                fixed = f"/{rel_to_docs}"
-                issues.append(
-                    LinkIssue(
-                        file=md_file,
-                        original=target,
-                        fixed=fixed,
-                        reason="normalize to absolute",
-                    )
-                )
-                replacements[target] = fixed
+        file_issues, replacements, link_count = inspect_file_links(
+            md_file, docs_root, basename_index, debug
+        )
+        issues.extend(file_issues)
+        total_links += link_count
+        for issue in file_issues:
+            if issue.fixed:
                 auto_fix_candidates += 1
                 auto_fix_files.add(md_file)
-                continue
-
-            # Normalize any docs/ prefix for lookup.
-            if target_no_fragment.startswith("docs/"):
-                target_no_fragment = target_no_fragment[len("docs/") :]
-
-            basename = Path(target_no_fragment).name
-            candidates = basename_index.get(basename, [])
-
-            if len(candidates) == 1:
-                candidate_rel = candidates[0].relative_to(docs_root).as_posix()
-                fixed = f"/{candidate_rel}"
-                issues.append(
-                    LinkIssue(
-                        file=md_file,
-                        original=target,
-                        fixed=fixed,
-                        reason="auto-fix (unique filename match)",
-                    )
-                )
-                replacements[target] = fixed
-                auto_fix_candidates += 1
-                auto_fix_files.add(md_file)
-            elif len(candidates) > 1:
-                issue = LinkIssue(
-                    file=md_file,
-                    original=target,
-                    fixed=None,
-                    reason=f"ambiguous ({len(candidates)} matches for {basename})",
-                )
-                issues.append(issue)
-                if debug:
-                    print(f"[debug] ambiguous link in {md_file}: {target} -> candidates={len(candidates)}")
-            else:
-                issue = LinkIssue(
-                    file=md_file,
-                    original=target,
-                    fixed=None,
-                    reason="no matching filename in docs/",
-                )
-                issues.append(issue)
-                if debug:
-                    print(f"[debug] missing link in {md_file}: {target}")
 
         if apply and replacements:
+            raw_text = md_file.read_text(encoding="utf-8")
             new_text = replace_links(raw_text, replacements)
             if new_text != raw_text:
                 md_file.write_text(new_text, encoding="utf-8")
@@ -206,7 +240,8 @@ def find_link_issues(
     return issues, modified_files, total_links, auto_fix_candidates, fixed_links_count, auto_fix_files
 
 
-def main(argv: Iterable[str] | None = None) -> int:
+def build_parser() -> argparse.ArgumentParser:
+    """Build CLI parser."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--docs-root",
@@ -231,6 +266,98 @@ def main(argv: Iterable[str] | None = None) -> int:
         action="store_true",
         help="Exit non-zero when issues are found (default: warn-only).",
     )
+    return parser
+
+
+def print_apply_summary(
+    *,
+    docs_root: Path,
+    modified: list[Path],
+    total_links: int,
+    fixed_count: int,
+) -> None:
+    """Print summary for apply mode."""
+    print(f"Links inspected: {total_links}")
+    print(f"Links fixed: {fixed_count}")
+    print(f"Files updated: {len(modified)}")
+    if not modified:
+        return
+    print("Updated files:")
+    for path in sorted(modified):
+        try:
+            rel_path = path.relative_to(docs_root)
+        except ValueError:
+            rel_path = path
+        print(f"- {rel_path}")
+
+
+def print_check_summary(
+    *,
+    auto_fix_candidates: int,
+    auto_fix_files: set[Path],
+    flagged: list[LinkIssue],
+    total_links: int,
+) -> None:
+    """Print summary for check mode."""
+    print(f"Links inspected: {total_links}")
+    print(f"Links needing fix: {auto_fix_candidates}")
+    if auto_fix_files:
+        print("Files with auto-fixes pending:")
+        for path in sorted(auto_fix_files):
+            print(f"- {path}")
+    print(f"Links needing manual review: {len(flagged)}")
+
+
+def print_manual_review(flagged: list[LinkIssue]) -> None:
+    """Print manual review details."""
+    if not flagged:
+        return
+    print("\nManual review needed:")
+    for iss in flagged:
+        print(f"- {iss.file}: '{iss.original}' -> {iss.reason}")
+
+
+def report_results(
+    *,
+    args: argparse.Namespace,
+    docs_root: Path,
+    issues: list[LinkIssue],
+    modified: list[Path],
+    total_links: int,
+    auto_fix_candidates: int,
+    fixed_count: int,
+    auto_fix_files: set[Path],
+) -> int:
+    """Print summary and return exit code."""
+    auto_fixes = [iss for iss in issues if iss.fixed]
+    flagged = [iss for iss in issues if iss.fixed is None]
+
+    if args.apply:
+        print_apply_summary(
+            docs_root=docs_root,
+            modified=modified,
+            total_links=total_links,
+            fixed_count=fixed_count,
+        )
+    else:
+        print_check_summary(
+            auto_fix_candidates=auto_fix_candidates,
+            auto_fix_files=auto_fix_files,
+            flagged=flagged,
+            total_links=total_links,
+        )
+
+    print_manual_review(flagged)
+
+    if flagged or (auto_fixes and not args.apply):
+        if auto_fixes and not args.apply:
+            print("\nRun with --apply to rewrite unambiguous markdown links.")
+        return 1 if args.strict else 0
+    return 0
+
+
+def main(argv: Iterable[str] | None = None) -> int:
+    parser = build_parser()
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     docs_root = args.docs_root.resolve()
@@ -242,41 +369,16 @@ def main(argv: Iterable[str] | None = None) -> int:
         docs_root, apply=args.apply, verbose=args.verbose, debug=args.debug
     )
 
-    auto_fixes = [iss for iss in issues if iss.fixed]
-    flagged = [iss for iss in issues if iss.fixed is None]
-
-    if args.apply:
-        print(f"Links inspected: {total_links}")
-        print(f"Links fixed: {fixed_count}")
-        print(f"Files updated: {len(modified)}")
-        if modified:
-            print("Updated files:")
-            for path in sorted(modified):
-                try:
-                    rel_path = path.relative_to(docs_root)
-                except ValueError:
-                    rel_path = path
-                print(f"- {rel_path}")
-    else:
-        print(f"Links inspected: {total_links}")
-        print(f"Links needing fix: {auto_fix_candidates}")
-        if auto_fix_files:
-            print("Files with auto-fixes pending:")
-            for path in sorted(auto_fix_files):
-                print(f"- {path}")
-        print(f"Links needing manual review: {len(flagged)}")
-
-    if flagged:
-        print("\nManual review needed:")
-        for iss in flagged:
-            print(f"- {iss.file}: '{iss.original}' -> {iss.reason}")
-
-    # Fail only in strict mode. Otherwise warn-only so CI can proceed.
-    if flagged or (auto_fixes and not args.apply):
-        if auto_fixes and not args.apply:
-            print("\nRun with --apply to rewrite unambiguous markdown links.")
-        return 1 if args.strict else 0
-    return 0
+    return report_results(
+        args=args,
+        docs_root=docs_root,
+        issues=issues,
+        modified=modified,
+        total_links=total_links,
+        auto_fix_candidates=auto_fix_candidates,
+        fixed_count=fixed_count,
+        auto_fix_files=auto_fix_files,
+    )
 
 
 if __name__ == "__main__":

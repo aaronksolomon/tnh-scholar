@@ -78,7 +78,7 @@ class CodexCliInvocationMapper:
             )
 
     def _arguments_for(self, request: RunnerTaskRequest, response_path: Path) -> tuple[str, ...]:
-        arguments = (
+        arguments: tuple[str, ...] = (
             "exec",
             "--json",
             "--ephemeral",
@@ -157,6 +157,8 @@ class CodexCliInvocationMapper:
         if value is None or value == "":
             return None
         return value
+
+
 @dataclass(frozen=True)
 class CodexCliOutputNormalizer:
     """Normalize Codex CLI execution results into maintained runner results."""

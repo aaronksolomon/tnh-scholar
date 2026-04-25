@@ -126,7 +126,14 @@ class TextObject(BaseModel):
 
 # class DharmaTalkVi(BaseModel):
 #     talk_summary: str = Field(..., description="Dharma talk summary in English.")
-#     sections: List[SectionVi] = Field(..., description="Ordered list of sections. The sequence of line ranges for the sections must cover every line from start to finish without any overlaps or gaps.")
+#     sections: List[SectionVi] = Field(
+#         ...,
+#         description=(
+#             "Ordered list of sections. The sequence of line ranges for the "
+#             "sections must cover every line from start to finish without any "
+#             "overlaps or gaps."
+#         ),
+#     )
 
 # class Section(BaseModel):
 #     title: str = Field(
@@ -185,7 +192,12 @@ class TextObject(BaseModel):
 #     )
 #     sections: List[Section] = Field(
 #         ...,
-#         description="An ordered list of sections with their titles and included start and end line numbers. The sequence of line ranges for the sections must cover every line from start to finish without any overlaps or gaps."
+#         description=(
+#             "An ordered list of sections with their titles and included start "
+#             "and end line numbers. The sequence of line ranges for the "
+#             "sections must cover every line from start to finish without any "
+#             "overlaps or gaps."
+#         )
 #     )
 # class Section(BaseSection):
 #     """

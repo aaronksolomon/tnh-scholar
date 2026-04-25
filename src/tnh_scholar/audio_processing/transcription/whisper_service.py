@@ -22,7 +22,7 @@ import os
 from dataclasses import dataclass, field
 from io import BytesIO
 from pathlib import Path
-from typing import Any, BinaryIO, Dict, List, Optional, TypedDict, Union
+from typing import Any, BinaryIO, Dict, List, Optional, TypedDict, Union, cast
 
 import openai
 from dotenv import load_dotenv
@@ -211,6 +211,7 @@ class WhisperTranscriptionService(TranscriptionService):
         Raises:
             ValueError: If file-like object is provided without 'file_extension' in options
         """
+        file_obj: BinaryIO
         if isinstance(audio_file, Path):
             try:
                 file_obj = open(audio_file, "rb")
@@ -504,7 +505,11 @@ class WhisperTranscriptionService(TranscriptionService):
             if should_close:
                 file_obj.close()
 
-    def _transcribe_execute(self, options, file_obj):
+    def _transcribe_execute(
+        self,
+        options: Optional[Dict[str, Any]],
+        file_obj: BinaryIO,
+    ) -> TranscriptionResult:
         # Prepare API parameters
         api_params = self._prepare_api_params(options)
         api_params["file"] = file_obj
@@ -588,7 +593,7 @@ class WhisperTranscriptionService(TranscriptionService):
 
                 # Call OpenAI API
                 logger.info(f"Transcribing directly to {format_type} with Whisper API")
-                return openai.audio.transcriptions.create(**api_params)
+                return cast(str, openai.audio.transcriptions.create(**api_params))
             finally:
                 # Clean up file object if we opened it
                 if should_close:

@@ -7,6 +7,7 @@ This script converts patterns like `[text](../foo/bar.md)` to `[text](/foo/bar.m
 """
 
 import re
+import subprocess
 from pathlib import Path
 from typing import List, Tuple
 
@@ -95,9 +96,63 @@ def convert_links_in_file(file_path: Path, docs_root: Path, dry_run: bool = Fals
     return len(conversions), conversions
 
 
-def main():
+def find_files_to_process(docs_root: Path) -> list[Path]:
+    """Return markdown files containing relative links."""
+    files_to_process: list[Path] = []
+    for md_file in docs_root.rglob('*.md'):
+        content = md_file.read_text(encoding='utf-8')
+        if '](..' in content or '](./' in content:
+            files_to_process.append(md_file)
+    return files_to_process
+
+
+def process_files(files_to_process: list[Path], docs_root: Path) -> tuple[int, int]:
+    """Convert links in candidate files and print results."""
+    total_conversions = 0
+    files_modified = 0
+    for file_path in files_to_process:
+        relative_path = file_path.relative_to(docs_root)
+        count, conversions = convert_links_in_file(file_path, docs_root, dry_run=False)
+        if count <= 0:
+            continue
+        print(f"{relative_path} ({count} links):")
+        for conversion in conversions:
+            print(conversion)
+        print()
+        total_conversions += count
+        files_modified += 1
+    return total_conversions, files_modified
+
+
+def run_mkdocs_build(project_root: Path) -> int:
+    """Run mkdocs build and report the result."""
+    print("Testing with mkdocs build...")
+    try:
+        result = subprocess.run(
+            ['mkdocs', 'build', '--strict'],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except FileNotFoundError:
+        print("⚠ mkdocs not found - skipping build test")
+        return 0
+    except subprocess.TimeoutExpired:
+        print("⚠ mkdocs build timed out")
+        return 0
+
+    if result.returncode == 0:
+        print("✓ mkdocs build succeeded!")
+        return 0
+
+    print("✗ mkdocs build failed:")
+    print(result.stderr)
+    return 1
+
+
+def main() -> int:
     """Main conversion process."""
-    # Determine paths
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
     docs_root = project_root / 'docs'
@@ -106,36 +161,10 @@ def main():
         print(f"Error: docs/ directory not found at {docs_root}")
         return 1
 
-    # Find all markdown files with relative links
     print("Scanning for markdown files with relative links...")
-
-    all_md_files = list(docs_root.rglob('*.md'))
-    files_to_process = []
-
-    for md_file in all_md_files:
-        content = md_file.read_text(encoding='utf-8')
-        if '](..' in content or '](./' in content:
-            # Has relative links
-            files_to_process.append(md_file)
-
+    files_to_process = find_files_to_process(docs_root)
     print(f"Found {len(files_to_process)} files with relative links\n")
-
-    # Process each file
-    total_conversions = 0
-    files_modified = 0
-
-    for file_path in files_to_process:
-        relative_path = file_path.relative_to(docs_root)
-        count, conversions = convert_links_in_file(file_path, docs_root, dry_run=False)
-
-        if count > 0:
-            print(f"{relative_path} ({count} links):")
-            for conversion in conversions:
-                print(conversion)
-            print()
-
-            total_conversions += count
-            files_modified += 1
+    total_conversions, files_modified = process_files(files_to_process, docs_root)
 
     # Summary
     print("=" * 80)
@@ -145,30 +174,7 @@ def main():
     print(f"Total links converted: {total_conversions}")
     print()
 
-    # Test with mkdocs build
-    print("Testing with mkdocs build...")
-    import subprocess
-    try:
-        result = subprocess.run(
-            ['mkdocs', 'build', '--strict'],
-            cwd=project_root,
-            capture_output=True,
-            text=True,
-            timeout=60
-        )
-
-        if result.returncode == 0:
-            print("✓ mkdocs build succeeded!")
-        else:
-            print("✗ mkdocs build failed:")
-            print(result.stderr)
-            return 1
-    except FileNotFoundError:
-        print("⚠ mkdocs not found - skipping build test")
-    except subprocess.TimeoutExpired:
-        print("⚠ mkdocs build timed out")
-
-    return 0
+    return run_mkdocs_build(project_root)
 
 
 if __name__ == '__main__':

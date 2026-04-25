@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Protocol
+from typing import Protocol, cast
 
 from tnh_scholar.agent_orchestration.app.models import HeadlessBootstrapConfig
 from tnh_scholar.agent_orchestration.common.run_id import strftime_run_id
@@ -39,7 +39,7 @@ class SystemClock:
 
     def now(self) -> datetime:
         """Return the current UTC timestamp."""
-        return utc_now()
+        return cast(datetime, utc_now())
 
 
 @dataclass(frozen=True)
@@ -48,7 +48,7 @@ class TimestampRunIdGenerator:
 
     def next_id(self, now: datetime) -> str:
         """Return a compact timestamp-based run ID."""
-        return strftime_run_id(now, "%Y%m%dT%H%M%SZ")
+        return cast(str, strftime_run_id(now, "%Y%m%dT%H%M%SZ"))
 
 
 @dataclass(frozen=True)

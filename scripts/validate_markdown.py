@@ -24,6 +24,7 @@ Exit code 1 indicates validation issues, but this is treated as a warning
 
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 from typing import Dict, List, NamedTuple
@@ -151,8 +152,6 @@ def check_relative_links(path: Path, lines: List[str]) -> List[ValidationIssue]:
     if rel_path.parts and rel_path.parts[0] == "project" and rel_path.parts[1] == "repo-root":
         return issues
 
-    import re
-
     link_pattern = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 
     in_code_block = False
@@ -169,7 +168,7 @@ def check_relative_links(path: Path, lines: List[str]) -> List[ValidationIssue]:
             continue
 
         matches = link_pattern.findall(line)
-        for link_text, link_url in matches:
+        for _, link_url in matches:
             # Allow archive-relative links per Historical References pattern
             if "archive/" in link_url:
                 continue
@@ -186,25 +185,9 @@ def check_relative_links(path: Path, lines: List[str]) -> List[ValidationIssue]:
     return issues
 
 
-def validate_file(path: Path) -> List[ValidationIssue]:
-    """Validate a single markdown file against standards."""
-    issues = []
-    rel_path = path.relative_to(DOCS_ROOT)
-    is_auto_generated = False
-
-    # Skip files with specialized frontmatter schemas
-    if is_special_frontmatter_file(path):
-        return issues
-
-    # Parse frontmatter
-    frontmatter, content_start = parse_frontmatter(path)
-
-    # Check frontmatter exists
-    if not frontmatter:
-        issues.append(ValidationIssue(rel_path, "missing_frontmatter", "File is missing YAML frontmatter"))
-        return issues  # Can't validate further without frontmatter
-
-    # Check required fields
+def validate_frontmatter_fields(frontmatter: Dict, rel_path: Path) -> list[ValidationIssue]:
+    """Validate required frontmatter fields and status values."""
+    issues: list[ValidationIssue] = []
     for field in REQUIRED_FIELDS:
         if field not in frontmatter:
             issues.append(
@@ -213,68 +196,84 @@ def validate_file(path: Path) -> List[ValidationIssue]:
 
     status_value = frontmatter.get("status")
     is_auto_generated = bool(frontmatter.get("auto_generated"))
+    if not status_value:
+        return issues
 
-    # Validate status field
-    if status_value:
-        if status_value not in ALLOWED_STATUSES:
+    if status_value not in ALLOWED_STATUSES:
+        issues.append(
+            ValidationIssue(
+                rel_path,
+                "invalid_status",
+                f"Status '{status_value}' is not allowed. Allowed: {', '.join(sorted(ALLOWED_STATUSES))}",
+            )
+        )
+    if is_auto_generated and status_value not in AUTO_GENERATED_ALLOWED_STATUSES:
+        issues.append(
+            ValidationIssue(
+                rel_path,
+                "invalid_status",
+                "Auto-generated files must use one of: "
+                f"{', '.join(sorted(AUTO_GENERATED_ALLOWED_STATUSES))}",
+            )
+        )
+    return issues
+
+
+def validate_content_structure(
+    frontmatter: Dict, rel_path: Path, content_lines: List[str]
+) -> list[ValidationIssue]:
+    """Validate heading presence, title match, and description paragraph."""
+    issues: list[ValidationIssue] = []
+    heading_info = get_first_heading(content_lines)
+    if not heading_info:
+        issues.append(ValidationIssue(rel_path, "missing_heading", "File is missing a top-level # heading"))
+        return issues
+
+    heading_text, heading_line_num = heading_info
+    if "title" in frontmatter:
+        fm_title = frontmatter["title"].strip()
+        if fm_title != heading_text:
             issues.append(
                 ValidationIssue(
                     rel_path,
-                    "invalid_status",
-                    f"Status '{status_value}' is not allowed. Allowed: {', '.join(sorted(ALLOWED_STATUSES))}",
-                )
-            )
-        if is_auto_generated and status_value not in AUTO_GENERATED_ALLOWED_STATUSES:
-            issues.append(
-                ValidationIssue(
-                    rel_path,
-                    "invalid_status",
-                    "Auto-generated files must use one of: "
-                    f"{', '.join(sorted(AUTO_GENERATED_ALLOWED_STATUSES))}",
+                    "title_mismatch",
+                    f"Title mismatch - frontmatter: '{fm_title}' vs heading: '{heading_text}'",
                 )
             )
 
-    # Read content lines
+    first_para = get_first_paragraph(content_lines, heading_line_num)
+    if not first_para:
+        issues.append(
+            ValidationIssue(
+                rel_path, "missing_description", "File is missing a description paragraph after the title"
+            )
+        )
+    return issues
+
+
+def validate_file(path: Path) -> List[ValidationIssue]:
+    """Validate a single markdown file against standards."""
+    issues: list[ValidationIssue] = []
+    rel_path = path.relative_to(DOCS_ROOT)
+
+    if is_special_frontmatter_file(path):
+        return issues
+
+    frontmatter, content_start = parse_frontmatter(path)
+    if not frontmatter:
+        issues.append(ValidationIssue(rel_path, "missing_frontmatter", "File is missing YAML frontmatter"))
+        return issues
+    issues.extend(validate_frontmatter_fields(frontmatter, rel_path))
+
     try:
         lines = path.read_text().splitlines()
     except Exception as e:
         issues.append(ValidationIssue(rel_path, "read_error", f"Could not read file: {e}"))
         return issues
 
-    # Get content lines (after frontmatter)
     content_lines = lines[content_start:] if content_start else lines
-
-    # Check for relative links in the entire file
     issues.extend(check_relative_links(path, lines))
-
-    # Check for first heading
-    heading_info = get_first_heading(content_lines)
-    if not heading_info:
-        issues.append(ValidationIssue(rel_path, "missing_heading", "File is missing a top-level # heading"))
-    else:
-        heading_text, heading_line_num = heading_info
-
-        # Check title matches heading
-        if "title" in frontmatter:
-            fm_title = frontmatter["title"].strip()
-            if fm_title != heading_text:
-                issues.append(
-                    ValidationIssue(
-                        rel_path,
-                        "title_mismatch",
-                        f"Title mismatch - frontmatter: '{fm_title}' vs heading: '{heading_text}'",
-                    )
-                )
-
-        # Check for description paragraph
-        first_para = get_first_paragraph(content_lines, heading_line_num)
-        if not first_para:
-            issues.append(
-                ValidationIssue(
-                    rel_path, "missing_description", "File is missing a description paragraph after the title"
-                )
-            )
-
+    issues.extend(validate_content_structure(frontmatter, rel_path, content_lines))
     return issues
 
 

@@ -21,7 +21,6 @@ from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionEnvelope,
     CompletionResult,
-    CompletionOutcomeStatus,
     Message,
     RenderedPrompt,
     Role,

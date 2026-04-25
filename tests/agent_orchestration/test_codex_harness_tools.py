@@ -6,7 +6,7 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-from tnh_scholar.agent_orchestration.codex_harness.models import PatchApplyResult, TestRunResult
+from tnh_scholar.agent_orchestration.codex_harness.models import TestRunResult
 from tnh_scholar.agent_orchestration.codex_harness.providers.patch_applier import GitPatchApplier
 from tnh_scholar.agent_orchestration.codex_harness.providers.tool_executor import CodexToolExecutor
 from tnh_scholar.agent_orchestration.codex_harness.tools import (

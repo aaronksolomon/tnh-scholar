@@ -3,7 +3,7 @@ from collections.abc import MutableMapping
 from copy import deepcopy
 from datetime import date, datetime
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterator, List, Mapping, Optional, Union
+from typing import Any, Callable, Dict, Iterator, List, Mapping, Optional, Union, cast
 
 import yaml
 from pydantic_core import core_schema
@@ -65,7 +65,8 @@ class Metadata(MutableMapping):
         if isinstance(value, tuple(self._type_processors.keys())):
             for type_, processor in self._type_processors.items():
                 if isinstance(value, type_):
-                    return processor(value)
+                    processed_value = processor(value)
+                    return cast(JsonValue, processed_value)
         if not isinstance(value, (str, int, float, bool, list, dict, type(None))):
             raise ValueError(
                 f"Value {value} of type {type(value)} has no conversion to JsonValue.")

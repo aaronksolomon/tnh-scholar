@@ -90,7 +90,11 @@ def get_youtube_urls_from_csv(file_path: Path) -> List[str]:
         with file_path.open("r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
 
-            if reader.fieldnames is None or "url" not in reader.fieldnames or "title" not in reader.fieldnames:
+            if (
+                reader.fieldnames is None
+                or "url" not in reader.fieldnames
+                or "title" not in reader.fieldnames
+            ):
                 logger.error("CSV file must contain 'url' and 'title' columns.")
                 raise ValueError("CSV file must contain 'url' and 'title' columns.")
 
@@ -144,6 +148,7 @@ def download_audio_yt(
         Path: Path to the downloaded audio file.
     """
     output_dir.mkdir(parents=True, exist_ok=True)
+    postprocessor_args: List[str] = []
     ydl_opts = {
         "format": "bestaudio/best",
         "postprocessors": [
@@ -153,14 +158,14 @@ def download_audio_yt(
                 "preferredquality": "192",
             }
         ],
-        "postprocessor_args": [],
+        "postprocessor_args": postprocessor_args,
         "noplaylist": True,
         "outtmpl": str(output_dir / "%(title)s.%(ext)s"),
     }
 
     # Add start time to the FFmpeg postprocessor if provided
     if start_time:
-        ydl_opts["postprocessor_args"].extend(["-ss", start_time])
+        postprocessor_args.extend(["-ss", start_time])
         logger.info(f"Postprocessor start time set to: {start_time}")
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:

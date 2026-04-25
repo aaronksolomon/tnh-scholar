@@ -12,8 +12,16 @@ from tnh_scholar.agent_orchestration.codex_harness.models import (
     CodexResponseText,
     CodexStructuredOutput,
 )
-from tnh_scholar.agent_orchestration.codex_harness.protocols import ResponsesClientProtocol, ToolRegistryProtocol
-from tnh_scholar.agent_orchestration.codex_harness.tools import ToolCall, ToolDefinition, ToolName, ToolResult
+from tnh_scholar.agent_orchestration.codex_harness.protocols import (
+    ResponsesClientProtocol,
+    ToolRegistryProtocol,
+)
+from tnh_scholar.agent_orchestration.codex_harness.tools import (
+    ToolCall,
+    ToolDefinition,
+    ToolName,
+    ToolResult,
+)
 
 
 @dataclass(frozen=True)
@@ -79,16 +87,17 @@ class ChatCompletionsClient(ResponsesClientProtocol):
         tool_outputs: list[dict[str, object]],
         tools: list[dict[str, object]],
     ) -> tuple[Any, list[dict[str, object]]]:
-        assistant_message = {
+        assistant_tool_calls: list[dict[str, object]] = [
+            {
+                "id": call.call_id,
+                "type": "function",
+                "function": {"name": call.name.value, "arguments": call.arguments_json},
+            }
+            for call in tool_calls
+        ]
+        assistant_message: dict[str, object] = {
             "role": "assistant",
-            "tool_calls": [
-                {
-                    "id": call.call_id,
-                    "type": "function",
-                    "function": {"name": call.name.value, "arguments": call.arguments_json},
-                }
-                for call in tool_calls
-            ],
+            "tool_calls": assistant_tool_calls,
         }
         messages.append(assistant_message)
         for output in tool_outputs:
@@ -126,12 +135,14 @@ class ChatCompletionsClient(ResponsesClientProtocol):
         if not message:
             return ""
         content = getattr(message, "content", None)
-        return content or ""
+        if not content:
+            return ""
+        return str(content)
 
     def _serialize_response(self, response: Any) -> str:
         dump = getattr(response, "model_dump_json", None)
         if callable(dump):
-            return dump(indent=2)
+            return str(dump(indent=2))
         return str(response)
 
     def _build_tools(self, definitions: list[ToolDefinition]) -> list[dict[str, object]]:

@@ -8,7 +8,6 @@ from typing import Optional
 import typer
 
 from tnh_scholar.agent_orchestration.codex_harness.adapters.output_parser import CodexOutputParser
-
 from tnh_scholar.agent_orchestration.codex_harness.models import (
     CodexDefaults,
     CodexRunConfig,
@@ -20,13 +19,15 @@ from tnh_scholar.agent_orchestration.codex_harness.providers.chat_completions_cl
     ChatCompletionsClient,
 )
 from tnh_scholar.agent_orchestration.codex_harness.providers.clock import SystemClock
-from tnh_scholar.agent_orchestration.codex_harness.providers.openai_responses_client import OpenAIResponsesClient
+from tnh_scholar.agent_orchestration.codex_harness.providers.openai_responses_client import (
+    OpenAIResponsesClient,
+)
 from tnh_scholar.agent_orchestration.codex_harness.providers.patch_applier import GitPatchApplier
 from tnh_scholar.agent_orchestration.codex_harness.providers.run_id import TimestampRunIdGenerator
 from tnh_scholar.agent_orchestration.codex_harness.providers.searcher import RipgrepSearcher
+from tnh_scholar.agent_orchestration.codex_harness.providers.test_runner import ShellTestRunner
 from tnh_scholar.agent_orchestration.codex_harness.providers.tool_executor import CodexToolExecutor
 from tnh_scholar.agent_orchestration.codex_harness.providers.tool_registry import CodexToolRegistry
-from tnh_scholar.agent_orchestration.codex_harness.providers.test_runner import ShellTestRunner
 from tnh_scholar.agent_orchestration.codex_harness.providers.workspace_locator import GitWorkspaceLocator
 from tnh_scholar.agent_orchestration.codex_harness.service import CodexHarnessService
 from tnh_scholar.agent_orchestration.codex_harness.tools import ToolSchemaFactory

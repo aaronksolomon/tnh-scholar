@@ -138,22 +138,27 @@ class CompletionEnvelope(BaseModel):
 
     @model_validator(mode="after")
     def _validate_outcome(self) -> "CompletionEnvelope":
-        if self.outcome is CompletionOutcomeStatus.SUCCEEDED:
-            if self.result is None:
-                raise ValueError("succeeded envelopes require result")
-            if self.failure is not None:
-                raise ValueError("succeeded envelopes cannot include failure")
-        elif self.outcome is CompletionOutcomeStatus.INCOMPLETE:
-            if self.result is None:
-                raise ValueError("incomplete envelopes require result")
-            if self.failure is not None:
-                raise ValueError("incomplete envelopes cannot include failure")
+        if self.outcome in (
+            CompletionOutcomeStatus.SUCCEEDED,
+            CompletionOutcomeStatus.INCOMPLETE,
+        ):
+            self._validate_success_like_outcome()
         elif self.outcome is CompletionOutcomeStatus.FAILED:
-            if self.result is not None:
-                raise ValueError("failed envelopes cannot include result")
-            if self.failure is None:
-                raise ValueError("failed envelopes require failure")
+            self._validate_failed_outcome()
         return self
+
+    def _validate_success_like_outcome(self) -> None:
+        outcome_name = self.outcome.value
+        if self.result is None:
+            raise ValueError(f"{outcome_name} envelopes require result")
+        if self.failure is not None:
+            raise ValueError(f"{outcome_name} envelopes cannot include failure")
+
+    def _validate_failed_outcome(self) -> None:
+        if self.result is not None:
+            raise ValueError("failed envelopes cannot include result")
+        if self.failure is None:
+            raise ValueError("failed envelopes require failure")
 
 
 class Role(str, Enum):

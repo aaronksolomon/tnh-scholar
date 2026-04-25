@@ -10,7 +10,12 @@ from tnh_scholar.gen_ai_service.models.domain import (
     Provenance,
     Usage,
 )
-from tnh_scholar.gen_ai_service.models.transport import ErrorInfo, ProviderResponse, ProviderStatus, TextPayload
+from tnh_scholar.gen_ai_service.models.transport import (
+    ErrorInfo,
+    ProviderResponse,
+    ProviderStatus,
+    TextPayload,
+)
 
 PolicyApplied = Dict[str, Union[str, int, float]]
 
@@ -62,7 +67,7 @@ def _retryable_for_failure(reason: FailureReason) -> bool:
 
 def _failure_message(resp: ProviderResponse, reason: FailureReason) -> str:
     if resp.error is not None and resp.error.message:
-        return resp.error.message
+        return str(resp.error.message)
 
     match reason:
         case FailureReason.EMPTY_CONTENT_WITH_TOKENS:

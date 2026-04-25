@@ -3,7 +3,7 @@ import subprocess
 import time
 from datetime import datetime
 from threading import Condition, Event, Thread
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 import requests
 from flask import Flask, jsonify, request
@@ -11,7 +11,7 @@ from flask import Flask, jsonify, request
 
 class WebhookServer:
     """A generic webhook server that can receive callbacks from external services."""
-    
+
     def __init__(self, port: int = 5050):
         """
         Initialize webhook server with configuration.
@@ -22,11 +22,11 @@ class WebhookServer:
         self.port = port
         self.app = self._create_flask_app()
         self.webhook_received = Condition()
-        self.webhook_data = None
+        self.webhook_data: Optional[Dict[str, Any]] = None
         self.flask_running = Event()
-        self.flask_server_thread = None
-        self.tunnel_process = None
-        
+        self.flask_server_thread: Optional[Thread] = None
+        self.tunnel_process: Optional[subprocess.Popen[str]] = None
+
     def _create_flask_app(self) -> Flask:
         """Create and configure Flask app with webhook endpoint."""
         app = Flask(__name__)
@@ -74,7 +74,62 @@ class WebhookServer:
             return 'Server shutting down...'
         
         return app
-    
+
+    def _build_tunnel_process(self) -> subprocess.Popen[str]:
+        """Start the local tunnel subprocess."""
+        return subprocess.Popen(
+            ["pylt", "port", str(self.port)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+    def _require_tunnel_process(self) -> subprocess.Popen[str]:
+        """Return the active tunnel process or raise if unavailable."""
+        if self.tunnel_process is None:
+            raise RuntimeError("Tunnel process is not running.")
+        return self.tunnel_process
+
+    def _raise_tunnel_start_error(self, process: subprocess.Popen[str]) -> None:
+        """Raise a descriptive error when tunnel startup fails."""
+        if process.stderr:
+            stderr = process.stderr.read()
+        else:
+            raise RuntimeError("ERROR: Tunnel process failed: no stderr")
+        if process.stdout:
+            stdout = process.stdout.read()
+        else:
+            raise RuntimeError("ERROR: Tunnel process failed: no stdout")
+        raise RuntimeError(
+            f"ERROR: Tunnel process failed:\nSTDOUT: {stdout}\nSTDERR: {stderr}"
+        )
+
+    def _read_tunnel_url(self, process: subprocess.Popen[str]) -> Optional[str]:
+        """Read tunnel output until a public URL appears or the timeout expires."""
+        url_pattern = re.compile(r'https?://[^\s\'"]+')
+        if process.stdout is None:
+            raise RuntimeError("ERROR: tunnel process has no stdout.")
+
+        start_time = time.time()
+        while time.time() - start_time < 15:
+            line = process.stdout.readline()
+            if not line:
+                time.sleep(0.1)
+                continue
+            print(f"Tunnel output: {line.strip()}")
+            if match := url_pattern.search(line):
+                return match[0]
+        return None
+
+    def _verify_tunnel(self, tunnel_url: str) -> None:
+        """Verify that the public tunnel can reach the local server."""
+        response = requests.get(f"{tunnel_url}/healthcheck", timeout=20)
+        if response.status_code == 200:
+            print("Tunnel verified: Flask server is accessible")
+            return
+        print(f"Tunnel health check returned status {response.status_code}")
+        raise RuntimeError("Could not verify Tunnel.")
+
     def start_server(self) -> None:
         """Start Flask server in a separate thread."""
         # Check if server is already running
@@ -101,8 +156,9 @@ class WebhookServer:
             print("Flask server has stopped")
         
         # Start server in a daemon thread
-        self.flask_server_thread = Thread(target=run_server, daemon=True)
-        self.flask_server_thread.start()
+        thread = Thread(target=run_server, daemon=True)
+        self.flask_server_thread = thread
+        thread.start()
         
         # Wait for server to start
         if not self.flask_running.wait(timeout=5):
@@ -148,71 +204,29 @@ class WebhookServer:
         print(f"Creating public tunnel to port {self.port}...")
 
         # Start the localtunnel process
-        self.tunnel_process = subprocess.Popen(
-            ["pylt", "port", str(self.port)],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
+        self.tunnel_process = self._build_tunnel_process()
+        process = self._require_tunnel_process()
 
         # Give it time to establish the tunnel
         time.sleep(3)
 
         # Check if process started successfully
-        if self.tunnel_process.poll() is not None:
-            if self.tunnel_process.stderr:
-                stderr = self.tunnel_process.stderr.read()
-            else:
-                raise RuntimeError("ERROR: Tunnel process failed: no stderr")
-            if self.tunnel_process.stdout:
-                stdout = self.tunnel_process.stdout.read()
-            else:
-                raise RuntimeError("ERROR: Tunnel process failed: no stderr")
-            raise RuntimeError(
-                f"ERROR: Tunnel process failed:\nSTDOUT: {stdout}\nSTDERR: {stderr}"
-                )
+        if process.poll() is not None:
+            self._raise_tunnel_start_error(process)
 
-        # Regular expression to find the URL in the output
-        url_pattern = re.compile(r'https?://[^\s\'"]+')
-
-        # Read output with timeout
-        start_time = time.time()
-        tunnel_url = None
-
-        while time.time() - start_time < 15:  # Wait up to 15 seconds
-            if not self.tunnel_process.stdout:
-                raise RuntimeError("ERROR: tunnel process has no stdout.")
-
-            line = self.tunnel_process.stdout.readline()
-            if not line:
-                time.sleep(0.1)
-                continue
-            print(f"Tunnel output: {line.strip()}")
-
-            # Check if the URL pattern is found
-            if match := url_pattern.search(line):
-                tunnel_url = match[0]
-                break
+        tunnel_url = self._read_tunnel_url(process)
 
         if not tunnel_url:
             print("ERROR: Could not find tunnel URL in output")
-            if self.tunnel_process.poll() is None:
-                self.tunnel_process.terminate()
+            if process.poll() is None:
+                process.terminate()
             return None
 
         print(f"Public tunnel created: {tunnel_url}")
         webhook_url = f"{tunnel_url}/webhook"
 
         # Verify the tunnel works
-        try:
-            response = requests.get(f"{tunnel_url}/healthcheck", timeout=20)
-            if response.status_code == 200:
-                print("Tunnel verified: Flask server is accessible")
-            else:
-                print(f"Tunnel health check returned status {response.status_code}")
-                raise RuntimeError("Could not verify Tunnel.") 
-        except requests.RequestException as e:
-            raise e
+        self._verify_tunnel(tunnel_url)
 
         return webhook_url
     

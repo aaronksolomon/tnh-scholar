@@ -53,7 +53,7 @@ class TimeGapChunker(ChunkingStrategy):
         if context.remaining_time < self.cfg.chunk.min_duration:
             return False
             
-        return projected_time >= self.cfg.chunk.target_duration
+        return bool(projected_time >= self.cfg.chunk.target_duration)
 
     def _calculate_gap_info(self, context) -> tuple[TimeMs, bool]:
         """Calculate gap time and gap_before flag for current segment."""

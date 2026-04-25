@@ -54,21 +54,96 @@ def load_segments_from_file(path):
     with open(path, "r") as f:
         return json.load(f)
 
-def main():
-    # If a data file is passed as argument, load it
-    segments = None
-    meta = None
-    error_msg = None
+def _load_viewer_payload() -> tuple[list[dict] | None, dict | None, str | None]:
+    """Load serialized viewer payload from CLI args."""
     if len(sys.argv) > 1 and os.path.exists(sys.argv[-1]):
         try:
             payload = load_segments_from_file(sys.argv[-1])
-            segments = payload.get("segments")
-            meta = payload.get("meta")
+            return payload.get("segments"), payload.get("meta"), None
         except Exception as e:
-            error_msg = f"Failed to load segment data: {e}"
-    else:
-        st.error("No segment data file provided. This viewer requires explicit segment and audio file input.")
-        st.stop()
+            return None, None, f"Failed to load segment data: {e}"
+    return None, None, (
+        "No segment data file provided. This viewer requires explicit segment and audio file input."
+    )
+
+
+def _render_timeline(blocks: List[SpeakerBlock]) -> None:
+    """Render the block timeline plot."""
+    speakers = list({block.speaker for block in blocks})
+    color_map = {
+        spk: pc.qualitative.Plotly[i % len(pc.qualitative.Plotly)] for i, spk in enumerate(speakers)
+    }
+
+    fig = go.Figure()
+    speaker_blocks = defaultdict(list)
+    for idx, block in enumerate(blocks):
+        speaker_blocks[block.speaker].append((idx, block))
+
+    bar_thickness = 0.6
+    for speaker, items in speaker_blocks.items():
+        for idx, block in items:
+            start_sec = block.start.to_seconds()
+            duration_sec = block.duration.to_seconds()
+            fig.add_trace(
+                go.Bar(
+                    x=[duration_sec],
+                    y=[speaker],
+                    base=[start_sec],
+                    orientation="h",
+                    marker_color=color_map[speaker],
+                    name=f"{idx + 1}: {speaker}",
+                    hovertext=(
+                        f"{idx + 1}: {speaker} "
+                        f"({start_sec:.2f}s-{start_sec + duration_sec:.2f}s)"
+                    ),
+                    width=bar_thickness,
+                )
+            )
+    fig.update_layout(
+        title="All Segments (seconds)",
+        xaxis_title="Time (seconds)",
+        yaxis_title="Speaker",
+        showlegend=False,
+        bargap=0.2,
+        barmode="overlay",
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+
+def _render_segment_player(blocks: List[SpeakerBlock], master_audio_path: str) -> None:
+    """Render the selected segment details and playable audio."""
+    st.write("## Enter Segment Number to Play")
+    max_segment = len(blocks)
+    segment_num = st.number_input(
+        "Segment number (1-based)",
+        min_value=1,
+        max_value=max_segment,
+        value=1,
+        step=1,
+        help=f"Enter a segment number between 1 and {max_segment}",
+    )
+    block = blocks[segment_num - 1]
+    start_ms = block.start.to_ms()
+    end_ms = block.end.to_ms()
+    st.write(f"Selected Segment: {segment_num} | Speaker: {block.speaker}")
+    st.write(
+        f"Start: {block.start.to_seconds():.2f}s, "
+        f"End: {block.end.to_seconds():.2f}s, "
+        f"Duration: {block.duration.to_seconds():.2f}s"
+    )
+
+    try:
+        audio = AudioSegment.from_file(master_audio_path)
+        segment_audio = audio[start_ms:end_ms]
+        buf = io.BytesIO()
+        segment_audio.export(buf, format="wav")
+        st.audio(buf.getvalue(), format="audio/wav")
+    except Exception as e:
+        st.error(f"Error extracting or playing audio segment: {e}")
+
+
+def main():
+    segments, meta, error_msg = _load_viewer_payload()
 
     if error_msg:
         st.error(error_msg)
@@ -90,82 +165,12 @@ def main():
         st.error("No segment blocks found.")
         st.stop()
 
-
-    # --- Timeline Plot: group by speaker, color by speaker, number blocks ---
     try:
-        speakers = list({block.speaker for block in blocks})
-        color_map = {
-            spk: pc.qualitative.Plotly[i % len(pc.qualitative.Plotly)] for i, spk in enumerate(speakers)
-        }
-
-        fig = go.Figure()
-        speaker_blocks = defaultdict(list)
-        for idx, block in enumerate(blocks):
-            speaker_blocks[block.speaker].append((idx, block))
-
-        bar_thickness = 0.6
-        for speaker, items in speaker_blocks.items():
-            y_val = speaker
-            for idx, block in items:
-                start_sec = block.start.to_seconds()
-                duration_sec = block.duration.to_seconds()
-                fig.add_trace(go.Bar(
-                    x=[duration_sec],
-                    y=[y_val],
-                    base=[start_sec],
-                    orientation='h',
-                    marker_color=color_map[speaker],
-                    name=f"{idx+1}: {speaker}",
-                    hovertext=f"{idx+1}: {speaker} ({start_sec:.2f}s-{start_sec+duration_sec:.2f}s)",
-                    width=bar_thickness
-                ))
-        fig.update_layout(
-            title="All Segments (seconds)",
-            xaxis_title="Time (seconds)",
-            yaxis_title="Speaker",
-            showlegend=False,
-            bargap=0.2,
-            barmode="overlay"
-        )
-        st.plotly_chart(fig, use_container_width=True)
+        _render_timeline(blocks)
     except Exception as e:
         st.error(f"Error generating timeline plot: {e}")
 
-
-    # --- Segment selection via entry box ---
-    st.write("## Enter Segment Number to Play")
-    max_segment = len(blocks)
-    segment_num = st.number_input(
-        "Segment number (1-based)",
-        min_value=1,
-        max_value=max_segment,
-        value=1,
-        step=1,
-        help=f"Enter a segment number between 1 and {max_segment}"
-    )
-    selected_idx = segment_num - 1
-
-    block = blocks[selected_idx]
-    start_ms = block.start.to_ms()
-    end_ms = block.end.to_ms()
-    st.write(f"Selected Segment: {segment_num} | Speaker: {block.speaker}")
-    st.write(
-        f"Start: {block.start.to_seconds():.2f}s, "
-        f"End: {block.end.to_seconds():.2f}s, "
-        f"Duration: {block.duration.to_seconds():.2f}s"
-    )
-
-    # --- Play audio for selected segment ---
-    try:
-        audio = AudioSegment.from_file(master_audio_path)
-        segment_audio = audio[start_ms:end_ms]
-        buf = io.BytesIO()
-        segment_audio.export(buf, format="wav")
-        st.audio(buf.getvalue(), format="audio/wav")
-    except Exception as e:
-        st.error(f"Error extracting or playing audio segment: {e}")
-
-
+    _render_segment_player(blocks, master_audio_path)
 
 if __name__ == "__main__":
     # Only run Streamlit app if called as main

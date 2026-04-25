@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Repo-Wide Lint and Type Debt Cleanup** (2026-04-25)
+  - Reduced the outstanding Ruff and mypy backlog across scripts, agent orchestration, GenAI, OCR, audio, query, metadata, prompt-system, and CLI surfaces
+  - Restored clean repo-wide static validation with `make lint` and `make type-check`
+  - Added a focused type-hardening pass in legacy utility and audio modules to remove remaining `Any` leaks and stale re-export/import issues
+  - Files: `scripts/`, `src/tnh_scholar/`, `tests/`
+
 - **Maintained `tnh-conductor` Operator Docs** (2026-04-24)
   - Added a maintained operator guide and CLI reference for the current `tnh-conductor` bootstrap path
   - Clarified the supported operator surface as `run`, `status`, and `status --watch`, distinct from earlier spike and migration-source orchestration paths

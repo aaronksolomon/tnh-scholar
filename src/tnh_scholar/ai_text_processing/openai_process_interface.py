@@ -1,4 +1,4 @@
-from typing import Optional, Type, Union
+from typing import Optional, Type, Union, cast
 
 from pydantic import BaseModel
 
@@ -49,10 +49,16 @@ def openai_process_text(
         response_model=response_format,
     )
     logger.info("Processing completed.")
-    return completion_result
+    return cast(Union[BaseModel, str], completion_result)
 
 
-def _run_batch_process_text(user_prompts, system_message, max_tokens, model_name, response_format):
+def _run_batch_process_text(
+    user_prompts: list[str],
+    system_message: str,
+    max_tokens: int,
+    model_name: str,
+    response_format: Optional[Type[BaseModel]],
+) -> Union[BaseModel, str]:
     if response_format:
         logger.warning(
             f"Response object can't be processed in batch mode. "
@@ -73,4 +79,4 @@ def _run_batch_process_text(user_prompts, system_message, max_tokens, model_name
         responses.append(response)
 
     logger.info("Processing completed.")
-    return responses[0] if responses else ""
+    return cast(Union[BaseModel, str], responses[0] if responses else "")
