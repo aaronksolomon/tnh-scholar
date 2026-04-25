@@ -262,6 +262,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-YF01: YouTube Transcript Source Handling](/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md)
 - [ADR-YF02: YouTube Transcript Format Selection](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)
 - [Agent Orchestration Collaboration Paradigms](/architecture/agent-orchestration/notes/research/agent-orchestration-collaboration-paradigms.md)
+- [Agent Orchestration Recursive Bootstrap Proposal](/architecture/agent-orchestration/notes/design/recursive-bootstrap-build-proposal.md)
 - [Agent Orchestration Spike Testing Sequence](/architecture/agent-orchestration/notes/experiments/spike-testing-sequence.md)
 - [Architecture Blueprint](/architecture/agent-orchestration/notes/design/architecture-blueprint.md)
 - [Architecture Overview](/architecture/overview.md)

@@ -28,7 +28,7 @@ This directory contains documentation for developers contributing to TNH Scholar
 **Key Implications for Contributors:**
 
 - No backward compatibility guarantees during 0.x
-- Breaking changes acceptable in patch releases (0.1.3 → 0.1.4)
+- Breaking changes acceptable in patch releases (0.3.0 → 0.3.1)
 - When refactoring core systems, update ALL dependents in same PR
 - No compatibility shims or legacy code maintenance
 - Clean breaks over gradual migrations

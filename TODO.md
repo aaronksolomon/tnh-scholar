@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-04-24"
+updated: "2026-04-25"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-24 (docs release-prep review complete; `tnh-conductor` operator docs and TODO cleanup next)
+> **Last Updated**: 2026-04-25 (release-prep docs sweep complete; indexes regenerated; release validation follow-up next)
 > **Version**: 0.3.1 (Alpha; preparing 0.4.0 bootstrap release)
 > **Status**: Active Development - bootstrap viable, release-prep and cleanup phase
 >
@@ -29,7 +29,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 **Next Steps**:
 
 1. 🚧 Prepare `0.4.0` bootstrap release framing for `tnh-conductor` prototype alpha
-2. 🚧 Finish maintained `tnh-conductor` operator docs and CLI reference for release readiness
+2. 🚧 Run `0.4.0` release validation pass and finalize version-bump scope/release notes
 3. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
 4. 🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)
 5. 🔮 Finish ytt-fetch robustness hardening (P1, reliability)

@@ -4,7 +4,7 @@ description: "Table of contents for development"
 owner: ""
 author: ""
 status: processing
-created: "2026-04-22"
+created: "2026-04-25"
 auto_generated: true
 ---
 
@@ -33,6 +33,8 @@ auto_generated: true
 **[TNH Scholar Style Guide](style-guide.md)** - Code formatting, naming conventions, and Python standards for TNH Scholar development.
 
 **[TNH Scholar System Design](system-design.md)** - High-level system design describing the cyclical AI processing architecture powering TNH Scholar.
+
+**[tnh-conductor Operator Guide](tnh-conductor-operator-guide.md)** - Practical operator guidance for running the maintained tnh-conductor bootstrap path.
 
 **[yt-dlp Ops Check](yt-dlp-ops-check.md)** - Local cron workflow for monthly yt-dlp integration checks.
 

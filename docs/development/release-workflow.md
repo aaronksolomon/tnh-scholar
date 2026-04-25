@@ -165,11 +165,11 @@ make release-major
 Choose the appropriate version bump:
 
 ```bash
-make release-patch   # For 0.1.4 → 0.1.5
+make release-patch   # For 0.3.1 → 0.3.2
 # OR
-make release-minor   # For 0.1.4 → 0.2.0
+make release-minor   # For 0.3.1 → 0.4.0
 # OR
-make release-major   # For 0.1.4 → 1.0.0
+make release-major   # For 0.3.1 → 1.0.0
 ```
 
 **What happens**:
@@ -182,9 +182,9 @@ make release-major   # For 0.1.4 → 1.0.0
 
 ```plaintext
 🚀 Bumping patch version (0.x.Y -> 0.x.Y+1)...
-Bumping version from 0.1.4 to 0.1.5
-📝 Updating version to 0.1.5 in TODO.md...
-✅ Version updated to 0.1.5
+Bumping version from 0.3.1 to 0.3.2
+📝 Updating version to 0.3.2 in TODO.md...
+✅ Version updated to 0.3.2
 
 Next steps:
   1. Review user-facing documentation (see Step 1.5 below for minor/major releases)
@@ -276,25 +276,25 @@ make changelog-draft
 ```text
 📝 Generating CHANGELOG entry from git history...
 
-## [0.1.5] - 2025-12-06
+## [0.4.0] - 2026-04-25
 
 ### Added
 
-- Automated version sync between pyproject.toml and TODO.md in release targets
-- Python-based link checker (md-dead-link-check) for documentation
+- Maintained `tnh-conductor` operator guide and CLI reference for the bootstrap path
+- Curated coding prompt library for bounded repo tasks and bootstrap follow-ups
 
 ### Changed
 
-- Replaced lychee with Python-native link checking tool
-- Improved developer onboarding with fewer external dependencies
+- Clarified rapid-prototype CI policy and mandatory pre-release validation expectations
+- Refreshed release-prep framing for the `0.4.0` bootstrap-oriented minor release
 
 ### Documentation
 
-- Created comprehensive release workflow documentation
+- Added operator-facing and release-prep documentation for the maintained bootstrap surface
 
 ============================================================
-📝 Draft CHANGELOG entry for v0.1.5
-Based on 8 commits since v0.1.4
+📝 Draft CHANGELOG entry for v0.4.0
+Based on commits since v0.3.1
 ============================================================
 
 👆 Copy this to CHANGELOG.md and edit as needed
@@ -323,7 +323,7 @@ All notable changes to TNH Scholar will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
-## [0.1.5] - 2025-12-06
+## [0.4.0] - 2026-04-25
 
 ### Added
 
@@ -341,11 +341,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Notes
 
-- This release focuses on release automation improvements (Phase 2)
-- No code functionality changes - purely tooling and documentation infrastructure
-- External link checking now uses pure Python stack for better Poetry integration
+- This release packages the maintained bootstrap-oriented `tnh-conductor` surface for the next minor milestone
+- Documentation and release framing were reviewed alongside the current runtime/operator state
 
-## [0.1.4] - 2025-12-05
+## [0.3.1] - 2026-01-13
 ...
 ```
 
@@ -364,11 +363,11 @@ make release-commit
 **Commit message format**:
 
 ```plaintext
-chore: Bump version to 0.1.5
+chore: Bump version to 0.4.0
 
 - Update version in pyproject.toml
 - Update TODO.md version header
-- Add 0.1.5 release notes to CHANGELOG.md
+- Add 0.4.0 release notes to CHANGELOG.md
 
 🤖 Generated with Claude Code
 
@@ -383,14 +382,14 @@ make release-tag
 
 **What happens**:
 
-- Creates an annotated git tag (e.g., `v0.1.5`)
+- Creates an annotated git tag (e.g., `v0.4.0`)
 - Pushes the current branch to the remote
 - Pushes the tag to the remote
 
 **Tag message format**:
 
 ```plaintext
-Release v0.1.5
+Release v0.4.0
 
 See CHANGELOG.md for full details.
 
@@ -402,9 +401,9 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 **Example output**:
 
 ```plaintext
-🏷️  Tagging version v0.1.5...
+🏷️  Tagging version v0.4.0...
 📤 Pushing branch and tag...
-✅ Tagged and pushed v0.1.5
+✅ Tagged and pushed v0.4.0
 
 Next: Run 'make release-publish' to publish to PyPI
 ```
@@ -440,21 +439,21 @@ make release-publish
 💡 Run 'python scripts/prepare_pypi_readme.py --restore' to restore original
 
 📦 Building package...
-Building tnh-scholar (0.1.5)
+Building tnh-scholar (0.4.0)
   - Building sdist
-  - Built tnh_scholar-0.1.5.tar.gz
+  - Built tnh_scholar-0.4.0.tar.gz
   - Building wheel
-  - Built tnh_scholar-0.1.5-py3-none-any.whl
+  - Built tnh_scholar-0.4.0-py3-none-any.whl
 
 📤 Publishing to PyPI...
-Publishing tnh-scholar (0.1.5) to PyPI
- - Uploading tnh_scholar-0.1.5-py3-none-any.whl 100%
- - Uploading tnh_scholar-0.1.5.tar.gz 100%
+Publishing tnh-scholar (0.4.0) to PyPI
+ - Uploading tnh_scholar-0.4.0-py3-none-any.whl 100%
+ - Uploading tnh_scholar-0.4.0.tar.gz 100%
 
 📝 Restoring original README...
 ✓ Restored README.md from backup
 
-✅ Published v0.1.5 to PyPI
+✅ Published v0.4.0 to PyPI
 
 🎉 Release complete! Check https://pypi.org/project/tnh-scholar/
 ```
@@ -471,11 +470,11 @@ After publishing, verify the release was successful:
 2. **Test Installation**:
 
    ```bash
-   pip install --upgrade tnh-scholar==0.1.5
+   pip install --upgrade tnh-scholar==0.4.0
    python -c "import tnh_scholar; print(tnh_scholar.__version__)"
    ```
 
-   Expected output: `0.1.5`
+   Expected output: `0.4.0`
 
 3. **Check GitHub**:
    - Tag appears in releases: [https://github.com/aaronksolomon/tnh-scholar/tags](https://github.com/aaronksolomon/tnh-scholar/tags)
@@ -518,11 +517,11 @@ make release-publish DRY_RUN=1
 ```plaintext
 🔍 DRY RUN MODE - No changes will be made
 
-🚀 Would bump patch version: 0.1.4 → 0.1.5
+🚀 Would bump patch version: 0.3.1 → 0.3.2
 
 Commands that would run:
   poetry version patch
-  sed -i.bak 's/> \*\*Version\*\*:.*/> **Version**: 0.1.5 (Alpha)/' TODO.md
+  sed -i.bak 's/> \*\*Version\*\*:.*/> **Version**: 0.3.2 (Alpha)/' TODO.md
 
 To execute: make release-patch
 ```
@@ -550,8 +549,8 @@ To execute: make release-patch
 poetry version -s
 
 # Test version bump calculation (doesn't modify files)
-poetry version --dry-run patch   # Shows: 0.1.4 → 0.1.5
-poetry version --dry-run minor   # Shows: 0.1.4 → 0.2.0
+poetry version --dry-run patch   # Shows: 0.3.1 → 0.3.2
+poetry version --dry-run minor   # Shows: 0.3.1 → 0.4.0
 
 # Actually bump (modifies pyproject.toml)
 make release-patch
@@ -625,7 +624,7 @@ All documentation tools are Python-based and managed by Poetry for consistent de
 **Solution**: Ensure TODO.md contains a line matching the pattern:
 
 ```markdown
-> **Version**: 0.1.4 (Alpha)
+> **Version**: 0.3.1 (Alpha)
 ```
 
 The version sync hook validates this format.
@@ -746,16 +745,16 @@ You can work on multiple features in parallel using branches:
 
 ```bash
 # Create feature branches from stable release
-git checkout -b feature-a v0.1.4
+git checkout -b feature-a v0.3.1
 # ... work on feature A ...
 
-git checkout -b feature-b v0.1.4
+git checkout -b feature-b v0.3.1
 # ... work on feature B ...
 
 # When ready, merge to main and release
 git checkout main
 git merge feature-a
-make release-patch  # Release 0.1.5
+make release-patch  # Release 0.3.2
 ```
 
 This allows rapid iteration without blocking work on new features.

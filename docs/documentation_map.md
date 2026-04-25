@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-04-22"
+created: "2026-04-25"
 auto_generated: true
 ---
 
@@ -51,6 +51,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [nfmt](/cli-reference/nfmt.md)
 - [sent-split](/cli-reference/sent-split.md)
 - [srt-translate](/cli-reference/srt-translate.md)
+- [tnh-conductor](/cli-reference/tnh-conductor.md)
 - [tnh-gen](/cli-reference/tnh-gen.md)
 - [tnh-setup](/cli-reference/tnh-setup.md)
 - [token-count](/cli-reference/token-count.md)
@@ -139,6 +140,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-YF01: YouTube Transcript Source Handling](/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md)
 - [ADR-YF02: YouTube Transcript Format Selection](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)
 - [Agent Orchestration Collaboration Paradigms](/architecture/agent-orchestration/notes/research/agent-orchestration-collaboration-paradigms.md)
+- [Agent Orchestration Recursive Bootstrap Proposal](/architecture/agent-orchestration/notes/design/recursive-bootstrap-build-proposal.md)
 - [Agent Orchestration Spike Testing Sequence](/architecture/agent-orchestration/notes/experiments/spike-testing-sequence.md)
 - [Architecture Blueprint](/architecture/agent-orchestration/notes/design/architecture-blueprint.md)
 - [Architecture Overview](/architecture/overview.md)
@@ -232,6 +234,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TNH Scholar Design Principles](/development/design-principles.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)
 - [TNH Scholar System Design](/development/system-design.md)
+- [tnh-conductor Operator Guide](/development/tnh-conductor-operator-guide.md)
 - [v0.2.0 Tag Correction Plan](/development/incident-reports/tag-v0.2.0-correction-plan.md)
 - [yt-dlp Ops Check](/development/yt-dlp-ops-check.md)
 

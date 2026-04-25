@@ -26,14 +26,14 @@ def test_normalize_transcript_texts_extracts_structured_entries(
         {"chunk": None, "transcript": "second chunk", "error": None},
     ]
 
-    with caplog.at_level(
-        logging.WARNING,
-        logger=audio_transcribe_module.logger.name,
-    ):
-        result = audio_transcribe_module._normalize_transcript_texts(transcripts)
+    caplog.set_level(logging.WARNING, logger=audio_transcribe_module.logger.name)
+    result = audio_transcribe_module._normalize_transcript_texts(transcripts)
 
     assert result == ["first chunk", "second chunk"]
-    assert "Skipping failed transcript chunk: upstream timeout" in caplog.text
+    assert any(
+        "Skipping failed transcript chunk: upstream timeout" in record.message
+        for record in caplog.records
+    )
 
 
 def test_normalize_transcript_texts_warns_for_missing_error_details(
@@ -41,14 +41,14 @@ def test_normalize_transcript_texts_warns_for_missing_error_details(
 ) -> None:
     transcripts = [{"chunk": None, "transcript": None, "error": None}]
 
-    with caplog.at_level(
-        logging.WARNING,
-        logger=audio_transcribe_module.logger.name,
-    ):
-        result = audio_transcribe_module._normalize_transcript_texts(transcripts)
+    caplog.set_level(logging.WARNING, logger=audio_transcribe_module.logger.name)
+    result = audio_transcribe_module._normalize_transcript_texts(transcripts)
 
     assert result == []
-    assert "Skipping failed transcript chunk without error details" in caplog.text
+    assert any(
+        "Skipping failed transcript chunk without error details" in record.message
+        for record in caplog.records
+    )
 
 
 def test_normalize_transcript_texts_warns_for_non_string_transcript_values(
@@ -56,14 +56,14 @@ def test_normalize_transcript_texts_warns_for_non_string_transcript_values(
 ) -> None:
     transcripts = [{"chunk": None, "transcript": 123, "error": None}]
 
-    with caplog.at_level(
-        logging.WARNING,
-        logger=audio_transcribe_module.logger.name,
-    ):
-        result = audio_transcribe_module._normalize_transcript_texts(transcripts)
+    caplog.set_level(logging.WARNING, logger=audio_transcribe_module.logger.name)
+    result = audio_transcribe_module._normalize_transcript_texts(transcripts)
 
     assert result == []
-    assert "Skipping transcript entry with non-string text: int" in caplog.text
+    assert any(
+        "Skipping transcript entry with non-string text: int" in record.message
+        for record in caplog.records
+    )
 
 
 def test_normalize_transcript_texts_warns_for_unsupported_entries(
@@ -71,11 +71,11 @@ def test_normalize_transcript_texts_warns_for_unsupported_entries(
 ) -> None:
     transcripts = [123]
 
-    with caplog.at_level(
-        logging.WARNING,
-        logger=audio_transcribe_module.logger.name,
-    ):
-        result = audio_transcribe_module._normalize_transcript_texts(transcripts)
+    caplog.set_level(logging.WARNING, logger=audio_transcribe_module.logger.name)
+    result = audio_transcribe_module._normalize_transcript_texts(transcripts)
 
     assert result == []
-    assert "Skipping unsupported transcript entry type: int" in caplog.text
+    assert any(
+        "Skipping unsupported transcript entry type: int" in record.message
+        for record in caplog.records
+    )
