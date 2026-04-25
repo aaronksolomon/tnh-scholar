@@ -10,6 +10,8 @@ updated: "2026-04-14"
 
 # Codex Headless Communication Experiment Plan
 
+This plan lays out the next bounded experiment sequence for understanding reliable headless Codex communication.
+
 ## Purpose
 
 Define the next rounds of Codex headless communication experiments in a way that is practical, narrow, sequential, and grounded in the results already observed.

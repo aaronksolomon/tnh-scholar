@@ -10,6 +10,8 @@ updated: "2026-04-12"
 
 # Codex Headless Research Memo for Engineer Agents
 
+This memo summarizes the most relevant official findings for current headless Codex and multi-agent collaboration research.
+
 ## 1. Research Findings
 
 This memo summarizes the most relevant official Codex findings for current headless and agent-collaboration research.

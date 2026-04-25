@@ -23,6 +23,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added a focused type-hardening pass in legacy utility and audio modules to remove remaining `Any` leaks and stale re-export/import issues
   - Files: `scripts/`, `src/tnh_scholar/`, `tests/`
 
+- **Docs Build Warning Cleanup** (2026-04-25)
+  - Cleared the markdown validation backlog by normalizing stale frontmatter statuses, title metadata, required fields, and missing summary paragraphs in maintained docs
+  - Updated the generated subdirectory index pipeline to emit validator-compliant auto-generated metadata and regenerated the docs indexes from the cleaned state
+  - Fixed the TODO archive anchor targets and removed placeholder example links that were creating false-positive manual link-review warnings during docs builds
+  - Files: `docs/`, `TODO.md`, `scripts/generate_subdir_indexes.py`
+
 - **Maintained `tnh-conductor` Operator Docs** (2026-04-24)
   - Added a maintained operator guide and CLI reference for the current `tnh-conductor` bootstrap path
   - Clarified the supported operator surface as `run`, `status`, and `status --watch`, distinct from earlier spike and migration-source orchestration paths

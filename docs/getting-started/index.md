@@ -3,7 +3,7 @@ title: "Getting Started"
 description: "Table of contents for getting-started"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

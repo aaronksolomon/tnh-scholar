@@ -10,6 +10,8 @@ updated: "2026-04-15"
 
 # SPIKE-07 Codex Home State Dependency
 
+This experiment note tests which HOME-scoped Codex state is actually required for successful headless execution.
+
 ## Experiment ID
 
 `SPIKE-07`

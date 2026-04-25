@@ -3,7 +3,7 @@ title: "Utilities"
 description: "Table of contents for architecture/utilities"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

@@ -3,7 +3,7 @@ title: "Ytt Fetch"
 description: "Table of contents for architecture/ytt-fetch"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

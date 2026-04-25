@@ -9,6 +9,8 @@ updated: "2026-04-24"
 ---
 # Agent Orchestration Recursive Bootstrap Proposal
 
+This proposal frames the bootstrap release and sketches the next recursive build sequence toward longer-horizon multi-agent engineering work.
+
 ## Purpose
 
 This working note has two jobs:

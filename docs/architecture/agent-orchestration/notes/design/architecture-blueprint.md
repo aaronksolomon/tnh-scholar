@@ -9,6 +9,8 @@ updated: "2026-04-10"
 ---
 # Architecture Blueprint
 
+This blueprint summarizes the maintained agent orchestration system, its major subsystems, and the current flow of control.
+
 ## Purpose
 
 This note is a high-level architecture blueprint for new designers and engineers working in TNH Scholar agent orchestration.

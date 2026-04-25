@@ -776,6 +776,7 @@ docs/architecture/jvb-viewer/adr/
 
 ## Recently Completed Tasks (Archive)
 
+<a id="tnh-gen-cli-implementation-"></a>
 ### tnh-gen CLI Implementation ✅
 
 - **Completed**: 2025-12-27
@@ -783,6 +784,7 @@ docs/architecture/jvb-viewer/adr/
 - **What**: Protocol-driven CLI replacing tnh-fab, dual modes (human-friendly default, `--api` for machine consumption)
 - **Documentation**: [tnh-gen CLI Reference](/cli-reference/tnh-gen.md) (661 lines)
 
+<a id="file-based-registry-system-adr-a14-"></a>
 ### File-Based Registry System (ADR-A14) ✅
 
 - **Completed**: 2026-01-01 (PR #24)
@@ -790,6 +792,7 @@ docs/architecture/jvb-viewer/adr/
 - **What**: JSONC-based registry with multi-tier pricing, TNHContext path resolution, staleness detection
 - **Key Deliverables**: `openai.jsonc` registry, `RegistryLoader`, Pydantic schemas, JSON Schema for VS Code, refactored `model_router.py` and `safety_gate.py`, 264 tests passing
 
+<a id="vs-code-extension-walking-skeleton-"></a>
 ### VS Code Extension Walking Skeleton ✅
 
 - **Completed**: 2026-01-07
@@ -798,6 +801,7 @@ docs/architecture/jvb-viewer/adr/
 - **Capabilities**: QuickPick prompt selector, dynamic variable input, `tnh-gen run` subprocess execution, split-pane output, unit/integration tests
 - **Validation**: Proves bootstrapping concept - extension ready to accelerate TNH Scholar development
 
+<a id="patternprompt-migration-"></a>
 ### Pattern→Prompt Migration ✅
 
 - **Completed**: 2026-01-19
@@ -806,6 +810,7 @@ docs/architecture/jvb-viewer/adr/
 - **Key Changes**: `patterns/` → `prompts/` (standalone `tnh-prompts` repo), `TNH_PATTERN_DIR` → `TNH_PROMPT_DIR`, removed legacy `tnh-fab` CLI
 - **Breaking**: `TNH_PATTERN_DIR` env var removed, `tnh-fab` CLI removed
 
+<a id="provenance-format-refactor-"></a>
 ### Provenance Format Refactor ✅
 
 - **Completed**: 2026-01-19
@@ -825,6 +830,7 @@ docs/architecture/jvb-viewer/adr/
 - **What**: Implemented params_policy, model_router, safety_gate, completion_mapper with strong typing
 - **Grade**: A- (92/100) - Production ready with minor polish
 
+<a id="documentation-reorganization-phase-1-"></a>
 ### Documentation Reorganization Phase 1 ✅
 
 - **Completed**: 2025-12-05

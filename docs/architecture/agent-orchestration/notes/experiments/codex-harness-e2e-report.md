@@ -10,6 +10,8 @@ updated: "2026-01-23"
 
 # Codex Harness End-to-End Test Report
 
+This report summarizes the end-to-end Codex harness test flow, including what worked, what blocked, and the main operator-facing issues.
+
 ## Context
 
 We stood up a minimal Codex harness to validate a full tool-calling loop (read/search/apply/run tests) against the repo. This report captures what worked, what blocked, and the practical gotchas to help other agents reproduce and extend the test.

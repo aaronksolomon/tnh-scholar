@@ -10,6 +10,8 @@ updated: "2026-04-14"
 
 # Codex Headless Communication Report
 
+This report consolidates the observed behavior, errors, and viable invocation path from the first direct headless Codex communication experiments.
+
 ## Summary
 
 Headless Codex communication is viable, but the surface is still only partially understood.

@@ -3,7 +3,7 @@ title: "Ui Ux"
 description: "Table of contents for architecture/ui-ux"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

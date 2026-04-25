@@ -3,7 +3,7 @@ title: "Adr"
 description: "Table of contents for architecture/agent-orchestration/adr"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---
@@ -24,7 +24,7 @@ auto_generated: true
 
 **[ADR-OA01.4: Headless Agent Communication Functional Spike](adr-oa01.4-headless-agent-communication-functional-spike.md)** - Prerequisite functional spike for proving that structured headless communication between supervising and worker agents can happen simply and repeatably enough to support the OA01.2 conceptual spike.
 
-**[ADR-OA02: Phase 0 Protocol Layer Spike](adr-oa02-phase-0-protocol-spike.md)** - De-risking spike to prove headless agent capture and safety controls for tnh-conductor
+**[ADR-OA02: Phase 0 Protocol Layer Spike — Headless Capture + Safety Controls](adr-oa02-phase-0-protocol-spike.md)** - De-risking spike to prove headless agent capture and safety controls for tnh-conductor
 
 **[ADR-OA03: Agent Runner Architecture](adr-oa03-agent-runner-architecture.md)** - Phase 1 architecture for agent execution — kernel + adapter pattern based on OA02 spike learnings
 

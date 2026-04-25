@@ -10,6 +10,8 @@ updated: "2026-04-16"
 
 # Agent Orchestration Collaboration Paradigms
 
+This research note frames the broader multi-agent collaboration problem space across time horizons, scopes, and model families.
+
 ## Purpose
 
 Start a blue-sky research framing for the agent-orchestration problem space now emerging in TNH Scholar.

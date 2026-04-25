@@ -3,7 +3,7 @@ title: "Incident Reports"
 description: "Table of contents for development/incident-reports"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

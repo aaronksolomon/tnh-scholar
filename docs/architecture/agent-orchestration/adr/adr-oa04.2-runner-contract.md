@@ -4,7 +4,7 @@ description: "Defines the maintained RUN_AGENT request/result, artifact, and nor
 type: "design-detail"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT-5 Codex"
-status: implemented
+status: current
 created: "2026-03-26"
 parent_adr: "adr-oa04-workflow-schema-opcode-semantics.md"
 related_adrs:

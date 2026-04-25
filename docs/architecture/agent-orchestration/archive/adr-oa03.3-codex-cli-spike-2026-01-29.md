@@ -1,13 +1,18 @@
 ---
-title: "ADR-OA03.3: Codex CLI Phase-0 Protocol Spike"
+title: "ADR-OA03.3 — Codex CLI Phase-0 Protocol Spike"
 description: "Spike to evaluate Codex CLI as the primary Codex execution surface, superseding the API-based Codex runner approach"
+owner: "aaronksolomon"
+author: "Aaron Solomon"
 status: "proposed"
+created: "2026-01-29"
 supersedes:
   - ADR-OA03.2
 date: "2026-01-29"
 ---
 
 # ADR-OA03.3 — Codex CLI Phase-0 Protocol Spike
+
+This archived spike captures the initial evaluation of Codex CLI as the primary Codex execution surface before the maintained runner architecture was finalized.
 
 ## Context
 

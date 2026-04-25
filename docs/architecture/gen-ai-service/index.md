@@ -3,7 +3,7 @@ title: "Gen Ai Service"
 description: "Table of contents for architecture/gen-ai-service"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

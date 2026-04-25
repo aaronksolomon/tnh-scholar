@@ -14,6 +14,8 @@ related_adrs:
 
 # OA01.x Spike Experiment Register
 
+This register tracks the active OA01.x spike experiments and the narrow questions each maintained run is meant to answer.
+
 ## Purpose
 
 This is the maintained experiment register for the current `OA01.x` spike.

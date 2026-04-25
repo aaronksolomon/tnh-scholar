@@ -3,7 +3,7 @@ title: "Gpt4O Search Query Testing"
 description: "Table of contents for research/gpt4o-search-query-testing"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

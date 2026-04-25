@@ -3,7 +3,7 @@ title: "Research"
 description: "Table of contents for architecture/agent-orchestration/notes/research"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

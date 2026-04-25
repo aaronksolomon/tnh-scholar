@@ -8,6 +8,9 @@ created: "2026-01-13"
 ---
 
 # TNH-Scholar Agent Orchestration System
+
+This system design document consolidates the current architecture, scope, and operating model for the TNH Scholar agent orchestration system.
+
 ## Comprehensive Design Document — v1.0
 
 **Status:** Draft

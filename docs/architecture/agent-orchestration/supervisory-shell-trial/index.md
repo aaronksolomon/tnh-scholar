@@ -3,7 +3,7 @@ title: "Supervisory Shell Trial"
 description: "Table of contents for architecture/agent-orchestration/supervisory-shell-trial"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

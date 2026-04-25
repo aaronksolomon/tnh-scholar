@@ -3,7 +3,7 @@ title: "Project"
 description: "Table of contents for project"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

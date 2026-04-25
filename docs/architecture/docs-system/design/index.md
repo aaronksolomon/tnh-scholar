@@ -3,7 +3,7 @@ title: "Design"
 description: "Table of contents for architecture/docs-system/design"
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2026-04-25"
 auto_generated: true
 ---

@@ -3,7 +3,7 @@ title: "tnh-gen Robustness Review — April 2026"
 description: "Architectural analysis of issues #25, #47–#55 — identifying structural improvement opportunities beyond individual patches"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.6"
-status: review
+status: current
 created: "2026-04-16"
 auto_generated: false
 ---

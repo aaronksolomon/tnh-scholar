@@ -1,5 +1,5 @@
 ---
-title: "Bootstrap Direction Design Memo"
+title: "Design Memo: Re-centering Agent Orchestration on Bootstrap and Long-Horizon Useful Work"
 description: "Directional memo for agent orchestration design after the bootstrap threshold."
 owner: ""
 author: "aaronksolomon"
@@ -8,6 +8,8 @@ created: "2026-04-09"
 updated: "2026-04-10"
 ---
 # Design Memo: Re-centering Agent Orchestration on Bootstrap and Long-Horizon Useful Work
+
+This design memo explains the intended post-bootstrap direction for TNH Scholar agent orchestration and the capability it should optimize for next.
 
 ## Purpose
 

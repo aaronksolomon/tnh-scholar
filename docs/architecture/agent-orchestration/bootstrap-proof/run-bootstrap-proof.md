@@ -9,6 +9,8 @@ updated: "2026-04-10"
 ---
 # Run Bootstrap Proof
 
+This operator note explains how to launch the maintained bootstrap-proof workflow and where to find its required inputs.
+
 ## Files
 
 - Workflow: `docs/architecture/agent-orchestration/bootstrap-proof/generic-bootstrap-proof.workflow.yaml`
