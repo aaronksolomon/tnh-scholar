@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-04-21"
+updated: "2026-04-24"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-21 (`tnh-conductor status --watch` merged; bootstrap milestone confirmed; release-prep cleanup next)
+> **Last Updated**: 2026-04-24 (docs release-prep review complete; `tnh-conductor` operator docs and TODO cleanup next)
 > **Version**: 0.3.1 (Alpha; preparing 0.4.0 bootstrap release)
 > **Status**: Active Development - bootstrap viable, release-prep and cleanup phase
 >
@@ -29,14 +29,15 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 **Next Steps**:
 
 1. 🚧 Prepare `0.4.0` bootstrap release framing for `tnh-conductor` prototype alpha
-2. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
-3. 🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)
-4. 🔮 Finish ytt-fetch robustness hardening (P1, reliability)
-5. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
-6. 🚧 Prompt Catalog Safety - manifest validation + schema docs (P2, critical infrastructure)
-7. 🚧 Knowledge Base Implementation (P2, design complete)
-8. 🚧 Expand Test Coverage to 50%+ (P2)
-9. 🚧 OpenAI registry-driven request profiles for model-specific controls (P2, follow-up hardening)
+2. 🚧 Finish maintained `tnh-conductor` operator docs and CLI reference for release readiness
+3. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
+4. 🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)
+5. 🔮 Finish ytt-fetch robustness hardening (P1, reliability)
+6. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
+7. 🚧 Prompt Catalog Safety - manifest validation + schema docs (P2, critical infrastructure)
+8. 🚧 Knowledge Base Implementation (P2, design complete)
+9. 🚧 Expand Test Coverage with refreshed baseline and current gaps (P2)
+10. 🚧 OpenAI registry-driven request profiles for model-specific controls (P2, follow-up hardening)
 
 **For completed items**: See [Archive](#recently-completed-tasks-archive) section at end.
 
@@ -157,8 +158,14 @@ This section organizes work into three priority levels based on criticality for 
     - keep semantic-control depth and review automation out of scope unless they become true blockers
   - [ ] **Release Prep** `feat/oa07-bootstrap-release-prep` — Prototype-alpha cleanup and packaging (small/medium, next)
     - document the bootstrap milestone and known limitations clearly
+    - add maintained `tnh-conductor` CLI reference and operator-facing usage docs
     - prune stale temporary artifacts and clarify operator workflow defaults
     - decide exact `0.4.0` scope before version bump and release notes
+  - [ ] **Claude CLI worker hardening** — Robust non-interactive execution and write scoping (small/medium)
+    - confirm current `claude` CLI flags and non-interactive behavior still match maintained adapter assumptions
+    - add explicit write-scoping / permission-mode policy so bounded docs and code tasks do not stall on unexpected prompts
+    - persist raw stream-json output and termination details in canonical artifacts for easier failure triage
+    - add regression coverage for stalled-write / permission-request paths in the Claude runner adapter
   - [ ] **PR-9** `feat/oa07-review-automation` — Commit/push/PR automation (optional, small/medium)
     - create local commits on the managed branch
     - push the work branch
@@ -312,8 +319,8 @@ docs/architecture/jvb-viewer/adr/
   - [x] Update `config_loader.py` to handle prompt directory override at CLI precedence level
   - [x] Update `ConfigData` type to accept `prompt_catalog_dir` override
   - [x] Add unit tests for flag precedence (CLI flag > workspace > user > env)
-  - [ ] Update help text and CLI reference documentation
-  - [ ] Update `docs/cli-reference/tnh-gen.md` global flags section
+  - [x] Update help text and CLI reference documentation
+  - [x] Update `docs/cli-reference/tnh-gen.md` global flags section
 - **Files to Modify**:
   - `src/tnh_scholar/cli_tools/tnh_gen/tnh_gen.py` (add flag)
   - `src/tnh_scholar/cli_tools/tnh_gen/config_loader.py` (precedence handling)
@@ -406,12 +413,9 @@ docs/architecture/jvb-viewer/adr/
 - **Medium Priority (V1 Completion)**:
   - [ ] Promote `policy_applied` typing to a shared domain type (CompletionEnvelope) to avoid loose `dict` usage across the service.
 
-  - [ ] Capability registry extraction (**→ ADR-A14**)
-    - Create `runtime_assets/registries/providers/openai.jsonc`
-    - Implement `RegistryLoader` with JSONC support
-    - Refactor `model_router.py` to use registry
-    - Refactor `safety_gate.py` to use registry pricing
-    - See: [ADR-A14: File-Based Registry System](docs/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md)
+  - [ ] OpenAI registry-driven request profiles
+    - follow current GPT-family adapter shaping with registry-backed request profiles instead of adapter-local matching
+    - keep model-specific controls discoverable in provider metadata rather than CLI/runtime conditionals
   - [ ] Intent routing implementation
     - Document planned approach or create follow-up issue
     - Current: placeholder at [model_router.py:98-101](src/tnh_scholar/gen_ai_service/routing/model_router.py#L98-L101)
@@ -503,7 +507,7 @@ docs/architecture/jvb-viewer/adr/
 #### 🚧 Expand Test Coverage
 
 - **Status**: NOT STARTED
-- **Current Coverage**: ~5% (4 test modules)
+- **Current Coverage**: Refresh baseline before planning. The old "~5% / 4 test modules" snapshot is obsolete.
 - **Target**: 50%+ for gen_ai_service
 - **Tasks**:
   - [ ] GenAI service flows: prompt rendering, policy resolution, provider adapters
@@ -511,16 +515,9 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Configuration loading edge cases
   - [ ] Error handling scenarios
   - [ ] Pattern catalog validation
-  - [ ] **Full CLI test suite with 100% coverage** (HIGH PRIORITY - include all CLI tools, not just tnh-gen)
-  - [ ] **tnh-gen CLI comprehensive coverage** (HIGH PRIORITY - Missing basic command tests):
-    - [ ] Add tests for all `tnh-gen config` commands (show, get, set, list)
-    - [ ] Add tests for all `tnh-gen list` commands (simple, query)
-    - [ ] Add tests for `tnh-gen gen` command with various options
-    - [ ] Test Path serialization in config commands (regression test for model_dump)
-    - [ ] Test config precedence: defaults → user → workspace → CLI flags
-    - [ ] Test error handling for all commands
-    - [ ] Integration tests for full workflows
-    - **Context**: Basic command `tnh-gen config show` failed with Path serialization bug that should have been caught by tests
+  - [ ] **Full CLI test suite with refreshed priorities**
+    - focus on active CLI surfaces still lacking strong coverage, not already-hardened `tnh-gen` basics
+    - prioritize `tnh-conductor`, `audio-transcribe`, `ytt-fetch`, and edge-case regression coverage
 
 #### 🚧 Consolidate Environment Loading
 
@@ -633,12 +630,12 @@ docs/architecture/jvb-viewer/adr/
 
 - **Status**: NOT STARTED
 - **Priority**: HIGH (blocks pip install)
-- **Problem**: `src/tnh_scholar/__init__.py` raises FileNotFoundError when repo layout missing
+- **Problem**: packaging and installed-wheel validation still need cleanup around prompt assets and repo-layout assumptions
 - **Tasks**:
-  - [ ] Package pattern assets as resources
-  - [ ] Make patterns directory optional
-  - [ ] Move directory checks to CLI entry points only
-  - [ ] Ensure installed wheels work without patterns/ directory
+  - [ ] Package prompt assets as resources where needed
+  - [ ] Verify installed wheels work without repo-local prompt directories
+  - [ ] Keep repo-layout assumptions out of import-time package initialization
+  - [ ] Audit CLI entry points for any remaining repo-root-only assumptions
 
 #### 🚧 Logging System Scope
 
@@ -651,10 +648,10 @@ docs/architecture/jvb-viewer/adr/
 
 #### 🚧 Comprehensive CLI Reference Documentation
 
-- **Status**: IN PROGRESS (tnh-gen complete ✅, other CLIs pending)
+- **Status**: IN PROGRESS (`tnh-gen` complete, `tnh-conductor` now documented, other CLIs still uneven)
 - **Tasks**:
   - [ ] Update user-guide examples to use tnh-gen
-  - [ ] Document other CLI tools (audio-transcribe, ytt-fetch, nfmt, etc.)
+  - [ ] Document other CLI tools with maintained/operator-facing scope (`audio-transcribe`, `ytt-fetch`, `nfmt`, etc.)
   - [ ] Consider automation for CLI reference generation
 
 #### 🔮 Shared CLI UI Module (tnh_cli_ui)
