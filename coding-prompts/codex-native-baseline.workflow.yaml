@@ -1,0 +1,26 @@
+# source: tmp/codex-native-baseline.workflow.yaml
+# copied: 2026-04-24
+# normalized: 2026-04-25
+# description: Temporary baseline workflow used to verify native Codex CLI execution through `tnh-conductor`.
+
+workflow_id: codex_native_baseline
+version: 1
+description: Temporary no-edit workflow for validating native Codex CLI invocation through tnh-conductor.
+entry_step: ack
+steps:
+  - id: ack
+    opcode: RUN_AGENT
+    agent: codex
+    prompt: |
+      Reply exactly: ACK_NATIVE_CODEX_KERNEL_BASELINE
+      Do not edit files.
+    routes:
+      completed: STOP
+      error: STOP
+      killed_timeout: STOP
+      killed_idle: STOP
+      killed_policy: STOP
+
+  - id: STOP
+    opcode: STOP
+    reason: Native Codex baseline run finished.
