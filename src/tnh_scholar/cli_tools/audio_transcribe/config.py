@@ -1,7 +1,5 @@
 
 from typing import Optional
-
-from dotenv import load_dotenv
 from pydantic import Field, ValidationError, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -11,9 +9,6 @@ class NoAudioSourceError(ValueError):
 
 class MultipleAudioSourceError(ValueError):
     """Raised when audio source selection has multiple sources)."""
-    
-# Load environment variables from .env file if present
-load_dotenv()
 
 
 DEFAULT_OUTPUT_PATH = "./audio_transcriptions/transcript.txt"

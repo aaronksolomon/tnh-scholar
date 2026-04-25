@@ -38,7 +38,6 @@ from pathlib import Path
 from typing import Any
 
 import click
-from dotenv import load_dotenv
 from pydantic import ValidationError
 
 from tnh_scholar.audio_processing import DiarizationConfig
@@ -52,7 +51,6 @@ from .convert_video import convert_video_to_audio
 from .transcription_pipeline import TranscriptionPipeline
 from .version_check import check_ytd_version
 
-load_dotenv()
 logger = get_child_logger(__name__)
 
 DEFAULT_OUTPUT_PATH = "./audio_transcriptions/transcript.txt"
@@ -299,7 +297,7 @@ class AudioTranscribeApp:
             transcripts: List of transcript strings.
         """
         for i, text in enumerate(transcripts, 1):
-            print(f"\n--- Transcript chunk {i} ---\n{text}\n")
+            click.echo(f"\n--- Transcript chunk {i} ---\n{text}\n")
 
 
 def _normalize_transcript_texts(transcripts: list[Any] | None) -> list[str]:
@@ -430,13 +428,13 @@ def audio_transcribe(**kwargs):
     try:
         config = AudioTranscribeConfig(**kwargs)
     except NoAudioSourceError as e:
-        print(f"\n[INPUT ERROR] {e}", flush=True)
+        click.echo(f"\n[INPUT ERROR] {e}", err=True)
         raise SystemExit(1) from e
     except MultipleAudioSourceError as e:
-        print(f"\n[INPUT ERROR] {e}", flush=True)
+        click.echo(f"\n[INPUT ERROR] {e}", err=True)
         raise SystemExit(1) from e
     except ValidationError as e:
-        print("\n[CONFIG VALIDATION ERROR]\n", e, flush=True)
+        click.echo(f"\n[CONFIG VALIDATION ERROR]\n{e}", err=True)
         raise SystemExit(1) from e
     app = AudioTranscribeApp(config)
     app.run()
