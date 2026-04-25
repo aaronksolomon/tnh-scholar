@@ -67,6 +67,16 @@ Before starting any release, ensure all quality checks pass:
 make release-check
 ```
 
+This is the mandatory full-codebase verification pass for a release candidate.
+
+During rapid prototyping, pull request CI is intentionally lighter-weight than a traditional protected-branch setup:
+
+- lint/type/doc checks on PRs are informative, not blocking
+- the full pytest run on PRs is opt-in via the `full-ci` label
+- `main` still receives the full GitHub Actions test run after merge
+
+That means **the release owner must run `make release-check` on the actual release candidate state before tagging or publishing**, regardless of whether earlier PRs carried the `full-ci` label.
+
 This runs:
 
 - `make test` - Full test suite with pytest
@@ -77,6 +87,29 @@ This runs:
 **Expected output**: `✅ All quality checks passed - ready to release`
 
 If checks fail, fix the issues before proceeding with the release.
+
+### Pull Request CI Policy During Rapid Prototyping
+
+PR CI is currently optimized for fast iteration rather than strict merge blocking.
+
+**Who applies `full-ci`**: the PR author or reviewer opening the merge path is responsible for adding the `full-ci` label when a PR needs the full GitHub Actions pytest pass before merge.
+
+**Use `full-ci` for**:
+
+- runtime or library code changes
+- CLI behavior changes
+- packaging, install, or release mechanics
+- orchestration or agent-runner changes
+- dependency updates
+- any change where the risk is unclear
+
+**Usually not required for**:
+
+- docs-only edits
+- comment-only cleanup
+- narrow metadata or issue-tracking updates
+
+Even when `full-ci` is skipped on the PR, the pre-release `make release-check` run above remains mandatory.
 
 ## Release Types
 
