@@ -55,6 +55,7 @@ These are aspirational but active development goals aligned with the needs of th
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
 - **Text formatting and translation**: `tnh-gen` CLI for prompt-driven text processing with human-friendly defaults and API mode for programmatic use
+- **Headless workflow orchestration**: `tnh-conductor` for maintained local/bootstrap workflow execution with status watching and canonical run artifacts
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md) and [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) for current status and roadmap
@@ -172,6 +173,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [nfmt](/cli-reference/nfmt.md)
 - [sent-split](/cli-reference/sent-split.md)
 - [srt-translate](/cli-reference/srt-translate.md)
+- [tnh-conductor](/cli-reference/tnh-conductor.md)
 - [tnh-gen](/cli-reference/tnh-gen.md)
 - [tnh-setup](/cli-reference/tnh-setup.md)
 - [token-count](/cli-reference/token-count.md)
@@ -353,6 +355,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TNH Scholar Design Principles](/development/design-principles.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)
 - [TNH Scholar System Design](/development/system-design.md)
+- [tnh-conductor Operator Guide](/development/tnh-conductor-operator-guide.md)
 - [v0.2.0 Tag Correction Plan](/development/incident-reports/tag-v0.2.0-correction-plan.md)
 - [yt-dlp Ops Check](/development/yt-dlp-ops-check.md)
 
