@@ -11,7 +11,7 @@ updated: "2026-04-25"
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-25 (release-prep docs sweep and repo-wide lint/type cleanup complete; release validation follow-up next)
+> **Last Updated**: 2026-04-25 (release-prep docs sweep and repo-wide lint/type cleanup complete; notebook repo cleanup and release validation next)
 > **Version**: 0.3.1 (Alpha; preparing 0.4.0 bootstrap release)
 > **Status**: Active Development - bootstrap viable, release validation and packaging phase
 >
@@ -30,14 +30,15 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 1. 🚧 Prepare `0.4.0` bootstrap release framing for `tnh-conductor` prototype alpha
 2. 🚧 Run `0.4.0` release validation pass and finalize version-bump scope/release notes
-3. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
-4. 🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)
-5. 🔮 Finish ytt-fetch robustness hardening (P1, reliability)
-6. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
-7. 🚧 Prompt Catalog Safety - manifest validation + schema docs (P2, critical infrastructure)
-8. 🚧 Knowledge Base Implementation (P2, design complete)
-9. 🚧 Expand Test Coverage with refreshed baseline and current gaps (P2)
-10. 🚧 OpenAI registry-driven request profiles for model-specific controls (P2, follow-up hardening)
+3. 🚧 Reduce notebook/test clutter before release: archive junk notebooks and move real test coverage into pytest where practical
+4. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
+5. 🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)
+6. 🔮 Finish ytt-fetch robustness hardening (P1, reliability)
+7. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
+8. 🚧 Prompt Catalog Safety - manifest validation + schema docs (P2, critical infrastructure)
+9. 🚧 Knowledge Base Implementation (P2, design complete)
+10. 🚧 Expand Test Coverage with refreshed baseline and current gaps (P2)
+11. 🚧 OpenAI registry-driven request profiles for model-specific controls (P2, follow-up hardening)
 
 **Recent release hardening completed**:
 
@@ -164,6 +165,7 @@ This section organizes work into three priority levels based on criticality for 
   - [ ] **Release Prep** `feat/oa07-bootstrap-release-prep` — Prototype-alpha cleanup and packaging (small/medium, next)
     - document the bootstrap milestone and known limitations clearly
     - add maintained `tnh-conductor` CLI reference and operator-facing usage docs
+    - reduce notebook/test clutter so the release ships with a cleaner repo state
     - prune stale temporary artifacts and clarify operator workflow defaults
     - decide exact `0.4.0` scope before version bump and release notes
   - [ ] **Claude CLI worker hardening** — Robust non-interactive execution and write scoping (small/medium)
@@ -691,12 +693,13 @@ docs/architecture/jvb-viewer/adr/
 
 - **Status**: NOT STARTED
 - **Priority**: HIGH
-- **Goal**: Transform notebooks from exploratory/testing to production-quality examples
+- **Goal**: Ship a cleaner release repo by reducing notebook clutter and keeping only intentional examples/research assets
 - **Tasks**:
   - [ ] Audit & categorize all notebooks
-  - [ ] Polish core example notebooks
-  - [ ] Convert testing notebooks to pytest
-  - [ ] Archive legacy notebooks with context notes
+  - [ ] Remove or archive junk/testing notebooks that no longer justify repo overhead
+  - [ ] Convert notebook-discovered tests into `pytest` where the behavior still matters
+  - [ ] Keep only core example/research notebooks that are intentional release artifacts
+  - [ ] Add context notes for archived notebooks that still have historical value
 
 ---
 
