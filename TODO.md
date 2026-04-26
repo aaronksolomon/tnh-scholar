@@ -42,6 +42,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 **Recent release hardening completed**:
 
+- ✅ Dependabot Stage 5 optional GUI graph refresh landed for Poetry-managed `langchain`, `langchain-community`, `langchain-core`, `langchain-text-splitters`, and `aiohttp`
 - ✅ `pattern_share` app explicitly marked as an exploratory legacy prompt-sharing prototype with prompt terminology restored in the UI
 - ✅ Dependabot Stage 4 `pattern_share` manifest refresh landed for `streamlit`, `langchain`, and `langchain-community`
 - ✅ Dependabot Stage 3 dev/tooling refresh landed for `flask`, `jinja2`, `black`, `pytest`, and patched notebook/tooling transitive packages

@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Dependabot Stage 5 Optional GUI Graph Refresh** (2026-04-26)
+  - Added an explicit optional `langchain` dependency to the Poetry GUI extra so the optional LangChain stack is pinned intentionally rather than drifting through transitive resolution
+  - Updated the Poetry-backed GUI dependency graph to patched `langchain`, `langchain-community`, `langchain-core`, `langchain-text-splitters`, and `aiohttp` versions
+  - Verified the refreshed graph in a clean `pip install -e '.[gui]'` environment before leaving the higher-risk `torch` and Whisper stack for a separate stage
+  - Files: `pyproject.toml`, `poetry.lock`
+
 - **Pattern Share Status/Terminology Clarification** (2026-04-26)
   - Marked the `pattern_share` Streamlit app as an exploratory legacy prototype rather than a maintained TNH Scholar feature
   - Updated user-facing copy from `pattern` to `prompt` while preserving legacy internal storage identifiers for compatibility
