@@ -630,8 +630,9 @@ docs/architecture/jvb-viewer/adr/
   - [x] Aggregate catalog parse/validation issues into typed health reports
   - [x] Surface catalog health through `tnh-gen list` and `tnh-gen config show --catalog-health`
   - [x] Fix relative `--prompt-dir` prompt catalog path resolution and remove bogus legacy `output_mode: text` warnings
-  - [ ] Normalize legacy prompt frontmatter to PT05 baseline (`role`, `inputs`, explicit `output_contract`)
-  - [ ] Add `schema_ref` coverage for maintained JSON prompts
+  - [x] Normalize legacy prompt frontmatter to PT05 baseline (`role`, `inputs`, explicit `output_contract`)
+  - [x] Add `schema_ref` coverage for maintained JSON prompts
+  - [ ] Simplify overlapping legacy prompt bodies and retire redundant variants
   - [ ] Add manifest validation
   - [ ] Better error messages (unknown prompt, hash mismatch)
   - [ ] Frontmatter/schema validation guidance
