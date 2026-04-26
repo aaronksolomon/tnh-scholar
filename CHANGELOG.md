@@ -24,6 +24,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Refreshed agent/workflow docs and updated docs tooling (`mkdocs-material`, `mkdocstrings-python`, `pymdown-extensions`, `pygments`) so strict docs builds remain healthy under the current dependency set
   - Files: `.github/workflows/`, `docs/development/`, `AGENTS.md`, `AGENT_WORKFLOW.md`, `docs/architecture/agent-orchestration/example-agent-workflow.md`, `mkdocs.yaml`, `docs/api/index.md`, `pyproject.toml`, `poetry.lock`
 
+- **Dependabot Final Remediation Slice** (2026-04-26)
+  - Removed prototype-only `langchain`, `langchain-community`, and `supabase` packages from the root Poetry graph so the maintained `gui` extra is limited to `streamlit`
+  - Updated the standalone `audio_transcribe` environment manifest to patched `yt_dlp`
+  - Updated the standalone `pattern_share` prototype manifest to current patched LangChain/OpenAI package lines and refreshed the Poetry lock to patched `Pygments`
+  - Files: `pyproject.toml`, `poetry.lock`, `src/tnh_scholar/cli_tools/audio_transcribe/environment/requirements.txt`, `src/tnh_scholar/pattern_share/requirements.txt`
+
 - **Query Cleanup: Remove Dead `v2_cleaning_scripts` Artifact** (2026-04-26)
   - Removed the unused `query/v2_cleaning_scripts.py` experimental helper after confirming it had no imports, tests, docs references, or entry points
   - Dropped `transformers` from declared dependencies because that file was its only remaining consumer in the repo
