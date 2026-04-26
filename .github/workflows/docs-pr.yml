@@ -32,6 +32,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python
+        id: setup-python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12.4"
@@ -45,7 +46,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv
-          key: docs-pr-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+          key: docs-pr-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('poetry.lock', 'pyproject.toml') }}
 
       - name: Install dependencies
         run: |
@@ -66,3 +67,6 @@ jobs:
 
       - name: Build MkDocs site (read-only)
         run: make docs-build-readonly
+
+      - name: Verify docs validation left worktree unchanged
+        run: git diff --exit-code
