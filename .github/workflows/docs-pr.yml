@@ -31,6 +31,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Shared Python/Poetry setup sequence.
+      # Keep this block aligned with:
+      # - .github/workflows/ci-pr.yml
+      # - .github/workflows/ci-main.yml
+      # - .github/workflows/ci-scheduled.yml
+      # - .github/workflows/docs-publish.yml
       - name: Set up Python
         id: setup-python
         uses: actions/setup-python@v5
