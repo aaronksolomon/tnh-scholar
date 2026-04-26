@@ -1,4 +1,11 @@
-# app.py
+"""Exploratory legacy prompt-sharing prototype.
+
+This Streamlit app is not a maintained TNH Scholar surface. It remains in the
+repo as an exploratory artifact and still depends on legacy Supabase table names
+(`patterns`, `match_patterns`). User-facing copy should use "prompt" language to
+match the rest of the repo, even where storage internals still use legacy names.
+"""
+
 import os
 import tempfile
 from pathlib import Path
@@ -122,12 +129,14 @@ class CredentialsManager:
 
 
 class PatternRepository:
-    """Manages pattern storage and retrieval using Supabase."""
+    """Manages legacy prompt storage and retrieval using Supabase."""
 
     def __init__(self, supabase_url: str, supabase_key: str, openai_key: str):
         """Initialize with Supabase and OpenAI credentials."""
         self.supabase: Client = create_client(supabase_url, supabase_key)
         self.embeddings = OpenAIEmbeddings(openai_api_key=openai_key)
+        # Keep the existing legacy table/query names until this prototype is either
+        # retired or intentionally rebuilt on top of the maintained prompt system.
         self.vector_store = SupabaseVectorStore(
             self.supabase,
             self.embeddings,
@@ -136,7 +145,7 @@ class PatternRepository:
         )
 
     def add_pattern(self, pattern: "Prompt") -> str:
-        """Add pattern to database with embeddings."""
+        """Add a prompt to the legacy store with embeddings."""
         # Extract frontmatter for metadata
         metadata = pattern.extract_frontmatter() or {}
 
@@ -153,7 +162,7 @@ class PatternRepository:
         return str(ids[0])
 
     def search_patterns(self, query: str, limit: int = 10) -> List[Dict]:
-        """Search patterns using semantic similarity."""
+        """Search stored prompts using semantic similarity."""
         results = self.vector_store.similarity_search_with_score(query, k=limit)
         return [
             {"pattern": doc.page_content, "metadata": doc.metadata, "score": score}
@@ -195,20 +204,20 @@ def _build_repository() -> PatternRepository:
 
 
 def _render_single_pattern_upload(repo: PatternRepository) -> None:
-    uploaded_file = st.file_uploader("Upload Pattern (.md)", type=["md"])
+    uploaded_file = st.file_uploader("Upload Prompt (.md)", type=["md"])
     if uploaded_file is None:
         return
 
     content = uploaded_file.read().decode()
     pattern = Prompt(name=Path(uploaded_file.name).stem, instructions=content)
-    if st.button("Share Pattern"):
+    if st.button("Share Prompt"):
         pattern_id = repo.add_pattern(pattern)
-        st.success(f"Pattern shared! ID: {pattern_id}")
+        st.success(f"Prompt stored in legacy prototype. ID: {pattern_id}")
 
 
 def _render_repository_import(repo: PatternRepository) -> None:
     repo_url = st.text_input("Git Repository URL")
-    if not repo_url or not st.button("Import Repository"):
+    if not repo_url or not st.button("Import Prompt Repository"):
         return
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -220,25 +229,25 @@ def _render_repository_import(repo: PatternRepository) -> None:
                 pattern = Prompt(name=file.stem, instructions=file.read_text())
                 repo.add_pattern(pattern)
 
-            st.success("Repository imported successfully!")
+            st.success("Repository imported into the legacy prototype store.")
         except Exception as e:
             st.error(f"Failed to import: {str(e)}")
 
 
 def _render_sidebar(repo: PatternRepository) -> None:
     with st.sidebar:
-        st.header("Share Patterns")
+        st.header("Legacy Prompt Share")
 
-        upload_type = st.radio("Upload Type", ["Single Pattern", "Git Repository"])
+        upload_type = st.radio("Upload Type", ["Single Prompt", "Git Repository"])
 
-        if upload_type == "Single Pattern":
+        if upload_type == "Single Prompt":
             _render_single_pattern_upload(repo)
         else:
             _render_repository_import(repo)
 
 
 def _render_search_tab(repo: PatternRepository) -> None:
-    query = st.text_input("Search patterns...")
+    query = st.text_input("Search prompts...")
     if not query:
         return
 
@@ -266,14 +275,22 @@ def _render_browse_tab(repo: PatternRepository) -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Pattern Library", layout="wide")
-    st.title("AI Pattern Library")
+    st.set_page_config(page_title="Exploratory Prompt Share Prototype", layout="wide")
+    st.title("Exploratory Prompt Share Prototype")
+    st.warning(
+        "This is a legacy exploratory app, not a maintained TNH Scholar feature. "
+        "Expect drift, partial behavior, and legacy storage assumptions."
+    )
+    st.caption(
+        "Terminology note: TNH Scholar now uses 'prompt' language. "
+        "This prototype still relies on legacy internal table/query names."
+    )
 
     repo = _build_repository()
     _render_sidebar(repo)
 
     # Main content area
-    tab1, tab2 = st.tabs(["Search Patterns", "Browse"])
+    tab1, tab2 = st.tabs(["Search Prompts", "Browse Legacy Store"])
 
     with tab1:
         _render_search_tab(repo)
