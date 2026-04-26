@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Dependabot Stage 3 Dev/Tooling Refresh** (2026-04-25)
+  - Bumped direct app and dev dependencies for `flask`, `jinja2`, `black`, and `pytest` to current patched versions
+  - Refreshed the locked dev/notebook/tooling stack to pull in patched `nbconvert`, `tornado`, `filelock`, `virtualenv`, and `werkzeug`
+  - Kept the remediation slice bounded to low-adaptation infrastructure packages before the larger `langchain-*` and `torch` family updates
+  - Files: `pyproject.toml`, `poetry.lock`
+
 - **Repo-Wide Lint and Type Debt Cleanup** (2026-04-25)
   - Reduced the outstanding Ruff and mypy backlog across scripts, agent orchestration, GenAI, OCR, audio, query, metadata, prompt-system, and CLI surfaces
   - Restored clean repo-wide static validation with `make lint` and `make type-check`
