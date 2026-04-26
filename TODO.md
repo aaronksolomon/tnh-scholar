@@ -634,7 +634,7 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Add `schema_ref` coverage for maintained JSON prompts
   - [ ] Add manifest validation
   - [ ] Better error messages (unknown prompt, hash mismatch)
-  - [ ] Front-matter/schema validation guidance
+  - [ ] Frontmatter/schema validation guidance
   - [ ] Document prompt schema
 
 #### 🚧 Knowledge Base Implementation
