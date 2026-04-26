@@ -1,3 +1,6 @@
+# Standalone pinned environment for the exploratory legacy prompt-sharing app.
+# These pins are intentionally narrower than the root optional GUI deps so this
+# prototype remains reproducible even though it is not a maintained surface.
 streamlit==1.54.0
 supabase==2.11.0
 langchain==0.3.28

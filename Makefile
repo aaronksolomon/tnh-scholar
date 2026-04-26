@@ -8,6 +8,7 @@ SANDBOX_PATH ?= ../tnh-scholar-sandbox
 SANDBOX_BRANCH ?= feat/agent-orchestration-sandbox
 SANDBOX_SOURCE_REPO ?= .
 PR_BASE ?= origin/main
+DOCS_WARNING_BASE ?= $(PR_BASE)
 PR_CHECK_ARGS ?=
 
 .PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-build-readonly docs-drift docs-change-warning docs-verify docs-verify-readonly codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
@@ -108,13 +109,24 @@ docs-drift:
 	$(POETRY) run python scripts/check_readme_docs_drift.py
 
 docs-change-warning:
-	@CHANGED_MD=$$(git diff --name-only HEAD -- '*.md'); \
+	@BASE_REF="$(DOCS_WARNING_BASE)"; \
+	BRANCH_MD=""; \
+	if git rev-parse --verify "$$BASE_REF" >/dev/null 2>&1; then \
+		BRANCH_MD=$$(git diff --name-only "$$BASE_REF"...HEAD -- '*.md'); \
+	fi; \
+	WORKTREE_MD=$$(git diff --name-only HEAD -- '*.md'); \
+	CHANGED_MD=$$(printf '%s\n%s\n' "$$BRANCH_MD" "$$WORKTREE_MD" | sed '/^$$/d' | sort -u); \
 	if [ -n "$$CHANGED_MD" ]; then \
 		echo "⚠️  Tracked Markdown changes detected:"; \
 		printf '%s\n' "$$CHANGED_MD"; \
 		echo ""; \
 		echo "Release check is running read-only docs validation."; \
 		echo "If these edits should regenerate docs artifacts, run 'make docs-build' before release."; \
+		if git rev-parse --verify "$$BASE_REF" >/dev/null 2>&1; then \
+			echo "Compared branch docs drift against $$BASE_REF and included local tracked edits."; \
+		else \
+			echo "Base ref $$BASE_REF was not available; warning includes local tracked edits only."; \
+		fi; \
 	else \
 		echo "✅ No tracked Markdown changes detected"; \
 	fi

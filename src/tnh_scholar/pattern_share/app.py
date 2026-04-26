@@ -2,8 +2,10 @@
 
 This Streamlit app is not a maintained TNH Scholar surface. It remains in the
 repo as an exploratory artifact and still depends on legacy Supabase table names
-(`patterns`, `match_patterns`). User-facing copy should use "prompt" language to
-match the rest of the repo, even where storage internals still use legacy names.
+(`patterns`, `match_patterns`). It also uses a standalone pinned requirements
+set under `src/tnh_scholar/pattern_share/requirements.txt` instead of the root
+optional GUI extra. User-facing copy should use "prompt" language to match the
+rest of the repo, even where storage internals still use legacy names.
 """
 
 import os
