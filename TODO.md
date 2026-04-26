@@ -42,6 +42,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 **Recent release hardening completed**:
 
+- ✅ Removed dead `query/v2_cleaning_scripts.py` artifact and dropped its unused `transformers` dependency
 - ✅ Dependabot Stage 6 retired the legacy local Whisper / `torch` audio path so maintained audio support is limited to current API-backed surfaces
 - ✅ Dependabot Stage 5 optional GUI graph refresh landed for Poetry-managed `langchain`, `langchain-community`, `langchain-core`, `langchain-text-splitters`, and `aiohttp`
 - ✅ `pattern_share` app explicitly marked as an exploratory legacy prompt-sharing prototype with prompt terminology restored in the UI

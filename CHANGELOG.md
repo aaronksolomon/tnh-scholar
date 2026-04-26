@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Query Cleanup: Remove Dead `v2_cleaning_scripts` Artifact** (2026-04-26)
+  - Removed the unused `query/v2_cleaning_scripts.py` experimental helper after confirming it had no imports, tests, docs references, or entry points
+  - Dropped `transformers` from declared dependencies because that file was its only remaining consumer in the repo
+  - Files: `src/tnh_scholar/query/v2_cleaning_scripts.py`, `pyproject.toml`, `poetry.lock`
+
 - **Dependabot Stage 6 Legacy Local-Whisper Retirement** (2026-04-26)
   - Removed the unused local Whisper / `torch` legacy audio path so maintained transcription support is limited to the current API-backed audio surfaces
   - Dropped legacy module exports and deleted the old `yt_transcribe` script that still depended on the retired chunking helpers
