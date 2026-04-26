@@ -43,21 +43,6 @@ jobs:
           poetry env use python
           poetry install --no-interaction --no-ansi --no-root
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y tree
-
-      - name: Verify directory trees
-        run: |
-          poetry run python scripts/generate_tree.py
-          if ! git diff --quiet -- project_directory_tree.txt src_directory_tree.txt; then
-            echo "Directory tree drift detected:"
-            git diff --stat -- project_directory_tree.txt src_directory_tree.txt
-            git diff -- project_directory_tree.txt src_directory_tree.txt
-          fi
-        continue-on-error: true
-
       - name: Ruff lint
         run: poetry run ruff check .
 

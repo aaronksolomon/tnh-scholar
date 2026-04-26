@@ -8,7 +8,6 @@ on:
       - "docs/**"
       - "README.md"
       - "mkdocs.yaml"
-      - "Makefile"
       - "scripts/check_readme_docs_drift.py"
       - "scripts/generate_doc_index.py"
       - "scripts/generate_index_md.py"

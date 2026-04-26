@@ -17,7 +17,7 @@ from tnh_scholar.tools.tree_builder import build_tree  # noqa: E402
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Write project_directory_tree.txt (and optionally src_directory_tree.txt)."
+        description="Write legacy project tree snapshots for manual developer reference."
     )
     parser.add_argument(
         "--root",

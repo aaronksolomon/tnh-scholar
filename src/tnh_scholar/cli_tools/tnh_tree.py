@@ -1,12 +1,8 @@
 """
 Developer tool for the tnh-scholar project.
 
-This script generates a directory tree for the entire project and for the src directory,
-saving the results to 'project_directory_tree.txt' and 'src_directory_tree.txt' respectively.
-
-Uses the generic module generate_tree which has a basic function build_tree that executes tree building.
-
-Exposed as a script via pyproject.toml under the name 'tnh-tree'.
+This legacy utility generates repository tree snapshots for manual developer reference.
+It is no longer part of routine CI or release validation.
 """
 from tnh_scholar import TNH_PROJECT_ROOT_DIR
 from tnh_scholar.tools.tree_builder import build_tree

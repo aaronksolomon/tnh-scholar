@@ -416,7 +416,7 @@ Run:
 - `poetry run ruff check .`
 - `poetry run ruff format --check .`
 - `poetry run mypy src/`
-- `poetry run python scripts/generate_tree.py` with drift report only
+- no directory-tree generation or drift checking in routine PR/main validation
 - `npx markdownlint-cli2 '**/*.md'`
 - `poetry run python scripts/sync_readme.py`
 

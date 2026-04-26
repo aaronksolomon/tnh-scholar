@@ -166,31 +166,22 @@ ci-check:
 	@echo "Running CI checks locally..."
 	@echo "========================================="
 	@echo ""
-	@echo "🌐 [1/7] Checking health-check freshness..."
+	@echo "🌐 [1/6] Checking health-check freshness..."
 	@$(MAKE) update-health-check
 	@echo ""
-	@echo "📁 [2/7] Verifying directory trees..."
-	@$(POETRY) run python scripts/generate_tree.py
-	@if ! git diff --quiet -- project_directory_tree.txt src_directory_tree.txt; then \
-		echo "⚠️  Directory tree drift detected:"; \
-		git diff --stat -- project_directory_tree.txt src_directory_tree.txt; \
-	else \
-		echo "✅ Directory trees are up to date"; \
-	fi
-	@echo ""
-	@echo "🔍 [3/7] Running ruff lint..."
+	@echo "🔍 [2/6] Running ruff lint..."
 	@$(POETRY) run ruff check . && echo "✅ Ruff lint passed" || echo "⚠️  Ruff lint found issues (non-blocking)"
 	@echo ""
-	@echo "✨ [4/7] Checking ruff format..."
+	@echo "✨ [3/6] Checking ruff format..."
 	@$(POETRY) run ruff format --check . && echo "✅ Ruff format passed" || echo "⚠️  Ruff format check found issues (non-blocking)"
 	@echo ""
-	@echo "🔎 [5/7] Running type checks..."
+	@echo "🔎 [4/6] Running type checks..."
 	@$(POETRY) run mypy src/ && echo "✅ Type checking passed" || echo "⚠️  Type checking found issues (non-blocking)"
 	@echo ""
-	@echo "🧪 [6/7] Running tests..."
+	@echo "🧪 [5/6] Running tests..."
 	@$(POETRY) run pytest --maxfail=1 --cov=tnh_scholar --cov-report=term-missing
 	@echo ""
-	@echo "📝 [7/7] Verifying README ↔ docs/index.md sync..."
+	@echo "📝 [6/6] Verifying README ↔ docs/index.md sync..."
 	@$(POETRY) run python scripts/sync_readme.py && echo "✅ README sync verified"
 	@echo ""
 	@echo "========================================="
