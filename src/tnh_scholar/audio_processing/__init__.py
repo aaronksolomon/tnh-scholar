@@ -9,17 +9,7 @@ __all__ = [
     "MultilingualTranscriptionRequest",
     "MultilingualTranscriptionService",
     "TranscriptionProvider",
-    "detect_nonsilent",
-    "detect_whisper_boundaries",
-    "split_audio",
-    "split_audio_at_boundaries",
 ]
-
-
-def _load_audio_legacy_export(name: str):
-    from . import audio_legacy
-
-    return getattr(audio_legacy, name)
 
 
 def _load_multilingual_export(name: str):
@@ -41,10 +31,6 @@ def _load_diarization_config():
 
 
 _LOADERS: Mapping[str, Callable[[], object]] = {
-    "detect_nonsilent": lambda: _load_audio_legacy_export("detect_nonsilent"),
-    "detect_whisper_boundaries": lambda: _load_audio_legacy_export("detect_whisper_boundaries"),
-    "split_audio": lambda: _load_audio_legacy_export("split_audio"),
-    "split_audio_at_boundaries": lambda: _load_audio_legacy_export("split_audio_at_boundaries"),
     "ArtifactRetention": lambda: _load_multilingual_export("ArtifactRetention"),
     "MultilingualTranscriptionRequest": lambda: _load_multilingual_export(
         "MultilingualTranscriptionRequest"

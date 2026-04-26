@@ -2,7 +2,6 @@ click==8.1.7
 colorlog==6.9.0
 lxml==6.1.0
 openai==1.57.4
-openai_whisper==20240930
 protobuf==5.29.6
 pydantic==2.10.3
 pydub==0.25.1

@@ -21,7 +21,6 @@ def check_requirements(requirements_file: Path) -> None:
     # Map requirement names to their importable module names if they differ
     name_map = {
         "python-dotenv": "dotenv",
-        "openai_whisper": "whisper",
         "protobuf": "google.protobuf",
         # Add other mappings if needed
     }

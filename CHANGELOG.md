@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Dependabot Stage 6 Legacy Local-Whisper Retirement** (2026-04-26)
+  - Removed the unused local Whisper / `torch` legacy audio path so maintained transcription support is limited to the current API-backed audio surfaces
+  - Dropped legacy module exports and deleted the old `yt_transcribe` script that still depended on the retired chunking helpers
+  - Removed `openai-whisper` and `torch` from declared dependencies and from the standalone `audio_transcribe` environment manifest
+  - Files: `src/tnh_scholar/audio_processing/__init__.py`, `src/tnh_scholar/cli_tools/audio_transcribe/environment/`, `pyproject.toml`, `poetry.lock`, `src/tnh_scholar/video_processing/yt_transcribe.py`
+
 - **Dependabot Stage 5 Optional GUI Graph Refresh** (2026-04-26)
   - Added an explicit optional `langchain` dependency to the Poetry GUI extra so the optional LangChain stack is pinned intentionally rather than drifting through transitive resolution
   - Updated the Poetry-backed GUI dependency graph to patched `langchain`, `langchain-community`, `langchain-core`, `langchain-text-splitters`, and `aiohttp` versions
