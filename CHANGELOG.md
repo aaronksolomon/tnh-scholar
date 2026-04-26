@@ -17,6 +17,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Query Cleanup: Remove Dead `v2_cleaning_scripts` Artifact** (2026-04-26)
+  - Removed the unused `query/v2_cleaning_scripts.py` experimental helper after confirming it had no imports, tests, docs references, or entry points
+  - Dropped `transformers` from declared dependencies because that file was its only remaining consumer in the repo
+  - Files: `src/tnh_scholar/query/v2_cleaning_scripts.py`, `pyproject.toml`, `poetry.lock`
+
+- **Dependabot Stage 6 Legacy Local-Whisper Retirement** (2026-04-26)
+  - Removed the unused local Whisper / `torch` legacy audio path so maintained transcription support is limited to the current API-backed audio surfaces
+  - Dropped legacy module exports and deleted the old `yt_transcribe` script that still depended on the retired chunking helpers
+  - Removed `openai-whisper` and `torch` from declared dependencies and from the standalone `audio_transcribe` environment manifest
+  - Files: `src/tnh_scholar/audio_processing/__init__.py`, `src/tnh_scholar/cli_tools/audio_transcribe/environment/`, `pyproject.toml`, `poetry.lock`, `src/tnh_scholar/video_processing/yt_transcribe.py`
+
+- **Dependabot Stage 5 Optional GUI Graph Refresh** (2026-04-26)
+  - Added an explicit optional `langchain` dependency to the Poetry GUI extra so the optional LangChain stack is pinned intentionally rather than drifting through transitive resolution
+  - Updated the Poetry-backed GUI dependency graph to patched `langchain`, `langchain-community`, `langchain-core`, `langchain-text-splitters`, and `aiohttp` versions
+  - Verified the refreshed graph in a clean `pip install -e '.[gui]'` environment before leaving the higher-risk `torch` and Whisper stack for a separate stage
+  - Files: `pyproject.toml`, `poetry.lock`
+
+- **Pattern Share Status/Terminology Clarification** (2026-04-26)
+  - Marked the `pattern_share` Streamlit app as an exploratory legacy prototype rather than a maintained TNH Scholar feature
+  - Updated user-facing copy from `pattern` to `prompt` while preserving legacy internal storage identifiers for compatibility
+  - Files: `src/tnh_scholar/pattern_share/app.py`
+
+- **Dependabot Stage 4 Pattern Share Manifest Refresh** (2026-04-26)
+  - Updated the standalone `pattern_share` requirements manifest to patched `streamlit`, `langchain`, and `langchain-community` versions without changing the repo-wide Poetry lock graph
+  - Kept `langchain-openai` pinned pending a separate compatibility review because its remaining advisory points at a newer major line
+  - Files: `src/tnh_scholar/pattern_share/requirements.txt`
+
+- **Dependabot Stage 3 Dev/Tooling Refresh** (2026-04-25)
+  - Bumped direct app and dev dependencies for `flask`, `jinja2`, `black`, and `pytest` to current patched versions
+  - Refreshed the locked dev/notebook/tooling stack to pull in patched `nbconvert`, `tornado`, `filelock`, `virtualenv`, and `werkzeug`
+  - Kept the remediation slice bounded to low-adaptation infrastructure packages before the larger `langchain-*` and `torch` family updates
+  - Files: `pyproject.toml`, `poetry.lock`
+
 - **Repo-Wide Lint and Type Debt Cleanup** (2026-04-25)
   - Reduced the outstanding Ruff and mypy backlog across scripts, agent orchestration, GenAI, OCR, audio, query, metadata, prompt-system, and CLI surfaces
   - Restored clean repo-wide static validation with `make lint` and `make type-check`
