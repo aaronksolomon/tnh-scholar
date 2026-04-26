@@ -19,7 +19,8 @@ Compatibility:
 TODOs for Hardening:
   - Add telemetry for unknown finish_reason and schema drift (infra.metrics/infra.tracer).
   - Add compatibility matrix doc (docs/providers/openai_adapter.md) and link to it from here.
-  - Replace model-prefix request shaping with registry-driven request profiles so future model families do not require adapter-local string matching.
+  - Replace model-prefix request shaping with registry-driven request profiles
+    so future model families do not require adapter-local string matching.
   - Add automated version drift check against latest OpenAI SDK to flag mapping review.
   - Add guardrails for empty choices / malformed usage with structured FAILED status.
   - Revalidate request/response shapes after the OpenAI SDK 2.15.0 bump.

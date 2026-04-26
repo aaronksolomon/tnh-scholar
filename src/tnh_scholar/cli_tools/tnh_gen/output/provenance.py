@@ -44,7 +44,7 @@ def provenance_block(
     merged_metadata = provenance_metadata
     if source_metadata:
         merged_metadata = source_metadata | provenance_metadata
-    return Frontmatter.generate(merged_metadata)
+    return str(Frontmatter.generate(merged_metadata))
 
 
 def write_output_file(
@@ -70,6 +70,7 @@ def write_output_file(
         )
         path.write_text(f"{header}{result_text}", encoding="utf-8")
     elif source_metadata:
-        path.write_text(f"{Frontmatter.generate(source_metadata)}{result_text}", encoding="utf-8")
+        header = str(Frontmatter.generate(source_metadata))
+        path.write_text(f"{header}{result_text}", encoding="utf-8")
     else:
         path.write_text(result_text, encoding="utf-8")

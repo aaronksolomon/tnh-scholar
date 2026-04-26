@@ -154,7 +154,8 @@ def _read_input_document(input_file: Path) -> tuple[Metadata, str]:
         ValueError: If the input file cannot be read.
     """
     try:
-        return Frontmatter.extract_from_file(input_file)
+        metadata, content = Frontmatter.extract_from_file(input_file)
+        return metadata, str(content)
     except Exception as exc:
         raise ValueError(f"Unable to read input file {input_file}") from exc
 

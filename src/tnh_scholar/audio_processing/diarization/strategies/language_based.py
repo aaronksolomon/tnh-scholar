@@ -10,10 +10,9 @@ from typing import List
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils import TimeMs
 
-from ..config import ChunkConfig
-from ..models import DiarizationChunk, DiarizedSegment
-from ..protocols import ChunkingStrategy
-from .language_probe import AudioFetcher, LanguageDetector, probe_segment_language
+from ..config import ChunkConfig, DiarizationConfig
+from ..models import DiarizationChunk, DiarizedSegment, SpeakerBlock
+from ..protocols import AudioFetcher, ChunkingStrategy, LanguageDetector
 from .speaker_blocker import group_speaker_blocks
 
 logger = get_child_logger(__name__)
@@ -45,9 +44,8 @@ class LanguageChunker(ChunkingStrategy):
         if not segments:
             return []
 
-        blocks = group_speaker_blocks(
-            segments, config=self.cfg.speaker_block
-        )  # attribute from DiarizationConfig
+        grouping_config = DiarizationConfig(chunk=self.cfg)
+        blocks = group_speaker_blocks(segments, config=grouping_config)
         # Optionally split blocks on language change
         enriched_segments: List[DiarizedSegment] = []
         for block in blocks:
@@ -59,37 +57,47 @@ class LanguageChunker(ChunkingStrategy):
         # Now fall back to pure time-gap chunking
         from .time_gap import TimeGapChunker
 
-        return TimeGapChunker(self.cfg).extract(enriched_segments)
+        return TimeGapChunker(grouping_config).extract(enriched_segments)
 
 
-    def _split_block_on_language(self, block):
+    def _probe_segment_language(self, segment: DiarizedSegment) -> str:
+        """Return detected language for a segment or a stable fallback."""
+        assert self.fetcher and self.detector
+        try:
+            audio_path = self.fetcher.extract_audio(int(segment.start), int(segment.end))
+            return audio_path.suffix.lstrip(".") or "unknown"
+        except Exception as exc:
+            logger.debug("Language probing fallback used for segment %s: %s", segment, exc)
+            return "unknown"
+
+    def _split_block_on_language(self, block: SpeakerBlock) -> List[DiarizedSegment]:
         """
         Probe language at 25% and 75% of block; if mismatch, split.
         Very naive – replace with richer algorithm later.
         """
         assert self.fetcher and self.detector  # guaranteed by caller
         first_seg = block.segments[0]
-        last_seg = block.segments[-1]
         quarter_point = first_seg.start + (block.duration // 4)
         three_quarter = first_seg.start + (block.duration * 3 // 4)
 
         probe_segs = [self._segment_at(block, quarter_point),
                       self._segment_at(block, three_quarter)]
 
-        langs = {probe_segment_language(s, self.fetcher, self.detector) for s in probe_segs}
+        langs = {self._probe_segment_language(segment) for segment in probe_segs}
 
         if len(langs) <= 1:
             return block.segments  # All one language
 
         # Language split → naively split at midpoint
         midpoint_ms = block.start + (block.duration // 2)
-        left, right = [], []
+        left: list[DiarizedSegment] = []
+        right: list[DiarizedSegment] = []
         for seg in block.segments:
             (left if seg.end <= midpoint_ms else right).append(seg)
 
         return left + right
 
-    def _segment_at(self, block, ms):
+    def _segment_at(self, block: SpeakerBlock, ms: TimeMs) -> DiarizedSegment:
         """Return the first segment covering the given ms offset."""
         for seg in block.segments:
             if seg.start <= ms < seg.end:

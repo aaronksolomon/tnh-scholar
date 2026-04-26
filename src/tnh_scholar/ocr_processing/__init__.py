@@ -1,1 +1,35 @@
-from .ocr_processing import *
+from tnh_scholar.ocr_processing.ocr_processing import (
+    PDFParseWarning,
+    annotate_image_with_text,
+    build_processed_pdf,
+    deserialize_entity_annotations_from_json,
+    extract_image_from_page,
+    get_page_dimensions,
+    load_pdf_pages,
+    load_processed_PDF_data,
+    make_image_preprocess_mask,
+    pil_to_bytes,
+    process_page,
+    process_single_image,
+    save_processed_pdf_data,
+    serialize_entity_annotations_to_json,
+    start_image_annotator_client,
+)
+
+__all__ = [
+    "PDFParseWarning",
+    "annotate_image_with_text",
+    "build_processed_pdf",
+    "deserialize_entity_annotations_from_json",
+    "extract_image_from_page",
+    "get_page_dimensions",
+    "load_pdf_pages",
+    "load_processed_PDF_data",
+    "make_image_preprocess_mask",
+    "pil_to_bytes",
+    "process_page",
+    "process_single_image",
+    "save_processed_pdf_data",
+    "serialize_entity_annotations_to_json",
+    "start_image_annotator_client",
+]

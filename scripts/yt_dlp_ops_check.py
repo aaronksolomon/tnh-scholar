@@ -4,8 +4,7 @@ from datetime import datetime
 from pathlib import Path
 
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
-from rich.progress import TaskID
+from rich.progress import Progress, SpinnerColumn, TaskID, TextColumn
 
 from tnh_scholar.video_processing.ops_check import OpsCheckConfig, OpsCheckRunner
 from tnh_scholar.video_processing.video_processing import DLPDownloader

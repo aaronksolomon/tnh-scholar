@@ -61,6 +61,74 @@ def find_near_matches(title: str, candidates: set[str]) -> list[str]:
     return near_matches
 
 
+def build_report_header() -> list[str]:
+    """Return report header lines."""
+    return [
+        "=" * 80,
+        "README.md ↔ docs/index.md Drift Report",
+        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        "=" * 80,
+        "",
+    ]
+
+
+def append_matched_section_report(
+    report_lines: list[str],
+    matched_sections: set[str],
+    readme_sections: dict[str, str],
+    docs_sections: dict[str, str],
+) -> bool:
+    """Append matched-section comparisons and return whether diffs were found."""
+    if not matched_sections:
+        return False
+
+    has_diffs = False
+    report_lines.append("Matched Sections (compared):")
+    for section in sorted(matched_sections):
+        readme_text = readme_sections[section]
+        docs_text = docs_sections[section]
+        if readme_text == docs_text:
+            report_lines.append(f"✓ {section}: IDENTICAL")
+            continue
+
+        report_lines.append(f"✗ {section}: DIFFERS")
+        report_lines.append("")
+        diff = unified_diff(
+            readme_text.splitlines(keepends=True),
+            docs_text.splitlines(keepends=True),
+            fromfile=f"README.md::{section}",
+            tofile=f"docs/index.md::{section}",
+            lineterm="",
+        )
+        report_lines.extend(diff)
+        report_lines.append("")
+        has_diffs = True
+    report_lines.append("")
+    return has_diffs
+
+
+def append_unique_sections(report_lines: list[str], title: str, sections: set[str]) -> bool:
+    """Append sections unique to one file and report whether any were found."""
+    if not sections:
+        return False
+    report_lines.append(title)
+    for section in sorted(sections):
+        report_lines.append(f"- {section}")
+    report_lines.append("")
+    return True
+
+
+def build_near_match_warnings(readme_only: set[str], docs_only: set[str]) -> list[str]:
+    """Build possible title-mismatch warnings."""
+    warnings: list[str] = []
+    for readme_section in readme_only:
+        for match in find_near_matches(readme_section, docs_only):
+            warnings.append(
+                f'⚠ "{readme_section}" (README) vs "{match}" (docs/index.md) - possible mismatch'
+            )
+    return warnings
+
+
 def generate_report() -> str:
     """Generate drift report comparing README and docs/index.md."""
     if not README.exists() or not DOCS_INDEX.exists():
@@ -72,80 +140,33 @@ def generate_report() -> str:
     readme_sections = extract_sections(readme_content)
     docs_sections = extract_sections(docs_content)
 
-    report_lines = [
-        "=" * 80,
-        "README.md ↔ docs/index.md Drift Report",
-        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-        "=" * 80,
-        "",
-    ]
-
-    # Track what we've compared
-    all_sections = set(readme_sections.keys()) | set(docs_sections.keys())
+    report_lines = build_report_header()
     matched_sections = set(readme_sections.keys()) & set(docs_sections.keys())
     readme_only = set(readme_sections.keys()) - set(docs_sections.keys())
     docs_only = set(docs_sections.keys()) - set(readme_sections.keys())
 
-    has_diffs = False
+    has_diffs = append_matched_section_report(
+        report_lines, matched_sections, readme_sections, docs_sections
+    )
+    has_diffs |= append_unique_sections(
+        report_lines, "Sections only in README.md:", readme_only
+    )
+    has_diffs |= append_unique_sections(
+        report_lines, "Sections only in docs/index.md:", docs_only
+    )
 
-    # Compare matched sections
-    if matched_sections:
-        report_lines.append("Matched Sections (compared):")
-        for section in sorted(matched_sections):
-            readme_text = readme_sections[section]
-            docs_text = docs_sections[section]
-
-            if readme_text == docs_text:
-                report_lines.append(f"✓ {section}: IDENTICAL")
-            else:
-                report_lines.append(f"✗ {section}: DIFFERS")
-                report_lines.append("")
-                diff = unified_diff(
-                    readme_text.splitlines(keepends=True),
-                    docs_text.splitlines(keepends=True),
-                    fromfile=f"README.md::{section}",
-                    tofile=f"docs/index.md::{section}",
-                    lineterm=""
-                )
-                report_lines.extend(diff)
-                report_lines.append("")
-                has_diffs = True
-        report_lines.append("")
-
-    # List sections unique to each file
-    if readme_only:
-        report_lines.append("Sections only in README.md:")
-        for section in sorted(readme_only):
-            report_lines.append(f"- {section}")
-        report_lines.append("")
-        has_diffs = True
-
-    if docs_only:
-        report_lines.append("Sections only in docs/index.md:")
-        for section in sorted(docs_only):
-            report_lines.append(f"- {section}")
-        report_lines.append("")
-        has_diffs = True
-
-    # Check for near-matches (possible typos)
-    near_match_warnings = []
-    for readme_section in readme_only:
-        matches = find_near_matches(readme_section, docs_only)
-        for match in matches:
-            near_match_warnings.append(
-                f'⚠ "{readme_section}" (README) vs "{match}" (docs/index.md) - possible mismatch'
-            )
-
+    near_match_warnings = build_near_match_warnings(readme_only, docs_only)
     if near_match_warnings:
         report_lines.append("Title Mismatches (possible typos):")
         report_lines.extend(near_match_warnings)
         report_lines.append("")
         has_diffs = True
 
-    # Summary
     if has_diffs:
         report_lines.append("⚠ DRIFT DETECTED - Review differences above")
-        report_lines.append("This is informational only - no action required unless intentional divergence.")
+        report_lines.append(
+            "This is informational only - no action required unless intentional divergence."
+        )
     else:
         report_lines.append("✓ NO SIGNIFICANT DRIFT DETECTED")
 
@@ -159,15 +180,9 @@ def generate_report() -> str:
 def main() -> int:
     """Generate and output drift report (always exits 0)."""
     report = generate_report()
-
-    # Write to file
     REPORT_FILE.write_text(report, encoding="utf-8")
     print(f"Drift report written to {REPORT_FILE}")
-
-    # Also print to console (for CI visibility)
     print("\n" + report)
-
-    # Always exit 0 (non-blocking)
     return 0
 
 

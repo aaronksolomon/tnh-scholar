@@ -10,6 +10,8 @@ updated: "2026-04-12"
 
 # Codex Headless Communication Research Directions
 
+This research note identifies the highest-priority questions that follow the first successful headless Codex communication experiments.
+
 ## Purpose
 
 Identify the next research questions needed to understand how Codex can be invoked in a way that behaves as close as possible to a normal user-shell run while remaining usable for agent-collaboration experiments.

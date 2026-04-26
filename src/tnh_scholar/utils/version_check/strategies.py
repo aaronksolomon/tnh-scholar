@@ -56,7 +56,7 @@ def parse_vdiff_matrix(matrix_str: str) -> Tuple[Optional[int], Optional[int], O
     if len(parts) != 3:
         raise ValueError(f"Invalid version difference matrix: {matrix_str}")
 
-    limits = []
+    limits: list[int | None] = []
     for part in parts:
         if part == "*":
             limits.append(None)  # No limit
@@ -66,4 +66,5 @@ def parse_vdiff_matrix(matrix_str: str) -> Tuple[Optional[int], Optional[int], O
             except ValueError as e:
                 raise ValueError(f"Invalid version component: {part}") from e
 
-    return tuple(limits)  # Tuple[Optional[int], Optional[int], Optional[int]]
+    major_limit, minor_limit, micro_limit = limits
+    return major_limit, minor_limit, micro_limit

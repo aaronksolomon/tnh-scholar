@@ -10,6 +10,8 @@ updated: "2026-04-15"
 
 # SPIKE-08 Launch Context Environment Contamination
 
+This experiment note isolates whether Codex-on-Codex launch noise is driven by PTY shape or inherited environment contamination.
+
 ## Experiment ID
 
 `SPIKE-08`

@@ -67,7 +67,7 @@ Summary Table:
 import json
 import subprocess
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional, cast
 
 from IPython.display import Audio, display
 from pydantic import BaseModel
@@ -323,7 +323,14 @@ class AudioEnhancer:
             raise RuntimeError(f"Sample extraction failed: {result.stderr}")
         return output_path
 
-    def _sample_output_path(self, input_path, output_path, start, duration, output_format) -> Path:
+    def _sample_output_path(
+        self,
+        input_path: Path,
+        output_path: Optional[Path],
+        start: int | float,
+        duration: int | float,
+        output_format: str,
+    ) -> Path:
         if output_path is None:
             return ( 
                     input_path.parent / 
@@ -335,7 +342,7 @@ class AudioEnhancer:
         """Play audio in notebook for quality assessment."""
         display(Audio(str(file_path)))
 
-    def get_audio_info(self, file_path: Path):
+    def get_audio_info(self, file_path: Path) -> dict[str, Any]:
         """Get detailed audio information using ffprobe."""
         cmd = [
             "ffprobe", "-v", "quiet", "-print_format", "json",
@@ -347,8 +354,12 @@ class AudioEnhancer:
         logger.error(f"FFprobe error: {result.stderr}")
         raise RuntimeError("Failed to retrieve audio info.")
 
-    def _display_stream_info(self, result: subprocess.CompletedProcess, file_path: Path) -> dict:
-        data = json.loads(result.stdout)
+    def _display_stream_info(
+        self,
+        result: subprocess.CompletedProcess[str],
+        file_path: Path,
+    ) -> dict[str, Any]:
+        data = cast(dict[str, list[dict[str, Any]]], json.loads(result.stdout))
         stream = data["streams"][0]
 
         logger.info(f"File: {file_path}")

@@ -123,7 +123,7 @@ def _calculate_segment_size(num_text: NumberedText, target_segment_tokens: int) 
     avg_tokens_per_line = tokens / num_text.size
     logger.debug(f"Average tokens per line: {avg_tokens_per_line}")
 
-    return max(1, round(target_segment_tokens / avg_tokens_per_line))
+    return int(max(1, round(target_segment_tokens / avg_tokens_per_line)))
 
 
 class SectionParser:

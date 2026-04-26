@@ -10,6 +10,8 @@ updated: "2026-04-15"
 
 # SPIKE-06 Native Codex CLI Baseline
 
+This experiment note records the standalone native Codex CLI baseline before orchestration comparisons were run.
+
 ## Experiment ID
 
 `SPIKE-06`

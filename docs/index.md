@@ -55,6 +55,7 @@ These are aspirational but active development goals aligned with the needs of th
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
 - **Text formatting and translation**: `tnh-gen` CLI for prompt-driven text processing with human-friendly defaults and API mode for programmatic use
+- **Headless workflow orchestration**: `tnh-conductor` for maintained local/bootstrap workflow execution with status watching and canonical run artifacts
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Prompt system**: See [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md) and [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md) for current status and roadmap
@@ -172,6 +173,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [nfmt](/cli-reference/nfmt.md)
 - [sent-split](/cli-reference/sent-split.md)
 - [srt-translate](/cli-reference/srt-translate.md)
+- [tnh-conductor](/cli-reference/tnh-conductor.md)
 - [tnh-gen](/cli-reference/tnh-gen.md)
 - [tnh-setup](/cli-reference/tnh-setup.md)
 - [token-count](/cli-reference/token-count.md)
@@ -212,7 +214,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-OA01.3: Practical Approach for the Orientation-Based Conceptual Spike](/architecture/agent-orchestration/adr/adr-oa01.3-conceptual-spike-practical-approach.md)
 - [ADR-OA01.4: Headless Agent Communication Functional Spike](/architecture/agent-orchestration/adr/adr-oa01.4-headless-agent-communication-functional-spike.md)
 - [ADR-OA01: TNH-Conductor — Provenance-Driven AI Workflow Coordination](/architecture/agent-orchestration/adr/adr-oa01-agent-orchestration-strategy.md)
-- [ADR-OA02: Phase 0 Protocol Layer Spike](/architecture/agent-orchestration/adr/adr-oa02-phase-0-protocol-spike.md)
+- [ADR-OA02: Phase 0 Protocol Layer Spike — Headless Capture + Safety Controls](/architecture/agent-orchestration/adr/adr-oa02-phase-0-protocol-spike.md)
 - [ADR-OA03.1: Claude Code Runner](/architecture/agent-orchestration/adr/adr-oa03.1-claude-code-runner.md)
 - [ADR-OA03.2: Codex Runner](/architecture/agent-orchestration/adr/adr-oa03.2-codex-runner.md)
 - [ADR-OA03.3: Codex CLI Runner](/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md)
@@ -260,11 +262,11 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-YF01: YouTube Transcript Source Handling](/architecture/ytt-fetch/adr/adr-yf01-yt-transcript-source-handling.md)
 - [ADR-YF02: YouTube Transcript Format Selection](/architecture/ytt-fetch/adr/adr-yf02-yt-transcript-format-selection.md)
 - [Agent Orchestration Collaboration Paradigms](/architecture/agent-orchestration/notes/research/agent-orchestration-collaboration-paradigms.md)
+- [Agent Orchestration Recursive Bootstrap Proposal](/architecture/agent-orchestration/notes/design/recursive-bootstrap-build-proposal.md)
 - [Agent Orchestration Spike Testing Sequence](/architecture/agent-orchestration/notes/experiments/spike-testing-sequence.md)
 - [Architecture Blueprint](/architecture/agent-orchestration/notes/design/architecture-blueprint.md)
 - [Architecture Overview](/architecture/overview.md)
 - [Audio Chunking Algorithm Design Document](/architecture/transcription/design/audio-chunking-design.md)
-- [Bootstrap Direction Design Memo](/architecture/agent-orchestration/notes/design/bootstrap-direction-design-memo.md)
 - [Bootstrap Proof Run Result](/architecture/agent-orchestration/notes/experiments/bootstrap-proof-run-result.md)
 - [Codex Harness End-to-End Test Report](/architecture/agent-orchestration/notes/experiments/codex-harness-e2e-report.md)
 - [Codex Harness Spike Findings](/architecture/agent-orchestration/notes/experiments/codex-harness-spike-findings.md)
@@ -275,6 +277,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [Codex Official Docs Reference Summary](/architecture/agent-orchestration/notes/research/codex-official-docs-reference-summary.md)
 - [Current Bootstrap Proof Task Brief](/architecture/agent-orchestration/bootstrap-proof/current-task-brief.md)
 - [Current Supervisory Task Brief](/architecture/agent-orchestration/supervisory-shell-trial/current-supervisory-task-brief.md)
+- [Design Memo: Re-centering Agent Orchestration on Bootstrap and Long-Horizon Useful Work](/architecture/agent-orchestration/notes/design/bootstrap-direction-design-memo.md)
 - [Design Strategy: VS Code as UI/UX Platform for TNH Scholar](/architecture/ui-ux/design/vs-code-as-ui-platform.md)
 - [Diarization Algorithms](/architecture/transcription/design/diarization-algorithms.md)
 - [Diarization Chunker Module Design Strategy](/architecture/transcription/design/diarization-chunker-design.md)
@@ -353,6 +356,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TNH Scholar Design Principles](/development/design-principles.md)
 - [TNH Scholar Style Guide](/development/style-guide.md)
 - [TNH Scholar System Design](/development/system-design.md)
+- [tnh-conductor Operator Guide](/development/tnh-conductor-operator-guide.md)
 - [v0.2.0 Tag Correction Plan](/development/incident-reports/tag-v0.2.0-correction-plan.md)
 - [yt-dlp Ops Check](/development/yt-dlp-ops-check.md)
 

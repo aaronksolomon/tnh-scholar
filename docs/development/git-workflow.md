@@ -139,6 +139,31 @@ git push origin --delete feature/my-feature
 - `sourcery review <paths> 2>&1`
 - optional focused pytest targets supplied by the caller
 
+### PR CI Policy
+
+GitHub PR CI is intentionally non-blocking during the current rapid-prototype phase.
+
+- lint, format, type-check, and docs sync steps on PRs are advisory
+- the full GitHub Actions pytest pass runs on PRs only when the PR has the `full-ci` label
+- pushes to `main` still run the full GitHub Actions test job after merge
+
+Responsibility for `full-ci` is simple:
+
+- the PR author should add it for code changes with non-trivial regression risk
+- the reviewer should add it if the author did not and the change warrants it
+
+Use `full-ci` by default for:
+
+- runtime code changes
+- CLI behavior changes
+- orchestration/agent-runner changes
+- dependency or packaging changes
+- anything release-adjacent or difficult to reason about locally
+
+Docs-only or similarly low-risk metadata changes can usually skip it.
+
+This label policy does **not** replace release validation. Before any release tag or publish step, the release owner must run the full local gate with `make release-check` as described in [Release Workflow](/development/release-workflow.md).
+
 **Why this is safer**:
 
 - Simpler workflow = fewer opportunities for staleness errors

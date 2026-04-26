@@ -15,6 +15,7 @@ TNH Scholar provides a suite of command-line tools designed to work together for
 ### Core CLI Tools
 
 - **[tnh-gen](/cli-reference/tnh-gen.md)** – Unified GenAI-powered text processing CLI (NEW)
+- **[tnh-conductor](/cli-reference/tnh-conductor.md)** – Maintained local/headless workflow bootstrap runner
 - **[audio-transcribe](/cli-reference/audio-transcribe.md)** – Transcribe audio files with diarization
 - **[nfmt](/cli-reference/nfmt.md)** – Normalize and format text files
 - **[tnh-setup](/cli-reference/tnh-setup.md)** – Environment setup helper
@@ -55,6 +56,20 @@ tnh-gen run --prompt translate \
 ```
 
 For complete documentation, see [tnh-gen CLI Reference](/cli-reference/tnh-gen.md).
+
+## TNH-Conductor
+
+The `tnh-conductor` CLI is the maintained headless/bootstrap runner for TNH Scholar agent orchestration.
+
+It currently exposes a deliberately small operator surface:
+
+- `tnh-conductor run` for executing one workflow
+- `tnh-conductor status` for reading one run status snapshot
+- `tnh-conductor status --watch` for polling live run state until completion
+
+This CLI is intended for managed worktree execution and canonical run-artifact tracking. It is the maintained operator-facing entry point, distinct from earlier spike and MVP orchestration code.
+
+For complete documentation, see [tnh-conductor CLI Reference](/cli-reference/tnh-conductor.md).
 
 ## Audio-Transcribe
 

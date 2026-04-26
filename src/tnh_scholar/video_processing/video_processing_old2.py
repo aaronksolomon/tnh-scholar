@@ -272,14 +272,14 @@ def _extract_metadata(
     fields = fields or DEFAULT_METADATA_FIELDS
     return {k: info.get(k) for k in fields if k in info}
 
-def get_video_metadata(url: str) -> VideoResult:
+def get_video_metadata(url: str) -> VideoMetadata:
     """Get metadata for a YouTube video without downloading content.
     
     Args:
         url: YouTube video URL
         
     Returns:
-        VideoResult with only metadata field populated
+        VideoMetadata with only metadata field populated
         
     Raises:
         yt_dlp.utils.DownloadError: If video info extraction fails
@@ -289,4 +289,4 @@ def get_video_metadata(url: str) -> VideoResult:
     with yt_dlp.YoutubeDL(options) as ydl:
         info = ydl.extract_info(url, download=False)
         metadata = _extract_metadata(info)
-        return VideoResult(metadata=metadata)
+        return VideoMetadata(metadata=metadata)

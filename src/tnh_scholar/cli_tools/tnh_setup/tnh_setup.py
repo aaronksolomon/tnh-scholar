@@ -84,6 +84,69 @@ def download_prompts(paths: SetupPaths) -> bool:
         click.echo(f"Prompt download failed: {e}", err=True)
         return False
 
+
+def maybe_download_prompts(paths: SetupPaths, *, skip_prompts: bool) -> None:
+    """Prompt for and download markdown prompt files."""
+    if skip_prompts:
+        return
+    should_download = click.confirm(
+        "\nDownload prompt (markdown text) files from GitHub?\n"
+        f"Source: {PROMPTS_URL}\n"
+        f"Target: {paths.prompt_dir}"
+    )
+    if not should_download:
+        return
+    if download_prompts(paths):
+        click.echo("Prompt files downloaded successfully")
+    else:
+        click.echo("Prompt download failed", err=True)
+
+
+def maybe_setup_ytdlp_runtime(*, skip_ytdlp_runtime: bool) -> None:
+    """Prompt for and run yt-dlp runtime setup."""
+    if skip_ytdlp_runtime:
+        return
+    should_setup = click.confirm(
+        "\nSet up yt-dlp runtime dependencies (JS runtime + curl_cffi)?\n"
+        "This improves YouTube download stability."
+    )
+    if not should_setup:
+        return
+
+    click.echo("• yt-dlp runtime setup: running")
+    script_path = Path(__file__).resolve().parents[4] / "scripts" / "setup_ytdlp_runtime.py"
+    if script_path.exists():
+        result = subprocess.run(
+            [sys.executable, str(script_path), "--yes"],
+            check=False,
+        )
+        if result.returncode != 0:
+            click.echo("  ⚠️  runtime setup reported errors. Review output above.", err=True)
+    else:
+        click.echo(
+            f"  ⚠️  runtime setup script not found at {script_path}",
+            err=True,
+        )
+
+    click.echo("• yt-dlp runtime verification")
+    inspector = YTDLPEnvironmentInspector()
+    report = inspector.inspect_report()
+    if report.has_items():
+        click.echo("  ⚠️  runtime incomplete. Some downloads may fail.", err=True)
+        for item in report.items:
+            click.echo(f"  - {item.code}: {item.message}", err=True)
+        return
+    click.echo("  ✅ runtime verified.")
+
+
+def maybe_check_environment(*, skip_env: bool) -> None:
+    """Load env and report missing OpenAI configuration."""
+    if skip_env:
+        return
+    load_dotenv()
+    if not check_openai_env(output=False):
+        print(OPENAI_ENV_HELP_MSG)
+
 @click.command()
 @click.option('--skip-env', is_flag=True, help='Skip API key setup')
 @click.option('--skip-prompts', is_flag=True, help='Skip prompt download')
@@ -93,58 +156,13 @@ def tnh_setup(skip_env: bool, skip_prompts: bool, skip_ytdlp_runtime: bool):
     context = TNHContext.discover()
     paths = _build_setup_paths(context)
     click.echo("TNH Setup")
-    
-    # Create config directories
+
     create_config_dirs(paths)
     click.echo(f"Created config directory: {paths.config_dir}")
-    
-    # Prompt download
-    if not skip_prompts and click.confirm(
-                "\nDownload prompt (markdown text) files from GitHub?\n"
-                f"Source: {PROMPTS_URL}\n"
-                f"Target: {paths.prompt_dir}"
-            ):
-        if download_prompts(paths):
-            click.echo("Prompt files downloaded successfully")
-        else:
-            click.echo("Prompt download failed", err=True)
 
-    if not skip_ytdlp_runtime and click.confirm(
-        "\nSet up yt-dlp runtime dependencies (JS runtime + curl_cffi)?\n"
-        "This improves YouTube download stability."
-    ):
-        click.echo("• yt-dlp runtime setup: running")
-        script_path = Path(__file__).resolve().parents[4] / "scripts" / "setup_ytdlp_runtime.py"
-        if script_path.exists():
-            result = subprocess.run(
-                [sys.executable, str(script_path), "--yes"],
-                check=False,
-            )
-            if result.returncode != 0:
-                click.echo("  ⚠️  runtime setup reported errors. Review output above.", err=True)
-        else:
-            click.echo(
-                f"  ⚠️  runtime setup script not found at {script_path}",
-                err=True,
-            )
-        click.echo("• yt-dlp runtime verification")
-        inspector = YTDLPEnvironmentInspector()
-        report = inspector.inspect_report()
-        if report.has_items():
-            click.echo("  ⚠️  runtime incomplete. Some downloads may fail.", err=True)
-            for item in report.items:
-                click.echo(
-                    f"  - {item.code}: {item.message}",
-                    err=True,
-                )
-        else:
-            click.echo("  ✅ runtime verified.")
-            
-    # Environment test:
-    if not skip_env:
-        load_dotenv()  # for development
-        if not check_openai_env(output=False):
-            print(OPENAI_ENV_HELP_MSG)
+    maybe_download_prompts(paths, skip_prompts=skip_prompts)
+    maybe_setup_ytdlp_runtime(skip_ytdlp_runtime=skip_ytdlp_runtime)
+    maybe_check_environment(skip_env=skip_env)
     
 def main():
     """Entry point for setup CLI tool."""

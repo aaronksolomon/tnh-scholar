@@ -14,6 +14,8 @@ related_docs:
 
 # OA01.x Cloud Direction Generation Comparison Result
 
+This result note compares the three OA01.x cloud direction-generation attempts for novelty, overlap, subagent evidence, and practical value.
+
 ## Experiment ID
 
 `DIR-12.EX-4`

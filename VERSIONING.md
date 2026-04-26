@@ -10,15 +10,15 @@ TNH Scholar uses different versioning strategies depending on project maturity.
 
 ## Rapid Prototype Phase (0.x) - Current
 
-**Status**: Active (currently v0.1.4)
+**Status**: Active (currently v0.3.1, preparing v0.4.0)
 
 ### Core Principles
 
 During the **0.x release series**, TNH Scholar follows **rapid prototype versioning** that prioritizes architectural consistency and fast iteration over backward compatibility:
 
 1. **Breaking changes are acceptable in ANY 0.x release**
-   - Minor version bumps (0.1.x → 0.2.0) MAY include breaking changes
-   - Patch version bumps (0.1.3 → 0.1.4) MAY include breaking changes
+   - Minor version bumps (0.3.x → 0.4.0) MAY include breaking changes
+   - Patch version bumps (0.3.0 → 0.3.1) MAY include breaking changes
    - No backward compatibility guarantees
 
 2. **Force refactors in dependent code**
@@ -48,9 +48,9 @@ During the **0.x release series**, TNH Scholar follows **rapid prototype version
 
 We use `MAJOR.MINOR.PATCH` notation, but with different semantics than semver:
 
-- **0.MINOR.PATCH** format (e.g., 0.1.4, 0.2.0)
-- **MINOR bump** (0.1.x → 0.2.0): Significant feature additions or major refactors (may break APIs)
-- **PATCH bump** (0.1.3 → 0.1.4): Bug fixes, small features, or internal refactors (may break APIs)
+- **0.MINOR.PATCH** format (e.g., 0.3.1, 0.4.0)
+- **MINOR bump** (0.3.x → 0.4.0): Significant feature additions or major refactors (may break APIs)
+- **PATCH bump** (0.3.0 → 0.3.1): Bug fixes, small features, or internal refactors (may break APIs)
 - **MAJOR stays at 0** until stable release
 
 **Key Difference from Semver**: PATCH bumps can include breaking changes during 0.x.
@@ -66,14 +66,14 @@ Even though we don't guarantee compatibility, we provide:
 
 ### Examples
 
-**Acceptable in 0.1.3 → 0.1.4 (patch):**
+**Acceptable in 0.3.0 → 0.3.1 (patch):**
 - ✅ Remove `ai_text_processing/prompts.py` entirely
 - ✅ Change import paths from `tnh_scholar.ai_text_processing.prompts` to `tnh_scholar.prompt_system`
 - ✅ Remove `TNH_PATTERN_DIR` environment variable support
 - ✅ Change CLI flags from `--pattern` to `--prompt`
 - ✅ Refactor GenAI service adapter interfaces
 
-**Acceptable in 0.1.x → 0.2.0 (minor):**
+**Acceptable in 0.3.x → 0.4.0 (minor):**
 - ✅ Major architecture refactor (e.g., prompt system → object-service compliance)
 - ✅ Complete rewrite of subsystems
 - ✅ New CLI tools or major feature additions
@@ -83,7 +83,7 @@ Even though we don't guarantee compatibility, we provide:
 
 **For Users (pip install tnh-scholar):**
 - Expect breaking changes in ANY 0.x update
-- Pin to specific version if stability needed: `pip install tnh-scholar==0.1.4`
+- Pin to specific version if stability needed: `pip install tnh-scholar==0.3.1`
 - Review CHANGELOG before upgrading
 - Migration guides provided for major changes
 
@@ -129,8 +129,9 @@ Before releasing 1.0.0, we must:
 
 | Version | Date | Type | Notes |
 |---------|------|------|-------|
-| 0.1.4 | 2025-01 | Patch | Test patches, build fixes |
-| 0.1.3 | 2024-12 | Patch | Alpha release |
+| 0.3.1 | 2026-01 | Patch | Current release baseline before 0.4.0 prep |
+| 0.3.0 | 2026-01 | Patch | Prior alpha release |
+| 0.2.0 | 2025-12 | Minor | Documentation and release workflow milestone |
 | ... | ... | ... | Earlier versions |
 
 ## Related Documentation
@@ -159,7 +160,7 @@ Before releasing 1.0.0, we must:
 
 ### Q: How do I avoid breaking changes?
 
-**A**: Pin to a specific version: `pip install tnh-scholar==0.1.4`. Review CHANGELOG before upgrading.
+**A**: Pin to a specific version: `pip install tnh-scholar==0.3.1`. Review CHANGELOG before upgrading.
 
 ### Q: What if I'm building on top of TNH Scholar?
 
@@ -171,6 +172,6 @@ Before releasing 1.0.0, we must:
 
 ---
 
-**Last Updated**: 2025-12-06
-**Current Version**: 0.1.4
+**Last Updated**: 2026-04-25
+**Current Version**: 0.3.1
 **Current Phase**: Rapid Prototype (0.x)

@@ -5,7 +5,7 @@ Lightweight language-detection helpers pluggable into chunkers.
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, cast
 
 from tnh_scholar.audio_processing.transcription import patch_whisper_options
 from tnh_scholar.logging_config import get_child_logger
@@ -42,7 +42,8 @@ class WhisperLanguageDetector:
         
     def _extract_language_from_result(self, result) -> Optional[str]:
         """Extract language code from transcription result."""
-        return getattr(result, 'language', None)
+        language = getattr(result, "language", None)
+        return cast(Optional[str], language)
             
 
 class LanguageProbe:

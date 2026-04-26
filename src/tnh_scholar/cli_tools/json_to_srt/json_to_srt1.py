@@ -10,7 +10,7 @@ import json
 import sys
 from datetime import timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, TextIO, Tuple
+from typing import Any, List, Optional, TextIO, Tuple, cast
 
 import click
 
@@ -18,6 +18,8 @@ from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils.file_utils import write_str_to_file
 
 logger = get_child_logger(__name__)
+
+JsonDict = dict[str, Any]
 
 def format_timestamp(seconds: float) -> str:
     """Convert seconds to SRT timestamp format (HH:MM:SS,mmm)."""
@@ -27,10 +29,11 @@ def format_timestamp(seconds: float) -> str:
     milliseconds = round(td.microseconds / 1000)
     return f"{hours:02d}:{minutes:02d}:{seconds:02d},{milliseconds:03d}"
 
-def parse_jsonl_line(line: str) -> Dict:
+def parse_jsonl_line(line: str) -> JsonDict:
     """Parse a single JSONL line into a dictionary."""
     try:
-        return json.loads(line.strip())
+        parsed = json.loads(line.strip())
+        return cast(JsonDict, parsed)
     except json.JSONDecodeError as e:
         logger.error(f"Error parsing JSONL line: {e}")
         return {}
@@ -41,14 +44,14 @@ def format_srt_entry(index: int, start: float, end: float, text: str) -> str:
     end_str = format_timestamp(end)
     return f"{index}\n{start_str} --> {end_str}\n{text}\n"
 
-def extract_segment_data(segment: Dict) -> Tuple[float, float, str]:
+def extract_segment_data(segment: JsonDict) -> Tuple[float, float, str]:
     """Extract timestamp and text data from a segment."""
     start = segment.get("start", 0)
     end = segment.get("end", 0)
     text = segment.get("text", "").strip()
     return start, end, text
 
-def process_segment(segment: Dict, entry_index: int) -> Tuple[str, int]:
+def process_segment(segment: JsonDict, entry_index: int) -> Tuple[str, int]:
     """Process a single segment into SRT format."""
     start, end, text = extract_segment_data(segment)
     
@@ -58,10 +61,12 @@ def process_segment(segment: Dict, entry_index: int) -> Tuple[str, int]:
     entry = format_srt_entry(entry_index, start, end, text)
     return entry, entry_index + 1
 
-def process_segments_list(segments_list: List[Dict], 
-                          entry_index: int) -> Tuple[List[str], int]:
+def process_segments_list(
+    segments_list: List[JsonDict],
+    entry_index: int,
+) -> Tuple[List[str], int]:
     """Process a list of segments into SRT entries."""
-    entries = []
+    entries: list[str] = []
     
     for segment in segments_list:
         entry, entry_index = process_segment(segment, entry_index)
@@ -70,26 +75,38 @@ def process_segments_list(segments_list: List[Dict],
             
     return entries, entry_index
 
-def get_segments_from_data(data: Dict) -> List[Dict]:
+def get_segments_from_data(data: JsonDict) -> List[JsonDict]:
     """Extract segments from a data object."""
-    return data["segments"] if "segments" in data else []
+    return cast(List[JsonDict], data.get("segments", []))
 
 def read_input_lines(input_file: TextIO) -> List[str]:
     """Read and filter input lines from file."""
     return [line.strip() for line in input_file if line.strip()]
 
-def process_jsonl_line(line: str, entry_index: int) -> Tuple[List[str], int]:
+def process_jsonl_line(
+    line: str,
+    entry_index: int,
+    accumulated_time: float,
+) -> Tuple[List[str], int, float]:
     """Process a single JSONL line into SRT entries."""
     data = parse_jsonl_line(line)
     if not data:
-        return [], entry_index
-        
-    segments = get_segments_from_data(data)
-    return process_segments_list(segments, entry_index)
+        return [], entry_index, 0.0
+
+    chunk_duration = float(data.get("duration", 0.0))
+    shifted_segments: list[JsonDict] = []
+    for segment in get_segments_from_data(data):
+        shifted_segment = dict(segment)
+        shifted_segment["start"] = float(segment.get("start", 0.0)) + accumulated_time
+        shifted_segment["end"] = float(segment.get("end", 0.0)) + accumulated_time
+        shifted_segments.append(shifted_segment)
+
+    entries, next_index = process_segments_list(shifted_segments, entry_index)
+    return entries, next_index, chunk_duration
 
 def process_jsonl_content(lines: List[str]) -> str:
     """Process all JSONL content into SRT format."""
-    all_entries = []
+    all_entries: list[str] = []
     entry_index = 1
     accumulated_time = 0.0  # Track total duration of processed chunks
     

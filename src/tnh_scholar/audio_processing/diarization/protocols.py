@@ -63,13 +63,13 @@ class DiarizationService(Protocol):
         params: Optional[DiarizationParams] = None,
         *,
         wait_until_complete: bool = True,
-    ) -> DiarizationResponse: 
-        ...
+    ) -> DiarizationResponse:
         """One-shot convenience: start + (optionally) wait + fetch + map.
 
         Implementations may optimize this path; default behavior can be
         start() followed by get_response().
         """
+        ...
         
 class ResultWriter(Protocol):
     """Port for persisting diarization results."""

@@ -161,7 +161,7 @@ def simple_completion(
                 )
             return parsed_payload
 
-        return response.payload.text
+        return str(response.payload.text)
 
     except Exception as e:
         logger.error(f"Simple completion failed: {e}")

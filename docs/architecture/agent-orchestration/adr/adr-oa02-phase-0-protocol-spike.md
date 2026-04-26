@@ -1,10 +1,10 @@
 ---
-title: "ADR-OA02: Phase 0 Protocol Layer Spike"
+title: "ADR-OA02: Phase 0 Protocol Layer Spike — Headless Capture + Safety Controls"
 description: "De-risking spike to prove headless agent capture and safety controls for tnh-conductor"
 type: "implementation-guide"
 owner: "aaronksolomon"
 author: "Aaron Solomon, GPT 5.2, Claude Opus 4.5"
-status: implemented
+status: accepted
 created: "2026-01-19"
 updated: "2026-02-08"
 parent_adr: "adr-oa01-agent-orchestration-strategy.md"
@@ -14,7 +14,7 @@ parent_adr: "adr-oa01-agent-orchestration-strategy.md"
 
 De-risking spike to prove headless agent invocation, transcript capture, and safety controls work reliably.
 
-- **Status**: Implemented *(changed from WIP 2026-02-08 — see Addendum)*
+- **Status**: Accepted *(implemented 2026-02-08 — see Addendum)*
 - **Type**: Implementation ADR (De-risking Spike)
 - **Date**: 2026-01-19
 - **Owner**: Aaron Solomon

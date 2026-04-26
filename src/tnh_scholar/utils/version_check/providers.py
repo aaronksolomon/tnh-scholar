@@ -2,7 +2,7 @@
 
 import importlib.metadata
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Any, Optional, cast
 
 import requests
 from packaging.version import InvalidVersion, Version
@@ -59,10 +59,12 @@ class StandardVersionProvider(VersionProvider):
                 f"Failed to fetch {package_name} version from PyPI: {e}"
             ) from e
 
-    def _send_url_request(self, url, package_name):
+    def _send_url_request(self, url: str, package_name: str) -> Version:
         response = requests.get(url, timeout=self.timeout)
         response.raise_for_status()
-        version_str = response.json()["info"]["version"]
+        payload = cast(dict[str, Any], response.json())
+        info = cast(dict[str, Any], payload["info"])
+        version_str = str(info["version"])
         version = Version(version_str)
 
         # Cache the result

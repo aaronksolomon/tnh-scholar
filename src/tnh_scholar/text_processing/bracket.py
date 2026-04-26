@@ -11,6 +11,13 @@ class FormattingError(Exception):
         super().__init__(message)
 
 
+def _matches_bracketed_line(line: str, number: bool) -> re.Match[str] | None:
+    """Return the expected bracketed-line match for numbered or plain input."""
+    if number:
+        return re.match(r"<(\d+):(.*?)>", line)
+    return re.match(r"<(.*?)>", line)
+
+
 # functions to bracket and unbracket text with line numbers
 
 def bracket_lines(text: str, number: bool = False) -> str:
@@ -86,10 +93,12 @@ def unbracket_lines(text: str, number: bool = False) -> str:
     Args:
         text (str): The input string with encapsulated lines.
         number (bool): If True, removes line numbers in the format 'digit:'.
-                       Raises a ValueError if `number=True` and a line does not start with a digit followed by a colon.
+            Raises a ValueError if `number=True` and a line does not start
+            with a digit followed by a colon.
 
     Returns:
-        str: A newline-separated string with the encapsulation removed, and line numbers stripped if specified.
+        str: A newline-separated string with the encapsulation removed,
+            and line numbers stripped if specified.
 
     Examples:
         >>> unbracket_lines("<1:Line 1>\n<2:Line 2>", number=True)
@@ -104,9 +113,7 @@ def unbracket_lines(text: str, number: bool = False) -> str:
     unbracketed_lines = []
 
     for line in text.splitlines():
-        match = (
-            re.match(r"<(\d+):(.*?)>", line) if number else re.match(r"<(.*?)>", line)
-        )
+        match = _matches_bracketed_line(line, number)
         if match:
             content = match[2].strip() if number else match[1].strip()
             unbracketed_lines.append(content)
@@ -130,7 +137,7 @@ def unbracket_all_lines(pages):
 
 def lines_from_bracketed_text(
     text: str, start: int, end: int, keep_brackets=False
-) -> list[str]:
+) -> str:
     """
     Extracts lines from bracketed text between the start and end indices, inclusive.
     Handles both numbered and non-numbered cases.

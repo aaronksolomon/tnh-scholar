@@ -22,7 +22,7 @@ from concurrent.futures import Future
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import Any, BinaryIO, Dict, List, Optional, Union
+from typing import Any, BinaryIO, Dict, List, Optional, Union, cast
 
 import assemblyai as aai
 from dotenv import load_dotenv
@@ -179,7 +179,7 @@ class AAITranscriptionService(TranscriptionService):
             Configured TranscriptionConfig object
         """
         # Start with empty config
-        config_params = {}
+        config_params: Dict[str, Any] = {}
 
         # Add core settings
         if self.config.speech_model == SpeechModel.NANO:
@@ -363,11 +363,11 @@ class AAITranscriptionService(TranscriptionService):
         Returns:
             Dictionary of audio intelligence features
         """
-        intelligence = {}
+        intelligence: Dict[str, Any] = {}
 
         # Extract auto chapters
         if hasattr(transcript, "chapters") and transcript.chapters:
-            chapters_data = []
+            chapters_data: List[Dict[str, Any]] = []
             chapters_data.extend(
                 {
                     "summary": chapter.summary,
@@ -381,7 +381,7 @@ class AAITranscriptionService(TranscriptionService):
 
         # Extract sentiment analysis
         if hasattr(transcript, "sentiment_analysis") and transcript.sentiment_analysis:
-            sentiment_data = []
+            sentiment_data: List[Dict[str, Any]] = []
             sentiment_data.extend(
                 {
                     "text": sentiment.text,
@@ -396,7 +396,7 @@ class AAITranscriptionService(TranscriptionService):
 
         # Extract entity detection
         if hasattr(transcript, "entities") and transcript.entities:
-            entities_data = []
+            entities_data: List[Dict[str, Any]] = []
             entities_data.extend(
                 {
                     "text": entity.text,
@@ -410,9 +410,9 @@ class AAITranscriptionService(TranscriptionService):
 
         # Extract topics (IAB categories)
         if hasattr(transcript, "iab_categories") and transcript.iab_categories:
-            topics_data = {
+            topics_data: Dict[str, Any] = {
                 "results": [],
-                "summary": transcript.iab_categories.summary
+                "summary": transcript.iab_categories.summary,
             }
 
             if not transcript.iab_categories.results:
@@ -437,7 +437,7 @@ class AAITranscriptionService(TranscriptionService):
         if hasattr(transcript, "auto_highlights") and transcript.auto_highlights:
             intelligence["highlights"] = {
                 "results": transcript.auto_highlights.results,
-                "status": transcript.auto_highlights.status
+                "status": transcript.auto_highlights.status,
             }
 
         return intelligence
@@ -505,7 +505,7 @@ class AAITranscriptionService(TranscriptionService):
         self,
         audio_file: Union[Path, BinaryIO, str],
         options: Optional[Dict[str, Any]] = None
-    ) ->  Future:
+    ) -> Future[Any]:
         """
         Submit an asynchronous transcription job using AssemblyAI's SDK.
         
@@ -534,7 +534,10 @@ class AAITranscriptionService(TranscriptionService):
             
             # Use the SDK's asynchronous submit method
             # This returns a Future object containing a Transcript
-            return self.transcriber.transcribe_async(file_path, config=tx_config)
+            return cast(
+                Future[Any],
+                self.transcriber.transcribe_async(file_path, config=tx_config),
+            )
                         
         except Exception as e:
             logger.error(f"Transcription submission failed: {e}")
@@ -597,9 +600,15 @@ class AAITranscriptionService(TranscriptionService):
         
         # Get subtitles in requested format
         if format_type == "srt":
-            return transcript.export_subtitles_srt(chars_per_caption=chars_per_caption)
+            return cast(
+                str,
+                transcript.export_subtitles_srt(chars_per_caption=chars_per_caption),
+            )
         else:  # format_type == "vtt"
-            return transcript.export_subtitles_vtt(chars_per_caption=chars_per_caption)
+            return cast(
+                str,
+                transcript.export_subtitles_vtt(chars_per_caption=chars_per_caption),
+            )
     
     def transcribe_to_format(
         self,
@@ -634,9 +643,15 @@ class AAITranscriptionService(TranscriptionService):
 
         # Check if we need direct subtitle generation
         if format_type == "srt":  
-            return transcript.export_subtitles_srt(chars_per_caption=chars_per_caption)
+            return cast(
+                str,
+                transcript.export_subtitles_srt(chars_per_caption=chars_per_caption),
+            )
         elif format_type == "vtt":
-            return transcript.export_subtitles_vtt(chars_per_caption=chars_per_caption)
+            return cast(
+                str,
+                transcript.export_subtitles_vtt(chars_per_caption=chars_per_caption),
+            )
 
         # For other formats, use the format converter
         # First get a normal transcription result
@@ -647,7 +662,11 @@ class AAITranscriptionService(TranscriptionService):
             result, format_type, format_options or {}
         )
 
-    def _gen_transcript(self, transcription_options, audio_file):
+    def _gen_transcript(
+        self,
+        transcription_options: Optional[Dict[str, Any]],
+        audio_file: Union[Path, BinaryIO, str],
+    ) -> aai.Transcript:
         # Create configuration with options
         tx_config = self._create_transcription_config(transcription_options)
         
@@ -658,4 +677,4 @@ class AAITranscriptionService(TranscriptionService):
         
         # Use the SDK's synchronous transcribe method
         # This will block until transcription is complete
-        return self.transcriber.transcribe(file_path, config=tx_config)
+        return cast(aai.Transcript, self.transcriber.transcribe(file_path, config=tx_config))

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import cast
 
 from tnh_scholar.agent_orchestration.conductor_mvp.models import (
     ArtifactPaths,
@@ -67,7 +68,7 @@ class WorkflowCatalog:
         """Return route target for an outcome or raise with context."""
         for route in step.routes:
             if route.outcome == outcome_key:
-                return route.target
+                return cast(str, route.target)
         raise WorkflowValidationError(f"{context} '{outcome_key}' in step: {step.id}")
 
 

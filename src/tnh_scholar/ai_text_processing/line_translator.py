@@ -321,11 +321,9 @@ class LineTranslator:
             str: Content with segment tags removed
         """
 
-        # Validate lines
-
         error_count = 0
         lines = translated_content.splitlines()
-        line_numbers = []
+        line_numbers: list[int] = []
 
         start_line = start_index  # inclusive start
         end_line = end_index - 1  # exclusive end
@@ -334,50 +332,69 @@ class LineTranslator:
             line = line.strip()
             if not line:
                 continue
-
-            if ":" not in line:
-                logger.warning(f"Invalid line format: {line}")
+            line_num = self._parse_translated_line_number(line)
+            if line_num is None:
                 error_count += 1
                 continue
-
-            try:
-                line_num = int(line[: line.index(":")])
-                if line_num < 0:
-                    logger.warning(f"Invalid line number: {line}")
-                    error_count += 1
-                    continue
-                line_numbers.append(line_num)
-            except ValueError:
-                logger.warning(f"Line number parsing failed: {line}")
-                error_count += 1
-                continue
+            line_numbers.append(line_num)
 
         # Validate sequence
-        if not line_numbers:
-            logger.warning("No valid line numbers found")
-        else:
-            if line_numbers[0] != start_line:
-                logger.warning(
-                    f"First line number {line_numbers[0]} "
-                    f" doesn't match expected {start_line}"
-                )
-                error_count += 1
-
-            if line_numbers[-1] != end_line:
-                logger.warning(
-                    f"Last line number {line_numbers[-1]} "
-                    f"doesn't match expected {end_line}"
-                )
-                error_count += 1
-
-            expected = set(range(start_line, end_line + 1))
-            if missing := expected - set(line_numbers):
-                logger.warning(f"Missing line numbers in sequence: {missing}")
-                error_count += len(missing)
+        error_count += self._validate_line_number_sequence(
+            line_numbers,
+            start_line,
+            end_line,
+        )
 
         logger.debug(f"Validated {len(lines)} lines from {start_line} to {end_line}\n"
                      f"{error_count} errors encountered.")
         return error_count > 0
+
+    def _parse_translated_line_number(self, line: str) -> int | None:
+        if ":" not in line:
+            logger.warning(f"Invalid line format: {line}")
+            return None
+
+        try:
+            line_num = int(line[: line.index(":")])
+        except ValueError:
+            logger.warning(f"Line number parsing failed: {line}")
+            return None
+
+        if line_num < 0:
+            logger.warning(f"Invalid line number: {line}")
+            return None
+        return line_num
+
+    def _validate_line_number_sequence(
+        self,
+        line_numbers: list[int],
+        start_line: int,
+        end_line: int,
+    ) -> int:
+        if not line_numbers:
+            logger.warning("No valid line numbers found")
+            return 0
+
+        error_count = 0
+        if line_numbers[0] != start_line:
+            logger.warning(
+                f"First line number {line_numbers[0]} "
+                f" doesn't match expected {start_line}"
+            )
+            error_count += 1
+
+        if line_numbers[-1] != end_line:
+            logger.warning(
+                f"Last line number {line_numbers[-1]} "
+                f"doesn't match expected {end_line}"
+            )
+            error_count += 1
+
+        expected = set(range(start_line, end_line + 1))
+        if missing := expected - set(line_numbers):
+            logger.warning(f"Missing line numbers in sequence: {missing}")
+            error_count += len(missing)
+        return error_count
 
 def translate_text_by_lines(
     text: TextObject,

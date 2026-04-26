@@ -94,14 +94,14 @@ class DiarizationChunker:
                 # If no last_segment, this is first segment, so no gap.
                 return 0 
             else:
-                return segment.start - self.last_segment.end
+                return int(segment.start - self.last_segment.end)
             
 
         def _should_split(self, segment: DiarizedSegment) -> bool:
             gap_time = self._gap_time(segment)
             interval_time = gap_time if gap_time < self.gap_threshold else self.spacing
             accumulated_time = self.accumulated_time + interval_time + segment.duration
-            return accumulated_time >= self.config.target_duration 
+            return bool(accumulated_time >= self.config.target_duration) 
          
         def _finalize_current_chunk(self, next_segment: Optional[DiarizedSegment]):
             if self.current_chunk_segments:

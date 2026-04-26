@@ -165,12 +165,12 @@ When documenting superseded designs, archived ADRs, or earlier explorations, use
 
 ### Superseded ADRs
 
-- **[ADR-XX: Title](<docs-absolute-path>/archive/adr/adr-xx-title.md)** (YYYY-MM-DD)
+- `**[ADR-XX: Title](<docs-absolute-path>/archive/adr/adr-xx-title.md)** (YYYY-MM-DD)`
   *Status*: Superseded by [ADR-DD02](/architecture/docs-system/adr/adr-dd02-main-content-nav.md)
 
 ### Earlier Design Explorations
 
-- **[Design Doc Title](<docs-absolute-path>/archive/design-doc.md)** (YYYY-MM-DD)
+- `**[Design Doc Title](<docs-absolute-path>/archive/design-doc.md)** (YYYY-MM-DD)`
   *Status*: Replaced by [Current Doc](/architecture/docs-system/design/documentation-design.md)
 
 </details>

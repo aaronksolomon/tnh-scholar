@@ -10,7 +10,7 @@ Handles chunked transcriptions with proper timestamp accumulation.
 import json
 from datetime import timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, TextIO, Tuple
+from typing import Any, List, Optional, TextIO, Tuple, cast
 
 import click
 
@@ -20,6 +20,8 @@ from tnh_scholar.utils.file_utils import write_str_to_file
 
 setup_logging()
 logger = get_child_logger(__name__)
+
+JsonDict = dict[str, Any]
 
 
 class JsonlToSrtConverter:
@@ -38,10 +40,11 @@ class JsonlToSrtConverter:
         milliseconds = round(td.microseconds / 1000)
         return f"{hours:02d}:{minutes:02d}:{seconds:02d},{milliseconds:03d}"
 
-    def parse_jsonl_line(self, line: str) -> Dict:
+    def parse_jsonl_line(self, line: str) -> JsonDict:
         """Parse a single JSONL line into a dictionary."""
         try:
-            return json.loads(line.strip())
+            parsed = json.loads(line.strip())
+            return cast(JsonDict, parsed)
         except json.JSONDecodeError as e:
             logger.error(f"Error parsing JSONL line: {e}")
             return {}
@@ -52,14 +55,14 @@ class JsonlToSrtConverter:
         end_str = self.format_timestamp(end)
         return f"{index}\n{start_str} --> {end_str}\n{text}\n"
 
-    def extract_segment_data(self, segment: Dict) -> Tuple[float, float, str]:
+    def extract_segment_data(self, segment: JsonDict) -> Tuple[float, float, str]:
         """Extract timestamp and text data from a segment."""
         start = segment.get("start", 0) + self.accumulated_time
         end = segment.get("end", 0) + self.accumulated_time
         text = segment.get("text", "").strip()
         return start, end, text
 
-    def process_segment(self, segment: Dict) -> Optional[str]:
+    def process_segment(self, segment: JsonDict) -> Optional[str]:
         """Process a single segment into SRT format."""
         start, end, text = self.extract_segment_data(segment)
 
@@ -70,7 +73,7 @@ class JsonlToSrtConverter:
         self.entry_index += 1
         return entry
 
-    def process_segments_list(self, segments_list: List[Dict]) -> List[str]:
+    def process_segments_list(self, segments_list: List[JsonDict]) -> List[str]:
         """Process a list of segments into SRT entries."""
         entries = []
 
@@ -80,9 +83,9 @@ class JsonlToSrtConverter:
 
         return entries
 
-    def get_segments_from_data(self, data: Dict) -> List[Dict]:
+    def get_segments_from_data(self, data: JsonDict) -> List[JsonDict]:
         """Extract segments from a data object."""
-        return data.get("segments", [])
+        return cast(List[JsonDict], data.get("segments", []))
 
     def read_input_lines(self, input_file: TextIO) -> List[str]:
         """Read and filter input lines from file."""

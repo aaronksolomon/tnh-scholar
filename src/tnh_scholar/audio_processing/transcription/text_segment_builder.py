@@ -65,40 +65,43 @@ class TextSegmentBuilder:
             self.current_characters += 1  # space before the new word
         self.current_characters += len(word.text)
         self.current_words.append(word)
-        
+
+    def _has_speaker_change(self, word: TimedTextUnit, last_word: TimedTextUnit) -> bool:
+        """Return whether a new segment is needed due to speaker change."""
+        return not self.ignore_speaker and (word.speaker != last_word.speaker)
+
+    def _has_significant_pause(self, word: TimedTextUnit, last_word: TimedTextUnit) -> bool:
+        """Return whether a pause exceeds the configured maximum gap."""
+        if self.max_gap_duration is None:
+            return False
+        return (word.start_ms - last_word.end_ms) > self.max_gap_duration
+
+    def _exceeds_max_duration(self, word: TimedTextUnit) -> bool:
+        """Return whether adding this word would exceed the max duration."""
+        if self.max_duration is None:
+            return False
+        duration = word.end_ms - self.current_words[0].start_ms
+        return duration > self.max_duration
+
+    def _exceeds_target_characters(self, word: TimedTextUnit) -> bool:
+        """Return whether adding this word would exceed the target character count."""
+        if self.target_characters is None:
+            return False
+        total_chars = self.current_characters + len(word.text) + 1
+        return total_chars > self.target_characters
 
     def _should_start_new_segment(self, word: TimedTextUnit) -> bool:
         if not self.current_words:
             return False
 
-        # Speaker change
         last_word = self.current_words[-1]
-        if not self.ignore_speaker and (word.speaker != last_word.speaker):
+        if self._has_speaker_change(word, last_word):
             return True
-
-        # Significant pause
-        if self.max_gap_duration is not None:
-            pause = word.start_ms - last_word.end_ms
-            if pause > self.max_gap_duration:
-                return True
-
-        # End punctuation
+        if self._has_significant_pause(word, last_word):
+            return True
         if last_word.text and self._is_punctuation_word(last_word.text):
             return True
-
-        # Max duration
-        if self.max_duration is not None:
-            duration = word.end_ms - self.current_words[0].start_ms
-            if duration > self.max_duration:
-                return True
-
-        # Target character count
-        if self.target_characters is not None:
-            total_chars = self.current_characters + len(word.text) + 1
-            if total_chars > self.target_characters:
-                return True
-
-        return False
+        return self._exceeds_max_duration(word) or self._exceeds_target_characters(word)
 
     def _flush_current_words(self):
         if not self.current_words:

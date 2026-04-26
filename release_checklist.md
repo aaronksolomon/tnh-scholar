@@ -3,19 +3,39 @@ title: "TNH Scholar Release Checklist"
 description: "Checklist of tasks required before publishing a TNH Scholar release."
 owner: ""
 author: ""
-status: processing
+status: current
 created: "2025-01-22"
 ---
 # TNH Scholar Release Checklist
 
 Checklist of tasks required before publishing a TNH Scholar release.
 
-- [ ] Update version in pyproject.toml
-- [ ] Update CHANGELOG.md
-- [ ] Run full test suite: `pytest`
-- [ ] Run type checks: `mypy`
-- [ ] Run linting: `ruff check .`
-- [ ] Build test
-- [ ] TestPyPI upload & install test
-- [ ] PyPI upload
-- [ ] Tag release in git
+## Pre-Release
+
+- [ ] Confirm the release scope and choose the correct bump type (`make release-patch`, `make release-minor`, or `make release-major`)
+- [ ] Run the full local gate on the actual release candidate state: `make release-check`
+- [ ] For minor or major releases, review user-facing docs (`README.md`, `docs/getting-started/`, `docs/user-guide/`, `docs/cli-reference/`, `AGENTS.md`) for stale claims and examples
+- [ ] Ensure `CHANGELOG.md` reflects the actual unreleased work clearly and user-readably
+
+## Versioning
+
+- [ ] Update `pyproject.toml` version via the release target
+- [ ] Confirm `TODO.md` version header matches the bumped version
+- [ ] Verify user-facing version references are not stale (`README.md`, `VERSIONING.md`, release docs as needed)
+
+## Validation
+
+- [ ] Full test suite passes
+- [ ] Type checks pass
+- [ ] Linting passes
+- [ ] Documentation verification passes
+- [ ] Any release-adjacent focused checks for the changed surface have been run
+
+## Publish
+
+- [ ] Commit release metadata updates (`make release-commit`)
+- [ ] Tag and push the release (`make release-tag`)
+- [ ] Publish to PyPI (`make release-publish`)
+- [ ] Verify the package on PyPI and confirm README rendering
+- [ ] Test install the published version from PyPI
+- [ ] Confirm the GitHub tag and release notes are present

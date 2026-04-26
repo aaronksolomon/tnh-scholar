@@ -9,6 +9,8 @@ updated: "2026-04-10"
 ---
 # Current Bootstrap Proof Task Brief
 
+This brief defines the current bounded task and required repo context for the maintained bootstrap-proof workflow.
+
 ## Repo Orientation
 
 Read the repo-local instructions and standards before coding:

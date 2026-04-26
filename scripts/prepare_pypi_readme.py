@@ -33,7 +33,7 @@ def strip_frontmatter(content: str) -> str:
     return cleaned
 
 
-def main():
+def main() -> int:
     """Strip frontmatter from README.md or restore backup."""
     parser = argparse.ArgumentParser(description="Prepare README for PyPI distribution")
     parser.add_argument(
@@ -55,7 +55,7 @@ def main():
 
         shutil.copy2(backup_path, readme_path)
         backup_path.unlink()
-        print(f"✓ Restored README.md from backup")
+        print("✓ Restored README.md from backup")
         return 0
 
     # Strip frontmatter
@@ -78,13 +78,13 @@ def main():
 
     # Check if anything was actually removed
     if len(content) == len(cleaned_content):
-        print(f"ℹ No frontmatter found in README.md")
+        print("ℹ No frontmatter found in README.md")
     else:
         removed_bytes = len(content) - len(cleaned_content)
         print(f"✓ Stripped {removed_bytes} bytes of frontmatter from README.md")
 
-    print(f"\n📦 README.md is ready for PyPI build")
-    print(f"💡 Run 'python scripts/prepare_pypi_readme.py --restore' to restore original")
+    print("\n📦 README.md is ready for PyPI build")
+    print("💡 Run 'python scripts/prepare_pypi_readme.py --restore' to restore original")
 
     return 0
 

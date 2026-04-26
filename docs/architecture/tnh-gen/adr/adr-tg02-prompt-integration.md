@@ -3,7 +3,7 @@ title: "ADR-TG02: TNH-Gen CLI Prompt System Integration"
 description: "Integration pattern for tnh-gen CLI with prompt system via PromptsAdapter"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Sonnet 4.5"
-status: implemented
+status: accepted
 created: "2025-12-07"
 updated: "2026-01-02"
 ---
@@ -12,7 +12,7 @@ updated: "2026-01-02"
 
 This ADR defines how the `tnh-gen` CLI integrates with the prompt system (ADR-PT04) through the `PromptsAdapter`, establishing variable precedence rules and command implementation patterns.
 
-- **Status**: Implemented
+- **Status**: Accepted
 - **Date**: 2025-12-07
 - **Updated**: 2026-01-02
 - **Owner**: Aaron Solomon

@@ -4,7 +4,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Callable, List, Tuple
+from typing import Any, Callable, List, Tuple, cast
 
 import fitz  # PyMuPDF for PDF processing
 from google.cloud import vision
@@ -56,7 +56,7 @@ def pil_to_bytes(image: Image.Image, format: str = "PNG") -> bytes:
 
 
 def start_image_annotator_client(
-    credentials_file: str = None,
+    credentials_file: str | None = None,
     api_endpoint: str = "vision.googleapis.com",
     timeout: Tuple[int, int] = (10, 30),
     enable_logging: bool = False,
@@ -65,7 +65,9 @@ def start_image_annotator_client(
     Starts and returns a Google Vision API ImageAnnotatorClient with optional configuration.
 
     Parameters:
-        credentials_file (str): Path to the credentials JSON file. If None, uses the default environment variable.
+        credentials_file (str):
+            Path to the credentials JSON file. If None, uses the default
+            environment variable.
         api_endpoint (str): Custom API endpoint for the Vision API. Default is the global endpoint.
         timeout (Tuple[int, int]): Connection and read timeouts in seconds. Default is (10, 30).
         enable_logging (bool): Enable detailed logging for debugging. Default is False.
@@ -240,7 +242,7 @@ def extract_image_from_page(page: fitz.Page) -> Image.Image:
 def annotate_image_with_text(
     image: Image.Image,
     text_annotations: List[EntityAnnotation],
-    annotation_font_path: str,
+    annotation_font_path: str | Path,
     font_size: int = 12,
 ) -> Image.Image:
     """
@@ -344,7 +346,7 @@ def process_single_image(
     client: vision.ImageAnnotatorClient,
     feature_type: str = DEFAULT_ANNOTATION_METHOD,
     language_hints: List = DEFAULT_ANNOTATION_LANGUAGE_HINTS,
-) -> List[vision.EntityAnnotation]:
+) -> Any:
     """
     Processes a single image with the Google Vision API and returns text annotations.
 
@@ -383,14 +385,14 @@ def process_single_image(
         {"image": vision_image, "features": features, "image_context": image_context}
     )
 
-    return response
+    return cast(Any, response)
 
 
 def process_page(
     page: fitz.Page,
     client: vision.ImageAnnotatorClient,
-    annotation_font_path: str,
-    preprocessor: Callable[[Image.Image, int], Image.Image] = None,
+    annotation_font_path: str | Path,
+    preprocessor: Callable[[Image.Image, int], Image.Image] | None = None,
 ) -> Tuple[str, List[vision.EntityAnnotation], Image.Image, Image.Image, dict]:
     """
     Processes a single PDF page, extracting text, word locations, and annotated images.
@@ -425,7 +427,7 @@ def process_page(
     response = process_single_image(processed_image, client)
 
     if response:
-        text_annotations = response.text_annotations
+        text_annotations = cast(list[EntityAnnotation], response.text_annotations)
         # Extract full text and word locations
         full_page_text = text_annotations[0].description if text_annotations else ""
         word_locations = text_annotations[1:] if len(text_annotations) > 1 else []
@@ -454,10 +456,10 @@ def process_page(
     )
 
 
-def build_processed_pdf(
+def build_processed_pdf(  # noqa: C901
     pdf_path: Path,
     client: vision.ImageAnnotatorClient,
-    preprocessor: Callable = None,
+    preprocessor: Callable[[Image.Image, int], Image.Image] | None = None,
     annotation_font_path: Path = DEFAULT_ANNOTATION_FONT_PATH,
 ) -> Tuple[
     List[str], List[List[vision.EntityAnnotation]], List[Image.Image], List[Image.Image]
@@ -676,7 +678,7 @@ def save_processed_pdf_data(
     print(f"Processed data saved in: {base_path}")
 
 
-def load_processed_PDF_data(
+def load_processed_PDF_data(  # noqa: C901
     base_path: Path,
 ) -> Tuple[
     List[str], List[List[EntityAnnotation]], List[Image.Image], List[Image.Image]
@@ -703,7 +705,7 @@ def load_processed_PDF_data(
     # Load metadata
     try:
         with metadata_file.open("r", encoding="utf-8") as f:
-            metadata = json.load(f)
+            metadata = cast(dict[str, Any], json.load(f))
     except FileNotFoundError:
         raise FileNotFoundError(f"Metadata file '{metadata_file}' not found.")
     except json.JSONDecodeError as e:
@@ -730,7 +732,7 @@ def load_processed_PDF_data(
 
     # Load text pages
     with text_pages_file.open("r", encoding="utf-8") as f:
-        text_pages = json.load(f)
+        text_pages = cast(List[str], json.load(f))
 
     # Load word locations
     with word_locations_file.open("r", encoding="utf-8") as f:

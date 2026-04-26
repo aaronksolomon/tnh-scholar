@@ -9,6 +9,8 @@ updated: "2026-04-10"
 ---
 # Bootstrap Proof Run Result
 
+This result note records what the first maintained bootstrap-proof execution accomplished, where it failed, and what that revealed about the system.
+
 ## Summary
 
 The first maintained bootstrap-proof executions were operationally useful even though they did not complete the intended repo task. The maintained conductor created a real managed worktree, launched the maintained runtime, persisted run metadata and step artifacts, and exposed important operator UX and runner-contract weaknesses.

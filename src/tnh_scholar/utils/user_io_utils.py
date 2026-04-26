@@ -1,14 +1,12 @@
 import os
 import sys
+from typing import Any, Optional, cast
 
 if os.name == "nt":  # Windows
     pass
 else:  # Unix-like (Linux, macOS)
     pass
 
-
-import os
-from typing import Optional
 
 
 def get_single_char(prompt: Optional[str] = None) -> str:
@@ -39,7 +37,9 @@ def get_single_char(prompt: Optional[str] = None) -> str:
     # Terminal environment
     if os.name == "nt":  # Windows
         import msvcrt
-        return msvcrt.getch().decode("utf-8")
+        getch = cast(Any, getattr(msvcrt, "getch"))
+        windows_char = getch()
+        return bytes(windows_char).decode("utf-8")
     else:  # Unix-like
         import termios
         import tty

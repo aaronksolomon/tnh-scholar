@@ -184,7 +184,9 @@ with col2:
                 if current_page_index > 0:
                     st.session_state.current_page_index -= 1
                     print(f"current page: {st.session_state.current_page_index}")
-                    # st.session_state.current_text = st.session_state.pages[st.session_state.current_page_index]["text"]
+                    # st.session_state.current_text = st.session_state.pages[
+                    #     st.session_state.current_page_index
+                    # ]["text"]
 
         # Right Arrow Button
         with col_next:
@@ -199,7 +201,9 @@ with col2:
                 if current_page_index < len(pages) - 1:
                     st.session_state.current_page_index += 1
                     print(f"current page: {st.session_state.current_page_index}")
-                    # st.session_state.current_text = st.session_state.pages[st.session_state.current_page_index]["text"]
+                    # st.session_state.current_text = st.session_state.pages[
+                    #     st.session_state.current_page_index
+                    # ]["text"]
 
         # Display the current page number
         st.write(f"Page {current_page_index + 1} of {len(pages)}")

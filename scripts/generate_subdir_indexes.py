@@ -141,7 +141,7 @@ def write_index(directory: Path, entries: List[Tuple[str, str, str, str]]) -> No
         f'description: "Table of contents for {rel_dir}"',
         'owner: ""',
         'author: ""',
-        "status: processing",
+        "status: current",
         f'created: "{datetime.now(timezone.utc).date()}"',
         f"{AUTO_FLAG}: true",
         "---",
@@ -150,7 +150,8 @@ def write_index(directory: Path, entries: List[Tuple[str, str, str, str]]) -> No
         "",
         "**Table of Contents**:",
         "",
-        f"<!-- To manually edit this file, update the front matter and keep `{AUTO_FLAG}: true` to allow regeneration. -->",
+        "<!-- To manually edit this file, update the front matter and keep "
+        f"`{AUTO_FLAG}: true` to allow regeneration. -->",
         "",
     ]
     body: list = []

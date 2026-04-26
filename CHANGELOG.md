@@ -17,6 +17,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Repo-Wide Lint and Type Debt Cleanup** (2026-04-25)
+  - Reduced the outstanding Ruff and mypy backlog across scripts, agent orchestration, GenAI, OCR, audio, query, metadata, prompt-system, and CLI surfaces
+  - Restored clean repo-wide static validation with `make lint` and `make type-check`
+  - Added a focused type-hardening pass in legacy utility and audio modules to remove remaining `Any` leaks and stale re-export/import issues
+  - Files: `scripts/`, `src/tnh_scholar/`, `tests/`
+
+- **Docs Build Warning Cleanup** (2026-04-25)
+  - Cleared the markdown validation backlog by normalizing stale frontmatter statuses, title metadata, required fields, and missing summary paragraphs in maintained docs
+  - Updated the generated subdirectory index pipeline to emit validator-compliant auto-generated metadata and regenerated the docs indexes from the cleaned state
+  - Fixed the TODO archive anchor targets and removed placeholder example links that were creating false-positive manual link-review warnings during docs builds
+  - Files: `docs/`, `TODO.md`, `scripts/generate_subdir_indexes.py`
+
+- **Maintained `tnh-conductor` Operator Docs** (2026-04-24)
+  - Added a maintained operator guide and CLI reference for the current `tnh-conductor` bootstrap path
+  - Clarified the supported operator surface as `run`, `status`, and `status --watch`, distinct from earlier spike and migration-source orchestration paths
+  - Linked the new operator-facing docs into the main documentation navigation and relevant overview pages
+  - Files: `docs/development/tnh-conductor-operator-guide.md`, `docs/cli-reference/tnh-conductor.md`, `docs/cli-reference/overview.md`, `docs/architecture/agent-orchestration/system-design.md`, `docs/index.md`
+
+- **Expert-Oriented Coding Prompt Library** (2026-04-25)
+  - Added a curated `coding-prompts/` library for bounded repo tasks, conductor-doc cleanup, TODO refreshes, bootstrap-proof follow-ups, and reusable prompt rails
+  - Collected both Codex and Claude-oriented prompt/task briefs plus a baseline workflow fixture for direct native execution comparisons
+  - Files: `coding-prompts/`
+
+- **Recursive Bootstrap Build Proposal** (2026-04-25)
+  - Added a design proposal describing a recursive bootstrap build path for the maintained agent-orchestration direction
+  - Captured the next-step architectural framing as a design note rather than silently expanding release scope
+  - Files: `docs/architecture/agent-orchestration/notes/design/recursive-bootstrap-build-proposal.md`
+
 - **`tnh-conductor status --watch` Live Monitoring** (2026-04-21)
   - Added `--watch` and `--poll-interval-seconds` to `tnh-conductor status` so operators can stream machine-readable JSON status snapshots until a run reaches a terminal lifecycle state
   - Preserved the existing one-shot status output when watch mode is not enabled
@@ -213,6 +241,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Clarified in `AGENTS.md` that normal PRs are the default workflow and that `git branch -D` is allowed only with explicit approval plus non-loss verification
   - Updated `TODO.md` release framing to mark the maintained `tnh-conductor` bootstrap path as a usable prototype and to put `0.4.0` release-prep cleanup first in the queue
   - Files: `AGENTS.md`, `TODO.md`
+
+- **Rapid-Prototype CI and Release Validation Policy Clarification** (2026-04-24)
+  - Updated the git and release workflow docs to reflect the current prototype policy: PR CI is lighter-weight, `full-ci` is opt-in on riskier PRs, and `make release-check` remains mandatory on the actual release candidate state
+  - Added explicit minor-release documentation review guidance for user-facing docs before tagging or publishing feature releases
+  - Files: `docs/development/git-workflow.md`, `docs/development/release-workflow.md`
 
 - **Repository Workflow Guardrail Clarification** (2026-04-20)
   - Added an explicit branch/worktree removal rule to `AGENTS.md`: deletion now requires user approval plus a non-loss verification check before cleanup

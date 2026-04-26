@@ -10,6 +10,8 @@ updated: "2026-01-25"
 
 # Codex Harness Spike Findings
 
+This findings note summarizes the Codex API harness spike, its hard constraints, and the architectural implications of those results.
+
 ## Executive Summary
 
 The Codex harness spike revealed fundamental constraints in driving GPT-Codex models via the Responses API for agentic coding tasks. While tool execution worked correctly, **the model consistently fails to produce final structured output after tool-calling rounds**, blocking reliable automation.

@@ -1,3 +1,5 @@
+from typing import cast
+
 import streamlit as st
 
 
@@ -89,7 +91,7 @@ class DocumentEditor:
         Returns:
             Page: The current Page object.
         """
-        return self.pages[self.current_page_index]
+        return cast(Page, self.pages[self.current_page_index])
 
     def navigate(self, direction: str):
         """
@@ -117,12 +119,11 @@ class DocumentEditor:
         current_page = self.get_current_page()
 
         # Display current page details
-        st.write(
-            f"Page {current_page.number} of {len(self.pages)}. {'MODIFIED' if current_page.is_modified() else ''}"
-        )
+        modified_label = "MODIFIED" if current_page.is_modified() else ""
+        st.write(f"Page {current_page.number} of {len(self.pages)}. {modified_label}")
 
         # Text area for editing page content
-        new_text = st.text_area(
+        st.text_area(
             label=f"Page {current_page.number} Content",
             value=current_page.text,
             height=300,

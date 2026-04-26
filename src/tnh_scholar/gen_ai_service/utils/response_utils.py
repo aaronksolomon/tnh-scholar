@@ -10,7 +10,7 @@ Connected modules:
 
 from __future__ import annotations
 
-from typing import Any, Optional, TypeVar
+from typing import Any, Optional, TypeVar, cast
 
 from pydantic import BaseModel
 
@@ -47,7 +47,7 @@ def extract_text(envelope: CompletionEnvelope) -> str:
     if envelope.result.text is None:
         raise ValueError("Completion result has no text content")
 
-    return envelope.result.text
+    return str(envelope.result.text)
 
 
 def extract_object(envelope: CompletionEnvelope, model_class: Optional[type[T]] = None) -> T:
@@ -94,7 +94,7 @@ def extract_object(envelope: CompletionEnvelope, model_class: Optional[type[T]] 
             f"got {type(parsed_obj).__name__}"
         )
 
-    return parsed_obj
+    return cast(T, parsed_obj)
 
 
 def extract_usage(envelope: CompletionEnvelope) -> dict[str, int]:
@@ -216,7 +216,7 @@ def extract_finish_reason(envelope: CompletionEnvelope) -> str | None:
 
     # Handle enum or string
     if hasattr(finish_reason, "value"):
-        return finish_reason.value
+        return str(finish_reason.value)
 
     return str(finish_reason) if finish_reason else None
 

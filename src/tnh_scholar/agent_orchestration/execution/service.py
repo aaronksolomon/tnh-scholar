@@ -104,7 +104,7 @@ class SubprocessExecutionService:
         return subprocess.PIPE if should_capture else None
 
     def _use_text_mode(self, request: ExecutionRequest) -> bool:
-        return request.output_capture_policy.encoding.value == "text"
+        return bool(request.output_capture_policy.encoding.value == "text")
 
     def _encoding(self, request: ExecutionRequest) -> str | None:
         return "utf-8" if self._use_text_mode(request) else None

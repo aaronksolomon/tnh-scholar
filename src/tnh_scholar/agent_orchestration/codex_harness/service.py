@@ -23,8 +23,8 @@ from tnh_scholar.agent_orchestration.codex_harness.protocols import (
     PatchApplierProtocol,
     ResponsesClientProtocol,
     RunIdGeneratorProtocol,
-    ToolRegistryProtocol,
     TestRunnerProtocol,
+    ToolRegistryProtocol,
 )
 from tnh_scholar.logging_config import get_logger
 
@@ -186,7 +186,7 @@ class CodexHarnessService:
             self.artifact_writer.write_text(artifacts.stdout_log, result.stdout)
         if result.stderr:
             self.artifact_writer.write_text(artifacts.stderr_log, result.stderr)
-        return result.applied
+        return bool(result.applied)
 
     def _run_tests_if_needed(self, params: CodexRunParams, artifacts: CodexRunArtifacts) -> int | None:
         if params.run_tests_command is None:
@@ -194,7 +194,7 @@ class CodexHarnessService:
         result = self.test_runner.run(params.run_tests_command, params.timeout_seconds)
         self.artifact_writer.write_text(artifacts.stdout_log, result.stdout)
         self.artifact_writer.write_text(artifacts.stderr_log, result.stderr)
-        return result.exit_code
+        return int(result.exit_code)
 
     def _resolve_run_status(
         self,

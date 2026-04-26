@@ -3,7 +3,7 @@ title: "VS Code 1.110 Agent Features Research"
 description: "Research findings from VS Code February 2026 release — UI patterns and systems relevant to tnh-conductor"
 owner: "aaronksolomon"
 author: "Claude Opus 4.5"
-status: reference
+status: current
 created: "2026-03-08"
 ---
 # VS Code 1.110 Agent Features Research

@@ -23,9 +23,10 @@ TNH Scholar is currently in active prototyping. Key capabilities:
 - **Text formatting and translation**: `tnh-gen` CLI for punctuation, translation, sectioning, and prompt-driven processing. See [ADR-TG01](docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) and [ADR-TG02](docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md) for architecture details.
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
+- **Agent orchestration bootstrap**: maintained `tnh-conductor` local/headless workflow runner for bounded worktree-backed bootstrap flows
 - **Prompt system**: See ADRs under [docs/architecture/prompt-system/index.md](docs/architecture/prompt-system/index.md) for decisions and roadmap
 
-> **⚠️ Rapid Prototype Phase (0.x)**: TNH Scholar is in active development with **no backward compatibility guarantees**. Breaking changes may occur in ANY 0.x release (including patches). Pin to a specific version if stability is needed: `pip install tnh-scholar==0.3.0`. See [ADR-PP01](docs/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) for versioning policy.
+> **⚠️ Rapid Prototype Phase (0.x)**: TNH Scholar is in active development with **no backward compatibility guarantees**. Breaking changes may occur in ANY 0.x release (including patches). Pin to a specific version if stability is needed: `pip install tnh-scholar==0.3.1`. See [ADR-PP01](docs/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) for versioning policy.
 
 ## Quick Start
 
@@ -142,7 +143,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing expectation
 
 ## Project Status
 
-TNH Scholar is currently in **alpha stage** (v0.3.0). Expect ongoing API and workflow changes during active development.
+TNH Scholar is currently in **alpha stage** (v0.3.1), preparing a `0.4.0` bootstrap-oriented minor release. Expect ongoing API and workflow changes during active development.
 
 ## Support & Community
 

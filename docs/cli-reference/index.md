@@ -3,8 +3,8 @@ title: "CLI Reference"
 description: "Table of contents for cli-reference"
 owner: ""
 author: ""
-status: processing
-created: "2026-04-22"
+status: current
+created: "2026-04-25"
 auto_generated: true
 ---
 
@@ -25,6 +25,8 @@ auto_generated: true
 **[sent-split](sent-split.md)** - Split text into sentences using NLTK, with newline or space separators.
 
 **[srt-translate](srt-translate.md)** - Translate SRT subtitle files while preserving timecodes, using TNH Scholar translation patterns.
+
+**[tnh-conductor](tnh-conductor.md)** - Maintained local/headless workflow bootstrap runner for agent orchestration.
 
 **[tnh-gen](tnh-gen.md)** - Complete reference for the tnh-gen CLI - TNH Scholar's unified command-line interface for GenAI-powered text processing
 

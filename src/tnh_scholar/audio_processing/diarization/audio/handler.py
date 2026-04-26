@@ -90,6 +90,50 @@ class AudioHandler:
                     f"spacing_time={getattr(segment, 'spacing_time', None)}"
                 )
 
+    def _clamp_bounds(self, start: int, end: int, audio_length: int) -> tuple[int, int]:
+        """Clamp audio slice bounds to the available audio length."""
+        return max(0, min(start, audio_length)), max(0, min(end, audio_length))
+
+    def _append_audio_slice(
+        self,
+        assembled: AudioSegment,
+        base_audio: AudioSegment,
+        start: int,
+        end: int,
+        audio_length: int,
+    ) -> tuple[AudioSegment, int]:
+        """Append a clamped audio slice and return updated audio plus appended length."""
+        start, end = self._clamp_bounds(start, end, audio_length)
+        if end <= start:
+            return assembled, 0
+        interval_audio: AudioSegment = base_audio[start:end]
+        return assembled + interval_audio, len(interval_audio)
+
+    def _append_gap_content(
+        self,
+        assembled: AudioSegment,
+        segment: DiarizationChunk | object,
+        prev_end: int,
+        seg_start: int,
+        base_audio: AudioSegment,
+        audio_length: int,
+    ) -> tuple[AudioSegment, int]:
+        """Append either silence or the real audio between two diarized segments."""
+        if self.config.silence_all_intervals or getattr(segment, "gap_before", False):
+            spacing_time = getattr(segment, "spacing_time", 0)
+            if spacing_time <= 0:
+                return assembled, 0
+            return assembled + AudioSegment.silent(duration=spacing_time), spacing_time
+        if seg_start <= prev_end:
+            return assembled, 0
+        return self._append_audio_slice(
+            assembled,
+            base_audio,
+            prev_end,
+            seg_start,
+            audio_length,
+        )
+
     def _assemble_segments(self, chunk: DiarizationChunk, base_audio: AudioSegment) -> AudioSegment:
         """Assemble audio for the given diarization chunk using gap information."""
         assembled: AudioSegment = AudioSegment.empty()
@@ -97,50 +141,30 @@ class AudioHandler:
         prev_end: Optional[int] = None
         audio_length = len(base_audio)
 
-        def _clamp(val, min_val, max_val):
-            return max(min_val, min(val, max_val))
-
-        def _add_silence(duration):
-            nonlocal assembled, offset
-            if duration > 0:
-                assembled += AudioSegment.silent(duration=duration)
-                offset += duration
-
-        def _add_interval_audio(start, end):
-            nonlocal assembled, offset
-            start = _clamp(start, 0, audio_length)
-            end = _clamp(end, 0, audio_length)
-            if end > start:
-                interval_audio = base_audio[start:end]
-                assembled += interval_audio
-                offset += len(interval_audio)
-
-        def _add_segment_audio(start, end):
-            nonlocal assembled, offset
-            start = _clamp(start, 0, audio_length)
-            end = _clamp(end, 0, audio_length)
-            if end > start:
-                seg_audio: AudioSegment = base_audio[start:end]
-                assembled += seg_audio
-                offset += len(seg_audio)
-                return len(seg_audio)
-            return 0
-
         for segment in chunk.segments:
             seg_start = int(segment.start)
             seg_end = int(segment.end)
 
-            # Handle gap before segment
             if prev_end is not None:
-                if self.config.silence_all_intervals or getattr(segment, "gap_before", False):
-                    spacing_time = getattr(segment, "spacing_time", 0)
-                    _add_silence(spacing_time)
-                elif seg_start > prev_end:
-                    _add_interval_audio(prev_end, seg_start)
+                assembled, added_gap = self._append_gap_content(
+                    assembled,
+                    segment,
+                    prev_end,
+                    seg_start,
+                    base_audio,
+                    audio_length,
+                )
+                offset += added_gap
 
-            # Append current segment audio (clamped)
             segment.audio_map_start = offset
-            _add_segment_audio(seg_start, seg_end)
+            assembled, added_segment = self._append_audio_slice(
+                assembled,
+                base_audio,
+                seg_start,
+                seg_end,
+                audio_length,
+            )
+            offset += added_segment
 
             prev_end = seg_end
 

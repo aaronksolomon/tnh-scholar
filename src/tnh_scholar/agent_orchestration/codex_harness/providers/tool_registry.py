@@ -3,9 +3,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import cast
 
 from tnh_scholar.agent_orchestration.codex_harness.protocols import ToolExecutorProtocol
-from tnh_scholar.agent_orchestration.codex_harness.tools import ToolCall, ToolDefinition, ToolSchemaFactory, ToolResult
+from tnh_scholar.agent_orchestration.codex_harness.tools import (
+    ToolCall,
+    ToolDefinition,
+    ToolResult,
+    ToolSchemaFactory,
+)
 
 
 @dataclass(frozen=True)
@@ -16,7 +22,7 @@ class CodexToolRegistry:
     executor: ToolExecutorProtocol
 
     def definitions(self) -> list[ToolDefinition]:
-        return self.schema_factory.all_definitions()
+        return cast(list[ToolDefinition], self.schema_factory.all_definitions())
 
     def execute(self, call: ToolCall) -> ToolResult:
         return self.executor.execute(call)

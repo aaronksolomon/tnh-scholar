@@ -10,6 +10,8 @@ updated: "2026-04-16"
 
 # SPIKE-09 Prompt Dir Three-Arm Comparison
 
+This experiment note compares direct Codex, supervisory Codex, and kernel-mediated orchestration on the same bounded implementation task.
+
 ## Experiment ID
 
 `SPIKE-09`

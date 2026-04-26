@@ -3,7 +3,7 @@ title: "ADR-OA03.3: Codex CLI Runner"
 description: "Codex execution path via CLI — headless exec mode, superseding API-based approach"
 owner: "aaronksolomon"
 author: "Aaron Solomon, Claude Opus 4.5"
-status: implemented
+status: current
 created: "2026-02-07"
 updated: "2026-02-08"
 parent_adr: "adr-oa03-agent-runner-architecture.md"

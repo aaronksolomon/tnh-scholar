@@ -3,8 +3,8 @@ title: "Vs Code Integration"
 description: "Table of contents for architecture/ui-ux/vs-code-integration"
 owner: ""
 author: ""
-status: processing
-created: "2026-04-22"
+status: current
+created: "2026-04-25"
 auto_generated: true
 ---
 

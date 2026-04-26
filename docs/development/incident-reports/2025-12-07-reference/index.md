@@ -3,8 +3,8 @@ title: "2025 12 07 Reference"
 description: "Table of contents for development/incident-reports/2025-12-07-reference"
 owner: ""
 author: ""
-status: processing
-created: "2026-04-22"
+status: current
+created: "2026-04-25"
 auto_generated: true
 ---
 

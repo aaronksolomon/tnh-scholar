@@ -1,4 +1,5 @@
 import logging
+from typing import cast
 
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
@@ -75,12 +76,18 @@ class OpenAIClient(ProviderClient):
             request_kwargs["reasoning_effort"] = openai_request.reasoning_effort
 
         if openai_request.response_format is not None:
-            return self._client.beta.chat.completions.parse(
-                response_format=openai_request.response_format,
-                **request_kwargs,
+            return cast(
+                ChatCompletion,
+                self._client.beta.chat.completions.parse(
+                    response_format=openai_request.response_format,
+                    **request_kwargs,
+                ),
             )
 
-        return self._client.chat.completions.create(**request_kwargs)
+        return cast(
+            ChatCompletion,
+            self._client.chat.completions.create(**request_kwargs),
+        )
 
     def generate(self, request: ProviderRequest) -> ProviderResponse:
         """

@@ -1,6 +1,7 @@
 # version 2 testing of clearning scripts
 
 import spacy
+from transformers import pipeline
 
 # Load a pretrained model, e.g., for sentence and chapter recognition
 nlp = spacy.load("en_core_web_sm")
@@ -35,9 +36,6 @@ def process_book(book_text):
         chapters.append((chapter_title, " ".join(chapter_content)))
 
     return chapters
-
-
-from transformers import pipeline
 
 # Load a pre-trained BERT model for classification
 classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")

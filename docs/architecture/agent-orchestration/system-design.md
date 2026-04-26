@@ -8,6 +8,9 @@ created: "2026-01-13"
 ---
 
 # TNH-Scholar Agent Orchestration System
+
+This system design document consolidates the current architecture, scope, and operating model for the TNH Scholar agent orchestration system.
+
 ## Comprehensive Design Document — v1.0
 
 **Status:** Draft
@@ -32,6 +35,18 @@ The key insight is using `tnh-gen`'s provenance infrastructure as the **single s
 ### Feasibility Assessment
 
 **High feasibility.** The existing `tnh-gen` module provides the hardest prerequisite: provenance tracking. Most agent frameworks struggle to answer "why did the agent do X?" — TNH-Scholar already has this infrastructure.
+
+### Operator Quick Reference
+
+For the maintained CLI entry point, see **[tnh-conductor CLI Reference](/cli-reference/tnh-conductor.md)**.
+
+The current operator-facing surface is deliberately minimal:
+
+- `tnh-conductor run` to execute one workflow
+- `tnh-conductor status` to read one run status snapshot
+- `tnh-conductor status --watch` to poll run state until completion
+
+This maintained CLI is distinct from `tnh-conductor-spike` and the internal `conductor_mvp` migration package.
 
 ---
 

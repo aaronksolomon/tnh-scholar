@@ -249,7 +249,7 @@ class Prompt:
         content = self.get_content_without_frontmatter()
 
         # Combine new frontmatter with content
-        self.instructions = f"---\n{yaml_str}---\n\n{content}"
+        self.instructions = MarkdownStr(f"---\n{yaml_str}---\n\n{content}")
         
         
     def source_bytes(self) -> bytes:
@@ -407,7 +407,7 @@ class GitBackedRepository:
             logger.error(f"Git operation failed: {e}")
             raise
 
-    def _commit_file_update(self, rel_path, file_path):
+    def _commit_file_update(self, rel_path: Path, file_path: Path) -> str:
         if self._is_file_clean(rel_path):
             # Return the current commit hash if no changes
             return self.repo.head.commit.hexsha
@@ -419,7 +419,7 @@ class GitBackedRepository:
             author=Actor("PromptManager", ""),
         )
         logger.info(f"Committed changes to {file_path}: {commit.hexsha}")
-        return commit.hexsha
+        return str(commit.hexsha)
 
     def _get_file_revisions(self, file_path: Path) -> List[Commit]:
         """
@@ -521,7 +521,12 @@ class GitBackedRepository:
                 # Print commit header
                 date_str = commit.committed_datetime.strftime("%Y-%m-%d %H:%M:%S")
                 print(f"\nCommit {commit.hexsha[:8]} ({date_str}):")
-                print(f"Message: {commit.message.strip()}")
+                message = (
+                    commit.message.decode().strip()
+                    if isinstance(commit.message, bytes)
+                    else commit.message.strip()
+                )
+                print(f"Message: {message}")
 
                 # Get and display diffs
                 prev_commit = commits[i + 1] if i + 1 < len(commits) else None
@@ -940,6 +945,7 @@ class LocalPromptManager:
     """
 
     _instance: Optional["LocalPromptManager"] = None
+    _prompt_manager: "PromptCatalog | None"
 
     def __new__(cls) -> "LocalPromptManager":
         """

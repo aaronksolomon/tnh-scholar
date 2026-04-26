@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from typing import Protocol, Tuple
+from typing import Protocol
 
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionEnvelope,
     Fingerprint,
-    RenderRequest,
     RenderedPrompt,
+    RenderRequest,
 )
 from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
@@ -18,7 +18,7 @@ class PromptCatalogProtocol(Protocol):
         """Get metadata for a specific prompt."""
         ...
 
-    def render(self, request: RenderRequest) -> Tuple[RenderedPrompt, Fingerprint]:
+    def render(self, request: RenderRequest) -> tuple[RenderedPrompt, Fingerprint]:
         """Render prompt content and fingerprint for provider consumption."""
         ...
 
