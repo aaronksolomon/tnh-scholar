@@ -10,7 +10,7 @@ SANDBOX_SOURCE_REPO ?= .
 PR_BASE ?= origin/main
 PR_CHECK_ARGS ?=
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-drift docs-verify codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-build-readonly docs-drift docs-change-warning docs-verify docs-verify-readonly codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -99,9 +99,25 @@ docs-build: docs-generate docs-links
 	@echo "Building MkDocs site..."
 	$(POETRY) run mkdocs build --strict
 
+docs-build-readonly:
+	@echo "Building MkDocs site (read-only)..."
+	$(POETRY) run mkdocs build --strict
+
 docs-drift:
 	@echo "Checking README ↔ docs/index.md drift..."
 	$(POETRY) run python scripts/check_readme_docs_drift.py
+
+docs-change-warning:
+	@CHANGED_MD=$$(git diff --name-only HEAD -- '*.md'); \
+	if [ -n "$$CHANGED_MD" ]; then \
+		echo "⚠️  Tracked Markdown changes detected:"; \
+		printf '%s\n' "$$CHANGED_MD"; \
+		echo ""; \
+		echo "Release check is running read-only docs validation."; \
+		echo "If these edits should regenerate docs artifacts, run 'make docs-build' before release."; \
+	else \
+		echo "✅ No tracked Markdown changes detected"; \
+	fi
 
 link-check:
 	@echo "Running external link check..."
@@ -114,6 +130,9 @@ codespell:
 docs-verify: docs-drift docs-build codespell
 	@echo "Verifying documentation..."
 	$(POETRY) run python scripts/sync_readme.py
+
+docs-verify-readonly: docs-drift docs-build-readonly codespell
+	@echo "Verifying documentation (read-only)..."
 
 docs: docs-verify
 	@echo "Documentation build complete: site/"
@@ -177,7 +196,7 @@ pr-check:
 # Set DRY_RUN=1 to preview commands without executing (e.g., make release-patch DRY_RUN=1)
 DRY_RUN ?= 0
 
-release-check: test type-check lint docs-verify
+release-check: test type-check lint docs-change-warning docs-verify-readonly
 	@echo "✅ All quality checks passed - ready to release"
 
 changelog-draft:
