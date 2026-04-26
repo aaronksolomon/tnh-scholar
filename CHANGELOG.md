@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Prompt Catalog Stage 1 Tooling Fixes** (2026-04-26)
+  - Fixed filesystem prompt-catalog listing for relative `--prompt-dir` usage so `tnh-gen --prompt-dir ./prompts list` no longer double-prefixes prompt paths
+  - Normalized legacy `output_mode: text` prompt metadata without spurious catalog warnings, leaving only real validation issues visible during catalog health checks
+  - Added focused prompt-system regression coverage for relative repository paths and legacy text-mode metadata handling
+  - Files: `src/tnh_scholar/prompt_system/adapters/filesystem_catalog_adapter.py`, `src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`, `tests/prompt_system/test_catalog_adapters.py`, `tests/prompt_system/test_mapper.py`
+
 - **CI Workflow Cleanup and Docs Validation Split** (2026-04-26)
   - Replaced the old overloaded CI workflow with separate PR validation, `main` validation/test, and scheduled weekly full-test workflows
   - Split docs CI into read-only PR validation and a separate `main` publish path, removing docs generation from PR verification

@@ -25,6 +25,14 @@ def test_to_key_from_path_supports_absolute_and_relative_paths(tmp_path: Path):
     assert mapper.to_key_from_path(relative, base_path) == "agent-orch/planner/evaluate"
 
 
+def test_to_key_from_path_strips_relative_base_prefix():
+    mapper = PromptMapper()
+    base_path = Path("prompts")
+    relative = Path("prompts/agent-orch/planner/evaluate.md")
+
+    assert mapper.to_key_from_path(relative, base_path) == "agent-orch/planner/evaluate"
+
+
 def test_to_key_from_path_keeps_absolute_path_when_not_under_base(tmp_path: Path):
     mapper = PromptMapper()
     base_path = tmp_path / "prompts"
@@ -108,6 +116,27 @@ Evaluate planner output.
     assert names_to_specs["harness_report"].strictness.value == "strict"
     assert not names_to_specs["context_notes"].required
     assert names_to_specs["context_notes"].strictness.value == "loose"
+
+
+def test_to_domain_prompt_accepts_legacy_text_output_mode_without_warning():
+    mapper = PromptMapper()
+    content = """---
+key: agent-orch/planner/evaluate
+name: Planner Evaluate
+version: 1
+description: Evaluate planner output.
+role: planner
+required_variables: []
+output_mode: text
+---
+Evaluate planner output.
+"""
+
+    prompt = mapper.to_domain_prompt(content)
+
+    assert prompt.metadata.output_contract is not None
+    assert prompt.metadata.output_contract.mode.value == "text"
+    assert prompt.metadata.warnings == []
 
 
 def test_to_domain_prompt_normalizes_artifact_output_entries():

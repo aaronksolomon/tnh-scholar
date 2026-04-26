@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from tnh_scholar.prompt_system.adapters.filesystem_catalog_adapter import (
     FilesystemPromptCatalog,
 )
@@ -82,6 +84,29 @@ def test_filesystem_catalog_list_returns_namespaced_keys(tmp_path: Path):
     keys = sorted(metadata.canonical_key() for metadata in catalog.list())
 
     assert keys == ["agent-orch/planner/evaluate", "core/task/summarize"]
+
+
+@pytest.mark.parametrize(
+    "repository_path",
+    [Path("prompts"), Path("./prompts")],
+)
+def test_filesystem_catalog_list_supports_relative_repository_path(
+    tmp_path: Path,
+    monkeypatch,
+    repository_path: Path,
+):
+    relative_repo = tmp_path / "prompts"
+    write_prompt(relative_repo, "agent-orch/planner/evaluate")
+    monkeypatch.chdir(tmp_path)
+
+    config = PromptCatalogConfig(repository_path=repository_path)
+    mapper = PromptMapper()
+    loader = PromptLoader(PromptValidator(ValidationPolicy()))
+    catalog = FilesystemPromptCatalog(config, mapper=mapper, loader=loader)
+
+    keys = [metadata.canonical_key() for metadata in catalog.list()]
+
+    assert keys == ["agent-orch/planner/evaluate"]
 
 
 def test_filesystem_catalog_get_accepts_immutable_reference(tmp_path: Path):

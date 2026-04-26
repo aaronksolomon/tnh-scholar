@@ -65,7 +65,7 @@ class FilesystemPromptCatalog(PromptCatalogPort):
         for path in files:
             key = self._mapper.to_key_from_path(path, self._config.repository_path)
             request = PromptFileRequest(
-                path=self._mapper.to_file_request(key, self._config.repository_path),
+                path=path,
                 commit_sha=None,
             )
             file_resp = self._transport.read_file(request)

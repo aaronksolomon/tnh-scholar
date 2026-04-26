@@ -22,7 +22,13 @@ class PromptMapper:
         return base_path / f"{canonical_key}.md"
 
     def to_key_from_path(self, path: Path, base_path: Path) -> str:
-        """Map a prompt file path to canonical key."""
+        """Map a prompt file path to canonical key.
+
+        Absolute paths are relativized only when they live under ``base_path``.
+        Relative paths also strip a matching relative ``base_path`` prefix, which
+        keeps ``prompts/foo.md`` and ``foo.md`` equivalent for callers such as
+        ``--prompt-dir ./prompts``. Paths outside the base are preserved.
+        """
         if path.is_absolute():
             try:
                 relative = path.relative_to(base_path)
@@ -30,6 +36,10 @@ class PromptMapper:
                 relative = path
         else:
             relative = path
+            try:
+                relative = relative.relative_to(base_path)
+            except ValueError:
+                pass
         relative = relative.with_suffix("")
         return relative.as_posix()
 
@@ -168,6 +178,8 @@ class PromptMapper:
             return {"mode": "json"}
         if legacy_mode == "artifacts":
             return {"mode": "artifacts", "artifacts": []}
+        if legacy_mode == "text":
+            return {"mode": "text"}
         if legacy_mode is not None:
             warnings.append(
                 f"Frontmatter field 'output_mode' invalid; got '{legacy_mode}'. Defaulting to 'text'."
