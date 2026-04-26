@@ -28,20 +28,20 @@ assemblyai = "*"
 ebooklib = { version = "0.18", optional = true }
 fitz = { version = "0.0.1.dev2", optional = true }
 flask = "3.1.0"
-gitpython = "3.1.44"
+gitpython = "3.1.47"
 google-cloud = { version = "0.34.0", optional = true }
 google-cloud-vision = { version = "3.9.0", optional = true }
 jinja2 = "3.1.5"
 langchain-community = { version = "0.3.13", optional = true }
 langdetect = "1.0.9"
-lxml = "5.3.0"
-nltk = "3.9.1"
+lxml = "6.1.0"
+nltk = "3.9.4"
 numpy = ">=2.0,<2.1"
 openai = ">=2,<3"
 openai-whisper = "*"
 packaging = "24.2"
 pdf2image = { version = "1.17.0", optional = true }
-pillow = { version = "11.1.0", optional = true }
+pillow = { version = "12.2.0", optional = true }
 pycountry = "24.6.1"
 pydantic = ">=2.10,<3"
 pydantic-settings = ">=2.6,<3"
@@ -49,11 +49,11 @@ pysrt = "1.1.2"
 pydub = "0.25.1"
 platformdirs = "4.3.6"
 pyngrok = "7.2.3"
-python-dotenv = "1.0.1"
+python-dotenv = "1.2.2"
 python-json-logger = "2.0.7"
 pyyaml = "6.0.2"
 regex = "2024.11.6"
-requests = "2.32.3"
+requests = "2.33.0"
 rich = "13.9.4"
 spacy = { version = ">=3.8,<3.9", optional = true }
 streamlit = { version = ">=1.41,<2", optional = true }
