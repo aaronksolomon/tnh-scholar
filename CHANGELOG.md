@@ -25,6 +25,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Refreshed agent/workflow docs and updated docs tooling (`mkdocs-material`, `mkdocstrings-python`, `pymdown-extensions`, `pygments`) so strict docs builds remain healthy under the current dependency set
   - Files: `.github/workflows/`, `docs/development/`, `AGENTS.md`, `AGENT_WORKFLOW.md`, `docs/architecture/agent-orchestration/example-agent-workflow.md`, `mkdocs.yaml`, `docs/api/index.md`, `pyproject.toml`, `poetry.lock`
 
+- **Docs Tooling Alignment for API Build Stability** (2026-04-26)
+  - Updated `mkdocstrings-python` and pinned `pymdown-extensions` explicitly so API reference generation no longer fails in `pymdownx.highlight` while rendering `docs/api/index.md`
+  - Preserved `pygments 2.20.0` while moving the mkdocstrings/pymdown side to the compatible versions verified by `mkdocs build --strict`
+  - Files: `pyproject.toml`, `poetry.lock`
+
 - **Dependabot Final Remediation Slice** (2026-04-26)
   - Removed prototype-only `langchain`, `langchain-community`, and `supabase` packages from the root Poetry graph so the maintained `gui` extra is limited to `streamlit`
   - Updated the standalone `audio_transcribe` environment manifest to patched `yt_dlp`
