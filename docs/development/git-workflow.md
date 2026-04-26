@@ -4,7 +4,7 @@ description: "Safe git practices for TNH Scholar development to prevent data los
 author: "Claude Sonnet 4.5"
 status: "current"
 created: "2025-12-07"
-updated: "2026-03-25"
+updated: "2026-04-26"
 owner: "Engineering"
 ---
 
@@ -143,9 +143,11 @@ git push origin --delete feature/my-feature
 
 GitHub PR CI is intentionally non-blocking during the current rapid-prototype phase.
 
-- lint, format, type-check, and docs sync steps on PRs are advisory
-- the full GitHub Actions pytest pass runs on PRs only when the PR has the `full-ci` label
-- pushes to `main` still run the full GitHub Actions test job after merge
+- the always-on `pr-validation` workflow is advisory fast signal
+- `pr-validation` intentionally avoids heavy optional extras and full pytest
+- the `full-test` workflow path runs on PRs only when the PR has the `full-ci` label
+- pushes to `main` still run the authoritative post-merge `main-test` workflow
+- a scheduled weekly full test run provides a periodic integrated health signal outside the PR loop
 
 Responsibility for `full-ci` is simple:
 
@@ -163,6 +165,11 @@ Use `full-ci` by default for:
 Docs-only or similarly low-risk metadata changes can usually skip it.
 
 This label policy does **not** replace release validation. Before any release tag or publish step, the release owner must run the full local gate with `make release-check` as described in [Release Workflow](/development/release-workflow.md).
+
+Docs validation is also split by intent:
+
+- PR docs validation is read-only
+- docs generation and publication happen on `main`
 
 **Why this is safer**:
 

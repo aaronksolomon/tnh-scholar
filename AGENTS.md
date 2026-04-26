@@ -5,7 +5,7 @@ owner: ""
 author: "aaronksolomon, Claude Sonnet 4.5"
 status: current
 created: "2025-12-07"
-updated: "2026-04-21"
+updated: "2026-04-26"
 ---
 # AGENTS.md
 
@@ -68,6 +68,7 @@ Rules:
 Core commands:
 
 ```bash
+make branch-preflight
 make pr-check
 make ci-check
 poetry install --with local
@@ -76,8 +77,19 @@ poetry run sourcery review <paths> 2>&1
 
 Docs-only changes: run `make docs-build`; if it passes, push directly to `main` (no PR required during rapid-prototype phase). Do not create new indexes or edit auto generated indexes. Indexes are auto built.
 
+High-level operating stance:
+- For higher-order workflow questions, multi-agent coordination, or delegation judgment, see `AGENT_WORKFLOW.md`
+- Agent roles are not fixed; use the lightest workflow that is honest about risk
+- Validation is local-first; use focused checks for focused changes and broader local validation for higher-risk work
+- Treat PR CI as advisory fast signal; use `full-ci` when extra GitHub-side confidence is warranted
+- For complex, multi-step, or mission-critical work, agents should consider scoped task distribution or independent review via subagents/assistant agents when available
+- Native subagents are preferred when the runtime supports them; repo-local assistant CLIs such as `codex-assistant` and `claude-assistant` are valid bounded-review or bounded-implementation tools when their output can be captured and reviewed
+- Delegation should stay scoped and useful: do not offload immediate blocking judgment blindly, and do not treat delegated output as a substitute for final engineering review
+- Merge and release judgment remain human-owned; agents inform engineering decisions, they do not replace them
+
 Default PR flow:
 - `main -> feat/<slice> -> PR -> merge`
+- Run `make branch-preflight` before starting new work
 - Open a normal PR by default; use a draft PR only when the user explicitly asks for draft status or the work is intentionally not review-ready
 - Run `make pr-check` before opening a PR
 - Preferred diff size: `<120k` chars
