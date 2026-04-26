@@ -1,6 +1,5 @@
-# requirements.txt
-streamlit=1.41.1
-supabase=2.11.0
-langchain=0.3.13
-langchain-openai=0.2.14
-langchain-community=0.3.13
+streamlit==1.54.0
+supabase==2.11.0
+langchain==0.3.28
+langchain-openai==0.2.14
+langchain-community==0.3.31

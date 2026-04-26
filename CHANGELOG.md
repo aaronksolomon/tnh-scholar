@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Dependabot Stage 4 Pattern Share Manifest Refresh** (2026-04-26)
+  - Updated the standalone `pattern_share` requirements manifest to patched `streamlit`, `langchain`, and `langchain-community` versions without changing the repo-wide Poetry lock graph
+  - Kept `langchain-openai` pinned pending a separate compatibility review because its remaining advisory points at a newer major line
+  - Files: `src/tnh_scholar/pattern_share/requirements.txt`
+
 - **Dependabot Stage 3 Dev/Tooling Refresh** (2026-04-25)
   - Bumped direct app and dev dependencies for `flask`, `jinja2`, `black`, and `pytest` to current patched versions
   - Refreshed the locked dev/notebook/tooling stack to pull in patched `nbconvert`, `tornado`, `filelock`, `virtualenv`, and `werkzeug`
