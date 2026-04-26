@@ -30,6 +30,10 @@ class PromptMapper:
                 relative = path
         else:
             relative = path
+            try:
+                relative = relative.relative_to(base_path)
+            except ValueError:
+                pass
         relative = relative.with_suffix("")
         return relative.as_posix()
 
@@ -168,6 +172,8 @@ class PromptMapper:
             return {"mode": "json"}
         if legacy_mode == "artifacts":
             return {"mode": "artifacts", "artifacts": []}
+        if legacy_mode == "text":
+            return {"mode": "text"}
         if legacy_mode is not None:
             warnings.append(
                 f"Frontmatter field 'output_mode' invalid; got '{legacy_mode}'. Defaulting to 'text'."

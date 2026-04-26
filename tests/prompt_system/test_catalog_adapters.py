@@ -84,6 +84,24 @@ def test_filesystem_catalog_list_returns_namespaced_keys(tmp_path: Path):
     assert keys == ["agent-orch/planner/evaluate", "core/task/summarize"]
 
 
+def test_filesystem_catalog_list_supports_relative_repository_path(tmp_path: Path, monkeypatch):
+    relative_repo = tmp_path / "prompts"
+    write_prompt(relative_repo, "agent-orch/planner/evaluate")
+    original_cwd = Path.cwd()
+    monkeypatch.chdir(tmp_path)
+    try:
+        config = PromptCatalogConfig(repository_path=Path("prompts"))
+        mapper = PromptMapper()
+        loader = PromptLoader(PromptValidator(ValidationPolicy()))
+        catalog = FilesystemPromptCatalog(config, mapper=mapper, loader=loader)
+
+        keys = [metadata.canonical_key() for metadata in catalog.list()]
+    finally:
+        monkeypatch.chdir(original_cwd)
+
+    assert keys == ["agent-orch/planner/evaluate"]
+
+
 def test_filesystem_catalog_get_accepts_immutable_reference(tmp_path: Path):
     write_prompt(tmp_path, "agent-orch/planner/evaluate", "Hi {{who}}")
     config = PromptCatalogConfig(repository_path=tmp_path)
