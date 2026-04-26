@@ -194,7 +194,7 @@ render_stage(stage_id, body, height=300)
 # ========== STAGE 3: + Regions plugin (demo regions), drag/resize, diagnostics ==========
 st.subheader("Stage 3 — + Regions (drag/resize), per-event diagnostics")
 stage_id = "s3"
-body = f"""
+body = """
 <div class="wrap-{stage_id}">
   <div id="timeline-{stage_id}" class="timeline"></div>
   <div id="wave-{stage_id}" class="wave" tabindex="0"></div>
@@ -218,7 +218,7 @@ body = f"""
   try {
     const ws = WaveSurfer.create({
       container: "#wave-s3",
-      url: "{{AUDIO_URL}}".replace("{{AUDIO_URL}}", ""), /* placeholder ignored by browser */
+      url: "__AUDIO_URL__",
       height: 160,
       minPxPerSec: pxPerSec_s3,
       waveColor: "#9aa5b1",
@@ -273,6 +273,8 @@ body = f"""
   }
 </script>
 """
+body = body.replace("{stage_id}", stage_id)
+body = body.replace("__AUDIO_URL__", audio_url)
 
 render_stage(stage_id, body, height=340)
 
