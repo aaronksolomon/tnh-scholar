@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Dependabot Final Remediation Slice** (2026-04-26)
+  - Removed prototype-only `langchain`, `langchain-community`, and `supabase` packages from the root Poetry graph so the maintained `gui` extra is limited to `streamlit`
+  - Updated the standalone `audio_transcribe` environment manifest to patched `yt_dlp`
+  - Updated the standalone `pattern_share` prototype manifest to current patched LangChain/OpenAI package lines and refreshed the Poetry lock to patched `Pygments`
+  - Files: `pyproject.toml`, `poetry.lock`, `src/tnh_scholar/cli_tools/audio_transcribe/environment/requirements.txt`, `src/tnh_scholar/pattern_share/requirements.txt`
+
 - **Query Cleanup: Remove Dead `v2_cleaning_scripts` Artifact** (2026-04-26)
   - Removed the unused `query/v2_cleaning_scripts.py` experimental helper after confirming it had no imports, tests, docs references, or entry points
   - Dropped `transformers` from declared dependencies because that file was its only remaining consumer in the repo
