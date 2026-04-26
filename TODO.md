@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-04-25"
+updated: "2026-04-26"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-25 (release-prep docs sweep and repo-wide lint/type cleanup complete; notebook repo cleanup and release validation next)
+> **Last Updated**: 2026-04-26 (CI workflow cleanup and docs validation split landed; notebook repo cleanup and release validation next)
 > **Version**: 0.3.1 (Alpha; preparing 0.4.0 bootstrap release)
 > **Status**: Active Development - bootstrap viable, release validation and packaging phase
 >
@@ -42,6 +42,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 **Recent release hardening completed**:
 
+- ✅ CI workflow cleanup split GitHub validation into PR, `main`, scheduled full-test, and docs-specific flows; docs PR validation is now read-only
 - ✅ Removed dead `query/v2_cleaning_scripts.py` artifact and dropped its unused `transformers` dependency
 - ✅ Dependabot Stage 6 retired the legacy local Whisper / `torch` audio path so maintained audio support is limited to current API-backed surfaces
 - ✅ Dependabot Stage 5 optional GUI graph refresh landed for Poetry-managed `langchain`, `langchain-community`, `langchain-core`, `langchain-text-splitters`, and `aiohttp`

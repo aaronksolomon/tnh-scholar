@@ -11,7 +11,7 @@ created: "2025-01-19"
 ::: tnh_scholar
     handler: python
     options:
-        show_source: true
+        show_source: false
         show_root_heading: true
         show_if_no_docstring: true
         members: true

@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **CI Workflow Cleanup and Docs Validation Split** (2026-04-26)
+  - Replaced the old overloaded CI workflow with separate PR validation, `main` validation/test, and scheduled weekly full-test workflows
+  - Split docs CI into read-only PR validation and a separate `main` publish path, removing docs generation from PR verification
+  - Refreshed agent/workflow docs and updated docs tooling (`mkdocs-material`, `mkdocstrings-python`, `pymdown-extensions`, `pygments`) so strict docs builds remain healthy under the current dependency set
+  - Files: `.github/workflows/`, `docs/development/`, `AGENTS.md`, `AGENT_WORKFLOW.md`, `docs/architecture/agent-orchestration/example-agent-workflow.md`, `mkdocs.yaml`, `docs/api/index.md`, `pyproject.toml`, `poetry.lock`
+
 - **Query Cleanup: Remove Dead `v2_cleaning_scripts` Artifact** (2026-04-26)
   - Removed the unused `query/v2_cleaning_scripts.py` experimental helper after confirming it had no imports, tests, docs references, or entry points
   - Dropped `transformers` from declared dependencies because that file was its only remaining consumer in the repo

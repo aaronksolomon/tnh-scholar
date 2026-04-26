@@ -1,34 +1,28 @@
-name: Documentation
+name: Docs Publish
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main, develop, docs-reorg ]
+    branches: [main]
     paths:
-      - 'docs/**'
-      - 'README.md'
-      - 'mkdocs.yaml'
-      - 'scripts/generate_cli_docs.py'
-      - 'scripts/generate_doc_index.py'
-      - 'scripts/generate_index_md.py'
-      - 'scripts/sync_readme.py'
-      - 'scripts/check_readme_docs_drift.py'
-      - '.github/workflows/docs.yml'
-  pull_request:
-    branches: [ main, develop, docs-reorg ]
-    paths:
-      - 'docs/**'
-      - 'README.md'
-      - 'mkdocs.yaml'
-      - 'scripts/generate_cli_docs.py'
-      - 'scripts/generate_doc_index.py'
-      - 'scripts/generate_index_md.py'
-      - 'scripts/sync_readme.py'
-      - 'scripts/check_readme_docs_drift.py'
-      - '.github/workflows/docs.yml'
+      - "docs/**"
+      - "README.md"
+      - "mkdocs.yaml"
+      - "Makefile"
+      - "scripts/check_readme_docs_drift.py"
+      - "scripts/generate_doc_index.py"
+      - "scripts/generate_index_md.py"
+      - "scripts/generate_subdir_indexes.py"
+      - "scripts/sync_readme.py"
+      - "scripts/sync_root_docs.py"
+      - "scripts/update_index_doc_map.py"
+      - "scripts/validate_markdown.py"
+      - "scripts/verify_doc_links.py"
+      - ".github/workflows/docs-pr.yml"
+      - ".github/workflows/docs-publish.yml"
 
 jobs:
-  docs-build-and-verify:
+  docs-publish:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -53,12 +47,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+          key: docs-publish-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
 
       - name: Install dependencies
         run: |
           poetry env use python
-          poetry install --no-interaction --no-ansi
+          poetry install --no-interaction --no-ansi --no-root
 
       - name: Check documentation drift
         run: |
@@ -69,10 +63,7 @@ jobs:
       - name: Verify README ↔ docs/index.md sync
         run: poetry run python scripts/sync_readme.py
 
-      - name: Generate documentation
-        run: make docs-generate
-
-      - name: Build MkDocs site
+      - name: Build documentation
         run: make docs-build
 
       - name: Upload docs artifact (main branch only)
@@ -83,7 +74,7 @@ jobs:
           path: site/
 
       - name: Deploy to GitHub Pages
-        if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/docs-reorg') && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -5,6 +5,7 @@ owner: ""
 author: "Claude (Sonnet 4.5) with Aaron Solomon"
 status: current
 created: "2025-12-06"
+updated: "2026-04-26"
 ---
 # Release Workflow
 
@@ -56,7 +57,7 @@ Before first release, complete these configuration steps:
 3. **Quality Checks Pass**: Verify the project builds cleanly
 
    ```bash
-   make release-check  # Runs: test, type-check, lint, docs-verify
+   make release-check  # Runs: test, type-check, lint, docs-verify-readonly
    ```
 
 ### Pre-Release Verification
@@ -71,9 +72,11 @@ This is the mandatory full-codebase verification pass for a release candidate.
 
 During rapid prototyping, pull request CI is intentionally lighter-weight than a traditional protected-branch setup:
 
-- lint/type/doc checks on PRs are informative, not blocking
-- the full pytest run on PRs is opt-in via the `full-ci` label
-- `main` still receives the full GitHub Actions test run after merge
+- the always-on `pr-validation` workflow is informative, not blocking
+- `pr-validation` intentionally skips heavy optional extras and full pytest
+- the `full-test` PR workflow path is opt-in via the `full-ci` label
+- `main` still receives the authoritative post-merge `main-test` GitHub Actions run after merge
+- a scheduled weekly full test run provides a periodic integrated health signal between releases
 
 That means **the release owner must run `make release-check` on the actual release candidate state before tagging or publishing**, regardless of whether earlier PRs carried the `full-ci` label.
 
@@ -82,7 +85,7 @@ This runs:
 - `make test` - Full test suite with pytest
 - `make type-check` - MyPy type checking
 - `make lint` - Ruff linting
-- `make docs-verify` - Documentation build, link check, and spell check
+- `make docs-verify-readonly` - Read-only documentation build and verification checks
 
 **Expected output**: `✅ All quality checks passed - ready to release`
 
@@ -92,7 +95,7 @@ If checks fail, fix the issues before proceeding with the release.
 
 PR CI is currently optimized for fast iteration rather than strict merge blocking.
 
-**Who applies `full-ci`**: the PR author or reviewer opening the merge path is responsible for adding the `full-ci` label when a PR needs the full GitHub Actions pytest pass before merge.
+**Who applies `full-ci`**: the PR author or reviewer opening the merge path is responsible for adding the `full-ci` label when a PR needs the GitHub-side `full-test` pytest pass before merge.
 
 **Use `full-ci` for**:
 
@@ -110,6 +113,11 @@ PR CI is currently optimized for fast iteration rather than strict merge blockin
 - narrow metadata or issue-tracking updates
 
 Even when `full-ci` is skipped on the PR, the pre-release `make release-check` run above remains mandatory.
+
+Documentation CI follows the same split:
+
+- PR docs validation is read-only
+- docs generation and publication happen on `main`
 
 ## Release Types
 

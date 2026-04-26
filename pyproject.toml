@@ -78,7 +78,7 @@ ipykernel = "6.29.5"
 mkdocs-gen-files = "0.5.0"
 mkdocs-literate-nav = "0.6.1"
 mkdocstrings-python = "^2.0.1"
-mkdocs-material = "9.5.50"
+mkdocs-material = "9.7.6"
 mypy = "1.14.1"
 pipreqs = "0.5.0"
 pytest = "9.0.3"
@@ -91,6 +91,7 @@ types-requests = "2.32.0.20241016"
 pre-commit = "^4.5.0"
 codespell = "2.3.0"
 md-dead-link-check = "^1.2.0"
+pygments = "2.20.0"
 
 [tool.poetry.group.local]
 optional = true
