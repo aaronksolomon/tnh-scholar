@@ -68,6 +68,7 @@ Rules:
 Core commands:
 
 ```bash
+make branch-preflight
 make pr-check
 make ci-check
 poetry install --with local
@@ -88,6 +89,7 @@ High-level operating stance:
 
 Default PR flow:
 - `main -> feat/<slice> -> PR -> merge`
+- Run `make branch-preflight` before starting new work
 - Open a normal PR by default; use a draft PR only when the user explicitly asks for draft status or the work is intentionally not review-ready
 - Run `make pr-check` before opening a PR
 - Preferred diff size: `<120k` chars

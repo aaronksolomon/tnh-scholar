@@ -11,7 +11,7 @@ PR_BASE ?= origin/main
 DOCS_WARNING_BASE ?= $(PR_BASE)
 PR_CHECK_ARGS ?=
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-build-readonly docs-drift docs-change-warning docs-verify docs-verify-readonly codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-build-readonly docs-drift docs-change-warning docs-verify docs-verify-readonly codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check branch-preflight pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -190,6 +190,28 @@ ci-check:
 	@echo ""
 	@echo "Note: Markdown lint (npx markdownlint) requires Node.js and is not included."
 	@echo "Run manually: npx markdownlint '**/*.md'"
+
+branch-preflight:
+	@echo "Checking branch hygiene..."
+	@CURRENT_BRANCH=$$(git branch --show-current); \
+	git fetch --quiet origin main; \
+	BASE_REF=$$(git rev-parse origin/main); \
+	BRANCH_BASE=$$(git merge-base HEAD origin/main); \
+	if [ "$$BRANCH_BASE" != "$$BASE_REF" ]; then \
+		echo "❌ Branch is not based on latest origin/main"; \
+		echo "   current branch: $$CURRENT_BRANCH"; \
+		echo "   branch base:    $$BRANCH_BASE"; \
+		echo "   origin/main:    $$BASE_REF"; \
+		echo "   Sync main and branch from fresh origin/main before starting new work."; \
+		exit 1; \
+	fi; \
+	if ! git diff --quiet || ! git diff --cached --quiet; then \
+		echo "❌ Tracked worktree changes detected"; \
+		git status --short; \
+		echo "   Start new work from a clean tracked state."; \
+		exit 1; \
+	fi; \
+	echo "✅ Branch is based on latest origin/main and tracked worktree is clean"
 
 pr-check:
 	@echo "Evaluating PR readiness against $(PR_BASE)..."

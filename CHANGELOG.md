@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Replaced the old overloaded CI workflow with separate PR validation, `main` validation/test, and scheduled weekly full-test workflows
   - Split docs CI into read-only PR validation and a separate `main` publish path, removing docs generation from PR verification
   - Removed legacy directory-tree generation/drift checks from routine CI and local validation; `tnh-tree` remains available as a manual developer utility only
+  - Added `make branch-preflight` as a fast local repo-hygiene check so new work starts from a clean branch based on current `origin/main`
   - Refreshed agent/workflow docs and updated docs tooling (`mkdocs-material`, `mkdocstrings-python`, `pymdown-extensions`, `pygments`) so strict docs builds remain healthy under the current dependency set
   - Files: `.github/workflows/`, `docs/development/`, `AGENTS.md`, `AGENT_WORKFLOW.md`, `docs/architecture/agent-orchestration/example-agent-workflow.md`, `mkdocs.yaml`, `docs/api/index.md`, `pyproject.toml`, `poetry.lock`
 

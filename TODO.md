@@ -44,6 +44,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 - ✅ CI workflow cleanup split GitHub validation into PR, `main`, scheduled full-test, and docs-specific flows; docs PR validation is now read-only
 - ✅ Legacy directory-tree generation/drift checks were removed from routine CI and local validation; `tnh-tree` remains available only as a manual developer utility
+- ✅ Added `make branch-preflight` so new work can start from a clean branch based on current `origin/main`
 - ✅ Final Dependabot remediation slice removed prototype-only LangChain packages from the root Poetry graph, patched `yt_dlp` in the standalone audio env, and refreshed the remaining vulnerable manifests
 - ✅ Removed dead `query/v2_cleaning_scripts.py` artifact and dropped its unused `transformers` dependency
 - ✅ Dependabot Stage 6 retired the legacy local Whisper / `torch` audio path so maintained audio support is limited to current API-backed surfaces
