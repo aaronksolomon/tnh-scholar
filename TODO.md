@@ -638,6 +638,19 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Frontmatter/schema validation guidance
   - [ ] Document prompt schema
 
+#### 🚧 tnh-gen Review Context Ingestion
+
+- **Status**: NOT STARTED
+- **Priority**: MEDIUM
+- **Problem**: `tnh-gen` can run ad hoc review prompts via `--prompt-dir`, but it cannot yet gather bounded local document context on its own for review workflows such as docs language audits
+- **Tasks**:
+  - [ ] Add repeatable local context inputs for `tnh-gen run` (for example `--context-file` or `--context-dir`)
+  - [ ] Support bounded repo-local file loading for review prompts with explicit source allowlists
+  - [ ] Emit included context sources in provenance and API output
+  - [ ] Document a standard review-workflow pattern for docs, ADR, and architecture audits
+  - [ ] Persist `tnh-gen` run output by default to a temp or run-artifact file even when no `--output-file` is provided
+  - [ ] Add follow-on conversation support for `tnh-gen` review/generation runs so a prompt can continue from prior output or thread state
+
 #### 🚧 Knowledge Base Implementation
 
 - **Status**: DESIGN COMPLETE

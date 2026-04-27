@@ -4,7 +4,7 @@ description: "Table of contents for architecture/agent-orchestration"
 owner: ""
 author: ""
 status: current
-created: "2026-04-25"
+created: "2026-04-27"
 auto_generated: true
 ---
 
@@ -13,6 +13,8 @@ auto_generated: true
 **Table of Contents**:
 
 <!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+
+**[Example Agent Workflow](example-agent-workflow.md)** - Example multi-agent workflow preserved as a reference for agent-orchestration design and future automation.
 
 **[TNH-Scholar Agent Orchestration System](system-design.md)** - Comprehensive design document for the agent orchestration system
 

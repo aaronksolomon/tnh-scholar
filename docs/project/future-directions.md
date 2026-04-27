@@ -239,6 +239,8 @@ This is the highest vision of TNH-Scholar:
 - A platform that supports, rather than automates, interpretation.  
 - A system that grows with care, clarity, and purpose.  
 
+A horizon further out: as the infrastructure matures, the project's scope may extend beyond the Plum Village lineage to the wider landscape of contemporary Buddhist teachers and comparative Buddhist scholarship — other traditions, other lineages, using the same trustworthy, transparent tools.
+
 This document is intentionally speculative.  
 As the project matures, some directions will solidify into real designs; others may remain guiding inspirations.  
 It should be updated when major new horizons emerge or when certain horizons become active workstreams.

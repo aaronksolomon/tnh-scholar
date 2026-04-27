@@ -4,7 +4,7 @@ description: "Table of contents for development"
 owner: ""
 author: ""
 status: current
-created: "2026-04-25"
+created: "2026-04-27"
 auto_generated: true
 ---
 
@@ -13,6 +13,8 @@ auto_generated: true
 **Table of Contents**:
 
 <!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
+
+**[CI Workflow Cleanup Proposal](ci-workflow-cleanup-proposal.md)** - Proposed reorganization of TNH Scholar local and GitHub CI loops for rapid prototype development and release preparation.
 
 **[Contributing to TNH Scholar (Prototype Phase)](contributing-prototype-phase.md)** - TNH Scholar is currently in rapid prototype phase, focusing on core functionality and basic usability. We welcome contributions that help validate and improve the prototype implementation.
 
