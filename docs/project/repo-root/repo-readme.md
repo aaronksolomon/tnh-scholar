@@ -1,0 +1,169 @@
+---
+title: TNH Scholar README
+description: "Open-source, AI-assisted tools for corpus processing, translation, and\
+  \ multilingual study of Th\xEDch Nh\u1EA5t H\u1EA1nh's teachings and the Plum Village/wider\
+  \ tradition, developed through mindful human\u2013AI collaboration."
+owner: ''
+author: ''
+status: current
+created: '2024-10-21'
+auto_generated: true
+generated_from: /README.md
+---
+
+<!-- DO NOT EDIT: Auto-generated from /README.md. Edit the root file instead. -->
+
+# TNH Scholar README
+
+TNH Scholar is a human-centered research project for the study and exploration of the teachings of Thích Nhất Hạnh, the Plum Village tradition, and the broader Buddhist tradition. It is grounded in mindful human–AI collaboration, with an emphasis on transparency, authenticity, and care.
+
+## Vision & Aspiration
+
+TNH Scholar aspires to make the teachings of Thích Nhất Hạnh, the Plum Village tradition, and the broader Buddhist tradition more accessible, discoverable, and researchable. It explores how AI can support deep study, translation, navigation, and content processing, while also opening new possibilities for the collaborative development of the software and research workflows behind that work. Our vision is to keep human discernment, scholarly care, contemplative use, and mindful human–AI collaboration at the center.
+
+## Features
+
+TNH Scholar is currently in active prototyping. Key capabilities:
+
+- **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
+- **Text formatting and translation**: `tnh-gen` CLI for punctuation, translation, sectioning, and prompt-driven processing. See [ADR-TG01](../../architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) and [ADR-TG02](../../architecture/tnh-gen/adr/adr-tg02-prompt-integration.md) for architecture details.
+- **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
+- **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
+- **Agent orchestration bootstrap**: maintained `tnh-conductor` local/headless workflow runner for bounded worktree-backed bootstrap flows
+- **Prompt system**: See ADRs under [docs/architecture/prompt-system/index.md](../../architecture/prompt-system/index.md) for decisions and roadmap
+
+> **⚠️ Rapid Prototype Phase (0.x)**: TNH Scholar is in active development with **no backward compatibility guarantees**. Breaking changes may occur in ANY 0.x release (including patches). Pin to a specific version if stability is needed: `pip install tnh-scholar==0.3.1`. See [ADR-PP01](../../architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md) for versioning policy.
+
+## Quick Start
+
+### Installation (PyPI)
+
+```bash
+pip install tnh-scholar
+tnh-setup
+```
+
+Prerequisites: Python 3.12.4+, OpenAI API key (CLI tools), Google Vision (optional OCR), pip or Poetry.
+
+### Development setup (from source)
+
+Follow [DEV_SETUP.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md) for the full workflow. Short version:
+
+```bash
+pyenv install 3.12.4
+poetry config virtualenvs.in-project true
+make setup-dev    # Full dev environment (recommended)
+make build-all    # Full rebuild (poetry update, yt-dlp, pipx, docs)
+make pipx-build   # Install CLI tools globally (audio-transcribe, tnh-gen, etc.)
+```
+
+### Set OpenAI credentials
+
+```bash
+export OPENAI_API_KEY="your-api-key"
+```
+
+### Example usage
+
+**Transcribe Audio from YouTube:**
+
+```bash
+audio-transcribe --yt_url "https://youtube.com/watch?v=example" --split --transcribe
+```
+
+**Download Video Transcripts:**
+
+```bash
+ytt-fetch "https://youtube.com/watch?v=example" -l en -o transcript.txt
+```
+
+**Process Text with tnh-gen:**
+
+```bash
+# List available prompts
+tnh-gen list
+
+# Run a prompt on a file
+tnh-gen run --prompt translate --input-file input.txt --var source_lang=vi --var target_lang=en
+
+```
+
+## Getting Started
+
+- **Practitioners**: Install, configure credentials, and follow the [Quick Start Guide](../../getting-started/quick-start-guide.md); workflows live in the [User Guide](../../user-guide/overview.md).
+- **Developers**: Set up via [DEV_SETUP.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md) and [Contributing](https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md); review [System Design](../../development/system-design.md) and the [CLI docs](../../cli-reference/index.md); run `make docs` to view locally.
+  - **Project Philosophy & Vision**: Developers and researchers should review the conceptual foundations in `docs/project/vision.md`, `docs/project/philosophy.md`, `docs/project/principles.md`, and `docs/project/conceptual-architecture.md` to understand the system’s long-term direction and design intent.
+- **Researchers**: Explore [Research](../../research/index.md) for experiments and direction in the study of Thích Nhất Hạnh, Plum Village, and broader Buddhist materials; see [Architecture](../../architecture/index.md) for pipelines/ADRs (e.g., [ADR-K01](../../architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)).
+
+## Documentation Overview
+
+Comprehensive documentation is available in multiple formats:
+
+- **Online Documentation**: [aaronksolomon.github.io/tnh-scholar/](https://aaronksolomon.github.io/tnh-scholar/)
+- **GitHub Repository**: [github.com/aaronksolomon/tnh-scholar](https://github.com/aaronksolomon/tnh-scholar)
+
+### Documentation Structure
+
+- **[Getting Started](../../getting-started/index.md)** – Installation, setup, and first steps
+- **[CLI Docs](../../cli-reference/index.md)** – Command-line tool documentation
+- **[User Guide](../../user-guide/index.md)** – Detailed usage guides, prompts, and workflows
+- **[API Reference](../../api/index.md)** – Python API documentation for programmatic use
+- **[Architecture](../../architecture/index.md)** – Design decisions, ADRs, and system overview
+- **[Development](../../development/index.md)** – Contributing guidelines and development setup
+- **[Research](../../research/index.md)** – Research notes, experiments, and background
+- **[Documentation Operations](../../docs-ops/index.md)** – Documentation roadmap and maintenance
+
+## Architecture Overview
+
+- Documentation strategy: [ADR-DD01](../../architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md) and [ADR-DD02](../../architecture/docs-system/adr/adr-dd02-main-content-nav.md)
+- GenAI, transcription, and prompt system ADRs live under [Architecture](../../architecture/index.md) (see ADR-A*, ADR-TR*, ADR-PT*).
+- System design references: [Object–Service Design](../../architecture/object-service/object-service-design-overview.md) and [System Design](../../development/system-design.md).
+
+## Development
+
+**Common commands:**
+
+- `make setup-dev` - Full development environment setup
+- `make build-all` - Full rebuild (poetry update, yt-dlp, pipx tools, docs)
+- `make update` - Update dependencies and reinstall pipx tools
+- `make pipx-build` - Install CLI tools globally via pipx (editable mode)
+- `make test`, `make lint`, `make format` - Testing and code quality
+- `make docs`, `make ci-check` - Documentation and CI validation
+- `poetry run mypy src/` - Type checking
+
+**CLI Tool Access:**
+
+All CLI tools can be installed globally via pipx for easy access in any shell:
+
+```bash
+make pipx-build  # Installs: audio-transcribe, tnh-gen, ytt-fetch, token-count, nfmt, etc.
+```
+
+**Optional dependency groups (development only):** `tnh-scholar[ocr]`, `tnh-scholar[gui]`, `tnh-scholar[query]`, `tnh-scholar[dev]`
+
+**Troubleshooting and workflows:** [DEV_SETUP.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/DEV_SETUP.md)
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/aaronksolomon/tnh-scholar/blob/main/CONTRIBUTING.md) for coding standards, testing expectations, and PR workflow. We welcome contributions from practitioners, developers, and scholars who resonate with a human-centered, mindful, transparent, and careful approach to AI-supported research.
+
+## Project Status
+
+TNH Scholar is currently in **alpha stage** (v0.3.1), preparing a `0.4.0` bootstrap-oriented minor release. Expect ongoing API and workflow changes during active development.
+
+## Support & Community
+
+- Bug reports & feature requests: [GitHub Issues](https://github.com/aaronksolomon/tnh-scholar/issues)
+- Questions & discussions: [GitHub Discussions](https://github.com/aaronksolomon/tnh-scholar/discussions)
+
+## Documentation Map
+
+For an auto-generated list of every document (titles and metadata), see the [Documentation Index](../../documentation_index.md).
+
+## License
+
+This project is licensed under the [GPL-3.0 License](https://github.com/aaronksolomon/tnh-scholar/blob/main/LICENSE).
+
+---
+
+**For more information, visit the [full documentation](https://aaronksolomon.github.io/tnh-scholar/) or explore the [source code](https://github.com/aaronksolomon/tnh-scholar).**
