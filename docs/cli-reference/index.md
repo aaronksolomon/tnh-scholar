@@ -4,7 +4,7 @@ description: "Table of contents for cli-reference"
 owner: ""
 author: ""
 status: current
-created: "2026-04-25"
+created: "2026-04-27"
 auto_generated: true
 ---
 
@@ -14,7 +14,7 @@ auto_generated: true
 
 <!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
-**[audio-transcribe](audio-transcribe.md)** - Command-line tool for audio transcription tasks.
+**[audio-transcribe](audio-transcribe.md)** - Command-line tool for downloading audio (YouTube or local) and transcribing to text.
 
 **[json-to-srt](json-to-srt.md)** - Convert JSONL transcription output (from audio-transcribe) into SRT subtitle files.
 

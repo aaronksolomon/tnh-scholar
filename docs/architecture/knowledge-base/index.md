@@ -4,7 +4,7 @@ description: "Table of contents for architecture/knowledge-base"
 owner: ""
 author: ""
 status: current
-created: "2026-04-25"
+created: "2026-04-27"
 auto_generated: true
 ---
 

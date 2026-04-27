@@ -1,6 +1,6 @@
 ---
 title: "TNH Scholar README"
-description: "TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models."
+description: "Open-source, AI-assisted tools for corpus processing, translation, and multilingual study of Thích Nhất Hạnh's teachings and the Plum Village/wider tradition, developed through mindful human–AI collaboration."
 owner: ""
 author: ""
 status: continuous update
@@ -9,11 +9,11 @@ created: "2024-10-21"
 
 # TNH Scholar README
 
-TNH Scholar is an AI-driven project designed to explore, query, process and translate the teachings of Thich Nhat Hanh and the Plum Village community. The project provides tools for practitioners and scholars to engage with mindfulness and spiritual wisdom through natural language processing and machine learning models.
+TNH Scholar is a human-centered research project for the study and exploration of the teachings of Thích Nhất Hạnh, the Plum Village tradition, and the broader Buddhist tradition. It is grounded in mindful human–AI collaboration, with an emphasis on transparency, authenticity, and care.
 
-## Vision & Goals
+## Vision & Aspiration
 
-TNH Scholar aims to make the teachings of Thich Nhat Hanh and the Plum Village tradition more accessible and discoverable through modern AI techniques. By combining natural language processing, machine learning, semantic search, and careful curation, we create pathways for practitioners and scholars to translate, search, organize, process and otherwise find meaningful connections among the body of teachings.
+TNH Scholar aspires to make the teachings of Thích Nhất Hạnh, the Plum Village tradition, and the broader Buddhist tradition more accessible, discoverable, and researchable. It explores how AI can support deep study, translation, navigation, and content processing, while also opening new possibilities for the collaborative development of the software and research workflows behind that work. Our vision is to keep human discernment, scholarly care, contemplative use, and mindful human–AI collaboration at the center.
 
 ## Features
 
@@ -87,7 +87,7 @@ tnh-gen run --prompt translate --input-file input.txt --var source_lang=vi --var
 - **Practitioners**: Install, configure credentials, and follow the [Quick Start Guide](docs/getting-started/quick-start-guide.md); workflows live in the [User Guide](docs/user-guide/overview.md).
 - **Developers**: Set up via [DEV_SETUP.md](DEV_SETUP.md) and [Contributing](CONTRIBUTING.md); review [System Design](docs/development/system-design.md) and the [CLI docs](docs/cli-reference/index.md); run `make docs` to view locally.
   - **Project Philosophy & Vision**: Developers and researchers should review the conceptual foundations in `docs/project/vision.md`, `docs/project/philosophy.md`, `docs/project/principles.md`, and `docs/project/conceptual-architecture.md` to understand the system’s long-term direction and design intent.
-- **Researchers**: Explore [Research](docs/research/index.md) for experiments and direction; see [Architecture](docs/architecture/index.md) for pipelines/ADRs (e.g., [ADR-K01](docs/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)).
+- **Researchers**: Explore [Research](docs/research/index.md) for experiments and direction in the study of Thích Nhất Hạnh, Plum Village, and broader Buddhist materials; see [Architecture](docs/architecture/index.md) for pipelines/ADRs (e.g., [ADR-K01](docs/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)).
 
 ## Documentation Overview
 
@@ -139,7 +139,7 @@ make pipx-build  # Installs: audio-transcribe, tnh-gen, ytt-fetch, token-count, 
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing expectations, and PR workflow. We welcome contributions from practitioners, developers, and scholars.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing expectations, and PR workflow. We welcome contributions from practitioners, developers, and scholars who resonate with a human-centered, mindful, transparent, and careful approach to AI-supported research.
 
 ## Project Status
 

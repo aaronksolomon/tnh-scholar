@@ -1,0 +1,872 @@
+---
+title: TNH Scholar CHANGELOG
+description: Chronological log of notable TNH Scholar changes.
+owner: ''
+author: ''
+status: current
+created: '2025-02-28'
+auto_generated: true
+generated_from: /CHANGELOG.md
+---
+
+<!-- DO NOT EDIT: Auto-generated from /CHANGELOG.md. Edit the root file instead. -->
+
+# TNH Scholar CHANGELOG
+
+All notable changes to TNH Scholar will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+
+- **Prompt Catalog Stage 2 Metadata Normalization** (2026-04-26)
+  - Normalized the maintained `prompts/` catalog to the PT05 metadata baseline by adding explicit `role`, `inputs`, and `output_contract` fields across the legacy prompt set
+  - Added concrete `schema_ref` coverage for the maintained JSON prompts so prompt catalog health now loads cleanly through `tnh-gen`
+  - Removed obsolete `review_count` variables and instructions from legacy prompts because they are not part of the modern-model operating contract
+  - Files: `prompts/`, `TODO.md`
+
+- **Prompt Catalog Stage 1 Tooling Fixes** (2026-04-26)
+  - Fixed filesystem prompt-catalog listing for relative `--prompt-dir` usage so `tnh-gen --prompt-dir ./prompts list` no longer double-prefixes prompt paths
+  - Normalized legacy `output_mode: text` prompt metadata without spurious catalog warnings, leaving only real validation issues visible during catalog health checks
+  - Added focused prompt-system regression coverage for relative repository paths and legacy text-mode metadata handling
+  - Files: `src/tnh_scholar/prompt_system/adapters/filesystem_catalog_adapter.py`, `src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`, `tests/prompt_system/test_catalog_adapters.py`, `tests/prompt_system/test_mapper.py`
+
+- **CI Workflow Cleanup and Docs Validation Split** (2026-04-26)
+  - Replaced the old overloaded CI workflow with separate PR validation, `main` validation/test, and scheduled weekly full-test workflows
+  - Split docs CI into read-only PR validation and a separate `main` publish path, removing docs generation from PR verification
+  - Removed legacy directory-tree generation/drift checks from routine CI and local validation; `tnh-tree` remains available as a manual developer utility only
+  - Added `make branch-preflight` as a fast local repo-hygiene check so new work starts from a clean branch based on current `origin/main`
+  - Refreshed agent/workflow docs and updated docs tooling (`mkdocs-material`, `mkdocstrings-python`, `pymdown-extensions`, `pygments`) so strict docs builds remain healthy under the current dependency set
+  - Files: `.github/workflows/`, `docs/development/`, `AGENTS.md`, `AGENT_WORKFLOW.md`, `docs/architecture/agent-orchestration/example-agent-workflow.md`, `mkdocs.yaml`, `docs/api/index.md`, `pyproject.toml`, `poetry.lock`
+
+- **Docs Tooling Alignment for API Build Stability** (2026-04-26)
+  - Updated `mkdocstrings-python` and pinned `pymdown-extensions` explicitly so API reference generation no longer fails in `pymdownx.highlight` while rendering `docs/api/index.md`
+  - Preserved `pygments 2.20.0` while moving the mkdocstrings/pymdown side to the compatible versions verified by `mkdocs build --strict`
+  - Files: `pyproject.toml`, `poetry.lock`
+
+- **Dependabot Final Remediation Slice** (2026-04-26)
+  - Removed prototype-only `langchain`, `langchain-community`, and `supabase` packages from the root Poetry graph so the maintained `gui` extra is limited to `streamlit`
+  - Updated the standalone `audio_transcribe` environment manifest to patched `yt_dlp`
+  - Updated the standalone `pattern_share` prototype manifest to current patched LangChain/OpenAI package lines and refreshed the Poetry lock to patched `Pygments`
+  - Files: `pyproject.toml`, `poetry.lock`, `src/tnh_scholar/cli_tools/audio_transcribe/environment/requirements.txt`, `src/tnh_scholar/pattern_share/requirements.txt`
+
+- **Query Cleanup: Remove Dead `v2_cleaning_scripts` Artifact** (2026-04-26)
+  - Removed the unused `query/v2_cleaning_scripts.py` experimental helper after confirming it had no imports, tests, docs references, or entry points
+  - Dropped `transformers` from declared dependencies because that file was its only remaining consumer in the repo
+  - Files: `src/tnh_scholar/query/v2_cleaning_scripts.py`, `pyproject.toml`, `poetry.lock`
+
+- **Dependabot Stage 6 Legacy Local-Whisper Retirement** (2026-04-26)
+  - Removed the unused local Whisper / `torch` legacy audio path so maintained transcription support is limited to the current API-backed audio surfaces
+  - Dropped legacy module exports and deleted the old `yt_transcribe` script that still depended on the retired chunking helpers
+  - Removed `openai-whisper` and `torch` from declared dependencies and from the standalone `audio_transcribe` environment manifest
+  - Files: `src/tnh_scholar/audio_processing/__init__.py`, `src/tnh_scholar/cli_tools/audio_transcribe/environment/`, `pyproject.toml`, `poetry.lock`, `src/tnh_scholar/video_processing/yt_transcribe.py`
+
+- **Dependabot Stage 5 Optional GUI Graph Refresh** (2026-04-26)
+  - Added an explicit optional `langchain` dependency to the Poetry GUI extra so the optional LangChain stack is pinned intentionally rather than drifting through transitive resolution
+  - Updated the Poetry-backed GUI dependency graph to patched `langchain`, `langchain-community`, `langchain-core`, `langchain-text-splitters`, and `aiohttp` versions
+  - Verified the refreshed graph in a clean `pip install -e '.[gui]'` environment before leaving the higher-risk `torch` and Whisper stack for a separate stage
+  - Files: `pyproject.toml`, `poetry.lock`
+
+- **Pattern Share Status/Terminology Clarification** (2026-04-26)
+  - Marked the `pattern_share` Streamlit app as an exploratory legacy prototype rather than a maintained TNH Scholar feature
+  - Updated user-facing copy from `pattern` to `prompt` while preserving legacy internal storage identifiers for compatibility
+  - Files: `src/tnh_scholar/pattern_share/app.py`
+
+- **Dependabot Stage 4 Pattern Share Manifest Refresh** (2026-04-26)
+  - Updated the standalone `pattern_share` requirements manifest to patched `streamlit`, `langchain`, and `langchain-community` versions without changing the repo-wide Poetry lock graph
+  - Kept `langchain-openai` pinned pending a separate compatibility review because its remaining advisory points at a newer major line
+  - Files: `src/tnh_scholar/pattern_share/requirements.txt`
+
+- **Dependabot Stage 3 Dev/Tooling Refresh** (2026-04-25)
+  - Bumped direct app and dev dependencies for `flask`, `jinja2`, `black`, and `pytest` to current patched versions
+  - Refreshed the locked dev/notebook/tooling stack to pull in patched `nbconvert`, `tornado`, `filelock`, `virtualenv`, and `werkzeug`
+  - Kept the remediation slice bounded to low-adaptation infrastructure packages before the larger `langchain-*` and `torch` family updates
+  - Files: `pyproject.toml`, `poetry.lock`
+
+- **Repo-Wide Lint and Type Debt Cleanup** (2026-04-25)
+  - Reduced the outstanding Ruff and mypy backlog across scripts, agent orchestration, GenAI, OCR, audio, query, metadata, prompt-system, and CLI surfaces
+  - Restored clean repo-wide static validation with `make lint` and `make type-check`
+  - Added a focused type-hardening pass in legacy utility and audio modules to remove remaining `Any` leaks and stale re-export/import issues
+  - Files: `scripts/`, `src/tnh_scholar/`, `tests/`
+
+- **Docs Build Warning Cleanup** (2026-04-25)
+  - Cleared the markdown validation backlog by normalizing stale frontmatter statuses, title metadata, required fields, and missing summary paragraphs in maintained docs
+  - Updated the generated subdirectory index pipeline to emit validator-compliant auto-generated metadata and regenerated the docs indexes from the cleaned state
+  - Fixed the TODO archive anchor targets and removed placeholder example links that were creating false-positive manual link-review warnings during docs builds
+  - Files: `docs/`, `TODO.md`, `scripts/generate_subdir_indexes.py`
+
+- **Maintained `tnh-conductor` Operator Docs** (2026-04-24)
+  - Added a maintained operator guide and CLI reference for the current `tnh-conductor` bootstrap path
+  - Clarified the supported operator surface as `run`, `status`, and `status --watch`, distinct from earlier spike and migration-source orchestration paths
+  - Linked the new operator-facing docs into the main documentation navigation and relevant overview pages
+  - Files: `docs/development/tnh-conductor-operator-guide.md`, `docs/cli-reference/tnh-conductor.md`, `docs/cli-reference/overview.md`, `docs/architecture/agent-orchestration/system-design.md`, `docs/index.md`
+
+- **Expert-Oriented Coding Prompt Library** (2026-04-25)
+  - Added a curated `coding-prompts/` library for bounded repo tasks, conductor-doc cleanup, TODO refreshes, bootstrap-proof follow-ups, and reusable prompt rails
+  - Collected both Codex and Claude-oriented prompt/task briefs plus a baseline workflow fixture for direct native execution comparisons
+  - Files: `coding-prompts/`
+
+- **Recursive Bootstrap Build Proposal** (2026-04-25)
+  - Added a design proposal describing a recursive bootstrap build path for the maintained agent-orchestration direction
+  - Captured the next-step architectural framing as a design note rather than silently expanding release scope
+  - Files: `docs/architecture/agent-orchestration/notes/design/recursive-bootstrap-build-proposal.md`
+
+- **`tnh-conductor status --watch` Live Monitoring** (2026-04-21)
+  - Added `--watch` and `--poll-interval-seconds` to `tnh-conductor status` so operators can stream machine-readable JSON status snapshots until a run reaches a terminal lifecycle state
+  - Preserved the existing one-shot status output when watch mode is not enabled
+  - Added focused CLI regression coverage for repeated polling through completion and immediate stop on blocked runs
+  - Files: `src/tnh_scholar/cli_tools/tnh_conductor/tnh_conductor.py`, `tests/cli_tools/test_tnh_conductor.py`
+
+- **SPIKE-10 Agent Coordination Comparison Result** (2026-04-20)
+  - Recorded the five-arm SPIKE-10 result note for the shared `tnh-conductor status --watch` task across direct Codex, native subagents, explicit `codex-assistant`, explicit `claude-assistant`, and the maintained `tnh-conductor` path
+  - Captured the main recommendation to keep `tnh-conductor` as the primary coordination substrate while treating direct Codex as the baseline and the assistant CLIs as experimental worker seams
+  - Clarified that the current comparison excludes a live `tnh-gen` evaluator because maintained agent-orch code does not yet wire that supervisory seam
+  - Files: `docs/architecture/agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-result.md`
+
+- **Assistant CLI Wrappers and SPIKE-10 Comparison Setup** (2026-04-20)
+  - Added a minimal `claude-assistant` CLI entry point parallel to `codex-assistant` for explicit external worker runs with captured stdout/stderr and final-message extraction
+  - Added focused regression coverage for the new Claude wrapper and preserved the existing Codex wrapper checks
+  - Added SPIKE-10 experiment planning, task-brief, workflow, and operator docs for comparing direct Codex, native subagents, explicit assistant-CLI workers, and the maintained `tnh-conductor` path on the same bounded task
+  - Files: `src/tnh_scholar/cli_tools/claude_assistant/`, `tests/cli_tools/test_claude_assistant.py`, `docs/architecture/agent-orchestration/notes/experiments/`, `pyproject.toml`
+
+- **tnh-gen GPT-5 Family Compatibility Refresh** (2026-04-20)
+  - Added `gpt-5.4` to the OpenAI registry asset so `tnh-gen` can route and cost GPT-5.4 requests without configuration failures
+  - Updated the OpenAI provider seam to omit unsupported temperature overrides for legacy GPT-5-family models and to request minimal reasoning effort so short text completions do not spend the full token budget on reasoning only
+  - Added focused provider and registry regressions plus live golden validation for exact `ACK` output and an ADR-review task on `gpt-5.4`
+  - Files: `src/tnh_scholar/gen_ai_service/providers/`, `src/tnh_scholar/runtime_assets/registries/providers/openai.jsonc`, `tests/gen_ai_service/test_openai_*.py`, `tests/gen_ai_service/test_registry_loader.py`
+
+- **tnh-gen Prompt Catalog Health and Config Reporting** (2026-04-19)
+  - Added typed prompt catalog health models and adapter accumulation so filesystem and git-backed prompt catalogs report parse, validation, and metadata issues without per-prompt warning spam
+  - Updated `tnh-gen list` to emit a single human summary for catalog load failures and to include `catalog_errors` in API output
+  - Added `tnh-gen config show --catalog-health` for structured catalog diagnostics sourced through the shared prompts adapter
+  - Added focused regression coverage for filesystem/git catalog health accumulation and the new CLI reporting paths
+  - Files: `src/tnh_scholar/prompt_system/`, `src/tnh_scholar/gen_ai_service/pattern_catalog/adapters/prompts_adapter.py`, `src/tnh_scholar/cli_tools/tnh_gen/commands/{config,list}.py`, `src/tnh_scholar/cli_tools/tnh_gen/types.py`, `tests/prompt_system/`, `tests/cli_tools/test_tnh_gen.py`
+
+- **tnh-gen Completion Outcome and Run Robustness** (2026-04-18)
+  - Added typed completion outcomes, structured failure payloads, and adapter diagnostics across the GenAI service and `tnh-gen run`
+  - Hardened the OpenAI adapter against empty, missing, and unsupported response shapes instead of silently returning success-shaped empty text
+  - Updated `tnh-gen run` to branch on succeeded/incomplete/failed outcomes, preserve input frontmatter in output files, and support direct `--prompt-dir` forwarding for one-off runs
+  - Added focused regression coverage for adapter failure mapping, failed/incomplete run behavior, budget blocking, and frontmatter/provenance handling
+  - Files: `src/tnh_scholar/gen_ai_service/`, `src/tnh_scholar/cli_tools/tnh_gen/`, `src/tnh_scholar/metadata/metadata.py`, `tests/gen_ai_service/`, `tests/cli_tools/test_tnh_gen*.py`
+
+- **Codex Headless Experiment Docs Refresh** (2026-04-13)
+  - Expanded the headless communication report and experiment plan with native subagent findings, low-noise execution guidance, and a clearer next-experiment sequence
+  - Added supervisory shell-trial operator docs plus a repo-local Codex profile and wrapper-script options used by the documented experiment path
+  - Refreshed tracked directory-tree snapshots to capture the newly documented repo structure
+  - Files: `docs/architecture/agent-orchestration/notes/experiments/`, `docs/architecture/agent-orchestration/supervisory-shell-trial/`, `.codex/config.toml`, `scripts/codex_ephemeral_exec.py`, `project_directory_tree.txt`, `src_directory_tree.txt`
+
+- **OA07.1 Maintained Headless Bootstrap Entry** (2026-04-09)
+  - Added a maintained `tnh-conductor` CLI and app-layer bootstrap path that loads one workflow, composes the real worktree-backed kernel runtime, and returns canonical run metadata/final-state paths
+  - Added an explicit bootstrap runtime profile for builtin validator mappings and mutable execution policy, while keeping `EVALUATE` and `GATE` fail-closed until real maintained semantic-control implementations land
+  - Added typed execution and validation protocol seams plus focused regressions for happy-path bootstrap, unsupported semantic-step rejection, `ROLLBACK(pre_run)`, agent failure terminal metadata, and default CLI storage roots
+  - Files: `src/tnh_scholar/agent_orchestration/app/`, `src/tnh_scholar/cli_tools/tnh_conductor/`, `src/tnh_scholar/agent_orchestration/execution/`, `src/tnh_scholar/agent_orchestration/validation/`, `src/tnh_scholar/agent_orchestration/kernel/`, `tests/agent_orchestration/test_headless_bootstrap_service.py`, `tests/cli_tools/test_tnh_conductor.py`, `pyproject.toml`
+
+- **CI Constraint Path Hardening** (2026-04-08)
+  - Updated the GitHub Actions `PIP_CONSTRAINT` environment variable to use `${{ github.workspace }}` so the CI setuptools cap resolves from a stable absolute workspace path rather than a relative shell cwd
+  - Files: `.github/workflows/ci.yml`
+
+- **Docs Strict-Build Warning Cleanup** (2026-04-08)
+  - Removed the repo-root docs link from the OA07.1 worktree plan note and converted the OA03.3 archived draft reference to plain repository-path text so strict MkDocs builds no longer warn on those links
+  - Files: `docs/architecture/agent-orchestration/notes/oa07.1-pr7-worktree-workspace-plan.md`, `docs/architecture/agent-orchestration/adr/adr-oa03.3-codex-cli-runner.md`
+
+- **OA07.1 Worktree Runtime Boundary** (2026-04-08)
+  - Added a maintained `WorkspaceContext` model and expanded the workspace contract so mutable runs have explicit worktree identity, base ref/SHA, and context-backed snapshot/diff semantics
+  - Added `GitWorktreeWorkspaceService` with managed worktree creation from committed base refs and `ROLLBACK(pre_run)` implemented by discarding and recreating the worktree at recorded base state
+  - Updated the kernel so `RUN_AGENT` and `RUN_VALIDATION` execute against the managed worktree root while canonical artifacts and provenance remain under the run directory
+  - Persisted workspace context into run metadata, tightened workspace-boundary validation, and wired rollback target handling through the maintained kernel path
+  - Updated validation contracts from `run_directory` to mutable-step `working_directory` and added real temp-repo tests for worktree lifecycle plus kernel regressions for worktree-root execution, rollback metadata refresh, and boundary guards
+  - Files: `src/tnh_scholar/agent_orchestration/workspace/`, `src/tnh_scholar/agent_orchestration/kernel/`, `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`, `src/tnh_scholar/agent_orchestration/validation/`, `tests/agent_orchestration/test_workspace_service.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+
+- **Agent Orchestration Bootstrap ADR Alignment** (2026-04-06)
+  - Added `ADR-OA07` and `ADR-OA07.1` to freeze the bootstrap safety model for worktree isolation, branch-scoped rollback, mutable workspace boundaries, and agent authority through review-ready PR creation
+  - Clarified the `OA04` family as workflow execution contracts and updated `OA04.1` to describe MVP runtime build order and the handoff to `OA07.x` for workspace-safety decisions
+  - Marked implemented OA04 decimal ADRs repo-consistently and refreshed orchestration ADR cross-references, TODO planning, and generated documentation indexes to match the current ADR map
+  - Files: `docs/architecture/agent-orchestration/adr/`, `TODO.md`, generated `docs/**/index.md`
+
+- **Agent Orchestration Runtime Bootstrap Clarification** (2026-04-08)
+  - Tightened `OA07` and `OA07.1` so the first bootstrap milestone is a maintained local/headless runtime loop with real worktree-root mutable execution and discard/recreate `ROLLBACK(pre_run)`
+  - Split the roadmap cleanly into `PR-7` worktree runtime boundary, `PR-8` headless bootstrap entry, and optional later review automation
+  - Added the focused `OA07.1 PR-7 Worktree Runtime Boundary Plan` note and aligned `TODO.md` with the updated implementation seam
+  - Files: `docs/architecture/agent-orchestration/adr/`, `docs/architecture/agent-orchestration/notes/`, `TODO.md`
+
+- **OA04.2 Runner Adapters** (2026-04-03)
+  - Expanded the maintained `runners/` subsystem with adapter capability declarations, normalized transcript/final-response payloads, typed invocation metadata, and a delegating runner service
+  - Added execution-backed maintained adapters for headless Claude CLI and Codex CLI runs with explicit mapper/normalizer seams, mechanical termination mapping, and fail-fast rejection for unsupported policy guarantees
+  - Updated the kernel to persist canonical `runner_transcript`, `runner_final_response`, and richer `runner_metadata` artifacts from normalized runner results through the run-artifact store
+  - Clarified ADR-OA04.2 via addendum so maintained adapters return typed normalized payloads while canonical persistence remains owned by `run_artifacts/`
+  - Added focused adapter tests for command mapping, normalization, unsupported-policy rejection, unknown adapter-family routing, and kernel integration coverage for canonical runner artifact persistence
+  - Files: `src/tnh_scholar/agent_orchestration/runners/`, `src/tnh_scholar/agent_orchestration/kernel/service.py`, `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`, `docs/architecture/agent-orchestration/adr/adr-oa04.2-runner-contract.md`, `tests/agent_orchestration/test_runner_adapters.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+
+- **Dependency Policy Refresh and Codex Spike Quarantine** (2026-04-03)
+  - Refreshed repository dependency policy inputs and CI build constraints to keep dependency resolution aligned with current project rules
+  - Updated `pyproject.toml` and `poetry.lock` as part of the dependency-policy maintenance pass
+  - Quarantined the suspended codex harness spike from active package/export paths while preserving the experimental context in `agent_orchestration/EXPERIMENTAL.md`
+  - Refreshed generated repository tree snapshots to match the current structure
+  - Files: `.github/constraints/ci-build.txt`, `.github/workflows/ci.yml`, `pyproject.toml`, `poetry.lock`, `src/tnh_scholar/agent_orchestration/EXPERIMENTAL.md`, `src/tnh_scholar/agent_orchestration/codex_harness/__init__.py`, `src/tnh_scholar/cli_tools/tnh_codex_harness/__init__.py`, `project_directory_tree.txt`, `src_directory_tree.txt`
+
+- **OA04.4 Execution Policy Contract** (2026-03-31)
+  - Added a maintained `execution_policy/` package with typed settings, requested/effective policy models, stable violation classes, policy summaries, and a protocol/assembler boundary
+  - Replaced the runner-layer `PromptInteractionPolicy` stub with `RequestedExecutionPolicy` on `RunnerTaskRequest`
+  - Extended workflow/kernel policy references across executable step types and persisted canonical `policy_summary.json` artifacts for each executed step
+  - Added kernel-side hard-fail enforcement for maintained policy violations, including protected-branch workspace-write blocking and impossible empty write-scope detection
+  - Fixed requested/effective precedence so `allowed_paths=None` means inherit while `allowed_paths=()` means explicitly empty, including runtime-tightening behavior
+  - Introduced `shared_enums.py` to keep runner-facing enums below package initializers and avoid cross-package import cycles
+  - Added focused execution-policy contract tests plus kernel integration coverage for policy artifact persistence, non-agent step policy refs, protected-branch violations, and hard-fail behavior
+  - Files: `src/tnh_scholar/agent_orchestration/execution_policy/`, `src/tnh_scholar/agent_orchestration/shared_enums.py`, `src/tnh_scholar/agent_orchestration/kernel/`, `src/tnh_scholar/agent_orchestration/runners/`, `tests/agent_orchestration/test_execution_policy_contract.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+
+- **OA04.3 Kernel Provenance Integration** (2026-03-28)
+  - Added `kernel/provenance.py` to record canonical step lifecycle events, gate events, rollback events, manifests, and workspace evidence artifacts through the maintained run-artifact store
+  - Updated `KernelRunService` to persist terminal metadata fields (`ended_at`, `last_step_id`, `termination`) on both success and failure paths
+  - Added typed canonical artifact payloads for runner metadata and gate request/outcome artifacts, replacing ad hoc dict payload assembly in kernel app logic
+  - Moved `AgentFamily` and `RunnerTermination` into `kernel/enums.py` so canonical artifact models do not depend upward on `runners/`
+  - Expanded OA07 kernel tests to cover happy-path manifests/events, ISO timestamps, failure-path provenance, and canonical runner metadata shape
+  - Files: `src/tnh_scholar/agent_orchestration/kernel/`, `src/tnh_scholar/agent_orchestration/run_artifacts/models.py`, `src/tnh_scholar/agent_orchestration/runners/models.py`, `tests/agent_orchestration/test_oa07_execution_validation_kernel.py`
+
+- **OA04.3 Run-Artifact Contract and Store** (2026-03-28)
+  - Expanded `run_artifacts/` with the full OA04.3 maintained contract: `RunArtifactPaths` (with `artifacts_root`), `RunMetadata`, `RunEventRecord`, `RunEventType`, `ArtifactRole`, `StepArtifactEntry`, `EvidenceSummary`, `EvidenceReference`, `StepManifest`
+  - Added `write_text_artifact` and `write_json_artifact` to `RunArtifactStoreProtocol` and `FilesystemRunArtifactStore`
+  - Extracted shared kernel enums (`Opcode`, `MechanicalOutcome`, `PlannerStatus`, `GateOutcome`) into `kernel/enums.py`
+  - Exported `RunArtifactStoreProtocol` from `run_artifacts` public API
+  - Added OA04.3 contract regression tests covering metadata fields, event stream, manifest artifact-role lookup, final-state persistence, and Pydantic JSON artifact path
+  - Files: `src/tnh_scholar/agent_orchestration/kernel/`, `src/tnh_scholar/agent_orchestration/run_artifacts/`, `tests/agent_orchestration/test_run_artifacts_contract.py`
+
+- **Multilingual Audio Transcription MVP** (2026-03-05)
+  - Added MVP multilingual subtitle orchestration with typed request/result models, protocol seams, segment translation flow, speaker-block routing, and malformed-failure handling for block merge recovery
+  - Added Pyannote client/schema hardening and expanded diarization regression coverage for status parsing and client behavior
+  - Added focused script coverage for `transcribe_translate_srt`
+  - Files: `src/tnh_scholar/audio_processing/`, `scripts/transcribe_translate_srt.py`, `tests/audio_processing/`, `tests/test_transcribe_translate_srt_script.py`
+
+- **Prompt Platform PT05 Foundations (WIP / Developer Preview, not production-ready)** (2026-02-10 to 2026-02-14)
+  - Implemented PT05-aligned prompt envelope and metadata compatibility layer in prompt-system domain models
+  - Added namespace-first canonical key mapping and immutable prompt reference support (`<canonical_key>.v<version>`)
+  - Added PT05 validator enforcement for output modes, strict inputs, required envelope fields, and numeric version constraints
+  - Aligned filesystem + git catalog adapters to resilient fallback behavior with typed warnings/metadata for invalid prompt artifacts
+  - Added targeted hardening refinements:
+    - split metadata sync methods by concern (key, role, output)
+    - narrowed prompt parse exception handling to `ValueError` + `pydantic.ValidationError`
+    - enforced `PromptValidationResult.valid` invariant from error list
+  - Added substantial prompt-system test expansion (including new mapper suite) and updated dependent tnh-gen assertions
+  - Scope note: foundation is merged for incremental development and integration; full cross-subsystem prompt platform wiring remains in progress
+  - Files: `src/tnh_scholar/prompt_system/`, `tests/prompt_system/`, `tests/cli_tools/test_tnh_gen.py`
+
+- **Agent Orchestration MVP Kernel (WIP / Developer Preview, not production-ready)** (2026-02-08 to 2026-02-10)
+  - Added OA04/OA04.1-aligned deterministic kernel MVP package (workflow models, schema validation, opcode execution service, providers, adapters)
+  - Implemented MVP opcode flow support for `RUN_AGENT`, `RUN_VALIDATION`, `EVALUATE`, `GATE`, `ROLLBACK`, `STOP`
+  - Added weak pre-run + strong runtime golden-gate enforcement for generated/proposed golden paths
+  - Added local validation runner support for builtin/script validators with harness report handling
+  - Added initial kernel test coverage
+  - Added active-code dedup for orchestration clock/run-id behavior via `agent_orchestration/common` shared helpers (spike code unchanged)
+  - Scope note: merged incrementally for ongoing development; not yet fully operational end-to-end
+  - Files: `src/tnh_scholar/agent_orchestration/conductor_mvp/`, `src/tnh_scholar/agent_orchestration/common/`, `src/tnh_scholar/agent_orchestration/codex_harness/providers/clock.py`, `src/tnh_scholar/agent_orchestration/codex_harness/providers/run_id.py`, `tests/agent_orchestration/test_conductor_mvp_kernel.py`
+
+- **yt-dlp Operational Hardening** (2026-02-02 to 2026-02-07)
+  - Added yt-dlp environment inspection and ops check services (`yt_environment.py`, `ops_check.py`)
+  - Added yt-dlp runtime setup script with JS runtime and curl_cffi support (`scripts/setup_ytdlp_runtime.py`)
+  - Added cron-ready ops check runner with validation URL list (`scripts/yt_dlp_ops_check.py`)
+  - Added preflight validation to ytt-fetch with runtime option injection
+  - Added tnh-setup runtime verification step with Rich UI components
+  - Added comprehensive test suite for ops checks, environment detection, and runtime options
+  - ADRs: ADR-VP02 (yt-dlp operational strategy), ADR-ST01 (tnh-setup runtime hardening), ADR-ST01.1 (UI design)
+  - Files: `src/tnh_scholar/video_processing/yt_environment.py`, `src/tnh_scholar/video_processing/ops_check.py`, `src/tnh_scholar/cli_tools/tnh_setup/ui.py`, `tests/video_processing/`
+
+- **Agent Orchestration Phase 0 Spike** (2026-01-20 to 2026-01-25)
+  - Implemented Phase 0 protocol spike per ADR-OA02 with PTY capture for Claude Code CLI
+  - Built Codex harness with Responses API integration and tool surface (read_file, search_repo, list_files, apply_patch, run_tests)
+  - Added sandbox sync automation (`scripts/sync-sandbox.sh`, `make sync-sandbox`)
+  - Created comprehensive ADRs: OA01 (strategy), OA02 (spike), OA03 (runner architecture), OA03.1 (Claude Code), OA03.2 (Codex)
+  - Files: `src/tnh_scholar/agent_orchestration/spike/`, `src/tnh_scholar/agent_orchestration/codex_harness/`, `src/tnh_scholar/cli_tools/tnh_codex_harness/`
+
+### Changed
+
+- **Prototype CI Churn Reduction** (2026-04-21)
+  - Narrowed GitHub CI triggers to `main` only and made the full pytest step opt-in for PRs via the `full-ci` label
+  - Preserved full test execution on pushes to `main` after merge while keeping prototype PRs lightweight by default
+  - Made directory-tree drift and README/docs sync informational rather than blocking during prototype churn
+  - Files: `.github/workflows/ci.yml`
+
+- **yt-dlp Freshness-Gated Health Check** (2026-04-21)
+  - Added `scripts/update_health_check.py`, passive `make update-health-check`, and explicit `make health-check`
+  - Wired the passive status gate into `make ci-check`, `make build-all`, and `make update`
+  - The passive gate now warns when the last yt-dlp ops run is older than 10 days and fails when it is older than 30 days, while `make health-check` remains the explicit live execution path
+  - Added focused regression coverage for fresh status, stale warning, expiry failure, and explicit run-now state persistence
+  - Files: `scripts/update_health_check.py`, `tests/scripts/test_update_health_check_py.py`, `Makefile`, `docs/development/yt-dlp-ops-check.md`, `TODO.md`
+
+- **yt-dlp Runtime Setup Build Fix** (2026-04-21)
+  - Fixed `scripts/setup_ytdlp_runtime.py` so `make ytdlp-runtime` and `make build-all` no longer fail just because `curl_cffi` is unavailable in the active Poetry environment
+  - Switched the fallback installer to the active interpreter, added `ensurepip` bootstrapping when `pip` is missing, and kept missing `curl_cffi` as a non-fatal warning when JS runtime/config setup still succeeds
+  - Added focused regression coverage for non-fatal `curl_cffi` warnings and the missing-`pip` bootstrap path
+  - Files: `scripts/setup_ytdlp_runtime.py`, `tests/scripts/test_setup_ytdlp_runtime_py.py`
+
+- **audio-transcribe Structured Transcript Output Fix** (2026-04-21)
+  - Fixed the `audio-transcribe` CLI crash when the transcription pipeline returns structured transcript records instead of plain strings
+  - Normalized CLI output so transcript writes and stdout rendering accept both legacy string entries and the current dict-shaped pipeline results, while skipping failed chunks cleanly
+  - Added focused regression coverage for the structured transcript normalization path
+  - Files: `src/tnh_scholar/cli_tools/audio_transcribe/audio_transcribe.py`, `tests/cli_tools/test_audio_transcribe.py`
+
+- **Workflow and Release-Prep Documentation Clarification** (2026-04-21)
+  - Clarified in `AGENTS.md` that normal PRs are the default workflow and that `git branch -D` is allowed only with explicit approval plus non-loss verification
+  - Updated `TODO.md` release framing to mark the maintained `tnh-conductor` bootstrap path as a usable prototype and to put `0.4.0` release-prep cleanup first in the queue
+  - Files: `AGENTS.md`, `TODO.md`
+
+- **Rapid-Prototype CI and Release Validation Policy Clarification** (2026-04-24)
+  - Updated the git and release workflow docs to reflect the current prototype policy: PR CI is lighter-weight, `full-ci` is opt-in on riskier PRs, and `make release-check` remains mandatory on the actual release candidate state
+  - Added explicit minor-release documentation review guidance for user-facing docs before tagging or publishing feature releases
+  - Files: `docs/development/git-workflow.md`, `docs/development/release-workflow.md`
+
+- **Repository Workflow Guardrail Clarification** (2026-04-20)
+  - Added an explicit branch/worktree removal rule to `AGENTS.md`: deletion now requires user approval plus a non-loss verification check before cleanup
+  - Recorded the follow-up architectural direction for OpenAI model request handling in `TODO.md` and the OpenAI adapter module note so the GPT-5 compatibility fix remains a narrow bugfix rather than silent long-term architecture
+  - Files: `AGENTS.md`, `TODO.md`, `src/tnh_scholar/gen_ai_service/providers/openai_adapter.py`, `AGENTLOG.md`
+
+- **ADR-OA03.2 Codex Runner Suspended** (2026-01-25)
+  - Spike revealed API constraints: model produces tool calls without final text output
+  - VS Code Codex extension uses client-side orchestration (different architecture than API-first approach)
+  - Added suspension addendum with findings and conditions for resumption
+  - Comprehensive findings documented in `docs/architecture/agent-orchestration/notes/codex-harness-spike-findings.md`
+
+- **Patterns→Prompts Migration Complete** (2026-01-17 to 2026-01-19)
+  - Renamed `patterns/` directory to `prompts/` with standalone `tnh-prompts` git repository
+  - Updated env var from `TNH_PATTERN_DIR` → `TNH_PROMPT_DIR`
+  - Renamed CLI flag `--skip-patterns` → `--skip-prompts` in tnh-setup
+  - Updated constants, function names, and all documentation references
+
+### Removed
+
+- **tnh-fab CLI Tool** (2026-01-19)
+  - Removed deprecated `tnh-fab` CLI implementation and tests
+  - Removed `tnh-fab` entry point from pyproject.toml
+  - All functionality replaced by `tnh-gen` CLI
+
+### Infrastructure
+
+- **Git Workflow Documentation** (2026-01-19)
+  - Added untracked files rule to AGENTS.md, git-workflow.md, and CLAUDE.md
+  - Archived AGENTLOG sessions for patterns→prompts migration
+
+## [0.3.1] - 2026-01-13
+
+### Changed
+
+- **Documentation Updates**
+  - Updated version references from 0.2.2/0.1.3 to 0.3.0 in AGENTS.md and README.md
+  - Regenerated documentation index and map
+  - Enhanced release workflow with comprehensive documentation review step for minor/major releases
+
+### Infrastructure
+
+- **Post-Release Housekeeping**
+  - Archived AGENTLOG sessions for v0.3.0 release cycle
+  - Updated archive index with VS Code extension walking skeleton summary
+
+## [0.3.0] - 2026-01-09
+
+### Added
+
+- **VS Code Extension Walking Skeleton (COMPLETED)** (2026-01-07)
+  - Implemented TypeScript extension with CLI integration per ADR-VSC02
+  - Three commands: "Run Prompt on Active File", "Refresh Prompt Catalog", "Show Diagnostics"
+  - TnhGenCliService: CLI adapter with process lifecycle management
+  - ConfigService: VS Code settings integration with CF01 ownership precedence
+  - PromptService: Prompt discovery and execution orchestration
+  - EditorService, FileService: File handling and split pane integration
+  - Unit and integration test harness (node:test + test-electron)
+  - All endpoints tested end-to-end in live dev extension
+  - ADR-VSC02 status updated from 'wip' to 'implemented'
+  - Files: `vscode-extension/tnh-scholar/` (24 files, 3138+ lines)
+  - ADRs: [ADR-VSC01](https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md), [ADR-VSC02](https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
+
+- **Workspace Improvements** (2026-01-07)
+  - Added .github/ISSUE_TEMPLATE.md for structured issue reporting (supports tactical and architectural problems)
+  - Added poetry.toml for project-level Poetry configuration
+  - Updated .gitignore with VS Code extension build artifacts and temp files
+  - Files: `.github/ISSUE_TEMPLATE.md`, `poetry.toml`, `.gitignore`
+
+- **VS Code Extension Architecture ADRs** (2026-01-02, updated 2026-01-07)
+  - Accepted ADR-VSC01: VS Code Integration Strategy (CLI-first architecture)
+  - Implemented ADR-VSC02: VS Code Extension Architecture (components, flow, data contracts)
+  - Added Pattern→Prompt migration task to TODO.md (Priority 1, sequenced after extension)
+  - Added AGENT_WORKFLOW.md: Dual-agent development workflow documentation
+  - ADR-TG01 addendum: Documented API success payloads and --config flag usage
+  - ADR-TG02 addendum: Documented prompt metadata integration with extension
+  - ADRs: [ADR-VSC01](https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy.md), [ADR-VSC02](https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation.md)
+  - Files: `AGENT_WORKFLOW.md`, `TODO.md`, `docs/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md`, `docs/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md`
+
+- **ADR-A14: File-Based Registry System** (2026-01-01, PR #24)
+  - Implemented JSONC-based registry for provider metadata, model capabilities, pricing, and context limits
+  - Added TNHContext for three-layer path resolution (workspace → user → built-in) per ADR-CF01
+  - Created RegistryLoader with JSONC parsing, caching, and override merging
+  - Added multi-tier pricing support (batch, flex, standard, priority)
+  - Implemented staleness detection (ADR-A14.1) with configurable 90-day threshold and environment variables
+  - Created built-in OpenAI registry with GPT-4/5 model metadata
+  - Added JSON Schema for VS Code autocomplete and validation
+  - Files: `src/tnh_scholar/configuration/context.py`, `src/tnh_scholar/gen_ai_service/config/registry.py`, `src/tnh_scholar/gen_ai_service/models/registry.py`, `src/tnh_scholar/gen_ai_service/adapters/registry/`, `src/tnh_scholar/runtime_assets/registries/`, comprehensive test suite
+  - ADRs: [ADR-A14](https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/gen-ai-service/adr/adr-a14-file-based-registry-system.md), [ADR-A14.1](https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/gen-ai-service/adr/adr-a14.1-registry-staleness-detection.md), [ADR-CF01](https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md)
+
+- **Audio Transcribe Hotfix Tests + Dependencies** (2026-01-03)
+  - Added diarization payload parsing tests and AssemblyAI option handling tests
+  - Added `assemblyai` and `pysrt` as required dependencies
+  - Added `make update` target for Poetry update/build + pipx rebuild
+  - Files: `tests/audio_processing/diarization/test_schemas.py`, `tests/cli_tools/test_audio_transcribe_pipeline.py`, `tests/audio_processing/transcription/test_assemblyai_service_options.py`, `tests/audio_processing/transcription/test_transcription_service_factory.py`, `pyproject.toml`, `Makefile`
+
+### Changed
+
+- **Prompt Frontmatter Normalization + Token Encoding Fallback** (2026-01-05)
+  - Coerced missing/invalid prompt metadata fields to safe defaults with warnings
+  - Added registry-aware encoding fallback for token counting when tiktoken lacks model mapping
+  - Files: `src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`, `src/tnh_scholar/gen_ai_service/utils/token_utils.py`, `patterns/simple_punctuate.md`, `tests/prompt_system/test_catalog_adapters.py`, `tests/gen_ai_service/utils/test_token_utils.py`
+
+- **Audio Transcribe AssemblyAI Pipeline** (2026-01-03)
+  - Skip pyannote diarization for AssemblyAI and transcribe full audio directly
+  - Normalize AssemblyAI options to SDK-supported keys and map language settings
+  - Files: `src/tnh_scholar/cli_tools/audio_transcribe/transcription_pipeline.py`, `src/tnh_scholar/audio_processing/transcription/assemblyai_service.py`
+
+- **GenAI Service Registry Integration** (2026-01-01, PR #24)
+  - Refactored model_router.py to use registry-based capability checks (removed hardcoded MODEL_CAPABILITIES)
+  - Refactored safety_gate.py to use registry pricing with tier support (removed hardcoded pricing constants)
+  - Refactored token_utils.py to use registry context limits with tiktoken fallback
+  - Updated GenAISettings to validate against registry data
+  - Files: `src/tnh_scholar/gen_ai_service/routing/model_router.py`, `src/tnh_scholar/gen_ai_service/safety/safety_gate.py`, `src/tnh_scholar/gen_ai_service/utils/token_utils.py`, `src/tnh_scholar/gen_ai_service/config/settings.py`
+
+- **Development Workflow Improvements** (2026-01-01, PR #24)
+  - Moved Sourcery to optional local group to unblock CI/docs builds (platform-specific wheels issue)
+  - Added PR requirements to AGENTS.md: `make ci-check`, Sourcery review, mypy type checking
+  - Updated DEV_SETUP.md with optional local group installation instructions
+  - Fixed 9 mypy type errors in registry system files
+  - Files: `pyproject.toml`, `poetry.lock`, `DEV_SETUP.md`, `AGENTS.md`
+
+- **AGENTLOG Archive Workflow** (2026-01-01)
+  - Implemented new archiving workflow with archive/agentlogs/archive-index.md
+  - Archived 2026-01-01 sessions to AGENTLOG-01-01-26.md with summary
+  - Reset AGENTLOG.md to template-only structure
+  - Added archiving workflow to AGENTLOG_TEMPLATE.md and AGENTS.md
+  - Files: `AGENTLOG.md`, `archive/agentlogs/AGENTLOG-01-01-26.md`, `archive/agentlogs/archive-index.md`, `AGENTLOG_TEMPLATE.md`, `AGENTS.md`
+
+- **tnh-gen Provenance YAML Frontmatter** (2025-12-30)
+  - Switched file output provenance headers from HTML comments to YAML frontmatter
+  - Updated CLI reference to document the YAML provenance format
+  - Updated tests to assert YAML provenance markers
+  - Files: `src/tnh_scholar/cli_tools/tnh_gen/output/provenance.py`, `tests/cli_tools/test_tnh_gen.py`, `docs/cli-reference/tnh-gen.md`
+
+- **Documentation Standards - ADR Status Lifecycle** (2025-12-28)
+  - Formalized ADR status lifecycle: `proposed` → `accepted` → `implemented` → `superseded`/`archived`
+  - Clarified status separation: ADRs use `accepted`/`implemented`, guides/docs use `current`
+  - Updated markdown-standards.md with universal vs ADR-specific status values and lifecycle flows
+  - Updated adr-template.md with complete ADR status definitions and editing policy
+  - Standardized on `rejected` (not `discarded`) for proposed-but-not-approved ADRs
+  - Updated 3 implemented ADRs to correct status: ADR-TG01, ADR-TG01.1, ADR-DD03
+  - Added TODO task for 25 historical ADRs marked `current` (low priority audit needed)
+  - Files: `docs/docs-ops/markdown-standards.md`, `docs/docs-ops/adr-template.md`, `docs/architecture/tnh-gen/adr/*.md`, `docs/architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md`, `TODO.md`
+
+- **Documentation Build Infrastructure**
+  - Updated `mkdocstrings-python` from 1.13.0 to 2.0.1 to resolve deprecation warnings
+  - Eliminated all mkdocstrings-related deprecation warnings in docs build process
+  - Build now completes cleanly without any warnings about deprecated import paths or handler methods
+  - Updated references from deprecated `tnh-fab.md` to `tnh-gen.md` in CLI reference and user guide
+  - Made dev dependencies non-optional in `pyproject.toml` (removed `optional = true` from dev group) to ensure `poetry install` always includes dev tools (pytest, mkdocs, mypy, etc.) and prevent accidental removal
+
+### Fixed
+
+- **Post-PR21 Merge Hotfix**
+  - Fixed IndentationError in `filesystem_catalog_adapter.py` caused by duplicate lines from merge conflict resolution
+  - Removed orphaned code fragments (lines 84-85) that were incomplete fragments of a closed `Prompt()` constructor
+  - Restored test collection functionality (all 210 tests passing)
+  - Preserved warning logging functionality (`_log_warnings` call at lines 82-83)
+
+- **Audio Transcribe Hotfix** (2026-01-03, Hotfix to main)
+  - Accept pyannote status payload aliases and default outcome for Pydantic validation
+  - Fix diarization success matching and reduce log payload size
+  - Skip diarization for AssemblyAI and transcribe full audio
+  - Improve transcription factory lazy import handling for AssemblyAI
+  - Normalize AssemblyAI options (drop unsupported keys, map language, disable language_detection when language_code set)
+  - Add minimal tests for diarization payloads, pipeline provider routing, and AssemblyAI option normalization
+  - Promote `assemblyai` and `pysrt` to core dependencies to match runtime expectations
+  - Files: `src/tnh_scholar/audio_processing/diarization/schemas.py`, `src/tnh_scholar/cli_tools/audio_transcribe/transcription_pipeline.py`, `src/tnh_scholar/audio_processing/transcription/transcription_service.py`, `src/tnh_scholar/audio_processing/transcription/assemblyai_service.py`, `pyproject.toml`, `Makefile`, `tests/audio_processing/`, `tests/cli_tools/test_audio_transcribe_pipeline.py`
+
+- **Prompt Frontmatter + Token Counting Hotfix** (2026-01-05, Hotfix to main)
+  - Normalized prompt frontmatter loading to default missing required variables and defaults with warnings instead of failing
+  - Fixed `simple_punctuate` frontmatter required variables list
+  - Added registry-based encoding fallback for token counting (resolves `gpt-5-mini` tiktoken warnings)
+  - Added prompt mapper coverage for missing required variables and token counting test for GPT-5 registry encoding resolution
+  - Files: `src/tnh_scholar/prompt_system/mappers/prompt_mapper.py`, `patterns/simple_punctuate.md`, `tests/prompt_system/test_catalog_adapters.py`, `src/tnh_scholar/gen_ai_service/utils/token_utils.py`, `tests/gen_ai_service/utils/test_token_utils.py`
+
+### Added
+
+- **tnh-gen CLI Tool** - New prompt-driven content generation CLI (ADR-TG01, ADR-TG01.1, ADR-TG02)
+  - **Core Implementation (Dec 2025)** - Initial CLI based on ADR-TG01 and ADR-TG02:
+    - Typer-based command structure (`list`, `run`, `config`, `version` subcommands)
+    - JSON-first output with structured metadata for VS Code integration
+    - Layered configuration system (defaults → env → user → workspace → CLI overrides)
+    - Multiple output formats (JSON, YAML, text, table) with provenance tracking
+    - Protocol-based dependency injection (GenAIServiceProtocol, PromptCatalogProtocol)
+    - Legacy prompt compatibility with graceful degradation and warnings
+    - Environment variable loading (.env support) and input_text auto-injection
+    - Variable precedence (inline vars > JSON file > input file)
+    - Comprehensive test coverage for CLI commands and variable precedence
+    - `src/tnh_scholar/cli_tools/tnh_gen/`: Core CLI package with modular command structure
+    - `src/tnh_scholar/gen_ai_service/protocols.py`: Service and catalog protocol definitions
+    - `tests/cli_tools/test_tnh_gen.py`: CLI test suite
+  - **Human-Friendly Defaults (Dec 23-28, 2025)** - ADR-TG01.1 implementation:
+    - Redesigned default output mode from JSON-first to human-readable text
+    - Added `--api` flag for machine-readable contract output (VS Code, scripts)
+    - Dual output modes: simplified text for CLI users, full JSON/YAML for programmatic consumption
+    - Simplified default output: `list` shows readable descriptions, `run` shows text only
+    - Added output format policy with validation: `--api` incompatible with `--format text/table`
+    - Updated all commands (list, run, config, version) for dual-mode output
+    - Enhanced error messages for dual-mode: plain text (human) vs JSON envelope (API)
+    - Refactored run command from 222 lines with 90-line function to 380 lines with 12 focused functions
+    - Introduced RunContext dataclass to encapsulate execution state
+    - `src/tnh_scholar/cli_tools/tnh_gen/output/human_formatter.py`: Human-readable formatters
+    - `src/tnh_scholar/cli_tools/tnh_gen/output/policy.py`: Format policy resolution/validation
+    - Enhanced test coverage for API vs human output modes (100% coverage achieved Dec 28, 2025)
+  - **Documentation (Dec 28, 2025)**:
+    - `docs/cli-reference/tnh-gen.md`: Complete CLI reference documentation
+    - `docs/cli-reference/archive/`: Archived legacy tnh-fab documentation
+    - Updated getting-started guides with tnh-gen workflows
+    - Updated CLI reference overview to feature tnh-gen
+
+- **AI Text Processing Design Work**
+  - Add ADR-AT03: Minimal ai_text_processing refactor for tnh-gen
+  - Add ADR-AT03.1: Transition plan for phased implementation
+  - Add ADR-AT03.2: NumberedText section boundary validation (ACCEPTED)
+  - Add ADR-AT03.3: TextObject robustness improvements
+  - Add ADR-AT04: Future AI text processing platform strategy
+
+- **UI/UX Design Work**
+  - Add ADR-VSC03: Python-JavaScript impedance investigation
+  - Add ADR-VSC03.1: Investigation findings
+  - Add ADR-VSC03.2: Real-world survey addendum
+  - Add ADR-VSC03.3: Investigation synthesis
+  - Add JVB Viewer ADR series for UI architecture
+
+- **Test Coverage**
+  - Add comprehensive CLI test coverage for json_to_srt, nfmt, sent_split, srt_translate, token_count
+  - Add tnh_fab CLI tests for deprecated tool
+  - Add shared CLI utilities module for test helpers
+  - Add tnh-gen coverage tests achieving 100% module coverage (Dec 28, 2025)
+
+### Changed
+
+- **Type Safety Improvements**
+  - Improved type safety across gen_ai_service modules
+  - Changed RenderVars type from `Dict` to `Mapping[str, Any]` for broader compatibility
+  - Fixed TypedDict optionality in `ConfigValuePayload` for mapping-compatible typing
+
+- **Prompt System Enhancements**
+  - Best-effort prompt loading with synthetic metadata for invalid frontmatter
+  - Warnings field in PromptMetadata threaded through list/run outputs
+  - Frontmatter parsing leniency (leading whitespace/BOM handling)
+  - Invalid-metadata tagging for filtering in downstream clients
+  - Whitelisted `input_text` in validator for legacy prompt compatibility
+
+- **Documentation Infrastructure**
+  - Added comprehensive tnh-gen CLI reference documentation (`docs/cli-reference/tnh-gen.md`)
+  - Documented ADR-TG01.1 human-friendly defaults implementation
+  - Enhanced ADR template with clearer structure and examples
+  - Updated markdown standards for consistency
+  - Refined human-AI software engineering principles
+  - Improved documentation navigation (index, map)
+  - Enhanced tnh-zen CSS styling for better readability
+  - Updated docs/index.md with current feature status
+  - Updated VS Code integration ADRs to use `--api` flag
+
+## [0.2.2] - 2025-12-11
+
+### Deprecated
+
+- **tnh-fab CLI Tool**
+  - Added comprehensive deprecation warnings for tnh-fab CLI tool
+  - Runtime warning displayed on all tnh-fab command invocations
+  - Help text updated to indicate deprecation and migration path to tnh-gen
+  - All user-facing documentation updated with deprecation notices
+  - Migration guidance pointing to TNH-Gen Architecture (ADR-TG01, ADR-TG02)
+
+### Changed
+
+- **Documentation Updates**
+  - Updated README.md, docs/index.md with tnh-fab deprecation notices
+  - Updated CLI reference documentation to mark tnh-fab as deprecated
+  - Updated getting started guide and user guide with migration information
+  - Updated architecture overview to note CLI tool transition
+  - Changed status metadata for tnh-fab.md to "deprecated"
+
+### Infrastructure
+
+- **Makefile Improvements**
+  - Minor robustness enhancements to build and release targets
+
+## [0.2.1] - 2025-12-11
+
+### Infrastructure & Tooling
+
+This patch release focuses on hardening release automation, improving developer experience, and expanding project documentation infrastructure.
+
+### Added
+
+- **Archive System Infrastructure**
+  - Comprehensive archive linking system with automated AGENTLOG management
+  - Search capabilities for archived documentation and session logs
+  - AGENTLOG template for structured agent work tracking
+  - Issue draft system for capturing work-in-progress documentation
+
+- **GenAI Service Core Implementation**
+  - Complete policy, routing, and safety gate implementation per ADR-A08/A09/A11
+  - Expanded test coverage (+128% improvement)
+  - Sourcery fixes for code quality improvements
+
+- **CI/CD Enhancements**
+  - Local CI check command (`make ci-check`) for pre-push validation
+  - Non-blocking quality checks (mypy, ruff, markdown lint) to prevent CI bottlenecks
+  - Pre-commit hooks for notebook preparation and code quality
+
+### Changed
+
+- **Release Automation Hardening**
+  - Makefile robustness improvements (UTF-8 handling, GitHub CLI access checks)
+  - Enhanced version sync mechanism between pyproject.toml and TODO.md
+  - Fixed Python heredoc formatting in release-publish target
+
+- **Documentation Quality**
+  - Codespell configuration now skips .txt archival files
+  - Documentation metadata validation and normalization
+  - Enhanced markdown link verification with warning-only default mode
+
+### Fixed
+
+- Node.js setup for markdown linting in CI
+- Git workflow improvements with staleness detection
+- Directory tree generation for CI verification
+- Documentation build automation scripts
+
+### Documentation
+
+- Training pipeline research documentation
+- Archive linking patterns (ADR-DD01 Addendum 4)
+- Long-term project initiatives in TODO
+- Comprehensive session logs in archive/agentlogs/
+
+### Notes
+
+- All 124 tests passing
+- Pre-existing lint/type-check issues tracked separately (technical debt)
+- Focus on infrastructure stability for rapid prototyping phase
+
+## [0.2.0] - 2025-12-06
+
+### Major Infrastructure Improvements
+
+This release represents a significant maturation of project infrastructure, building on the documentation reorganization from v0.1.4. Combined, these releases deliver comprehensive documentation tooling and streamlined release automation.
+
+**Versioning Note**: The v0.1.3 → v0.1.4 transition should have been v0.1.3 → v0.2.0 given the scope of documentation system changes. This release (v0.2.0) acknowledges both the documentation infrastructure (v0.1.4) and release automation improvements as a cohesive minor release milestone.
+
+### Added
+
+- **Comprehensive Dry-Run Mode for Release Workflow**
+  - Preview all release commands before execution (`DRY_RUN=1` parameter)
+  - Shows exact commands, commit messages, and tag messages before creating them
+  - Prevents costly mistakes (git tags, PyPI publishes)
+  - Supports all release targets: version bump, commit, tag, publish
+  - Clear visual feedback with "🔍 DRY RUN MODE" indicator
+
+- **Version Sync Pre-commit Hook**
+  - Automatically validates `pyproject.toml` and `TODO.md` versions match
+  - Prevents version drift bugs before commit
+  - Clear error messages with fix instructions
+  - Runs on every commit via pre-commit framework
+
+- **Python-Native Link Checker**
+  - Replaced lychee (Rust tool) with md-dead-link-check (Python package)
+  - Pure Python toolchain, no external dependencies required
+  - Configured to check external links only (MkDocs validates internal links)
+  - Better Poetry integration and developer onboarding
+
+- **Comprehensive Release Workflow Documentation**
+  - Production-ready documentation at `docs/development/release-workflow.md`
+  - Complete guide covering prerequisites, step-by-step workflow, troubleshooting
+  - Conforms to ADR-DD01 markdown standards
+  - Documents dry-run mode, automation features, and best practices
+  - Examples, tips for efficient releases, and conventional commit guidance
+
+- **Markdown Link Standard Enforcement**
+  - Added validation to detect relative links (`../`) in documentation
+  - Enforces absolute path links from `/docs/` root
+  - Updated markdown standards with clear examples and guidelines
+  - Prevents MkDocs strict mode issues
+
+### Changed
+
+- **Simplified Developer Setup**
+  - Removed non-Python tooling hard requirements (lychee now optional)
+  - All documentation tools managed by Poetry
+  - Improved new contributor onboarding experience
+
+- **Code Quality Improvements**
+  - Applied ruff auto-fixes to 21 files (28 automatic style fixes)
+  - Import organization and sorting
+  - Removed unused imports and trailing whitespace
+  - All tests passing after cleanup (94/94)
+
+### Infrastructure
+
+- **Release Automation Phase 2**
+  - Restored full `docs-verify` pipeline with Python-native tools
+  - Enhanced Makefile with dry-run support for all release targets
+  - Version sync validation integrated into git workflow
+  - Reduced external tool dependencies
+
+### Notes
+
+- No code functionality changes - purely tooling, automation, and documentation infrastructure
+- This release focuses on making the development and release process "feel very smooth"
+- External link checking now uses pure Python stack
+- All 94 tests passing with 1 deprecation warning (audioop in pydub, Python 3.13)
+
+## [0.1.4] - 2025-12-05
+
+### Added
+
+- **Documentation System Reorganization (Phase 1)** - Major infrastructure overhaul:
+  - New hierarchical directory structure with 13 architecture modules
+  - Automated documentation tooling (8 build scripts for generation and validation)
+  - Comprehensive markdown standards with quality enforcement (markdownlint, codespell, lychee)
+  - Auto-generated documentation index and navigation map
+  - MkDocs configuration rewrite with filesystem-driven navigation
+  - Custom zen-inspired theme with collapsible navigation
+  - GitHub Pages deployment with CI/CD verification
+  - Drift monitoring between README.md and docs/index.md
+
+- **Pattern → Prompt Terminology Standardization (ADR-DD03 Phase 1)**:
+  - Renamed user-facing documentation from "Pattern" to "Prompt" terminology
+  - Updated README.md, docs/index.md, getting-started/, user-guide/
+  - Retained legacy compatibility (TNH_PATTERN_DIR, --pattern flags)
+
+- **Release Automation (Phase 1)**:
+  - Makefile release targets for streamlined release workflow
+  - CHANGELOG generator script (auto-generate from git commits)
+  - Automated version bump, commit, tag, and publish workflow
+  - Reduces release time from 2 hours to 10 minutes (83% reduction)
+
+- **Architecture Documentation**:
+  - 3 new ADRs: ADR-DD01 (docs reorganization), ADR-DD02 (navigation strategy), ADR-DD03 (terminology migration)
+  - Reorganized and standardized existing ADRs across 13 architecture modules
+  - Created comprehensive architecture overview and index pages
+  - 30+ design documents reorganized and renamed to match standards
+
+- **Enhanced Root Documentation**:
+  - AGENTLOG.md: Detailed session logs for all work sessions
+  - CHANGELOG.md: Maintained and updated changelog
+  - Expanded README.md with refined vision and architecture snapshot
+  - Restructured TODO.md with priority roadmap (Priority 1-3)
+  - Enhanced CONTRIBUTING.md and DEV_SETUP.md
+
+- **Build & Quality Infrastructure**:
+  - Pre-commit hooks configuration for markdown linting and spell checking
+  - Makefile targets: `docs`, `docs-verify`, `docs-quickcheck`, `check-drift`, `release-*`
+  - .lychee.toml for link checking configuration
+  - .codespell-ignore.txt for technical/dharma terms
+  - .markdownlint.json for markdown linting rules
+
+- **Research Documentation**:
+  - New: RAG research directions document
+  - Reorganized: Existing research files renamed to match markdown standards
+
+### Changed
+
+- **Directory Structure**: Reorganized from flat to hierarchical architecture
+  - docs/cli/ → docs/cli-reference/ (consolidated CLI documentation)
+  - docs/design/ → docs/architecture/<module>/ (module-specific organization)
+  - docs/user-guide/patterns.md → docs/user-guide/prompt-system.md
+  - Split design-guide.md into style-guide.md and design-principles.md (Python standards)
+  - Moved object-service architecture from development/ to architecture/
+
+- **CI/CD Workflows**:
+  - Enhanced .github/workflows/ci.yml with markdownlint, codespell, link checking
+  - Added .github/workflows/docs.yml for documentation build and GitHub Pages deployment
+
+- **Navigation**: MkDocs configuration rewrite with absolute link validation enabled
+
+### Documentation
+
+- Established comprehensive markdown standards in docs/docs-ops/markdown-standards.md
+- ADR naming convention: `adr-<modulecode><number>-<descriptor>.md`
+- Module-specific storage: `docs/architecture/<module>/adr/` organization
+- Archive structure: `docs/archive/` (top-level) + `docs/architecture/<module>/archive/` (module-specific)
+
+### Notes
+
+- **No breaking changes**: Purely documentation infrastructure improvements
+- **Navigation changes**: Users should update bookmarks from docs/cli/ to docs/cli-reference/
+- **Phase 2 work**: Outstanding items tracked in TODO #9 (archive expansion, gap filling, additional testing)
+- **Merge PR**: Merged docs-reorg branch with 96 commits, 429 files changed (67,885 additions, 7,616 deletions)
+
+### References
+
+- [ADR-DD01: Documentation System Reorganization Strategy](../../architecture/docs-system/adr/adr-dd01-docs-reorg-strategy.md)
+- [ADR-DD02: Main Content and Navigation Strategy](../../architecture/docs-system/adr/adr-dd02-main-content-nav.md)
+- [ADR-DD03: Pattern→Prompt Terminology Migration](../../architecture/docs-system/adr/adr-dd03-pattern-to-prompt.md)
+- [TODO #9: Documentation Reorganization](https://github.com/aaronksolomon/tnh-scholar/blob/main/TODO.md#9--documentation-reorganization-adr-dd01--adr-dd02)
+
+## Unreleased
+
+### Documentation
+
+- **Auto-generated Documentation Index System** (2025-12-05):
+  - Implemented dual-format auto-generated documentation indexing (ADR-DD01 Addendum 3)
+  - Created `scripts/generate_doc_index.py` to generate both `documentation_index.md` (comprehensive searchable table) and `documentation_map.md` (hierarchical navigation)
+  - Created `scripts/append_doc_map_to_index.py` to inject documentation map into index.md at build time
+  - Documentation Map now auto-generated from filesystem and frontmatter metadata, eliminating manual maintenance
+  - Both formats always in sync with actual documentation structure
+
+- **Phase 2 Documentation Reorganization** (ADR-DD01/ADR-DD02 completion):
+  - Completed comprehensive file reorganization: renamed 75+ architecture documents for clarity and consistency
+  - Established canonical naming patterns: `adr-XX-descriptive-name.md` for ADRs, `system-design.md` for design docs
+  - Created README.md files for major sections (architecture/, cli/, development/, getting-started/)
+  - Removed obsolete CLI reference stubs (pending auto-generation)
+  - Archived historical research artifacts and experiment files
+  - Reorganized reference materials (yt-dlp docs, GPT-4 experiments) into categorized subdirectories
+  - Updated all cross-references and internal links for reorganized structure
+  - Achieved zero mkdocs build warnings after reorganization
+
+- Standardized Markdown front matter, titles, and summary paragraphs across the docs tree (prompt-pattern files excluded pending dedicated schema).
+- Updated `docs/docs-ops/markdown-standards.md` to spell out the Prompt Template front matter exception.
+- Regenerated `documentation_index.md` after metadata fixes.
+- **Filesystem-driven navigation**: Removed hardcoded `mkdocs.yaml` nav section and adopted `mkdocs-literate-nav` + `mkdocs-gen-files`.
+  - Added `docs/nav.md` as the source of truth for navigation hierarchy.
+  - MkDocs now automatically syncs nav with filesystem structure.
+  - CLI docs and prompt template catalog are auto-generated from codebase artifacts.
+- Fixed GitHub Actions workflows: YAML parsing errors in frontmatter, package installation, and GitHub Pages deployment permissions.
+- Cleaned docstrings and type hints in the AI/text/audio/journal/ocr modules so MkDocs + Griffe stop emitting annotation warnings.
+- Added project philosophy and vision documentation in `docs/project/` (philosophy.md, vision.md, principles.md, conceptual-architecture.md, future-directions.md).
+- Added Parallax Press stakeholder overview document at `docs/tnh_scholar_parallax_overview.md`.
+- Updated README.md with refined vision statement and getting started section.
+- Updated docs/index.md with expanded vision and goals.
+- Updated TODO.md with Part 4g documentation testing workflow.
+- **Pattern→Prompt terminology standardization** (ADR-DD03 Phase 1): Updated all user-facing documentation to use "Prompt" instead of "Pattern" to align with industry standards and gen-ai-service refactoring.
+  - Added historical terminology note to docs/index.md
+  - Updated README, getting-started/, user-guide/ documentation
+  - Renamed docs/user-guide/patterns.md → prompts.md
+  - Renamed docs/architecture/pattern-system/ → prompt-system/
+  - Updated ADR-DD01 and ADR-DD02 references
+- **Documentation structure reorganization** (Python community standards):
+  - Split design-guide.md into style-guide.md (code formatting, PEP 8) and design-principles.md (architectural patterns)
+  - Moved object-service architecture to canonical location (development/architecture/ → architecture/object-service/)
+  - Converted object-service-design-blueprint-v2 to ADR-OS01 (adopted V3, deleted V1)
+  - Created design-overview.md and updated implementation-status.md with resolved items
+  - Created forward-looking prompt-architecture.md documenting current V1 and planned V2 (PromptCatalog, fingerprinting, VS Code integration)
+  - Moved pattern-core-design.md to archive/ with historical terminology note
+  - Fixed all 35 mkdocs build --strict warnings from reorganization (link updates, regenerated index)
+ - Navigation cleanup: removed the mirrored “Project Docs” (repo-root copies) from MkDocs navigation to avoid confusing duplication with `docs/project`.
+
+### Developer Experience
+
+- Added pre-commit hooks configuration with codespell, trailing whitespace removal, and basic file checks.
+- Added lychee link checker with `.lychee.toml` configuration for documentation quality assurance.
+- Added Makefile targets for link checking (`make check-links`, `make check-links-verbose`).
+- Added `scripts/sync_root_docs.py` to sync root-level docs into MkDocs structure and wired into build system.
+- **MkDocs strict mode cleanup**: Fixed all 136 warnings to achieve zero-warning builds.
+  - Fixed autorefs warnings in TODO.md and regenerated mirrored root docs.
+  - Aligned docstrings/signatures and type annotations across AI/text/audio/journal/OCR/utils modules to satisfy griffe.
+  - Restored full mkdocstrings options in API documentation.
+  - Created `docs/docs-ops/mkdocs-warning-backlog.md` to track progress and future doc additions.

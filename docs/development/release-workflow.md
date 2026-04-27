@@ -145,10 +145,12 @@ make release-minor
 
 **Use for**:
 
-- New features that maintain backward compatibility
+- New features or significant capability additions
 - Significant documentation reorganization
 - New CLI commands or subcommands
 - Major improvements to existing features
+
+**Note**: During 0.x rapid prototype phase, minor releases may include breaking changes. See [ADR-PP01](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md).
 
 **⚠️ Documentation Review Required**: Minor releases with new features require manual review of user-facing documentation to catch docs issues. See Step 1.5 below.
 
@@ -186,7 +188,7 @@ make release-major   # For 0.3.1 → 1.0.0
 - Updates `TODO.md` version header to match
 - Displays next steps
 
-**Example output**:
+**Example output** (version numbers will reflect your current release):
 
 ```plaintext
 🚀 Bumping patch version (0.x.Y -> 0.x.Y+1)...

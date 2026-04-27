@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-04-25"
+created: "2026-04-27"
 auto_generated: true
 ---
 
@@ -161,6 +161,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [Diarization Chunker Module Design Strategy](/architecture/transcription/design/diarization-chunker-design.md)
 - [Diarization System Design](/architecture/transcription/design/diarization-system-design.md)
 - [Documentation Design](/architecture/docs-system/design/documentation-design.md)
+- [Example Agent Workflow](/architecture/agent-orchestration/example-agent-workflow.md)
 - [GenAI Service — Design Strategy](/architecture/gen-ai-service/design/genai-service-design-strategy.md)
 - [Generate Markdown Translation JSON Pairs](/architecture/jvb-viewer/design/generate-md-translation-json-pairs.md)
 - [Generate Markdown Vietnamese](/architecture/jvb-viewer/design/generate-md-vietnamese.md)
@@ -220,6 +221,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 
 ## Development
 
+- [CI Workflow Cleanup Proposal](/development/ci-workflow-cleanup-proposal.md)
 - [Contributing to TNH Scholar (Prototype Phase)](/development/contributing-prototype-phase.md)
 - [Development Documentation](/development/overview.md)
 - [Fine Tuning Strategy](/development/fine-tuning-strategy.md)

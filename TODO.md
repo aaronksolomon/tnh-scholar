@@ -638,6 +638,19 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Frontmatter/schema validation guidance
   - [ ] Document prompt schema
 
+#### 🚧 tnh-gen Review Context Ingestion
+
+- **Status**: NOT STARTED
+- **Priority**: MEDIUM
+- **Problem**: `tnh-gen` can run ad hoc review prompts via `--prompt-dir`, but it cannot yet gather bounded local document context on its own for review workflows such as docs language audits
+- **Tasks**:
+  - [ ] Add repeatable local context inputs for `tnh-gen run` (for example `--context-file` or `--context-dir`)
+  - [ ] Support bounded repo-local file loading for review prompts with explicit source allowlists
+  - [ ] Emit included context sources in provenance and API output
+  - [ ] Document a standard review-workflow pattern for docs, ADR, and architecture audits
+  - [ ] Persist `tnh-gen` run output by default to a temp or run-artifact file even when no `--output-file` is provided
+  - [ ] Add follow-on conversation support for `tnh-gen` review/generation runs so a prompt can continue from prior output or thread state
+
 #### 🚧 Knowledge Base Implementation
 
 - **Status**: DESIGN COMPLETE
@@ -658,6 +671,17 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Verify installed wheels work without repo-local prompt directories
   - [ ] Keep repo-layout assumptions out of import-time package initialization
   - [ ] Audit CLI entry points for any remaining repo-root-only assumptions
+
+#### 🚧 Repo-Root Docs Generation and CI Consistency
+
+- **Status**: NOT STARTED
+- **Priority**: HIGH
+- **Problem**: Documentation standards and generated docs link to `/project/repo-root/*`, but those generated files currently live under ignored paths and may be absent in clean remote CI checkouts, causing MkDocs/link-validation inconsistencies between local and GitHub builds
+- **Tasks**:
+  - [ ] Decide whether `docs/project/repo-root/` outputs should be tracked in git or generated in all CI docs-validation paths before link checks run
+  - [ ] Align `.gitignore`, docs build scripts, and CI expectations so local and remote docs validation see the same repo-root docs set
+  - [ ] Verify `make docs-build`, PR docs validation, and GitHub Actions all succeed from a clean checkout with no pre-existing generated repo-root docs
+  - [ ] Document the intended contract for repo-root doc mirrors in docs ops guidance
 
 #### 🚧 Logging System Scope
 
