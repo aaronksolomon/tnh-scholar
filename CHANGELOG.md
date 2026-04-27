@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Prompt Catalog Stage 2 Metadata Normalization** (2026-04-26)
+  - Normalized the maintained `prompts/` catalog to the PT05 metadata baseline by adding explicit `role`, `inputs`, and `output_contract` fields across the legacy prompt set
+  - Added concrete `schema_ref` coverage for the maintained JSON prompts so prompt catalog health now loads cleanly through `tnh-gen`
+  - Removed obsolete `review_count` variables and instructions from legacy prompts because they are not part of the modern-model operating contract
+  - Files: `prompts/`, `TODO.md`
+
 - **Prompt Catalog Stage 1 Tooling Fixes** (2026-04-26)
   - Fixed filesystem prompt-catalog listing for relative `--prompt-dir` usage so `tnh-gen --prompt-dir ./prompts list` no longer double-prefixes prompt paths
   - Normalized legacy `output_mode: text` prompt metadata without spurious catalog warnings, leaving only real validation issues visible during catalog health checks
