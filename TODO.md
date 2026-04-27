@@ -672,6 +672,17 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Keep repo-layout assumptions out of import-time package initialization
   - [ ] Audit CLI entry points for any remaining repo-root-only assumptions
 
+#### 🚧 Repo-Root Docs Generation and CI Consistency
+
+- **Status**: NOT STARTED
+- **Priority**: HIGH
+- **Problem**: Documentation standards and generated docs link to `/project/repo-root/*`, but those generated files currently live under ignored paths and may be absent in clean remote CI checkouts, causing MkDocs/link-validation inconsistencies between local and GitHub builds
+- **Tasks**:
+  - [ ] Decide whether `docs/project/repo-root/` outputs should be tracked in git or generated in all CI docs-validation paths before link checks run
+  - [ ] Align `.gitignore`, docs build scripts, and CI expectations so local and remote docs validation see the same repo-root docs set
+  - [ ] Verify `make docs-build`, PR docs validation, and GitHub Actions all succeed from a clean checkout with no pre-existing generated repo-root docs
+  - [ ] Document the intended contract for repo-root doc mirrors in docs ops guidance
+
 #### 🚧 Logging System Scope
 
 - **Location**: `src/tnh_scholar/logging_config.py`
