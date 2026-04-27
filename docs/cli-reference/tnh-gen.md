@@ -113,7 +113,7 @@ tnh-gen --api --format yaml list
 # → Full metadata as YAML
 
 # Human-friendly table
-tnh-gen --format table list
+tnh-gen list --format table
 # → Simplified table format
 ```
 
@@ -137,7 +137,7 @@ tnh-gen list [OPTIONS]
 --keys-only        # Output only prompt keys (one per line)
 ```
 
-Note: `--format` and `--api` are global flags that must come before `list`.
+Note: `--api` is a global flag and must come before `list`. For table output, use the `list` subcommand's own `--format table` option.
 
 #### Human-Friendly Output (Default)
 
@@ -197,7 +197,7 @@ $ tnh-gen --api list
 #### Table Format
 
 ```bash
-$ tnh-gen --format table list
+$ tnh-gen list --format table
 KEY         NAME                               TAGS                  MODEL
 translate   Vietnamese-English Translation     translation, dharma   gpt-4o
 summarize   Summarize Teaching                 summarization         gpt-4o-mini
