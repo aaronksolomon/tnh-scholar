@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`tnh-gen --vars` Generated-Artifact Compatibility** (2026-04-28)
+  - Taught `tnh-gen run --vars` to accept JSON objects wrapped in YAML frontmatter so staged `tnh-gen` workflows can feed generated JSON artifacts into later prompt runs without manual stripping
+  - Preserved the existing failure contract for non-object payloads and frontmatter-wrapped bodies that are still not valid JSON
+  - Added focused CLI and loader regression coverage for frontmatter-wrapped vars files
+  - Files: `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`, `tests/cli_tools/test_tnh_gen.py`, `tests/cli_tools/test_tnh_gen_coverage.py`
+
 - **Prompt Catalog Stage 2 Metadata Normalization** (2026-04-26)
   - Normalized the maintained `prompts/` catalog to the PT05 metadata baseline by adding explicit `role`, `inputs`, and `output_contract` fields across the legacy prompt set
   - Added concrete `schema_ref` coverage for the maintained JSON prompts so prompt catalog health now loads cleanly through `tnh-gen`
