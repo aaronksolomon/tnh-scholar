@@ -14,6 +14,7 @@ Checklist of tasks required before publishing a TNH Scholar release.
 
 - [ ] Confirm the release scope and choose the correct bump type (`make release-patch`, `make release-minor`, or `make release-major`)
 - [ ] Run the full local gate on the actual release candidate state: `make release-check`
+- [ ] Run all live golden tests for the release candidate state and capture their outputs as release artifacts; today this includes the live `tnh-gen` golden pipeline under `tests/golden/`, and future CLIs should be added here as they gain live goldens
 - [ ] For minor or major releases, review user-facing docs (`README.md`, `docs/getting-started/`, `docs/user-guide/`, `docs/cli-reference/`, `AGENTS.md`) for stale claims and examples
 - [ ] Ensure `CHANGELOG.md` reflects the actual unreleased work clearly and user-readably
 
