@@ -1291,6 +1291,117 @@ def test_run_reports_non_object_vars_file(tmp_path, monkeypatch):
     assert "--vars file must contain a JSON object" in payload["error"]
 
 
+def test_run_accepts_frontmatter_wrapped_json_vars_file(tmp_path, monkeypatch):
+    prompt_dir = _write_prompt(tmp_path)
+    input_file = tmp_path / "input.txt"
+    input_file.write_text("file-input", encoding="utf-8")
+
+    vars_file = tmp_path / "vars.json"
+    vars_file.write_text(
+        (
+            "---\n"
+            "tnh_scholar_generated: true\n"
+            "prompt_key: section_by_break\n"
+            "---\n\n"
+            '{"audience":"from_vars","section_count":4}\n'
+        ),
+        encoding="utf-8",
+    )
+
+    metadata = PromptMetadata(
+        key="daily",
+        name="Daily Guidance",
+        version="1.0.0",
+        description="Daily guidance prompt for testing.",
+        task_type="study-plan",
+        required_variables=["audience"],
+        optional_variables=[],
+        default_variables={},
+        tags=["guidance"],
+    )
+    stub_service = _StubService(metadata)
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+    monkeypatch.setattr(run_module, "_initialize_service", lambda *_, **__: stub_service)
+
+    result = runner.invoke(
+        tnh_gen.app,
+        [
+            "--api",
+            "run",
+            "--prompt",
+            "daily",
+            "--input-file",
+            str(input_file),
+            "--vars",
+            str(vars_file),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "succeeded"
+    assert stub_service.last_request.variables["audience"] == "from_vars"
+    assert stub_service.last_request.variables["section_count"] == 4
+
+
+def test_run_reports_frontmatter_wrapped_non_json_vars_body(tmp_path, monkeypatch):
+    prompt_dir = _write_prompt(tmp_path)
+    input_file = tmp_path / "input.txt"
+    input_file.write_text("file-input", encoding="utf-8")
+
+    vars_file = tmp_path / "vars.json"
+    vars_file.write_text(
+        (
+            "---\n"
+            "tnh_scholar_generated: true\n"
+            "---\n\n"
+            "sections:\n"
+            "  - start_line: 1\n"
+        ),
+        encoding="utf-8",
+    )
+
+    metadata = PromptMetadata(
+        key="daily",
+        name="Daily Guidance",
+        version="1.0.0",
+        description="Daily guidance prompt for testing.",
+        task_type="study-plan",
+        required_variables=["audience"],
+        optional_variables=[],
+        default_variables={},
+        tags=["guidance"],
+    )
+    stub_service = _StubService(metadata)
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+    monkeypatch.setattr(run_module, "_initialize_service", lambda *_, **__: stub_service)
+
+    result = runner.invoke(
+        tnh_gen.app,
+        [
+            "--api",
+            "run",
+            "--prompt",
+            "daily",
+            "--input-file",
+            str(input_file),
+            "--vars",
+            str(vars_file),
+        ],
+    )
+
+    assert result.exit_code == 4
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "failed"
+    assert "Invalid JSON" in payload["error"]
+
+
 def test_cli_loads_dotenv_for_settings(tmp_path, monkeypatch):
     dotenv_path = tmp_path / ".env"
     dotenv_path.write_text("OPENAI_API_KEY=from_dotenv\n", encoding="utf-8")

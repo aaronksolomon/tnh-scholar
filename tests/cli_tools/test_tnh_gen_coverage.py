@@ -519,6 +519,24 @@ def test_provenance_write_without_header(tmp_path):
     assert output_file.read_text(encoding="utf-8") == "plain text"
 
 
+def test_load_vars_file_accepts_frontmatter_wrapped_json(tmp_path):
+    vars_file = tmp_path / "vars.json"
+    vars_file.write_text(
+        (
+            "---\n"
+            "tnh_scholar_generated: true\n"
+            "prompt_key: daily\n"
+            "---\n\n"
+            '{"audience":"students","count":2}\n'
+        ),
+        encoding="utf-8",
+    )
+
+    payload = run_module._load_vars_file(vars_file)
+
+    assert payload == {"audience": "students", "count": 2}
+
+
 def test_provenance_yaml_roundtrip(tmp_path):
     output_file = tmp_path / "output.txt"
     envelope = _envelope_with_warnings()

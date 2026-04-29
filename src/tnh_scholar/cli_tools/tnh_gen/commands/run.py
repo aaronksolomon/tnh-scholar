@@ -125,12 +125,21 @@ def _load_vars_file(path: Path | None) -> VariableMap:
     """
     if path is None:
         return {}
+    raw_text = path.read_text(encoding="utf-8")
     try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload = json.loads(raw_text)
     except json.JSONDecodeError as exc:
-        raise json.JSONDecodeError(
-            f"Invalid JSON in vars file {path}", exc.doc, exc.pos
-        ) from exc
+        _, body = Frontmatter.extract(raw_text)
+        if body == raw_text:
+            raise json.JSONDecodeError(
+                f"Invalid JSON in vars file {path}", exc.doc, exc.pos
+            ) from exc
+        try:
+            payload = json.loads(body)
+        except json.JSONDecodeError as body_exc:
+            raise json.JSONDecodeError(
+                f"Invalid JSON in vars file {path}", body_exc.doc, body_exc.pos
+            ) from body_exc
     if not isinstance(payload, dict):
         raise ValueError("--vars file must contain a JSON object")
     return {str(k): v for k, v in payload.items()}
