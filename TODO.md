@@ -637,6 +637,7 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Better error messages (unknown prompt, hash mismatch)
   - [ ] Frontmatter/schema validation guidance
   - [ ] Document prompt schema
+  - [ ] Clean up ADR statuses and cross-ADR alignment for the prompt-platform / `tnh-gen` structured JSON contract area (`TG04`, `TG04.1`, `PT05`, related prompt-system notes) once the design settles
 
 #### 🚧 tnh-gen Review Context Ingestion
 
