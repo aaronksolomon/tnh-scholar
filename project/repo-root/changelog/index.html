@@ -10193,6 +10193,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -10379,6 +10383,76 @@
   
   
     <span class="md-status md-status--proposed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/tnh-gen/adr/adr-tg04-structured-json-contract-and-scope/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-TG04: Structured JSON Contract and Scope Boundaries
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/tnh-gen/adr/adr-tg04.1-json-contract-runtime-validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-TG04.1: JSON Contract Runtime Validation
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
   
 
   
@@ -15121,7 +15195,16 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Prompt Catalog Stage 2 Metadata Normalization</strong> (2026-04-26)</li>
+<li><strong><code>tnh-gen --vars</code> Generated-Artifact Compatibility</strong> (2026-04-28)</li>
+<li>Taught <code>tnh-gen run --vars</code> to accept JSON objects wrapped in YAML frontmatter so staged <code>tnh-gen</code> workflows can feed generated JSON artifacts into later prompt runs without manual stripping</li>
+<li>Preserved the existing failure contract for non-object payloads and frontmatter-wrapped bodies that are still not valid JSON</li>
+<li>Added focused CLI and loader regression coverage for frontmatter-wrapped vars files</li>
+<li>
+<p>Files: <code>src/tnh_scholar/cli_tools/tnh_gen/commands/run.py</code>, <code>tests/cli_tools/test_tnh_gen.py</code>, <code>tests/cli_tools/test_tnh_gen_coverage.py</code></p>
+</li>
+<li>
+<p><strong>Prompt Catalog Stage 2 Metadata Normalization</strong> (2026-04-26)</p>
+</li>
 <li>Normalized the maintained <code>prompts/</code> catalog to the PT05 metadata baseline by adding explicit <code>role</code>, <code>inputs</code>, and <code>output_contract</code> fields across the legacy prompt set</li>
 <li>Added concrete <code>schema_ref</code> coverage for the maintained JSON prompts so prompt catalog health now loads cleanly through <code>tnh-gen</code></li>
 <li>Removed obsolete <code>review_count</code> variables and instructions from legacy prompts because they are not part of the modern-model operating contract</li>
