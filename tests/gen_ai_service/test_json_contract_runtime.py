@@ -114,7 +114,7 @@ def test_gen_ai_service_validates_json_contract_and_canonicalizes_text(
     assert response_format is not None
     assert response_format["type"] == "json_schema"
     assert response_format["json_schema"]["name"] == "tnh_testing_echo_v1"
-    assert response_format["json_schema"]["strict"] is True
+    assert response_format["json_schema"]["strict"] is False
     assert response_format["json_schema"]["schema"]["type"] == "object"
     assert envelope.result is not None
     assert envelope.result.json_value == {"message": "hello"}
@@ -151,3 +151,34 @@ def test_gen_ai_service_maps_schema_validation_failures_to_failed_outcome(
     assert envelope.failure is not None
     assert envelope.failure.reason == FailureReason.CONTRACT_VALIDATION_FAILED
     assert "schema 'tnh.testing.echo.v1'" in envelope.failure.message
+
+
+def test_gen_ai_service_maps_malformed_json_to_failed_outcome(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    prompt_dir = _write_json_prompt(tmp_path)
+    monkeypatch.setattr(service_module, "apply_policy", _fake_apply_policy)
+    monkeypatch.setattr(service_module, "select_provider_and_model", _fake_select)
+    monkeypatch.setattr(service_module, "OpenAIClient", DummyOpenAIClient)
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(prompt_dir))
+    monkeypatch.setenv("OPENAI_API_KEY", "unit-test-key")
+
+    settings = GenAISettings(_env_file=None)
+    service = GenAIService(settings=settings)
+    dummy_client: DummyOpenAIClient = service.openai_client  # type: ignore[assignment]
+    dummy_client.response = _provider_response("{not-json")
+
+    envelope = service.generate(
+        RenderRequest(
+            instruction_key="json-echo",
+            user_input="ignored",
+            variables={},
+        )
+    )
+
+    assert envelope.outcome.value == "failed"
+    assert envelope.result is None
+    assert envelope.failure is not None
+    assert envelope.failure.reason == FailureReason.CONTRACT_VALIDATION_FAILED
+    assert "not valid JSON" in envelope.failure.message

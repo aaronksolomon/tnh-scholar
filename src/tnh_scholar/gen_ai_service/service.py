@@ -193,7 +193,9 @@ def _response_format_for_schema(
         "type": "json_schema",
         "json_schema": {
             "name": _response_format_name(resolved_schema.schema_ref),
-            "strict": True,
+            # Use schema-guided output without forcing OpenAI's strict subset gate.
+            # Local JSON Schema validation remains the authoritative contract check.
+            "strict": False,
             "schema": resolved_schema.document,
         },
     }

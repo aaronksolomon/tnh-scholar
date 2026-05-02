@@ -10,6 +10,8 @@ from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.prompt_system.service.contract_schema import (
     PromptContractSchemaResolver,
+    _load_schema_document,
+    _relative_schema_path,
 )
 
 
@@ -60,6 +62,14 @@ def test_schema_resolver_rejects_missing_schema(tmp_path: Path):
         PromptContractSchemaResolver(context).resolve_validated("tnh.testing.missing.v1")
 
 
+def test_schema_resolver_rejects_invalid_schema_ref_syntax():
+    with pytest.raises(ConfigurationError, match="Invalid prompt contract schema_ref"):
+        _relative_schema_path("tnh..bad.v1")
+
+    with pytest.raises(ConfigurationError, match="Invalid prompt contract schema_ref"):
+        _relative_schema_path("../escape")
+
+
 def test_schema_resolver_rejects_invalid_schema_document(tmp_path: Path):
     builtin_root = tmp_path / "builtin"
     _write_schema(builtin_root, "tnh.testing.bad.v1", {"type": 123})
@@ -73,6 +83,22 @@ def test_schema_resolver_rejects_invalid_schema_document(tmp_path: Path):
 
     with pytest.raises(ConfigurationError, match="is invalid"):
         PromptContractSchemaResolver(context).resolve_validated("tnh.testing.bad.v1")
+
+
+def test_schema_resolver_rejects_non_object_schema_document(tmp_path: Path):
+    schema_path = tmp_path / "non_object.schema.json"
+    schema_path.write_text(json.dumps(["not", "an", "object"]), encoding="utf-8")
+
+    with pytest.raises(ConfigurationError, match="must be a JSON object"):
+        _load_schema_document(schema_path)
+
+
+def test_schema_resolver_rejects_malformed_json_schema_document(tmp_path: Path):
+    schema_path = tmp_path / "malformed.schema.json"
+    schema_path.write_text("{not-json", encoding="utf-8")
+
+    with pytest.raises(ConfigurationError, match="is not valid JSON"):
+        _load_schema_document(schema_path)
 
 
 def test_schema_resolver_validates_json_instances(tmp_path: Path):

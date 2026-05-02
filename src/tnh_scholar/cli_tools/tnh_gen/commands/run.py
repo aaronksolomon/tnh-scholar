@@ -355,9 +355,8 @@ def _result_payload_from_envelope(envelope: CompletionEnvelope) -> RunResultPayl
         "usage": usage_payload,
         "finish_reason": result.finish_reason,
     }
-    if result.json_value is not None:
-        payload["json"] = result.json_value
     if result.schema_ref is not None:
+        payload["json"] = result.json_value
         payload["schema_ref"] = result.schema_ref
     return payload
 

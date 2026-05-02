@@ -602,6 +602,50 @@ class _JsonStubService:
         )
 
 
+class _JsonNullStubService:
+    def __init__(self, metadata: PromptMetadata):
+        self.last_request: Any = None
+        self.catalog = _StubCatalog(metadata)
+
+    def generate(self, request):
+        self.last_request = request
+        started = datetime.now()
+        finished = started + timedelta(seconds=1)
+        return CompletionEnvelope(
+            outcome=CompletionOutcomeStatus.SUCCEEDED,
+            result=CompletionResult(
+                text="null",
+                usage=Usage(
+                    prompt_tokens=10,
+                    completion_tokens=20,
+                    total_tokens=30,
+                ),
+                model="gpt-4o",
+                provider="openai",
+                json_value=None,
+                schema_ref="tnh.testing.echo.v1",
+                finish_reason="stop",
+            ),
+            provenance=Provenance(
+                provider="openai",
+                model="gpt-4o",
+                started_at=started,
+                finished_at=finished,
+                attempt_count=1,
+                fingerprint=Fingerprint(
+                    prompt_key="json-echo",
+                    prompt_name="JSON Echo",
+                    prompt_base_path=".",
+                    prompt_content_hash="hash-prompt",
+                    variables_hash="hash-vars",
+                    user_string_hash="hash-input",
+                ),
+            ),
+            policy_applied={"routing_reason": "test"},
+            warnings=[],
+        )
+
+
 class _JsonContractFailedStubService:
     def __init__(self, metadata: PromptMetadata):
         self.last_request: Any = None
@@ -1143,6 +1187,51 @@ def test_run_api_json_prompt_includes_structured_result_and_writes_canonical_jso
     assert sidecar_payload["source"] == "draft"
     assert sidecar_payload["tnh_scholar_generated"] is True
     assert sidecar_payload["prompt_key"] == "json-echo"
+
+
+def test_run_api_json_prompt_preserves_root_null_payload(tmp_path, monkeypatch):
+    prompt_dir = _write_json_prompt(tmp_path)
+    input_file = tmp_path / "input.txt"
+    input_file.write_text("file-input", encoding="utf-8")
+
+    metadata = PromptMetadata(
+        key="json-echo",
+        name="JSON Echo",
+        version="1.0.0",
+        description="JSON prompt for testing.",
+        task_type="test",
+        role="task",
+        required_variables=[],
+        optional_variables=[],
+        default_variables={},
+        output_contract={"mode": "json", "schema_ref": "tnh.testing.echo.v1"},
+    )
+    stub_service = _JsonNullStubService(metadata)
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+    monkeypatch.setattr(run_module, "_initialize_service", lambda *_, **__: stub_service)
+
+    result = runner.invoke(
+        tnh_gen.app,
+        [
+            "--api",
+            "run",
+            "--prompt",
+            "json-echo",
+            "--input-file",
+            str(input_file),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "succeeded"
+    assert "json" in payload["result"]
+    assert payload["result"]["json"] is None
+    assert payload["result"]["schema_ref"] == "tnh.testing.echo.v1"
+    assert payload["result"]["text"] == "null"
 
 
 def test_run_api_contract_validation_failure_uses_format_error_and_skips_output_file(

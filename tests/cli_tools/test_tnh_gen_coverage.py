@@ -523,9 +523,10 @@ def test_provenance_write_structured_output_skips_headers_even_with_metadata(tmp
     output_file = tmp_path / "output.json"
     envelope = _envelope_with_warnings()
     source_metadata = Metadata({"source": "draft"})
+    result_text = '{\n  "message": "ok"\n}'
     provenance_module.write_output_file(
         output_file,
-        result_text='{"message":"ok"}',
+        result_text=result_text,
         envelope=envelope,
         source_metadata=source_metadata,
         trace_id="trace",
@@ -533,7 +534,8 @@ def test_provenance_write_structured_output_skips_headers_even_with_metadata(tmp
         include_provenance=True,
         structured_output=True,
     )
-    assert output_file.read_text(encoding="utf-8") == '{"message":"ok"}'
+    # Structured output writes are raw passthrough; canonicalization happens upstream.
+    assert output_file.read_text(encoding="utf-8") == result_text
     sidecar = provenance_module.sidecar_path(output_file)
     payload = yaml.safe_load(sidecar.read_text(encoding="utf-8"))
     assert payload["source"] == "draft"
