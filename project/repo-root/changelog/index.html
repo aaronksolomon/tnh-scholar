@@ -10197,6 +10197,8 @@
       
         
       
+        
+      
     
     
     
@@ -10443,6 +10445,41 @@
     
   
     ADR-TG04.1: JSON Contract Runtime Validation
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-TG04.2: Structured JSON Provenance Sidecars
   
 
     
@@ -15195,7 +15232,18 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong><code>tnh-gen --vars</code> Generated-Artifact Compatibility</strong> (2026-04-28)</li>
+<li><strong><code>tnh-gen</code> Structured JSON Contract Runtime Validation</strong> (2026-05-01)</li>
+<li>Added prompt-contract schema resolution and validation with workspace, user, and built-in precedence for maintained JSON prompts</li>
+<li>Wired <code>tnh-gen</code> and <code>GenAIService</code> to enforce JSON prompt contracts at both catalog time and post-invocation runtime, including typed <code>CONTRACT_VALIDATION_FAILED</code> handling</li>
+<li>Updated the OpenAI path to use provider-native <code>json_schema</code> structured output requests while retaining local schema validation as the authoritative contract check</li>
+<li>Ensured JSON prompt <code>--output-file</code> writes remain canonical JSON text and moved persisted provenance for structured outputs into adjacent <code>.provenance.yaml</code> sidecars</li>
+<li>Added focused prompt-system, service, CLI, and provenance regression coverage for structured JSON success, failure, and missing-schema paths</li>
+<li>
+<p>Files: <code>src/tnh_scholar/prompt_system/service/contract_schema.py</code>, <code>src/tnh_scholar/prompt_system/service/validator.py</code>, <code>src/tnh_scholar/gen_ai_service/</code>, <code>src/tnh_scholar/cli_tools/tnh_gen/</code>, <code>src/tnh_scholar/runtime_assets/schemas/</code>, <code>docs/architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars.md</code>, <code>tests/prompt_system/</code>, <code>tests/gen_ai_service/</code>, <code>tests/cli_tools/</code></p>
+</li>
+<li>
+<p><strong><code>tnh-gen --vars</code> Generated-Artifact Compatibility</strong> (2026-04-28)</p>
+</li>
 <li>Taught <code>tnh-gen run --vars</code> to accept JSON objects wrapped in YAML frontmatter so staged <code>tnh-gen</code> workflows can feed generated JSON artifacts into later prompt runs without manual stripping</li>
 <li>Preserved the existing failure contract for non-object payloads and frontmatter-wrapped bodies that are still not valid JSON</li>
 <li>Added focused CLI and loader regression coverage for frontmatter-wrapped vars files</li>

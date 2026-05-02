@@ -6,35 +6,35 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Consolidated report on direct headless Codex communication experiments, observed errors, and the currently viable invocation pathway.">
+        <meta name="description" content="Clarify how tnh-gen preserves first-class provenance for structured JSON outputs without violating JSON artifact purity.">
       
       
-        <meta name="author" content="Codex">
+        <meta name="author" content="Aaron Solomon, OpenAI Codex">
       
       
       
-        <link rel="prev" href="../codex-headless-communication-experiment-plan/">
+        <link rel="prev" href="../adr-tg04.1-json-contract-runtime-validation/">
       
       
-        <link rel="next" href="../oa01x-cloud-direction-generation-comparison-result/">
+        <link rel="next" href="../../notes/">
       
       
         
       
       
-      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Codex Headless Communication Report - TNH Scholar Documentation</title>
+        <title>ADR-TG04.2: Structured JSON Provenance Sidecars - TNH Scholar Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,11 +53,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../../stylesheets/tnh-zen.css">
+      <link rel="stylesheet" href="../../../../stylesheets/tnh-zen.css">
     
-    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -124,7 +124,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#codex-headless-communication-report" class="md-skip">
+        <a href="#adr-tg042-structured-json-provenance-sidecars" class="md-skip">
           Skip to content
         </a>
       
@@ -160,7 +160,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-header__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -180,7 +180,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Codex Headless Communication Report
+              ADR-TG04.2: Structured JSON Provenance Sidecars
             
           </span>
         </div>
@@ -272,7 +272,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
+    <a href="../../../.." title="TNH Scholar Documentation" class="md-nav__button md-logo" aria-label="TNH Scholar Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -302,7 +302,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   
@@ -360,7 +360,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../getting-started/" class="md-nav__link ">
+            <a href="../../../../getting-started/" class="md-nav__link ">
               
   
   
@@ -411,7 +411,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../getting-started/configuration/" class="md-nav__link">
+      <a href="../../../../getting-started/configuration/" class="md-nav__link">
         
   
   
@@ -446,7 +446,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../getting-started/installation/" class="md-nav__link">
+      <a href="../../../../getting-started/installation/" class="md-nav__link">
         
   
   
@@ -481,7 +481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../getting-started/quick-start-guide/" class="md-nav__link">
+      <a href="../../../../getting-started/quick-start-guide/" class="md-nav__link">
         
   
   
@@ -547,7 +547,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../user-guide/" class="md-nav__link ">
+            <a href="../../../../user-guide/" class="md-nav__link ">
               
   
   
@@ -598,7 +598,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../user-guide/best-practices/" class="md-nav__link">
+      <a href="../../../../user-guide/best-practices/" class="md-nav__link">
         
   
   
@@ -633,7 +633,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../user-guide/overview/" class="md-nav__link">
+      <a href="../../../../user-guide/overview/" class="md-nav__link">
         
   
   
@@ -668,7 +668,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../user-guide/prompt-system/" class="md-nav__link">
+      <a href="../../../../user-guide/prompt-system/" class="md-nav__link">
         
   
   
@@ -738,7 +738,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../project/" class="md-nav__link ">
+            <a href="../../../../project/" class="md-nav__link ">
               
   
   
@@ -789,7 +789,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/conceptual-architecture/" class="md-nav__link">
+      <a href="../../../../project/conceptual-architecture/" class="md-nav__link">
         
   
   
@@ -824,7 +824,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/future-directions/" class="md-nav__link">
+      <a href="../../../../project/future-directions/" class="md-nav__link">
         
   
   
@@ -859,7 +859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/philosophy/" class="md-nav__link">
+      <a href="../../../../project/philosophy/" class="md-nav__link">
         
   
   
@@ -894,7 +894,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/principles/" class="md-nav__link">
+      <a href="../../../../project/principles/" class="md-nav__link">
         
   
   
@@ -929,7 +929,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/vision/" class="md-nav__link">
+      <a href="../../../../project/vision/" class="md-nav__link">
         
   
   
@@ -991,7 +991,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../community/" class="md-nav__link ">
+            <a href="../../../../community/" class="md-nav__link ">
               
   
   
@@ -1042,7 +1042,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../community/parallax-overview/" class="md-nav__link">
+      <a href="../../../../community/parallax-overview/" class="md-nav__link">
         
   
   
@@ -1116,7 +1116,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../project/repo-root/" class="md-nav__link ">
+            <a href="../../../../project/repo-root/" class="md-nav__link ">
               
   
   
@@ -1167,7 +1167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/repo-root/changelog/" class="md-nav__link">
+      <a href="../../../../project/repo-root/changelog/" class="md-nav__link">
         
   
   
@@ -1202,7 +1202,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/repo-root/contributing-root/" class="md-nav__link">
+      <a href="../../../../project/repo-root/contributing-root/" class="md-nav__link">
         
   
   
@@ -1237,7 +1237,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
+      <a href="../../../../project/repo-root/dev-setup-guide/" class="md-nav__link">
         
   
   
@@ -1272,7 +1272,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/repo-root/release_checklist/" class="md-nav__link">
+      <a href="../../../../project/repo-root/release_checklist/" class="md-nav__link">
         
   
   
@@ -1307,7 +1307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/repo-root/repo-readme/" class="md-nav__link">
+      <a href="../../../../project/repo-root/repo-readme/" class="md-nav__link">
         
   
   
@@ -1342,7 +1342,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/repo-root/todo-list/" class="md-nav__link">
+      <a href="../../../../project/repo-root/todo-list/" class="md-nav__link">
         
   
   
@@ -1377,7 +1377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../project/repo-root/versioning/" class="md-nav__link">
+      <a href="../../../../project/repo-root/versioning/" class="md-nav__link">
         
   
   
@@ -1459,7 +1459,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../cli-reference/" class="md-nav__link ">
+            <a href="../../../../cli-reference/" class="md-nav__link ">
               
   
   
@@ -1510,7 +1510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/audio-transcribe/" class="md-nav__link">
+      <a href="../../../../cli-reference/audio-transcribe/" class="md-nav__link">
         
   
   
@@ -1545,7 +1545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/json-to-srt/" class="md-nav__link">
+      <a href="../../../../cli-reference/json-to-srt/" class="md-nav__link">
         
   
   
@@ -1580,7 +1580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/nfmt/" class="md-nav__link">
+      <a href="../../../../cli-reference/nfmt/" class="md-nav__link">
         
   
   
@@ -1615,7 +1615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/overview/" class="md-nav__link">
+      <a href="../../../../cli-reference/overview/" class="md-nav__link">
         
   
   
@@ -1650,7 +1650,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/sent-split/" class="md-nav__link">
+      <a href="../../../../cli-reference/sent-split/" class="md-nav__link">
         
   
   
@@ -1685,7 +1685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/srt-translate/" class="md-nav__link">
+      <a href="../../../../cli-reference/srt-translate/" class="md-nav__link">
         
   
   
@@ -1720,7 +1720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/tnh-conductor/" class="md-nav__link">
+      <a href="../../../../cli-reference/tnh-conductor/" class="md-nav__link">
         
   
   
@@ -1755,7 +1755,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/tnh-gen/" class="md-nav__link">
+      <a href="../../../../cli-reference/tnh-gen/" class="md-nav__link">
         
   
   
@@ -1790,7 +1790,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/tnh-setup/" class="md-nav__link">
+      <a href="../../../../cli-reference/tnh-setup/" class="md-nav__link">
         
   
   
@@ -1825,7 +1825,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/token-count/" class="md-nav__link">
+      <a href="../../../../cli-reference/token-count/" class="md-nav__link">
         
   
   
@@ -1860,7 +1860,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../cli-reference/ytt-fetch/" class="md-nav__link">
+      <a href="../../../../cli-reference/ytt-fetch/" class="md-nav__link">
         
   
   
@@ -1902,7 +1902,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../api/" class="md-nav__link">
+      <a href="../../../../api/" class="md-nav__link">
         
   
   
@@ -2006,7 +2006,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../" class="md-nav__link ">
+            <a href="../../../" class="md-nav__link ">
               
   
   
@@ -2057,7 +2057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../overview/" class="md-nav__link">
+      <a href="../../../overview/" class="md-nav__link">
         
   
   
@@ -2089,8 +2089,6 @@
                 
   
   
-    
-  
   
   
     
@@ -2116,15 +2114,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../" class="md-nav__link ">
+            <a href="../../../agent-orchestration/" class="md-nav__link ">
               
   
   
@@ -2155,7 +2153,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2175,7 +2173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../example-agent-workflow/" class="md-nav__link">
+      <a href="../../../agent-orchestration/example-agent-workflow/" class="md-nav__link">
         
   
   
@@ -2210,7 +2208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../system-design/" class="md-nav__link">
+      <a href="../../../agent-orchestration/system-design/" class="md-nav__link">
         
   
   
@@ -2307,7 +2305,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../adr/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/adr/" class="md-nav__link ">
               
   
   
@@ -2358,7 +2356,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa01-agent-orchestration-strategy/" class="md-nav__link">
         
   
   
@@ -2393,7 +2391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa01.1-conductor-strategy-v2/" class="md-nav__link">
         
   
   
@@ -2428,7 +2426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa01.2-conceptual-spike-orientation-based-supervisory-orchestration/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa01.2-conceptual-spike-orientation-based-supervisory-orchestration/" class="md-nav__link">
         
   
   
@@ -2463,7 +2461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa01.3-conceptual-spike-practical-approach/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa01.3-conceptual-spike-practical-approach/" class="md-nav__link">
         
   
   
@@ -2498,7 +2496,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa01.4-headless-agent-communication-functional-spike/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa01.4-headless-agent-communication-functional-spike/" class="md-nav__link">
         
   
   
@@ -2533,7 +2531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa02-phase-0-protocol-spike/" class="md-nav__link">
         
   
   
@@ -2568,7 +2566,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa03-agent-runner-architecture/" class="md-nav__link">
         
   
   
@@ -2603,7 +2601,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa03.1-claude-code-runner/" class="md-nav__link">
         
   
   
@@ -2638,7 +2636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa03.2-codex-runner/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa03.2-codex-runner/" class="md-nav__link">
         
   
   
@@ -2673,7 +2671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa03.3-codex-cli-runner/" class="md-nav__link">
         
   
   
@@ -2708,7 +2706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04-workflow-schema-opcode-semantics/" class="md-nav__link">
         
   
   
@@ -2743,7 +2741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout/" class="md-nav__link">
         
   
   
@@ -2778,7 +2776,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa04.2-runner-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.2-runner-contract/" class="md-nav__link">
         
   
   
@@ -2813,7 +2811,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.3-provenance-run-artifact-contract/" class="md-nav__link">
         
   
   
@@ -2848,7 +2846,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa04.3.1-run-transparency-and-state-reporting/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.3.1-run-transparency-and-state-reporting/" class="md-nav__link">
         
   
   
@@ -2883,7 +2881,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.4-policy-enforcement-contract/" class="md-nav__link">
         
   
   
@@ -2918,7 +2916,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa04.5-harness-backend-contract/" class="md-nav__link">
         
   
   
@@ -2953,7 +2951,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa05-prompt-library-specification/" class="md-nav__link">
         
   
   
@@ -2988,7 +2986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa06-planner-evaluator-contract/" class="md-nav__link">
         
   
   
@@ -3023,7 +3021,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa06.1-evaluator-directed-revision-loop/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa06.1-evaluator-directed-revision-loop/" class="md-nav__link">
         
   
   
@@ -3058,7 +3056,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa07-diff-policy-safety-rails/" class="md-nav__link">
         
   
   
@@ -3093,7 +3091,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
+      <a href="../../../agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback/" class="md-nav__link">
         
   
   
@@ -3158,7 +3156,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../bootstrap-proof/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/bootstrap-proof/" class="md-nav__link ">
               
   
   
@@ -3209,7 +3207,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../bootstrap-proof/current-task-brief/" class="md-nav__link">
+      <a href="../../../agent-orchestration/bootstrap-proof/current-task-brief/" class="md-nav__link">
         
   
   
@@ -3244,7 +3242,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../bootstrap-proof/run-bootstrap-proof/" class="md-nav__link">
+      <a href="../../../agent-orchestration/bootstrap-proof/run-bootstrap-proof/" class="md-nav__link">
         
   
   
@@ -3284,8 +3282,6 @@
                 
   
   
-    
-  
   
   
     
@@ -3307,15 +3303,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_6" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/" class="md-nav__link ">
               
   
   
@@ -3346,7 +3342,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_3_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_3_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -3390,7 +3386,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../design/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/design/" class="md-nav__link ">
               
   
   
@@ -3441,7 +3437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/architecture-blueprint/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/design/architecture-blueprint/" class="md-nav__link">
         
   
   
@@ -3476,7 +3472,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/bootstrap-direction-design-memo/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/design/bootstrap-direction-design-memo/" class="md-nav__link">
         
   
   
@@ -3511,7 +3507,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/recursive-bootstrap-build-proposal/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/design/recursive-bootstrap-build-proposal/" class="md-nav__link">
         
   
   
@@ -3551,8 +3547,6 @@
                 
   
   
-    
-  
   
   
     
@@ -3608,15 +3602,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_6_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_3_6_3" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/experiments/" class="md-nav__link ">
               
   
   
@@ -3647,7 +3641,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_3_6_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_9_3_6_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9_3_6_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -3667,7 +3661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../bootstrap-proof-run-result/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/bootstrap-proof-run-result/" class="md-nav__link">
         
   
   
@@ -3702,7 +3696,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../codex-harness-e2e-report/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/codex-harness-e2e-report/" class="md-nav__link">
         
   
   
@@ -3737,7 +3731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../codex-harness-spike-findings/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/codex-harness-spike-findings/" class="md-nav__link">
         
   
   
@@ -3772,7 +3766,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../codex-headless-communication-experiment-plan/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/codex-headless-communication-experiment-plan/" class="md-nav__link">
         
   
   
@@ -3804,44 +3798,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Codex Headless Communication Report
-  
-
-    
-  </span>
-  
-  
-    
-  
-  
-    <span class="md-status md-status--current"></span>
-  
-
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../agent-orchestration/notes/experiments/codex-headless-communication-report/" class="md-nav__link">
         
   
   
@@ -3864,451 +3824,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Summary
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#experiment-sequence" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Experiment Sequence
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Experiment Sequence">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#e1-baseline-headless-reachability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E1. Baseline Headless Reachability
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e2-isolated-home-trial" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E2. Isolated Home Trial
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e3-stream-separation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E3. Stream Separation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e4-real-review-prompt" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E4. Real Review Prompt
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e5-user-shell-comparison" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E5. User-Shell Comparison
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e6-repo-local-wrapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E6. Repo-Local Wrapper
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e7-repo-local-config" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E7. Repo-Local Config
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e8-native-subagent-smoke-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E8. Native Subagent Smoke Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e9-feature-noise-reduction" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E9. Feature-Noise Reduction
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e10-low-noise-native-subagent-path" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E10. Low-Noise Native Subagent Path
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e11-user-shell-supervisory-trial" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E11. User-Shell Supervisory Trial
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#results" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Results
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Results">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-default-authenticated-home-is-usable" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Default Authenticated Home Is Usable
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-isolated-codex_home-reduced-some-noise-but-broke-authentication" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Isolated CODEX_HOME Reduced Some Noise but Broke Authentication
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-stdout-and-stderr-separation-is-the-key-cleanup-move" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. stdout and stderr Separation Is the Key Cleanup Move
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-user-shell-context-is-cleaner-than-tool-launched-context" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. User-Shell Context Is Cleaner Than Tool-Launched Context
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-a-tiny-wrapper-script-works-but-it-does-not-eliminate-environment-effects" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. A Tiny Wrapper Script Works, But It Does Not Eliminate Environment Effects
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-repo-local-config-is-real-but-not-sufficient" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Repo-Local Config Is Real but Not Sufficient
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-native-subagent-support-is-confirmed-in-headless-mode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Native Subagent Support Is Confirmed in Headless Mode
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#8-disabling-plugins-and-shell_snapshot-materially-reduces-noise" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8. Disabling plugins and shell_snapshot Materially Reduces Noise
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#9-lower-noise-is-not-yet-the-same-thing-as-better-operation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9. Lower Noise Is Not Yet the Same Thing as Better Operation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#10-the-first-supervisory-trial-was-productive-but-exposed-a-launch-mode-constraint" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10. The First Supervisory Trial Was Productive but Exposed a Launch-Mode Constraint
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#practical-interpretation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Practical Interpretation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#matrix" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Matrix
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#error-classes-observed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Error Classes Observed
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Error Classes Observed">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-local-state-database-migration-warnings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Local State Database Migration Warnings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-plugin-manifest-warnings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. Plugin Manifest Warnings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-shell-snapshot-cleanup-warnings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        C. Shell Snapshot Cleanup Warnings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-ephemeral-thread-backfill-warning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        D. Ephemeral Thread Backfill Warning
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e-isolated-state-authentication-failure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E. Isolated-State Authentication Failure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#f-personality-model-warning-under-some-paths" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        F. Personality / Model Warning Under Some Paths
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#g-parent-thread-rollout-unavailable-for-fork" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        G. Parent Thread Rollout Unavailable for Fork
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#current-recommendation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Current Recommendation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#open-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Open Questions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conclusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Conclusion
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -4321,7 +3836,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../oa01x-cloud-direction-generation-comparison-result/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/oa01x-cloud-direction-generation-comparison-result/" class="md-nav__link">
         
   
   
@@ -4356,7 +3871,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../oa01x-spike-experiment-register/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/oa01x-spike-experiment-register/" class="md-nav__link">
         
   
   
@@ -4391,7 +3906,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../run-spike-10-agent-coordination-comparison/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/run-spike-10-agent-coordination-comparison/" class="md-nav__link">
         
   
   
@@ -4426,7 +3941,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-02-execution-context-comparison/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-02-execution-context-comparison/" class="md-nav__link">
         
   
   
@@ -4461,7 +3976,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-03-native-subagent-smoke-test/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-03-native-subagent-smoke-test/" class="md-nav__link">
         
   
   
@@ -4496,7 +4011,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-04-narrow-supervisory-comparison/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-04-narrow-supervisory-comparison/" class="md-nav__link">
         
   
   
@@ -4531,7 +4046,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-05-minimum-review-artifact-set/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-05-minimum-review-artifact-set/" class="md-nav__link">
         
   
   
@@ -4566,7 +4081,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-06-native-codex-cli-baseline/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-06-native-codex-cli-baseline/" class="md-nav__link">
         
   
   
@@ -4601,7 +4116,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-07-codex-home-state-dependency/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-07-codex-home-state-dependency/" class="md-nav__link">
         
   
   
@@ -4636,7 +4151,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-08-launch-context-env-contamination/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-08-launch-context-env-contamination/" class="md-nav__link">
         
   
   
@@ -4671,7 +4186,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-09-prompt-dir-three-arm-comparison/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-09-prompt-dir-three-arm-comparison/" class="md-nav__link">
         
   
   
@@ -4706,7 +4221,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-10-agent-coordination-comparison-plan/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-plan/" class="md-nav__link">
         
   
   
@@ -4741,7 +4256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-10-agent-coordination-comparison-result/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-10-agent-coordination-comparison-result/" class="md-nav__link">
         
   
   
@@ -4776,7 +4291,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-10-conductor-watch-task-brief/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-10-conductor-watch-task-brief/" class="md-nav__link">
         
   
   
@@ -4811,7 +4326,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spike-testing-sequence/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/spike-testing-sequence/" class="md-nav__link">
         
   
   
@@ -4870,7 +4385,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../cloud-run-artifacts/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/experiments/cloud-run-artifacts/" class="md-nav__link ">
               
   
   
@@ -4921,7 +4436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cloud-run-artifacts/oa01x-experimental-directions-and-experiment-catalog/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/cloud-run-artifacts/oa01x-experimental-directions-and-experiment-catalog/" class="md-nav__link">
         
   
   
@@ -4956,7 +4471,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cloud-run-artifacts/oa01x-experimental-directions-atlas/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/cloud-run-artifacts/oa01x-experimental-directions-atlas/" class="md-nav__link">
         
   
   
@@ -4991,7 +4506,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cloud-run-artifacts/oa1x-experimental-directions-matrix/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/experiments/cloud-run-artifacts/oa1x-experimental-directions-matrix/" class="md-nav__link">
         
   
   
@@ -5066,7 +4581,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../plans/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/plans/" class="md-nav__link ">
               
   
   
@@ -5117,7 +4632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../plans/oa07-bootstrap-proof-workflow-plan/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/plans/oa07-bootstrap-proof-workflow-plan/" class="md-nav__link">
         
   
   
@@ -5152,7 +4667,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../plans/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/plans/oa07.1-pr7-worktree-workspace-plan/" class="md-nav__link">
         
   
   
@@ -5187,7 +4702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../plans/oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/plans/oa07.1-pr8-bootstrap-headless-entry-plan/" class="md-nav__link">
         
   
   
@@ -5258,7 +4773,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../research/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/notes/research/" class="md-nav__link ">
               
   
   
@@ -5309,7 +4824,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/agent-orchestration-collaboration-paradigms/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/research/agent-orchestration-collaboration-paradigms/" class="md-nav__link">
         
   
   
@@ -5344,7 +4859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/codex-headless-communication-research-directions/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/research/codex-headless-communication-research-directions/" class="md-nav__link">
         
   
   
@@ -5379,7 +4894,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/codex-headless-research-memo-for-engineer-agents/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/research/codex-headless-research-memo-for-engineer-agents/" class="md-nav__link">
         
   
   
@@ -5414,7 +4929,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/codex-official-docs-reference-summary/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/research/codex-official-docs-reference-summary/" class="md-nav__link">
         
   
   
@@ -5449,7 +4964,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../research/vscode-1110-agent-features-research/" class="md-nav__link">
+      <a href="../../../agent-orchestration/notes/research/vscode-1110-agent-features-research/" class="md-nav__link">
         
   
   
@@ -5530,7 +5045,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../supervisory-shell-trial/" class="md-nav__link ">
+            <a href="../../../agent-orchestration/supervisory-shell-trial/" class="md-nav__link ">
               
   
   
@@ -5581,7 +5096,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../supervisory-shell-trial/current-supervisory-task-brief/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/current-supervisory-task-brief/" class="md-nav__link">
         
   
   
@@ -5616,7 +5131,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../supervisory-shell-trial/prompt-dir-task-brief/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/prompt-dir-task-brief/" class="md-nav__link">
         
   
   
@@ -5651,7 +5166,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../supervisory-shell-trial/run-prompt-dir-comparison/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/run-prompt-dir-comparison/" class="md-nav__link">
         
   
   
@@ -5686,7 +5201,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../supervisory-shell-trial/run-supervisory-shell-trial/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/run-supervisory-shell-trial/" class="md-nav__link">
         
   
   
@@ -5721,7 +5236,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../supervisory-shell-trial/supervisory-team-workflow-contract-v2/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract-v2/" class="md-nav__link">
         
   
   
@@ -5756,7 +5271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../supervisory-shell-trial/supervisory-team-workflow-contract/" class="md-nav__link">
+      <a href="../../../agent-orchestration/supervisory-shell-trial/supervisory-team-workflow-contract/" class="md-nav__link">
         
   
   
@@ -5807,7 +5322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ai-text-processing/" class="md-nav__link">
+      <a href="../../../ai-text-processing/" class="md-nav__link">
         
   
   
@@ -5927,7 +5442,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../ai-text-processing/adr/" class="md-nav__link ">
+            <a href="../../../ai-text-processing/adr/" class="md-nav__link ">
               
   
   
@@ -5978,7 +5493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at01-ai-text-processing/" class="md-nav__link">
         
   
   
@@ -6013,7 +5528,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at02-sectioning-textobject/" class="md-nav__link">
         
   
   
@@ -6048,7 +5563,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03-object-service-refactor/" class="md-nav__link">
         
   
   
@@ -6083,7 +5598,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.1-transition-plan/" class="md-nav__link">
         
   
   
@@ -6118,7 +5633,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.2-numberedtext-validation/" class="md-nav__link">
         
   
   
@@ -6153,7 +5668,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at03.3-textobject-robustness/" class="md-nav__link">
         
   
   
@@ -6188,7 +5703,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
+      <a href="../../../ai-text-processing/adr/adr-at04-ai-text-processing-platform-strat/" class="md-nav__link">
         
   
   
@@ -6253,7 +5768,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../ai-text-processing/design/" class="md-nav__link ">
+            <a href="../../../ai-text-processing/design/" class="md-nav__link ">
               
   
   
@@ -6304,7 +5819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
+      <a href="../../../ai-text-processing/design/textobject-original-design/" class="md-nav__link">
         
   
   
@@ -6339,7 +5854,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
+      <a href="../../../ai-text-processing/design/textobject-system-design/" class="md-nav__link">
         
   
   
@@ -6412,7 +5927,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../configuration/" class="md-nav__link ">
+            <a href="../../../configuration/" class="md-nav__link ">
               
   
   
@@ -6463,7 +5978,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../configuration/tnh-configuration-management/" class="md-nav__link">
+      <a href="../../../configuration/tnh-configuration-management/" class="md-nav__link">
         
   
   
@@ -6520,7 +6035,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../configuration/adr/" class="md-nav__link ">
+            <a href="../../../configuration/adr/" class="md-nav__link ">
               
   
   
@@ -6571,7 +6086,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
+      <a href="../../../configuration/adr/adr-cf01-runtime-context-strategy/" class="md-nav__link">
         
   
   
@@ -6606,7 +6121,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../configuration/adr/adr-cf02-prompt-catalog-discovery/" class="md-nav__link">
+      <a href="../../../configuration/adr/adr-cf02-prompt-catalog-discovery/" class="md-nav__link">
         
   
   
@@ -6679,7 +6194,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../docs-system/" class="md-nav__link ">
+            <a href="../../../docs-system/" class="md-nav__link ">
               
   
   
@@ -6756,7 +6271,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../docs-system/adr/" class="md-nav__link ">
+            <a href="../../../docs-system/adr/" class="md-nav__link ">
               
   
   
@@ -6807,7 +6322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd01-docs-reorg-strategy/" class="md-nav__link">
         
   
   
@@ -6842,7 +6357,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd02-main-content-nav/" class="md-nav__link">
         
   
   
@@ -6877,7 +6392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd03-pattern-to-prompt/" class="md-nav__link">
         
   
   
@@ -6912,7 +6427,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
+      <a href="../../../docs-system/adr/adr-dd03-phase1-punchlist/" class="md-nav__link">
         
   
   
@@ -6975,7 +6490,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../docs-system/design/" class="md-nav__link ">
+            <a href="../../../docs-system/design/" class="md-nav__link ">
               
   
   
@@ -7026,7 +6541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../docs-system/design/documentation-design/" class="md-nav__link">
+      <a href="../../../docs-system/design/documentation-design/" class="md-nav__link">
         
   
   
@@ -7077,7 +6592,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/" class="md-nav__link">
+      <a href="../../../gen-ai-service/" class="md-nav__link">
         
   
   
@@ -7203,7 +6718,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../gen-ai-service/adr/" class="md-nav__link ">
+            <a href="../../../gen-ai-service/adr/" class="md-nav__link ">
               
   
   
@@ -7254,7 +6769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a01-object-service-genai/" class="md-nav__link">
         
   
   
@@ -7289,7 +6804,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a02-patterncatalog-integration-v1/" class="md-nav__link">
         
   
   
@@ -7324,7 +6839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a08-config-params-policy-taxonomy/" class="md-nav__link">
         
   
   
@@ -7359,7 +6874,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a09-v1-simplified/" class="md-nav__link">
         
   
   
@@ -7394,7 +6909,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a11-model-parameters-fix/" class="md-nav__link">
         
   
   
@@ -7429,7 +6944,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a12-prompt-system-fingerprinting-v1/" class="md-nav__link">
         
   
   
@@ -7464,7 +6979,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a13-migrate-openai-to-genaiservice/" class="md-nav__link">
         
   
   
@@ -7499,7 +7014,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a14-file-based-registry-system/" class="md-nav__link">
         
   
   
@@ -7534,7 +7049,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a14.1-registry-staleness-detection/" class="md-nav__link">
         
   
   
@@ -7569,7 +7084,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
+      <a href="../../../gen-ai-service/adr/adr-a15-thread-safety-rate-limiting/" class="md-nav__link">
         
   
   
@@ -7634,7 +7149,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../gen-ai-service/design/" class="md-nav__link ">
+            <a href="../../../gen-ai-service/design/" class="md-nav__link ">
               
   
   
@@ -7685,7 +7200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
+      <a href="../../../gen-ai-service/design/genai-service-design-strategy/" class="md-nav__link">
         
   
   
@@ -7720,7 +7235,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
+      <a href="../../../gen-ai-service/design/openai-interface-migration-plan/" class="md-nav__link">
         
   
   
@@ -7793,7 +7308,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../jvb-viewer/" class="md-nav__link ">
+            <a href="../../../jvb-viewer/" class="md-nav__link ">
               
   
   
@@ -7866,7 +7381,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../jvb-viewer/adr/" class="md-nav__link ">
+            <a href="../../../jvb-viewer/adr/" class="md-nav__link ">
               
   
   
@@ -7917,7 +7432,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
+      <a href="../../../jvb-viewer/adr/adr-jv03-canonical-xml-ast/" class="md-nav__link">
         
   
   
@@ -7952,7 +7467,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
+      <a href="../../../jvb-viewer/adr/adr-jvb01_as-built_jvb_viewer_v1/" class="md-nav__link">
         
   
   
@@ -8021,7 +7536,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../jvb-viewer/design/" class="md-nav__link ">
+            <a href="../../../jvb-viewer/design/" class="md-nav__link ">
               
   
   
@@ -8072,7 +7587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/generate-md-translation-json-pairs/" class="md-nav__link">
         
   
   
@@ -8107,7 +7622,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/generate-md-vietnamese/" class="md-nav__link">
         
   
   
@@ -8142,7 +7657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/jvb-viewer-v2-strategy/" class="md-nav__link">
         
   
   
@@ -8177,7 +7692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
+      <a href="../../../jvb-viewer/design/luan-hoi/" class="md-nav__link">
         
   
   
@@ -8248,7 +7763,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../knowledge-base/" class="md-nav__link ">
+            <a href="../../../knowledge-base/" class="md-nav__link ">
               
   
   
@@ -8319,7 +7834,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../knowledge-base/adr/" class="md-nav__link ">
+            <a href="../../../knowledge-base/adr/" class="md-nav__link ">
               
   
   
@@ -8370,7 +7885,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
+      <a href="../../../knowledge-base/adr/adr-k01-kb-architecture-strategy/" class="md-nav__link">
         
   
   
@@ -8441,7 +7956,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../metadata/" class="md-nav__link ">
+            <a href="../../../metadata/" class="md-nav__link ">
               
   
   
@@ -8514,7 +8029,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../metadata/adr/" class="md-nav__link ">
+            <a href="../../../metadata/adr/" class="md-nav__link ">
               
   
   
@@ -8565,7 +8080,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
+      <a href="../../../metadata/adr/adr-md01-json-ld-metadata/" class="md-nav__link">
         
   
   
@@ -8600,7 +8115,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
+      <a href="../../../metadata/adr/adr-md02-metadata-object-service-integration/" class="md-nav__link">
         
   
   
@@ -8677,7 +8192,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../object-service/" class="md-nav__link ">
+            <a href="../../../object-service/" class="md-nav__link ">
               
   
   
@@ -8728,7 +8243,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../object-service/object-service-design-gaps/" class="md-nav__link">
+      <a href="../../../object-service/object-service-design-gaps/" class="md-nav__link">
         
   
   
@@ -8763,7 +8278,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../object-service/object-service-design-overview/" class="md-nav__link">
+      <a href="../../../object-service/object-service-design-overview/" class="md-nav__link">
         
   
   
@@ -8798,7 +8313,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../object-service/object-service-implementation-status/" class="md-nav__link">
+      <a href="../../../object-service/object-service-implementation-status/" class="md-nav__link">
         
   
   
@@ -8853,7 +8368,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../object-service/adr/" class="md-nav__link ">
+            <a href="../../../object-service/adr/" class="md-nav__link ">
               
   
   
@@ -8904,7 +8419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
+      <a href="../../../object-service/adr/adr-os01-object-service-architecture-v3/" class="md-nav__link">
         
   
   
@@ -8977,7 +8492,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../project-policies/" class="md-nav__link ">
+            <a href="../../../project-policies/" class="md-nav__link ">
               
   
   
@@ -9028,7 +8543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
+      <a href="../../../project-policies/versioning-policy-implementation-summary/" class="md-nav__link">
         
   
   
@@ -9083,7 +8598,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../project-policies/adr/" class="md-nav__link ">
+            <a href="../../../project-policies/adr/" class="md-nav__link ">
               
   
   
@@ -9134,7 +8649,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
+      <a href="../../../project-policies/adr/adr-pp01-rapid-prototype-versioning/" class="md-nav__link">
         
   
   
@@ -9207,7 +8722,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../prompt-system/" class="md-nav__link ">
+            <a href="../../../prompt-system/" class="md-nav__link ">
               
   
   
@@ -9258,7 +8773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../prompt-system/prompt-system-architecture/" class="md-nav__link">
+      <a href="../../../prompt-system/prompt-system-architecture/" class="md-nav__link">
         
   
   
@@ -9317,7 +8832,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../prompt-system/adr/" class="md-nav__link ">
+            <a href="../../../prompt-system/adr/" class="md-nav__link ">
               
   
   
@@ -9368,7 +8883,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
+      <a href="../../../prompt-system/adr/adr-pt03-prompt-system-status-roadmap/" class="md-nav__link">
         
   
   
@@ -9403,7 +8918,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
+      <a href="../../../prompt-system/adr/adr-pt04-prompt-system-refactor/" class="md-nav__link">
         
   
   
@@ -9438,7 +8953,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../prompt-system/adr/adr-pt05-prompt-platform-strategy/" class="md-nav__link">
+      <a href="../../../prompt-system/adr/adr-pt05-prompt-platform-strategy/" class="md-nav__link">
         
   
   
@@ -9489,7 +9004,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../provenance/" class="md-nav__link">
+      <a href="../../../provenance/" class="md-nav__link">
         
   
   
@@ -9595,7 +9110,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../provenance/adr/" class="md-nav__link ">
+            <a href="../../../provenance/adr/" class="md-nav__link ">
               
   
   
@@ -9646,7 +9161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
+      <a href="../../../provenance/adr/adr-pv01-provenance-tracing-strat/" class="md-nav__link">
         
   
   
@@ -9719,7 +9234,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../setup-tnh/" class="md-nav__link ">
+            <a href="../../../setup-tnh/" class="md-nav__link ">
               
   
   
@@ -9792,7 +9307,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../setup-tnh/adr/" class="md-nav__link ">
+            <a href="../../../setup-tnh/adr/" class="md-nav__link ">
               
   
   
@@ -9843,7 +9358,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening/" class="md-nav__link">
+      <a href="../../../setup-tnh/adr/adr-st01-tnh-setup-runtime-hardening/" class="md-nav__link">
         
   
   
@@ -9878,7 +9393,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../setup-tnh/adr/adr-st01.1-tnh-setup-ui-design/" class="md-nav__link">
+      <a href="../../../setup-tnh/adr/adr-st01.1-tnh-setup-ui-design/" class="md-nav__link">
         
   
   
@@ -9941,7 +9456,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../setup-tnh/design/" class="md-nav__link ">
+            <a href="../../../setup-tnh/design/" class="md-nav__link ">
               
   
   
@@ -9992,7 +9507,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
+      <a href="../../../setup-tnh/design/setup-tnh-minimal-extensible-tool/" class="md-nav__link">
         
   
   
@@ -10043,7 +9558,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tnh-gen/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   
@@ -10068,8 +9583,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -10081,11 +9598,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20" checked>
         
           
           <label class="md-nav__link" for="__nav_9_20" id="__nav_9_20_label" tabindex="0">
@@ -10106,7 +9623,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_20_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_20_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_20">
             <span class="md-nav__icon md-icon"></span>
             
@@ -10121,6 +9638,8 @@
                 
   
   
+    
+  
   
   
     
@@ -10148,15 +9667,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_20_1" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../tnh-gen/adr/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -10187,7 +9706,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_20_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_20_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_20_1">
             <span class="md-nav__icon md-icon"></span>
             
@@ -10207,7 +9726,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tnh-gen/adr/adr-tg01-cli-architecture/" class="md-nav__link">
+      <a href="../adr-tg01-cli-architecture/" class="md-nav__link">
         
   
   
@@ -10242,7 +9761,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tnh-gen/adr/adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
+      <a href="../adr-tg01.1-human-friendly-defaults/" class="md-nav__link">
         
   
   
@@ -10277,7 +9796,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tnh-gen/adr/adr-tg02-prompt-integration/" class="md-nav__link">
+      <a href="../adr-tg02-prompt-integration/" class="md-nav__link">
         
   
   
@@ -10312,7 +9831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tnh-gen/adr/adr-tg03-completion-contract/" class="md-nav__link">
+      <a href="../adr-tg03-completion-contract/" class="md-nav__link">
         
   
   
@@ -10347,7 +9866,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tnh-gen/adr/adr-tg04-structured-json-contract-and-scope/" class="md-nav__link">
+      <a href="../adr-tg04-structured-json-contract-and-scope/" class="md-nav__link">
         
   
   
@@ -10382,7 +9901,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tnh-gen/adr/adr-tg04.1-json-contract-runtime-validation/" class="md-nav__link">
+      <a href="../adr-tg04.1-json-contract-runtime-validation/" class="md-nav__link">
         
   
   
@@ -10414,10 +9933,44 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../../tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-TG04.2: Structured JSON Provenance Sidecars
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -10440,6 +9993,137 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-structured-json-output-files-remain-pure-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Structured JSON Output Files Remain Pure JSON
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-provenance-moves-to-a-sidecar-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Provenance Moves to a Sidecar File
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-sidecar-content-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Sidecar Content Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-text-outputs-keep-existing-inline-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Text Outputs Keep Existing Inline Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consequences
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rejected-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rejected Alternative
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rejected Alternative">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inline-yaml-frontmatter-in-json-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inline YAML Frontmatter in .json Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -10482,7 +10166,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../tnh-gen/notes/" class="md-nav__link ">
+            <a href="../../notes/" class="md-nav__link ">
               
   
   
@@ -10533,7 +10217,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tnh-gen/notes/tnh-gen-implementation-plan-2026-04/" class="md-nav__link">
+      <a href="../../notes/tnh-gen-implementation-plan-2026-04/" class="md-nav__link">
         
   
   
@@ -10568,7 +10252,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tnh-gen/notes/tnh-gen-robustness-review-2026-04/" class="md-nav__link">
+      <a href="../../notes/tnh-gen-robustness-review-2026-04/" class="md-nav__link">
         
   
   
@@ -10641,7 +10325,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../transcription/" class="md-nav__link ">
+            <a href="../../../transcription/" class="md-nav__link ">
               
   
   
@@ -10724,7 +10408,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../transcription/adr/" class="md-nav__link ">
+            <a href="../../../transcription/adr/" class="md-nav__link ">
               
   
   
@@ -10775,7 +10459,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr01-assemblyai-integration/" class="md-nav__link">
         
   
   
@@ -10810,7 +10494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr02-optimized-srt-design/" class="md-nav__link">
         
   
   
@@ -10845,7 +10529,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr03-ms-timestamps/" class="md-nav__link">
         
   
   
@@ -10880,7 +10564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr04-assemblyai-improvements/" class="md-nav__link">
         
   
   
@@ -10915,7 +10599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/adr/adr-tr05-language-aware-multilingual-transcription-engine/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr05-language-aware-multilingual-transcription-engine/" class="md-nav__link">
         
   
   
@@ -10950,7 +10634,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/adr/adr-tr05.1-speaker-block-language-lock-default/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr05.1-speaker-block-language-lock-default/" class="md-nav__link">
         
   
   
@@ -10985,7 +10669,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/adr/adr-tr05.2-mvp-service-scaffold/" class="md-nav__link">
+      <a href="../../../transcription/adr/adr-tr05.2-mvp-service-scaffold/" class="md-nav__link">
         
   
   
@@ -11070,7 +10754,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../transcription/design/" class="md-nav__link ">
+            <a href="../../../transcription/design/" class="md-nav__link ">
               
   
   
@@ -11121,7 +10805,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/audio-chunking-design/" class="md-nav__link">
+      <a href="../../../transcription/design/audio-chunking-design/" class="md-nav__link">
         
   
   
@@ -11156,7 +10840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/diarization-algorithms/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-algorithms/" class="md-nav__link">
         
   
   
@@ -11191,7 +10875,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/diarization-chunker-design/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-chunker-design/" class="md-nav__link">
         
   
   
@@ -11226,7 +10910,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/diarization-system-design/" class="md-nav__link">
+      <a href="../../../transcription/design/diarization-system-design/" class="md-nav__link">
         
   
   
@@ -11261,7 +10945,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
+      <a href="../../../transcription/design/interval-to-segment-mapping/" class="md-nav__link">
         
   
   
@@ -11296,7 +10980,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/language-aware-chunking-design/" class="md-nav__link">
+      <a href="../../../transcription/design/language-aware-chunking-design/" class="md-nav__link">
         
   
   
@@ -11331,7 +11015,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
+      <a href="../../../transcription/design/language-aware-chunking-orchestrator-notes/" class="md-nav__link">
         
   
   
@@ -11366,7 +11050,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
+      <a href="../../../transcription/design/modular-pipeline-best-practices/" class="md-nav__link">
         
   
   
@@ -11401,7 +11085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
+      <a href="../../../transcription/design/practical-language-aware-chunking/" class="md-nav__link">
         
   
   
@@ -11436,7 +11120,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
+      <a href="../../../transcription/design/speaker-diarization-algorithm-design/" class="md-nav__link">
         
   
   
@@ -11471,7 +11155,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
+      <a href="../../../transcription/design/speaker-diarization-time-mapped-design/" class="md-nav__link">
         
   
   
@@ -11506,7 +11190,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../transcription/design/timelinemapper-design/" class="md-nav__link">
+      <a href="../../../transcription/design/timelinemapper-design/" class="md-nav__link">
         
   
   
@@ -11579,7 +11263,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../ui-ux/" class="md-nav__link ">
+            <a href="../../../ui-ux/" class="md-nav__link ">
               
   
   
@@ -11650,7 +11334,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../ui-ux/design/" class="md-nav__link ">
+            <a href="../../../ui-ux/design/" class="md-nav__link ">
               
   
   
@@ -11701,7 +11385,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
+      <a href="../../../ui-ux/design/vs-code-as-ui-platform/" class="md-nav__link">
         
   
   
@@ -11774,7 +11458,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../ui-ux/vs-code-integration/" class="md-nav__link ">
+            <a href="../../../ui-ux/vs-code-integration/" class="md-nav__link ">
               
   
   
@@ -11825,7 +11509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc01-vscode-integration-strategy/" class="md-nav__link">
         
   
   
@@ -11860,7 +11544,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc02-tnh-gen-cli-implementation/" class="md-nav__link">
         
   
   
@@ -11895,7 +11579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03-python-javascript-impedance-investigation/" class="md-nav__link">
         
   
   
@@ -11930,7 +11614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.1-findings/" class="md-nav__link">
         
   
   
@@ -11965,7 +11649,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.2-real-world-survey-addendum/" class="md-nav__link">
         
   
   
@@ -12000,7 +11684,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
+      <a href="../../../ui-ux/vs-code-integration/adr-vsc03.3-investigation-synthesis/" class="md-nav__link">
         
   
   
@@ -12071,7 +11755,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../utilities/" class="md-nav__link ">
+            <a href="../../../utilities/" class="md-nav__link ">
               
   
   
@@ -12144,7 +11828,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../utilities/design/" class="md-nav__link ">
+            <a href="../../../utilities/design/" class="md-nav__link ">
               
   
   
@@ -12195,7 +11879,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../utilities/design/package-version-checker-design/" class="md-nav__link">
+      <a href="../../../utilities/design/package-version-checker-design/" class="md-nav__link">
         
   
   
@@ -12230,7 +11914,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../utilities/design/utilities-catalog/" class="md-nav__link">
+      <a href="../../../utilities/design/utilities-catalog/" class="md-nav__link">
         
   
   
@@ -12301,7 +11985,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../video-processing/" class="md-nav__link ">
+            <a href="../../../video-processing/" class="md-nav__link ">
               
   
   
@@ -12374,7 +12058,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../video-processing/adr/" class="md-nav__link ">
+            <a href="../../../video-processing/adr/" class="md-nav__link ">
               
   
   
@@ -12425,7 +12109,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
+      <a href="../../../video-processing/adr/adr-vp01-video-processing/" class="md-nav__link">
         
   
   
@@ -12460,7 +12144,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../video-processing/adr/adr-vp02-ytdlp-operational-strategy/" class="md-nav__link">
+      <a href="../../../video-processing/adr/adr-vp02-ytdlp-operational-strategy/" class="md-nav__link">
         
   
   
@@ -12511,7 +12195,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ytt-fetch/" class="md-nav__link">
+      <a href="../../../ytt-fetch/" class="md-nav__link">
         
   
   
@@ -12623,7 +12307,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../ytt-fetch/adr/" class="md-nav__link ">
+            <a href="../../../ytt-fetch/adr/" class="md-nav__link ">
               
   
   
@@ -12674,7 +12358,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf00-early-decisions/" class="md-nav__link">
         
   
   
@@ -12709,7 +12393,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf01-yt-transcript-source-handling/" class="md-nav__link">
         
   
   
@@ -12744,7 +12428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
+      <a href="../../../ytt-fetch/adr/adr-yf02-yt-transcript-format-selection/" class="md-nav__link">
         
   
   
@@ -12807,7 +12491,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../ytt-fetch/design/" class="md-nav__link ">
+            <a href="../../../ytt-fetch/design/" class="md-nav__link ">
               
   
   
@@ -12858,7 +12542,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
+      <a href="../../../ytt-fetch/design/youtube-api-vs-yt-dlp-eval/" class="md-nav__link">
         
   
   
@@ -12962,7 +12646,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../development/" class="md-nav__link ">
+            <a href="../../../../development/" class="md-nav__link ">
               
   
   
@@ -13013,7 +12697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/ci-workflow-cleanup-proposal/" class="md-nav__link">
+      <a href="../../../../development/ci-workflow-cleanup-proposal/" class="md-nav__link">
         
   
   
@@ -13048,7 +12732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/contributing-prototype-phase/" class="md-nav__link">
+      <a href="../../../../development/contributing-prototype-phase/" class="md-nav__link">
         
   
   
@@ -13083,7 +12767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/design-principles/" class="md-nav__link">
+      <a href="../../../../development/design-principles/" class="md-nav__link">
         
   
   
@@ -13118,7 +12802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/fine-tuning-strategy/" class="md-nav__link">
+      <a href="../../../../development/fine-tuning-strategy/" class="md-nav__link">
         
   
   
@@ -13153,7 +12837,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/git-workflow/" class="md-nav__link">
+      <a href="../../../../development/git-workflow/" class="md-nav__link">
         
   
   
@@ -13188,7 +12872,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
+      <a href="../../../../development/human-ai-software-engineering-principles/" class="md-nav__link">
         
   
   
@@ -13223,7 +12907,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/improvements-initial-structure/" class="md-nav__link">
+      <a href="../../../../development/improvements-initial-structure/" class="md-nav__link">
         
   
   
@@ -13258,7 +12942,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/overview/" class="md-nav__link">
+      <a href="../../../../development/overview/" class="md-nav__link">
         
   
   
@@ -13293,7 +12977,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/release-workflow/" class="md-nav__link">
+      <a href="../../../../development/release-workflow/" class="md-nav__link">
         
   
   
@@ -13328,7 +13012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/style-guide/" class="md-nav__link">
+      <a href="../../../../development/style-guide/" class="md-nav__link">
         
   
   
@@ -13363,7 +13047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/system-design/" class="md-nav__link">
+      <a href="../../../../development/system-design/" class="md-nav__link">
         
   
   
@@ -13398,7 +13082,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/tnh-conductor-operator-guide/" class="md-nav__link">
+      <a href="../../../../development/tnh-conductor-operator-guide/" class="md-nav__link">
         
   
   
@@ -13433,7 +13117,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/yt-dlp-ops-check/" class="md-nav__link">
+      <a href="../../../../development/yt-dlp-ops-check/" class="md-nav__link">
         
   
   
@@ -13492,7 +13176,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../development/incident-reports/" class="md-nav__link ">
+            <a href="../../../../development/incident-reports/" class="md-nav__link ">
               
   
   
@@ -13543,7 +13227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-git-recovery/" class="md-nav__link">
         
   
   
@@ -13578,7 +13262,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/incident-reports/tag-v0.2.0-correction-plan/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/tag-v0.2.0-correction-plan/" class="md-nav__link">
         
   
   
@@ -13637,7 +13321,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
+            <a href="../../../../development/incident-reports/2025-12-07-reference/" class="md-nav__link ">
               
   
   
@@ -13688,7 +13372,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-reference/forensic-analysis/" class="md-nav__link">
         
   
   
@@ -13723,7 +13407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-reference/implementation-summary/" class="md-nav__link">
         
   
   
@@ -13758,7 +13442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
+      <a href="../../../../development/incident-reports/2025-12-07-reference/incident-report-updates/" class="md-nav__link">
         
   
   
@@ -13844,7 +13528,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../docs-ops/" class="md-nav__link ">
+            <a href="../../../../docs-ops/" class="md-nav__link ">
               
   
   
@@ -13895,7 +13579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../docs-ops/adr-template/" class="md-nav__link">
+      <a href="../../../../docs-ops/adr-template/" class="md-nav__link">
         
   
   
@@ -13930,7 +13614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../docs-ops/markdown-standards/" class="md-nav__link">
+      <a href="../../../../docs-ops/markdown-standards/" class="md-nav__link">
         
   
   
@@ -13965,7 +13649,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
+      <a href="../../../../docs-ops/mkdocs-strict-warning-backlog/" class="md-nav__link">
         
   
   
@@ -14000,7 +13684,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../docs-ops/preview-theme/" class="md-nav__link">
+      <a href="../../../../docs-ops/preview-theme/" class="md-nav__link">
         
   
   
@@ -14035,7 +13719,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../docs-ops/theme-design/" class="md-nav__link">
+      <a href="../../../../docs-ops/theme-design/" class="md-nav__link">
         
   
   
@@ -14111,7 +13795,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../research/" class="md-nav__link ">
+            <a href="../../../../research/" class="md-nav__link ">
               
   
   
@@ -14162,7 +13846,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../research/gpt_development_convos/" class="md-nav__link">
+      <a href="../../../../research/gpt_development_convos/" class="md-nav__link">
         
   
   
@@ -14197,7 +13881,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../research/kb-design-document/" class="md-nav__link">
+      <a href="../../../../research/kb-design-document/" class="md-nav__link">
         
   
   
@@ -14232,7 +13916,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../research/metadata-summary-report/" class="md-nav__link">
+      <a href="../../../../research/metadata-summary-report/" class="md-nav__link">
         
   
   
@@ -14267,7 +13951,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../research/preliminary-feasibility-study/" class="md-nav__link">
+      <a href="../../../../research/preliminary-feasibility-study/" class="md-nav__link">
         
   
   
@@ -14302,7 +13986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../research/rag-research-directions/" class="md-nav__link">
+      <a href="../../../../research/rag-research-directions/" class="md-nav__link">
         
   
   
@@ -14337,7 +14021,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../research/siap-methodology/" class="md-nav__link">
+      <a href="../../../../research/siap-methodology/" class="md-nav__link">
         
   
   
@@ -14392,7 +14076,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
+            <a href="../../../../research/gpt4o-search-query-testing/" class="md-nav__link ">
               
   
   
@@ -14443,7 +14127,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
+      <a href="../../../../research/gpt4o-search-query-testing/queries-1-3-words/" class="md-nav__link">
         
   
   
@@ -14506,7 +14190,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
+            <a href="../../../../research/gpt4o-translation-experiments/" class="md-nav__link ">
               
   
   
@@ -14557,7 +14241,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
+      <a href="../../../../research/gpt4o-translation-experiments/passage_test/" class="md-nav__link">
         
   
   
@@ -14607,7 +14291,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../documentation_index/" class="md-nav__link">
+      <a href="../../../../documentation_index/" class="md-nav__link">
         
   
   
@@ -14661,10 +14345,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
+  <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Summary
+        Context
       
     </span>
   </a>
@@ -14672,22 +14356,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#experiment-sequence" class="md-nav__link">
+  <a href="#decision" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Experiment Sequence
+        Decision
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Experiment Sequence">
+    <nav class="md-nav" aria-label="Decision">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#e1-baseline-headless-reachability" class="md-nav__link">
+  <a href="#1-structured-json-output-files-remain-pure-json" class="md-nav__link">
     <span class="md-ellipsis">
       
-        E1. Baseline Headless Reachability
+        1. Structured JSON Output Files Remain Pure JSON
       
     </span>
   </a>
@@ -14695,10 +14379,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#e2-isolated-home-trial" class="md-nav__link">
+  <a href="#2-provenance-moves-to-a-sidecar-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        E2. Isolated Home Trial
+        2. Provenance Moves to a Sidecar File
       
     </span>
   </a>
@@ -14706,10 +14390,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#e3-stream-separation" class="md-nav__link">
+  <a href="#3-sidecar-content-rules" class="md-nav__link">
     <span class="md-ellipsis">
       
-        E3. Stream Separation
+        3. Sidecar Content Rules
       
     </span>
   </a>
@@ -14717,87 +14401,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#e4-real-review-prompt" class="md-nav__link">
+  <a href="#4-text-outputs-keep-existing-inline-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        E4. Real Review Prompt
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e5-user-shell-comparison" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E5. User-Shell Comparison
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e6-repo-local-wrapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E6. Repo-Local Wrapper
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e7-repo-local-config" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E7. Repo-Local Config
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e8-native-subagent-smoke-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E8. Native Subagent Smoke Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e9-feature-noise-reduction" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E9. Feature-Noise Reduction
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e10-low-noise-native-subagent-path" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E10. Low-Noise Native Subagent Path
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e11-user-shell-supervisory-trial" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E11. User-Shell Supervisory Trial
+        4. Text Outputs Keep Existing Inline Behavior
       
     </span>
   </a>
@@ -14810,121 +14417,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#results" class="md-nav__link">
+  <a href="#consequences" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Results
+        Consequences
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Results">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rejected-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rejected Alternative
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rejected Alternative">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-default-authenticated-home-is-usable" class="md-nav__link">
+  <a href="#inline-yaml-frontmatter-in-json-files" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Default Authenticated Home Is Usable
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-isolated-codex_home-reduced-some-noise-but-broke-authentication" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Isolated CODEX_HOME Reduced Some Noise but Broke Authentication
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-stdout-and-stderr-separation-is-the-key-cleanup-move" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. stdout and stderr Separation Is the Key Cleanup Move
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-user-shell-context-is-cleaner-than-tool-launched-context" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. User-Shell Context Is Cleaner Than Tool-Launched Context
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-a-tiny-wrapper-script-works-but-it-does-not-eliminate-environment-effects" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. A Tiny Wrapper Script Works, But It Does Not Eliminate Environment Effects
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-repo-local-config-is-real-but-not-sufficient" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Repo-Local Config Is Real but Not Sufficient
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-native-subagent-support-is-confirmed-in-headless-mode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Native Subagent Support Is Confirmed in Headless Mode
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#8-disabling-plugins-and-shell_snapshot-materially-reduces-noise" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8. Disabling plugins and shell_snapshot Materially Reduces Noise
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#9-lower-noise-is-not-yet-the-same-thing-as-better-operation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9. Lower Noise Is Not Yet the Same Thing as Better Operation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#10-the-first-supervisory-trial-was-productive-but-exposed-a-launch-mode-constraint" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10. The First Supervisory Trial Was Productive but Exposed a Launch-Mode Constraint
+        Inline YAML Frontmatter in .json Files
       
     </span>
   </a>
@@ -14933,155 +14452,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#practical-interpretation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Practical Interpretation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#matrix" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Matrix
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#error-classes-observed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Error Classes Observed
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Error Classes Observed">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-local-state-database-migration-warnings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A. Local State Database Migration Warnings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-plugin-manifest-warnings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        B. Plugin Manifest Warnings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-shell-snapshot-cleanup-warnings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        C. Shell Snapshot Cleanup Warnings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-ephemeral-thread-backfill-warning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        D. Ephemeral Thread Backfill Warning
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e-isolated-state-authentication-failure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        E. Isolated-State Authentication Failure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#f-personality-model-warning-under-some-paths" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        F. Personality / Model Warning Under Some Paths
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#g-parent-thread-rollout-unavailable-for-fork" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        G. Parent Thread Rollout Unavailable for Fork
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#current-recommendation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Current Recommendation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#open-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Open Questions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conclusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Conclusion
-      
-    </span>
-  </a>
   
 </li>
       
@@ -15105,548 +14475,73 @@
   
 
 
-<h1 id="codex-headless-communication-report">Codex Headless Communication Report<a class="headerlink" href="#codex-headless-communication-report" title="Link to this section">&para;</a></h1>
-<p>This report consolidates the observed behavior, errors, and viable invocation path from the first direct headless Codex communication experiments.</p>
-<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Link to this section">&para;</a></h2>
-<p>Headless Codex communication is viable, but the surface is still only partially understood.</p>
-<p>What is now clear:</p>
+<h1 id="adr-tg042-structured-json-provenance-sidecars">ADR-TG04.2: Structured JSON Provenance Sidecars<a class="headerlink" href="#adr-tg042-structured-json-provenance-sidecars" title="Link to this section">&para;</a></h1>
+<p>Clarify where provenance lives for structured JSON output artifacts produced by <code>tnh-gen</code>.</p>
 <ul>
-<li><code>codex exec</code> is usable for machine-readable collaboration,</li>
-<li>user-shell context matters materially,</li>
-<li>repo-local config is active and useful,</li>
-<li>native subagent behavior is available in headless mode,</li>
-<li>and <code>plugins</code> plus <code>shell_snapshot</code> are major noise contributors in this environment.</li>
+<li><strong>Filename</strong>: <code>adr-tg04.2-structured-json-provenance-sidecars.md</code></li>
+<li><strong>Status</strong>: Accepted</li>
+<li><strong>Date</strong>: 2026-05-01</li>
+<li><strong>Authors</strong>: Aaron Solomon, OpenAI Codex</li>
+<li><strong>Owner</strong>: aaronksolomon</li>
+<li><strong>Parent ADR</strong>: <a href="../adr-tg04-structured-json-contract-and-scope/">ADR-TG04: Structured JSON Contract and Scope Boundaries</a></li>
 </ul>
-<p>What is not yet clear:</p>
+<hr />
+<h2 id="context">Context<a class="headerlink" href="#context" title="Link to this section">&para;</a></h2>
+<p>ADR-TG04.1 established two requirements that conflict if provenance remains inline:</p>
 <ul>
-<li>the functional cost of disabling noisy surfaces,</li>
-<li>the value of persistence/state features that currently look like noise,</li>
-<li>whether a user-launched supervisory agent is materially better than wrapper-mediated collaboration,</li>
-<li>and how much of Codex's native collaboration/product surface should be reused rather than rebuilt around.</li>
+<li>structured JSON <code>--output-file</code> artifacts must remain canonical JSON text</li>
+<li>provenance is a first-class TNH Scholar concern and should remain durable on disk</li>
 </ul>
-<h2 id="experiment-sequence">Experiment Sequence<a class="headerlink" href="#experiment-sequence" title="Link to this section">&para;</a></h2>
-<h3 id="e1-baseline-headless-reachability">E1. Baseline Headless Reachability<a class="headerlink" href="#e1-baseline-headless-reachability" title="Link to this section">&para;</a></h3>
+<p>The older file-writing convention used YAML frontmatter inline with file content.
+That works for text artifacts, but it breaks the ordinary contract of a JSON file.
+A JSON artifact that requires TNH-specific frontmatter stripping is no longer a normal JSON artifact.</p>
+<p>We want both:</p>
 <ul>
-<li>default authenticated invocation with a trivial <code>ACK</code> prompt</li>
-<li>result: success</li>
-<li>learning: Codex is reachable headlessly with the default authenticated home</li>
+<li>standard JSON files that downstream tools can parse directly</li>
+<li>retained provenance and source metadata for TNH workflows</li>
 </ul>
-<h3 id="e2-isolated-home-trial">E2. Isolated Home Trial<a class="headerlink" href="#e2-isolated-home-trial" title="Link to this section">&para;</a></h3>
+<hr />
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Link to this section">&para;</a></h2>
+<h3 id="1-structured-json-output-files-remain-pure-json">1. Structured JSON Output Files Remain Pure JSON<a class="headerlink" href="#1-structured-json-output-files-remain-pure-json" title="Link to this section">&para;</a></h3>
+<p>When a prompt output contract is <code>json</code>, the primary <code>--output-file</code> artifact must contain only canonical JSON text.</p>
+<p>No YAML frontmatter or other inline metadata may be prefixed to the JSON artifact.</p>
+<h3 id="2-provenance-moves-to-a-sidecar-file">2. Provenance Moves to a Sidecar File<a class="headerlink" href="#2-provenance-moves-to-a-sidecar-file" title="Link to this section">&para;</a></h3>
+<p>When a structured JSON output is written to disk, provenance is written to a deterministic sidecar YAML file alongside the JSON artifact.</p>
+<p>Path rule:</p>
 <ul>
-<li>repo-local <code>CODEX_HOME</code> with a trivial <code>ACK</code> prompt</li>
-<li>result: failure</li>
-<li>learning: isolated state without auth is not viable; noise dropped but auth failed</li>
+<li>primary artifact: <code>&lt;output-path&gt;</code></li>
+<li>provenance sidecar: <code>&lt;output-path&gt;.provenance.yaml</code></li>
 </ul>
-<h3 id="e3-stream-separation">E3. Stream Separation<a class="headerlink" href="#e3-stream-separation" title="Link to this section">&para;</a></h3>
+<p>Examples:</p>
 <ul>
-<li>authenticated invocation with explicit <code>stdout</code> and <code>stderr</code> separation</li>
-<li>result: success</li>
-<li>learning: this is the key cleanup move; collaboration output is clean on <code>stdout</code></li>
+<li><code>sections.json</code></li>
+<li><code>sections.json.provenance.yaml</code></li>
 </ul>
-<h3 id="e4-real-review-prompt">E4. Real Review Prompt<a class="headerlink" href="#e4-real-review-prompt" title="Link to this section">&para;</a></h3>
+<h3 id="3-sidecar-content-rules">3. Sidecar Content Rules<a class="headerlink" href="#3-sidecar-content-rules" title="Link to this section">&para;</a></h3>
+<p>If provenance is enabled, the sidecar stores the same merged metadata that would otherwise have appeared in inline frontmatter:</p>
 <ul>
-<li>authenticated invocation with a real ADR review prompt and explicit <code>stdout</code>/<code>stderr</code> separation</li>
-<li>result: success</li>
-<li>learning: the channel is not only alive; it can produce useful review findings</li>
+<li>TNH Scholar generated markers</li>
+<li>prompt key and prompt version</li>
+<li>model and fingerprint</li>
+<li>trace id and generation timestamp</li>
+<li>preserved source metadata when present</li>
 </ul>
-<h3 id="e5-user-shell-comparison">E5. User-Shell Comparison<a class="headerlink" href="#e5-user-shell-comparison" title="Link to this section">&para;</a></h3>
+<p>If provenance is disabled but source metadata exists, the sidecar stores the preserved source metadata only.</p>
+<p>If neither provenance nor source metadata is present, no sidecar file is written.</p>
+<h3 id="4-text-outputs-keep-existing-inline-behavior">4. Text Outputs Keep Existing Inline Behavior<a class="headerlink" href="#4-text-outputs-keep-existing-inline-behavior" title="Link to this section">&para;</a></h3>
+<p>This addendum applies only to structured JSON output artifacts.</p>
+<p>Text outputs continue using the existing inline frontmatter behavior because text artifacts do not carry the same machine-parseability expectation as JSON files.</p>
+<hr />
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Link to this section">&para;</a></h2>
 <ul>
-<li>the same <code>ACK</code> command run from the user's shell</li>
-<li>result: success with clean <code>stdout</code> and empty <code>stderr</code></li>
-<li>learning: Codex behaves better in a real user-shell context than in the live agent execution context</li>
+<li>JSON artifacts remain standard JSON files and can be consumed by ordinary tooling without custom preprocessing.</li>
+<li>Provenance remains durable and first-class on disk for TNH Scholar workflows.</li>
+<li>Downstream consumers that want both payload and provenance must read two adjacent artifacts instead of one mixed-format file.</li>
 </ul>
-<h3 id="e6-repo-local-wrapper">E6. Repo-Local Wrapper<a class="headerlink" href="#e6-repo-local-wrapper" title="Link to this section">&para;</a></h3>
-<ul>
-<li>wrapper-script invocation of both <code>ACK</code> and a real review task</li>
-<li>result: success</li>
-<li>learning: a tiny wrapper is useful for normalization and capture, but does not itself reproduce user-shell cleanliness</li>
-</ul>
-<h3 id="e7-repo-local-config">E7. Repo-Local Config<a class="headerlink" href="#e7-repo-local-config" title="Link to this section">&para;</a></h3>
-<ul>
-<li>repo-local <code>.codex/config.toml</code> with <code>collab</code> and <code>collab_exec</code> profiles</li>
-<li>result: success</li>
-<li>learning: repo-local Codex config is active and can shape local CLI behavior, but did not materially reduce the core noise by itself</li>
-</ul>
-<h3 id="e8-native-subagent-smoke-test">E8. Native Subagent Smoke Test<a class="headerlink" href="#e8-native-subagent-smoke-test" title="Link to this section">&para;</a></h3>
-<ul>
-<li>headless prompt explicitly requesting one subagent</li>
-<li>result: success</li>
-<li>learning: native subagent behavior is available in headless <code>exec</code>; <code>spawn_agent</code> and <code>wait</code> events appear in JSONL output</li>
-</ul>
-<h3 id="e9-feature-noise-reduction">E9. Feature-Noise Reduction<a class="headerlink" href="#e9-feature-noise-reduction" title="Link to this section">&para;</a></h3>
-<ul>
-<li>wrapper runs with <code>--disable plugins</code></li>
-<li>wrapper runs with <code>--disable plugins --disable shell_snapshot</code></li>
-<li>result: success</li>
-<li>learning: <code>plugins</code> and <code>shell_snapshot</code> account for most of the noise in this environment</li>
-</ul>
-<h3 id="e10-low-noise-native-subagent-path">E10. Low-Noise Native Subagent Path<a class="headerlink" href="#e10-low-noise-native-subagent-path" title="Link to this section">&para;</a></h3>
-<ul>
-<li>wrapper + repo-local <code>collab</code> profile + <code>--disable plugins --disable shell_snapshot</code> + explicit subagent prompt</li>
-<li>result: success</li>
-<li>learning: the lower-noise path still preserves native subagent collaboration events and returns clean machine-readable output</li>
-</ul>
-<h3 id="e11-user-shell-supervisory-trial">E11. User-Shell Supervisory Trial<a class="headerlink" href="#e11-user-shell-supervisory-trial" title="Link to this section">&para;</a></h3>
-<ul>
-<li>shell-launched Codex supervisor using the supervisory-shell-trial assets</li>
-<li>result: useful but not clean</li>
-<li>learning:</li>
-<li>the supervisor did perform distinct delegated workstreams,</li>
-<li>native subagent collaboration produced useful convergent findings,</li>
-<li>but the first three spawns failed because the session could not fork parent rollout context cleanly,</li>
-<li>so the supervisor had to recover by embedding explicit repo/task context in each subagent prompt</li>
-</ul>
-<h2 id="results">Results<a class="headerlink" href="#results" title="Link to this section">&para;</a></h2>
-<h3 id="1-default-authenticated-home-is-usable">1. Default Authenticated Home Is Usable<a class="headerlink" href="#1-default-authenticated-home-is-usable" title="Link to this section">&para;</a></h3>
-<p>Using the installed Codex CLI against the default authenticated home succeeded for both a trivial handshake and a real review task.</p>
-<p>Evidence:</p>
-<ul>
-<li>handshake output: <code>tmp/codex-stdout.jsonl</code></li>
-<li>review output: <code>tmp/codex-review-stdout.jsonl</code></li>
-</ul>
-<p>The review task produced concrete findings about <code>OA01.4</code>, so this was not only a connectivity test.</p>
-<h3 id="2-isolated-codex_home-reduced-some-noise-but-broke-authentication">2. Isolated <code>CODEX_HOME</code> Reduced Some Noise but Broke Authentication<a class="headerlink" href="#2-isolated-codex_home-reduced-some-noise-but-broke-authentication" title="Link to this section">&para;</a></h3>
-<p>Running with an isolated repo-local <code>CODEX_HOME</code> removed the broken local state-db warnings, but the invocation then failed with authentication errors.</p>
-<p>Observed sequence:</p>
-<ul>
-<li>initial websocket retries with temporary server-side <code>500</code> errors,</li>
-<li>fallback to HTTP,</li>
-<li>then repeated <code>401 Unauthorized</code> responses because the isolated state did not carry usable auth.</li>
-</ul>
-<p>This means isolated state is not currently a drop-in cleanup solution.</p>
-<h3 id="3-stdout-and-stderr-separation-is-the-key-cleanup-move">3. <code>stdout</code> and <code>stderr</code> Separation Is the Key Cleanup Move<a class="headerlink" href="#3-stdout-and-stderr-separation-is-the-key-cleanup-move" title="Link to this section">&para;</a></h3>
-<p>Separating output streams was the most useful cleanup improvement.</p>
-<p>When run as:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>codex<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--json<span class="w"> </span>--ephemeral<span class="w"> </span>...<span class="w"> </span>&gt;<span class="w"> </span>useful.jsonl<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>diagnostics.log
-</span></code></pre></div>
-<p>the result is:</p>
-<ul>
-<li>clean JSON event stream on <code>stdout</code>,</li>
-<li>noisy but ignorable startup/runtime diagnostics on <code>stderr</code>.</li>
-</ul>
-<p>This is the strongest practical outcome from the experiments.</p>
-<h3 id="4-user-shell-context-is-cleaner-than-tool-launched-context">4. User-Shell Context Is Cleaner Than Tool-Launched Context<a class="headerlink" href="#4-user-shell-context-is-cleaner-than-tool-launched-context" title="Link to this section">&para;</a></h3>
-<p>The same <code>ACK</code> command run from the user's own shell produced a cleaner result than my tool-launched runs:</p>
-<ul>
-<li>clean JSON on <code>stdout</code>,</li>
-<li>empty <code>stderr</code>.</li>
-</ul>
-<p>Evidence:</p>
-<ul>
-<li>user-shell output: <code>tmp/codex-user-stdout.jsonl</code></li>
-<li>user-shell stderr: <code>tmp/codex-user-stderr.log</code></li>
-</ul>
-<p>This strongly suggests Codex expects a more normal user-shell environment than the live coding-agent tool environment naturally provides.</p>
-<h3 id="5-a-tiny-wrapper-script-works-but-it-does-not-eliminate-environment-effects">5. A Tiny Wrapper Script Works, But It Does Not Eliminate Environment Effects<a class="headerlink" href="#5-a-tiny-wrapper-script-works-but-it-does-not-eliminate-environment-effects" title="Link to this section">&para;</a></h3>
-<p>A repo-local wrapper script was added at <code>scripts/codex_ephemeral_exec.py</code>.</p>
-<p>It successfully:</p>
-<ul>
-<li>ran <code>ACK</code>,</li>
-<li>ran a real review task,</li>
-<li>captured <code>stdout</code> and <code>stderr</code>,</li>
-<li>and extracted a final message summary.</li>
-</ul>
-<p>Evidence:</p>
-<ul>
-<li>wrapper <code>ACK</code> summary/output: <code>tmp/codex-script-stdout.jsonl</code></li>
-<li>wrapper review output: <code>tmp/codex-script-review-stdout.jsonl</code></li>
-</ul>
-<p>But the wrapper did not remove the noisy warnings when launched from this live agent environment. That confirms the wrapper is useful for normalization, not for magically reproducing a true user shell.</p>
-<h3 id="6-repo-local-config-is-real-but-not-sufficient">6. Repo-Local Config Is Real but Not Sufficient<a class="headerlink" href="#6-repo-local-config-is-real-but-not-sufficient" title="Link to this section">&para;</a></h3>
-<p>A repo-local <code>.codex/config.toml</code> was added and used successfully with named profiles.</p>
-<p>This proved two things:</p>
-<ul>
-<li>repo-scoped Codex config is a real working surface,</li>
-<li>but simply adding a repo-local profile does not by itself clean up the dominant warnings in this environment.</li>
-</ul>
-<p>The current repo-local profiles are useful as a place to hold experiment defaults, not yet as a solution to the noise problem.</p>
-<h3 id="7-native-subagent-support-is-confirmed-in-headless-mode">7. Native Subagent Support Is Confirmed in Headless Mode<a class="headerlink" href="#7-native-subagent-support-is-confirmed-in-headless-mode" title="Link to this section">&para;</a></h3>
-<p>The strongest new finding from this round is that built-in Codex collaboration is not merely documented; it is visibly active in headless JSONL output.</p>
-<p>Observed in <code>stdout</code>:</p>
-<ul>
-<li><code>collab_tool_call</code> with <code>tool: "spawn_agent"</code></li>
-<li><code>collab_tool_call</code> with <code>tool: "wait"</code></li>
-<li>subordinate agent completion message</li>
-<li>final top-level response after the wait completes</li>
-</ul>
-<p>This means future work should be careful not to rebuild a subagent system that Codex already exposes natively.</p>
-<h3 id="8-disabling-plugins-and-shell_snapshot-materially-reduces-noise">8. Disabling <code>plugins</code> and <code>shell_snapshot</code> Materially Reduces Noise<a class="headerlink" href="#8-disabling-plugins-and-shell_snapshot-materially-reduces-noise" title="Link to this section">&para;</a></h3>
-<p>The wrapper-based comparison showed:</p>
-<ul>
-<li>baseline wrapper path: heavy plugin-manifest and shell-snapshot warnings</li>
-<li><code>--disable plugins</code>: plugin noise removed, state-db and shell-snapshot warnings remain</li>
-<li><code>--disable plugins --disable shell_snapshot</code>: only state-db and ephemeral-thread warnings remain</li>
-</ul>
-<p>This is the cleanest machine-oriented path found so far from the live agent environment.</p>
-<h3 id="9-lower-noise-is-not-yet-the-same-thing-as-better-operation">9. Lower Noise Is Not Yet the Same Thing as Better Operation<a class="headerlink" href="#9-lower-noise-is-not-yet-the-same-thing-as-better-operation" title="Link to this section">&para;</a></h3>
-<p>The experiments show how to quiet the channel, but they do not yet show the cost of doing so.</p>
-<p>Open question:</p>
-<ul>
-<li>are <code>plugins</code>, <code>shell_snapshot</code>, or state-backed behavior functionally useful for real supervisory collaboration, even if they are noisy in simple tests?</li>
-</ul>
-<p>That question remains unanswered and should be treated as a real design concern rather than an implementation detail.</p>
-<h3 id="10-the-first-supervisory-trial-was-productive-but-exposed-a-launch-mode-constraint">10. The First Supervisory Trial Was Productive but Exposed a Launch-Mode Constraint<a class="headerlink" href="#10-the-first-supervisory-trial-was-productive-but-exposed-a-launch-mode-constraint" title="Link to this section">&para;</a></h3>
-<p>The shell-launched supervisory run was the first meaningful test of Codex as a supervisor rather than a single headless worker.</p>
-<p>What happened:</p>
-<ul>
-<li>the supervisor read the workflow contract and task brief,</li>
-<li>attempted three distinct subagent workstreams,</li>
-<li>failed on the first three spawn attempts with a parent-rollout fork error,</li>
-<li>retried with explicit repo and task context embedded in each subagent prompt,</li>
-<li>and then successfully completed three distinct review workstreams plus a final synthesis.</li>
-</ul>
-<p>The subagent workstreams were genuinely distinct:</p>
-<ul>
-<li>strategic coherence of <code>OA01.2</code> to <code>OA01.4</code></li>
-<li>practical feasibility and experiment shaping</li>
-<li>clarity, consistency, and pruning</li>
-</ul>
-<p>This was not the same task repeated three times. The overlap happened later in the findings, where the three workstreams converged on similar structural issues.</p>
-<p>The run also showed some limited creativity:</p>
-<ul>
-<li>the supervisor recovered from the failed spawn mode without user intervention,</li>
-<li>reframed the subagent prompts to compensate for missing inherited context,</li>
-<li>and produced a stronger synthesis than a straight-line single-pass critique would likely have produced.</li>
-</ul>
-<p>At the same time, this was not a clean proof of the intended workflow contract.</p>
-<p>Why:</p>
-<ul>
-<li>the supervisor had to retry the spawn strategy,</li>
-<li>it did a bit more framing and synthesis work itself than a strict reading of the contract would prefer,</li>
-<li>and the run surfaced a real product/runtime constraint rather than a purely prompt-level behavior question.</li>
-</ul>
-<h2 id="practical-interpretation">Practical Interpretation<a class="headerlink" href="#practical-interpretation" title="Link to this section">&para;</a></h2>
-<p>These experiments separated three questions clearly:</p>
-<ul>
-<li>can headless collaboration happen,</li>
-<li>can native Codex collaboration happen,</li>
-<li>and can either happen through a clean enough channel to support more meaningful experiments?</li>
-</ul>
-<p>Current answers:</p>
-<ul>
-<li>headless collaboration: yes</li>
-<li>native subagent collaboration: yes</li>
-<li>clean enough operator channel: yes, provisionally</li>
-</ul>
-<p>But the path is still exploratory. We have found a viable low-noise route, not yet an endorsed operating mode.</p>
-<p>The supervisory-shell trial strengthens that conclusion:</p>
-<ul>
-<li>native supervisory use is plausible,</li>
-<li>but the collaboration surface still has operational constraints that need to be understood before treating it as a clean substrate.</li>
-</ul>
-<h2 id="matrix">Matrix<a class="headerlink" href="#matrix" title="Link to this section">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Surface</th>
-<th>Expected / question</th>
-<th>Observed here</th>
-<th>Confidence</th>
-<th>Current implication</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>codex exec</code></td>
-<td>Official headless surface</td>
-<td>Works for <code>ACK</code>, review prompts, and subagent prompts</td>
-<td>High</td>
-<td>Main baseline path</td>
-</tr>
-<tr>
-<td>Authenticated default home</td>
-<td>Should carry usable auth/state</td>
-<td>Required for successful runs</td>
-<td>High</td>
-<td>Keep using <code>~/.codex</code> for now</td>
-</tr>
-<tr>
-<td>Isolated repo-local home</td>
-<td>Might give cleaner local isolation</td>
-<td>Failed with <code>401 Unauthorized</code></td>
-<td>High</td>
-<td>Not viable without explicit auth handling</td>
-</tr>
-<tr>
-<td><code>--ephemeral</code></td>
-<td>Should keep runs lightweight</td>
-<td>Works; leaves a harmless backfill warning</td>
-<td>High</td>
-<td>Keep in baseline</td>
-</tr>
-<tr>
-<td><code>stdout</code> / <code>stderr</code> split</td>
-<td>Should isolate usable output</td>
-<td>Clean collaboration output on <code>stdout</code></td>
-<td>High</td>
-<td>Essential baseline practice</td>
-</tr>
-<tr>
-<td>Repo-local <code>.codex/config.toml</code></td>
-<td>Should be a real config layer</td>
-<td>Profiles are active and usable</td>
-<td>High</td>
-<td>Good place for repo-scoped defaults</td>
-</tr>
-<tr>
-<td><code>collab</code> profile</td>
-<td>Should reduce approval friction</td>
-<td>Works, but does not materially change noise</td>
-<td>Medium</td>
-<td>Useful as a baseline profile</td>
-</tr>
-<tr>
-<td><code>collab_exec</code> profile</td>
-<td><code>inherit = "all"</code> might help</td>
-<td>No meaningful cleanliness gain seen</td>
-<td>Medium</td>
-<td>Not currently special</td>
-</tr>
-<tr>
-<td>Repo root context</td>
-<td>Should pick up repo guidance</td>
-<td>Returned <code>AGENTS.md</code> in prior tests</td>
-<td>Medium</td>
-<td>Repo discovery likely works</td>
-</tr>
-<tr>
-<td>Outside-repo context</td>
-<td>Should not see repo guidance</td>
-<td>Returned <code>NONE</code> in prior tests</td>
-<td>Medium</td>
-<td>Boundary behaves plausibly</td>
-</tr>
-<tr>
-<td>Wrapper script</td>
-<td>Should normalize invocation</td>
-<td>Works and returns a final summary JSON</td>
-<td>High</td>
-<td>Good thin launcher surface</td>
-</tr>
-<tr>
-<td>Wrapper <code>stdin=DEVNULL</code></td>
-<td>Might remove stdin-related chatter</td>
-<td><code>Reading additional input from stdin...</code> still appears</td>
-<td>Medium</td>
-<td>Not fixed yet</td>
-</tr>
-<tr>
-<td><code>plugins</code> enabled</td>
-<td>Might add useful capability, may add noise</td>
-<td>Heavy plugin-manifest noise</td>
-<td>High</td>
-<td>Need cost/benefit testing</td>
-</tr>
-<tr>
-<td><code>plugins</code> disabled</td>
-<td>Might reduce noise</td>
-<td>Removes most stderr spam</td>
-<td>High</td>
-<td>Strong cleanup lever</td>
-</tr>
-<tr>
-<td><code>shell_snapshot</code> enabled</td>
-<td>Might aid environment capture, may add noise</td>
-<td>Snapshot cleanup warning appears</td>
-<td>High</td>
-<td>Need cost/benefit testing</td>
-</tr>
-<tr>
-<td><code>shell_snapshot</code> disabled</td>
-<td>Might reduce noise</td>
-<td>Removes snapshot warning</td>
-<td>High</td>
-<td>Strong cleanup lever</td>
-</tr>
-<tr>
-<td><code>multi_agent</code> feature</td>
-<td>Documented and feature-listed</td>
-<td>Behaviorally confirmed via JSONL <code>spawn_agent</code> and <code>wait</code></td>
-<td>High</td>
-<td>Native collaboration surface is real</td>
-</tr>
-<tr>
-<td>Native subagent events</td>
-<td>Might not appear in headless mode</td>
-<td>Visible in <code>stdout</code> JSONL</td>
-<td>High</td>
-<td>Reuse before rebuilding</td>
-</tr>
-<tr>
-<td>Low-noise subagent path</td>
-<td>Might break collaboration behavior</td>
-<td>Still supports <code>spawn_agent</code> + <code>wait</code></td>
-<td>High</td>
-<td>Best current machine-oriented path</td>
-</tr>
-<tr>
-<td>Shell-launched supervisory run</td>
-<td>Might show whether native supervision is meaningfully useful</td>
-<td>Produced useful delegated work and synthesis, but required retry after fork-context failure</td>
-<td>Medium</td>
-<td>Promising enough to continue, but not a clean success</td>
-</tr>
-<tr>
-<td>Initial fork-based subagent spawn</td>
-<td>Might inherit parent context cleanly</td>
-<td>Failed with <code>parent thread rollout unavailable for fork</code></td>
-<td>Medium</td>
-<td>Launch mode matters; explicit context fallback may be necessary</td>
-</tr>
-<tr>
-<td>State DB persistence</td>
-<td>Might be useful despite warnings</td>
-<td>Repeated migration discrepancy warning</td>
-<td>Low</td>
-<td>Understand before disabling or discarding</td>
-</tr>
-</tbody>
-</table>
-<h2 id="error-classes-observed">Error Classes Observed<a class="headerlink" href="#error-classes-observed" title="Link to this section">&para;</a></h2>
-<h3 id="a-local-state-database-migration-warnings">A. Local State Database Migration Warnings<a class="headerlink" href="#a-local-state-database-migration-warnings" title="Link to this section">&para;</a></h3>
-<p>Observed on the authenticated default home:</p>
-<ul>
-<li><code>failed to open state db at /Users/phapman/.codex/state_5.sqlite: migration 24 was previously applied but is missing in the resolved migrations</code></li>
-<li><code>state db discrepancy during find_thread_path_by_id_str_in_subdir: falling_back</code></li>
-</ul>
-<p>Interpretation:</p>
-<ul>
-<li>the local Codex state database appears to be from an older or different internal migration set</li>
-<li>Codex continues operating by falling back rather than failing hard</li>
-<li>this is noisy but not currently fatal for headless use</li>
-</ul>
-<p>Implication:</p>
-<ul>
-<li>this likely indicates a local Codex installation or state mismatch that could be cleaned up later</li>
-<li>it is not a blocker for immediate experimentation</li>
-</ul>
-<h3 id="b-plugin-manifest-warnings">B. Plugin Manifest Warnings<a class="headerlink" href="#b-plugin-manifest-warnings" title="Link to this section">&para;</a></h3>
-<p>Observed repeatedly:</p>
-<ul>
-<li><code>ignoring interface.defaultPrompt: prompt must be at most 128 characters</code></li>
-</ul>
-<p>Interpretation:</p>
-<ul>
-<li>curated or installed plugin metadata under <code>~/.codex/.tmp/plugins/</code> contains manifests with overlong default prompts</li>
-<li>Codex logs the issue repeatedly during startup or plugin scanning</li>
-</ul>
-<p>Implication:</p>
-<ul>
-<li>this appears to be upstream or CLI-environment noise, not project-specific failure</li>
-<li>it is currently harmless but very noisy</li>
-</ul>
-<h3 id="c-shell-snapshot-cleanup-warnings">C. Shell Snapshot Cleanup Warnings<a class="headerlink" href="#c-shell-snapshot-cleanup-warnings" title="Link to this section">&para;</a></h3>
-<p>Observed:</p>
-<ul>
-<li>failed deletion of shell snapshot temp files with <code>No such file or directory</code></li>
-</ul>
-<p>Interpretation:</p>
-<ul>
-<li>cleanup logic is attempting to remove temp snapshot files that are already gone</li>
-</ul>
-<p>Implication:</p>
-<ul>
-<li>harmless noise</li>
-</ul>
-<h3 id="d-ephemeral-thread-backfill-warning">D. Ephemeral Thread Backfill Warning<a class="headerlink" href="#d-ephemeral-thread-backfill-warning" title="Link to this section">&para;</a></h3>
-<p>Observed after successful runs:</p>
-<ul>
-<li><code>ephemeral threads do not support includeTurns</code></li>
-</ul>
-<p>Interpretation:</p>
-<ul>
-<li>Codex tries to backfill richer turn history even though ephemeral mode does not persist the session in the same way</li>
-</ul>
-<p>Implication:</p>
-<ul>
-<li>harmless for current purposes</li>
-<li>another reason to treat <code>stdout</code> as the primary usable channel</li>
-</ul>
-<h3 id="e-isolated-state-authentication-failure">E. Isolated-State Authentication Failure<a class="headerlink" href="#e-isolated-state-authentication-failure" title="Link to this section">&para;</a></h3>
-<p>Observed under repo-local <code>CODEX_HOME</code>:</p>
-<ul>
-<li>websocket <code>500 Internal Server Error</code> during retries</li>
-<li>fallback to HTTP</li>
-<li>repeated <code>401 Unauthorized: Missing bearer or basic authentication in header</code></li>
-</ul>
-<p>Interpretation:</p>
-<ul>
-<li>repo-local isolated state lacks the authentication material used by the default home</li>
-<li>server-side transient websocket errors may also be present, but the decisive blocker was missing auth</li>
-</ul>
-<p>Implication:</p>
-<ul>
-<li>a truly isolated state path would require explicit auth setup</li>
-<li>this is possible future work, but not required for current spike progress</li>
-</ul>
-<h3 id="f-personality-model-warning-under-some-paths">F. Personality / Model Warning Under Some Paths<a class="headerlink" href="#f-personality-model-warning-under-some-paths" title="Link to this section">&para;</a></h3>
-<p>Observed in lower-noise subagent runs:</p>
-<ul>
-<li><code>Model personality requested but model_messages is missing, falling back to base instructions</code></li>
-</ul>
-<p>Interpretation:</p>
-<ul>
-<li>some model/profile combinations do not fully support the configured personality surface</li>
-<li>Codex falls back rather than failing hard</li>
-</ul>
-<p>Implication:</p>
-<ul>
-<li>this is not currently a blocker</li>
-<li>but it means model/profile interactions are another surface worth understanding before turning defaults into stable tooling</li>
-</ul>
-<h3 id="g-parent-thread-rollout-unavailable-for-fork">G. Parent Thread Rollout Unavailable for Fork<a class="headerlink" href="#g-parent-thread-rollout-unavailable-for-fork" title="Link to this section">&para;</a></h3>
-<p>Observed in the first supervisory-shell run:</p>
-<ul>
-<li><code>collab spawn failed: Fatal error: parent thread rollout unavailable for fork</code></li>
-</ul>
-<p>Interpretation:</p>
-<ul>
-<li>the spawned subagent path appears to expect parent rollout context that was not available in this launch mode</li>
-<li>the exact internal cause is still inferred rather than fully known, but the behavior is clear from the error and retry pattern</li>
-</ul>
-<p>Implication:</p>
-<ul>
-<li>shell-launched native supervision works, but not all subagent spawn modes are equally dependable</li>
-<li>explicit task context in subagent prompts may currently be the safer path than assuming inherited context</li>
-</ul>
-<h2 id="current-recommendation">Current Recommendation<a class="headerlink" href="#current-recommendation" title="Link to this section">&para;</a></h2>
-<p>For machine-oriented experimentation from this live environment, the best current path is:</p>
-<ol>
-<li>keep the authenticated default <code>~/.codex</code> home,</li>
-<li>use repo-local profile <code>collab</code>,</li>
-<li>use <code>--ephemeral</code>,</li>
-<li>separate <code>stdout</code> and <code>stderr</code>,</li>
-<li>disable <code>plugins</code> and <code>shell_snapshot</code> when the goal is a cleaner event channel,</li>
-<li>treat <code>stdout</code> as the collaboration channel,</li>
-<li>treat <code>stderr</code> as diagnostics only.</li>
-</ol>
-<p>For higher-value next experiments, prefer a user-shell-launched supervisory run before doing much more wrapper or noise optimization.</p>
-<p>For supervisory trials specifically:</p>
-<ul>
-<li>assume inherited fork-context may fail,</li>
-<li>and be prepared to pass explicit repo and task context to subagents.</li>
-</ul>
-<h2 id="open-questions">Open Questions<a class="headerlink" href="#open-questions" title="Link to this section">&para;</a></h2>
-<ul>
-<li>What practical capability is lost when <code>plugins</code> are disabled?</li>
-<li>What practical capability is lost when <code>shell_snapshot</code> is disabled?</li>
-<li>Is the state DB warning merely noisy, or does it indicate degraded useful behavior?</li>
-<li>Can a user-launched supervisory Codex session coordinate real work more effectively than a thin wrapper-led collaboration pattern?</li>
-<li>How much of Codex's native subagent/planning surface should be treated as product capability to reuse rather than substrate to rebuild?</li>
-<li>Is inherited subagent fork-context dependable enough for future supervisory experiments, or should explicit-context delegation be the baseline?</li>
-<li>Does human framing remain necessary for genuine novelty and exploration, even if native supervision is operationally viable?</li>
-</ul>
-<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Link to this section">&para;</a></h2>
-<p>The experiments now support a slightly stronger but still cautious conclusion:</p>
-<ul>
-<li>headless Codex communication is viable,</li>
-<li>native headless subagent collaboration is also viable,</li>
-<li>a materially cleaner invocation path exists,</li>
-<li>a shell-launched supervisory run can generate useful delegated analysis,</li>
-<li>but the costs of suppressing noisy surfaces are still unknown,</li>
-<li>and inherited subagent context currently looks less dependable than explicit-context delegation.</li>
-</ul>
-<p>So the work remains exploratory. The next important step is not more local noise chasing by default. It is a more meaningful supervisory experiment, ideally launched from the user's shell, so the project can judge whether the native collaboration surface is genuinely useful for the direction now emerging in <code>OA01.2</code> to <code>OA01.4</code>.</p>
+<hr />
+<h2 id="rejected-alternative">Rejected Alternative<a class="headerlink" href="#rejected-alternative" title="Link to this section">&para;</a></h2>
+<h3 id="inline-yaml-frontmatter-in-json-files">Inline YAML Frontmatter in <code>.json</code> Files<a class="headerlink" href="#inline-yaml-frontmatter-in-json-files" title="Link to this section">&para;</a></h3>
+<p>Rejected because it redefines a JSON artifact into a TNH-specific pseudo-format and breaks the ordinary expectations of generic JSON tooling, schema validators, editors, and downstream automation.</p>
 
 
 
@@ -15747,10 +14642,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
