@@ -65,6 +65,32 @@ def _write_prompt(tmp_path) -> str:
     return str(prompt_dir)
 
 
+def _write_json_prompt(tmp_path) -> str:
+    prompt_dir = tmp_path / "prompts"
+    prompt_dir.mkdir()
+    prompt_dir.joinpath("json-echo.md").write_text(
+        dedent(
+            """\
+            ---
+            key: json-echo
+            name: JSON Echo
+            version: 1.0.0
+            description: JSON prompt for testing.
+            task_type: test
+            role: task
+            required_variables: []
+            output_contract:
+              mode: json
+              schema_ref: tnh.testing.echo.v1
+            ---
+            Return JSON.
+            """
+        ),
+        encoding="utf-8",
+    )
+    return str(prompt_dir)
+
+
 def _write_legacy_prompt(tmp_path) -> str:
     prompt_dir = tmp_path / "prompts"
     prompt_dir.mkdir()
@@ -532,6 +558,89 @@ class _BudgetBlockedService:
         )
 
 
+class _JsonStubService:
+    def __init__(self, metadata: PromptMetadata):
+        self.last_request: Any = None
+        self.catalog = _StubCatalog(metadata)
+
+    def generate(self, request):
+        self.last_request = request
+        started = datetime.now()
+        finished = started + timedelta(seconds=1)
+        return CompletionEnvelope(
+            outcome=CompletionOutcomeStatus.SUCCEEDED,
+            result=CompletionResult(
+                text='{"message":"generated"}',
+                usage=Usage(
+                    prompt_tokens=10,
+                    completion_tokens=20,
+                    total_tokens=30,
+                ),
+                model="gpt-4o",
+                provider="openai",
+                json_value={"message": "generated"},
+                schema_ref="tnh.testing.echo.v1",
+                finish_reason="stop",
+            ),
+            provenance=Provenance(
+                provider="openai",
+                model="gpt-4o",
+                started_at=started,
+                finished_at=finished,
+                attempt_count=1,
+                fingerprint=Fingerprint(
+                    prompt_key="json-echo",
+                    prompt_name="JSON Echo",
+                    prompt_base_path=".",
+                    prompt_content_hash="hash-prompt",
+                    variables_hash="hash-vars",
+                    user_string_hash="hash-input",
+                ),
+            ),
+            policy_applied={"routing_reason": "test"},
+            warnings=[],
+        )
+
+
+class _JsonContractFailedStubService:
+    def __init__(self, metadata: PromptMetadata):
+        self.last_request: Any = None
+        self.catalog = _StubCatalog(metadata)
+
+    def generate(self, request):
+        self.last_request = request
+        started = datetime.now()
+        finished = started + timedelta(seconds=1)
+        return CompletionEnvelope(
+            outcome=CompletionOutcomeStatus.FAILED,
+            failure=CompletionFailure(
+                reason=FailureReason.CONTRACT_VALIDATION_FAILED,
+                message=(
+                    "Generated JSON did not satisfy schema "
+                    "'tnh.testing.echo.v1' at $.message: 1 is not of type 'string'"
+                ),
+                retryable=False,
+            ),
+            provenance=Provenance(
+                provider="openai",
+                model="gpt-4o",
+                started_at=started,
+                finished_at=finished,
+                attempt_count=1,
+                fingerprint=Fingerprint(
+                    prompt_key="json-echo",
+                    prompt_name="JSON Echo",
+                    prompt_base_path=".",
+                    prompt_content_hash="hash-prompt",
+                    variables_hash="hash-vars",
+                    user_string_hash="hash-input",
+                ),
+            ),
+            policy_applied={"routing_reason": "test"},
+            warnings=[],
+        )
+
+
 class _RecordingFactory:
     def __init__(self, service: Any):
         self.service = service
@@ -977,6 +1086,157 @@ def test_run_api_failed_completion_returns_failure_payload_without_file(tmp_path
     assert not output_file.exists()
 
 
+def test_run_api_json_prompt_includes_structured_result_and_writes_canonical_json(
+    tmp_path,
+    monkeypatch,
+):
+    prompt_dir = _write_json_prompt(tmp_path)
+    input_file = tmp_path / "input.md"
+    input_file.write_text(
+        "---\nsource: draft\n---\nfile-input\n",
+        encoding="utf-8",
+    )
+
+    metadata = PromptMetadata(
+        key="json-echo",
+        name="JSON Echo",
+        version="1.0.0",
+        description="JSON prompt for testing.",
+        task_type="test",
+        role="task",
+        required_variables=[],
+        optional_variables=[],
+        default_variables={},
+        output_contract={"mode": "json", "schema_ref": "tnh.testing.echo.v1"},
+    )
+    stub_service = _JsonStubService(metadata)
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+    monkeypatch.setattr(run_module, "_initialize_service", lambda *_, **__: stub_service)
+
+    output_file = tmp_path / "json-output.json"
+    result = runner.invoke(
+        tnh_gen.app,
+        [
+            "--api",
+            "run",
+            "--prompt",
+            "json-echo",
+            "--input-file",
+            str(input_file),
+            "--output-file",
+            str(output_file),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "succeeded"
+    assert payload["result"]["json"] == {"message": "generated"}
+    assert payload["result"]["schema_ref"] == "tnh.testing.echo.v1"
+    assert payload["result"]["text"] == '{"message":"generated"}'
+    assert output_file.read_text(encoding="utf-8") == '{"message":"generated"}'
+
+
+def test_run_api_contract_validation_failure_uses_format_error_and_skips_output_file(
+    tmp_path,
+    monkeypatch,
+):
+    prompt_dir = _write_json_prompt(tmp_path)
+    input_file = tmp_path / "input.txt"
+    input_file.write_text("file-input", encoding="utf-8")
+
+    metadata = PromptMetadata(
+        key="json-echo",
+        name="JSON Echo",
+        version="1.0.0",
+        description="JSON prompt for testing.",
+        task_type="test",
+        role="task",
+        required_variables=[],
+        optional_variables=[],
+        default_variables={},
+        output_contract={"mode": "json", "schema_ref": "tnh.testing.echo.v1"},
+    )
+    stub_service = _JsonContractFailedStubService(metadata)
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+    monkeypatch.setattr(run_module, "_initialize_service", lambda *_, **__: stub_service)
+
+    output_file = tmp_path / "failed.json"
+    result = runner.invoke(
+        tnh_gen.app,
+        [
+            "--api",
+            "run",
+            "--prompt",
+            "json-echo",
+            "--input-file",
+            str(input_file),
+            "--output-file",
+            str(output_file),
+        ],
+    )
+
+    assert result.exit_code == ExitCode.FORMAT_ERROR
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "failed"
+    assert payload["failure"]["reason"] == FailureReason.CONTRACT_VALIDATION_FAILED.value
+    assert not output_file.exists()
+
+
+def test_run_api_missing_json_schema_returns_input_error(tmp_path, monkeypatch):
+    prompt_dir = tmp_path / "prompts"
+    prompt_dir.mkdir()
+    prompt_dir.joinpath("missing-schema.md").write_text(
+        dedent(
+            """\
+            ---
+            key: missing-schema
+            name: Missing Schema
+            version: 1.0.0
+            description: JSON prompt with missing schema artifact.
+            task_type: test
+            role: task
+            required_variables: []
+            output_contract:
+              mode: json
+              schema_ref: tnh.testing.missing.v1
+            ---
+            Return JSON.
+            """
+        ),
+        encoding="utf-8",
+    )
+    input_file = tmp_path / "input.txt"
+    input_file.write_text("file-input", encoding="utf-8")
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(prompt_dir))
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+
+    result = runner.invoke(
+        tnh_gen.app,
+        [
+            "--api",
+            "run",
+            "--prompt",
+            "missing-schema",
+            "--input-file",
+            str(input_file),
+        ],
+    )
+
+    assert result.exit_code == ExitCode.INPUT_ERROR
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "failed"
+    assert "Prompt contract schema 'tnh.testing.missing.v1' was not found" in payload["error"]
+
+
 def test_run_api_budget_block_returns_structured_payload(tmp_path, monkeypatch):
     _write_prompt(tmp_path)
     input_file = tmp_path / "input.txt"
@@ -1111,6 +1371,52 @@ def test_run_human_mode_failed_completion_reports_error_and_skips_output_file(tm
     assert "backend failure" in result.stdout
     assert "[warn]" in result.stderr
     assert "trace_id=" in result.stderr
+    assert not output_file.exists()
+
+
+def test_run_human_mode_contract_validation_failure_skips_output_file(
+    tmp_path,
+    monkeypatch,
+):
+    prompt_dir = _write_json_prompt(tmp_path)
+    input_file = tmp_path / "input.txt"
+    input_file.write_text("file-input", encoding="utf-8")
+
+    metadata = PromptMetadata(
+        key="json-echo",
+        name="JSON Echo",
+        version="1.0.0",
+        description="JSON prompt for testing.",
+        task_type="test",
+        role="task",
+        required_variables=[],
+        optional_variables=[],
+        default_variables={},
+        output_contract={"mode": "json", "schema_ref": "tnh.testing.echo.v1"},
+    )
+    stub_service = _JsonContractFailedStubService(metadata)
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+    monkeypatch.setattr(run_module, "_initialize_service", lambda *_, **__: stub_service)
+
+    output_file = tmp_path / "failed.json"
+    result = runner.invoke(
+        tnh_gen.app,
+        [
+            "run",
+            "--prompt",
+            "json-echo",
+            "--input-file",
+            str(input_file),
+            "--output-file",
+            str(output_file),
+        ],
+    )
+
+    assert result.exit_code == ExitCode.FORMAT_ERROR
+    assert "Generated JSON did not satisfy schema" in result.stdout
     assert not output_file.exists()
 
 

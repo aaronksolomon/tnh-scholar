@@ -56,11 +56,15 @@ def write_output_file(
     trace_id: str,
     prompt_version: str | None,
     include_provenance: bool,
+    structured_output: bool = False,
 ) -> None:
     """Write result text to disk, optionally prefixing provenance metadata."""
     if envelope.outcome is CompletionOutcomeStatus.FAILED:
         raise ValueError("Cannot write output for a failed completion outcome")
     path.parent.mkdir(parents=True, exist_ok=True)
+    if structured_output:
+        path.write_text(result_text, encoding="utf-8")
+        return
     if include_provenance:
         header = provenance_block(
             envelope,

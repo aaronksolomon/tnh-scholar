@@ -93,6 +93,7 @@ class FailureReason(str, Enum):
     CONTENT_FIELD_MISSING = "content_field_missing"
     UNSUPPORTED_RESPONSE_SHAPE = "unsupported_response_shape"
     CONTENT_EXTRACTION_ERROR = "content_extraction_error"
+    CONTRACT_VALIDATION_FAILED = "contract_validation_failed"
 
 
 class AdapterDiagnostics(BaseModel):
@@ -108,6 +109,8 @@ class CompletionResult(BaseModel):
     model: str
     provider: str
     parsed: BaseModel | None = None
+    json_value: Any = None
+    schema_ref: str | None = None
     finish_reason: str | None = None
 
 

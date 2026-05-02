@@ -29,7 +29,7 @@ TODOs for Hardening:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, cast
+from typing import Any, Dict, List, Mapping, Optional, cast
 
 from openai.types.chat.chat_completion import ChatCompletion
 from openai.types.chat.chat_completion_message_param import (
@@ -61,7 +61,7 @@ class OpenAIChatCompletionRequest(BaseModel):
     max_completion_tokens: int
     seed: Optional[int] = None
     reasoning_effort: str | None = None
-    response_format: Optional[type[BaseModel]] = None
+    response_format: Optional[type[BaseModel] | Mapping[str, Any]] = None
 
 
 @dataclass(frozen=True)

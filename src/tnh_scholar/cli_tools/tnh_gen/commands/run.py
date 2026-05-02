@@ -33,12 +33,13 @@ from tnh_scholar.gen_ai_service.models.domain import (
     CompletionEnvelope,
     CompletionFailure,
     CompletionOutcomeStatus,
+    FailureReason,
     RenderRequest,
 )
 from tnh_scholar.gen_ai_service.models.errors import SafetyBlocked
 from tnh_scholar.gen_ai_service.protocols import GenAIServiceProtocol
 from tnh_scholar.metadata import Frontmatter, Metadata
-from tnh_scholar.prompt_system.domain.models import PromptMetadata
+from tnh_scholar.prompt_system.domain.models import PromptMetadata, PromptOutputMode
 
 logger = logging.getLogger(__name__)
 
@@ -347,13 +348,18 @@ def _result_payload_from_envelope(envelope: CompletionEnvelope) -> RunResultPayl
             "total_tokens": result.usage.total_tokens,
         }
 
-    return {
+    payload: RunResultPayload = {
         "text": result.text,
         "model": result.model,
         "provider": result.provider,
         "usage": usage_payload,
         "finish_reason": result.finish_reason,
     }
+    if result.json_value is not None:
+        payload["json"] = result.json_value
+    if result.schema_ref is not None:
+        payload["schema_ref"] = result.schema_ref
+    return payload
 
 
 def _provenance_payload(
@@ -600,10 +606,14 @@ def _emit_run_output(
             context.output_format,
             api,
         )
-        raise typer.Exit(code=int(ExitCode.PROVIDER_ERROR))
+        raise typer.Exit(code=int(_failed_completion_exit_code(envelope)))
 
     result_text = envelope.result.text if envelope.result else ""
     if context.output_file:
+        is_structured_output = (
+            context.metadata.output_contract is not None
+            and context.metadata.output_contract.mode is PromptOutputMode.json
+        )
         write_output_file(
             context.output_file,
             result_text=result_text,
@@ -612,10 +622,18 @@ def _emit_run_output(
             trace_id=context.trace_id,
             prompt_version=context.metadata.version,
             include_provenance=context.include_provenance,
+            structured_output=is_structured_output,
         )
         if not api:
             typer.echo(f"Wrote output to {context.output_file}", err=True)
     _emit_stdout(payload, result_text, context.output_format, api)
+
+
+def _failed_completion_exit_code(envelope: CompletionEnvelope) -> ExitCode:
+    reason = envelope.failure.reason if envelope.failure is not None else None
+    if reason is FailureReason.CONTRACT_VALIDATION_FAILED:
+        return ExitCode.FORMAT_ERROR
+    return ExitCode.PROVIDER_ERROR
 
 
 def _execute_prompt(context: RunContext) -> tuple[CompletionEnvelope, RunOutcomePayload]:

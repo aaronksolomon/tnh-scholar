@@ -12,9 +12,13 @@ Connected modules:
   - infra.issue_handler.IssueHandler (runtime validation & error hints)
 """
 
+import json
 from datetime import datetime
 from pathlib import Path
 
+from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
+
+from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.gen_ai_service.config.params_policy import apply_policy
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.infra.issue_handler import IssueHandler
@@ -24,7 +28,11 @@ from tnh_scholar.gen_ai_service.mappers.completion_mapper import (
     provider_to_completion,
 )
 from tnh_scholar.gen_ai_service.models.domain import (
+    CompletionFailure,
     CompletionEnvelope,
+    CompletionOutcomeStatus,
+    CompletionResult,
+    FailureReason,
     RenderRequest,
 )
 from tnh_scholar.gen_ai_service.models.transport import ProviderRequest, ProviderResponse
@@ -34,6 +42,12 @@ from tnh_scholar.gen_ai_service.providers.openai_adapter import OpenAIAdapter
 from tnh_scholar.gen_ai_service.providers.openai_client import OpenAIClient
 from tnh_scholar.gen_ai_service.routing.model_router import select_provider_and_model
 from tnh_scholar.gen_ai_service.safety import safety_gate
+from tnh_scholar.prompt_system.domain.models import PromptMetadata, PromptOutputMode
+from tnh_scholar.prompt_system.service.contract_schema import (
+    PromptContractSchemaResolver,
+    ResolvedPromptContractSchema,
+    format_contract_validation_error,
+)
 
 
 class GenAIService:
@@ -53,9 +67,11 @@ class GenAIService:
             raise RuntimeError("GenAIService could not determine a prompt catalog directory")
         self.catalog: PromptCatalogProtocol = PromptsAdapter(prompts_base=prompts_base)
         self.openai_adapter = OpenAIAdapter()
+        self._schema_resolver = PromptContractSchemaResolver.for_prompt_directory(prompts_base)
 
     def generate(self, request: RenderRequest) -> CompletionEnvelope:
         prompt_metadata = self.catalog.introspect(request.instruction_key)
+        resolved_schema = self._resolve_json_schema(prompt_metadata)
         # Adapter / catalog returns a RenderedPrompt and a Fingerprint (per ADR-A12)
         rendered, fingerprint = self.catalog.render(request)
 
@@ -89,6 +105,10 @@ class GenAIService:
             temperature=selection.temperature,
             max_output_tokens=selection.max_output_tokens,
             seed=selection.seed,
+            response_format=_response_format_for_schema(
+                resolved_schema=resolved_schema,
+                provider=selection.provider,
+            ),
         )
 
         started = datetime.now()
@@ -109,12 +129,40 @@ class GenAIService:
             attempt_count=response.attempts,
         )
 
-        return provider_to_completion(
+        envelope = provider_to_completion(
             response,
             provenance=provenance,
             policy_applied=_build_policy_applied(selection.routing_reason, safety_report),
             warnings=list(safety_report.warnings),
         )
+        return self._apply_json_contract(envelope, resolved_schema)
+
+    def _resolve_json_schema(
+        self,
+        prompt_metadata: PromptMetadata,
+    ) -> ResolvedPromptContractSchema | None:
+        contract = prompt_metadata.output_contract
+        if contract is None or contract.mode != PromptOutputMode.json:
+            return None
+        if not contract.schema_ref:
+            raise ConfigurationError("JSON prompt output_contract.schema_ref is required.")
+        return self._schema_resolver.resolve_validated(contract.schema_ref)
+
+    def _apply_json_contract(
+        self,
+        envelope: CompletionEnvelope,
+        resolved_schema: ResolvedPromptContractSchema | None,
+    ) -> CompletionEnvelope:
+        if resolved_schema is None or envelope.result is None:
+            return envelope
+        if envelope.outcome is CompletionOutcomeStatus.FAILED:
+            return envelope
+        try:
+            json_value = json.loads(envelope.result.text)
+            self._schema_resolver.validate_instance(resolved_schema, json_value)
+        except (json.JSONDecodeError, JsonSchemaValidationError) as exc:
+            return _contract_validation_failure(envelope, resolved_schema.schema_ref, exc)
+        return _with_validated_json(envelope, resolved_schema.schema_ref, json_value)
 
 
 def _build_policy_applied(
@@ -130,3 +178,70 @@ def _build_policy_applied(
     if routing_reason is not None:
         policy["routing_reason"] = routing_reason
     return policy
+
+
+def _response_format_for_schema(
+    *,
+    resolved_schema: ResolvedPromptContractSchema | None,
+    provider: str,
+) -> dict[str, object] | None:
+    if resolved_schema is None:
+        return None
+    if provider != "openai":
+        return None
+    return {
+        "type": "json_schema",
+        "json_schema": {
+            "name": _response_format_name(resolved_schema.schema_ref),
+            "strict": True,
+            "schema": resolved_schema.document,
+        },
+    }
+
+
+def _response_format_name(schema_ref: str) -> str:
+    normalized = "".join(
+        char if char.isalnum() or char in {"_", "-"} else "_"
+        for char in schema_ref
+    )
+    return normalized[:64] or "structured_output"
+
+
+def _contract_validation_failure(
+    envelope: CompletionEnvelope,
+    schema_ref: str,
+    error: json.JSONDecodeError | JsonSchemaValidationError,
+) -> CompletionEnvelope:
+    return CompletionEnvelope(
+        outcome=CompletionOutcomeStatus.FAILED,
+        failure=CompletionFailure(
+            reason=FailureReason.CONTRACT_VALIDATION_FAILED,
+            message=format_contract_validation_error(schema_ref=schema_ref, error=error),
+            retryable=False,
+        ),
+        provenance=envelope.provenance,
+        policy_applied=dict(envelope.policy_applied),
+        warnings=list(envelope.warnings),
+    )
+
+
+def _with_validated_json(
+    envelope: CompletionEnvelope,
+    schema_ref: str,
+    json_value: object,
+) -> CompletionEnvelope:
+    result = envelope.result
+    if result is None:
+        return envelope
+    canonical_text = json.dumps(json_value, ensure_ascii=False, separators=(",", ":"))
+    updated_result = CompletionResult(
+        text=canonical_text,
+        usage=result.usage,
+        model=result.model,
+        provider=result.provider,
+        parsed=result.parsed,
+        json_value=json_value,
+        schema_ref=schema_ref,
+        finish_reason=result.finish_reason,
+    )
+    return envelope.model_copy(update={"result": updated_result})

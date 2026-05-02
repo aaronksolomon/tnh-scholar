@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`tnh-gen` Structured JSON Contract Runtime Validation** (2026-05-01)
+  - Added prompt-contract schema resolution and validation with workspace, user, and built-in precedence for maintained JSON prompts
+  - Wired `tnh-gen` and `GenAIService` to enforce JSON prompt contracts at both catalog time and post-invocation runtime, including typed `CONTRACT_VALIDATION_FAILED` handling
+  - Updated the OpenAI path to use provider-native `json_schema` structured output requests while retaining local schema validation as the authoritative contract check
+  - Ensured JSON prompt `--output-file` writes remain canonical JSON text without YAML provenance headers, preserving downstream machine-readability
+  - Added focused prompt-system, service, CLI, and provenance regression coverage for structured JSON success, failure, and missing-schema paths
+  - Files: `src/tnh_scholar/prompt_system/service/contract_schema.py`, `src/tnh_scholar/prompt_system/service/validator.py`, `src/tnh_scholar/gen_ai_service/`, `src/tnh_scholar/cli_tools/tnh_gen/`, `src/tnh_scholar/runtime_assets/schemas/`, `tests/prompt_system/`, `tests/gen_ai_service/`, `tests/cli_tools/`
+
 - **`tnh-gen --vars` Generated-Artifact Compatibility** (2026-04-28)
   - Taught `tnh-gen run --vars` to accept JSON objects wrapped in YAML frontmatter so staged `tnh-gen` workflows can feed generated JSON artifacts into later prompt runs without manual stripping
   - Preserved the existing failure contract for non-object payloads and frontmatter-wrapped bodies that are still not valid JSON

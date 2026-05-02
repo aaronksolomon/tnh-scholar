@@ -519,6 +519,23 @@ def test_provenance_write_without_header(tmp_path):
     assert output_file.read_text(encoding="utf-8") == "plain text"
 
 
+def test_provenance_write_structured_output_skips_headers_even_with_metadata(tmp_path):
+    output_file = tmp_path / "output.json"
+    envelope = _envelope_with_warnings()
+    source_metadata = Metadata({"source": "draft"})
+    provenance_module.write_output_file(
+        output_file,
+        result_text='{"message":"ok"}',
+        envelope=envelope,
+        source_metadata=source_metadata,
+        trace_id="trace",
+        prompt_version=None,
+        include_provenance=True,
+        structured_output=True,
+    )
+    assert output_file.read_text(encoding="utf-8") == '{"message":"ok"}'
+
+
 def test_load_vars_file_accepts_frontmatter_wrapped_json(tmp_path):
     vars_file = tmp_path / "vars.json"
     vars_file.write_text(
