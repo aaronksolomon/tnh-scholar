@@ -1,5 +1,7 @@
+from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.prompt_system.config.policy import ValidationPolicy
 from tnh_scholar.prompt_system.domain.models import Prompt, PromptMetadata, RenderParams
+from tnh_scholar.prompt_system.service.contract_schema import PromptContractSchemaResolver
 from tnh_scholar.prompt_system.service.validator import PromptValidator
 
 
@@ -111,6 +113,32 @@ def test_validate_rejects_json_output_without_schema_ref():
 
     assert not result.valid
     assert any(err.code == "MISSING_SCHEMA_REF" for err in result.errors)
+
+
+def test_validate_rejects_unresolvable_schema_ref(tmp_path):
+    resolver = PromptContractSchemaResolver(
+        TNHContext(
+            builtin_root=tmp_path / "builtin",
+            workspace_root=tmp_path / "workspace",
+            user_root=tmp_path / "user",
+            correlation_id="corr",
+            session_id="sess",
+        )
+    )
+    validator = PromptValidator(ValidationPolicy(), schema_resolver=resolver)
+    prompt = make_prompt(
+        metadata_extra={
+            "output_contract": {
+                "mode": "json",
+                "schema_ref": "tnh.testing.missing.v1",
+            }
+        }
+    )
+
+    result = validator.validate(prompt)
+
+    assert not result.valid
+    assert any(err.code == "INVALID_SCHEMA_REF" for err in result.errors)
 
 
 def test_validate_rejects_artifacts_output_without_artifact_declarations():

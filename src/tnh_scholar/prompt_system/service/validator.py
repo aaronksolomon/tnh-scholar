@@ -3,6 +3,7 @@
 import re
 
 from jinja2 import Environment, StrictUndefined, TemplateSyntaxError
+from tnh_scholar.exceptions import ConfigurationError
 
 from ..config.policy import ValidationPolicy
 from ..domain.models import (
@@ -14,6 +15,7 @@ from ..domain.models import (
     ValidationIssue,
 )
 from ..domain.protocols import PromptValidatorPort
+from .contract_schema import PromptContractSchemaResolver
 
 _VERSION_PATTERN = re.compile(r"^\d+(?:\.\d+){0,2}$")
 _ALWAYS_ALLOWED_VARIABLES = {"input_text"}
@@ -22,8 +24,13 @@ _ALWAYS_ALLOWED_VARIABLES = {"input_text"}
 class PromptValidator(PromptValidatorPort):
     """Validates prompt metadata and render parameters."""
 
-    def __init__(self, policy: ValidationPolicy):
+    def __init__(
+        self,
+        policy: ValidationPolicy,
+        schema_resolver: PromptContractSchemaResolver | None = None,
+    ):
         self._policy = policy
+        self._schema_resolver = schema_resolver
 
     def validate(self, prompt: Prompt) -> PromptValidationResult:
         """Validate prompt metadata and template syntax."""
@@ -166,6 +173,12 @@ class PromptValidator(PromptValidatorPort):
                     field="output_contract.schema_ref",
                 )
             )
+        if (
+            contract.mode == PromptOutputMode.json
+            and contract.schema_ref
+            and self._schema_resolver is not None
+        ):
+            self._validate_schema_ref(contract.schema_ref, errors)
         if contract.mode == PromptOutputMode.artifacts and not contract.artifacts:
             errors.append(
                 ValidationIssue(
@@ -173,6 +186,23 @@ class PromptValidator(PromptValidatorPort):
                     code="MISSING_ARTIFACTS",
                     message="Artifacts output mode requires at least one artifact declaration.",
                     field="output_contract.artifacts",
+                )
+            )
+
+    def _validate_schema_ref(
+        self,
+        schema_ref: str,
+        errors: list[ValidationIssue],
+    ) -> None:
+        try:
+            self._schema_resolver.resolve_validated(schema_ref)
+        except ConfigurationError as exc:
+            errors.append(
+                ValidationIssue(
+                    level="error",
+                    code="INVALID_SCHEMA_REF",
+                    message=str(exc),
+                    field="output_contract.schema_ref",
                 )
             )
 

@@ -3,6 +3,7 @@ from typing import cast
 
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
+from pydantic import BaseModel
 from tenacity import (
     Retrying,
     before_sleep_log,
@@ -75,7 +76,10 @@ class OpenAIClient(ProviderClient):
         if openai_request.reasoning_effort is not None:
             request_kwargs["reasoning_effort"] = openai_request.reasoning_effort
 
-        if openai_request.response_format is not None:
+        if isinstance(openai_request.response_format, type) and issubclass(
+            openai_request.response_format,
+            BaseModel,
+        ):
             return cast(
                 ChatCompletion,
                 self._client.beta.chat.completions.parse(
@@ -83,6 +87,8 @@ class OpenAIClient(ProviderClient):
                     **request_kwargs,
                 ),
             )
+        if openai_request.response_format is not None:
+            request_kwargs["response_format"] = openai_request.response_format
 
         return cast(
             ChatCompletion,

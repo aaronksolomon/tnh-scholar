@@ -27,9 +27,29 @@ def provenance_block(
     prompt_version: str | None,
 ) -> str:
     """Build a YAML frontmatter block capturing provenance for saved files."""
+    return str(
+        Frontmatter.generate(
+            provenance_metadata(
+                envelope,
+                source_metadata=source_metadata,
+                trace_id=trace_id,
+                prompt_version=prompt_version,
+            )
+        )
+    )
+
+
+def provenance_metadata(
+    envelope: CompletionEnvelope,
+    *,
+    source_metadata: Metadata | None = None,
+    trace_id: str,
+    prompt_version: str | None,
+) -> Metadata:
+    """Build merged provenance metadata for persisted sidecars or headers."""
     fp = envelope.provenance.fingerprint
     version = prompt_version or "unknown"
-    provenance_metadata = Metadata(
+    generated_metadata = Metadata(
         {
             "tnh_scholar_generated": True,
             "prompt_key": fp.prompt_key,
@@ -41,10 +61,14 @@ def provenance_block(
             "schema_version": "1.0",
         }
     )
-    merged_metadata = provenance_metadata
     if source_metadata:
-        merged_metadata = source_metadata | provenance_metadata
-    return str(Frontmatter.generate(merged_metadata))
+        return source_metadata | generated_metadata
+    return generated_metadata
+
+
+def sidecar_path(path: Path) -> Path:
+    """Return the provenance sidecar path for a structured output artifact."""
+    return path.with_name(f"{path.name}.provenance.yaml")
 
 
 def write_output_file(
@@ -56,11 +80,27 @@ def write_output_file(
     trace_id: str,
     prompt_version: str | None,
     include_provenance: bool,
+    structured_output: bool = False,
 ) -> None:
     """Write result text to disk, optionally prefixing provenance metadata."""
     if envelope.outcome is CompletionOutcomeStatus.FAILED:
         raise ValueError("Cannot write output for a failed completion outcome")
     path.parent.mkdir(parents=True, exist_ok=True)
+    if structured_output:
+        path.write_text(result_text, encoding="utf-8")
+        if include_provenance:
+            sidecar = sidecar_path(path)
+            metadata = provenance_metadata(
+                envelope,
+                source_metadata=source_metadata,
+                trace_id=trace_id,
+                prompt_version=prompt_version,
+            )
+            sidecar.write_text(metadata.to_yaml(), encoding="utf-8")
+        elif source_metadata:
+            sidecar = sidecar_path(path)
+            sidecar.write_text(source_metadata.to_yaml(), encoding="utf-8")
+        return
     if include_provenance:
         header = provenance_block(
             envelope,

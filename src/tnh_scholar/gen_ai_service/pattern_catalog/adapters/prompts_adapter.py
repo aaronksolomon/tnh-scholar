@@ -37,6 +37,9 @@ from tnh_scholar.prompt_system.domain.protocols import (
 from tnh_scholar.prompt_system.mappers.prompt_mapper import PromptMapper
 from tnh_scholar.prompt_system.service.loader import PromptLoader
 from tnh_scholar.prompt_system.service.renderer import PromptRenderer
+from tnh_scholar.prompt_system.service.contract_schema import (
+    PromptContractSchemaResolver,
+)
 from tnh_scholar.prompt_system.service.validator import PromptValidator
 from tnh_scholar.prompt_system.transport.cache import InMemoryCacheTransport
 
@@ -61,8 +64,12 @@ class PromptsAdapter:
 
         render_policy = PromptRenderPolicy()
         validation_policy = ValidationPolicy()
+        schema_resolver = PromptContractSchemaResolver.for_prompt_directory(self._base)
 
-        self._validator = validator or PromptValidator(validation_policy)
+        self._validator = validator or PromptValidator(
+            validation_policy,
+            schema_resolver=schema_resolver,
+        )
         self._renderer = renderer or PromptRenderer(
             render_policy, settings_defaults={}
         )

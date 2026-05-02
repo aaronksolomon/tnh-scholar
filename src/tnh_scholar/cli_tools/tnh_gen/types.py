@@ -138,6 +138,8 @@ class RunResultPayload(TypedDict):
     provider: str | None
     usage: RunUsagePayload | None
     finish_reason: str | None
+    json: NotRequired[Any]
+    schema_ref: NotRequired[str]
 
 
 class RunProvenancePayload(TypedDict):
