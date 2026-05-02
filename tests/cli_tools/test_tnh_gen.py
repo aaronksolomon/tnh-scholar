@@ -1138,6 +1138,11 @@ def test_run_api_json_prompt_includes_structured_result_and_writes_canonical_jso
     assert payload["result"]["schema_ref"] == "tnh.testing.echo.v1"
     assert payload["result"]["text"] == '{"message":"generated"}'
     assert output_file.read_text(encoding="utf-8") == '{"message":"generated"}'
+    sidecar = Path(f"{output_file}.provenance.yaml")
+    sidecar_payload = yaml.safe_load(sidecar.read_text(encoding="utf-8"))
+    assert sidecar_payload["source"] == "draft"
+    assert sidecar_payload["tnh_scholar_generated"] is True
+    assert sidecar_payload["prompt_key"] == "json-echo"
 
 
 def test_run_api_contract_validation_failure_uses_format_error_and_skips_output_file(

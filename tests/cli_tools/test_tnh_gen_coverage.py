@@ -534,6 +534,31 @@ def test_provenance_write_structured_output_skips_headers_even_with_metadata(tmp
         structured_output=True,
     )
     assert output_file.read_text(encoding="utf-8") == '{"message":"ok"}'
+    sidecar = provenance_module.sidecar_path(output_file)
+    payload = yaml.safe_load(sidecar.read_text(encoding="utf-8"))
+    assert payload["source"] == "draft"
+    assert payload["tnh_scholar_generated"] is True
+
+
+def test_provenance_write_structured_output_without_generated_provenance_writes_source_sidecar(tmp_path):
+    output_file = tmp_path / "output.json"
+    envelope = _envelope_with_warnings()
+    source_metadata = Metadata({"source": "draft"})
+    provenance_module.write_output_file(
+        output_file,
+        result_text='{"message":"ok"}',
+        envelope=envelope,
+        source_metadata=source_metadata,
+        trace_id="trace",
+        prompt_version=None,
+        include_provenance=False,
+        structured_output=True,
+    )
+    assert output_file.read_text(encoding="utf-8") == '{"message":"ok"}'
+    sidecar = provenance_module.sidecar_path(output_file)
+    payload = yaml.safe_load(sidecar.read_text(encoding="utf-8"))
+    assert payload["source"] == "draft"
+    assert "tnh_scholar_generated" not in payload
 
 
 def test_load_vars_file_accepts_frontmatter_wrapped_json(tmp_path):
