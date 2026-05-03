@@ -642,6 +642,7 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Better error messages (unknown prompt, hash mismatch)
   - [ ] Frontmatter/schema validation guidance
   - [ ] Document prompt schema
+  - [ ] Clean up ADR statuses and cross-ADR alignment for the prompt-platform / `tnh-gen` structured JSON contract area (`TG04`, `TG04.1`, `PT05`, related prompt-system notes) once the design settles
 
 #### 🚧 tnh-gen Review Context Ingestion
 
@@ -676,6 +677,17 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Verify installed wheels work without repo-local prompt directories
   - [ ] Keep repo-layout assumptions out of import-time package initialization
   - [ ] Audit CLI entry points for any remaining repo-root-only assumptions
+
+#### 🚧 Repo-Root Docs Generation and CI Consistency
+
+- **Status**: NOT STARTED
+- **Priority**: HIGH
+- **Problem**: Documentation standards and generated docs link to `/project/repo-root/*`, but those generated files currently live under ignored paths and may be absent in clean remote CI checkouts, causing MkDocs/link-validation inconsistencies between local and GitHub builds
+- **Tasks**:
+  - [ ] Decide whether `docs/project/repo-root/` outputs should be tracked in git or generated in all CI docs-validation paths before link checks run
+  - [ ] Align `.gitignore`, docs build scripts, and CI expectations so local and remote docs validation see the same repo-root docs set
+  - [ ] Verify `make docs-build`, PR docs validation, and GitHub Actions all succeed from a clean checkout with no pre-existing generated repo-root docs
+  - [ ] Document the intended contract for repo-root doc mirrors in docs ops guidance
 
 #### 🚧 Logging System Scope
 

@@ -4,7 +4,7 @@ description: "Table of contents for architecture/metadata"
 owner: ""
 author: ""
 status: current
-created: "2026-04-27"
+created: "2026-05-03"
 auto_generated: true
 ---
 

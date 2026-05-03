@@ -17,11 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Codex Repo-Ops Defaults and Golden Artifact Hygiene** (2026-05-02)
+- **Codex Repo-Ops Defaults** (2026-05-02)
   - Documented the repo-local `.codex/config.toml` profiles as repo-operations and prototype test-environment defaults rather than application behavior
   - Clarified the current full-environment inheritance choice for repo-local Codex execution, including the VICOA-related operator path under active prototype use
-  - Normalized the tracked `tnh-prompts/` workspace readme to Markdown and stopped tracking generated golden-run artifacts while preserving tracked seed inputs
-  - Files: `.codex/config.toml`, `.gitignore`, `docs/development/codex-repo-ops.md`, `tnh-prompts/README.md`, `tests/golden/`
+  - Added a maintained repo-operations note describing scope boundaries for repo-local Codex defaults during the current prototype phase
+  - Files: `.codex/config.toml`, `docs/development/codex-repo-ops.md`
 
 - **`tnh-gen` Structured JSON Contract Runtime Validation** (2026-05-01)
   - Added prompt-contract schema resolution and validation with workspace, user, and built-in precedence for maintained JSON prompts

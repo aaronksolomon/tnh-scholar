@@ -4,7 +4,7 @@ description: "Table of contents for architecture/tnh-gen/adr"
 owner: ""
 author: ""
 status: current
-created: "2026-04-27"
+created: "2026-05-03"
 auto_generated: true
 ---
 
@@ -21,6 +21,12 @@ auto_generated: true
 **[ADR-TG02: TNH-Gen CLI Prompt System Integration](adr-tg02-prompt-integration.md)** - Integration pattern for tnh-gen CLI with prompt system via PromptsAdapter
 
 **[ADR-TG03: Typed Completion Outcome and Adapter Diagnostics](adr-tg03-completion-contract.md)** - Normalize transport failure states into a typed domain outcome envelope and structured adapter diagnostics for observable, reliable generation results
+
+**[ADR-TG04: Structured JSON Contract and Scope Boundaries](adr-tg04-structured-json-contract-and-scope.md)** - Define tnh-gen as a prompt-agnostic execution substrate, separate it from higher-level semantic processing and orchestration, and establish the scope for structured JSON contracts.
+
+**[ADR-TG04.1: JSON Contract Runtime Validation](adr-tg04.1-json-contract-runtime-validation.md)** - Define the runtime contract for resolving schema_ref, validating JSON prompt outputs, mapping failures, and serializing structured results in tnh-gen.
+
+**[ADR-TG04.2: Structured JSON Provenance Sidecars](adr-tg04.2-structured-json-provenance-sidecars.md)** - Clarify how tnh-gen preserves first-class provenance for structured JSON outputs without violating JSON artifact purity.
 
 ---
 
