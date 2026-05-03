@@ -17,12 +17,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Codex Repo-Ops Defaults** (2026-05-02)
+  - Documented the repo-local `.codex/config.toml` profiles as repo-operations and prototype test-environment defaults rather than application behavior
+  - Clarified the current full-environment inheritance choice for repo-local Codex execution, including the VICOA-related operator path under active prototype use
+  - Added a maintained repo-operations note describing scope boundaries for repo-local Codex defaults during the current prototype phase
+  - Files: `.codex/config.toml`, `docs/development/codex-repo-ops.md`
+
 - **`tnh-gen` Structured JSON Contract Runtime Validation** (2026-05-01)
   - Added prompt-contract schema resolution and validation with workspace, user, and built-in precedence for maintained JSON prompts
   - Wired `tnh-gen` and `GenAIService` to enforce JSON prompt contracts at both catalog time and post-invocation runtime, including typed `CONTRACT_VALIDATION_FAILED` handling
   - Updated the OpenAI path to use provider-native `json_schema` structured output requests while retaining local schema validation as the authoritative contract check
   - Ensured JSON prompt `--output-file` writes remain canonical JSON text and moved persisted provenance for structured outputs into adjacent `.provenance.yaml` sidecars
   - Added focused prompt-system, service, CLI, and provenance regression coverage for structured JSON success, failure, and missing-schema paths
+  - Added the first maintained built-in schema set for the current JSON prompt family: `default_section`, `section_by_break`, `generate_sections_en`, `generate_sections_multi_lang`, and `translate_json`
+  - Added small JSON-prompt golden input scaffolds to support cheap live validation before the larger journal pipeline run
+  - Added a tracked repo-local `tnh-prompts/` workspace so walkthroughs and goldens can run against a reproducible prompt mirror instead of depending on an external local prompt checkout
   - Files: `src/tnh_scholar/prompt_system/service/contract_schema.py`, `src/tnh_scholar/prompt_system/service/validator.py`, `src/tnh_scholar/gen_ai_service/`, `src/tnh_scholar/cli_tools/tnh_gen/`, `src/tnh_scholar/runtime_assets/schemas/`, `docs/architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars.md`, `tests/prompt_system/`, `tests/gen_ai_service/`, `tests/cli_tools/`
 
 - **`tnh-gen --vars` Generated-Artifact Compatibility** (2026-04-28)
