@@ -1417,7 +1417,7 @@ def test_run_human_budget_block_reports_actionable_text(tmp_path, monkeypatch):
     assert result.exit_code == ExitCode.POLICY_ERROR
     assert "Budget blocked" in result.stdout
     assert "Raise max_dollars in config" in result.stdout
-    assert "tnh-gen config set --workspace max_dollars 0.10" in result.stdout
+    assert "tnh-gen config set --workspace max_dollars 0.30" in result.stdout
     assert "trace_id=" in result.stderr
 
 

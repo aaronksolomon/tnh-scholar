@@ -88,5 +88,5 @@ Before rerunning this larger journal golden:
 
 - Use the repo-local prompt mirror with `--prompt-dir ./tnh-prompts`.
 - Confirm the five small JSON prompt live checks in `tests/golden/json-prompts/` first.
-- Confirm budget configuration is high enough for live runs; the current preliminary attempts were blocked at the active `$0.10` budget.
+- Confirm budget configuration is high enough for live runs. Earlier preliminary attempts in this workstream were blocked under the old `$0.10` default; the current runtime default is now `$0.30`.
 - If running from this worktree source, export env vars from the root repo `.env` with `set -a` before invoking `tnh-gen`.

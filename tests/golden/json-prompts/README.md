@@ -81,4 +81,4 @@ PYTHONPATH=./src \
 ```
 
 - The next intended live runs are the five small JSON prompt checks in this directory.
-- The first preliminary live attempts were blocked by the active budget config still resolving to `$0.10`, so the next agent should address budget configuration before retrying.
+- The first preliminary live attempts in this workstream were blocked under the earlier `$0.10` default. The current runtime default is now `$0.30`, but operators can still raise it explicitly when a specific run needs more headroom.

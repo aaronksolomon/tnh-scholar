@@ -85,7 +85,7 @@ Example configuration file:
 {
   "prompt_catalog_dir": "/path/to/prompts",
   "default_model": "gpt-5-mini",
-  "max_dollars": 0.10,
+  "max_dollars": 0.30,
   "max_input_chars": 120000,
   "default_temperature": 1.0,
   "api_key": "sk-..."
