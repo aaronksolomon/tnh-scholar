@@ -44,6 +44,10 @@ Each JSON output should also produce a provenance sidecar:
 
 - `<output>.provenance.yaml`
 
+These generated outputs are intentionally local-only and ignored by git. The
+tracked fixture in this directory is the input scaffold, including
+`translate-json-input.json`.
+
 ## Prompt Source
 
 These goldens are intended to run against the tracked repo-local prompt workspace:

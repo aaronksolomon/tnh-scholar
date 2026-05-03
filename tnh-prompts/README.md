@@ -41,6 +41,10 @@ tnh-gen --prompt-dir ./tnh-prompts ...
 
 This avoids dependence on an external local prompt checkout.
 
+Golden-run outputs generated from this workspace should stay local to the
+operator's environment; this directory tracks the prompt mirror itself, not run
+artifacts.
+
 ## Scope
 
 - Prompt quality is still under active iteration.
