@@ -52,17 +52,51 @@ This guide outlines recommended practices for using TNH Scholar effectively.
 - Validate output at each stage
 - Consider using `tee` for debugging
 
-Example of good pipeline practice:
+The recommended pipeline uses tnh-gen for every stage, including the split:
 
 ```bash
-# Good: Save intermediate results
-tnh-gen run --prompt punctuate --input-file input.txt --output-file punctuated.txt
-tnh-gen run --prompt section --input-file punctuated.txt --output-file sections.json
-tnh-gen run --prompt format_xml --input-file punctuated.txt --vars sections.json --output-file final.xml
+# Step 1: Number raw lines (preprocessing — no model call)
+awk '{print NR":"$0}' source.txt > source_numbered.txt
 
-# Not recommended: Overwrite the only copy without checkpoints
-tnh-gen run --prompt format_xml --input-file input.txt --output-file input.txt
+# Step 2: Section — tnh-gen identifies page/article breaks and produces metadata
+tnh-gen run --prompt section_by_break \
+  --input-file source_numbered.txt \
+  --var source_language=Vietnamese \
+  --var section_count=4 \
+  --var metadata='{"title":"...","author":"..."}' \
+  --output-file sections.json
+
+# Step 3: Clean each section (focused per-page context)
+for i in 1 2 3 4; do
+  tnh-gen run --prompt default_clean_numbered \
+    --input-file section_${i}_raw.txt \
+    --var source_language=Vietnamese \
+    --output-file section_${i}_clean.txt
+done
+
+# Step 4: Translate each section with full document context
+for i in 1 2 3 4; do
+  tnh-gen run --prompt default_line_translate \
+    --input-file section_${i}_clean.txt \
+    --vars sections.json \
+    --var source_language=Vietnamese \
+    --var target_language=English \
+    --var style=scholarly \
+    --output-file section_${i}_translated.txt
+done
+
+# Step 5: Combine
+cat section_{1,2,3,4}_translated.txt > final_translated.txt
 ```
+
+Processing section-by-section (rather than one large batch) keeps each model call focused on a single page's worth of content and contains errors locally. The `sections.json` produced in step 2 carries section titles, key concepts, and a document summary that give the translator full context for every section.
+
+```bash
+# Never: overwrite your only input copy
+tnh-gen run --prompt default_clean --input-file source.txt --output-file source.txt
+```
+
+For the full walkthrough with a real OCR source, extraction helper script, and golden output structure, see the [Pipeline Walkthrough](/user-guide/pipeline-walkthrough.md).
 
 #### 3. Error Handling
 

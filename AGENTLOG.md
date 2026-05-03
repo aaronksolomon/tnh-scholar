@@ -465,3 +465,44 @@ Recovered the final SPIKE-10 state after a lost thread, compared the direct and 
 - [CHANGELOG.md](CHANGELOG.md)
 - [TODO.md](TODO.md)
 - [PR #61](https://github.com/aaronksolomon/tnh-scholar/pull/61)
+
+## [2026-05-02 21:35 PDT] TG04 Structured JSON Contract Merge And Golden-Test Reset
+
+**Agent**: GPT-5 (Codex CLI)
+**Chat Reference**: tnh-gen structured JSON contract merge wrap-up
+**Human Collaborator**: phapman
+
+### Context
+PR #73 (`feat/tnh-gen-json-contract-impl`) merged to `main` and established the first maintained `tnh-gen` structured JSON contract slice, including schema resolution, runtime validation, OpenAI structured-output wiring, and JSON provenance sidecars. Local work had been split across multiple worktrees, so the follow-up task was to preserve the open golden-test scaffold while resetting onto merged `main`.
+
+### Key Decisions
+- **Resume golden testing from fresh `main` rather than rebasing old exploratory branches**: avoid rebasing dirty worktrees and instead create a clean main-based worktree that already contains the merged JSON-contract code.
+- **Carry forward only the golden scaffold commit**: cherry-pick the unmerged golden pipeline scaffold onto fresh `main` so live-golden work resumes without dragging older exploratory branch state along.
+- **Preserve JSON purity and provenance together**: the merged slice now treats JSON output artifacts as pure JSON and writes adjacent provenance sidecars, which is the contract future golden tests should assume.
+
+### Work Completed
+- [x] Verified PR #73 merge commit was reachable from `origin/main` and that the local implementation branch could be safely retired (files: local git history, `origin/main`)
+- [x] Created fresh worktree `feat/tnh-gen-golden-main` from updated `origin/main` and cherry-picked the golden pipeline scaffold commit `3130588d` onto it as `ff0ed7cd` (files: `/Users/phapman/Desktop/Projects/tnh-scholar-golden-main`, `tests/golden/journal-pipeline/`, user-guide/docs scaffold files)
+- [x] Appended the required merged-PR continuity note to `AGENTLOG.md` in the new golden-testing worktree (files: `AGENTLOG.md`)
+
+### Discoveries & Insights
+- **The merged JSON-contract slice is now the right substrate for live golden tests**: there is no reason to continue testing structured JSON behavior from the older exploratory branches.
+- **The older golden-runtime branch still held unique scaffold work**: because the scaffold commit was not merged, it needed to be retained explicitly before any cleanup.
+- **The original docs-only main worktree is not clean**: it contains generated doc-index modifications, so it should not be removed blindly as part of routine cleanup.
+
+### Files Modified/Created
+- `AGENTLOG.md`: Added this merged-PR and golden-reset continuity entry.
+
+### Next Steps
+- [ ] Remove the now-redundant clean implementation worktree/branch for `feat/tnh-gen-json-contract-impl`.
+- [ ] Remove the old clean `feat/tnh-gen-golden-runtime` worktree/branch now that its scaffold commit is retained on `feat/tnh-gen-golden-main`.
+- [ ] Resume live golden-path testing from `feat/tnh-gen-golden-main` against merged `main` code.
+
+### Open Questions
+- Whether the old docs-only worktree `docs/tg04-adr-main` should be cleaned separately after deciding how to handle its generated index drift.
+
+### References
+- [PR #73](https://github.com/aaronksolomon/tnh-scholar/pull/73)
+- [docs/architecture/tnh-gen/adr/adr-tg04-structured-json-contract-and-scope.md](docs/architecture/tnh-gen/adr/adr-tg04-structured-json-contract-and-scope.md)
+- [docs/architecture/tnh-gen/adr/adr-tg04.1-json-contract-runtime-validation.md](docs/architecture/tnh-gen/adr/adr-tg04.1-json-contract-runtime-validation.md)
+- [docs/architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars.md](docs/architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars.md)

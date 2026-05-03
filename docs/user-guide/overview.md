@@ -66,24 +66,54 @@ Relevant documentation:
 
 Typical steps:
 
-1. **Normalize and clean**  
-   - Use `nfmt` or equivalent preprocessing to remove obvious noise and enforce consistent formatting.
+1. **Clean OCR artifacts** with `tnh-gen default_clean` or `default_clean_numbered`
+   - Remove running headers, footers, watermarks, and stray characters introduced by scanning.
+   - `default_clean` produces flowing plain text; `default_clean_numbered` preserves scan-line boundaries in `N:LINE` format for section- and line-tracked pipelines.
 
-2. **Apply patterns and prompts** with `tnh-gen`
-   - Use domain-specific patterns or prompts to:
-     - Identify headings and sections,
-     - Tag poems, plays, quotes, exercises, or notes,
-     - Insert metadata or footnote markers.
+   ```bash
+   tnh-gen run --prompt default_clean \
+     --input-file raw_ocr.txt \
+     --var source_language=Vietnamese \
+     --var publication_name="Phật Giáo Việt Nam" \
+     --output-file cleaned.txt
+   ```
 
-3. **Review and refine**
-   - Humans review the output, correct tagging, and adjust patterns as needed.
-   - The corrected text becomes a better training or reference dataset for future workflows.
+2. **Add structure with prompts** via `tnh-gen`
+   - Punctuate and paragraph-break with `default_punctuate`.
+   - Divide into labelled sections with `default_section` (produces metadata JSON).
+   - Tag domain-specific elements (poems, quotes, exercises) with specialised prompts.
+
+   ```bash
+   tnh-gen run --prompt default_punctuate \
+     --input-file cleaned.txt \
+     --var source_language=Vietnamese \
+     --output-file punctuated.txt
+   ```
+
+3. **Translate** with `default_line_translate`
+   - Pass the section JSON from step 2 as `--vars` to give the model full document context.
+
+   ```bash
+   tnh-gen run --prompt default_line_translate \
+     --input-file cleaned_numbered.txt \
+     --vars sections.json \
+     --var source_language=Vietnamese \
+     --var target_language=English \
+     --var style=scholarly \
+     --output-file translated.txt
+   ```
+
+4. **Review and refine**
+   - Humans review AI output, correct tagging or translation, and adjust prompts as needed.
+   - Corrected output becomes a reference for future pipeline runs.
+
+For a fully worked example using real OCR source text, see the [Pipeline Walkthrough](/user-guide/pipeline-walkthrough.md).
 
 Relevant documentation:
 
-- [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)
-- Additional prompt design docs: [ADR-PT03](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
-- [tnh-gen](/cli-reference/tnh-gen.md) CLI guide (see [TNH-Gen](/architecture/tnh-gen/index.md) for architecture)
+- [Pipeline Walkthrough](/user-guide/pipeline-walkthrough.md) — step-by-step two-track example
+- [Prompt System](/user-guide/prompt-system.md) — how prompts work and how to create them
+- [tnh-gen CLI Reference](/cli-reference/tnh-gen.md)
 
 ---
 

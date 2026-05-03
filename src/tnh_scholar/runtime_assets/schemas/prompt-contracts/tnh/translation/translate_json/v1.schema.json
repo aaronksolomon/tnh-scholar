@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TNH Translate JSON Output",
+  "description": "Arbitrary valid JSON translated while preserving root JSON shape.",
+  "oneOf": [
+    {
+      "type": "object"
+    },
+    {
+      "type": "array"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "number"
+    },
+    {
+      "type": "boolean"
+    },
+    {
+      "type": "null"
+    }
+  ]
+}
