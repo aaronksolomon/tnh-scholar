@@ -4,6 +4,7 @@ from textwrap import dedent
 
 import pytest
 
+from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.gen_ai_service import service as service_module
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
@@ -17,6 +18,7 @@ from tnh_scholar.gen_ai_service.models.transport import (
     TextPayload,
 )
 from tnh_scholar.gen_ai_service.service import GenAIService
+from tnh_scholar.prompt_system.service.contract_schema import PromptContractSchemaResolver
 
 
 class DummyOpenAIClient:
@@ -182,3 +184,63 @@ def test_gen_ai_service_maps_malformed_json_to_failed_outcome(
     assert envelope.failure is not None
     assert envelope.failure.reason == FailureReason.CONTRACT_VALIDATION_FAILED
     assert "not valid JSON" in envelope.failure.message
+
+
+def test_gen_ai_service_skips_openai_response_format_for_non_object_json_schema(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    prompt_dir = _write_json_prompt(tmp_path)
+    builtin_root = tmp_path / "builtin"
+    schema_dir = builtin_root / "schemas" / "prompt-contracts" / "tnh" / "testing" / "echo"
+    schema_dir.mkdir(parents=True, exist_ok=True)
+    schema_dir.joinpath("v1.schema.json").write_text(
+        dedent(
+            """\
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "oneOf": [
+                { "type": "object" },
+                { "type": "array" }
+              ]
+            }
+            """
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(service_module, "apply_policy", _fake_apply_policy)
+    monkeypatch.setattr(service_module, "select_provider_and_model", _fake_select)
+    monkeypatch.setattr(service_module, "OpenAIClient", DummyOpenAIClient)
+    monkeypatch.setattr(
+        PromptContractSchemaResolver,
+        "for_prompt_directory",
+        classmethod(
+            lambda cls, _prompts_base: cls(
+                TNHContext(
+                    builtin_root=builtin_root,
+                    workspace_root=prompt_dir.parent,
+                    user_root=tmp_path / "user",
+                    correlation_id="corr",
+                    session_id="sess",
+                )
+            )
+        ),
+    )
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(prompt_dir))
+    monkeypatch.setenv("OPENAI_API_KEY", "unit-test-key")
+
+    settings = GenAISettings(_env_file=None)
+    service = GenAIService(settings=settings)
+    dummy_client: DummyOpenAIClient = service.openai_client  # type: ignore[assignment]
+    dummy_client.response = _provider_response('{"message":"hello"}')
+
+    envelope = service.generate(
+        RenderRequest(
+            instruction_key="json-echo",
+            user_input="ignored",
+            variables={},
+        )
+    )
+
+    assert envelope.outcome.value == "succeeded"
+    assert dummy_client.requests[0].response_format is None

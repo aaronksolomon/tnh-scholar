@@ -189,6 +189,8 @@ def _response_format_for_schema(
         return None
     if provider != "openai":
         return None
+    if not _supports_openai_json_schema(resolved_schema.document):
+        return None
     return {
         "type": "json_schema",
         "json_schema": {
@@ -199,6 +201,12 @@ def _response_format_for_schema(
             "schema": resolved_schema.document,
         },
     }
+
+
+def _supports_openai_json_schema(schema_document: object) -> bool:
+    if not isinstance(schema_document, dict):
+        return False
+    return schema_document.get("type") == "object"
 
 
 def _response_format_name(schema_ref: str) -> str:

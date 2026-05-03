@@ -4,9 +4,14 @@ model_reasoning_effort = "medium"
 [profiles.collab]
 approval_policy = "never"
 sandbox_mode = "workspace-write"
-shell_environment_policy.inherit = "core"
+shell_environment_policy.inherit = "all"
 
 [profiles.collab_exec]
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+shell_environment_policy.inherit = "all"
+
+[profiles.repo]
 approval_policy = "never"
 sandbox_mode = "workspace-write"
 shell_environment_policy.inherit = "all"

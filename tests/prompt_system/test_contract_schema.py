@@ -196,9 +196,7 @@ def test_schema_resolver_validates_json_instances(tmp_path: Path):
             "tnh.translation.translate_json.v1",
             {
                 "title": "Translated title",
-                "sections": [
-                    {"name": "Section A"}
-                ],
+                "sections": [{"name": "Section A"}],
             },
         ),
     ],
