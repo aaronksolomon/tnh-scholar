@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TNH Generate Sections English Output",
+  "description": "Logical English sectioning output with per-section summaries and inclusive line ranges.",
+  "type": "object",
+  "required": [
+    "sections"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "summary"
+      ]
+    },
+    {
+      "required": [
+        "document_summary"
+      ]
+    },
+    {
+      "required": [
+        "talk_summary"
+      ]
+    }
+  ],
+  "properties": {
+    "summary": {
+      "type": "string"
+    },
+    "document_summary": {
+      "type": "string"
+    },
+    "talk_summary": {
+      "type": "string"
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "summary",
+          "start_line",
+          "end_line"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "start_line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "end_line": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    }
+  }
+}

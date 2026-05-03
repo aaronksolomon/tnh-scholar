@@ -1,0 +1,8 @@
+fingerprint: sha256:fbdb8195361c22bb0c9cd325cd5c2a4eee0c98f559ef44b3fa50f068f0e69306
+generated_at: '2026-05-02T22:16:43Z'
+model: gpt-4o-mini
+prompt_key: translate_json
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: d77a947e93ba4b37b780f59ad12ccfce

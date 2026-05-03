@@ -128,3 +128,86 @@ def test_schema_resolver_validates_json_instances(tmp_path: Path):
 
     with pytest.raises(JsonSchemaValidationError):
         resolver.validate_instance(resolved, {"message": 1})
+
+
+@pytest.mark.parametrize(
+    ("schema_ref", "payload"),
+    [
+        (
+            "tnh.sectioning.default_section.v1",
+            {
+                "document_summary": "Summary",
+                "document_metadata": "title: Example",
+                "key_concepts": ["karma", "emptiness"],
+                "narrative_context": "Context",
+                "sections": [
+                    {
+                        "start_line": 1,
+                        "title": "Opening",
+                    }
+                ],
+            },
+        ),
+        (
+            "tnh.sectioning.section_by_break.v1",
+            {
+                "document_summary": "Summary",
+                "dublin_core": {"title": "Example"},
+                "key_concepts": "karma; emptiness",
+                "narrative_context": "Context",
+                "sections": [
+                    {
+                        "start_line": 1,
+                        "title": "Page 1",
+                    }
+                ],
+            },
+        ),
+        (
+            "tnh.sectioning.generate_sections_en.v1",
+            {
+                "talk_summary": "Overall summary",
+                "sections": [
+                    {
+                        "title": "Opening",
+                        "summary": "Intro section",
+                        "start_line": 1,
+                        "end_line": 12,
+                    }
+                ],
+            },
+        ),
+        (
+            "tnh.sectioning.generate_sections_multi_lang.v1",
+            {
+                "document_summary": "Overall summary",
+                "sections": [
+                    {
+                        "title_vi": "Mở đầu",
+                        "title_en": "Opening",
+                        "summary": "Intro section",
+                        "start_line": 1,
+                        "end_line": 12,
+                    }
+                ],
+            },
+        ),
+        (
+            "tnh.translation.translate_json.v1",
+            {
+                "title": "Translated title",
+                "sections": [{"name": "Section A"}],
+            },
+        ),
+    ],
+)
+def test_builtin_prompt_contract_schemas_resolve_and_validate_examples(
+    schema_ref: str,
+    payload: object,
+):
+    resolver = PromptContractSchemaResolver(TNHContext.discover(start_path=Path(__file__)))
+
+    resolved = resolver.resolve_validated(schema_ref)
+
+    assert resolved.path.is_file()
+    resolver.validate_instance(resolved, payload)
