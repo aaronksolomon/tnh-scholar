@@ -30,6 +30,7 @@ class GitPromptCatalog(PromptCatalogPort):
         "Expected prompt envelope keys include prompt_id/key, name, version, description, "
         "role/task_type, inputs/required_variables, and output_contract/output_mode."
     )
+    _IGNORED_FILENAMES = frozenset({"readme.md"})
 
     def __init__(
         self,
@@ -130,6 +131,8 @@ class GitPromptCatalog(PromptCatalogPort):
         health = CatalogHealth()
         prompts = []
         for path in files:
+            if self._should_ignore_path(path):
+                continue
             key = self._mapper.to_key_from_path(path, self._config.repository_path)
             file_req = self._build_file_request(key)
             file_resp = self._transport.read_file_at_commit(file_req)
@@ -178,3 +181,6 @@ class GitPromptCatalog(PromptCatalogPort):
 
     def _best_effort_body(self, content: str) -> str:
         return extract_best_effort_body(content)
+
+    def _should_ignore_path(self, path: Path) -> bool:
+        return path.name.lower() in self._IGNORED_FILENAMES

@@ -312,3 +312,41 @@ output_contract:
     refreshed_health = catalog.catalog_health()
     assert refreshed_health.error_count == 0
     assert refreshed_health.warning_count == 0
+
+
+def test_git_catalog_list_ignores_readme_markdown(tmp_path: Path):
+    repo_path = tmp_path / "repo"
+    repo_path.mkdir()
+    _init_git_repo(repo_path)
+    _write_prompt(repo_path, "agent-orch/planner/evaluate")
+    (repo_path / "README.md").write_text(
+        "# Prompt Workspace\n\nHuman documentation only.\n",
+        encoding="utf-8",
+    )
+    subprocess.run(["git", "add", "."], cwd=repo_path, check=True)
+    subprocess.run(
+        ["git", "commit", "-m", "add prompt workspace docs"],
+        cwd=repo_path,
+        check=True,
+        stdout=subprocess.PIPE,
+    )
+
+    transport_config = GitTransportConfig(repository_path=repo_path, auto_pull=False)
+    mapper = PromptMapper()
+    validator = PromptValidator(ValidationPolicy())
+    loader = PromptLoader(validator)
+    transport = GitTransportClient(config=transport_config, mapper=mapper)
+    catalog_config = PromptCatalogConfig(repository_path=repo_path, enable_git_refresh=False)
+    catalog = GitPromptCatalog(
+        config=catalog_config,
+        transport=transport,
+        loader=loader,
+        mapper=mapper,
+    )
+
+    keys = [metadata.canonical_key() for metadata in catalog.list()]
+
+    assert keys == ["agent-orch/planner/evaluate"]
+    health = catalog.catalog_health()
+    assert health.error_count == 0
+    assert health.warning_count == 0

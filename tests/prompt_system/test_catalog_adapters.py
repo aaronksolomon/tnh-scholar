@@ -86,6 +86,25 @@ def test_filesystem_catalog_list_returns_namespaced_keys(tmp_path: Path):
     assert keys == ["agent-orch/planner/evaluate", "core/task/summarize"]
 
 
+def test_filesystem_catalog_list_ignores_readme_markdown(tmp_path: Path):
+    write_prompt(tmp_path, "agent-orch/planner/evaluate")
+    (tmp_path / "README.md").write_text(
+        "# Prompt Workspace\n\nHuman documentation only.\n",
+        encoding="utf-8",
+    )
+    config = PromptCatalogConfig(repository_path=tmp_path)
+    mapper = PromptMapper()
+    loader = PromptLoader(PromptValidator(ValidationPolicy()))
+    catalog = FilesystemPromptCatalog(config, mapper=mapper, loader=loader)
+
+    keys = [metadata.canonical_key() for metadata in catalog.list()]
+
+    assert keys == ["agent-orch/planner/evaluate"]
+    health = catalog.catalog_health()
+    assert health.error_count == 0
+    assert health.warning_count == 0
+
+
 @pytest.mark.parametrize(
     "repository_path",
     [Path("prompts"), Path("./prompts")],
