@@ -4,7 +4,7 @@ description: "Hierarchical navigation of TNH Scholar documentation"
 owner: "Documentation Working Group"
 author: "Docs Automation"
 status: "current"
-created: "2026-04-27"
+created: "2026-05-03"
 auto_generated: true
 ---
 
@@ -121,6 +121,9 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-TG01: tnh-gen CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)
 - [ADR-TG02: TNH-Gen CLI Prompt System Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)
 - [ADR-TG03: Typed Completion Outcome and Adapter Diagnostics](/architecture/tnh-gen/adr/adr-tg03-completion-contract.md)
+- [ADR-TG04.1: JSON Contract Runtime Validation](/architecture/tnh-gen/adr/adr-tg04.1-json-contract-runtime-validation.md)
+- [ADR-TG04.2: Structured JSON Provenance Sidecars](/architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars.md)
+- [ADR-TG04: Structured JSON Contract and Scope Boundaries](/architecture/tnh-gen/adr/adr-tg04-structured-json-contract-and-scope.md)
 - [ADR-TR01: AssemblyAI Integration for Transcription Service](/architecture/transcription/adr/adr-tr01-assemblyai-integration.md)
 - [ADR-TR02: Optimized SRT Generation Design](/architecture/transcription/adr/adr-tr02-optimized-srt-design.md)
 - [ADR-TR03: Standardizing Timestamps to Milliseconds](/architecture/transcription/adr/adr-tr03-ms-timestamps.md)
@@ -222,6 +225,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 ## Development
 
 - [CI Workflow Cleanup Proposal](/development/ci-workflow-cleanup-proposal.md)
+- [Codex Repo Ops](/development/codex-repo-ops.md)
 - [Contributing to TNH Scholar (Prototype Phase)](/development/contributing-prototype-phase.md)
 - [Development Documentation](/development/overview.md)
 - [Fine Tuning Strategy](/development/fine-tuning-strategy.md)

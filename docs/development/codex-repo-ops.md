@@ -1,6 +1,8 @@
 ---
 title: "Codex Repo Ops"
 description: "Repo-local Codex configuration policy for TNH Scholar prototype operator workflows."
+owner: ""
+author: ""
 status: current
 created: "2026-05-02"
 updated: "2026-05-02"

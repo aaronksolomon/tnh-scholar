@@ -4,7 +4,7 @@ description: "Table of contents for research/gpt4o-translation-experiments"
 owner: ""
 author: ""
 status: current
-created: "2026-04-27"
+created: "2026-05-03"
 auto_generated: true
 ---
 
