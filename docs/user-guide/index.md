@@ -18,7 +18,9 @@ auto_generated: true
 
 **[User Guide Overview](overview.md)** - Practical guide for using TNH Scholar as a tool user or workflow designer, covering main workflows and how the pieces fit together.
 
-**[TNH Scholar Prompt System](prompt-system.md)** - This document describes the TNH Scholar Prompt System (formerly called patterns). The system allows for template-based prompting of AI interactions, with version control and concurrent access management.
+**[Pipeline Walkthrough: OCR Journal Text](pipeline-walkthrough.md)** - A fully worked pipeline example — section, clean, and translate four pages of OCR-scanned Vietnamese Buddhist journal text using tnh-gen for every stage.
+
+**[TNH Scholar Prompt System](prompt-system.md)** - How to use, locate, and create prompts for tnh-gen text processing pipelines.
 
 ---
 

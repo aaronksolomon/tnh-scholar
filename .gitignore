@@ -70,7 +70,10 @@ prompts/
 # Generated golden-run artifacts stay local; only seed inputs/docs are tracked.
 tests/golden/json-prompts/*.output.json
 tests/golden/json-prompts/*.output.json.provenance.yaml
+tests/golden/journal-pipeline/02_sections.json
+tests/golden/journal-pipeline/03_sections.json
 tests/golden/journal-pipeline/sections.json
+tests/golden/journal-pipeline/sections.strict.json
 tests/golden/journal-pipeline/final_translated.txt
 tests/golden/journal-pipeline/section_*_raw.txt
 tests/golden/journal-pipeline/section_*_clean.txt

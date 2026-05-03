@@ -22,6 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`tnh-gen` Golden Artifact Policy Normalization** (2026-05-03)
+  - Standardized the live-golden directories on a single policy: tracked source fixtures and operator docs, untracked generated run artifacts
+  - Updated the journal walkthrough and golden READMEs to stop implying that generated outputs should be committed as repository fixtures
+  - Expanded the ignore rules to cover sectioning scratch outputs produced during journal prompt iteration
+  - Files: `.gitignore`, `docs/user-guide/pipeline-walkthrough.md`, `tests/golden/json-prompts/README.md`, `tests/golden/journal-pipeline/README.md`
+
 - **Codex Repo-Ops Defaults** (2026-05-02)
   - Documented the repo-local `.codex/config.toml` profiles as repo-operations and prototype test-environment defaults rather than application behavior
   - Clarified the current full-environment inheritance choice for repo-local Codex execution, including the VICOA-related operator path under active prototype use

@@ -200,7 +200,7 @@ cat tests/golden/journal-pipeline/section_{1,2,3,4}_translated.txt \
 
 ## Golden Output Structure
 
-After running the full pipeline, commit these files as the golden reference:
+After running the full pipeline, expect local generated artifacts like these:
 
 ```
 tests/golden/journal-pipeline/
@@ -228,7 +228,12 @@ tests/golden/journal-pipeline/
 └── final_translated.txt          ← combined output
 ```
 
-Re-running the pipeline on the same source and diffing against these files confirms that prompt changes have not introduced regressions.
+These generated files are intentionally local-only and ignored by git. The
+tracked golden scaffold for this walkthrough is the source material plus the
+operator documentation under `tests/golden/journal-pipeline/`.
+
+Re-running the pipeline on the same source and diffing against these local
+artifacts confirms that prompt changes have not introduced regressions.
 
 ---
 

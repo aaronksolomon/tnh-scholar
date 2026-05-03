@@ -30,9 +30,10 @@ These are intentionally small and cheap. They are meant to validate:
 - `translate-json-input.json`
   - Small nested JSON document for `translate_json`
 
-## Expected Outputs
+## Local Output Conventions
 
-Generated golden outputs should be written alongside these inputs once the live runs are captured. Typical filenames:
+Generated golden outputs may be written alongside these inputs during live runs.
+Typical filenames:
 
 - `default-section.output.json`
 - `section-by-break.output.json`
@@ -44,8 +45,8 @@ Each JSON output should also produce a provenance sidecar:
 
 - `<output>.provenance.yaml`
 
-These generated outputs are intentionally local-only and ignored by git. The
-tracked fixture in this directory is the input scaffold, including
+These generated outputs are intentionally local-only and ignored by git. This
+directory tracks only the input scaffold and operator notes, including
 `translate-json-input.json`.
 
 ## Prompt Source

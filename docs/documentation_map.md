@@ -21,6 +21,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 ## User Guide
 
 - [Best Practices](/user-guide/best-practices.md)
+- [Pipeline Walkthrough: OCR Journal Text](/user-guide/pipeline-walkthrough.md)
 - [TNH Scholar Prompt System](/user-guide/prompt-system.md)
 - [User Guide Overview](/user-guide/overview.md)
 
@@ -214,6 +215,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TextObject System Design Document](/architecture/ai-text-processing/design/textobject-system-design.md)
 - [TimelineMapper Design Document](/architecture/transcription/design/timelinemapper-design.md)
 - [TNH Configuration Management](/architecture/configuration/tnh-configuration-management.md)
+- [tnh-gen Docs Consistency + OCR Pipeline Walkthrough Plan](/architecture/tnh-gen/notes/tnh-gen-docs-pipeline-plan-2026-04.md)
 - [tnh-gen Implementation Plan — April 2026](/architecture/tnh-gen/notes/tnh-gen-implementation-plan-2026-04.md)
 - [tnh-gen Robustness Review — April 2026](/architecture/tnh-gen/notes/tnh-gen-robustness-review-2026-04.md)
 - [TNH-Scholar Agent Orchestration System](/architecture/agent-orchestration/system-design.md)
