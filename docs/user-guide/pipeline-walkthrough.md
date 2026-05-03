@@ -36,6 +36,14 @@ Processing section-by-section rather than as one large batch keeps each model ca
 
 The article presents the Buddhist doctrine of dependent origination (*paticca-samuppāda*) against three competing Indian philosophical schools from the time of the Buddha — representative of the dense, formally structured academic Vietnamese that this pipeline is designed for.
 
+For a reproducible repo-local run, invoke `tnh-gen` from the repository root with:
+
+```bash
+--prompt-dir ./tnh-prompts
+```
+
+This tracked prompt workspace is the testing mirror used by the walkthrough and golden assets in this repository.
+
 ### What the Raw OCR Looks Like
 
 The four pages contain several categories of artifact that the clean stage must fix:
@@ -87,6 +95,7 @@ This is a plain shell step — no model call. The numbered file retains all OCR 
 
 ```bash
 tnh-gen run --prompt section_by_break \
+  --prompt-dir ./tnh-prompts \
   --input-file tests/golden/journal-pipeline/source_numbered.txt \
   --var source_language=Vietnamese \
   --var section_count=4 \
@@ -146,6 +155,7 @@ Run `default_clean_numbered` on each section file individually. Each call receiv
 ```bash
 for i in 1 2 3 4; do
   tnh-gen run --prompt default_clean_numbered \
+    --prompt-dir ./tnh-prompts \
     --input-file tests/golden/journal-pipeline/section_${i}_raw.txt \
     --var source_language="${SOURCE_LANG}" \
     --var publication_name="${PUB_NAME}" \
@@ -165,6 +175,7 @@ Translate each clean section with `default_line_translate`, passing `sections.js
 ```bash
 for i in 1 2 3 4; do
   tnh-gen run --prompt default_line_translate \
+    --prompt-dir ./tnh-prompts \
     --input-file tests/golden/journal-pipeline/section_${i}_clean.txt \
     --vars tests/golden/journal-pipeline/sections.json \
     --var source_language="${SOURCE_LANG}" \
@@ -228,6 +239,7 @@ If you do not need line-level provenance, you can use the per-page source files 
 ```bash
 for page in 7 8 9 10; do
   tnh-gen run --prompt default_clean \
+    --prompt-dir ./tnh-prompts \
     --input-file tests/golden/journal-pipeline/source_page_${page}.txt \
     --var source_language=Vietnamese \
     --var publication_name="${PUB_NAME}" \
@@ -235,6 +247,7 @@ for page in 7 8 9 10; do
     --output-file page_${page}_clean.txt
 
   tnh-gen run --prompt default_punctuate \
+    --prompt-dir ./tnh-prompts \
     --input-file page_${page}_clean.txt \
     --var source_language=Vietnamese \
     --output-file page_${page}_punctuated.txt
