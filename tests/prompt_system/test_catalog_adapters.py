@@ -21,7 +21,7 @@ key: {key}
 name: {name}
 version: 1.0.0
 description: desc
-task_type: test
+role: task
 required_variables: []
 ---
 {template}
@@ -60,7 +60,7 @@ key: cached
 name: cached
 version: invalid
 description: desc
-task_type: test
+role: task
 required_variables: []
 ---
 Second
@@ -84,6 +84,25 @@ def test_filesystem_catalog_list_returns_namespaced_keys(tmp_path: Path):
     keys = sorted(metadata.canonical_key() for metadata in catalog.list())
 
     assert keys == ["agent-orch/planner/evaluate", "core/task/summarize"]
+
+
+def test_filesystem_catalog_list_ignores_readme_markdown(tmp_path: Path):
+    write_prompt(tmp_path, "agent-orch/planner/evaluate")
+    (tmp_path / "README.md").write_text(
+        "# Prompt Workspace\n\nHuman documentation only.\n",
+        encoding="utf-8",
+    )
+    config = PromptCatalogConfig(repository_path=tmp_path)
+    mapper = PromptMapper()
+    loader = PromptLoader(PromptValidator(ValidationPolicy()))
+    catalog = FilesystemPromptCatalog(config, mapper=mapper, loader=loader)
+
+    keys = [metadata.canonical_key() for metadata in catalog.list()]
+
+    assert keys == ["agent-orch/planner/evaluate"]
+    health = catalog.catalog_health()
+    assert health.error_count == 0
+    assert health.warning_count == 0
 
 
 @pytest.mark.parametrize(
@@ -209,7 +228,7 @@ def test_mapper_split_handles_bom_and_delimiters():
         "name: x\n"
         "version: 1.0.0\n"
         "description: d\n"
-        "task_type: t\n"
+        "role: task\n"
         "required_variables: []\n"
         "---\n"
         "Body"
@@ -226,7 +245,7 @@ key: simple
 name: Simple
 version: 1.0.0
 description: desc
-task_type: test
+role: task
 optional_variables:
   - source_language
 default_variables:
@@ -251,7 +270,7 @@ key: simple
 name: Simple
 version: 1.0.0
 description: desc
-task_type: test
+role: task
 required_variables: []
 output_contract: not-a-mapping
 ---

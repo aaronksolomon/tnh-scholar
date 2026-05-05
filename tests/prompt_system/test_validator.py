@@ -17,7 +17,6 @@ def make_prompt(
         "version": version,
         "description": "desc",
         "role": "task",
-        "task_type": "test",
         "required_variables": required or [],
         "output_contract": {"mode": "text"},
     }
@@ -33,18 +32,9 @@ def test_validate_accepts_numeric_major_version():
     assert result.valid
 
 
-def test_validate_accepts_legacy_task_type_when_role_missing():
+def test_validate_rejects_missing_role():
     validator = PromptValidator(ValidationPolicy())
-    prompt = make_prompt(metadata_extra={"role": None, "task_type": "planner"})
-
-    result = validator.validate(prompt)
-
-    assert result.valid
-
-
-def test_validate_rejects_missing_role_and_unknown_task_type():
-    validator = PromptValidator(ValidationPolicy())
-    prompt = make_prompt(metadata_extra={"role": None, "task_type": "unknown"})
+    prompt = make_prompt(metadata_extra={"role": None})
 
     result = validator.validate(prompt)
 
@@ -165,7 +155,6 @@ def test_validate_rejects_missing_required_fields():
         version="",
         description="desc",
         role=None,
-        task_type="unknown",
         output_contract={"mode": "text"},
     )
     prompt = Prompt(name="test", version="1", template="", metadata=metadata)

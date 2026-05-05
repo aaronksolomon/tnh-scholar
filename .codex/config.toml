@@ -1,12 +1,21 @@
+# Repo-scoped Codex defaults for TNH Scholar repo operations and prototype
+# test-environment workflows. These profiles are not part of application
+# behavior. Full environment inheritance is intentional for the current
+# repo-local execution path, including VICOA-related operator flows.
 model = "gpt-5.4"
 model_reasoning_effort = "medium"
 
 [profiles.collab]
 approval_policy = "never"
 sandbox_mode = "workspace-write"
-shell_environment_policy.inherit = "core"
+shell_environment_policy.inherit = "all"
 
 [profiles.collab_exec]
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+shell_environment_policy.inherit = "all"
+
+[profiles.repo]
 approval_policy = "never"
 sandbox_mode = "workspace-write"
 shell_environment_policy.inherit = "all"

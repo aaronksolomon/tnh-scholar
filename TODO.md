@@ -633,11 +633,23 @@ docs/architecture/jvb-viewer/adr/
   - [x] Normalize legacy prompt frontmatter to PT05 baseline (`role`, `inputs`, explicit `output_contract`)
   - [x] Add `schema_ref` coverage for maintained JSON prompts
   - [ ] Simplify overlapping legacy prompt bodies and retire redundant variants
+  - [ ] Decide the release-facing default prompt home per [ADR-PT05.1](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md): repoint workspace discovery from `prompts/` to `tnh-prompts/`, or explicitly keep `tnh-prompts` as an override-only prototype path with clear docs
+  - [ ] Deprecate the external prompt-repo / setup-download path from the normative release workflow, or explicitly reclassify it as experimental-only per [ADR-PT05.1](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md)
   - [ ] Add manifest validation
   - [ ] Better error messages (unknown prompt, hash mismatch)
   - [ ] Frontmatter/schema validation guidance
   - [ ] Document prompt schema
   - [ ] Clean up ADR statuses and cross-ADR alignment for the prompt-platform / `tnh-gen` structured JSON contract area (`TG04`, `TG04.1`, `PT05`, related prompt-system notes) once the design settles
+
+#### 🚧 tnh-gen Operator UX
+
+- **Status**: NOT STARTED
+- **Priority**: LOW–MEDIUM
+- **Problem**: `tnh-gen` provides no feedback while the model is working and does not save run output automatically, creating a poor experience for interactive and long-running calls
+- **Tasks**:
+  - [ ] Add heartbeat / progress indicator to stderr during model calls so operators know the run is alive (especially for long documents — 10–30 s wait with no output)
+  - [ ] Add basic run logging: log prompt key, model, input path, and elapsed time at completion even in non-`--api` mode
+  - [ ] Persist `tnh-gen` run output by default to a temp or run-artifact directory when no `--output-file` is provided
 
 #### 🚧 tnh-gen Review Context Ingestion
 
@@ -649,7 +661,6 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Support bounded repo-local file loading for review prompts with explicit source allowlists
   - [ ] Emit included context sources in provenance and API output
   - [ ] Document a standard review-workflow pattern for docs, ADR, and architecture audits
-  - [ ] Persist `tnh-gen` run output by default to a temp or run-artifact file even when no `--output-file` is provided
   - [ ] Add follow-on conversation support for `tnh-gen` review/generation runs so a prompt can continue from prior output or thread state
 
 #### 🚧 Knowledge Base Implementation

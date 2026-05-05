@@ -1,3 +1,6 @@
+import pytest
+from pydantic import ValidationError
+
 from tnh_scholar.prompt_system.domain.models import (
     PromptMetadata,
     PromptOutputContract,
@@ -83,18 +86,7 @@ def test_prompt_metadata_maps_legacy_structured_to_json_contract():
     assert metadata.output_contract.mode == PromptOutputMode.json
 
 
-def test_prompt_metadata_derives_role_from_legacy_task_type():
-    metadata = PromptMetadata(
-        key="agent-orch/planner/evaluate",
-        name="Planner Evaluate",
-        version="1",
-        description="desc",
-        task_type="planner",
-    )
-    assert metadata.role == "planner"
-
-
-def test_prompt_metadata_derives_task_type_from_role():
+def test_prompt_metadata_preserves_role():
     metadata = PromptMetadata(
         key="agent-orch/planner/evaluate",
         name="Planner Evaluate",
@@ -102,7 +94,19 @@ def test_prompt_metadata_derives_task_type_from_role():
         description="desc",
         role="planner",
     )
-    assert metadata.task_type == "planner"
+    assert metadata.role == "planner"
+
+
+def test_prompt_metadata_rejects_legacy_task_type_field():
+    with pytest.raises(ValidationError):
+        PromptMetadata(
+            key="agent-orch/planner/evaluate",
+            name="Planner Evaluate",
+            version="1",
+            description="desc",
+            role="planner",
+            task_type="planner",
+        )
 
 
 def test_prompt_metadata_maps_output_contract_to_legacy_output_mode():

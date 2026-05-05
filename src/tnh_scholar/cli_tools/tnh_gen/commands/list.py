@@ -22,7 +22,7 @@ from tnh_scholar.prompt_system.domain.models import CatalogHealth, PromptMetadat
 app = typer.Typer(help="List available prompts with metadata.", invoke_without_command=True)
 
 _EXPECTED_FRONTMATTER = (
-    "Expected YAML frontmatter keys: key, name, version, description, task_type, "
+    "Expected YAML frontmatter keys: key, name, version, description, role, "
     "required_variables, optional_variables, tags, default_variables"
 )
 

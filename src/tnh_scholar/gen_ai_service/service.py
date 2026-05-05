@@ -12,6 +12,7 @@ Connected modules:
   - infra.issue_handler.IssueHandler (runtime validation & error hints)
 """
 
+import copy
 import json
 from datetime import datetime
 from pathlib import Path
@@ -162,7 +163,11 @@ class GenAIService:
             self._schema_resolver.validate_instance(resolved_schema, json_value)
         except (json.JSONDecodeError, JsonSchemaValidationError) as exc:
             return _contract_validation_failure(envelope, resolved_schema.schema_ref, exc)
-        return _with_validated_json(envelope, resolved_schema.schema_ref, json_value)
+        return _with_validated_json(
+            envelope,
+            resolved_schema.schema_ref,
+            json_value,
+        )
 
 
 def _build_policy_applied(
@@ -189,6 +194,8 @@ def _response_format_for_schema(
         return None
     if provider != "openai":
         return None
+    if not _supports_openai_json_schema(resolved_schema.document):
+        return None
     return {
         "type": "json_schema",
         "json_schema": {
@@ -196,9 +203,38 @@ def _response_format_for_schema(
             # Use schema-guided output without forcing OpenAI's strict subset gate.
             # Local JSON Schema validation remains the authoritative contract check.
             "strict": False,
-            "schema": resolved_schema.document,
+            "schema": _openai_compatible_json_schema(resolved_schema.document),
         },
     }
+
+
+def _supports_openai_json_schema(schema_document: object) -> bool:
+    if not isinstance(schema_document, dict):
+        return False
+    return bool(schema_document.get("type") == "object")
+
+
+def _openai_compatible_json_schema(schema_document: object) -> dict[str, object]:
+    if not isinstance(schema_document, dict):
+        raise TypeError("OpenAI JSON schema compatibility requires an object schema document.")
+    compatible_schema = copy.deepcopy(schema_document)
+    sanitized = _strip_openai_incompatible_keywords(compatible_schema)
+    if not isinstance(sanitized, dict):
+        raise TypeError("OpenAI JSON schema compatibility produced a non-object schema.")
+    return sanitized
+
+
+def _strip_openai_incompatible_keywords(node: object) -> object:
+    if isinstance(node, dict):
+        for keyword in ("oneOf", "anyOf", "allOf", "enum", "not"):
+            node.pop(keyword, None)
+        for value in node.values():
+            _strip_openai_incompatible_keywords(value)
+        return node
+    if isinstance(node, list):
+        for item in node:
+            _strip_openai_incompatible_keywords(item)
+    return node
 
 
 def _response_format_name(schema_ref: str) -> str:

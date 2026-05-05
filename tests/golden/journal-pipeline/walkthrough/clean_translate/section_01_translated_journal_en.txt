@@ -1,0 +1,34 @@
+---
+fingerprint: sha256:0f43eea8064183f27e1d7e400a88a6dd9de50e7ef9cb4a14b001a23e41ba305d
+generated_at: '2026-05-04T05:46:15Z'
+model: gpt-5.4
+prompt_key: translate_journal_section_en
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: 6b1dcbd0b6e149158d9c76b2c96f08bb
+---
+
+The Indian Intellectual Context and Buddhism’s Critical Stance
+
+In the time of the Buddha, the question of the principle underlying all things was one to which the Indian intellectual world gave great attention. The Brahmajāla Sutta records as many as sixty-two different explanations advanced by the Indian philosophical schools of that age. In sum, we may discern the following three tendencies:
+
+1.— The tendency of fatalism (pubba-kata-hetu)
+
+The philosophical schools belonging to this tendency held that both the natural world and the human world are arranged by predestination. Everything operates according to pre-existing natural laws. The value of human effort and material agency is not acknowledged here.
+
+2. The tendency of theism or divine-volition theory (issara-nimmāna-hetu)
+
+The philosophical schools belonging to this tendency maintained that all things exist through the will of a divine being. That divine being here is Brahmā, and the center of the schools belonging to this tendency is Brahmanism.
+
+3.— The tendency of accidentalism (ahetu-apaccaya)
+
+The philosophical schools belonging to this tendency did not admit any principle of causality. All phenomena arise and exist accidentally, without following any rule or lawful principle whatsoever.
+
+The first and second tendencies assign all responsibility to a supernatural power. Personal responsibility here does not become an issue; fortune and misfortune alike are things that human beings cannot determine. Human good and evil actions are not the motive force behind success and failure, ruin and accomplishment.
+
+The third tendency likewise cannot provide a foundation for personal moral responsibility. If everything is accidental, then good is also accidental, evil is also accidental, and fortune and blessing are also accidental; there is nothing that can serve as a standard for human conduct. Consequently, human beings cannot gradually advance toward truth, beauty, and goodness; on the contrary, they may very easily slip down the slope of sin and depravity.
+
+From the theoretical point of view, the doctrines belonging to the above tendencies all contain many defects. From the human point of view, the consequences produced by those doctrines are dark and disheartening. None of them can give human beings peace of mind or a secure grounding for life, nor do they affirm the necessary capacities already present in human beings.
+
+The Buddha’s standpoint was to expound the principle of the universe as the foundation for a way of human life. That principle had to accord with the truth of the myriad phenomena, and that way of life had to lead human beings to the fulfillment of ethical and religious value. The Buddha’s purpose in preaching the Dīrgha Āgama was not to overthrow the theories of others for its own sake, but only to reject erroneous philosophical views that might obstruct the realization of human morality and liberation.

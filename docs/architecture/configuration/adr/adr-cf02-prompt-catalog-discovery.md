@@ -221,3 +221,17 @@ Add discovery logic to `GenAISettings` without extending TNHContext.
 - [ADR-CF01: Runtime Context & Configuration Strategy](/architecture/configuration/adr/adr-cf01-runtime-context-strategy.md) - Parent three-layer model
 - [ADR-A08: Config/Params/Policy Taxonomy](/architecture/gen-ai-service/adr/adr-a08-config-params-policy-taxonomy.md) - Settings vs Config distinction
 - [tnh-prompts repository](https://github.com/aaronksolomon/patterns) - External prompt catalog
+
+---
+
+## Addendum 2026-05-05: Prototype Prompt Workspace Clarification
+
+**Context**: CF02 was written around an external prompt-repository operating model in which prompts were not tracked in `tnh-scholar` and development flowed through a separate shared prompt checkout. Current prototype `tnh-gen` work, walkthroughs, and golden validation now operate primarily against the tracked repo-local `tnh-prompts/` workspace.
+
+**Decision**: CF02 remains the accepted three-layer discovery model, but its external-repository assumption is no longer the normative prototype operating posture. See [ADR-PT05.1: Prototype Prompt Workspace Simplification](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md).
+
+**Implications**:
+
+- The three-layer discovery pattern remains valid as a configuration strategy.
+- The active repo-local prototype workspace is now `tnh-prompts/`, not an assumed external prompt checkout.
+- A later implementation decision may repoint default workspace discovery from `prompts/` to `tnh-prompts/`, but that is intentionally deferred from this addendum.

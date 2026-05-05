@@ -4,7 +4,7 @@ description: "Table of contents for architecture/object-service"
 owner: ""
 author: ""
 status: current
-created: "2026-04-27"
+created: "2026-05-05"
 auto_generated: true
 ---
 

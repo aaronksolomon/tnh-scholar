@@ -1,0 +1,26 @@
+---
+fingerprint: sha256:2dcb3a1a84e85e6df49f48e7091fed91fefaf51ec61e80795f0dd6366a7479cc
+generated_at: '2026-05-04T14:14:11Z'
+model: gpt-5.4
+prompt_key: translate_journal_section_en
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: 25d598a0c6dc46d296b407b4f8295ecf
+---
+
+The World of Conditional Relations and the Principle of Dependent Arising
+
+The worldview expounded by the Buddha is a worldview of conditional relations (Paticca-samuppada). All phenomena are established in dependence upon one another. All are intimately interconnected. Without this interconnection, not a single thing could be established. This interconnection is precisely cause and condition. In the scriptures, such terms as HETU (cause), PACCAYA (condition), NIDANA (conditioning basis), and SAMUDAYA (arising) are all different names indicating this relation. The Buddha defined cause and condition as follows:
+
+“If this exists, that exists; if this arises, that arises; if this is not, that is not; if this ceases, that ceases.
+
+(* If this exists, that exists; if this arises, that arises; if this is not, that is not; if this ceases, that ceases....)
+
+To say, “If this exists, that exists; if this is not, that is not,” is to present the relation among things existing simultaneously. To say, “If this arises, that arises; if this ceases, that ceases,” is to present the relation among things existing at different times. All dharmas arise, cease, and exist within this very intimate web of mutual relations; there is no dharma (phenomenon) that can exist independently and absolutely. When the cause comes first and the effect later, this is called temporally distinct causation; when cause and effect are simultaneous, this is called simultaneous causation. One cause may have different effects depending upon the accompanying conditions. Therefore, there can be no absolute cause, nor can there be any absolute effect.
+
+The world is woven together by systems of simultaneous conditional relations (from the standpoint of space) and systems of temporally distinct conditional relations (from the standpoint of time). This is the Buddhist conception of causality. In the sutras and treatises, the term conditioned dharmas (Samkhata dhamma) refers precisely to the phenomena of this world of conditional relations. All are impermanent and changing, precisely because of these conditional relations; for within a world of conditionality there cannot be phenomena that are eternal and everlasting. It is by virtue of this conception of dependent arising that Buddhism rejects the notion that the world was created by an ego-possessing Supreme God. This is something we cannot fail to acknowledge.
+
+According to the Huayan school, the whole universe is an endlessly interpenetrating system of dependent arising. Huayan doctrine, in this way, was established upon the causal-relational conception found in the Agamas. The Abhidharma works of Southern Buddhism also classified causes and conditions for purposes of examination and understanding, and this too was the principal task of the Theravada scholastics. (The Mahapakarana distinguishes as many as 24 conditions; fascicle 25 of the Sariputra Abhidharma Sastra distinguishes 10 conditions; the Sarvastivadins maintained 4 conditions.)
+
+Here, we shall only briefly examine two types: temporally distinct causation and simultaneous causation.

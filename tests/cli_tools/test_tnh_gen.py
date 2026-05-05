@@ -44,7 +44,7 @@ def _write_prompt(tmp_path) -> str:
             name: Daily Guidance
             version: 1.0.0
             description: Daily guidance prompt for testing.
-            task_type: study-plan
+            role: study-plan
             required_variables:
               - audience
             optional_variables:
@@ -76,7 +76,6 @@ def _write_json_prompt(tmp_path) -> str:
             name: JSON Echo
             version: 1.0.0
             description: JSON prompt for testing.
-            task_type: test
             role: task
             required_variables: []
             output_contract:
@@ -122,7 +121,7 @@ def _write_prompt_catalog(tmp_path) -> str:
             name: Daily Guidance
             version: 1.0.0
             description: Daily guidance prompt for testing.
-            task_type: study-plan
+            role: study-plan
             required_variables: []
             optional_variables: []
             default_variables: {}
@@ -146,7 +145,7 @@ def _write_prompt_catalog(tmp_path) -> str:
             name: Zen Reflection
             version: 1.0.0
             description: Reflect on Zen teachings.
-            task_type: reflection
+            role: reflection
             required_variables: []
             optional_variables: []
             default_variables: {}
@@ -170,7 +169,7 @@ def _write_prompt_catalog(tmp_path) -> str:
             name: Study Planner
             version: 1.0.0
             description: Plan a study session.
-            task_type: planning
+            role: planning
             required_variables: []
             optional_variables: []
             default_variables: {}
@@ -303,7 +302,7 @@ def test_global_prompt_dir_is_applied_and_restored(tmp_path, monkeypatch):
             name: Custom Prompt
             version: 1.0.0
             description: Custom prompt for testing.
-            task_type: study-plan
+            role: study-plan
             required_variables: []
             optional_variables: []
             default_variables: {}
@@ -707,7 +706,7 @@ def test_run_missing_required_variables_returns_error(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -749,7 +748,7 @@ def test_run_invalid_input_file_returns_error(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -795,7 +794,7 @@ def test_run_merges_variables_and_writes_file(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=["location"],
         default_variables={},
@@ -867,7 +866,7 @@ def test_run_strips_input_frontmatter_and_merges_output_metadata(tmp_path, monke
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -931,7 +930,7 @@ def test_run_preserves_yaml_date_frontmatter(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -990,7 +989,7 @@ def test_run_accepts_forwarded_config_api_and_prompt_dir(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1039,7 +1038,7 @@ def test_run_api_incomplete_returns_payload_and_writes_file(tmp_path, monkeypatc
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1090,7 +1089,7 @@ def test_run_api_failed_completion_returns_failure_payload_without_file(tmp_path
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1146,7 +1145,6 @@ def test_run_api_json_prompt_includes_structured_result_and_writes_canonical_jso
         name="JSON Echo",
         version="1.0.0",
         description="JSON prompt for testing.",
-        task_type="test",
         role="task",
         required_variables=[],
         optional_variables=[],
@@ -1199,7 +1197,6 @@ def test_run_api_json_prompt_preserves_root_null_payload(tmp_path, monkeypatch):
         name="JSON Echo",
         version="1.0.0",
         description="JSON prompt for testing.",
-        task_type="test",
         role="task",
         required_variables=[],
         optional_variables=[],
@@ -1247,7 +1244,6 @@ def test_run_api_contract_validation_failure_uses_format_error_and_skips_output_
         name="JSON Echo",
         version="1.0.0",
         description="JSON prompt for testing.",
-        task_type="test",
         role="task",
         required_variables=[],
         optional_variables=[],
@@ -1294,7 +1290,6 @@ def test_run_api_missing_json_schema_returns_input_error(tmp_path, monkeypatch):
             name: Missing Schema
             version: 1.0.0
             description: JSON prompt with missing schema artifact.
-            task_type: test
             role: task
             required_variables: []
             output_contract:
@@ -1341,7 +1336,7 @@ def test_run_api_budget_block_returns_structured_payload(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1388,7 +1383,7 @@ def test_run_human_budget_block_reports_actionable_text(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1417,7 +1412,7 @@ def test_run_human_budget_block_reports_actionable_text(tmp_path, monkeypatch):
     assert result.exit_code == ExitCode.POLICY_ERROR
     assert "Budget blocked" in result.stdout
     assert "Raise max_dollars in config" in result.stdout
-    assert "tnh-gen config set --workspace max_dollars 0.10" in result.stdout
+    assert "tnh-gen config set --workspace max_dollars 0.30" in result.stdout
     assert "trace_id=" in result.stderr
 
 
@@ -1431,7 +1426,7 @@ def test_run_human_mode_failed_completion_reports_error_and_skips_output_file(tm
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1481,7 +1476,6 @@ def test_run_human_mode_contract_validation_failure_skips_output_file(
         name="JSON Echo",
         version="1.0.0",
         description="JSON prompt for testing.",
-        task_type="test",
         role="task",
         required_variables=[],
         optional_variables=[],
@@ -1524,7 +1518,7 @@ def test_run_human_mode_outputs_text_only(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1565,7 +1559,7 @@ def test_run_human_mode_rejects_json_format(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1612,7 +1606,7 @@ def test_run_reports_invalid_vars_file(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1658,7 +1652,7 @@ def test_run_reports_non_object_vars_file(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1713,7 +1707,7 @@ def test_run_accepts_frontmatter_wrapped_json_vars_file(tmp_path, monkeypatch):
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1769,7 +1763,7 @@ def test_run_reports_frontmatter_wrapped_non_json_vars_body(tmp_path, monkeypatc
         name="Daily Guidance",
         version="1.0.0",
         description="Daily guidance prompt for testing.",
-        task_type="study-plan",
+        role="study-plan",
         required_variables=["audience"],
         optional_variables=[],
         default_variables={},
@@ -1936,7 +1930,7 @@ def test_legacy_prompt_allows_auto_input_text_variable():
         name="Legacy Prompt",
         version="1.0.0",
         description="Legacy prompt without declared vars.",
-        task_type="edit",
+        role="edit",
         required_variables=[],
         optional_variables=[],
         default_variables={},

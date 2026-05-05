@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TNH Section By Break Output",
+  "description": "Structured sectioning output that prefers structural break cues in numbered transcripts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_summary",
+    "document_metadata",
+    "key_concepts",
+    "narrative_context",
+    "sections"
+  ],
+  "properties": {
+    "document_summary": {
+      "type": "string"
+    },
+    "document_metadata": {
+      "type": "string"
+    },
+    "dublin_core": {
+      "type": "object"
+    },
+    "key_concepts": {
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "narrative_context": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "start_line",
+          "end_line",
+          "title"
+        ],
+        "properties": {
+          "start_line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "end_line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "title": {
+            "type": "string"
+          },
+          "title_en": {
+            "type": "string"
+          },
+          "title_orig": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

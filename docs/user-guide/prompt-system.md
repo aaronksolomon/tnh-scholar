@@ -1,292 +1,229 @@
 ---
 title: "TNH Scholar Prompt System"
-description: "This document describes the TNH Scholar Prompt System (formerly called patterns). The system allows for template-based prompting of AI interactions, with version control and concurrent access management."
+description: "How to use, locate, and create prompts for tnh-gen text processing pipelines."
 owner: ""
 author: ""
 status: current
 created: "2025-01-19"
+updated: "2026-04-28"
 ---
+
 # TNH Scholar Prompt System
 
-This document describes the TNH Scholar Prompt System (formerly called patterns). The system allows for template-based prompting of AI interactions, with version control and concurrent access management.
+The TNH Scholar Prompt System manages the text processing templates that power `tnh-gen`. Prompts are Jinja2-templated Markdown files with YAML frontmatter, stored in prompt directories and loaded by name at runtime.
 
-It is designed to interface with **tnh-gen**, the unified CLI for prompt-driven text processing.
+> **Terminology note**: Earlier versions of the project called these files *patterns* and the management layer *PatternManager*. The current system uses *prompts* and `PromptCatalog`. The two terms refer to the same concept; the older terminology appears in legacy notebooks and archived code.
 
-Additional tools which use prompts may be developed for the project.
+---
 
-The prompt system provides a version-controlled, concurrent-safe way to manage text processing templates. It is built around Jinja2 templates with Git-based versioning and file locking for safety.
+## Core Concepts
 
-## Core Components
+### Prompt File
 
-### Prompt
+A prompt file is a `.md` file with two parts:
 
-A Prompt represents a single text processing template with:
+- **YAML frontmatter** — metadata, required/optional variables, model defaults, output contract
+- **Template body** — the instruction text, using `{{ variable }}` for Jinja2 substitution
 
-- Instructions (as a Jinja2 template)
-- Default template values
-- Metadata in YAML frontmatter (optional) which may include default template values
-
-Example prompt file:
+Example:
 
 ```markdown
 ---
-description: Example prompt
-version: 1.0
-language: English
+key: example_prompt
+name: Example Prompt
+version: "1.0"
+description: Processes text in a given language and style
+required_variables:
+  - source_language
+optional_variables:
+  - style_convention
+default_variables:
+  source_language: English
+  style_convention: APA
+default_model: gpt-4o-mini
+output_mode: text
+schema_version: "1.0"
 ---
-Process this text in {{ language }} using {{ style_convention }} formatting.
+
+Process the input text in {{ source_language }} using {{ style_convention }} conventions.
+
+Output only the processed text.
 ```
 
-In this example prompt the default `language` template variable is specified as English.
-If not supplied through a template or other means, this default value will be used.
-Setting default values when possible in the frontmatter is a good practice and allows prompts to run
-with less specifications.
+When a variable has a `default_variables` entry, it can be omitted from the command line and the default applies. Required variables with no default must be supplied via `--var` or `--vars`.
 
-### Prompt Files
+### Prompt Catalog
 
-- Stored as .md files
-- Include optional YAML frontmatter
-- Use Jinja2 template syntax
-- Support template variables
+The `PromptCatalog` is the runtime interface that discovers and loads prompts from the prompt directory. It is used internally by `tnh-gen` and can also be used programmatically.
+
+---
 
 ## Using Prompts
 
 ### Through tnh-gen CLI
 
-The most common way to use prompts is through the `tnh-gen` command-line tool:
+The primary interface for prompts is `tnh-gen`:
 
 ```bash
-# Basic prompt processing
-tnh-gen run --prompt prompt_name --input-file input.txt
-
-# Process with sections (pass a vars JSON file)
-tnh-gen run --prompt format_xml --input-file input.txt --vars sections.json
-
-# Process with inline variables
-tnh-gen run --prompt format_xml --input-file input.txt --var key=value
-```
-
-```bash
-# List available prompts
+# List all available prompts
 tnh-gen list
 
-# Run a specific prompt
-tnh-gen run --prompt translate --input-file input.txt --var source_lang=vi --var target_lang=en
+# Run a prompt with an input file
+tnh-gen run --prompt default_punctuate \
+  --input-file transcript.txt \
+  --var source_language=Vietnamese
+
+# Pass variables from a JSON file (useful for complex or reused variable sets)
+tnh-gen run --prompt default_line_translate \
+  --input-file cleaned.txt \
+  --vars sections.json \
+  --var source_language=Vietnamese \
+  --var target_language=English \
+  --var style=scholarly
+
+# Inline variable overrides take precedence over --vars file values
+tnh-gen run --prompt default_section \
+  --input-file cleaned_numbered.txt \
+  --vars base_vars.json \
+  --var target_section_count=4
 ```
+
+See [tnh-gen CLI Reference](/cli-reference/tnh-gen.md) for the full variable precedence rules and output options.
 
 ### Programmatic Usage
 
-For developers building tools that use the prompt system:
+For developers integrating the prompt system into tools or scripts:
 
 ```python
 from tnh_scholar.ai_text_processing import Prompt, PromptCatalog
 
-# Initialize prompt catalog
-prompt_catalog = PromptCatalog(prompt_dir)
+# Initialize the catalog from the prompt directory
+catalog = PromptCatalog(prompt_dir)
 
-# Load a prompt
-prompt = prompt_catalog.load("my_prompt")
+# Load a prompt by key
+prompt = catalog.load("default_punctuate")
 
-# Apply template values
-result = prompt.apply_template({
-    "language": "English",
+# Render the template with variable values
+rendered = prompt.apply_template({
+    "source_language": "Vietnamese",
     "style_convention": "APA"
 })
 ```
 
+---
+
 ## Prompt Location
 
-By default, prompts are stored in the user's home directory under:
+By default, runtime prompt discovery checks:
 
-```bash
+```
+./prompts/
 ~/.config/tnh-scholar/prompts/
+src/tnh_scholar/runtime_assets/prompts/
 ```
 
-(Patterns are legacy terminology; the directory is now `prompts`.)
+For the maintained walkthrough and golden test workflows in this repository, use:
 
-This location can be customized by setting the `TNH_PROMPT_DIR` environment variable:
+```bash
+--prompt-dir ./tnh-prompts
+```
+
+Override the catalog location globally with the `TNH_PROMPT_DIR` environment variable:
 
 ```bash
 # In .bashrc, .zshrc, or similar:
 export TNH_PROMPT_DIR=/path/to/prompts
 ```
 
-(or loaded through a `.env` file for development installations.)
+Or in a `.env` file for development installations.
 
-The prompt system will:
+Resolution order:
 
-1. First check for `TNH_PROMPT_DIR` environment variable
-2. If not set, use the default ~/.config/tnh-scholar/prompts
-3. Create the prompt directory if it doesn't exist
+1. `TNH_PROMPT_DIR` environment variable (if set)
+2. Workspace prompt directory: `./prompts/`
+3. User prompt directory: `~/.config/tnh-scholar/prompts/`
+4. Bundled runtime prompts in `src/tnh_scholar/runtime_assets/prompts/`
 
-When using a prompt name with `tnh-gen` (for example, `tnh-gen run --prompt my_prompt`), the system searches for a corresponding .md file (for example, `my_prompt.md`) in the prompt directory and its subdirectories.
+When `tnh-gen run --prompt my_prompt` is invoked, the system searches for `my_prompt.md` in the prompt directory and its subdirectories.
 
-### Default Prompt/Patterns
+### Default Prompts
 
-Through the setup utility, tnh-setup, the user has the option to download and install several default and example prompts.
+The following prompts are installed by `tnh-setup` and form the core of the standard pipelines:
 
-**Note**: The prompt system is used by `tnh-gen`. Default prompts expected in the prompts directory:
+| Key | File | Purpose |
+|-----|------|---------|
+| `default_clean` | `default_clean.md` | OCR artifact removal, plain text output (Track A) |
+| `default_clean_numbered` | `default_clean_numbered.md` | OCR artifact removal, `N:LINE` numbered output (Track B) |
+| `default_punctuate` | `default_punctuate.md` | Add punctuation and paragraph breaks |
+| `default_section` | `default_section.md` | Divide numbered transcript into sections with metadata |
+| `default_line_translate` | `default_line_translate.md` | Line-by-line translation with section context |
 
-- default_punctuate.md - Default punctuation prompt
-- default_section.md - Default section analysis pattern
-- default_line_translation.md - Default translation pattern
+These can be customised by creating a prompt with the same key in your prompt directory — your version takes precedence.
 
-These provide basic functionality but can be customized or overridden by creating patterns with the same names in your prompt directory.
+---
 
-### Pattern Integration
+## Creating Prompts
 
-The prompt system can be integrated into other tools and workflows:
+A valid prompt file requires:
 
-- Custom text processing applications
-- Web services
-- Analysis pipelines
-- Batch processing systems
+1. A unique `key` in the frontmatter
+2. Valid Jinja2 template syntax in the body
+3. All variables referenced in the body declared in `required_variables` or `optional_variables`
 
-### Template Variables
-
-Templates support variables through Jinja2 syntax:
-
-- Use `{{ variable }}` for simple substitution
-- Values provided when applying template
-- Default values can be specified in Pattern
-
-## Pattern Storage and Management
-
-### Pattern Manager
-
-The PatternManager provides the main interface for:
-
-- Loading patterns by name
-- Saving new patterns
-- Version control integration
-- Concurrent access management
-
-### Pattern Locations
-
-Patterns are stored in a directory specified as either:
-
-- `$HOME/.config/tnh-scholar/prompts` (default search location)
-
-- A custom directory specified by TNH_PROMPT_DIR environment variable, which can also be configured in a .env file.
-
-### Version Control
-
-Patterns are automatically version controlled:
-
-- Git-backed storage
-- Automatic commits on changes
-- History tracking
-- Change validation
-
-### Concurrent Access
-
-The system provides safe concurrent access through:
-
-- File-level locking
-- Lock cleanup
-- Stale lock detection
-- Safe access patterns
-
-## Creating Patterns
-
-Patterns must have:
-
-1. Unique name
-2. Valid Jinja2 template content
-3. Optional default template values
-
-Example pattern creation:
-
-```python
-from tnh_scholar.ai_text_processing import Pattern
-
-pattern = Pattern(
-    name="example_pattern",
-    instructions="Process {{ text }} using {{ style }}",
-    default_template_fields={"style": "default"}
-)
-```
-
-## Pattern File Format
-
-A pattern file (`example.md`):
+Minimal example:
 
 ```markdown
 ---
-description: Example processing pattern
-version: 1.0
-author: TNH Scholar
+key: my_reformat
+name: My Reformat Prompt
+version: "1.0"
+description: Reformats input text
+required_variables:
+  - source_language
+default_variables:
+  source_language: English
+default_model: gpt-4o-mini
+output_mode: text
+schema_version: "1.0"
 ---
-Please process this text according to these parameters:
 
-Language: {{ language }}
-Style: {{ style_convention }}
-Review Count: {{ review_count }}
+Reformat the following {{ source_language }} text with consistent paragraph spacing.
 
-Apply standard formatting while maintaining original meaning.
+Output only the reformatted text.
 ```
 
-## Error Handling
+Save the file as `my_reformat.md` in your prompt directory. It is immediately available as:
 
-The system handles common errors:
-
-- Missing patterns
-- Invalid template syntax
-- Concurrent access conflicts
-- Version control issues
-
-## Technical Details
-
-### File Locking
-
-- Uses system-level file locking
-- Automatic lock cleanup
-- Timeout handling
-- Safe concurrent access
+```bash
+tnh-gen run --prompt my_reformat --input-file input.txt
+```
 
 ### Version Control
 
-- Git-based backend
-- Automatic commit messages
-- Change tracking
-- History preservation
+Prompt files are ordinary files. If they live in a git-tracked workspace such as
+`tnh-prompts/`, changes are versioned through normal repository commits. User-level
+prompt directories under `~/.config/tnh-scholar/` are local by default unless you
+choose to place them under version control yourself.
 
-### Pattern Validation
-
-All patterns are validated for:
-
-- Template syntax
-- Required variables
-- Unique naming
-- Content format
-
-## Limitations
-
-Current implementation:
-
-- Single repository per PatternManager
-- File-based storage only
-- Local Git repository
-- Synchronous operations
+---
 
 ## Best Practices
 
-### 1. Pattern Naming
+### Prompt Naming
 
-- Use descriptive names
-- Include purpose in name
-- Follow lowercase_with_underscores format
+- Use `lowercase_with_underscores`
+- Include the purpose: `default_clean`, `translate_section_thay_en`
+- Prefix with `default_` only for the canonical, general-purpose versions
 
-### 2. Template Content
+### Template Design
 
-- Document required variables
-- Include usage examples
-- Provide default values
-- Use clear template syntax
+- Declare all variables in frontmatter — required or optional
+- Provide `default_variables` values wherever reasonable to reduce command-line verbosity
+- End every prompt with an explicit output instruction ("Output only the cleaned text. Do not add comments.")
+- Keep prompts single-purpose; chain them in pipelines rather than combining tasks
 
-### 3. Pattern Management
+### Testing
 
-- Regular pattern updates
-- Version control usage
-- Proper error handling
-- Pattern testing
+- Test new prompts with a small representative sample before running on full documents
+- For prompts that feed into each other (e.g., `default_clean_numbered` → `default_section`), verify the output format of each stage matches what the next stage expects
+- Store test inputs and expected outputs alongside the prompt or in a golden test directory

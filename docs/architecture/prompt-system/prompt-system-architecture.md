@@ -109,7 +109,7 @@ class PromptCatalog(Protocol):
 
     def list_prompts(
         self,
-        task_type: Optional[TaskType] = None,
+        role: Optional[str] = None,
         tags: Optional[list[str]] = None
     ) -> list[PromptMetadata]:
         """List available prompts with optional filtering."""
@@ -133,21 +133,12 @@ class PromptCatalog(Protocol):
 
 ```python
 from pydantic import BaseModel, Field
-from enum import Enum
-
-class TaskType(str, Enum):
-    """Types of processing tasks."""
-    PUNCTUATE = "punctuate"
-    TRANSLATE = "translate"
-    SECTION = "section"
-    CUSTOM = "custom"
-
 class PromptMetadata(BaseModel):
     """Metadata for a prompt template."""
 
     name: str = Field(..., description="Unique prompt identifier")
     version: str = Field(..., description="Semantic version (e.g., '1.0.0')")
-    task_type: TaskType = Field(..., description="Type of processing task")
+    role: str = Field(..., description="Prompt role classifier")
     description: str = Field(..., description="Human-readable description")
 
     # Variable requirements
@@ -262,14 +253,14 @@ const selected = await vscode.window.showQuickPick(
 **Create New Prompt**:
 
 1. User runs command: "TNH Scholar: Create Prompt"
-2. VS Code prompts for metadata (name, task type, description)
+2. VS Code prompts for metadata (name, role, description)
 3. Extension generates scaffold with metadata frontmatter:
 
 ```markdown
 ---
 name: custom_summarize
 version: 1.0.0
-task_type: custom
+role: custom
 description: Summarize dharma talk with key insights
 required_variables: [text, max_words]
 optional_variables: {language: en, style: concise}
@@ -305,7 +296,7 @@ Focus on:
 
 - ✅ Add YAML frontmatter to existing prompts
 - ✅ Document required/optional variables
-- ✅ Add task_type and tags
+- ✅ Add role and tags
 
 ### Phase 2: PromptCatalog Service (Q1 2026)
 

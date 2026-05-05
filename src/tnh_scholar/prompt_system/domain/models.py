@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class PromptOutputMode(str, Enum):
@@ -52,13 +52,14 @@ class PromptOutputContract(BaseModel):
 class PromptMetadata(BaseModel):
     """Prompt front matter metadata."""
 
+    model_config = ConfigDict(extra="forbid")
+
     prompt_id: str | None = None
     key: str = ""
     name: str
     version: str
     description: str
     role: str | None = None
-    task_type: str = "unknown"
     required_variables: list[str] = Field(default_factory=list)
     optional_variables: list[str] = Field(default_factory=list)
     default_variables: dict[str, Any] = Field(default_factory=dict)
@@ -93,7 +94,6 @@ class PromptMetadata(BaseModel):
     def _sync_legacy_and_v2_fields(self) -> "PromptMetadata":
         """Normalize key/output fields for legacy and v2 compatibility."""
         self._sync_key_fields()
-        self._sync_role_fields()
         self._sync_output_fields()
         return self
 
@@ -103,13 +103,6 @@ class PromptMetadata(BaseModel):
             self.prompt_id = self.key
         if not self.key and self.prompt_id:
             self.key = self.prompt_id
-
-    def _sync_role_fields(self) -> None:
-        """Keep role and legacy task_type synchronized for compatibility."""
-        if self.role is None and self.task_type != "unknown":
-            self.role = self.task_type
-        if self.task_type == "unknown" and self.role is not None:
-            self.task_type = self.role
 
     def _sync_output_fields(self) -> None:
         """Keep output_contract and legacy output_mode synchronized."""

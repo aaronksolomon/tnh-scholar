@@ -145,7 +145,9 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 
 ## User Guide
 
+- [A Buddhist Cosmological View — Vũ-trụ-quan Phật học](/user-guide/vu-tru-quan-phat-hoc-en.md)
 - [Best Practices](/user-guide/best-practices.md)
+- [Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text](/user-guide/pipeline-walkthrough.md)
 - [TNH Scholar Prompt System](/user-guide/prompt-system.md)
 - [User Guide Overview](/user-guide/overview.md)
 
@@ -238,6 +240,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-PP01: Rapid Prototype Versioning Policy](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md)
 - [ADR-PT03: Prompt System Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
 - [ADR-PT04: Prompt System Refactor Plan (Revised)](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- [ADR-PT05.1: Prototype Prompt Workspace Simplification](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md)
 - [ADR-PT05: Prompt Platform Strategy](/architecture/prompt-system/adr/adr-pt05-prompt-platform-strategy.md)
 - [ADR-PV01: Provenance & Tracing Infrastructure Strategy](/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md)
 - [ADR-ST01.1: tnh-setup UI Design](/architecture/setup-tnh/adr/adr-st01.1-tnh-setup-ui-design.md)
@@ -246,6 +249,10 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-TG01: tnh-gen CLI Architecture](/architecture/tnh-gen/adr/adr-tg01-cli-architecture.md)
 - [ADR-TG02: TNH-Gen CLI Prompt System Integration](/architecture/tnh-gen/adr/adr-tg02-prompt-integration.md)
 - [ADR-TG03: Typed Completion Outcome and Adapter Diagnostics](/architecture/tnh-gen/adr/adr-tg03-completion-contract.md)
+- [ADR-TG04.1: JSON Contract Runtime Validation](/architecture/tnh-gen/adr/adr-tg04.1-json-contract-runtime-validation.md)
+- [ADR-TG04.2: Structured JSON Provenance Sidecars](/architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars.md)
+- [ADR-TG04.3: Structured Output Trust Boundaries and Control Surfaces](/architecture/tnh-gen/adr/adr-tg04.3-structured-output-trust-boundaries.md)
+- [ADR-TG04: Structured JSON Contract and Scope Boundaries](/architecture/tnh-gen/adr/adr-tg04-structured-json-contract-and-scope.md)
 - [ADR-TR01: AssemblyAI Integration for Transcription Service](/architecture/transcription/adr/adr-tr01-assemblyai-integration.md)
 - [ADR-TR02: Optimized SRT Generation Design](/architecture/transcription/adr/adr-tr02-optimized-srt-design.md)
 - [ADR-TR03: Standardizing Timestamps to Milliseconds](/architecture/transcription/adr/adr-tr03-ms-timestamps.md)
@@ -336,8 +343,11 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TextObject System Design Document](/architecture/ai-text-processing/design/textobject-system-design.md)
 - [TimelineMapper Design Document](/architecture/transcription/design/timelinemapper-design.md)
 - [TNH Configuration Management](/architecture/configuration/tnh-configuration-management.md)
+- [tnh-gen Docs Consistency + OCR Pipeline Walkthrough Plan](/architecture/tnh-gen/notes/tnh-gen-docs-pipeline-plan-2026-04.md)
+- [tnh-gen GPT-5 Structured Output Eval — May 2026](/architecture/tnh-gen/notes/tnh-gen-gpt5-structured-output-eval-2026-05.md)
 - [tnh-gen Implementation Plan — April 2026](/architecture/tnh-gen/notes/tnh-gen-implementation-plan-2026-04.md)
 - [tnh-gen Robustness Review — April 2026](/architecture/tnh-gen/notes/tnh-gen-robustness-review-2026-04.md)
+- [tnh-gen UX Directions and Issues — May 2026](/architecture/tnh-gen/notes/tnh-gen-ux-directions-2026-05.md)
 - [TNH-Scholar Agent Orchestration System](/architecture/agent-orchestration/system-design.md)
 - [TNH‑Scholar Utilities Catalog](/architecture/utilities/design/utilities-catalog.md)
 - [Versioning Policy Documentation Additions](/architecture/project-policies/versioning-policy-implementation-summary.md)
@@ -347,6 +357,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 ## Development
 
 - [CI Workflow Cleanup Proposal](/development/ci-workflow-cleanup-proposal.md)
+- [Codex Repo Ops](/development/codex-repo-ops.md)
 - [Contributing to TNH Scholar (Prototype Phase)](/development/contributing-prototype-phase.md)
 - [Development Documentation](/development/overview.md)
 - [Fine Tuning Strategy](/development/fine-tuning-strategy.md)

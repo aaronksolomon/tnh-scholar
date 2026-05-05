@@ -37,15 +37,15 @@ tnh-gen list
 # Translate Vietnamese text to English
 tnh-gen run --prompt translate \
   --input-file teaching.md \
-  --var source_lang=vi \
-  --var target_lang=en \
+  --var source_language=vi \
+  --var target_language=en \
   --output-file teaching.en.md
 
 # Get machine-readable output for scripts
 tnh-gen run --prompt translate \
   --input-file teaching.md \
-  --var source_lang=vi \
-  --var target_lang=en \
+  --var source_language=vi \
+  --var target_language=en \
   --api > output.json
 ```
 
@@ -102,8 +102,8 @@ tnh-gen list --tag translation
 # Translate a teaching
 tnh-gen run --prompt translate \
   --input-file vietnamese_teaching.md \
-  --var source_lang=vi \
-  --var target_lang=en \
+  --var source_language=vi \
+  --var target_language=en \
   --output-file english_teaching.md
 
 # Summarize a dharma talk

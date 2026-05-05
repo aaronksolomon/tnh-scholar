@@ -584,7 +584,7 @@ def _emit_budget_block(
     )
     suggestion = (
         "Raise max_dollars in config, for example:\n"
-        "  tnh-gen config set --workspace max_dollars 0.10"
+        "  tnh-gen config set --workspace max_dollars 0.30"
     )
     typer.echo(format_human_friendly_error(error, suggestion=suggestion))
 

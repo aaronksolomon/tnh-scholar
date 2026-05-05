@@ -3,7 +3,7 @@ key: summarize
 name: Summarize
 version: "1.0.0"
 description: "Summarize the input text in concise bullet points."
-task_type: "summarize"
+role: "summarize"
 required_variables: []
 optional_variables:
   - input_text

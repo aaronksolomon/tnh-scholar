@@ -40,6 +40,7 @@ class GenAISettings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",  # ignore unknown env vars rather than erroring
+        populate_by_name=True,
     )
 
     # Provider credentials / org metadata
@@ -56,7 +57,7 @@ class GenAISettings(BaseSettings):
     default_max_output_tokens: int = 10_000
     default_seed: int | None = None
     max_input_chars: int = 120_000
-    max_dollars: float = 0.10
+    max_dollars: float = 0.30
     registry_staleness_warn: bool = True
     registry_staleness_threshold_days: int = 90
 

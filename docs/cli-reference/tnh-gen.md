@@ -41,14 +41,14 @@ tnh-gen list
 # Execute a prompt (human-friendly output)
 tnh-gen run --prompt translate \
   --input-file teaching.md \
-  --var source_lang=vi \
-  --var target_lang=en
+  --var source_language=vi \
+  --var target_language=en
 
 # Get machine-readable output for scripts
 tnh-gen --api run --prompt translate \
   --input-file teaching.md \
-  --var source_lang=vi \
-  --var target_lang=en
+  --var source_language=vi \
+  --var target_language=en
 ```
 
 ## Global Flags
@@ -57,7 +57,7 @@ These flags work with all commands:
 
 ```bash
 --api              # Enable machine-readable API contract output (JSON)
---format FORMAT    # Output format: json, yaml, text, table
+--format FORMAT    # Output format: json, yaml, text (the `list` command also supports table)
 --prompt-dir PATH  # Override the prompt catalog directory
 --config PATH      # Override config file location
 --quiet, -q        # Suppress non-error output
@@ -152,7 +152,7 @@ daily - Daily Guidance
 
 translate - Vietnamese-English Translation
   Translate Vietnamese dharma texts to English with context awareness.
-  Variables: source_lang, target_lang, input_text, [context]
+  Variables: source_language, target_language, input_text, [context]
   Model: gpt-4o | Tags: translation, dharma
 
 summarize - Summarize Teaching
@@ -177,7 +177,7 @@ $ tnh-gen --api list
       "name": "Vietnamese-English Translation",
       "description": "Translate Vietnamese dharma texts to English",
       "tags": ["translation", "dharma"],
-      "required_variables": ["source_lang", "target_lang", "input_text"],
+      "required_variables": ["source_language", "target_language", "input_text"],
       "optional_variables": ["context"],
       "default_variables": {},
       "default_model": "gpt-4o",
@@ -187,10 +187,7 @@ $ tnh-gen --api list
     }
   ],
   "count": 1,
-  "sources": {
-    "catalog_type": "filesystem",
-    "catalog_path": "/path/to/prompts"
-  }
+  "sources": ["defaults+env", "workspace"]
 }
 ```
 
@@ -288,16 +285,16 @@ Variables are merged in this precedence order (highest to lowest):
 tnh-gen run --prompt translate \
   --input-file teaching.md \
   --vars base_vars.json \
-  --var source_lang=vi \
-  --var target_lang=en
+  --var source_language=vi \
+  --var target_language=en
 ```
 
-If `base_vars.json` contains `{"source_lang": "en"}`, the inline `--var source_lang=vi` wins.
+If `base_vars.json` contains `{"source_language": "en"}`, the inline `--var source_language=vi` wins.
 
 #### Human-Friendly Output (Default)
 
 ```bash
-$ tnh-gen run --prompt translate --input-file teaching.md --var source_lang=vi --var target_lang=en
+$ tnh-gen run --prompt translate --input-file teaching.md --var source_language=vi --var target_language=en
 
 [Generated translation text appears here without JSON wrapper...]
 ```
@@ -310,7 +307,7 @@ $ tnh-gen run --prompt translate --input-file teaching.md --var source_lang=vi -
 #### API Output
 
 ```bash
-$ tnh-gen --api run --prompt translate --input-file teaching.md --var source_lang=vi --var target_lang=en
+$ tnh-gen --api run --prompt translate --input-file teaching.md --var source_language=vi --var target_language=en
 {
   "status": "succeeded",
   "result": {
@@ -371,8 +368,8 @@ schema_version: "1.0"
 # Simple translation with inline variables
 tnh-gen run --prompt translate \
   --input-file teaching.md \
-  --var source_lang=vi \
-  --var target_lang=en \
+  --var source_language=vi \
+  --var target_language=en \
   --output-file teaching.en.md
 
 # Complex variables via JSON file
@@ -430,7 +427,7 @@ Configuration loaded in this order (highest to lowest precedence):
 {
   "prompt_catalog_dir": "/path/to/prompts",
   "default_model": "gpt-4o-mini",
-  "max_dollars": 0.10,
+  "max_dollars": 0.30,
   "max_input_chars": 50000,
   "default_temperature": 0.2,
   "provider_api_keys": {
@@ -448,7 +445,7 @@ Configuration loaded in this order (highest to lowest precedence):
 $ tnh-gen config show
 prompt_catalog_dir: /custom/path
 default_model: gpt-4o-mini
-max_dollars: 0.10
+max_dollars: 0.30
 ```
 
 **Behavior**:
@@ -464,21 +461,16 @@ $ tnh-gen --api config show
   "config": {
     "prompt_catalog_dir": "/custom/path",
     "default_model": "gpt-4o-mini",
-    "max_dollars": 0.10,
+    "max_dollars": 0.30,
     "provider_api_keys": {
       "openai": "${OPENAI_API_KEY}",
       "anthropic": "${ANTHROPIC_API_KEY}"
     }
   },
-  "sources": {
-    "prompt_catalog_dir": "workspace",
-    "default_model": "user",
-    "max_dollars": "defaults",
-    "provider_api_keys": "defaults"
-  },
+  "sources": ["defaults+env", "user", "workspace"],
   "config_files": [
-    "/path/to/workspace/.tnh-scholar/config.yaml",
-    "~/.config/tnh-scholar/config.yaml"
+    "/path/to/workspace/.vscode/tnh-scholar.json",
+    "~/.config/tnh-scholar/tnh-gen.json"
   ]
 }
 ```
@@ -497,7 +489,7 @@ tnh-gen config get default_model
 gpt-4o-mini
 
 # Set value (writes to user config)
-tnh-gen config set max_dollars 0.25
+tnh-gen config set max_dollars 0.30
 
 # Set workspace-level config
 tnh-gen config set --workspace prompt_catalog_dir ./prompts
@@ -536,6 +528,95 @@ $ tnh-gen --api version
   "genai_service_version": "1.0.0"
 }
 ```
+
+---
+
+## Pipeline Examples
+
+These examples use four pages of OCR-scanned Vietnamese Buddhist journal text. Source files and scan images are in `tests/golden/journal-pipeline/`. See the [Pipeline Walkthrough](/user-guide/pipeline-walkthrough.md) for the fully annotated version including the section-extraction helper script.
+
+### Recommended Pipeline (section → clean → translate)
+
+`section_by_break` performs the document split using structural breaks in the numbered OCR text — page headers, blank lines, article titles. Each section (roughly one journal page) is then cleaned and translated in a focused, contained call.
+
+```bash
+# Step 1: Number raw lines (preprocessing)
+tnh-lines number source.txt source_numbered.txt
+
+# Step 2: Section — identifies page breaks, produces metadata JSON
+tnh-gen run --prompt section_by_break \
+  --input-file source_numbered.txt \
+  --var source_language=Vietnamese \
+  --var target_section_count=4 \
+  --var document_metadata='title: ...\nauthor: ...\njournal: ...' \
+  --output-file sections.json
+
+# Step 3: Extract section line ranges (see Pipeline Walkthrough for helper script)
+# → produces section_1_raw.txt ... section_4_raw.txt
+
+# Step 4: Clean each section (focused per-page context)
+for i in 1 2 3 4; do
+  tnh-gen run --prompt default_clean_numbered \
+    --input-file section_${i}_raw.txt \
+    --var source_language=Vietnamese \
+    --var publication_name="Phật Giáo Việt Nam" \
+    --var publisher_mark="Tư Viện Huệ Quang" \
+    --output-file section_${i}_clean.txt
+done
+
+# Step 5: Translate each section with full document context
+for i in 1 2 3 4; do
+  tnh-gen run --prompt default_line_translate \
+    --input-file section_${i}_clean.txt \
+    --vars sections.json \
+    --var source_language=Vietnamese \
+    --var target_language=English \
+    --var style=scholarly \
+    --output-file section_${i}_translated.txt
+done
+
+# Step 6: Combine
+cat section_{1,2,3,4}_translated.txt > final_translated.txt
+```
+
+**What raw OCR looks like before cleaning:**
+
+```
+1.―
+1-                                ← duplicate section marker
+Khuynh hướng Túc mệnh-luận...
+...
+PHẬT GIÁO VIỆT NAM                ← running footer mid-paragraph
+```
+
+**After `default_clean_numbered`:**
+
+```
+10:1. Khuynh hướng Túc mệnh-luận (Pubba kata hetu)
+11:Các triết phái thuộc khuynh hướng này...
+```
+
+Footer removed; duplicate marker resolved; line numbers contiguous.
+
+### Simpler Alternative (no line tracking)
+
+For quick passes where section metadata and line references are not needed:
+
+```bash
+for page in 7 8 9 10; do
+  tnh-gen run --prompt default_clean \
+    --input-file source_page_${page}.txt \
+    --var source_language=Vietnamese \
+    --output-file page_${page}_clean.txt
+
+  tnh-gen run --prompt default_punctuate \
+    --input-file page_${page}_clean.txt \
+    --var source_language=Vietnamese \
+    --output-file page_${page}_punctuated.txt
+done
+```
+
+Per-page source files (`source_page_7.txt` etc.) are pre-extracted and available in `tests/golden/journal-pipeline/`.
 
 ---
 

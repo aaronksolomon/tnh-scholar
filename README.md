@@ -78,7 +78,7 @@ ytt-fetch "https://youtube.com/watch?v=example" -l en -o transcript.txt
 tnh-gen list
 
 # Run a prompt on a file
-tnh-gen run --prompt translate --input-file input.txt --var source_lang=vi --var target_lang=en
+tnh-gen run --prompt translate --input-file input.txt --var source_language=vi --var target_language=en
 
 ```
 

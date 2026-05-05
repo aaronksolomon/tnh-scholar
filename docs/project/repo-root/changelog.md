@@ -22,6 +22,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`tnh-gen` Golden Artifact Policy Normalization** (2026-05-03)
+  - Standardized the live-golden directories on a single policy: tracked source fixtures and operator docs, untracked generated run artifacts
+  - Updated the journal walkthrough and golden READMEs to stop implying that generated outputs should be committed as repository fixtures
+  - Expanded the ignore rules to cover sectioning scratch outputs produced during journal prompt iteration
+  - Files: `.gitignore`, `docs/user-guide/pipeline-walkthrough.md`, `tests/golden/json-prompts/README.md`, `tests/golden/journal-pipeline/README.md`
+
+- **Codex Repo-Ops Defaults** (2026-05-02)
+  - Documented the repo-local `.codex/config.toml` profiles as repo-operations and prototype test-environment defaults rather than application behavior
+  - Clarified the current full-environment inheritance choice for repo-local Codex execution, including the VICOA-related operator path under active prototype use
+  - Added a maintained repo-operations note describing scope boundaries for repo-local Codex defaults during the current prototype phase
+  - Files: `.codex/config.toml`, `docs/development/codex-repo-ops.md`
+
+- **`tnh-gen` Structured JSON Contract Runtime Validation** (2026-05-01)
+  - Added prompt-contract schema resolution and validation with workspace, user, and built-in precedence for maintained JSON prompts
+  - Wired `tnh-gen` and `GenAIService` to enforce JSON prompt contracts at both catalog time and post-invocation runtime, including typed `CONTRACT_VALIDATION_FAILED` handling
+  - Updated the OpenAI path to use provider-native `json_schema` structured output requests while retaining local schema validation as the authoritative contract check
+  - Ensured JSON prompt `--output-file` writes remain canonical JSON text and moved persisted provenance for structured outputs into adjacent `.provenance.yaml` sidecars
+  - Added focused prompt-system, service, CLI, and provenance regression coverage for structured JSON success, failure, and missing-schema paths
+  - Added the first maintained built-in schema set for the current JSON prompt family: `default_section`, `section_by_break`, `generate_sections_en`, `generate_sections_multi_lang`, and `translate_json`
+  - Added small JSON-prompt golden input scaffolds to support cheap live validation before the larger journal pipeline run
+  - Added a tracked repo-local `tnh-prompts/` workspace so walkthroughs and goldens can run against a reproducible prompt mirror instead of depending on an external local prompt checkout
+  - Files: `src/tnh_scholar/prompt_system/service/contract_schema.py`, `src/tnh_scholar/prompt_system/service/validator.py`, `src/tnh_scholar/gen_ai_service/`, `src/tnh_scholar/cli_tools/tnh_gen/`, `src/tnh_scholar/runtime_assets/schemas/`, `docs/architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars.md`, `tests/prompt_system/`, `tests/gen_ai_service/`, `tests/cli_tools/`
+
+- **`tnh-gen --vars` Generated-Artifact Compatibility** (2026-04-28)
+  - Taught `tnh-gen run --vars` to accept JSON objects wrapped in YAML frontmatter so staged `tnh-gen` workflows can feed generated JSON artifacts into later prompt runs without manual stripping
+  - Preserved the existing failure contract for non-object payloads and frontmatter-wrapped bodies that are still not valid JSON
+  - Added focused CLI and loader regression coverage for frontmatter-wrapped vars files
+  - Files: `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`, `tests/cli_tools/test_tnh_gen.py`, `tests/cli_tools/test_tnh_gen_coverage.py`
+
 - **Prompt Catalog Stage 2 Metadata Normalization** (2026-04-26)
   - Normalized the maintained `prompts/` catalog to the PT05 metadata baseline by adding explicit `role`, `inputs`, and `output_contract` fields across the legacy prompt set
   - Added concrete `schema_ref` coverage for the maintained JSON prompts so prompt catalog health now loads cleanly through `tnh-gen`
