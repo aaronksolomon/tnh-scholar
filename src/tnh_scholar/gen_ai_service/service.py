@@ -218,7 +218,10 @@ def _openai_compatible_json_schema(schema_document: object) -> dict[str, object]
     if not isinstance(schema_document, dict):
         raise TypeError("OpenAI JSON schema compatibility requires an object schema document.")
     compatible_schema = copy.deepcopy(schema_document)
-    return _strip_openai_incompatible_keywords(compatible_schema)
+    sanitized = _strip_openai_incompatible_keywords(compatible_schema)
+    if not isinstance(sanitized, dict):
+        raise TypeError("OpenAI JSON schema compatibility produced a non-object schema.")
+    return sanitized
 
 
 def _strip_openai_incompatible_keywords(node: object) -> object:

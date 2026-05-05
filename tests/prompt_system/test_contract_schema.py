@@ -140,12 +140,13 @@ def test_schema_resolver_validates_json_instances(tmp_path: Path):
                 "document_metadata": "title: Example",
                 "key_concepts": ["karma", "emptiness"],
                 "narrative_context": "Context",
-                "sections": [
-                    {
-                        "start_line": 1,
-                        "title": "Opening",
-                    }
-                ],
+                    "sections": [
+                        {
+                            "start_line": 1,
+                            "end_line": 12,
+                            "title": "Opening",
+                        }
+                    ],
             },
         ),
         (
@@ -155,12 +156,13 @@ def test_schema_resolver_validates_json_instances(tmp_path: Path):
                 "dublin_core": {"title": "Example"},
                 "key_concepts": "karma; emptiness",
                 "narrative_context": "Context",
-                "sections": [
-                    {
-                        "start_line": 1,
-                        "title": "Page 1",
-                    }
-                ],
+                    "sections": [
+                        {
+                            "start_line": 1,
+                            "end_line": 12,
+                            "title": "Page 1",
+                        }
+                    ],
             },
         ),
         (
