@@ -1,0 +1,14 @@
+---
+fingerprint: sha256:a7360f8a217572b19962a23a7d0e38b0aa92c73df6cc9ce69d145c1ce4a635e5
+generated_at: '2026-05-03T21:29:54Z'
+model: gpt-5.4
+prompt_key: default_clean
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: f78c366e7c6f46518d147cdadab0059a
+---
+
+2. Vấn đề dị thời nhân quả cũng là vấn đề liên tục tồn tại. Tất cả mọi hiện tượng tuy đều là vô thường biến thiên, nhưng không có một vật nào hoàn toàn đoạn diệt. Không có một cá thể nào vĩnh cửu bất biến, nhưng luôn luôn có những “giòng” hiện tượng liên tục bất đoạn. Mọi vật biến chuyển liên tục theo những phép tắc nhất định. Đức Phật đã chú trọng đặc biệt về sự thuyết minh dòng liên tục sinh mạng, nghĩa là về những hiện tượng hữu tình. Ngài dạy rằng động cơ căn bản của luân hồi sinh tử là vô minh và ái dục. Bản thân loài hữu tình là những kết hợp của toàn thể những kinh nghiệm và những nghiệp nhân quá khứ. Do những nghiệp nhân hiện tại, các loài hữu tình sẽ đi đến những giai đoạn sinh mệnh vị lai. Về phương diện luận lý, Ngài khai thị quy luật dị thục nhân và dị thục quả. Về phương diện tâm lý, Ngài giải bày quy luật đồng loại nhân và đẳng lưu quả. Về phương diện siêu hình, Ngài trình bày quy luật Thập Nhị Nhân Duyên. Tuy rằng cách đây hai ngàn năm trăm năm, những thuật ngữ và cách dụng ngữ còn nghèo nàn, nhưng văn tự Tứ A Hàm cũng đã có thể diễn giải được những giáo lý tinh vi ấy.
+
+Tóm lại, quan niệm nhân quả của Phật Giáo theo nghĩa hẹp, chỉ là Nhân quả luật (Loi de Causalité); nhưng theo nghĩa rộng, không phải chỉ là những quan hệ nhân quả có tính cách thuần túy lý luận. Quan niệm nhân quả của đạo Phật bao hàm cả những quan hệ đạo đức, giải thoát; bề rộng thì dàn trải khắp mười phương và chiều dài thì thấu suốt quá khứ vị lai hiện-

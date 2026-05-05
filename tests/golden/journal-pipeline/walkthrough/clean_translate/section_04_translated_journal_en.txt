@@ -1,0 +1,16 @@
+---
+fingerprint: sha256:0f43eea8064183f27e1d7e400a88a6dd9de50e7ef9cb4a14b001a23e41ba305d
+generated_at: '2026-05-04T05:46:13Z'
+model: gpt-5.4
+prompt_key: translate_journal_section_en
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: c9c9a2b17a8642df9685e7a03c893b35
+---
+
+Successive-Time Causality, the Stream of Life, and the Ethical Meaning of Liberation
+
+2. The problem of successive-time causality is also the problem of continuity in existence. Although all phenomena are impermanent and ever-changing, no thing is utterly annihilated. There is no individual entity that is eternally unchanging, yet there are always uninterrupted “streams” of phenomena continuing on. All things undergo ceaseless transformation according to definite principles. The Buddha gave special attention to explaining the continuous stream of life, that is, the phenomena of sentient beings. He taught that the fundamental motive force of saṃsāric birth-and-death is ignorance and craving. Sentient beings themselves are combinations of the totality of past experiences and karmic causes. On the basis of present karmic causes, sentient beings proceed toward future stages of life. From the logical point of view, he elucidated the law of heterogeneous causes and heterogeneous results. From the psychological point of view, he expounded the law of homogeneous causes and equivalent-flow results. From the metaphysical point of view, he presented the law of the Twelvefold Dependent Origination. Although, twenty-five hundred years ago, terminology and modes of expression were still limited, the texts of the Four Āgamas were nevertheless able to expound these subtle doctrines.
+
+In sum, the Buddhist conception of causality, in its narrow sense, is simply the law of causality (Loi de Causalité); but in its broader sense, it is not confined to causal relations of a purely theoretical kind. The Buddhist conception of causality also encompasses ethical and soteriological relations; in breadth it extends throughout the ten directions, and in length it penetrates past, future, and present.

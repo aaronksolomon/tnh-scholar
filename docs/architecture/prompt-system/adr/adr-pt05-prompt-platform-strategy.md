@@ -239,6 +239,29 @@ Validation is required at three layers.
 - Output contract mode validity
 - Contract reference validity when present
 
+---
+
+## Addendum 2026-05-04: Canonical Prompt Classifier
+
+Prototype decision for the current prompt platform and `tnh-gen` walkthrough work:
+
+- `role` is the canonical prompt classification field.
+- `task_type` is removed from the active prompt metadata contract rather than retained as a compatibility alias.
+- Prompt routing, validation, maintained prompt authoring, and user-facing examples should all speak in terms of `role`.
+
+Rationale:
+
+- PT05 already centers `role` in the platform envelope and namespace-scoped role taxonomies.
+- Keeping both `role` and `task_type` in active use creates visible authoring redundancy and weakens the prompt contract story.
+- The prototype goal is a clean, teachable prompt surface rather than a compatibility-preserving migration layer.
+
+Implications:
+
+- Maintained prompts should declare `role` only.
+- Prompt validators require `role`.
+- Routing code should consume `role` directly.
+- Older fixtures or historical prompt examples that still mention `task_type` are not normative for current design work and should be updated opportunistically rather than preserved as part of the active contract.
+
 #### Layer 2: Catalog Integrity Validation
 
 - Key uniqueness
