@@ -3,11 +3,11 @@ title: "tnh-gen Docs Consistency + OCR Pipeline Walkthrough Plan"
 description: "Work plan for v0.4.0 docs consistency pass on tnh-gen user-guide and CLI reference, and development of a golden OCR pipeline example with two-track clean→punctuate→section→translate walkthrough."
 owner: ""
 author: ""
-status: active
+status: draft
 created: "2026-04-27"
 ---
 
-# tnh-gen Docs Consistency + OCR Pipeline Walkthrough
+# tnh-gen Docs Consistency + OCR Pipeline Walkthrough Plan
 
 Work plan for the v0.4.0 docs consistency pass and golden pipeline example development.
 

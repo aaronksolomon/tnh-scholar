@@ -1,5 +1,5 @@
 ---
-title: "Pipeline Case Study: OCR Journal Text"
+title: "Pipeline Case Study: Phat Giao Viet Nam OCR Journal Text"
 description: "A worked case study — section, clean, and translate a scanned Vietnamese Buddhist journal article using tnh-gen."
 owner: ""
 author: ""

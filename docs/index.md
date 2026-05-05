@@ -145,8 +145,9 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 
 ## User Guide
 
+- [A Buddhist Cosmological View — Vũ-trụ-quan Phật học](/user-guide/vu-tru-quan-phat-hoc-en.md)
 - [Best Practices](/user-guide/best-practices.md)
-- [Pipeline Walkthrough: OCR Journal Text](/user-guide/pipeline-walkthrough.md)
+- [Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text](/user-guide/pipeline-walkthrough.md)
 - [TNH Scholar Prompt System](/user-guide/prompt-system.md)
 - [User Guide Overview](/user-guide/overview.md)
 
@@ -249,6 +250,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-TG03: Typed Completion Outcome and Adapter Diagnostics](/architecture/tnh-gen/adr/adr-tg03-completion-contract.md)
 - [ADR-TG04.1: JSON Contract Runtime Validation](/architecture/tnh-gen/adr/adr-tg04.1-json-contract-runtime-validation.md)
 - [ADR-TG04.2: Structured JSON Provenance Sidecars](/architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars.md)
+- [ADR-TG04.3: Structured Output Trust Boundaries and Control Surfaces](/architecture/tnh-gen/adr/adr-tg04.3-structured-output-trust-boundaries.md)
 - [ADR-TG04: Structured JSON Contract and Scope Boundaries](/architecture/tnh-gen/adr/adr-tg04-structured-json-contract-and-scope.md)
 - [ADR-TR01: AssemblyAI Integration for Transcription Service](/architecture/transcription/adr/adr-tr01-assemblyai-integration.md)
 - [ADR-TR02: Optimized SRT Generation Design](/architecture/transcription/adr/adr-tr02-optimized-srt-design.md)
@@ -341,8 +343,10 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TimelineMapper Design Document](/architecture/transcription/design/timelinemapper-design.md)
 - [TNH Configuration Management](/architecture/configuration/tnh-configuration-management.md)
 - [tnh-gen Docs Consistency + OCR Pipeline Walkthrough Plan](/architecture/tnh-gen/notes/tnh-gen-docs-pipeline-plan-2026-04.md)
+- [tnh-gen GPT-5 Structured Output Eval — May 2026](/architecture/tnh-gen/notes/tnh-gen-gpt5-structured-output-eval-2026-05.md)
 - [tnh-gen Implementation Plan — April 2026](/architecture/tnh-gen/notes/tnh-gen-implementation-plan-2026-04.md)
 - [tnh-gen Robustness Review — April 2026](/architecture/tnh-gen/notes/tnh-gen-robustness-review-2026-04.md)
+- [tnh-gen UX Directions and Issues — May 2026](/architecture/tnh-gen/notes/tnh-gen-ux-directions-2026-05.md)
 - [TNH-Scholar Agent Orchestration System](/architecture/agent-orchestration/system-design.md)
 - [TNH‑Scholar Utilities Catalog](/architecture/utilities/design/utilities-catalog.md)
 - [Versioning Policy Documentation Additions](/architecture/project-policies/versioning-policy-implementation-summary.md)

@@ -4,7 +4,7 @@ description: "Table of contents for architecture/tnh-gen/adr"
 owner: ""
 author: ""
 status: current
-created: "2026-05-03"
+created: "2026-05-05"
 auto_generated: true
 ---
 
@@ -27,6 +27,8 @@ auto_generated: true
 **[ADR-TG04.1: JSON Contract Runtime Validation](adr-tg04.1-json-contract-runtime-validation.md)** - Define the runtime contract for resolving schema_ref, validating JSON prompt outputs, mapping failures, and serializing structured results in tnh-gen.
 
 **[ADR-TG04.2: Structured JSON Provenance Sidecars](adr-tg04.2-structured-json-provenance-sidecars.md)** - Clarify how tnh-gen preserves first-class provenance for structured JSON outputs without violating JSON artifact purity.
+
+**[ADR-TG04.3: Structured Output Trust Boundaries and Control Surfaces](adr-tg04.3-structured-output-trust-boundaries.md)** - Define how tnh-gen and downstream consumers should treat model-produced structured data, distinguish artifact contracts from control contracts, and prefer deterministic control outside AI-generated payloads.
 
 ---
 

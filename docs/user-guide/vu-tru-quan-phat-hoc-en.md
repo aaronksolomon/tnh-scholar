@@ -1,15 +1,21 @@
 ---
 title: "A Buddhist Cosmological View — Vũ-trụ-quan Phật học"
 description: "Pipeline translation of a 1957 Vietnamese Buddhist journal article on dependent origination and Buddhist cosmology, produced by tnh-gen."
+owner: "TNH Scholar"
 author: "Thạc-Đức"
 source: "Phật Giáo Việt Nam, issue 17–18, 1957"
 translated_by: "tnh-gen / translate_journal_section_en"
 model: "gpt-5.4"
-status: pipeline-output
+status: current
+created: "2026-05-04"
 generated: "2026-05-04"
 ---
 
-# Vũ-trụ-quan Phật học
+# A Buddhist Cosmological View — Vũ-trụ-quan Phật học
+
+Pipeline-assisted English translation of a 1957 Vietnamese Buddhist journal article,
+produced as part of the `tnh-gen` journal walkthrough.
+
 ## A Buddhist Cosmological View
 
 **Author:** Thạc-Đức  

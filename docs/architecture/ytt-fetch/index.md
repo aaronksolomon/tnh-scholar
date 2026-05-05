@@ -4,7 +4,7 @@ description: "Table of contents for architecture/ytt-fetch"
 owner: ""
 author: ""
 status: current
-created: "2026-05-03"
+created: "2026-05-05"
 auto_generated: true
 ---
 

@@ -644,6 +644,16 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Document prompt schema
   - [ ] Clean up ADR statuses and cross-ADR alignment for the prompt-platform / `tnh-gen` structured JSON contract area (`TG04`, `TG04.1`, `PT05`, related prompt-system notes) once the design settles
 
+#### 🚧 tnh-gen Operator UX
+
+- **Status**: NOT STARTED
+- **Priority**: LOW–MEDIUM
+- **Problem**: `tnh-gen` provides no feedback while the model is working and does not save run output automatically, creating a poor experience for interactive and long-running calls
+- **Tasks**:
+  - [ ] Add heartbeat / progress indicator to stderr during model calls so operators know the run is alive (especially for long documents — 10–30 s wait with no output)
+  - [ ] Add basic run logging: log prompt key, model, input path, and elapsed time at completion even in non-`--api` mode
+  - [ ] Persist `tnh-gen` run output by default to a temp or run-artifact directory when no `--output-file` is provided
+
 #### 🚧 tnh-gen Review Context Ingestion
 
 - **Status**: NOT STARTED
@@ -654,7 +664,6 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Support bounded repo-local file loading for review prompts with explicit source allowlists
   - [ ] Emit included context sources in provenance and API output
   - [ ] Document a standard review-workflow pattern for docs, ADR, and architecture audits
-  - [ ] Persist `tnh-gen` run output by default to a temp or run-artifact file even when no `--output-file` is provided
   - [ ] Add follow-on conversation support for `tnh-gen` review/generation runs so a prompt can continue from prior output or thread state
 
 #### 🚧 Knowledge Base Implementation

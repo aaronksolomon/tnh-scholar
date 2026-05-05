@@ -4,7 +4,7 @@ description: "Table of contents for architecture/gen-ai-service/design"
 owner: ""
 author: ""
 status: current
-created: "2026-05-03"
+created: "2026-05-05"
 auto_generated: true
 ---
 
