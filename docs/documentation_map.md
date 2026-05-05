@@ -115,6 +115,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [ADR-PP01: Rapid Prototype Versioning Policy](/architecture/project-policies/adr/adr-pp01-rapid-prototype-versioning.md)
 - [ADR-PT03: Prompt System Current Status & Roadmap](/architecture/prompt-system/adr/adr-pt03-prompt-system-status-roadmap.md)
 - [ADR-PT04: Prompt System Refactor Plan (Revised)](/architecture/prompt-system/adr/adr-pt04-prompt-system-refactor.md)
+- [ADR-PT05.1: Prototype Prompt Workspace Simplification](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md)
 - [ADR-PT05: Prompt Platform Strategy](/architecture/prompt-system/adr/adr-pt05-prompt-platform-strategy.md)
 - [ADR-PV01: Provenance & Tracing Infrastructure Strategy](/architecture/provenance/adr/adr-pv01-provenance-tracing-strat.md)
 - [ADR-ST01.1: tnh-setup UI Design](/architecture/setup-tnh/adr/adr-st01.1-tnh-setup-ui-design.md)

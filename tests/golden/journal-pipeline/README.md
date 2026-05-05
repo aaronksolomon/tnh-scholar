@@ -80,12 +80,14 @@ After running the pipeline, local outputs are typically written here:
 
 Scratch variants such as `02_sections.json`, `03_sections.json`, or
 `sections.strict.json` may also appear during prompt iteration. These are
-generated local artifacts as well and should remain untracked.
+generated local artifacts as well.
 
-All generated outputs in this directory are intentionally left untracked in
-git. The tracked fixtures here are the source text, per-page extracts, images,
-and this operator documentation. See the pipeline walkthrough documentation for
-commands.
+The checked-in walkthrough artifacts live under
+`tests/golden/journal-pipeline/walkthrough/clean_translate/`, including
+`sections_gpt54.json`, its provenance sidecar, numbered section slices, cleaned
+section outputs, vars files, and translated section outputs. Treat those as the
+artifact set of record for the current journal case study walkthrough. Ad hoc
+reruns and scratch variants may still be left untracked.
 
 ## Handoff State
 

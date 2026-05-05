@@ -219,7 +219,7 @@ raw OCR text
   ↓ tnh-lines number
 numbered source
   ↓ tnh-gen default_section
-sections.json
+sections_gpt54.json
   ↓ extract section
 section raw text
   ↓ tnh-gen default_clean
@@ -281,7 +281,7 @@ explicitly rather than normalized.
 ## Stage 1: Number the lines
 
 **Input:** `$SOURCE_FILE` — raw OCR text, approximately 146 lines  
-**Output:** `"$WORK_DIR/source_numbered.txt"` — same text with `N:` line prefix
+**Output:** `"$WORK_DIR/source_numbered_walkthrough.txt"` — same text with `N:` line prefix
 
 The sectioning prompt needs numbered input to anchor its section boundaries. We add line
 numbers to the source first:
@@ -289,7 +289,7 @@ numbers to the source first:
 ```bash
 tnh-lines number \
   "$SOURCE_FILE" \
-  "$WORK_DIR/source_numbered.txt"
+  "$WORK_DIR/source_numbered_walkthrough.txt"
 ```
 
 The output is plain text with `N:LINE` formatting — every line prefixed with its position.
@@ -308,8 +308,8 @@ boundaries to.
 
 ## Stage 2: Section the article
 
-**Input:** `"$WORK_DIR/source_numbered.txt"`  
-**Output:** `"$WORK_DIR/sections.json"` — section map, titles, summaries, and document-level metadata
+**Input:** `"$WORK_DIR/source_numbered_walkthrough.txt"`  
+**Output:** `"$WORK_DIR/sections_gpt54.json"` — section map, titles, summaries, and document-level metadata
 
 `default_section` reads the numbered source and divides it into logical sections. It also
 generates document-level metadata — a summary, key concepts, and section titles in both
@@ -319,12 +319,12 @@ Vietnamese and English — that will travel with the text through later stages.
 tnh-gen run \
   --prompt-dir ./tnh-prompts \
   --prompt default_section \
-  --input-file "$WORK_DIR/source_numbered.txt" \
+  --input-file "$WORK_DIR/source_numbered_walkthrough.txt" \
   --var source_language=Vietnamese \
   --var target_section_count=4 \
   --var target_lines_per_section=36 \
   --var document_metadata="$METADATA" \
-  --output-file "$WORK_DIR/sections.json"
+  --output-file "$WORK_DIR/sections_gpt54.json"
 ```
 
 The output is a JSON file. Here is what it finds in this article:
@@ -341,7 +341,7 @@ Beyond the section map, the JSON includes a document summary, key concepts (`nh�
 context note explaining the structure of the argument. This context gets passed into the
 translation stage.
 
-> **Review point:** Inspect `sections.json` before proceeding. If a boundary looks off —
+> **Review point:** Inspect `sections_gpt54.json` before proceeding. If a boundary looks off —
 > a section breaks mid-argument, or two short sections should be merged — the JSON can be
 > edited directly at this point. Sectioning is the one stage where human adjustment before
 > the next step is most consequential.
@@ -350,7 +350,7 @@ translation stage.
 
 ## Stage 3: Extract a section
 
-**Input:** `"$WORK_DIR/source_numbered.txt"` and section boundaries from `sections.json`  
+**Input:** `"$WORK_DIR/source_numbered_walkthrough.txt"` and section boundaries from `sections_gpt54.json`  
 **Output:** `"$WORK_DIR/section_01_raw.txt"` — unnumbered OCR text for section 1
 
 Taking `start_line` and `end_line` from the JSON, we extract that range from the numbered
@@ -358,7 +358,7 @@ source (lines 1–48):
 
 ```bash
 sed -n '1,48p' \
-  "$WORK_DIR/source_numbered.txt" \
+  "$WORK_DIR/source_numbered_walkthrough.txt" \
   > "$WORK_DIR/section_01_numbered.txt"
 ```
 
@@ -434,7 +434,7 @@ continuous prose. The footer intrusion that appeared mid-paragraph on page 7
 ## Stage 5: Translate the section
 
 **Input:** `"$WORK_DIR/section_01_cleaned.txt"` and `"$WORK_DIR/section_01_journal_translate_vars.json"`  
-**Output:** `"$WORK_DIR/section_01_translated.txt"` — English draft with YAML provenance header
+**Output:** `"$WORK_DIR/section_01_translated_journal_en.txt"` — English draft with YAML provenance header
 
 `translate_journal_section_en` translates a cleaned section into English, using the
 document context from the sectioning JSON — the summary, key concepts, source metadata,
@@ -447,10 +447,10 @@ tnh-gen run \
   --prompt translate_journal_section_en \
   --input-file "$WORK_DIR/section_01_cleaned.txt" \
   --vars "$WORK_DIR/section_01_journal_translate_vars.json" \
-  --output-file "$WORK_DIR/section_01_translated.txt"
+  --output-file "$WORK_DIR/section_01_translated_journal_en.txt"
 ```
 
-The vars file carries the section context from `sections.json` forward into this call.
+The vars file carries the section context from `sections_gpt54.json` forward into this call.
 See [Using a vars file](#using-a-vars-file) below.
 
 Here is the opening of the translation:
@@ -503,7 +503,12 @@ context for each one.
 When all four sections are done:
 
 ```bash
-cat "$WORK_DIR/section_0"{1,2,3,4}"_translated.txt" > "$WORK_DIR/final_translated.txt"
+cat \
+  "$WORK_DIR/section_01_translated_journal_en.txt" \
+  "$WORK_DIR/section_02_translated_journal_en.txt" \
+  "$WORK_DIR/section_03_translated_journal_en.txt" \
+  "$WORK_DIR/section_04_translated_journal_en.txt" \
+  > "$WORK_DIR/final_translated.txt"
 ```
 
 > **Full pipeline output:** The complete four-section translation — assembled from the

@@ -3,25 +3,10 @@
   "title": "TNH Generate Sections Multi-Language Output",
   "description": "Logical multi-language sectioning output with source-language titles, English titles, summaries, and inclusive line ranges.",
   "type": "object",
+  "additionalProperties": false,
   "required": [
+    "document_summary",
     "sections"
-  ],
-  "anyOf": [
-    {
-      "required": [
-        "summary"
-      ]
-    },
-    {
-      "required": [
-        "document_summary"
-      ]
-    },
-    {
-      "required": [
-        "talk_summary"
-      ]
-    }
   ],
   "properties": {
     "summary": {
@@ -38,28 +23,13 @@
       "minItems": 1,
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "required": [
+          "title",
           "summary",
           "start_line",
           "end_line",
           "title_en"
-        ],
-        "anyOf": [
-          {
-            "required": [
-              "title"
-            ]
-          },
-          {
-            "required": [
-              "title_orig"
-            ]
-          },
-          {
-            "required": [
-              "title_vi"
-            ]
-          }
         ],
         "properties": {
           "title": {

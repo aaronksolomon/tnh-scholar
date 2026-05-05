@@ -43,9 +43,10 @@ Each JSON output should also produce a provenance sidecar:
 
 - `<output>.provenance.yaml`
 
-These generated outputs are intentionally local-only and ignored by git. This
-directory tracks only the input scaffold and operator notes, including the
-retained `translate-json-input.json` fixture.
+The current maintained live-golden outputs in this directory are tracked in git
+as comparison artifacts, including model-suffixed variants produced during the
+GPT-5-family evaluation loop. Additional local reruns may still create
+untracked scratch outputs alongside them.
 
 ## Prompt Source
 

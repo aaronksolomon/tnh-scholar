@@ -20,6 +20,8 @@ auto_generated: true
 
 **[ADR-PT05: Prompt Platform Strategy](adr-pt05-prompt-platform-strategy.md)** - Establishes TNH Scholar's prompt platform architecture for multi-module prompt libraries, schema layering, and robust client integration.
 
+**[ADR-PT05.1: Prototype Prompt Workspace Simplification](adr-pt05.1-prototype-prompt-workspace-simplification.md)** - Defines the active prototype prompt storage model around a tracked repo-local workspace and deprecates the external shared prompt-repo path for current TNH Scholar operations.
+
 ---
 
 *This file auto-generated.*

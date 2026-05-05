@@ -368,8 +368,28 @@ def test_sectioning_schema_requires_end_line_for_walkthrough_handoff() -> None:
     for schema_name in ("default_section", "section_by_break"):
         schema_path = schemas_root / schema_name / "v1.schema.json"
         schema = service_module.json.loads(schema_path.read_text(encoding="utf-8"))
+        assert schema["additionalProperties"] is False
         required_fields = schema["properties"]["sections"]["items"]["required"]
+        assert schema["properties"]["sections"]["items"]["additionalProperties"] is False
         assert "end_line" in required_fields
+
+
+def test_sectioning_schema_rejects_top_level_schema_echo_keys() -> None:
+    schemas_root = (
+        Path(__file__).resolve().parents[2]
+        / "src"
+        / "tnh_scholar"
+        / "runtime_assets"
+        / "schemas"
+        / "prompt-contracts"
+        / "tnh"
+        / "sectioning"
+    )
+
+    for schema_name in ("default_section", "section_by_break", "generate_sections_multi_lang"):
+        schema_path = schemas_root / schema_name / "v1.schema.json"
+        schema = service_module.json.loads(schema_path.read_text(encoding="utf-8"))
+        assert schema["additionalProperties"] is False
 
 
 def test_gen_ai_service_rejects_schema_echo_properties_wrapper(

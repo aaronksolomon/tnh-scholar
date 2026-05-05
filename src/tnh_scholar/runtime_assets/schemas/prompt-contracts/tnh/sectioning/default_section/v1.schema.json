@@ -3,23 +3,13 @@
   "title": "TNH Default Section Output",
   "description": "Structured sectioning output for numbered transcripts with document-level context.",
   "type": "object",
+  "additionalProperties": false,
   "required": [
     "document_summary",
+    "document_metadata",
     "key_concepts",
     "narrative_context",
     "sections"
-  ],
-  "anyOf": [
-    {
-      "required": [
-        "document_metadata"
-      ]
-    },
-    {
-      "required": [
-        "dublin_core"
-      ]
-    }
   ],
   "properties": {
     "document_summary": {
@@ -32,17 +22,13 @@
       "type": "object"
     },
     "key_concepts": {
-      "oneOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      ]
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "string"
+      }
     },
     "narrative_context": {
       "type": "string"
@@ -55,6 +41,7 @@
       "minItems": 1,
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "required": [
           "start_line",
           "end_line",

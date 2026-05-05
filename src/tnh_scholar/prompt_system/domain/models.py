@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class PromptOutputMode(str, Enum):
@@ -51,6 +51,8 @@ class PromptOutputContract(BaseModel):
 
 class PromptMetadata(BaseModel):
     """Prompt front matter metadata."""
+
+    model_config = ConfigDict(extra="forbid")
 
     prompt_id: str | None = None
     key: str = ""

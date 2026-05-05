@@ -10,7 +10,7 @@ updated: "2026-04-28"
 
 # TNH Scholar Prompt System
 
-The TNH Scholar Prompt System manages the text processing templates that power `tnh-gen`. Prompts are Jinja2-templated Markdown files with YAML frontmatter, stored in a Git-backed directory and loaded by name at runtime.
+The TNH Scholar Prompt System manages the text processing templates that power `tnh-gen`. Prompts are Jinja2-templated Markdown files with YAML frontmatter, stored in prompt directories and loaded by name at runtime.
 
 > **Terminology note**: Earlier versions of the project called these files *patterns* and the management layer *PatternManager*. The current system uses *prompts* and `PromptCatalog`. The two terms refer to the same concept; the older terminology appears in legacy notebooks and archived code.
 
@@ -85,7 +85,7 @@ tnh-gen run --prompt default_line_translate \
 tnh-gen run --prompt default_section \
   --input-file cleaned_numbered.txt \
   --vars base_vars.json \
-  --var section_count=4
+  --var target_section_count=4
 ```
 
 See [tnh-gen CLI Reference](/cli-reference/tnh-gen.md) for the full variable precedence rules and output options.
@@ -114,13 +114,21 @@ rendered = prompt.apply_template({
 
 ## Prompt Location
 
-By default, prompts are stored at:
+By default, runtime prompt discovery checks:
 
 ```
+./prompts/
 ~/.config/tnh-scholar/prompts/
+src/tnh_scholar/runtime_assets/prompts/
 ```
 
-Override the location with the `TNH_PROMPT_DIR` environment variable:
+For the maintained walkthrough and golden test workflows in this repository, use:
+
+```bash
+--prompt-dir ./tnh-prompts
+```
+
+Override the catalog location globally with the `TNH_PROMPT_DIR` environment variable:
 
 ```bash
 # In .bashrc, .zshrc, or similar:
@@ -132,8 +140,9 @@ Or in a `.env` file for development installations.
 Resolution order:
 
 1. `TNH_PROMPT_DIR` environment variable (if set)
-2. Default `~/.config/tnh-scholar/prompts/`
-3. Directory is created if it does not exist
+2. Workspace prompt directory: `./prompts/`
+3. User prompt directory: `~/.config/tnh-scholar/prompts/`
+4. Bundled runtime prompts in `src/tnh_scholar/runtime_assets/prompts/`
 
 When `tnh-gen run --prompt my_prompt` is invoked, the system searches for `my_prompt.md` in the prompt directory and its subdirectories.
 
@@ -191,7 +200,10 @@ tnh-gen run --prompt my_reformat --input-file input.txt
 
 ### Version Control
 
-Prompts in the prompt directory are automatically tracked by Git. Changes are committed on save, giving you a full history of prompt modifications. Use standard `git log` and `git diff` to inspect changes.
+Prompt files are ordinary files. If they live in a git-tracked workspace such as
+`tnh-prompts/`, changes are versioned through normal repository commits. User-level
+prompt directories under `~/.config/tnh-scholar/` are local by default unless you
+choose to place them under version control yourself.
 
 ---
 

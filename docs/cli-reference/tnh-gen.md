@@ -41,14 +41,14 @@ tnh-gen list
 # Execute a prompt (human-friendly output)
 tnh-gen run --prompt translate \
   --input-file teaching.md \
-  --var source_lang=vi \
-  --var target_lang=en
+  --var source_language=vi \
+  --var target_language=en
 
 # Get machine-readable output for scripts
 tnh-gen --api run --prompt translate \
   --input-file teaching.md \
-  --var source_lang=vi \
-  --var target_lang=en
+  --var source_language=vi \
+  --var target_language=en
 ```
 
 ## Global Flags
@@ -57,7 +57,7 @@ These flags work with all commands:
 
 ```bash
 --api              # Enable machine-readable API contract output (JSON)
---format FORMAT    # Output format: json, yaml, text, table
+--format FORMAT    # Output format: json, yaml, text (the `list` command also supports table)
 --prompt-dir PATH  # Override the prompt catalog directory
 --config PATH      # Override config file location
 --quiet, -q        # Suppress non-error output
@@ -152,7 +152,7 @@ daily - Daily Guidance
 
 translate - Vietnamese-English Translation
   Translate Vietnamese dharma texts to English with context awareness.
-  Variables: source_lang, target_lang, input_text, [context]
+  Variables: source_language, target_language, input_text, [context]
   Model: gpt-4o | Tags: translation, dharma
 
 summarize - Summarize Teaching
@@ -177,7 +177,7 @@ $ tnh-gen --api list
       "name": "Vietnamese-English Translation",
       "description": "Translate Vietnamese dharma texts to English",
       "tags": ["translation", "dharma"],
-      "required_variables": ["source_lang", "target_lang", "input_text"],
+      "required_variables": ["source_language", "target_language", "input_text"],
       "optional_variables": ["context"],
       "default_variables": {},
       "default_model": "gpt-4o",
@@ -187,10 +187,7 @@ $ tnh-gen --api list
     }
   ],
   "count": 1,
-  "sources": {
-    "catalog_type": "filesystem",
-    "catalog_path": "/path/to/prompts"
-  }
+  "sources": ["defaults+env", "workspace"]
 }
 ```
 
@@ -288,16 +285,16 @@ Variables are merged in this precedence order (highest to lowest):
 tnh-gen run --prompt translate \
   --input-file teaching.md \
   --vars base_vars.json \
-  --var source_lang=vi \
-  --var target_lang=en
+  --var source_language=vi \
+  --var target_language=en
 ```
 
-If `base_vars.json` contains `{"source_lang": "en"}`, the inline `--var source_lang=vi` wins.
+If `base_vars.json` contains `{"source_language": "en"}`, the inline `--var source_language=vi` wins.
 
 #### Human-Friendly Output (Default)
 
 ```bash
-$ tnh-gen run --prompt translate --input-file teaching.md --var source_lang=vi --var target_lang=en
+$ tnh-gen run --prompt translate --input-file teaching.md --var source_language=vi --var target_language=en
 
 [Generated translation text appears here without JSON wrapper...]
 ```
@@ -310,7 +307,7 @@ $ tnh-gen run --prompt translate --input-file teaching.md --var source_lang=vi -
 #### API Output
 
 ```bash
-$ tnh-gen --api run --prompt translate --input-file teaching.md --var source_lang=vi --var target_lang=en
+$ tnh-gen --api run --prompt translate --input-file teaching.md --var source_language=vi --var target_language=en
 {
   "status": "succeeded",
   "result": {
@@ -371,8 +368,8 @@ schema_version: "1.0"
 # Simple translation with inline variables
 tnh-gen run --prompt translate \
   --input-file teaching.md \
-  --var source_lang=vi \
-  --var target_lang=en \
+  --var source_language=vi \
+  --var target_language=en \
   --output-file teaching.en.md
 
 # Complex variables via JSON file
@@ -470,15 +467,10 @@ $ tnh-gen --api config show
       "anthropic": "${ANTHROPIC_API_KEY}"
     }
   },
-  "sources": {
-    "prompt_catalog_dir": "workspace",
-    "default_model": "user",
-    "max_dollars": "defaults",
-    "provider_api_keys": "defaults"
-  },
+  "sources": ["defaults+env", "user", "workspace"],
   "config_files": [
-    "/path/to/workspace/.tnh-scholar/config.yaml",
-    "~/.config/tnh-scholar/config.yaml"
+    "/path/to/workspace/.vscode/tnh-scholar.json",
+    "~/.config/tnh-scholar/tnh-gen.json"
   ]
 }
 ```
@@ -549,14 +541,14 @@ These examples use four pages of OCR-scanned Vietnamese Buddhist journal text. S
 
 ```bash
 # Step 1: Number raw lines (preprocessing)
-awk '{print NR":"$0}' source.txt > source_numbered.txt
+tnh-lines number source.txt source_numbered.txt
 
 # Step 2: Section — identifies page breaks, produces metadata JSON
 tnh-gen run --prompt section_by_break \
   --input-file source_numbered.txt \
   --var source_language=Vietnamese \
-  --var section_count=4 \
-  --var metadata='{"title":"...","author":"...","journal":"..."}' \
+  --var target_section_count=4 \
+  --var document_metadata='title: ...\nauthor: ...\njournal: ...' \
   --output-file sections.json
 
 # Step 3: Extract section line ranges (see Pipeline Walkthrough for helper script)
