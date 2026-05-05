@@ -1,6 +1,7 @@
 """Legacy Click-based tnh-setup entrypoint.
 
 Prefer ``tnh_setup_typer.py`` for the maintained CLI implementation.
+This compatibility path is retained temporarily and should not diverge.
 """
 
 import subprocess
@@ -11,7 +12,7 @@ from pathlib import Path
 import click
 from dotenv import load_dotenv
 
-# Constants
+from tnh_scholar.cli_tools.tnh_setup.prompt_display import PromptSetupDisplay
 from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.utils.validate import check_openai_env
 from tnh_scholar.video_processing.yt_environment import YTDLPEnvironmentInspector
@@ -63,8 +64,8 @@ def report_prompt_setup(paths: SetupPaths, *, skip_prompts: bool) -> None:
         return
     click.echo("\nPrompt setup")
     click.echo(f"User prompt directory: {paths.prompt_dir}")
-    click.echo("Repo prompt workspace: tnh-prompts/ (repo-local default)")
-    click.echo("Bundled prompts: src/tnh_scholar/runtime_assets/prompts/")
+    click.echo(f"Repo prompt workspace: {PromptSetupDisplay.repo_workspace()}")
+    click.echo(f"Bundled prompts: {PromptSetupDisplay.bundled_prompts()}")
     click.echo("No external prompt download is performed.")
 
 

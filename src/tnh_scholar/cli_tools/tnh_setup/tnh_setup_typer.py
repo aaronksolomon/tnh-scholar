@@ -6,6 +6,7 @@ from pathlib import Path
 import typer
 from dotenv import load_dotenv
 
+from tnh_scholar.cli_tools.tnh_setup.prompt_display import PromptSetupDisplay
 from tnh_scholar.cli_tools.tnh_setup.ui import SetupSummaryItem, SetupUI
 from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.utils.validate import check_openai_env
@@ -137,8 +138,8 @@ def _prompt_skip_item(ui: SetupUI, reason: str) -> SetupSummaryItem:
 
 def _prompt_setup(ui: SetupUI, config: SetupConfig) -> SetupSummaryItem:
     ui.status("User prompt directory", str(config.prompt_dir), "info")
-    ui.status("Repo prompt workspace", "tnh-prompts/ (repo-local default)", "info")
-    ui.status("Bundled prompts", "src/tnh_scholar/runtime_assets/prompts/", "info")
+    ui.status("Repo prompt workspace", PromptSetupDisplay.repo_workspace(), "info")
+    ui.status("Bundled prompts", PromptSetupDisplay.bundled_prompts(), "info")
     ui.status("Prompt setup", "local directories ready; no external download", "ok")
     return _summary_item("Prompts", "configured", "ok")
 
