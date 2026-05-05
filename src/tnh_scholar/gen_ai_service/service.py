@@ -211,7 +211,7 @@ def _response_format_for_schema(
 def _supports_openai_json_schema(schema_document: object) -> bool:
     if not isinstance(schema_document, dict):
         return False
-    return schema_document.get("type") == "object"
+    return bool(schema_document.get("type") == "object")
 
 
 def _openai_compatible_json_schema(schema_document: object) -> dict[str, object]:
