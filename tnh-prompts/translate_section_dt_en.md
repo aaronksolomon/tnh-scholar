@@ -25,7 +25,7 @@ tags:
   - dharma-talk
   - plum-village
   - english
-default_model: gpt-4o
+default_model: gpt-5.4
 output_contract:
   mode: text
 output_mode: text
@@ -33,7 +33,7 @@ safety_level: safe
 schema_version: "1.0"
 ---
 
-Translate the section "{{ section_title }}" from {{ source_language }} into English in Plum Village / TNH style.
+Translate the section "{{ section_title }}" from {{ source_language }} into clear English in a Plum Village / TNH-adjacent Buddhist prose register.
 
 Metadata:
 {{ metadata }}
@@ -41,9 +41,12 @@ Metadata:
 Requirements:
 - Generate an English section title.
 - Preserve meaning while improving punctuation, grammar, transcription, and flow where needed.
+- Prefer faithful, readable, lightly scholarly English over decorative phrasing.
+- Keep established Buddhist technical terms accurate and consistent.
 - Paragraph the result with single blank-line separation.
 - Do not add, omit, summarize, or explain content.
 - Do not use markdown or wrapper formatting.
+- Do not output code fences, labels, notes, or introductory text.
 
 Output:
 - first line: the English title

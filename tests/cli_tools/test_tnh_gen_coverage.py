@@ -67,7 +67,7 @@ def _prompt_metadata(**overrides) -> PromptMetadata:
         "name": "Daily Guidance",
         "version": "1.0.0",
         "description": "Daily guidance prompt for testing.",
-        "task_type": "study-plan",
+        "role": "study-plan",
         "required_variables": [],
         "optional_variables": [],
         "default_variables": {},
@@ -119,7 +119,7 @@ def _write_prompt(tmp_path) -> str:
             "name: Daily Guidance\n"
             "version: 1.0.0\n"
             "description: Daily guidance prompt for testing.\n"
-            "task_type: study-plan\n"
+            "role: study-plan\n"
             "required_variables: []\n"
             "optional_variables: []\n"
             "default_variables: {}\n"

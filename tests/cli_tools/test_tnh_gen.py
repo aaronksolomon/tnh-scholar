@@ -44,7 +44,7 @@ def _write_prompt(tmp_path) -> str:
             name: Daily Guidance
             version: 1.0.0
             description: Daily guidance prompt for testing.
-            task_type: study-plan
+            role: study-plan
             required_variables:
               - audience
             optional_variables:
@@ -76,7 +76,6 @@ def _write_json_prompt(tmp_path) -> str:
             name: JSON Echo
             version: 1.0.0
             description: JSON prompt for testing.
-            task_type: test
             role: task
             required_variables: []
             output_contract:
@@ -122,7 +121,7 @@ def _write_prompt_catalog(tmp_path) -> str:
             name: Daily Guidance
             version: 1.0.0
             description: Daily guidance prompt for testing.
-            task_type: study-plan
+            role: study-plan
             required_variables: []
             optional_variables: []
             default_variables: {}
@@ -146,7 +145,7 @@ def _write_prompt_catalog(tmp_path) -> str:
             name: Zen Reflection
             version: 1.0.0
             description: Reflect on Zen teachings.
-            task_type: reflection
+            role: reflection
             required_variables: []
             optional_variables: []
             default_variables: {}
@@ -170,7 +169,7 @@ def _write_prompt_catalog(tmp_path) -> str:
             name: Study Planner
             version: 1.0.0
             description: Plan a study session.
-            task_type: planning
+            role: planning
             required_variables: []
             optional_variables: []
             default_variables: {}

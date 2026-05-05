@@ -21,7 +21,7 @@ key: {key}
 name: {name}
 version: 1.0.0
 description: desc
-task_type: test
+role: task
 required_variables: []
 ---
 {template}
@@ -60,7 +60,7 @@ key: cached
 name: cached
 version: invalid
 description: desc
-task_type: test
+role: task
 required_variables: []
 ---
 Second
@@ -228,7 +228,7 @@ def test_mapper_split_handles_bom_and_delimiters():
         "name: x\n"
         "version: 1.0.0\n"
         "description: d\n"
-        "task_type: t\n"
+        "role: task\n"
         "required_variables: []\n"
         "---\n"
         "Body"
@@ -245,7 +245,7 @@ key: simple
 name: Simple
 version: 1.0.0
 description: desc
-task_type: test
+role: task
 optional_variables:
   - source_language
 default_variables:
@@ -270,7 +270,7 @@ key: simple
 name: Simple
 version: 1.0.0
 description: desc
-task_type: test
+role: task
 required_variables: []
 output_contract: not-a-mapping
 ---

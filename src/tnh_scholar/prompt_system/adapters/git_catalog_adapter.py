@@ -28,7 +28,7 @@ class GitPromptCatalog(PromptCatalogPort):
 
     _EXPECTED_FRONTMATTER = (
         "Expected prompt envelope keys include prompt_id/key, name, version, description, "
-        "role/task_type, inputs/required_variables, and output_contract/output_mode."
+        "role, inputs/required_variables, and output_contract/output_mode."
     )
     _IGNORED_FILENAMES = frozenset({"readme.md"})
 
@@ -170,7 +170,6 @@ class GitPromptCatalog(PromptCatalogPort):
             version="0.0.0-invalid",
             description="Auto-generated metadata for prompt without valid frontmatter.",
             role="task",
-            task_type="unknown",
             required_variables=[],
             optional_variables=[],
             default_variables={},

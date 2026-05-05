@@ -30,13 +30,14 @@ def _prompt_metadata(
     *,
     default_model: str | None = None,
     output_mode: str | None = None,
+    role: str = "task",
 ) -> PromptMetadata:
     return PromptMetadata(
         key="k",
         name="n",
         version="1.0.0",
         description="desc",
-        task_type="task",
+        role=role,
         required_variables=[],
         default_variables={},
         tags=[],
@@ -147,6 +148,26 @@ def test_router_keeps_structured_capable_model_for_json_mode():
 
     assert routed.model == "gpt-4o-mini"
     assert "intent=summarize" in (routed.routing_reason or "")
+
+
+def test_router_uses_prompt_role_when_intent_is_missing():
+    settings = GenAISettings(_env_file=None, default_model="gpt-4o-mini")
+    params = ResolvedParams(
+        provider="openai",
+        model="gpt-4o-mini",
+        temperature=0.5,
+        max_output_tokens=128,
+        output_mode="text",
+    )
+
+    routed = select_provider_and_model(
+        intent=None,
+        params=params,
+        settings=settings,
+        prompt_metadata=_prompt_metadata(role="sectioning"),
+    )
+
+    assert "intent=sectioning" in (routed.routing_reason or "")
 
 
 def test_router_leaves_model_for_text_mode():

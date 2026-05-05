@@ -13,7 +13,6 @@ This directory holds small live-golden inputs for the maintained JSON prompts:
 - `section_by_break`
 - `generate_sections_en`
 - `generate_sections_multi_lang`
-- `translate_json`
 
 These are intentionally small and cheap. They are meant to validate:
 
@@ -28,7 +27,7 @@ These are intentionally small and cheap. They are meant to validate:
 - `numbered-short-vi.txt`
   - Vietnamese numbered text for `default_section`, `section_by_break`, and `generate_sections_multi_lang`
 - `translate-json-input.json`
-  - Small nested JSON document for `translate_json`
+  - Retained as a possible future design fixture for JSON-translation work, not as a maintained `tnh-gen` golden prompt
 
 ## Local Output Conventions
 
@@ -39,15 +38,14 @@ Typical filenames:
 - `section-by-break.output.json`
 - `generate-sections-en.output.json`
 - `generate-sections-multi-lang.output.json`
-- `translate-json.output.json`
 
 Each JSON output should also produce a provenance sidecar:
 
 - `<output>.provenance.yaml`
 
 These generated outputs are intentionally local-only and ignored by git. This
-directory tracks only the input scaffold and operator notes, including
-`translate-json-input.json`.
+directory tracks only the input scaffold and operator notes, including the
+retained `translate-json-input.json` fixture.
 
 ## Prompt Source
 
@@ -61,6 +59,7 @@ These goldens are intended to run against the tracked repo-local prompt workspac
 
 - This scaffold is for structural and live-contract validation, not semantic prompt-quality review.
 - Broader prompt simplification and quality cleanup remain deferred under `TODO.md` in the `Prompt Catalog Safety` area.
+- `translate_json` was removed from the maintained prompt workspace after GPT-5-family evaluation showed repeated semantic no-op behavior despite structural success.
 
 ## Handoff State
 
@@ -81,5 +80,5 @@ PYTHONPATH=./src \
   config show --catalog-health
 ```
 
-- The next intended live runs are the five small JSON prompt checks in this directory.
+- The next intended live runs are the four maintained sectioning checks in this directory.
 - The first preliminary live attempts in this workstream were blocked under the earlier `$0.10` default. The current runtime default is now `$0.30`, but operators can still raise it explicitly when a specific run needs more headroom.

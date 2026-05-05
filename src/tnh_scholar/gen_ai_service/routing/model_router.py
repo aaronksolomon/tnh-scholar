@@ -86,7 +86,7 @@ def select_provider_and_model(
             model = fallback
 
     # Placeholder for future intent-based overrides
-    intent_tag = intent or (prompt_metadata.task_type if prompt_metadata else None)
+    intent_tag = intent or (prompt_metadata.role if prompt_metadata else None)
     if intent_tag:
         routing_reason = f"{routing_reason}; intent={intent_tag}"
 

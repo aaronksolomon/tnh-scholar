@@ -45,7 +45,6 @@ def _write_json_prompt(tmp_path):
             name: json-echo
             version: 1.0.0
             description: JSON contract prompt for testing.
-            task_type: test
             role: task
             required_variables: []
             output_contract:
@@ -244,3 +243,143 @@ def test_gen_ai_service_skips_openai_response_format_for_non_object_json_schema(
 
     assert envelope.outcome.value == "succeeded"
     assert dummy_client.requests[0].response_format is None
+
+
+def test_gen_ai_service_sanitizes_openai_response_format_for_object_schema_with_top_level_anyof(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    prompt_dir = _write_json_prompt(tmp_path)
+    builtin_root = tmp_path / "builtin"
+    schema_dir = builtin_root / "schemas" / "prompt-contracts" / "tnh" / "testing" / "echo"
+    schema_dir.mkdir(parents=True, exist_ok=True)
+    schema_dir.joinpath("v1.schema.json").write_text(
+        dedent(
+            """\
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "anyOf": [
+                { "required": ["message"] },
+                { "required": ["summary"] }
+              ],
+              "properties": {
+                "message": { "type": "string" },
+                "summary": { "type": "string" }
+              }
+            }
+            """
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(service_module, "apply_policy", _fake_apply_policy)
+    monkeypatch.setattr(service_module, "select_provider_and_model", _fake_select)
+    monkeypatch.setattr(service_module, "OpenAIClient", DummyOpenAIClient)
+    monkeypatch.setattr(
+        PromptContractSchemaResolver,
+        "for_prompt_directory",
+        classmethod(
+            lambda cls, _prompts_base: cls(
+                TNHContext(
+                    builtin_root=builtin_root,
+                    workspace_root=prompt_dir.parent,
+                    user_root=tmp_path / "user",
+                    correlation_id="corr",
+                    session_id="sess",
+                )
+            )
+        ),
+    )
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(prompt_dir))
+    monkeypatch.setenv("OPENAI_API_KEY", "unit-test-key")
+
+    settings = GenAISettings(_env_file=None)
+    service = GenAIService(settings=settings)
+    dummy_client: DummyOpenAIClient = service.openai_client  # type: ignore[assignment]
+    dummy_client.response = _provider_response('{"message":"hello"}')
+
+    envelope = service.generate(
+        RenderRequest(
+            instruction_key="json-echo",
+            user_input="ignored",
+            variables={},
+        )
+    )
+
+    assert envelope.outcome.value == "succeeded"
+    response_format = dummy_client.requests[0].response_format
+    assert response_format is not None
+    assert response_format["type"] == "json_schema"
+    schema = response_format["json_schema"]["schema"]
+    assert schema["type"] == "object"
+    assert "anyOf" not in schema
+
+
+def test_gen_ai_service_rejects_schema_echo_properties_wrapper(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    prompt_dir = _write_json_prompt(tmp_path)
+    builtin_root = tmp_path / "builtin"
+    schema_dir = builtin_root / "schemas" / "prompt-contracts" / "tnh" / "testing" / "echo"
+    schema_dir.mkdir(parents=True, exist_ok=True)
+    schema_dir.joinpath("v1.schema.json").write_text(
+        dedent(
+            """\
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "required": ["document_summary", "sections"],
+              "properties": {
+                "document_summary": { "type": "string" },
+                "sections": {
+                  "type": "array",
+                  "items": { "type": "object" }
+                }
+              }
+            }
+            """
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(service_module, "apply_policy", _fake_apply_policy)
+    monkeypatch.setattr(service_module, "select_provider_and_model", _fake_select)
+    monkeypatch.setattr(service_module, "OpenAIClient", DummyOpenAIClient)
+    monkeypatch.setattr(
+        PromptContractSchemaResolver,
+        "for_prompt_directory",
+        classmethod(
+            lambda cls, _prompts_base: cls(
+                TNHContext(
+                    builtin_root=builtin_root,
+                    workspace_root=prompt_dir.parent,
+                    user_root=tmp_path / "user",
+                    correlation_id="corr",
+                    session_id="sess",
+                )
+            )
+        ),
+    )
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(prompt_dir))
+    monkeypatch.setenv("OPENAI_API_KEY", "unit-test-key")
+
+    settings = GenAISettings(_env_file=None)
+    service = GenAIService(settings=settings)
+    dummy_client: DummyOpenAIClient = service.openai_client  # type: ignore[assignment]
+    dummy_client.response = _provider_response(
+        '{"type":"object","properties":{"document_summary":"summary","sections":[{"title":"One"}]}}'
+    )
+
+    envelope = service.generate(
+        RenderRequest(
+            instruction_key="json-echo",
+            user_input="ignored",
+            variables={},
+        )
+    )
+
+    assert envelope.outcome.value == "failed"
+    assert envelope.result is None
+    assert envelope.failure is not None
+    assert envelope.failure.reason == FailureReason.CONTRACT_VALIDATION_FAILED
+    assert "schema 'tnh.testing.echo.v1'" in envelope.failure.message

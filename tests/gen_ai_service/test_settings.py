@@ -48,6 +48,23 @@ def test_settings_alias_precedence(tmp_path: Path, monkeypatch: pytest.MonkeyPat
     assert settings.prompt_dir == fallback
 
 
+def test_settings_explicit_prompt_dir_overrides_env_alias(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    env_dir = tmp_path / "env-prompts"
+    explicit_dir = tmp_path / "explicit-prompts"
+    env_dir.mkdir()
+    explicit_dir.mkdir()
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(env_dir))
+
+    settings = GenAISettings(_env_file=None, prompt_dir=explicit_dir)
+
+    assert settings.prompt_dir == explicit_dir
+    assert settings.default_prompt_dir == explicit_dir
+
+
 def test_settings_prompt_dir_defaults_to_context(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

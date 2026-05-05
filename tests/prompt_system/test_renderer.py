@@ -15,7 +15,7 @@ def make_prompt(
         name="test",
         version="1.0.0",
         description="desc",
-        task_type="test",
+        role="task",
         required_variables=required or [],
         **(metadata_extra or {}),
     )

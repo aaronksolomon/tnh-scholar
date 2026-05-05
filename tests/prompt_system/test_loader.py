@@ -16,7 +16,7 @@ def test_loader_delegates_to_validator():
             name="test",
             version="1.0.0",
             description="desc",
-            task_type="test",
+            role="task",
             required_variables=[],
         ),
     )

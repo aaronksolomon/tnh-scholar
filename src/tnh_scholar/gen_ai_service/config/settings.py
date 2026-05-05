@@ -40,6 +40,7 @@ class GenAISettings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",  # ignore unknown env vars rather than erroring
+        populate_by_name=True,
     )
 
     # Provider credentials / org metadata

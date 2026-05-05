@@ -12,6 +12,7 @@ Connected modules:
   - infra.issue_handler.IssueHandler (runtime validation & error hints)
 """
 
+import copy
 import json
 from datetime import datetime
 from pathlib import Path
@@ -162,7 +163,11 @@ class GenAIService:
             self._schema_resolver.validate_instance(resolved_schema, json_value)
         except (json.JSONDecodeError, JsonSchemaValidationError) as exc:
             return _contract_validation_failure(envelope, resolved_schema.schema_ref, exc)
-        return _with_validated_json(envelope, resolved_schema.schema_ref, json_value)
+        return _with_validated_json(
+            envelope,
+            resolved_schema.schema_ref,
+            json_value,
+        )
 
 
 def _build_policy_applied(
@@ -198,7 +203,7 @@ def _response_format_for_schema(
             # Use schema-guided output without forcing OpenAI's strict subset gate.
             # Local JSON Schema validation remains the authoritative contract check.
             "strict": False,
-            "schema": resolved_schema.document,
+            "schema": _openai_compatible_json_schema(resolved_schema.document),
         },
     }
 
@@ -207,6 +212,15 @@ def _supports_openai_json_schema(schema_document: object) -> bool:
     if not isinstance(schema_document, dict):
         return False
     return schema_document.get("type") == "object"
+
+
+def _openai_compatible_json_schema(schema_document: object) -> dict[str, object]:
+    if not isinstance(schema_document, dict):
+        raise TypeError("OpenAI JSON schema compatibility requires an object schema document.")
+    compatible_schema = copy.deepcopy(schema_document)
+    for keyword in ("oneOf", "anyOf", "allOf", "enum", "not"):
+        compatible_schema.pop(keyword, None)
+    return compatible_schema
 
 
 def _response_format_name(schema_ref: str) -> str:

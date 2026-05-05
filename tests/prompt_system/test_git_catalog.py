@@ -29,7 +29,7 @@ key: {name}
 name: {prompt_name}
 version: 1.0.0
 description: desc
-task_type: test
+role: task
 required_variables:
   - who
 ---

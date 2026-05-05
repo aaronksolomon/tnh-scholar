@@ -3,7 +3,6 @@ key: default_clean
 name: Default OCR Clean
 version: "1.0"
 description: Cleans OCR-generated text into flowing plain text — fixes character errors, restores diacritical marks, removes page artifacts (headers, footers, watermarks, page numbers), and normalizes paragraph structure. Use for plain-text output pipelines; see default_clean_numbered for line-tracked pipelines.
-task_type: cleaning
 role: cleaning
 required_variables:
   - source_language
@@ -26,7 +25,7 @@ tags:
   - text-processing
 default_variables:
   source_language: Vietnamese
-default_model: gpt-4o
+default_model: gpt-5.4
 output_contract:
   mode: text
 output_mode: text

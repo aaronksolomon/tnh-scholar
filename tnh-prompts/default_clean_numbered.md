@@ -28,7 +28,7 @@ tags:
   - text-processing
 default_variables:
   source_language: Vietnamese
-default_model: gpt-4o
+default_model: gpt-5.4
 output_contract:
   mode: text
 output_mode: text

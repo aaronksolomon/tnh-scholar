@@ -3,7 +3,7 @@ key: translate
 name: Translate
 version: "1.0.0"
 description: "Translate input text between languages."
-task_type: "translate"
+role: "translate"
 required_variables:
   - source_language
   - target_language
