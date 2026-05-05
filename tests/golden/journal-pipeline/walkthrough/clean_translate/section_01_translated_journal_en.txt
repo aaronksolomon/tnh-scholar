@@ -1,34 +1,38 @@
 ---
 fingerprint: sha256:2dcb3a1a84e85e6df49f48e7091fed91fefaf51ec61e80795f0dd6366a7479cc
-generated_at: '2026-05-05T08:27:33Z'
+generated_at: '2026-05-05T14:01:25Z'
 model: gpt-5.4
 prompt_key: translate_journal_section_en
 prompt_version: '1.0'
 schema_version: '1.0'
 tnh_scholar_generated: true
-trace_id: 2a4a97fb28d64144b02fb9620011af97
+trace_id: 9c185442eebb4c439852d270e650e5e8
 ---
 
-Three Philosophical Tendencies in India and Buddhism’s Critique
+Introduction and a Critique of Three Indian Philosophical Tendencies
 
-At the time of the Buddha, the question of the principle underlying all things was one to which the intellectual world of India gave great attention. The Brahmajāla Sutta records as many as sixty-two different explanations advanced by the Indian philosophical schools of that period. Broadly speaking, however, we can discern the following three tendencies:
+Buddhist Cosmology
 
-1.— The tendency of fatalism (Pubba-kata-hetu)
+Thac-Duc
 
-The philosophical schools belonging to this tendency held that both the natural world and the human world were arranged by predestination. Everything proceeded according to pre-existing natural laws. The value of human effort and material agency was not acknowledged here.
+In the age of the Buddha, the question of the fundamental principle of all things was one to which the intellectual world of India gave great attention. The Brahmajala Sutta records as many as sixty-two different explanations advanced by the Indian philosophical schools of that time. In general, however, we may discern the following three tendencies:
 
-2. The tendency of theism or divine-volition theory (Issara-nimmāna-hetu)
+1. The tendency of fatalism (Pubba-kata-hetu)
 
-The philosophical schools belonging to this tendency held that all things exist through the will of a divine being. This divine being was Brahmā, and the center of the schools belonging to this tendency was Brahmanism.
+The philosophical schools belonging to this tendency maintained that the entire natural world and human world are arranged by predestination. Everything proceeds according to pre-existent natural laws. The value of human effort and material agency is not acknowledged here.
 
-3.— The tendency of chance theory (Ahetu-apaccaya)
+2. The tendency of theism or divine volition (Issara-nimmana-hetu)
 
-The philosophical schools belonging to this tendency did not acknowledge any principle of causality. All phenomena arose and existed by chance, without following any law or principle whatsoever.
+The philosophical schools belonging to this tendency maintained that all things exist through the will of a divine being. That divine being here is Brahma, and the center of the schools belonging to this tendency is Brahmanism.
 
-The first and second tendencies assign all responsibility to a supernatural power. Personal responsibility here does not become an issue; fortune and misfortune alike are things that human beings cannot determine. Human actions, whether good or evil, are not the motive force behind success, failure, ruin, or accomplishment.
+3. The tendency of chance or accidentalism (Ahetu-apaccaya)
 
-The third tendency likewise fails to establish a foundation for personal moral responsibility. If everything is merely accidental, then good is accidental, evil is accidental, and fortune and blessing are accidental as well; nothing remains to serve as a standard for human conduct. Consequently, human beings cannot gradually advance toward truth, beauty, and goodness; on the contrary, they may all too easily fall into sin and moral degradation.
+The philosophical schools belonging to this tendency did not acknowledge the principle of cause and effect. All phenomena arise and exist accidentally, without following any law or principle whatsoever.
 
-From the theoretical point of view, the doctrines belonging to the above tendencies all contain many defects. From the standpoint of human life, the consequences they bring about are dark and discouraging. None of them can give human beings a settled ground on which to establish life and peace of mind; nor do they affirm the necessary and inherent capacities of the human person.
+The first and second tendencies assign all responsibility to a supernatural power. Personal responsibility here does not become an issue; fortune and misfortune alike are things that human beings cannot determine. Human good and evil actions are not the motive force behind success or failure, growth or ruin.
 
-The Buddha’s standpoint was to expound the principle of the universe as the foundation for a way of life. That principle had to accord with the truth of the myriad phenomena, and that way of life had to lead human beings to the fulfillment of moral and religious value. The Buddha’s purpose in teaching the Dīrghāgama was not to overthrow the theories of others for its own sake, but simply to reject erroneous philosophical views that might obstruct the realization of morality and liberation in human beings.
+The third tendency likewise cannot establish any basis for personal moral responsibility. If everything is accidental, then goodness is accidental, evil is accidental, fortune and misfortune are accidental as well; there is nothing that can serve as a standard for human conduct. Consequently, human beings cannot gradually advance toward truth, beauty, and goodness; on the contrary, they may very easily slide down the slope of sin and moral degeneration.
+
+From the theoretical point of view, the doctrines belonging to the above tendencies all have many defects. From the human point of view, the consequences produced by those doctrines are dark and discouraging. None of them can provide human beings with peace of mind and a secure grounding for life; none can affirm the necessary and inherent capacities of the human person.
+
+The Buddha’s standpoint was to expound the principle of the universe as the foundation for a way of human life. That principle had to accord with the truth of the myriad phenomena, and that way of life had to lead human beings to the fulfillment of an ethical and religious value. The Buddha’s purpose in preaching the Dirgha Agama was not to overthrow the theories of others for its own sake, but only to repudiate mistaken philosophical views that might obstruct the realization of morality and liberation in human beings.

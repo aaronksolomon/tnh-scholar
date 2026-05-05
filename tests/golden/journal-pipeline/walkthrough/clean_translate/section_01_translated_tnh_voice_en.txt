@@ -1,34 +1,34 @@
 ---
-fingerprint: sha256:d3bb380073fb612d8423efab51484d0339c1125039961e2645a45376a7bf3b7c
-generated_at: '2026-05-05T08:29:26Z'
+fingerprint: sha256:5d6d02c1b4d78e9f4b45950b2b9cc0ede1e03fcc7640d31fa188881ec2c042f1
+generated_at: '2026-05-05T14:02:28Z'
 model: gpt-5.4
 prompt_key: translate_journal_section_tnh_voice_en
 prompt_version: '1.0'
 schema_version: '1.0'
 tnh_scholar_generated: true
-trace_id: 8e64e029b3b74de2b402b67411b0c660
+trace_id: b55799bd07724a4ea9529d3f60a5ad0d
 ---
 
-Three Indian Philosophical Tendencies and Buddhism’s Critique
+Introduction and a Critique of Three Indian Philosophical Tendencies
 
-At the time of the Buddha, the question of the underlying principle of all things was one to which Indian thinkers gave great attention. The Brahmajāla Sutta records as many as sixty-two different explanations put forward by the Indian philosophical schools of that age. Broadly speaking, we can see three main tendencies:
+In the time of the Buddha, the question of the first principle of all things held a very important place in the intellectual life of India. The Brahmajāla Sutta records as many as sixty-two different explanations offered by the Indian philosophical schools of that age. Broadly speaking, we can see three principal tendencies:
 
-1. The tendency of fatalism (Pubba kata hetu)
+1. The tendency of fatalism (Pubba-kata-hetu)
 
-The schools belonging to this tendency held that the whole natural world and the human world are arranged by predestination. Everything unfolds according to fixed laws already there. The value of human effort and material means is not acknowledged here.
+The schools belonging to this tendency held that the whole natural world and the human world are arranged by predestination. Everything proceeds according to fixed natural laws already laid down. The value of human effort and material means is not acknowledged here.
 
-2. The tendency of theism, or divine will (Issara-nimmana hetu)
+2. The tendency of theism, or divine will (Issara-nimmāna-hetu)
 
-The schools of this tendency maintained that all things exist through the will of a divine being. That divine being here is Brahmā, and the center of the schools belonging to this tendency is Brahmanism.
+The schools belonging to this tendency held that all things exist through the will of a divine being. This divine being is Brahmā, and the center of the schools of this tendency is Brahmanism.
 
-3. The tendency of chance, or non-causation (Ahetu apaccaya)
+3. The tendency of chance (Ahetu-apaccaya)
 
-The schools belonging to this tendency did not admit the principle of causality. All phenomena arise and continue by chance, without following any law or principle at all.
+The schools belonging to this tendency did not admit the principle of causation. All phenomena arise and continue by chance, without following any law or principle at all.
 
-The first and second tendencies place all responsibility in the hands of a supernatural power. Personal responsibility does not truly arise as a question here; misfortune and blessing alike are things human beings cannot determine. Human actions, whether good or evil, are not the motive force behind success or failure, growth or ruin.
+The first and second tendencies assign all responsibility to a supernatural power. Personal responsibility therefore does not become a real question; blessing and misfortune alike are things that human beings cannot determine. Good and evil actions on the part of human beings are not regarded as the motive force behind success or failure, growth or decline.
 
-The third tendency also cannot establish any ground for personal moral responsibility. If everything is accidental, then goodness is accidental, evil is accidental, fortune and disaster are accidental as well. There is nothing that can serve as a standard for human conduct. Because of this, a person cannot gradually move toward truth, beauty, and goodness; on the contrary, one may easily slide down the slope of wrongdoing and corruption.
+The third tendency also cannot establish any basis for personal moral responsibility. If everything is mere chance, then good is also chance, evil is also chance, fortune and misfortune are also chance; there is nothing that can serve as a standard for human conduct. Because of this, human beings cannot gradually advance toward truth, beauty, and goodness. On the contrary, they may very easily slide down the slope of wrongdoing and corruption.
 
-From the standpoint of theory, the doctrines belonging to these tendencies all have many shortcomings. From the standpoint of human life, the consequences they bring are dark and discouraging. None of them can help a human being find peace and establish one’s life with confidence, for none of them affirms the necessary and already present capacities of the human person.
+From the point of view of theory, the doctrines belonging to these tendencies all have many shortcomings. From the point of view of human life, the consequences they bring are dark and discouraging. None of them can give a person peace of mind or a secure ground for life, nor do they affirm the necessary and already present capacities of the human being.
 
-The Buddha’s standpoint was to clarify the principle of the universe as the foundation for a way of human living. That principle had to accord with the truth of the countless phenomena, and that way of life had to lead the human being toward the fulfillment of moral and religious value. The Buddha’s purpose in teaching the Dīrgha Āgama was not to overthrow the theories of others for its own sake, but only to reject mistaken philosophical views that could obstruct the realization of morality and liberation.
+The Buddha’s standpoint was to explain the principle of the universe as the foundation for a way of human living. That principle had to accord with the truth of the countless phenomena, and that way of life had to lead the human being to the fulfillment of moral and religious value. The Buddha’s purpose in teaching the Dīrgha Āgama was not to overthrow the theories of others for its own sake, but only to reject mistaken philosophical views that could obstruct the realization of morality and liberation in human life.

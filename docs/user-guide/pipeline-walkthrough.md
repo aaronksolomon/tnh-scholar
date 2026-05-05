@@ -70,33 +70,19 @@ resolve the authorship question.
 
 ### Why this article matters
 
-At the doctrinal level, the article engages a question central to both the Buddha's
-earliest teaching and to mid-twentieth century Buddhist reform: what principle underlies
-the world of experience, action, suffering, and liberation? The author surveys three
-positions from ancient India — fatalism, divine-will theory, and accidentalism — and
-argues that the Buddha's doctrine of dependent origination (*duyên khởi*,
-*paticca-samuppāda*) offers what none of them can: a foundation for moral responsibility
-and genuine human agency. The treatment draws on the Āgamas, Abhidharma classification,
-and the Huayan conception of interdependence. For a scholarly translation pipeline, this
-means attending carefully to Pali and Sanskrit terminology, doctrinal register, textual
-citations, and places where OCR damage could change the philosophical meaning of a
-sentence.
-
-At the level of Vietnamese Buddhist history, the article belongs to a significant moment.
+At the level of Vietnamese Buddhist history, the article is significant.
 *Phật Giáo Việt Nam* was a vehicle for Buddhist modernization and reform, published 1956–1959
 by Tổng Hội Phật Giáo Việt Nam, with Vietnamese Buddhist thinkers working to articulate an
 engaged, rational, and nationally relevant Buddhism (Lê 2024). The journal's style, the
 topics chosen, and the pen-name culture around the editorial circle are all objects of
 ongoing scholarly study (Lê 2024; Lê 2023). Translating this material requires awareness
-of the 1950s Vietnamese Buddhist intellectual context, not just the doctrinal content.
+of the 1950s Vietnamese Buddhist intellectual context.
 
 At the level of Thích Nhất Hạnh's intellectual arc, articles from this period sit near the
 beginning of a trajectory that runs from Vietnamese Buddhist renewal through socially
 engaged Buddhism, peace work, and the forms of Buddhist teaching that later took root in
-the United States and Europe (Lê 2023; Lê 2024). This case study does not claim that any
-single article explains that arc; it shows that `tnh-scholar` must preserve philological
-detail, historical context, uncertain attribution, and translator-facing provenance rather
-than flattening the text into a generic English summary.
+the United States and Europe (Lê 2023; Lê 2024). This case study shows that `tnh-scholar` 
+must preserve philological detail, historical context, uncertain attribution, and translator-facing provenance.
 
 <details>
 <summary>References</summary>
@@ -330,10 +316,10 @@ The output is a JSON file. Here is what it finds in this article:
 
 | Section | Lines | Title |
 |---------|-------|-------|
-| 1 | 1–48 | Indian Intellectual Context and Buddhism's Critical Stance |
-| 2 | 49–93 | The Conditioned World and the Principle of Dependent Origination |
-| 3 | 94–124 | Simultaneous Causality and the Constitution of the World of Cognition |
-| 4 | 125–146 | Successive-Time Causality, Continuity of Life, and Ethical-Liberative Meaning |
+| 1 | 1–48 | Introduction and critique of three Indian philosophical tendencies |
+| 2 | 49–93 | Dependent origination as the Buddhist worldview |
+| 3 | 94–124 | Simultaneous causality: world as relation of subject and object |
+| 4 | 125–146 | Sequential causality, continuity of life, and the broader meaning of causality |
 
 Beyond the section map, the JSON includes a document summary, key concepts (`nhân duyên`,
 `duyên khởi`, `vô thường`, `luân hồi`, and more), Dublin Core metadata, and a narrative
@@ -454,19 +440,22 @@ Here is the opening of the translation:
 
 ---
 
-*The Indian Intellectual Context and Buddhism's Critical Stance*
+*Introduction and a Critique of Three Indian Philosophical Tendencies*
 
-In the time of the Buddha, the question of the principle underlying all things was
-one to which the Indian intellectual world gave great attention. The Brahmajāla Sutta
-records as many as sixty-two different explanations advanced by the Indian
-philosophical schools of that age. In sum, we may discern the following three
-tendencies:
+Buddhist Cosmology
 
-1.— The tendency of fatalism (*pubba-kata-hetu*)
+Thac-Duc
 
-The philosophical schools belonging to this tendency held that both the natural world
-and the human world are arranged by predestination. Everything operates according to
-pre-existing natural laws. The value of human effort and material agency is not
+In the age of the Buddha, the question of the fundamental principle of all things was
+one to which the intellectual world of India gave great attention. The Brahmajala Sutta
+records as many as sixty-two different explanations advanced by the Indian philosophical
+schools of that time. In general, however, we may discern the following three tendencies:
+
+1. The tendency of fatalism (*pubba-kata-hetu*)
+
+The philosophical schools belonging to this tendency maintained that the entire natural
+world and human world are arranged by predestination. Everything proceeds according to
+pre-existent natural laws. The value of human effort and material agency is not
 acknowledged here.
 
 ---
@@ -475,11 +464,11 @@ And here is the closing of the fourth and final section:
 
 ---
 
-In sum, the Buddhist conception of causality, in its narrow sense, is simply the law
-of causality; but in its broader sense, it is not confined to causal relations of a
-purely theoretical kind. The Buddhist conception of causality also encompasses ethical
-and soteriological relations; in breadth it extends throughout the ten directions,
-and in length it penetrates past, future, and present.
+In sum, the Buddhist conception of causality, in the narrow sense, is simply the Law
+of Causality (*Loi de Causalité*); but in the broad sense, it is not confined to causal
+relations of a purely theoretical nature. The Buddhist conception of causality also
+encompasses moral and liberative relations; in breadth it extends throughout the ten
+directions, and in length it penetrates past, future, and present.
 
 ---
 
@@ -586,7 +575,8 @@ timestamp, fingerprint — written as YAML front matter at the top of the file. 
 JSON outputs stay as raw JSON and receive a separate `.provenance.yaml` sidecar file
 instead. For historical materials, provenance also carries source metadata, attribution
 uncertainty, and prompt context. This makes artifacts inspectable and reproducible without
-pretending they are authoritative.
+pretending they are authoritative. Provenance identifies the generation context, but it
+does not preserve the literal shell command that launched the run.
 
 ---
 

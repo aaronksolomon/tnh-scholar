@@ -635,6 +635,9 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Simplify overlapping legacy prompt bodies and retire redundant variants
   - [x] Decide the release-facing default prompt home per [ADR-PT05.1](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md): repoint workspace discovery from `prompts/` to `tnh-prompts/`, or explicitly keep `tnh-prompts` as an override-only prototype path with clear docs
   - [x] Deprecate the external prompt-repo / setup-download path from the normative release workflow, or explicitly reclassify it as experimental-only per [ADR-PT05.1](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md)
+  - [x] Retire `PromptSystemSettings.tnh_prompt_dir` from the active runtime path so prompt-directory resolution flows through `GenAISettings` + `TNHContext`
+  - [ ] Finish demoting git-backed/shared prompt-catalog code and docs to explicit experimental status where it remains in-repo
+  - [ ] Follow up on the prompt-platform docs/ADR triage captured in [Prompt Platform Cleanup Follow-On](/architecture/prompt-system/notes/prompt-platform-cleanup-follow-on-2026-05.md) after the current `tnh-gen` testing slice is stabilized
   - [ ] Add manifest validation
   - [ ] Better error messages (unknown prompt, hash mismatch)
   - [ ] Frontmatter/schema validation guidance

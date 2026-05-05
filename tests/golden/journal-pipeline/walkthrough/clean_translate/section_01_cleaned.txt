@@ -1,29 +1,27 @@
 ---
 fingerprint: sha256:970af471ddbc533b22347b4afd59fe33a8d159159ba2e7f94e96cd9294ca003c
-generated_at: '2026-05-05T08:27:21Z'
+generated_at: '2026-05-05T14:01:13Z'
 model: gpt-5.4
 prompt_key: default_clean
 prompt_version: '1.0'
 schema_version: '1.0'
 tnh_scholar_generated: true
-trace_id: 1dd30249ac3c4090918953558160235d
+trace_id: 52dad9edd2684f0187c95ea983de01f5
 ---
 
-VŨ-TRỤ-QUAN
+VŨ-TRỤ-QUAN PHẬT-HỌC
 
-PHẬT-HỌC
+THẠC-ĐỨC
 
-THÍCH-ĐỨC
-
-Vào thời đại của đức Phật, vấn đề nguyên lý của vạn vật là một vấn đề rất được chú trọng trong tư tưởng giới Ấn Độ. Kinh Phạm-Động có chép lại đến sáu mươi hai lối giải thích khác nhau của các triết-phái Ấn-Độ thời ấy. Tựu trung, ta thấy có ba khuynh hướng sau đây:
+Vào thời đại của đức Phật, vấn đề nguyên lý của vạn vật là một vấn-đề rất được chú trọng trong tư tưởng-giới Ấn Độ. Kinh Phạm-Động có chép lại đến sáu mươi hai lối giải thích khác nhau của các triết-phái Ấn-Độ thời ấy. Tựu trung, ta thấy có ba khuynh hướng sau đây:
 
 1.― Khuynh hướng Túc mệnh-luận (Pubba kata hetu)
 
-Các triết phái thuộc khuynh hướng này chủ trương tất cả tự-nhiên-giới và nhân sự-giới đều do tiền định an bài. Mọi sự đều vận hành theo những quy luật tự nhiên sẵn có. Giá trị nhân lực và vật lực ở đây không được thừa nhận.
+Các triết-phái thuộc khuynh hướng này chủ trương tất cả tự-nhiên-giới và nhân sự-giới đều do tiền định an bài. Mọi sự đều vận hành theo những quy luật tự nhiên sẵn có. Giá trị nhân lực và vật lực ở đây không được thừa nhận.
 
 2. Khuynh hướng Thần ý luận (Issara-nimmana hetu)
 
-Các triết-phái thuộc khuynh hướng này chủ trương tất cả vạn-sự đều tồn tại do ý-chí của một đấng thần-minh. Vị thần-minh ở đây là Phạm Thiên (Brahma) và trung-tâm của các triết phái thuộc khuynh hướng này là Bà-la-môn giáo.
+Các triết-phái thuộc khuynh hướng này chủ trương tất cả vạn-sự đều tồn tại do ý-chí của một đấng thần-minh. Vị thần-minh ở đây là Phạm Thiên (Brahma) và trung-tâm của các triết-phái thuộc khuynh hướng này là Bà-la-môn giáo.
 
 3. – Khuynh hướng Ngẫu nhiên-luận (Ahetu apaccaya)
 

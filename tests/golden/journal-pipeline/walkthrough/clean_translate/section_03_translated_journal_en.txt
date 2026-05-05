@@ -1,28 +1,28 @@
 ---
 fingerprint: sha256:2dcb3a1a84e85e6df49f48e7091fed91fefaf51ec61e80795f0dd6366a7479cc
-generated_at: '2026-05-04T14:14:28Z'
+generated_at: '2026-05-05T14:02:05Z'
 model: gpt-5.4
 prompt_key: translate_journal_section_en
 prompt_version: '1.0'
 schema_version: '1.0'
 tnh_scholar_generated: true
-trace_id: 02fa4d9abea3414e87d7c78378c1863f
+trace_id: c6d0b4a0fa4c41ffad6e9231ee5471f3
 ---
 
-Simultaneous Causality and the Establishment of the World of Cognition
+Simultaneous Causality: The World as the Relation between Subjective and Objective
 
 1. The problem of simultaneous causality is also the problem of the subjective and the objective.
 
-The Buddha taught that the world is the interaction between subjective cognition and objective objects. Apart from this, there is nothing that can be called the world:
+The Buddha taught that the world is the intercourse between subjective cognition and objective object. Apart from this, there is nothing further that can be called the world:
 
-“Monks! I wish to expound to you the meaning of ‘the all’ (all dharmas). Listen well.
+“Monks! I wish to expound to you the problem of the all (all dhammas). Listen carefully.
 
-Monks! What is called ‘the all’? It is the eye in relation to forms, the ear in relation to sounds, the nose in relation to odors, the tongue in relation to tastes, the body in relation to tangibles, and the mind in relation to dharmas. Monks! This is what is called ‘the all.’” (Samyutta)
+Monks! What is called ‘the all (all dhammas)’? It is the eye in relation to forms, the ear in relation to sounds, the nose in relation to odors, the tongue in relation to tastes, the body in relation to tangibles, the mind in relation to dharmas. Monks! This is called ‘the all (all dhammas).’” (Samyutta)
 
-Thus, the world is established on the basis of the cognitive relation between the six sense faculties and the six sense objects. Outside the six faculties and the six objects, everything is meaningless to us.
+Thus, the world is constituted on the basis of the cognitive relation between the six sense faculties and the six sense objects. Outside the six faculties and the six objects, everything is, for us, without meaning.
 
-Therefore, according to the Buddha’s teaching, if there is no subjective side, there is no objective side; if there is no object, there is no subject. If the relation between the subjective and the objective is severed, the world cannot be established. Everything is established on that relation, just as two reeds stand upright only by leaning against one another:
+Therefore, as the Buddha taught, if there is no subjective, there is no objective; if there is no object, there is no subject. If the relation between the subjective and the objective is severed, the world cannot be constituted. Everything is established upon that relation, just as two reeds stand firm by leaning against one another:
 
-“Friend! Just as two reeds, being tied together and leaning against one another, are able to stand, so too, with Name-and-Form (le nom et la forme) as condition, there is Consciousness; with Consciousness as condition, there is Name-and-Form.... Of the two reeds, if one is removed, the other falls; if the other is removed, this one falls. So it is, friend: with the cessation of Name-and-Form, Consciousness ceases; with the cessation of Consciousness, Name-and-Form ceases....”
+“Friends! Just as two reeds, tied together and supporting one another, stand upright, so too, conditioned by Name-and-Form (le nom et la forme), there is Consciousness; conditioned by Consciousness, there is Name-and-Form... Of the two reeds, if one is removed, the other falls; if the other is removed, this one falls. So too, friend, with the cessation of Name-and-Form, Consciousness ceases; with the cessation of Consciousness, Name-and-Form ceases...”
 
-Name-and-Form here refers to the physiological organization (Samyutta) and psychological organization of sentient beings, which serve as the object for “Consciousness,” that is, the subjective cognitive aspect. But Name-and-Form are not things existing independently outside Consciousness. The two depend on one another in order to be established. Between them there is a subtle relation: it is not that one comes first and the other afterward. Apart from that relation, neither can be established.
+Name-and-Form here refers to the psycho-physical organization (Samyutta) of sentient beings, which serves as the object of “Consciousness,” that is, the subjective cognitive aspect. But Name-and-Form are not things existing independently outside Consciousness. The two depend on each other for their establishment. Between them there is a wondrous relation: it is not that one comes first and the other later. Apart from that relation, neither can be established.
