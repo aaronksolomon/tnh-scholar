@@ -69,6 +69,7 @@ Core commands:
 
 ```bash
 make branch-preflight
+make diff-size
 make pr-check
 make ci-check
 poetry install --with local
@@ -90,6 +91,13 @@ High-level operating stance:
 Default PR flow:
 - `main -> feat/<slice> -> PR -> merge`
 - Run `make branch-preflight` before starting new work
+- Run `make diff-size` on an existing branch:
+  - before substantial new work
+  - before creating a commit
+  - before opening a PR
+- If branch diff is `>=120k` chars, assess whether to stop and prepare a PR-ready slice
+- If branch diff is `>=140k` chars, avoid adding more substantial scope on that branch unless the user explicitly approves exceeding the review-size target
+- Do not open a PR from a branch whose intended changes are still partly uncommitted; commit or intentionally separate that work first
 - Open a normal PR by default; use a draft PR only when the user explicitly asks for draft status or the work is intentionally not review-ready
 - Run `make pr-check` before opening a PR
 - Preferred diff size: `<120k` chars

@@ -10,8 +10,11 @@ SANDBOX_SOURCE_REPO ?= .
 PR_BASE ?= origin/main
 DOCS_WARNING_BASE ?= $(PR_BASE)
 PR_CHECK_ARGS ?=
+DIFF_WARN_CHARS ?= 120000
+DIFF_LIMIT_CHARS ?= 140000
+DIFF_WATCH_SECONDS ?= 30
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-build-readonly docs-drift docs-change-warning docs-verify docs-verify-readonly codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check branch-preflight pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-build-readonly docs-drift docs-change-warning docs-verify docs-verify-readonly codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check diff-size diff-watch branch-preflight pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -212,6 +215,20 @@ branch-preflight:
 		exit 1; \
 	fi; \
 	echo "✅ Branch is based on latest origin/main and tracked worktree is clean"
+
+diff-size:
+	@echo "Evaluating branch diff size against $(PR_BASE)..."
+	$(POETRY) run python scripts/pr_readiness.py --base $(PR_BASE) --warn-chars $(DIFF_WARN_CHARS) --limit-chars $(DIFF_LIMIT_CHARS)
+
+diff-watch:
+	@while true; do \
+		date; \
+		$(MAKE) --no-print-directory diff-size; \
+		echo ""; \
+		echo "Refreshing in $(DIFF_WATCH_SECONDS)s. Press Ctrl-C to stop."; \
+		sleep $(DIFF_WATCH_SECONDS); \
+		echo ""; \
+	done
 
 pr-check:
 	@echo "Evaluating PR readiness against $(PR_BASE)..."
