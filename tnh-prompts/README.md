@@ -22,18 +22,19 @@ It is a workspace for testing and exploration during the current rapid-prototype
 
 ## Relationship to Other Prompt Locations
 
-- `prompts/`
-  - Separate fast-moving external prompt repo used for active authoring.
 - `tnh-prompts/`
-  - Tracked repo-local mirror used by `tnh-scholar` docs and tests.
+  - Tracked repo-local prompt workspace and the default workspace path inside this repository.
 - `src/tnh_scholar/runtime_assets/prompts/`
   - Minimal bundled shipped subset for installed-package behavior.
 
-For this phase, repo-local reproducibility takes priority over prompt-repo separation. As prompts stabilize, verified prompts from this workspace may later be promoted into runtime assets.
+For this phase, repo-local reproducibility takes priority. As prompts stabilize,
+verified prompts from this workspace may later be promoted into runtime assets.
 
 ## Usage
 
-For walkthroughs and golden tests, prefer:
+For walkthroughs and golden tests run from the repo root, this workspace is discovered by default.
+
+Use `--prompt-dir` only when you intentionally want to override it:
 
 ```bash
 tnh-gen --prompt-dir ./tnh-prompts ...

@@ -95,14 +95,16 @@ def _context_for_prompt_directory(prompts_base: Path) -> TNHContext:
         return discovered
 
     # Case 2: non-standard prompt directory name.
-    if prompts_path.name != "prompts":
+    # Keep legacy "prompts" support while repo-local work transitions to
+    # "tnh-prompts" as the normative workspace prompt home.
+    if prompts_path.name not in {"prompts", "tnh-prompts"}:
         return discovered
 
     # Case 3: user or built-in prompts directory.
     if prompts_path.parent in {discovered.user_root, discovered.builtin_root}:
         return discovered
 
-    # Case 4: repo-local prompts/ folder that should define a workspace root.
+    # Case 4: repo-local prompt workspace folder that should define a workspace root.
     return TNHContext.discover(
         workspace_root=prompts_path.parent,
         user_root=discovered.user_root,

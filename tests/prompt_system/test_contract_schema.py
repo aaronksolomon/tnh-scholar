@@ -10,6 +10,7 @@ from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.prompt_system.service.contract_schema import (
     PromptContractSchemaResolver,
+    _context_for_prompt_directory,
     _load_schema_document,
     _relative_schema_path,
 )
@@ -128,6 +129,16 @@ def test_schema_resolver_validates_json_instances(tmp_path: Path):
 
     with pytest.raises(JsonSchemaValidationError):
         resolver.validate_instance(resolved, {"message": 1})
+
+
+def test_prompt_directory_context_recognizes_repo_local_tnh_prompts(tmp_path: Path):
+    workspace_root = tmp_path / "workspace"
+    prompts_dir = workspace_root / "tnh-prompts"
+    prompts_dir.mkdir(parents=True)
+
+    resolved_context = _context_for_prompt_directory(prompts_dir)
+
+    assert resolved_context.workspace_root == workspace_root
 
 
 @pytest.mark.parametrize(

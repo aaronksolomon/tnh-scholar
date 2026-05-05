@@ -20,7 +20,7 @@ artifacts, uncertain metadata, and Buddhist terminology that must not be flatten
 cleanup or translation.
 
 The pipeline transforms the raw scan-derived article,
-[*Vũ-trụ-quan Phật học*](/user-guide/assets/journal-pipeline/pgvn-17-18-vu-tru-quan-phat-hoc.pdf),
+[*Vũ-trụ-quan Phật học*](assets/journal-pipeline/pgvn-17-18-vu-tru-quan-phat-hoc.pdf),
 into a readable English draft translation:
 [*A Buddhist Cosmological View*](/user-guide/vu-tru-quan-phat-hoc-en.md). The point is not
 only to make one article readable, but to show how fragile historical materials can become
@@ -139,9 +139,9 @@ then walks through each pipeline stage with the actual commands, inputs, outputs
 human review points. The source files for all stages live at
 `tests/golden/journal-pipeline/` in this repository.
 
-All `tnh-gen` commands shown here pass `--prompt-dir ./tnh-prompts` explicitly. The
-walkthrough is demonstrating the maintained prompt workspace directly, rather than relying
-on the repository's older default prompt catalog path.
+This walkthrough assumes you are running from the repo root, where `tnh-gen` now discovers
+the maintained prompt workspace from `./tnh-prompts/` by default. Use `--prompt-dir PATH`
+only if you want to override that default.
 
 ### The scanned pages
 
@@ -150,17 +150,17 @@ and give a sense of the source material. These images are not decorative — the
 the review chain. At the cleaning and translation stages, translators can compare the OCR
 output, cleaned Vietnamese, and generated English directly against the scanned pages.
 
-![Opening page of Vũ-trụ-quan Phật học — Phật Giáo Việt Nam issue 17–18, p. 7](/user-guide/assets/journal-pipeline/pgvn-17-18-page7-clean.jpg)
+![Opening page of Vũ-trụ-quan Phật học — Phật Giáo Việt Nam issue 17–18, p. 7](assets/journal-pipeline/pgvn-17-18-page7-clean.jpg)
 
 *Page 7 of the scan: article title, byline, and the opening argument.
 The running footer `PHẬT-GIÁO VIỆT-NAM` is visible at the bottom — one of the
-artifacts the clean stage must remove. ([View with OCR region annotations](/user-guide/assets/journal-pipeline/pgvn-17-18-page7.jpg))*
+artifacts the clean stage must remove. ([View with OCR region annotations](assets/journal-pipeline/pgvn-17-18-page7.jpg))*
 
-![Final page of the article — Phật Giáo Việt Nam issue 17–18, p. 10](/user-guide/assets/journal-pipeline/pgvn-17-18-page10-clean.jpg)
+![Final page of the article — Phật Giáo Việt Nam issue 17–18, p. 10](assets/journal-pipeline/pgvn-17-18-page10-clean.jpg)
 
 *Page 10: the article's closing argument on temporal causality, continuity of existence,
 and liberation. The footer `PHẬT GIÁO VIỆT NAM` and a page-number artifact appear near
-the bottom. ([View with OCR region annotations](/user-guide/assets/journal-pipeline/pgvn-17-18-page10.jpg))*
+the bottom. ([View with OCR region annotations](assets/journal-pipeline/pgvn-17-18-page10.jpg))*
 
 ### Source and attribution note
 
@@ -246,10 +246,10 @@ Two CLI tools from the repo:
 - **`tnh-lines`** — adds or removes line numbers from a text file
 - **`tnh-gen`** — runs a prompt against a file and writes the result
 
-All commands run from the repo root. Prompts come from the local prompt workspace:
+All commands run from the repo root. Prompts come from the default local prompt workspace:
 
 ```bash
---prompt-dir ./tnh-prompts
+./tnh-prompts/
 ```
 
 A few shell variables simplify the commands throughout:
@@ -317,7 +317,6 @@ Vietnamese and English — that will travel with the text through later stages.
 
 ```bash
 tnh-gen run \
-  --prompt-dir ./tnh-prompts \
   --prompt default_section \
   --input-file "$WORK_DIR/source_numbered_walkthrough.txt" \
   --var source_language=Vietnamese \
@@ -386,7 +385,6 @@ features that may matter to later translation review.
 
 ```bash
 tnh-gen run \
-  --prompt-dir ./tnh-prompts \
   --prompt default_clean \
   --input-file "$WORK_DIR/section_01_raw.txt" \
   --vars "$WORK_DIR/clean_vars.json" \
@@ -443,7 +441,6 @@ sections while keeping the draft tied to its source context.
 
 ```bash
 tnh-gen run \
-  --prompt-dir ./tnh-prompts \
   --prompt translate_journal_section_en \
   --input-file "$WORK_DIR/section_01_cleaned.txt" \
   --vars "$WORK_DIR/section_01_journal_translate_vars.json" \
@@ -491,6 +488,56 @@ and in length it penetrates past, future, and present.
 > doctrinal vocabulary consistency across sections, and any place where the model resolved
 > an ambiguity in the cleaned Vietnamese. The translation inherits attribution uncertainty
 > from the source — it does not resolve it.
+
+---
+
+## Optional comparison run: a different translation prompt
+
+One strength of `tnh-gen` is that a prompt can be changed without changing the surrounding
+file workflow. The same cleaned section and the same vars file can be run through a second
+prompt and produce a second fully provenance-tracked artifact.
+
+For this case study, a comparison prompt is included:
+
+- `translate_journal_section_en`
+  - baseline journal-translation prompt
+- `translate_journal_section_tnh_voice_en`
+  - alternate prompt aimed at a gentler, more contemplative English voice associated with later published Thích Nhất Hạnh prose
+
+The second run uses the same cleaned section and vars file, but writes to a different
+output path:
+
+```bash
+tnh-gen run \
+  --prompt translate_journal_section_tnh_voice_en \
+  --input-file "$WORK_DIR/section_01_cleaned.txt" \
+  --vars "$WORK_DIR/section_01_journal_translate_vars.json" \
+  --output-file "$WORK_DIR/section_01_translated_tnh_voice_en.txt"
+```
+
+This makes comparison straightforward:
+
+- same source section
+- same cleaned Vietnamese
+- same document context
+- different prompt key
+- different fingerprint and trace ID
+
+In the current checked-in comparison artifacts, the baseline translation tends to read
+more academically, while the TNH-voice variant is gentler and more flowing in English.
+The tradeoff is exactly what the provenance chain is meant to make reviewable: the
+alternate prompt can improve readability and tone in places, but it can also become
+slightly more interpretive.
+
+In the checked-in artifacts, compare:
+
+- `section_01_translated_journal_en.txt`
+- `section_01_translated_tnh_voice_en.txt`
+- `section_04_translated_journal_en.txt`
+- `section_04_translated_tnh_voice_en.txt`
+
+This is a useful review pattern when prompt tuning is part of the work: the prompt itself
+becomes a first-class part of the provenance chain.
 
 ---
 
@@ -581,11 +628,13 @@ tests/golden/journal-pipeline/walkthrough/clean_translate/
 ├── section_01_cleaned.txt
 ├── section_01_journal_translate_vars.json
 ├── section_01_translated_journal_en.txt
+├── section_01_translated_tnh_voice_en.txt
 ├── section_02_raw.txt      ← (and numbered, cleaned, vars, translated)
 ├── section_03_raw.txt
 ├── section_04_raw.txt
 ├── section_04_cleaned.txt
 ├── section_04_translated_journal_en.txt
+├── section_04_translated_tnh_voice_en.txt
 └── clean_vars.json
 ```
 

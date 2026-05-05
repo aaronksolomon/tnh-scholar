@@ -69,7 +69,7 @@ These flags work with all commands:
 ```bash
 # Correct
 tnh-gen --api list
-tnh-gen --prompt-dir ./prompts run --prompt translate ...
+tnh-gen --prompt-dir ./my-prompts run --prompt translate ...
 
 # Incorrect (will not work)
 tnh-gen list --api
@@ -492,7 +492,7 @@ gpt-4o-mini
 tnh-gen config set max_dollars 0.30
 
 # Set workspace-level config
-tnh-gen config set --workspace prompt_catalog_dir ./prompts
+tnh-gen config set --workspace prompt_catalog_dir ./tnh-prompts
 ```
 
 ---

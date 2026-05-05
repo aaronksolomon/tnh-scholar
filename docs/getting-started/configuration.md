@@ -38,8 +38,8 @@ OPENAI_API_KEY=your-api-key-here
 TNH Scholar creates and uses the following directory structure:
 
 ```plaintext
-~/.config/tnh_scholar/
-├── prompts/          # Prompt storage
+~/.config/tnh-scholar/
+├── prompts/          # User prompt overrides
 └── logs/            # Log files
 ```
 
@@ -49,8 +49,9 @@ TNH Scholar creates and uses the following directory structure:
 
 Prompts can be stored in:
 
-1. Default location: `~/.config/tnh_scholar/prompts/`
-2. Custom location specified by `TNH_PROMPT_DIR` environment variable
+1. Repo-local default workspace: `./tnh-prompts/` when running from the `tnh-scholar` repo root
+2. User override location: `~/.config/tnh-scholar/prompts/`
+3. Custom location specified by `TNH_PROMPT_DIR` environment variable
 
 To use a custom prompt directory:
 
@@ -60,15 +61,9 @@ export TNH_PROMPT_DIR=/path/to/prompts
 
 ### Default Prompts
 
-The system includes several default prompts:
-
-- default_punctuate.md
-- default_section.md
-- default_line_translation.md
-- default_xml_format.md
-- default_xml_paragraph_format.md
-
-These can be downloaded during setup or manually added later.
+The current prototype workflow uses the tracked repo-local `tnh-prompts/` workspace.
+Bundled runtime prompts remain available in `src/tnh_scholar/runtime_assets/prompts/`,
+and `~/.config/tnh-scholar/prompts/` can be used for local overrides.
 
 ## Configuration File
 
@@ -102,12 +97,12 @@ tnh-setup
 
 # Skip specific steps
 tnh-setup --skip-env        # Skip API key check
-tnh-setup --skip-prompts   # Skip prompt download
+tnh-setup --skip-prompts   # Skip prompt setup guidance
 ```
 
 This will:
 
 1. Create necessary directories
-2. Offer to download default prompts
+2. Prepare the user prompt directory and report prompt locations
 3. Check for OpenAI API key
 4. Set up basic configuration

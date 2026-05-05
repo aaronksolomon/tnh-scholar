@@ -16,7 +16,7 @@ This directory holds small live-golden inputs for the maintained JSON prompts:
 
 These are intentionally small and cheap. They are meant to validate:
 
-- prompt discovery through `--prompt-dir`
+- prompt discovery through the default repo-local workspace
 - schema resolution and runtime JSON validation
 - basic prompt-shape viability before running the larger journal pipeline
 
@@ -50,11 +50,8 @@ untracked scratch outputs alongside them.
 
 ## Prompt Source
 
-These goldens are intended to run against the tracked repo-local prompt workspace:
-
-```bash
---prompt-dir ./tnh-prompts
-```
+These goldens are intended to run from the repo root against the default
+repo-local `./tnh-prompts/` workspace.
 
 ## Notes
 
@@ -77,7 +74,6 @@ set +a
 
 PYTHONPATH=./src \
   /Users/phapman/Desktop/Projects/tnh-scholar/.venv/bin/tnh-gen \
-  --prompt-dir ./tnh-prompts \
   config show --catalog-health
 ```
 

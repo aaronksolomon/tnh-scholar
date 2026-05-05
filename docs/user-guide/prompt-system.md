@@ -117,18 +117,18 @@ rendered = prompt.apply_template({
 By default, runtime prompt discovery checks:
 
 ```
-./prompts/
+./tnh-prompts/
 ~/.config/tnh-scholar/prompts/
 src/tnh_scholar/runtime_assets/prompts/
 ```
 
-For the maintained walkthrough and golden test workflows in this repository, use:
+For repo-local work in `tnh-scholar`, the default workspace is:
 
 ```bash
---prompt-dir ./tnh-prompts
+./tnh-prompts/
 ```
 
-Override the catalog location globally with the `TNH_PROMPT_DIR` environment variable:
+Use `--prompt-dir` or `TNH_PROMPT_DIR` only when you intentionally want to override that default:
 
 ```bash
 # In .bashrc, .zshrc, or similar:
@@ -140,7 +140,7 @@ Or in a `.env` file for development installations.
 Resolution order:
 
 1. `TNH_PROMPT_DIR` environment variable (if set)
-2. Workspace prompt directory: `./prompts/`
+2. Workspace prompt directory: `./tnh-prompts/`
 3. User prompt directory: `~/.config/tnh-scholar/prompts/`
 4. Bundled runtime prompts in `src/tnh_scholar/runtime_assets/prompts/`
 
@@ -148,7 +148,7 @@ When `tnh-gen run --prompt my_prompt` is invoked, the system searches for `my_pr
 
 ### Default Prompts
 
-The following prompts are installed by `tnh-setup` and form the core of the standard pipelines:
+The repo-local `tnh-prompts/` workspace and bundled runtime prompts include the core prompts used by the current pipelines:
 
 | Key | File | Purpose |
 |-----|------|---------|

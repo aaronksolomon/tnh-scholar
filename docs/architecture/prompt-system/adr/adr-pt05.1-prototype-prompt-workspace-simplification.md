@@ -161,3 +161,21 @@ That decision should be made deliberately after review of packaging, installed-w
 2. Should `tnh-setup` deprecate external prompt download behavior in favor of repo-local and bundled prompt flows?
 3. What is the explicit boundary between experimental prompt-sharing infrastructure and maintained prompt-platform behavior?
 4. Which prompts should be promoted from `tnh-prompts/` into `runtime_assets/prompts/` before the next release milestone?
+
+---
+
+## Addendum 2026-05-05: Default Workspace Repoint Implemented
+
+**Context**: Follow-on `tnh-gen` review work completed the implementation decision that this ADR left open.
+
+**Decision**:
+
+- repo-local workspace discovery now defaults to `./tnh-prompts/` rather than `./prompts/`
+- the repo `prompts/` mirror is no longer treated as the active workspace inside `tnh-scholar`
+- `tnh-setup` no longer downloads prompts from the old external prompt repository as part of the normative setup flow
+
+**Implications**:
+
+- walkthroughs and golden tests can now rely on the default repo-local prompt home
+- `--prompt-dir` remains available for intentional overrides and experiments
+- user prompt directories and bundled runtime prompts remain part of the three-layer discovery model

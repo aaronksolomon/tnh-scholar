@@ -1,11 +1,8 @@
-import io
 import subprocess
 import sys
-import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 
-import requests
 import typer
 from dotenv import load_dotenv
 
@@ -19,7 +16,6 @@ app = typer.Typer(add_completion=False, no_args_is_help=False)
 
 @dataclass(frozen=True)
 class SetupConfig:
-    prompts_url: str
     config_dir: Path
     log_dir: Path
     prompt_dir: Path
@@ -37,7 +33,6 @@ class PromptDecision:
 
 def _build_config(context: TNHContext) -> SetupConfig:
     return SetupConfig(
-        prompts_url="https://github.com/aaronksolomon/patterns/archive/main.zip",
         config_dir=context.user_root,
         log_dir=context.user_root / "logs",
         prompt_dir=context.user_root / "prompts",
@@ -61,34 +56,6 @@ def _create_config_dirs(config: SetupConfig) -> None:
     config.config_dir.mkdir(parents=True, exist_ok=True)
     config.log_dir.mkdir(exist_ok=True)
     config.prompt_dir.mkdir(exist_ok=True)
-
-
-def _fetch_prompts_zip(url: str) -> bytes:
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.content
-
-
-def _extract_prompts_zip(zip_bytes: bytes, prompt_dir: Path) -> None:
-    with zipfile.ZipFile(io.BytesIO(zip_bytes)) as zip_ref:
-        root_dir = zip_ref.filelist[0].filename.split("/")[0]
-        for zip_info in zip_ref.filelist:
-            if zip_info.filename.endswith(".md"):
-                rel_path = Path(zip_info.filename).relative_to(root_dir)
-                target_path = prompt_dir / rel_path
-                target_path.parent.mkdir(parents=True, exist_ok=True)
-                with zip_ref.open(zip_info) as source, open(target_path, "wb") as target:
-                    target.write(source.read())
-
-
-def _download_prompts(config: SetupConfig) -> bool:
-    try:
-        zip_bytes = _fetch_prompts_zip(config.prompts_url)
-        _extract_prompts_zip(zip_bytes, config.prompt_dir)
-        return True
-    except Exception as exc:  # noqa: BLE001 - broad catch to keep setup resilient
-        typer.echo(f"Prompt download failed: {exc}", err=True)
-        return False
 
 
 def _confirm_action(prompt: str, decision: PromptDecision) -> bool:
@@ -164,21 +131,19 @@ def _prompt_dir_status(ui: SetupUI, config: SetupConfig) -> tuple[bool, bool]:
 
 
 def _prompt_skip_item(ui: SetupUI, reason: str) -> SetupSummaryItem:
-    ui.status("Prompt download", f"skipped ({reason})", "skip")
+    ui.status("Prompt setup", f"skipped ({reason})", "skip")
     return _summary_item("Prompts", "skipped", "skip")
 
 
-def _prompt_download(ui: SetupUI, config: SetupConfig) -> SetupSummaryItem:
-    ui.status("Prompt source", config.prompts_url, "info")
-    success = ui.spinner("Downloading prompts...", lambda: _download_prompts(config))
-    if success:
-        ui.status("Prompt download", "complete", "ok")
-        return _summary_item("Prompts", "installed", "ok")
-    ui.status("Prompt download", "failed", "error")
-    return _summary_item("Prompts", "failed", "error")
+def _prompt_setup(ui: SetupUI, config: SetupConfig) -> SetupSummaryItem:
+    ui.status("User prompt directory", str(config.prompt_dir), "info")
+    ui.status("Repo prompt workspace", "tnh-prompts/ (repo-local default)", "info")
+    ui.status("Bundled prompts", "src/tnh_scholar/runtime_assets/prompts/", "info")
+    ui.status("Prompt setup", "local directories ready; no external download", "ok")
+    return _summary_item("Prompts", "configured", "ok")
 
 
-def _handle_prompt_download(
+def _handle_prompt_setup_info(
     ui: SetupUI,
     config: SetupConfig,
     decision: PromptDecision,
@@ -189,10 +154,8 @@ def _handle_prompt_download(
     if decision.verify_only:
         return _prompt_skip_item(ui, "--verify-only")
     if prompt_files:
-        ui.status("Prompt files", "detected (download will overwrite)", "warn")
-    if not _confirm_action("\nDownload prompt files from GitHub?", decision):
-        return _prompt_skip_item(ui, "user declined")
-    return _prompt_download(ui, config)
+        ui.status("Prompt files", "detected in user prompt directory", "info")
+    return _prompt_setup(ui, config)
 
 
 def _runtime_summary(ui: SetupUI, ok: bool, note: str | None) -> SetupSummaryItem:
@@ -268,7 +231,7 @@ def _prompt_section(
         ui.status("Config directory", f"ready at {config.config_dir}", "ok")
     else:
         ui.status("Config directory", f"verify-only (target {config.config_dir})", "info")
-    return _handle_prompt_download(ui, config, decision)
+    return _handle_prompt_setup_info(ui, config, decision)
 
 
 def _runtime_section(ui: SetupUI, decision: PromptDecision) -> SetupSummaryItem:
@@ -290,7 +253,7 @@ def _run_setup(config: SetupConfig, decision: PromptDecision) -> None:
 @app.command()
 def tnh_setup(
     skip_env: bool = typer.Option(False, help="Skip OpenAI API key check."),
-    skip_prompts: bool = typer.Option(False, help="Skip prompt download."),
+    skip_prompts: bool = typer.Option(False, help="Skip prompt directory setup guidance."),
     skip_ytdlp_runtime: bool = typer.Option(False, help="Skip yt-dlp runtime setup."),
     verify_only: bool = typer.Option(False, help="Only run environment verification."),
     assume_yes: bool = typer.Option(False, "--yes", "-y", help="Assume yes for all prompts."),

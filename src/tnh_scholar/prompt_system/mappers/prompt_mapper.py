@@ -26,8 +26,8 @@ class PromptMapper:
 
         Absolute paths are relativized only when they live under ``base_path``.
         Relative paths also strip a matching relative ``base_path`` prefix, which
-        keeps ``prompts/foo.md`` and ``foo.md`` equivalent for callers such as
-        ``--prompt-dir ./prompts``. Paths outside the base are preserved.
+        keeps ``tnh-prompts/foo.md`` and ``foo.md`` equivalent for callers such
+        as ``--prompt-dir ./tnh-prompts``. Paths outside the base are preserved.
         """
         if path.is_absolute():
             try:

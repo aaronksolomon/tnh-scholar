@@ -1,6 +1,6 @@
 ---
 title: "tnh-setup"
-description: "The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default prompts."
+description: "The `tnh-setup` command configures the TNH Scholar environment, prepares local prompt directories, and verifies core runtime prerequisites."
 owner: ""
 author: ""
 status: current
@@ -9,7 +9,7 @@ updated: "2026-02-01"
 ---
 # tnh-setup
 
-The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default prompts.
+The `tnh-setup` command configures the TNH Scholar environment, prepares local prompt directories, and verifies core runtime prerequisites.
 
 ## Usage
 
@@ -21,7 +21,7 @@ tnh-setup [OPTIONS]
 
 ```bash
 --skip-env       Skip API key setup check
---skip-prompts  Skip prompt download
+--skip-prompts  Skip prompt directory setup guidance
 --skip-ytdlp-runtime  Skip yt-dlp runtime setup
 --verify-only    Only run environment verification
 -y, --yes        Assume yes for all prompts
@@ -34,14 +34,15 @@ tnh-setup [OPTIONS]
 The setup process includes:
 
 1. Directory Creation
-   - Creates ~/.config/tnh_scholar/
-   - Creates prompts directory
+   - Creates ~/.config/tnh-scholar/
+   - Creates prompts directory for user-level overrides
    - Creates logs directory
 
-2. Prompt Download
-   - Offers to download default prompts from GitHub
-   - Prompts are saved to ~/.config/tnh_scholar/prompts/
-   - Maintains directory structure from repository
+2. Prompt Setup
+   - Prepares ~/.config/tnh-scholar/prompts/ for local prompt overrides
+   - Reports the repo-local default workspace: ./tnh-prompts/
+   - Reports bundled runtime prompts at src/tnh_scholar/runtime_assets/prompts/
+   - Does not download prompts from an external repository
 
 3. Environment Check
    - Verifies OpenAI API key configuration
@@ -66,7 +67,7 @@ tnh-setup
 # Skip API key check
 tnh-setup --skip-env
 
-# Skip prompt download
+# Skip prompt setup guidance
 tnh-setup --skip-prompts
 
 # Skip both
@@ -79,15 +80,13 @@ tnh-setup --skip-env --skip-prompts
 tnh-setup --verify-only
 ```
 
-## Default Prompts
+## Prompt Locations
 
-When downloading prompts, the following are included:
+`tnh-setup` prepares and reports three prompt locations:
 
-- default_punctuate.md
-- default_section.md
-- default_line_translation.md
-- default_xml_format.md
-- default_xml_paragraph_format.md
+- Repo-local default workspace: `./tnh-prompts/` when running inside the repository
+- User prompt directory: `~/.config/tnh-scholar/prompts/`
+- Bundled runtime prompts: `src/tnh_scholar/runtime_assets/prompts/`
 
 ## Environment Variables
 
@@ -116,12 +115,11 @@ For AI processing with TNH-scholar:
 For OpenAI API access help: https://platform.openai.com/
 ```
 
-### Prompt Download Issues
+### Prompt Setup Issues
 
-- Check internet connection
-- Verify GitHub access
-- Ensure write permissions in config directory
-- Check disk space
+- Ensure write permissions in the config directory
+- Confirm the repository contains `tnh-prompts/` when working from source
+- Use `TNH_PROMPT_DIR` or `--prompt-dir` if you intentionally store prompts elsewhere
 
 ## Post-Setup Verification
 
@@ -130,15 +128,15 @@ After running setup, verify:
 1. Directory Structure:
 
    ```plaintext
-   ~/.config/tnh_scholar/
+   ~/.config/tnh-scholar/
    ├── prompts/
    └── logs/
    ```
 
 2. Prompt Files:
-   - Check that prompt files are present
+   - Check that repo-local prompts are present in `./tnh-prompts/` when working from source
+   - Check `~/.config/tnh-scholar/prompts/` for user overrides if you use them
    - Verify file permissions
-   - Ensure proper formatting
 
 3. Environment:
    - Confirm API key is set

@@ -165,6 +165,8 @@ class RegistryPathBuilder:
 class PromptPathBuilder:
     """Builds prompt search paths for a context."""
 
+    _WORKSPACE_DIRNAME = "tnh-prompts"
+
     def __init__(self, context: TNHContext) -> None:
         self._context = context
 
@@ -180,7 +182,7 @@ class PromptPathBuilder:
         return next((path for path in self.build()), None)
 
     def _workspace_path(self) -> Path:
-        return self._context.workspace_root / "prompts"
+        return self._context.workspace_root / self._WORKSPACE_DIRNAME
 
     def _user_path(self) -> Path:
         return self._context.user_root / "prompts"

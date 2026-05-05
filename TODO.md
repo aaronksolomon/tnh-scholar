@@ -633,8 +633,8 @@ docs/architecture/jvb-viewer/adr/
   - [x] Normalize legacy prompt frontmatter to PT05 baseline (`role`, `inputs`, explicit `output_contract`)
   - [x] Add `schema_ref` coverage for maintained JSON prompts
   - [ ] Simplify overlapping legacy prompt bodies and retire redundant variants
-  - [ ] Decide the release-facing default prompt home per [ADR-PT05.1](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md): repoint workspace discovery from `prompts/` to `tnh-prompts/`, or explicitly keep `tnh-prompts` as an override-only prototype path with clear docs
-  - [ ] Deprecate the external prompt-repo / setup-download path from the normative release workflow, or explicitly reclassify it as experimental-only per [ADR-PT05.1](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md)
+  - [x] Decide the release-facing default prompt home per [ADR-PT05.1](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md): repoint workspace discovery from `prompts/` to `tnh-prompts/`, or explicitly keep `tnh-prompts` as an override-only prototype path with clear docs
+  - [x] Deprecate the external prompt-repo / setup-download path from the normative release workflow, or explicitly reclassify it as experimental-only per [ADR-PT05.1](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md)
   - [ ] Add manifest validation
   - [ ] Better error messages (unknown prompt, hash mismatch)
   - [ ] Frontmatter/schema validation guidance
@@ -694,6 +694,7 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Align `.gitignore`, docs build scripts, and CI expectations so local and remote docs validation see the same repo-root docs set
   - [ ] Verify `make docs-build`, PR docs validation, and GitHub Actions all succeed from a clean checkout with no pre-existing generated repo-root docs
   - [ ] Document the intended contract for repo-root doc mirrors in docs ops guidance
+  - [ ] Review upcoming MkDocs 2.0 / Material compatibility risk and define an upgrade stance before docs-tooling version changes are taken
 
 #### 🚧 Logging System Scope
 

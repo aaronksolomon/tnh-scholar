@@ -72,7 +72,7 @@ def test_settings_prompt_dir_defaults_to_context(
     user_root = tmp_path / "user"
     builtin_root = tmp_path / "builtin"
 
-    (workspace_root / "prompts").mkdir(parents=True)
+    (workspace_root / "tnh-prompts").mkdir(parents=True)
     (user_root / "prompts").mkdir(parents=True)
     (builtin_root / "prompts").mkdir(parents=True)
 
@@ -91,4 +91,4 @@ def test_settings_prompt_dir_defaults_to_context(
     )
 
     settings = GenAISettings(_env_file=None)
-    assert settings.prompt_dir == workspace_root / "prompts"
+    assert settings.prompt_dir == workspace_root / "tnh-prompts"

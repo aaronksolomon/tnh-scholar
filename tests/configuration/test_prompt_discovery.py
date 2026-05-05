@@ -25,7 +25,7 @@ def test_prompt_search_paths_precedence(tmp_path: Path) -> None:
     user_root = tmp_path / "user"
     builtin_root = tmp_path / "builtin"
 
-    (workspace_root / "prompts").mkdir(parents=True)
+    (workspace_root / "tnh-prompts").mkdir(parents=True)
     (user_root / "prompts").mkdir(parents=True)
     (builtin_root / "prompts").mkdir(parents=True)
 
@@ -36,7 +36,7 @@ def test_prompt_search_paths_precedence(tmp_path: Path) -> None:
     )
 
     assert context.get_prompt_search_paths() == [
-        workspace_root / "prompts",
+        workspace_root / "tnh-prompts",
         user_root / "prompts",
         builtin_root / "prompts",
     ]
@@ -78,7 +78,7 @@ def test_prompt_search_paths_skip_non_directory_entries(tmp_path: Path) -> None:
     user_root = tmp_path / "user"
     builtin_root = tmp_path / "builtin"
 
-    (workspace_root / "prompts").mkdir(parents=True)
+    (workspace_root / "tnh-prompts").mkdir(parents=True)
     (user_root / "prompts").mkdir(parents=True)
     builtin_root.mkdir(parents=True)
     (builtin_root / "prompts").write_text("not a directory", encoding="utf-8")
@@ -90,6 +90,6 @@ def test_prompt_search_paths_skip_non_directory_entries(tmp_path: Path) -> None:
     )
 
     assert context.get_prompt_search_paths() == [
-        workspace_root / "prompts",
+        workspace_root / "tnh-prompts",
         user_root / "prompts",
     ]
