@@ -3,7 +3,6 @@ key: default_punctuate
 name: Default Punctuate
 version: "1.0"
 description: Adds punctuation and paragraph breaks to text while preserving original content
-task_type: punctuation
 role: punctuation
 required_variables:
   - source_language

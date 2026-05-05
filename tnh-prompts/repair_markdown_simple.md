@@ -3,7 +3,6 @@ key: repair_markdown_simple
 name: Repair Markdown Simple
 version: "1.0"
 description: Repairs markdown structure with consistent numbered sections and heading hierarchy
-task_type: formatting
 role: formatting
 required_variables: []
 optional_variables: []

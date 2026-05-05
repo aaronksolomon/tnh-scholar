@@ -3,7 +3,6 @@ key: translate_section_dt_en
 name: Translate Section Dharma Teacher English
 version: "1.0"
 description: Translates Plum Village monastic Dharma talks into English in TNH/Plum Village style
-task_type: translation
 role: translation
 required_variables:
   - source_language

@@ -3,7 +3,6 @@ key: xml_format_dt_section_en
 name: XML Format Dharma Talk Section English
 version: "1.0"
 description: Formats English Dharma talk transcriptions into XML paragraphs in Plum Village style
-task_type: formatting
 role: formatting
 required_variables:
   - section_title

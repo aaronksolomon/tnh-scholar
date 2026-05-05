@@ -3,7 +3,6 @@ key: format_markdown_math
 name: Format Markdown Math
 version: "1.0"
 description: Formats mathematical text into proper Markdown with correct equation notation ($ and $$)
-task_type: formatting
 role: formatting
 required_variables:
   - source_language

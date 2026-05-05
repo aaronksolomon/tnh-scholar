@@ -3,7 +3,6 @@ key: repair_markdown
 name: Repair Markdown
 version: "1.0"
 description: Repairs and standardizes markdown formatting, structure, and hierarchy while preserving original content
-task_type: formatting
 role: formatting
 required_variables: []
 optional_variables: []

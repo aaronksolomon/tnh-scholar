@@ -3,7 +3,6 @@ key: test
 name: Test
 version: "1.0"
 description: Test prompt for GenAI service module - summarizes input into single sentence
-task_type: testing
 role: testing
 required_variables: []
 optional_variables: []

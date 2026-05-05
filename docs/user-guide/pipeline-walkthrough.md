@@ -20,7 +20,7 @@ artifacts, uncertain metadata, and Buddhist terminology that must not be flatten
 cleanup or translation.
 
 The pipeline transforms the raw scan-derived article,
-[*Vũ-trụ-quan Phật học*](assets/journal-pipeline/pgvn-17-18-vu-tru-quan-phat-hoc.pdf),
+[*Vũ-trụ-quan Phật học*](/user-guide/assets/journal-pipeline/pgvn-17-18-vu-tru-quan-phat-hoc.pdf),
 into a readable English draft translation:
 [*A Buddhist Cosmological View*](/user-guide/vu-tru-quan-phat-hoc-en.md). The point is not
 only to make one article readable, but to show how fragile historical materials can become
@@ -139,6 +139,10 @@ then walks through each pipeline stage with the actual commands, inputs, outputs
 human review points. The source files for all stages live at
 `tests/golden/journal-pipeline/` in this repository.
 
+All `tnh-gen` commands shown here pass `--prompt-dir ./tnh-prompts` explicitly. The
+walkthrough is demonstrating the maintained prompt workspace directly, rather than relying
+on the repository's older default prompt catalog path.
+
 ### The scanned pages
 
 The processed text comes from four scanned journal pages. The two below bookend the article
@@ -146,17 +150,17 @@ and give a sense of the source material. These images are not decorative — the
 the review chain. At the cleaning and translation stages, translators can compare the OCR
 output, cleaned Vietnamese, and generated English directly against the scanned pages.
 
-![Opening page of Vũ-trụ-quan Phật học — Phật Giáo Việt Nam issue 17–18, p. 7](assets/journal-pipeline/pgvn-17-18-page7-clean.jpg)
+![Opening page of Vũ-trụ-quan Phật học — Phật Giáo Việt Nam issue 17–18, p. 7](/user-guide/assets/journal-pipeline/pgvn-17-18-page7-clean.jpg)
 
 *Page 7 of the scan: article title, byline, and the opening argument.
 The running footer `PHẬT-GIÁO VIỆT-NAM` is visible at the bottom — one of the
-artifacts the clean stage must remove. ([View with OCR region annotations](assets/journal-pipeline/pgvn-17-18-page7.jpg))*
+artifacts the clean stage must remove. ([View with OCR region annotations](/user-guide/assets/journal-pipeline/pgvn-17-18-page7.jpg))*
 
-![Final page of the article — Phật Giáo Việt Nam issue 17–18, p. 10](assets/journal-pipeline/pgvn-17-18-page10-clean.jpg)
+![Final page of the article — Phật Giáo Việt Nam issue 17–18, p. 10](/user-guide/assets/journal-pipeline/pgvn-17-18-page10-clean.jpg)
 
 *Page 10: the article's closing argument on temporal causality, continuity of existence,
 and liberation. The footer `PHẬT GIÁO VIỆT NAM` and a page-number artifact appear near
-the bottom. ([View with OCR region annotations](assets/journal-pipeline/pgvn-17-18-page10.jpg))*
+the bottom. ([View with OCR region annotations](/user-guide/assets/journal-pipeline/pgvn-17-18-page10.jpg))*
 
 ### Source and attribution note
 
@@ -525,12 +529,12 @@ While a model call is running, the terminal is quiet. On success:
 On failure, an error message and a trace ID appear. The trace ID is useful for reporting
 problems.
 
-Each output file also gets a provenance header — model name, prompt version, timestamp,
-fingerprint — written as YAML front matter at the top of the file. For historical
-materials, the provenance also documents source URL, attribution uncertainty, and prompt
-context. This makes artifacts self-documenting and allows later comparison runs to detect
-regressions. Provenance does not make a translation authoritative; it makes it inspectable
-and reproducible.
+Plain-text outputs get an embedded provenance header — model name, prompt version,
+timestamp, fingerprint — written as YAML front matter at the top of the file. Structured
+JSON outputs stay as raw JSON and receive a separate `.provenance.yaml` sidecar file
+instead. For historical materials, provenance also carries source metadata, attribution
+uncertainty, and prompt context. This makes artifacts inspectable and reproducible without
+pretending they are authoritative.
 
 ---
 
@@ -543,49 +547,48 @@ section-specific vars file carries document context and source attribution forwa
 {
   "source_language": "Vietnamese",
   "target_language": "English",
-  "style": "scholarly",
-  "section_title": "Indian Intellectual Context and Buddhism's Critical Stance",
+  "section_title": "Bối cảnh tư tưởng Ấn Độ và lập trường phê bình của Phật giáo",
   "document_summary": "...",
-  "key_concepts": ["nhân duyên", "duyên khởi", "vô thường"],
-  "source_page": "https://thuvienhoasen.org/a26248/tap-chi-phat-giao-viet-nam",
-  "source_pdf": "https://thuvienhoasen.org/images/file/4Vp0iwbv0wgQAJAY/phat-giao-viet-nam-1956-17-18.pdf",
-  "attribution_note": "Signed Thạc-Đức; attribution to Trần Thạc Đức / Thích Nhất Hạnh uncertain"
+  "section_summary": "...",
+  "document_key_concepts": "Vũ-trụ-quan Phật học; Nhân duyên; Duyên khởi; ...",
+  "document_metadata": "title: Vũ-trụ-quan Phật học\nauthor: Thạc-Đức\njournal: Phật Giáo Việt Nam\nissue: 17-18\nyear: 1957"
 }
 ```
 
-This is built from `sections.json` by pulling out the relevant section entry along with
-document-level fields. Individual `--var key=value` flags can supplement or override.
-Source and attribution fields travel into the generated artifact alongside content fields,
-so provenance sidecars carry the full research context.
+This is built from the sectioning JSON by pulling out the relevant section entry along
+with document-level fields. Individual `--var key=value` flags can supplement or
+override. In the checked-in walkthrough artifact set, this exact file is
+`section_01_journal_translate_vars.json`.
 
 ---
 
 ### Artifact layout
 
-After running the full pipeline, the working directory looks like this:
+The checked-in walkthrough artifact directory looks like this:
 
 ```
 tests/golden/journal-pipeline/walkthrough/clean_translate/
-├── source_numbered.txt
-├── sections.json
-├── sections.json.provenance.yaml
+├── source_numbered_walkthrough.txt
+├── sections_gpt54.json
+├── sections_gpt54.json.provenance.yaml
 ├── section_01_numbered.txt
 ├── section_01_raw.txt
 ├── section_01_cleaned.txt
 ├── section_01_journal_translate_vars.json
-├── section_01_translated.txt
+├── section_01_translated_journal_en.txt
 ├── section_02_raw.txt      ← (and numbered, cleaned, vars, translated)
 ├── section_03_raw.txt
 ├── section_04_raw.txt
 ├── section_04_cleaned.txt
-├── section_04_translated.txt
-└── final_translated.txt
+├── section_04_translated_journal_en.txt
+└── clean_vars.json
 ```
 
 These files are checked in as golden artifacts for test comparison and prompt refinement.
-They also show the intended research posture of the system: every generated result should
-remain connected to the page image, source text, intermediate transformations, prompt
-context, and provenance that produced it.
+An assembled `final_translated.txt` can be produced locally, but it is not the checked-in
+artifact of record for this walkthrough. The checked-in set shows the intended research
+posture of the system: every generated result remains connected to the page image, source
+text, intermediate transformations, prompt context, and provenance that produced it.
 
 ---
 

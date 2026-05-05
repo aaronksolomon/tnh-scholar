@@ -3,7 +3,6 @@ key: make_text_concise
 name: Make Text Concise
 version: "1.0"
 description: Transforms verbose text into concise version (~50% reduction) while preserving meaning and voice
-task_type: editing
 role: editing
 required_variables: []
 optional_variables: []

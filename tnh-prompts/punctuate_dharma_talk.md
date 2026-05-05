@@ -3,7 +3,6 @@ key: punctuate_dharma_talk
 name: Punctuate Dharma Talk
 version: "1.0"
 description: Adds punctuation and paragraph breaks to Deer Park and Plum Village Dharma Talk transcriptions
-task_type: punctuation
 role: punctuation
 required_variables:
   - source_language

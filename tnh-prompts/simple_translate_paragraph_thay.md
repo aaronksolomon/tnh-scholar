@@ -3,7 +3,6 @@ key: simple_translate_paragraph_thay
 name: Simple Translate Paragraph Thay
 version: "1.0"
 description: Translates a single paragraph from TNH into flawless English in his style
-task_type: translation
 role: translation
 required_variables: []
 optional_variables: []

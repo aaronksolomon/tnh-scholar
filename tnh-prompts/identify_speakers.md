@@ -3,7 +3,6 @@ key: identify_speakers
 name: Identify Speakers
 version: "1.0"
 description: Identifies and labels speakers in audio transcripts using inference and context
-task_type: diarization
 role: diarization
 required_variables: []
 optional_variables: []

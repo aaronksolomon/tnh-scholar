@@ -3,7 +3,6 @@ key: extract_wisdom1
 name: Extract Wisdom One
 version: "1.0"
 description: Extracts insights, quotes, facts, and recommendations from text for TNH students
-task_type: extraction
 role: extraction
 required_variables:
   - metadata

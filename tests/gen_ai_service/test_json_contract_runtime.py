@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from textwrap import dedent
 
 import pytest
@@ -313,6 +314,62 @@ def test_gen_ai_service_sanitizes_openai_response_format_for_object_schema_with_
     schema = response_format["json_schema"]["schema"]
     assert schema["type"] == "object"
     assert "anyOf" not in schema
+
+
+def test_openai_compatible_json_schema_strips_nested_unsupported_keywords() -> None:
+    schema = {
+        "type": "object",
+        "properties": {
+            "key_concepts": {
+                "oneOf": [
+                    {"type": "string"},
+                    {"type": "array", "items": {"type": "string", "enum": ["a", "b"]}},
+                ]
+            },
+            "sections": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "anyOf": [{"required": ["title"]}, {"required": ["title_en"]}],
+                    "properties": {"title": {"type": "string"}},
+                },
+            },
+        },
+    }
+
+    sanitized = service_module._openai_compatible_json_schema(schema)
+
+    def assert_no_unsupported_keywords(node: object) -> None:
+        if isinstance(node, dict):
+            for keyword in ("oneOf", "anyOf", "allOf", "enum", "not"):
+                assert keyword not in node
+            for value in node.values():
+                assert_no_unsupported_keywords(value)
+            return
+        if isinstance(node, list):
+            for item in node:
+                assert_no_unsupported_keywords(item)
+
+    assert_no_unsupported_keywords(sanitized)
+
+
+def test_sectioning_schema_requires_end_line_for_walkthrough_handoff() -> None:
+    schemas_root = (
+        Path(__file__).resolve().parents[2]
+        / "src"
+        / "tnh_scholar"
+        / "runtime_assets"
+        / "schemas"
+        / "prompt-contracts"
+        / "tnh"
+        / "sectioning"
+    )
+
+    for schema_name in ("default_section", "section_by_break"):
+        schema_path = schemas_root / schema_name / "v1.schema.json"
+        schema = service_module.json.loads(schema_path.read_text(encoding="utf-8"))
+        required_fields = schema["properties"]["sections"]["items"]["required"]
+        assert "end_line" in required_fields
 
 
 def test_gen_ai_service_rejects_schema_echo_properties_wrapper(

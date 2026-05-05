@@ -3,7 +3,6 @@ key: translate_metadata
 name: Translate Metadata
 version: "1.0"
 description: Translates YAML metadata fields and values to target language
-task_type: translation
 role: translation
 required_variables:
   - target_language

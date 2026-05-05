@@ -3,7 +3,6 @@ key: default_clean_numbered
 name: Default OCR Clean (Numbered)
 version: "1.0"
 description: Cleans OCR-generated text and outputs numbered lines in N:LINE format, preserving OCR scan-line boundaries. Compatible with default_section and default_line_translate. Use for line-tracked pipelines; see default_clean for plain-text output.
-task_type: cleaning
 role: cleaning
 required_variables:
   - source_language

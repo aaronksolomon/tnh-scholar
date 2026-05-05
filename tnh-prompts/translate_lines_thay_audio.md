@@ -3,7 +3,6 @@ key: translate_lines_thay_audio
 name: Translate Lines Thay Audio
 version: "1.0"
 description: Line-by-line translation of TNH Vietnamese audio transcripts to English preserving line numbers
-task_type: translation
 role: translation
 required_variables:
   - source_language

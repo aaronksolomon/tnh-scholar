@@ -3,7 +3,6 @@ key: simple_punctuate
 name: Simple Punctuate
 version: "1.0"
 description: Add punctuation to text while preserving original words
-task_type: punctuation
 role: punctuation
 required_variables: []
 optional_variables:

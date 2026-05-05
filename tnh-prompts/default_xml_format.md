@@ -3,7 +3,6 @@ key: default_xml_format
 name: Default XML Format
 version: "1.0"
 description: Formats text sections into XML paragraphs with proper punctuation
-task_type: formatting
 role: formatting
 required_variables:
   - source_language

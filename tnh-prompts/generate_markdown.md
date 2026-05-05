@@ -3,7 +3,6 @@ key: generate_markdown
 name: Generate Markdown
 version: "1.0"
 description: Converts various text formats (transcripts, PDFs, OCR, HTML) into well-structured Markdown
-task_type: formatting
 role: formatting
 required_variables:
   - source_language

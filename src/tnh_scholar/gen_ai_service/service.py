@@ -218,9 +218,20 @@ def _openai_compatible_json_schema(schema_document: object) -> dict[str, object]
     if not isinstance(schema_document, dict):
         raise TypeError("OpenAI JSON schema compatibility requires an object schema document.")
     compatible_schema = copy.deepcopy(schema_document)
-    for keyword in ("oneOf", "anyOf", "allOf", "enum", "not"):
-        compatible_schema.pop(keyword, None)
-    return compatible_schema
+    return _strip_openai_incompatible_keywords(compatible_schema)
+
+
+def _strip_openai_incompatible_keywords(node: object) -> object:
+    if isinstance(node, dict):
+        for keyword in ("oneOf", "anyOf", "allOf", "enum", "not"):
+            node.pop(keyword, None)
+        for value in node.values():
+            _strip_openai_incompatible_keywords(value)
+        return node
+    if isinstance(node, list):
+        for item in node:
+            _strip_openai_incompatible_keywords(item)
+    return node
 
 
 def _response_format_name(schema_ref: str) -> str:

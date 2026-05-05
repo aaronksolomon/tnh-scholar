@@ -3,7 +3,6 @@ key: extract_wisdom_section
 name: Extract Wisdom Section
 version: "1.0"
 description: Extracts insights from a named section of text for TNH students
-task_type: extraction
 role: extraction
 required_variables:
   - section_title

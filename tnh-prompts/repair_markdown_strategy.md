@@ -3,7 +3,6 @@ key: repair_markdown_strategy
 name: Repair Markdown Strategy
 version: "1.0"
 description: Generates a bullet-point strategy for repairing markdown structure
-task_type: analysis
 role: analysis
 required_variables: []
 optional_variables: []

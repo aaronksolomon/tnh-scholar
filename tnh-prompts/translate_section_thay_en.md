@@ -3,7 +3,6 @@ key: translate_section_thay_en
 name: Translate Section Thay English
 version: "1.0"
 description: Translates Thich Nhat Hanh's Dharma talks into English matching his writing style
-task_type: translation
 role: translation
 required_variables:
   - source_language

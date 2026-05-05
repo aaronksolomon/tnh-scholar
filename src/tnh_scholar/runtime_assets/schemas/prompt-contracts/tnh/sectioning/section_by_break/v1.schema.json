@@ -57,6 +57,7 @@
         "type": "object",
         "required": [
           "start_line",
+          "end_line",
           "title"
         ],
         "properties": {

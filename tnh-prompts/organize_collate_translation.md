@@ -3,7 +3,6 @@ key: organize_collate_translation
 name: Organize and Collate Translation
 version: "1.0"
 description: Organizes line-by-line translated Vietnamese Dharma talks into coherent English paragraphs in TNH style
-task_type: editing
 role: editing
 required_variables:
   - section_title

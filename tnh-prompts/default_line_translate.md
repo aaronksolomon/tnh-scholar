@@ -3,7 +3,6 @@ key: default_line_translate
 name: Default Line Translate
 version: "1.0"
 description: Line-by-line translation preserving line numbers and structure (tightly coupled to translate processor)
-task_type: translation
 role: translation
 required_variables:
   - source_language

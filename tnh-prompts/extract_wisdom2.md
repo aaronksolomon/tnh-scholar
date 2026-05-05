@@ -3,7 +3,6 @@ key: extract_wisdom2
 name: Extract Wisdom Two
 version: "1.0"
 description: Extracts detailed insights (35 ideas, 30 quotes, 20 facts) from text for TNH students
-task_type: extraction
 role: extraction
 required_variables: []
 optional_variables: []

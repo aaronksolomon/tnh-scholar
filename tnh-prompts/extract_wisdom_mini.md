@@ -3,7 +3,6 @@ key: extract_wisdom_mini
 name: Extract Wisdom Mini
 version: "1.0"
 description: Extracts concise insights (5-10 each of ideas, quotes, facts) from text for TNH students
-task_type: extraction
 role: extraction
 required_variables: []
 optional_variables: []

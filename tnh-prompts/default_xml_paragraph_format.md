@@ -3,7 +3,6 @@ key: default_xml_paragraph_format
 name: Default XML Paragraph Format
 version: "1.0"
 description: Formats single paragraph text into XML with proper tags (p, br, lists, quotes, emphasis)
-task_type: formatting
 role: formatting
 required_variables:
   - source_language
