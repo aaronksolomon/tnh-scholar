@@ -88,6 +88,12 @@ tests/golden/journal-pipeline/*.provenance.yaml
 *.jpg
 *.png
 
+# Allow tracked docs assets for the journal pipeline case study
+!docs/user-guide/assets/
+!docs/user-guide/assets/journal-pipeline/
+!docs/user-guide/assets/journal-pipeline/*.pdf
+!docs/user-guide/assets/journal-pipeline/*.jpg
+
 *.mp4
 *.mov
 *.avi
