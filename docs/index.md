@@ -146,8 +146,9 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 ## User Guide
 
 - [A Buddhist Cosmological View — Vũ-trụ-quan Phật học](/user-guide/vu-tru-quan-phat-hoc-en.md)
+- [A Buddhist Cosmological View — Vũ-trụ-quan Phật học (TNH-voice)](/user-guide/vu-tru-quan-phat-hoc-tnh-voice-en.md)
 - [Best Practices](/user-guide/best-practices.md)
-- [Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text](/user-guide/pipeline-walkthrough.md)
+- [Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text](/user-guide/journal-pipeline-case-study.md)
 - [TNH Scholar Prompt System](/user-guide/prompt-system.md)
 - [User Guide Overview](/user-guide/overview.md)
 
@@ -318,6 +319,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [Package Version Checker Design Document](/architecture/utilities/design/package-version-checker-design.md)
 - [Practical Language-Aware Chunking Design](/architecture/transcription/design/practical-language-aware-chunking.md)
 - [Prompt Dir Task Brief](/architecture/agent-orchestration/supervisory-shell-trial/prompt-dir-task-brief.md)
+- [Prompt Platform Cleanup Follow-On](/architecture/prompt-system/notes/prompt-platform-cleanup-follow-on-2026-05.md)
 - [Prompt System Architecture](/architecture/prompt-system/prompt-system-architecture.md)
 - [Run Bootstrap Proof](/architecture/agent-orchestration/bootstrap-proof/run-bootstrap-proof.md)
 - [Run Prompt Dir Comparison](/architecture/agent-orchestration/supervisory-shell-trial/run-prompt-dir-comparison.md)

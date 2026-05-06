@@ -160,7 +160,7 @@ tnh-gen run --prompt default_line_translate \
 ### ✅ Docs Updates Complete
 
 - [x] `docs/user-guide/best-practices.md` — replaced stale pipeline example with two-track commands; added link to walkthrough
-- [x] `docs/user-guide/pipeline-walkthrough.md` — new file; full annotated two-track walkthrough with OCR artifact examples, all commands, section JSON shape, golden output table
+- [x] `docs/user-guide/journal-pipeline-case-study.md` — new file; full annotated two-track walkthrough with OCR artifact examples, all commands, section JSON shape, golden output table
 - [x] `docs/cli-reference/tnh-gen.md` — added "Pipeline Examples" section with both tracks, before/after OCR snippet, track comparison note
 - [x] `docs/user-guide/overview.md` — Workflow 2 updated with concrete CLI commands and link to walkthrough
 - [x] `docs/user-guide/prompt-system.md` — rewritten: Pattern/PatternManager removed, PromptCatalog API, updated default prompts table including `default_clean` and `default_clean_numbered`

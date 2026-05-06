@@ -107,11 +107,11 @@ Typical steps:
    - Humans review AI output, correct tagging or translation, and adjust prompts as needed.
    - Corrected output becomes a reference for future pipeline runs.
 
-For a fully worked example using real OCR source text, see the [Pipeline Walkthrough](/user-guide/pipeline-walkthrough.md).
+For a fully worked example using real OCR source text, see the [Journal Pipeline Case Study](/user-guide/journal-pipeline-case-study.md).
 
 Relevant documentation:
 
-- [Pipeline Walkthrough](/user-guide/pipeline-walkthrough.md) — step-by-step two-track example
+- [Journal Pipeline Case Study](/user-guide/journal-pipeline-case-study.md) — step-by-step two-track example
 - [Prompt System](/user-guide/prompt-system.md) — how prompts work and how to create them
 - [tnh-gen CLI Reference](/cli-reference/tnh-gen.md)
 
