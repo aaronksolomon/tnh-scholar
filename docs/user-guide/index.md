@@ -22,10 +22,6 @@ auto_generated: true
 
 **[TNH Scholar Prompt System](prompt-system.md)** - How to use, locate, and create prompts for tnh-gen text processing pipelines.
 
-**[A Buddhist Cosmological View — Vũ-trụ-quan Phật học](vu-tru-quan-phat-hoc-en.md)** - Pipeline translation of the 1957 Vietnamese Buddhist journal article on dependent origination and Buddhist cosmology, produced by tnh-gen.
-
-**[A Buddhist Cosmological View — Vũ-trụ-quan Phật học (TNH-voice)](vu-tru-quan-phat-hoc-tnh-voice-en.md)** - TNH-voice prompt translation of a 1957 Vietnamese Buddhist journal article on dependent origination and Buddhist cosmology, produced by tnh-gen.
-
 ---
 
 *This file auto-generated.*

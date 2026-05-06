@@ -27,9 +27,10 @@ For a simpler hierarchical view, see the Documentation Map section at the bottom
 
 | Title | Description | Created | Path |
 | --- | --- | --- | --- |
-| [A Buddhist Cosmological View — Vũ-trụ-quan Phật học](/user-guide/vu-tru-quan-phat-hoc-en.md) | Pipeline translation of the 1957 Vietnamese Buddhist journal article on dependent origination and Buddhist cosmology, produced by tnh-gen. | 2026-05-04 | `docs/user-guide/vu-tru-quan-phat-hoc-en.md` |
-| [A Buddhist Cosmological View — Vũ-trụ-quan Phật học (TNH-voice)](/user-guide/vu-tru-quan-phat-hoc-tnh-voice-en.md) | TNH-voice prompt translation of a 1957 Vietnamese Buddhist journal article on dependent origination and Buddhist cosmology, produced by tnh-gen. | 2026-05-05 | `docs/user-guide/vu-tru-quan-phat-hoc-tnh-voice-en.md` |
+| [A Buddhist Cosmological View — Vũ-trụ-quan Phật học](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-en.md) | Pipeline translation of the 1957 Vietnamese Buddhist journal article on dependent origination and Buddhist cosmology, produced by tnh-gen. | 2026-05-04 | `docs/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-en.md` |
+| [A Buddhist Cosmological View — Vũ-trụ-quan Phật học (TNH-voice)](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-en.md) | TNH-voice prompt translation of a 1957 Vietnamese Buddhist journal article on dependent origination and Buddhist cosmology, produced by tnh-gen. | 2026-05-05 | `docs/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-en.md` |
 | [Best Practices](/user-guide/best-practices.md) | This guide outlines recommended practices for using TNH Scholar effectively. | 2025-02-01 | `docs/user-guide/best-practices.md` |
+| [Journal Pipeline](/user-guide/assets/journal-pipeline/index.md) | Table of contents for user-guide/assets/journal-pipeline | 2026-05-06 | `docs/user-guide/assets/journal-pipeline/index.md` |
 | [Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text](/user-guide/journal-pipeline-case-study.md) | A worked case study — section, clean, and translate a scanned Vietnamese Buddhist journal article using tnh-gen. | 2026-05-04 | `docs/user-guide/journal-pipeline-case-study.md` |
 | [TNH Scholar Prompt System](/user-guide/prompt-system.md) | How to use, locate, and create prompts for tnh-gen text processing pipelines. | 2025-01-19 | `docs/user-guide/prompt-system.md` |
 | [User Guide](/user-guide/index.md) | Table of contents for user-guide | 2026-05-06 | `docs/user-guide/index.md` |

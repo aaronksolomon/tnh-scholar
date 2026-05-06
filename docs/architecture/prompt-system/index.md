@@ -18,6 +18,8 @@ auto_generated: true
 
 **[Adr](adr/index.md)** - Table of contents for architecture/prompt-system/adr
 
+**[Notes](notes/index.md)** - Table of contents for architecture/prompt-system/notes
+
 ---
 
 *This file auto-generated.*
