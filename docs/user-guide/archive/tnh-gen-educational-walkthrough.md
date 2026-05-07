@@ -11,7 +11,7 @@ updated: "2026-05-04"
 
 `tnh-gen` runs a prompt against a file and writes the result to an output file. This walkthrough shows how that works — starting with the smallest useful examples, then moving to a real multi-step journal workflow.
 
-For the older pipeline-oriented reference, keep [Pipeline Walkthrough](/user-guide/pipeline-walkthrough.md) open beside this one.
+For the older pipeline-oriented reference, keep [Journal Pipeline Case Study](/user-guide/journal-pipeline-case-study.md) open beside this one.
 
 ## The Basic Command Shape
 
@@ -340,13 +340,13 @@ These rough edges are real and documented honestly:
 
 1. `tests/golden/json-prompts/README.md` — the maintained JSON prompt examples and golden outputs
 2. [Journal Walkthrough Review](/user-guide/journal-walkthrough-review.md)
-3. [Pipeline Walkthrough](/user-guide/pipeline-walkthrough.md)
+3. [Journal Pipeline Case Study](/user-guide/journal-pipeline-case-study.md)
 4. [Prompt System](/user-guide/prompt-system.md)
 
 ## Related Docs
 
 - [Journal Walkthrough Review](/user-guide/journal-walkthrough-review.md)
-- [Pipeline Walkthrough](/user-guide/pipeline-walkthrough.md)
+- [Journal Pipeline Case Study](/user-guide/journal-pipeline-case-study.md)
 - [Prompt System](/user-guide/prompt-system.md)
 - [Best Practices](/user-guide/best-practices.md)
 - [tnh-gen CLI Reference](/cli-reference/tnh-gen.md)

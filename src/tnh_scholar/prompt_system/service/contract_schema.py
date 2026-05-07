@@ -7,10 +7,11 @@ from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
-from jsonschema.exceptions import SchemaError, ValidationError as JsonSchemaValidationError
+from jsonschema.exceptions import SchemaError
+from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
 from pydantic import BaseModel
 
-from tnh_scholar.configuration.context import TNHContext
+from tnh_scholar.configuration.context import PromptDirectoryNames, TNHContext
 from tnh_scholar.exceptions import ConfigurationError
 
 SCHEMA_DIRECTORY_PARTS = ("schemas", "prompt-contracts")
@@ -95,14 +96,20 @@ def _context_for_prompt_directory(prompts_base: Path) -> TNHContext:
         return discovered
 
     # Case 2: non-standard prompt directory name.
-    if prompts_path.name != "prompts":
+    # Keep legacy workspace-name support while repo-local work transitions to
+    # the PT5.1 prompt-home model.
+    workspace_names = {
+        PromptDirectoryNames.legacy_workspace(),
+        PromptDirectoryNames.workspace(),
+    }
+    if prompts_path.name not in workspace_names:
         return discovered
 
     # Case 3: user or built-in prompts directory.
     if prompts_path.parent in {discovered.user_root, discovered.builtin_root}:
         return discovered
 
-    # Case 4: repo-local prompts/ folder that should define a workspace root.
+    # Case 4: repo-local prompt workspace folder that should define a workspace root.
     return TNHContext.discover(
         workspace_root=prompts_path.parent,
         user_root=discovered.user_root,

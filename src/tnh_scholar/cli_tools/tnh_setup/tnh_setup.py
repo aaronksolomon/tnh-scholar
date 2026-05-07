@@ -1,17 +1,18 @@
-# setup.py
+"""Legacy Click-based tnh-setup entrypoint.
 
-import io
+Prefer ``tnh_setup_typer.py`` for the maintained CLI implementation.
+This compatibility path is retained temporarily and should not diverge.
+"""
+
 import subprocess
 import sys
-import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 
 import click
-import requests
 from dotenv import load_dotenv
 
-# Constants
+from tnh_scholar.cli_tools.tnh_setup.prompt_display import PromptSetupDisplay
 from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.utils.validate import check_openai_env
 from tnh_scholar.video_processing.yt_environment import YTDLPEnvironmentInspector
@@ -31,9 +32,6 @@ For OpenAI API access help: https://platform.openai.com/
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>> -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 """
-
-PROMPTS_URL = "https://github.com/aaronksolomon/patterns/archive/main.zip"
-
 
 @dataclass(frozen=True)
 class SetupPaths:
@@ -60,46 +58,15 @@ def create_config_dirs(paths: SetupPaths) -> None:
     paths.prompt_dir.mkdir(exist_ok=True)
 
 
-def download_prompts(paths: SetupPaths) -> bool:
-    """Download and extract prompt files from GitHub."""
-    try:
-        response = requests.get(PROMPTS_URL)
-        response.raise_for_status()
-        
-        with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
-            root_dir = zip_ref.filelist[0].filename.split('/')[0]
-            
-            for zip_info in zip_ref.filelist:
-                if zip_info.filename.endswith('.md'):
-                    rel_path = Path(zip_info.filename).relative_to(root_dir)
-                    target_path = paths.prompt_dir / rel_path
-                    
-                    target_path.parent.mkdir(parents=True, exist_ok=True)
-                    
-                    with zip_ref.open(zip_info) as source, open(target_path, 'wb') as target:
-                        target.write(source.read())
-        return True
-        
-    except Exception as e:
-        click.echo(f"Prompt download failed: {e}", err=True)
-        return False
-
-
-def maybe_download_prompts(paths: SetupPaths, *, skip_prompts: bool) -> None:
-    """Prompt for and download markdown prompt files."""
+def report_prompt_setup(paths: SetupPaths, *, skip_prompts: bool) -> None:
+    """Report prompt directory setup without external downloads."""
     if skip_prompts:
         return
-    should_download = click.confirm(
-        "\nDownload prompt (markdown text) files from GitHub?\n"
-        f"Source: {PROMPTS_URL}\n"
-        f"Target: {paths.prompt_dir}"
-    )
-    if not should_download:
-        return
-    if download_prompts(paths):
-        click.echo("Prompt files downloaded successfully")
-    else:
-        click.echo("Prompt download failed", err=True)
+    click.echo("\nPrompt setup")
+    click.echo(f"User prompt directory: {paths.prompt_dir}")
+    click.echo(f"Repo prompt workspace: {PromptSetupDisplay.repo_workspace()}")
+    click.echo(f"Bundled prompts: {PromptSetupDisplay.bundled_prompts()}")
+    click.echo("No external prompt download is performed.")
 
 
 def maybe_setup_ytdlp_runtime(*, skip_ytdlp_runtime: bool) -> None:
@@ -149,7 +116,7 @@ def maybe_check_environment(*, skip_env: bool) -> None:
 
 @click.command()
 @click.option('--skip-env', is_flag=True, help='Skip API key setup')
-@click.option('--skip-prompts', is_flag=True, help='Skip prompt download')
+@click.option('--skip-prompts', is_flag=True, help='Skip prompt directory setup guidance')
 @click.option('--skip-ytdlp-runtime', is_flag=True, help='Skip yt-dlp runtime setup')
 def tnh_setup(skip_env: bool, skip_prompts: bool, skip_ytdlp_runtime: bool):
     """Set up TNH Scholar configuration."""
@@ -160,7 +127,7 @@ def tnh_setup(skip_env: bool, skip_prompts: bool, skip_ytdlp_runtime: bool):
     create_config_dirs(paths)
     click.echo(f"Created config directory: {paths.config_dir}")
 
-    maybe_download_prompts(paths, skip_prompts=skip_prompts)
+    report_prompt_setup(paths, skip_prompts=skip_prompts)
     maybe_setup_ytdlp_runtime(skip_ytdlp_runtime=skip_ytdlp_runtime)
     maybe_check_environment(skip_env=skip_env)
     

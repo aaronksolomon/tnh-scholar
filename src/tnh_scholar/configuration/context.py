@@ -89,6 +89,27 @@ class ContextIdFactory:
 
 
 @dataclass(frozen=True)
+class PromptDirectoryNames:
+    """Canonical prompt-directory names used by runtime discovery."""
+
+    @classmethod
+    def workspace(cls) -> str:
+        return "tnh-prompts"
+
+    @classmethod
+    def legacy_workspace(cls) -> str:
+        return "prompts"
+
+    @classmethod
+    def user(cls) -> str:
+        return "prompts"
+
+    @classmethod
+    def builtin(cls) -> str:
+        return "prompts"
+
+
+@dataclass(frozen=True)
 class TNHContext:
     """Resolved runtime context for TNH Scholar."""
 
@@ -180,10 +201,10 @@ class PromptPathBuilder:
         return next((path for path in self.build()), None)
 
     def _workspace_path(self) -> Path:
-        return self._context.workspace_root / "prompts"
+        return self._context.workspace_root / PromptDirectoryNames.workspace()
 
     def _user_path(self) -> Path:
-        return self._context.user_root / "prompts"
+        return self._context.user_root / PromptDirectoryNames.user()
 
     def _builtin_path(self) -> Path:
-        return self._context.builtin_root / "prompts"
+        return self._context.builtin_root / PromptDirectoryNames.builtin()

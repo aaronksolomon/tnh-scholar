@@ -50,13 +50,8 @@ Note: the watermark text `TU VIEN HUE QUANG` in the scans is the stamp of this s
 
 ## Pipeline Variables
 
-Run the walkthrough from the repo root with:
-
-```bash
---prompt-dir ./tnh-prompts
-```
-
-This repository-local prompt workspace is the canonical source for repeating the golden test in `tnh-scholar`.
+Run the walkthrough from the repo root. `tnh-gen` will discover the canonical
+repo-local prompt workspace from `./tnh-prompts/` by default.
 
 When running this example, use:
 
@@ -93,7 +88,7 @@ reruns and scratch variants may still be left untracked.
 
 Before rerunning this larger journal golden:
 
-- Use the repo-local prompt mirror with `--prompt-dir ./tnh-prompts`.
+- Run from the repo root so the default `./tnh-prompts/` workspace is discovered.
 - Confirm the five small JSON prompt live checks in `tests/golden/json-prompts/` first.
 - Confirm budget configuration is high enough for live runs. Earlier preliminary attempts in this workstream were blocked under the old `$0.10` default; the current runtime default is now `$0.30`.
 - If running from this worktree source, export env vars from the root repo `.env` with `set -a` before invoking `tnh-gen`.

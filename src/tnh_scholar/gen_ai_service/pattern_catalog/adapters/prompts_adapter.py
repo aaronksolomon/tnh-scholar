@@ -27,7 +27,6 @@ from tnh_scholar.prompt_system.adapters.filesystem_catalog_adapter import (
 )
 from tnh_scholar.prompt_system.config.policy import PromptRenderPolicy, ValidationPolicy
 from tnh_scholar.prompt_system.config.prompt_catalog_config import PromptCatalogConfig
-from tnh_scholar.prompt_system.config.settings import PromptSystemSettings
 from tnh_scholar.prompt_system.domain.models import CatalogHealth, Prompt, PromptMetadata, RenderParams
 from tnh_scholar.prompt_system.domain.protocols import (
     PromptCatalogPort,
@@ -60,7 +59,6 @@ class PromptsAdapter:
         validator: PromptValidatorPort | None = None,
     ):
         self._base = Path(prompts_base)
-        settings = PromptSystemSettings.from_env()
 
         render_policy = PromptRenderPolicy()
         validation_policy = ValidationPolicy()
@@ -79,7 +77,6 @@ class PromptsAdapter:
         catalog_config = PromptCatalogConfig(
             repository_path=self._base,
             enable_git_refresh=False,
-            cache_ttl_s=settings.cache_ttl_seconds,
             validation_on_load=True,
         )
         self._catalog = catalog or FilesystemPromptCatalog(

@@ -1,0 +1,16 @@
+---
+fingerprint: sha256:5d6d02c1b4d78e9f4b45950b2b9cc0ede1e03fcc7640d31fa188881ec2c042f1
+generated_at: '2026-05-05T14:02:36Z'
+model: gpt-5.4
+prompt_key: translate_journal_section_tnh_voice_en
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: eaf87429b1c6473086f9c4614a68f478
+---
+
+Temporal Causation, the Continuity of the Stream of Life, and the Broader Meaning of Cause and Effect
+
+2. The question of temporal causation is also the question of continuity in existence. All phenomena are impermanent and ever-changing, yet not a single thing is utterly cut off and annihilated. There is no individual entity that is eternal and unchanging, yet there are always continuous, unbroken “streams” of phenomena. All things transform themselves continuously according to certain principles. The Buddha gave particular attention to explaining the continuous stream of life, that is, the phenomena of sentient beings. He taught that the fundamental driving force of birth-and-death and rebirth is ignorance and craving. Sentient beings themselves are the formations of the whole of their past experiences and karmic causes. Through present karmic causes, sentient beings move on toward future stages of life. From the logical point of view, he illuminated the law of heterogeneous causes and heterogeneous fruits. From the psychological point of view, he explained the law of homogeneous causes and equal-flow fruits. From the metaphysical point of view, he presented the law of the Twelvefold Chain of Dependent Origination. Although, twenty-five centuries ago, terminology and modes of expression were still poor, the texts of the Four Āgamas were already able to expound these subtle teachings.
+
+In short, the Buddhist understanding of cause and effect, in its narrow sense, is simply the law of causality. But in its broader sense, it is not limited to relations of cause and effect that are purely theoretical. The Buddhist view of cause and effect also embraces ethical and liberative relations; in breadth it extends throughout the ten directions, and in length it penetrates past, future, and present.

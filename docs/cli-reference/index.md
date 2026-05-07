@@ -4,7 +4,7 @@ description: "Table of contents for cli-reference"
 owner: ""
 author: ""
 status: current
-created: "2026-05-05"
+created: "2026-05-06"
 auto_generated: true
 ---
 
@@ -30,7 +30,7 @@ auto_generated: true
 
 **[tnh-gen](tnh-gen.md)** - Complete reference for the tnh-gen CLI - TNH Scholar's unified command-line interface for GenAI-powered text processing
 
-**[tnh-setup](tnh-setup.md)** - The `tnh-setup` command configures the TNH Scholar environment, setting up necessary directories and downloading default prompts.
+**[tnh-setup](tnh-setup.md)** - The `tnh-setup` command configures the TNH Scholar environment, prepares local prompt directories, and verifies core runtime prerequisites.
 
 **[token-count](token-count.md)** - The `token-count` command calculates the OpenAI API token count for text input. This is useful for ensuring that a text is within maximum token limits for the API model and also for estimating API costs.
 

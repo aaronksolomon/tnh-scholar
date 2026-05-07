@@ -1,22 +1,20 @@
 ---
-title: "A Buddhist Cosmological View — Vũ-trụ-quan Phật học"
-description: "Pipeline translation of a 1957 Vietnamese Buddhist journal article on dependent origination and Buddhist cosmology, produced by tnh-gen."
+title: "A Buddhist Cosmological View — Vũ-trụ-quan Phật học (TNH-voice)"
+description: "TNH-voice prompt translation of a 1957 Vietnamese Buddhist journal article on dependent origination and Buddhist cosmology, produced by tnh-gen."
 owner: "TNH Scholar"
 author: "Thạc-Đức"
 source: "Phật Giáo Việt Nam, issue 17–18, 1957"
-translated_by: "tnh-gen / translate_journal_section_en"
+translated_by: "tnh-gen / translate_journal_section_tnh_voice_en (sections I, IV); translate_journal_section_en (sections II, III)"
 model: "gpt-5.4"
 status: current
-created: "2026-05-04"
-generated: "2026-05-04"
+created: "2026-05-05"
+generated: "2026-05-05"
 ---
 
-# A Buddhist Cosmological View — Vũ-trụ-quan Phật học
+# A Buddhist Cosmological View — Vũ-trụ-quan Phật học (TNH-voice)
 
-Pipeline-assisted English translation of a 1957 Vietnamese Buddhist journal article,
+TNH-voice prompt translation of the 1957 Vietnamese Buddhist journal article,
 produced as part of the `tnh-gen` journal walkthrough.
-
-## A Buddhist Cosmological View
 
 **Author:** Thạc-Đức  
 **Source:** *Phật Giáo Việt Nam*, issue 17–18, 1957  
@@ -25,71 +23,73 @@ produced as part of the `tnh-gen` journal walkthrough.
 **Attribution note:** The byline Thạc-Đức is associated with Trần Thạc Đức, a pen name
 appearing in the 1950s *Phật Giáo Việt Nam* corpus. Scholarship by Adrienne Minh-Châu Lê
 identifies Thạc Đức as one of Thích Nhất Hạnh's pen names during his editorship of the
-journal (Lê 2024; see also Plum Village 2014). This attribution is not confirmed for every
-article bearing the name and is preserved here as it appears in the source.
+journal (Lê 2024; see also Plum Village 2014).
 
-*This document is a pipeline-assisted translation produced by `tnh-gen` using the
-`translate_journal_section_en` prompt against cleaned OCR text from scanned journal pages.
-It is offered as a research baseline and working draft, not a final scholarly translation.*
+*This document is a pipeline-assisted translation produced by `tnh-gen`. Sections I and IV
+use the `translate_journal_section_tnh_voice_en` prompt; sections II and III use the
+`translate_journal_section_en` baseline prompt (no TNH-voice artifacts were generated for
+those sections). It is offered as a research baseline and working draft, not a final
+scholarly translation.*
 
 ---
 
-## I. Indian Intellectual Context and Buddhism's Critical Stance
+## A Buddhist Cosmological View
+
+### I. Indian Intellectual Context and Buddhism's Critical Stance
 
 *(Bối cảnh tư tưởng Ấn Độ và lập trường phê bình của Phật giáo)*
 
-In the time of the Buddha, the question of the principle underlying all things was one
-to which the Indian intellectual world gave great attention. The Brahmajāla Sutta records
-as many as sixty-two different explanations advanced by the Indian philosophical schools
-of that age. In sum, we may discern the following three tendencies:
+In the time of the Buddha, the question of the first principle of all things held a very
+important place in the intellectual life of India. The Brahmajāla Sutta records as many as
+sixty-two different explanations offered by the Indian philosophical schools of that age.
+Broadly speaking, we can see three principal tendencies:
 
 **1.— The tendency of fatalism** *(pubba-kata-hetu)*
 
-The philosophical schools belonging to this tendency held that both the natural world
-and the human world are arranged by predestination. Everything operates according to
-pre-existing natural laws. The value of human effort and material agency is not
-acknowledged here.
+The schools belonging to this tendency held that the whole natural world and the human
+world are arranged by predestination. Everything proceeds according to fixed natural laws
+already laid down. The value of human effort and material means is not acknowledged here.
 
-**2. The tendency of theism, or divine-volition theory** *(issara-nimmāna-hetu)*
+**2. The tendency of theism, or divine will** *(issara-nimmāna-hetu)*
 
-The philosophical schools belonging to this tendency maintained that all things exist
-through the will of a divine being. That divine being here is Brahmā, and the center of
-the schools belonging to this tendency is Brahmanism.
+The schools belonging to this tendency held that all things exist through the will of a
+divine being. This divine being is Brahmā, and the center of the schools of this tendency
+is Brahmanism.
 
-**3.— The tendency of accidentalism** *(ahetu-apaccaya)*
+**3.— The tendency of chance** *(ahetu-apaccaya)*
 
-The philosophical schools belonging to this tendency did not admit any principle of
-causality. All phenomena arise and exist accidentally, without following any rule or
-lawful principle whatsoever.
+The schools belonging to this tendency did not admit the principle of causation. All
+phenomena arise and continue by chance, without following any law or principle at all.
 
 The first and second tendencies assign all responsibility to a supernatural power.
-Personal responsibility here does not become an issue; fortune and misfortune alike are
-things that human beings cannot determine. Human good and evil actions are not the motive
-force behind success and failure, ruin and accomplishment.
+Personal responsibility therefore does not become a real question; blessing and misfortune
+alike are things that human beings cannot determine. Good and evil actions on the part of
+human beings are not regarded as the motive force behind success or failure, growth or
+decline.
 
-The third tendency likewise cannot provide a foundation for personal moral
-responsibility. If everything is accidental, then good is also accidental, evil is also
-accidental, and fortune and blessing are also accidental; there is nothing that can serve
-as a standard for human conduct. Consequently, human beings cannot gradually advance
-toward truth, beauty, and goodness; on the contrary, they may very easily slip down the
-slope of sin and depravity.
+The third tendency also cannot establish any basis for personal moral responsibility. If
+everything is mere chance, then good is also chance, evil is also chance, fortune and
+misfortune are also chance; there is nothing that can serve as a standard for human
+conduct. Because of this, human beings cannot gradually advance toward truth, beauty, and
+goodness. On the contrary, they may very easily slide down the slope of wrongdoing and
+corruption.
 
-From the theoretical point of view, the doctrines belonging to the above tendencies all
-contain many defects. From the human point of view, the consequences produced by those
-doctrines are dark and disheartening. None of them can give human beings peace of mind
-or a secure grounding for life, nor do they affirm the necessary capacities already
-present in human beings.
+From the point of view of theory, the doctrines belonging to these tendencies all have
+many shortcomings. From the point of view of human life, the consequences they bring are
+dark and discouraging. None of them can give a person peace of mind or a secure ground for
+life, nor do they affirm the necessary and already present capacities of the human being.
 
-The Buddha's standpoint was to expound the principle of the universe as the foundation
-for a way of human life. That principle had to accord with the truth of the myriad
-phenomena, and that way of life had to lead human beings to the fulfillment of ethical
-and religious value. The Buddha's purpose in preaching the Dīrgha Āgama was not to
-overthrow the theories of others for its own sake, but only to reject erroneous
-philosophical views that might obstruct the realization of human morality and liberation.
+The Buddha's standpoint was to explain the principle of the universe as the foundation for
+a way of human living. That principle had to accord with the truth of the countless
+phenomena, and that way of life had to lead the human being to the fulfillment of moral
+and religious value. The Buddha's purpose in teaching the Dīrgha Āgama was not to
+overthrow the theories of others for its own sake, but only to reject mistaken
+philosophical views that could obstruct the realization of morality and liberation in
+human life.
 
 ---
 
-## II. The World of Conditional Relations and the Principle of Dependent Arising
+### II. The World of Conditional Relations and the Principle of Dependent Arising
 
 *(Thế giới nhân duyên và nguyên lý duyên khởi)*
 
@@ -140,7 +140,7 @@ simultaneous causation.
 
 ---
 
-## III. Simultaneous Causality and the Establishment of the World of Cognition
+### III. Simultaneous Causality and the Establishment of the World of Cognition
 
 *(Đồng thời nhân quả và sự thành lập của thế giới nhận thức)*
 
@@ -183,41 +183,43 @@ from that relation, neither can be established.
 
 ---
 
-## IV. Successive-Time Causality, the Stream of Life, and the Ethical Meaning of Liberation
+### IV. Successive-Time Causality, the Stream of Life, and the Ethical Meaning of Liberation
 
 *(Dị thời nhân quả, dòng sinh mệnh và ý nghĩa đạo đức giải thoát)*
 
-**2.** The problem of successive-time causality is also the problem of continuity in
-existence. Although all phenomena are impermanent and ever-changing, no thing is utterly
-annihilated. There is no individual entity that is eternally unchanging, yet there are
-always uninterrupted "streams" of phenomena continuing on. All things undergo ceaseless
-transformation according to definite principles.
+**2.** The question of temporal causation is also the question of continuity in
+existence. All phenomena are impermanent and ever-changing, yet not a single thing is
+utterly cut off and annihilated. There is no individual entity that is eternal and
+unchanging, yet there are always continuous, unbroken "streams" of phenomena. All things
+transform themselves continuously according to certain principles.
 
-The Buddha gave special attention to explaining the continuous stream of life — that is,
-the phenomena of sentient beings. He taught that the fundamental motive force of
-saṃsāric birth-and-death is ignorance and craving. Sentient beings themselves are
-combinations of the totality of past experiences and karmic causes. On the basis of
-present karmic causes, sentient beings proceed toward future stages of life.
+The Buddha gave particular attention to explaining the continuous stream of life — that
+is, the phenomena of sentient beings. He taught that the fundamental driving force of
+birth-and-death and rebirth is ignorance and craving. Sentient beings themselves are the
+formations of the whole of their past experiences and karmic causes. Through present
+karmic causes, sentient beings move on toward future stages of life.
 
-From the logical point of view, he elucidated the law of heterogeneous causes and
-heterogeneous results. From the psychological point of view, he expounded the law of
-homogeneous causes and equivalent-flow results. From the metaphysical point of view,
-he presented the law of the Twelvefold Dependent Origination. Although, twenty-five
-hundred years ago, terminology and modes of expression were still limited, the texts
-of the Four Āgamas were nevertheless able to expound these subtle doctrines.
+From the logical point of view, he illuminated the law of heterogeneous causes and
+heterogeneous fruits. From the psychological point of view, he explained the law of
+homogeneous causes and equal-flow fruits. From the metaphysical point of view, he
+presented the law of the Twelvefold Chain of Dependent Origination. Although, twenty-five
+centuries ago, terminology and modes of expression were still poor, the texts of the Four
+Āgamas were already able to expound these subtle teachings.
 
-In sum, the Buddhist conception of causality, in its narrow sense, is simply the law of
-causality (*Loi de Causalité*); but in its broader sense, it is not confined to causal
-relations of a purely theoretical kind. The Buddhist conception of causality also
-encompasses ethical and soteriological relations; in breadth it extends throughout the
-ten directions, and in length it penetrates past, future, and present.
+In short, the Buddhist understanding of cause and effect, in its narrow sense, is simply
+the law of causality. But in its broader sense, it is not limited to relations of cause
+and effect that are purely theoretical. The Buddhist view of cause and effect also
+embraces ethical and liberative relations; in breadth it extends throughout the ten
+directions, and in length it penetrates past, future, and present.
 
 ---
 
-*Pipeline provenance: translated by `tnh-gen` using prompt `translate_journal_section_en`
-(version 1.0), model gpt-5.4, generated 2026-05-04. Section boundaries and document
-context from `default_section` (version 1.0), same model and date. Source: cleaned OCR
-from `tests/golden/journal-pipeline/`. Full artifact chain at
+*Pipeline provenance: sections I and IV translated by `tnh-gen` using prompt
+`translate_journal_section_tnh_voice_en` (version 1.0), model gpt-5.4, generated
+2026-05-05. Sections II and III translated using prompt `translate_journal_section_en`
+(version 1.0), same model, generated 2026-05-04. Section boundaries and document context
+from `default_section` (version 1.0). Source: cleaned OCR from
+`tests/golden/journal-pipeline/`. Full artifact chain at
 `tests/golden/journal-pipeline/walkthrough/clean_translate/`.*
 
 ---

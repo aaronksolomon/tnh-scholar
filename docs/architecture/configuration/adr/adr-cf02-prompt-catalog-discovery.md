@@ -234,4 +234,4 @@ Add discovery logic to `GenAISettings` without extending TNHContext.
 
 - The three-layer discovery pattern remains valid as a configuration strategy.
 - The active repo-local prototype workspace is now `tnh-prompts/`, not an assumed external prompt checkout.
-- A later implementation decision may repoint default workspace discovery from `prompts/` to `tnh-prompts/`, but that is intentionally deferred from this addendum.
+- Default workspace discovery has now been repointed from `prompts/` to `tnh-prompts/` in the active implementation path; see the addendum to [ADR-PT05.1: Prototype Prompt Workspace Simplification](/architecture/prompt-system/adr/adr-pt05.1-prototype-prompt-workspace-simplification.md).

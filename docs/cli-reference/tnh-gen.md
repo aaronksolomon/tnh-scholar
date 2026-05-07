@@ -69,7 +69,7 @@ These flags work with all commands:
 ```bash
 # Correct
 tnh-gen --api list
-tnh-gen --prompt-dir ./prompts run --prompt translate ...
+tnh-gen --prompt-dir ./my-prompts run --prompt translate ...
 
 # Incorrect (will not work)
 tnh-gen list --api
@@ -492,7 +492,7 @@ gpt-4o-mini
 tnh-gen config set max_dollars 0.30
 
 # Set workspace-level config
-tnh-gen config set --workspace prompt_catalog_dir ./prompts
+tnh-gen config set --workspace prompt_catalog_dir ./tnh-prompts
 ```
 
 ---
@@ -533,7 +533,7 @@ $ tnh-gen --api version
 
 ## Pipeline Examples
 
-These examples use four pages of OCR-scanned Vietnamese Buddhist journal text. Source files and scan images are in `tests/golden/journal-pipeline/`. See the [Pipeline Walkthrough](/user-guide/pipeline-walkthrough.md) for the fully annotated version including the section-extraction helper script.
+These examples use four pages of OCR-scanned Vietnamese Buddhist journal text. Source files and scan images are in `tests/golden/journal-pipeline/`. See the [Journal Pipeline Case Study](/user-guide/journal-pipeline-case-study.md) for the fully annotated version including the section-extraction helper script.
 
 ### Recommended Pipeline (section → clean → translate)
 

@@ -77,7 +77,7 @@ def cli_callback(
     Examples:
       tnh-gen list
       tnh-gen --api list
-      tnh-gen --prompt-dir ./prompts list
+      tnh-gen --prompt-dir ./my-prompts list
       tnh-gen run --prompt daily --input-file notes.md
       tnh-gen --api run --prompt daily --input-file notes.md
 

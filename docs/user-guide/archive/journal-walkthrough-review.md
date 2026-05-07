@@ -9,7 +9,7 @@ updated: "2026-05-03"
 ---
 # Journal Walkthrough Review
 
-This document is a review companion to the more general [Pipeline Walkthrough](/docs/user-guide/pipeline-walkthrough.md) and the user-facing [tnh-gen Walkthrough](/docs/user-guide/tnh-gen-educational-walkthrough.md). It is based on an actual `tnh-gen` run against the journal test source and points directly to the resulting artifacts so a human reviewer can inspect output quality and flag UI/UX issues.
+This document is a review companion to the more general [Journal Pipeline Case Study](/docs/user-guide/journal-pipeline-case-study.md) and the user-facing [tnh-gen Walkthrough](/docs/user-guide/tnh-gen-educational-walkthrough.md). It is based on an actual `tnh-gen` run against the journal test source and points directly to the resulting artifacts so a human reviewer can inspect output quality and flag UI/UX issues.
 
 ## Scope
 
@@ -182,7 +182,7 @@ Suggested review questions:
 
 ## Related Docs
 
-- [Pipeline Walkthrough](/docs/user-guide/pipeline-walkthrough.md)
+- [Journal Pipeline Case Study](/docs/user-guide/journal-pipeline-case-study.md)
 - [Prompt System](/docs/user-guide/prompt-system.md)
 - [Best Practices](/docs/user-guide/best-practices.md)
 - [tnh-gen CLI Reference](/docs/cli-reference/tnh-gen.md)
