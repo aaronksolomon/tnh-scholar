@@ -1,0 +1,16 @@
+---
+fingerprint: sha256:2dcb3a1a84e85e6df49f48e7091fed91fefaf51ec61e80795f0dd6366a7479cc
+generated_at: '2026-05-05T14:02:17Z'
+model: gpt-5.4
+prompt_key: translate_journal_section_en
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: ca5337bdefef45b0981973458bb16948
+---
+
+Temporally Sequential Causality, the Continuity of the Life-Stream, and the Broader Meaning of Causality
+
+2. The problem of temporally sequential causality is also the problem of continuity in existence. Although all phenomena are impermanent and ever-changing, there is nothing that is utterly annihilated. There is no individual entity that is eternal and unchanging, yet there are always continuous, unbroken “streams” of phenomena. All things transform continuously according to definite principles. The Buddha gave particular attention to explaining the continuous stream of life, that is, the phenomena of sentient beings. He taught that the fundamental motive forces of saṃsāric birth-and-death are ignorance and craving. Sentient beings themselves are combinations of the totality of past experiences and karmic causes. Because of present karmic causes, sentient beings proceed toward future stages of life. From the logical point of view, he elucidated the law of heterogeneous causes and heterogeneous results. From the psychological point of view, he expounded the law of homogeneous causes and corresponding flowing results. From the metaphysical point of view, he presented the law of the Twelvefold Dependent Origination. Although, twenty-five hundred years ago, terminology and modes of expression were still limited, the texts of the Four Āgamas were nevertheless able to expound these subtle teachings.
+
+In sum, the Buddhist conception of causality, in the narrow sense, is simply the Law of Causality (Loi de Causalité); but in the broad sense, it is not confined to causal relations of a purely theoretical nature. The Buddhist conception of causality also encompasses moral and liberative relations; in breadth it extends throughout the ten directions, and in length it penetrates past, future, and present.
