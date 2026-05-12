@@ -66,6 +66,8 @@ prompts/
 !src/**/*.jsonl
 !src/**/*.jsonc
 !tests/golden/json-prompts/translate-json-input.json
+!tests/golden/json-prompts/*.output.json
+!tests/golden/journal-pipeline/**/*.json
 
 # Generated golden-run artifacts stay local; only seed inputs/docs are tracked.
 tests/golden/json-prompts/*.output.json
@@ -92,6 +94,7 @@ tests/golden/journal-pipeline/*.provenance.yaml
 !docs/user-guide/assets/
 !docs/user-guide/assets/journal-pipeline/
 !docs/user-guide/assets/journal-pipeline/*.pdf
+!tests/golden/journal-pipeline/*.pdf
 !docs/user-guide/assets/journal-pipeline/*.jpg
 
 *.mp4

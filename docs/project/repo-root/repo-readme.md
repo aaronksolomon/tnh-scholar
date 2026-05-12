@@ -26,7 +26,7 @@ TNH Scholar aspires to make the teachings of Thích Nhất Hạnh, the Plum Vill
 TNH Scholar is currently in active prototyping. Key capabilities:
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
-- **Text formatting and translation**: `tnh-gen` CLI for punctuation, translation, sectioning, and prompt-driven processing. See [ADR-TG01](../../architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) and [ADR-TG02](../../architecture/tnh-gen/adr/adr-tg02-prompt-integration.md) for architecture details.
+- **Text formatting and translation**: `tnh-gen` CLI for punctuation, translation, sectioning, and prompt-driven processing. See [ADR-TG01](../../architecture/tnh-gen/adr/adr-tg01-cli-architecture.md) and [ADR-TG02](../../architecture/tnh-gen/adr/adr-tg02-prompt-integration.md) for architecture details. See the [Thầy Edited Journal Text Case Study](../../user-guide/journal-pipeline-case-study.md) for a fully worked OCR-to-translation example.
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started
 - **Agent orchestration bootstrap**: maintained `tnh-conductor` local/headless workflow runner for bounded worktree-backed bootstrap flows

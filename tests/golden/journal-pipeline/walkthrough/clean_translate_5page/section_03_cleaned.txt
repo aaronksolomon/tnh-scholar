@@ -1,0 +1,26 @@
+---
+fingerprint: sha256:970af471ddbc533b22347b4afd59fe33a8d159159ba2e7f94e96cd9294ca003c
+generated_at: '2026-05-06T21:04:26Z'
+model: gpt-5.4
+prompt_key: default_clean
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: f3c84161c5a74b86bb38ae11439953d8
+---
+
+1. Vấn-đề đồng thời nhân quả, cũng là vấn-đề chủ quan và khách quan.
+
+Đức Phật dạy: thế giới là sự giao tiếp giữa nhận thức chủ quan và đối tượng khách quan. Ngoài ra, không có gì có thể gọi là thế giới nữa:
+
+“Này các thầy Tỳ-kheo! Ta muốn khai thị cho các người về vấn đề tất cả (các pháp). Các ngươi hãy lắng nghe.
+
+Các thầy Tỳ-kheo! Sao gọi là “tất cả (các pháp)”? Đó là mắt đối với sắc, tai đối với tiếng, mũi đối với hương, lưỡi đối với vị, thân đối với xúc, tâm đối với pháp. Này các thầy Tỳ-kheo! Như thế gọi là “tất cả (các pháp)”. (Samyutta)
+
+Như thế, thế giới được thành lập trên sự liên hệ nhận thức của lục căn và lục trần. Ngoài lục căn lục trần, tất cả đối với chúng ta đều là vô nghĩa. Cho nên, như lời Phật dạy, nếu không có chủ quan thì không có khách quan, không có đối tượng thì không có chủ thể! Nếu ly-khai sự liên hệ giữa chủ quan và khách quan thì thế giới không thể thành lập. Tất cả đều được thành lập trên sự liên hệ ấy, cũng như hai cây lau dựa nhau mà đứng vững:
+
+“Này các bạn! Như hai cây lau nhờ buộc nhau, dựa nhau mà đứng, cũng như thế, nhờ Danh, Sắc (le nom et la forme) làm duyên mà có Thức, nhờ Thức làm duyên mà có Danh, Sắc... Trong hai cây lau, nếu lấy cây này đi cây kia sẽ ngã, nếu lấy cây kia đi, cây này sẽ ngã. Như thế, này bạn! Do Danh, Sắc diệt cho nên Thức diệt, do Thức diệt cho nên Danh Sắc diệt...
+
+Danh Sắc ở đây là chỉ cho tổ chức sinh-lý (Samyutta) và tâm lý của loài hữu tình, làm đối tượng cho “Thức” tức là phần nhận thức chủ quan. Nhưng không phải Danh Sắc là những gì tồn tại biệt lập ngoài Thức. Cả hai nương vào nhau để được thành lập. Giữa cả hai có một liên hệ mầu-nhiệm, không phải một cái có trước, một cái có sau. Lìa sự liên-hệ ấy, cả hai đều không được thành lập.
+
+2. Vấn đề dị thời nhân quả cũng là vấn đề liên tục tồn tại. Tất cả mọi hiện-tượng tuy đều là vô thường biến thiên, nhưng không có một vật nào hoàn toàn đoạn diệt. Không có một cá thể nào vĩnh cửu bất-biến, nhưng luôn luôn có những “giòng” hiện tượng liên tục bất đoạn. Mọi vật biến chuyển liên-tục theo những phép tắc nhất định. Đức Phật đã chú trọng đặc biệt về sự thuyết-minh dòng liên-tục sinh mạng, nghĩa là về những hiện tượng hữu tình. Ngài dạy rằng động cơ căn bản của luân hồi sinh tử là vô minh và ái dục. Bản thân loài hữu-tình là những kết hợp của toàn thể những kinh-nghiệm và những nghiệp nhân quá khứ. Do những nghiệp nhân hiện tại, các loài hữu tình sẽ đi đến những giai đoạn sinh-mệnh vị-lai. Về phương diện luận-lý, Ngài khai thị quy luật dị thục-nhân và dị-thục quả. Về phương diện tâm-lý, Ngài giải bày quy luật dòng loại nhân và đẳng-lưu-quả. Về phương diện siêu hình, Ngài trình bày quy luật Thập Nhị-Nhân-Duyên. Tuy rằng cách đây hai ngàn năm trăm năm, những thuật ngữ và cách dụng ngữ còn nghèo nàn, nhưng văn tự Tứ-A-Hàm cũng đã có thể diễn giải được những giáo lý tinh vi ấy.

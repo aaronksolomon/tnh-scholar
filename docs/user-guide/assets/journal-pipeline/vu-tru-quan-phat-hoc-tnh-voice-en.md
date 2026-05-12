@@ -4,11 +4,11 @@ description: "TNH-voice prompt translation of a 1957 Vietnamese Buddhist journal
 owner: "TNH Scholar"
 author: "Thạc-Đức"
 source: "Phật Giáo Việt Nam, issue 17–18, 1957"
-translated_by: "tnh-gen / translate_journal_section_tnh_voice_en (sections I, IV); translate_journal_section_en (sections II, III)"
+translated_by: "tnh-gen / translate_journal_section_tnh_voice_en"
 model: "gpt-5.4"
 status: current
 created: "2026-05-05"
-generated: "2026-05-05"
+generated: "2026-05-06"
 ---
 
 # A Buddhist Cosmological View — Vũ-trụ-quan Phật học (TNH-voice)
@@ -18,209 +18,227 @@ produced as part of the `tnh-gen` journal walkthrough.
 
 **Author:** Thạc-Đức  
 **Source:** *Phật Giáo Việt Nam*, issue 17–18, 1957  
-**Pages:** 6–9 of the journal scan
+**Pages:** 7–11 of the journal scan
 
 **Attribution note:** The byline Thạc-Đức is associated with Trần Thạc Đức, a pen name
 appearing in the 1950s *Phật Giáo Việt Nam* corpus. Scholarship by Adrienne Minh-Châu Lê
 identifies Thạc Đức as one of Thích Nhất Hạnh's pen names during his editorship of the
 journal (Lê 2024; see also Plum Village 2014).
 
-*This document is a pipeline-assisted translation produced by `tnh-gen`. Sections I and IV
-use the `translate_journal_section_tnh_voice_en` prompt; sections II and III use the
-`translate_journal_section_en` baseline prompt (no TNH-voice artifacts were generated for
-those sections). It is offered as a research baseline and working draft, not a final
-scholarly translation.*
+*This document is a pipeline-assisted translation produced by `tnh-gen`, part of the `tnh-scholar` suite, using the
+`translate_journal_section_tnh_voice_en` prompt against cleaned OCR text from scanned
+journal pages. It is offered as a research baseline and working draft, not a final translation.*
 
 ---
 
 ## A Buddhist Cosmological View
 
-### I. Indian Intellectual Context and Buddhism's Critical Stance
+### I. Introduction and a Critique of Three Indian Philosophical Tendencies
 
-*(Bối cảnh tư tưởng Ấn Độ và lập trường phê bình của Phật giáo)*
+*(Bối cảnh tư tưởng Ấn Độ và phê bình ba khuynh hướng sai lạc)*
 
-In the time of the Buddha, the question of the first principle of all things held a very
-important place in the intellectual life of India. The Brahmajāla Sutta records as many as
-sixty-two different explanations offered by the Indian philosophical schools of that age.
-Broadly speaking, we can see three principal tendencies:
+In the time of the Buddha, the question of the fundamental principle of all things was one
+of the most important concerns in the world of Indian thought. The Brahmajāla Sutta records
+as many as sixty-two different explanations offered by the philosophical schools of that age.
+Taken together, we can see three main tendencies:
 
-**1.— The tendency of fatalism** *(pubba-kata-hetu)*
+**1. The tendency of Fatalism** *(Pubba-kata-hetu)*
 
-The schools belonging to this tendency held that the whole natural world and the human
-world are arranged by predestination. Everything proceeds according to fixed natural laws
-already laid down. The value of human effort and material means is not acknowledged here.
+The schools belonging to this tendency held that everything in the natural world and the
+human world is arranged by predestination. All things proceed according to pre-existing
+natural laws. The value of human effort and material means is not recognized here.
 
-**2. The tendency of theism, or divine will** *(issara-nimmāna-hetu)*
+**2. The tendency of Theism, or Divine Will** *(Issara-nimmāna-hetu)*
 
-The schools belonging to this tendency held that all things exist through the will of a
-divine being. This divine being is Brahmā, and the center of the schools of this tendency
+The schools belonging to this tendency maintained that all things exist through the will of
+a divine being. This divine being is Brahmā, and the center of the schools in this tendency
 is Brahmanism.
 
-**3.— The tendency of chance** *(ahetu-apaccaya)*
+**3. The tendency of Chance, or Causelessness** *(Ahetu-apaccaya)*
 
-The schools belonging to this tendency did not admit the principle of causation. All
-phenomena arise and continue by chance, without following any law or principle at all.
+The schools belonging to this tendency did not accept the principle of cause and effect. All
+phenomena arise and exist by chance, without following any law or principle at all.
 
-The first and second tendencies assign all responsibility to a supernatural power.
-Personal responsibility therefore does not become a real question; blessing and misfortune
-alike are things that human beings cannot determine. Good and evil actions on the part of
-human beings are not regarded as the motive force behind success or failure, growth or
+The first and second tendencies place all responsibility in the hands of a supernatural
+power. Personal responsibility does not become a real question here; misfortune and blessing
+alike are things that human beings cannot determine. Human actions, whether wholesome or
+unwholesome, are not seen as the motive force behind success or failure, flourishing or
 decline.
 
-The third tendency also cannot establish any basis for personal moral responsibility. If
-everything is mere chance, then good is also chance, evil is also chance, fortune and
-misfortune are also chance; there is nothing that can serve as a standard for human
-conduct. Because of this, human beings cannot gradually advance toward truth, beauty, and
-goodness. On the contrary, they may very easily slide down the slope of wrongdoing and
-corruption.
+The third tendency also cannot establish any foundation for personal moral responsibility.
+If everything is merely accidental, then good is accidental, evil is accidental, misfortune
+and blessing are accidental as well; there is nothing that can serve as a standard for human
+conduct. Because of that, human beings cannot gradually move toward truth, beauty, and
+goodness. On the contrary, they can very easily slide down into wrongdoing and dissipation.
 
-From the point of view of theory, the doctrines belonging to these tendencies all have
-many shortcomings. From the point of view of human life, the consequences they bring are
-dark and discouraging. None of them can give a person peace of mind or a secure ground for
-life, nor do they affirm the necessary and already present capacities of the human being.
+From the standpoint of reasoning, the doctrines belonging to these tendencies contain many
+shortcomings. From the standpoint of human life, the consequences they bring are dark and
+discouraging. None of them can give a human being true peace on which to establish one's
+life, nor do they affirm the necessary capacities already present within the human person.
 
-The Buddha's standpoint was to explain the principle of the universe as the foundation for
-a way of human living. That principle had to accord with the truth of the countless
-phenomena, and that way of life had to lead the human being to the fulfillment of moral
-and religious value. The Buddha's purpose in teaching the Dīrgha Āgama was not to
-overthrow the theories of others for its own sake, but only to reject mistaken
-philosophical views that could obstruct the realization of morality and liberation in
-human life.
+The Buddha's position was to illuminate the principle of the universe in order to lay the
+foundation for a way of human living. That principle had to accord with the truth of the
+countless phenomena, and that way of life had to lead the human being to the fulfillment of
+moral and religious value. The Buddha's purpose in teaching the Dīrgha Āgama was not to
+attack the theoretical systems of others, but only to reject mistaken philosophical views
+that could obstruct the realization of morality and liberation in human life.
 
 ---
 
-### II. The World of Conditional Relations and the Principle of Dependent Arising
+### II. The Worldview of Conditionality and the Principle of Dependent Arising
 
-*(Thế giới nhân duyên và nguyên lý duyên khởi)*
+*(Thế giới quan nhân duyên và nguyên lý duyên sinh)*
 
-The worldview expounded by the Buddha is a worldview of conditional relations
-(*Paticca-samuppāda*). All phenomena are established in dependence upon one another. All
-are intimately interconnected. Without this interconnection, not a single thing could be
-established. This interconnection is precisely cause and condition. In the scriptures,
-such terms as HETU (cause), PACCAYA (condition), NIDĀNA (conditioning basis), and
-SAMUDAYA (arising) are all different names indicating this relation. The Buddha defined
-cause and condition as follows:
+The worldview taught by the Buddha is a worldview of conditionality (*Paticca samuppada*).
+All phenomena rely on one another in order to come into being. All are intimately connected
+with one another. Without that connection, not a single thing could be established. That
+connection is precisely what is called cause and condition. In the scriptures, the terms
+CAUSE (*hetu*), CONDITION (*paccaya*), CONDITIONING FACTOR (*nidana*), and ARISING
+(*samudaya*) are all different names pointing to that same relation. The Buddha defined
+conditionality in this way:
 
-> *If this exists, that exists; if this arises, that arises;*  
-> *if this is not, that is not; if this ceases, that ceases.*
+> *"If this is, that is; if this arises, that arises; if this is not, that is not; if this*
+> *ceases, that ceases."*
 
-To say "if this exists, that exists; if this is not, that is not" is to present the
-relation among things existing simultaneously. To say "if this arises, that arises; if
-this ceases, that ceases" is to present the relation among things existing at different
-times. All dharmas arise, cease, and exist within this very intimate web of mutual
-relations; there is no dharma (phenomenon) that can exist independently and absolutely.
-When the cause comes first and the effect later, this is called temporally distinct
-causation; when cause and effect are simultaneous, this is called simultaneous
-causation. One cause may have different effects depending upon the accompanying
-conditions. Therefore, there can be no absolute cause, nor can there be any absolute
-effect.
+*"To say, 'If this is, that is; if this is not, that is not,' is to describe the relation*
+*among things existing at the same time. To say, 'If this arises, that arises; if this*
+*ceases, that ceases,' is to describe the relation among things existing at different*
+*times. All dharmas arise, cease, and exist within this very close network of mutual*
+*relation; no dharma (phenomenon) can exist independently or absolutely. When cause comes*
+*first and effect follows later, this is called temporally successive cause and effect.*
+*When cause and effect are simultaneous, this is called simultaneous cause and effect. One*
+*cause may bring about different effects according to the accompanying conditions.*
+*Therefore, there can be no absolute cause, and there can be no absolute effect."*
 
-The world is woven together by systems of simultaneous conditional relations (from the
-standpoint of space) and systems of temporally distinct conditional relations (from the
-standpoint of time). This is the Buddhist conception of causality. In the sutras and
-treatises, the term *conditioned dharmas* (*saṅkhata-dhamma*) refers precisely to the
-phenomena of this world of conditional relations. All are impermanent and changing,
-precisely because of these conditional relations; for within a world of conditionality
-there cannot be phenomena that are eternal and everlasting. It is by virtue of this
-conception of dependent arising that Buddhism rejects the notion that the world was
-created by an ego-possessing Supreme God — this is something we cannot fail to
-acknowledge.
+The world is woven out of systems of simultaneous conditionality, viewed from the standpoint
+of space, and systems of temporally successive conditionality, viewed from the standpoint of
+time. This is the Buddhist understanding of causation. In the sutras and treatises, the
+term conditioned dharmas (*samkhata dhamma*) refers precisely to the phenomena of this world
+of conditionality. All things are impermanent and changing, and this too is because of
+conditional relation; for in a world of conditionality, there cannot be phenomena that are
+permanent and eternal. It is on the basis of this understanding of dependent arising that
+Buddhism rejects the notion of a world created by a self-existent Supreme God. This is
+something we cannot fail to recognize.
 
-According to the Huayan school, the whole universe is an endlessly interpenetrating
-system of dependent arising. Huayan doctrine, in this way, was established upon the
-causal-relational conception found in the Āgamas. The Abhidharma works of Southern
-Buddhism also classified causes and conditions for purposes of examination and
-understanding — this too was the principal task of the Theravāda scholastics. (The
-*Mahāpaṭṭhāna* distinguishes as many as 24 conditions; fascicle 25 of the *Śāriputra
-Abhidharma Śāstra* distinguishes 10 conditions; the Sarvāstivādins maintained 4
-conditions.)
+According to the teaching of the Avatamsaka School, the whole universe is an endlessly
+interpenetrating system of dependent arising. In this way, Avatamsaka doctrine is
+established upon the causal vision already present in the Agamas. The Abhidharma works of
+Southern Buddhism also classified conditions in order to observe and understand them, and
+this was indeed one of the principal tasks of the Theravada scholastics. (The Mahapakarana
+distinguishes twenty-four conditions; volume 25 of the Sariputra Abhidharma Treatise
+distinguishes ten conditions; the Sarvastivada school upholds four conditions.)
 
-Here, we shall only briefly examine two types: temporally distinct causation and
-simultaneous causation.
+Here, we will only briefly examine two kinds: temporally successive cause and effect, and
+simultaneous cause and effect.
 
 ---
 
-### III. Simultaneous Causality and the Establishment of the World of Cognition
+### III. Simultaneous and Successive Causality in the Structure of the World
 
-*(Đồng thời nhân quả và sự thành lập của thế giới nhận thức)*
+*(Đồng thời nhân quả và dị thời nhân quả trong cấu trúc thế giới)*
 
-**1.** The problem of simultaneous causality is also the problem of the subjective and
-the objective.
+**1.** The question of simultaneous causality is also the question of the subjective and the
+objective.
 
-The Buddha taught that the world is the interaction between subjective cognition and
-objective phenomena. Apart from this, there is nothing that can be called the world:
+The Buddha taught that the world is the meeting between subjective awareness and objective
+phenomena. Apart from this, there is nothing that can be called the world:
 
-> *"Monks! I wish to expound to you the meaning of 'the all.' Listen well.*
+> *"Bhikkhus, I wish to teach you the meaning of 'all dharmas.' Listen carefully.*
 >
-> *Monks! What is called 'the all'? It is the eye in relation to forms, the ear in
-> relation to sounds, the nose in relation to odors, the tongue in relation to tastes,
-> the body in relation to tangibles, and the mind in relation to dharmas. Monks! This is
-> what is called 'the all.'"* (Samyutta-nikāya)
+> *Bhikkhus, what is called 'all dharmas'? It is the eye in relation to forms, the ear in*
+> *relation to sounds, the nose in relation to odors, the tongue in relation to tastes, the*
+> *body in relation to tactile objects, and the mind in relation to mental objects.*
+> *Bhikkhus, this is called 'all dharmas.'"* (*Samyutta*)
 
-Thus, the world is established on the basis of the cognitive relation between the six
-sense faculties and the six sense objects. Outside the six faculties and the six objects,
-everything is meaningless to us.
+Thus the world is established upon the relation of cognition between the six sense
+faculties and the six sense objects. Outside the six faculties and the six objects,
+everything is without meaning for us. Therefore, as the Buddha taught, if there is no
+subjective side, there is no objective side; if there is no object, there is no subject. If
+the relation between subject and object is removed, the world cannot be established.
+Everything is founded upon that relation, just as two reeds stand only by leaning against
+each other:
 
-Therefore, according to the Buddha's teaching, if there is no subjective side, there is
-no objective side; if there is no object, there is no subject. If the relation between
-the subjective and the objective is severed, the world cannot be established. Everything
-is established on that relation — just as two reeds stand upright only by leaning against
-one another:
+> *"Friends, just as two bundles of reeds, tied together and leaning upon each other, are*
+> *able to stand, so too, with Name-and-Form as condition, Consciousness is; with*
+> *Consciousness as condition, Name-and-Form is... Of those two bundles of reeds, if one is*
+> *taken away, the other falls; if the other is taken away, this one falls. In the same*
+> *way, friend, with the cessation of Name-and-Form, Consciousness ceases; with the*
+> *cessation of Consciousness, Name-and-Form ceases..."*
 
-> *"Friend! Just as two reeds, being tied together and leaning against one another, are
-> able to stand: so too, with Name-and-Form as condition, there is Consciousness; with
-> Consciousness as condition, there is Name-and-Form. Of the two reeds, if one is
-> removed, the other falls; if the other is removed, this one falls. So it is, friend:
-> with the cessation of Name-and-Form, Consciousness ceases; with the cessation of
-> Consciousness, Name-and-Form ceases."*
-
-Name-and-Form here refers to the physiological and psychological organization of
-sentient beings, which serves as the object for Consciousness — that is, the subjective
-cognitive aspect. But Name-and-Form are not things existing independently outside
-Consciousness. The two depend on one another in order to be established. Between them
-there is a subtle relation: it is not that one comes first and the other afterward. Apart
+Name-and-Form here refers to the physiological organization and the psychological
+organization of sentient beings, serving as the object for "Consciousness," that is, the
+subjective aspect of cognition. But Name-and-Form are not things existing separately
+outside Consciousness. The two depend on one another in order to be established. Between
+them there is a subtle relation: it is not that one comes first and the other later. Apart
 from that relation, neither can be established.
 
----
-
-### IV. Successive-Time Causality, the Stream of Life, and the Ethical Meaning of Liberation
-
-*(Dị thời nhân quả, dòng sinh mệnh và ý nghĩa đạo đức giải thoát)*
-
-**2.** The question of temporal causation is also the question of continuity in
-existence. All phenomena are impermanent and ever-changing, yet not a single thing is
+**2.** The question of successive causality is also the question of continuity in
+existence. All phenomena are impermanent and ever changing, yet there is nothing that is
 utterly cut off and annihilated. There is no individual entity that is eternal and
-unchanging, yet there are always continuous, unbroken "streams" of phenomena. All things
-transform themselves continuously according to certain principles.
-
-The Buddha gave particular attention to explaining the continuous stream of life — that
-is, the phenomena of sentient beings. He taught that the fundamental driving force of
-birth-and-death and rebirth is ignorance and craving. Sentient beings themselves are the
-formations of the whole of their past experiences and karmic causes. Through present
-karmic causes, sentient beings move on toward future stages of life.
-
-From the logical point of view, he illuminated the law of heterogeneous causes and
-heterogeneous fruits. From the psychological point of view, he explained the law of
-homogeneous causes and equal-flow fruits. From the metaphysical point of view, he
-presented the law of the Twelvefold Chain of Dependent Origination. Although, twenty-five
-centuries ago, terminology and modes of expression were still poor, the texts of the Four
-Āgamas were already able to expound these subtle teachings.
-
-In short, the Buddhist understanding of cause and effect, in its narrow sense, is simply
-the law of causality. But in its broader sense, it is not limited to relations of cause
-and effect that are purely theoretical. The Buddhist view of cause and effect also
-embraces ethical and liberative relations; in breadth it extends throughout the ten
-directions, and in length it penetrates past, future, and present.
+unchanging, yet there are always streams of phenomena continuing without interruption. All
+things transform continuously according to definite principles. The Buddha gave particular
+attention to explaining the continuity of the stream of life, that is, the phenomena of
+sentient beings. He taught that the fundamental driving forces of saṃsāric birth and death
+are ignorance and craving. Sentient beings themselves are the formations of the whole body
+of past experience and past karmic causes. Through present karmic causes, sentient beings
+move toward future phases of life. From the standpoint of logic, he illuminated the law of
+heterogeneous causes and heterogeneous fruits. From the standpoint of psychology, he
+explained the law of homogeneous causes and equal-flow fruits. From the standpoint of
+metaphysics, he set forth the law of the Twelvefold Chain of Dependent Origination.
+Although twenty-five centuries ago terminology and modes of expression were still limited,
+the texts of the Four Āgamas were already able to express these subtle teachings.
 
 ---
 
-*Pipeline provenance: sections I and IV translated by `tnh-gen` using prompt
+### IV. The Inclusive Meaning of Causality and the Vision of Interdependent Co-Arising
+
+*(Ý nghĩa tổng hợp của nhân quả và viễn tượng trùng trùng duyên khởi)*
+
+In sum, the Buddhist understanding of cause and effect, in its narrow sense, is simply the
+law of causality. But in its broader sense, it is not merely a set of causal relations of a
+purely theoretical kind. The Buddhist view of causality also embraces ethical and liberating
+relationships; its breadth extends throughout the ten directions, and its length penetrates
+the past, the future, and the present. The "one" is intimately related to the "all," and the
+"all" can be understood through the "one."
+
+An ancient Vietnamese Zen master expressed this principle in two marvelous lines:
+
+> *"If there is being, there is being from the tiniest mote;*  
+> *If there is non-being, then this whole world is also not."*
+
+*(Tác hữu trần sa hữu / Vi không nhất thiết không)*
+
+A grain of dust may be small, yet it exists through its relation with the whole. The whole
+may be vast, yet if it loses its relation with a tiny grain of dust, it cannot be
+established. Therefore another Zen master of the Lý dynasty said:
+
+> *"Heaven and earth are gathered on the tip of a hair;*  
+> *The sun and moon are contained in a mustard seed."*
+
+*(Càn khôn tận thị mao đầu thượng / Nhật nguyệt bao hàm giới tử trung)*
+
+Here, great and small are no longer merely great and small. A mustard seed may be tiny, yet
+it has been formed through its relation with the whole. The entire universe has come together
+to bring it into being, just as it has come together with the entire universe to bring forth
+the sun and the moon. If it is there, then all is there; if it is not there, then all is
+not. "Heaven and earth can lie upon the tip of a single hair" is precisely this meaning.
+
+The world, the universe, and the myriad beings are woven together by endless systems of
+interdependent causes and conditions. This is a fundamental and profound insight of
+Buddhism. Upon this insight are established transcendent systems of teaching and wondrous
+methods of practice. Modern science has already gone beyond a simple, one-directional notion
+of causality and has come close to the Buddhist vision of interdependent co-arising in its
+infinite interweaving. We may hope that one day the torch of the teaching of causes and
+conditions will shine forth in full, continuing to dispel notions of fatalism, chance, and
+divine creation, so that humankind may soon come to recognize its path.
+
+---
+
+*Pipeline provenance: translated by `tnh-gen` using prompt
 `translate_journal_section_tnh_voice_en` (version 1.0), model gpt-5.4, generated
-2026-05-05. Sections II and III translated using prompt `translate_journal_section_en`
-(version 1.0), same model, generated 2026-05-04. Section boundaries and document context
-from `default_section` (version 1.0). Source: cleaned OCR from
-`tests/golden/journal-pipeline/`. Full artifact chain at
-`tests/golden/journal-pipeline/walkthrough/clean_translate/`.*
+2026-05-07. Section boundaries and document context from `default_section` (version 1.0).
+Source: cleaned OCR from `tests/golden/journal-pipeline/5page/`. Full artifact chain at
+`tests/golden/journal-pipeline/walkthrough/clean_translate_5page/`.*
 
 ---
 
@@ -229,7 +247,7 @@ from `default_section` (version 1.0). Source: cleaned OCR from
 ### Primary Source
 
 Thạc-Đức [attr. Thích Nhất Hạnh]. "Vũ-trụ-quan Phật học." *Phật Giáo Việt Nam*, nos.
-17–18 (1957): 6–9. Digitized copy available via Thư Viện Hoa Sen:
+17–18 (1957): 7–11. Digitized copy available via Thư Viện Hoa Sen:
 [thuvienhoasen.org/a26248/tap-chi-phat-giao-viet-nam](https://thuvienhoasen.org/a26248/tap-chi-phat-giao-viet-nam).
 
 ### Scholarship on *Phật Giáo Việt Nam* and Thích Nhất Hạnh's Early Writings

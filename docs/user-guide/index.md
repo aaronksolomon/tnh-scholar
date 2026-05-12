@@ -4,7 +4,7 @@ description: "Table of contents for user-guide"
 owner: ""
 author: ""
 status: current
-created: "2026-05-06"
+created: "2026-05-12"
 auto_generated: true
 ---
 
@@ -16,7 +16,7 @@ auto_generated: true
 
 **[Best Practices](best-practices.md)** - This guide outlines recommended practices for using TNH Scholar effectively.
 
-**[Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text](journal-pipeline-case-study.md)** - A worked case study — section, clean, and translate a scanned Vietnamese Buddhist journal article using tnh-gen.
+**[Pipeline Case Study: Thầy Edited Journal Text](journal-pipeline-case-study.md)** - A worked case study — section, clean, and translate a scanned Vietnamese Buddhist journal article using tnh-gen.
 
 **[User Guide Overview](overview.md)** - Practical guide for using TNH Scholar as a tool user or workflow designer, covering main workflows and how the pieces fit together.
 

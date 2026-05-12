@@ -533,7 +533,12 @@ $ tnh-gen --api version
 
 ## Pipeline Examples
 
-These examples use four pages of OCR-scanned Vietnamese Buddhist journal text. Source files and scan images are in `tests/golden/journal-pipeline/`. See the [Journal Pipeline Case Study](/user-guide/journal-pipeline-case-study.md) for the fully annotated version including the section-extraction helper script.
+These examples show a simplified OCR journal flow. The current canonical worked example is
+the rebuilt five-page journal pipeline in
+`tests/golden/journal-pipeline/5page/` with the full reviewed artifact chain under
+`tests/golden/journal-pipeline/walkthrough/clean_translate_5page/`.
+See the [Thầy Edited Journal Text Case Study](/user-guide/journal-pipeline-case-study.md) for the
+fully annotated current workflow.
 
 ### Recommended Pipeline (section → clean → translate)
 

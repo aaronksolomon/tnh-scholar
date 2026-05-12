@@ -69,6 +69,9 @@ jobs:
       - name: Verify README ↔ docs/index.md sync
         run: poetry run python scripts/sync_readme.py
 
+      - name: Refresh generated docs artifacts
+        run: make build-indexes
+
       - name: Build documentation
         run: make docs-build
 

@@ -1,72 +1,62 @@
 ---
-title: "Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text"
+title: "Pipeline Case Study: Thầy Edited Journal Text"
 description: "A worked case study — section, clean, and translate a scanned Vietnamese Buddhist journal article using tnh-gen."
 owner: ""
 author: ""
 status: current
 created: "2026-05-04"
-updated: "2026-05-04"
+updated: "2026-05-06"
 ---
 
-# Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text
+# Pipeline Case Study: Thầy Edited Journal Text
 
-This case study follows `tnh-scholar` work on a scanned article from
-[*Phật Giáo Việt Nam*](https://thuvienhoasen.org/a26248/tap-chi-phat-giao-viet-nam),
-a monthly journal published from 1956 to 1959 by Tổng Hội Phật Giáo Việt Nam at chùa
-Ấn Quang and edited by Thích Nhất Hạnh. The journal is available online as scanned
-PDFs. For this walkthrough, the article was preprocessed in the TNH-scholar workspace
-using Google OCR.
-
-The pipeline turns the scan-derived article,
-[*Vũ-trụ-quan Phật học*](assets/journal-pipeline/pgvn-17-18-vu-tru-quan-phat-hoc.pdf),
+The pipeline uses `tnh-gen` to turn a scan-derived article,
+[*Vũ-trụ-quan Phật học*](/user-guide/assets/journal-pipeline/pgvn-17-18-vu-tru-quan-phat-hoc.pdf), from
+[*Phật Giáo Việt Nam*](https://thuvienhoasen.org/a26248/tap-chi-phat-giao-viet-nam), edited by Thích Nhất Hạnh,
 into a readable English draft:
-[*A Buddhist Cosmological View*](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-en.md). The aim is not
-to produce an authoritative translation, but to create a traceable draft that translators
-can check against the source image, OCR text, cleaned Vietnamese, prompt metadata, and
-English output.
+[*A Buddhist Cosmological View*](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-refined-en.md). The draft is intended to be a traceable artifact that translators
+can review.
 
 ---
 
-## What the pipeline demonstrates
+## The pipeline
 
-This case study shows how we move from scanned historical pages to a reviewable
-translation draft without losing the source trail.
+Each stage of the pipeline handles one part of the transformation and generation of the translation:
 
-Each stage handles one part of that problem:
+- **OCR:** starting point: an imperfect machine text derived from page images.
+- **Line anchoring:** adds stable line numbers for section boundaries.
+- **Sectioning:** divides the article by argument structure, not page or token limits.
+- **Extraction:** isolates one reviewed section at a time.
+- **Cleaning:** repairs OCR damage without modernizing the text.
+- **Translation:** generates an English draft with document context and provenance attached.
+- **Review:** human review with AI assisted refinement and dialog for a refined draft.
 
-- **OCR:** start from imperfect machine text derived from page images.
-- **Line anchoring:** add stable line numbers for section boundaries.
-- **Sectioning:** divide the article by argument structure, not page or token limits.
-- **Extraction:** isolate one reviewed section at a time.
-- **Cleaning:** repair OCR damage without modernizing the text.
-- **Translation:** generate an English draft with document context and provenance attached.
-
-The pipeline makes the article more accessible while keeping each transformation visible.
+The pipeline makes the article accessible to English speakers while keeping each transformation visible.
 
 ---
 
-## Source and scholarly context
+## Source and context
 
 ### Article and attribution
 
-The text is *Vũ-trụ-quan Phật học* — *A Buddhist Cosmological View* — signed Thạc-Đức
-and published in *Phật Giáo Việt Nam*, issue 17–18, December 1957. Thạc-Đức is associated
-with Trần Thạc Đức, a pen name in the *Phật Giáo Việt Nam* corpus; recent scholarship and
-the Plum Village extended biography identify it as one of Thích Nhất Hạnh's pen names.
+The text, *Vũ-trụ-quan Phật học* — *A Buddhist Cosmological View* — is signed Thạc-Đức
+and published in *Phật Giáo Việt Nam*, issue 17–18, December 1957. Recent scholarship
+and the Plum Village extended biography identify Thạc-Đức as one of Thích Nhất Hạnh's
+pen names in the *Phật Giáo Việt Nam* corpus.
 
-### Why this article matters
+### Relevance 
 
 *Phật Giáo Việt Nam* was part of a 1950s Vietnamese Buddhist reform conversation. It
 published doctrinal essays, essays on Buddhist modernization, and early writing connected
 with Thích Nhất Hạnh's vision for the reform of Vietnamese Buddhism.
 
-This article discusses causality, dependent origination, moral responsibility, and
+The article discusses causality, dependent origination, moral responsibility, and
 liberation. These themes appear early in the historical arc of Thích Nhất Hạnh's life
-and teaching, and they give us a window into understanding his later development of engaged
+and teaching, and they may give us a window into understanding his later development of engaged
 Buddhism, peace work, and community building.
 
-For this case study, the article is useful because it requires the system to preserve several
-kinds of context at once: source images, OCR damage, Buddhist terminology, historical
+Technically, the article is useful because it requires an extended pipeline and the preservation of
+context: source images, OCR damage, Buddhist terminology, historical
 metadata, attribution, and translation provenance.
 
 <details>
@@ -94,15 +84,14 @@ Thư Viện Phật Việt. "Trần Thạc Đức — Phật giáo Việt Nam và
 
 ---
 
-## Technical workflow
+## Pipeline workflow
 
-This section shows the source material, then walks through the commands, inputs, outputs, and review points.
+This section discusses the source material, then walks through the commands, inputs, outputs, and review points.
 
-> **Technical note:** This walkthrough uses the Unix shell, shell variables, file paths,
-> `sed`, and repeated CLI commands. Browser, VS Code, and terminal UI interfaces are
-> planned; see [Future Platform Development](#future-platform-development).
-
-
+> **Technical notes:** This workflow uses the Unix shell, shell variables, file paths,
+> `sed`, `cat`, and repeated TNH-scholar commands. Browser, VS Code, and terminal UI interfaces are
+> planned: see [Future Platform Development](#future-platform-development).
+> Though technically challenging, the entire pipeline has been run with AI assistance (Codex in VS Code) and then reviewed. This makes the complex work tractable.
 > Source files live at `tests/golden/journal-pipeline/`.
 > Commands are run from the repo root.
 > `tnh-gen` discovers prompts from `./tnh-prompts/` by default;
@@ -110,8 +99,7 @@ This section shows the source material, then walks through the commands, inputs,
 
 ### The scanned pages
 
-The article comes from four scanned journal pages. The two below bookend the article and
-show the source material. They are part of the review chain: translators can compare the
+The article spans five journal pages. The first and last page are shown. Translators can compare the
 OCR, cleaned Vietnamese, and generated English against the page images.
 
 ![Opening page of Vũ-trụ-quan Phật học — Phật Giáo Việt Nam issue 17–18, p. 7](assets/journal-pipeline/pgvn-17-18-page7-clean.jpg)
@@ -120,17 +108,21 @@ OCR, cleaned Vietnamese, and generated English against the page images.
 The running footer `PHẬT-GIÁO VIỆT-NAM` is visible at the bottom — one of the
 artifacts the clean stage must remove. ([View with OCR region annotations](assets/journal-pipeline/pgvn-17-18-page7.jpg))*
 
-![Final page of the article — Phật Giáo Việt Nam issue 17–18, p. 10](assets/journal-pipeline/pgvn-17-18-page10-clean.jpg)
+![Final page of the article — Phật Giáo Việt Nam issue 17–18, p. 11](assets/journal-pipeline/pgvn-17-18-page11-clean.jpg)
 
-*Page 10: the article's closing argument on temporal causality, continuity of existence,
-and liberation. The footer `PHẬT GIÁO VIỆT NAM` and a page-number artifact appear near
-the bottom. ([View with OCR region annotations](assets/journal-pipeline/pgvn-17-18-page10.jpg))*
+*Page 11: the article's closing discussion on trùng trùng duyên khởi, moral causality,
+and liberation. The footer `PHẬT-GIÁO VIỆT-NAM` and a page-number artifact appear near
+the bottom. ([View with OCR region annotations](assets/journal-pipeline/pgvn-17-18-page11.jpg))*
 
 ### Source and attribution note
 
 The digitized journal is hosted by Thư Viện Hoa Sen, which credits Thư Viện Huệ Quang for
-digitizing the rare materials. The Hoa Sen page is the source used for this project.
+digitizing. The Hoa Sen page is the source used for this project.
 
+- Local five-page PDF extract used in this case study:
+  [pgvn-17-18-vu-tru-quan-phat-hoc.pdf](assets/journal-pipeline/pgvn-17-18-vu-tru-quan-phat-hoc.pdf)
+- Repo-local golden working copy of the rebuilt extract:
+  `tests/golden/journal-pipeline/pgvn-17-18-vu-tru-quan-phat-hoc-complete.pdf`
 - Collection page: <https://thuvienhoasen.org/a26248/tap-chi-phat-giao-viet-nam>
 - Direct PDF: <https://thuvienhoasen.org/images/file/4Vp0iwbv0wgQAJAY/phat-giao-viet-nam-1956-17-18.pdf>
 - Hoa Vô Ưu mirror/reference: <https://hoavouu.com/a24580/nguyet-san-phat-giao-viet-nam-1956>
@@ -156,14 +148,14 @@ Khuynh hướng Túc mệnh-luận (Pubba kata hetu)
 họa phúc đều
 PHẬT GIÁO VIỆT NAM           ← running journal footer landed mid-paragraph
 ...
-thấu suốt quá khứ vị lai hiện-
-THẢI CHO MỌT NẤU             ← page footer artifact (page 10)
+nhận thức được đường lối của mình.
+10
+PHẬT-GIÁO VIỆT-NAM           ← final-page number and journal footer (page 11)
 ```
 
-The text is mostly intact, but not reliable enough for translation. Broken lines obscure
-syntax; dropped diacritics change Vietnamese words; running headers and page artifacts
-interrupt paragraphs; Buddhist terms need to survive cleanup without being silently
-modernized. This is the kind of document `tnh-gen` is meant to handle.
+The text is not yet reliable for translation. Broken lines obscure
+syntax. Dropped diacritics change Vietnamese words. Running headers and page artifacts
+interrupt paragraphs. Buddhist terms need to survive cleanup. 
 
 ---
 
@@ -177,29 +169,34 @@ raw OCR text
 numbered source
   ↓ tnh-gen default_section
 sections_gpt54.json
+  ↓ human review / correction copy
+sections_gpt54_corrected.json
   ↓ extract section
 section raw text
   ↓ tnh-gen default_clean
 cleaned Vietnamese
   ↓ tnh-gen translate_journal_section_en
-English draft translation + provenance
+baseline English draft + provenance
+  ↓ tnh-gen translate_journal_section_tnh_voice_en
+assembled TNH-voice English draft
+  ↓ external dialog: Aaron K. Solomon + GPT-5.5 Thinking
+  [inputs: cleaned Vietnamese + TNH-voice draft]
+final refined English draft
 ```
 
-Each step is small enough to inspect. OCR text becomes numbered text; numbered text becomes
-a section map; a reviewed section becomes cleaned Vietnamese; the cleaned section becomes a
-draft translation with provenance.
+Each step is small enough to inspect.
 
-> **Technical Note**: the extract step is currently a plain `sed` call; there is no dedicated
-> subcommand yet. The model calls are automated; the review points are human.
+> **Technical Note**: the extract step is currently a plain `sed` call. There is no dedicated
+> subcommand yet. Model calls are automated, human and further AI review follow.
 
 ---
 
-## What's needed
-
-Two CLI tools from the repo:
+## Needed tools
 
 - **`tnh-lines`** — adds or removes line numbers from a text file
 - **`tnh-gen`** — runs a prompt against a file and writes the result
+- **`sed`** — parses section file (Unix)
+- **`cat`** - joins text (Unix)
 
 All commands run from the repo root. Prompts come from the default local prompt workspace:
 
@@ -210,13 +207,13 @@ All commands run from the repo root. Prompts come from the default local prompt 
 These shell variables are used throughout:
 
 ```bash
-SOURCE_FILE=tests/golden/journal-pipeline/source.txt
-WORK_DIR=tests/golden/journal-pipeline/walkthrough/clean_translate
+SOURCE_FILE=tests/golden/journal-pipeline/5page/source.txt
+WORK_DIR=tests/golden/journal-pipeline/walkthrough/clean_translate_5page
 mkdir -p "$WORK_DIR"
 
 METADATA='title: Vũ-trụ-quan Phật học
 author: Thạc-Đức
-possible_author: Trần Thạc Đức / Thích Nhất Hạnh attribution uncertain
+pen_name_of: Thích Nhất Hạnh
 journal: Phật Giáo Việt Nam
 issue: 17-18
 year: 1957
@@ -227,15 +224,15 @@ source_mirror: https://hoavouu.com/a24580/nguyet-san-phat-giao-viet-nam-1956
 catalog_record: https://tailieuphathoc.com/tai-lieu/nguyet-san-phat-giao-viet-nam-do-tong-hoi-phat-giao-viet-nam-xuat-ban-dat-tai-chua-an-quang-tu-nam-1956-1959-1892?viewpdf=2325'
 ```
 
-This metadata travels into prompt calls and generated artifact provenance. Uncertain fields
-such as `possible_author` and conflicting date labels stay explicit.
+This metadata travels into prompt calls and generated artifact provenance. Source-history
+details and conflicting date labels can stay explicit without blocking the workflow.
 
 ---
 
 ## Stage 1: Number the lines
 
-**Input:** `$SOURCE_FILE` — raw OCR text, approximately 146 lines  
-**Output:** `"$WORK_DIR/source_numbered_walkthrough.txt"` — same text with `N:` line prefix
+**Input:** `$SOURCE_FILE` — raw OCR text, 177 lines: `tests/golden/journal-pipeline/5page/source.txt`  
+**Output:** `"$WORK_DIR/source_numbered_walkthrough.txt"` — same text with `N:` line prefix: `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/source_numbered_walkthrough.txt`
 
 The sectioning prompt needs numbered input to anchor its section boundaries. We add line
 numbers to the source first:
@@ -261,10 +258,10 @@ only anchor section boundaries.
 
 ## Stage 2: Section the article
 
-**Input:** `"$WORK_DIR/source_numbered_walkthrough.txt"`  
-**Output:** `"$WORK_DIR/sections_gpt54.json"` — section map, titles, summaries, and document-level metadata
+**Input:** `"$WORK_DIR/source_numbered_walkthrough.txt"`: `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/source_numbered_walkthrough.txt`  
+**Output:** `"$WORK_DIR/sections_gpt54.json"` — section map, titles, summaries, and document-level metadata: `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/sections_gpt54.json`
 
-`default_section` reads the numbered source and divides it into logical sections. It also
+[`default_section`](https://github.com/aaronksolomon/tnh-scholar/blob/main/tnh-prompts/default_section.md) reads the numbered source and divides it into logical sections. It also
 generates a summary, key concepts, and section titles that travel forward into later stages.
 
 ```bash
@@ -273,38 +270,44 @@ tnh-gen run \
   --input-file "$WORK_DIR/source_numbered_walkthrough.txt" \
   --var source_language=Vietnamese \
   --var target_section_count=4 \
-  --var target_lines_per_section=36 \
+  --var target_lines_per_section=44 \
   --var document_metadata="$METADATA" \
   --output-file "$WORK_DIR/sections_gpt54.json"
 ```
 
-The output is a JSON file. Here is what it finds in this article:
+The raw output is a JSON file. Here is what the model finds in this article:
 
 | Section | Lines | Title |
 |---------|-------|-------|
-| 1 | 1–48 | Introduction and critique of three Indian philosophical tendencies |
-| 2 | 49–93 | Dependent origination as the Buddhist worldview |
-| 3 | 94–124 | Simultaneous causality: world as relation of subject and object |
-| 4 | 125–146 | Sequential causality, continuity of life, and the broader meaning of causality |
+| 1 | 1–47 | Introduction and a critique of three Indian philosophical tendencies |
+| 2 | 48–91 | The worldview of causality and the principle of dependent origination |
+| 3 | 92–137 | Simultaneous and successive causality in the structure of the world |
+| 4 | 138–177 | The larger meaning of causality and the vision of interdependent arising |
 
 The JSON also includes document-level context: summary, key concepts, metadata, and notes
-on the structure of the argument. This context gets passed into translation.
+on the structure of the argument. This context gets passed into translation. The provenance
+for the section run is `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/sections_gpt54.json.provenance.yaml`.
 
-> **Review point:** We inspect `sections_gpt54.json` before proceeding. If a boundary breaks
-> an argument or merges distinct claims, edit the JSON here. Sectioning is the most
-> consequential review point.
+> **Review point:** Section data, `sections_gpt54.json`, is inspected before proceeding. In this run,
+> one boundary split a sentence across sections 2 and 3, so the workflow continues
+> from a Codex-corrected and human reviewed copy:
+> `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/sections_gpt54_corrected.json`.
+> An earlier
+> section-1 English heading, "Introduction and a Critique of Three Indian Philosophical
+> Tendencies," was also retained as the reviewed downstream presentation title. The raw model output remains
+> preserved as the baseline artifact. Reviewed edits live in separately named files.
 
 ---
 
-## Stage 3: Extract a section
+## Stage 3: Extract section
 
-**Input:** `"$WORK_DIR/source_numbered_walkthrough.txt"` and section boundaries from `sections_gpt54.json`  
-**Output:** `"$WORK_DIR/section_01_raw.txt"` — unnumbered OCR text for section 1
+**Input:** `"$WORK_DIR/source_numbered_walkthrough.txt"` and section boundaries from `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/sections_gpt54_corrected.json`  
+**Output:** `"$WORK_DIR/section_01_raw.txt"` — unnumbered OCR text for section 1: `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_01_raw.txt`
 
-Using `start_line` and `end_line` from the JSON, extract section 1 from the numbered source:
+Using `start_line` and `end_line` from the reviewed section map, extract section 1 from the numbered source:
 
 ```bash
-sed -n '1,48p' \
+sed -n '1,47p' \
   "$WORK_DIR/source_numbered_walkthrough.txt" \
   > "$WORK_DIR/section_01_numbered.txt"
 ```
@@ -323,10 +326,10 @@ This produces the raw OCR text for section 1.
 
 ## Stage 4: Clean the OCR text
 
-**Input:** `"$WORK_DIR/section_01_raw.txt"` — raw OCR with diacritics damage and footer artifacts  
-**Output:** `"$WORK_DIR/section_01_cleaned.txt"` — corrected Vietnamese prose
+**Input:** `"$WORK_DIR/section_01_raw.txt"` — raw OCR with diacritics damage and footer artifacts: `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_01_raw.txt`  
+**Output:** `"$WORK_DIR/section_01_cleaned.txt"` — corrected Vietnamese prose: `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_01_cleaned.txt`
 
-`default_clean` corrects OCR damage while staying close to the original. It removes stray
+[`default_clean`](https://github.com/aaronksolomon/tnh-scholar/blob/main/tnh-prompts/default_clean.md) corrects OCR damage while staying close to the original. It removes stray
 footer lines, restores dropped diacritics, and rejoins lines split across page boundaries
 without rewriting the text or modernizing the prose.
 
@@ -375,10 +378,10 @@ into prose. The page footer intrusion is gone.
 
 ## Stage 5: Translate the section
 
-**Input:** `"$WORK_DIR/section_01_cleaned.txt"` and `"$WORK_DIR/section_01_journal_translate_vars.json"`  
-**Output:** `"$WORK_DIR/section_01_translated_journal_en.txt"` — English draft with YAML provenance header
+**Input:** `"$WORK_DIR/section_01_cleaned.txt"` and `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_01_journal_translate_vars.json`  
+**Output:** `"$WORK_DIR/section_01_translated_journal_en.txt"` — English draft with YAML provenance header: `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_01_translated_journal_en.txt`
 
-`translate_journal_section_en` translates a cleaned section into English using the section
+[`translate_journal_section_en`](https://github.com/aaronksolomon/tnh-scholar/blob/main/tnh-prompts/translate_journal_section_en.md) translates a cleaned section into English using the section
 summary, key concepts, source metadata, attribution note, and section structure. This helps
 keep terminology consistent across sections and keeps the draft tied to the source.
 
@@ -390,62 +393,52 @@ tnh-gen run \
   --output-file "$WORK_DIR/section_01_translated_journal_en.txt"
 ```
 
-The vars file carries the section context from `sections_gpt54.json` forward into this call.
+The vars file carries the section context from the reviewed section map forward into this call.
 See [Using a vars file](#using-a-vars-file) below.
 
-Here is the opening of the translation:
+Here is the opening of the baseline English translation:
 
 ---
 
 *Introduction and a Critique of Three Indian Philosophical Tendencies*
 
-Buddhist Cosmology
-
-Thac-Duc
-
-In the age of the Buddha, the question of the fundamental principle of all things was
-one to which the intellectual world of India gave great attention. The Brahmajala Sutta
+In the time of the Buddha, the question of the fundamental principle of all things was
+one to which the Indian intellectual world gave great attention. The Brahmajāla Sutta
 records as many as sixty-two different explanations advanced by the Indian philosophical
-schools of that time. In general, however, we may discern the following three tendencies:
+schools of that period. Broadly speaking, three tendencies may be discerned:
 
-1. The tendency of fatalism (*pubba-kata-hetu*)
+1. The tendency of fatalism (Pubba kata hetu)
 
-The philosophical schools belonging to this tendency maintained that the entire natural
-world and human world are arranged by predestination. Everything proceeds according to
-pre-existent natural laws. The value of human effort and material agency is not
-acknowledged here.
-
----
-
-And here is the closing of the fourth and final section:
+The philosophical schools belonging to this tendency held that both the natural world
+and the human world were arranged by predestination. Everything proceeded according to
+pre-existing natural laws. The value of human effort and material agency was not
+recognized here.
 
 ---
 
-In sum, the Buddhist conception of causality, in the narrow sense, is simply the Law
-of Causality (*Loi de Causalité*); but in the broad sense, it is not confined to causal
-relations of a purely theoretical nature. The Buddhist conception of causality also
-encompasses moral and liberative relations; in breadth it extends throughout the ten
-directions, and in length it penetrates past, future, and present.
+> **Review point:** Terminology, doctrinal vocabulary, citations, and places
+> where the model made choices, all can be reviewed. The translation inherits the source attribution
+> metadata supplied to the run.
 
 ---
 
-> **Review point:** We review terminology, doctrinal vocabulary, citations, and any place
-> where the model resolved an ambiguity. The translation inherits attribution uncertainty;
-> it does not resolve it.
-
----
-
-## Optional comparison run: a different translation prompt
+## Improved translation prompt
 
 A prompt can change without changing the file workflow. The same cleaned section and vars
 file can run through a second prompt and produce a second provenance-tracked artifact.
 
-For this case study, a comparison prompt is included:
+For this case study, a second stage  prompt was used:
 
-- `translate_journal_section_en`
+- [`translate_journal_section_en`](https://github.com/aaronksolomon/tnh-scholar/blob/main/tnh-prompts/translate_journal_section_en.md)
   - baseline journal-translation prompt
-- `translate_journal_section_tnh_voice_en`
+- [`translate_journal_section_tnh_voice_en`](https://github.com/aaronksolomon/tnh-scholar/blob/main/tnh-prompts/translate_journal_section_tnh_voice_en.md)
   - alternate prompt aimed at a gentler English voice associated with later published Thích Nhất Hạnh prose
+
+The linked final article result in this case study,
+[*A Buddhist Cosmological View*](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-refined-en.md),
+is based on this TNH-voice prompt path after some additional refinement. The assembled baseline English document, the
+assembled TNH-voice document, and the cleaned Vietnamese document are linked alongside it
+below.
 
 The second run uses the same cleaned section and vars file, but writes to a different
 output path:
@@ -462,29 +455,33 @@ Here is the opening paragraph of section 1 across all three forms:
 
 | Vietnamese | Baseline English | TNH-voice English |
 |---|---|---|
-| Vào thời đại của đức Phật, vấn đề nguyên lý của vạn vật là một vấn-đề rất được chú trọng trong tư tưởng-giới Ấn Độ. | In the age of the Buddha, the question of the fundamental principle of all things was one to which the intellectual world of India gave great attention. | In the time of the Buddha, the question of the first principle of all things held a very important place in the intellectual life of India. |
-| Kinh Phạm-Động có chép lại đến sáu mươi hai lối giải thích khác nhau của các triết-phái Ấn-Độ thời ấy. | The Brahmajala Sutta records as many as sixty-two different explanations advanced by the Indian philosophical schools of that time. | The Brahmajāla Sutta records as many as sixty-two different explanations offered by the Indian philosophical schools of that age. |
-| Tựu trung, ta thấy có ba khuynh hướng sau đây: | In general, however, we may discern the following three tendencies: | Broadly speaking, we can see three principal tendencies: |
+| Vào thời đại của đức Phật, vấn đề nguyên lý của vạn vật là một vấn-đề rất được chú trọng trong tư tưởng-giới Ấn Độ. | In the time of the Buddha, the question of the fundamental principle of all things was one to which the Indian intellectual world gave great attention. | In the time of the Buddha, the question of the first principle of all things held a very important place in the intellectual life of India. |
+| Kinh Phạm-Động có chép lại đến sáu mươi hai lối giải thích khác nhau của các triết-phái Ấn-Độ thời ấy. | The Brahmajāla Sutta records as many as sixty-two different explanations advanced by the Indian philosophical schools of that period. | The Brahmajāla Sutta records as many as sixty-two different explanations offered by the Indian philosophical schools of that age. |
+| Tựu trung, ta thấy có ba khuynh hướng sau đây: | Broadly speaking, three tendencies may be discerned: | Broadly speaking, we can see three principal tendencies: |
 
-This is a useful review pattern when prompt tuning is part of the work: the prompt itself
-becomes a clear part of the provenance chain.
+This is a useful pattern when prompt tuning is part of the work. The prompt transformation becomes part of the provenance chain.
 
-<details>
-<summary>Sample translation artifacts</summary>
+Assembled documents for comparison and final review:
 
-- [section_01_translated_journal_en.txt](assets/journal-pipeline/section_01_translated_journal_en.txt)
-- [section_01_translated_tnh_voice_en.txt](assets/journal-pipeline/section_01_translated_tnh_voice_en.txt)
-- [section_04_translated_journal_en.txt](assets/journal-pipeline/section_04_translated_journal_en.txt)
-- [section_04_translated_tnh_voice_en.txt](assets/journal-pipeline/section_04_translated_tnh_voice_en.txt)
-
-</details>
+- [A Buddhist Cosmological View — baseline English](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-en.md)
+- [A Buddhist Cosmological View — TNH-voice](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-en.md)
+- [A Buddhist Cosmological View — refined TNH-voice](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-refined-en.md)
+- [Vũ-trụ-quan Phật học — cleaned Vietnamese text](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-vi.md)
 
 ---
 
 ## Stage 6: Repeat for remaining sections
 
 We repeat the same clean → translate pattern for sections 2, 3, and 4. Each section gets its
-own cleaned file, translated file, and context vars file.
+own cleaned file, translated file, and context vars file. For example:
+
+- `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_02_cleaned.txt`
+- `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_02_translated_journal_en.txt`
+- `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_03_cleaned.txt`
+- `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_03_translated_journal_en.txt`
+- `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_04_cleaned.txt`
+- `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_04_translated_journal_en.txt`
+- `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_04_translated_tnh_voice_en.txt`
 
 When all four sections are done:
 
@@ -494,18 +491,38 @@ cat \
   "$WORK_DIR/section_02_translated_journal_en.txt" \
   "$WORK_DIR/section_03_translated_journal_en.txt" \
   "$WORK_DIR/section_04_translated_journal_en.txt" \
-  > "$WORK_DIR/final_translated.txt"
+  > "$WORK_DIR/final_translated_journal_en.txt"
 ```
 
-> **Full pipeline output:** The complete four-section translation — assembled from the
-> `.txt` artifacts produced by this pipeline and converted to a formatted `.md` document
-> by Claude Code as part of this case study's drafting and workflow production — is at
-> **[*Vũ-trụ-quan Phật học*: A Buddhist Cosmological View](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-en.md)**
-> (baseline prompt). A parallel version using the TNH-voice prompt for sections I and IV is at
-> **[*Vũ-trụ-quan Phật học*: A Buddhist Cosmological View (TNH-voice)](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-en.md)**.
-> The `.md` conversion was part of the case study workflow: Codex AI helped build the
-> golden artifact infrastructure, and Claude Code helped draft and test this walkthrough
-> against that infrastructure.
+The assembled baseline translation: `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/final_translated_journal_en.txt`
+
+---
+
+## Stage 7: Review and refinement
+
+The assembled TNH-voice translation and the cleaned Vietnamese source were brought into an external review dialog — Aaron K. Solomon and *GPT-5.5 Thinking* via the OpenAI ChatGPT interface. The specific refinements made are listed below.
+
+| Area | Baseline wording | Refined wording / choice | Reason |
+|---|---|---|---|
+| Voice target | later TNH voice | early TNH intellectual voice | The source is a 1957 philosophical essay, not a later Dharma talk. |
+| Key phrase | principle of the universe — the law of causes and conditions | *principle of the universe* (*nguyên lý của vũ trụ*) | Keeps the translation closer to the Vietnamese; explanation moved to terminology note. |
+| Technical term | name-and-form | nāmarūpa, with “name-and-form” as gloss | Matches Buddhist technical usage and later TNH English idiom. |
+| Vietnamese source term | Danh, Sắc | danh sắc / danh-sắc noted as normalized form | Preserves source variation while noting standard Vietnamese Buddhist usage. |
+| Relationship phrase | subtle relationship | profound relationship | Renders *mầu-nhiệm* with a term closer to the intended register. |
+| Terminology support | inline explanations | end terminology notes | Keeps the body readable while preserving doctrinal context. |
+
+> **Pipeline process note:** A source-completeness correction changed this case study
+> materially: the article first appeared to end at four scanned pages, but later review
+> showed that it continued onto a fifth page. The earlier four-page
+> `tnh-gen` workflow artifacts were preserved for testing/reference under `tests/golden/journal-pipeline/walkthrough/clean_translate/`, then the source and workflow on the
+> complete five-page article were built. New sectioning, cleaning, and translation artifacts were generated under
+> `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/`.
+> For a user-facing assembled result, this case study links to
+> **[*Vũ-trụ-quan Phật học* (refined TNH-voice)](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-refined-en.md)**.
+
+> **Workflow execution:** Codex AI
+> built the golden artifact infrastructure and executed shell commands, Claude Code
+> helped draft and test this document against that infrastructure and assembled the final translations, GPT-5.5 participated in a directed refinement conversation with Aaron K. Solomon to refine translation language and terminology notes, and Codex and Claude both assisted with final verification of this document and the final derived file set. Aaron K. Solomon directed and reviewed the process.
 
 ---
 
@@ -525,7 +542,7 @@ problems.
 Plain-text outputs get an embedded YAML provenance header with model name, prompt version,
 timestamp, and fingerprint. Structured JSON outputs stay as raw JSON and receive a separate
 `.provenance.yaml` sidecar. For historical materials, provenance also carries source
-metadata, attribution uncertainty, and prompt context. Provenance makes artifacts
+metadata and prompt context. Provenance makes artifacts
 inspectable and reproducible; it does not make them authoritative.
 
 ---
@@ -543,13 +560,13 @@ section-specific vars file carries document context and source attribution forwa
   "document_summary": "...",
   "section_summary": "...",
   "document_key_concepts": "Vũ-trụ-quan Phật học; Nhân duyên; Duyên khởi; ...",
-  "document_metadata": "title: Vũ-trụ-quan Phật học\nauthor: Thạc-Đức\njournal: Phật Giáo Việt Nam\nissue: 17-18\nyear: 1957"
+  "document_metadata": "title: Vũ-trụ-quan Phật học\nauthor_signature: Thạc-Đức\npen_name_of: Thích Nhất Hạnh\njournal: Phật Giáo Việt Nam\nissue: 17-18\nyear: 1957"
 }
 ```
 
 This is built from the sectioning JSON by pulling out the relevant section and document
 fields. Individual `--var key=value` flags can supplement or override it. In the checked-in
-artifact set, this file is `section_01_journal_translate_vars.json`.
+artifact set, this file is `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/section_01_journal_translate_vars.json`.
 
 ---
 
@@ -558,28 +575,33 @@ artifact set, this file is `section_01_journal_translate_vars.json`.
 The checked-in walkthrough artifact directory looks like this:
 
 ```
-tests/golden/journal-pipeline/walkthrough/clean_translate/
+tests/golden/journal-pipeline/walkthrough/clean_translate_5page/
 ├── source_numbered_walkthrough.txt
-├── sections_gpt54.json
+├── sectioning_vars.json
+├── sections_gpt54.json                         ← 4-section run (used)
 ├── sections_gpt54.json.provenance.yaml
+├── sections_gpt54_corrected.json               ← boundary-corrected copy
+├── sections_gpt54_target5.json                 ← alternative 5-section run (reference)
+├── sections_gpt54_target5.json.provenance.yaml
 ├── section_01_numbered.txt
 ├── section_01_raw.txt
 ├── section_01_cleaned.txt
 ├── section_01_journal_translate_vars.json
 ├── section_01_translated_journal_en.txt
 ├── section_01_translated_tnh_voice_en.txt
-├── section_02_raw.txt      ← (and numbered, cleaned, vars, translated)
+├── section_02_raw.txt      ← (and numbered, cleaned, vars, baseline, TNH-voice)
+├── section_02_translated_tnh_voice_en.txt
 ├── section_03_raw.txt
+├── section_03_translated_tnh_voice_en.txt
 ├── section_04_raw.txt
 ├── section_04_cleaned.txt
 ├── section_04_translated_journal_en.txt
 ├── section_04_translated_tnh_voice_en.txt
+├── final_translated_journal_en.txt             ← assembled baseline English (all 4 sections)
 └── clean_vars.json
 ```
 
-These files are checked in as golden artifacts for test comparison and prompt refinement.
-An assembled `final_translated.txt` can be produced locally, but it is not the checked-in
-artifact of record. The checked-in set shows the intended posture: every generated result
+These files are checked into the `tnh-scholar` repository as golden artifacts for test comparison and prompt refinement. This checked-in set shows the intended workflow: every generated result
 remains connected to the page image, source text, intermediate transformations, prompt
 context, and provenance that produced it.
 
@@ -587,31 +609,28 @@ context, and provenance that produced it.
 
 ## Future Platform Development
 
-Currently, the workflow is run from the command line. That makes every step visible and
-easy to inspect, but it also requires comfort with Unix shell commands, JSON, file paths,
-and manual file handling. Future versions should make the same work easier to do while
+Currently, the workflow is run from the command line. Every step is visible and
+easy to inspect, but it also requires AI directed execution — or comfort and time for Unix shell commands, JSON, file paths,
+and manual file handling. Future versions intend to make the same work simple to do while
 keeping the same files, prompts, source links, and provenance records underneath.
 
 Planned directions:
 
-- **VS Code extension** — the nearest-term direction. A panel could let a user open a
+- **VS Code extension** — the nearest-term direction. A panel would let a user open a
   source file, run sectioning, review and adjust the section map, then step through
   cleaning and translation without leaving the editor. The same files would still be
   written and preserved for review.
 
-- **TUI (terminal user interface)** — for users who prefer the terminal but want a guided
+- **TUI (terminal user interface)** — A terminal-based guided
   view of the workflow: artifact previews, section selection, and prompt output shown in
   place.
 
 - **Web interface** — a longer-term direction for collaborative or institutionally hosted
   work: shared document queues, version tracking, and annotation.
 
-The important pieces would stay the same: prompts, vars files, provenance records, source
-images, cleaned text, translation drafts, and structured sections.
-
 ---
 
-- ## See also
+## See also
 
 - [tnh-gen CLI Reference](/cli-reference/tnh-gen.md)
 - [Prompt System](/user-guide/prompt-system.md)
