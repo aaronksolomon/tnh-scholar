@@ -14,7 +14,7 @@ DIFF_WARN_CHARS ?= 120000
 DIFF_LIMIT_CHARS ?= 140000
 DIFF_WATCH_SECONDS ?= 30
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-generate docs-build docs-build-readonly docs-drift docs-change-warning docs-verify docs-verify-readonly codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check diff-size diff-watch branch-preflight pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-check build-indexes docs-generate docs-build docs-build-readonly docs-drift docs-change-warning docs-verify docs-verify-readonly codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check diff-size diff-watch branch-preflight pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -45,6 +45,7 @@ build-all:
 	$(MAKE) ytdlp-runtime
 	$(MAKE) update-health-check
 	$(MAKE) pipx-refresh
+	$(MAKE) build-indexes
 	$(MAKE) docs-build
 
 update:
@@ -83,13 +84,18 @@ docs-validate:
 	@echo "Validating markdown documentation"
 	$(POETRY) run python scripts/validate_markdown.py || echo "⚠️  Validation warnings found (non-fatal)"
 
-docs-generate: docs-validate
+docs-check: docs-validate docs-drift
+	@echo "Checking docs consistency..."
+
+build-indexes: docs-check
 	@echo "Generating documentation artifacts..."
 	$(POETRY) run python scripts/sync_root_docs.py
 	$(POETRY) run python scripts/generate_index_md.py
 	$(POETRY) run python scripts/generate_subdir_indexes.py
 	$(POETRY) run python scripts/generate_doc_index.py
 	$(POETRY) run python scripts/update_index_doc_map.py
+
+docs-generate: build-indexes
 
 docs-links:
 	@echo "Auto-fixing unambiguous documentation links..."
@@ -99,13 +105,12 @@ docs-links-apply:
 	@echo "Auto-fixing unambiguous documentation links..."
 	$(POETRY) run python scripts/verify_doc_links.py --apply
 
-docs-build: docs-generate docs-links
+docs-build: docs-check
 	@echo "Building MkDocs site..."
 	$(POETRY) run mkdocs build --strict
 
-docs-build-readonly:
-	@echo "Building MkDocs site (read-only)..."
-	$(POETRY) run mkdocs build --strict
+docs-build-readonly: docs-build
+	@true
 
 docs-drift:
 	@echo "Checking README ↔ docs/index.md drift..."
@@ -124,7 +129,7 @@ docs-change-warning:
 		printf '%s\n' "$$CHANGED_MD"; \
 		echo ""; \
 		echo "Release check is running read-only docs validation."; \
-		echo "If these edits should regenerate docs artifacts, run 'make docs-build' before release."; \
+		echo "If these edits should regenerate docs artifacts, run 'make build-indexes' and 'make docs-build' before release."; \
 		if git rev-parse --verify "$$BASE_REF" >/dev/null 2>&1; then \
 			echo "Compared branch docs drift against $$BASE_REF and included local tracked edits."; \
 		else \
@@ -142,20 +147,20 @@ codespell:
 	@echo "Running codespell..."
 	$(POETRY) run codespell -q 3 -I .codespell-ignore.txt --skip="*.txt" README.md docs
 
-docs-verify: docs-drift docs-build codespell
+docs-verify: build-indexes docs-links docs-build codespell
 	@echo "Verifying documentation..."
 	$(POETRY) run python scripts/sync_readme.py
 
-docs-verify-readonly: docs-drift docs-build-readonly codespell
+docs-verify-readonly: docs-build codespell
 	@echo "Verifying documentation (read-only)..."
 
 docs: docs-verify
 	@echo "Documentation build complete: site/"
 
-docs-quickcheck: docs-generate
+docs-quickcheck: build-indexes
 	@echo "Running docs quickcheck (strict build, links, spelling)..."
 	$(MAKE) docs-links
-	$(POETRY) run mkdocs build --strict
+	$(MAKE) docs-build
 	$(MAKE) codespell
 
 # Type checking

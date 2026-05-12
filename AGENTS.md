@@ -76,7 +76,7 @@ poetry install --with local
 poetry run sourcery review <paths> 2>&1
 ```
 
-Docs-only changes: run `make docs-build` only before PR creation or when the user explicitly requests docs validation. If it passes, push directly to `main` (no PR required during rapid-prototype phase). Do not create new indexes or edit auto generated indexes. Indexes are auto built.
+Docs-only changes: run `make docs-build` before PR creation or when the user explicitly requests docs validation. If generated docs artifacts should be refreshed, run `make build-indexes` separately before commit/PR. If docs validation passes, push directly to `main` is allowed during rapid-prototype phase. Do not create new indexes or edit auto generated indexes manually.
 
 High-level operating stance:
 - For higher-order workflow questions, multi-agent coordination, or delegation judgment, see `AGENT_WORKFLOW.md`

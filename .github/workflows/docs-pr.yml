@@ -71,8 +71,8 @@ jobs:
       - name: Validate markdown
         run: poetry run python scripts/validate_markdown.py
 
-      - name: Build MkDocs site (read-only)
-        run: make docs-build-readonly
+      - name: Build MkDocs site
+        run: make docs-build
 
       - name: Verify docs validation left worktree unchanged
         run: git diff --exit-code
