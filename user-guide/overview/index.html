@@ -644,7 +644,7 @@
   <span class="md-ellipsis">
     
   
-    Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text
+    Pipeline Case Study: Thầy Edited Journal Text
   
 
     
@@ -971,6 +971,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1077,6 +1081,76 @@
     
   
     A Buddhist Cosmological View — Vũ-trụ-quan Phật học (TNH-voice)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-refined-en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A Buddhist Cosmological View — Vũ-trụ-quan Phật học (Refined TNH-voice Draft)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assets/journal-pipeline/vu-tru-quan-phat-hoc-vi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vũ-trụ-quan Phật học — Văn bản đã làm sạch (tiếng Việt)
   
 
     
@@ -10596,6 +10670,8 @@
       
         
       
+        
+      
     
     
     
@@ -10677,6 +10753,41 @@
   
   
     <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/tnh-gen/notes/tnh-gen-golden-artifact-preservation-2026-05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tnh-gen Golden Artifact Preservation Note — May 2026
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
   
 
   
@@ -15110,8 +15221,8 @@
 </span></code></pre></div>
 <ol>
 <li><strong>Add structure with prompts</strong> via <code>tnh-gen</code></li>
-<li>Punctuate and paragraph-break with <code>default_punctuate</code>.</li>
 <li>Divide into labelled sections with <code>default_section</code> (produces metadata JSON).</li>
+<li>Use punctuate or other specialised prompts where the text and workflow need them.</li>
 <li>Tag domain-specific elements (poems, quotes, exercises) with specialised prompts.</li>
 </ol>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>default_punctuate<span class="w"> </span><span class="se">\</span>
@@ -15120,26 +15231,28 @@
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>--output-file<span class="w"> </span>punctuated.txt
 </span></code></pre></div>
 <ol>
-<li><strong>Translate</strong> with <code>default_line_translate</code></li>
-<li>Pass the section JSON from step 2 as <code>--vars</code> to give the model full document context.</li>
+<li><strong>Translate</strong> with a task-specific translation prompt</li>
+<li>For the journal case-study path, use <code>translate_journal_section_en</code> or a variant such
+     as <code>translate_journal_section_tnh_voice_en</code>.</li>
+<li>Pass section-level context via <code>--vars</code> to give the model document and section context.</li>
 </ol>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>default_line_translate<span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate_journal_section_en<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--input-file<span class="w"> </span>cleaned_numbered.txt<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--vars<span class="w"> </span>sections.json<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>English<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">style</span><span class="o">=</span>scholarly<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span>--output-file<span class="w"> </span>translated.txt
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span>--output-file<span class="w"> </span>translated.txt
 </span></code></pre></div>
 <ol>
 <li><strong>Review and refine</strong></li>
 <li>Humans review AI output, correct tagging or translation, and adjust prompts as needed.</li>
 <li>Corrected output becomes a reference for future pipeline runs.</li>
 </ol>
-<p>For a fully worked example using real OCR source text, see the <a href="../journal-pipeline-case-study/">Journal Pipeline Case Study</a>.</p>
+<p>For a fully worked example using real OCR source text, see the <a href="../journal-pipeline-case-study/">Thầy Edited Journal Text Case Study</a>.</p>
 <p>Relevant documentation:</p>
 <ul>
-<li><a href="../journal-pipeline-case-study/">Journal Pipeline Case Study</a> — step-by-step two-track example</li>
+<li><a href="../journal-pipeline-case-study/">Thầy Edited Journal Text Case Study</a> — step-by-step real OCR journal workflow</li>
+<li><a href="../assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-refined-en/">A Buddhist Cosmological View — refined TNH-voice draft</a> — final user-facing assembled result from the case study</li>
 <li><a href="../prompt-system/">Prompt System</a> — how prompts work and how to create them</li>
 <li><a href="../../cli-reference/tnh-gen/">tnh-gen CLI Reference</a></li>
 </ul>

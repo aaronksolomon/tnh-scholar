@@ -642,7 +642,7 @@
   <span class="md-ellipsis">
     
   
-    Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text
+    Pipeline Case Study: Thầy Edited Journal Text
   
 
     
@@ -821,6 +821,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -927,6 +931,76 @@
     
   
     A Buddhist Cosmological View — Vũ-trụ-quan Phật học (TNH-voice)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-refined-en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A Buddhist Cosmological View — Vũ-trụ-quan Phật học (Refined TNH-voice Draft)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-vi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vũ-trụ-quan Phật học — Văn bản đã làm sạch (tiếng Việt)
   
 
     
@@ -11084,6 +11158,8 @@
       
         
       
+        
+      
     
     
     
@@ -11165,6 +11241,41 @@
   
   
     <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/tnh-gen/notes/tnh-gen-golden-artifact-preservation-2026-05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tnh-gen Golden Artifact Preservation Note — May 2026
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
   
 
   
@@ -16415,7 +16526,12 @@
 </span></code></pre></div>
 <hr />
 <h2 id="pipeline-examples">Pipeline Examples<a class="headerlink" href="#pipeline-examples" title="Link to this section">&para;</a></h2>
-<p>These examples use four pages of OCR-scanned Vietnamese Buddhist journal text. Source files and scan images are in <code>tests/golden/journal-pipeline/</code>. See the <a href="../../user-guide/journal-pipeline-case-study/">Journal Pipeline Case Study</a> for the fully annotated version including the section-extraction helper script.</p>
+<p>These examples show a simplified OCR journal flow. The current canonical worked example is
+the rebuilt five-page journal pipeline in
+<code>tests/golden/journal-pipeline/5page/</code> with the full reviewed artifact chain under
+<code>tests/golden/journal-pipeline/walkthrough/clean_translate_5page/</code>.
+See the <a href="../../user-guide/journal-pipeline-case-study/">Thầy Edited Journal Text Case Study</a> for the
+fully annotated current workflow.</p>
 <h3 id="recommended-pipeline-section-clean-translate">Recommended Pipeline (section → clean → translate)<a class="headerlink" href="#recommended-pipeline-section-clean-translate" title="Link to this section">&para;</a></h3>
 <p><code>section_by_break</code> performs the document split using structural breaks in the numbered OCR text — page headers, blank lines, article titles. Each section (roughly one journal page) is then cleaned and translated in a focused, contained call.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># Step 1: Number raw lines (preprocessing)</span>
