@@ -1,0 +1,24 @@
+---
+fingerprint: sha256:970af471ddbc533b22347b4afd59fe33a8d159159ba2e7f94e96cd9294ca003c
+generated_at: '2026-05-06T21:04:04Z'
+model: gpt-5.4
+prompt_key: default_clean
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: 1822c43aabc248369fc2a346f93a4b29
+---
+
+Thế giới quan mà đức Phật thuyết minh là thế giới quan nhân duyên (Paticca samuppada). Tất cả mọi hiện tượng đều nương vào nhau để mà thành lập. Tất cả đều có liên hệ mật thiết đến nhau. Không có sự liên hệ ấy, sẽ không có một vật nào được thành lập. Sự liên hệ ấy chính là nhân duyên. Trong kinh điển có những danh từ NHÂN (hetu), DUYÊN (Paccaya), ĐIỀU KIỆN (Nidana), TẬP (Samudaya) đều là những tên gọi khác nhau để chỉ sự liên hệ ấy. Đức Phật đã định nghĩa NHÂN DUYÊN như sau:
+
+« Nhược thử hữu tắc bỉ hữu, nhược thử sinh tắc bỉ sinh, nhược thử vô tắc bỉ vô, nhược thử diệt tắc bỉ diệt.
+
+(* Cái này có thì cái kia có, cái này sinh thì cái kia sinh, cái này không thì cái kia không, cái này diệt thì cái kia diệt. ...)
+
+Nói « Cái này có thì cái kia có, cái này không thì cái kia không » tức là trình bày sự quan hệ của những sự vật tồn tại đồng thời. Nói « cái này sinh thì cái kia sinh, cái này diệt thì cái kia diệt » tức là trình bày sự quan hệ của những sự vật tồn tại khác thời. Tất cả các pháp đều sinh diệt và tồn tại trong sự hỗ tương liên hệ rất mật thiết ấy; không có pháp (hiện tượng) nào có thể tồn tại độc lập và tuyệt đối. Nhân trước quả sau thì gọi là dị thời nhân quả, nhân quả cùng một lúc thì gọi là đồng thời nhân quả. Một nhân có thể có những quả khác nhau tùy theo các duyên (điều kiện) phụ tiếp. Vì vậy, không thể có nhân tuyệt đối và cũng không có quả tuyệt đối.
+
+Thế giới được dệt thành bởi những hệ thống nhân duyên đồng thời (đứng về phương diện không gian) và những hệ thống nhân duyên dị thời (đứng về phương diện thời gian). Đó là quan niệm nhân quả của đạo Phật. Trong kinh luận, danh từ hữu-vi-pháp (Samkhata dhamma) chính là để chỉ cho những hiện tượng của thế giới nhân duyên ấy. Tất cả đều vô thường biến thiên, chính cũng do sự liên hệ nhân duyên, bởi vì trong thế giới nhân duyên, không thể có những hiện tượng thường bằng vĩnh cửu. Do quan niệm duyên sinh này mà đạo Phật bài xích quan niệm sáng tạo thế giới của một đấng Thượng Đế hữu ngã. Đó là một điều mà chúng ta không thể không thừa nhận.
+
+Theo chủ trương của Hoa-Nghiêm-Tông, toàn thể vũ trụ là cả một hệ thống duyên khởi trùng điệp vô tận. Giáo lý Hoa-Nghiêm, như thế, đã thành lập trên quan niệm liên hệ nhân quả của A-Hàm. Các tác phẩm A-Tỳ-Đạt-Ma của Phật-Giáo Nam Tông cũng đã phân loại nhân duyên để quan sát tìm hiểu và chính đó cũng là nhiệm vụ chủ yếu của các luận sư Thượng-tọa-bộ. (Luận Mahapakarana phân biệt đến 24 duyên; Xá-Lợi-Phất A-Tỳ-Đàm-Luận quyển 25 phân biệt 10 duyên; Hữu-Bộ chủ trương 4 duyên)
+
+Ở đây, chúng ta chỉ tìm hiểu sơ lược về hai loại: dị thời nhân quả và đồng thời nhân quả.

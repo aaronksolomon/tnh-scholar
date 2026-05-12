@@ -57,7 +57,7 @@ These are aspirational but active development goals aligned with the needs of th
 ## Current Features
 
 - **Audio and transcript processing**: `audio-transcribe` with diarization and YouTube support
-- **Text formatting and translation**: `tnh-gen` CLI for prompt-driven text processing with human-friendly defaults and API mode for programmatic use
+- **Text formatting and translation**: `tnh-gen` CLI for prompt-driven text processing with human-friendly defaults and API mode for programmatic use — see the [Thầy Edited Journal Text Case Study](/user-guide/journal-pipeline-case-study.md) for a fully worked OCR-to-translation example
 - **Headless workflow orchestration**: `tnh-conductor` for maintained local/bootstrap workflow execution with status watching and canonical run artifacts
 - **Acquisition utilities**: `ytt-fetch` for transcripts; `token-count` and `nfmt` for prep and planning
 - **Setup and configuration**: `tnh-setup` plus guided config in Getting Started

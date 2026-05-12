@@ -1,0 +1,33 @@
+---
+fingerprint: sha256:5d6d02c1b4d78e9f4b45950b2b9cc0ede1e03fcc7640d31fa188881ec2c042f1
+generated_at: '2026-05-06T21:02:46Z'
+model: gpt-5.4
+prompt_key: translate_journal_section_tnh_voice_en
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: d779b3190fb64469849b481d74db6d90
+---
+
+The Inclusive Meaning of Causality and the Vision of Interdependent Co-Arising
+
+In sum, the Buddhist understanding of cause and effect, in its narrow sense, is simply the law of causality. But in its broader sense, it is not merely a set of causal relations of a purely theoretical kind. The Buddhist view of causality also embraces ethical and liberating relationships; its breadth extends throughout the ten directions, and its length penetrates the past, the future, and the present. The “one” is intimately related to the “all,” and the “all” can be understood through the “one.”
+
+An ancient Vietnamese Zen master expressed this principle in two marvelous lines:
+
+“If there is, even a speck of dust exists;
+If there is emptiness, then all is empty.”
+
+Translated:
+
+“If there is being, there is being from the tiniest mote;
+If there is non-being, then this whole world is also not.”
+
+A grain of dust may be small, yet it exists through its relation with the whole. The whole may be vast, yet if it loses its relation with a tiny grain of dust, it cannot be established. Therefore another Zen master of the Lý dynasty said:
+
+“Heaven and earth are gathered on the tip of a hair;
+The sun and moon are contained in a mustard seed.”
+
+Here, great and small are no longer merely great and small. A mustard seed may be tiny, yet it has been formed through its relation with the whole. The entire universe has come together to bring it into being, just as it has come together with the entire universe to bring forth the sun and the moon. If it is there, then all is there; if it is not there, then all is not. “Heaven and earth can lie upon the tip of a single hair” is precisely this meaning.
+
+The world, the universe, and the myriad beings are woven together by endless systems of interdependent causes and conditions. This is a fundamental and profound insight of Buddhism. Upon this insight are established transcendent systems of teaching and wondrous methods of practice. Modern science has already gone beyond a simple, one-directional notion of causality and has come close to the Buddhist vision of interdependent co-arising in its infinite interweaving. We may hope that one day the torch of the teaching of causes and conditions will shine forth in full, continuing to dispel notions of fatalism, chance, and divine creation, so that humankind may soon come to recognize its path.

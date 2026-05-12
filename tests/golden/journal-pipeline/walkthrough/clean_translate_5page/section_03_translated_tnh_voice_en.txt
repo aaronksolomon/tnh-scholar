@@ -1,0 +1,28 @@
+---
+fingerprint: sha256:5d6d02c1b4d78e9f4b45950b2b9cc0ede1e03fcc7640d31fa188881ec2c042f1
+generated_at: '2026-05-07T20:31:49Z'
+model: gpt-5.4
+prompt_key: translate_journal_section_tnh_voice_en
+prompt_version: '1.0'
+schema_version: '1.0'
+tnh_scholar_generated: true
+trace_id: 347e19683ef749c09dc6425c7f828b83
+---
+
+Simultaneous Causality and Successive Causality in the Structure of the World
+
+1. The question of simultaneous causality is also the question of the subjective and the objective.
+
+The Buddha taught that the world is the meeting between subjective awareness and objective phenomena. Apart from this, there is nothing that can be called the world:
+
+“Bhikkhus, I wish to teach you the meaning of ‘all dharmas.’ Listen carefully.
+
+Bhikkhus, what is called ‘all dharmas’? It is the eye in relation to forms, the ear in relation to sounds, the nose in relation to odors, the tongue in relation to tastes, the body in relation to tactile objects, and the mind in relation to mental objects. Bhikkhus, this is called ‘all dharmas.’” (Samyutta)
+
+Thus the world is established upon the relation of cognition between the six sense faculties and the six sense objects. Outside the six faculties and the six objects, everything is without meaning for us. Therefore, as the Buddha taught, if there is no subjective side, there is no objective side; if there is no object, there is no subject. If the relation between subject and object is removed, the world cannot be established. Everything is founded upon that relation, just as two reeds stand only by leaning against each other:
+
+“Friends, just as two bundles of reeds, tied together and leaning upon each other, are able to stand, so too, with Name-and-Form as condition, Consciousness is; with Consciousness as condition, Name-and-Form is... Of those two bundles of reeds, if one is taken away, the other falls; if the other is taken away, this one falls. In the same way, friend, with the cessation of Name-and-Form, Consciousness ceases; with the cessation of Consciousness, Name-and-Form ceases...
+
+Name-and-Form here refers to the physiological organization and the psychological organization of sentient beings, serving as the object for “Consciousness,” that is, the subjective aspect of cognition. But Name-and-Form are not things existing separately outside Consciousness. The two depend on one another in order to be established. Between them there is a subtle relation: it is not that one comes first and the other later. Apart from that relation, neither can be established.
+
+2. The question of successive causality is also the question of continuity in existence. All phenomena are impermanent and ever changing, yet there is nothing that is utterly cut off and annihilated. There is no individual entity that is eternal and unchanging, yet there are always streams of phenomena continuing without interruption. All things transform continuously according to definite principles. The Buddha gave particular attention to explaining the continuity of the stream of life, that is, the phenomena of sentient beings. He taught that the fundamental driving forces of saṃsāric birth and death are ignorance and craving. Sentient beings themselves are the formations of the whole body of past experience and past karmic causes. Through present karmic causes, sentient beings move toward future phases of life. From the standpoint of logic, he illuminated the law of heterogeneous causes and heterogeneous fruits. From the standpoint of psychology, he explained the law of homogeneous causes and equal-flow fruits. From the standpoint of metaphysics, he set forth the law of the Twelvefold Chain of Dependent Origination. Although twenty-five centuries ago terminology and modes of expression were still limited, the texts of the Four Āgamas were already able to express these subtle teachings.

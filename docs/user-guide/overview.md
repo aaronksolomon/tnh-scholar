@@ -79,8 +79,8 @@ Typical steps:
    ```
 
 2. **Add structure with prompts** via `tnh-gen`
-   - Punctuate and paragraph-break with `default_punctuate`.
    - Divide into labelled sections with `default_section` (produces metadata JSON).
+   - Use punctuate or other specialised prompts where the text and workflow need them.
    - Tag domain-specific elements (poems, quotes, exercises) with specialised prompts.
 
    ```bash
@@ -90,16 +90,17 @@ Typical steps:
      --output-file punctuated.txt
    ```
 
-3. **Translate** with `default_line_translate`
-   - Pass the section JSON from step 2 as `--vars` to give the model full document context.
+3. **Translate** with a task-specific translation prompt
+   - For the journal case-study path, use `translate_journal_section_en` or a variant such
+     as `translate_journal_section_tnh_voice_en`.
+   - Pass section-level context via `--vars` to give the model document and section context.
 
    ```bash
-   tnh-gen run --prompt default_line_translate \
+   tnh-gen run --prompt translate_journal_section_en \
      --input-file cleaned_numbered.txt \
      --vars sections.json \
      --var source_language=Vietnamese \
      --var target_language=English \
-     --var style=scholarly \
      --output-file translated.txt
    ```
 
@@ -107,11 +108,12 @@ Typical steps:
    - Humans review AI output, correct tagging or translation, and adjust prompts as needed.
    - Corrected output becomes a reference for future pipeline runs.
 
-For a fully worked example using real OCR source text, see the [Journal Pipeline Case Study](/user-guide/journal-pipeline-case-study.md).
+For a fully worked example using real OCR source text, see the [Thầy Edited Journal Text Case Study](/user-guide/journal-pipeline-case-study.md).
 
 Relevant documentation:
 
-- [Journal Pipeline Case Study](/user-guide/journal-pipeline-case-study.md) — step-by-step two-track example
+- [Thầy Edited Journal Text Case Study](/user-guide/journal-pipeline-case-study.md) — step-by-step real OCR journal workflow
+- [A Buddhist Cosmological View — refined TNH-voice draft](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-refined-en.md) — final user-facing assembled result from the case study
 - [Prompt System](/user-guide/prompt-system.md) — how prompts work and how to create them
 - [tnh-gen CLI Reference](/cli-reference/tnh-gen.md)
 

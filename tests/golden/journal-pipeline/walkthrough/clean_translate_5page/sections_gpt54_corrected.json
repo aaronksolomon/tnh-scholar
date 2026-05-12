@@ -1,0 +1,117 @@
+{
+  "document_summary": "Bài khảo luận trình bày thế giới quan Phật học như một thế giới quan nhân duyên, đối chiếu với ba khuynh hướng tư tưởng Ấn Độ cổ là túc mệnh luận, thần ý luận và ngẫu nhiên luận. Tác giả cho rằng chỉ giáo lý duyên khởi mới vừa phù hợp với thực tại của vạn pháp, vừa đặt nền tảng cho trách nhiệm đạo đức, giải thoát và một đường lối nhân sinh tích cực. Từ đó, bài viết giải thích hai phương diện của nhân quả là đồng thời nhân quả và dị thời nhân quả, rồi mở rộng đến cái nhìn trùng trùng duyên khởi của Phật giáo.",
+  "document_metadata": "Nhan đề: Vũ-trụ-quan Phật học. Tác giả ký Thạc-Đức, bút danh gắn với Thích Nhất Hạnh trong giai đoạn đầu của tạp chí Phật Giáo Việt Nam. Văn bản đăng trên tạp chí Phật Giáo Việt Nam, số 17-18, năm 1957, hiện được số hóa bởi Thư Viện Huệ Quang. Thể loại là khảo luận Phật học, tập trung vào giáo lý nhân duyên, nhân quả, duyên khởi, và ý nghĩa nhân sinh của thế giới quan Phật giáo trong tương quan với các trào lưu tư tưởng Ấn Độ cổ.",
+  "dublin_core": {
+    "title": "Vũ-trụ-quan Phật học",
+    "creator": "Thạc-Đức",
+    "subject": "Thế giới quan Phật giáo, nhân duyên, nhân quả, duyên khởi, trách nhiệm đạo đức và nhân sinh quan",
+    "description": "Khảo luận trình bày giáo lý nhân duyên như nền tảng của thế giới quan Phật học, phê bình các khuynh hướng túc mệnh luận, thần ý luận và ngẫu nhiên luận, đồng thời giải thích đồng thời nhân quả, dị thời nhân quả và ý nghĩa trùng trùng duyên khởi.",
+    "publisher": "Tạp chí Phật Giáo Việt Nam",
+    "contributor": "Thư Viện Huệ Quang số hóa",
+    "date": "1957",
+    "type": "Khảo luận Phật học",
+    "format": "Văn bản báo chí số hóa",
+    "identifier": "Phật Giáo Việt Nam, số 17-18, năm 1957",
+    "source": "Tạp chí Phật Giáo Việt Nam",
+    "language": "vi",
+    "relation": "Liên hệ giáo lý A-hàm, A-tỳ-đạt-ma và Hoa Nghiêm tông",
+    "coverage": "Tư tưởng Phật giáo và bối cảnh triết học Ấn Độ cổ",
+    "rights": "Tư liệu số hóa từ Thư Viện Huệ Quang"
+  },
+  "key_concepts": [
+    "vũ trụ quan Phật học",
+    "nhân duyên",
+    "duyên khởi",
+    "nhân quả",
+    "đồng thời nhân quả",
+    "dị thời nhân quả",
+    "túc mệnh luận",
+    "thần ý luận",
+    "ngẫu nhiên luận",
+    "lục căn lục trần",
+    "Danh Sắc và Thức",
+    "Thập nhị nhân duyên",
+    "vô thường",
+    "liên hệ toàn thể",
+    "trách nhiệm đạo đức",
+    "giải thoát"
+  ],
+  "narrative_context": "Bài viết thuộc mạch khảo luận Phật học Việt Nam giữa thế kỷ XX, khi các tác giả tăng sĩ vừa giới thiệu giáo lý căn bản, vừa đối thoại với triết học và khoa học hiện đại. Văn bản triển khai từ bối cảnh tư tưởng Ấn Độ thời Đức Phật, nêu các học thuyết đối lập để làm nổi bật lập trường duyên khởi của Phật giáo. Từ đó, tác giả chuyển sang giải thích cấu trúc liên hệ của thế giới, sự tương thuộc giữa chủ thể và khách thể, rồi mở rộng đến dòng tương tục của sinh mệnh và viễn tượng trùng trùng duyên khởi. Giọng văn vừa biện luận vừa khuyến giáo, nhằm xác lập giá trị nhận thức và giá trị nhân sinh của giáo lý nhân duyên.",
+  "language": "vi",
+  "sections": [
+    {
+      "start_line": 1,
+      "end_line": 47,
+      "title": "Mở đầu: bối cảnh triết học Ấn Độ và phê bình ba khuynh hướng sai lạc",
+      "title_en": "Introduction and a Critique of Three Indian Philosophical Tendencies",
+      "title_orig": "VŨ-TRỤ-QUAN PHAT-HOC",
+      "summary": "Phần đầu đặt bài viết vào bối cảnh tư tưởng Ấn Độ thời Đức Phật, nơi vấn đề nguyên lý của vạn vật được tranh luận mạnh mẽ. Tác giả lược nêu ba khuynh hướng lớn: túc mệnh luận, thần ý luận và ngẫu nhiên luận, rồi chỉ ra rằng cả ba đều không thể thiết lập trách nhiệm cá nhân và nền tảng đạo đức. Từ đó, phần này xác định lập trường của Đức Phật là trình bày một nguyên lý vũ trụ phù hợp với thực tại và có giá trị dẫn đạo cho đời sống con người.",
+      "keywords": [
+        "Ấn Độ cổ",
+        "túc mệnh luận",
+        "thần ý luận",
+        "ngẫu nhiên luận",
+        "trách nhiệm cá nhân",
+        "đạo đức",
+        "lập trường của Đức Phật"
+      ]
+    },
+    {
+      "start_line": 48,
+      "end_line": 91,
+      "title": "Thế giới quan nhân duyên và nguyên lý duyên sinh",
+      "title_en": "Dependent origination as the Buddhist worldview",
+      "title_orig": "Thế giới quan mà đức Phật thuyết minh là thế giới quan nhân duyên",
+      "summary": "Phần này trình bày trực tiếp giáo lý nhân duyên như nền tảng của thế giới quan Phật giáo. Tác giả giải thích công thức duyên khởi “cái này có thì cái kia có”, phân biệt quan hệ đồng thời và khác thời, nhấn mạnh rằng mọi pháp đều không tồn tại độc lập hay tuyệt đối. Phần cuối mở rộng sang truyền thống kinh luận, từ A-hàm, A-tỳ-đạt-ma đến Hoa Nghiêm, để cho thấy chiều sâu phát triển của tư tưởng duyên khởi trong Phật giáo.",
+      "keywords": [
+        "nhân duyên",
+        "duyên sinh",
+        "Paticca samuppada",
+        "đồng thời nhân quả",
+        "dị thời nhân quả",
+        "hữu vi pháp",
+        "vô thường",
+        "Hoa Nghiêm",
+        "A-tỳ-đạt-ma"
+      ]
+    },
+    {
+      "start_line": 92,
+      "end_line": 137,
+      "title": "Đồng thời nhân quả và dị thời nhân quả trong cấu trúc thế giới",
+      "title_en": "Simultaneous and sequential causality in the structure of the world",
+      "title_orig": "Ở đây, chúng ta chỉ tìm hiểu sơ lược về hai loại",
+      "summary": "Phần này đi vào hai loại nhân quả mà tác giả xem là cốt yếu. Với đồng thời nhân quả, thế giới được hiểu như sự giao tiếp giữa lục căn và lục trần, giữa chủ quan và khách quan; Danh Sắc và Thức nương nhau mà thành lập. Với dị thời nhân quả, tác giả nhấn mạnh tính tương tục của các hiện tượng, đặc biệt là dòng sinh mệnh hữu tình, được vận hành bởi vô minh, ái dục, nghiệp và các quy luật như dị thục, đẳng lưu và Thập nhị nhân duyên.",
+      "keywords": [
+        "đồng thời nhân quả",
+        "dị thời nhân quả",
+        "lục căn lục trần",
+        "chủ quan và khách quan",
+        "Danh Sắc",
+        "Thức",
+        "vô minh",
+        "ái dục",
+        "nghiệp",
+        "Thập nhị nhân duyên"
+      ]
+    },
+    {
+      "start_line": 138,
+      "end_line": 177,
+      "title": "Ý nghĩa tổng hợp của nhân quả và viễn tượng trùng trùng duyên khởi",
+      "title_en": "The broader meaning of causality and the vision of interdependent totality",
+      "title_orig": "Tóm lại, quan-niệm nhân-quả của Phật-Giáo",
+      "summary": "Phần kết tổng hợp quan niệm nhân quả theo nghĩa rộng, bao gồm không chỉ lý luận mà cả đạo đức và giải thoát. Tác giả dùng thi ca thiền học để diễn tả mối tương liên giữa một và tất cả, giữa hạt bụi nhỏ và toàn thể vũ trụ, từ đó làm nổi bật cái nhìn trùng trùng duyên khởi. Kết thúc bài, tác giả khẳng định đây là nhận định căn bản của đạo Phật và bày tỏ kỳ vọng giáo lý nhân duyên sẽ giúp nhân loại vượt qua các quan niệm định mệnh, ngẫu nhiên và thần tạo.",
+      "keywords": [
+        "nhân quả theo nghĩa rộng",
+        "đạo đức",
+        "giải thoát",
+        "một và tất cả",
+        "thiền học Việt Nam",
+        "trùng trùng duyên khởi",
+        "toàn thể vũ trụ",
+        "khoa học hiện đại"
+      ]
+    }
+  ]
+}

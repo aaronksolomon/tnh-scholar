@@ -1,0 +1,28 @@
+{
+  "reference_note": "Historical reference artifact reconstructed from the published 4-page journal case-study walkthrough. This is not recovered raw tnh-gen output; it preserves the earlier documented split for comparison against later 5-page reruns.",
+  "reference_scope": "4-page documented case-study split",
+  "document_summary": "Bài khảo luận trình bày thế giới quan Phật học như một thế giới quan nhân duyên, đối chiếu với ba khuynh hướng tư tưởng Ấn Độ cổ là túc mệnh luận, thần ý luận và ngẫu nhiên luận. Tác giả cho rằng chỉ giáo lý duyên khởi mới vừa phù hợp với thực tại của vạn pháp, vừa đặt nền tảng cho trách nhiệm đạo đức, giải thoát và một đường lối nhân sinh tích cực. Từ đó, bài viết giải thích hai phương diện của nhân quả là đồng thời nhân quả và dị thời nhân quả, rồi mở rộng đến cái nhìn trùng trùng duyên khởi của Phật giáo.",
+  "language": "vi",
+  "sections": [
+    {
+      "start_line": 1,
+      "end_line": 48,
+      "title_en": "Introduction and a critique of three Indian philosophical tendencies"
+    },
+    {
+      "start_line": 49,
+      "end_line": 93,
+      "title_en": "Dependent origination as the Buddhist worldview"
+    },
+    {
+      "start_line": 94,
+      "end_line": 124,
+      "title_en": "Simultaneous causality: world as relation of subject and object"
+    },
+    {
+      "start_line": 125,
+      "end_line": 146,
+      "title_en": "Sequential causality, continuity of life, and the broader meaning of causality"
+    }
+  ]
+}

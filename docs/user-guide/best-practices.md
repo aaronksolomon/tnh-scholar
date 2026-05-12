@@ -96,7 +96,7 @@ Processing section-by-section (rather than one large batch) keeps each model cal
 tnh-gen run --prompt default_clean --input-file source.txt --output-file source.txt
 ```
 
-For the full walkthrough with a real OCR source, extraction helper script, and golden output structure, see the [Journal Pipeline Case Study](/user-guide/journal-pipeline-case-study.md).
+For the full walkthrough with a real OCR source, extraction helper script, and golden output structure, see the [Thầy Edited Journal Text Case Study](/user-guide/journal-pipeline-case-study.md).
 
 #### 3. Error Handling
 
