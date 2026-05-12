@@ -4,7 +4,7 @@ description: "Table of contents for architecture/tnh-gen/notes"
 owner: ""
 author: ""
 status: current
-created: "2026-05-06"
+created: "2026-05-12"
 auto_generated: true
 ---
 
@@ -15,6 +15,8 @@ auto_generated: true
 <!-- To manually edit this file, update the front matter and keep `auto_generated: true` to allow regeneration. -->
 
 **[tnh-gen Docs Consistency + OCR Pipeline Walkthrough Plan](tnh-gen-docs-pipeline-plan-2026-04.md)** - Work plan for v0.4.0 docs consistency pass on tnh-gen user-guide and CLI reference, and development of a golden OCR pipeline example with two-track clean→punctuate→section→translate walkthrough.
+
+**[tnh-gen Golden Artifact Preservation Note — May 2026](tnh-gen-golden-artifact-preservation-2026-05.md)** - Short operations note from the journal pipeline rerun on preserving structured artifacts, separating reviewed edits from raw outputs, and avoiding rerun clobber.
 
 **[tnh-gen GPT-5 Structured Output Eval — May 2026](tnh-gen-gpt5-structured-output-eval-2026-05.md)** - Concise findings from live golden evaluation of maintained tnh-gen prompts for walkthrough viability, human usability, artifact-backed real journal runs, and GPT-5-family prompt tuning.
 

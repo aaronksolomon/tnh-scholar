@@ -146,11 +146,13 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 ## User Guide
 
 - [A Buddhist Cosmological View — Vũ-trụ-quan Phật học](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-en.md)
+- [A Buddhist Cosmological View — Vũ-trụ-quan Phật học (Refined TNH-voice Draft)](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-refined-en.md)
 - [A Buddhist Cosmological View — Vũ-trụ-quan Phật học (TNH-voice)](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-en.md)
 - [Best Practices](/user-guide/best-practices.md)
-- [Pipeline Case Study: Phật Giáo Việt Nam OCR Journal Text](/user-guide/journal-pipeline-case-study.md)
+- [Pipeline Case Study: Thầy Edited Journal Text](/user-guide/journal-pipeline-case-study.md)
 - [TNH Scholar Prompt System](/user-guide/prompt-system.md)
 - [User Guide Overview](/user-guide/overview.md)
+- [Vũ-trụ-quan Phật học — Văn bản đã làm sạch (tiếng Việt)](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-vi.md)
 
 ## Project
 
@@ -346,6 +348,7 @@ Auto-generated map of the documentation hierarchy. Regenerated during docs build
 - [TimelineMapper Design Document](/architecture/transcription/design/timelinemapper-design.md)
 - [TNH Configuration Management](/architecture/configuration/tnh-configuration-management.md)
 - [tnh-gen Docs Consistency + OCR Pipeline Walkthrough Plan](/architecture/tnh-gen/notes/tnh-gen-docs-pipeline-plan-2026-04.md)
+- [tnh-gen Golden Artifact Preservation Note — May 2026](/architecture/tnh-gen/notes/tnh-gen-golden-artifact-preservation-2026-05.md)
 - [tnh-gen GPT-5 Structured Output Eval — May 2026](/architecture/tnh-gen/notes/tnh-gen-gpt5-structured-output-eval-2026-05.md)
 - [tnh-gen Implementation Plan — April 2026](/architecture/tnh-gen/notes/tnh-gen-implementation-plan-2026-04.md)
 - [tnh-gen Robustness Review — April 2026](/architecture/tnh-gen/notes/tnh-gen-robustness-review-2026-04.md)
