@@ -537,6 +537,8 @@
       
         
       
+        
+      
     
     
     
@@ -618,6 +620,41 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/journal-facsimile-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post-pipeline Facsimile Step
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
   
 
   
@@ -756,7 +793,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -785,14 +822,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -833,7 +870,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7_2" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -862,14 +899,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3_6_2" id="__nav_3_6_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_7_2" id="__nav_3_7_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_6_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_6_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7_2">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -15950,7 +15987,43 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong><code>tnh-gen</code> Golden Artifact Policy Normalization</strong> (2026-05-03)</li>
+<li><strong>Ruff Format Baseline + Release Gate Alignment</strong> (2026-05-26)</li>
+<li>Applied the current Ruff formatter across the repository so the codebase matches the format contract already enforced by GitHub <code>Main CI</code></li>
+<li>Added a blocking local <code>format-check</code> target and wired <code>release-check</code> to include <code>ruff format --check .</code>, closing the gap between local release validation and remote main-branch validation</li>
+<li>Revalidated the formatted tree with <code>ruff check</code>, <code>ruff format --check</code>, and the full local release gate</li>
+<li>
+<p>Files: <code>Makefile</code>, <code>scripts/</code>, <code>src/</code>, <code>tests/</code></p>
+</li>
+<li>
+<p><strong>Notebook Secret Hygiene Fix for YouTube Playlist Tooling</strong> (2026-05-26)</p>
+</li>
+<li>Removed a hardcoded Google API key from the tracked YouTube playlist notebook and switched the notebook to load <code>YOUTUBE_API_KEY</code> from the environment or a local <code>.env</code> file</li>
+<li>Added <code>.env</code> ignore rules so replacement local secrets can stay out of version control</li>
+<li>
+<p>Files: <code>notebooks/video_processing/youtube_playlist_process.ipynb</code>, <code>.gitignore</code></p>
+</li>
+<li>
+<p><strong>Dependency Security Refresh for Release Prep</strong> (2026-05-25)</p>
+</li>
+<li>Updated <code>GitPython</code> to <code>3.1.50</code> to clear the current newline-injection and path-traversal advisories affecting repository config and reference APIs</li>
+<li>Refreshed the locked transitive graph for <code>urllib3</code>, <code>idna</code>, <code>mistune</code>, and <code>pymdown-extensions</code> to the currently patched lines accepted by the Poetry resolver</li>
+<li>Revalidated the release candidate state with the full local release gate after the dependency changes</li>
+<li>
+<p>Files: <code>pyproject.toml</code>, <code>poetry.lock</code></p>
+</li>
+<li>
+<p><strong>Journal Facsimile Docs + <code>audio-transcribe</code> Release Hardening</strong> (2026-05-25)</p>
+</li>
+<li>Added a new post-pipeline facsimile note, linked the journal case study to the new facsimile artifact set, and added local Typst/web helper assets and scripts for the experimental page-7 facsimile workflow</li>
+<li>Updated user-facing project vision/community copy to clarify corpus scope beyond Thích Nhất Hạnh-only materials</li>
+<li>Fixed <code>audio-transcribe</code> validation so <code>--no_transcribe</code> fails cleanly instead of crashing, aligned config defaults with the CLI surface, and added a regression test for the download-only validation path</li>
+<li>Cleaned release-doc quality blockers by excluding PDFs from <code>codespell</code>, fixing a small set of documentation typos, and normalizing Ruff import ordering in maintained Python modules</li>
+<li>
+<p>Files: <code>docs/user-guide/</code>, <code>docs/project/vision.md</code>, <code>docs/index.md</code>, <code>docs/community/parallax-overview.md</code>, <code>experiments/</code>, <code>scripts/build_typst_facsimile_assets.sh</code>, <code>scripts/render_typst_facsimile.sh</code>, <code>src/tnh_scholar/cli_tools/audio_transcribe/</code>, <code>tests/cli_tools/test_audio_transcribe.py</code>, <code>Makefile</code>, <code>.codespell-ignore.txt</code></p>
+</li>
+<li>
+<p><strong><code>tnh-gen</code> Golden Artifact Policy Normalization</strong> (2026-05-03)</p>
+</li>
 <li>Standardized the live-golden directories on a single policy: tracked source fixtures and operator docs, untracked generated run artifacts</li>
 <li>Updated the journal walkthrough and golden READMEs to stop implying that generated outputs should be committed as repository fixtures</li>
 <li>Expanded the ignore rules to cover sectioning scratch outputs produced during journal prompt iteration</li>

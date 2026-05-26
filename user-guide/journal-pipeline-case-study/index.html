@@ -11,7 +11,7 @@
       
       
       
-        <link rel="prev" href="../best-practices/">
+        <link rel="prev" href="../journal-facsimile-step/">
       
       
         <link rel="next" href="../overview/">
@@ -539,6 +539,8 @@
       
         
       
+        
+      
     
     
     
@@ -620,6 +622,41 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../journal-facsimile-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post-pipeline Facsimile Step
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
   
 
   
@@ -777,6 +814,17 @@
     <span class="md-ellipsis">
       
         The scanned pages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-pipeline-facsimile-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-pipeline facsimile output
       
     </span>
   </a>
@@ -1094,7 +1142,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1123,14 +1171,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1171,7 +1219,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7_2" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1200,14 +1248,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3_6_2" id="__nav_3_6_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_7_2" id="__nav_3_7_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_6_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_6_2">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7_2">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -15301,6 +15349,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#post-pipeline-facsimile-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-pipeline facsimile output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#source-and-attribution-note" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -15611,9 +15670,25 @@ OCR, cleaned Vietnamese, and generated English against the page images.</p>
 The running footer <code>PHẬT-GIÁO VIỆT-NAM</code> is visible at the bottom — one of the
 artifacts the clean stage must remove. (<a href="../assets/journal-pipeline/pgvn-17-18-page7.jpg">View with OCR region annotations</a>)</em></p>
 <p><img alt="Final page of the article — Phật Giáo Việt Nam issue 17–18, p. 11" src="../assets/journal-pipeline/pgvn-17-18-page11-clean.jpg" /></p>
-<p><em>Page 11: the article's closing discussion on trùng trùng duyên khởi, moral causality,
+<p><em>Page 11 scan: the article's closing discussion on trùng trùng duyên khởi, moral causality,
 and liberation. The footer <code>PHẬT-GIÁO VIỆT-NAM</code> and a page-number artifact appear near
 the bottom. (<a href="../assets/journal-pipeline/pgvn-17-18-page11.jpg">View with OCR region annotations</a>)</em></p>
+<h3 id="post-pipeline-facsimile-output">Post-pipeline facsimile output<a class="headerlink" href="#post-pipeline-facsimile-output" title="Link to this section">&para;</a></h3>
+<p>The pipeline can also feed a downstream presentation artifact: an experimental English
+facsimile-translation that keeps the page feel of the journal while using the reviewed
+translated text.</p>
+<p><img alt="Experimental v1 English facsimile prototype of page 7 of Vũ-trụ-quan Phật học" src="../assets/journal-pipeline/pgvn-17-18-page7-facsimile-v1.png" /></p>
+<p><em>Experimental <code>v1</code> post-pipeline facsimile prototype of the opening page, built from the clean
+scan, local font matching, the TNH-voice translation output for the opening body text, and
+manual layout tuning. The display title is a simplified English facsimile treatment rather
+than a literal title translation. This is a presentation-layer artifact rather than a
+replacement for the source images or traceable text files.
+(<a href="../assets/journal-pipeline/pgvn-17-18-page7-facsimile-v1.png">PNG</a>, <a href="../assets/journal-pipeline/pgvn-17-18-page7-facsimile-v1.pdf">PDF</a>)</em></p>
+<p>This is useful as a “what’s possible next” step after OCR, cleaning, translation, and review:
+it gives a legible English page that can be compared directly against the original scan, the
+cleaned Vietnamese, and the refined English draft. A short note on the generation approach and
+the next research direction for interactive region overlays is here:
+<a href="../journal-facsimile-step/">Post-pipeline facsimile step</a>.</p>
 <h3 id="source-and-attribution-note">Source and attribution note<a class="headerlink" href="#source-and-attribution-note" title="Link to this section">&para;</a></h3>
 <p>The digitized journal is hosted by Thư Viện Hoa Sen, which credits Thư Viện Huệ Quang for
 digitizing. The Hoa Sen page is the source used for this project.</p>
@@ -16107,6 +16182,12 @@ keeping the same files, prompts, source links, and provenance records underneath
 <li>
 <p><strong>Web interface</strong> — a longer-term direction for collaborative or institutionally hosted
   work: shared document queues, version tracking, and annotation.</p>
+</li>
+<li>
+<p><strong>Facsimile + region overlay</strong> — a hybrid direction after the core pipeline: keep the page
+  image or facsimile as the visual ground truth, then add OCR-derived bounding boxes that can
+  reveal Vietnamese and English text by line, sentence, or paragraph. This would fit either a
+  web viewer or a VS Code analysis pane.</p>
 </li>
 </ul>
 <hr />
