@@ -1,6 +1,10 @@
 # Apple
 .DS_Store 
 
+# Local environment files
+.env
+.env.*
+
 # Audio transcription
 audio_transcriptions/
 

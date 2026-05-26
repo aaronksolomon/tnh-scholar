@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Notebook Secret Hygiene Fix for YouTube Playlist Tooling** (2026-05-26)
+  - Removed a hardcoded Google API key from the tracked YouTube playlist notebook and switched the notebook to load `YOUTUBE_API_KEY` from the environment or a local `.env` file
+  - Added `.env` ignore rules so replacement local secrets can stay out of version control
+  - Files: `notebooks/video_processing/youtube_playlist_process.ipynb`, `.gitignore`
+
 - **Dependency Security Refresh for Release Prep** (2026-05-25)
   - Updated `GitPython` to `3.1.50` to clear the current newline-injection and path-traversal advisories affecting repository config and reference APIs
   - Refreshed the locked transitive graph for `urllib3`, `idna`, `mistune`, and `pymdown-extensions` to the currently patched lines accepted by the Poetry resolver
