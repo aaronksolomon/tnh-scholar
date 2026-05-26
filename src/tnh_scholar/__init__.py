@@ -47,7 +47,7 @@ Dependencies:
 from pathlib import Path
 
 # Package version
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 
 # Dynamically determine and set up paths for the project
 TNH_ROOT_SRC_DIR = Path(__file__).resolve().parent
