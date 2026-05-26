@@ -100,6 +100,7 @@ tests/golden/journal-pipeline/*.provenance.yaml
 !docs/user-guide/assets/journal-pipeline/*.pdf
 !tests/golden/journal-pipeline/*.pdf
 !docs/user-guide/assets/journal-pipeline/*.jpg
+!docs/user-guide/assets/journal-pipeline/*.png
 
 *.mp4
 *.mov
