@@ -486,16 +486,8 @@ release-publish:
 		echo "✅ Created GitHub release v$$VERSION"; \
 		echo ""; \
 		REMOTE_URL=$$(git remote get-url origin 2>/dev/null || true); \
-		GITHUB_REPO=$$(REMOTE_URL="$$REMOTE_URL" python - <<'PY'\
-	import os\
-	import re\
-	\
-	remote = os.environ.get("REMOTE_URL", "")\
-	match = re.search(r'github\\.com[:/](?P<repo>[^/]+/[^/]+)(?:\\.git)?$$', remote)\
-	if match:\
-	    print(match.group("repo"))\
-	PY\
-	); \
+		GITHUB_REPO=$$(printf '%s\n' "$$REMOTE_URL" | sed -nE 's#.*github\.com[:/]([^/]+/[^/]+)(\.git)?$$#\1#p'); \
+		GITHUB_REPO=$${GITHUB_REPO%.git}; \
 		echo "🎉 Release complete!"; \
 		echo "   PyPI: https://pypi.org/project/tnh-scholar/"; \
 		if [ -n "$$GITHUB_REPO" ]; then \
