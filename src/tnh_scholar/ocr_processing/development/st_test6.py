@@ -160,11 +160,7 @@ class DocumentEditor:
         """
 
         # Ensure a valid current page
-        if (
-            not self.pages
-            or self.current_page_index < 0
-            or self.current_page_index >= len(self.pages)
-        ):
+        if not self.pages or self.current_page_index < 0 or self.current_page_index >= len(self.pages):
             raise RuntimeError("Invalid page state. No page to save.")
 
         # Retrieve current page and text from the text area

@@ -24,9 +24,7 @@ def extract_unique_tags(xml_file: str | Path) -> Set[str]:
 
 def main():
     # Create argument parser
-    parser = argparse.ArgumentParser(
-        description="Extract all unique tags from an XML file."
-    )
+    parser = argparse.ArgumentParser(description="Extract all unique tags from an XML file.")
     parser.add_argument("xml_file", type=str, help="Path to the XML file.")
 
     # Parse command-line arguments

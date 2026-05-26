@@ -181,6 +181,10 @@ type-check:
 	@echo "Running type checks..."
 	$(POETRY) run mypy src/
 
+format-check:
+	@echo "Checking Ruff formatting..."
+	$(POETRY) run ruff format --check .
+
 # CI check - run all CI checks locally
 ci-check:
 	@echo "========================================="
@@ -256,7 +260,7 @@ pr-check:
 # Set DRY_RUN=1 to preview commands without executing (e.g., make release-patch DRY_RUN=1)
 DRY_RUN ?= 0
 
-release-check: test type-check lint docs-change-warning docs-verify-readonly
+release-check: test type-check lint format-check docs-change-warning docs-verify-readonly
 	@echo "✅ All quality checks passed - ready to release"
 
 changelog-draft:

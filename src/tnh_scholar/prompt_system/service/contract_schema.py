@@ -61,9 +61,7 @@ class PromptContractSchemaResolver:
                     document=_load_schema_document(candidate),
                 )
         searched = ", ".join(str(root / relative_path) for root in roots)
-        raise ConfigurationError(
-            f"Prompt contract schema '{schema_ref}' was not found. Searched: {searched}"
-        )
+        raise ConfigurationError(f"Prompt contract schema '{schema_ref}' was not found. Searched: {searched}")
 
     def validate_instance(
         self,

@@ -18,12 +18,8 @@ class LogicalSection(BaseModel):
         ...,
         description="Meaningful title for the section in the original language of the section.",
     )
-    start_line: int = Field(
-        ..., description="Starting line number of the section (inclusive)."
-    )
-    end_line: int = Field(
-        ..., description="Ending line number of the section (inclusive)."
-    )
+    start_line: int = Field(..., description="Starting line number of the section (inclusive).")
+    end_line: int = Field(..., description="Ending line number of the section (inclusive).")
 
 
 class TextObject(BaseModel):

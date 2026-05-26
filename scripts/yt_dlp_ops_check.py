@@ -44,26 +44,19 @@ class OpsProgressUI:
         self.task_id = self.progress.add_task("Preparing live checks...", total=None)
 
     def on_url_started(self, index: int, total_urls: int, url: str) -> None:
-        self._update_progress(
-            f"[{index + 1}/{total_urls}] Checking {self._short_url(url)}"
-        )
+        self._update_progress(f"[{index + 1}/{total_urls}] Checking {self._short_url(url)}")
 
     def on_url_succeeded(self, index: int, total_urls: int, url: str) -> None:
-        self.console.print(
-            f"[green][OK][/green] [{index + 1}/{total_urls}] {self._short_url(url)}"
-        )
+        self.console.print(f"[green][OK][/green] [{index + 1}/{total_urls}] {self._short_url(url)}")
 
     def on_url_failed(self, index: int, total_urls: int, url: str, reason: str) -> None:
-        self.console.print(
-            f"[red][FAIL][/red] [{index + 1}/{total_urls}] {self._short_url(url)} :: {reason}"
-        )
+        self.console.print(f"[red][FAIL][/red] [{index + 1}/{total_urls}] {self._short_url(url)} :: {reason}")
 
     def on_run_finished(self, report) -> None:
         if self.progress is not None:
             self.progress.stop()
         self.console.print(
-            "[bold]Completed[/bold] "
-            f"(successes={report.successes}, failures={len(report.failures)})"
+            f"[bold]Completed[/bold] (successes={report.successes}, failures={len(report.failures)})"
         )
 
     def _update_progress(self, description: str) -> None:
@@ -121,10 +114,7 @@ def _format_report(report) -> str:
         f"successes={report.successes}",
         f"failures={len(report.failures)}",
     ]
-    lines.extend(
-        f"failure_url={failure.url} reason={failure.reason}"
-        for failure in report.failures
-    )
+    lines.extend(f"failure_url={failure.url} reason={failure.reason}" for failure in report.failures)
     return "\n".join(lines)
 
 

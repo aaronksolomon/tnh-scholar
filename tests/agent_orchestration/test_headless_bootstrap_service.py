@@ -310,9 +310,7 @@ def test_headless_bootstrap_service_runs_workflow_in_managed_worktree(tmp_path: 
     assert status["lifecycle_state"] == "completed"
     assert status["termination"] == "completed"
     assert metadata["workspace_context"]["base_ref"] == "main"
-    assert metadata["workspace_context"]["worktree_path"] == str(
-        result.workspace_context.worktree_path
-    )
+    assert metadata["workspace_context"]["worktree_path"] == str(result.workspace_context.worktree_path)
     assert result.final_state_path.read_text(encoding="utf-8").strip() == "completed:STOP"
 
     agent_manifest = _read_manifest(result.run_directory, "agent")
@@ -351,9 +349,7 @@ def test_bootstrap_runtime_profile_exposes_review_policy_and_poetry_validators()
     assert review_policy.execution_posture == ExecutionPosture.workspace_write
     assert review_policy.approval_posture == ApprovalPosture.bounded_auto_approve
 
-    builtin_entries = {
-        entry.name.value: entry for entry in runtime_profile.validation.builtin_commands
-    }
+    builtin_entries = {entry.name.value: entry for entry in runtime_profile.validation.builtin_commands}
     assert builtin_entries["tests"].arguments[:2] == ("run", "pytest")
     assert builtin_entries["lint"].arguments[:2] == ("run", "ruff")
     assert builtin_entries["typecheck"].arguments[:2] == ("run", "mypy")

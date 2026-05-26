@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """CLI wrapper around the notebook preparation utility."""
+
 from __future__ import annotations
 
 import argparse
@@ -16,20 +17,14 @@ from tnh_scholar.tools.notebook_prep import prep_notebooks  # noqa: E402
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description=(
-            "Create *_local.ipynb versions of notebooks and strip outputs from "
-            "the originals."
-        )
+        description=("Create *_local.ipynb versions of notebooks and strip outputs from the originals.")
     )
     parser.add_argument(
         "-d",
         "--directory",
         default=ROOT / "notebooks",
         type=Path,
-        help=(
-            "Directory containing notebooks to process. "
-            "Defaults to the repository's notebooks directory."
-        ),
+        help=("Directory containing notebooks to process. Defaults to the repository's notebooks directory."),
     )
     parser.add_argument(
         "--dry-run",

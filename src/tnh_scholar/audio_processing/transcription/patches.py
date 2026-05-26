@@ -3,7 +3,18 @@ from typing import Any, BinaryIO, Dict, Optional
 
 # Allowed audio file extensions for Whisper/OpenAI API
 _ALLOWED_EXTENSIONS = [
-    "mp3", "mp4", "mpeg", "mpga", "m4a", "wav", "webm", "ogg", "flac", "aac", "wma", "opus"
+    "mp3",
+    "mp4",
+    "mpeg",
+    "mpga",
+    "m4a",
+    "wav",
+    "webm",
+    "ogg",
+    "flac",
+    "aac",
+    "wma",
+    "opus",
 ]
 
 
@@ -14,10 +25,8 @@ def patch_file_with_name(file_obj: BytesIO, extension: str) -> BinaryIO:
     file_obj.name = f"filename_placeholder.{extension}"
     return file_obj
 
-def patch_whisper_options(
-    options: Optional[Dict[str, Any]],
-    file_extension: str
-    ) -> Dict[str, Any]:
+
+def patch_whisper_options(options: Optional[Dict[str, Any]], file_extension: str) -> Dict[str, Any]:
     """
     Patch routine to ensure 'file_extension' is present in transcription options dict.
     This is a workaround for OpenAI Whisper API, which requires file-like objects to have a
@@ -34,11 +43,8 @@ def patch_whisper_options(
         ValueError: If file_extension is not in the allowed list
     """
     patched = dict(options) if options is not None else {}
-    ext = file_extension.lstrip('.')
+    ext = file_extension.lstrip(".")
     if ext.lower() not in _ALLOWED_EXTENSIONS:
-        raise ValueError(
-            f"Unsupported file extension '{ext}'. Allowed extensions: {_ALLOWED_EXTENSIONS}"
-        )
-    patched['file_extension'] = ext
+        raise ValueError(f"Unsupported file extension '{ext}'. Allowed extensions: {_ALLOWED_EXTENSIONS}")
+    patched["file_extension"] = ext
     return patched
-    

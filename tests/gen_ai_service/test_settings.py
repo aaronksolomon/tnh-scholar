@@ -65,9 +65,7 @@ def test_settings_explicit_prompt_dir_overrides_env_alias(
     assert settings.default_prompt_dir == explicit_dir
 
 
-def test_settings_prompt_dir_defaults_to_context(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_settings_prompt_dir_defaults_to_context(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     workspace_root = tmp_path / "workspace"
     user_root = tmp_path / "user"
     builtin_root = tmp_path / "builtin"

@@ -12,6 +12,7 @@ class Block:
     end_sec: float
     text: str
 
+
 def _sec_to_srt_time(t: float) -> str:
     h = int(t // 3600)
     m = int((t % 3600) // 60)
@@ -19,8 +20,10 @@ def _sec_to_srt_time(t: float) -> str:
     ms = int((t - int(t)) * 1000)
     return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
 
+
 def _normalize_blocks(blocks: Iterable[Block]) -> List[Block]:
     return sorted(list(blocks), key=lambda b: (b.start_sec, b.end_sec))
+
 
 def blocks_from_speakerblocks(objs: Iterable[object]) -> List[Block]:
     out: List[Block] = []
@@ -38,6 +41,7 @@ def blocks_from_speakerblocks(objs: Iterable[object]) -> List[Block]:
             en = 0.0
         out.append(Block(speaker_id=str(sid), start_sec=st, end_sec=en, text=str(txt)))
     return _normalize_blocks(out)
+
 
 def export_audacity_labels(blocks: Iterable[Block], outdir: Path, per_speaker: bool = True) -> List[Path]:
     outdir.mkdir(parents=True, exist_ok=True)
@@ -62,6 +66,7 @@ def export_audacity_labels(blocks: Iterable[Block], outdir: Path, per_speaker: b
         paths.append(p)
     return paths
 
+
 def export_srt(blocks: Iterable[Block], outpath: Path) -> Path:
     blocks = _normalize_blocks(blocks)
     with outpath.open("w", encoding="utf-8") as f:
@@ -71,6 +76,7 @@ def export_srt(blocks: Iterable[Block], outpath: Path) -> Path:
             line = f"{b.speaker_id}: {b.text}".strip()
             f.write(line + "\n\n")
     return outpath
+
 
 def import_audacity_labels(label_path: Path, speaker_id: Optional[str] = None) -> List[Block]:
     blocks: List[Block] = []
@@ -86,6 +92,7 @@ def import_audacity_labels(label_path: Path, speaker_id: Optional[str] = None) -
                     sid = label_path.stem.split("labels_")[-1]
                 blocks.append(Block(speaker_id=sid, start_sec=st, end_sec=en, text=lab))
     return _normalize_blocks(blocks)
+
 
 def merge_back(original: List[Block], edited: List[Block]) -> List[Block]:
     out: List[Block] = []

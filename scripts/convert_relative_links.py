@@ -20,9 +20,9 @@ def find_relative_links(content: str) -> List[Tuple[str, str]]:
     """
     # Pattern to match markdown links with relative paths
     # Matches [text](../path) or [text](./path) but not [text](http://...) or [text](/absolute)
-    pattern = r'\[([^\]]+)\]\((\.\./[^\)]+|\.\/[^\)]+)\)'
+    pattern = r"\[([^\]]+)\]\((\.\./[^\)]+|\.\/[^\)]+)\)"
     matches = re.findall(pattern, content)
-    return [(f'[{text}]({path})', path) for text, path in matches]
+    return [(f"[{text}]({path})", path) for text, path in matches]
 
 
 def resolve_relative_path(file_path: Path, relative_path: str, docs_root: Path) -> str:
@@ -47,7 +47,7 @@ def resolve_relative_path(file_path: Path, relative_path: str, docs_root: Path) 
     try:
         relative_to_docs = target_path.relative_to(docs_root)
         # Convert to absolute path notation (starting with /)
-        absolute_path = '/' + str(relative_to_docs).replace('\\', '/')
+        absolute_path = "/" + str(relative_to_docs).replace("\\", "/")
         return absolute_path
     except ValueError:
         # Path is outside docs/ directory - leave it as is
@@ -61,7 +61,7 @@ def convert_links_in_file(file_path: Path, docs_root: Path, dry_run: bool = Fals
     Returns:
         (count_of_conversions, list_of_conversions)
     """
-    content = file_path.read_text(encoding='utf-8')
+    content = file_path.read_text(encoding="utf-8")
     original_content = content
     conversions = []
 
@@ -70,17 +70,17 @@ def convert_links_in_file(file_path: Path, docs_root: Path, dry_run: bool = Fals
 
     for full_match, relative_path in relative_links:
         # Skip external links
-        if relative_path.startswith('http://') or relative_path.startswith('https://'):
+        if relative_path.startswith("http://") or relative_path.startswith("https://"):
             continue
 
         # Convert to absolute path
         absolute_path = resolve_relative_path(file_path, relative_path, docs_root)
 
         # Extract the link text
-        text_match = re.match(r'\[([^\]]+)\]', full_match)
+        text_match = re.match(r"\[([^\]]+)\]", full_match)
         if text_match:
             link_text = text_match.group(1)
-            new_link = f'[{link_text}]({absolute_path})'
+            new_link = f"[{link_text}]({absolute_path})"
 
             # Replace in content
             content = content.replace(full_match, new_link)
@@ -91,7 +91,7 @@ def convert_links_in_file(file_path: Path, docs_root: Path, dry_run: bool = Fals
 
     # Write back if content changed and not dry run
     if content != original_content and not dry_run:
-        file_path.write_text(content, encoding='utf-8')
+        file_path.write_text(content, encoding="utf-8")
 
     return len(conversions), conversions
 
@@ -99,9 +99,9 @@ def convert_links_in_file(file_path: Path, docs_root: Path, dry_run: bool = Fals
 def find_files_to_process(docs_root: Path) -> list[Path]:
     """Return markdown files containing relative links."""
     files_to_process: list[Path] = []
-    for md_file in docs_root.rglob('*.md'):
-        content = md_file.read_text(encoding='utf-8')
-        if '](..' in content or '](./' in content:
+    for md_file in docs_root.rglob("*.md"):
+        content = md_file.read_text(encoding="utf-8")
+        if "](.." in content or "](./" in content:
             files_to_process.append(md_file)
     return files_to_process
 
@@ -129,7 +129,7 @@ def run_mkdocs_build(project_root: Path) -> int:
     print("Testing with mkdocs build...")
     try:
         result = subprocess.run(
-            ['mkdocs', 'build', '--strict'],
+            ["mkdocs", "build", "--strict"],
             cwd=project_root,
             capture_output=True,
             text=True,
@@ -155,7 +155,7 @@ def main() -> int:
     """Main conversion process."""
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
-    docs_root = project_root / 'docs'
+    docs_root = project_root / "docs"
 
     if not docs_root.exists():
         print(f"Error: docs/ directory not found at {docs_root}")
@@ -177,5 +177,5 @@ def main() -> int:
     return run_mkdocs_build(project_root)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     exit(main())

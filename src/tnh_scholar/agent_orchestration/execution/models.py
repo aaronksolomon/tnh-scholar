@@ -116,9 +116,7 @@ class ExecutionRequest(BaseModel):
     working_directory: Path
     environment_policy: EnvironmentPolicy
     timeout_policy: TimeoutPolicy = Field(default_factory=TimeoutPolicy)
-    output_capture_policy: ExecutionOutputCapturePolicy = Field(
-        default_factory=ExecutionOutputCapturePolicy
-    )
+    output_capture_policy: ExecutionOutputCapturePolicy = Field(default_factory=ExecutionOutputCapturePolicy)
 
 
 class ExecutionResult(BaseModel):

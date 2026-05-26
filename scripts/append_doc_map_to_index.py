@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Append documentation_map.md content to index.md during build."""
+
 from __future__ import annotations
 
 from pathlib import Path

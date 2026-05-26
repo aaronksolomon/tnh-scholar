@@ -45,9 +45,7 @@ def test_render_includes_user_input_as_message():
     renderer = PromptRenderer(PromptRenderPolicy())
     prompt = make_prompt("Hello {{ name }}!")
 
-    rendered = renderer.render(
-        prompt, RenderParams(variables={"name": "caller"}, user_input="hi there")
-    )
+    rendered = renderer.render(prompt, RenderParams(variables={"name": "caller"}, user_input="hi there"))
 
     assert len(rendered.messages) == 1
     assert rendered.messages[0].content == "hi there"

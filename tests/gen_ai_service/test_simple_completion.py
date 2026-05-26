@@ -14,9 +14,8 @@ from tnh_scholar.gen_ai_service.models.transport import (
     TextPayload,
 )
 
-simple_completion_module = importlib.import_module(
-    "tnh_scholar.gen_ai_service.adapters.simple_completion"
-)
+simple_completion_module = importlib.import_module("tnh_scholar.gen_ai_service.adapters.simple_completion")
+
 
 class DummyClient:
     def __init__(self, response: ProviderResponse):

@@ -8,35 +8,35 @@ else:  # Unix-like (Linux, macOS)
     pass
 
 
-
 def get_single_char(prompt: Optional[str] = None) -> str:
     """
     Get a single character from input, adapting to the execution environment.
-    
+
     Args:
         prompt: Optional prompt to display before getting input
-        
+
     Returns:
         A single character string from user input
-        
+
     Note:
         - In terminal environments, uses raw input mode without requiring Enter
         - In Jupyter/IPython, falls back to regular input with message about Enter
     """
     # Check if we're in IPython/Jupyter
-    is_notebook = hasattr(sys, 'ps1') or bool(sys.flags.interactive)
+    is_notebook = hasattr(sys, "ps1") or bool(sys.flags.interactive)
 
     if prompt:
-        print(prompt, end='', flush=True)
+        print(prompt, end="", flush=True)
 
     if is_notebook:
         # Jupyter/IPython environment - use regular input
         entry = input("Single character input required ")
-        return entry[0] if entry else "\n" # Use newline if no entry
-    
+        return entry[0] if entry else "\n"  # Use newline if no entry
+
     # Terminal environment
     if os.name == "nt":  # Windows
         import msvcrt
+
         getch = cast(Any, getattr(msvcrt, "getch"))
         windows_char = getch()
         return bytes(windows_char).decode("utf-8")
@@ -84,6 +84,4 @@ def get_user_confirmation(prompt: str, default: bool = True) -> bool:
             print()  # Add a newline
             return default
         else:
-            print(
-                f"\nInvalid input: {char}. Please type 'y' or 'n': ", end="", flush=True
-            )
+            print(f"\nInvalid input: {char}. Please type 'y' or 'n': ", end="", flush=True)

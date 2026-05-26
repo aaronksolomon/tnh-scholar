@@ -69,13 +69,9 @@ class CodexCliInvocationMapper:
         if policy.forbidden_paths:
             raise ValueError("Codex CLI adapter does not support native forbidden_paths constraints.")
         if policy.forbidden_operations:
-            raise ValueError(
-                "Codex CLI adapter does not support native forbidden_operations constraints."
-            )
+            raise ValueError("Codex CLI adapter does not support native forbidden_operations constraints.")
         if policy.approval_posture == ApprovalPosture.bounded_auto_approve:
-            raise ValueError(
-                "Codex CLI adapter does not support native bounded_auto_approve controls."
-            )
+            raise ValueError("Codex CLI adapter does not support native bounded_auto_approve controls.")
 
     def _arguments_for(self, request: RunnerTaskRequest, response_path: Path) -> tuple[str, ...]:
         arguments: tuple[str, ...] = (

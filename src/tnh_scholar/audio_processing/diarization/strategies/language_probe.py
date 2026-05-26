@@ -22,36 +22,37 @@ logger = get_child_logger(__name__)
 
 class WhisperLanguageDetector:
     """Language detector using Whisper service."""
-    
+
     def __init__(self, model: str = "whisper-1", audio_handler: Optional[AudioHandler] = None):
         self.model = model
         self.audio_handler = audio_handler or AudioHandler()
 
     def detect(self, audio: AudioSegment, format_str: str) -> Optional[str]:
         from tnh_scholar.audio_processing.transcription.whisper_service import WhisperTranscriptionService
+
         whisper = WhisperTranscriptionService(model=self.model, language=None, response_format="verbose_json")
         try:
             audio_bytes = self.audio_handler.export_audio_bytes(audio, format_str=format_str)
-            options = patch_whisper_options(options = None, file_extension=format_str)
+            options = patch_whisper_options(options=None, file_extension=format_str)
             result = whisper.transcribe(audio_bytes, options=options)
             logger.debug(f"full transcription result: {result}")
             return self._extract_language_from_result(result)
         except Exception as e:
             logger.warning(f"Language detection failed: {e}")
             return None
-        
+
     def _extract_language_from_result(self, result) -> Optional[str]:
         """Extract language code from transcription result."""
         language = getattr(result, "language", None)
         return cast(Optional[str], language)
-            
+
 
 class LanguageProbe:
     def __init__(self, config: DiarizationConfig, detector: LanguageDetector):
         self.probe_time = config.language.probe_time
         self.export_format = config.language.export_format
         self.detector = detector
-        
+
     def segment_language(
         self,
         aug_segment: AugDiarizedSegment,
@@ -74,13 +75,13 @@ class LanguageProbe:
             return language
         logger.warning(f"No language detected in language probe for segment {aug_segment}.")
         return "unknown"
-    
+
     def _calculate_probe_window(
         self,
         aug_segment: AugDiarizedSegment,
     ) -> tuple[TimeMs, TimeMs]:
         """
-        Calculate start/end times for language probe sampling, 
+        Calculate start/end times for language probe sampling,
         always relative to the segment audio (0 to duration).
         """
         duration = aug_segment.duration
@@ -108,16 +109,16 @@ class LanguageProbe:
 
 # class SimpleAudioFetcher:
 #     """Extract audio segments for language probing."""
-    
+
 #     def __init__(self, source_audio: Path, temp_dir: Optional[Path] = None):
 #         self.source_audio = source_audio
 #         self.temp_dir = temp_dir or Path.cwd() / "temp_audio"
 #         self.temp_dir.mkdir(exist_ok=True)
-    
+
 #     def extract_audio(self, start_ms: int, end_ms: int) -> Path:
 #         """Extract audio segment to temporary file."""
 #         import subprocess
-        
+
 #         output_path = self.temp_dir / f"probe_{start_ms}_{end_ms}.wav"
 #         cmd = [
 #             "ffmpeg", "-i", str(self.source_audio),

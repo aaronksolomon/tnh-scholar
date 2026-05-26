@@ -103,9 +103,7 @@ class PackageVersionChecker:
             name=package_name,
             installed_version=str(installed),
             latest_version=str(latest),
-            required_version=str(config.get_required_version())
-            if config.requirement
-            else None,
+            required_version=str(config.get_required_version()) if config.requirement else None,
         )
 
     def check_version(

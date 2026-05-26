@@ -80,9 +80,7 @@ def select_provider_and_model(
         selector = StructuredFallbackSelector(params.provider)
         if not selector.supports_structured(params.model):
             fallback = selector.select(settings.default_model)
-            routing_reason = (
-                f"{routing_reason} → router: switched to structured-capable model {fallback}"
-            )
+            routing_reason = f"{routing_reason} → router: switched to structured-capable model {fallback}"
             model = fallback
 
     # Placeholder for future intent-based overrides

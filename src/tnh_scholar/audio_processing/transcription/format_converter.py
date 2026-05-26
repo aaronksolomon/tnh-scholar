@@ -33,6 +33,7 @@ from .transcription_service import (
 
 logger = get_child_logger(__name__)
 
+
 class FormatConverterConfig(BaseModel):
     """
     User-tunable knobs for :class:`FormatConverter`.
@@ -45,7 +46,8 @@ class FormatConverterConfig(BaseModel):
     include_speaker: bool = True
     characters_per_entry: int = 42
     max_gap_duration_ms: int = 2_000
-    
+
+
 class FormatConverter:
     """
     Convert a raw transcription result to *text*, *SRT*, or (placeholder) *VTT*.
@@ -62,8 +64,8 @@ class FormatConverter:
             max_duration_ms=self.config.max_entry_duration_ms,
             target_characters=self.config.characters_per_entry,
             avoid_orphans=True,
-            ignore_speaker=not self.config.include_speaker,  
-            max_gap_duration_ms=self.config.max_gap_duration_ms
+            ignore_speaker=not self.config.include_speaker,
+            max_gap_duration_ms=self.config.max_gap_duration_ms,
         )
 
     def convert(
@@ -113,7 +115,7 @@ class FormatConverter:
         2. *word*-level input  - chunk via :class:`SegmentBuilder`
         3. plain *text* fallback
         """
-        
+
         if timed_text := result.utterance_timing:
             units: List[TimedTextUnit] = []
             for i, unit in enumerate(timed_text.iter_segments(), start=1):
@@ -154,6 +156,4 @@ class FormatConverter:
             return TimedText(segments=units, granularity=Granularity.SEGMENT)
 
         # If we arrived here – nothing to work with.
-        raise ValueError(
-            "Cannot build TimedText: result contains no utterances, words, or text."
-        )
+        raise ValueError("Cannot build TimedText: result contains no utterances, words, or text.")

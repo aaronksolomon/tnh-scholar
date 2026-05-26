@@ -3,9 +3,7 @@ from importlib import import_module
 import pytest
 from click.testing import CliRunner
 
-audio_transcribe_module = import_module(
-    "tnh_scholar.cli_tools.audio_transcribe.audio_transcribe"
-)
+audio_transcribe_module = import_module("tnh_scholar.cli_tools.audio_transcribe.audio_transcribe")
 
 
 def _capture_warning_messages(

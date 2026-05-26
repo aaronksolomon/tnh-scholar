@@ -5,9 +5,7 @@ from pathlib import Path
 from tnh_scholar.gen_ai_service.config.registry import RegistryLoader, RegistryPaths
 
 
-def test_registry_staleness_warning_emitted(
-    tmp_path: Path, caplog, monkeypatch
-) -> None:
+def test_registry_staleness_warning_emitted(tmp_path: Path, caplog, monkeypatch) -> None:
     provider_dir = tmp_path / "providers"
     override_dir = tmp_path / "overrides"
     provider_dir.mkdir()

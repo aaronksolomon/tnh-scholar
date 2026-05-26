@@ -49,7 +49,4 @@ class RegexPromptHandler(PromptHandlerProtocol):
         )
 
     def _matches_interactive_prompt(self, text: str) -> bool:
-        return any(
-            re.search(pattern, text, re.IGNORECASE)
-            for pattern in self.interactive_patterns
-        )
+        return any(re.search(pattern, text, re.IGNORECASE) for pattern in self.interactive_patterns)

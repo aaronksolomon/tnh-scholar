@@ -14,13 +14,13 @@ Usage:
 """
 
 # TODO for production-readiness:
-# - Check that all `assert` statements are failsafe only and explicit error handling with informative 
+# - Check that all `assert` statements are failsafe only and explicit error handling with informative
 #   exceptions has happened upstream.
 # - Add granular error handling and logging for file and network operations (YouTube download, file I/O).
 # - Implement retry logic for network-dependent steps (e.g., YouTube downloads).
 # - Ensure temporary files are cleaned up if the process fails midway.
 # - Add checks and error handling for disk space and file permissions when writing outputs.
-# - Log errors and print user-friendly messages to stderr in the CLI; consider returning appropriate exit 
+# - Log errors and print user-friendly messages to stderr in the CLI; consider returning appropriate exit
 #   codes.
 # - Add input sanitization for file paths and URLs, especially before passing to subprocesses.
 # - Warn the user if multiple input sources (yt_url, yt_url_csv, file_) are provided simultaneously.
@@ -28,8 +28,6 @@ Usage:
 # - Consider a plugin/registry pattern for supporting additional transcription services.
 # - Ensure all exceptions are logged with stack traces for debugging.
 # - Add unit tests for all major code paths.
-
-
 
 import logging
 import tempfile
@@ -72,13 +70,13 @@ def _configure_logging_once() -> None:
     )
 
 
-
 class AudioTranscribeApp:
     """
     Main application class for audio transcription CLI.
     Organizes configuration, source resolution, and pipeline execution. All
     runtime options are supplied via a validated `AudioTranscribeConfig`.
     """
+
     def __init__(self, config: AudioTranscribeConfig) -> None:
         """
         Args:
@@ -138,6 +136,7 @@ class AudioTranscribeApp:
         """
         if not self.keep_artifacts and self.temp_dir and self.temp_dir.exists():
             import shutil
+
             try:
                 shutil.rmtree(self.temp_dir)
             except Exception as e:
@@ -174,8 +173,7 @@ class AudioTranscribeApp:
         click.echo(f"  End Time:            {self.end_time}")
         click.echo(f"  Audio File:          {self.audio_file}")
         click.echo(f"  Prompt:              '{self.prompt}'")
-        
-     
+
     def _resolve_audio_source(self) -> Path:
         """
         Resolve and return the audio file to transcribe.
@@ -213,9 +211,7 @@ class AudioTranscribeApp:
         """
         if not check_ytd_version():
             logger.error("yt-dlp is not available. Cannot download from YouTube.")
-            raise click.ClickException(
-                "yt-dlp is missing or outdated. Update with: poetry update yt-dlp"
-            )
+            raise click.ClickException("yt-dlp is missing or outdated. Update with: poetry update yt-dlp")
 
         dl = DLPDownloader()
 
@@ -231,14 +227,14 @@ class AudioTranscribeApp:
 
     def _extract_yt_audio(self, dl: Any, download_path: Path) -> Path:
         video_data = dl.get_audio(
-                self.yt_url,
-                start=self.start_time,
-                output_path=download_path,
-            )
+            self.yt_url,
+            start=self.start_time,
+            output_path=download_path,
+        )
         if not video_data or not video_data.filepath:
             raise FileNotFoundError("Failed to download or locate audio file.")
         return Path(video_data.filepath)
-    
+
     def _get_audio_from_file(self) -> Path:
         """
         Return the audio file path, converting video if needed.
@@ -280,6 +276,7 @@ class AudioTranscribeApp:
             LanguageConfig,
             SpeakerConfig,
         )
+
         return DiarizationConfig(
             chunk=ChunkConfig(
                 target_duration=self.chunk_duration,
@@ -358,67 +355,65 @@ def _log_invalid_transcript_text(transcript_text: Any) -> None:
     entry_type = type(transcript_text).__name__
     logger.warning("Skipping transcript entry with non-string text: %s", entry_type)
 
+
 @click.command()
+@click.option("-y", "--yt_url", type=str, help="Single YouTube URL.")
 @click.option(
-    "-y", "--yt_url", type=str,
-    help="Single YouTube URL."
+    "-v",
+    "--yt_url_csv",
+    type=click.Path(exists=True),
+    help="CSV file with multiple YouTube URLs in first column.",
+)
+@click.option("-f", "--file", "file_", type=click.Path(exists=True), help="Path to a local audio file.")
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    default=DEFAULT_OUTPUT_PATH,
+    help="Path to the output transcript file.",
+)
+# Removed temp_dir option, now handled by keep_artifacts only
+@click.option(
+    "-s",
+    "--service",
+    type=click.Choice(["whisper", "assemblyai"]),
+    default=DEFAULT_SERVICE,
+    help="Transcription service to use.",
 )
 @click.option(
-    "-v", "--yt_url_csv", type=click.Path(exists=True),
-    help="CSV file with multiple YouTube URLs in first column."
+    "-m", "--model", type=str, default=DEFAULT_MODEL, help="Model to use for transcription (for OpenAI only)."
+)
+@click.option("-l", "--language", type=str, default="en", help="Language code (e.g., 'en', 'vi').")
+@click.option(
+    "-r",
+    "--response_format",
+    type=str,
+    default=DEFAULT_RESPONSE_FORMAT,
+    help="Response format for Whisper (default: text).",
 )
 @click.option(
-    "-f", "--file", "file_", type=click.Path(exists=True),
-    help="Path to a local audio file."
+    "--chunk_duration",
+    type=int,
+    default=DEFAULT_CHUNK_DURATION,
+    help="Chunk duration in seconds (default: 120).",
+)
+@click.option("--min_chunk", type=int, default=DEFAULT_MIN_CHUNK, help="Minimum chunk duration in seconds.")
+@click.option("--start_time", type=str, help="Start time offset for the input media (HH:MM:SS).")
+@click.option("--end_time", type=str, help="End time offset for the input media (HH:MM:SS).")
+@click.option("--prompt", type=str, default="", help="Prompt or keywords to guide the transcription.")
+@click.option(
+    "-n",
+    "--no_transcribe",
+    is_flag=True,
+    default=False,
+    help="Download YouTube audio to mp3 only, do not transcribe. Requires --yt_url or --yt_url_csv.",
 )
 @click.option(
-    "-o", "--output", type=click.Path(), default=DEFAULT_OUTPUT_PATH,
-    help="Path to the output transcript file."
-)
-    # Removed temp_dir option, now handled by keep_artifacts only
-@click.option(
-    "-s", "--service", type=click.Choice(["whisper", "assemblyai"]), default=DEFAULT_SERVICE,
-    help="Transcription service to use."
-)
-@click.option(
-    "-m", "--model", type=str, default=DEFAULT_MODEL,
-    help="Model to use for transcription (for OpenAI only)."
-)
-@click.option(
-    "-l", "--language", type=str, default="en",
-    help="Language code (e.g., 'en', 'vi')."
-)
-@click.option(
-    "-r", "--response_format", type=str, default=DEFAULT_RESPONSE_FORMAT,
-    help="Response format for Whisper (default: text)."
-)
-@click.option(
-    "--chunk_duration", type=int, default=DEFAULT_CHUNK_DURATION,
-    help="Chunk duration in seconds (default: 120)."
-)
-@click.option(
-    "--min_chunk", type=int, default=DEFAULT_MIN_CHUNK,
-    help="Minimum chunk duration in seconds."
-)
-@click.option(
-    "--start_time", type=str,
-    help="Start time offset for the input media (HH:MM:SS)."
-)
-@click.option(
-    "--end_time", type=str,
-    help="End time offset for the input media (HH:MM:SS)."
-)
-@click.option(
-    "--prompt", type=str, default="",
-    help="Prompt or keywords to guide the transcription."
-)
-@click.option(
-    "-n", "--no_transcribe", is_flag=True, default=False,
-    help="Download YouTube audio to mp3 only, do not transcribe. Requires --yt_url or --yt_url_csv."
-)
-@click.option(
-    "-k", "--keep_artifacts", is_flag=True, default=False,
-    help="Keep all intermediate artifacts in the output directory instead of using a system temp directory."
+    "-k",
+    "--keep_artifacts",
+    is_flag=True,
+    default=False,
+    help="Keep all intermediate artifacts in the output directory instead of using a system temp directory.",
 )
 def audio_transcribe(**kwargs):
     """
@@ -439,9 +434,10 @@ def audio_transcribe(**kwargs):
     app = AudioTranscribeApp(config)
     app.run()
 
+
 def main():
     audio_transcribe()
 
+
 if __name__ == "__main__":
     main()
-    

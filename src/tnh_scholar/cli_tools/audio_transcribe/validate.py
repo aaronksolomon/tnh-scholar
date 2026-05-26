@@ -1,20 +1,17 @@
 from pathlib import Path
 
 _NO_ACTIONS_MESSAGE = (
-    "No actions requested. At least one of --yt_download, --split, "
-    "--transcribe, or --full must be set."
+    "No actions requested. At least one of --yt_download, --split, --transcribe, or --full must be set."
 )
 _TRANSCRIBE_WITHOUT_CHUNKS_MESSAGE = (
     "Transcription requested without splitting or downloading and "
     "no_chunks=False. Must provide --chunk_dir with pre-split chunks."
 )
 _BOUNDARY_FLAGS_WITHOUT_SPLIT_MESSAGE = (
-    "Boundary detection flags given but splitting is not requested. "
-    "Remove these flags or enable --split."
+    "Boundary detection flags given but splitting is not requested. Remove these flags or enable --split."
 )
 _NO_BOUNDARY_METHOD_MESSAGE = (
-    "No boundary method selected for splitting. Enable either whisper "
-    "or silence boundaries."
+    "No boundary method selected for splitting. Enable either whisper or silence boundaries."
 )
 
 
@@ -63,14 +60,11 @@ def _validate_download_inputs(
     if not is_download:
         return
     if yt_url and yt_url_list:
-        raise ValueError(
-            "Both --yt_process_url and --yt_process_url_list provided. Only one allowed."
-        )
+        raise ValueError("Both --yt_process_url and --yt_process_url_list provided. Only one allowed.")
     if yt_url or yt_url_list:
         return
     raise ValueError(
-        "When --yt_download is specified, you must provide "
-        "--yt_process_url or --yt_process_url_list."
+        "When --yt_download is specified, you must provide --yt_process_url or --yt_process_url_list."
     )
 
 
@@ -87,16 +81,13 @@ def _validate_local_input_requirements(
         return
     if split and audio_file is None:
         raise ValueError(
-            "Splitting requested but no audio file provided and no "
-            "YouTube download source available."
+            "Splitting requested but no audio file provided and no YouTube download source available."
         )
     if not transcribe or split:
         return
     if no_chunks:
         if audio_file is None:
-            raise ValueError(
-                "Transcription requested with no_chunks=True but no audio file provided."
-            )
+            raise ValueError("Transcription requested with no_chunks=True but no audio file provided.")
         return
     if chunk_dir is None:
         raise ValueError(_TRANSCRIBE_WITHOUT_CHUNKS_MESSAGE)
@@ -127,9 +118,7 @@ def _validate_boundary_flags(
             raise ValueError(_BOUNDARY_FLAGS_WITHOUT_SPLIT_MESSAGE)
         return
     if silence_boundaries and whisper_boundaries:
-        raise ValueError(
-            "Cannot use both --silence_boundaries and --whisper_boundaries simultaneously."
-        )
+        raise ValueError("Cannot use both --silence_boundaries and --whisper_boundaries simultaneously.")
     if silence_boundaries or whisper_boundaries:
         return
     raise ValueError(_NO_BOUNDARY_METHOD_MESSAGE)

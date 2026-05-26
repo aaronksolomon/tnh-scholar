@@ -25,4 +25,3 @@ class ValidationPolicy(BaseModel):
     mode: Literal["strict", "warn", "permissive"] = "strict"
     fail_on_missing_required: bool = True
     allow_extra_variables: bool = False
-

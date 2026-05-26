@@ -1,33 +1,96 @@
 """
 SegmentBuilder for creating phrase-level segments from word-level TimedText.
 
-This module builds higher-level segments from a TimedText object containing 
-word-level units, based on configurable criteria like duration, character count, 
+This module builds higher-level segments from a TimedText object containing
+word-level units, based on configurable criteria like duration, character count,
 punctuation, pauses, and speaker changes.
 """
+
 from typing import List, Optional
 
 from ..timed_object.timed_text import Granularity, TimedText, TimedTextUnit
 
-COMMON_ABBREVIATIONS = frozenset({
-    "adj.", "adm.", "adv.", "al.", "anon.", "apr.", "arc.", "aug.", "ave.",
-    "brig.", "bros.", "capt.", "cmdr.", "col.", "comdr.", "con.", "corp.",
-    "cpl.", "dr.", "drs.", "ed.", "enc.", "etc.", "ex.", "feb.", "gen.",
-    "gov.", "hon.", "hosp.", "hr.", "inc.", "jan.", "jr.", "maj.", "mar.",
-    "messrs.", "mlle.", "mm.", "mme.", "mr.", "mrs.", "ms.", "msgr.", "nov.",
-    "oct.", "op.", "ord.", "ph.d.", "prof.", "pvt.", "rep.", "reps.", "res.",
-    "rev.", "rt.", "sen.", "sens.", "sep.", "sfc.", "sgt.", "sr.", "st.", "supt.",
-    "surg.", "u.s.", "v.p.", "vs."
-})
+COMMON_ABBREVIATIONS = frozenset(
+    {
+        "adj.",
+        "adm.",
+        "adv.",
+        "al.",
+        "anon.",
+        "apr.",
+        "arc.",
+        "aug.",
+        "ave.",
+        "brig.",
+        "bros.",
+        "capt.",
+        "cmdr.",
+        "col.",
+        "comdr.",
+        "con.",
+        "corp.",
+        "cpl.",
+        "dr.",
+        "drs.",
+        "ed.",
+        "enc.",
+        "etc.",
+        "ex.",
+        "feb.",
+        "gen.",
+        "gov.",
+        "hon.",
+        "hosp.",
+        "hr.",
+        "inc.",
+        "jan.",
+        "jr.",
+        "maj.",
+        "mar.",
+        "messrs.",
+        "mlle.",
+        "mm.",
+        "mme.",
+        "mr.",
+        "mrs.",
+        "ms.",
+        "msgr.",
+        "nov.",
+        "oct.",
+        "op.",
+        "ord.",
+        "ph.d.",
+        "prof.",
+        "pvt.",
+        "rep.",
+        "reps.",
+        "res.",
+        "rev.",
+        "rt.",
+        "sen.",
+        "sens.",
+        "sep.",
+        "sfc.",
+        "sgt.",
+        "sr.",
+        "st.",
+        "supt.",
+        "surg.",
+        "u.s.",
+        "v.p.",
+        "vs.",
+    }
+)
+
 
 class TextSegmentBuilder:
     def __init__(
         self,
         *,
-        max_duration_ms: Optional[int] = None, # milliseconds
+        max_duration_ms: Optional[int] = None,  # milliseconds
         target_characters: Optional[int] = None,
         avoid_orphans: bool = True,
-        max_gap_duration_ms: Optional[int] = None, # milliseconds
+        max_gap_duration_ms: Optional[int] = None,  # milliseconds
         ignore_speaker: bool = True,
     ):
         self.max_duration = max_duration_ms
@@ -43,9 +106,7 @@ class TextSegmentBuilder:
     def create_segments(self, timed_text: TimedText) -> TimedText:
         # Validate
         if not timed_text.words:
-            raise ValueError(
-                "TimedText object must have word-level units to build segments."
-                )
+            raise ValueError("TimedText object must have word-level units to build segments.")
 
         for unit in timed_text.words:
             if unit.granularity != Granularity.WORD:
@@ -59,7 +120,7 @@ class TextSegmentBuilder:
 
         self._flush_current_words()  # Final flush
         return TimedText(segments=self.segments, granularity=Granularity.SEGMENT)
-    
+
     def _add_word(self, word: TimedTextUnit):
         if self.current_words:
             self.current_characters += 1  # space before the new word
@@ -120,12 +181,12 @@ class TextSegmentBuilder:
         self.segments.append(segment)
         self.current_words = []
         self.current_characters = 0
-        
+
     def _find_speaker(self) -> Optional[str]:
         """
-        Only called when ignore_speakers is False; 
-        in this case we always split on speaker. 
-        So only one speaker is expected. 
+        Only called when ignore_speakers is False;
+        in this case we always split on speaker.
+        So only one speaker is expected.
         """
         speakers = {word.speaker for word in self.current_words}
         assert len(speakers) == 1, "Inconsistent speakers in segment"
@@ -139,8 +200,7 @@ class TextSegmentBuilder:
         if not word_text:
             return False
         return word_text[-1] in ".!?" and word_text.lower() not in COMMON_ABBREVIATIONS
-    
-    
+
     def build_segments(
         self,
         *,

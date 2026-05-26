@@ -45,10 +45,11 @@ def cli_config_to_settings_kwargs(cli_config: CLIConfig, overrides: ServiceOverr
 class ServiceFactory(Protocol):
     """Factory protocol for constructing GenAI services."""
 
-    def create_genai_service(self, 
-                             cli_config: CLIConfig, 
-                             overrides: ServiceOverrides,
-                             ) -> GenAIServiceProtocol:
+    def create_genai_service(
+        self,
+        cli_config: CLIConfig,
+        overrides: ServiceOverrides,
+    ) -> GenAIServiceProtocol:
         """Create a GenAI service given CLI config and overrides."""
         ...
 
@@ -56,10 +57,9 @@ class ServiceFactory(Protocol):
 class DefaultServiceFactory:
     """Default factory bridging CLI config to GenAIService."""
 
-    def create_genai_service(self, 
-                             cli_config: CLIConfig, 
-                             overrides: ServiceOverrides
-                             ) -> GenAIServiceProtocol:
+    def create_genai_service(
+        self, cli_config: CLIConfig, overrides: ServiceOverrides
+    ) -> GenAIServiceProtocol:
         """Create a fully configured GenAI service instance.
 
         Args:
@@ -70,5 +70,5 @@ class DefaultServiceFactory:
             GenAIServiceProtocol implementation bound to current settings.
         """
         settings_kwargs = cli_config_to_settings_kwargs(cli_config, overrides)
-        settings = GenAISettings(_env_file=None, **settings_kwargs) #type: ignore # pydantic mypy plugin misses
+        settings = GenAISettings(_env_file=None, **settings_kwargs)  # type: ignore # pydantic mypy plugin misses
         return GenAIService(settings=settings)

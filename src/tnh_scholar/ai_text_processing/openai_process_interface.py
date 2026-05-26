@@ -10,6 +10,7 @@ logger = get_child_logger(__name__)
 
 TOKEN_BUFFER = 500
 
+
 def openai_process_text(
     text_input: str,
     process_instructions: str,
@@ -37,9 +38,7 @@ def openai_process_text(
     )
 
     if batch:
-        return _run_batch_process_text(
-            user_prompts, system_message, max_tokens, model_name, response_format
-        )
+        return _run_batch_process_text(user_prompts, system_message, max_tokens, model_name, response_format)
 
     completion_result = simple_completion(
         system_message=system_message,
@@ -61,12 +60,9 @@ def _run_batch_process_text(
 ) -> Union[BaseModel, str]:
     if response_format:
         logger.warning(
-            f"Response object can't be processed in batch mode. "
-            f"Response format ignored:\n\t{response_format}"
+            f"Response object can't be processed in batch mode. Response format ignored:\n\t{response_format}"
         )
-    logger.info(
-        "Processing batch sequentially via simple_completion (temporary migration fallback)."
-    )
+    logger.info("Processing batch sequentially via simple_completion (temporary migration fallback).")
     responses = []
     for idx, prompt in enumerate(user_prompts):
         logger.debug("Processing batch item %s/%s", idx + 1, len(user_prompts))

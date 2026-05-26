@@ -109,9 +109,7 @@ class HarnessBackendRequest(BaseModel):
     artifact_patterns: tuple[str, ...] = Field(default_factory=tuple)
     timeout_seconds: int | None = None
     environment_policy: EnvironmentPolicy
-    output_capture_policy: ExecutionOutputCapturePolicy = Field(
-        default_factory=ExecutionOutputCapturePolicy
-    )
+    output_capture_policy: ExecutionOutputCapturePolicy = Field(default_factory=ExecutionOutputCapturePolicy)
 
 
 class HarnessBackendResult(BaseModel):

@@ -62,41 +62,54 @@ DEFAULT_METADATA_FIELDS = [
     "tags",
 ]
 
+
 # Return Types
 @dataclass
 class VideoMetadata:
     """Base class for video operations containing common metadata."""
+
     metadata: Dict[str, Any]
+
 
 @dataclass
 class VideoTranscript(VideoMetadata):
     """Result of transcript operations."""
+
     content: str
+
 
 @dataclass
 class VideoDownload(VideoMetadata):
     """Result of download operations."""
+
     filepath: Path
+
 
 class SubtitleTrack(TypedDict):
     """Type definition for a subtitle track entry."""
+
     url: str
     ext: str
     name: str
 
+
 class VideoInfo(TypedDict):
     """Type definition for relevant video info fields."""
+
     subtitles: Dict[str, List[SubtitleTrack]]
     automatic_captions: Dict[str, List[SubtitleTrack]]
 
+
 class TranscriptNotFoundError(Exception):
     """Raised when no transcript is available for the requested language."""
+
     def __init__(self, video_url: str, language: str) -> None:
         self.video_url = video_url
         self.language = language
         message = f"No transcript found for {self.video_url} \
                     in language {self.language}."
         super().__init__(message)
+
 
 def get_youtube_urls_from_csv(file_path: Path) -> List[str]:
     """Reads YouTube URLs from a CSV file containing URLs and titles."""
@@ -108,9 +121,11 @@ def get_youtube_urls_from_csv(file_path: Path) -> List[str]:
     try:
         with file_path.open("r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
-            if reader.fieldnames is None \
-                or "url" not in reader.fieldnames \
-                or "title" not in reader.fieldnames:
+            if (
+                reader.fieldnames is None
+                or "url" not in reader.fieldnames
+                or "title" not in reader.fieldnames
+            ):
                 logger.error("CSV file must contain 'url' and 'title' columns.")
                 raise ValueError("CSV file must contain 'url' and 'title' columns.")
 
@@ -122,6 +137,7 @@ def get_youtube_urls_from_csv(file_path: Path) -> List[str]:
         raise
 
     return urls
+
 
 def get_video_download_path_yt(output_dir: Path, url: str) -> VideoDownload:
     """Get video metadata and expected download path."""
@@ -139,11 +155,8 @@ def get_video_download_path_yt(output_dir: Path, url: str) -> VideoDownload:
             raise
         return VideoDownload(metadata=metadata, filepath=filepath)
 
-def download_audio_yt(
-    url: str, 
-    output_dir: Path, 
-    start_time: Optional[str] = None
-) -> VideoDownload:
+
+def download_audio_yt(url: str, output_dir: Path, start_time: Optional[str] = None) -> VideoDownload:
     """Downloads audio from YouTube URL with optional start time."""
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -161,8 +174,9 @@ def download_audio_yt(
             metadata = _extract_metadata(info)
         else:
             logger.error(f"YT audio download: Unable to get info for {url}.")
-            raise 
+            raise
         return VideoDownload(metadata=metadata, filepath=filepath)
+
 
 def get_transcript(
     url: str,
@@ -179,9 +193,7 @@ def get_transcript(
             os.remove(transcript_file)
             logger.debug(f"Removed temporary transcript file: {transcript_file}")
         except OSError as e:
-            logger.warning(
-                f"Failed to remove temporary transcript file {transcript_file}: {e}"
-                )
+            logger.warning(f"Failed to remove temporary transcript file {transcript_file}: {e}")
 
     content = _extract_ttml_text(text)
 
@@ -195,6 +207,7 @@ def get_transcript(
             raise
     return VideoTranscript(metadata=metadata, content=content)
 
+
 def _download_yt_ttml(temp_storage_path: Path, url: str, lang: str = "en") -> Path:
     """Downloads video transcript in TTML format."""
     logger.info(f"Downloading TTML transcript for {url} in language '{lang}'")
@@ -206,6 +219,7 @@ def _download_yt_ttml(temp_storage_path: Path, url: str, lang: str = "en") -> Pa
         raise
 
     return _extract_ttml_from_youtube(url, lang, temp_storage_path)
+
 
 def _extract_ttml_from_youtube(url: str, lang: str, temp_storage_path: Path) -> Path:
     """Extracts TTML data from YouTube."""
@@ -225,6 +239,7 @@ def _extract_ttml_from_youtube(url: str, lang: str, temp_storage_path: Path) -> 
 
         logger.error(f"Downloaded transcript file not found in {temp_storage_path}.")
         raise TranscriptNotFoundError(video_url=url, language=lang)
+
 
 def _extract_ttml_text(ttml_str: str) -> str:
     """Extract raw text content from TTML format string."""
@@ -255,37 +270,36 @@ def _extract_ttml_text(ttml_str: str) -> str:
     except ParseError as e:
         logger.error(f"Failed to parse XML content: {e}")
         raise
-    
-def _extract_metadata(
-    info: Dict[str, Any], 
-    fields: Optional[List[str]] = None
-    ) -> Dict[str, Any]:
+
+
+def _extract_metadata(info: Dict[str, Any], fields: Optional[List[str]] = None) -> Dict[str, Any]:
     """Extract specified metadata fields from yt-dlp info dictionary.
-    
+
     Args:
         info: Raw info dictionary from yt-dlp
         fields: List of fields to extract. If None, uses DEFAULT_METADATA_FIELDS
-        
+
     Returns:
         Dictionary containing only specified fields that exist in info
     """
     fields = fields or DEFAULT_METADATA_FIELDS
     return {k: info.get(k) for k in fields if k in info}
 
+
 def get_video_metadata(url: str) -> VideoMetadata:
     """Get metadata for a YouTube video without downloading content.
-    
+
     Args:
         url: YouTube video URL
-        
+
     Returns:
         VideoMetadata with only metadata field populated
-        
+
     Raises:
         yt_dlp.utils.DownloadError: If video info extraction fails
     """
     options = BASE_YDL_OPTIONS | {"skip_download": True}
-    
+
     with yt_dlp.YoutubeDL(options) as ydl:
         info = ydl.extract_info(url, download=False)
         metadata = _extract_metadata(info)

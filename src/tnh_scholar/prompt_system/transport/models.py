@@ -35,4 +35,3 @@ class GitRefreshResponse(BaseModel):
     branch: str
     changed_files: list[str]
     refreshed_at: str
-

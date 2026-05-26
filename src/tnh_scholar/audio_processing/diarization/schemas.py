@@ -19,7 +19,7 @@ class PollOutcome(str, Enum):
     INTERRUPTED = "interrupted"
     ERROR = "error"
 
-    
+
 class JobStatus(str, Enum):
     CREATED = "created"
     SUCCEEDED = "succeeded"
@@ -33,7 +33,7 @@ class JobHandle:
     job_id: str
     backend: Literal["pyannote"] = "pyannote"
 
-    
+
 class DiarizationParams(BaseModel):
     """
     Per-request diarization options; maps to pyannote API payload.
@@ -41,9 +41,9 @@ class DiarizationParams(BaseModel):
     """
 
     model_config = ConfigDict(
-        frozen=True,            # make instances immutable
+        frozen=True,  # make instances immutable
         populate_by_name=True,  # allow using pythonic field names with aliases
-        extra="forbid",         # catch accidental fields at construction
+        extra="forbid",  # catch accidental fields at construction
     )
 
     # Pythonic attribute -> API alias on dump
@@ -98,7 +98,7 @@ class JobStatusResponse(BaseModel):
 
     # The job id for connected to this response
     job_id: str = Field(alias="jobId")
-    
+
     # How the client-side polling finished
     outcome: PollOutcome = PollOutcome.ERROR
 
@@ -130,11 +130,11 @@ class JobStatusResponse(BaseModel):
 class ErrorCode(str, Enum):
     """Client- and adapter-level error taxonomy (not server statuses)."""
 
-    TIMEOUT = "timeout"        # client-side polling exceeded
-    CANCELLED = "cancelled"      # user/client initiated cancellation
-    TRANSIENT = "transient"      # retryable infra/network issue
+    TIMEOUT = "timeout"  # client-side polling exceeded
+    CANCELLED = "cancelled"  # user/client initiated cancellation
+    TRANSIENT = "transient"  # retryable infra/network issue
     BAD_REQUEST = "bad_request"  # invalid params before hitting API
-    API_ERROR = "api_error"      # remote API responded with error
+    API_ERROR = "api_error"  # remote API responded with error
     PARSE_ERROR = "parse_error"  # unexpected/invalid payload shape
     UNKNOWN = "unknown"
 

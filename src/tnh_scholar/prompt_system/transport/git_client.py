@@ -18,10 +18,7 @@ class GitTransportClient:
         self._mapper = mapper
 
     def get_current_commit(self) -> str:
-        return (
-            self._run_git(["rev-parse", "HEAD"], cwd=self._config.repository_path)
-            .strip()
-        )
+        return self._run_git(["rev-parse", "HEAD"], cwd=self._config.repository_path).strip()
 
     def pull_latest(self) -> GitRefreshResponse:
         if not self._config.auto_pull:
@@ -46,9 +43,7 @@ class GitTransportClient:
     def read_file_at_commit(self, request: PromptFileRequest) -> PromptFileResponse:
         if request.commit_sha:
             spec = f"{request.commit_sha}:{request.path}"
-            content = self._run_git(
-                ["show", spec], cwd=self._config.repository_path
-            )
+            content = self._run_git(["show", spec], cwd=self._config.repository_path)
         else:
             content = request.path.read_text(encoding="utf-8")
 
@@ -64,10 +59,7 @@ class GitTransportClient:
         return sorted(self._config.repository_path.glob(pattern))
 
     def _current_branch(self) -> str:
-        return (
-            self._run_git(["rev-parse", "--abbrev-ref", "HEAD"], cwd=self._config.repository_path)
-            .strip()
-        )
+        return self._run_git(["rev-parse", "--abbrev-ref", "HEAD"], cwd=self._config.repository_path).strip()
 
     def _changed_files(self) -> list[str]:
         try:

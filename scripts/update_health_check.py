@@ -131,8 +131,7 @@ class UpdateHealthCheckService:
             print(summary)
             return CheckOutcome(ran=False, success=True, summary=summary)
         summary = (
-            f"yt-dlp health check fresh. last run: {record.last_run_at}, "
-            f"exit_code: {record.last_exit_code}."
+            f"yt-dlp health check fresh. last run: {record.last_run_at}, exit_code: {record.last_exit_code}."
         )
         print(summary)
         return CheckOutcome(ran=False, success=True, summary=summary)

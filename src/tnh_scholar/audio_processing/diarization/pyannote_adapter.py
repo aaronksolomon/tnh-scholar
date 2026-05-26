@@ -23,11 +23,12 @@ from .types import PyannoteEntry
 
 logger = get_child_logger(__name__)
 
+
 class PyannoteAdapter(SegmentAdapter):
     def __init__(self, config: DiarizationConfig = DiarizationConfig()):
         self.config = config
 
-    def to_segments(self, data: Dict[str, List['PyannoteEntry']]) -> List[DiarizedSegment]:
+    def to_segments(self, data: Dict[str, List["PyannoteEntry"]]) -> List[DiarizedSegment]:
         """
         Convert a pyannoteai diarization result dict to list of DiarizationSegment objects.
         """
@@ -46,9 +47,7 @@ class PyannoteAdapter(SegmentAdapter):
             segments.append(segment)
         return self._sort_and_normalize_segments(segments)
 
-    def to_response(
-        self, jsr: JobStatusResponse
-    ) -> DiarizationResponse:
+    def to_response(self, jsr: JobStatusResponse) -> DiarizationResponse:
         """
         Convert a JobStatusResponse to a DiarizationResponse (domain layer).
         """
@@ -74,9 +73,7 @@ class PyannoteAdapter(SegmentAdapter):
         ann = raw.get("annotation")
         if isinstance(ann, dict) and isinstance(ann.get("segments"), list):
             return list(ann["segments"])
-        logger.warning(
-            "Unexpected payload shape in _extract_entries: %r", payload
-        )
+        logger.warning("Unexpected payload shape in _extract_entries: %r", payload)
         return []
 
     def _validate_pyannote_entries(self, entries: List[dict[str, Any]]) -> List[dict[str, Any]]:
@@ -97,9 +94,7 @@ class PyannoteAdapter(SegmentAdapter):
             valid.append(e)
         return valid
 
-    def _sort_and_normalize_segments(
-        self, segments: List[DiarizedSegment]
-        ) -> List[DiarizedSegment]:
+    def _sort_and_normalize_segments(self, segments: List[DiarizedSegment]) -> List[DiarizedSegment]:
         self._sort_by_start(segments)
         for segment in segments:
             segment.normalize()
@@ -225,6 +220,5 @@ class PyannoteAdapter(SegmentAdapter):
                 code=ErrorCode.TRANSIENT,
                 message=("Job failed to upload or start."),
                 details=None,
-            )
-            
+            ),
         )

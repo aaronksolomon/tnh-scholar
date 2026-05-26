@@ -16,8 +16,6 @@ if st.button("show"):
 # Display the modified text
 st.markdown(st.session_state.text)
 
-if st.button(
-    "show again", on_click=update_text, args=[st.session_state.text]
-):  # <--- invoke the callback
+if st.button("show again", on_click=update_text, args=[st.session_state.text]):  # <--- invoke the callback
     # Display the modified text
     st.markdown(st.session_state.text)

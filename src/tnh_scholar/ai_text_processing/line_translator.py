@@ -34,6 +34,7 @@ TRANSCRIPT_SEGMENT_MARKER = "TRANSCRIPT_SEGMENT"
 PRECEDING_CONTEXT_MARKER = "PRECEDING_CONTEXT"
 FOLLOWING_CONTEXT_MARKER = "FOLLOWING_CONTEXT"
 
+
 class LineTranslator:
     """Translates text line by line while maintaining line numbers and context."""
 
@@ -44,7 +45,7 @@ class LineTranslator:
         review_count: int = DEFAULT_REVIEW_COUNT,
         style: str = DEFAULT_TRANSLATE_STYLE,
         # Number of context lines before/after
-        context_lines: int = DEFAULT_TRANSLATE_CONTEXT_LINES,  
+        context_lines: int = DEFAULT_TRANSLATE_CONTEXT_LINES,
     ):
         """
         Initialize line translator.
@@ -87,7 +88,7 @@ class LineTranslator:
         Returns:
             Translated text segment with line numbers preserved
         """
-        
+
         # Calculate context ranges
         preceding_start = max(1, start_line - self.context_lines)  # lines start on 1.
         following_end = min(num_text.end + 1, end_line + self.context_lines)
@@ -108,7 +109,7 @@ class LineTranslator:
             "target_language": get_language_from_code(target_language),
             "review_count": self.review_count,
             "style": self.style,
-            "metadata": metadata.to_yaml()
+            "metadata": metadata.to_yaml(),
         }
 
         if template_dict:
@@ -119,39 +120,32 @@ class LineTranslator:
         translate_instructions = self.pattern.apply_template(template_values)
 
         if start_line <= 1:
-            logger.debug(
-                f"Translate instructions (first segment):\n{translate_instructions}"
-            )
+            logger.debug(f"Translate instructions (first segment):\n{translate_instructions}")
         logger.debug(f"Translation input:\n{translation_input}")
-        
+
         return self._translate_with_retries(
             translation_input,
             translate_instructions,
             start_line,
             end_line,
-            )
+        )
 
-    def _translate_with_retries(
-        self, 
-        translation_input,
-        translate_instructions, 
-        start_line, end_line
-        ) -> str:
-        
+    def _translate_with_retries(self, translation_input, translate_instructions, start_line, end_line) -> str:
         retries = 0
         translated_lines = ""
 
         while retries < MAX_RETRIES:
-            translated_segment = self.processor.process_text(
-                translation_input, translate_instructions)
+            translated_segment = self.processor.process_text(translation_input, translate_instructions)
             translated_lines = self._extract_lines(translated_segment)
 
             if not self._validate_lines(translated_lines, start_line, end_line):
                 break  # Validation successful, exit loop
 
             retries += 1
-            logger.warning(f"Validation failed for segment {start_line}-{end_line}, "
-                           f"retrying (attempt {retries + 1}/{MAX_RETRIES})")
+            logger.warning(
+                f"Validation failed for segment {start_line}-{end_line}, "
+                f"retrying (attempt {retries + 1}/{MAX_RETRIES})"
+            )
             # You might want to add a delay here, e.g., using time.sleep()
 
         if retries == MAX_RETRIES:
@@ -159,19 +153,18 @@ class LineTranslator:
                 f"Validation failed after {MAX_RETRIES}"
                 f" retries for segment {start_line}-{end_line}\n"
                 "Using last generated result."
-                )
-        
+            )
+
         return self._extract_content(translated_lines)
-            
+
     def _extract_content(self, lines: str) -> str:
         """convert line-numbered format to un-numbered text."""
         # clean each line and return full clean segment
         line_list = lines.splitlines()
         # Remove line numbering and strip whitespace
-        stripped_lines = [line.split(':', 1)[-1].strip() for line in line_list]
+        stripped_lines = [line.split(":", 1)[-1].strip() for line in line_list]
         return "\n".join(stripped_lines)
-        
-            
+
     def _build_translation_input(
         self, preceding_context: str, transcript_segment: str, following_context: str
     ) -> str:
@@ -226,7 +219,7 @@ class LineTranslator:
         self,
         text: TextObject,
         source_language: str,
-        segment_size: Optional[int] = None,  
+        segment_size: Optional[int] = None,
         target_language: str = DEFAULT_TARGET_LANGUAGE,
         template_dict: Optional[Dict] = None,
     ) -> TextObject:
@@ -243,7 +236,7 @@ class LineTranslator:
         Returns:
             Complete translated text with line numbers preserved
         """
-        
+
         # Use TextObject language if not specified
         if not source_language:
             source_language = text.language
@@ -251,24 +244,17 @@ class LineTranslator:
         # Convert text to numbered lines
         num_text = text.num_text
         total_lines = num_text.size
-        
+
         metadata = text.metadata
 
         if not segment_size:
-            segment_size = _calculate_segment_size(
-                num_text, DEFAULT_TRANSLATION_TARGET_TOKENS
-            )
+            segment_size = _calculate_segment_size(num_text, DEFAULT_TRANSLATION_TARGET_TOKENS)
 
         translated_segments = []
 
-        logger.debug(
-            f"Total lines to translate: {total_lines} "
-            f" | Translation segment size: {segment_size}."
-        )
+        logger.debug(f"Total lines to translate: {total_lines}  | Translation segment size: {segment_size}.")
         # Process text in segments using segment iteration
-        for start_idx, end_idx in num_text.iter_segments(
-            segment_size, min_segment_size=MIN_SEGMENT_SIZE
-        ):
+        for start_idx, end_idx in num_text.iter_segments(segment_size, min_segment_size=MIN_SEGMENT_SIZE):
             translated_content = self.translate_segment(
                 num_text=num_text,
                 start_line=start_idx,
@@ -281,21 +267,17 @@ class LineTranslator:
 
             translated_segments.append(translated_content)
 
-        new_text =  "\n".join(translated_segments).strip()
-        
+        new_text = "\n".join(translated_segments).strip()
+
         return text.transform(
-            data_str=new_text, 
-            language=target_language, 
-            )
+            data_str=new_text,
+            language=target_language,
+        )
 
     def _extract_lines(self, segment: str) -> str:
-        if segment.startswith(TRANSCRIPT_SEGMENT_MARKER) and segment.endswith(
-            TRANSCRIPT_SEGMENT_MARKER
-        ):
-            segment = segment[
-                len(TRANSCRIPT_SEGMENT_MARKER) : -len(TRANSCRIPT_SEGMENT_MARKER)
-            ]
-            
+        if segment.startswith(TRANSCRIPT_SEGMENT_MARKER) and segment.endswith(TRANSCRIPT_SEGMENT_MARKER):
+            segment = segment[len(TRANSCRIPT_SEGMENT_MARKER) : -len(TRANSCRIPT_SEGMENT_MARKER)]
+
         else:
             logger.warning("Translated segment missing transcript_segment tags")
 
@@ -305,9 +287,7 @@ class LineTranslator:
         segment = "\n".join(stripped_lines)
         return segment.strip()
 
-    def _validate_lines(
-        self, translated_content: str, start_index: int, end_index: int
-    ) -> bool:
+    def _validate_lines(self, translated_content: str, start_index: int, end_index: int) -> bool:
         """
         Validate translated segment format, content, and line number sequence.
         Issues warnings for validation issues rather than raising errors.
@@ -345,8 +325,9 @@ class LineTranslator:
             end_line,
         )
 
-        logger.debug(f"Validated {len(lines)} lines from {start_line} to {end_line}\n"
-                     f"{error_count} errors encountered.")
+        logger.debug(
+            f"Validated {len(lines)} lines from {start_line} to {end_line}\n{error_count} errors encountered."
+        )
         return error_count > 0
 
     def _parse_translated_line_number(self, line: str) -> int | None:
@@ -377,17 +358,11 @@ class LineTranslator:
 
         error_count = 0
         if line_numbers[0] != start_line:
-            logger.warning(
-                f"First line number {line_numbers[0]} "
-                f" doesn't match expected {start_line}"
-            )
+            logger.warning(f"First line number {line_numbers[0]}  doesn't match expected {start_line}")
             error_count += 1
 
         if line_numbers[-1] != end_line:
-            logger.warning(
-                f"Last line number {line_numbers[-1]} "
-                f"doesn't match expected {end_line}"
-            )
+            logger.warning(f"Last line number {line_numbers[-1]} doesn't match expected {end_line}")
             error_count += 1
 
         expected = set(range(start_line, end_line + 1))
@@ -395,6 +370,7 @@ class LineTranslator:
             logger.warning(f"Missing line numbers in sequence: {missing}")
             error_count += len(missing)
         return error_count
+
 
 def translate_text_by_lines(
     text: TextObject,
@@ -408,13 +384,12 @@ def translate_text_by_lines(
     review_count: Optional[int] = None,
     template_dict: Optional[Dict] = None,
 ) -> TextObject:
-    
     if source_language is None:
         source_language = text.language
 
     if pattern is None:
         pattern = get_pattern(DEFAULT_TRANSLATION_PATTERN)
-        
+
     processor = OpenAIProcessor(model)
 
     translator = LineTranslator(
@@ -426,17 +401,17 @@ def translate_text_by_lines(
     )
 
     process_metadata = ProcessMetadata(
-            step="translation",
-            processor="LineTranslator",
-            model=processor.model,
-            source_language=source_language,
-            target_language=target_language,
-            segment_size=segment_size,
-            context_lines=translator.context_lines,
-            review_count=translator.review_count,
-            style=translator.style,
-            template_dict=template_dict,
-        )
+        step="translation",
+        processor="LineTranslator",
+        model=processor.model,
+        source_language=source_language,
+        target_language=target_language,
+        segment_size=segment_size,
+        context_lines=translator.context_lines,
+        review_count=translator.review_count,
+        style=translator.style,
+        template_dict=template_dict,
+    )
 
     text = translator.translate_text(
         text,

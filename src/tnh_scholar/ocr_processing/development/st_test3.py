@@ -40,10 +40,7 @@ def navigate(direction):
     Save the current page's text and navigate to the specified direction.
     """
     save_text()
-    if (
-        direction == "next"
-        and st.session_state.current_page_index < len(st.session_state.pages) - 1
-    ):
+    if direction == "next" and st.session_state.current_page_index < len(st.session_state.pages) - 1:
         st.session_state.current_page_index += 1
     elif direction == "previous" and st.session_state.current_page_index > 0:
         st.session_state.current_page_index -= 1

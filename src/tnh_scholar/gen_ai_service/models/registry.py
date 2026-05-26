@@ -28,9 +28,7 @@ class ModelPricing(BaseModel):
 
     input_per_1k: float = Field(ge=0, description="Input token price per 1K")
     output_per_1k: float = Field(ge=0, description="Output token price per 1K")
-    cached_input_per_1k: float | None = Field(
-        None, ge=0, description="Cached input price (if supported)"
-    )
+    cached_input_per_1k: float | None = Field(None, ge=0, description="Cached input price (if supported)")
 
 
 class ModelPricingTiers(BaseModel):

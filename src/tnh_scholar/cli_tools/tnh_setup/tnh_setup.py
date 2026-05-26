@@ -33,6 +33,7 @@ For OpenAI API access help: https://platform.openai.com/
 >>>>>>>>>>>>>>>>>>>>>>>>>>> -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 """
 
+
 @dataclass(frozen=True)
 class SetupPaths:
     """Resolved filesystem paths used by setup."""
@@ -114,10 +115,11 @@ def maybe_check_environment(*, skip_env: bool) -> None:
     if not check_openai_env(output=False):
         print(OPENAI_ENV_HELP_MSG)
 
+
 @click.command()
-@click.option('--skip-env', is_flag=True, help='Skip API key setup')
-@click.option('--skip-prompts', is_flag=True, help='Skip prompt directory setup guidance')
-@click.option('--skip-ytdlp-runtime', is_flag=True, help='Skip yt-dlp runtime setup')
+@click.option("--skip-env", is_flag=True, help="Skip API key setup")
+@click.option("--skip-prompts", is_flag=True, help="Skip prompt directory setup guidance")
+@click.option("--skip-ytdlp-runtime", is_flag=True, help="Skip yt-dlp runtime setup")
 def tnh_setup(skip_env: bool, skip_prompts: bool, skip_ytdlp_runtime: bool):
     """Set up TNH Scholar configuration."""
     context = TNHContext.discover()
@@ -130,10 +132,12 @@ def tnh_setup(skip_env: bool, skip_prompts: bool, skip_ytdlp_runtime: bool):
     report_prompt_setup(paths, skip_prompts=skip_prompts)
     maybe_setup_ytdlp_runtime(skip_ytdlp_runtime=skip_ytdlp_runtime)
     maybe_check_environment(skip_env=skip_env)
-    
+
+
 def main():
     """Entry point for setup CLI tool."""
     tnh_setup()
+
 
 if __name__ == "__main__":
     main()

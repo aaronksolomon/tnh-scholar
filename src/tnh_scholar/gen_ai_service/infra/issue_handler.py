@@ -81,16 +81,14 @@ class IssueHandler:
         cwd = Path(os.getcwd())
         fallback = cwd / "gen_ai_prompts"
 
-        IssueHandler.logger.warning(
-            f"No prompt catalog configured. Using fallback directory: {fallback}"
-        )
+        IssueHandler.logger.warning(f"No prompt catalog configured. Using fallback directory: {fallback}")
 
         # Create directory if needed
         # Will raise if cannot create writeable directory
         ensure_directory_writable(fallback)
-        
+
         return fallback
-    
+
     @staticmethod
     def warn(message: str) -> None:
         """Emit a runtime warning without raising."""

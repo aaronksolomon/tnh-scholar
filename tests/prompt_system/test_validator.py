@@ -223,9 +223,7 @@ def test_validate_render_reports_missing_required_strict_input():
 
 
 def test_validate_render_allows_extra_when_policy_allows_extra_variables():
-    validator = PromptValidator(
-        ValidationPolicy(mode="strict", allow_extra_variables=True)
-    )
+    validator = PromptValidator(ValidationPolicy(mode="strict", allow_extra_variables=True))
     prompt = make_prompt(required=["name"])
     params = RenderParams(variables={"name": "x", "extra": "allowed"})
 
@@ -236,9 +234,7 @@ def test_validate_render_allows_extra_when_policy_allows_extra_variables():
 
 
 def test_validate_render_allows_extra_when_policy_warns():
-    validator = PromptValidator(
-        ValidationPolicy(mode="warn", allow_extra_variables=False)
-    )
+    validator = PromptValidator(ValidationPolicy(mode="warn", allow_extra_variables=False))
     prompt = make_prompt(required=["name"])
     params = RenderParams(variables={"name": "x", "extra": "y"})
 

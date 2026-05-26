@@ -11,15 +11,17 @@ from typing import Iterator, List, Optional
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-# TODO convert this module to work not just on text but any object. 
+# TODO convert this module to work not just on text but any object.
 # Create a super class, TimedObject and TimedUnit.
 # Would allow segments in DiarizationChunker to be TimedObjects,
 # with unified interface.
 
+
 class Granularity(str, Enum):
     SEGMENT = "segment"
     WORD = "word"
-    
+
+
 class TimedTextUnit(BaseModel):
     """
     Represents a timed unit with timestamps.
@@ -28,6 +30,7 @@ class TimedTextUnit(BaseModel):
     associates text content with start/end times and optional metadata.
     Can represent either a segment (phrase/sentence) or a word.
     """
+
     text: str = Field(..., description="The text content")
     start_ms: int = Field(..., description="Start time in milliseconds")
     end_ms: int = Field(..., description="End time in milliseconds")
@@ -59,25 +62,21 @@ class TimedTextUnit(BaseModel):
     def shift_time(self, offset_ms: int) -> "TimedTextUnit":
         """Create a new TimedUnit with timestamps shifted by offset."""
         return self.model_copy(
-            update={
-                "start_ms": self.start_ms + offset_ms,
-                "end_ms": self.end_ms + offset_ms
-            }
+            update={"start_ms": self.start_ms + offset_ms, "end_ms": self.end_ms + offset_ms}
         )
 
     def overlaps_with(self, other: "TimedTextUnit") -> bool:
         """Check if this unit overlaps with another."""
-        return (self.start_ms <= other.end_ms and 
-                other.start_ms <= self.end_ms)
+        return self.start_ms <= other.end_ms and other.start_ms <= self.end_ms
 
     def set_speaker(self, speaker: str) -> None:
         """Set the speaker label."""
         self.speaker = speaker
-        
+
     def normalize(self) -> None:
         """Normalize the duration of the segment to be nonzero"""
         if self.start_ms == self.end_ms:
-            self.end_ms = self.start_ms + 1 # minimum duration 
+            self.end_ms = self.start_ms + 1  # minimum duration
 
     @field_validator("start_ms", "end_ms")
     @classmethod
@@ -91,9 +90,7 @@ class TimedTextUnit(BaseModel):
     def _validate_positive_duration(cls, end_ms: int, info) -> int:
         start_ms = info.data.get("start_ms")
         if start_ms is not None and end_ms < start_ms:
-            raise ValueError(
-                f"end_ms ({end_ms}) must be greater than start_ms ({start_ms})."
-            )
+            raise ValueError(f"end_ms ({end_ms}) must be greater than start_ms ({start_ms}).")
         return end_ms
 
     @field_validator("text")
@@ -101,9 +98,7 @@ class TimedTextUnit(BaseModel):
     def _validate_word_text(cls, v: str, info):
         granularity = info.data.get("granularity", "segment")
         if granularity == "word" and (" " in v.strip()):
-            raise ValueError(
-                "Text for a word-level TimedUnit cannot contain whitespace."
-            )
+            raise ValueError("Text for a word-level TimedUnit cannot contain whitespace.")
         return v
 
 
@@ -132,7 +127,7 @@ class TimedText(BaseModel):
         segments: Optional[List[TimedTextUnit]] = None,
         words: Optional[List[TimedTextUnit]] = None,
         units: Optional[List[TimedTextUnit]] = None,
-        **kwargs
+        **kwargs,
     ):
         """
         Custom initializer for TimedText.
@@ -167,7 +162,7 @@ class TimedText(BaseModel):
             raise ValueError("Must provide granularity for empty TimedText.")
 
         super().__init__(granularity=granularity, segments=segments, words=words, **kwargs)
-        
+
     @model_validator(mode="after")
     def _validate_exclusive_granularity(self):
         """
@@ -238,8 +233,10 @@ class TimedText(BaseModel):
     def append(self, unit: TimedTextUnit):
         """Add a unit to the end."""
         if unit.granularity != self.granularity:
-            raise ValueError(f"Cannot append unit with granularity {unit.granularity} "
-                             "to TimedText of granularity {self.granularity}.")
+            raise ValueError(
+                f"Cannot append unit with granularity {unit.granularity} "
+                "to TimedText of granularity {self.granularity}."
+            )
         self.units.append(unit)
 
     def extend(self, units: List[TimedTextUnit]):
@@ -271,7 +268,6 @@ class TimedText(BaseModel):
         """Sort units by start time."""
         self.units.sort(key=lambda unit: unit.start_ms)
 
-            
     @classmethod
     def _new_with_units(
         cls, units: List[TimedTextUnit], granularity: Optional[Granularity] = None
@@ -302,20 +298,14 @@ class TimedText(BaseModel):
         Return a new TimedText object containing only units within [start_ms, end_ms].
         Units must overlap with the interval to be included.
         """
-        sliced_units = [
-            unit for unit in self.units
-            if unit.end_ms > start_ms and unit.start_ms < end_ms
-        ]
+        sliced_units = [unit for unit in self.units if unit.end_ms > start_ms and unit.start_ms < end_ms]
         return self._new_with_units(sliced_units, self.granularity)
 
     def filter_by_min_duration(self, min_duration_ms: int) -> "TimedText":
         """
         Return a new TimedText object containing only units with a minimum duration.
         """
-        filtered_units = [
-            unit for unit in self.units
-            if unit.duration_ms >= min_duration_ms
-        ]
+        filtered_units = [unit for unit in self.units if unit.duration_ms >= min_duration_ms]
         return self._new_with_units(filtered_units, self.granularity)
 
     @classmethod
@@ -332,10 +322,10 @@ class TimedText(BaseModel):
         all_units: List[TimedTextUnit] = []
         for item in items:
             all_units.extend(item.units)
-            
+
         # Use the classmethod to generate with units
         return cls._new_with_units(all_units, granularity)
-    
+
     def iter(self) -> Iterator[TimedTextUnit]:
         """
         Unified iterator over the units of the correct granularity.
@@ -363,7 +353,7 @@ class TimedText(BaseModel):
         if not self.is_word_granularity():
             raise ValueError("Cannot call iter_words() on TimedText with SEGMENT granularity.")
         return iter(self.words)
-    
+
     def export_text(self, separator: str = "\n", skip_empty: bool = True, show_speaker: bool = True) -> str:
         """
         Export the text content of all units as a single string.
@@ -376,13 +366,11 @@ class TimedText(BaseModel):
         Returns:
             Concatenated text of all units, separated by `separator`.
         """
+
         def _text_line(unit: TimedTextUnit) -> str:
             if show_speaker and unit.speaker:
                 return f"[{unit.speaker}] {unit.text}"
             return unit.text
 
-        texts = [
-            _text_line(unit) for unit in self.units
-            if not skip_empty or unit.text.strip()
-        ]
+        texts = [_text_line(unit) for unit in self.units if not skip_empty or unit.text.strip()]
         return separator.join(texts)

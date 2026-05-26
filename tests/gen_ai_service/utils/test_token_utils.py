@@ -62,9 +62,7 @@ def test_token_count_gpt5_uses_registry_encoding(caplog):
     count = token_count("Hello, world!", model="gpt-5-mini")
 
     assert count > 0
-    assert not any(
-        "Unknown model 'gpt-5-mini'" in record.message for record in caplog.records
-    )
+    assert not any("Unknown model 'gpt-5-mini'" in record.message for record in caplog.records)
 
 
 def test_token_count_file(tmp_path: Path):
@@ -98,9 +96,7 @@ def test_token_count_messages_empty():
 
 def test_token_count_messages_single():
     """Test token counting with single message."""
-    messages = [
-        Message(role="user", content="Hello!")
-    ]
+    messages = [Message(role="user", content="Hello!")]
 
     count = token_count_messages(messages)
 
@@ -150,10 +146,7 @@ def test_token_count_messages_with_content_parts():
 def test_estimate_max_completion_tokens():
     """Test estimating max completion tokens."""
     # Small prompt with large context window
-    max_tokens = estimate_max_completion_tokens(
-        prompt_tokens=1000,
-        model="gpt-4o"
-    )
+    max_tokens = estimate_max_completion_tokens(prompt_tokens=1000, model="gpt-4o")
 
     # Should leave plenty of room (128k context - 1k prompt - buffer)
     assert max_tokens > 120_000
@@ -167,16 +160,13 @@ def test_estimate_max_completion_tokens_near_limit():
         estimate_max_completion_tokens(
             prompt_tokens=8000,
             model="gpt-4",  # 8k context
-            context_limit=8192
+            context_limit=8192,
         )
 
 
 def test_estimate_max_completion_tokens_custom_limit():
     """Test estimation with custom context limit."""
-    max_tokens = estimate_max_completion_tokens(
-        prompt_tokens=1000,
-        context_limit=10_000
-    )
+    max_tokens = estimate_max_completion_tokens(prompt_tokens=1000, context_limit=10_000)
 
     # Should respect custom limit
     assert max_tokens > 8_000  # 10k - 1k - buffer

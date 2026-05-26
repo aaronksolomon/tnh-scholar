@@ -67,10 +67,7 @@ def format_human_friendly_list(prompts: Iterable[PromptMetadata]) -> str:
         tags = ", ".join(prompt.tags) if prompt.tags else LABELS.no_tags
         model_display = _style_text(model, fg=OutputColor.MODEL)
         tags_display = _style_text(tags, fg=OutputColor.TAGS) if prompt.tags else tags
-        lines.extend((
-            f"  Model: {model_display}{LABELS.metadata_separator}Tags: {tags_display}",
-            ""
-        ))
+        lines.extend((f"  Model: {model_display}{LABELS.metadata_separator}Tags: {tags_display}", ""))
     return "\n".join(lines)
 
 
@@ -80,9 +77,6 @@ def format_human_friendly_error(error: Exception, suggestion: str | None = None)
     lines = [error_line, ""]
 
     if suggestion:
-        suggestion_line = _style_text(
-            f"{LABELS.suggestion_prefix}{suggestion}",
-            fg=OutputColor.SUGGESTION
-        )
+        suggestion_line = _style_text(f"{LABELS.suggestion_prefix}{suggestion}", fg=OutputColor.SUGGESTION)
         lines.extend((suggestion_line, ""))
     return "\n".join(lines)

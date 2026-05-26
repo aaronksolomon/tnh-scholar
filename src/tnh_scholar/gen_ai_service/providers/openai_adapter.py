@@ -12,7 +12,7 @@ Connected modules:
 
 Compatibility:
   - Pinned OpenAI SDK: 2.15.0 (see PINNED_OPENAI_SDK below)
-  - Reference: openai/types/chat/chat_completion.py and openai/types/chat/chat_completion_message_param.py 
+  - Reference: openai/types/chat/chat_completion.py and openai/types/chat/chat_completion_message_param.py
    (SDK 2.5.0)
   - This module defines the provider seam → canonical transport envelope.
 
@@ -316,11 +316,10 @@ class OpenAIAdapter:
         base = {"role": role, "content": msg.content}
 
         # include name only when present
-        if (name := getattr(msg, "name", None)):
+        if name := getattr(msg, "name", None):
             base["name"] = name
 
         return base
-        
 
     def to_openai_request(self, req: ProviderRequest) -> OpenAIChatCompletionRequest:
         """
@@ -358,7 +357,7 @@ class OpenAIAdapter:
         - Add request schema guardrails if OpenAI introduces new message shapes.
         - Add compatibility matrix entry for request-side fields when docs are created.
         """
-        
+
         # NOTE: We cast message dicts into ChatCompletionMessageParam
         #   as defined in openai/types/chat/chat_completion_message_param.py:
         #   expects fields {"role": str, "content": str | list, "name": Optional[str]}.
@@ -403,7 +402,7 @@ class OpenAIAdapter:
               - choices[0].finish_reason: str | None
               - usage: object | None with prompt_tokens, completion_tokens, total_tokens
         model: the model descriptor string
-        provider: the provider id string 
+        provider: the provider id string
         attempts: the number of attempts made to generate the response
 
         Outputs
@@ -433,7 +432,7 @@ class OpenAIAdapter:
         - Document mapping matrix in docs/providers/openai_adapter.md and keep golden tests.
         - Add automated version drift check to flag re-validation when SDK updates.
         """
-        
+
         try:
             structure = _validate_response_structure(
                 response,
@@ -477,11 +476,7 @@ class OpenAIAdapter:
             )
         except Exception as exc:
             raw_usage = getattr(response, "usage", None)
-            provider_usage = (
-                _provider_usage_from_response_usage(raw_usage)
-                if raw_usage is not None
-                else None
-            )
+            provider_usage = _provider_usage_from_response_usage(raw_usage) if raw_usage is not None else None
             return _failed_response(
                 provider=provider,
                 model=model,

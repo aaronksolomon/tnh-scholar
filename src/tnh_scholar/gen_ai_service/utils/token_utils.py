@@ -122,9 +122,7 @@ class EncodingProvider:
 
         if tiktoken is None:
             if not self._fallback_warning_emitted:
-                logger.warning(
-                    "tiktoken not installed; falling back to character-count token estimation"
-                )
+                logger.warning("tiktoken not installed; falling back to character-count token estimation")
                 self._fallback_warning_emitted = True
             self._cache[model] = self._fallback_encoding
             return self._fallback_encoding
@@ -267,11 +265,7 @@ class ModelPolicyRegistry:
 
     def formatting_policy(self, model: str) -> FormattingPolicy:
         return next(
-            (
-                policy
-                for prefix, policy in self._formatting_entries
-                if model.startswith(prefix)
-            ),
+            (policy for prefix, policy in self._formatting_entries if model.startswith(prefix)),
             DEFAULT_FORMATTING_POLICY,
         )
 

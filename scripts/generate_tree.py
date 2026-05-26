@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate directory-tree text files for the project."""
+
 from __future__ import annotations
 
 import argparse

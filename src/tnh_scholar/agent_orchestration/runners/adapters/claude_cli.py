@@ -71,9 +71,7 @@ class ClaudeCliInvocationMapper:
         if policy.forbidden_paths:
             raise ValueError("Claude CLI adapter does not support native forbidden_paths constraints.")
         if policy.forbidden_operations:
-            raise ValueError(
-                "Claude CLI adapter does not support native forbidden_operations constraints."
-            )
+            raise ValueError("Claude CLI adapter does not support native forbidden_operations constraints.")
 
     def _arguments_for(self, request: RunnerTaskRequest) -> tuple[str, ...]:
         return (

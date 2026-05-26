@@ -192,8 +192,7 @@ class SpeakerBlockLanguageSegmentationService(LanguageSegmentationServiceProtoco
         grouped_blocks = group_speaker_blocks(segments, self._config)
         if request.source_language is not None:
             return [
-                self._build_fixed_language_block(block, request.source_language)
-                for block in grouped_blocks
+                self._build_fixed_language_block(block, request.source_language) for block in grouped_blocks
             ]
         base_audio = AudioSegment.from_file(request.audio_file)
         return [self._build_detected_block(block, base_audio) for block in grouped_blocks]
@@ -230,7 +229,7 @@ class SpeakerBlockLanguageSegmentationService(LanguageSegmentationServiceProtoco
         block: SpeakerBlock,
         base_audio: AudioSegment,
     ) -> SpeakerLanguageBlock:
-        block_audio = base_audio[int(block.start):int(block.end)]
+        block_audio = base_audio[int(block.start) : int(block.end)]
         language_code = self._probe_language(block, block_audio)
         is_uncertain = language_code is None
         return self._build_block(
@@ -319,10 +318,7 @@ class PassThroughSubtitleMergeService(SubtitleMergeServiceProtocol):
         *,
         translated: bool,
     ) -> str:
-        timed_texts = [
-            self._build_shifted_timed_text(result, translated=translated)
-            for result in results
-        ]
+        timed_texts = [self._build_shifted_timed_text(result, translated=translated) for result in results]
         combined = self._srt_processor.combine(timed_texts)
         return str(self._srt_processor.generate(combined))
 
@@ -377,11 +373,7 @@ class PassThroughSubtitleMergeService(SubtitleMergeServiceProtocol):
         self,
         results: list[SegmentTranscriptionResult],
     ) -> str | None:
-        languages = {
-            result.source_language
-            for result in results
-            if result.source_language is not None
-        }
+        languages = {result.source_language for result in results if result.source_language is not None}
         if len(languages) == 1:
             return cast(str, next(iter(languages)))
         return None
@@ -405,12 +397,8 @@ class MultilingualTranscriptionService:
         ]
         | None = None,
     ) -> None:
-        self._transcription_service = (
-            transcription_service or ProviderBackedSegmentTranscriptionService()
-        )
-        self._segmentation_service = (
-            segmentation_service or SpeakerBlockLanguageSegmentationService()
-        )
+        self._transcription_service = transcription_service or ProviderBackedSegmentTranscriptionService()
+        self._segmentation_service = segmentation_service or SpeakerBlockLanguageSegmentationService()
         self._translation_service_factory = translation_service_factory
         self._merge_service_factory = merge_service_factory
 
@@ -437,8 +425,7 @@ class MultilingualTranscriptionService:
         translation_service = self._create_translation_service(request)
         base_audio = AudioSegment.from_file(request.audio_file)
         results = [
-            self._transcribe_block(request, block, translation_service, base_audio)
-            for block in blocks
+            self._transcribe_block(request, block, translation_service, base_audio) for block in blocks
         ]
         merge_service = self._create_merge_service(request.artifact_retention)
         return merge_service.merge(results)

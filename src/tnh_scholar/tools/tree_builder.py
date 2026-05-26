@@ -1,4 +1,5 @@
 """Helpers for generating directory-tree text files."""
+
 import shutil
 import subprocess
 from pathlib import Path
@@ -13,9 +14,7 @@ def build_tree(root_dir: Path, src_dir: Optional[Path] = None) -> None:
         )
 
     if not root_dir.exists() or not root_dir.is_dir():
-        raise FileNotFoundError(
-            f"The root directory '{root_dir}' does not exist or is not a directory."
-        )
+        raise FileNotFoundError(f"The root directory '{root_dir}' does not exist or is not a directory.")
 
     project_tree_output = root_dir / "project_directory_tree.txt"
     # Run from the root so the tree uses relative paths (stable across environments).
@@ -27,9 +26,7 @@ def build_tree(root_dir: Path, src_dir: Optional[Path] = None) -> None:
 
     if src_dir:
         if not src_dir.exists() or not src_dir.is_dir():
-            raise FileNotFoundError(
-                f"The source directory '{src_dir}' does not exist or is not a directory."
-            )
+            raise FileNotFoundError(f"The source directory '{src_dir}' does not exist or is not a directory.")
         src_tree_output = root_dir / "src_directory_tree.txt"
         subprocess.run(
             ["tree", "--gitignore", ".", "-o", str(src_tree_output)],

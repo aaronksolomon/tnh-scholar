@@ -124,9 +124,7 @@ class FilesystemPromptCatalog(PromptCatalogPort):
             key,
             reason=f"Invalid prompt: {validation.errors}",
         )
-        prompt.metadata = prompt.metadata.model_copy(
-            update={"warnings": fallback_metadata.warnings}
-        )
+        prompt.metadata = prompt.metadata.model_copy(update={"warnings": fallback_metadata.warnings})
         return list(fallback_metadata.warnings)
 
     def _make_cache_key(self, prompt_key: str) -> str:

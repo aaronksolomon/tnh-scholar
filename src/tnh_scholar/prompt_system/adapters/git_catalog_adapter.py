@@ -159,10 +159,7 @@ class GitPromptCatalog(PromptCatalogPort):
         return f"{prompt_key}@{commit[:8]}"
 
     def _fallback_metadata(self, key: str, *, reason: str) -> PromptMetadata:
-        warning = (
-            f"Missing or invalid frontmatter for prompt '{key}': {reason}. "
-            f"{self._EXPECTED_FRONTMATTER}"
-        )
+        warning = f"Missing or invalid frontmatter for prompt '{key}': {reason}. {self._EXPECTED_FRONTMATTER}"
         return PromptMetadata(
             prompt_id=key,
             key=key,

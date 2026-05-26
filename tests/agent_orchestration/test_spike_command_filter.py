@@ -38,7 +38,7 @@ from tnh_scholar.agent_orchestration.spike.service import SpikeRunService
         ("git merge main", True),
         ("git push --force", True),
         ("git push --force-with-lease", True),
-        ("git commit -m \"msg\"", True),
+        ('git commit -m "msg"', True),
         ("git push origin main", True),
         ("mv .git/HEAD /tmp/HEAD", True),
         ("cp .git/config /tmp/config", True),

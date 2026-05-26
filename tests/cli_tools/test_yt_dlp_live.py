@@ -38,9 +38,7 @@ def test_ytt_fetch_transcript_live() -> None:
                 stacklevel=2,
             )
 
-    url_path = Path(
-        os.environ.get("TNH_YT_URLS_PATH", "tests/fixtures/yt_dlp/validation_urls.txt")
-    )
+    url_path = Path(os.environ.get("TNH_YT_URLS_PATH", "tests/fixtures/yt_dlp/validation_urls.txt"))
     urls = _load_urls(url_path)
     assert urls, f"Expected at least one URL in {url_path}"
 

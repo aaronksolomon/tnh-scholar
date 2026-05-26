@@ -9,7 +9,7 @@ def write_data_to_json_file(
     file: Path, data: Union[dict, list], indent: int = 4, ensure_ascii: bool = False
 ) -> None:
     """
-    Writes a dictionary or list as a JSON string to a file, 
+    Writes a dictionary or list as a JSON string to a file,
     ensuring the parent directory exists,
     and supports formatting with indentation and ASCII control.
 
@@ -45,9 +45,7 @@ def write_data_to_json_file(
         raise IOError(f"Error writing JSON string to file '{file}': {e}") from e
 
 
-def save_model_to_json(
-    file: Path, model: BaseModel, indent: int = 4, ensure_ascii: bool = False
-) -> None:
+def save_model_to_json(file: Path, model: BaseModel, indent: int = 4, ensure_ascii: bool = False) -> None:
     """
     Saves a Pydantic model to a JSON file, formatted with indentation for readability.
 

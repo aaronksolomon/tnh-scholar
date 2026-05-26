@@ -363,9 +363,7 @@ def test_execution_service_honors_output_capture_policy(tmp_path: Path) -> None:
 
 def test_execution_timeout_policy_idle_seconds_is_documented_only() -> None:
     policy = TimeoutPolicy(idle_seconds=5)
-    assert "Reserved for future enforcement" in str(
-        type(policy).model_fields["idle_seconds"].description
-    )
+    assert "Reserved for future enforcement" in str(type(policy).model_fields["idle_seconds"].description)
 
 
 def test_validation_service_executes_builtin_validator(tmp_path: Path) -> None:
@@ -393,9 +391,7 @@ def test_validation_service_executes_builtin_validator(tmp_path: Path) -> None:
 def test_validation_service_captures_builtin_stdout_and_stderr(tmp_path: Path) -> None:
     script = tmp_path / "validator.sh"
     script.write_text(
-        "#!/bin/sh\n"
-        "echo builtin out\n"
-        "echo builtin err 1>&2\n",
+        "#!/bin/sh\necho builtin out\necho builtin err 1>&2\n",
         encoding="utf-8",
     )
     script.chmod(0o755)
@@ -452,9 +448,7 @@ def test_validation_service_marks_invalid_harness_report_as_error(tmp_path: Path
     service = _validation_service()
     result = service.run(
         ValidationStepRequest(
-            validators=[
-                HarnessValidationSpec(name=GeneratedHarnessValidatorId.generated_harness)
-            ],
+            validators=[HarnessValidationSpec(name=GeneratedHarnessValidatorId.generated_harness)],
             working_directory=tmp_path,
         )
     )
@@ -887,8 +881,7 @@ def test_kernel_runtime_completes_when_gate_approved_after_proposed_goldens(tmp_
     assert agent_manifest.artifact_for_role(ArtifactRole.workspace_diff) is None
     runner_metadata = json.loads(
         (
-            result.run_directory
-            / agent_manifest.artifact_for_role(ArtifactRole.runner_metadata).path
+            result.run_directory / agent_manifest.artifact_for_role(ArtifactRole.runner_metadata).path
         ).read_text(encoding="utf-8")
     )
     assert "transcript_path" not in runner_metadata
@@ -931,9 +924,7 @@ def test_kernel_runtime_uses_worktree_root_for_mutable_steps(tmp_path: Path) -> 
     )
     worktree_root = tmp_path / "managed-worktree"
     runner = RecordingRunner()
-    validation = RecordingValidationService(
-        ValidationResult(termination=ValidationTermination.completed)
-    )
+    validation = RecordingValidationService(ValidationResult(termination=ValidationTermination.completed))
     service = KernelRunService(
         clock=FixedClock(datetime(2026, 3, 7, tzinfo=timezone.utc)),
         run_id_generator=FixedRunId("run-worktree-root"),
@@ -971,7 +962,9 @@ def test_kernel_runtime_rejects_worktree_nested_under_run_directory(tmp_path: Pa
         artifact_store=FilesystemRunArtifactStore(),
         workspace=RecordingWorkspace(repo_root=tmp_path, worktree_path=nested_worktree),
         runner_service=SuccessRunner(),
-        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
         planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
         gate_approver=FixedGateApprover(GateOutcome.gate_approved),
         workflow_validator=WorkflowValidator(),
@@ -1003,7 +996,9 @@ def test_kernel_runtime_emits_periodic_status_updates_during_long_runner_step(tm
         artifact_store=FilesystemRunArtifactStore(),
         workspace=NullWorkspaceService(repo_root=tmp_path),
         runner_service=SlowSuccessRunner(delay_seconds=0.05),
-        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
         planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
         gate_approver=FixedGateApprover(GateOutcome.gate_approved),
         workflow_validator=WorkflowValidator(),
@@ -1034,7 +1029,9 @@ def test_kernel_runtime_rejects_run_directory_nested_under_worktree(tmp_path: Pa
         artifact_store=FilesystemRunArtifactStore(),
         workspace=RecordingWorkspace(repo_root=tmp_path, worktree_path=worktree_root),
         runner_service=SuccessRunner(),
-        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
         planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
         gate_approver=FixedGateApprover(GateOutcome.gate_approved),
         workflow_validator=WorkflowValidator(),
@@ -1397,7 +1394,9 @@ def test_kernel_runtime_rejects_unknown_agent_identifier(tmp_path: Path) -> None
         artifact_store=FilesystemRunArtifactStore(),
         workspace=NullWorkspaceService(repo_root=tmp_path),
         runner_service=SuccessRunner(),
-        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
         planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
         gate_approver=FixedGateApprover(GateOutcome.gate_approved),
         workflow_validator=WorkflowValidator(),
@@ -1443,7 +1442,9 @@ def test_kernel_runtime_rejects_invalid_planner_next_step(tmp_path: Path) -> Non
         artifact_store=FilesystemRunArtifactStore(),
         workspace=NullWorkspaceService(repo_root=tmp_path),
         runner_service=SuccessRunner(),
-        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
         planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success, next_step="STOP")),
         gate_approver=FixedGateApprover(GateOutcome.gate_approved),
         workflow_validator=WorkflowValidator(),
@@ -1474,7 +1475,9 @@ def test_kernel_runtime_executes_rollback_step(tmp_path: Path) -> None:
         artifact_store=FilesystemRunArtifactStore(),
         workspace=workspace,
         runner_service=SuccessRunner(),
-        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
         planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
         gate_approver=FixedGateApprover(GateOutcome.gate_approved),
         workflow_validator=WorkflowValidator(),
@@ -1512,7 +1515,9 @@ def test_kernel_runtime_rejects_unknown_rollback_target(tmp_path: Path) -> None:
         artifact_store=FilesystemRunArtifactStore(),
         workspace=RecordingWorkspace(repo_root=tmp_path),
         runner_service=SuccessRunner(),
-        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
         planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
         gate_approver=FixedGateApprover(GateOutcome.gate_approved),
         workflow_validator=WorkflowValidator(),
@@ -1610,7 +1615,9 @@ def test_kernel_runtime_applies_step_policy_reference_to_non_agent_steps(tmp_pat
         artifact_store=FilesystemRunArtifactStore(),
         workspace=NullWorkspaceService(repo_root=tmp_path),
         runner_service=SuccessRunner(),
-        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
         planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
         gate_approver=FixedGateApprover(GateOutcome.gate_approved),
         workflow_validator=WorkflowValidator(),
@@ -1656,7 +1663,9 @@ def test_kernel_runtime_hard_fails_on_protected_branch_policy_violation(tmp_path
         artifact_store=FilesystemRunArtifactStore(),
         workspace=ProtectedBranchWorkspace(repo_root=tmp_path),
         runner_service=SuccessRunner(),
-        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
         planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
         gate_approver=FixedGateApprover(GateOutcome.gate_approved),
         workflow_validator=WorkflowValidator(),
@@ -1705,7 +1714,9 @@ def test_kernel_runtime_hard_fails_on_empty_write_scope_policy_violation(tmp_pat
         artifact_store=FilesystemRunArtifactStore(),
         workspace=NullWorkspaceService(repo_root=tmp_path),
         runner_service=SuccessRunner(),
-        validation_service=FixedValidationService(ValidationResult(termination=ValidationTermination.completed)),
+        validation_service=FixedValidationService(
+            ValidationResult(termination=ValidationTermination.completed)
+        ),
         planner_evaluator=FixedEvaluator(PlannerDecision(status=PlannerStatus.success)),
         gate_approver=FixedGateApprover(GateOutcome.gate_approved),
         workflow_validator=WorkflowValidator(),

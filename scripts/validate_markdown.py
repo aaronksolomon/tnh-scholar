@@ -212,8 +212,7 @@ def validate_frontmatter_fields(frontmatter: Dict, rel_path: Path) -> list[Valid
             ValidationIssue(
                 rel_path,
                 "invalid_status",
-                "Auto-generated files must use one of: "
-                f"{', '.join(sorted(AUTO_GENERATED_ALLOWED_STATUSES))}",
+                f"Auto-generated files must use one of: {', '.join(sorted(AUTO_GENERATED_ALLOWED_STATUSES))}",
             )
         )
     return issues

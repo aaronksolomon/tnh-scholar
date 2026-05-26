@@ -29,9 +29,7 @@ class YTDLPEnvironmentInspector:
         warnings = []
 
         if not self._has_js_runtime():
-            warnings.append(
-                "yt-dlp JS runtime missing. Install deno or node and configure --js-runtimes."
-            )
+            warnings.append("yt-dlp JS runtime missing. Install deno or node and configure --js-runtimes.")
 
         if not self._has_impersonation_runtime():
             warnings.append(
@@ -72,9 +70,7 @@ class YTDLPEnvironmentInspector:
     def _missing_remote_components_item(self) -> YTPreflightItem:
         return YTPreflightItem(
             code="missing_remote_components",
-            message=(
-                "yt-dlp remote components not configured. Enable --remote-components ejs:github."
-            ),
+            message=("yt-dlp remote components not configured. Enable --remote-components ejs:github."),
         )
 
     def _has_js_runtime(self) -> bool:

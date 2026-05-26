@@ -1,4 +1,3 @@
-
 import streamlit as st
 from lxml import etree
 
@@ -70,9 +69,7 @@ def handle_uploaded_text_file(uploaded_file):
                 st.session_state.pages = extract_pages(st.session_state.tree)
                 st.session_state.current_page_index = 0  # Reset to the first page
                 st.session_state.uploaded_xml_file_name = uploaded_file.name
-                print(
-                    f"Uploaded XML file name: {st.session_state.uploaded_xml_file_name}"
-                )
+                print(f"Uploaded XML file name: {st.session_state.uploaded_xml_file_name}")
     else:
         print("Error: Unsupported file type.")
 
@@ -141,9 +138,7 @@ st.set_page_config(layout="wide")
 
 # Sidebar file upload
 st.sidebar.title("OCR Editor")
-uploaded_image_file = st.sidebar.file_uploader(
-    "Upload an Image", type=["jpg", "jpeg", "png", "pdf"]
-)
+uploaded_image_file = st.sidebar.file_uploader("Upload an Image", type=["jpg", "jpeg", "png", "pdf"])
 uploaded_text_file = st.sidebar.file_uploader("Upload OCR Text File", type=["xml"])
 
 # Directory paths (optional for advanced workflows)
@@ -212,18 +207,12 @@ with col2:
         )
 
         unsaved_text_edit = False
-        if (
-            edited_text != pages[st.session_state.current_page_index]["text"]
-        ):  # check for change in the text.
+        if edited_text != pages[st.session_state.current_page_index]["text"]:  # check for change in the text.
             print("TEXT CHANGE:")  # debug
-            print(
-                f"---CURRENT---\n>{current_text}<\n---[end]\n\n---EDITED---\n>{edited_text}<\n---[end]\n\n"
-            )
+            print(f"---CURRENT---\n>{current_text}<\n---[end]\n\n---EDITED---\n>{edited_text}<\n---[end]\n\n")
             handle_text_change(edited_text)
             unsaved_text_edit = True
-        modified = (
-            unsaved_text_edit or pages[st.session_state.current_page_index]["modified"]
-        )
+        modified = unsaved_text_edit or pages[st.session_state.current_page_index]["modified"]
         st.write(
             f"Page {st.session_state.current_page_index + 1} of {len(pages)} {'MODIFIED' if modified else ''}"
         )

@@ -59,7 +59,7 @@ JOB_ID_FIELD = "jobId"
 
 
 class _PollSignal(Enum):
-    CONTINUE = "continue"              # internal: keep polling
+    CONTINUE = "continue"  # internal: keep polling
     STATUS_RETRY_EXHAUSTED = "status_retry_exhausted"  # internal: status_fn retried and failed
 
 
@@ -76,8 +76,7 @@ class PyannoteClient:
         self.api_key = api_key or os.getenv("PYANNOTEAI_API_TOKEN")
         if not self.api_key:
             raise APIKeyError(
-                "API key is required. Set PYANNOTEAI_API_TOKEN environment "
-                "variable or pass as parameter"
+                "API key is required. Set PYANNOTEAI_API_TOKEN environment variable or pass as parameter"
             )
 
         self.config = config or PyannoteConfig()
@@ -132,7 +131,7 @@ class PyannoteClient:
         wait=wait_exponential_jitter(exp_base=2, initial=3, max=30),
         retry=retry_if_exception_type(
             (requests.RequestException, requests.Timeout, requests.ConnectionError)
-            ),
+        ),
     )
     def upload_audio(self, file_path: Path) -> Optional[str]:
         """
@@ -187,12 +186,10 @@ class PyannoteClient:
             json={"url": media_id},
             timeout=self.network_timeout,
         )
-        upload_url = self._extract_response_info(
-            response, "url", "No upload URL in API response"
-        )
+        upload_url = self._extract_response_info(response, "url", "No upload URL in API response")
         logger.debug(f"Got upload URL for media ID: {media_id}")
         return upload_url
-    
+
     def _extract_response_info(
         self,
         response: requests.Response,
@@ -204,7 +201,7 @@ class PyannoteClient:
         if result := info.get(response_type):
             return str(result)
         raise ValueError(error_msg)
-    
+
     # -----------------------
     # Start job
     # -----------------------
@@ -245,9 +242,7 @@ class PyannoteClient:
             json=payload,
             timeout=self.network_timeout,
         )
-        job_id = self._extract_response_info(
-            response, JOB_ID_FIELD, "API response missing job ID"
-        )
+        job_id = self._extract_response_info(response, JOB_ID_FIELD, "API response missing job ID")
         logger.info(f"Diarization job {job_id} started successfully")
         return job_id
 
@@ -267,7 +262,7 @@ class PyannoteClient:
         wait=wait_exponential_jitter(exp_base=2, initial=1, max=10),
         retry=retry_if_exception_type(
             (requests.RequestException, requests.Timeout, requests.ConnectionError)
-            ),
+        ),
     )
     def _check_status_with_retry(self, job_id: str) -> Optional[JobStatusResponse]:
         """
@@ -275,7 +270,7 @@ class PyannoteClient:
 
         Retries network failures without killing the polling loop.
         Fails fast on API errors (auth, malformed response, etc.).
-        
+
         Used as the status function in the JobPoller helper class.
         """
         try:
@@ -358,13 +353,13 @@ class PyannoteClient:
 
         # --- Internal builders to attach polling context and craft JSRs ---
         def _attach_context(
-            self, 
-            base: Optional[JobStatusResponse], 
-            *, 
-            outcome: PollOutcome, 
-            elapsed: float, 
-            msg: Optional[str] = None
-            ) -> JobStatusResponse:
+            self,
+            base: Optional[JobStatusResponse],
+            *,
+            outcome: PollOutcome,
+            elapsed: float,
+            msg: Optional[str] = None,
+        ) -> JobStatusResponse:
             """Return a JSR carrying outcome + poll context. If `base` exists, preserve its
             status/payload/server_error_msg unless `msg` overrides it. Otherwise, synthesize a minimal JSR."""
             if base is None:
@@ -401,43 +396,31 @@ class PyannoteClient:
 
         def _on_status_retry_exhausted(self, *, elapsed: float) -> JobStatusResponse:
             return self._attach_context(
-                self.last_status, 
-                outcome=PollOutcome.NETWORK_ERROR, 
-                elapsed=elapsed, 
-                msg=self._last_error_reason
-                )
+                self.last_status,
+                outcome=PollOutcome.NETWORK_ERROR,
+                elapsed=elapsed,
+                msg=self._last_error_reason,
+            )
 
         def _on_invalid_payload(self, *, elapsed: float) -> JobStatusResponse:
             return self._attach_context(
-                self.last_status, 
-                outcome=PollOutcome.ERROR, 
-                elapsed=elapsed, 
-                msg="invalid status payload"
-                )
+                self.last_status, outcome=PollOutcome.ERROR, elapsed=elapsed, msg="invalid status payload"
+            )
 
         def _on_timeout(self, err: RetryError, *, elapsed: float) -> JobStatusResponse:
             return self._attach_context(
-                self.last_status, 
-                outcome=PollOutcome.TIMEOUT, 
-                elapsed=elapsed, 
-                msg=str(err)
-                )
+                self.last_status, outcome=PollOutcome.TIMEOUT, elapsed=elapsed, msg=str(err)
+            )
 
         def _on_interrupt(self, *, elapsed: float) -> JobStatusResponse:
             return self._attach_context(
-                self.last_status, 
-                outcome=PollOutcome.INTERRUPTED, 
-                elapsed=elapsed, 
-                msg="KeyboardInterrupt"
-                )
+                self.last_status, outcome=PollOutcome.INTERRUPTED, elapsed=elapsed, msg="KeyboardInterrupt"
+            )
 
         def _on_exception(self, err: Exception, *, elapsed: float) -> JobStatusResponse:
             return self._attach_context(
-                self.last_status, 
-                outcome=PollOutcome.ERROR, 
-                elapsed=elapsed, 
-                msg=str(err)
-                )
+                self.last_status, outcome=PollOutcome.ERROR, elapsed=elapsed, msg=str(err)
+            )
 
         def run(self) -> JobStatusResponse:
             try:
@@ -514,9 +497,11 @@ class PyannoteClient:
             raise ConfigurationError("Timeout cannot be set with wait_until_complete")
 
         # Derive an effective timeout for this call, without mutating client defaults
-        effective_timeout = None if wait_until_complete else (
-            timeout if timeout is not None else self.polling_config.polling_timeout
-            )
+        effective_timeout = (
+            None
+            if wait_until_complete
+            else (timeout if timeout is not None else self.polling_config.polling_timeout)
+        )
 
         cfg = PollingConfig(
             polling_timeout=effective_timeout,
@@ -531,5 +516,3 @@ class PyannoteClient:
             polling_config=cfg,
         )
         return poller.run()
-    
-    

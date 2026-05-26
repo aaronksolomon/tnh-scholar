@@ -16,19 +16,18 @@ FFMPEG_VIDEO_CONV_DEFAULT_CONFIG = {
     "audio_samplerate": "44100",
 }
 
+
 def convert_video_to_audio(
-    video_file: Path, 
-    output_dir: Path,
-    conversion_params: Optional[Dict[str, str]] = None
+    video_file: Path, output_dir: Path, conversion_params: Optional[Dict[str, str]] = None
 ) -> Path:
     """
     Convert a video file to an audio file using ffmpeg.
-    
+
     Args:
         video_file: Path to the video file
         output_dir: Directory to save the converted audio file
         conversion_params: Optional dictionary to override default conversion parameters
-        
+
     Returns:
         Path to the converted audio file
     """
@@ -48,14 +47,18 @@ def convert_video_to_audio(
 
     try:
         cmd = [
-            "ffmpeg", 
-            "-i", str(video_file),
+            "ffmpeg",
+            "-i",
+            str(video_file),
             "-vn",
-            "-acodec", params["audio_codec"],
-            "-ab", params["audio_bitrate"],
-            "-ar", params["audio_samplerate"],
+            "-acodec",
+            params["audio_codec"],
+            "-ab",
+            params["audio_bitrate"],
+            "-ar",
+            params["audio_samplerate"],
             "-y",  # Overwrite output file if it exists
-            str(output_file)
+            str(output_file),
         ]
         subprocess.run(cmd, check=True, capture_output=True)
         logger.info(f"Conversion successful: {output_file}")

@@ -47,9 +47,7 @@ class PromptValidator(PromptValidatorPort):
         valid = not errors
         return PromptValidationResult(valid=valid, errors=errors, warnings=warnings)
 
-    def validate_render(
-        self, prompt: Prompt, params: RenderParams
-    ) -> PromptValidationResult:
+    def validate_render(self, prompt: Prompt, params: RenderParams) -> PromptValidationResult:
         """Validate render inputs against prompt requirements."""
         errors: list[ValidationIssue] = []
         warnings: list[ValidationIssue] = []
@@ -60,9 +58,7 @@ class PromptValidator(PromptValidatorPort):
         valid = not errors
         return PromptValidationResult(valid=valid, errors=errors, warnings=warnings)
 
-    def _validate_required_fields(
-        self, prompt: Prompt, errors: list[ValidationIssue]
-    ) -> None:
+    def _validate_required_fields(self, prompt: Prompt, errors: list[ValidationIssue]) -> None:
         if not prompt.metadata.name:
             errors.append(
                 ValidationIssue(
@@ -110,9 +106,7 @@ class PromptValidator(PromptValidatorPort):
             )
 
     def _validate_version(self, prompt: Prompt, errors: list[ValidationIssue]) -> None:
-        if prompt.metadata.version and not _VERSION_PATTERN.match(
-            prompt.metadata.version
-        ):
+        if prompt.metadata.version and not _VERSION_PATTERN.match(prompt.metadata.version):
             errors.append(
                 ValidationIssue(
                     level="error",

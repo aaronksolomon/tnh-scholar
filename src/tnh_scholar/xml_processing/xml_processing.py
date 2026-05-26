@@ -57,9 +57,7 @@ def save_pages_to_xml(
             # Add each page with its content and <pagebreak> tag
             for page_number, text in enumerate(text_pages, start=1):
                 if not isinstance(text, str):
-                    raise ValueError(
-                        f"Invalid page content at index {page_number - 1}: expected a string."
-                    )
+                    raise ValueError(f"Invalid page content at index {page_number - 1}: expected a string.")
 
                 content = text.strip()
                 escaped_text = escape(content)
@@ -72,22 +70,16 @@ def save_pages_to_xml(
         print(f"XML file successfully saved at {output_xml_path}")
 
     except PermissionError as e:
-        raise PermissionError(
-            f"Permission denied while writing to {output_xml_path}: {e}"
-        ) from e
+        raise PermissionError(f"Permission denied while writing to {output_xml_path}: {e}") from e
 
     except OSError as e:
-        raise OSError(
-            f"An OS-related error occurred while saving XML file at {output_xml_path}: {e}"
-        ) from e
+        raise OSError(f"An OS-related error occurred while saving XML file at {output_xml_path}: {e}") from e
 
     except Exception as e:
         raise RuntimeError(f"An unexpected error occurred: {e}") from e
 
 
-def join_xml_data_to_doc(
-    file_path: Path, data: List[str], overwrite: bool = False
-) -> None:
+def join_xml_data_to_doc(file_path: Path, data: List[str], overwrite: bool = False) -> None:
     """
     Joins a list of XML-tagged data with newlines, wraps it with <document> tags,
     and writes it to the specified file. Raises an exception if the file exists
@@ -106,9 +98,7 @@ def join_xml_data_to_doc(
         >>> join_xml_data_to_doc(Path("output.xml"), ["<tag>Data</tag>"], overwrite=True)
     """
     if file_path.exists() and not overwrite:
-        raise FileExistsError(
-            f"The file {file_path} already exists and overwrite is not set."
-        )
+        raise FileExistsError(f"The file {file_path} already exists and overwrite is not set.")
 
     if not data:
         raise ValueError("The data list cannot be empty.")
@@ -188,11 +178,7 @@ class PagebreakXMLParser:
         for start, end in page_groups:
             if start < 1 or end < start:
                 continue  # skip invalid groups
-            if group := [
-                self.pages[i]
-                for i in range(start - 1, end)
-                if 0 <= i < len(self.pages)
-            ]:
+            if group := [self.pages[i] for i in range(start - 1, end) if 0 <= i < len(self.pages)]:
                 grouped_pages.append("\n".join(group).strip())
         return grouped_pages
 

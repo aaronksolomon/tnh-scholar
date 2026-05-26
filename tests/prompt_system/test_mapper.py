@@ -189,12 +189,8 @@ Evaluate planner output.
     prompt = mapper.to_domain_prompt(content)
 
     assert "existing warning" in prompt.metadata.warnings
-    assert any(
-        "required_variables" in warning for warning in prompt.metadata.warnings
-    )
-    assert any(
-        "default_variables" in warning for warning in prompt.metadata.warnings
-    )
+    assert any("required_variables" in warning for warning in prompt.metadata.warnings)
+    assert any("default_variables" in warning for warning in prompt.metadata.warnings)
     assert prompt.metadata.output_contract is not None
     assert prompt.metadata.output_contract.mode.value == "artifacts"
 

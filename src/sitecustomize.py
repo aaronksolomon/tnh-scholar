@@ -1,4 +1,5 @@
 """Project-wide Python startup configuration."""
+
 from __future__ import annotations
 
 import warnings

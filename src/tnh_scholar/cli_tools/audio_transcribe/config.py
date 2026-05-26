@@ -14,6 +14,7 @@ DEFAULT_OUTPUT_PATH = "./audio_transcriptions/transcript.txt"
 DEFAULT_TEMP_DIR = "./audio_transcriptions/tmp"
 DEFAULT_SERVICE = "whisper"
 
+
 class AudioTranscribeConfig(BaseSettings):
     """Validated runtime configuration for the audio-transcribe CLI."""
 
@@ -61,9 +62,7 @@ class AudioTranscribeConfig(BaseSettings):
         num_sources = sum(bool(s) for s in sources)
         if self.no_transcribe:
             if not (self.yt_url or self.yt_url_csv):
-                raise ValueError(
-                    "--no_transcribe requires a YouTube URL or CSV (--yt_url or --yt_url_csv)."
-                )
+                raise ValueError("--no_transcribe requires a YouTube URL or CSV (--yt_url or --yt_url_csv).")
             if self.file_:
                 raise ValueError(
                     "--no_transcribe does not support local file input. Use --yt_url or --yt_url_csv only."

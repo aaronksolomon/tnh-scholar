@@ -17,7 +17,7 @@ from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.utils import TNHAudioSegment as AudioSegment
 
-# TODO: Evaluate whether runtime type import isolation (using TYPE_CHECKING) is needed 
+# TODO: Evaluate whether runtime type import isolation (using TYPE_CHECKING) is needed
 # across the codebase. E.g.:
 # from typing import TYPE_CHECKING
 # if TYPE_CHECKING:
@@ -32,10 +32,7 @@ logger = get_child_logger(__name__)
 class AudioHandler:
     """Isolates audio operations and external dependencies (pydub, ffmpeg)."""
 
-    def __init__(
-        self, 
-        config: AudioHandlerConfig = AudioHandlerConfig()
-        ):
+    def __init__(self, config: AudioHandlerConfig = AudioHandlerConfig()):
         self.config = config
         # Sensible fall‑backs for optional config values
         self.base_audio: AudioSegment
@@ -44,11 +41,11 @@ class AudioHandler:
 
     def build_audio_chunk(self, chunk: DiarizationChunk, audio_file: Path) -> AudioChunk:
         """builds and sets the internal chunk.audio to be the new AudioChunk"""
-        
+
         self._set_io_format(audio_file)
         base_audio = self._load_audio(audio_file)
         self._validate_segments(chunk)
-        
+
         audio_segment = self._assemble_segments(chunk, base_audio)
         audio_chunk = AudioChunk(
             data=self._export_audio(audio_segment),
@@ -58,7 +55,7 @@ class AudioHandler:
         )
         chunk.audio = audio_chunk
         return audio_chunk
-    
+
     def export_audio_bytes(self, audio_segment: AudioSegment, format_str: Optional[str] = None) -> BytesIO:
         """Export AudioSegment to BytesIO for services/modules that require file-like objects."""
         return self._export_audio(audio_segment, format_str)
@@ -75,7 +72,7 @@ class AudioHandler:
 
         # Use input format if output format not specified
         self.output_format = self.output_format or self.input_format
-        
+
     def _load_audio(self, audio_file: Path) -> AudioSegment:
         """Load the audio file and validate format."""
         return AudioSegment.from_file(audio_file, format=self.input_format)
@@ -171,12 +168,8 @@ class AudioHandler:
         return assembled
 
     # TODO: in _export_audio:
-    # handle needed parameters for various export formats (can use kwargs for options)    
-    def _export_audio(
-        self, 
-        audio_segment: AudioSegment,  
-        format_str: Optional[str] = None
-        ) -> BytesIO:
+    # handle needed parameters for various export formats (can use kwargs for options)
+    def _export_audio(self, audio_segment: AudioSegment, format_str: Optional[str] = None) -> BytesIO:
         """Export *audio segment* in the configured format and return raw bytes."""
 
         export_format = format_str or self.output_format

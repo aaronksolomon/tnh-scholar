@@ -44,7 +44,7 @@ class TimeMs(int):
             cls._validate,
             serialization=core_schema.plain_serializer_function_ser_schema(lambda v: int(v)),
         )
-        
+
     @classmethod
     def _validate(cls, value, info):
         """
@@ -61,26 +61,27 @@ class TimeMs(int):
 
     def __add__(self, other):
         return TimeMs(int(self) + int(other))
-    
+
     def __radd__(self, other):
         return TimeMs(int(other) + int(self))
-    
+
     def __sub__(self, other):
         return TimeMs(int(self) - int(other))
-    
+
     def __rsub__(self, other):
         return TimeMs(int(self) - int(other))
 
     def __repr__(self) -> str:
         return f"TimeMs({self.to_seconds():.3f}s)"
 
+
 def convert_sec_to_ms(val: float) -> int:
-    """ 
+    """
     Convert seconds to milliseconds, rounding to the nearest integer.
     """
     return round(val * 1000)
 
+
 def convert_ms_to_sec(ms: int) -> float:
     """Convert time from milliseconds (int) to seconds (float)."""
     return float(ms / 1000)
-

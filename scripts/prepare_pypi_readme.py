@@ -25,10 +25,10 @@ def strip_frontmatter(content: str) -> str:
         Content with frontmatter removed
     """
     # Match YAML frontmatter: --- at start, content, then ---
-    frontmatter_pattern = r'^---\s*\n.*?\n---\s*\n'
+    frontmatter_pattern = r"^---\s*\n.*?\n---\s*\n"
 
     # Remove frontmatter if it exists at the start of the file
-    cleaned = re.sub(frontmatter_pattern, '', content, count=1, flags=re.DOTALL)
+    cleaned = re.sub(frontmatter_pattern, "", content, count=1, flags=re.DOTALL)
 
     return cleaned
 

@@ -110,15 +110,11 @@ class PromptMapper:
         value = metadata_raw.get(field_name)
         if value is None:
             if warn_on_missing:
-                warnings.append(
-                    f"Frontmatter field '{field_name}' missing; defaulting to []."
-                )
+                warnings.append(f"Frontmatter field '{field_name}' missing; defaulting to [].")
             return []
         if isinstance(value, list):
             return [str(item) for item in value]
-        warnings.append(
-            f"Frontmatter field '{field_name}' invalid; expected list."
-        )
+        warnings.append(f"Frontmatter field '{field_name}' invalid; expected list.")
         return []
 
     def _coerce_dict_field(
@@ -132,15 +128,11 @@ class PromptMapper:
         value = metadata_raw.get(field_name)
         if value is None:
             if warn_on_missing:
-                warnings.append(
-                    f"Frontmatter field '{field_name}' missing; defaulting to {{}}."
-                )
+                warnings.append(f"Frontmatter field '{field_name}' missing; defaulting to {{}}.")
             return {}
         if isinstance(value, dict):
             return dict(value)
-        warnings.append(
-            f"Frontmatter field '{field_name}' invalid; expected mapping."
-        )
+        warnings.append(f"Frontmatter field '{field_name}' invalid; expected mapping.")
         return {}
 
     def _normalize_inputs(self, metadata_raw: dict[str, Any]) -> list[dict[str, Any]]:
@@ -151,12 +143,10 @@ class PromptMapper:
         required_variables = metadata_raw.get("required_variables", [])
         optional_variables = metadata_raw.get("optional_variables", [])
         normalized_inputs: list[dict[str, Any]] = [
-            {"name": str(name), "required": True, "strictness": "strict"}
-            for name in required_variables
+            {"name": str(name), "required": True, "strictness": "strict"} for name in required_variables
         ]
         normalized_inputs.extend(
-            {"name": str(name), "required": False, "strictness": "loose"}
-            for name in optional_variables
+            {"name": str(name), "required": False, "strictness": "loose"} for name in optional_variables
         )
         return normalized_inputs
 
@@ -169,9 +159,7 @@ class PromptMapper:
         if isinstance(raw_contract, dict):
             return self._normalized_contract_dict(raw_contract)
         if raw_contract is not None:
-            warnings.append(
-                "Frontmatter field 'output_contract' invalid; expected mapping."
-            )
+            warnings.append("Frontmatter field 'output_contract' invalid; expected mapping.")
 
         legacy_mode = metadata_raw.get("output_mode")
         if legacy_mode in ["json", "structured"]:

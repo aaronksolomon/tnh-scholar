@@ -9,6 +9,7 @@ Workflow:
    - If multiple or none, report as ambiguous/missing.
 4) Emit a summary of applied or suggested fixes.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -85,6 +86,7 @@ def normalize_target(link: str) -> str:
 
 def replace_links(text: str, replacements: dict[str, str]) -> str:
     """Replace exact link targets in markdown link syntax."""
+
     def repl(match: re.Match[str]) -> str:
         label, target = match.group(1), match.group(2)
         new_target = replacements.get(target)
@@ -193,9 +195,7 @@ def inspect_file_links(
                 replacements[target] = immediate_issue.fixed
             continue
 
-        issue = resolve_missing_target(
-            md_file, target, normalized_target, basename_index, docs_root
-        )
+        issue = resolve_missing_target(md_file, target, normalized_target, basename_index, docs_root)
         issues.append(issue)
         if issue.fixed:
             replacements[target] = issue.fixed
@@ -218,9 +218,7 @@ def find_link_issues(
     auto_fix_files: set[Path] = set()
 
     for md_file in iter_markdown_files(docs_root):
-        file_issues, replacements, link_count = inspect_file_links(
-            md_file, docs_root, basename_index, debug
-        )
+        file_issues, replacements, link_count = inspect_file_links(md_file, docs_root, basename_index, debug)
         issues.extend(file_issues)
         total_links += link_count
         for issue in file_issues:
@@ -255,12 +253,8 @@ def build_parser() -> argparse.ArgumentParser:
         help="Apply auto-fixes when there is a single unambiguous match, "
         "and normalize resolvable relative links to absolute.",
     )
-    parser.add_argument(
-        "--verbose", action="store_true", help="Print per-file replacement details"
-    )
-    parser.add_argument(
-        "--debug", action="store_true", help="Print debugging info for flagged links"
-    )
+    parser.add_argument("--verbose", action="store_true", help="Print per-file replacement details")
+    parser.add_argument("--debug", action="store_true", help="Print debugging info for flagged links")
     parser.add_argument(
         "--strict",
         action="store_true",

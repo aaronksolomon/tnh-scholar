@@ -226,11 +226,7 @@ class WorkflowValidator:
             step = catalog.find_step(current)
             if isinstance(step, GateStep):
                 return True
-            queue.extend(
-                target
-                for target in catalog.transition_targets(step)
-                if target != "STOP"
-            )
+            queue.extend(target for target in catalog.transition_targets(step) if target != "STOP")
         return False
 
     def _validate_target(self, workflow: WorkflowDefinition, target: str) -> None:

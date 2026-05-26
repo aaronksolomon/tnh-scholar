@@ -155,9 +155,7 @@ class RegistryLoader:
             if model in info.aliases:
                 return info
         available = ", ".join(registry.models.keys())
-        raise ConfigurationError(
-            f"Model {model} not found in {provider} registry. Available: {available}"
-        )
+        raise ConfigurationError(f"Model {model} not found in {provider} registry. Available: {available}")
 
     def _find_model_in_provider(self, provider: str, model: str) -> ModelInfo | None:
         registry = self.get_provider(provider)

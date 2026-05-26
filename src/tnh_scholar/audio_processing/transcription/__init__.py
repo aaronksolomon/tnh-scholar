@@ -23,5 +23,5 @@ __all__ = [
     "TimedTextUnit",
     "Granularity",
     "TranscriptionService",
-    "TranscriptionServiceFactory",   
+    "TranscriptionServiceFactory",
 ]

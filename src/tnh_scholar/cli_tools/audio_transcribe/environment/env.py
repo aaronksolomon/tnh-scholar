@@ -6,6 +6,7 @@ from tnh_scholar.utils.validate import check_openai_env
 
 logger = get_child_logger(__name__)
 
+
 def check_requirements(requirements_file: Path) -> None:
     """
     Check that all requirements listed in requirements.txt can be imported.
@@ -46,6 +47,7 @@ def check_requirements(requirements_file: Path) -> None:
                 f"WARNING: Could not import '{mod_name}' from '{pkg}'. Check that it is correctly installed."
             )
 
+
 def check_env() -> bool:
     """
     Check the environment for necessary conditions:
@@ -62,5 +64,5 @@ def check_env() -> bool:
         return False
 
     return True
-    
+
     # check_requirements(requirements_file)

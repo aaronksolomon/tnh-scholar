@@ -154,7 +154,6 @@ Notes
   base logger (``tnh``) so your app can coexist with other libraries cleanly.
 """
 
-
 import contextlib
 import logging
 import logging.config
@@ -177,6 +176,7 @@ try:
     # import the module rather than the class to avoid reassigning an imported type name
     import pythonjsonlogger.json as _pythonjsonlogger_json  # type: ignore
     from pythonjsonlogger import jsonlogger  # pip install python-json-logger
+
     JsonFormatter = getattr(_pythonjsonlogger_json, "JsonFormatter", None)
 except Exception:
     jsonlogger = None
@@ -234,20 +234,22 @@ LOG_COLORS = {
 LOG_FMT_PLAIN = "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
 LOG_FMT_COLOR = "%(asctime)s | %(log_color)s%(levelname)-8s%(reset)s | %(name)s | %(message)s"
 LOG_FMT_JSON = (
-    "%(asctime)s %(levelname)s %(name)s %(message)s "
-    "%(process)d %(thread)d %(module)s %(filename)s %(lineno)d"
+    "%(asctime)s %(levelname)s %(name)s %(message)s %(process)d %(thread)d %(module)s %(filename)s %(lineno)d"
 )
 # Legacy defaults kept for backward-compat call sites using get_child_logger()
 DEFAULT_CONSOLE_FORMAT_STRING = LOG_FMT_COLOR
 DEFAULT_FILE_FORMAT_STRING = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
+
 # --- Env helpers (evaluated at instantiation time) ---
 def _env_str(key: str, default: str) -> str:
     return os.getenv(key, default)
 
+
 def _env_bool(key: str, default: str) -> bool:
     val = os.getenv(key, default)
     return val.strip().lower() in ("true", "1", "yes", "on")
+
 
 def _env_int(key: str, default: int) -> int:
     val = os.getenv(key)
@@ -256,14 +258,17 @@ def _env_int(key: str, default: int) -> int:
     except Exception:
         return default
 
+
 def _is_tty(stream) -> bool:
     try:
         return hasattr(stream, "isatty") and stream.isatty()
     except Exception:
         return False
 
+
 class UtcFormatter(logging.Formatter):
     """UTC ISO-8601 timestamps for plain text logging."""
+
     # logging.Formatter.converter must accept (float | None) and return struct_time;
     # time.gmtime satisfies that contract and returns a UTC struct_time.
     converter = time.gmtime
@@ -277,6 +282,7 @@ class UtcFormatter(logging.Formatter):
 @dataclass
 class LogSettings:
     """Environment-driven logging settings with sensible defaults."""
+
     # Mode
     environment: str = field(default_factory=lambda: _env_str("APP_ENV", "dev"))  # dev|prod|test
     base_name: str = field(default_factory=lambda: _env_str("LOG_BASE", BASE_LOG_NAME))
@@ -288,16 +294,14 @@ class LogSettings:
     to_stdout: bool = field(default_factory=lambda: _env_bool("LOG_STDOUT", "true"))
     to_file: bool = field(default_factory=lambda: _env_bool("LOG_FILE_ENABLE", "false"))
     file_path: Path = field(
-        default_factory=lambda: Path(
-            _env_str("LOG_FILE_PATH", str(BASE_LOG_DIR / DEFAULT_LOG_FILEPATH))
-            )
-        )
+        default_factory=lambda: Path(_env_str("LOG_FILE_PATH", str(BASE_LOG_DIR / DEFAULT_LOG_FILEPATH)))
+    )
 
     # File rotation
-    rotate_when: Optional[str] = field(default_factory=lambda: _env_str("LOG_ROTATE_WHEN", "") or None)  
-        # e.g. 'midnight'
-    rotate_bytes: Optional[int] = field(default_factory=lambda: (_env_int("LOG_ROTATE_BYTES", 0) or None))  
-        # e.g. 10485760
+    rotate_when: Optional[str] = field(default_factory=lambda: _env_str("LOG_ROTATE_WHEN", "") or None)
+    # e.g. 'midnight'
+    rotate_bytes: Optional[int] = field(default_factory=lambda: (_env_int("LOG_ROTATE_BYTES", 0) or None))
+    # e.g. 10485760
     backups: int = field(default_factory=lambda: _env_int("LOG_BACKUPS", 5))
 
     # Format
@@ -314,10 +318,12 @@ class LogSettings:
     use_queue: bool = field(default_factory=lambda: _env_bool("LOG_USE_QUEUE", "true"))
 
     # Noise suppression (comma-separated)
-    suppress_modules: str = field(default_factory=lambda: _env_str(
-        "LOG_SUPPRESS",
-        "urllib3,httpx,openai,botocore,boto3,asyncio,uvicorn,uvicorn.error,uvicorn.access",
-    ))
+    suppress_modules: str = field(
+        default_factory=lambda: _env_str(
+            "LOG_SUPPRESS",
+            "urllib3,httpx,openai,botocore,boto3,asyncio,uvicorn,uvicorn.error,uvicorn.access",
+        )
+    )
 
     def is_dev(self) -> bool:
         return self.environment.lower() == "dev"
@@ -332,6 +338,7 @@ class LogSettings:
             return True
         try:
             from IPython.core.getipython import get_ipython
+
             return get_ipython() is not None  # in a notebook/console
         except Exception:
             return False
@@ -351,12 +358,15 @@ class LogSettings:
 
 _queue_listener: Optional[QueueListener] = None
 
+
 class LoggingConfigurator:
     _queue: Optional[queue.Queue] = None
 
     # ----- Private helpers (handlers) -----
     def _stdout_handler_config(self, fmt_key: str) -> dict:
-        stream_path = "ext://sys.stdout" if self.settings.log_stream.lower() == "stdout" else "ext://sys.stderr"
+        stream_path = (
+            "ext://sys.stdout" if self.settings.log_stream.lower() == "stdout" else "ext://sys.stderr"
+        )
         return {
             "class": "logging.StreamHandler",
             "stream": stream_path,
@@ -394,6 +404,7 @@ class LoggingConfigurator:
             "encoding": "utf-8",
             "filters": ["omp_filter"],
         }
+
     """Modular builder for project-wide logging configuration."""
 
     def __init__(self, settings: Optional[LogSettings] = None):
@@ -477,7 +488,7 @@ class LoggingConfigurator:
                 "queue": self._queue,
             }
         return handlers
-    
+
     # ----- Private helpers (queue sinks) -----
     def _make_stream_sink(self) -> logging.Handler:
         s = self.settings
@@ -669,7 +680,7 @@ def get_child_logger(name: str, console: bool = False, separate_file: bool = Fal
     Returns:
         logging.Logger: Configured child logger.
     """
-    
+
     def _setup_logfile(name, logger):
         logfile = BASE_LOG_DIR / f"{name}.log"
         logfile.parent.mkdir(parents=True, exist_ok=True)  # Ensure directory exists
@@ -707,7 +718,9 @@ def get_child_logger(name: str, console: bool = False, separate_file: bool = Fal
 
     return logger
 
+
 # --- Compatibility shims for gradual migration ---
+
 
 def get_logger(name: str) -> logging.Logger:
     """Preferred helper: returns a namespaced logger under the base project name.

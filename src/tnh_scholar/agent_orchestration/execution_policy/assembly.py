@@ -187,10 +187,7 @@ class ExecutionPolicyAssembler:
         effective: EffectiveExecutionPolicy,
     ) -> tuple[PolicyViolation, ...]:
         violations: list[PolicyViolation] = []
-        if (
-            effective.execution_posture == ExecutionPosture.workspace_write
-            and requested.allowed_paths == ()
-        ):
+        if effective.execution_posture == ExecutionPosture.workspace_write and requested.allowed_paths == ():
             violations.append(
                 PolicyViolation(
                     violation_class=PolicyViolationClass.forbidden_path,

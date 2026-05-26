@@ -1,4 +1,5 @@
 """Utilities for maintaining paired *_local.ipynb notebooks."""
+
 from __future__ import annotations
 
 import shutil

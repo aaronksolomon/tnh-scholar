@@ -15,7 +15,7 @@ class WebhookServer:
     def __init__(self, port: int = 5050):
         """
         Initialize webhook server with configuration.
-        
+
         Args:
             port: The port to run the Flask server on
         """
@@ -30,29 +30,31 @@ class WebhookServer:
     def _create_flask_app(self) -> Flask:
         """Create and configure Flask app with webhook endpoint."""
         app = Flask(__name__)
-        
-        @app.route('/healthcheck', methods=['GET'])
+
+        @app.route("/healthcheck", methods=["GET"])
         def healthcheck():
             """Simple endpoint to verify the server is running."""
-            return jsonify({
-                'status': 'ok',
-                'timestamp': datetime.now().isoformat(),
-                'webhook_received': self.webhook_data is not None
-            })
-        
-        @app.route('/webhook', methods=['POST'])
+            return jsonify(
+                {
+                    "status": "ok",
+                    "timestamp": datetime.now().isoformat(),
+                    "webhook_received": self.webhook_data is not None,
+                }
+            )
+
+        @app.route("/webhook", methods=["POST"])
         def handle_webhook():
             """Receive webhook data from external services."""
             # Get JSON data from the request
             data = request.json
-            
+
             # Log webhook receipt
-            print("\n" + "="*40)
+            print("\n" + "=" * 40)
             print(f"WEBHOOK RECEIVED at {datetime.now().strftime('%H:%M:%S')}")
-            
+
             if data is not None:
                 print(f"Webhook data status: {data.get('status', 'unknown')}")
-                
+
                 # Update the shared state with proper synchronization
                 with self.webhook_received:
                     self.webhook_data = data
@@ -60,19 +62,19 @@ class WebhookServer:
                     print("Notification sent to waiting threads")
             else:
                 print("Webhook received with no JSON data")
-            
+
             # Always return a success response to acknowledge receipt
-            return jsonify({'status': 'received'}), 200
-        
-        @app.route('/shutdown', methods=['POST'])
+            return jsonify({"status": "received"}), 200
+
+        @app.route("/shutdown", methods=["POST"])
         def shutdown():
             """Endpoint to gracefully shut down the Flask server."""
-            func = request.environ.get('werkzeug.server.shutdown')
+            func = request.environ.get("werkzeug.server.shutdown")
             if func is None:
-                raise RuntimeError('Not running with the Werkzeug Server')
+                raise RuntimeError("Not running with the Werkzeug Server")
             func()
-            return 'Server shutting down...'
-        
+            return "Server shutting down..."
+
         return app
 
     def _build_tunnel_process(self) -> subprocess.Popen[str]:
@@ -100,9 +102,7 @@ class WebhookServer:
             stdout = process.stdout.read()
         else:
             raise RuntimeError("ERROR: Tunnel process failed: no stdout")
-        raise RuntimeError(
-            f"ERROR: Tunnel process failed:\nSTDOUT: {stdout}\nSTDERR: {stderr}"
-        )
+        raise RuntimeError(f"ERROR: Tunnel process failed:\nSTDOUT: {stdout}\nSTDERR: {stderr}")
 
     def _read_tunnel_url(self, process: subprocess.Popen[str]) -> Optional[str]:
         """Read tunnel output until a public URL appears or the timeout expires."""
@@ -133,64 +133,57 @@ class WebhookServer:
     def start_server(self) -> None:
         """Start Flask server in a separate thread."""
         # Check if server is already running
-        if self.flask_running.is_set() and \
-            self.flask_server_thread and \
-                self.flask_server_thread.is_alive():
+        if self.flask_running.is_set() and self.flask_server_thread and self.flask_server_thread.is_alive():
             print(f"Flask server already running on port {self.port}")
             return
-        
+
         # Reset state
         self.flask_running.clear()
-        
+
         # Create thread function that sets event when server starts
         def run_server():
             print(f"Starting Flask server on port {self.port}...")
             self.flask_running.set()
-            self.app.run(
-                host="0.0.0.0", 
-                port=self.port, 
-                debug=False, 
-                use_reloader=False
-                )
+            self.app.run(host="0.0.0.0", port=self.port, debug=False, use_reloader=False)
             self.flask_running.clear()
             print("Flask server has stopped")
-        
+
         # Start server in a daemon thread
         thread = Thread(target=run_server, daemon=True)
         self.flask_server_thread = thread
         thread.start()
-        
+
         # Wait for server to start
         if not self.flask_running.wait(timeout=5):
             raise RuntimeError("Flask server failed to start within timeout period")
-        
+
         print(f"Flask server started successfully on port {self.port}")
-    
+
     def shutdown_server(self) -> None:
         """Gracefully shut down the Flask server."""
         if not self.flask_running.is_set():
             print("Flask server is not running")
             return
-        
+
         try:
             print("Shutting down Flask server...")
             requests.post(f"http://localhost:{self.port}/shutdown")
-            
+
             # Wait for server to stop
             if self.flask_server_thread:
                 self.flask_server_thread.join(timeout=5)
-                
+
             if self.flask_running.is_set():
                 print("WARNING: Flask server did not shut down gracefully")
             else:
                 print("Flask server shut down successfully")
         except Exception as e:
             print(f"Error shutting down Flask server: {e}")
-    
+
     def create_tunnel(self) -> Optional[str]:
         """
         Create a public webhook URL using py-localtunnel.
-        
+
         Returns:
             Optional[str]: The public webhook URL or None if tunnel creation failed
         """
@@ -229,7 +222,7 @@ class WebhookServer:
         self._verify_tunnel(tunnel_url)
 
         return webhook_url
-    
+
     def close_tunnel(self) -> None:
         """Close the tunnel if it's running."""
         if self.tunnel_process and self.tunnel_process.poll() is None:
@@ -237,30 +230,30 @@ class WebhookServer:
             self.tunnel_process.terminate()
             self.tunnel_process.wait(timeout=5)
             print("Tunnel closed")
-    
+
     def wait_for_webhook(self, timeout: int = 120) -> Optional[Dict]:
         """
         Wait for webhook data to be received.
-        
+
         Args:
             timeout: Maximum time to wait in seconds
-            
+
         Returns:
             Optional[Dict]: The webhook data or None if timed out
         """
         print(f"Waiting for webhook callback (timeout: {timeout}s)...")
-        
+
         with self.webhook_received:
             # Wait for notification with timeout
             webhook_received = self.webhook_received.wait(timeout=timeout)
-            
+
             if webhook_received and self.webhook_data is not None:
                 print("Webhook received with data")
                 return self.webhook_data
-        
+
         print(f"Timed out waiting for webhook after {timeout} seconds")
         return None
-    
+
     def cleanup(self) -> None:
         """Clean up all resources."""
         self.close_tunnel()

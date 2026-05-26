@@ -9,6 +9,8 @@ from typing import Generator, Union
 PathLike = Union[str, Path]
 
 DEFAULT_MAX_FILENAME_LENGTH = 25
+
+
 class FileExistsWarning(UserWarning):
     pass
 
@@ -23,12 +25,13 @@ def ensure_directory_exists(dir_path: Path) -> bool:
     Returns:
         bool: True if the directory exists or was created successfully, False otherwise.
     """
-    # No exception handling here. 
-    # If exceptions occur let them propagate. 
+    # No exception handling here.
+    # If exceptions occur let them propagate.
     # Prototype code.
-    
+
     dir_path.mkdir(parents=True, exist_ok=True)
     return True
+
 
 def ensure_directory_writable(dir_path: Path) -> None:
     """
@@ -55,10 +58,9 @@ def ensure_directory_writable(dir_path: Path) -> None:
             tmp.flush()
     except Exception as e:
         raise ValueError(f"Directory is not writable: {dir_path}") from e
-    
-def iterate_subdir(
-    directory: Path, recursive: bool = False
-) -> Generator[Path, None, None]:
+
+
+def iterate_subdir(directory: Path, recursive: bool = False) -> Generator[Path, None, None]:
     """
     Iterates through subdirectories in the given directory.
 
@@ -83,8 +85,10 @@ def iterate_subdir(
             if subdirectory.is_dir():
                 yield subdirectory
 
+
 def path_source_str(path: Path):
     return str(path.resolve())
+
 
 def copy_files_with_regex(
     source_dir: Path,
@@ -93,16 +97,16 @@ def copy_files_with_regex(
     preserve_structure: bool = True,
 ) -> None:
     """
-    Copies files from subdirectories one level down in the source directory to 
-    the destination directory if they match any regex pattern. Optionally preserves the 
+    Copies files from subdirectories one level down in the source directory to
+    the destination directory if they match any regex pattern. Optionally preserves the
     directory structure.
 
     Args:
         source_dir (Path): Path to the source directory to search files in.
-        destination_dir (Path): Path to the destination directory where files will be 
+        destination_dir (Path): Path to the destination directory where files will be
             copied.
         regex_patterns (list[str]): List of regex patterns to match file names.
-        preserve_structure (bool): Whether to preserve the directory structure. 
+        preserve_structure (bool): Whether to preserve the directory structure.
             Defaults to True.
 
     Raises:
@@ -117,9 +121,7 @@ def copy_files_with_regex(
         ... )
     """
     if not source_dir.is_dir():
-        raise ValueError(
-            f"The source directory {source_dir} does not exist or is not a directory."
-        )
+        raise ValueError(f"The source directory {source_dir} does not exist or is not a directory.")
 
     if not destination_dir.exists():
         destination_dir.mkdir(parents=True, exist_ok=True)
@@ -135,14 +137,10 @@ def copy_files_with_regex(
                 if file_path.is_file():
                     print(f"checking file: {file_path.name}")
                     # Check if the file matches any of the regex patterns
-                    if any(
-                        pattern.match(file_path.name) for pattern in compiled_patterns
-                    ):
+                    if any(pattern.match(file_path.name) for pattern in compiled_patterns):
                         if preserve_structure:
                             # Construct the target path, preserving relative structure
-                            relative_path = (
-                                subdir.relative_to(source_dir) / file_path.name
-                            )
+                            relative_path = subdir.relative_to(source_dir) / file_path.name
                             target_path = destination_dir / relative_path
                             target_path.parent.mkdir(parents=True, exist_ok=True)
                         else:
@@ -165,6 +163,7 @@ def read_str_from_file(file_path: Path) -> str:
 
     with open(file_path, "r", encoding="utf-8") as file:
         return file.read()
+
 
 def write_str_to_file(file_path: PathLike, text: str, overwrite: bool = False):
     """Writes text to a file with file locking.
@@ -190,33 +189,26 @@ def write_str_to_file(file_path: PathLike, text: str, overwrite: bool = False):
             fcntl.flock(f, fcntl.LOCK_UN)  # Release lock
     except OSError as e:
         raise OSError(f"Error writing to or locking file {file_path}: {e}") from e
-    
-def sanitize_filename(
-    filename: str, 
-    max_length: int = DEFAULT_MAX_FILENAME_LENGTH
-    ) -> str:  
+
+
+def sanitize_filename(filename: str, max_length: int = DEFAULT_MAX_FILENAME_LENGTH) -> str:
     """Sanitize filename for use unix use."""
-    
+
     # Normalize Unicode to remove accents and convert to ASCII
-    clean = (
-        unicodedata.normalize(
-            "NFKD", 
-            filename).encode(
-                "ascii", 
-                "ignore").decode("ascii")
-    )
-    
+    clean = unicodedata.normalize("NFKD", filename).encode("ascii", "ignore").decode("ascii")
+
     clean = clean.lower()
     clean = re.sub(r"[^a-z0-9\s]", " ", clean.strip())
     clean = clean.strip()
-    
+
     # shorten
-    clean = clean[:max_length].strip() 
-    
+    clean = clean[:max_length].strip()
+
     # convert spaces to _
     clean = re.sub(r"\s+", "_", clean)
-        
+
     return clean
+
 
 def to_slug(string: str) -> str:
     """
@@ -230,9 +222,7 @@ def to_slug(string: str) -> str:
         'hello-world'
     """
     # Normalize Unicode to remove accents and convert to ASCII
-    string = (
-        unicodedata.normalize("NFKD", string).encode("ascii", "ignore").decode("ascii")
-    )
+    string = unicodedata.normalize("NFKD", string).encode("ascii", "ignore").decode("ascii")
 
     # Replace all non-alphanumeric characters with spaces (only keep a-z and 0-9)
     string = re.sub(r"[^a-z0-9\s]", " ", string.lower().strip())
@@ -240,8 +230,10 @@ def to_slug(string: str) -> str:
     # Replace any sequence of spaces with a single hyphen
     return re.sub(r"\s+", "-", string)
 
+
 def path_as_str(path: Path) -> str:
     return str(path.resolve())
+
 
 __all__ = [
     "DEFAULT_MAX_FILENAME_LENGTH",

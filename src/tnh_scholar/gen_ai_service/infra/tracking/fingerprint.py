@@ -72,6 +72,7 @@ def hash_vars(d: RenderVars) -> str:
 
 # ---------- internal helpers ----------
 
+
 def _coerce(x: Any) -> Any:
     """
     Recursively coerce values to JSON-encodable canonical forms.

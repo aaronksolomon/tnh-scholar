@@ -92,9 +92,7 @@ def start_image_annotator_client(
         # Set up credentials
         if credentials_file:
             if not os.path.exists(credentials_file):
-                raise FileNotFoundError(
-                    f"Credentials file '{credentials_file}' not found."
-                )
+                raise FileNotFoundError(f"Credentials file '{credentials_file}' not found.")
             os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_file
 
         # Configure client options
@@ -140,9 +138,7 @@ def load_pdf_pages(pdf_path: Path) -> fitz.Document:
         raise FileNotFoundError(f"The file '{pdf_path}' does not exist.")
 
     if not pdf_path.suffix.lower() == ".pdf":
-        raise ValueError(
-            f"The file '{pdf_path}' is not a valid PDF document (expected '.pdf')."
-        )
+        raise ValueError(f"The file '{pdf_path}' is not a valid PDF document (expected '.pdf').")
 
     try:
         return fitz.open(str(pdf_path))  # PyMuPDF expects a string path
@@ -220,11 +216,7 @@ def extract_image_from_page(page: fitz.Page) -> Image.Image:
         base_image = page.parent.extract_image(xref)
 
         # Validate the extracted image data
-        if (
-            "image" not in base_image
-            or "width" not in base_image
-            or "height" not in base_image
-        ):
+        if "image" not in base_image or "width" not in base_image or "height" not in base_image:
             raise ValueError("The extracted image data is incomplete.")
 
         # Convert the raw image bytes into a Pillow image
@@ -274,12 +266,8 @@ def annotate_image_with_text(
 
     try:
         for i, text_obj in enumerate(text_annotations):
-            vertices = [
-                (vertex.x, vertex.y) for vertex in text_obj.bounding_poly.vertices
-            ]
-            if (
-                len(vertices) == 4
-            ):  # Ensure there are exactly 4 vertices for a rectangle
+            vertices = [(vertex.x, vertex.y) for vertex in text_obj.bounding_poly.vertices]
+            if len(vertices) == 4:  # Ensure there are exactly 4 vertices for a rectangle
                 # Draw the bounding box
                 draw.polygon(vertices, outline="red", width=2)
 
@@ -287,9 +275,7 @@ def annotate_image_with_text(
                 if i > 0:
                     # Offset the text position slightly for clarity
                     text_position = (vertices[0][0] + 2, vertices[0][1] + 2)
-                    draw.text(
-                        text_position, text_obj.description, fill="red", font=font
-                    )
+                    draw.text(text_position, text_obj.description, fill="red", font=font)
 
     except AttributeError as e:
         raise ValueError(f"Invalid text annotation structure: {e}")
@@ -435,14 +421,10 @@ def process_page(
         # return empty data
         full_page_text = ""
         word_locations = [EntityAnnotation()]
-        text_annotations = [
-            EntityAnnotation()
-        ]  # create empty data structures to allow storing to proceed.
+        text_annotations = [EntityAnnotation()]  # create empty data structures to allow storing to proceed.
 
     # Create an annotated image with bounding boxes and labels
-    annotated_image = annotate_image_with_text(
-        processed_image, text_annotations, annotation_font_path
-    )
+    annotated_image = annotate_image_with_text(processed_image, text_annotations, annotation_font_path)
 
     # Get page dimensions (from the original PDF page, not the image)
     page_dimensions = get_page_dimensions(page)
@@ -461,9 +443,7 @@ def build_processed_pdf(  # noqa: C901
     client: vision.ImageAnnotatorClient,
     preprocessor: Callable[[Image.Image, int], Image.Image] | None = None,
     annotation_font_path: Path = DEFAULT_ANNOTATION_FONT_PATH,
-) -> Tuple[
-    List[str], List[List[vision.EntityAnnotation]], List[Image.Image], List[Image.Image]
-]:
+) -> Tuple[List[str], List[List[vision.EntityAnnotation]], List[Image.Image], List[Image.Image]]:
     """
     Processes a PDF document, extracting text, word locations, annotated images, and unannotated images.
 
@@ -532,12 +512,9 @@ def build_processed_pdf(  # noqa: C901
             ) = process_page(page, client, annotation_font_path, preprocessor)
 
             if full_page_text:  # this is not an empty page
-
                 if page_num == 0:  # save first page info
                     first_page_dimensions = page_dimensions
-                elif (
-                    page_dimensions != first_page_dimensions
-                ):  # verify page dimensions are consistent
+                elif page_dimensions != first_page_dimensions:  # verify page dimensions are consistent
                     PDFParseWarning.warn(
                         f"Page {page_num + 1} has different dimensions than page 1."
                         f"({page_dimensions}) compared to the first page: ({first_page_dimensions})."
@@ -663,9 +640,7 @@ def save_processed_pdf_data(
     metadata = {
         "source_pdf": journal_name,
         "page_count": len(text_pages),
-        "images_directory": str(
-            images_dir
-        ),  # Convert Path to string for JSON serialization
+        "images_directory": str(images_dir),  # Convert Path to string for JSON serialization
         "files": {
             "text_pages": "text_pages.json",
             "word_locations": "word_locations.json",
@@ -680,9 +655,7 @@ def save_processed_pdf_data(
 
 def load_processed_PDF_data(  # noqa: C901
     base_path: Path,
-) -> Tuple[
-    List[str], List[List[EntityAnnotation]], List[Image.Image], List[Image.Image]
-]:
+) -> Tuple[List[str], List[List[EntityAnnotation]], List[Image.Image], List[Image.Image]]:
     """
     Loads processed PDF data from files using metadata for file references.
 
@@ -712,21 +685,15 @@ def load_processed_PDF_data(  # noqa: C901
         raise ValueError(f"Invalid metadata file format: {e}")
 
     # Extract file paths from metadata
-    text_pages_file = base_path / metadata.get("files", {}).get(
-        "text_pages", "text_pages.json"
-    )
-    word_locations_file = base_path / metadata.get("files", {}).get(
-        "word_locations", "word_locations.json"
-    )
+    text_pages_file = base_path / metadata.get("files", {}).get("text_pages", "text_pages.json")
+    word_locations_file = base_path / metadata.get("files", {}).get("word_locations", "word_locations.json")
     images_dir = Path(metadata.get("images_directory", base_path / "images"))
 
     # Validate file paths
     if not text_pages_file.exists():
         raise FileNotFoundError(f"Text pages file '{text_pages_file}' not found.")
     if not word_locations_file.exists():
-        raise FileNotFoundError(
-            f"Word locations file '{word_locations_file}' not found."
-        )
+        raise FileNotFoundError(f"Word locations file '{word_locations_file}' not found.")
     if not images_dir.exists() or not images_dir.is_dir():
         raise FileNotFoundError(f"Images directory '{images_dir}' not found.")
 
@@ -737,16 +704,12 @@ def load_processed_PDF_data(  # noqa: C901
     # Load word locations
     with word_locations_file.open("r", encoding="utf-8") as f:
         serialized_word_locations = f.read()
-        word_locations = deserialize_entity_annotations_from_json(
-            serialized_word_locations
-        )
+        word_locations = deserialize_entity_annotations_from_json(serialized_word_locations)
 
     # Load images
     annotated_images = []
     unannotated_images = []
-    for file in sorted(
-        images_dir.iterdir()
-    ):  # Iterate over files in the images directory
+    for file in sorted(images_dir.iterdir()):  # Iterate over files in the images directory
         if file.name.startswith("annotated_page_") and file.suffix == ".png":
             annotated_images.append(Image.open(file))
         elif file.name.startswith("unannotated_page_") and file.suffix == ".png":

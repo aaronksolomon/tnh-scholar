@@ -70,9 +70,7 @@ def _validate_claude_executable(path: Path) -> Path:
 
 
 def _default_claude_executable() -> Path:
-    env_override = os.environ.get("CLAUDE_EXECUTABLE") or os.environ.get(
-        "CLAUDE_ASSISTANT_EXECUTABLE"
-    )
+    env_override = os.environ.get("CLAUDE_EXECUTABLE") or os.environ.get("CLAUDE_ASSISTANT_EXECUTABLE")
     candidates: list[Path] = []
     if env_override:
         candidates.append(Path(env_override).expanduser())

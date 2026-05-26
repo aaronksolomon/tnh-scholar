@@ -26,6 +26,7 @@ DEFAULT_TRANSCRIPT_OPTIONS = {
     "logger": logger,
 }
 
+
 class TranscriptNotFoundError(Exception):
     """Raised when no transcript is available for the requested language."""
 
@@ -44,9 +45,7 @@ class TranscriptNotFoundError(Exception):
         self.video_url = video_url
         self.language = language
 
-        message = (
-            f"No transcript found for {self.video_url} in language {self.language}. "
-        )
+        message = f"No transcript found for {self.video_url} in language {self.language}. "
         super().__init__(message)
 
 
@@ -109,6 +108,7 @@ def get_youtube_urls_from_csv(file_path: Path) -> List[str]:
 
     return urls
 
+
 def get_video_download_path_yt(output_dir: Path, url: str) -> Path:
     """
     Extracts the video title using yt-dlp.
@@ -126,12 +126,11 @@ def get_video_download_path_yt(output_dir: Path, url: str) -> Path:
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(
-            url, download=False
-        )  # Extract metadata without downloading
+        info = ydl.extract_info(url, download=False)  # Extract metadata without downloading
         filepath = ydl.prepare_filename(info)
 
     return Path(filepath).with_suffix(".mp3")
+
 
 def download_audio_yt(
     url: str, output_dir: Path, start_time: Optional[str] = None, prompt_overwrite=True
@@ -209,11 +208,10 @@ def get_transcript(
             os.remove(transcript_file)
             logger.debug(f"Removed temporary transcript file: {transcript_file}")
         except OSError as e:
-            logger.warning(
-                f"Failed to remove temporary transcript file {transcript_file}: {e}"
-            )
+            logger.warning(f"Failed to remove temporary transcript file {transcript_file}: {e}")
 
     return _extract_ttml_text(text)
+
 
 def _download_yt_ttml(temp_storage_path: Path, url: str, lang: str = "en") -> Path:
     """
@@ -241,6 +239,7 @@ def _download_yt_ttml(temp_storage_path: Path, url: str, lang: str = "en") -> Pa
 
     return _extract_ttml_from_youtube(url, lang, temp_storage_path)
 
+
 def _extract_ttml_from_youtube(url: str, lang: str, temp_storage_path: Path) -> Path:
     """Extracts TTML data from YouTube using yt-dlp."""
 
@@ -266,6 +265,7 @@ def _extract_ttml_from_youtube(url: str, lang: str, temp_storage_path: Path) -> 
             return ttml_files[0]
 
         raise TranscriptNotFoundError(video_url=url, language=lang)
+
 
 def _extract_ttml_text(ttml_str: str) -> str:
     """
@@ -317,6 +317,7 @@ def _extract_ttml_text(ttml_str: str) -> str:
     except ParseError as e:
         logger.error(f"Failed to parse XML content: {e}")
         raise
+
 
 def get_transcript_info(video_url: str, lang: str = "en") -> str:
     """

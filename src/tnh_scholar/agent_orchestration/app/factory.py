@@ -99,9 +99,7 @@ class BootstrapKernelFactory:
                 )
             ),
             validation_service=ValidationService(
-                resolver=StaticValidatorResolver(
-                    entries=list(self.config.validation.builtin_commands)
-                ),
+                resolver=StaticValidatorResolver(entries=list(self.config.validation.builtin_commands)),
                 execution_service=execution_service,
                 harness_resolver=StaticHarnessBackendResolver(),
                 backend_registry=HarnessBackendRegistry(

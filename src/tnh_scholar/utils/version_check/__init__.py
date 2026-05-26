@@ -4,10 +4,4 @@ from .checker import PackageVersionChecker
 from .config import VersionCheckerConfig, VersionStrategy
 from .models import PackageInfo, Result
 
-__all__ = [
-    "PackageVersionChecker",
-    "VersionCheckerConfig", 
-    "VersionStrategy",
-    "Result", 
-    "PackageInfo"
-]
+__all__ = ["PackageVersionChecker", "VersionCheckerConfig", "VersionStrategy", "Result", "PackageInfo"]

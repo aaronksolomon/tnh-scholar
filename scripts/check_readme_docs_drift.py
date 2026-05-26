@@ -4,6 +4,7 @@
 Non-blocking check that highlights content drift between the two entry points.
 Outputs to docs_sync_report.txt for manual review during project check-ins.
 """
+
 from __future__ import annotations
 
 import re
@@ -28,7 +29,7 @@ def extract_sections(content: str) -> dict[str, str]:
 
     for line in lines:
         # Match ## headings (but not # or ###)
-        if re.match(r'^## [^#]', line):
+        if re.match(r"^## [^#]", line):
             # Save previous section
             if current_section:
                 sections[current_section] = "\n".join(current_content).strip()
@@ -51,10 +52,10 @@ def find_near_matches(title: str, candidates: set[str]) -> list[str]:
     Returns list of candidates that differ only in case, punctuation, or whitespace.
     """
     near_matches = []
-    normalized = re.sub(r'[^a-z0-9]', '', title.lower())
+    normalized = re.sub(r"[^a-z0-9]", "", title.lower())
 
     for candidate in candidates:
-        candidate_normalized = re.sub(r'[^a-z0-9]', '', candidate.lower())
+        candidate_normalized = re.sub(r"[^a-z0-9]", "", candidate.lower())
         if normalized == candidate_normalized and title != candidate:
             near_matches.append(candidate)
 
@@ -123,9 +124,7 @@ def build_near_match_warnings(readme_only: set[str], docs_only: set[str]) -> lis
     warnings: list[str] = []
     for readme_section in readme_only:
         for match in find_near_matches(readme_section, docs_only):
-            warnings.append(
-                f'⚠ "{readme_section}" (README) vs "{match}" (docs/index.md) - possible mismatch'
-            )
+            warnings.append(f'⚠ "{readme_section}" (README) vs "{match}" (docs/index.md) - possible mismatch')
     return warnings
 
 
@@ -145,15 +144,9 @@ def generate_report() -> str:
     readme_only = set(readme_sections.keys()) - set(docs_sections.keys())
     docs_only = set(docs_sections.keys()) - set(readme_sections.keys())
 
-    has_diffs = append_matched_section_report(
-        report_lines, matched_sections, readme_sections, docs_sections
-    )
-    has_diffs |= append_unique_sections(
-        report_lines, "Sections only in README.md:", readme_only
-    )
-    has_diffs |= append_unique_sections(
-        report_lines, "Sections only in docs/index.md:", docs_only
-    )
+    has_diffs = append_matched_section_report(report_lines, matched_sections, readme_sections, docs_sections)
+    has_diffs |= append_unique_sections(report_lines, "Sections only in README.md:", readme_only)
+    has_diffs |= append_unique_sections(report_lines, "Sections only in docs/index.md:", docs_only)
 
     near_match_warnings = build_near_match_warnings(readme_only, docs_only)
     if near_match_warnings:
@@ -164,9 +157,7 @@ def generate_report() -> str:
 
     if has_diffs:
         report_lines.append("⚠ DRIFT DETECTED - Review differences above")
-        report_lines.append(
-            "This is informational only - no action required unless intentional divergence."
-        )
+        report_lines.append("This is informational only - no action required unless intentional divergence.")
     else:
         report_lines.append("✓ NO SIGNIFICANT DRIFT DETECTED")
 

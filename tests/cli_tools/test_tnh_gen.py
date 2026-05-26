@@ -311,8 +311,8 @@ def test_global_prompt_dir_is_applied_and_restored(tmp_path, monkeypatch):
             # Custom Prompt
             """
         ),
-            encoding="utf-8",
-        )
+        encoding="utf-8",
+    )
     monkeypatch.setenv("TNH_PROMPT_DIR", "sentinel")
     monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
 
@@ -388,9 +388,7 @@ class _StubService:
             outcome=CompletionOutcomeStatus.SUCCEEDED,
             result=CompletionResult(
                 text="generated text",
-                usage=Usage(
-                    prompt_tokens=10, completion_tokens=20, total_tokens=30
-                ),
+                usage=Usage(prompt_tokens=10, completion_tokens=20, total_tokens=30),
                 model="gpt-4o",
                 provider="openai",
                 finish_reason="stop",
@@ -851,13 +849,7 @@ def test_run_strips_input_frontmatter_and_merges_output_metadata(tmp_path, monke
     prompt_dir = _write_prompt(tmp_path)
     input_file = tmp_path / "input.md"
     input_file.write_text(
-        (
-            "---\n"
-            "source: draft\n"
-            "prompt_key: user-value\n"
-            "---\n"
-            "file-input\n"
-        ),
+        ("---\nsource: draft\nprompt_key: user-value\n---\nfile-input\n"),
         encoding="utf-8",
     )
 
@@ -915,13 +907,7 @@ def test_run_preserves_yaml_date_frontmatter(tmp_path, monkeypatch):
     prompt_dir = _write_prompt(tmp_path)
     input_file = tmp_path / "input.md"
     input_file.write_text(
-        (
-            "---\n"
-            "date: 2026-04-17\n"
-            "source: draft\n"
-            "---\n"
-            "file-input\n"
-        ),
+        ("---\ndate: 2026-04-17\nsource: draft\n---\nfile-input\n"),
         encoding="utf-8",
     )
 
@@ -1748,13 +1734,7 @@ def test_run_reports_frontmatter_wrapped_non_json_vars_body(tmp_path, monkeypatc
 
     vars_file = tmp_path / "vars.json"
     vars_file.write_text(
-        (
-            "---\n"
-            "tnh_scholar_generated: true\n"
-            "---\n\n"
-            "sections:\n"
-            "  - start_line: 1\n"
-        ),
+        ("---\ntnh_scholar_generated: true\n---\n\nsections:\n  - start_line: 1\n"),
         encoding="utf-8",
     )
 
@@ -1983,9 +1963,7 @@ def test_config_set_and_get_user_scope(tmp_path, monkeypatch):
     monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
     monkeypatch.chdir(tmp_path)
 
-    set_result = runner.invoke(
-        tnh_gen.app, ["--api", "config", "set", "default_model", "gpt-4o"]
-    )
+    set_result = runner.invoke(tnh_gen.app, ["--api", "config", "set", "default_model", "gpt-4o"])
     assert set_result.exit_code == 0
 
     get_result = runner.invoke(tnh_gen.app, ["--api", "config", "get", "default_model"])

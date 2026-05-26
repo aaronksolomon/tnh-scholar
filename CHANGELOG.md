@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Ruff Format Baseline + Release Gate Alignment** (2026-05-26)
+  - Applied the current Ruff formatter across the repository so the codebase matches the format contract already enforced by GitHub `Main CI`
+  - Added a blocking local `format-check` target and wired `release-check` to include `ruff format --check .`, closing the gap between local release validation and remote main-branch validation
+  - Revalidated the formatted tree with `ruff check`, `ruff format --check`, and the full local release gate
+  - Files: `Makefile`, `scripts/`, `src/`, `tests/`
+
 - **Notebook Secret Hygiene Fix for YouTube Playlist Tooling** (2026-05-26)
   - Removed a hardcoded Google API key from the tracked YouTube playlist notebook and switched the notebook to load `YOUTUBE_API_KEY` from the environment or a local `.env` file
   - Added `.env` ignore rules so replacement local secrets can stay out of version control

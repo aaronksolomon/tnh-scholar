@@ -89,10 +89,7 @@ def extract_object(envelope: CompletionEnvelope, model_class: Optional[type[T]] 
         )
 
     if model_class is not None and not isinstance(parsed_obj, model_class):
-        raise TypeError(
-            f"Expected object of type {model_class.__name__}, "
-            f"got {type(parsed_obj).__name__}"
-        )
+        raise TypeError(f"Expected object of type {model_class.__name__}, got {type(parsed_obj).__name__}")
 
     return cast(T, parsed_obj)
 

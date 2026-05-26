@@ -239,9 +239,7 @@ class ValidationService(ValidationServiceProtocol):
         if current is None:
             return new_value
         if current.media_type != new_value.media_type:
-            raise ValidationArtifactMergeError(
-                "Validation text artifacts must share a media type."
-            )
+            raise ValidationArtifactMergeError("Validation text artifacts must share a media type.")
         combined = self._join_text(current.content, new_value.content)
         return ValidationTextArtifact(
             filename=fallback_filename,

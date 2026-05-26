@@ -70,9 +70,7 @@ def _validate_codex_executable(path: Path) -> Path:
 
 
 def _default_codex_executable() -> Path:
-    env_override = os.environ.get("CODEX_EXECUTABLE") or os.environ.get(
-        "CODEX_ASSISTANT_EXECUTABLE"
-    )
+    env_override = os.environ.get("CODEX_EXECUTABLE") or os.environ.get("CODEX_ASSISTANT_EXECUTABLE")
     candidates: list[Path] = []
     if env_override:
         candidates.append(Path(env_override).expanduser())
@@ -87,9 +85,7 @@ def _default_codex_executable() -> Path:
             return _validate_codex_executable(candidate)
     if resolved := shutil.which("codex"):
         return _validate_codex_executable(Path(resolved))
-    raise typer.BadParameter(
-        "Unable to locate Codex executable. Install Codex or pass --codex-executable."
-    )
+    raise typer.BadParameter("Unable to locate Codex executable. Install Codex or pass --codex-executable.")
 
 
 def _build_command(

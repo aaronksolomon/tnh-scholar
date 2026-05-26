@@ -67,19 +67,19 @@ class PyannoteService(DiarizationService):
         return self.adapter.to_response(jsr)
 
     def generate(
-        self, 
-        audio_path: Path, 
-        params: Optional[DiarizationParams] = None, 
-        *, 
-        wait_until_complete: bool = True
-        ) -> DiarizationResponse:
+        self,
+        audio_path: Path,
+        params: Optional[DiarizationParams] = None,
+        *,
+        wait_until_complete: bool = True,
+    ) -> DiarizationResponse:
         if job_id := self.start(audio_path, params=params):
             return self.get_response(job_id, wait_until_complete=wait_until_complete)
         return self.adapter.failed_start()
 
 
-
 # ===== Orchestrator ===========================================================
+
 
 class DiarizationProcessor:
     """Orchestrator over a DiarizationService.
@@ -132,7 +132,7 @@ class DiarizationProcessor:
 
     def get_response(
         self, job: Optional[Union[JobHandle, str]] = None, *, wait_until_complete: bool = False
-        ) -> DiarizationResponse:
+    ) -> DiarizationResponse:
         """Fetch current/final response for a job, caching the last response."""
         target_id: Optional[str]
         if isinstance(job, JobHandle):
@@ -152,10 +152,8 @@ class DiarizationProcessor:
     def generate(self, *, wait_until_complete: bool = True) -> DiarizationResponse:
         """One-shot convenience: delegate to the service and cache the response."""
         resp = self.service.generate(
-            self.audio_file_path, 
-            params=self.params, 
-            wait_until_complete=wait_until_complete
-            )
+            self.audio_file_path, params=self.params, wait_until_complete=wait_until_complete
+        )
         self._last_response = resp
         # If the service exposes a job_id in the envelope, cache it for UIs
         # Do not fail on metadata issues; response is primary.
@@ -175,11 +173,12 @@ class DiarizationProcessor:
         if result is None:
             raise ValueError(
                 "No DiarizationResponse available; call generate()/get_response() first or pass response="
-                )
+            )
         return self.writer.write(self.output_path, result)
 
 
 # ===== Convenience functions ==================================================
+
 
 def diarize(
     audio_file_path: Path,

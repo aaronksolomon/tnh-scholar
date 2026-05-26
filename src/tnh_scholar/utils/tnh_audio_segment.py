@@ -1,4 +1,3 @@
-
 """
 TNHAudioSegment: A typed, minimal wrapper for pydub.AudioSegment.
 
@@ -44,7 +43,7 @@ class TNHAudioSegment:
             TNHAudioSegment instance containing the loaded audio.
         """
         return TNHAudioSegment(_AudioSegment.from_file(file, format=format, **kwargs))
-    
+
     def export(self, out_f: str | BinaryIO, format: str, **kwargs: Any) -> None:
         """
         Wrapper: Export the audio segment to a file-like object or file path.
@@ -55,7 +54,7 @@ class TNHAudioSegment:
             **kwargs: Additional keyword arguments passed to pydub.AudioSegment.export.
         """
         self._segment.export(out_f, format=format, **kwargs)
-        
+
     @staticmethod
     def silent(duration: int) -> "TNHAudioSegment":
         return TNHAudioSegment(_AudioSegment.silent(duration=duration))
@@ -65,7 +64,7 @@ class TNHAudioSegment:
         return TNHAudioSegment(_AudioSegment.empty())
 
     def __getitem__(self, key: int | slice) -> "TNHAudioSegment":
-        return TNHAudioSegment(self._segment[key]) # type: ignore
+        return TNHAudioSegment(self._segment[key])  # type: ignore
 
     def __add__(self, other: "TNHAudioSegment") -> "TNHAudioSegment":
         return TNHAudioSegment(self._segment + other._segment)

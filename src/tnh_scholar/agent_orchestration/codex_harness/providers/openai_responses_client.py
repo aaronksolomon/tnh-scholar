@@ -73,10 +73,7 @@ class OpenAIResponsesClient(ResponsesClientProtocol):
         request: CodexRequest,
         tools: list[dict[str, object]],
     ) -> Any:
-        input_payload = [
-            {"role": message.role, "content": message.content}
-            for message in request.messages
-        ]
+        input_payload = [{"role": message.role, "content": message.content} for message in request.messages]
         payload = {
             "model": request.model,
             "input": input_payload,

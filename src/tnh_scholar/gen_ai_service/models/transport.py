@@ -49,6 +49,7 @@ class FinishReason(str, Enum):
     FUNCTION_CALL = "function_call"
     OTHER = "other"
 
+
 class ErrorKind(str, Enum):
     PROVIDER = "provider"
     TIMEOUT = "timeout"
@@ -56,6 +57,7 @@ class ErrorKind(str, Enum):
     RATE_LIMIT = "rate_limit"
     SAFETY = "safety"
     UNKNOWN = "unknown"
+
 
 class ErrorInfo(BaseModel):
     kind: ErrorKind
@@ -66,9 +68,10 @@ class ErrorInfo(BaseModel):
 
 class ProviderUsage(BaseModel):
     """Transport-level usage (provider-agnostic, not domain)."""
-    tokens_in: Optional[int] = None          # aka prompt/input tokens
-    tokens_out: Optional[int] = None         # aka completion/output tokens
-    tokens_total: Optional[int] = None       # adapters may compute
+
+    tokens_in: Optional[int] = None  # aka prompt/input tokens
+    tokens_out: Optional[int] = None  # aka completion/output tokens
+    tokens_total: Optional[int] = None  # adapters may compute
     # Optional multi-modal counters — fill only if provider reports them
     chars_in: Optional[int] = None
     chars_out: Optional[int] = None
@@ -76,6 +79,7 @@ class ProviderUsage(BaseModel):
     audio_seconds_in: Optional[float] = None
     # Raw provider details for auditing/future mapping
     provider_breakdown: Dict[str, Any] = {}
+
 
 class TextPayload(BaseModel):
     text: str
@@ -92,6 +96,7 @@ class ProviderResponse(BaseModel):
       allows higher layers to decide whether to treat the response as
       acceptable or to retry/fail.
     """
+
     provider: str
     model: str
     status: ProviderStatus = ProviderStatus.OK

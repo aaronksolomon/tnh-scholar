@@ -41,6 +41,7 @@ logger = get_child_logger(__name__)
 
 class SpeechModel(str, Enum):
     """Supported AssemblyAI speech models."""
+
     BEST = "best"
     NANO = "nano"
 
@@ -49,41 +50,41 @@ class SpeechModel(str, Enum):
 class AAIConfig:
     """
     Comprehensive configuration for AssemblyAI transcription service.
-    
+
     This class contains all configurable options for the AssemblyAI API,
     organized by feature category.
     """
-    
+
     # Base configuration
     api_key: Optional[str] = None
     use_eu_endpoint: bool = False
-    
+
     # Connection configuration
     polling_interval: int = 4
-    
+
     # Core transcription configuration
     speech_model: SpeechModel = SpeechModel.BEST
     language_code: Optional[str] = None
     language_detection: bool = True
     dual_channel: bool = False
-    
+
     # Text formatting options
     format_text: bool = True
     punctuate: bool = True
     disfluencies: bool = False
     filter_profanity: bool = False
-    
+
     # subtitle options
     chars_per_caption: int = 60
-    
+
     # Speaker options
     speaker_labels: bool = True
     speakers_expected: Optional[int] = None
-    
+
     # Audio channel options
     custom_spelling: Dict[str, str] = field(default_factory=dict)
     word_boost: List[str] = field(default_factory=list)
-    
+
     # Audio intelligence configuration
     auto_chapters: bool = False
     auto_highlights: bool = False
@@ -92,7 +93,7 @@ class AAIConfig:
     sentiment_analysis: bool = False
     summarization: bool = False
     content_safety: bool = False
-    
+
     # Callback options (Webhook functionality currently not implemented)
     # The transcribe_asynch method provides asynchronous processing
     webhook_url: Optional[str] = None
@@ -103,46 +104,44 @@ class AAIConfig:
 class AAITranscriptionService(TranscriptionService):
     """
     AssemblyAI implementation of the TranscriptionService interface.
-    
+
     Provides comprehensive access to AssemblyAI's transcription services
     with support for all major features through the official Python SDK.
     """
-    
+
     def __init__(
-        self, 
-        api_key: Optional[str] = None, 
+        self,
+        api_key: Optional[str] = None,
         options: Optional[Dict[str, Any]] = None,
-        ):
+    ):
         """
         Initialize the AssemblyAI transcription service.
-        
+
         Args:
             api_key: AssemblyAI API key (defaults to ASSEMBLYAI_API_KEY env var)
             options: Additional transcription configuration overrides
         """
         # Initialize format converter for fallback cases
         self.format_converter = FormatConverter()
-        
+
         # Set and validate configuration
         self.config = AAIConfig()
-        
+
         # Configure SDK
         self._configure_sdk(api_key)
-        
+
         # Create transcriber instance
-        self.transcriber = aai.Transcriber(
-            config=self._create_transcription_config(options)
-            )
-        
+        self.transcriber = aai.Transcriber(config=self._create_transcription_config(options))
+
         logger.debug("Initialized AssemblyAI service with SDK")
-    
+
     def _configure_sdk(self, api_key: Optional[str] = None) -> None:
         """
         Configure the AssemblyAI SDK with API key and regional settings.
-        
+
         Args:
             api_key: AssemblyAI API key
-            
+
         Raises:
             ValueError: If no API key is provided or found in environment
         """
@@ -153,28 +152,25 @@ class AAITranscriptionService(TranscriptionService):
                 "AssemblyAI API key is required. Set ASSEMBLYAI_API_KEY environment "
                 "variable, pass as api_key parameter, or include in config."
             )
-        
+
         # Configure SDK settings
         aai.settings.api_key = api_key
         aai.settings.polling_interval = self.config.polling_interval
 
-
-        
         # Configure regional settings
         if self.config.use_eu_endpoint:
             aai.settings.base_url = "https://api.eu.assemblyai.com/v2"
             logger.debug("Using EU endpoint for AssemblyAI API")
-    
+
     def _create_transcription_config(
-        self, 
-        options: Optional[Dict[str, Any]] = None
+        self, options: Optional[Dict[str, Any]] = None
     ) -> aai.TranscriptionConfig:
         """
         Create a TranscriptionConfig object from configuration and options.
-        
+
         Args:
             options: Additional options to override configuration
-            
+
         Returns:
             Configured TranscriptionConfig object
         """
@@ -222,12 +218,9 @@ class AAITranscriptionService(TranscriptionService):
         # Add webhook config
         if self.config.webhook_url:
             config_params["webhook_url"] = self.config.webhook_url
-            if self.config.webhook_auth_header_name and \
-                self.config.webhook_auth_header_value:
-                config_params["webhook_auth_header_name"] = \
-                    self.config.webhook_auth_header_name
-                config_params["webhook_auth_header_value"] = \
-                    self.config.webhook_auth_header_value
+            if self.config.webhook_auth_header_name and self.config.webhook_auth_header_value:
+                config_params["webhook_auth_header_name"] = self.config.webhook_auth_header_name
+                config_params["webhook_auth_header_value"] = self.config.webhook_auth_header_value
 
         # Override with any provided options (filtered to SDK-supported keys)
         if options:
@@ -260,41 +253,37 @@ class AAITranscriptionService(TranscriptionService):
         """
         params = inspect.signature(aai.TranscriptionConfig).parameters
         return set(params.keys())
-    
-    def _get_file_path(
-        self, 
-        audio_file: Union[Path, BinaryIO, str]
-        ) -> Union[BinaryIO, str]:
+
+    def _get_file_path(self, audio_file: Union[Path, BinaryIO, str]) -> Union[BinaryIO, str]:
         """
         Get appropriate file path for different input types.
-        
+
         Args:
             audio_file: Path, file-like object, or URL of audio file
-            
+
         Returns:
             Path or string for SDK
-            
+
         Raises:
             TypeError: If input type is not supported
         """
         # Handle Path objects
         if isinstance(audio_file, Path):
             return str(audio_file)
-            
+
         # Handle URLs
         if isinstance(audio_file, str) and (
-            audio_file.startswith("http://") or 
-            audio_file.startswith("https://")
+            audio_file.startswith("http://") or audio_file.startswith("https://")
         ):
             return audio_file
-            
+
         # Handle file-like objects
         if hasattr(audio_file, "read"):
             # SDK handles file-like objects directly
             return audio_file
-            
+
         raise TypeError(f"Unsupported audio file type: {type(audio_file)}")
-    
+
     def _extract_words(self, transcript: aai.Transcript) -> TimedText:
         """
         Extract words with timestamps from transcript and return a TimedText object.
@@ -323,7 +312,7 @@ class AAITranscriptionService(TranscriptionService):
 
         # TimedText performs its own internal validation
         return TimedText(words=units, granularity=Granularity.WORD)
-    
+
     def _extract_utterances(self, transcript: aai.Transcript) -> TimedText:
         """
         Extract utterances (speaker segments) from transcript and return a TimedText object.
@@ -352,14 +341,14 @@ class AAITranscriptionService(TranscriptionService):
         ]
 
         return TimedText(segments=units, granularity=Granularity.SEGMENT)
-    
+
     def _extract_audio_intelligence(self, transcript: aai.Transcript) -> Dict[str, Any]:
         """
         Extract audio intelligence features from transcript.
-        
+
         Args:
             transcript: AssemblyAI transcript object
-            
+
         Returns:
             Dictionary of audio intelligence features
         """
@@ -417,19 +406,17 @@ class AAITranscriptionService(TranscriptionService):
 
             if not transcript.iab_categories.results:
                 return topics_data
-            
+
             for result in transcript.iab_categories.results:
-                topics_data["results"].append({
-                    "text": result.text,
-                    "labels": [
-                        {"label": label.label, "relevance": label.relevance}
-                        for label in result.labels
-                    ],
-                    "timestamp": {
-                        "start": result.timestamp.start,
-                        "end": result.timestamp.end
+                topics_data["results"].append(
+                    {
+                        "text": result.text,
+                        "labels": [
+                            {"label": label.label, "relevance": label.relevance} for label in result.labels
+                        ],
+                        "timestamp": {"start": result.timestamp.start, "end": result.timestamp.end},
                     }
-                })
+                )
 
             intelligence["topics"] = topics_data
 
@@ -441,7 +428,7 @@ class AAITranscriptionService(TranscriptionService):
             }
 
         return intelligence
-    
+
     def standardize_result(self, transcript: aai.Transcript) -> TranscriptionResult:
         """
         Standardize AssemblyAI transcript to match common format.
@@ -456,8 +443,7 @@ class AAITranscriptionService(TranscriptionService):
         words = self._extract_words(transcript)
         utterances = self._extract_utterances(transcript)
 
-        language = self.config.language_code or \
-                ("auto" if self.config.language_detection else "unknown")
+        language = self.config.language_code or ("auto" if self.config.language_detection else "unknown")
 
         return TranscriptionResult(
             text=transcript.text or "",
@@ -470,55 +456,51 @@ class AAITranscriptionService(TranscriptionService):
             status=transcript.status,
             raw_result=transcript.json_response,
         )
-    
+
     def transcribe(
-        self,
-        audio_file: Union[Path, BinaryIO, str],
-        options: Optional[Dict[str, Any]] = None
+        self, audio_file: Union[Path, BinaryIO, str], options: Optional[Dict[str, Any]] = None
     ) -> TranscriptionResult:
         """
         Transcribe audio file to text using AssemblyAI's synchronous SDK approach.
-        
+
         This method handles:
         - File paths
         - File-like objects
         - URLs
-        
+
         Args:
             audio_file: Path, file-like object, or URL of audio file
             options: Provider-specific options for transcription
-            
+
         Returns:
             Dictionary containing standardized transcription results
         """
         try:
             transcript = self._gen_transcript(options, audio_file)
-            
+
             # Standardize the result format
             return self.standardize_result(transcript)
-            
+
         except Exception as e:
             logger.error(f"Transcription failed: {e}")
             raise RuntimeError(f"AssemblyAI transcription failed: {e}") from e
-    
+
     def transcribe_async(
-        self,
-        audio_file: Union[Path, BinaryIO, str],
-        options: Optional[Dict[str, Any]] = None
+        self, audio_file: Union[Path, BinaryIO, str], options: Optional[Dict[str, Any]] = None
     ) -> Future[Any]:
         """
         Submit an asynchronous transcription job using AssemblyAI's SDK.
-        
+
         This method submits a transcription job and returns immediately with
         a transcript ID that can be used to retrieve results later.
-        
+
         Args:
             audio_file: Path, file-like object, or URL of audio file
             options: Provider-specific options for transcription
-            
+
         Returns:
             String containing the transcript ID for later retrieval
-            
+
         Notes:
             The SDK's submit method returns a Future object, but this method
             extracts just the transcript ID for simpler handling.
@@ -526,33 +508,32 @@ class AAITranscriptionService(TranscriptionService):
         try:
             # Create configuration with options
             tx_config = self._create_transcription_config(options)
-            
+
             # Get file path/object in the right format
             file_path = self._get_file_path(audio_file)
-            
+
             logger.info("Submitting asynchronous transcription with AssemblyAI SDK")
-            
+
             # Use the SDK's asynchronous submit method
             # This returns a Future object containing a Transcript
             return cast(
                 Future[Any],
                 self.transcriber.transcribe_async(file_path, config=tx_config),
             )
-                        
+
         except Exception as e:
             logger.error(f"Transcription submission failed: {e}")
-            raise RuntimeError(f"AssemblyAI transcription submission failed: {e}") \
-                from e
-    
+            raise RuntimeError(f"AssemblyAI transcription submission failed: {e}") from e
+
     def get_result(self, job_id: str) -> TranscriptionResult:
         """
         Get results for an existing transcription job.
-        
+
         This method blocks until the transcript is retrieved.
-        
+
         Args:
             job_id: ID of the transcription job
-            
+
         Returns:
             Dictionary containing transcription results
         """
@@ -560,44 +541,41 @@ class AAITranscriptionService(TranscriptionService):
             # Use the SDK's get_by_id method to retrieve the transcript
             # This blocks until the transcript is retrieved
             transcript = aai.Transcript.get_by_id(job_id)
-            
+
             # Standardize the result format
             return self.standardize_result(transcript)
-            
+
         except Exception as e:
             logger.error(f"Failed to retrieve transcript {job_id}: {e}")
             raise RuntimeError(f"Failed to retrieve transcript: {e}") from e
-    
+
     def get_subtitles(
-        self, 
-        transcript_id: str, 
+        self,
+        transcript_id: str,
         format_type: str = "srt",
     ) -> str:
         """
         Get subtitles directly from AssemblyAI.
-        
+
         Args:
             transcript_id: ID of the transcription job
             format_type: Format type ("srt" or "vtt")
-            
+
         Returns:
             String representation in the requested format
-            
+
         Raises:
             ValueError: If the format type is not supported
         """
         chars_per_caption = self.config.chars_per_caption
-        
+
         format_type = format_type.lower()
-        
+
         if format_type not in ["srt", "vtt"]:
-            raise ValueError(
-                f"Unsupported subtitle format: {format_type}. "
-                "Supported formats: srt, vtt"
-                )
+            raise ValueError(f"Unsupported subtitle format: {format_type}. Supported formats: srt, vtt")
         # Create transcript object from ID
         transcript = aai.Transcript(transcript_id=transcript_id)
-        
+
         # Get subtitles in requested format
         if format_type == "srt":
             return cast(
@@ -609,40 +587,40 @@ class AAITranscriptionService(TranscriptionService):
                 str,
                 transcript.export_subtitles_vtt(chars_per_caption=chars_per_caption),
             )
-    
+
     def transcribe_to_format(
         self,
         audio_file: Union[Path, BinaryIO, str],
         format_type: str = "srt",
         transcription_options: Optional[Dict[str, Any]] = None,
-        format_options: Optional[Dict[str, Any]] = None
+        format_options: Optional[Dict[str, Any]] = None,
     ) -> str:
         """
         Transcribe audio and return result in specified format.
-        
+
         Takes advantage of the direct subtitle generation
         functionality when requesting SRT or VTT formats.
-        
+
         Args:
             audio_file: Path, file-like object, or URL of audio file
             format_type: Format type (e.g., "srt", "vtt", "text")
             transcription_options: Options for transcription
             format_options: Format-specific options
-            
+
         Returns:
             String representation in the requested format
         """
         format_type = format_type.lower()
-        chars_per_caption = format_options.get(
-            'chars_per_caption', self.config.chars_per_caption) \
-            if format_options else self.config.chars_per_caption
+        chars_per_caption = (
+            format_options.get("chars_per_caption", self.config.chars_per_caption)
+            if format_options
+            else self.config.chars_per_caption
+        )
 
-        transcript = self._gen_transcript(
-                transcription_options, audio_file
-            )
+        transcript = self._gen_transcript(transcription_options, audio_file)
 
         # Check if we need direct subtitle generation
-        if format_type == "srt":  
+        if format_type == "srt":
             return cast(
                 str,
                 transcript.export_subtitles_srt(chars_per_caption=chars_per_caption),
@@ -658,9 +636,7 @@ class AAITranscriptionService(TranscriptionService):
         result = self.transcribe(audio_file, transcription_options)
 
         # Then convert to the requested format
-        return self.format_converter.convert(
-            result, format_type, format_options or {}
-        )
+        return self.format_converter.convert(result, format_type, format_options or {})
 
     def _gen_transcript(
         self,
@@ -669,12 +645,12 @@ class AAITranscriptionService(TranscriptionService):
     ) -> aai.Transcript:
         # Create configuration with options
         tx_config = self._create_transcription_config(transcription_options)
-        
+
         # Get file path/object in the right format
         file_path = self._get_file_path(audio_file)
-        
+
         logger.info("Starting synchronous transcription with AssemblyAI SDK")
-        
+
         # Use the SDK's synchronous transcribe method
         # This will block until transcription is complete
         return cast(aai.Transcript, self.transcriber.transcribe(file_path, config=tx_config))

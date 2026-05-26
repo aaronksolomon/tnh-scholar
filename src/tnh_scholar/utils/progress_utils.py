@@ -5,9 +5,7 @@ from typing import Optional
 
 from tqdm import tqdm
 
-BAR_FORMAT = (
-    "{desc}: {percentage:3.0f}%|{bar}| " "Total: {total_fmt} sec. [elapsed: {elapsed}]"
-)
+BAR_FORMAT = "{desc}: {percentage:3.0f}%|{bar}| Total: {total_fmt} sec. [elapsed: {elapsed}]"
 
 
 class ExpectedTimeTQDM:
@@ -54,9 +52,7 @@ class ExpectedTimeTQDM:
             time.sleep(self.delay_start)
 
         # 2) Create the tqdm bar (only now does it appear)
-        self._pbar = tqdm(
-            total=self.expected_time, desc=self.desc, unit="sec", bar_format=BAR_FORMAT
-        )
+        self._pbar = tqdm(total=self.expected_time, desc=self.desc, unit="sec", bar_format=BAR_FORMAT)
 
         # 3) Update until told to stop
         while not self._stop_event.is_set():
@@ -81,8 +77,6 @@ class ExpectedTimeTQDM:
             self._pbar.close()
 
     import time
-
-
 
 
 class TimeProgress:

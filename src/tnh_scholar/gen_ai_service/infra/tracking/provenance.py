@@ -26,6 +26,7 @@ __all__ = [
     "build_provenance",
 ]
 
+
 def build_provenance(
     *,
     fingerprint: Fingerprint,

@@ -59,7 +59,6 @@ class LanguageChunker(ChunkingStrategy):
 
         return TimeGapChunker(grouping_config).extract(enriched_segments)
 
-
     def _probe_segment_language(self, segment: DiarizedSegment) -> str:
         """Return detected language for a segment or a stable fallback."""
         assert self.fetcher and self.detector
@@ -80,8 +79,7 @@ class LanguageChunker(ChunkingStrategy):
         quarter_point = first_seg.start + (block.duration // 4)
         three_quarter = first_seg.start + (block.duration * 3 // 4)
 
-        probe_segs = [self._segment_at(block, quarter_point),
-                      self._segment_at(block, three_quarter)]
+        probe_segs = [self._segment_at(block, quarter_point), self._segment_at(block, three_quarter)]
 
         langs = {self._probe_segment_language(segment) for segment in probe_segs}
 

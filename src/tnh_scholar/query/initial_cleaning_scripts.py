@@ -56,9 +56,7 @@ def extract_text_and_metadata(file_path):
         soup = BeautifulSoup(item.get_body_content(), "html.parser")
 
         chapter_title, chapter_content = extract_content(soup)
-        content_with_metadata["chapters"].append(
-            {"chapter": chapter_title, "content": chapter_content}
-        )
+        content_with_metadata["chapters"].append({"chapter": chapter_title, "content": chapter_content})
 
     return content_with_metadata
 

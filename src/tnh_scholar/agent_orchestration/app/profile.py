@@ -31,9 +31,7 @@ class BootstrapRuntimeProfile:
 def build_bootstrap_runtime_profile() -> BootstrapRuntimeProfile:
     """Return the explicit bootstrap profile used by the maintained CLI."""
     return BootstrapRuntimeProfile(
-        validation=HeadlessValidationConfig(
-            builtin_commands=_bootstrap_builtin_commands()
-        ),
+        validation=HeadlessValidationConfig(builtin_commands=_bootstrap_builtin_commands()),
         policy=HeadlessPolicyConfig(
             execution_policy_settings=ExecutionPolicySettings(
                 default_policy=RequestedExecutionPolicy(

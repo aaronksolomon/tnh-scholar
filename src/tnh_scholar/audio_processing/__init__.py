@@ -32,13 +32,9 @@ def _load_diarization_config():
 
 _LOADERS: Mapping[str, Callable[[], object]] = {
     "ArtifactRetention": lambda: _load_multilingual_export("ArtifactRetention"),
-    "MultilingualTranscriptionRequest": lambda: _load_multilingual_export(
-        "MultilingualTranscriptionRequest"
-    ),
+    "MultilingualTranscriptionRequest": lambda: _load_multilingual_export("MultilingualTranscriptionRequest"),
     "TranscriptionProvider": lambda: _load_multilingual_export("TranscriptionProvider"),
-    "MultilingualTranscriptionService": lambda: _load_multilingual_export(
-        "MultilingualTranscriptionService"
-    ),
+    "MultilingualTranscriptionService": lambda: _load_multilingual_export("MultilingualTranscriptionService"),
     "DiarizationConfig": _load_diarization_config,
 }
 _LOADERS = MappingProxyType(_LOADERS)

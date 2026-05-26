@@ -305,9 +305,7 @@ class SpikeRunService:
             "Create or use the sandbox worktree and run the spike there."
         )
 
-    def _execute_agent(
-        self, context: RunContext, params: SpikeParams, policy: SpikePolicy
-    ) -> AgentRunResult:
+    def _execute_agent(self, context: RunContext, params: SpikeParams, policy: SpikePolicy) -> AgentRunResult:
         run_params = params.model_copy(update={"response_path": context.artifact_paths.response_path})
         command = self.command_builder.build(run_params)
         self._write_event(

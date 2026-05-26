@@ -68,9 +68,7 @@ class PromptsAdapter:
             validation_policy,
             schema_resolver=schema_resolver,
         )
-        self._renderer = renderer or PromptRenderer(
-            render_policy, settings_defaults={}
-        )
+        self._renderer = renderer or PromptRenderer(render_policy, settings_defaults={})
 
         mapper = PromptMapper()
         loader = PromptLoader(self._validator)
@@ -104,10 +102,7 @@ class PromptsAdapter:
         ps_rendered = self._renderer.render(prompt, params)
         rendered = RenderedPrompt(
             system=ps_rendered.system,
-            messages=[
-                Message(role=Role(msg.role), content=msg.content)
-                for msg in ps_rendered.messages
-            ],
+            messages=[Message(role=Role(msg.role), content=msg.content) for msg in ps_rendered.messages],
         )
         fingerprint = self._build_fingerprint(prompt, request)
         return rendered, fingerprint

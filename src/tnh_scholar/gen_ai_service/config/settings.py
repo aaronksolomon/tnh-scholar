@@ -73,6 +73,7 @@ class GenAISettings(BaseSettings):
         max_tokens = getattr(values, "default_max_output_tokens", 10_000)
         try:
             from tnh_scholar.gen_ai_service.config.registry import get_model_info
+
             limit = get_model_info(provider, model).context_window
         except ConfigurationError:
             return values

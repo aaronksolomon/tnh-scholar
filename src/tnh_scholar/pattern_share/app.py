@@ -56,17 +56,13 @@ class CredentialsManager:
             }
 
             if not all(credentials.values()):
-                raise ConfigurationError(
-                    "Missing required database credentials (SUPABASE_URL, SUPABASE_KEY)"
-                )
+                raise ConfigurationError("Missing required database credentials (SUPABASE_URL, SUPABASE_KEY)")
 
             return credentials
 
         except Exception as e:
             # Convert any unexpected exceptions to ConfigurationError
-            raise ConfigurationError(
-                f"Error loading database credentials: {str(e)}"
-            ) from e
+            raise ConfigurationError(f"Error loading database credentials: {str(e)}") from e
 
     def _initialize_openai_key(self):
         """Initialize OpenAI key with graceful fallbacks."""
@@ -93,9 +89,7 @@ class CredentialsManager:
             st.warning("No OpenAI API key found. Please enter your key in the sidebar.")
 
         except Exception as e:
-            st.warning(
-                f"Error initializing OpenAI key: {str(e)}. Please enter your key manually."
-            )
+            st.warning(f"Error initializing OpenAI key: {str(e)}. Please enter your key manually.")
             st.session_state.openai_key = ""
 
     def render_key_input(self):
@@ -124,10 +118,7 @@ class CredentialsManager:
 
     def is_openai_key_valid(self):
         """Check if OpenAI key is present and valid."""
-        return bool(
-            st.session_state.openai_key
-            and st.session_state.openai_key.startswith("sk-")
-        )
+        return bool(st.session_state.openai_key and st.session_state.openai_key.startswith("sk-"))
 
 
 class PatternRepository:
@@ -158,17 +149,14 @@ class PatternRepository:
         }
 
         # Store in Supabase with embeddings
-        ids = self.vector_store.add_texts(
-            texts=[pattern.instructions], metadatas=[pattern_data["metadata"]]
-        )
+        ids = self.vector_store.add_texts(texts=[pattern.instructions], metadatas=[pattern_data["metadata"]])
         return str(ids[0])
 
     def search_patterns(self, query: str, limit: int = 10) -> List[Dict]:
         """Search stored prompts using semantic similarity."""
         results = self.vector_store.similarity_search_with_score(query, k=limit)
         return [
-            {"pattern": doc.page_content, "metadata": doc.metadata, "score": score}
-            for doc, score in results
+            {"pattern": doc.page_content, "metadata": doc.metadata, "score": score} for doc, score in results
         ]
 
 

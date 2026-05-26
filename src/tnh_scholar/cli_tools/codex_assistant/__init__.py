@@ -1,2 +1,1 @@
 """Codex assistant CLI package."""
-

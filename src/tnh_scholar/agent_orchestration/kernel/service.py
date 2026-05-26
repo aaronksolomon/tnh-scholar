@@ -1037,8 +1037,7 @@ class KernelRunService:
                 PolicyViolation(
                     violation_class=PolicyViolationClass.protected_branch_violation,
                     message=(
-                        "Workspace-write policy is not allowed on protected branch "
-                        f"{snapshot.branch_name}."
+                        f"Workspace-write policy is not allowed on protected branch {snapshot.branch_name}."
                     ),
                     hard_violation=True,
                 )

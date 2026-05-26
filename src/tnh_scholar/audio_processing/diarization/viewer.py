@@ -40,6 +40,7 @@ def launch_segment_viewer(segments: List[SpeakerBlock], master_audio_file: Path)
     proc = subprocess.Popen(cmd)
     return proc.pid
 
+
 # --- Helper to close Streamlit viewer by PID ---
 def close_segment_viewer(pid: int):
     """Terminate the Streamlit viewer process by PID."""
@@ -49,10 +50,12 @@ def close_segment_viewer(pid: int):
     except Exception as e:
         print(f"Failed to close Streamlit viewer (PID {pid}): {e}")
 
+
 # --- Main Streamlit App ---
 def load_segments_from_file(path):
     with open(path, "r") as f:
         return json.load(f)
+
 
 def _load_viewer_payload() -> tuple[list[dict] | None, dict | None, str | None]:
     """Load serialized viewer payload from CLI args."""
@@ -62,17 +65,17 @@ def _load_viewer_payload() -> tuple[list[dict] | None, dict | None, str | None]:
             return payload.get("segments"), payload.get("meta"), None
         except Exception as e:
             return None, None, f"Failed to load segment data: {e}"
-    return None, None, (
-        "No segment data file provided. This viewer requires explicit segment and audio file input."
+    return (
+        None,
+        None,
+        ("No segment data file provided. This viewer requires explicit segment and audio file input."),
     )
 
 
 def _render_timeline(blocks: List[SpeakerBlock]) -> None:
     """Render the block timeline plot."""
     speakers = list({block.speaker for block in blocks})
-    color_map = {
-        spk: pc.qualitative.Plotly[i % len(pc.qualitative.Plotly)] for i, spk in enumerate(speakers)
-    }
+    color_map = {spk: pc.qualitative.Plotly[i % len(pc.qualitative.Plotly)] for i, spk in enumerate(speakers)}
 
     fig = go.Figure()
     speaker_blocks = defaultdict(list)
@@ -92,10 +95,7 @@ def _render_timeline(blocks: List[SpeakerBlock]) -> None:
                     orientation="h",
                     marker_color=color_map[speaker],
                     name=f"{idx + 1}: {speaker}",
-                    hovertext=(
-                        f"{idx + 1}: {speaker} "
-                        f"({start_sec:.2f}s-{start_sec + duration_sec:.2f}s)"
-                    ),
+                    hovertext=(f"{idx + 1}: {speaker} ({start_sec:.2f}s-{start_sec + duration_sec:.2f}s)"),
                     width=bar_thickness,
                 )
             )
@@ -171,6 +171,7 @@ def main():
         st.error(f"Error generating timeline plot: {e}")
 
     _render_segment_player(blocks, master_audio_path)
+
 
 if __name__ == "__main__":
     # Only run Streamlit app if called as main

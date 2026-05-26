@@ -28,6 +28,7 @@ from tnh_scholar.gen_ai_service.utils.response_utils import (
 
 class SampleModel(BaseModel):
     """Sample Pydantic model for testing."""
+
     name: str
     value: int
 
@@ -113,6 +114,7 @@ def test_extract_object_with_type_check():
 
 def test_extract_object_wrong_type():
     """Test extracting object with wrong type raises error."""
+
     class OtherModel(BaseModel):
         foo: str
 

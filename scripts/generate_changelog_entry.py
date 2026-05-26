@@ -118,9 +118,7 @@ def main():
     """Main entry point."""
     last_tag = get_last_tag()
     if not last_tag:
-        print(
-            "No previous tag found. Cannot generate changelog.", file=sys.stderr
-        )
+        print("No previous tag found. Cannot generate changelog.", file=sys.stderr)
         print(
             "\nThis is likely your first release. Write the changelog manually.",
             file=sys.stderr,

@@ -238,10 +238,7 @@ def _strip_openai_incompatible_keywords(node: object) -> object:
 
 
 def _response_format_name(schema_ref: str) -> str:
-    normalized = "".join(
-        char if char.isalnum() or char in {"_", "-"} else "_"
-        for char in schema_ref
-    )
+    normalized = "".join(char if char.isalnum() or char in {"_", "-"} else "_" for char in schema_ref)
     return normalized[:64] or "structured_output"
 
 

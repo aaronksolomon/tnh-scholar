@@ -3,12 +3,12 @@ Module review and recommendations:
 
 Big Picture Approach:
 
-Modular, Configurable, and Extensible: Your use of Pydantic models for settings and configs is excellent. 
+Modular, Configurable, and Extensible: Your use of Pydantic models for settings and configs is excellent.
 It makes the pipeline flexible and easy to tune for different ASR or enhancement needs.
 Tooling: Leveraging SoX and FFmpeg is a pragmatic choice for robust, high-quality audio processing.
-Pipeline Structure: The AudioEnhancer class is well-structured, 
+Pipeline Structure: The AudioEnhancer class is well-structured,
 with clear separation of concerns for each processing step (remix, rate, gain, EQ, compand, etc.).
-Notebook Integration: The play_audio method and use of IPython display is great for interactive, 
+Notebook Integration: The play_audio method and use of IPython display is great for interactive,
 iterative work.
 
 Details & Points You Might Be Missing:
@@ -19,7 +19,7 @@ You print errors but could benefit from more structured logging (e.g., using Pyt
 Consider more granular exception handling, especially for subprocess calls.
 Testing & Validation:
 
-No unit tests or validation of output audio quality/format are present. Consider adding automated tests 
+No unit tests or validation of output audio quality/format are present. Consider adding automated tests
 (even if just for file existence, format, and basic properties).
 You could add a method to compare pre/post enhancement SNR, loudness, or other metrics.
 Documentation & Examples:
@@ -32,7 +32,7 @@ For large-scale or batch processing, consider parallelization or async processin
 Temporary files (e.g., intermediate FLACs) could be managed/cleaned up more robustly.
 Extensibility:
 
-The pipeline is modular, but adding a “custom steps” hook (e.g., user-defined SoX/FFmpeg args) 
+The pipeline is modular, but adding a “custom steps” hook (e.g., user-defined SoX/FFmpeg args)
 would make it even more flexible.
 You might want to support other codecs or output formats for downstream ASR models.
 Feature Gaps:
@@ -42,7 +42,7 @@ Consider adding Voice Activity Detection (VAD) or silence trimming as optional s
 You could add a “dry run” mode to print the SoX/FFmpeg commands without executing, for debugging.
 ASR-Specific Enhancements:
 
-You might want to add preset configs for different ASR models (e.g., Whisper, Wav2Vec2, etc.), 
+You might want to add preset configs for different ASR models (e.g., Whisper, Wav2Vec2, etc.),
 as they may have different optimal preprocessing.
 Consider integrating with open-source ASR evaluation tools to close the loop on enhancement effectiveness.
 General Strategic Recommendations:
@@ -54,14 +54,14 @@ CLI/Script Interface: Consider a command-line interface for use outside notebook
 Unit Tests: Add basic tests for each method, especially for error cases.
 Summary Table:
 
- | Modularity | Good | Add custom step hooks | 
- | Configurability | Excellent | Presets for more ASR models | 
- | Error Handling | Basic | Use logging, more granular exceptions | 
- | Testing | Missing | Add unit tests, output validation | 
- | Documentation | Good | Add usage examples, README | 
- | Extensibility | Good | Support more codecs, batch processing | 
+ | Modularity | Good | Add custom step hooks |
+ | Configurability | Excellent | Presets for more ASR models |
+ | Error Handling | Basic | Use logging, more granular exceptions |
+ | Testing | Missing | Add unit tests, output validation |
+ | Documentation | Good | Add usage examples, README |
+ | Extensibility | Good | Support more codecs, batch processing |
  | ASR Optimization | Good start | Add VAD, silence trim, model-specific configs |
- 
+
 """
 
 import json
@@ -77,9 +77,10 @@ from tnh_scholar.logging_config import get_child_logger
 
 logger = get_child_logger(__name__)
 
+
 class CompressionSettings(BaseSettings):
     """Compression settings for audio enhancement routines.
-    
+
     Attributes:
         minimal: List of compand arguments for minimal compression.
         light: List of compand arguments for light compression.
@@ -89,6 +90,7 @@ class CompressionSettings(BaseSettings):
         whisper_aggressive: List of compand arguments for aggressive Whisper compression.
         primary_speech_only: List of compand arguments for primary speech only.
     """
+
     minimal: list[str] = ["0.1,0.3", "3:-50,-40,-30,-20", "-3", "-80", "0.2"]
     light: list[str] = ["0.05,0.2", "6:-60,-50,-40,-30,-20,-10", "-3", "-85", "0.1"]
     moderate: list[str] = ["0.03,0.15", "6:-65,-50,-40,-30,-20,-10", "-4", "-85", "0.1"]
@@ -101,33 +103,33 @@ class CompressionSettings(BaseSettings):
 class EQSettings(BaseSettings):
     highpass_freq: int = 175
     lowpass_freq: int = 15000
-    eq_bands: list[tuple[int, float, int]] = [
-        (100, 0.9, -20),
-        (1500, 1, 4),
-        (4000, 0.6, 15),
-        (10000, 1, -10)
-    ]
+    eq_bands: list[tuple[int, float, int]] = [(100, 0.9, -20), (1500, 1, 4), (4000, 0.6, 15), (10000, 1, -10)]
     contrast: int = 75
     bass: tuple[int, int] = (-5, 200)
     treble: tuple[int, int] = (3, 3000)
 
+
 class GateSettings(BaseSettings):
     gate_params: list[str] = ["0.1", "0.05", "-inf", "0.1", "-90", "0.1"]
+
 
 class NormalizationSettings(BaseSettings):
     norm_level: int = -1
 
+
 class RemixSettings(BaseSettings):
     remix_channels: str = "1,2"
+
 
 class RateSettings(BaseSettings):
     rate_args: list[str] = ["-v"]
 
+
 class EnhancementConfig(BaseModel):
-    codec: str = 'flac'
+    codec: str = "flac"
     sample_rate: int = 48000
     channels: int = 2
-    compression_level: str = 'aggressive'
+    compression_level: str = "aggressive"
     force_mono: bool = False
     target_rate: Optional[int] = None
     eq: EQSettings = EQSettings()
@@ -138,21 +140,22 @@ class EnhancementConfig(BaseModel):
     include_gate: bool = True
     include_eq: bool = True
 
+
 class AudioEnhancer:
     def __init__(
-        self, 
-        config: EnhancementConfig = EnhancementConfig(), 
-        compression_settings: CompressionSettings = CompressionSettings()
-        ):
+        self,
+        config: EnhancementConfig = EnhancementConfig(),
+        compression_settings: CompressionSettings = CompressionSettings(),
+    ):
         """Initialize with enhancement configuration and compression settings."""
-        
+
         # Check required tools
         for tool in ["sox", "ffmpeg"]:
             try:
                 subprocess.run(["which", tool], capture_output=True, text=True, check=True)
             except (subprocess.SubprocessError, FileNotFoundError) as e:
                 raise RuntimeError(f"{tool} is not installed. Please install it first.") from e
-            
+
         self.config = config
         self.compression_settings = compression_settings
 
@@ -207,8 +210,12 @@ class AudioEnhancer:
     def _set_freq(self) -> list[str]:
         """Set highpass and lowpass frequencies."""
         return [
-            "highpass", "-1", str(self.config.eq.highpass_freq),
-            "lowpass", "-1", str(self.config.eq.lowpass_freq)
+            "highpass",
+            "-1",
+            str(self.config.eq.highpass_freq),
+            "lowpass",
+            "-1",
+            str(self.config.eq.lowpass_freq),
         ]
 
     def _set_eq(self) -> list[str]:
@@ -223,7 +230,7 @@ class AudioEnhancer:
         comp_args: list[str] = getattr(
             self.compression_settings,
             self.config.compression_level,
-            self.compression_settings.whisper_optimized
+            self.compression_settings.whisper_optimized,
         )
         return ["compand", *comp_args, ":"]
 
@@ -237,9 +244,14 @@ class AudioEnhancer:
         """Set contrast, bass, and treble if EQ is enabled."""
         if self.config.include_eq:
             return [
-                "contrast", str(self.config.eq.contrast),
-                "bass", str(self.config.eq.bass[0]), str(self.config.eq.bass[1]),
-                "treble", f"+{self.config.eq.treble[0]}", str(self.config.eq.treble[1])
+                "contrast",
+                str(self.config.eq.contrast),
+                "bass",
+                str(self.config.eq.bass[0]),
+                str(self.config.eq.bass[1]),
+                "treble",
+                f"+{self.config.eq.treble[0]}",
+                str(self.config.eq.treble[1]),
             ]
         return []
 
@@ -252,12 +264,17 @@ class AudioEnhancer:
         Convert input audio to FLAC format using ffmpeg, preserving maximal fidelity.
         """
         cmd = [
-            "ffmpeg", "-i", str(input_path),
-            "-map", "0:a:0",
-            "-c:a", "flac",
-            "-compression_level", "8",
+            "ffmpeg",
+            "-i",
+            str(input_path),
+            "-map",
+            "0:a:0",
+            "-c:a",
+            "flac",
+            "-compression_level",
+            "8",
             str(output_path),
-            "-y"
+            "-y",
         ]
         result = subprocess.run(cmd, check=True, capture_output=True)
         if result.returncode != 0:
@@ -301,15 +318,19 @@ class AudioEnhancer:
         """
         input_path = Path(input_path)
         output_path = self._sample_output_path(input_path, output_path, start, duration, output_format)
-        
+
         if codec is None:
             codec = "flac" if output_format == "flac" else None
 
         cmd = [
-            "ffmpeg", "-y",
-            "-ss", str(start),
-            "-t", str(duration),
-            "-i", str(input_path),
+            "ffmpeg",
+            "-y",
+            "-ss",
+            str(start),
+            "-t",
+            str(duration),
+            "-i",
+            str(input_path),
         ]
         if codec:
             cmd += ["-c:a", codec]
@@ -332,12 +353,11 @@ class AudioEnhancer:
         output_format: str,
     ) -> Path:
         if output_path is None:
-            return ( 
-                    input_path.parent / 
-                    f"{input_path.stem}_sample_{int(start)}s_{int(duration)}s.{output_format}"
+            return (
+                input_path.parent / f"{input_path.stem}_sample_{int(start)}s_{int(duration)}s.{output_format}"
             )
         return Path(output_path)
-            
+
     def play_audio(self, file_path: Path):
         """Play audio in notebook for quality assessment."""
         display(Audio(str(file_path)))
@@ -345,8 +365,15 @@ class AudioEnhancer:
     def get_audio_info(self, file_path: Path) -> dict[str, Any]:
         """Get detailed audio information using ffprobe."""
         cmd = [
-            "ffprobe", "-v", "quiet", "-print_format", "json",
-            "-show_streams", "-select_streams", "a:0", str(file_path)
+            "ffprobe",
+            "-v",
+            "quiet",
+            "-print_format",
+            "json",
+            "-show_streams",
+            "-select_streams",
+            "a:0",
+            str(file_path),
         ]
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode == 0:
@@ -371,15 +398,14 @@ class AudioEnhancer:
         logger.info(f"Sample Format: {stream.get('sample_fmt', 'Unknown')}")
 
         return stream
-            
-            
-            
+
+
 def compress_wav_to_mp4_vbr(
     input_wav: str | Path, output_path: Optional[str | Path] = None, quality: int = 8
-    ) -> Path:
+) -> Path:
     """
     Compress WAV to M4A (AAC VBR) using ffmpeg.
-    
+
     Parameters:
     -----------
     input_wav : str or Path
@@ -388,7 +414,7 @@ def compress_wav_to_mp4_vbr(
         Output .mp4 file path. If None, auto-generated from input
     quality : int, default=8
         VBR quality level: 1 = good (~96kbps), 2 = very good (~128kbps), 3+ = higher bitrate
-    
+
     Returns:
     --------
     Path
@@ -400,29 +426,22 @@ def compress_wav_to_mp4_vbr(
     else:
         output_path = Path(output_path)
 
-    cmd = [
-        "ffmpeg", "-y", "-i", str(input_wav),
-        "-c:a", "aac",
-        "-q:a", str(quality),
-        str(output_path)
-    ]
-    
+    cmd = ["ffmpeg", "-y", "-i", str(input_wav), "-c:a", "aac", "-q:a", str(quality), str(output_path)]
+
     result = subprocess.run(cmd, capture_output=True, text=True)
-    
+
     if result.returncode != 0:
         logger.error("Error compressing audio:")
         logger.error(result.stderr)
         raise RuntimeError("FFmpeg compression failed.")
-    
+
     print(f"Compressed audio saved to: {output_path}")
     return output_path
 
 
-
 def get_sox_info(file_path):
     """Get audio info using SoX"""
-    result = subprocess.run(["sox", "--info", str(file_path)], 
-                          capture_output=True, text=True)
+    result = subprocess.run(["sox", "--info", str(file_path)], capture_output=True, text=True)
     if result.returncode == 0:
         logger.error(result.stdout)
     else:

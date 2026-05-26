@@ -52,13 +52,10 @@ class HeadlessBootstrapService:
 
     def _validate_bootstrap_workflow(self, workflow: WorkflowDefinition) -> None:
         unsupported = [
-            str(step.opcode)
-            for step in workflow.steps
-            if step.opcode in {Opcode.evaluate, Opcode.gate}
+            str(step.opcode) for step in workflow.steps if step.opcode in {Opcode.evaluate, Opcode.gate}
         ]
         if unsupported:
             joined = ", ".join(unsupported)
             raise ValueError(
-                "Maintained headless bootstrap does not support semantic control steps yet: "
-                f"{joined}."
+                f"Maintained headless bootstrap does not support semantic control steps yet: {joined}."
             )

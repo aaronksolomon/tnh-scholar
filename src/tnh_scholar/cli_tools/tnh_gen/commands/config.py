@@ -296,8 +296,7 @@ def set_config_value(
 
 
 @app.command("list")
-def list_config_keys(
-):
+def list_config_keys():
     """List available configuration keys supported by the CLI."""
     trace_id = uuid4().hex
     try:

@@ -13,6 +13,7 @@ from tnh_scholar.audio_processing.transcription import (
 
 class SubtitleFormat(str, Enum):
     """Supported subtitle formats."""
+
     SRT = "srt"
     VTT = "vtt"
     TEXT = "text"
@@ -20,7 +21,7 @@ class SubtitleFormat(str, Enum):
 
 class SRTConfig:
     """Configuration options for SRT processing."""
-    
+
     def __init__(
         self,
         include_speaker: bool = False,
@@ -32,7 +33,7 @@ class SRTConfig:
     ):
         """
         Initialize with default settings.
-        
+
         Args:
             include_speaker: Whether to include speaker labels in output
             speaker_format: Format string for speaker attribution
@@ -49,43 +50,40 @@ class SRTConfig:
 
 
 def _extract_speaker_from_text(text: str) -> Tuple[Optional[str], str]:
-            """Utility to extract speaker information from text if present, 
-            using the format "[speaker] text"."""
-            if match := re.match(r"^\[([^\]]+)\]\s*(.*)", text):
-                speaker = match[1].strip()
-                text = match[2].strip()
-                return speaker, text
-            return None, text
-        
+    """Utility to extract speaker information from text if present,
+    using the format "[speaker] text"."""
+    if match := re.match(r"^\[([^\]]+)\]\s*(.*)", text):
+        speaker = match[1].strip()
+        text = match[2].strip()
+        return speaker, text
+    return None, text
+
+
 class SRTProcessor:
     """
     Handles parsing and generating SRT format.
-    
+
     Provides functionality to convert between SRT text format and
     TimedText objects, with various formatting options.
     Supports both native parsing/generation and pysrt backend.
     """
-    
+
     def __init__(self, config: Optional[SRTConfig] = None):
         """
         Initialize with optional configuration overrides.
-        
+
         Args:
             config: Configuration options for SRT processing
         """
         self.config = config or SRTConfig()
-        
+
     def merge_srts(self, srt_list: List[str]) -> str:
         """Merge multiple SRT files into a single SRT string."""
         timed_text_list = [self.parse(srt) for srt in srt_list]
         combined_timed_text = self.combine(timed_text_list)
         return self.generate(combined_timed_text, self.config.include_speaker)
-    
-    def generate(
-        self, 
-        timed_text: TimedText, 
-        include_speaker: Optional[bool] = None
-    ) -> str:
+
+    def generate(self, timed_text: TimedText, include_speaker: Optional[bool] = None) -> str:
         """
         Generate SRT content from a TimedText object.
         Uses internal generator or pysrt depending on configuration.
@@ -94,18 +92,18 @@ class SRTProcessor:
             include_speaker = self.config.include_speaker
         if self.config.use_pysrt:
             return self._generate_with_pysrt(timed_text)
-        
+
         srt_parts: list[str] = []
         srt_parts.extend(
             self._generate_entry(
-                entry, 
+                entry,
                 index=i if self.config.reindex_entries else entry.index,
-                include_speaker=include_speaker
+                include_speaker=include_speaker,
             )
             for i, entry in enumerate(timed_text.iter_segments(), start=1)
         )
         return "\n".join(srt_parts)
-        
+
     def parse(self, srt_content: str) -> TimedText:
         """
         Parse SRT content into a new TimedText object.
@@ -115,31 +113,28 @@ class SRTProcessor:
             return self._parse_with_pysrt(srt_content)
         parser = self._SRTParser(srt_content)
         return parser.parse()
-        
+
     def shift_timestamps(self, timed_text: TimedText, offset_ms: int) -> TimedText:
-            """
-            Shift all timestamps by the given offset.
-            
-            Args:
-                timed_text: TimedText to shift
-                offset_ms: Offset in milliseconds to apply
-                
-            Returns:
-                New TimedText object with adjusted timestamps
-            """
-            new_segments = [
-                segment.shift_time(offset_ms) 
-                for segment in timed_text.iter_segments()
-                ]
-            return TimedText(segments=new_segments)
-    
+        """
+        Shift all timestamps by the given offset.
+
+        Args:
+            timed_text: TimedText to shift
+            offset_ms: Offset in milliseconds to apply
+
+        Returns:
+            New TimedText object with adjusted timestamps
+        """
+        new_segments = [segment.shift_time(offset_ms) for segment in timed_text.iter_segments()]
+        return TimedText(segments=new_segments)
+
     def combine(self, timed_texts: List[TimedText]) -> TimedText:
         """
         Combine multiple lists of TimedText into one, with proper indexing.
-        
+
         Args:
             timed_texts: List of TimedText to combine
-            
+
         Returns:
             Combined TimedText object
         """
@@ -151,7 +146,7 @@ class SRTProcessor:
         combined_segments.sort(key=lambda x: x.start_ms)
 
         return TimedText(segments=combined_segments)
-    
+
     def assign_single_speaker(self, srt_content: str, speaker: str) -> str:
         """
         Assign the same speaker to all segments in the SRT content.
@@ -160,9 +155,7 @@ class SRTProcessor:
         timed_text.set_all_speakers(speaker)
         return self.generate(timed_text, include_speaker=True)
 
-    def assign_speaker_by_mapping(
-        self, srt_content: str, speaker_labels: dict[str, list[int]]
-        ) -> str:
+    def assign_speaker_by_mapping(self, srt_content: str, speaker_labels: dict[str, list[int]]) -> str:
         """
         Assign speakers to segments based on a mapping of speaker to segment indices.
         (Not implemented yet.)
@@ -170,14 +163,14 @@ class SRTProcessor:
         raise NotImplementedError("assign_speaker_by_mapping is not implemented yet.")
 
     def add_speaker_labels(
-        self, 
-        srt_content: str, 
-        *, 
-        speaker: Optional[str] = None, 
-        speaker_labels: Optional[dict[str, list[int]]] = None
-        ) -> str:
+        self,
+        srt_content: str,
+        *,
+        speaker: Optional[str] = None,
+        speaker_labels: Optional[dict[str, list[int]]] = None,
+    ) -> str:
         """
-        Unified entry point for adding speaker labels. 
+        Unified entry point for adding speaker labels.
         (Not implemented yet.)
         """
         raise NotImplementedError("add_speaker_labels is not implemented yet.")
@@ -197,13 +190,11 @@ class SRTProcessor:
                         timed_segment = self._parse_entry()
                         self.timed_segments.append(timed_segment)
                     except (IndexError, ValueError) as e:
-                        raise ValueError(
-                            f"Invalid SRT format at line {self.current_index}: {e}"
-                        ) from e
+                        raise ValueError(f"Invalid SRT format at line {self.current_index}: {e}") from e
                 self.current_index += 1  # Always increment to avoid infinite loops
 
             return TimedText(segments=self.timed_segments)
-        
+
         def _parse_entry(self) -> TimedTextUnit:
             index = self._parse_index()
             start_time, end_time = self._parse_timestamps()
@@ -241,19 +232,18 @@ class SRTProcessor:
 
         def _parse_text(self) -> str:
             text_lines = []
-            while self.current_index < len(self.lines) \
-                and self.lines[self.current_index].strip():
+            while self.current_index < len(self.lines) and self.lines[self.current_index].strip():
                 text_lines.append(self.lines[self.current_index])
                 self.current_index += 1
             return "\n".join(text_lines).strip()
-        
+
         def _timestamp_to_ms(self, timestamp: str) -> int:
             """
             Convert SRT timestamp (HH:MM:SS,mmm) to milliseconds.
-            
+
             Args:
                 timestamp: SRT format timestamp
-                
+
             Returns:
                 Timestamp in milliseconds
             """
@@ -266,11 +256,11 @@ class SRTProcessor:
             return hours * 3600000 + minutes * 60000 + seconds * 1000 + milliseconds
 
     def _generate_entry(
-        self, 
-        entry: TimedTextUnit, 
+        self,
+        entry: TimedTextUnit,
         index: Optional[int] = None,
         include_speaker: bool = False,
-        ) -> str:
+    ) -> str:
         """Generate a single SRT entry from a TimedUnit."""
         start_timestamp = self._ms_to_timestamp(entry.start_ms)
         end_timestamp = self._ms_to_timestamp(entry.end_ms)
@@ -286,21 +276,21 @@ class SRTProcessor:
             "",  # Empty line between entries
         ]
         return "\n".join(srt_entry)
-    
+
     def _ms_to_timestamp(self, milliseconds: int) -> str:
         """
         Convert milliseconds to SRT timestamp format (HH:MM:SS,mmm).
-        
+
         Args:
             milliseconds: Time in milliseconds
-            
+
         Returns:
             Formatted timestamp string
         """
         total_seconds, ms = divmod(milliseconds, 1000)
         hours, remainder = divmod(total_seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
-        
+
         return self.config.timestamp_format.format(hours, minutes, seconds, ms)
 
     def _parse_with_pysrt(self, srt_content: str) -> TimedText:
@@ -330,7 +320,6 @@ class SRTProcessor:
             end = pysrt.SubRipTime(milliseconds=segment.end_ms)
             text = segment.text
             if self.config.include_speaker and segment.speaker:
-                text = self.config.speaker_format.format(
-                    speaker=segment.speaker, text=text)
+                text = self.config.speaker_format.format(speaker=segment.speaker, text=text)
             subs.append(pysrt.SubRipItem(index=i, start=start, end=end, text=text))
         return str(subs.to_string())

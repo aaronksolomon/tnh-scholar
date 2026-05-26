@@ -54,8 +54,7 @@ class TranscriptionPipeline:
         self.transcriber = transcriber
         if transcriber == "whisper":
             self.transcription_options = patch_whisper_options(
-                transcription_options,
-                file_extension=audio_file.suffix
+                transcription_options, file_extension=audio_file.suffix
             )
         else:
             self.transcription_options = transcription_options
@@ -108,7 +107,6 @@ class TranscriptionPipeline:
             output_dir = Path(output_dir)
         elif not isinstance(output_dir, Path):
             raise TypeError("output_dir must be a str or pathlib.Path instance")
-
 
     def run(self) -> Optional[List[Dict[str, Any]]]:
         """
@@ -175,14 +173,12 @@ class TranscriptionPipeline:
             diarization_response = diarize_to_file(
                 audio_file_path=self.audio_file,
                 output_path=self.diarization_results_path,
-                wait_until_complete=True, # for this module defaulting to unlimited processing time
-                **(self.diarization_kwargs or {})
+                wait_until_complete=True,  # for this module defaulting to unlimited processing time
+                **(self.diarization_kwargs or {}),
             )
         else:
             diarization_response = diarize(
-                self.audio_file,
-                wait_until_complete=True,
-                **(self.diarization_kwargs or {})
+                self.audio_file, wait_until_complete=True, **(self.diarization_kwargs or {})
             )
         if diarization_response is None:
             raise RuntimeError("Diarizer returned None response")
@@ -266,11 +262,7 @@ class TranscriptionPipeline:
                 self.logger.error(f"Transcription failed for chunk {chunk}: {exc}")
                 transcript_text = None
                 error_detail = str(exc)
-            transcripts.append({
-                "chunk": chunk,
-                "transcript": transcript_text,
-                "error": error_detail
-            })
+            transcripts.append({"chunk": chunk, "transcript": transcript_text, "error": error_detail})
         return transcripts
 
     def _handle_pipeline_error(self, exc: Exception) -> None:

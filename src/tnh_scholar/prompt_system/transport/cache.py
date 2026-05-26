@@ -8,17 +8,13 @@ T = TypeVar("T")
 class CacheTransport(Protocol, Generic[T]):
     """Abstract cache transport."""
 
-    def get(self, key: str) -> T | None:
-        ...
+    def get(self, key: str) -> T | None: ...
 
-    def set(self, key: str, value: T, ttl_s: int | None = None) -> None:
-        ...
+    def set(self, key: str, value: T, ttl_s: int | None = None) -> None: ...
 
-    def invalidate(self, key: str) -> None:
-        ...
+    def invalidate(self, key: str) -> None: ...
 
-    def clear(self) -> None:
-        ...
+    def clear(self) -> None: ...
 
 
 class InMemoryCacheTransport(Generic[T]):
@@ -51,4 +47,3 @@ class InMemoryCacheTransport(Generic[T]):
 
     def clear(self) -> None:
         self._cache.clear()
-

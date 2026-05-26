@@ -9,12 +9,13 @@ from tnh_scholar.utils import TNHAudioSegment as AudioSegment
 
 logger = get_child_logger(__name__)
 
-# TODO use TimeMS everywhere in timing logic throughout codebase 
+# TODO use TimeMS everywhere in timing logic throughout codebase
+
 
 class DiarizedSegment(BaseModel):
     """
     Represents a diarized audio segment for a single speaker.
-    
+
     Attributes:
         speaker (str): The speaker label for this segment.
         start (TimeMs): Start time in milliseconds.
@@ -32,13 +33,14 @@ class DiarizedSegment(BaseModel):
           only when the segment is accumulated into a chunk for downstream audio handling.
         - These fields should be considered write-once and must not be mutated elsewhere.
     """
+
     speaker: str
     start: TimeMs  # Start time in milliseconds
-    end: TimeMs    # End time in milliseconds
-    audio_map_start: Optional[int] # location in the audio output file
-    gap_before: Optional[bool] # indicates a gap > gap_threshold before this segment
-    spacing_time: Optional[int] # spacing between this and previous segment; adjusted spacing if gap before
-    
+    end: TimeMs  # End time in milliseconds
+    audio_map_start: Optional[int]  # location in the audio output file
+    gap_before: Optional[bool]  # indicates a gap > gap_threshold before this segment
+    spacing_time: Optional[int]  # spacing between this and previous segment; adjusted spacing if gap before
+
     @property
     def duration(self) -> "TimeMs":
         """Get segment duration in milliseconds."""
@@ -47,7 +49,7 @@ class DiarizedSegment(BaseModel):
     @property
     def duration_sec(self) -> float:
         return float(self.duration.to_seconds())
-    
+
     # ------------------------------------------------------------------- #
     # IMPLEMENTATION NOTE
     # Convenience wrappers returning the new Time abstraction so can
@@ -61,27 +63,29 @@ class DiarizedSegment(BaseModel):
     @property
     def end_time(self) -> "TimeMs":
         return self.end
-    
+
     @property
     def mapped_start(self) -> int:
         """Downstream registry field set by the audio handler"""
         return int(self.start if self.audio_map_start is None else self.audio_map_start)
-    
+
     @property
     def mapped_end(self) -> int:
         if self.audio_map_start is None:
             return int(self.end)
         return int(self.audio_map_start + int(self.duration))
-    
+
     def normalize(self) -> None:
         """Normalize the duration of the segment to be nonzero and validate start/end values."""
         # Validate that start and end are non-negative integers
         if not isinstance(self.start, int) or not isinstance(self.end, int):
-            raise ValueError("Segment start and end must be integers, "
-                             f"got start={self.start}, end={self.end}")
+            raise ValueError(
+                f"Segment start and end must be integers, got start={self.start}, end={self.end}"
+            )
         if self.start < 0 or self.end < 0:
-            raise ValueError(f"Segment start and end must be non-negative, "
-                             f"got start={self.start}, end={self.end}")
+            raise ValueError(
+                f"Segment start and end must be non-negative, got start={self.start}, end={self.end}"
+            )
 
         # Explicitly handle negative durations
         if self.end < self.start:
@@ -98,6 +102,7 @@ class DiarizedSegment(BaseModel):
                 "Adjusting end to ensure minimum duration of 1."
             )
             self.end = TimeMs(self.start + 1)  # set minimum nonzero duration
+
 
 class AugDiarizedSegment(DiarizedSegment):
     """
@@ -117,7 +122,7 @@ class AugDiarizedSegment(DiarizedSegment):
         - The `audio` field is a slice of the original audio corresponding to this segment.
         - All time values (start, end, duration) are relative to the original audio.
         - When slicing or probing the `audio` field, use times relative to 0 (i.e., 0 to duration).
-        - For language probing or any operation on `audio`, 
+        - For language probing or any operation on `audio`,
           always use 0 as the start and `duration` as the end.
     """
 
@@ -131,8 +136,8 @@ class AugDiarizedSegment(DiarizedSegment):
         """End time relative to the segment audio (duration of segment)."""
         return self.duration
 
-    gap_before_new: bool  # rename when ready to move over to using this class 
-    spacing_time_new: TimeMs  # rename when ready to move over to using this class 
+    gap_before_new: bool  # rename when ready to move over to using this class
+    spacing_time_new: TimeMs  # rename when ready to move over to using this class
     audio: Optional[AudioSegment]
 
     @classmethod
@@ -142,7 +147,7 @@ class AugDiarizedSegment(DiarizedSegment):
         gap_before: Optional[bool] = None,
         spacing_time_new: Optional[TimeMs] = None,
         audio: Optional[AudioSegment] = None,
-        **kwargs
+        **kwargs,
     ) -> "AugDiarizedSegment":
         """
         Create an AugDiarizedSegment from a DiarizedSegment, with optional new fields.
@@ -165,7 +170,7 @@ class AugDiarizedSegment(DiarizedSegment):
             gap_before_new=segment.gap_before if segment.gap_before is not None else False,
             spacing_time_new=spacing_time_new if spacing_time_new is not None else TimeMs(0),
             audio=audio,
-            **kwargs
+            **kwargs,
         )
 
     class Config:
@@ -179,26 +184,28 @@ class AudioChunk(BaseModel):
     sample_rate: Optional[int] = None
     channels: Optional[int] = None
     format: Optional[str] = None
-    
+
     class Config:
         arbitrary_types_allowed = True
-        
+
 
 class DiarizationChunk(BaseModel):
     """Represents a chunk of segments to be processed together."""
+
     start_time: int  # Start time in milliseconds
-    end_time: int    # End time in milliseconds
+    end_time: int  # End time in milliseconds
     audio: Optional[AudioChunk] = None
     segments: List[DiarizedSegment]
     accumulated_time: int = 0
+
     class Config:
         arbitrary_types_allowed = True
-    
+
     @property
     def total_duration(self) -> int:
         """Get chunk duration in milliseconds."""
         return self.end_time - self.start_time
-    
+
     @property
     def total_duration_sec(self) -> float:
         return float(convert_ms_to_sec(self.total_duration))
@@ -206,6 +213,7 @@ class DiarizationChunk(BaseModel):
     @property
     def total_duration_time(self) -> "TimeMs":
         return TimeMs(self.total_duration)
+
 
 class SpeakerBlock(BaseModel):
     """A block of contiguous or near-contiguous segments spoken by the same speaker.
@@ -277,7 +285,7 @@ class SpeakerBlock(BaseModel):
             "duration_sec": duration_sec,
             "segment_count": segment_count,
         }
-    
+
     @classmethod
     def from_dict(cls, data: dict) -> "SpeakerBlock":
         """
@@ -311,7 +319,7 @@ class SpeakerBlock(BaseModel):
             except Exception as e:
                 logger.error(
                     f"SpeakerBlock.from_dict: Failed to construct DiarizedSegment at index {idx}: {e}"
-                    )
+                )
                 raise
             segments.append(segment)
 

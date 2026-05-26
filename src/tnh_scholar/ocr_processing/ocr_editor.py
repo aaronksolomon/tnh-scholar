@@ -73,9 +73,7 @@ st.write(st.session_state)
 
 # Sidebar file upload
 st.sidebar.title("OCR Editor")
-uploaded_image_file = st.sidebar.file_uploader(
-    "Upload an Image", type=["jpg", "jpeg", "png", "pdf"]
-)
+uploaded_image_file = st.sidebar.file_uploader("Upload an Image", type=["jpg", "jpeg", "png", "pdf"])
 uploaded_text_file = st.sidebar.file_uploader("Upload OCR Text File", type=["xml"])
 
 # Directory paths (optional for advanced workflows)
@@ -98,9 +96,7 @@ if uploaded_text_file:
                 st.session_state.current_page_index = 0  # Reset to the first page
                 st.session_state.uploaded_xml_file_name = uploaded_text_file.name
                 print(f"Session tree: {st.session_state.tree}")
-                print(
-                    f"Uploaded XML file name: {st.session_state.uploaded_xml_file_name}"
-                )
+                print(f"Uploaded XML file name: {st.session_state.uploaded_xml_file_name}")
     else:
         print("Error we should not reach: unsupported file type.")
 else:  # there is no active xml file so reset related state:
@@ -132,7 +128,6 @@ with col1:
 
 # Text editor and buttons in the right column
 with col2:
-
     if pages:
         # Ensure the current page's text is in session state
         current_text = pages[current_page_index]["text"]
@@ -175,9 +170,7 @@ with col2:
             if st.button("⬅️ Previous Page"):
                 # Save current page's edits to pages before navigating
                 if edited_text != st.session_state.current_text:
-                    st.session_state.pages[st.session_state.current_page_index][
-                        "text"
-                    ] = edited_text
+                    st.session_state.pages[st.session_state.current_page_index]["text"] = edited_text
                     st.session_state.current_text = edited_text
 
                 # Navigate to the previous page
@@ -193,9 +186,7 @@ with col2:
             # Save current page's edits to pages before navigating
             if st.button("Next Page ➡️"):
                 if edited_text != st.session_state.current_text:
-                    st.session_state.pages[st.session_state.current_page_index][
-                        "text"
-                    ] = edited_text
+                    st.session_state.pages[st.session_state.current_page_index]["text"] = edited_text
                     st.session_state.current_text = edited_text
 
                 if current_page_index < len(pages) - 1:

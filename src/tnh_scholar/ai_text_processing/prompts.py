@@ -24,6 +24,7 @@ logger = get_child_logger(__name__)
 
 MANAGER_UPDATE_MESSAGE = "PromptManager Update:"
 
+
 class Prompt:
     """
     Base Prompt class for version-controlled template prompts.
@@ -48,7 +49,7 @@ class Prompt:
     @staticmethod
     def _normalize_name(value: str) -> str:
         """Canonicalize prompt names for case-insensitive handling.
-        
+
         Currently: strip() + lower(). If future rules are needed (e.g.,
         removing punctuation, limiting length), implement them here.
         """
@@ -60,7 +61,7 @@ class Prompt:
         instructions: MarkdownStr,
         path: Optional[Path] = None,
         default_template_fields: Optional[Dict[str, str]] = None,
-        allow_empty_vars: bool = False,        
+        allow_empty_vars: bool = False,
     ) -> None:
         """
         Initialize a new Prompt instance.
@@ -97,7 +98,7 @@ class Prompt:
         Create and configure a Jinja2 environment with optimal settings.
 
         Returns:
-            Environment: Configured Jinja2 environment 
+            Environment: Configured Jinja2 environment
             with security and formatting options
         """
         return Environment(
@@ -117,9 +118,7 @@ class Prompt:
         try:
             self._env.parse(self.instructions)
         except TemplateError as e:
-            raise TemplateError(
-                f"Invalid template syntax in prompt '{self.name}': {str(e)}"
-            ) from e
+            raise TemplateError(f"Invalid template syntax in prompt '{self.name}': {str(e)}") from e
 
     def apply_template(self, field_values: Optional[Dict[str, str]] = None) -> str:
         """
@@ -143,10 +142,9 @@ class Prompt:
         """
         # Get frontmatter values
         frontmatter = self.extract_frontmatter() or {}
-        
+
         # Combine values with correct precedence using | operator
-        template_values = self.default_template_fields | \
-            frontmatter | (field_values or {})
+        template_values = self.default_template_fields | frontmatter | (field_values or {})
 
         instructions = self.get_content_without_frontmatter()
         logger.debug(f"instructions without frontmatter:\n{instructions}")
@@ -154,32 +152,26 @@ class Prompt:
         try:
             return self._render_template_with_values(instructions, template_values)
         except TemplateError as e:
-            raise TemplateError(
-                f"Template rendering failed for prompt '{self.name}': {str(e)}"
-                ) from e
+            raise TemplateError(f"Template rendering failed for prompt '{self.name}': {str(e)}") from e
 
-    def _render_template_with_values(
-        self, 
-        instructions: str, 
-        template_values: dict
-        ) -> str:
+    def _render_template_with_values(self, instructions: str, template_values: dict) -> str:
         """
         Validate and render template with provided values.
-        
+
         Args:
             instructions: Template content without frontmatter
             template_values: Values to substitute into template
-            
+
         Returns:
             Rendered template string
-            
+
         Raises:
             ValueError: If required template variables are missing
         """
         # Parse for validation
         parsed_content = self._env.parse(instructions)
         required_vars = find_undeclared_variables(parsed_content)
-        
+
         # Validate variables
         missing_vars = required_vars - set(template_values.keys())
         if missing_vars and not self._allow_empty_vars:
@@ -187,11 +179,11 @@ class Prompt:
                 f"Missing required template variables in prompt '{self.name}': "
                 f"{', '.join(sorted(missing_vars))}"
             )
-        
+
         # Create and render template
         template = self._env.from_string(instructions)
         return template.render(**template_values)
-    
+
     def extract_frontmatter(self) -> Optional[Dict[str, Any]]:
         """
         Extract and validate YAML frontmatter from markdown instructions.
@@ -210,8 +202,7 @@ class Prompt:
                 if frontmatter is None:
                     return None
                 if not isinstance(frontmatter, dict):
-                    logger.warning(f"Frontmatter must be a YAML dictionary: "
-                                   f"{frontmatter}")
+                    logger.warning(f"Frontmatter must be a YAML dictionary: {frontmatter}")
                     return None
                 return frontmatter
             except yaml.YAMLError as e:
@@ -241,17 +232,14 @@ class Prompt:
         updated_frontmatter = {**current_frontmatter, **new_data}
 
         # Create YAML string
-        yaml_str = yaml.dump(
-            updated_frontmatter, default_flow_style=False, allow_unicode=True
-        )
+        yaml_str = yaml.dump(updated_frontmatter, default_flow_style=False, allow_unicode=True)
 
         # Remove existing frontmatter if present
         content = self.get_content_without_frontmatter()
 
         # Combine new frontmatter with content
         self.instructions = MarkdownStr(f"---\n{yaml_str}---\n\n{content}")
-        
-        
+
     def source_bytes(self) -> bytes:
         """
         Best-effort raw bytes for prompt hashing.
@@ -278,10 +266,7 @@ class Prompt:
         Returns:
             str: Hexadecimal string of the SHA-256 hash
         """
-        content = (
-            f"{self.name}{self.instructions}"
-            f"{sorted(self.default_template_fields.items())}"
-            )
+        content = f"{self.name}{self.instructions}{sorted(self.default_template_fields.items())}"
         return hashlib.sha256(content.encode("utf-8")).hexdigest()
 
     def to_dict(self) -> Dict[str, Any]:
@@ -394,9 +379,7 @@ class GitBackedRepository:
         try:
             rel_path = file_path.relative_to(self.repo_path)
         except ValueError as e:
-            raise ValueError(
-                f"File {file_path} is not under the repository root {self.repo_path}"
-            ) from e
+            raise ValueError(f"File {file_path} is not under the repository root {self.repo_path}") from e
 
         if not file_path.exists():
             raise FileNotFoundError(f"File does not exist: {file_path}")
@@ -530,9 +513,7 @@ class GitBackedRepository:
 
                 # Get and display diffs
                 prev_commit = commits[i + 1] if i + 1 < len(commits) else None
-                stat_diff, detailed_diff = self._get_commit_diff(
-                    commit, file_path, prev_commit
-                )
+                stat_diff, detailed_diff = self._get_commit_diff(commit, file_path, prev_commit)
 
                 if stat_diff:
                     print("\nChanges:")
@@ -560,8 +541,7 @@ class GitBackedRepository:
             bool: True if file has no changes
         """
         return str(rel_path) not in (
-            [item.a_path for item in self.repo.index.diff(None)]
-            + self.repo.untracked_files
+            [item.a_path for item in self.repo.index.diff(None)] + self.repo.untracked_files
         )
 
 
@@ -646,9 +626,7 @@ class ConcurrentAccessManager:
                 yield
 
             except BlockingIOError as e:
-                raise RuntimeError(
-                    f"File {file_path} is locked by another process"
-                ) from e
+                raise RuntimeError(f"File {file_path} is locked by another process") from e
 
         except OSError as e:
             logger.error(f"Lock operation failed for {file_path}: {e}")
@@ -754,9 +732,7 @@ class PromptCatalog:
         try:
             resolved.relative_to(self.base_path)
         except ValueError as e:
-            raise ValueError(
-                f"Path {path} resolves outside repository: {self.base_path}"
-            ) from e
+            raise ValueError(f"Path {path} resolves outside repository: {self.base_path}") from e
 
         return resolved
 
@@ -775,9 +751,7 @@ class PromptCatalog:
         with suppress(StopIteration):
             for path in self.base_path.rglob("*.md"):
                 if path.is_file() and path.stem.lower() == target:
-                    logger.debug(
-                        f"Found prompt file for name {prompt_name} at: {path}"
-                    )
+                    logger.debug(f"Found prompt file for name {prompt_name} at: {path}")
                     return self._normalize_path(path)
         logger.debug(f"No prompt file found with name: {prompt_name}")
         return None
@@ -834,9 +808,9 @@ class PromptCatalog:
         # Locate the .md file; raise if missing
         path = self.get_path(prompt_name)
         if not path:
-            raise FileNotFoundError(f"No prompt file named {prompt_name}.md found in prompt catalog:\n"
-                                    f"{self.base_path}"
-                                    )
+            raise FileNotFoundError(
+                f"No prompt file named {prompt_name}.md found in prompt catalog:\n{self.base_path}"
+            )
 
         # Acquire lock before reading
         with self.access_manager.file_lock(path):
@@ -886,7 +860,7 @@ class PromptCatalog:
             base_path: Repository path to verify.
 
         Returns:
-            bool: True if the repository is valid 
+            bool: True if the repository is valid
             and contains no duplicate prompt files.
         """
         try:
@@ -930,7 +904,8 @@ class PromptCatalog:
         except (InvalidGitRepositoryError, Exception) as e:
             logger.error(f"Repository verification failed: {e}")
             return False
-        
+
+
 class LocalPromptManager:
     """
     A simple singleton implementation of PromptManager that ensures only one instance
@@ -987,5 +962,3 @@ class LocalPromptManager:
     def get_prompt(self, name: str) -> Prompt:
         """Get a prompt by name."""
         return self.prompt_manager.load(Prompt._normalize_name(name))
-    
-    

@@ -41,16 +41,20 @@ DEFAULT_PUNCTUATE_MODEL = "gpt-4o"
 DEFAULT_OPENAI_MODEL = "gpt-4o"
 DEFAULT_SECTION_RANGE_VAR = 2
 
+
 @dataclass
 class ProcessedSection:
     """Represents a processed section of text with its metadata."""
+
     title: str
     original_str: str
     processed_str: str
     metadata: Dict = field(default_factory=dict)
 
+
 class TextProcessor(ABC):
     """Abstract base class for text processors that can return Pydantic objects."""
+
     @abstractmethod
     def process_text(
         self,
@@ -73,8 +77,10 @@ class TextProcessor(ABC):
         """
         pass
 
+
 class OpenAIProcessor(TextProcessor):
     """OpenAI-based text processor implementation."""
+
     def __init__(self, model: Optional[str] = None, max_tokens: int = 0):
         if not model:
             model = DEFAULT_OPENAI_MODEL
@@ -102,6 +108,7 @@ class OpenAIProcessor(TextProcessor):
             response_format=response_format,
             **kwargs,
         )
+
 
 def _calculate_segment_size(num_text: NumberedText, target_segment_tokens: int) -> int:
     """
@@ -161,7 +168,7 @@ class SectionParser:
             text: Input TextObject to process
             section_count_target: the target for the number of sections to find
             segment_size_target: the target for the number of lines per section
-                (if section_count_target is specified, 
+                (if section_count_target is specified,
                 this value will be set to generate correct segments)
             template_dict: Optional additional template variables
 
@@ -183,16 +190,14 @@ class SectionParser:
 
         # determine section count if not specified
         if not section_count_target:
-            segment_size_target, section_count_target = self._get_section_count_info(
-                text.content
-            )
+            segment_size_target, section_count_target = self._get_section_count_info(text.content)
         elif not segment_size_target:
             segment_size_target = round(num_text.size / section_count_target)
 
         section_count_range = self._get_section_count_range(section_count_target)
 
         current_metadata = text.metadata
-        
+
         # Prepare template variables
         template_values = {
             "metadata": current_metadata.to_yaml(),
@@ -209,21 +214,18 @@ class SectionParser:
         instructions = self.section_pattern.apply_template(template_values)
         logger.debug(f"Finding sections with pattern instructions:\n {instructions}")
 
-        logger.info(
-            f"Finding sections for {source_language} text "
-            f"(target sections: {section_count_target})"
-        )
+        logger.info(f"Finding sections for {source_language} text (target sections: {section_count_target})")
 
         # Process text with structured output
         result = self.section_scanner.process_text(
             num_text.numbered_content, instructions, response_format=AIResponse
         )
-        
+
         ai_response = cast(AIResponse, result)
         text_result = TextObject.from_response(ai_response, current_metadata, num_text)
 
         logger.info(f"Generated {text_result.section_count} sections.")
-        
+
         return text_result
 
     def _get_section_count_info(self, text: str) -> Tuple[int, int]:
@@ -240,6 +242,7 @@ class SectionParser:
         low = max(1, section_count_target - section_range_var)
         high = section_count_target + section_range_var
         return f"{low}-{high}"
+
 
 def find_sections(
     text: TextObject,
@@ -277,17 +280,17 @@ def find_sections(
         section_pattern=section_pattern,
         review_count=review_count,
     )
-    
+
     process_metadata = ProcessMetadata(
-            step="find_sections",
-            processor="SectionProcessor", 
-            source_language=source_language,
-            pattern=section_pattern.name,
-            model=section_model,
-            section_count=section_count,
-            review_count=review_count,
-            template_dict=template_dict,
-        )
+        step="find_sections",
+        processor="SectionProcessor",
+        source_language=source_language,
+        pattern=section_pattern.name,
+        model=section_model,
+        section_count=section_count,
+        review_count=review_count,
+        template_dict=template_dict,
+    )
 
     result_text = parser.find_sections(
         text,
@@ -296,6 +299,7 @@ def find_sections(
     )
     result_text.transform(process_metadata=process_metadata)
     return result_text
+
 
 class SectionProcessor:
     """Handles section-based XML text processing with configurable output handling."""
@@ -338,17 +342,14 @@ class SectionProcessor:
                 - processed_text: Processed text content
                 - start_line: Starting line number
         """
-        # numbered_transcript = NumberedText(transcript) 
+        # numbered_transcript = NumberedText(transcript)
         # transcript is now stored in the TextObject
         sections = text_object.sections
 
-        logger.info(
-            f"Processing {len(sections)} sections with pattern: {self.pattern.name}"
-        )
+        logger.info(f"Processing {len(sections)} sections with pattern: {self.pattern.name}")
 
         for section_entry in text_object:
-            logger.info(f"Processing section {section_entry.number} "
-                        f"'{section_entry.title}':")
+            logger.info(f"Processing section {section_entry.number} '{section_entry.title}':")
 
             # Get text segment for section
             text_segment = section_entry.content
@@ -411,7 +412,7 @@ class SectionProcessor:
                 title=f"Paragraph {i}",
                 original_str=line,
                 processed_str=processed_str,
-                metadata={"paragraph_number": i}
+                metadata={"paragraph_number": i},
             )
 
 
@@ -448,7 +449,7 @@ class GeneralProcessor:
         """
 
         source_language = get_language_from_code(text.language)
-        
+
         template_values = {
             "metadata": text.metadata_str,
             "source_language": source_language,
@@ -464,13 +465,14 @@ class GeneralProcessor:
         logger.debug(f"Process instructions:\n{instructions}")
 
         result = self.processor.process_text(text.content, instructions)
-        
+
         logger.info("Processing completed.")
 
         # normalize newline spacing to two newline between lines and return
         # commented out to allow pattern to dictate newlines:
         # return normalize_newlines(text)
         return result
+
 
 def process_text(
     text: TextObject,
@@ -479,7 +481,6 @@ def process_text(
     model: Optional[str] = None,
     template_dict: Optional[Dict] = None,
 ) -> TextObject:
-
     if not model:
         model = DEFAULT_OPENAI_MODEL
 
@@ -490,19 +491,18 @@ def process_text(
     )
 
     process_metadata = ProcessMetadata(
-            step="process_text",
-            processor="GeneralProcessor",
-            pattern=pattern.name,
-            model=model,
-            template_dict=template_dict,
-        )
-    
-    result = processor.process_text(
-        text, template_dict=template_dict
+        step="process_text",
+        processor="GeneralProcessor",
+        pattern=pattern.name,
+        model=model,
+        template_dict=template_dict,
     )
+
+    result = processor.process_text(text, template_dict=template_dict)
     text.transform(data_str=result, process_metadata=process_metadata)
     return text
-    
+
+
 def process_text_by_sections(
     text_object: TextObject,
     template_dict: Dict,
@@ -526,17 +526,18 @@ def process_text_by_sections(
     section_processor = SectionProcessor(processor, pattern, template_dict)
 
     process_metadata = ProcessMetadata(
-            step="process_text_by_sections",
-            processor="SectionProcessor",
-            pattern=pattern.name,
-            model=model,
-            template_dict=template_dict,
-        )
+        step="process_text_by_sections",
+        processor="SectionProcessor",
+        pattern=pattern.name,
+        model=model,
+        template_dict=template_dict,
+    )
     result = section_processor.process_sections(text_object)
-    
+
     text_object.transform(process_metadata=process_metadata)
-    
+
     return result
+
 
 def process_text_by_paragraphs(
     text: TextObject,
@@ -578,6 +579,7 @@ def process_text_by_paragraphs(
     text.transform(process_metadata=process_metadata)
 
     return result
+
 
 def get_pattern(name: str) -> Prompt:
     """

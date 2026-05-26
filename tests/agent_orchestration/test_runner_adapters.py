@@ -35,8 +35,8 @@ def test_claude_cli_adapter_normalizes_stdout_to_runner_artifacts(tmp_path: Path
     executable.write_text(
         "#!/bin/sh\n"
         "printf '%s\\n' "
-        "'{\"type\":\"start\"}' "
-        "'{\"type\":\"assistant\",\"text\":\"done from claude\"}'\n",
+        '\'{"type":"start"}\' '
+        '\'{"type":"assistant","text":"done from claude"}\'\n',
         encoding="utf-8",
     )
     executable.chmod(0o755)
@@ -79,8 +79,8 @@ def test_claude_cli_adapter_ignores_non_assistant_text_when_extracting_final_res
     executable.write_text(
         "#!/bin/sh\n"
         "printf '%s\\n' "
-        "'{\"type\":\"tool_result\",\"text\":\"tool chatter\"}' "
-        "'{\"type\":\"assistant\",\"text\":\"true final response\"}'\n",
+        '\'{"type":"tool_result","text":"tool chatter"}\' '
+        '\'{"type":"assistant","text":"true final response"}\'\n',
         encoding="utf-8",
     )
     executable.chmod(0o755)
@@ -243,13 +243,13 @@ def test_codex_cli_adapter_reads_final_response_and_maps_workspace_write(tmp_pat
         "response=''\n"
         "sandbox=''\n"
         "while [ $# -gt 0 ]; do\n"
-        "  case \"$1\" in\n"
+        '  case "$1" in\n'
         "    --output-last-message)\n"
-        "      response=\"$2\"\n"
+        '      response="$2"\n'
         "      shift 2\n"
         "      ;;\n"
         "    --sandbox)\n"
-        "      sandbox=\"$2\"\n"
+        '      sandbox="$2"\n'
         "      shift 2\n"
         "      ;;\n"
         "    *)\n"
@@ -259,8 +259,8 @@ def test_codex_cli_adapter_reads_final_response_and_maps_workspace_write(tmp_pat
         "done\n"
         "printf 'codex final\\n' > \"$response\"\n"
         "printf '%s\\n' "
-        "'{\"type\":\"thread.started\"}' "
-        "\"{\\\"type\\\":\\\"item.completed\\\",\\\"item\\\":{\\\"type\\\":\\\"agent_message\\\",\\\"text\\\":\\\"sandbox:$sandbox\\\"}}\"\n",
+        '\'{"type":"thread.started"}\' '
+        '"{\\"type\\":\\"item.completed\\",\\"item\\":{\\"type\\":\\"agent_message\\",\\"text\\":\\"sandbox:$sandbox\\"}}"\n',
         encoding="utf-8",
     )
     executable.chmod(0o755)
@@ -373,8 +373,8 @@ def test_codex_cli_adapter_includes_model_when_configured(tmp_path: Path) -> Non
         "#!/bin/sh\n"
         "response=''\n"
         "while [ $# -gt 0 ]; do\n"
-        "  if [ \"$1\" = \"--output-last-message\" ]; then\n"
-        "    response=\"$2\"\n"
+        '  if [ "$1" = "--output-last-message" ]; then\n'
+        '    response="$2"\n'
         "    shift 2\n"
         "  else\n"
         "    shift\n"
@@ -433,8 +433,7 @@ def test_codex_cli_adapter_rejects_bounded_auto_approve(
 def test_codex_cli_adapter_returns_error_when_final_response_is_missing(tmp_path: Path) -> None:
     executable = tmp_path / "codex"
     executable.write_text(
-        "#!/bin/sh\n"
-        "printf '%s\\n' '{\"type\":\"thread.started\"}'\n",
+        "#!/bin/sh\nprintf '%s\\n' '{\"type\":\"thread.started\"}'\n",
         encoding="utf-8",
     )
     executable.chmod(0o755)
@@ -490,7 +489,7 @@ def test_delegating_runner_service_routes_to_matching_adapter(tmp_path: Path) ->
     codex.write_text(
         "#!/bin/sh\n"
         "while [ $# -gt 0 ]; do\n"
-        "  if [ \"$1\" = \"--output-last-message\" ]; then\n"
+        '  if [ "$1" = "--output-last-message" ]; then\n'
         "    printf 'codex\\n' > \"$2\"\n"
         "    shift 2\n"
         "  else\n"
@@ -529,7 +528,7 @@ def test_delegating_runner_service_routes_to_matching_adapter(tmp_path: Path) ->
 def test_delegating_runner_service_raises_for_unknown_family(tmp_path: Path) -> None:
     claude = tmp_path / "claude"
     claude.write_text(
-        "#!/bin/sh\nprintf '%s\\n' '{\"type\":\"assistant\",\"text\":\"ok\"}'\n",
+        '#!/bin/sh\nprintf \'%s\\n\' \'{"type":"assistant","text":"ok"}\'\n',
         encoding="utf-8",
     )
     claude.chmod(0o755)

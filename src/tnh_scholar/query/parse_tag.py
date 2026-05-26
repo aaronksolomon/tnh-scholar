@@ -80,6 +80,7 @@ def extract_tags_by_attributes(
 
     return extracted_tags
 
+
 def get_all_tag_names(soup: BeautifulSoup) -> list[str]:
     """
     Extract all unique HTML tag names from a BeautifulSoup object.
@@ -144,9 +145,7 @@ def get_all_attribute_values(soup: BeautifulSoup, tag: str) -> dict[str, set[str
                 attributes_with_values[attr] = set()
             # Check if the value is a list (e.g., class="class1 class2") and handle accordingly
             if isinstance(value, list):
-                attributes_with_values[attr].update(
-                    value
-                )  # Add all elements from the list
+                attributes_with_values[attr].update(value)  # Add all elements from the list
             else:
                 attributes_with_values[attr].add(value)  # Add a single value
 
@@ -369,9 +368,7 @@ def generate_reduced_text_soup(soup: BeautifulSoup) -> BeautifulSoup:
     new_soup = copy.deepcopy(soup)
 
     # Traverse through all elements in the copied soup, targeting text nodes
-    for element in new_soup.find_all(
-        string=True
-    ):  # Find all NavigableString text nodes
+    for element in new_soup.find_all(string=True):  # Find all NavigableString text nodes
         if isinstance(element, NavigableString):
             words = element.split()
             if len(words) > 5:
@@ -575,9 +572,7 @@ def unwrap_redundant_tags(soup: BeautifulSoup, tag_list) -> None:
             3. Child is a Tag instance (not NavigableString/Comment)
             """
             is_redundant_wrapper = (
-                not tag.attrs
-                and len(tag.contents) == 1
-                and isinstance(tag.contents[0], Tag)
+                not tag.attrs and len(tag.contents) == 1 and isinstance(tag.contents[0], Tag)
             )
 
             if is_redundant_wrapper:
@@ -661,9 +656,4 @@ def normalize_quotes(text: str) -> str:
 
     """
     # Replace left and right double smart quotes with straight double quote
-    return (
-        text.replace("\u201C", '"')
-        .replace("\u201D", '"')
-        .replace("\u2018", "'")
-        .replace("\u2019", "'")
-    )
+    return text.replace("\u201c", '"').replace("\u201d", '"').replace("\u2018", "'").replace("\u2019", "'")

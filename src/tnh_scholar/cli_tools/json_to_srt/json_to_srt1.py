@@ -21,6 +21,7 @@ logger = get_child_logger(__name__)
 
 JsonDict = dict[str, Any]
 
+
 def format_timestamp(seconds: float) -> str:
     """Convert seconds to SRT timestamp format (HH:MM:SS,mmm)."""
     td = timedelta(seconds=seconds)
@@ -28,6 +29,7 @@ def format_timestamp(seconds: float) -> str:
     minutes, seconds = divmod(remainder, 60)
     milliseconds = round(td.microseconds / 1000)
     return f"{hours:02d}:{minutes:02d}:{seconds:02d},{milliseconds:03d}"
+
 
 def parse_jsonl_line(line: str) -> JsonDict:
     """Parse a single JSONL line into a dictionary."""
@@ -38,11 +40,13 @@ def parse_jsonl_line(line: str) -> JsonDict:
         logger.error(f"Error parsing JSONL line: {e}")
         return {}
 
+
 def format_srt_entry(index: int, start: float, end: float, text: str) -> str:
     """Format a single SRT entry."""
     start_str = format_timestamp(start)
     end_str = format_timestamp(end)
     return f"{index}\n{start_str} --> {end_str}\n{text}\n"
+
 
 def extract_segment_data(segment: JsonDict) -> Tuple[float, float, str]:
     """Extract timestamp and text data from a segment."""
@@ -51,15 +55,17 @@ def extract_segment_data(segment: JsonDict) -> Tuple[float, float, str]:
     text = segment.get("text", "").strip()
     return start, end, text
 
+
 def process_segment(segment: JsonDict, entry_index: int) -> Tuple[str, int]:
     """Process a single segment into SRT format."""
     start, end, text = extract_segment_data(segment)
-    
+
     if not text:
         return "", entry_index
-        
+
     entry = format_srt_entry(entry_index, start, end, text)
     return entry, entry_index + 1
+
 
 def process_segments_list(
     segments_list: List[JsonDict],
@@ -67,21 +73,24 @@ def process_segments_list(
 ) -> Tuple[List[str], int]:
     """Process a list of segments into SRT entries."""
     entries: list[str] = []
-    
+
     for segment in segments_list:
         entry, entry_index = process_segment(segment, entry_index)
         if entry:
             entries.append(entry)
-            
+
     return entries, entry_index
+
 
 def get_segments_from_data(data: JsonDict) -> List[JsonDict]:
     """Extract segments from a data object."""
     return cast(List[JsonDict], data.get("segments", []))
 
+
 def read_input_lines(input_file: TextIO) -> List[str]:
     """Read and filter input lines from file."""
     return [line.strip() for line in input_file if line.strip()]
+
 
 def process_jsonl_line(
     line: str,
@@ -104,21 +113,22 @@ def process_jsonl_line(
     entries, next_index = process_segments_list(shifted_segments, entry_index)
     return entries, next_index, chunk_duration
 
+
 def process_jsonl_content(lines: List[str]) -> str:
     """Process all JSONL content into SRT format."""
     all_entries: list[str] = []
     entry_index = 1
     accumulated_time = 0.0  # Track total duration of processed chunks
-    
+
     for line in lines:
-        entries, entry_index, chunk_duration = process_jsonl_line(
-            line, entry_index, accumulated_time)
+        entries, entry_index, chunk_duration = process_jsonl_line(line, entry_index, accumulated_time)
         all_entries.extend(entries)
-        
+
         # Add this chunk's duration to accumulated time
-        accumulated_time += chunk_duration  
-    
+        accumulated_time += chunk_duration
+
     return "\n".join(all_entries)
+
 
 def handle_output(srt_content: str, output_file: Optional[Path]) -> None:
     """Write SRT content to file or stdout."""
@@ -128,14 +138,15 @@ def handle_output(srt_content: str, output_file: Optional[Path]) -> None:
     else:
         click.echo(srt_content)
 
+
 def convert_to_srt(input_file: TextIO, output_file: Optional[Path] = None) -> str:
     """
     Convert a JSONL transcription file to SRT format.
-    
+
     Args:
         input_file: JSONL transcription file to parse
         output_file: Optional output file path
-        
+
     Returns:
         str: SRT formatted content
     """
@@ -144,18 +155,14 @@ def convert_to_srt(input_file: TextIO, output_file: Optional[Path] = None) -> st
     handle_output(srt_content, output_file)
     return srt_content
 
+
 @click.command()
 @click.argument("input_file", type=click.File("r"), default="-")
-@click.option(
-    "-o", 
-    "--output", 
-    type=click.Path(path_type=Path), 
-    help="Output file (default: stdout)"
-)
+@click.option("-o", "--output", type=click.Path(path_type=Path), help="Output file (default: stdout)")
 def json_to_srt(input_file: TextIO, output: Optional[Path] = None) -> None:
     """
     Convert JSONL transcription files to SRT subtitle format.
-    
+
     Reads from stdin if no INPUT_FILE is specified.
     Writes to stdout if no output file is specified.
     """
@@ -165,9 +172,11 @@ def json_to_srt(input_file: TextIO, output: Optional[Path] = None) -> None:
         logger.error(f"Error processing file: {e}")
         sys.exit(1)
 
+
 def main():
     """Entry point for the jsonl-to-srt CLI tool."""
     json_to_srt()
+
 
 if __name__ == "__main__":
     main()

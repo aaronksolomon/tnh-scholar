@@ -9,8 +9,7 @@ from ..models import DiarizedSegment, SpeakerBlock
 
 
 def group_speaker_blocks(
-    segments: List[DiarizedSegment],
-    config: DiarizationConfig = DiarizationConfig()
+    segments: List[DiarizedSegment], config: DiarizationConfig = DiarizationConfig()
 ) -> List[SpeakerBlock]:
     """Group contiguous or near-contiguous segments by speaker identity.
 
@@ -29,7 +28,7 @@ def group_speaker_blocks(
 
     blocks: List[SpeakerBlock] = []
     buffer: List[DiarizedSegment] = [segments[0]]
-    
+
     gap_threshold = config.speaker.same_speaker_gap_threshold
 
     for current in segments[1:]:

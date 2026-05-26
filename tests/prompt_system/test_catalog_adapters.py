@@ -200,9 +200,7 @@ def test_filesystem_catalog_best_effort_body_without_frontmatter_block(tmp_path:
     assert body == "just plain body"
 
 
-def test_filesystem_catalog_best_effort_body_uses_delimiter_fallback(
-    tmp_path: Path, monkeypatch
-):
+def test_filesystem_catalog_best_effort_body_uses_delimiter_fallback(tmp_path: Path, monkeypatch):
     config = PromptCatalogConfig(repository_path=tmp_path)
     mapper = PromptMapper()
     loader = PromptLoader(PromptValidator(ValidationPolicy()))
@@ -258,9 +256,7 @@ Hello
     prompt = mapper.to_domain_prompt(content)
 
     assert prompt.metadata.required_variables == []
-    assert any(
-        "required_variables" in warning for warning in prompt.metadata.warnings
-    )
+    assert any("required_variables" in warning for warning in prompt.metadata.warnings)
 
 
 def test_mapper_warns_on_invalid_output_contract_type():
@@ -281,6 +277,4 @@ Hello
 
     assert prompt.metadata.output_contract is not None
     assert prompt.metadata.output_contract.mode.value == "text"
-    assert any(
-        "output_contract" in warning for warning in prompt.metadata.warnings
-    )
+    assert any("output_contract" in warning for warning in prompt.metadata.warnings)

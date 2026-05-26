@@ -132,9 +132,7 @@ def _load_vars_file(path: Path | None) -> VariableMap:
     except json.JSONDecodeError as exc:
         _, body = Frontmatter.extract(raw_text)
         if body == raw_text:
-            raise json.JSONDecodeError(
-                f"Invalid JSON in vars file {path}", exc.doc, exc.pos
-            ) from exc
+            raise json.JSONDecodeError(f"Invalid JSON in vars file {path}", exc.doc, exc.pos) from exc
         try:
             payload = json.loads(body)
         except json.JSONDecodeError as body_exc:
@@ -219,9 +217,7 @@ def _validate_required_variables(variables: VariableMap, metadata: PromptMetadat
     """
     if missing := [var for var in metadata.required_variables if var not in variables]:
         suggestion = " ".join(f"--var {var}=<value>" for var in missing)
-        raise ValueError(
-            f"Missing required variables: {', '.join(missing)}. Add with: {suggestion}"
-        )
+        raise ValueError(f"Missing required variables: {', '.join(missing)}. Add with: {suggestion}")
 
 
 # ---- Service Initialization ----
@@ -537,9 +533,7 @@ def _emit_completion_failure(
 
     failure_message = envelope.failure.message if envelope.failure else "Completion failed."
     error_code = (
-        envelope.failure.reason.value.upper()
-        if envelope.failure is not None
-        else "COMPLETION_FAILED"
+        envelope.failure.reason.value.upper() if envelope.failure is not None else "COMPLETION_FAILED"
     )
     emit_trace_id(trace_id, error_code)
     typer.echo(format_human_friendly_error(RuntimeError(failure_message)))
@@ -583,8 +577,7 @@ def _emit_budget_block(
         f"Budget blocked: estimated cost ${estimated_cost:.4f} exceeds budget ${max_dollars:.4f}."
     )
     suggestion = (
-        "Raise max_dollars in config, for example:\n"
-        "  tnh-gen config set --workspace max_dollars 0.30"
+        "Raise max_dollars in config, for example:\n  tnh-gen config set --workspace max_dollars 0.30"
     )
     typer.echo(format_human_friendly_error(error, suggestion=suggestion))
 

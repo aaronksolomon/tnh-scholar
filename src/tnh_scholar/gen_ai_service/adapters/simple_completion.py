@@ -59,6 +59,7 @@ def _get_service() -> GenAIService:
         _service = GenAIService()
     return _service
 
+
 def simple_completion(
     system_message: str,
     user_message: str,
@@ -141,9 +142,7 @@ def simple_completion(
 
         # Check status
         if response.status != ProviderStatus.OK:
-            raise RuntimeError(
-                f"Completion failed with status {response.status}: {response.error}"
-            )
+            raise RuntimeError(f"Completion failed with status {response.status}: {response.error}")
 
         if not response.payload:
             raise ValueError("Provider response did not include payload")
@@ -166,6 +165,7 @@ def simple_completion(
     except Exception as e:
         logger.error(f"Simple completion failed: {e}")
         raise
+
 
 def simple_completion_from_file(
     system_message: str,

@@ -13,9 +13,7 @@ def test_openai_client_omits_temperature_for_legacy_gpt5_requests():
         captured.update(kwargs)
         return SimpleNamespace()
 
-    client._client = SimpleNamespace(
-        chat=SimpleNamespace(completions=SimpleNamespace(create=_create))
-    )
+    client._client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=_create)))
     request = SimpleNamespace(
         model="gpt-5",
         messages=[{"role": "user", "content": "Return ACK"}],
@@ -40,9 +38,7 @@ def test_openai_client_keeps_temperature_for_gpt54_requests():
         captured.update(kwargs)
         return SimpleNamespace()
 
-    client._client = SimpleNamespace(
-        chat=SimpleNamespace(completions=SimpleNamespace(create=_create))
-    )
+    client._client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=_create)))
     request = SimpleNamespace(
         model="gpt-5.4",
         messages=[{"role": "user", "content": "Return ACK"}],

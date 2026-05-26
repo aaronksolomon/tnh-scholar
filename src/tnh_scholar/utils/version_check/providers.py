@@ -12,12 +12,12 @@ from .cache import VersionCache
 
 class VersionProvider(ABC):
     """Interface for retrieving package version information."""
-    
+
     @abstractmethod
     def get_installed_version(self, package_name: str) -> Version:
         """Get installed package version."""
         pass
-        
+
     @abstractmethod
     def get_latest_version(self, package_name: str) -> Version:
         """Get latest available package version."""
@@ -26,12 +26,12 @@ class VersionProvider(ABC):
 
 class StandardVersionProvider(VersionProvider):
     """Standard implementation of version provider using importlib and PyPI."""
-    
+
     def __init__(self, cache: Optional[VersionCache] = None, timeout: int = 5):
         self.cache = cache or VersionCache()
         self.timeout = timeout
         self.pypi_url_template = "https://pypi.org/pypi/{package}/json"
-        
+
     def get_installed_version(self, package_name: str) -> Version:
         """Get installed package version."""
         try:
@@ -43,7 +43,7 @@ class StandardVersionProvider(VersionProvider):
             raise ImportError(f"{package_name} is not installed") from e
         except InvalidVersion as e:
             raise InvalidVersion(f"Invalid version for {package_name}: {e}") from e
-            
+
     def get_latest_version(self, package_name: str) -> Version:
         """Get latest available package version from PyPI."""
         # Check cache first
@@ -55,9 +55,7 @@ class StandardVersionProvider(VersionProvider):
         try:
             return self._send_url_request(url, package_name)
         except requests.RequestException as e:
-            raise requests.RequestException(
-                f"Failed to fetch {package_name} version from PyPI: {e}"
-            ) from e
+            raise requests.RequestException(f"Failed to fetch {package_name} version from PyPI: {e}") from e
 
     def _send_url_request(self, url: str, package_name: str) -> Version:
         response = requests.get(url, timeout=self.timeout)

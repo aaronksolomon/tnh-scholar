@@ -33,6 +33,7 @@ class OpenAIClient(ProviderClient):
         self._client = OpenAI(api_key=api_key, organization=organization)
         self._adapter = OpenAIAdapter()
         import openai  # if not already imported elsewhere
+
         self.sdk_version = getattr(openai, "__version__", None)
         self._retry_caller = self._create_retry_caller()
 
@@ -118,7 +119,7 @@ class OpenAIClient(ProviderClient):
                 provider=self.PROVIDER,
                 attempts=attempts,
             )
-            
+
         except Exception as e:
             # Surface as ProviderError for upstream handling
             raise ProviderError(str(e)) from e

@@ -566,13 +566,7 @@ def test_provenance_write_structured_output_without_generated_provenance_writes_
 def test_load_vars_file_accepts_frontmatter_wrapped_json(tmp_path):
     vars_file = tmp_path / "vars.json"
     vars_file.write_text(
-        (
-            "---\n"
-            "tnh_scholar_generated: true\n"
-            "prompt_key: daily\n"
-            "---\n\n"
-            '{"audience":"students","count":2}\n'
-        ),
+        ('---\ntnh_scholar_generated: true\nprompt_key: daily\n---\n\n{"audience":"students","count":2}\n'),
         encoding="utf-8",
     )
 

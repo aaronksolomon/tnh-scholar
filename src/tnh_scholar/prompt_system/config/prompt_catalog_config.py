@@ -21,4 +21,3 @@ class GitTransportConfig(BaseModel):
     auto_pull: bool = False
     pull_timeout_s: float = 30.0
     default_branch: str = "main"
-

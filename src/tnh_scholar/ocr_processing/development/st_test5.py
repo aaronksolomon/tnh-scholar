@@ -74,9 +74,7 @@ def save_text():
         if not is_current_page_modified():  # very first modification
             update_current_page("original", current_page["text"])
             save_new_page_text(text)
-        elif (
-            current_page["original"] == text
-        ):  # the user has edited back to original state.
+        elif current_page["original"] == text:  # the user has edited back to original state.
             revert_page_text()
         else:
             save_new_page_text(text)
@@ -89,10 +87,7 @@ def navigate(direction):
     Save the current page's text and navigate to the specified direction.
     """
     save_text()
-    if (
-        direction == "next"
-        and st.session_state.current_page_index < len(st.session_state.pages) - 1
-    ):
+    if direction == "next" and st.session_state.current_page_index < len(st.session_state.pages) - 1:
         st.session_state.current_page_index += 1
     elif direction == "previous" and st.session_state.current_page_index > 0:
         st.session_state.current_page_index -= 1
@@ -136,9 +131,7 @@ if current_page["modified"]:
     st.write(f"Page {current_page['number']} has been modified.")
 
 modified = current_page["modified"]
-info_string = (
-    f"Page {current_page['number']} of {len(pages)}. {'MODIFIED' if modified else ''}"
-)
+info_string = f"Page {current_page['number']} of {len(pages)}. {'MODIFIED' if modified else ''}"
 # Text area for editing page content
 st.text_area(
     info_string,

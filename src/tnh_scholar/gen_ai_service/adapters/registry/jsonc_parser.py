@@ -116,9 +116,7 @@ class JsoncParser:
                 state.advance(2)
                 return True
             state.advance()
-        raise ValueError(
-            f"Unterminated block comment starting at line {start_line}, column {start_col}"
-        )
+        raise ValueError(f"Unterminated block comment starting at line {start_line}, column {start_col}")
 
     def _is_trailing_comma(self, state: _ScanState) -> bool:
         index = state.index + 1

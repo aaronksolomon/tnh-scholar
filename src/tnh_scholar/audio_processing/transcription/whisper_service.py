@@ -6,7 +6,7 @@ leading to complex validation and logic. Plan is to:
 
   - Refactor so each WhisperTranscriptionService instance is configured once at construction, with all
     relevant settings (including file-like/path-like mode, file extension, etc).
-  - Use Pydantic BaseSettings for configuration to normalize configuration and validation according to 
+  - Use Pydantic BaseSettings for configuration to normalize configuration and validation according to
         TNH Scholar style.
   - Remove ad-hoc runtime options from the transcribe() entrypoint; all config should be set at init.
   - If a different configuration is needed, instantiate a new service object.
@@ -45,7 +45,7 @@ logger = get_child_logger(__name__)
 def _logprob_to_confidence(avg_logprob: Optional[float]) -> float:
     """
     Map avg_logprob to confidence [0,1] linearly.
-    
+
     avg_logprob = 0 -> confidence = 1
     avg_logprob = -1 -> confidence = 0
     """
@@ -57,6 +57,7 @@ def _logprob_to_confidence(avg_logprob: Optional[float]) -> float:
     # Clamp to [0,1]
     confidence = max(0.0, min(1.0, confidence))
     return confidence
+
 
 class WordEntry(TypedDict, total=False):
     word: str
@@ -89,46 +90,50 @@ class WhisperResponse(WhisperBase, total=False):
 @dataclass
 class WhisperConfig:
     """Configuration for the Whisper transcription service."""
+
     model: str = "whisper-1"
     response_format: str = "verbose_json"
-    timestamp_granularities: Optional[List[str]] = field(
-        default_factory=lambda: ["word"]
-        )
-    chunking_strategy: str = "auto" # currently not usable
-    language: Optional[str] = None # language code
+    timestamp_granularities: Optional[List[str]] = field(default_factory=lambda: ["word"])
+    chunking_strategy: str = "auto"  # currently not usable
+    language: Optional[str] = None  # language code
     temperature: Optional[float] = None
     prompt: Optional[str] = None
 
     # Supported response formats
     SUPPORTED_FORMATS = ["json", "text", "srt", "vtt", "verbose_json"]
-    
+
     # Parameters allowed for each format
     FORMAT_PARAMS = {
         "verbose_json": ["timestamp_granularities"],
         "json": [],
         "text": [],
         "srt": [],
-        "vtt": []
+        "vtt": [],
     }
-    
+
     # Basic parameters: always allowed
     BASE_PARAMS = [
-            "model", "language", "temperature", "prompt", "response_format",
-        ]
-    
+        "model",
+        "language",
+        "temperature",
+        "prompt",
+        "response_format",
+    ]
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert configuration to dictionary for API call."""
         # Filter out None values to avoid sending unnecessary parameters
-        return {k: v for k, v in self.__dict__.items() 
-                if v is not None and not k.startswith("_") and k != "SUPPORTED_FORMATS"}
-    
+        return {
+            k: v
+            for k, v in self.__dict__.items()
+            if v is not None and not k.startswith("_") and k != "SUPPORTED_FORMATS"
+        }
+
     def validate(self) -> None:
         """Validate configuration values."""
         if self.response_format not in self.SUPPORTED_FORMATS:
             logger.warning(
-                f"Unsupported response format: {self.response_format}, "
-                f"defaulting to 'verbose_json'"
+                f"Unsupported response format: {self.response_format}, defaulting to 'verbose_json'"
             )
             self.response_format = "verbose_json"
 
@@ -136,46 +141,47 @@ class WhisperConfig:
 class WhisperTranscriptionService(TranscriptionService):
     """
     OpenAI Whisper implementation of the TranscriptionService interface.
-    
+
     Provides transcription services using the OpenAI Whisper API.
     """
-    
+
     def __init__(self, api_key: Optional[str] = None, **config_options: Any):
         """
         Initialize the Whisper transcription service.
-        
+
         Args:
             api_key: OpenAI API key (defaults to OPENAI_API_KEY env var)
             **config_options: Additional configuration options
         """
         # Create configuration base
         self.config = WhisperConfig()
-        
+
         # Set any configuration options provided
         for key, value in config_options.items():
             if hasattr(self.config, key):
                 setattr(self.config, key, value)
-        
+
         # Validate configuration
         self.config.validate()
-        
+
         # Initialize format converter
         self.format_converter = FormatConverter()
-        
+
         # Set API key
         self.set_api_key(api_key)
-    
+
     def _create_jsonl_writer(self):
         """
         Create a file-like object that captures JSONL output.
-        
+
         Returns:
             A file-like object that captures writes
         """
+
         class JsonlCapture:
             def __init__(self):
                 self.data = []
-            
+
             def write(self, content):
                 try:
                     # Try to parse as JSON
@@ -184,19 +190,17 @@ class WhisperTranscriptionService(TranscriptionService):
                 except json.JSONDecodeError:
                     # If not valid JSON, just append as string
                     self.data.append(content)
-            
+
             def flush(self):
                 pass
-            
+
             def close(self):
                 pass
-        
+
         return JsonlCapture()
-    
+
     def _prepare_file_object(
-        self,
-        audio_file: Union[Path, BytesIO],
-        options: Optional[Dict[str, Any]] = None
+        self, audio_file: Union[Path, BytesIO], options: Optional[Dict[str, Any]] = None
     ) -> tuple[BinaryIO, bool]:
         """
         Prepare file object for API call. PATCH: file-like objects require 'file_extension' in options.
@@ -230,10 +234,8 @@ class WhisperTranscriptionService(TranscriptionService):
             should_close = False
 
         return file_obj, should_close
-    
-    def _prepare_api_params(
-        self, options: Optional[Dict[str, Any]] = None
-        ) -> Dict[str, Any]:
+
+    def _prepare_api_params(self, options: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Prepare parameters for the Whisper API call.
 
@@ -249,15 +251,11 @@ class WhisperTranscriptionService(TranscriptionService):
         options = options or {}
 
         # Determine which response format we're using
-        response_format = options.get(
-            "response_format", self.config.response_format
-        )
+        response_format = options.get("response_format", self.config.response_format)
 
         # Compute allowed parameters for the chosen format
-        allowed_params = (
-            set(self.config.FORMAT_PARAMS.get(response_format, []))
-            | 
-            set(self.config.BASE_PARAMS)
+        allowed_params = set(self.config.FORMAT_PARAMS.get(response_format, [])) | set(
+            self.config.BASE_PARAMS
         )
 
         # Start with base params, filtered to allowed
@@ -277,7 +275,7 @@ class WhisperTranscriptionService(TranscriptionService):
             api_params["response_format"] = "verbose_json"
 
         return api_params
-    
+
     def _to_whisper_response(self, response: Any) -> WhisperResponse:
         """
         Convert an OpenAI Whisper API response (JSON or Verbose JSON) into a clean,
@@ -289,7 +287,7 @@ class WhisperTranscriptionService(TranscriptionService):
         Returns:
             A WhisperVerboseJson dictionary
         """
-            
+
         if hasattr(response, "model_dump"):
             data = response.model_dump(exclude_unset=True)
         elif hasattr(response, "to_dict"):
@@ -297,25 +295,25 @@ class WhisperTranscriptionService(TranscriptionService):
         elif isinstance(response, dict):
             data = response
         elif isinstance(response, str):
-            data = {"text": response} # mimic minimal data response format.
+            data = {"text": response}  # mimic minimal data response format.
         else:
-            raise ValueError(f"OpenAI response does not have a method to extract data "
-                             f"(missing 'model_dump' or 'to_dict'): {repr(response)}")
-        
+            raise ValueError(
+                f"OpenAI response does not have a method to extract data "
+                f"(missing 'model_dump' or 'to_dict'): {repr(response)}"
+            )
+
         # Required field: duration
         duration = float(data.get("duration", 0.0))
-        
-        # Required field: text 
+
+        # Required field: text
         text = data.get("text")
         if not isinstance(text, str):
-            raise ValueError(f"Invalid response: 'text' must be a string, "
-                             f"got {type(text)}")
+            raise ValueError(f"Invalid response: 'text' must be a string, got {type(text)}")
 
-        # Optional fields with normalization 
+        # Optional fields with normalization
         language = data.get("language") or self.config.language or "unknown"
         if not isinstance(language, str):
-            raise ValueError(f"Unexpected OpenAI response: 'language' is not a string."
-                             f"got {type(language)}")
+            raise ValueError(f"Unexpected OpenAI response: 'language' is not a string.got {type(language)}")
 
         # Optional: words and segments (only present in verbose_json)
         words = data.get("words")
@@ -333,45 +331,45 @@ class WhisperTranscriptionService(TranscriptionService):
             words=words,
             segments=segments,
         )
-    
+
     def set_api_key(self, api_key: Optional[str] = None) -> None:
         """
         Set or update the API key.
-        
+
         This method allows refreshing the API key without re-instantiating the class.
-        
+
         Args:
             api_key: OpenAI API key (defaults to OPENAI_API_KEY env var)
-            
+
         Raises:
             ValueError: If no API key is provided or found in environment
         """
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        
+
         if not self.api_key:
             raise ValueError(
                 "OpenAI API key is required. Set OPENAI_API_KEY environment "
                 "variable or pass as api_key parameter."
             )
-        
+
         # Configure OpenAI client
         openai.api_key = self.api_key
         logger.debug("API key updated")
-    
+
     def _seconds_to_ms(self, seconds: Optional[float]) -> Optional[int]:
         """
         Convert seconds to milliseconds.
-        
+
         Args:
             seconds: Time in seconds
-            
+
         Returns:
             Time in milliseconds or None if seconds is None
         """
         return None if seconds is None else int(seconds * 1000)
-    
+
     def _export_response(self, response: WhisperResponse) -> TranscriptionResult:
-        """Process and validate WhisperResponse into TranscriptionResult."""       
+        """Process and validate WhisperResponse into TranscriptionResult."""
         return TranscriptionResult(
             text=response["text"],
             language=response["language"],
@@ -383,10 +381,8 @@ class WhisperTranscriptionService(TranscriptionService):
             status="completed",  # You can set a static "completed" status
             raw_result=dict(response),  # Store the original response for debugging
         )
-        
-    def _extract_and_validate_words(
-        self, response: WhisperResponse
-        ) -> TimedText:
+
+    def _extract_and_validate_words(self, response: WhisperResponse) -> TimedText:
         """Extract, validate, and convert word data into WordTiming objects."""
         words_data = response.get("words")
         units: list[TimedTextUnit] = []
@@ -433,16 +429,14 @@ class WhisperTranscriptionService(TranscriptionService):
                         confidence=0.0,
                     )
                 )
-        
+
         return TimedText(words=units, granularity=Granularity.WORD)
 
-    def _extract_and_validate_utterances(
-        self, response: WhisperResponse
-        ) -> TimedText:
+    def _extract_and_validate_utterances(self, response: WhisperResponse) -> TimedText:
         """Extract and validate utterance segments into Utterance objects."""
         segments = response.get("segments")
         units: list[TimedTextUnit] = []
-        
+
         if segments:
             for i, segment in enumerate(segments, start=1):
                 start_ms = self._seconds_to_ms(segment.get("start"))
@@ -468,7 +462,7 @@ class WhisperTranscriptionService(TranscriptionService):
                         confidence=_logprob_to_confidence(segment.get("avg_logprob", 0.0)),
                     )
                 )
-        
+
         return TimedText(segments=units, granularity=Granularity.SEGMENT)
 
     def transcribe(
@@ -479,12 +473,12 @@ class WhisperTranscriptionService(TranscriptionService):
         """
         Transcribe audio file to text using OpenAI Whisper API.
 
-        PATCH: If audio_file is a file-like object, options['file_extension'] must be provided 
+        PATCH: If audio_file is a file-like object, options['file_extension'] must be provided
         (OpenAI API quirk).
 
         Args:
             audio_file: Path to audio file or file-like object
-            options: Provider-specific options for transcription. 
+            options: Provider-specific options for transcription.
                      If audio_file is file-like, must include 'file_extension'.
 
         Returns:
@@ -515,29 +509,28 @@ class WhisperTranscriptionService(TranscriptionService):
         api_params["file"] = file_obj
 
         # Call OpenAI API
-        logger.info(f"Transcribing audio with Whisper API "
-                    f"using model: {api_params['model']}")
+        logger.info(f"Transcribing audio with Whisper API using model: {api_params['model']}")
         raw_response = openai.audio.transcriptions.create(**api_params)
         response = self._to_whisper_response(raw_response)
 
         result = self._export_response(response)
-            
+
         logger.info("Transcription completed successfully")
         return result
 
     def get_result(self, job_id: str) -> TranscriptionResult:
         """
         Get results for an existing transcription job.
-        
+
         Whisper API operates synchronously and doesn't use job IDs,
         so this method is not implemented.
-        
+
         Args:
             job_id: ID of the transcription job
-                
+
         Returns:
             Dictionary containing transcription results
-            
+
         Raises:
             NotImplementedError: This method is not supported for Whisper
         """
@@ -546,7 +539,7 @@ class WhisperTranscriptionService(TranscriptionService):
             "Does not support retrieving results by job ID.\n"
             "Use the transcribe() method for direct transcription."
         )
-        
+
     def transcribe_to_format(
         self,
         audio_file: Union[Path, BytesIO],
@@ -557,7 +550,7 @@ class WhisperTranscriptionService(TranscriptionService):
         """
         Transcribe audio and return result in specified format.
 
-        PATCH: If audio_file is a file-like object, transcription_options['file_extension'] must be provided 
+        PATCH: If audio_file is a file-like object, transcription_options['file_extension'] must be provided
         (OpenAI API quirk).
 
         Takes advantage of the direct subtitle generation functionality when requesting SRT or VTT formats.
@@ -565,7 +558,7 @@ class WhisperTranscriptionService(TranscriptionService):
         Args:
             audio_file: Path, file-like object, or URL of audio file
             format_type: Format type (e.g., "srt", "vtt", "text")
-            transcription_options: Options for transcription. If audio_file is file-like, must include 
+            transcription_options: Options for transcription. If audio_file is file-like, must include
                                    'file_extension'.
             format_options: Format-specific options
 
@@ -604,6 +597,4 @@ class WhisperTranscriptionService(TranscriptionService):
         result = self.transcribe(audio_file, transcription_options)
 
         # Then convert to the requested format
-        return self.format_converter.convert(
-            result, format_type, format_options or {}
-        )
+        return self.format_converter.convert(result, format_type, format_options or {})

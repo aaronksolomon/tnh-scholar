@@ -2,6 +2,7 @@ import re
 
 #### NOTE THIS MODULE DEPRECATED available for reference and development purposes ####
 
+
 class FormattingError(Exception):
     """
     Custom exception raised for formatting-related errors.
@@ -19,6 +20,7 @@ def _matches_bracketed_line(line: str, number: bool) -> re.Match[str] | None:
 
 
 # functions to bracket and unbracket text with line numbers
+
 
 def bracket_lines(text: str, number: bool = False) -> str:
     """
@@ -39,10 +41,7 @@ def bracket_lines(text: str, number: bool = False) -> str:
         >>> bracket_lines("This is a string with\n   two lines.", number=True)
         '<1:This is a string with>\n<2:   two lines.>'
     """
-    return "\n".join(
-        f"<{f'{i+1}:{line}' if number else line}>"
-        for i, line in enumerate(text.split("\n"))
-    )
+    return "\n".join(f"<{f'{i + 1}:{line}' if number else line}>" for i, line in enumerate(text.split("\n")))
 
 
 def number_lines(text: str, start: int = 1, separator: str = ": ") -> str:
@@ -135,9 +134,7 @@ def unbracket_all_lines(pages):
     return result
 
 
-def lines_from_bracketed_text(
-    text: str, start: int, end: int, keep_brackets=False
-) -> str:
+def lines_from_bracketed_text(text: str, start: int, end: int, keep_brackets=False) -> str:
     """
     Extracts lines from bracketed text between the start and end indices, inclusive.
     Handles both numbered and non-numbered cases.
@@ -168,9 +165,7 @@ def lines_from_bracketed_text(
 
     # Validate indices
     if start < 1 or end < 1 or start > end or end > len(lines):
-        raise ValueError(
-            "Invalid start or end indices for the given text: start:{start}, end: {end}"
-        )
+        raise ValueError("Invalid start or end indices for the given text: start:{start}, end: {end}")
 
     # Extract lines and validate formatting
     result = []

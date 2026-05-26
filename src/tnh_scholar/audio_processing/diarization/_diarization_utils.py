@@ -14,12 +14,12 @@ from .models import DiarizationChunk, DiarizedSegment
 
 class SegmentContext:
     """Rich context for current segment during traversal."""
-    
+
     def __init__(
-        self, 
+        self,
         segment: DiarizedSegment,
         prev_segment: Optional[DiarizedSegment],
-        next_segment: Optional[DiarizedSegment], 
+        next_segment: Optional[DiarizedSegment],
         consumed_time: TimeMs,
         remaining_time: TimeMs,
         index: int,
@@ -32,63 +32,65 @@ class SegmentContext:
         self.remaining_time = remaining_time
         self.index = index
         self.total_segments = total_segments
-    
+
     @property
     def time_interval_next(self) -> Optional[TimeMs]:
         """
-        Time interval between current segment end and next segment start. 
+        Time interval between current segment end and next segment start.
         Can be negative if segments overlap.
         """
         return TimeMs(self.next.start - self.segment.end) if self.next else None
-    
+
     @property
     def time_interval_prev(self) -> Optional[TimeMs]:
         """
-        Time interval between current segment start and previous segment end. 
+        Time interval between current segment start and previous segment end.
         Can be negative if segments overlap.
         """
         return TimeMs(self.segment.start - self.prev.end) if self.prev else None
-    
+
     @property
     def speaker_changed_from_prev(self) -> bool:
         """True if speaker changed from previous segment."""
         return self.prev is not None and self.prev.speaker != self.segment.speaker
-    
+
     @property
     def speaker_changes_to_next(self) -> bool:
         """True if speaker changes to next segment."""
         return self.next is not None and self.next.speaker != self.segment.speaker
-    
+
     @property
     def is_first(self) -> bool:
         """True if this is the first segment."""
         return self.index == 0
-    
+
     @property
     def is_last(self) -> bool:
         """True if this is the last segment."""
         return self.index == self.total_segments - 1
-    
+
     def __repr__(self) -> str:
-        return (f"SegmentContext(index={self.index}, speaker='{self.segment.speaker}', "
-                f"elapsed={self.consumed_time}, remaining={self.remaining_time})")
+        return (
+            f"SegmentContext(index={self.index}, speaker='{self.segment.speaker}', "
+            f"elapsed={self.consumed_time}, remaining={self.remaining_time})"
+        )
 
 
 class SegmentWalker:
     """Manages segment collection and provides rich context during iteration."""
-    
+
     def __init__(self, segments: List[DiarizedSegment]):
         if not segments:
             raise ValueError("Cannot create walker with empty segment list.")
-        
+
         self.segments = segments
         self.total_segments = len(segments)
         self.total_time = TimeMs(sum(seg.duration for seg in segments))
-    
+
     def walk(self) -> Iterator[SegmentContext]:
         """
         Iterate through segments yielding rich context for each.
-        
+
         Yields:
             SegmentContext: Rich context for each segment including timing and neighbors
         """
@@ -96,8 +98,8 @@ class SegmentWalker:
 
         for i, segment in enumerate(self.segments):
             remaining = self.total_time - consumed
-            prev_segment = self.segments[i-1] if i > 0 else None
-            next_segment = self.segments[i+1] if i < self.total_segments-1 else None
+            prev_segment = self.segments[i - 1] if i > 0 else None
+            next_segment = self.segments[i + 1] if i < self.total_segments - 1 else None
 
             yield SegmentContext(
                 segment=segment,
@@ -113,14 +115,14 @@ class SegmentWalker:
 
 class ChunkAccumulator:
     """Handles chunk building logic with configurable finalization rules."""
-    
+
     def __init__(self, config):
         self.config = config
         self.current_segments: List[DiarizedSegment] = []
         self.chunks: List[DiarizationChunk] = []
         self.chunk_start_time: Optional[TimeMs] = None
         self.accumulated_time: TimeMs = TimeMs(0)
-    
+
     def add_segment(self, segment: DiarizedSegment, segment_spacing: TimeMs, gap_before: bool) -> None:
         """
         Add segment to current chunk with specified gap handling.
@@ -131,7 +133,7 @@ class ChunkAccumulator:
         Args:
             segment: Segment to add
             segment_spacing: the time between this and previous segment
-            gap_before: True if the previous segment is far enough away in time 
+            gap_before: True if the previous segment is far enough away in time
             that a smaller silent gap is added, and interval is condensed.
         """
         if not self.current_segments:
@@ -153,33 +155,31 @@ class ChunkAccumulator:
         """Create chunk from current segments and reset state."""
         if not self.current_segments:
             raise ValueError("Cannot finalize empty chunk")
-        
+
         if self.chunk_start_time is None:
-            raise ValueError("Chunk start time not set. "
-                             "Possibly no segments have been added to the accumulator."
-                             )
+            raise ValueError(
+                "Chunk start time not set. Possibly no segments have been added to the accumulator."
+            )
         chunk = DiarizationChunk(
             start_time=self.chunk_start_time,
             end_time=int(self.current_segments[-1].end),
             segments=self.current_segments.copy(),
             audio=None,
-            accumulated_time=self.accumulated_time
+            accumulated_time=self.accumulated_time,
         )
-        
+
         self.chunks.append(chunk)
         self._reset_state()
         return chunk
-    
+
     def finalize_and_get_chunks(self) -> List[DiarizationChunk]:
         """Finalize any remaining chunk and return all chunks."""
         if self.current_segments:
             self.finalize_chunk()
         return self.chunks.copy()
-    
-    
+
     def _reset_state(self) -> None:
         """Reset accumulator state for next chunk."""
         self.current_segments = []
         self.chunk_start_time = None
         self.accumulated_time = TimeMs(0)
-

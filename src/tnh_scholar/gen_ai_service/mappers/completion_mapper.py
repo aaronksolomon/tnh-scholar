@@ -37,15 +37,11 @@ def _outcome_from_response(
     match resp.status:
         case ProviderStatus.OK:
             return (
-                CompletionOutcomeStatus.SUCCEEDED
-                if payload is not None
-                else CompletionOutcomeStatus.FAILED
+                CompletionOutcomeStatus.SUCCEEDED if payload is not None else CompletionOutcomeStatus.FAILED
             )
         case ProviderStatus.INCOMPLETE:
             return (
-                CompletionOutcomeStatus.INCOMPLETE
-                if payload is not None
-                else CompletionOutcomeStatus.FAILED
+                CompletionOutcomeStatus.INCOMPLETE if payload is not None else CompletionOutcomeStatus.FAILED
             )
         case ProviderStatus.FAILED | ProviderStatus.FILTERED | ProviderStatus.RATE_LIMITED:
             return CompletionOutcomeStatus.FAILED

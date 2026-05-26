@@ -22,6 +22,8 @@ MAX_TOKEN_LIMIT = 60000
 MAX_BATCH_RETRIES = 40  # Number of retries
 BATCH_RETRY_DELAY = 5  # seconds to wait before retry
 DEFAULT_JOURNAL_MODEL = "gpt-4o"
+
+
 class ModelSettings(TypedDict):
     max_tokens: int
     temperature: float
@@ -138,7 +140,7 @@ def create_jsonl_file_for_batch(
     for i, message in enumerate(messages):
         max_tokens = max_token_list[i]
         request_obj: dict[str, Any] = {
-            "custom_id": f"request-{i+1}",
+            "custom_id": f"request-{i + 1}",
             "method": "POST",
             "url": "/v1/chat/completions",
             "body": {
@@ -423,9 +425,7 @@ def validate_and_clean_data(data, schema) -> dict:  # noqa: C901
         Clean a dictionary object based on its schema.
         """
         if not isinstance(obj, dict):
-            print(
-                f"Expected dict but got: \n{type(obj)}: {obj}\nResetting to empty dict."
-            )
+            print(f"Expected dict but got: \n{type(obj)}: {obj}\nResetting to empty dict.")
             return {}
         cleaned = {}
         properties = obj_schema.get("properties", {})
@@ -442,9 +442,7 @@ def validate_and_clean_data(data, schema) -> dict:  # noqa: C901
         raise ValueError("Top-level schema must be of type 'object'.")
 
 
-def validate_and_save_metadata(
-    output_file_path: Path, json_metadata_serial: str, schema
-) -> bool:
+def validate_and_save_metadata(output_file_path: Path, json_metadata_serial: str, schema) -> bool:
     """
     Validates and cleans journal data against the schema, then writes it to a JSON file.
 
@@ -459,9 +457,7 @@ def validate_and_save_metadata(
         # Write the parsed data to the specified JSON file
         with open(output_file_path, "w", encoding="utf-8") as f:
             json.dump(cleaned_data, f, indent=4, ensure_ascii=False)
-        logger.info(
-            f"Parsed and validated metadata successfully written to {output_file_path}"
-        )
+        logger.info(f"Parsed and validated metadata successfully written to {output_file_path}")
         return True
     except Exception as e:
         logger.error(f"An error occurred during validation or writing: {e}")
@@ -482,9 +478,7 @@ def extract_page_groups_from_metadata(metadata) -> list:
 
     # Ensure metadata contains sections
     if "sections" not in metadata or not isinstance(metadata["sections"], list):
-        raise ValueError(
-            "Metadata does not contain a valid 'sections' key with a list of sections."
-        )
+        raise ValueError("Metadata does not contain a valid 'sections' key with a list of sections.")
 
     for section in metadata["sections"]:
         try:
@@ -538,9 +532,7 @@ def generate_clean_batch(
         batch_message_seq = generate_messages(system_message, user_wrap_function, pages)
 
         # Save the batch file
-        create_jsonl_file_for_batch(
-            batch_message_seq, output_file, max_token_list=max_tokens
-        )
+        create_jsonl_file_for_batch(batch_message_seq, output_file, max_token_list=max_tokens)
         logger.info(f"Batch file created successfully: {output_file}")
 
         return output_file
@@ -557,24 +549,18 @@ def generate_clean_batch(
 
 
 # running batches
-def batch_section(
-    input_xml_path: Path, batch_jsonl: Path, system_message, journal_name
-) -> str:
+def batch_section(input_xml_path: Path, batch_jsonl: Path, system_message, journal_name) -> str:
     """
     Split journal content into sections using GPT, with retries for
     starting and completing the batch.
     """
     try:
-        logger.info(
-            f"Starting sectioning batch for {journal_name} with file:\n\t{input_xml_path}"
-        )
+        logger.info(f"Starting sectioning batch for {journal_name} with file:\n\t{input_xml_path}")
         # Load journal content
         journal_pages = read_str_from_file(input_xml_path)
 
         # Create GPT messages for sectioning
-        messages = generate_messages(
-            system_message, _identity_text, [journal_pages]
-        )
+        messages = generate_messages(system_message, _identity_text, [journal_pages])
 
         # Create JSONL file for batch processing
         jsonl_file = create_jsonl_file_for_batch(messages, batch_jsonl, json_mode=True)
@@ -585,9 +571,7 @@ def batch_section(
             extra={"input_xml_path": input_xml_path},
             exc_info=True,
         )
-        raise RuntimeError(
-            f"Error initializing batch sectioning data for journal '{journal_name}'."
-        ) from e
+        raise RuntimeError(f"Error initializing batch sectioning data for journal '{journal_name}'.") from e
 
     response = start_batch_with_retries(
         jsonl_file,
@@ -595,9 +579,7 @@ def batch_section(
     )
 
     if response:
-        json_result = response[
-            0
-        ]  # should return json, just one batch so first response
+        json_result = response[0]  # should return json, just one batch so first response
         # Log success and return output json
         logger.info(
             f"Successfully batch sectioned journal '{journal_name}' with input file: {input_xml_path}."
@@ -651,9 +633,7 @@ def batch_translate(
             f"Failed to initialize data for translation batching for journal '{journal_name}'.",
             exc_info=True,
         )
-        raise RuntimeError(
-            f"Error during data initialization for journal '{journal_name}'."
-        ) from e
+        raise RuntimeError(f"Error during data initialization for journal '{journal_name}'.") from e
 
     translation_data = translate_sections(
         batch_json_path,
@@ -691,9 +671,7 @@ def translate_sections(
         max_tokens = floor(token_count(section_content) * 1.3) + 1000
         max_token_list.append(max_tokens)
         current_token_count += max_tokens
-        section_data = SimpleNamespace(
-            title=section_info["title_en"], content=section_content
-        )
+        section_data = SimpleNamespace(title=section_info["title_en"], content=section_content)
         section_data_to_send.append(section_data)
         logger.debug(f"section {i}: {section_data.title} added for batch processing.")
 
@@ -741,9 +719,7 @@ def send_data_for_tx_batch(
     """
     try:
         # Generate all messages using the generate_messages function
-        messages = generate_messages(
-            system_message, _translation_prompt, section_data_to_send
-        )
+        messages = generate_messages(system_message, _translation_prompt, section_data_to_send)
 
         if immediate:
             logger.info(f"Running immediate chat process for journal '{journal_name}'.")
@@ -752,9 +728,7 @@ def send_data_for_tx_batch(
                 max_tokens = max_token_list[i]
                 response = run_immediate_chat_process(message, max_tokens=max_tokens)
                 translated_data.append(response)
-            logger.info(
-                f"Immediate translation completed for journal '{journal_name}'."
-            )
+            logger.info(f"Immediate translation completed for journal '{journal_name}'.")
             return translated_data
         else:
             logger.info(f"Running batch processing for journal '{journal_name}'.")
@@ -782,9 +756,7 @@ def send_data_for_tx_batch(
 
 
 # Output
-def save_cleaned_data(
-    cleaned_xml_path: Path, cleaned_wrapped_pages: List[str], journal_name
-):
+def save_cleaned_data(cleaned_xml_path: Path, cleaned_wrapped_pages: List[str], journal_name):
     try:
         logger.info(f"Saving cleaned content to XML for journal '{journal_name}'.")
         cleaned_wrapped_pages = unwrap_all_lines(cleaned_wrapped_pages)
@@ -796,14 +768,10 @@ def save_cleaned_data(
             extra={"cleaned_xml_path": cleaned_xml_path},
             exc_info=True,
         )
-        raise RuntimeError(
-            f"Failed to save cleaned data for journal '{journal_name}'."
-        ) from e
+        raise RuntimeError(f"Failed to save cleaned data for journal '{journal_name}'.") from e
 
 
-def save_sectioning_data(
-    output_json_path: Path, raw_output_path: Path, serial_json: str, journal_name
-):
+def save_sectioning_data(output_json_path: Path, raw_output_path: Path, serial_json: str, journal_name):
     try:
         raw_output_path.write_text(serial_json, encoding="utf-8")
     except Exception as e:
@@ -812,19 +780,13 @@ def save_sectioning_data(
             extra={"raw_output_path": raw_output_path},
             exc_info=True,
         )
-        raise RuntimeError(
-            f"Failed to write raw response file for journal '{journal_name}'."
-        ) from e
+        raise RuntimeError(f"Failed to write raw response file for journal '{journal_name}'.") from e
 
     # Validate and save metadata
     try:
-        valid = validate_and_save_metadata(
-            output_json_path, serial_json, journal_schema
-        )
+        valid = validate_and_save_metadata(output_json_path, serial_json, journal_schema)
         if not valid:
-            raise RuntimeError(
-                f"Validation failed for metadata of journal '{journal_name}'."
-            )
+            raise RuntimeError(f"Validation failed for metadata of journal '{journal_name}'.")
     except Exception as e:
         logger.error(
             f"Error occurred while validating and saving metadata for journal '{journal_name}'.",
@@ -849,9 +811,7 @@ def save_translation_data(xml_output_path: Path, translation_data, journal_name)
             extra={"xml_output_path": xml_output_path},
             exc_info=True,
         )
-        raise RuntimeError(
-            f"Failed to save translation data for journal '{journal_name}'."
-        ) from e
+        raise RuntimeError(f"Failed to save translation data for journal '{journal_name}'.") from e
 
 
 # JSON helpers
@@ -866,9 +826,7 @@ def deserialize_json(serialized_data: str) -> dict:
         dict: The deserialized Python dictionary.
     """
     if not isinstance(serialized_data, str):
-        logger.error(
-            f"String input required for deserialize_json. Received: {type(serialized_data)}"
-        )
+        logger.error(f"String input required for deserialize_json. Received: {type(serialized_data)}")
         raise ValueError("String input required.")
 
     try:

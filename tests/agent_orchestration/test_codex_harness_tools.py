@@ -138,4 +138,4 @@ def test_run_tests_tool(tmp_path: Path) -> None:
     )
     args = RunTestsArgs(command="pytest").model_dump_json()
     result = executor.execute(ToolCall(name=ToolName.run_tests, call_id="c5", arguments_json=args))
-    assert "\"exit_code\":5" in result.output_json
+    assert '"exit_code":5' in result.output_json
