@@ -123,7 +123,7 @@ translated text.
 ![Experimental v1 English facsimile prototype of page 7 of Vũ-trụ-quan Phật học](assets/journal-pipeline/pgvn-17-18-page7-facsimile-v1.png)
 
 *Experimental `v1` post-pipeline facsimile prototype of the opening page, built from the clean
-scan, local font matching, the TNH-voice translation output for the opening body text, and
+scan, local font matching, the TNH-voice translation output for the opening-page body text, and
 manual layout tuning. The display title is a simplified English facsimile treatment rather
 than a literal title translation. This is a presentation-layer artifact rather than a
 replacement for the source images or traceable text files.

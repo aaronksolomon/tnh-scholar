@@ -7,13 +7,13 @@
 #set page(width: 140mm, height: 210mm, margin: 0mm)
 
 #set text(
-  font: ("Libertinus Serif", "New Computer Modern", "Georgia", "Times New Roman"),
-  size: 6.7pt,
+  font: ("Courier New", "Courier", "Times New Roman"),
+  size: 7.55pt,
   lang: "en",
-  fill: rgb("#1a1611"),
+  fill: rgb("#120e0b"),
 )
 
-#set par(justify: true, leading: 0.34em, first-line-indent: 1.45em)
+#set par(justify: true, leading: 0.36em, first-line-indent: 1.35em)
 
 #let page-width = 140mm
 #let page-height = 210mm
@@ -32,30 +32,30 @@
 
 #let item-heading(num, heading, gloss) = [
   #set par(first-line-indent: 0em)
-  #text(size: 6.35pt, weight: "medium")[#num.  ]
-  #text(weight: "semibold")[#heading]
+  #text(size: 7.15pt, weight: "bold")[#num.  ]
+  #text(weight: "bold")[#heading]
   #h(0.2em)
-  #text(size: 5.55pt, style: "italic", fill: soft-ink)[(#gloss)]
+  #text(size: 6.55pt, style: "italic", fill: soft-ink)[(#gloss)]
 ]
 
 #let body-copy() = [
   #first-para()
 
-  #v(1.35mm)
+  #v(1.15mm)
   #item-heading([1], [The tendency of fatalism], [Pubba-kata-hetu])
 
   The schools belonging to this tendency held that the whole natural world and the human
   world are arranged by predestination. Everything proceeds according to fixed natural laws
   already laid down. The value of human effort and material means is not acknowledged here.
 
-  #v(1.1mm)
+  #v(0.95mm)
   #item-heading([2], [The tendency of theism, or divine will], [Issara-nimmāna-hetu])
 
   The schools belonging to this tendency held that all things exist through the will of a
   divine being. This divine being is Brahmā, and the center of the schools of this tendency
   is Brahmanism.
 
-  #v(1.1mm)
+  #v(0.95mm)
   #item-heading([3], [The tendency of chance], [Ahetu-apaccaya])
 
   The schools belonging to this tendency did not admit the principle of causation. All
@@ -63,37 +63,22 @@
 
   The first and second tendencies assign all responsibility to a supernatural power.
   Personal responsibility therefore does not become a real question; blessing and misfortune
-  alike are things that human beings cannot determine. Good and evil actions on the part of
-  human beings are not regarded as the motive force behind success or failure, growth or
-  decline.
-
-  The third tendency also cannot establish any basis for personal moral responsibility. If
-  everything is mere chance, then good is also chance, evil is also chance, fortune and
-  misfortune are also chance; there is nothing that can serve as a standard for human
-  conduct. Because of this, human beings cannot gradually advance toward truth, beauty, and
-  goodness. On the contrary, they may very easily slide down the slope of wrongdoing and
-  corruption.
-
-  From the point of view of theory, the doctrines belonging to these tendencies all have
-  many shortcomings. From the point of view of human life, the consequences they bring are
-  dark and discouraging. None of them can give a person peace of mind or a secure ground
-  for life, nor do they affirm the necessary and already present capacities of the human
-  being.
+  alike are things that human beings cannot determine.
 ]
 
 #place(top + left)[
   #image(paper-texture, width: page-width, height: page-height)
 ]
 
-#place(top + left, dx: 33.4mm, dy: 36.6mm)[
-  #image(title-image, width: 63.2mm)
+#place(top + left, dx: 27.4mm, dy: 31.8mm)[
+  #image(title-image, width: 83.5mm)
 ]
 
-#place(top + left, dx: 86.4mm, dy: 68.7mm)[
+#place(top + left, dx: 94.2mm, dy: 72.8mm)[
   #box(inset: (x: 0.65mm, y: 0mm), stroke: 0.28pt + hairline)[
     #set text(
       font: ("Helvetica Neue", "Arial", "Helvetica"),
-      size: 5.4pt,
+      size: 6.1pt,
       tracking: 0.15em,
       fill: soft-ink,
     )
@@ -101,16 +86,30 @@
   ]
 ]
 
-#place(top + left, dx: 14.5mm, dy: 82.2mm)[
-  #box(width: 108.5mm)[
+#place(top + left, dx: 15.8mm, dy: 90.8mm)[
+  #box(width: 106.5mm)[
     #body-copy()
   ]
 ]
 
-#place(top + left, dx: 100.5mm, dy: 186.7mm)[
+#place(top + left, dx: 15.5mm, dy: 179.9mm)[
+  #line(length: 106.8mm, stroke: 0.42pt + hairline)
+]
+
+#place(top + left, dx: 13.7mm, dy: 181.4mm)[
   #set text(
     font: ("Helvetica Neue", "Arial", "Helvetica"),
-    size: 5.9pt,
+    size: 6.1pt,
+    tracking: 0.02em,
+    fill: ink,
+  )
+  6
+]
+
+#place(top + left, dx: 98.8mm, dy: 181.6mm)[
+  #set text(
+    font: ("Helvetica Neue", "Arial", "Helvetica"),
+    size: 6.7pt,
     tracking: 0.06em,
     fill: ink,
   )

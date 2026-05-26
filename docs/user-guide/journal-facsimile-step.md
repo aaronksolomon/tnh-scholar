@@ -5,7 +5,7 @@ owner: ""
 author: ""
 status: draft
 created: "2026-05-25"
-updated: "2026-05-25"
+updated: "2026-05-26"
 ---
 
 # Post-pipeline Facsimile Step
@@ -30,7 +30,7 @@ The `v1` prototype reconstructs page 7 of *Vũ-trụ-quan Phật học* — the 
 
 ![Experimental English facsimile prototype of page 7 of Vũ-trụ-quan Phật học](assets/journal-pipeline/pgvn-17-18-page7-facsimile-v1.png)
 
-*Experimental `v1` English facsimile of the opening page. Body text follows the TNH-voice translation for section 1. The display title uses a stylized English rendering rather than a literal title translation.*
+*Experimental `v1` English facsimile of the opening page. Body text now follows the TNH-voice translation only through the page-7 extent, including the carry-over into the next page break. The display title uses a stylized English rendering rather than a literal title translation.*
 
 ## Future Direction
 
