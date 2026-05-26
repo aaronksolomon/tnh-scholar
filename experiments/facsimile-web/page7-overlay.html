@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page 7 Facsimile Overlay Prototype</title>
+    <link rel="stylesheet" href="./page7-overlay.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="stage">
+        <div class="toolbar">
+          <strong>Facsimile Overlay Prototype</strong>
+          <button type="button" class="is-active" data-mode="both">Both</button>
+          <button type="button" data-mode="vi">Vietnamese</button>
+          <button type="button" data-mode="en">English</button>
+          <button type="button" data-toggle-labels>Toggle Labels</button>
+        </div>
+
+        <div class="canvas-card">
+          <div class="image-frame">
+            <img data-page-image />
+            <div class="regions" data-regions></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <h1>Region Inspector</h1>
+        <p class="meta">Image-grounded facsimile with OCR-style overlay regions and translation payloads.</p>
+        <div data-detail></div>
+      </aside>
+    </main>
+
+    <div class="context-menu" data-context-menu>
+      <button type="button" data-mode="both">Show Both</button>
+      <button type="button" data-mode="vi">Vietnamese Only</button>
+      <button type="button" data-mode="en">English Only</button>
+    </div>
+
+    <script src="./page7-data.js"></script>
+    <script src="./page7-overlay.js"></script>
+  </body>
+</html>

@@ -5,7 +5,7 @@ owner: ""
 author: ""
 status: current
 created: "2026-05-04"
-updated: "2026-05-06"
+updated: "2026-05-25"
 ---
 
 # Pipeline Case Study: Thầy Edited Journal Text
@@ -44,7 +44,7 @@ and published in *Phật Giáo Việt Nam*, issue 17–18, December 1957. Recent
 and the Plum Village extended biography identify Thạc-Đức as one of Thích Nhất Hạnh's
 pen names in the *Phật Giáo Việt Nam* corpus.
 
-### Relevance 
+### Relevance
 
 *Phật Giáo Việt Nam* was part of a 1950s Vietnamese Buddhist reform conversation. It
 published doctrinal essays, essays on Buddhist modernization, and early writing connected
@@ -110,9 +110,30 @@ artifacts the clean stage must remove. ([View with OCR region annotations](asset
 
 ![Final page of the article — Phật Giáo Việt Nam issue 17–18, p. 11](assets/journal-pipeline/pgvn-17-18-page11-clean.jpg)
 
-*Page 11: the article's closing discussion on trùng trùng duyên khởi, moral causality,
+*Page 11 scan: the article's closing discussion on trùng trùng duyên khởi, moral causality,
 and liberation. The footer `PHẬT-GIÁO VIỆT-NAM` and a page-number artifact appear near
 the bottom. ([View with OCR region annotations](assets/journal-pipeline/pgvn-17-18-page11.jpg))*
+
+### Post-pipeline facsimile output
+
+The pipeline can also feed a downstream presentation artifact: an experimental English
+facsimile-translation that keeps the page feel of the journal while using the reviewed
+translated text.
+
+![Experimental v1 English facsimile prototype of page 7 of Vũ-trụ-quan Phật học](assets/journal-pipeline/pgvn-17-18-page7-facsimile-v1.png)
+
+*Experimental `v1` post-pipeline facsimile prototype of the opening page, built from the clean
+scan, local font matching, the TNH-voice translation output for the opening body text, and
+manual layout tuning. The display title is a simplified English facsimile treatment rather
+than a literal title translation. This is a presentation-layer artifact rather than a
+replacement for the source images or traceable text files.
+([PNG](assets/journal-pipeline/pgvn-17-18-page7-facsimile-v1.png), [PDF](assets/journal-pipeline/pgvn-17-18-page7-facsimile-v1.pdf))*
+
+This is useful as a “what’s possible next” step after OCR, cleaning, translation, and review:
+it gives a legible English page that can be compared directly against the original scan, the
+cleaned Vietnamese, and the refined English draft. A short note on the generation approach and
+the next research direction for interactive region overlays is here:
+[Post-pipeline facsimile step](/user-guide/journal-facsimile-step.md).
 
 ### Source and attribution note
 
@@ -627,6 +648,11 @@ Planned directions:
 
 - **Web interface** — a longer-term direction for collaborative or institutionally hosted
   work: shared document queues, version tracking, and annotation.
+
+- **Facsimile + region overlay** — a hybrid direction after the core pipeline: keep the page
+  image or facsimile as the visual ground truth, then add OCR-derived bounding boxes that can
+  reveal Vietnamese and English text by line, sentence, or paragraph. This would fit either a
+  web viewer or a VS Code analysis pane.
 
 ---
 

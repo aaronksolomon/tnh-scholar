@@ -18,16 +18,17 @@ produced as part of the `tnh-gen` journal walkthrough.
 
 **Author:** Thạc-Đức  
 **Source:** *Phật Giáo Việt Nam*, issue 17–18, 1957  
-**Pages:** 7–11 of the journal scan
+**Pages:** 6–10 in the original journal article
 
 **Attribution note:** The byline Thạc-Đức is associated with Trần Thạc Đức, a pen name
 appearing in the 1950s *Phật Giáo Việt Nam* corpus. Scholarship by Adrienne Minh-Châu Lê
 identifies Thạc Đức as one of Thích Nhất Hạnh's pen names during his editorship of the
 journal (Lê 2024; see also Plum Village 2014).
 
-*This document is a pipeline-assisted translation produced by `tnh-gen`, part of the `tnh-scholar` suite, using the
-`translate_journal_section_tnh_voice_en` prompt against cleaned OCR text from scanned
-journal pages. It is offered as a research baseline and working draft, not a final translation.*
+*This document is a pipeline-assisted translation produced by `tnh-gen`, part of the
+`tnh-scholar` suite, using the `translate_journal_section_tnh_voice_en` prompt against
+cleaned OCR text from a five-page extracted scan subset. It is offered as a research
+baseline and working draft, not a final translation.*
 
 ---
 
@@ -237,7 +238,9 @@ divine creation, so that humankind may soon come to recognize its path.
 *Pipeline provenance: translated by `tnh-gen` using prompt
 `translate_journal_section_tnh_voice_en` (version 1.0), model gpt-5.4, generated
 2026-05-07. Section boundaries and document context from `default_section` (version 1.0).
-Source: cleaned OCR from `tests/golden/journal-pipeline/5page/`. Full artifact chain at
+Source: cleaned OCR from the five-page extracted scan subset in
+`tests/golden/journal-pipeline/5page/`, corresponding to article pages 6-10 in the
+original magazine. Full artifact chain at
 `tests/golden/journal-pipeline/walkthrough/clean_translate_5page/`.*
 
 ---
@@ -247,7 +250,7 @@ Source: cleaned OCR from `tests/golden/journal-pipeline/5page/`. Full artifact c
 ### Primary Source
 
 Thạc-Đức [attr. Thích Nhất Hạnh]. "Vũ-trụ-quan Phật học." *Phật Giáo Việt Nam*, nos.
-17–18 (1957): 7–11. Digitized copy available via Thư Viện Hoa Sen:
+17–18 (1957): 6–10. Digitized copy available via Thư Viện Hoa Sen:
 [thuvienhoasen.org/a26248/tap-chi-phat-giao-viet-nam](https://thuvienhoasen.org/a26248/tap-chi-phat-giao-viet-nam).
 
 ### Scholarship on *Phật Giáo Việt Nam* and Thích Nhất Hạnh's Early Writings

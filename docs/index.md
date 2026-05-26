@@ -19,7 +19,7 @@ This document contains deeper onboarding and architectural context. For a more c
 
 TNH Scholar is intended as a long-term effort to support the **living Plum Village tradition** with trustworthy, transparent digital tools. This work is intended, both in development and usage, to deeply respect the tradition and practice of Thích Nhất Hạnh and the Plum Village community.
 
-- Support the building of **multilingual corpora** of Thích Nhất Hạnh's and the Plum Village community's teachings with high-fidelity text, rich metadata, and sentence-level alignment across languages.
+- Support the building of **multilingual corpora** spanning Thích Nhất Hạnh's teachings, wider Plum Village teachings, and freely available source Buddhist texts, with high-fidelity text, rich metadata, and sentence-level alignment across languages.
 - Provide **AI-assisted research tools** that expose their reasoning and keep human judgment central, serving monastics, practitioners, teachers, and researchers.
 - Support **cross-lingual research** with support for Vietnamese, English, French, Chinese, Pāli, Sanskrit, Tibetan, and other sources.
 - Enable **rich interactive environments** like bilingual readers combining scans, text, translations, and audio.
@@ -39,9 +39,9 @@ For the full vision, including scope, non-scope, relationship to spin-offs, and 
 
 ---
 
-## What TNH Scholar Makes Possible
+## What TNH Scholar Aspires to Make Possible
 
-TNH Scholar aims to support the community in:
+TNH Scholar aspires to support the community in:
 
 - Exploring teachings with bilingual text and translation side-by-side
 - Searching themes and teachings across languages and periods using semantic search and retrieval

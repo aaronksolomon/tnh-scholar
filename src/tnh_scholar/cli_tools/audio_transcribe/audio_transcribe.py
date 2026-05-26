@@ -394,7 +394,7 @@ def _log_invalid_transcript_text(transcript_text: Any) -> None:
 )
 @click.option(
     "--chunk_duration", type=int, default=DEFAULT_CHUNK_DURATION,
-    help="Chunk duration in seconds (default: 7 minutes)."
+    help="Chunk duration in seconds (default: 120)."
 )
 @click.option(
     "--min_chunk", type=int, default=DEFAULT_MIN_CHUNK,

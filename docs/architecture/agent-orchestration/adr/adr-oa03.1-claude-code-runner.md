@@ -236,7 +236,7 @@ The runner normalizes Claude output to kernel-compatible artifacts:
 | Condition | Runner Response |
 |-----------|-----------------|
 | Non-zero exit code | Mark step `error` |
-| Unparseable output | Mark step `unsafe` |
+| Unparsable output | Mark step `unsafe` |
 | Timeout | Mark step `killed_timeout` |
 | Interactive prompt detected | Mark step `blocked`, reason `interactive_prompt` |
 

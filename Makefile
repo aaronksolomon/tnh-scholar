@@ -13,8 +13,9 @@ PR_CHECK_ARGS ?=
 DIFF_WARN_CHARS ?= 120000
 DIFF_LIMIT_CHARS ?= 140000
 DIFF_WATCH_SECONDS ?= 30
+TYPST_FACSIMILE ?= experiments/typst/vu-tru-page7-facsimile.typ
 
-.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-check build-indexes docs-generate docs-build docs-build-readonly docs-drift docs-change-warning docs-verify docs-verify-readonly codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check diff-size diff-watch branch-preflight pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime
+.PHONY: setup setup-dev test lint format kernel docs docs-validate docs-check build-indexes docs-generate docs-build docs-build-readonly docs-drift docs-change-warning docs-verify docs-verify-readonly codespell docs-quickcheck type-check release-check changelog-draft release-patch release-minor release-major release-commit release-tag release-publish release-full docs-links docs-links-apply ci-check pr-check diff-size diff-watch branch-preflight pipx-refresh build-all update update-health-check health-check sync-sandbox ytdlp-runtime typst-facsimile typst-facsimile-assets typst-facsimile-clean facsimile-web-serve
 
 setup:
 	pyenv install -s $(PYTHON_VERSION)
@@ -58,6 +59,18 @@ update:
 
 sync-sandbox:
 	./scripts/sync-sandbox.sh --sandbox $(SANDBOX_PATH) --source-repo $(SANDBOX_SOURCE_REPO)
+
+typst-facsimile-assets:
+	./scripts/build_typst_facsimile_assets.sh
+
+typst-facsimile:
+	./scripts/render_typst_facsimile.sh $(TYPST_FACSIMILE)
+
+typst-facsimile-clean:
+	rm -f $(TYPST_FACSIMILE:.typ=.pdf) $(TYPST_FACSIMILE:.typ=.png)
+
+facsimile-web-serve:
+	python3 -m http.server 8027
 
 pipx-build:
 	@echo "Building pipx install for tnh-scholar (all CLI tools)..."
@@ -145,7 +158,7 @@ link-check:
 
 codespell:
 	@echo "Running codespell..."
-	$(POETRY) run codespell -q 3 -I .codespell-ignore.txt --skip="*.txt" README.md docs
+	$(POETRY) run codespell -q 3 -I .codespell-ignore.txt --skip="*.txt,*.pdf" README.md docs
 
 docs-verify: build-indexes docs-links docs-build codespell
 	@echo "Verifying documentation..."

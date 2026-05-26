@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Journal Facsimile Docs + `audio-transcribe` Release Hardening** (2026-05-25)
+  - Added a new post-pipeline facsimile note, linked the journal case study to the new facsimile artifact set, and added local Typst/web helper assets and scripts for the experimental page-7 facsimile workflow
+  - Updated user-facing project vision/community copy to clarify corpus scope beyond Thích Nhất Hạnh-only materials
+  - Fixed `audio-transcribe` validation so `--no_transcribe` fails cleanly instead of crashing, aligned config defaults with the CLI surface, and added a regression test for the download-only validation path
+  - Cleaned release-doc quality blockers by excluding PDFs from `codespell`, fixing a small set of documentation typos, and normalizing Ruff import ordering in maintained Python modules
+  - Files: `docs/user-guide/`, `docs/project/vision.md`, `docs/index.md`, `docs/community/parallax-overview.md`, `experiments/`, `scripts/build_typst_facsimile_assets.sh`, `scripts/render_typst_facsimile.sh`, `src/tnh_scholar/cli_tools/audio_transcribe/`, `tests/cli_tools/test_audio_transcribe.py`, `Makefile`, `.codespell-ignore.txt`
+
 - **`tnh-gen` Golden Artifact Policy Normalization** (2026-05-03)
   - Standardized the live-golden directories on a single policy: tracked source fixtures and operator docs, untracked generated run artifacts
   - Updated the journal walkthrough and golden READMEs to stop implying that generated outputs should be committed as repository fixtures

@@ -3,6 +3,7 @@
 import re
 
 from jinja2 import Environment, StrictUndefined, TemplateSyntaxError
+
 from tnh_scholar.exceptions import ConfigurationError
 
 from ..config.policy import ValidationPolicy

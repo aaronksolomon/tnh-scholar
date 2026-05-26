@@ -29,8 +29,8 @@ from tnh_scholar.gen_ai_service.mappers.completion_mapper import (
     provider_to_completion,
 )
 from tnh_scholar.gen_ai_service.models.domain import (
-    CompletionFailure,
     CompletionEnvelope,
+    CompletionFailure,
     CompletionOutcomeStatus,
     CompletionResult,
     FailureReason,

@@ -127,7 +127,7 @@ The extension spawns `tnh-gen` as a child process and communicates via JSON usin
 - **stderr** - Diagnostics only (warnings, trace IDs, debug info); log to Output channel, not used for UX logic
 - **Exit codes** - 0 (success), 1-5 (error categories per ADR-TG01)
 - **Success payload schemas** - `ListApiPayload`, `RunSuccessPayload`, `VersionPayload` in `src/tnh_scholar/cli_tools/tnh_gen/types.py:120`
-- **Error parsing** - On non-zero exit, attempt JSON parse for structured error; if missing/unparseable, show a generic failure and log stderr tail
+- **Error parsing** - On non-zero exit, attempt JSON parse for structured error; if missing/unparsable, show a generic failure and log stderr tail
 
 ### 3. Error Handling
 

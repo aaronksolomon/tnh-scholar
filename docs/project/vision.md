@@ -15,7 +15,7 @@ This document defines the long-term north star of the TNH-Scholar project — it
 
 TNH-Scholar exists to serve the living Plum Village tradition by:
 
-- Making Thích Nhất Hạnh and Plum Village lineage teachings easily accessible, discoverable, and navigable in order to aid research and practice.
+- Making Thích Nhất Hạnh's teachings, wider Plum Village teachings, and freely available source Buddhist texts accessible, discoverable, and navigable in order to aid research and practice.
 - Supporting deep, careful study by monastics, lay students, researchers, and practitioners.
 - Providing trustworthy, transparent AI-supported tools that respect the Dharma, the lineage, and the humans who work with them.
 - Exploring how AI can support scholarship, translation, navigation, and content processing while remaining grounded in human discernment, authenticity, and care.
@@ -29,7 +29,7 @@ The project is not only a software system. It is a long-term scholarly and techn
 
 At a high level, TNH-Scholar aims to become:
 
-- **A canonical, clean, multi-lingual corpus** of Thích Nhất Hạnh’s work and related sources, with:
+- **A canonical, clean, multi-lingual corpus** spanning Thích Nhất Hạnh’s work, wider Plum Village teachings, and freely available source Buddhist texts, with:
   - High-fidelity text,
   - Rich metadata,
   - Sentence-level alignment across languages,
@@ -70,7 +70,7 @@ The long-term vision is *not* to replace human scholars or practitioners, but to
 
 **In scope:**
 
-- Tools to structure, clean, annotate, translate, and search a multilingual corpus beginning with Thích Nhất Hạnh's legacy, extending to current Plum Village teachers, and reaching toward the historical canonical texts (Pāli, Tibetan, Sanskrit) the tradition draws from.
+- Tools to structure, clean, annotate, translate, and search a multilingual corpus spanning Thích Nhất Hạnh's legacy, wider Plum Village teachings, and freely available source Buddhist texts, including historical canonical texts (Pāli, Tibetan, Sanskrit) the tradition draws from.
 - Infrastructure to support reliable, transparent, AI-supported workflows (GenAIService, patterns, provenance).
 - Developer and research tooling (CLI, VS Code integration, batch jobs, evaluation tools), including exploratory work in human–AI and agent-supported software development where it serves the project’s scholarly aims.
 

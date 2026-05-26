@@ -21,7 +21,7 @@ This document provides a clear, non-technical introduction to the TNH‑Scholar 
 
 **TNH‑Scholar** is a long-term digital humanities and AI‑assisted research project dedicated to:
 
-- preserving, organizing, and making searchable the collected works of Thầy,
+- preserving, organizing, and making searchable Thích Nhất Hạnh's teachings, wider Plum Village teachings, and freely available source Buddhist texts,
 - enabling semantic search and discovery across teachings through advanced retrieval techniques,
 - supporting translation, annotation, and scholarship across Vietnamese, English, French, and other languages,
 - developing tools for practitioners, educators, editors, researchers, and archivists,

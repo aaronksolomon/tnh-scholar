@@ -102,7 +102,7 @@ The target is a supervised system that can carry a repository task through:
 - implementation
 - refinement
 - testing
-- checkin
+- check-in
 - PR creation
 - review response
 - merge-ready completion

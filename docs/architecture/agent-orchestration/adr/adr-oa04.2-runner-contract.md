@@ -241,7 +241,7 @@ Runner adapters MUST map native execution outcomes into the shared runner termin
 
 Important rules:
 
-- Missing or unparseable optional native artifacts do not by themselves require failure if normalized required artifacts are still produced.
+- Missing unparsable optional native artifacts do not by themselves require failure if normalized required artifacts are still produced.
 - Missing normalized transcript or metadata artifacts is `error`.
 - Unsupported interactive/prompting behavior in a headless-only adapter is `error` or `killed_policy`; it is never silently downgraded to success.
 

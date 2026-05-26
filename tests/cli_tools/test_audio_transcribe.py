@@ -1,6 +1,7 @@
 from importlib import import_module
 
 import pytest
+from click.testing import CliRunner
 
 audio_transcribe_module = import_module(
     "tnh_scholar.cli_tools.audio_transcribe.audio_transcribe"
@@ -85,3 +86,13 @@ def test_normalize_transcript_texts_warns_for_unsupported_entries(
 
     assert result == []
     assert "Skipping unsupported transcript entry type: int" in warning_messages
+
+
+def test_audio_transcribe_rejects_download_only_without_youtube_source() -> None:
+    runner = CliRunner()
+
+    result = runner.invoke(audio_transcribe_module.audio_transcribe, ["--no_transcribe"])
+
+    assert result.exit_code == 1
+    assert "[CONFIG VALIDATION ERROR]" in result.output
+    assert "--no_transcribe requires a YouTube URL or CSV" in result.output

@@ -1,0 +1,252 @@
+:root {
+  --paper: #b8aa85;
+  --paper-dark: #8f8466;
+  --ink: #16130f;
+  --accent: #8a2f10;
+  --accent-soft: rgba(138, 47, 16, 0.22);
+  --ui: #efe4c7;
+  --ui-line: rgba(22, 19, 15, 0.18);
+  --shadow: rgba(22, 19, 15, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, #d2c39e 0%, transparent 32%),
+    linear-gradient(180deg, #9b8d69 0%, #877a58 100%);
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: minmax(700px, 1fr) 360px;
+  gap: 20px;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border: 1px solid var(--ui-line);
+  border-radius: 16px;
+  background: rgba(239, 228, 199, 0.88);
+  box-shadow: 0 10px 30px var(--shadow);
+}
+
+.toolbar strong {
+  font-size: 0.92rem;
+}
+
+.toolbar button {
+  border: 1px solid var(--ui-line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--ink);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.toolbar button.is-active {
+  background: var(--accent);
+  color: #fff8eb;
+  border-color: transparent;
+}
+
+.canvas-card,
+.panel {
+  border: 1px solid var(--ui-line);
+  border-radius: 20px;
+  background: rgba(239, 228, 199, 0.9);
+  box-shadow: 0 16px 42px var(--shadow);
+}
+
+.canvas-card {
+  padding: 18px;
+}
+
+.image-frame {
+  position: relative;
+  width: min(100%, 760px);
+  margin: 0 auto;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.image-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.regions {
+  position: absolute;
+  inset: 0;
+}
+
+.region {
+  position: absolute;
+  border: 1.5px solid rgba(138, 47, 16, 0.45);
+  background: rgba(138, 47, 16, 0.06);
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.region:hover,
+.region:focus-visible,
+.region.is-active {
+  background: var(--accent-soft);
+  border-color: rgba(138, 47, 16, 0.9);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.region.region--title,
+.region.region--byline,
+.region.region--heading {
+  background: rgba(22, 19, 15, 0.05);
+}
+
+.region-label {
+  position: absolute;
+  left: 0;
+  top: -1.6rem;
+  padding: 2px 6px;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff8eb;
+  background: rgba(22, 19, 15, 0.78);
+  border-radius: 999px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 120ms ease, transform 120ms ease;
+  pointer-events: none;
+}
+
+.region:hover .region-label,
+.region:focus-visible .region-label,
+.region.is-active .region-label,
+.regions.show-labels .region-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.panel {
+  padding: 18px;
+  position: sticky;
+  top: 24px;
+  height: calc(100vh - 48px);
+  overflow: auto;
+}
+
+.panel h1 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+.panel .meta {
+  margin: 0 0 16px;
+  color: rgba(22, 19, 15, 0.66);
+  font-size: 0.9rem;
+}
+
+.panel .empty {
+  color: rgba(22, 19, 15, 0.7);
+  line-height: 1.5;
+}
+
+.detail-card {
+  border-top: 1px solid var(--ui-line);
+  padding-top: 14px;
+}
+
+.detail-card h2 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+}
+
+.detail-card .tag {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(22, 19, 15, 0.08);
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.segment {
+  padding: 10px 0;
+  border-top: 1px dashed rgba(22, 19, 15, 0.14);
+}
+
+.segment:first-of-type {
+  border-top: 0;
+}
+
+.segment dt {
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(22, 19, 15, 0.58);
+  margin-bottom: 4px;
+}
+
+.segment dd {
+  margin: 0 0 8px;
+  line-height: 1.45;
+}
+
+.context-menu {
+  position: fixed;
+  z-index: 10;
+  min-width: 180px;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid var(--ui-line);
+  background: rgba(255, 248, 235, 0.98);
+  box-shadow: 0 14px 34px rgba(22, 19, 15, 0.24);
+  display: none;
+}
+
+.context-menu button {
+  display: block;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.context-menu button:hover {
+  background: rgba(138, 47, 16, 0.12);
+}
+
+@media (max-width: 1100px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    position: static;
+    height: auto;
+  }
+}

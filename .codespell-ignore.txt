@@ -25,6 +25,7 @@ nav
 Thay
 astroid
 Nam
+NAM
 thi
 Ouput
 Usefull
