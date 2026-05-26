@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Dependency Security Refresh for Release Prep** (2026-05-25)
+  - Updated `GitPython` to `3.1.50` to clear the current newline-injection and path-traversal advisories affecting repository config and reference APIs
+  - Refreshed the locked transitive graph for `urllib3`, `idna`, `mistune`, and `pymdown-extensions` to the currently patched lines accepted by the Poetry resolver
+  - Revalidated the release candidate state with the full local release gate after the dependency changes
+  - Files: `pyproject.toml`, `poetry.lock`
+
 - **Journal Facsimile Docs + `audio-transcribe` Release Hardening** (2026-05-25)
   - Added a new post-pipeline facsimile note, linked the journal case study to the new facsimile artifact set, and added local Typst/web helper assets and scripts for the experimental page-7 facsimile workflow
   - Updated user-facing project vision/community copy to clarify corpus scope beyond Thích Nhất Hạnh-only materials
