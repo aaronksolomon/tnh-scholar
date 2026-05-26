@@ -12,7 +12,7 @@ updated: "2026-04-26"
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 > **Last Updated**: 2026-04-26 (CI workflow cleanup and docs validation split landed; notebook repo cleanup and release validation next)
-> **Version**: 0.4.0 (Alpha)
+> **Version**: 0.4.1 (Alpha)
 > **Status**: Active Development - bootstrap viable, release validation and packaging phase
 >
 > **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
