@@ -51,7 +51,7 @@ echo "Compiling Typst source: $typ_file"
 typst compile --root "$repo_root" "$typ_file" "$pdf_path"
 
 echo "Rendering first PDF page to PNG: $pdf_path"
-pdftoppm -png -r 300 -f 1 -singlefile "$pdf_path" "$base_path"
+pdftoppm -png -scale-to-x 512 -scale-to-y 768 -f 1 -singlefile "$pdf_path" "$base_path"
 
 echo "Wrote:"
 echo "  $pdf_path"
