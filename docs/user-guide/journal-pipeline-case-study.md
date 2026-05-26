@@ -5,14 +5,14 @@ owner: ""
 author: ""
 status: current
 created: "2026-05-04"
-updated: "2026-05-25"
+updated: "2026-05-26"
 ---
 
 # Pipeline Case Study: Thầy Edited Journal Text
 
 The pipeline uses `tnh-gen` to turn a scan-derived article,
 [*Vũ-trụ-quan Phật học*](/user-guide/assets/journal-pipeline/pgvn-17-18-vu-tru-quan-phat-hoc.pdf), from
-[*Phật Giáo Việt Nam*](https://thuvienhoasen.org/a26248/tap-chi-phat-giao-viet-nam), edited by Thích Nhất Hạnh,
+[*Phật Giáo Việt Nam*](https://thuvienhoasen.org/a26248/tap-chi-phat-giao-viet-nam) (Journal of Vietnamese Buddhism), edited by Thích Nhất Hạnh,
 into a readable English draft:
 [*A Buddhist Cosmological View*](/user-guide/assets/journal-pipeline/vu-tru-quan-phat-hoc-tnh-voice-refined-en.md). The draft is intended to be a traceable artifact that translators
 can review.
