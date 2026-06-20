@@ -27,6 +27,7 @@ from tnh_scholar.cli_tools.tnh_gen.types import (
     RunProvenancePayload,
     RunResultPayload,
     RunUsagePayload,
+    SettingsKwargs,
     VariableMap,
 )
 from tnh_scholar.exceptions import ConfigurationError, ValidationError
@@ -315,9 +316,16 @@ def _prepare_run_context(
         ConfigurationError: If service factory is not initialized.
         ValueError: If required variables are missing or inputs are invalid.
     """
+    settings_overrides = _settings_overrides_for_run(model, no_max_tokens_limit)
+
     # Load configuration
     overrides: ConfigData = {"default_model": model}
-    config, meta = load_config(ctx.config_path, overrides=overrides, prompt_dir=prompt_dir)
+    config, meta = load_config(
+        ctx.config_path,
+        overrides=overrides,
+        prompt_dir=prompt_dir,
+        settings_overrides=settings_overrides,
+    )
 
     # Get service factory from context
     factory = ctx.service_factory
@@ -366,6 +374,19 @@ def _prepare_run_context(
         output_file=output_file,
         include_provenance=not no_provenance,
     )
+
+
+def _settings_overrides_for_run(
+    model: str | None,
+    no_max_tokens_limit: bool,
+) -> SettingsKwargs | None:
+    """Build settings-only overrides needed before CLI config loads."""
+    overrides: SettingsKwargs = {}
+    if model is not None:
+        overrides["default_model"] = model
+    if no_max_tokens_limit:
+        overrides["default_output_token_limit_mode"] = OutputTokenLimitMode.MODEL_MAX
+    return overrides or None
 
 
 def _result_payload_from_envelope(envelope: CompletionEnvelope) -> RunResultPayload | None:

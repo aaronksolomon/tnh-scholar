@@ -23,7 +23,10 @@ from pydantic import AliasChoices, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tnh_scholar.exceptions import ConfigurationError
-from tnh_scholar.gen_ai_service.config.output_tokens import OutputTokenLimitMode
+from tnh_scholar.gen_ai_service.config.output_tokens import (
+    OutputTokenLimitMode,
+    format_output_token_limit_exceeded_message,
+)
 
 
 class GenAISettings(BaseSettings):
@@ -89,8 +92,12 @@ class GenAISettings(BaseSettings):
             return values
         if max_tokens > limit:
             raise ValueError(
-                f"default_max_output_tokens={max_tokens} exceeds output token limit for {model} ({limit}). "
-                "Lower the value or choose a model with a larger context window."
+                format_output_token_limit_exceeded_message(
+                    model=model,
+                    requested_tokens=max_tokens,
+                    model_max_output_tokens=limit,
+                )
+                + " Lower the value or choose a model with a larger output token limit."
             )
         return values
 

@@ -263,6 +263,18 @@ def test_load_config_tracks_sources(tmp_path, monkeypatch):
     assert str(override_path) in meta["config_files"]
 
 
+def test_load_config_allows_settings_override_for_model_max_mode(monkeypatch):
+    monkeypatch.setenv("DEFAULT_MODEL", "gpt-3.5-turbo")
+
+    config, meta = load_config(
+        overrides=None,
+        settings_overrides={"default_output_token_limit_mode": OutputTokenLimitMode.MODEL_MAX},
+    )
+
+    assert config.default_model == "gpt-3.5-turbo"
+    assert meta["sources"] == ["defaults+env"]
+
+
 def test_load_config_overrides_collects_sources(tmp_path, monkeypatch):
     config_home = tmp_path / "config-home"
     config_home.mkdir()

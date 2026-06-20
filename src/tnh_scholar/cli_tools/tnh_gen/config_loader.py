@@ -7,7 +7,7 @@ from typing import Any, cast
 
 from pydantic import BaseModel, Field, field_validator
 
-from tnh_scholar.cli_tools.tnh_gen.types import ConfigData, ConfigKey, ConfigMeta
+from tnh_scholar.cli_tools.tnh_gen.types import ConfigData, ConfigKey, ConfigMeta, SettingsKwargs
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 
 
@@ -106,6 +106,7 @@ def load_config(
     cwd: Path | None = None,
     overrides: ConfigData | None = None,
     prompt_dir: Path | None = None,
+    settings_overrides: SettingsKwargs | None = None,
 ) -> tuple[CLIConfig, ConfigMeta]:
     """Load CLI configuration with clear precedence and metadata.
 
@@ -119,6 +120,8 @@ def load_config(
         cwd: Working directory for resolving workspace config paths.
         overrides: In-memory override values (e.g., CLI flags).
         prompt_dir: Optional prompt catalog directory override.
+        settings_overrides: Optional GenAI settings overrides applied only when
+            loading environment-backed defaults.
 
     Returns:
         Tuple of validated `CLIConfig` and metadata containing the source list.
@@ -126,7 +129,10 @@ def load_config(
     Raises:
         ValueError: If any referenced config file contains invalid JSON.
     """
-    settings = GenAISettings(_env_file=None)  # type: ignore # not handled by pydantic mypy plugin
+    settings = GenAISettings(
+        _env_file=None,
+        **(settings_overrides or {}),
+    )  # type: ignore # not handled by pydantic mypy plugin
 
     base: ConfigData = {
         "prompt_catalog_dir": settings.prompt_dir,

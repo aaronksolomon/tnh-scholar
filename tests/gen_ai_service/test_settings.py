@@ -104,7 +104,7 @@ def test_settings_allow_model_max_output_token_mode() -> None:
 
 
 def test_settings_reject_capped_output_tokens_above_model_limit() -> None:
-    with pytest.raises(ValueError, match="exceeds output token limit"):
+    with pytest.raises(ValueError, match="Requested output tokens 10000 exceed model output limit"):
         GenAISettings(
             _env_file=None,
             default_model="gpt-3.5-turbo",

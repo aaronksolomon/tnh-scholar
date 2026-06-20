@@ -36,9 +36,38 @@ class EffectiveOutputTokenLimit(BaseModel):
     """Prompt-aware resolved token limit used for provider requests."""
 
     mode: OutputTokenLimitMode
+    context_limit: int = Field(ge=1)
     effective_max_output_tokens: int = Field(ge=1)
     model_max_output_tokens: int = Field(ge=1)
     available_context_tokens: int = Field(ge=0)
+
+
+def format_output_token_limit_exceeded_message(
+    *,
+    model: str,
+    requested_tokens: int,
+    model_max_output_tokens: int,
+) -> str:
+    """Build a consistent user-facing output-token-limit message."""
+    return (
+        f"Requested output tokens {requested_tokens} exceed model output limit for {model}: "
+        f"requested={requested_tokens}, model_max={model_max_output_tokens}."
+    )
+
+
+def format_context_window_exceeded_message(
+    *,
+    model: str,
+    prompt_tokens: int,
+    requested_tokens: int,
+    context_limit: int,
+) -> str:
+    """Build a consistent user-facing context-window message."""
+    return (
+        f"Context window exceeded for {model}: "
+        f"prompt_tokens={prompt_tokens}, requested_output_tokens={requested_tokens}, "
+        f"context_limit={context_limit}."
+    )
 
 
 def resolve_output_token_limit(
@@ -58,12 +87,18 @@ def resolve_output_token_limit(
 
     if available_context_tokens < 1:
         raise SafetyBlocked(
-            f"Context window exceeded for model {model}: {prompt_tokens} tokens >= {context_limit}"
+            format_context_window_exceeded_message(
+                model=model,
+                prompt_tokens=prompt_tokens,
+                requested_tokens=1,
+                context_limit=context_limit,
+            )
         )
 
     if policy.mode is OutputTokenLimitMode.MODEL_MAX:
         return EffectiveOutputTokenLimit(
             mode=policy.mode,
+            context_limit=context_limit,
             effective_max_output_tokens=min(model_max_output_tokens, available_context_tokens),
             model_max_output_tokens=model_max_output_tokens,
             available_context_tokens=available_context_tokens,
@@ -73,16 +108,24 @@ def resolve_output_token_limit(
         raise ValueError("capped token resolution requires capped_tokens")
     if policy.capped_tokens > model_max_output_tokens:
         raise SafetyBlocked(
-            f"Requested max output tokens {policy.capped_tokens} exceed model limit "
-            f"{model_max_output_tokens} for {model}"
+            format_output_token_limit_exceeded_message(
+                model=model,
+                requested_tokens=policy.capped_tokens,
+                model_max_output_tokens=model_max_output_tokens,
+            )
         )
     if policy.capped_tokens > available_context_tokens:
         raise SafetyBlocked(
-            f"Context window exceeded for model {model}: "
-            f"{prompt_tokens + policy.capped_tokens} tokens > {context_limit}"
+            format_context_window_exceeded_message(
+                model=model,
+                prompt_tokens=prompt_tokens,
+                requested_tokens=policy.capped_tokens,
+                context_limit=context_limit,
+            )
         )
     return EffectiveOutputTokenLimit(
         mode=policy.mode,
+        context_limit=context_limit,
         effective_max_output_tokens=policy.capped_tokens,
         model_max_output_tokens=model_max_output_tokens,
         available_context_tokens=available_context_tokens,

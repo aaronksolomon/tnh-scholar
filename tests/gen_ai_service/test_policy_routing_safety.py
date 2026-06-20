@@ -226,7 +226,7 @@ def test_safety_gate_blocks_on_model_output_limit_overflow():
         messages=[Message(role=Role.user, content="small text")],
     )
 
-    with pytest.raises(SafetyBlocked, match="exceed model limit"):
+    with pytest.raises(SafetyBlocked, match="Requested output tokens 200000 exceed model output limit"):
         safety_gate.pre_check(rendered, selection, settings)
 
 
@@ -243,7 +243,10 @@ def test_safety_gate_blocks_when_prompt_leaves_too_little_context():
         messages=[Message(role=Role.user, content="word " * 20_000)],
     )
 
-    with pytest.raises(SafetyBlocked, match="Context window exceeded"):
+    with pytest.raises(
+        SafetyBlocked,
+        match="Context window exceeded for gpt-3.5-turbo: .*context_limit=16385",
+    ):
         safety_gate.pre_check(rendered, selection, settings)
 
 
@@ -346,6 +349,7 @@ def test_safety_gate_resolves_model_max_to_available_context():
 
     assert report.effective_max_output_tokens > 0
     assert report.effective_max_output_tokens <= report.context_limit - report.prompt_tokens
+    assert report.context_limit > 0
 
 
 def test_safety_gate_post_check_returns_empty_for_none():

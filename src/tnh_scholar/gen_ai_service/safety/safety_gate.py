@@ -17,10 +17,7 @@ from tnh_scholar.gen_ai_service.config.output_tokens import (
     resolve_output_token_limit,
 )
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
-from tnh_scholar.gen_ai_service.config.registry import (
-    get_model_info,
-    get_registry_loader,
-)
+from tnh_scholar.gen_ai_service.config.registry import get_model_info, get_registry_loader
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionEnvelope,
@@ -43,11 +40,6 @@ class SafetyReport:
     output_token_limit_mode: OutputTokenLimitMode
     estimated_cost: float
     warnings: List[str]
-
-
-def _context_limit_for_model(provider: str, model: str) -> int:
-    return int(get_model_info(provider, model).context_window)
-
 
 def _estimate_cost(
     provider: str,
@@ -114,7 +106,6 @@ def pre_check(
     """
     messages = _normalize_messages(prompt)
     prompt_tokens = token_count_messages(messages, model=selection.model)
-    context_limit = _context_limit_for_model(selection.provider, selection.model)
 
     # Character bound
     warnings: list[str] = []
@@ -157,7 +148,7 @@ def pre_check(
 
     return SafetyReport(
         prompt_tokens=prompt_tokens,
-        context_limit=context_limit,
+        context_limit=effective_output_limit.context_limit,
         effective_max_output_tokens=effective_output_limit.effective_max_output_tokens,
         output_token_limit_mode=effective_output_limit.mode,
         estimated_cost=estimated_cost,
