@@ -14,6 +14,7 @@ from tnh_scholar.cli_tools.tnh_gen.factory import ServiceFactory, ServiceOverrid
 from tnh_scholar.cli_tools.tnh_gen.output.formatter import render_output
 from tnh_scholar.cli_tools.tnh_gen.output.human_formatter import format_human_friendly_error
 from tnh_scholar.cli_tools.tnh_gen.output.policy import resolve_output_format, validate_run_format
+from tnh_scholar.cli_tools.tnh_gen.output.progress import run_progress
 from tnh_scholar.cli_tools.tnh_gen.output.provenance import write_output_file
 from tnh_scholar.cli_tools.tnh_gen.state import OutputFormat, ctx
 from tnh_scholar.cli_tools.tnh_gen.types import (
@@ -771,26 +772,27 @@ def run_prompt(
         reasoning_effort = _normalize_reasoning_effort(reasoning)
         _apply_api_settings(format)
 
-        # Prepare execution context
-        context = _prepare_run_context(
-            prompt_key=prompt,
-            input_file=input_file,
-            vars_file=vars_file,
-            inline_vars=var,
-            prompt_dir=prompt_dir,
-            model=model,
-            intent=intent,
-            max_tokens=max_tokens,
-            temperature=temperature,
-            reasoning_effort=reasoning_effort,
-            output_file=output_file,
-            output_format=format,
-            no_provenance=no_provenance,
-            trace_id=trace_id,
-        )
+        with run_progress(prompt, input_file, quiet=ctx.quiet, api=ctx.api, no_color=ctx.no_color):
+            # Prepare execution context
+            context = _prepare_run_context(
+                prompt_key=prompt,
+                input_file=input_file,
+                vars_file=vars_file,
+                inline_vars=var,
+                prompt_dir=prompt_dir,
+                model=model,
+                intent=intent,
+                max_tokens=max_tokens,
+                temperature=temperature,
+                reasoning_effort=reasoning_effort,
+                output_file=output_file,
+                output_format=format,
+                no_provenance=no_provenance,
+                trace_id=trace_id,
+            )
 
-        # Execute prompt and build response payload
-        envelope, payload = _execute_prompt(context)
+            # Execute prompt and build response payload
+            envelope, payload = _execute_prompt(context)
 
         _emit_run_output(context, envelope, payload, ctx.api)
 
