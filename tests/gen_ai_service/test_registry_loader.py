@@ -10,3 +10,13 @@ def test_openai_registry_includes_gpt54():
 
     assert model_info.family == "gpt-5"
     assert model_info.max_output_tokens == 16384
+
+
+def test_openai_registry_includes_gpt55():
+    loader = get_registry_loader()
+
+    model_info = loader.get_model("openai", "gpt-5.5")
+
+    assert model_info.family == "gpt-5"
+    assert model_info.max_output_tokens == 16384
+    assert "gpt-5.5-latest" in model_info.aliases

@@ -139,6 +139,45 @@
       "aliases": ["gpt-5.4-latest"]
     },
 
+    "gpt-5.5": {
+      "display_name": "GPT-5.5",
+      "family": "gpt-5",
+      "capabilities": {
+        "vision": true,
+        "structured_output": true,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 200000,
+      "max_output_tokens": 16384,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.000625,
+          "output_per_1k": 0.005,
+          "cached_input_per_1k": 0.0000625
+        },
+        "flex": {
+          "input_per_1k": 0.000625,
+          "output_per_1k": 0.005,
+          "cached_input_per_1k": 0.0000625
+        },
+        "standard": {
+          "input_per_1k": 0.00125,
+          "output_per_1k": 0.01,
+          "cached_input_per_1k": 0.000125
+        },
+        "priority": {
+          "input_per_1k": 0.0025,
+          "output_per_1k": 0.02,
+          "cached_input_per_1k": 0.00025
+        }
+      },
+      "training_cutoff": "2025-12",
+      "released": "2026-06-17",
+      "deprecated": false,
+      "aliases": ["gpt-5.5-latest"]
+    },
+
     "gpt-4o-mini": {
       "display_name": "GPT-4o Mini",
       "family": "gpt-4",
