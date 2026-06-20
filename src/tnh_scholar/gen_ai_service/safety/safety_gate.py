@@ -12,6 +12,10 @@ Connected modules:
 from dataclasses import dataclass
 from typing import List, Sequence
 
+from tnh_scholar.gen_ai_service.config.output_tokens import (
+    OutputTokenLimitMode,
+    resolve_output_token_limit,
+)
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
 from tnh_scholar.gen_ai_service.config.registry import (
     get_model_info,
@@ -35,6 +39,8 @@ from tnh_scholar.prompt_system.domain.models import PromptMetadata
 class SafetyReport:
     prompt_tokens: int
     context_limit: int
+    effective_max_output_tokens: int
+    output_token_limit_mode: OutputTokenLimitMode
     estimated_cost: float
     warnings: List[str]
 
@@ -125,17 +131,18 @@ def pre_check(
     if len(text_concat) > settings.max_input_chars:
         raise SafetyBlocked(f"Prompt too large: {len(text_concat)} chars > limit {settings.max_input_chars}")
 
-    if prompt_tokens + selection.max_output_tokens > context_limit:
-        raise SafetyBlocked(
-            f"Context window exceeded for model {selection.model}: "
-            f"{prompt_tokens + selection.max_output_tokens} tokens > {context_limit}"
-        )
+    effective_output_limit = resolve_output_token_limit(
+        policy=selection.output_token_limit,
+        provider=selection.provider,
+        model=selection.model,
+        prompt_tokens=prompt_tokens,
+    )
 
     estimated_cost = _estimate_cost(
         selection.provider,
         selection.model,
         prompt_tokens,
-        selection.max_output_tokens,
+        effective_output_limit.effective_max_output_tokens,
     )
     if estimated_cost > settings.max_dollars:
         raise SafetyBlocked(
@@ -151,6 +158,8 @@ def pre_check(
     return SafetyReport(
         prompt_tokens=prompt_tokens,
         context_limit=context_limit,
+        effective_max_output_tokens=effective_output_limit.effective_max_output_tokens,
+        output_token_limit_mode=effective_output_limit.mode,
         estimated_cost=estimated_cost,
         warnings=warnings,
     )

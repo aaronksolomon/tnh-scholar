@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from tnh_scholar.configuration.context import TNHContext
+from tnh_scholar.gen_ai_service.config.output_tokens import OutputTokenLimitMode
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 
 PROMPT_ENV_VARS = ("PROMPT_DIR", "TNH_PROMPT_DIR")
@@ -90,3 +91,22 @@ def test_settings_prompt_dir_defaults_to_context(tmp_path: Path, monkeypatch: py
 
     settings = GenAISettings(_env_file=None)
     assert settings.prompt_dir == workspace_root / "tnh-prompts"
+
+
+def test_settings_allow_model_max_output_token_mode() -> None:
+    settings = GenAISettings(
+        _env_file=None,
+        default_model="gpt-5-mini",
+        default_output_token_limit_mode=OutputTokenLimitMode.MODEL_MAX,
+    )
+
+    assert settings.default_output_token_limit_mode is OutputTokenLimitMode.MODEL_MAX
+
+
+def test_settings_reject_capped_output_tokens_above_model_limit() -> None:
+    with pytest.raises(ValueError, match="exceeds output token limit"):
+        GenAISettings(
+            _env_file=None,
+            default_model="gpt-3.5-turbo",
+            default_max_output_tokens=10_000,
+        )

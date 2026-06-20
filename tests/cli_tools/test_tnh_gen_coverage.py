@@ -34,6 +34,7 @@ from tnh_scholar.cli_tools.tnh_gen.output import policy as policy_module
 from tnh_scholar.cli_tools.tnh_gen.output import provenance as provenance_module
 from tnh_scholar.cli_tools.tnh_gen.state import ListOutputFormat, OutputFormat, ctx
 from tnh_scholar.exceptions import ConfigurationError, ExternalServiceError, ValidationError
+from tnh_scholar.gen_ai_service.config.output_tokens import OutputTokenLimitMode
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionEnvelope,
     CompletionOutcomeStatus,
@@ -387,6 +388,7 @@ def test_prepare_run_context_requires_factory(tmp_path, monkeypatch):
                 model=None,
                 intent=None,
                 max_tokens=None,
+                no_max_tokens_limit=False,
                 temperature=None,
                 reasoning_effort=None,
                 output_file=None,
@@ -412,6 +414,7 @@ def test_initialize_service_uses_factory_overrides():
         factory,
         model="gpt-4o",
         max_tokens=10,
+        no_max_tokens_limit=False,
         temperature=0.5,
         reasoning_effort="high",
     )
@@ -419,6 +422,7 @@ def test_initialize_service_uses_factory_overrides():
     assert service == "service"
     assert factory.overrides.model == "gpt-4o"
     assert factory.overrides.max_tokens == 10
+    assert factory.overrides.output_token_limit_mode is None
     assert factory.overrides.temperature == 0.5
     assert factory.overrides.reasoning_effort == "high"
 
@@ -437,11 +441,31 @@ def test_emit_warnings_outputs_to_stderr(capsys):
 
 def test_validate_run_options_streaming_and_top_p(capsys):
     with pytest.raises(ValueError):
-        run_module._validate_run_options(streaming=True, top_p=None)
+        run_module._validate_run_options(
+            streaming=True,
+            top_p=None,
+            max_tokens=None,
+            no_max_tokens_limit=False,
+        )
 
-    run_module._validate_run_options(streaming=False, top_p=0.5)
+    run_module._validate_run_options(
+        streaming=False,
+        top_p=0.5,
+        max_tokens=None,
+        no_max_tokens_limit=False,
+    )
     captured = capsys.readouterr()
     assert "top-p" in captured.err.lower()
+
+
+def test_validate_run_options_rejects_conflicting_token_flags():
+    with pytest.raises(ValueError, match="cannot be used together"):
+        run_module._validate_run_options(
+            streaming=False,
+            top_p=None,
+            max_tokens=10,
+            no_max_tokens_limit=True,
+        )
 
 
 def test_output_formatters_cover_text_and_table_errors():
@@ -685,6 +709,7 @@ def test_factory_payload_and_protocol_coverage(tmp_path):
     overrides = factory_module.ServiceOverrides(
         model="override",
         max_tokens=9,
+        output_token_limit_mode=OutputTokenLimitMode.MODEL_MAX,
         temperature=0.1,
         reasoning_effort="medium",
     )
@@ -697,6 +722,7 @@ def test_factory_payload_and_protocol_coverage(tmp_path):
     assert payload["max_input_chars"] == 100
     assert payload["default_temperature"] == 0.1
     assert payload["default_max_output_tokens"] == 9
+    assert payload["default_output_token_limit_mode"] is OutputTokenLimitMode.MODEL_MAX
     assert payload["default_reasoning_effort"] == "medium"
 
     result = factory_module.ServiceFactory.create_genai_service(

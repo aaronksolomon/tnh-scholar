@@ -104,7 +104,7 @@ class GenAIService:
             system=rendered.system,
             messages=rendered.messages,
             temperature=selection.temperature,
-            max_output_tokens=selection.max_output_tokens,
+            max_output_tokens=safety_report.effective_max_output_tokens,
             seed=selection.seed,
             reasoning_effort=selection.reasoning_effort,
             response_format=_response_format_for_schema(
@@ -179,6 +179,8 @@ def _build_policy_applied(
     policy: PolicyApplied = {
         "prompt_tokens": safety_report.prompt_tokens,
         "context_limit": safety_report.context_limit,
+        "effective_max_output_tokens": safety_report.effective_max_output_tokens,
+        "output_token_limit_mode": safety_report.output_token_limit_mode.value,
         "estimated_cost": safety_report.estimated_cost,
     }
     if routing_reason is not None:
