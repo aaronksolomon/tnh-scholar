@@ -12,6 +12,7 @@ ConfigKey = Literal[
     "max_dollars",
     "max_input_chars",
     "default_temperature",
+    "default_reasoning_effort",
     "api_key",
     "cli_path",
 ]
@@ -23,6 +24,7 @@ class ConfigData(TypedDict, total=False):
     max_dollars: float | None
     max_input_chars: int | None
     default_temperature: float | None
+    default_reasoning_effort: str | None
     api_key: str | None
     cli_path: str | None
 
@@ -39,6 +41,7 @@ class ConfigValuePayload(TypedDict):
     max_dollars: NotRequired[float | None]
     max_input_chars: NotRequired[int | None]
     default_temperature: NotRequired[float | None]
+    default_reasoning_effort: NotRequired[str | None]
     api_key: NotRequired[str | None]
     cli_path: NotRequired[str | None]
 
@@ -221,3 +224,4 @@ class SettingsKwargs(TypedDict, total=False):
     max_input_chars: int
     default_temperature: float
     default_max_output_tokens: int
+    default_reasoning_effort: str | None

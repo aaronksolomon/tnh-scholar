@@ -19,6 +19,7 @@ class CLIConfig(BaseModel):
     max_dollars: float | None = None
     max_input_chars: int | None = None
     default_temperature: float | None = None
+    default_reasoning_effort: str | None = None
     api_key: str | None = None
     cli_path: str | None = None
 
@@ -133,6 +134,7 @@ def load_config(
         "max_dollars": settings.max_dollars,
         "max_input_chars": settings.max_input_chars,
         "default_temperature": settings.default_temperature,
+        "default_reasoning_effort": settings.default_reasoning_effort,
         "api_key": settings.openai_api_key,
         "cli_path": None,
     }

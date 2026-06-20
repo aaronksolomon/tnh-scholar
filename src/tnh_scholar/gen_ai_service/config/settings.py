@@ -55,6 +55,7 @@ class GenAISettings(BaseSettings):
     default_model: str = "gpt-5-mini"
     default_temperature: float = 1
     default_max_output_tokens: int = 10_000
+    default_reasoning_effort: str | None = None
     default_seed: int | None = None
     max_input_chars: int = 120_000
     max_dollars: float = 0.30

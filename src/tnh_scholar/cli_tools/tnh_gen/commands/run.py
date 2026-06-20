@@ -75,6 +75,13 @@ class TnhGenCLIOptions:
     INTENT = typer.Option(None, "--intent", help="Intent hint for routing.")
     MAX_TOKENS = typer.Option(None, "--max-tokens", help="Maximum output tokens.")
     TEMPERATURE = typer.Option(None, "--temperature", help="Model temperature.")
+    REASONING = typer.Option(
+        "high",
+        "--reasoning",
+        "--reasoning-effort",
+        help="Reasoning effort for supported models: minimal, low, medium, high, max, auto, or none.",
+        case_sensitive=False,
+    )
     TOP_P = typer.Option(None, "--top-p", help="Top-p sampling (not yet supported).")
     OUTPUT_FILE = typer.Option(None, "--output-file", help="Write result text to file.")
     FORMAT = typer.Option(
@@ -229,6 +236,7 @@ def _initialize_service(
     model: str | None,
     max_tokens: int | None,
     temperature: float | None,
+    reasoning_effort: str | None,
 ) -> GenAIServiceProtocol:
     """Build GenAI service with config and overrides.
 
@@ -238,11 +246,17 @@ def _initialize_service(
         model: Optional model override for this invocation.
         max_tokens: Optional max output tokens override.
         temperature: Optional temperature override.
+        reasoning_effort: Optional reasoning effort override.
 
     Returns:
         A configured GenAI service instance.
     """
-    overrides = ServiceOverrides(model=model, max_tokens=max_tokens, temperature=temperature)
+    overrides = ServiceOverrides(
+        model=model,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        reasoning_effort=reasoning_effort,
+    )
     return factory.create_genai_service(config, overrides)
 
 
@@ -255,6 +269,7 @@ def _prepare_run_context(
     intent: str | None,
     max_tokens: int | None,
     temperature: float | None,
+    reasoning_effort: str | None,
     output_file: Path | None,
     output_format: OutputFormat | None,
     no_provenance: bool,
@@ -273,6 +288,7 @@ def _prepare_run_context(
         intent: Optional routing intent.
         max_tokens: Optional max output tokens override.
         temperature: Optional temperature override.
+        reasoning_effort: Optional reasoning effort override.
         output_file: Optional path to write rendered output.
         output_format: Preferred CLI output format for stdout.
         no_provenance: Whether to skip provenance header when writing files.
@@ -295,7 +311,7 @@ def _prepare_run_context(
         raise ConfigurationError("Service factory not initialized")
 
     # Initialize service
-    service = _initialize_service(config, factory, model, max_tokens, temperature)
+    service = _initialize_service(config, factory, model, max_tokens, temperature, reasoning_effort)
 
     # Get prompt metadata
     metadata = _ensure_input_text_variable(service.catalog.introspect(prompt_key))
@@ -648,6 +664,19 @@ def _execute_prompt(context: RunContext) -> tuple[CompletionEnvelope, RunOutcome
     return envelope, payload
 
 
+def _normalize_reasoning_effort(reasoning: str | None) -> str | None:
+    if reasoning is None:
+        return None
+    normalized = reasoning.strip().lower()
+    if normalized in {"", "auto", "none", "off", "disabled"}:
+        return "none"
+    if normalized in {"max", "maximum"}:
+        return "high"
+    if normalized in {"minimal", "low", "medium", "high"}:
+        return normalized
+    raise ValueError("--reasoning must be one of: minimal, low, medium, high, max, auto, none")
+
+
 def _validate_run_options(streaming: bool, top_p: float | None) -> None:
     if streaming:
         raise ValueError("Streaming output is not implemented yet.")
@@ -702,6 +731,7 @@ def run_prompt(
     intent: str | None = TnhGenCLIOptions.INTENT,
     max_tokens: int | None = TnhGenCLIOptions.MAX_TOKENS,
     temperature: float | None = TnhGenCLIOptions.TEMPERATURE,
+    reasoning: str | None = TnhGenCLIOptions.REASONING,
     top_p: float | None = TnhGenCLIOptions.TOP_P,
     output_file: Path | None = TnhGenCLIOptions.OUTPUT_FILE,
     format: OutputFormat | None = TnhGenCLIOptions.FORMAT,
@@ -722,6 +752,7 @@ def run_prompt(
         intent: Optional routing intent to pass to the service.
         max_tokens: Max output tokens override.
         temperature: Temperature override.
+        reasoning: Reasoning effort override for supported models.
         top_p: Top-p sampling override (accepted but not applied).
         output_file: Optional file to write the rendered text to.
         format: Output format for stdout.
@@ -737,6 +768,7 @@ def run_prompt(
             ctx.api = True
 
         _validate_run_options(streaming, top_p)
+        reasoning_effort = _normalize_reasoning_effort(reasoning)
         _apply_api_settings(format)
 
         # Prepare execution context
@@ -750,6 +782,7 @@ def run_prompt(
             intent=intent,
             max_tokens=max_tokens,
             temperature=temperature,
+            reasoning_effort=reasoning_effort,
             output_file=output_file,
             output_format=format,
             no_provenance=no_provenance,

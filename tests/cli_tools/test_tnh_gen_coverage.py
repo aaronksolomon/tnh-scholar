@@ -388,6 +388,7 @@ def test_prepare_run_context_requires_factory(tmp_path, monkeypatch):
                 intent=None,
                 max_tokens=None,
                 temperature=None,
+                reasoning_effort=None,
                 output_file=None,
                 output_format=None,
                 no_provenance=False,
@@ -406,12 +407,20 @@ def test_initialize_service_uses_factory_overrides():
 
     factory = _StubFactory()
     config = CLIConfig()
-    service = run_module._initialize_service(config, factory, model="gpt-4o", max_tokens=10, temperature=0.5)
+    service = run_module._initialize_service(
+        config,
+        factory,
+        model="gpt-4o",
+        max_tokens=10,
+        temperature=0.5,
+        reasoning_effort="high",
+    )
 
     assert service == "service"
     assert factory.overrides.model == "gpt-4o"
     assert factory.overrides.max_tokens == 10
     assert factory.overrides.temperature == 0.5
+    assert factory.overrides.reasoning_effort == "high"
 
 
 def test_emit_warnings_respects_quiet(capsys):
@@ -673,7 +682,12 @@ def test_factory_payload_and_protocol_coverage(tmp_path):
         max_dollars=0.5,
         max_input_chars=100,
     )
-    overrides = factory_module.ServiceOverrides(model="override", max_tokens=9, temperature=0.1)
+    overrides = factory_module.ServiceOverrides(
+        model="override",
+        max_tokens=9,
+        temperature=0.1,
+        reasoning_effort="medium",
+    )
     payload = factory_module.cli_config_to_settings_kwargs(cli_config, overrides)
 
     assert payload["prompt_dir"] == tmp_path
@@ -683,6 +697,7 @@ def test_factory_payload_and_protocol_coverage(tmp_path):
     assert payload["max_input_chars"] == 100
     assert payload["default_temperature"] == 0.1
     assert payload["default_max_output_tokens"] == 9
+    assert payload["default_reasoning_effort"] == "medium"
 
     result = factory_module.ServiceFactory.create_genai_service(
         SimpleNamespace(),

@@ -106,6 +106,7 @@ class GenAIService:
             temperature=selection.temperature,
             max_output_tokens=selection.max_output_tokens,
             seed=selection.seed,
+            reasoning_effort=selection.reasoning_effort,
             response_format=_response_format_for_schema(
                 resolved_schema=resolved_schema,
                 provider=selection.provider,

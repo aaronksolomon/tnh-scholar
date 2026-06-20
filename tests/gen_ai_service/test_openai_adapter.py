@@ -136,6 +136,59 @@ def test_openai_adapter_uses_minimal_reasoning_for_legacy_gpt5_models():
     assert openai_request.reasoning_effort == "minimal"
 
 
+def test_openai_adapter_uses_high_reasoning_for_gpt55_models():
+    adapter = OpenAIAdapter()
+    request = ProviderRequest(
+        provider="openai",
+        model="gpt-5.5",
+        system="sys",
+        messages=[Message(role="user", content="Return ACK")],
+        temperature=0.2,
+        max_output_tokens=64,
+    )
+
+    openai_request = adapter.to_openai_request(request)
+
+    assert openai_request.temperature is None
+    assert openai_request.reasoning_effort == "high"
+
+
+def test_openai_adapter_honors_requested_reasoning_for_gpt55_models():
+    adapter = OpenAIAdapter()
+    request = ProviderRequest(
+        provider="openai",
+        model="gpt-5.5",
+        system="sys",
+        messages=[Message(role="user", content="Return ACK")],
+        temperature=0.2,
+        max_output_tokens=64,
+        reasoning_effort="low",
+    )
+
+    openai_request = adapter.to_openai_request(request)
+
+    assert openai_request.temperature is None
+    assert openai_request.reasoning_effort == "low"
+
+
+def test_openai_adapter_suppresses_reasoning_when_requested_none():
+    adapter = OpenAIAdapter()
+    request = ProviderRequest(
+        provider="openai",
+        model="gpt-5.5",
+        system="sys",
+        messages=[Message(role="user", content="Return ACK")],
+        temperature=0.2,
+        max_output_tokens=64,
+        reasoning_effort="none",
+    )
+
+    openai_request = adapter.to_openai_request(request)
+
+    assert openai_request.temperature is None
+    assert openai_request.reasoning_effort is None
+
+
 def test_openai_adapter_keeps_temperature_for_gpt54():
     adapter = OpenAIAdapter()
     request = ProviderRequest(

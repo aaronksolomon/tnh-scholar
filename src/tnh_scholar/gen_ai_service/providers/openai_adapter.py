@@ -52,6 +52,9 @@ from tnh_scholar.gen_ai_service.models.transport import (
 ADAPTER_COMPAT_VERSION = "2025-10-31"
 PINNED_OPENAI_SDK = "2.15.0"
 _LEGACY_GPT5_PREFIXES = ("gpt-5", "gpt-5-mini", "gpt-5-nano")
+_GPT55_MODEL_PREFIX = "gpt-5.5"
+_REASONING_DISABLED_VALUES = {"none", "auto", "off", "disabled"}
+_REASONING_HIGH_ALIASES = {"max", "maximum"}
 
 
 class OpenAIChatCompletionRequest(BaseModel):
@@ -74,7 +77,11 @@ class ContentExtractionResult:
 
 
 def _is_legacy_gpt5_model(model: str) -> bool:
-    return any(model == prefix or model.startswith(f"{prefix}-") for prefix in _LEGACY_GPT5_PREFIXES)
+    return (
+        any(model == prefix or model.startswith(f"{prefix}-") for prefix in _LEGACY_GPT5_PREFIXES)
+        or model == _GPT55_MODEL_PREFIX
+        or model.startswith(f"{_GPT55_MODEL_PREFIX}-")
+    )
 
 
 def _temperature_for_model(model: str, temperature: float | None) -> float | None:
@@ -83,7 +90,23 @@ def _temperature_for_model(model: str, temperature: float | None) -> float | Non
     return temperature
 
 
-def _reasoning_effort_for_model(model: str) -> str | None:
+def _normalize_requested_reasoning_effort(requested_effort: str | None) -> str | None:
+    if requested_effort is None:
+        return None
+    normalized = requested_effort.strip().lower()
+    if normalized in _REASONING_DISABLED_VALUES:
+        return None
+    if normalized in _REASONING_HIGH_ALIASES:
+        return "high"
+    return normalized
+
+
+def _reasoning_effort_for_model(model: str, requested_effort: str | None) -> str | None:
+    normalized_effort = _normalize_requested_reasoning_effort(requested_effort)
+    if requested_effort is not None and _is_legacy_gpt5_model(model):
+        return normalized_effort
+    if model == _GPT55_MODEL_PREFIX or model.startswith(f"{_GPT55_MODEL_PREFIX}-"):
+        return "high"
     if _is_legacy_gpt5_model(model):
         return "minimal"
     return None
@@ -375,7 +398,7 @@ class OpenAIAdapter:
             temperature=_temperature_for_model(req.model, req.temperature),
             max_completion_tokens=req.max_output_tokens,
             seed=req.seed,
-            reasoning_effort=_reasoning_effort_for_model(req.model),
+            reasoning_effort=_reasoning_effort_for_model(req.model, req.reasoning_effort),
             response_format=req.response_format,
         )
 

@@ -24,6 +24,7 @@ class ResolvedParams(BaseModel):
     model: str
     temperature: float
     max_output_tokens: int
+    reasoning_effort: str | None = None
     output_mode: str = "text"
     seed: Optional[int] = None
     routing_reason: Optional[str] = None
@@ -81,6 +82,7 @@ def apply_policy(
         model=model,
         temperature=current_settings.default_temperature,
         max_output_tokens=current_settings.default_max_output_tokens,
+        reasoning_effort=current_settings.default_reasoning_effort,
         output_mode=output_mode,
         seed=current_settings.default_seed,
         routing_reason=f"policy: intent={intent or 'unspecified'},"

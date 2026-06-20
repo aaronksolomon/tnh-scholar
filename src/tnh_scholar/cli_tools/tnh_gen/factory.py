@@ -17,6 +17,7 @@ class ServiceOverrides:
     model: str | None = None
     max_tokens: int | None = None
     temperature: float | None = None
+    reasoning_effort: str | None = None
 
 
 def cli_config_to_settings_kwargs(cli_config: CLIConfig, overrides: ServiceOverrides) -> SettingsKwargs:
@@ -36,6 +37,7 @@ def cli_config_to_settings_kwargs(cli_config: CLIConfig, overrides: ServiceOverr
         payload["default_temperature"] = overrides.temperature
     if overrides.max_tokens is not None:
         payload["default_max_output_tokens"] = overrides.max_tokens
+    payload["default_reasoning_effort"] = overrides.reasoning_effort
     # explicit model override stored in RenderRequest, not settings, but keep for completeness
     if overrides.model is not None:
         payload["default_model"] = overrides.model

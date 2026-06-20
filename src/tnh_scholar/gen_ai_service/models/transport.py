@@ -30,6 +30,7 @@ class ProviderRequest(BaseModel):
     temperature: float
     max_output_tokens: int
     seed: Optional[int] = None
+    reasoning_effort: Optional[str] = None
     response_format: Optional[Type[BaseModel] | Mapping[str, Any]] = None
 
 
