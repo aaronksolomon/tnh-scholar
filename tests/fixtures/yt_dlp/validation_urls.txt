@@ -2,10 +2,8 @@
 # Use full watch URLs only. Avoid Shorts and livestream replays.
 
 # Plum Village / TNH ecosystem
-https://www.youtube.com/watch?v=cbYPApa40J0
 https://www.youtube.com/watch?v=Q_UZCuBuuoU
 https://www.youtube.com/watch?v=Qch5ISD9Bxo
-https://www.youtube.com/watch?v=0yK1p4kz5cs
 
 # TED baseline
 https://www.youtube.com/watch?v=iG9CE55wbtY
