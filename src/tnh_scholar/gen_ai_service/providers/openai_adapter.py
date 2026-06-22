@@ -61,7 +61,7 @@ class OpenAIChatCompletionRequest(BaseModel):
     model: str
     messages: List[ChatCompletionMessageParam]
     temperature: float | None
-    max_completion_tokens: int
+    max_completion_tokens: int | None = None
     seed: Optional[int] = None
     reasoning_effort: str | None = None
     response_format: Optional[type[BaseModel] | Mapping[str, Any]] = None

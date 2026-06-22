@@ -6,7 +6,10 @@ import pytest
 
 from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.gen_ai_service import service as service_module
-from tnh_scholar.gen_ai_service.config.output_tokens import OutputTokenLimitPolicy
+from tnh_scholar.gen_ai_service.config.output_tokens import (
+    OutputTokenLimitMode,
+    OutputTokenLimitPolicy,
+)
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.infra.tracking.fingerprint import (
@@ -164,3 +167,60 @@ def test_missing_api_key_raises_configuration_error(tmp_path, monkeypatch: pytes
 
     with pytest.raises(ConfigurationError, match="Missing required API key: OPENAI_API_KEY"):
         GenAIService(settings=settings)
+
+
+def test_gen_ai_service_omits_provider_cap_for_model_max_mode(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    prompt_dir = _write_prompt(tmp_path)
+
+    policy_params = ResolvedParams(
+        provider="openai",
+        model="gpt-5.5",
+        temperature=0.2,
+        output_token_limit=OutputTokenLimitPolicy(mode=OutputTokenLimitMode.MODEL_MAX),
+        seed=None,
+    )
+
+    def fake_apply_policy(intent, call_hint, **_):
+        return policy_params
+
+    def fake_select(intent, params, settings, **_):
+        return params
+
+    monkeypatch.setattr(service_module, "apply_policy", fake_apply_policy)
+    monkeypatch.setattr(service_module, "select_provider_and_model", fake_select)
+    monkeypatch.setattr(service_module, "OpenAIClient", DummyOpenAIClient)
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(prompt_dir))
+    monkeypatch.setenv("OPENAI_API_KEY", "unit-test-key")
+
+    settings = GenAISettings(
+        _env_file=None,
+        default_model="gpt-5.5",
+        default_output_token_limit_mode=OutputTokenLimitMode.MODEL_MAX,
+        max_dollars=10.0,
+    )
+    service = GenAIService(settings=settings)
+    dummy_client: DummyOpenAIClient = service.openai_client  # type: ignore[assignment]
+    dummy_client.response = ProviderResponse(
+        provider="openai",
+        model=policy_params.model,
+        status=ProviderStatus.OK,
+        attempts=1,
+        payload=TextPayload(text="Rendered completion", finish_reason=FinishReason.STOP),
+        usage=ProviderUsage(tokens_in=123, tokens_out=45, tokens_total=168),
+    )
+
+    render_request = RenderRequest(
+        instruction_key="daily",
+        user_input="Where should I begin?",
+        variables={"audience": "practitioners"},
+        intent="study-plan",
+    )
+
+    service.generate(render_request)
+
+    assert len(dummy_client.requests) == 1
+    provider_request = dummy_client.requests[0]
+    assert provider_request.max_output_tokens is None

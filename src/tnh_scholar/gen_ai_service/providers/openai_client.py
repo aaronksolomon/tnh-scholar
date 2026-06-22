@@ -69,9 +69,10 @@ class OpenAIClient(ProviderClient):
         request_kwargs = dict(
             model=openai_request.model,
             messages=openai_request.messages,
-            max_completion_tokens=openai_request.max_completion_tokens,
             seed=openai_request.seed,
         )
+        if openai_request.max_completion_tokens is not None:
+            request_kwargs["max_completion_tokens"] = openai_request.max_completion_tokens
         if openai_request.temperature is not None:
             request_kwargs["temperature"] = openai_request.temperature
         if openai_request.reasoning_effort is not None:

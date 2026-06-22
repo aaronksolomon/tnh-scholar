@@ -104,7 +104,7 @@ class GenAIService:
             system=rendered.system,
             messages=rendered.messages,
             temperature=selection.temperature,
-            max_output_tokens=safety_report.effective_max_output_tokens,
+            max_output_tokens=_provider_request_max_output_tokens(safety_report),
             seed=selection.seed,
             reasoning_effort=selection.reasoning_effort,
             response_format=_response_format_for_schema(
@@ -186,6 +186,21 @@ def _build_policy_applied(
     if routing_reason is not None:
         policy["routing_reason"] = routing_reason
     return policy
+
+
+def _provider_request_max_output_tokens(
+    safety_report: safety_gate.SafetyReport,
+) -> int | None:
+    """Return the explicit provider cap to send for this request.
+
+    MODEL_MAX means "use the provider/model maximum safely available for this
+    prompt," so we avoid sending an explicit cap and let the provider enforce
+    its own current ceiling. We still keep the resolved effective budget in the
+    safety report for blocking, reporting, and cost estimation.
+    """
+    if safety_report.output_token_limit_mode is safety_gate.OutputTokenLimitMode.MODEL_MAX:
+        return None
+    return int(safety_report.effective_max_output_tokens)
 
 
 def _response_format_for_schema(

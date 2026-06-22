@@ -171,6 +171,22 @@ def test_openai_adapter_honors_requested_reasoning_for_gpt55_models():
     assert openai_request.reasoning_effort == "low"
 
 
+def test_openai_adapter_allows_omitting_explicit_max_completion_tokens():
+    adapter = OpenAIAdapter()
+    request = ProviderRequest(
+        provider="openai",
+        model="gpt-5.5",
+        system="sys",
+        messages=[Message(role="user", content="Return ACK")],
+        temperature=0.2,
+        max_output_tokens=None,
+    )
+
+    openai_request = adapter.to_openai_request(request)
+
+    assert openai_request.max_completion_tokens is None
+
+
 def test_openai_adapter_suppresses_reasoning_when_requested_none():
     adapter = OpenAIAdapter()
     request = ProviderRequest(

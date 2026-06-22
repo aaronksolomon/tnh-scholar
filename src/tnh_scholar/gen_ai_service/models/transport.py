@@ -28,7 +28,7 @@ class ProviderRequest(BaseModel):
     messages: List[Message]
     system: Optional[str] = None
     temperature: float
-    max_output_tokens: int
+    max_output_tokens: int | None = None
     seed: Optional[int] = None
     reasoning_effort: Optional[str] = None
     response_format: Optional[Type[BaseModel] | Mapping[str, Any]] = None
