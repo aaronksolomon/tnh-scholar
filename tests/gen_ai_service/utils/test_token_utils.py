@@ -180,8 +180,8 @@ def test_estimate_max_completion_tokens_gpt5_family():
         model="gpt-5-mini",
     )
 
-    assert max_tokens > 150_000
-    assert max_tokens < 200_000
+    assert max_tokens > 390_000
+    assert max_tokens < 400_000
 
 
 def test_estimate_max_completion_tokens_with_negative_prompt_tokens():

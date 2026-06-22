@@ -3,8 +3,8 @@
   "$schema": "./schema.json",
   "schema_version": "1.0",
   "provider": "openai",
-  "last_updated": "2026-04-20",
-  "source_url": "https://openai.com/api/pricing/",
+  "last_updated": "2026-06-22",
+  "source_url": "https://developers.openai.com/api/docs/models",
   "update_method": "manual",
   "pricing_tier": "standard",
   "pricing_tier_metadata": {
@@ -46,8 +46,8 @@
         "function_calling": true,
         "streaming": true
       },
-      "context_window": 200000,
-      "max_output_tokens": 16384,
+      "context_window": 400000,
+      "max_output_tokens": 128000,
       "pricing_tiers": {
         "batch": {
           "input_per_1k": 0.000125,
@@ -85,8 +85,8 @@
         "function_calling": true,
         "streaming": true
       },
-      "context_window": 200000,
-      "max_output_tokens": 16384,
+      "context_window": 400000,
+      "max_output_tokens": 128000,
       "pricing_tiers": {
         "batch": {
           "input_per_1k": 0.000625,
@@ -124,8 +124,8 @@
         "function_calling": true,
         "streaming": true
       },
-      "context_window": 200000,
-      "max_output_tokens": 16384,
+      "context_window": 1050000,
+      "max_output_tokens": 128000,
       "pricing_tiers": {
         "standard": {
           "input_per_1k": 0.00125,
@@ -148,8 +148,8 @@
         "function_calling": true,
         "streaming": true
       },
-      "context_window": 200000,
-      "max_output_tokens": 16384,
+      "context_window": 1050000,
+      "max_output_tokens": 128000,
       "pricing_tiers": {
         "batch": {
           "input_per_1k": 0.000625,
