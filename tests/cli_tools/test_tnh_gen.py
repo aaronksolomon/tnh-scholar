@@ -1559,6 +1559,7 @@ def test_run_defaults_reasoning_to_high(tmp_path, monkeypatch):
         factory,
         model,
         max_tokens,
+        no_max_tokens_limit,
         temperature,
         reasoning_effort,
     ):  # noqa: ANN001
@@ -1611,6 +1612,7 @@ def test_run_reasoning_max_alias_and_none_disable(tmp_path, monkeypatch):
         factory,
         model,
         max_tokens,
+        no_max_tokens_limit,
         temperature,
         reasoning_effort,
     ):  # noqa: ANN001
@@ -1637,6 +1639,60 @@ def test_run_reasoning_max_alias_and_none_disable(tmp_path, monkeypatch):
     assert max_result.exit_code == 0, max_result.output
     assert none_result.exit_code == 0, none_result.output
     assert captured == ["high", "none"]
+
+
+def test_run_no_max_tokens_limit_passes_flag_to_initializer(tmp_path, monkeypatch):
+    prompt_dir = _write_prompt(tmp_path)
+    input_file = tmp_path / "input.txt"
+    input_file.write_text("file-input", encoding="utf-8")
+
+    metadata = PromptMetadata(
+        key="daily",
+        name="Daily Guidance",
+        version="1.0.0",
+        description="Daily guidance prompt for testing.",
+        role="study-plan",
+        required_variables=["audience"],
+        optional_variables=[],
+        default_variables={},
+        tags=["guidance"],
+    )
+    stub_service = _StubService(metadata)
+    captured: dict[str, bool] = {}
+
+    def fake_initialize_service(
+        config,
+        factory,
+        model,
+        max_tokens,
+        no_max_tokens_limit,
+        temperature,
+        reasoning_effort,
+    ):  # noqa: ANN001
+        captured["no_max_tokens_limit"] = no_max_tokens_limit
+        return stub_service
+
+    monkeypatch.setenv("TNH_PROMPT_DIR", prompt_dir)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("TNH_GEN_CONFIG_HOME", str(tmp_path / "config-home"))
+    monkeypatch.setattr(run_module, "_initialize_service", fake_initialize_service)
+
+    result = runner.invoke(
+        tnh_gen.app,
+        [
+            "run",
+            "--prompt",
+            "daily",
+            "--input-file",
+            str(input_file),
+            "--var",
+            "audience=students",
+            "--no-max-tokens-limit",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert captured["no_max_tokens_limit"] is True
 
 
 def test_run_human_mode_rejects_json_format(tmp_path, monkeypatch):

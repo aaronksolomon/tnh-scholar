@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`tnh-gen` Model-Max Output Token Mode** (2026-06-20)
+  - Added a typed output-token limit policy to the GenAI service so request token budgeting is explicit at the policy layer rather than encoded as ad hoc CLI or provider behavior
+  - Added `tnh-gen run --no-max-tokens-limit`, which resolves output tokens to the selected model's maximum safe budget for the rendered prompt while preserving concrete provider request values
+  - Updated safety and service orchestration to resolve effective output tokens against both provider model limits and remaining context window before cost estimation and provider dispatch
+  - Added focused service, safety, settings, and CLI regression coverage for capped mode, model-max mode, conflict validation, and provider request shaping
+  - Files: `src/tnh_scholar/gen_ai_service/`, `src/tnh_scholar/cli_tools/tnh_gen/`, `tests/gen_ai_service/`, `tests/cli_tools/`
+
 - **Ruff Format Baseline + Release Gate Alignment** (2026-05-26)
   - Applied the current Ruff formatter across the repository so the codebase matches the format contract already enforced by GitHub `Main CI`
   - Added a blocking local `format-check` target and wired `release-check` to include `ruff format --check .`, closing the gap between local release validation and remote main-branch validation

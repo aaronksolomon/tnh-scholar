@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Literal, Mapping, MutableMapping, NotRequired, TypedDict
 
+from tnh_scholar.gen_ai_service.config.output_tokens import OutputTokenLimitMode
+
 DefaultVariables = Mapping[str, Any]
 PolicyApplied = Mapping[str, Any]
 VariableMap = MutableMapping[str, Any]
@@ -224,4 +226,5 @@ class SettingsKwargs(TypedDict, total=False):
     max_input_chars: int
     default_temperature: float
     default_max_output_tokens: int
+    default_output_token_limit_mode: OutputTokenLimitMode
     default_reasoning_effort: str | None

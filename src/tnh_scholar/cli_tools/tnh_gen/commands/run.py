@@ -27,9 +27,11 @@ from tnh_scholar.cli_tools.tnh_gen.types import (
     RunProvenancePayload,
     RunResultPayload,
     RunUsagePayload,
+    SettingsKwargs,
     VariableMap,
 )
 from tnh_scholar.exceptions import ConfigurationError, ValidationError
+from tnh_scholar.gen_ai_service.config.output_tokens import OutputTokenLimitMode
 from tnh_scholar.gen_ai_service.models.domain import (
     CompletionEnvelope,
     CompletionFailure,
@@ -75,6 +77,11 @@ class TnhGenCLIOptions:
     MODEL = typer.Option(None, "--model", help="Model override.")
     INTENT = typer.Option(None, "--intent", help="Intent hint for routing.")
     MAX_TOKENS = typer.Option(None, "--max-tokens", help="Maximum output tokens.")
+    NO_MAX_TOKENS_LIMIT = typer.Option(
+        False,
+        "--no-max-tokens-limit",
+        help="Use the selected model's maximum safe output tokens for this prompt.",
+    )
     TEMPERATURE = typer.Option(None, "--temperature", help="Model temperature.")
     REASONING = typer.Option(
         "high",
@@ -236,6 +243,7 @@ def _initialize_service(
     factory: ServiceFactory,
     model: str | None,
     max_tokens: int | None,
+    no_max_tokens_limit: bool,
     temperature: float | None,
     reasoning_effort: str | None,
 ) -> GenAIServiceProtocol:
@@ -246,6 +254,7 @@ def _initialize_service(
         factory: Service factory for constructing GenAI services.
         model: Optional model override for this invocation.
         max_tokens: Optional max output tokens override.
+        no_max_tokens_limit: Whether to resolve output tokens to the model maximum.
         temperature: Optional temperature override.
         reasoning_effort: Optional reasoning effort override.
 
@@ -255,6 +264,9 @@ def _initialize_service(
     overrides = ServiceOverrides(
         model=model,
         max_tokens=max_tokens,
+        output_token_limit_mode=(
+            OutputTokenLimitMode.MODEL_MAX if no_max_tokens_limit else None
+        ),
         temperature=temperature,
         reasoning_effort=reasoning_effort,
     )
@@ -269,6 +281,7 @@ def _prepare_run_context(
     model: str | None,
     intent: str | None,
     max_tokens: int | None,
+    no_max_tokens_limit: bool,
     temperature: float | None,
     reasoning_effort: str | None,
     output_file: Path | None,
@@ -288,6 +301,7 @@ def _prepare_run_context(
         model: Optional model override.
         intent: Optional routing intent.
         max_tokens: Optional max output tokens override.
+        no_max_tokens_limit: Whether to resolve output tokens to the model maximum.
         temperature: Optional temperature override.
         reasoning_effort: Optional reasoning effort override.
         output_file: Optional path to write rendered output.
@@ -302,9 +316,16 @@ def _prepare_run_context(
         ConfigurationError: If service factory is not initialized.
         ValueError: If required variables are missing or inputs are invalid.
     """
+    settings_overrides = _settings_overrides_for_run(model, no_max_tokens_limit)
+
     # Load configuration
     overrides: ConfigData = {"default_model": model}
-    config, meta = load_config(ctx.config_path, overrides=overrides, prompt_dir=prompt_dir)
+    config, meta = load_config(
+        ctx.config_path,
+        overrides=overrides,
+        prompt_dir=prompt_dir,
+        settings_overrides=settings_overrides,
+    )
 
     # Get service factory from context
     factory = ctx.service_factory
@@ -312,7 +333,15 @@ def _prepare_run_context(
         raise ConfigurationError("Service factory not initialized")
 
     # Initialize service
-    service = _initialize_service(config, factory, model, max_tokens, temperature, reasoning_effort)
+    service = _initialize_service(
+        config,
+        factory,
+        model,
+        max_tokens,
+        no_max_tokens_limit,
+        temperature,
+        reasoning_effort,
+    )
 
     # Get prompt metadata
     metadata = _ensure_input_text_variable(service.catalog.introspect(prompt_key))
@@ -345,6 +374,19 @@ def _prepare_run_context(
         output_file=output_file,
         include_provenance=not no_provenance,
     )
+
+
+def _settings_overrides_for_run(
+    model: str | None,
+    no_max_tokens_limit: bool,
+) -> SettingsKwargs | None:
+    """Build settings-only overrides needed before CLI config loads."""
+    overrides: SettingsKwargs = {}
+    if model is not None:
+        overrides["default_model"] = model
+    if no_max_tokens_limit:
+        overrides["default_output_token_limit_mode"] = OutputTokenLimitMode.MODEL_MAX
+    return overrides or None
 
 
 def _result_payload_from_envelope(envelope: CompletionEnvelope) -> RunResultPayload | None:
@@ -678,9 +720,16 @@ def _normalize_reasoning_effort(reasoning: str | None) -> str | None:
     raise ValueError("--reasoning must be one of: minimal, low, medium, high, max, auto, none")
 
 
-def _validate_run_options(streaming: bool, top_p: float | None) -> None:
+def _validate_run_options(
+    streaming: bool,
+    top_p: float | None,
+    max_tokens: int | None,
+    no_max_tokens_limit: bool,
+) -> None:
     if streaming:
         raise ValueError("Streaming output is not implemented yet.")
+    if max_tokens is not None and no_max_tokens_limit:
+        raise ValueError("--max-tokens and --no-max-tokens-limit cannot be used together.")
     if top_p is not None:
         typer.echo("Warning: --top-p is accepted but not applied in this version.", err=True)
 
@@ -731,6 +780,7 @@ def run_prompt(
     model: str | None = TnhGenCLIOptions.MODEL,
     intent: str | None = TnhGenCLIOptions.INTENT,
     max_tokens: int | None = TnhGenCLIOptions.MAX_TOKENS,
+    no_max_tokens_limit: bool = TnhGenCLIOptions.NO_MAX_TOKENS_LIMIT,
     temperature: float | None = TnhGenCLIOptions.TEMPERATURE,
     reasoning: str | None = TnhGenCLIOptions.REASONING,
     top_p: float | None = TnhGenCLIOptions.TOP_P,
@@ -752,6 +802,7 @@ def run_prompt(
         model: Optional model override for this run.
         intent: Optional routing intent to pass to the service.
         max_tokens: Max output tokens override.
+        no_max_tokens_limit: Whether to use the selected model's maximum safe output tokens.
         temperature: Temperature override.
         reasoning: Reasoning effort override for supported models.
         top_p: Top-p sampling override (accepted but not applied).
@@ -768,7 +819,7 @@ def run_prompt(
         if api:
             ctx.api = True
 
-        _validate_run_options(streaming, top_p)
+        _validate_run_options(streaming, top_p, max_tokens, no_max_tokens_limit)
         reasoning_effort = _normalize_reasoning_effort(reasoning)
         _apply_api_settings(format)
 
@@ -783,6 +834,7 @@ def run_prompt(
                 model=model,
                 intent=intent,
                 max_tokens=max_tokens,
+                no_max_tokens_limit=no_max_tokens_limit,
                 temperature=temperature,
                 reasoning_effort=reasoning_effort,
                 output_file=output_file,

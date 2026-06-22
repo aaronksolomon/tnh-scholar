@@ -23,6 +23,10 @@ from pydantic import AliasChoices, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from tnh_scholar.exceptions import ConfigurationError
+from tnh_scholar.gen_ai_service.config.output_tokens import (
+    OutputTokenLimitMode,
+    format_output_token_limit_exceeded_message,
+)
 
 
 class GenAISettings(BaseSettings):
@@ -55,6 +59,7 @@ class GenAISettings(BaseSettings):
     default_model: str = "gpt-5-mini"
     default_temperature: float = 1
     default_max_output_tokens: int = 10_000
+    default_output_token_limit_mode: OutputTokenLimitMode = OutputTokenLimitMode.CAPPED
     default_reasoning_effort: str | None = None
     default_seed: int | None = None
     max_input_chars: int = 120_000
@@ -71,17 +76,28 @@ class GenAISettings(BaseSettings):
 
         model = getattr(values, "default_model", "gpt-5-mini")
         provider = getattr(values, "default_provider", "openai")
+        output_token_limit_mode = getattr(
+            values,
+            "default_output_token_limit_mode",
+            OutputTokenLimitMode.CAPPED,
+        )
         max_tokens = getattr(values, "default_max_output_tokens", 10_000)
         try:
             from tnh_scholar.gen_ai_service.config.registry import get_model_info
 
-            limit = get_model_info(provider, model).context_window
+            limit = get_model_info(provider, model).max_output_tokens
         except ConfigurationError:
+            return values
+        if output_token_limit_mode is OutputTokenLimitMode.MODEL_MAX:
             return values
         if max_tokens > limit:
             raise ValueError(
-                f"default_max_output_tokens={max_tokens} exceeds context limit for {model} ({limit}). "
-                "Lower the value or choose a model with a larger context window."
+                format_output_token_limit_exceeded_message(
+                    model=model,
+                    requested_tokens=max_tokens,
+                    model_max_output_tokens=limit,
+                )
+                + " Lower the value or choose a model with a larger output token limit."
             )
         return values
 

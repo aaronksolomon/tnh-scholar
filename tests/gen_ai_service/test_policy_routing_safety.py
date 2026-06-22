@@ -4,6 +4,10 @@ from datetime import UTC, datetime
 
 import pytest
 
+from tnh_scholar.gen_ai_service.config.output_tokens import (
+    OutputTokenLimitMode,
+    OutputTokenLimitPolicy,
+)
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams, apply_policy
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.models.domain import (
@@ -115,7 +119,7 @@ def test_router_switches_to_structured_capable_model_for_json_mode():
         provider="openai",
         model="gpt-3.5-turbo",
         temperature=0.5,
-        max_output_tokens=128,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=128),
         output_mode="json",
     )
 
@@ -136,7 +140,7 @@ def test_router_keeps_structured_capable_model_for_json_mode():
         provider="openai",
         model="gpt-4o-mini",
         temperature=0.5,
-        max_output_tokens=128,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=128),
         output_mode="json",
     )
 
@@ -156,7 +160,7 @@ def test_router_uses_prompt_role_when_intent_is_missing():
         provider="openai",
         model="gpt-4o-mini",
         temperature=0.5,
-        max_output_tokens=128,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=128),
         output_mode="text",
     )
 
@@ -176,7 +180,7 @@ def test_router_leaves_model_for_text_mode():
         provider="openai",
         model="gpt-3.5-turbo",
         temperature=0.5,
-        max_output_tokens=128,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=128),
         output_mode="text",
     )
 
@@ -196,7 +200,7 @@ def test_safety_gate_blocks_on_character_limit():
         provider=settings.default_provider,
         model=settings.default_model,
         temperature=0.2,
-        max_output_tokens=50,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=50),
     )
 
     rendered = RenderedPrompt(
@@ -208,13 +212,13 @@ def test_safety_gate_blocks_on_character_limit():
         safety_gate.pre_check(rendered, selection, settings)
 
 
-def test_safety_gate_blocks_on_context_window_overflow():
+def test_safety_gate_blocks_on_model_output_limit_overflow():
     settings = GenAISettings(_env_file=None)
     selection = ResolvedParams(
         provider=settings.default_provider,
         model="gpt-3.5-turbo",
         temperature=0.2,
-        max_output_tokens=200_000,  # exceeds any known context window
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=200_000),
     )
 
     rendered = RenderedPrompt(
@@ -222,7 +226,27 @@ def test_safety_gate_blocks_on_context_window_overflow():
         messages=[Message(role=Role.user, content="small text")],
     )
 
-    with pytest.raises(SafetyBlocked, match="Context window exceeded"):
+    with pytest.raises(SafetyBlocked, match="Requested output tokens 200000 exceed model output limit"):
+        safety_gate.pre_check(rendered, selection, settings)
+
+
+def test_safety_gate_blocks_when_prompt_leaves_too_little_context():
+    settings = GenAISettings(_env_file=None, max_input_chars=200_000)
+    selection = ResolvedParams(
+        provider=settings.default_provider,
+        model="gpt-3.5-turbo",
+        temperature=0.2,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=4096),
+    )
+    rendered = RenderedPrompt(
+        system="system",
+        messages=[Message(role=Role.user, content="word " * 20_000)],
+    )
+
+    with pytest.raises(
+        SafetyBlocked,
+        match="Context window exceeded for gpt-3.5-turbo: .*context_limit=16385",
+    ):
         safety_gate.pre_check(rendered, selection, settings)
 
 
@@ -232,7 +256,7 @@ def test_safety_gate_blocks_on_budget_overflow():
         provider=settings.default_provider,
         model=settings.default_model,
         temperature=0.2,
-        max_output_tokens=10_000,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=10_000),
     )
 
     rendered = RenderedPrompt(
@@ -250,7 +274,7 @@ def test_safety_gate_warnings_for_metadata_and_non_string_content():
         provider=settings.default_provider,
         model=settings.default_model,
         temperature=0.2,
-        max_output_tokens=50,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=50),
     )
 
     rendered = RenderedPrompt(
@@ -275,7 +299,7 @@ def test_safety_gate_returns_report_and_warnings(monkeypatch: pytest.MonkeyPatch
         provider=settings.default_provider,
         model=settings.default_model,
         temperature=0.2,
-        max_output_tokens=50,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=50),
     )
 
     rendered = RenderedPrompt(
@@ -287,7 +311,45 @@ def test_safety_gate_returns_report_and_warnings(monkeypatch: pytest.MonkeyPatch
     assert isinstance(report, SafetyReport)
     assert report.prompt_tokens >= 0
     assert report.context_limit > 0
+    assert report.effective_max_output_tokens == 50
     assert report.estimated_cost >= 0
+
+
+def test_apply_policy_uses_model_max_mode_when_configured():
+    settings = GenAISettings(
+        _env_file=None,
+        default_output_token_limit_mode=OutputTokenLimitMode.MODEL_MAX,
+    )
+
+    resolved = apply_policy(
+        intent=None,
+        call_hint=None,
+        prompt_metadata=None,
+        settings=settings,
+    )
+
+    assert resolved.output_token_limit.mode is OutputTokenLimitMode.MODEL_MAX
+    assert resolved.output_token_limit.capped_tokens is None
+
+
+def test_safety_gate_resolves_model_max_to_available_context():
+    settings = GenAISettings(_env_file=None)
+    selection = ResolvedParams(
+        provider=settings.default_provider,
+        model="gpt-3.5-turbo",
+        temperature=0.2,
+        output_token_limit=OutputTokenLimitPolicy(mode=OutputTokenLimitMode.MODEL_MAX),
+    )
+    rendered = RenderedPrompt(
+        system="system",
+        messages=[Message(role=Role.user, content="hello")],
+    )
+
+    report = safety_gate.pre_check(rendered, selection, settings)
+
+    assert report.effective_max_output_tokens > 0
+    assert report.effective_max_output_tokens <= report.context_limit - report.prompt_tokens
+    assert report.context_limit > 0
 
 
 def test_safety_gate_post_check_returns_empty_for_none():

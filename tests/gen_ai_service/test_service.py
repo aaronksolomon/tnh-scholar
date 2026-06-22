@@ -6,6 +6,7 @@ import pytest
 
 from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.gen_ai_service import service as service_module
+from tnh_scholar.gen_ai_service.config.output_tokens import OutputTokenLimitPolicy
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.infra.tracking.fingerprint import (
@@ -75,7 +76,7 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
         provider="openai",
         model="gpt-5-mini",
         temperature=0.55,
-        max_output_tokens=256,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=256),
         seed=999,
     )
 
@@ -128,7 +129,7 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
     provider_request = dummy_client.requests[0]
     assert provider_request.model == policy_params.model
     assert provider_request.temperature == policy_params.temperature
-    assert provider_request.max_output_tokens == policy_params.max_output_tokens
+    assert provider_request.max_output_tokens == 256
     assert provider_request.seed == policy_params.seed
     assert provider_request.response_format is None
     assert provider_request.system == "# Daily Guidance\n\nOffer help to practitioners at Plum Village."

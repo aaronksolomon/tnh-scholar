@@ -7,6 +7,7 @@ import pytest
 
 from tnh_scholar.configuration.context import TNHContext
 from tnh_scholar.gen_ai_service import service as service_module
+from tnh_scholar.gen_ai_service.config.output_tokens import OutputTokenLimitPolicy
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.models.domain import FailureReason, RenderRequest
@@ -76,7 +77,7 @@ def _fake_apply_policy(intent, call_hint, **_):
         provider="openai",
         model="gpt-5-mini",
         temperature=0.2,
-        max_output_tokens=256,
+        output_token_limit=OutputTokenLimitPolicy(capped_tokens=256),
         output_mode="json",
         seed=1,
         routing_reason="test-policy",

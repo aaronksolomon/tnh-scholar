@@ -15,6 +15,10 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from tnh_scholar.gen_ai_service.config.output_tokens import (
+    OutputTokenLimitMode,
+    OutputTokenLimitPolicy,
+)
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.prompt_system.domain.models import PromptMetadata
 
@@ -23,7 +27,7 @@ class ResolvedParams(BaseModel):
     provider: str
     model: str
     temperature: float
-    max_output_tokens: int
+    output_token_limit: OutputTokenLimitPolicy
     reasoning_effort: str | None = None
     output_mode: str = "text"
     seed: Optional[int] = None
@@ -81,7 +85,14 @@ def apply_policy(
         provider=current_settings.default_provider,
         model=model,
         temperature=current_settings.default_temperature,
-        max_output_tokens=current_settings.default_max_output_tokens,
+        output_token_limit=OutputTokenLimitPolicy(
+            mode=OutputTokenLimitMode(current_settings.default_output_token_limit_mode),
+            capped_tokens=(
+                current_settings.default_max_output_tokens
+                if current_settings.default_output_token_limit_mode is OutputTokenLimitMode.CAPPED
+                else None
+            ),
+        ),
         reasoning_effort=current_settings.default_reasoning_effort,
         output_mode=output_mode,
         seed=current_settings.default_seed,
