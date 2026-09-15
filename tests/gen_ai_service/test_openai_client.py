@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
+import pytest
+from pydantic import BaseModel
+
+from tnh_scholar.gen_ai_service.providers.openai_adapter import OpenAIChatCompletionRequest
 from tnh_scholar.gen_ai_service.providers.openai_client import OpenAIClient
 
 
@@ -55,7 +59,8 @@ def test_openai_client_keeps_temperature_for_gpt54_requests():
     assert "reasoning_effort" not in captured
 
 
-def test_openai_client_omits_max_completion_tokens_when_unset():
+@pytest.mark.parametrize("structured", [False, True])
+def test_openai_client_sends_resolved_output_bound(structured: bool):
     client = OpenAIClient(api_key="test-key", organization=None)
     captured: dict[str, object] = {}
 
@@ -63,17 +68,20 @@ def test_openai_client_omits_max_completion_tokens_when_unset():
         captured.update(kwargs)
         return SimpleNamespace()
 
-    client._client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=_create)))
-    request = SimpleNamespace(
+    client._client = SimpleNamespace(
+        chat=SimpleNamespace(completions=SimpleNamespace(create=_create)),
+        beta=SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(parse=_create))),
+    )
+    request = OpenAIChatCompletionRequest(
         model="gpt-5.5",
         messages=[{"role": "user", "content": "Return ACK"}],
         temperature=None,
-        max_completion_tokens=None,
+        max_completion_tokens=128,
         seed=None,
         reasoning_effort="high",
-        response_format=None,
+        response_format=BaseModel if structured else None,
     )
 
     client._chat_create(request)
 
-    assert "max_completion_tokens" not in captured
+    assert captured["max_completion_tokens"] == 128

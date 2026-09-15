@@ -35,7 +35,7 @@ from openai.types.chat.chat_completion import ChatCompletion
 from openai.types.chat.chat_completion_message_param import (
     ChatCompletionMessageParam,
 )
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from tnh_scholar.gen_ai_service.models.domain import Message
 from tnh_scholar.gen_ai_service.models.transport import (
@@ -61,7 +61,7 @@ class OpenAIChatCompletionRequest(BaseModel):
     model: str
     messages: List[ChatCompletionMessageParam]
     temperature: float | None
-    max_completion_tokens: int | None = None
+    max_completion_tokens: int = Field(ge=1, strict=True)
     seed: Optional[int] = None
     reasoning_effort: str | None = None
     response_format: Optional[type[BaseModel] | Mapping[str, Any]] = None

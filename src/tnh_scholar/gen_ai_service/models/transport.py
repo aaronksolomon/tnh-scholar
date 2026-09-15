@@ -12,9 +12,9 @@ Connected modules:
 from enum import Enum
 from typing import Any, Dict, List, Mapping, Optional, Type
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
-from .domain import AdapterDiagnostics, FailureReason, Message
+from tnh_scholar.gen_ai_service.models.domain import AdapterDiagnostics, FailureReason, Message
 
 
 class ProviderName(str):
@@ -23,12 +23,14 @@ class ProviderName(str):
 
 
 class ProviderRequest(BaseModel):
+    """Provider invocation with a required, resolved output-token bound."""
+
     provider: str
     model: str
     messages: List[Message]
     system: Optional[str] = None
     temperature: float
-    max_output_tokens: int | None = None
+    max_output_tokens: int = Field(ge=1, strict=True)
     seed: Optional[int] = None
     reasoning_effort: Optional[str] = None
     response_format: Optional[Type[BaseModel] | Mapping[str, Any]] = None
