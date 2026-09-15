@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Dependency Refresh and OCR Installation** (2026-09-15)
+  - Refreshed the Poetry lockfile for the core, development, and optional dependency groups.
+  - Replaced the unrelated `fitz` distribution with PyMuPDF in the OCR extra and used its canonical `pymupdf` import.
+  - Added a PDF image round-trip regression covering the OCR extra without cloud credentials.
+
 - **Output Budget Enforcement Contract** (2026-09-15)
   - Kept policy resolution as the single source for the output bound used in budget approval, provider dispatch, and provenance, including model-max runs.
   - Required positive integer output limits at both provider request boundaries and removed the service-layer model-max cap omission.
