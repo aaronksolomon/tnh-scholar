@@ -46489,6 +46489,8 @@
       
         
       
+        
+      
     
     
     
@@ -46840,6 +46842,41 @@
     
   
     ADR-TG05: Run Progress Reporting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/tnh-gen/adr/adr-tg06-runtime-status-events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-TG06: Runtime Status Events for tnh-gen run
   
 
     
@@ -216214,7 +216251,7 @@ except Exception as e:
                 <code>page</code>
             </td>
             <td>
-                  <code><span title="fitz.Page">Page</span></code>
+                  <code><span title="pymupdf.Page">Page</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -216290,9 +216327,9 @@ except Exception as e:
   <blockquote>
 <blockquote>
 <blockquote>
-<p>import fitz
+<p>import pymupdf
 from PIL import Image
-doc = fitz.open("/path/to/document.pdf")
+doc = pymupdf.open("/path/to/document.pdf")
 page = doc.load_page(0)  # Load the first page
 try:
     image = extract_image_from_page(page)
@@ -216338,7 +216375,7 @@ except Exception as e:
                 <code>page</code>
             </td>
             <td>
-                  <code><span title="fitz.Page">Page</span></code>
+                  <code><span title="pymupdf.Page">Page</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -216391,7 +216428,7 @@ except Exception as e:
 
     <div class="doc doc-contents ">
 
-        <p>Opens the PDF document and returns the fitz Document object.</p>
+        <p>Opens the PDF document and returns the PyMuPDF Document object.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -216436,11 +216473,11 @@ except Exception as e:
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="fitz.Document">Document</span></code>
+                  <code><span title="pymupdf.Document">Document</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>fitz.Document: The loaded PDF document.</p>
+                <p>pymupdf.Document: The loaded PDF document.</p>
               </div>
             </td>
           </tr>
@@ -216821,7 +216858,7 @@ except Exception as e:
                 <code>page</code>
             </td>
             <td>
-                  <code><span title="fitz.Page">Page</span></code>
+                  <code><span title="pymupdf.Page">Page</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -218527,7 +218564,7 @@ except Exception as e:
                 <code>page</code>
             </td>
             <td>
-                  <code><span title="fitz.Page">Page</span></code>
+                  <code><span title="pymupdf.Page">Page</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -218603,9 +218640,9 @@ except Exception as e:
   <blockquote>
 <blockquote>
 <blockquote>
-<p>import fitz
+<p>import pymupdf
 from PIL import Image
-doc = fitz.open("/path/to/document.pdf")
+doc = pymupdf.open("/path/to/document.pdf")
 page = doc.load_page(0)  # Load the first page
 try:
     image = extract_image_from_page(page)
@@ -218651,7 +218688,7 @@ except Exception as e:
                 <code>page</code>
             </td>
             <td>
-                  <code><span title="fitz.Page">Page</span></code>
+                  <code><span title="pymupdf.Page">Page</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -218704,7 +218741,7 @@ except Exception as e:
 
     <div class="doc doc-contents ">
 
-        <p>Opens the PDF document and returns the fitz Document object.</p>
+        <p>Opens the PDF document and returns the PyMuPDF Document object.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -218749,11 +218786,11 @@ except Exception as e:
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="fitz.Document">Document</span></code>
+                  <code><span title="pymupdf.Document">Document</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>fitz.Document: The loaded PDF document.</p>
+                <p>pymupdf.Document: The loaded PDF document.</p>
               </div>
             </td>
           </tr>
@@ -219134,7 +219171,7 @@ except Exception as e:
                 <code>page</code>
             </td>
             <td>
-                  <code><span title="fitz.Page">Page</span></code>
+                  <code><span title="pymupdf.Page">Page</span></code>
             </td>
             <td>
               <div class="doc-md-description">

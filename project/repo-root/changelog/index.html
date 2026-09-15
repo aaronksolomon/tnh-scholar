@@ -10747,6 +10747,8 @@
       
         
       
+        
+      
     
     
     
@@ -11098,6 +11100,41 @@
     
   
     ADR-TG05: Run Progress Reporting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/tnh-gen/adr/adr-tg06-runtime-status-events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-TG06: Runtime Status Events for tnh-gen run
   
 
     
@@ -16046,7 +16083,15 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Output Budget Enforcement Contract</strong> (2026-09-15)</li>
+<li><strong>Dependency Refresh and OCR Installation</strong> (2026-09-15)</li>
+<li>Refreshed the Poetry lockfile for the core, development, and optional dependency groups.</li>
+<li>Replaced the unrelated <code>fitz</code> distribution with PyMuPDF in the OCR extra and used its canonical <code>pymupdf</code> import.</li>
+<li>
+<p>Added a PDF image round-trip regression covering the OCR extra without cloud credentials.</p>
+</li>
+<li>
+<p><strong>Output Budget Enforcement Contract</strong> (2026-09-15)</p>
+</li>
 <li>Kept policy resolution as the single source for the output bound used in budget approval, provider dispatch, and provenance, including model-max runs.</li>
 <li>Required positive integer output limits at both provider request boundaries and removed the service-layer model-max cap omission.</li>
 <li>Added regressions for stale-low registry limits, remaining-context limits, budget rejection before dispatch, and cap preservation in regular and structured provider calls.</li>

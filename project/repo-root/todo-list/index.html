@@ -1804,6 +1804,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Progress Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agreed-high-level-roadmap-2026-09-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agreed High-Level Roadmap (2026-09-15)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-github-work-verified-2026-09-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open GitHub Work (verified 2026-09-15)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recent-completed-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recent Completed Milestones
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -10949,6 +10988,8 @@
       
         
       
+        
+      
     
     
     
@@ -11300,6 +11341,41 @@
     
   
     ADR-TG05: Run Progress Reporting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--accepted"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/tnh-gen/adr/adr-tg06-runtime-status-events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-TG06: Runtime Status Events for tnh-gen run
   
 
     
@@ -15729,6 +15805,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Progress Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agreed-high-level-roadmap-2026-09-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agreed High-Level Roadmap (2026-09-15)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-github-work-verified-2026-09-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open GitHub Work (verified 2026-09-15)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recent-completed-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recent Completed Milestones
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -16446,30 +16561,49 @@
 <h1 id="tnh-scholar-todo-list">TNH Scholar TODO List<a class="headerlink" href="#tnh-scholar-todo-list" title="Link to this section">&para;</a></h1>
 <p>Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.</p>
 <blockquote>
-<p><strong>Last Updated</strong>: 2026-04-26 (CI workflow cleanup and docs validation split landed; notebook repo cleanup and release validation next)
+<p><strong>Last Updated</strong>: 2026-09-15 (release/status reconciliation; conductor completion and concept-aware knowledge-base roadmap)
 <strong>Version</strong>: 0.4.2 (Alpha)
-<strong>Status</strong>: Active Development - bootstrap viable, release validation and packaging phase</p>
+<strong>Status</strong>: Active Development — v0.4.2 released; conductor bootstrap usable; runtime status next, then bounded conductor completion and knowledge-base pilot</p>
 <p><strong>Style Note</strong>: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 Use <code>####</code> (h4) for task headers within priority sections.</p>
 </blockquote>
 <hr />
 <h2 id="progress-summary">Progress Summary<a class="headerlink" href="#progress-summary" title="Link to this section">&para;</a></h2>
 <p><strong>Bootstrap Path Status</strong>: ✅ <strong>COMPLETE</strong> — VS Code integration working, AI-assisted development enabled.</p>
-<p><strong>Agent-Orch Bootstrap Status</strong>: ✅ <strong>USABLE PROTOTYPE</strong> — the maintained <code>tnh-conductor</code> path has now produced and landed a bounded repo-native implementation through the worktree-backed headless path.</p>
-<p><strong>Next Steps</strong>:</p>
+<p><strong>Agent-Orch Bootstrap Status</strong>: ✅ <strong>USABLE PROTOTYPE</strong> — SPIKE-10 demonstrated useful implementation through the maintained worktree-backed headless path. The direct-arm implementation of <code>tnh-conductor status --watch</code> was selected for merging; the conductor run established bootstrap viability.</p>
+<p><strong>Release Status</strong>: ✅ <strong>v0.4.2 released 2026-05-26</strong>. Latest verified <code>main</code> commit is <code>42a3ecbc</code> (2026-09-15, post-PR #79 merge log). Release preparation for <code>0.4.0</code> is historical, not the next milestone.</p>
+<p><strong>Knowledge Base Status</strong>: <strong>PRELIMINARY DESIGN; IMPLEMENTATION PENDING</strong> — ADR-K01 is proposed. Concept modeling, source metadata, chunking, multilingual retrieval, and storage choices need a focused pilot decision.</p>
+<h3 id="agreed-high-level-roadmap-2026-09-15">Agreed High-Level Roadmap (2026-09-15)<a class="headerlink" href="#agreed-high-level-roadmap-2026-09-15" title="Link to this section">&para;</a></h3>
+<p>This sequence takes precedence over the older priority groupings below. Pilot sizes are starting targets to refine with corpus availability and reviewer input.</p>
 <ol>
-<li>🚧 Prepare <code>0.4.0</code> bootstrap release framing for <code>tnh-conductor</code> prototype alpha</li>
-<li>🚧 Run <code>0.4.0</code> release validation pass and finalize version-bump scope/release notes</li>
-<li>🚧 Reduce notebook/test clutter before release: archive junk notebooks and move real test coverage into pytest where practical</li>
-<li>🔮 <strong>JVB VS Code Parallel Viewer</strong> (P1, design phase) — ADR-JVB02 strategy + UI-UX design</li>
-<li>🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)</li>
-<li>🔮 Finish ytt-fetch robustness hardening (P1, reliability)</li>
-<li>🚧 GenAIService Final Polish - promote <code>policy_applied</code> typing (P1, minor)</li>
-<li>🚧 Prompt Catalog Safety - manifest validation + schema docs (P2, critical infrastructure)</li>
-<li>🚧 Knowledge Base Implementation (P2, design complete)</li>
-<li>🚧 Expand Test Coverage with refreshed baseline and current gaps (P2)</li>
-<li>🚧 OpenAI registry-driven request profiles for model-specific controls (P2, follow-up hardening)</li>
+<li><strong>Status reconciliation and PR #78 — merge complete.</strong> The budget-enforcement fix merged on 2026-09-15 after user approval. Roadmap, Sourcery authorization, and merge-log updates are included in the follow-up housekeeping commit.</li>
+<li><strong>Build bounded runtime status for <code>tnh-gen</code>.</strong> Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md">ADR-TG06</a>: typed stages, explicit JSONL event files usable with <code>--api</code>, heartbeats, and terminal outcomes that preserve failure origin. Validate agent-driven use outside the repository. PR #79 dependency refresh is merged.</li>
+<li><strong>Complete the conductor's bounded review/revision loop.</strong> Implement → review → evaluate evidence → at most one revision → validate → present a clear result for human review. Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa06.1-evaluator-directed-revision-loop.md">ADR-OA06.1</a>; verify runner compatibility and failure diagnostics. The maintained entry path still uses unsupported <code>EVALUATE</code> and <code>GATE</code> implementations. Commit/push/PR automation follows dependable execution and review.</li>
+<li><strong>Build a concept-aware knowledge-base pilot.</strong> Start with approximately 20–30 reviewed concepts, 30–50 documents or talks, and 30 representative questions. Connect a Buddhist conceptual foundation to Plum Village teachings/practices and source passages. Reuse the journal pipeline's provenance approach.</li>
+<li><strong>Evaluate retrieval with and without concept expansion.</strong> Compare relevant-source discovery, citation accuracy, multilingual behavior, and handling of insufficient evidence. Use expert judgments to decide which conceptual relationships and retrieval stages help.</li>
+<li><strong>Add a source viewer.</strong> Show the retrieved passage alongside original text or scan, translation, and conceptual connections. Build on the JVB viewer work; confirm the interface choice with pilot users.</li>
 </ol>
+<p><strong>Design reference</strong>: <a href="https://martinfowler.com/articles/reliable-llm-bayer.html">Bayer's reliable LLM application case study</a>. Adapt metadata-aware hybrid retrieval, evidence sufficiency checks, source citations, and expert evaluation to the TNH corpus. Choose infrastructure after a measurable pilot.</p>
+<h3 id="open-github-work-verified-2026-09-15">Open GitHub Work (verified 2026-09-15)<a class="headerlink" href="#open-github-work-verified-2026-09-15" title="Link to this section">&para;</a></h3>
+<ul>
+<li><a href="https://github.com/aaronksolomon/tnh-scholar/issues/55">#55: agent/script ergonomics</a> — explicit runtime controls and predictable machine output for delegated <code>tnh-gen</code> use.</li>
+<li><a href="https://github.com/aaronksolomon/tnh-scholar/issues/22">#22: concurrency hardening</a> — deferred thread safety and rate limiting.</li>
+<li><a href="https://github.com/aaronksolomon/tnh-scholar/issues/16">#16: architecture modernization follow-ups</a> — remaining architecture work.</li>
+<li><a href="https://github.com/aaronksolomon/tnh-scholar/issues/6">#6: model-training research spike</a> — research backlog; outside the immediate retrieval pilot.</li>
+</ul>
+<h3 id="recent-completed-milestones">Recent Completed Milestones<a class="headerlink" href="#recent-completed-milestones" title="Link to this section">&para;</a></h3>
+<ul>
+<li>
+<p>✅ <strong>2026-09-15</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/pull/78">PR #78</a> merged as <code>d5f140cf</code>; required output bounds now preserve budget approval through provider dispatch. Local full suite: 628 passed, 2 skipped. PR validation, docs validation, CodeQL, and Sourcery checks passed.</p>
+</li>
+<li>
+<p>✅ <strong>June 2026</strong>: <code>tnh-gen</code> model-max output mode (PR #77), reasoning-effort control, and terminal progress feedback. Provider-cap follow-up completed in PR #78 on 2026-09-15.</p>
+</li>
+<li>✅ <strong>May 2026</strong>: JSON prompt contract validation and provenance sidecars (PR #73); local <code>tnh-prompts/</code> discovery and golden-fixture refresh (PR #75).</li>
+<li>✅ <strong>May 2026</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/user-guide/journal-pipeline-case-study.md">Journal pipeline case study</a>, translation review and facsimile work, release hardening, and releases <code>v0.4.0</code>–<code>v0.4.2</code>.</li>
+<li>✅ <strong>April 2026</strong>: maintained conductor worktree execution, canonical run artifacts, live status/watch, bootstrap comparison, and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/development/tnh-conductor-operator-guide.md">operator documentation</a>.</li>
+</ul>
+<p><strong>Continuing backlog</strong>: audio/YouTube reliability, prompt manifest/docs cleanup, bounded review-context ingestion, configuration cleanup, and refreshed test coverage remain tracked below. Historical checklists and old implementation assessments require subsystem-specific verification before they are used as implementation plans.</p>
 <p><strong>Recent release hardening completed</strong>:</p>
 <ul>
 <li>✅ CI workflow cleanup split GitHub validation into PR, <code>main</code>, scheduled full-test, and docs-specific flows; docs PR validation is now read-only</li>
@@ -16489,7 +16623,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <p><strong>For completed items</strong>: See <a href="#recently-completed-tasks-archive">Archive</a> section at end.</p>
 <hr />
 <h2 id="priority-roadmap">Priority Roadmap<a class="headerlink" href="#priority-roadmap" title="Link to this section">&para;</a></h2>
-<p>This section organizes work into three priority levels based on criticality for production readiness.</p>
+<p>The following subsystem backlog retains historical priority groupings. Use the agreed high-level roadmap above for current execution order; completed bootstrap and release work is retained for context.</p>
 <h3 id="priority-1-vs-code-integration-enablement-bootstrap-path">Priority 1: VS Code Integration Enablement (Bootstrap Path)<a class="headerlink" href="#priority-1-vs-code-integration-enablement-bootstrap-path" title="Link to this section">&para;</a></h3>
 <p><strong>Goal</strong>: Enable AI-assisted development of TNH Scholar itself via VS Code extension. Prioritizes foundational work for tnh-gen + extension integration.</p>
 <p><strong>Status</strong>: Foundation Complete (tnh-gen CLI ✅, Registry System ✅)</p>
@@ -16500,7 +16634,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <h4 id="provenance-format-refactor-yaml-frontmatter-see-archive">✅ Provenance Format Refactor (YAML Frontmatter) — <em>See <a href="#provenance-format-refactor-">Archive</a></em><a class="headerlink" href="#provenance-format-refactor-yaml-frontmatter-see-archive" title="Link to this section">&para;</a></h4>
 <h4 id="agent-orch-oa07-runtime-implementation-sequence">🚨 Agent-Orch OA07 Runtime Implementation Sequence<a class="headerlink" href="#agent-orch-oa07-runtime-implementation-sequence" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: IN PROGRESS - maintained execution/validation/kernel slice landed and tested</li>
+<li><strong>Status</strong>: RUNTIME FOUNDATION IMPLEMENTED — maintained execution, validation, kernel, workspace, run-artifact, and runner packages exist; reference-package retirement remains follow-up</li>
 <li><strong>Priority</strong>: HIGH (foundation work for durable MVP)</li>
 <li><strong>Context</strong>: The accepted OA07 ADR set defines the maintained runtime architecture. The current <code>conductor_mvp/</code> and <code>spike/</code> code remains useful as migration source/reference, but should not receive forward-path feature growth.</li>
 <li><strong>Why This Matters</strong>:</li>
@@ -16559,23 +16693,23 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <h4 id="oa071-bootstrap-worktree-slice">🚨 OA07.1 Bootstrap Worktree Slice<a class="headerlink" href="#oa071-bootstrap-worktree-slice" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
 <li><strong>Status</strong>: MILESTONE REACHED — PR-7 and PR-8 are merged on <code>main</code>, and the first bounded bootstrap-proof workflow outcome is now landed through <code>tnh-conductor status --watch</code></li>
-<li><strong>Priority</strong>: HIGHEST (prove real maintained bootstrap usefulness)</li>
-<li><strong>Context</strong>: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary and the maintained headless entry path. Bootstrap is no longer blocked on substrate. The next blocker is proving one useful repo-native workflow through the maintained path. Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md">ADR-OA07</a> and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md">ADR-OA07.1</a>.</li>
+<li><strong>Priority</strong>: BOOTSTRAP MILESTONE COMPLETE; bounded review/revision is the next conductor milestone</li>
+<li><strong>Context</strong>: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary and the maintained headless entry path. Bootstrap is no longer blocked on substrate. SPIKE-10 established useful repo-native execution; the next milestone is the bounded review/revision loop. Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md">ADR-OA07</a> and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md">ADR-OA07.1</a>.</li>
 <li><strong>Bootstrap Goal</strong>:</li>
 <li>create a managed git worktree from a committed base ref</li>
 <li>run <code>RUN_AGENT</code> and <code>RUN_VALIDATION</code> against the worktree root</li>
 <li>keep canonical run artifacts in the run directory</li>
 <li>support <code>ROLLBACK(pre_run)</code> to recorded base state</li>
 <li>establish the headless path needed for later commit/push/PR automation</li>
-<li><strong>Why This Is Next</strong>:</li>
-<li>the worktree runtime boundary and maintained headless app-layer entry are now implemented on <code>main</code></li>
-<li>the system still needs one clean end-to-end proof that it can complete a useful repo task through the maintained path</li>
-<li>OA05/OA06 depth work should follow a live bootstrap proof, not precede it</li>
+<li><strong>Current Follow-Up</strong>:</li>
+<li>the worktree runtime boundary and maintained headless app-layer entry are implemented on <code>main</code></li>
+<li>useful bootstrap execution and operator documentation are complete</li>
+<li>implement the bounded OA06.1 review/revision milestone, including maintained evaluator wiring and the human handoff</li>
 <li><strong>Recent related docs work</strong>:</li>
 <li>documented the current low-noise Codex headless path, native subagent confirmation, and first supervisory shell-trial findings in <code>/docs/architecture/agent-orchestration/notes/experiments/</code> and <code>/docs/architecture/agent-orchestration/supervisory-shell-trial/</code></li>
 <li>SPIKE-10 comparison result now records the current practical recommendation: keep <code>tnh-conductor</code> as the main coordination substrate, harden native subagent launch reliability, and treat <code>codex-assistant</code> / <code>claude-assistant</code> worker paths as experimental until runtime bootstrap and auth are dependable</li>
 <li>direct-vs-conductor follow-up review selected the direct-arm <code>tnh-conductor status --watch</code> implementation as the merge candidate while preserving the maintained conductor run as the bootstrap-viability proof</li>
-<li>next focus is release-prep cleanup and packaging for a <code>0.4.0</code> prototype-alpha <code>tnh-conductor</code> milestone, not more orchestration-path comparison spikes first</li>
+<li><code>v0.4.0</code>–<code>v0.4.2</code> shipped in May; next focus is bounded review/revision and runner reliability</li>
 <li><strong>Recommended PR sizing</strong>:</li>
 <li>Prefer <strong>2 PRs</strong> to stay comfortably under diff-size guidance</li>
 <li>A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work</li>
@@ -16607,12 +16741,18 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li>keep semantic-control depth and review automation out of scope unless they become true blockers</li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Release Prep</strong> <code>feat/oa07-bootstrap-release-prep</code> — Prototype-alpha cleanup and packaging (small/medium, next)<ul>
-<li>document the bootstrap milestone and known limitations clearly</li>
-<li>add maintained <code>tnh-conductor</code> CLI reference and operator-facing usage docs</li>
-<li>reduce notebook/test clutter so the release ships with a cleaner repo state</li>
-<li>prune stale temporary artifacts and clarify operator workflow defaults</li>
-<li>decide exact <code>0.4.0</code> scope before version bump and release notes</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>Release Milestone</strong> — Prototype-alpha packaging and operator documentation<ul>
+<li>published <code>v0.4.0</code>, <code>v0.4.1</code>, and <code>v0.4.2</code> on 2026-05-26</li>
+<li>added maintained CLI reference and operator guide; completed release validation and hardening recorded in the changelog</li>
+<li>remaining notebook and temporary-artifact cleanup stays in the repo-hygiene backlog</li>
+</ul>
+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Bounded Review/Revision Completion</strong> — ADR-OA06.1<ul>
+<li>wire a maintained evaluator to canonical review and validation evidence</li>
+<li>allow at most one evaluator-directed revision with typed instructions and legal routes</li>
+<li>validate the revised result and present task outcome, evidence, and remaining blockers for human review</li>
+<li>implement the minimum gate/handoff behavior required by the workflow; do not treat existing unsupported gate wiring as operational</li>
+<li>verify current runner CLI compatibility, timeout/permission failures, and canonical diagnostics with focused regression checks and a bounded live proof</li>
 </ul>
 </li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Claude CLI worker hardening</strong> — Robust non-interactive execution and write scoping (small/medium)<ul>
@@ -16629,12 +16769,10 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <li>keep protected-branch merge human-only</li>
 </ul>
 </li>
-<li><strong>Explicit deferrals for this slice</strong>:</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> commit/push/PR automation if it causes PR-7 or PR-8 to exceed preferred diff size</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> strict OA05 compile-validation as a blocker for bootstrap</li>
+<li><strong>Remaining deferrals after bootstrap</strong>:</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> commit/push/PR automation until the bounded review/revision loop is dependable</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> full OA05 prompt compile-validation beyond the bounded review/revision requirements</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> full OA06 planner fixture/vector suite beyond the bootstrap path</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> maintained <code>EVALUATE</code> / <code>GATE</code> support before the first useful bootstrap proof</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> maintained <code>tnh-gen</code> evaluator or review-agent integration before the current orchestrator comparison proves out the control-surface path</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> non-script harness backends</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> stacked PR orchestration</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> multi-agent mutable collaboration inside one worktree</li>
@@ -16649,7 +16787,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 </ul>
 <h4 id="oa04-contract-family-pr-sequence-complete">✅ OA04 Contract Family — PR Sequence (Complete)<a class="headerlink" href="#oa04-contract-family-pr-sequence-complete" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: COMPLETE — contract ADRs implemented in maintained code; bootstrap remains blocked on OA07.1 worktree execution</li>
+<li><strong>Status</strong>: COMPLETE — contract ADRs implemented in maintained code; OA07.1 worktree execution and headless bootstrap subsequently landed</li>
 <li><strong>Context</strong>: OA04.2–OA04.5 are the contract-layer ADRs between the OA07 runtime foundations and the maintained runner/policy/provenance implementations. That contract family is now landed in code and should no longer be treated as pending. See implementation notes in <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md">ADR-OA04.1 Addendum 2026-03-27</a> for the original scaffolding gaps and <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md">ADR-OA04.1 Addendum 2026-04-05</a> for the bootstrap-first reprioritization.</li>
 <li><strong>Dependency chain</strong>:</li>
 <li>OA04.3 (run dir + manifests + evaluator evidence seam) → OA04.2 (runners normalize into canonical evidence)</li>
@@ -17143,13 +17281,16 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 </ul>
 <h4 id="tnh-gen-operator-ux">🚧 tnh-gen Operator UX<a class="headerlink" href="#tnh-gen-operator-ux" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: NOT STARTED</li>
-<li><strong>Priority</strong>: LOW–MEDIUM</li>
-<li><strong>Problem</strong>: <code>tnh-gen</code> provides no feedback while the model is working and does not save run output automatically, creating a poor experience for interactive and long-running calls</li>
+<li><strong>Status</strong>: PARTIALLY IMPLEMENTED — stderr progress spinner landed in June 2026</li>
+<li><strong>Priority</strong>: HIGH — next bounded implementation before the conductor review/revision loop</li>
+<li><strong>Problem</strong>: The current spinner is invisible to API and non-TTY callers; production agents need typed runtime status and accurate failure attribution</li>
 <li><strong>Tasks</strong>:</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add heartbeat / progress indicator to stderr during model calls so operators know the run is alive (especially for long documents — 10–30 s wait with no output)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add basic run logging: log prompt key, model, input path, and elapsed time at completion even in non-<code>--api</code> mode</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Persist <code>tnh-gen</code> run output by default to a temp or run-artifact directory when no <code>--output-file</code> is provided</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Add progress indicator to stderr during model calls</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Review and revise <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md">ADR-TG06</a> for agent-readable events and explicit failure origin (accepted 2026-09-15; implementation pending)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement the TG06 event contract, JSONL/Rich sinks, heartbeat lifecycle, and terminal-decision mapping</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Validate live event consumption and result purity from an external working directory</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Later: integrate shared diagnostic logging; V1 uses an explicit status file without shared logging setup</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Later: persist <code>tnh-gen</code> run output by default to a temp or run-artifact directory when no <code>--output-file</code> is provided</li>
 </ul>
 <h4 id="tnh-gen-review-context-ingestion">🚧 tnh-gen Review Context Ingestion<a class="headerlink" href="#tnh-gen-review-context-ingestion" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
@@ -17165,13 +17306,19 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 </ul>
 <h4 id="knowledge-base-implementation">🚧 Knowledge Base Implementation<a class="headerlink" href="#knowledge-base-implementation" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: DESIGN COMPLETE</li>
-<li><strong>ADR</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md">ADR-K01</a></li>
+<li><strong>Status</strong>: PRELIMINARY DESIGN; IMPLEMENTATION PENDING</li>
+<li><strong>Priority</strong>: NEXT PRODUCT MILESTONE after bounded conductor completion</li>
+<li><strong>ADR</strong>: <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md">ADR-K01</a> remains proposed; its storage, chunking, metadata, and multilingual assumptions need a pilot-specific follow-up decision</li>
 <li><strong>Tasks</strong>:</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement Supabase integration</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Vector search functionality</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Query capabilities</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Semantic similarity search</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Define reviewed Buddhist concepts and a connected Plum Village teaching/practice layer, with stable identifiers, multilingual labels, scoped definitions, and source-backed relationships</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Distinguish translation variants, broader concepts, related teachings, and practice expressions; preserve tradition and historical context</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Select a small corpus and representative questions with scholars/practitioners (initial targets: 20–30 concepts, 30–50 sources, 30 questions)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Define passage metadata and provenance: source identity, author/speaker, date, language, page/timestamp, original/translation links, and review status</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement ingestion and keyword/semantic retrieval with metadata filtering; choose storage against pilot needs rather than assuming Supabase is already decided</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add bounded concept expansion while retaining direct retrieval for uncatalogued material</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Compare retrieval with and without expansion; assess relevant-source discovery, citation accuracy, multilingual behavior, and insufficient-evidence handling</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add evidence-linked answers and source navigation once retrieval quality is demonstrated</li>
+<li><strong>Product Follow-Up</strong>: Connect source passages, scans/original text, translations, and concepts in the viewer; coordinate with the JVB viewer backlog</li>
 </ul>
 <h4 id="configuration-data-layout">🚧 Configuration &amp; Data Layout<a class="headerlink" href="#configuration-data-layout" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
