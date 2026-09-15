@@ -548,3 +548,49 @@ The user authorized merging PR #78 after the budget-enforcement fix and a clean 
 - [Output policy ADR](/architecture/gen-ai-service/adr/adr-a08-config-params-policy-taxonomy.md)
 
 ---
+
+
+## [2026-09-15 10:42 PDT] Dependency Refresh PR #79 Merge
+
+**Agent**: Codex
+**Chat Reference**: PR #79
+**Human Collaborator**: phapman
+
+### Context
+The maintainer approved a separate PR for the existing lockfile refresh, then approved its merge after reviewing CI and automated feedback.
+
+### Key Decisions
+- **Single dependency graph**: Maintainer approved the 629k-character diff size exception; 98.9% is the generated lockfile.
+- **Correct OCR dependency**: Replaced the unrelated `fitz` distribution with PyMuPDF and used the canonical import in the OCR implementation.
+- **Preserve runtime-status design**: Kept the untracked ADR unchanged and backed up outside the PR.
+
+### Work Completed
+- [x] Merged PR #79 as `f44a732a` with explicit maintainer approval and fast-forwarded local `main`.
+- [x] Validated a fresh environment with all extras and local tools; dependency consistency, 628 existing tests, one new OCR test, optional-feature smoke checks, and docs build passed.
+- [x] Verified GitHub PR validation and CodeQL passed, including type checking across 309 source files; the optional full-test job was skipped.
+- [x] Investigated Sourcery's notebook import warning: locked PyMuPDF still provides `fitz`, and its PDF round trip passed.
+
+### Discoveries & Insights
+- **CI limits**: Repository formatting remains advisory with three unchanged files flagged; local CI stops at the stale June 20 yt-dlp health-check record.
+- **Type-check evidence**: Local mypy timed out, but GitHub's configured type check succeeded.
+- **Legacy alias**: The notebook's `fitz` import works today but emits a deprecation warning.
+
+### Files Modified/Created
+- `pyproject.toml`, `poetry.lock`: Corrected OCR dependency and refreshed the resolved graph.
+- `src/tnh_scholar/ocr_processing/ocr_processing.py`: Adopted the canonical PyMuPDF import.
+- `tests/ocr_processing/test_pdf_dependencies.py`: Added credential-free PDF image integration coverage.
+- `CHANGELOG.md`: Recorded the dependency refresh and OCR correction.
+- `AGENTLOG.md`: Added this merge record.
+
+### Next Steps
+- [ ] Return to `docs/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md` for design review.
+- [ ] Update the notebook's deprecated PDF import in a future cleanup.
+- [ ] Refresh the live yt-dlp health check and address existing formatting drift separately.
+
+### Open Questions
+- None blocking the merged dependency refresh.
+
+### References
+- [PR #79](https://github.com/aaronksolomon/tnh-scholar/pull/79)
+
+---
