@@ -33,7 +33,12 @@ class OutputTokenLimitPolicy(BaseModel):
 
 
 class EffectiveOutputTokenLimit(BaseModel):
-    """Prompt-aware resolved token limit used for provider requests."""
+    """Single output bound for cost approval, provider dispatch, and reporting.
+
+    MODEL_MAX removes the user-selected cap, but still resolves to the smaller
+    of the registered model limit and remaining context. The resolved bound
+    must be sent to the provider unchanged after budget approval.
+    """
 
     mode: OutputTokenLimitMode
     context_limit: int = Field(ge=1)

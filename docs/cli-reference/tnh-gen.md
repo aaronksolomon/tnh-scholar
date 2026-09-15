@@ -257,10 +257,23 @@ tnh-gen run --prompt KEY [OPTIONS]
 ```bash
 --model MODEL_NAME       # Override prompt's default model
 --intent INTENT          # Routing hint (translation, summarization, etc.)
---max-tokens INT         # Max output tokens
+--max-tokens INT         # Explicit output-token cap
+--no-max-tokens-limit    # Resolve the model/context maximum; budget checks still apply
 --temperature FLOAT      # Model temperature (0.0-2.0)
 --top-p FLOAT            # Nucleus sampling parameter
 ```
+
+`--no-max-tokens-limit` removes the user-selected token cap. The service still
+resolves a concrete bound from the registered model maximum and remaining
+context, checks its estimated cost against `max_dollars`, and sends that same
+bound to the provider. Requests exceeding the budget are rejected before dispatch;
+the service does not silently shorten the requested output to fit the budget.
+`--max-tokens` and `--no-max-tokens-limit` cannot be combined.
+
+A provider limit rejection requires correcting the model registry or choosing a
+smaller explicit cap; the service does not retry without the approved bound.
+Cost estimates depend on local pricing and input-token estimates, so this output
+bound is not a guarantee of exact billed dollars or an aggregate retry budget.
 
 #### Output Options
 

@@ -6,7 +6,11 @@ import pytest
 
 from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.gen_ai_service import service as service_module
-from tnh_scholar.gen_ai_service.config.output_tokens import OutputTokenLimitPolicy
+from tnh_scholar.gen_ai_service.config import registry
+from tnh_scholar.gen_ai_service.config.output_tokens import (
+    OutputTokenLimitMode,
+    OutputTokenLimitPolicy,
+)
 from tnh_scholar.gen_ai_service.config.params_policy import ResolvedParams
 from tnh_scholar.gen_ai_service.config.settings import GenAISettings
 from tnh_scholar.gen_ai_service.infra.tracking.fingerprint import (
@@ -15,6 +19,8 @@ from tnh_scholar.gen_ai_service.infra.tracking.fingerprint import (
     hash_vars,
 )
 from tnh_scholar.gen_ai_service.models.domain import RenderRequest
+from tnh_scholar.gen_ai_service.models.errors import SafetyBlocked
+from tnh_scholar.gen_ai_service.models.registry import ModelPricing
 from tnh_scholar.gen_ai_service.models.transport import (
     FinishReason,
     ProviderRequest,
@@ -164,3 +170,96 @@ def test_missing_api_key_raises_configuration_error(tmp_path, monkeypatch: pytes
 
     with pytest.raises(ConfigurationError, match="Missing required API key: OPENAI_API_KEY"):
         GenAIService(settings=settings)
+
+
+@pytest.mark.parametrize(
+    ("mode", "context_limit", "budget", "expected_cap"),
+    [
+        (OutputTokenLimitMode.MODEL_MAX, 1000, 0.003, 128),
+        (OutputTokenLimitMode.MODEL_MAX, 150, 0.003, 50),
+        (OutputTokenLimitMode.CAPPED, 1000, 0.003, 64),
+        (OutputTokenLimitMode.MODEL_MAX, 1000, 0.0001, None),
+    ],
+)
+def test_gen_ai_service_enforces_approved_output_bound(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+    mode: OutputTokenLimitMode,
+    context_limit: int,
+    budget: float,
+    expected_cap: int | None,
+):
+    prompt_dir = _write_prompt(tmp_path)
+
+    # Simulate a stale-low local registry; use real resolution and budget checks.
+    model_info = registry.get_model_info("openai", "gpt-5.5").model_copy(
+        update={"max_output_tokens": 128, "context_window": context_limit}
+    )
+    monkeypatch.setattr(registry, "get_model_info", lambda *_: model_info)
+    monkeypatch.setattr(service_module.safety_gate, "token_count_messages", lambda *_, **__: 100)
+    monkeypatch.setattr(
+        service_module.safety_gate,
+        "_pricing_for_model",
+        lambda *_, **__: ModelPricing(input_per_1k=0.01, output_per_1k=0.01),
+    )
+    policy_params = ResolvedParams(
+        provider="openai",
+        model="gpt-5.5",
+        temperature=0.2,
+        output_token_limit=OutputTokenLimitPolicy(
+            mode=mode,
+            capped_tokens=64 if mode is OutputTokenLimitMode.CAPPED else None,
+        ),
+        seed=None,
+    )
+
+    def fake_apply_policy(intent, call_hint, **_):
+        return policy_params
+
+    def fake_select(intent, params, settings, **_):
+        return params
+
+    monkeypatch.setattr(service_module, "apply_policy", fake_apply_policy)
+    monkeypatch.setattr(service_module, "select_provider_and_model", fake_select)
+    monkeypatch.setattr(service_module, "OpenAIClient", DummyOpenAIClient)
+    monkeypatch.setenv("TNH_PROMPT_DIR", str(prompt_dir))
+    monkeypatch.setenv("OPENAI_API_KEY", "unit-test-key")
+
+    settings = GenAISettings(
+        _env_file=None,
+        default_model="gpt-5.5",
+        default_output_token_limit_mode=mode,
+        default_max_output_tokens=64,
+        max_dollars=budget,
+    )
+    service = GenAIService(settings=settings)
+    dummy_client: DummyOpenAIClient = service.openai_client  # type: ignore[assignment]
+    dummy_client.response = ProviderResponse(
+        provider="openai",
+        model=policy_params.model,
+        status=ProviderStatus.OK,
+        attempts=1,
+        payload=TextPayload(text="Rendered completion", finish_reason=FinishReason.STOP),
+        usage=ProviderUsage(tokens_in=123, tokens_out=45, tokens_total=168),
+    )
+
+    render_request = RenderRequest(
+        instruction_key="daily",
+        user_input="Where should I begin?",
+        variables={"audience": "practitioners"},
+        intent="study-plan",
+    )
+
+    if expected_cap is None:
+        with pytest.raises(SafetyBlocked, match="budget"):
+            service.generate(render_request)
+        assert dummy_client.requests == []
+        return
+
+    envelope = service.generate(render_request)
+
+    assert len(dummy_client.requests) == 1
+    assert dummy_client.requests[0].max_output_tokens == expected_cap
+    assert envelope.result is not None
+    assert envelope.policy_applied["effective_max_output_tokens"] == expected_cap
+    assert envelope.policy_applied["estimated_cost"] == pytest.approx((100 + expected_cap) * 0.00001)

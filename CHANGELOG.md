@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Output Budget Enforcement Contract** (2026-09-15)
+  - Kept policy resolution as the single source for the output bound used in budget approval, provider dispatch, and provenance, including model-max runs.
+  - Required positive integer output limits at both provider request boundaries and removed the service-layer model-max cap omission.
+  - Added regressions for stale-low registry limits, remaining-context limits, budget rejection before dispatch, and cap preservation in regular and structured provider calls.
+  - Retained explicit failure for incompatible provider limits; no uncapped fallback is introduced.
+
 ### Added
 
 - **`tnh-gen` Model-Max Output Token Mode** (2026-06-20)

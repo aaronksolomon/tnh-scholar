@@ -178,3 +178,30 @@ class CompletionPolicy(BaseModel):
   1. Integrate with `GenAIService` skeleton.  
   2. Validate via functional test notebook.  
   3. Refine during `ADR-A09` walking skeleton build.
+
+## Addendum 2026-09-15: Output Budget Enforcement Boundary
+
+The maintained output policy resolves one positive integer output bound before
+provider dispatch. `CAPPED` validates the requested cap; `MODEL_MAX` resolves the
+smaller of the registered model maximum and the context remaining after the
+prompt. The safety gate approves the estimated cost of that same bound or blocks
+the request. It does not silently reduce the requested output to fit the budget.
+
+The approved bound flows unchanged through `ProviderRequest`, the provider
+adapter, and the SDK request, and is recorded as `effective_max_output_tokens` in
+provenance. Both request models require a positive integer; neither permits an
+omitted limit. The service and adapter must not reinterpret `MODEL_MAX` as an
+uncapped request after budget approval.
+
+This addresses PR #78's budget-enforcement finding: a stale-low registry entry
+must not permit generation beyond the token allowance used by the budget check.
+A provider rejection of a stale-high limit requires corrected registry data or a
+smaller explicit cap; it must not trigger an uncapped fallback.
+
+The contract enforces output tokens per invocation. Dollar estimates still depend
+on local pricing and input-token estimation; aggregate retry spending and exact
+billing reconciliation remain separate concerns.
+
+Implementation boundaries: `src/tnh_scholar/gen_ai_service/config/output_tokens.py`,
+`src/tnh_scholar/gen_ai_service/safety/safety_gate.py`, and
+`src/tnh_scholar/gen_ai_service/models/transport.py`.
