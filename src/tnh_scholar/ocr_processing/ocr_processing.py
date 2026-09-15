@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from typing import Any, Callable, List, Tuple, cast
 
-import fitz  # PyMuPDF for PDF processing
+import pymupdf  # PDF processing
 from google.cloud import vision
 from google.cloud.vision_v1.types import EntityAnnotation
 from PIL import Image, ImageDraw, ImageFont
@@ -110,15 +110,15 @@ def start_image_annotator_client(
         raise Exception(f"Failed to initialize ImageAnnotatorClient: {e}")
 
 
-def load_pdf_pages(pdf_path: Path) -> fitz.Document:
+def load_pdf_pages(pdf_path: Path) -> pymupdf.Document:
     """
-    Opens the PDF document and returns the fitz Document object.
+    Opens the PDF document and returns the PyMuPDF Document object.
 
     Parameters:
         pdf_path (Path): The path to the PDF file.
 
     Returns:
-        fitz.Document: The loaded PDF document.
+        pymupdf.Document: The loaded PDF document.
 
     Raises:
         FileNotFoundError: If the specified file does not exist.
@@ -141,17 +141,17 @@ def load_pdf_pages(pdf_path: Path) -> fitz.Document:
         raise ValueError(f"The file '{pdf_path}' is not a valid PDF document (expected '.pdf').")
 
     try:
-        return fitz.open(str(pdf_path))  # PyMuPDF expects a string path
+        return pymupdf.open(str(pdf_path))  # PyMuPDF expects a string path
     except Exception as e:
         raise Exception(f"An unexpected error occurred while opening the PDF: {e}")
 
 
-def get_page_dimensions(page: fitz.Page) -> dict:
+def get_page_dimensions(page: pymupdf.Page) -> dict:
     """
     Extracts the width and height of a single PDF page in both inches and pixels.
 
     Args:
-        page (fitz.Page): A single PDF page object from PyMuPDF.
+        page (pymupdf.Page): A single PDF page object from PyMuPDF.
 
     Returns:
         dict: A dictionary containing the width and height of the page in inches and pixels.
@@ -180,12 +180,12 @@ def get_page_dimensions(page: fitz.Page) -> dict:
     }
 
 
-def extract_image_from_page(page: fitz.Page) -> Image.Image:
+def extract_image_from_page(page: pymupdf.Page) -> Image.Image:
     """
     Extracts the first image from the given PDF page and returns it as a PIL Image.
 
     Parameters:
-        page (fitz.Page): The PDF page object.
+        page (pymupdf.Page): The PDF page object.
 
     Returns:
         Image.Image: The first image on the page as a Pillow Image object.
@@ -195,9 +195,9 @@ def extract_image_from_page(page: fitz.Page) -> Image.Image:
         Exception: For unexpected errors during image extraction.
 
     Example:
-        >>> import fitz
+        >>> import pymupdf
         >>> from PIL import Image
-        >>> doc = fitz.open("/path/to/document.pdf")
+        >>> doc = pymupdf.open("/path/to/document.pdf")
         >>> page = doc.load_page(0)  # Load the first page
         >>> try:
         >>>     image = extract_image_from_page(page)
@@ -375,7 +375,7 @@ def process_single_image(
 
 
 def process_page(
-    page: fitz.Page,
+    page: pymupdf.Page,
     client: vision.ImageAnnotatorClient,
     annotation_font_path: str | Path,
     preprocessor: Callable[[Image.Image, int], Image.Image] | None = None,
@@ -384,7 +384,7 @@ def process_page(
     Processes a single PDF page, extracting text, word locations, and annotated images.
 
     Parameters:
-        page (fitz.Page): The PDF page object.
+        page (pymupdf.Page): The PDF page object.
         client (vision.ImageAnnotatorClient): Google Vision API client for text detection.
         preprocessor (Callable[[Image.Image, int], Image.Image]): Preprocessing function for the image.
         annotation_font_path (str): Path to the font file for annotations.
