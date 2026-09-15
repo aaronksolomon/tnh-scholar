@@ -13,7 +13,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 > **Last Updated**: 2026-09-15 (release/status reconciliation; conductor completion and concept-aware knowledge-base roadmap)
 > **Version**: 0.4.2 (Alpha)
-> **Status**: Active Development — v0.4.2 released; conductor bootstrap usable; knowledge-base pilot next after bounded conductor completion
+> **Status**: Active Development — v0.4.2 released; conductor bootstrap usable; runtime status next, then bounded conductor completion and knowledge-base pilot
 >
 > **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 > Use `####` (h4) for task headers within priority sections.
@@ -26,7 +26,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 **Agent-Orch Bootstrap Status**: ✅ **USABLE PROTOTYPE** — SPIKE-10 demonstrated useful implementation through the maintained worktree-backed headless path. The direct-arm implementation of `tnh-conductor status --watch` was selected for merging; the conductor run established bootstrap viability.
 
-**Release Status**: ✅ **v0.4.2 released 2026-05-26**. Latest verified `main` commit is `d5f140cf` (2026-09-15, PR #78). Release preparation for `0.4.0` is historical, not the next milestone.
+**Release Status**: ✅ **v0.4.2 released 2026-05-26**. Latest verified `main` commit is `42a3ecbc` (2026-09-15, post-PR #79 merge log). Release preparation for `0.4.0` is historical, not the next milestone.
 
 **Knowledge Base Status**: **PRELIMINARY DESIGN; IMPLEMENTATION PENDING** — ADR-K01 is proposed. Concept modeling, source metadata, chunking, multilingual retrieval, and storage choices need a focused pilot decision.
 
@@ -35,10 +35,11 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 This sequence takes precedence over the older priority groupings below. Pilot sizes are starting targets to refine with corpus availability and reviewer input.
 
 1. **Status reconciliation and PR #78 — merge complete.** The budget-enforcement fix merged on 2026-09-15 after user approval. Roadmap, Sourcery authorization, and merge-log updates are included in the follow-up housekeeping commit.
-2. **Complete the conductor's bounded review/revision loop.** Implement → review → evaluate evidence → at most one revision → validate → present a clear result for human review. Follow [ADR-OA06.1](/architecture/agent-orchestration/adr/adr-oa06.1-evaluator-directed-revision-loop.md); verify runner compatibility and failure diagnostics. The maintained entry path still uses unsupported `EVALUATE` and `GATE` implementations. Commit/push/PR automation follows dependable execution and review.
-3. **Build a concept-aware knowledge-base pilot.** Start with approximately 20–30 reviewed concepts, 30–50 documents or talks, and 30 representative questions. Connect a Buddhist conceptual foundation to Plum Village teachings/practices and source passages. Reuse the journal pipeline's provenance approach.
-4. **Evaluate retrieval with and without concept expansion.** Compare relevant-source discovery, citation accuracy, multilingual behavior, and handling of insufficient evidence. Use expert judgments to decide which conceptual relationships and retrieval stages help.
-5. **Add a source viewer.** Show the retrieved passage alongside original text or scan, translation, and conceptual connections. Build on the JVB viewer work; confirm the interface choice with pilot users.
+2. **Build bounded runtime status for `tnh-gen`.** Follow [ADR-TG06](/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md): typed stages, explicit JSONL event files usable with `--api`, heartbeats, and terminal outcomes that preserve failure origin. Validate agent-driven use outside the repository. PR #79 dependency refresh is merged.
+3. **Complete the conductor's bounded review/revision loop.** Implement → review → evaluate evidence → at most one revision → validate → present a clear result for human review. Follow [ADR-OA06.1](/architecture/agent-orchestration/adr/adr-oa06.1-evaluator-directed-revision-loop.md); verify runner compatibility and failure diagnostics. The maintained entry path still uses unsupported `EVALUATE` and `GATE` implementations. Commit/push/PR automation follows dependable execution and review.
+4. **Build a concept-aware knowledge-base pilot.** Start with approximately 20–30 reviewed concepts, 30–50 documents or talks, and 30 representative questions. Connect a Buddhist conceptual foundation to Plum Village teachings/practices and source passages. Reuse the journal pipeline's provenance approach.
+5. **Evaluate retrieval with and without concept expansion.** Compare relevant-source discovery, citation accuracy, multilingual behavior, and handling of insufficient evidence. Use expert judgments to decide which conceptual relationships and retrieval stages help.
+6. **Add a source viewer.** Show the retrieved passage alongside original text or scan, translation, and conceptual connections. Build on the JVB viewer work; confirm the interface choice with pilot users.
 
 **Design reference**: [Bayer's reliable LLM application case study](https://martinfowler.com/articles/reliable-llm-bayer.html). Adapt metadata-aware hybrid retrieval, evidence sufficiency checks, source citations, and expert evaluation to the TNH corpus. Choose infrastructure after a measurable pilot.
 
@@ -670,13 +671,15 @@ docs/architecture/jvb-viewer/adr/
 #### 🚧 tnh-gen Operator UX
 
 - **Status**: PARTIALLY IMPLEMENTED — stderr progress spinner landed in June 2026
-- **Priority**: LOW–MEDIUM
-- **Problem**: Basic liveness feedback exists; durable run logging and default output persistence remain follow-up
+- **Priority**: HIGH — next bounded implementation before the conductor review/revision loop
+- **Problem**: The current spinner is invisible to API and non-TTY callers; production agents need typed runtime status and accurate failure attribution
 - **Tasks**:
   - [x] Add progress indicator to stderr during model calls
-  - [ ] Review the local proposed runtime-status event design before extending stage feedback or logging
-  - [ ] Add basic run logging: log prompt key, model, input path, and elapsed time at completion even in non-`--api` mode
-  - [ ] Persist `tnh-gen` run output by default to a temp or run-artifact directory when no `--output-file` is provided
+  - [x] Review and revise [ADR-TG06](/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md) for agent-readable events and explicit failure origin (accepted 2026-09-15; implementation pending)
+  - [ ] Implement the TG06 event contract, JSONL/Rich sinks, heartbeat lifecycle, and terminal-decision mapping
+  - [ ] Validate live event consumption and result purity from an external working directory
+  - [ ] Later: integrate shared diagnostic logging; V1 uses an explicit status file without shared logging setup
+  - [ ] Later: persist `tnh-gen` run output by default to a temp or run-artifact directory when no `--output-file` is provided
 
 #### 🚧 tnh-gen Review Context Ingestion
 
