@@ -7479,6 +7479,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-09-15-output-budget-enforcement-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Addendum 2026-09-15: Output Budget Enforcement Boundary
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -15391,6 +15402,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-09-15-output-budget-enforcement-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Addendum 2026-09-15: Output Budget Enforcement Boundary
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -15598,6 +15620,27 @@ The refactor introduces explicit objects representing distinct layers of control
 <li>Validate via functional test notebook.  </li>
 <li>Refine during <code>ADR-A09</code> walking skeleton build.</li>
 </ul>
+<h2 id="addendum-2026-09-15-output-budget-enforcement-boundary">Addendum 2026-09-15: Output Budget Enforcement Boundary<a class="headerlink" href="#addendum-2026-09-15-output-budget-enforcement-boundary" title="Link to this section">&para;</a></h2>
+<p>The maintained output policy resolves one positive integer output bound before
+provider dispatch. <code>CAPPED</code> validates the requested cap; <code>MODEL_MAX</code> resolves the
+smaller of the registered model maximum and the context remaining after the
+prompt. The safety gate approves the estimated cost of that same bound or blocks
+the request. It does not silently reduce the requested output to fit the budget.</p>
+<p>The approved bound flows unchanged through <code>ProviderRequest</code>, the provider
+adapter, and the SDK request, and is recorded as <code>effective_max_output_tokens</code> in
+provenance. Both request models require a positive integer; neither permits an
+omitted limit. The service and adapter must not reinterpret <code>MODEL_MAX</code> as an
+uncapped request after budget approval.</p>
+<p>This addresses PR #78's budget-enforcement finding: a stale-low registry entry
+must not permit generation beyond the token allowance used by the budget check.
+A provider rejection of a stale-high limit requires corrected registry data or a
+smaller explicit cap; it must not trigger an uncapped fallback.</p>
+<p>The contract enforces output tokens per invocation. Dollar estimates still depend
+on local pricing and input-token estimation; aggregate retry spending and exact
+billing reconciliation remain separate concerns.</p>
+<p>Implementation boundaries: <code>src/tnh_scholar/gen_ai_service/config/output_tokens.py</code>,
+<code>src/tnh_scholar/gen_ai_service/safety/safety_gate.py</code>, and
+<code>src/tnh_scholar/gen_ai_service/models/transport.py</code>.</p>
 
 
 

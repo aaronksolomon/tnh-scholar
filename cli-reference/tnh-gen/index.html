@@ -16386,10 +16386,21 @@
 <h4 id="model-and-parameter-overrides">Model and Parameter Overrides<a class="headerlink" href="#model-and-parameter-overrides" title="Link to this section">&para;</a></h4>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>--model<span class="w"> </span>MODEL_NAME<span class="w">       </span><span class="c1"># Override prompt&#39;s default model</span>
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>--intent<span class="w"> </span>INTENT<span class="w">          </span><span class="c1"># Routing hint (translation, summarization, etc.)</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>--max-tokens<span class="w"> </span>INT<span class="w">         </span><span class="c1"># Max output tokens</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>--temperature<span class="w"> </span>FLOAT<span class="w">      </span><span class="c1"># Model temperature (0.0-2.0)</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>--top-p<span class="w"> </span>FLOAT<span class="w">            </span><span class="c1"># Nucleus sampling parameter</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>--max-tokens<span class="w"> </span>INT<span class="w">         </span><span class="c1"># Explicit output-token cap</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>--no-max-tokens-limit<span class="w">    </span><span class="c1"># Resolve the model/context maximum; budget checks still apply</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>--temperature<span class="w"> </span>FLOAT<span class="w">      </span><span class="c1"># Model temperature (0.0-2.0)</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>--top-p<span class="w"> </span>FLOAT<span class="w">            </span><span class="c1"># Nucleus sampling parameter</span>
 </span></code></pre></div>
+<p><code>--no-max-tokens-limit</code> removes the user-selected token cap. The service still
+resolves a concrete bound from the registered model maximum and remaining
+context, checks its estimated cost against <code>max_dollars</code>, and sends that same
+bound to the provider. Requests exceeding the budget are rejected before dispatch;
+the service does not silently shorten the requested output to fit the budget.
+<code>--max-tokens</code> and <code>--no-max-tokens-limit</code> cannot be combined.</p>
+<p>A provider limit rejection requires correcting the model registry or choosing a
+smaller explicit cap; the service does not retry without the approved bound.
+Cost estimates depend on local pricing and input-token estimates, so this output
+bound is not a guarantee of exact billed dollars or an aggregate retry budget.</p>
 <h4 id="output-options">Output Options<a class="headerlink" href="#output-options" title="Link to this section">&para;</a></h4>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>--output-file<span class="w"> </span>PATH<span class="w">       </span><span class="c1"># Write result to file</span>
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>--no-provenance<span class="w">          </span><span class="c1"># Omit provenance markers from output</span>

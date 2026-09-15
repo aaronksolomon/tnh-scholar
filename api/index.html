@@ -198878,6 +198878,27 @@ Uses the same translation engine as the prompt-driven line translator.</p>
 
 
 
+<h8 id="tnh_scholar.cli_tools.tnh_gen.commands.run.TnhGenCLIOptions.NO_MAX_TOKENS_LIMIT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">NO_MAX_TOKENS_LIMIT</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;--no-max-tokens-limit&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use the selected model&#39;s maximum safe output tokens for this prompt.&quot;</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#tnh_scholar.cli_tools.tnh_gen.commands.run.TnhGenCLIOptions.NO_MAX_TOKENS_LIMIT" class="headerlink" title="Link to this section">&para;</a></h8>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
 <h8 id="tnh_scholar.cli_tools.tnh_gen.commands.run.TnhGenCLIOptions.NO_PROVENANCE" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">NO_PROVENANCE</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;--no-provenance&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Omit provenance block in files.&#39;</span><span class="p">)</span></code>
 
@@ -199100,7 +199121,7 @@ Uses the same translation engine as the prompt-driven line translator.</p>
 
 
 <h7 id="tnh_scholar.cli_tools.tnh_gen.commands.run.run_prompt" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_prompt</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">CONFIG</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">API</span><span class="p">,</span> <span class="n">prompt_dir</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">PROMPT_DIR</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">PROMPT</span><span class="p">,</span> <span class="n">input_file</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">INPUT_FILE</span><span class="p">,</span> <span class="n">vars_file</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">VARS_FILE</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">VAR</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">MODEL</span><span class="p">,</span> <span class="n">intent</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">INTENT</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">MAX_TOKENS</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">,</span> <span class="n">reasoning</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">REASONING</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">TOP_P</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">OUTPUT_FILE</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">FORMAT</span><span class="p">,</span> <span class="n">no_provenance</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">NO_PROVENANCE</span><span class="p">,</span> <span class="n">streaming</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">STREAMING</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">run_prompt</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">CONFIG</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">API</span><span class="p">,</span> <span class="n">prompt_dir</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">PROMPT_DIR</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">PROMPT</span><span class="p">,</span> <span class="n">input_file</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">INPUT_FILE</span><span class="p">,</span> <span class="n">vars_file</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">VARS_FILE</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">VAR</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">MODEL</span><span class="p">,</span> <span class="n">intent</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">INTENT</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">MAX_TOKENS</span><span class="p">,</span> <span class="n">no_max_tokens_limit</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">NO_MAX_TOKENS_LIMIT</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">,</span> <span class="n">reasoning</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">REASONING</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">TOP_P</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">OUTPUT_FILE</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">FORMAT</span><span class="p">,</span> <span class="n">no_provenance</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">NO_PROVENANCE</span><span class="p">,</span> <span class="n">streaming</span><span class="o">=</span><span class="n">TnhGenCLIOptions</span><span class="o">.</span><span class="n">STREAMING</span><span class="p">)</span></code>
 
 <a href="#tnh_scholar.cli_tools.tnh_gen.commands.run.run_prompt" class="headerlink" title="Link to this section">&para;</a></h7>
 
@@ -199329,6 +199350,27 @@ Uses the same translation engine as the prompt-driven line translator.</p>
       class-attribute
       instance-attribute
    (tnh_scholar.cli_tools.tnh_gen.commands.run.TnhGenCLIOptions.MAX_TOKENS)" href="#tnh_scholar.cli_tools.tnh_gen.commands.run.TnhGenCLIOptions.MAX_TOKENS">MAX_TOKENS</a></code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>no_max_tokens_limit</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to use the selected model's maximum safe output tokens.</p>
+              </div>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="NO_MAX_TOKENS_LIMIT = typer.Option(False, '--no-max-tokens-limit', help="Use the selected model's maximum safe output tokens for this prompt.")
+
+  
+      class-attribute
+      instance-attribute
+   (tnh_scholar.cli_tools.tnh_gen.commands.run.TnhGenCLIOptions.NO_MAX_TOKENS_LIMIT)" href="#tnh_scholar.cli_tools.tnh_gen.commands.run.TnhGenCLIOptions.NO_MAX_TOKENS_LIMIT">NO_MAX_TOKENS_LIMIT</a></code>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -199955,7 +199997,7 @@ Uses the same translation engine as the prompt-driven line translator.</p>
 
 
 <h6 id="tnh_scholar.cli_tools.tnh_gen.config_loader.load_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">load_config</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prompt_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">load_config</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prompt_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">settings_overrides</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#tnh_scholar.cli_tools.tnh_gen.config_loader.load_config" class="headerlink" title="Link to this section">&para;</a></h6>
 
@@ -200038,6 +200080,23 @@ clobbering previous values.</p>
             <td>
               <div class="doc-md-description">
                 <p>Optional prompt catalog directory override.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>settings_overrides</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="SettingsKwargs (tnh_scholar.cli_tools.tnh_gen.types.SettingsKwargs)" href="#tnh_scholar.cli_tools.tnh_gen.types.SettingsKwargs">SettingsKwargs</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional GenAI settings overrides applied only when
+loading environment-backed defaults.</p>
               </div>
             </td>
             <td>
@@ -201052,6 +201111,27 @@ clobbering previous values.</p>
 
 
 
+<h7 id="tnh_scholar.cli_tools.tnh_gen.factory.ServiceOverrides.output_token_limit_mode" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">output_token_limit_mode</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#tnh_scholar.cli_tools.tnh_gen.factory.ServiceOverrides.output_token_limit_mode" class="headerlink" title="Link to this section">&para;</a></h7>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
 <h7 id="tnh_scholar.cli_tools.tnh_gen.factory.ServiceOverrides.reasoning_effort" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">reasoning_effort</span> <span class="o">=</span> <span class="kc">None</span></code>
 
@@ -201097,7 +201177,7 @@ clobbering previous values.</p>
 
 
 <h7 id="tnh_scholar.cli_tools.tnh_gen.factory.ServiceOverrides.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reasoning_effort</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_token_limit_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reasoning_effort</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#tnh_scholar.cli_tools.tnh_gen.factory.ServiceOverrides.__init__" class="headerlink" title="Link to this section">&para;</a></h7>
 
@@ -206328,6 +206408,26 @@ tnh-gen --api run --prompt daily --input-file notes.md</p>
   </span>
 
 <a href="#tnh_scholar.cli_tools.tnh_gen.types.SettingsKwargs.default_model" class="headerlink" title="Link to this section">&para;</a></h7>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="tnh_scholar.cli_tools.tnh_gen.types.SettingsKwargs.default_output_token_limit_mode" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">default_output_token_limit_mode</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#tnh_scholar.cli_tools.tnh_gen.types.SettingsKwargs.default_output_token_limit_mode" class="headerlink" title="Link to this section">&para;</a></h7>
 
 
     <div class="doc doc-contents ">
