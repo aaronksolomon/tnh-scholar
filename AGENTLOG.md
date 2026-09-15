@@ -506,3 +506,45 @@ PR #73 (`feat/tnh-gen-json-contract-impl`) merged to `main` and established the 
 - [docs/architecture/tnh-gen/adr/adr-tg04-structured-json-contract-and-scope.md](docs/architecture/tnh-gen/adr/adr-tg04-structured-json-contract-and-scope.md)
 - [docs/architecture/tnh-gen/adr/adr-tg04.1-json-contract-runtime-validation.md](docs/architecture/tnh-gen/adr/adr-tg04.1-json-contract-runtime-validation.md)
 - [docs/architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars.md](docs/architecture/tnh-gen/adr/adr-tg04.2-structured-json-provenance-sidecars.md)
+
+
+## [2026-09-15 08:20 PDT] PR #78 Output Budget Contract Merge
+
+**Agent**: Codex (GPT-6)
+**Chat Reference**: TNH Scholar status review and PR #78 completion
+**Human Collaborator**: phapman
+
+### Context
+The user authorized merging PR #78 after the budget-enforcement fix and a clean GitHub check run. The exact reviewed head was `16965d38315ea258c9d3e3e3fce3fa1c9c646513`.
+
+### Key Decisions
+- **One enforced output bound**: budget approval, provider dispatch, and provenance use the same resolved token limit, including model-max mode.
+- **Human-authorized merge**: merged the verified head with a merge commit; retained the branch and local work.
+
+### Work Completed
+- [x] Verified PR validation, docs validation, CodeQL, and Sourcery checks passed; GitHub full-test job was skipped.
+- [x] Merged PR #78 as `d5f140cff74090e3a1cc88c9ca91ff3af29e9313` on `main`.
+- [x] Recorded merge completion in the local roadmap and session log.
+
+### Discoveries & Insights
+- **Local validation**: 628 tests passed and 2 skipped; repository lint/type checks passed. The combined CI command remains blocked by stale yt-dlp health evidence, and three unchanged main-branch files fail repository-wide formatting.
+- **Review history**: the original budget finding is outdated after the fix; its thread remains unresolved in GitHub.
+
+### Files Modified/Created
+- `TODO.md`: Updated local roadmap with merge status and current main commit.
+- `AGENTLOG.md`: Appended merge continuity record.
+- `AGENTS.md`: Added scoped maintainer authorization for Sourcery code review.
+
+### Next Steps
+- [x] Prepare the TODO, AGENTS Sourcery authorization, and merge log as a separate docs-only housekeeping commit; the user authorized direct publication after docs validation.
+- [ ] Begin the bounded conductor review/revision milestone.
+- [ ] Triage the pre-existing local lockfile change and runtime-status ADR separately.
+
+### Open Questions
+- None blocking the completed merge.
+
+### References
+- [PR #78](https://github.com/aaronksolomon/tnh-scholar/pull/78)
+- [Output policy ADR](/architecture/gen-ai-service/adr/adr-a08-config-params-policy-taxonomy.md)
+
+---

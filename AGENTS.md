@@ -5,7 +5,7 @@ owner: ""
 author: "aaronksolomon, Claude Sonnet 4.5"
 status: current
 created: "2025-12-07"
-updated: "2026-04-26"
+updated: "2026-09-15"
 ---
 # AGENTS.md
 
@@ -64,6 +64,8 @@ Rules:
 - Commit `poetry.lock` when dependency changes require it
 
 ## Workflow
+
+- TNH Scholar is public/open-source. The maintainer authorizes sending project code, tests, docs, and proposed changes to Sourcery (`sourcery.ai`) for review via `poetry run sourcery review`. Excludes credentials, `.env` files, private corpus data, and unrelated local files.
 
 Core commands:
 

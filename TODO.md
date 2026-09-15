@@ -5,15 +5,15 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-04-26"
+updated: "2026-09-15"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-04-26 (CI workflow cleanup and docs validation split landed; notebook repo cleanup and release validation next)
+> **Last Updated**: 2026-09-15 (release/status reconciliation; conductor completion and concept-aware knowledge-base roadmap)
 > **Version**: 0.4.2 (Alpha)
-> **Status**: Active Development - bootstrap viable, release validation and packaging phase
+> **Status**: Active Development — v0.4.2 released; conductor bootstrap usable; knowledge-base pilot next after bounded conductor completion
 >
 > **Style Note**: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
 > Use `####` (h4) for task headers within priority sections.
@@ -24,21 +24,41 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 **Bootstrap Path Status**: ✅ **COMPLETE** — VS Code integration working, AI-assisted development enabled.
 
-**Agent-Orch Bootstrap Status**: ✅ **USABLE PROTOTYPE** — the maintained `tnh-conductor` path has now produced and landed a bounded repo-native implementation through the worktree-backed headless path.
+**Agent-Orch Bootstrap Status**: ✅ **USABLE PROTOTYPE** — SPIKE-10 demonstrated useful implementation through the maintained worktree-backed headless path. The direct-arm implementation of `tnh-conductor status --watch` was selected for merging; the conductor run established bootstrap viability.
 
-**Next Steps**:
+**Release Status**: ✅ **v0.4.2 released 2026-05-26**. Latest verified `main` commit is `d5f140cf` (2026-09-15, PR #78). Release preparation for `0.4.0` is historical, not the next milestone.
 
-1. 🚧 Prepare `0.4.0` bootstrap release framing for `tnh-conductor` prototype alpha
-2. 🚧 Run `0.4.0` release validation pass and finalize version-bump scope/release notes
-3. 🚧 Reduce notebook/test clutter before release: archive junk notebooks and move real test coverage into pytest where practical
-4. 🔮 **JVB VS Code Parallel Viewer** (P1, design phase) — ADR-JVB02 strategy + UI-UX design
-5. 🔮 Finish yt-dlp reliability suite + monthly ops trigger (P1, reliability)
-6. 🔮 Finish ytt-fetch robustness hardening (P1, reliability)
-7. 🚧 GenAIService Final Polish - promote `policy_applied` typing (P1, minor)
-8. 🚧 Prompt Catalog Safety - manifest validation + schema docs (P2, critical infrastructure)
-9. 🚧 Knowledge Base Implementation (P2, design complete)
-10. 🚧 Expand Test Coverage with refreshed baseline and current gaps (P2)
-11. 🚧 OpenAI registry-driven request profiles for model-specific controls (P2, follow-up hardening)
+**Knowledge Base Status**: **PRELIMINARY DESIGN; IMPLEMENTATION PENDING** — ADR-K01 is proposed. Concept modeling, source metadata, chunking, multilingual retrieval, and storage choices need a focused pilot decision.
+
+### Agreed High-Level Roadmap (2026-09-15)
+
+This sequence takes precedence over the older priority groupings below. Pilot sizes are starting targets to refine with corpus availability and reviewer input.
+
+1. **Status reconciliation and PR #78 — merge complete.** The budget-enforcement fix merged on 2026-09-15 after user approval. Roadmap, Sourcery authorization, and merge-log updates are included in the follow-up housekeeping commit.
+2. **Complete the conductor's bounded review/revision loop.** Implement → review → evaluate evidence → at most one revision → validate → present a clear result for human review. Follow [ADR-OA06.1](/architecture/agent-orchestration/adr/adr-oa06.1-evaluator-directed-revision-loop.md); verify runner compatibility and failure diagnostics. The maintained entry path still uses unsupported `EVALUATE` and `GATE` implementations. Commit/push/PR automation follows dependable execution and review.
+3. **Build a concept-aware knowledge-base pilot.** Start with approximately 20–30 reviewed concepts, 30–50 documents or talks, and 30 representative questions. Connect a Buddhist conceptual foundation to Plum Village teachings/practices and source passages. Reuse the journal pipeline's provenance approach.
+4. **Evaluate retrieval with and without concept expansion.** Compare relevant-source discovery, citation accuracy, multilingual behavior, and handling of insufficient evidence. Use expert judgments to decide which conceptual relationships and retrieval stages help.
+5. **Add a source viewer.** Show the retrieved passage alongside original text or scan, translation, and conceptual connections. Build on the JVB viewer work; confirm the interface choice with pilot users.
+
+**Design reference**: [Bayer's reliable LLM application case study](https://martinfowler.com/articles/reliable-llm-bayer.html). Adapt metadata-aware hybrid retrieval, evidence sufficiency checks, source citations, and expert evaluation to the TNH corpus. Choose infrastructure after a measurable pilot.
+
+### Open GitHub Work (verified 2026-09-15)
+
+- [#55: agent/script ergonomics](https://github.com/aaronksolomon/tnh-scholar/issues/55) — explicit runtime controls and predictable machine output for delegated `tnh-gen` use.
+- [#22: concurrency hardening](https://github.com/aaronksolomon/tnh-scholar/issues/22) — deferred thread safety and rate limiting.
+- [#16: architecture modernization follow-ups](https://github.com/aaronksolomon/tnh-scholar/issues/16) — remaining architecture work.
+- [#6: model-training research spike](https://github.com/aaronksolomon/tnh-scholar/issues/6) — research backlog; outside the immediate retrieval pilot.
+
+### Recent Completed Milestones
+
+- ✅ **2026-09-15**: [PR #78](https://github.com/aaronksolomon/tnh-scholar/pull/78) merged as `d5f140cf`; required output bounds now preserve budget approval through provider dispatch. Local full suite: 628 passed, 2 skipped. PR validation, docs validation, CodeQL, and Sourcery checks passed.
+
+- ✅ **June 2026**: `tnh-gen` model-max output mode (PR #77), reasoning-effort control, and terminal progress feedback. Provider-cap follow-up completed in PR #78 on 2026-09-15.
+- ✅ **May 2026**: JSON prompt contract validation and provenance sidecars (PR #73); local `tnh-prompts/` discovery and golden-fixture refresh (PR #75).
+- ✅ **May 2026**: [Journal pipeline case study](/user-guide/journal-pipeline-case-study.md), translation review and facsimile work, release hardening, and releases `v0.4.0`–`v0.4.2`.
+- ✅ **April 2026**: maintained conductor worktree execution, canonical run artifacts, live status/watch, bootstrap comparison, and [operator documentation](/development/tnh-conductor-operator-guide.md).
+
+**Continuing backlog**: audio/YouTube reliability, prompt manifest/docs cleanup, bounded review-context ingestion, configuration cleanup, and refreshed test coverage remain tracked below. Historical checklists and old implementation assessments require subsystem-specific verification before they are used as implementation plans.
 
 **Recent release hardening completed**:
 
@@ -62,7 +82,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 ## Priority Roadmap
 
-This section organizes work into three priority levels based on criticality for production readiness.
+The following subsystem backlog retains historical priority groupings. Use the agreed high-level roadmap above for current execution order; completed bootstrap and release work is retained for context.
 
 ### Priority 1: VS Code Integration Enablement (Bootstrap Path)
 
@@ -82,7 +102,7 @@ This section organizes work into three priority levels based on criticality for 
 
 #### 🚨 Agent-Orch OA07 Runtime Implementation Sequence
 
-- **Status**: IN PROGRESS - maintained execution/validation/kernel slice landed and tested
+- **Status**: RUNTIME FOUNDATION IMPLEMENTED — maintained execution, validation, kernel, workspace, run-artifact, and runner packages exist; reference-package retirement remains follow-up
 - **Priority**: HIGH (foundation work for durable MVP)
 - **Context**: The accepted OA07 ADR set defines the maintained runtime architecture. The current `conductor_mvp/` and `spike/` code remains useful as migration source/reference, but should not receive forward-path feature growth.
 - **Why This Matters**:
@@ -131,23 +151,23 @@ This section organizes work into three priority levels based on criticality for 
 #### 🚨 OA07.1 Bootstrap Worktree Slice
 
 - **Status**: MILESTONE REACHED — PR-7 and PR-8 are merged on `main`, and the first bounded bootstrap-proof workflow outcome is now landed through `tnh-conductor status --watch`
-- **Priority**: HIGHEST (prove real maintained bootstrap usefulness)
-- **Context**: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary and the maintained headless entry path. Bootstrap is no longer blocked on substrate. The next blocker is proving one useful repo-native workflow through the maintained path. Follow [ADR-OA07](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md) and [ADR-OA07.1](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md).
+- **Priority**: BOOTSTRAP MILESTONE COMPLETE; bounded review/revision is the next conductor milestone
+- **Context**: The maintained OA04.x runtime contracts now include the real OA07.1 worktree runtime boundary and the maintained headless entry path. Bootstrap is no longer blocked on substrate. SPIKE-10 established useful repo-native execution; the next milestone is the bounded review/revision loop. Follow [ADR-OA07](/architecture/agent-orchestration/adr/adr-oa07-diff-policy-safety-rails.md) and [ADR-OA07.1](/architecture/agent-orchestration/adr/adr-oa07.1-worktree-lifecycle-and-rollback.md).
 - **Bootstrap Goal**:
   - create a managed git worktree from a committed base ref
   - run `RUN_AGENT` and `RUN_VALIDATION` against the worktree root
   - keep canonical run artifacts in the run directory
   - support `ROLLBACK(pre_run)` to recorded base state
   - establish the headless path needed for later commit/push/PR automation
-- **Why This Is Next**:
-  - the worktree runtime boundary and maintained headless app-layer entry are now implemented on `main`
-  - the system still needs one clean end-to-end proof that it can complete a useful repo task through the maintained path
-  - OA05/OA06 depth work should follow a live bootstrap proof, not precede it
+- **Current Follow-Up**:
+  - the worktree runtime boundary and maintained headless app-layer entry are implemented on `main`
+  - useful bootstrap execution and operator documentation are complete
+  - implement the bounded OA06.1 review/revision milestone, including maintained evaluator wiring and the human handoff
 - **Recent related docs work**:
   - documented the current low-noise Codex headless path, native subagent confirmation, and first supervisory shell-trial findings in `/docs/architecture/agent-orchestration/notes/experiments/` and `/docs/architecture/agent-orchestration/supervisory-shell-trial/`
   - SPIKE-10 comparison result now records the current practical recommendation: keep `tnh-conductor` as the main coordination substrate, harden native subagent launch reliability, and treat `codex-assistant` / `claude-assistant` worker paths as experimental until runtime bootstrap and auth are dependable
   - direct-vs-conductor follow-up review selected the direct-arm `tnh-conductor status --watch` implementation as the merge candidate while preserving the maintained conductor run as the bootstrap-viability proof
-  - next focus is release-prep cleanup and packaging for a `0.4.0` prototype-alpha `tnh-conductor` milestone, not more orchestration-path comparison spikes first
+  - `v0.4.0`–`v0.4.2` shipped in May; next focus is bounded review/revision and runner reliability
 - **Recommended PR sizing**:
   - Prefer **2 PRs** to stay comfortably under diff-size guidance
   - A single PR is possible only if the implementation stays narrow and avoids CLI/app-layer work
@@ -173,12 +193,16 @@ This section organizes work into three priority levels based on criticality for 
     - exercise the current maintained subset: `RUN_AGENT`, `RUN_VALIDATION`, `STOP`, with `ROLLBACK(pre_run)` available only as fallback
     - prove the run yields a reviewable repo diff plus canonical metadata, manifests, events, and final state
     - keep semantic-control depth and review automation out of scope unless they become true blockers
-  - [ ] **Release Prep** `feat/oa07-bootstrap-release-prep` — Prototype-alpha cleanup and packaging (small/medium, next)
-    - document the bootstrap milestone and known limitations clearly
-    - add maintained `tnh-conductor` CLI reference and operator-facing usage docs
-    - reduce notebook/test clutter so the release ships with a cleaner repo state
-    - prune stale temporary artifacts and clarify operator workflow defaults
-    - decide exact `0.4.0` scope before version bump and release notes
+  - [x] **Release Milestone** — Prototype-alpha packaging and operator documentation
+    - published `v0.4.0`, `v0.4.1`, and `v0.4.2` on 2026-05-26
+    - added maintained CLI reference and operator guide; completed release validation and hardening recorded in the changelog
+    - remaining notebook and temporary-artifact cleanup stays in the repo-hygiene backlog
+  - [ ] **Bounded Review/Revision Completion** — ADR-OA06.1
+    - wire a maintained evaluator to canonical review and validation evidence
+    - allow at most one evaluator-directed revision with typed instructions and legal routes
+    - validate the revised result and present task outcome, evidence, and remaining blockers for human review
+    - implement the minimum gate/handoff behavior required by the workflow; do not treat existing unsupported gate wiring as operational
+    - verify current runner CLI compatibility, timeout/permission failures, and canonical diagnostics with focused regression checks and a bounded live proof
   - [ ] **Claude CLI worker hardening** — Robust non-interactive execution and write scoping (small/medium)
     - confirm current `claude` CLI flags and non-interactive behavior still match maintained adapter assumptions
     - add explicit write-scoping / permission-mode policy so bounded docs and code tasks do not stall on unexpected prompts
@@ -189,12 +213,10 @@ This section organizes work into three priority levels based on criticality for 
     - push the work branch
     - open or update a PR
     - keep protected-branch merge human-only
-- **Explicit deferrals for this slice**:
-  - [ ] commit/push/PR automation if it causes PR-7 or PR-8 to exceed preferred diff size
-  - [ ] strict OA05 compile-validation as a blocker for bootstrap
+- **Remaining deferrals after bootstrap**:
+  - [ ] commit/push/PR automation until the bounded review/revision loop is dependable
+  - [ ] full OA05 prompt compile-validation beyond the bounded review/revision requirements
   - [ ] full OA06 planner fixture/vector suite beyond the bootstrap path
-  - [ ] maintained `EVALUATE` / `GATE` support before the first useful bootstrap proof
-  - [ ] maintained `tnh-gen` evaluator or review-agent integration before the current orchestrator comparison proves out the control-surface path
   - [ ] non-script harness backends
   - [ ] stacked PR orchestration
   - [ ] multi-agent mutable collaboration inside one worktree
@@ -209,7 +231,7 @@ This section organizes work into three priority levels based on criticality for 
 
 #### ✅ OA04 Contract Family — PR Sequence (Complete)
 
-- **Status**: COMPLETE — contract ADRs implemented in maintained code; bootstrap remains blocked on OA07.1 worktree execution
+- **Status**: COMPLETE — contract ADRs implemented in maintained code; OA07.1 worktree execution and headless bootstrap subsequently landed
 - **Context**: OA04.2–OA04.5 are the contract-layer ADRs between the OA07 runtime foundations and the maintained runner/policy/provenance implementations. That contract family is now landed in code and should no longer be treated as pending. See implementation notes in [ADR-OA04.1 Addendum 2026-03-27](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md) for the original scaffolding gaps and [ADR-OA04.1 Addendum 2026-04-05](/architecture/agent-orchestration/adr/adr-oa04.1-implementation-notes-mvp-buildout.md) for the bootstrap-first reprioritization.
 - **Dependency chain**:
   - OA04.3 (run dir + manifests + evaluator evidence seam) → OA04.2 (runners normalize into canonical evidence)
@@ -647,11 +669,12 @@ docs/architecture/jvb-viewer/adr/
 
 #### 🚧 tnh-gen Operator UX
 
-- **Status**: NOT STARTED
+- **Status**: PARTIALLY IMPLEMENTED — stderr progress spinner landed in June 2026
 - **Priority**: LOW–MEDIUM
-- **Problem**: `tnh-gen` provides no feedback while the model is working and does not save run output automatically, creating a poor experience for interactive and long-running calls
+- **Problem**: Basic liveness feedback exists; durable run logging and default output persistence remain follow-up
 - **Tasks**:
-  - [ ] Add heartbeat / progress indicator to stderr during model calls so operators know the run is alive (especially for long documents — 10–30 s wait with no output)
+  - [x] Add progress indicator to stderr during model calls
+  - [ ] Review the local proposed runtime-status event design before extending stage feedback or logging
   - [ ] Add basic run logging: log prompt key, model, input path, and elapsed time at completion even in non-`--api` mode
   - [ ] Persist `tnh-gen` run output by default to a temp or run-artifact directory when no `--output-file` is provided
 
@@ -669,13 +692,19 @@ docs/architecture/jvb-viewer/adr/
 
 #### 🚧 Knowledge Base Implementation
 
-- **Status**: DESIGN COMPLETE
-- **ADR**: [ADR-K01](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md)
+- **Status**: PRELIMINARY DESIGN; IMPLEMENTATION PENDING
+- **Priority**: NEXT PRODUCT MILESTONE after bounded conductor completion
+- **ADR**: [ADR-K01](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md) remains proposed; its storage, chunking, metadata, and multilingual assumptions need a pilot-specific follow-up decision
 - **Tasks**:
-  - [ ] Implement Supabase integration
-  - [ ] Vector search functionality
-  - [ ] Query capabilities
-  - [ ] Semantic similarity search
+  - [ ] Define reviewed Buddhist concepts and a connected Plum Village teaching/practice layer, with stable identifiers, multilingual labels, scoped definitions, and source-backed relationships
+  - [ ] Distinguish translation variants, broader concepts, related teachings, and practice expressions; preserve tradition and historical context
+  - [ ] Select a small corpus and representative questions with scholars/practitioners (initial targets: 20–30 concepts, 30–50 sources, 30 questions)
+  - [ ] Define passage metadata and provenance: source identity, author/speaker, date, language, page/timestamp, original/translation links, and review status
+  - [ ] Implement ingestion and keyword/semantic retrieval with metadata filtering; choose storage against pilot needs rather than assuming Supabase is already decided
+  - [ ] Add bounded concept expansion while retaining direct retrieval for uncatalogued material
+  - [ ] Compare retrieval with and without expansion; assess relevant-source discovery, citation accuracy, multilingual behavior, and insufficient-evidence handling
+  - [ ] Add evidence-linked answers and source navigation once retrieval quality is demonstrated
+- **Product Follow-Up**: Connect source passages, scans/original text, translations, and concepts in the viewer; coordinate with the JVB viewer backlog
 
 #### 🚧 Configuration & Data Layout
 
