@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from uuid import uuid4
@@ -14,8 +15,11 @@ from tnh_scholar.cli_tools.tnh_gen.factory import ServiceFactory, ServiceOverrid
 from tnh_scholar.cli_tools.tnh_gen.output.formatter import render_output
 from tnh_scholar.cli_tools.tnh_gen.output.human_formatter import format_human_friendly_error
 from tnh_scholar.cli_tools.tnh_gen.output.policy import resolve_output_format, validate_run_format
-from tnh_scholar.cli_tools.tnh_gen.output.progress import run_progress
-from tnh_scholar.cli_tools.tnh_gen.output.provenance import write_output_file
+from tnh_scholar.cli_tools.tnh_gen.output.provenance import sidecar_path, write_output_file
+from tnh_scholar.cli_tools.tnh_gen.run_status.factory import create_emitter
+from tnh_scholar.cli_tools.tnh_gen.run_status.lifecycle import RunLifecycle
+from tnh_scholar.cli_tools.tnh_gen.run_status.models import RunStage, RunStatusMetadata
+from tnh_scholar.cli_tools.tnh_gen.run_status.policy import RunStatusConfig
 from tnh_scholar.cli_tools.tnh_gen.state import OutputFormat, ctx
 from tnh_scholar.cli_tools.tnh_gen.types import (
     ConfigData,
@@ -36,7 +40,6 @@ from tnh_scholar.gen_ai_service.models.domain import (
     CompletionEnvelope,
     CompletionFailure,
     CompletionOutcomeStatus,
-    FailureReason,
     RenderRequest,
 )
 from tnh_scholar.gen_ai_service.models.errors import SafetyBlocked
@@ -92,6 +95,9 @@ class TnhGenCLIOptions:
     )
     TOP_P = typer.Option(None, "--top-p", help="Top-p sampling (not yet supported).")
     OUTPUT_FILE = typer.Option(None, "--output-file", help="Write result text to file.")
+    STATUS_FILE = typer.Option(
+        None, "--status-file", help="Write live JSONL status to a fresh file (also in API/quiet mode)."
+    )
     FORMAT = typer.Option(
         None, "--format", help="Output format: json or yaml (API mode only).", case_sensitive=False
     )
@@ -264,9 +270,7 @@ def _initialize_service(
     overrides = ServiceOverrides(
         model=model,
         max_tokens=max_tokens,
-        output_token_limit_mode=(
-            OutputTokenLimitMode.MODEL_MAX if no_max_tokens_limit else None
-        ),
+        output_token_limit_mode=(OutputTokenLimitMode.MODEL_MAX if no_max_tokens_limit else None),
         temperature=temperature,
         reasoning_effort=reasoning_effort,
     )
@@ -657,7 +661,7 @@ def _emit_run_output(
             context.output_format,
             api,
         )
-        raise typer.Exit(code=int(_failed_completion_exit_code(envelope)))
+        return
 
     result_text = envelope.result.text if envelope.result else ""
     if context.output_file:
@@ -680,15 +684,8 @@ def _emit_run_output(
     _emit_stdout(payload, result_text, context.output_format, api)
 
 
-def _failed_completion_exit_code(envelope: CompletionEnvelope) -> ExitCode:
-    reason = envelope.failure.reason if envelope.failure is not None else None
-    if reason is FailureReason.CONTRACT_VALIDATION_FAILED:
-        return ExitCode.FORMAT_ERROR
-    return ExitCode.PROVIDER_ERROR
-
-
-def _execute_prompt(context: RunContext) -> tuple[CompletionEnvelope, RunOutcomePayload]:
-    """Execute the prompt for the given context and build the success payload."""
+def _execute_prompt(context: RunContext) -> CompletionEnvelope:
+    """Execute generation; classify its envelope before building output payloads."""
     user_input = str(context.variables.get("input_text", ""))
     request = RenderRequest(
         instruction_key=context.prompt_key,
@@ -697,14 +694,7 @@ def _execute_prompt(context: RunContext) -> tuple[CompletionEnvelope, RunOutcome
         intent=context.intent,
         model=context.model_override,
     )
-    envelope = context.service.generate(request)
-    payload = _build_success_payload(
-        envelope=envelope,
-        metadata=context.metadata,
-        config_meta=context.config_meta,
-        trace_id=context.trace_id,
-    )
-    return envelope, payload
+    return context.service.generate(request)
 
 
 def _normalize_reasoning_effort(reasoning: str | None) -> str | None:
@@ -742,27 +732,72 @@ def _apply_api_settings(format_override: OutputFormat | None) -> None:
 # ---- Error Handling ----
 
 
-def _handle_error(exc: Exception, trace_id: str, format_override: OutputFormat | None) -> None:
-    """Handle error and exit with appropriate code.
+def _render_run_exception(exc: Exception, trace_id: str, format_override: OutputFormat | None) -> None:
+    """Render an error; lifecycle owns the eventual exit code.
 
     Args:
         exc: The caught exception.
         trace_id: Unique trace identifier for the current invocation.
 
-    Raises:
-        typer.Exit: Always raised with the mapped exit code.
     """
+    if isinstance(exc, SafetyBlocked) and (details := _budget_block_details(exc)) is not None:
+        _emit_budget_block(trace_id, *details, format_override, ctx.api)
+        return
     if not isinstance(exc, (ValueError, KeyError, json.JSONDecodeError, ValidationError, ConfigurationError)):
         logger.exception(f"Unexpected error in run command [trace_id={trace_id}]")
 
-    output, exit_code, error_code = render_error(
+    output, _, error_code = render_error(
         exc,
         trace_id=trace_id,
         format_override=format_override,
     )
     emit_trace_id(trace_id, error_code)
     typer.echo(output)
-    raise typer.Exit(code=int(exit_code)) from exc
+
+
+def _run_lifecycle(
+    prompt: str,
+    input_file: Path,
+    output_file: Path | None,
+    status_file: Path | None,
+    vars_file: Path | None,
+    model: str | None,
+    trace_id: str,
+    format_override: OutputFormat | None,
+) -> RunLifecycle:
+    """Resolve application status once before any service preparation."""
+    policy = RunStatusConfig.resolve(
+        status_file=status_file,
+        api=ctx.api,
+        quiet=ctx.quiet,
+        is_tty=sys.stderr.isatty(),
+        no_color=ctx.no_color,
+    )
+    try:
+        policy.validate_paths(
+            (
+                input_file,
+                vars_file,
+                ctx.config_path,
+                output_file,
+                sidecar_path(output_file) if output_file else None,
+            )
+        )
+    except ValueError as exc:
+        _render_run_exception(exc, trace_id, format_override)
+        raise typer.Exit(int(ExitCode.INPUT_ERROR)) from exc
+    metadata = RunStatusMetadata(
+        trace_id=trace_id,
+        prompt_key=prompt,
+        input_file_name=input_file.name,
+        output_file_name=output_file.name if output_file else None,
+        requested_model=model,
+        api_mode=ctx.api,
+        quiet=ctx.quiet,
+    )
+    return RunLifecycle(
+        create_emitter(metadata, policy), lambda exc: _render_run_exception(exc, trace_id, format_override)
+    )
 
 
 # ---- CLI Command ----
@@ -785,6 +820,7 @@ def run_prompt(
     reasoning: str | None = TnhGenCLIOptions.REASONING,
     top_p: float | None = TnhGenCLIOptions.TOP_P,
     output_file: Path | None = TnhGenCLIOptions.OUTPUT_FILE,
+    status_file: Path | None = TnhGenCLIOptions.STATUS_FILE,
     format: OutputFormat | None = TnhGenCLIOptions.FORMAT,
     no_provenance: bool = TnhGenCLIOptions.NO_PROVENANCE,
     streaming: bool = TnhGenCLIOptions.STREAMING,
@@ -807,56 +843,44 @@ def run_prompt(
         reasoning: Reasoning effort override for supported models.
         top_p: Top-p sampling override (accepted but not applied).
         output_file: Optional file to write the rendered text to.
+        status_file: Fresh JSONL runtime event destination.
         format: Output format for stdout.
         no_provenance: Whether to omit provenance header in written files.
         streaming: Whether to request streaming (not yet implemented).
     """
     trace_id = uuid4().hex
+    if config is not None:
+        ctx.config_path = config
+    if api:
+        ctx.api = True
 
-    try:
-        if config is not None:
-            ctx.config_path = config
-        if api:
-            ctx.api = True
-
+    with _run_lifecycle(
+        prompt, input_file, output_file, status_file, vars_file, model, trace_id, format
+    ) as run:
         _validate_run_options(streaming, top_p, max_tokens, no_max_tokens_limit)
         reasoning_effort = _normalize_reasoning_effort(reasoning)
         _apply_api_settings(format)
-
-        with run_progress(prompt, input_file, quiet=ctx.quiet, api=ctx.api, no_color=ctx.no_color):
-            # Prepare execution context
-            context = _prepare_run_context(
-                prompt_key=prompt,
-                input_file=input_file,
-                vars_file=vars_file,
-                inline_vars=var,
-                prompt_dir=prompt_dir,
-                model=model,
-                intent=intent,
-                max_tokens=max_tokens,
-                no_max_tokens_limit=no_max_tokens_limit,
-                temperature=temperature,
-                reasoning_effort=reasoning_effort,
-                output_file=output_file,
-                output_format=format,
-                no_provenance=no_provenance,
-                trace_id=trace_id,
-            )
-
-            # Execute prompt and build response payload
-            envelope, payload = _execute_prompt(context)
-
+        run.emitter.emit_stage(RunStage.PREPARING_RUN)
+        context = _prepare_run_context(
+            prompt_key=prompt,
+            input_file=input_file,
+            vars_file=vars_file,
+            inline_vars=var,
+            prompt_dir=prompt_dir,
+            model=model,
+            intent=intent,
+            max_tokens=max_tokens,
+            no_max_tokens_limit=no_max_tokens_limit,
+            temperature=temperature,
+            reasoning_effort=reasoning_effort,
+            output_file=output_file,
+            output_format=format,
+            no_provenance=no_provenance,
+            trace_id=trace_id,
+        )
+        run.emitter.emit_stage(RunStage.GENERATING)
+        envelope = _execute_prompt(context)
+        run.classify(envelope)
+        payload = _build_success_payload(envelope, context.metadata, context.config_meta, trace_id)
+        run.emitter.emit_stage(RunStage.EMITTING_OUTPUT)
         _emit_run_output(context, envelope, payload, ctx.api)
-
-    except SafetyBlocked as exc:
-        budget_details = _budget_block_details(exc)
-        if budget_details is None:
-            _handle_error(exc, trace_id, format)
-            return
-        estimated_cost, max_dollars = budget_details
-        _emit_budget_block(trace_id, estimated_cost, max_dollars, format, ctx.api)
-        raise typer.Exit(code=int(ExitCode.POLICY_ERROR))
-    except typer.Exit:
-        raise
-    except Exception as exc:
-        _handle_error(exc, trace_id, format)

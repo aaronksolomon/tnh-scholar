@@ -240,3 +240,30 @@ The acceptance criterion is that an agent outside the repository can observe sta
 - [ADR-TG05: Run Progress Reporting](/architecture/tnh-gen/adr/adr-tg05-run-progress-reporting.md): narrow terminal-feedback predecessor.
 - [tnh-gen UX Directions and Issues — May 2026](/architecture/tnh-gen/notes/tnh-gen-ux-directions-2026-05.md): production observations motivating liveness feedback.
 - [Issue #55: Agent/script ergonomics](https://github.com/aaronksolomon/tnh-scholar/issues/55): predictable controls and output for delegated use.
+
+
+## Addendum 2026-09-17: V1 Implementation on Feature Branch
+
+**Status**: Implemented on `feat/tnh-gen-runtime-status-events`; review and merge pending.
+
+The `run_status` package now owns typed events, sink policy, sequence/timing,
+heartbeats, and terminal decisions. `run.py` classifies the service envelope before
+constructing or rendering its output payload. Rendering no longer selects the
+process exit code. Primary failure origin is retained if later rendering fails.
+
+`--status-file` uses exclusive creation and flushes complete JSONL records. Rich
+rendering stops before output while the file sink remains active. Heartbeat and
+terminal emission share serialized state, and the worker stops before terminal
+emission. Failed status sinks are retired without retrying generation. Failure
+records contain codes and stages only; optional free-text summaries are omitted.
+
+Cancellation follows Typer/Click's existing keyboard-interrupt abort behavior
+(exit 1), records `cancelled` when possible, and propagates the interruption.
+Other process termination retains best-effort cleanup without inventing a terminal
+success. Event readers accept additive V1 minor versions and unknown fields while
+rejecting unsupported major versions.
+
+Tests cover event/schema invariants, primary and secondary failure attribution,
+sink failures, output flushing, path protection, API/quiet selection, and live
+observation from an actual subprocess outside the checkout using a controlled
+service fixture. No provider calls are made by these tests.

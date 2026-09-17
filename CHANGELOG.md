@@ -30,6 +30,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`tnh-gen` Runtime Status Events (TG06)** (2026-09-17)
+  - Added explicit `--status-file` JSONL events for API, quiet, and external-directory runs, with typed stages, heartbeats, trace correlation, and terminal outcomes.
+  - Replaced direct spinner orchestration with isolated Rich/file sinks and a command lifecycle that preserves primary failure origin through error rendering.
+  - Completion follows requested output writes and stdout flushing; reporting failures never replay generation or replace a known primary failure.
+
+
 - **`tnh-gen` Model-Max Output Token Mode** (2026-06-20)
   - Added a typed output-token limit policy to the GenAI service so request token budgeting is explicit at the policy layer rather than encoded as ad hoc CLI or provider behavior
   - Added `tnh-gen run --no-max-tokens-limit`, which resolves output tokens to the selected model's maximum safe budget for the rendered prompt while preserving concrete provider request values

@@ -279,10 +279,55 @@ bound is not a guarantee of exact billed dollars or an aggregate retry budget.
 
 ```bash
 --output-file PATH       # Write result to file
+--status-file PATH       # Write live JSONL runtime events to a fresh file
 --no-provenance          # Omit provenance markers from output
 ```
 
-Note: `--format` and `--api` are global flags that must come before `run`.
+`--api` and `--format` may be supplied globally or on `run`.
+
+#### Runtime Status for Agents and Operators
+
+Human TTY runs show a transient stage indicator on stderr. API mode, quiet mode,
+and non-TTY invocations suppress that indicator. Explicit `--status-file` output
+works in all of these modes and leaves stdout reserved for the result payload.
+
+```bash
+# Run from any working directory; choose a fresh event path for each invocation.
+tnh-gen --quiet run --api --prompt translate \
+  --prompt-dir /path/to/prompts --input-file teaching.md \
+  --status-file translate-events.jsonl --output-file translation.md
+```
+
+The status-file parent directory must already exist. Existing destinations,
+including symlinks, and collisions with input/config/output paths are rejected
+before generation. Event files contain operational metadata (prompt key and
+filenames), not prompt contents, input text, or generated output. Keep them in a
+location appropriate for that metadata; callers own retention.
+
+Each UTF-8 JSONL record has schema version `1.0`, a per-run sequence, trace ID,
+UTC timestamp, elapsed times, and a typed event kind. Stages are `starting`,
+`preparing_run`, `generating`, and `emitting_output`. A heartbeat is emitted after
+10 seconds without another event; it confirms local process liveness, not remote
+model progress. Only returned service facts populate the resolved model/provider.
+
+Terminal outcomes are `completed`, `failed`, or `cancelled`. For failures,
+`failure.origin_stage` identifies where the primary failure occurred even when
+`stage` is `emitting_output`. A secondary rendering failure is recorded separately
+as `reporting_failure`. Existing CLI exit-code mappings remain in effect.
+
+Records are flushed as they are written. Live readers should consume only complete
+newline-terminated records, ignore unknown additive fields, and reject unsupported
+major schema versions. Combine terminal events with process exit status: a missing
+terminal record, a stopped heartbeat, or EOF does not prove success or justify
+repeating a paid request. Initialization of a requested file must succeed before
+generation; a later sink failure produces a bounded stderr diagnostic and disables
+that sink without changing the task outcome or triggering a retry.
+
+`completed` is emitted after requested output and provenance writes and stdout
+flushing succeed. It does not guarantee downstream consumption, atomic output
+replacement, or power-loss durability. Hard termination may leave partial events
+or output. Provider retry telemetry, automatic retention, and default result
+persistence remain outside this feature.
 
 #### Variable Precedence
 
