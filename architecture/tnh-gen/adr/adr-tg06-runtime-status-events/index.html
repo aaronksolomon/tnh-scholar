@@ -8131,6 +8131,8 @@
       
         
       
+        
+      
     
     
     
@@ -8283,6 +8285,120 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_11_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../knowledge-base/notes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_11_3" id="__nav_9_11_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_11_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_11_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../knowledge-base/notes/concept-extraction-live-review-2026-09-17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concept extraction live-test review
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
   
 
   
@@ -10829,6 +10945,28 @@
     <span class="md-ellipsis">
       
         Historical References
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-09-17-v1-implementation-on-feature-branch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Addendum 2026-09-17: V1 Implementation on Feature Branch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-09-17-live-test-repairs-and-four-second-heartbeats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Addendum 2026-09-17: Live-Test Repairs and Four-Second Heartbeats
       
     </span>
   </a>
@@ -15426,6 +15564,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-09-17-v1-implementation-on-feature-branch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Addendum 2026-09-17: V1 Implementation on Feature Branch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-09-17-live-test-repairs-and-four-second-heartbeats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Addendum 2026-09-17: Live-Test Repairs and Four-Second Heartbeats
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -15760,6 +15920,49 @@
 <li><a href="../../notes/tnh-gen-ux-directions-2026-05/">tnh-gen UX Directions and Issues — May 2026</a>: production observations motivating liveness feedback.</li>
 <li><a href="https://github.com/aaronksolomon/tnh-scholar/issues/55">Issue #55: Agent/script ergonomics</a>: predictable controls and output for delegated use.</li>
 </ul>
+<h2 id="addendum-2026-09-17-v1-implementation-on-feature-branch">Addendum 2026-09-17: V1 Implementation on Feature Branch<a class="headerlink" href="#addendum-2026-09-17-v1-implementation-on-feature-branch" title="Link to this section">&para;</a></h2>
+<p><strong>Status</strong>: Implemented on <code>feat/tnh-gen-runtime-status-events</code>; review and merge pending.</p>
+<p>The <code>run_status</code> package now owns typed events, sink policy, sequence/timing,
+heartbeats, and terminal decisions. <code>run.py</code> classifies the service envelope before
+constructing or rendering its output payload. Rendering no longer selects the
+process exit code. Primary failure origin is retained if later rendering fails.</p>
+<p><code>--status-file</code> uses exclusive creation and flushes complete JSONL records. Rich
+rendering stops before output while the file sink remains active. Heartbeat and
+terminal emission share serialized state, and the worker stops before terminal
+emission. Failed status sinks are retired without retrying generation. Failure
+records contain codes and stages only; optional free-text summaries are omitted.</p>
+<p>Cancellation follows Typer/Click's existing keyboard-interrupt abort behavior
+(exit 1), records <code>cancelled</code> when possible, and propagates the interruption.
+Other process termination retains best-effort cleanup without inventing a terminal
+success. Event readers accept additive V1 minor versions and unknown fields while
+rejecting unsupported major versions.</p>
+<p>Tests cover event/schema invariants, primary and secondary failure attribution,
+sink failures, output flushing, path protection, API/quiet selection, and live
+observation from an actual subprocess outside the checkout using a controlled
+service fixture. No provider calls are made by these tests.</p>
+<h2 id="addendum-2026-09-17-live-test-repairs-and-four-second-heartbeats">Addendum 2026-09-17: Live-Test Repairs and Four-Second Heartbeats<a class="headerlink" href="#addendum-2026-09-17-live-test-repairs-and-four-second-heartbeats" title="Link to this section">&para;</a></h2>
+<p>A production-provider run exposed a first heartbeat near 20 seconds: fixed-interval
+polling missed the deadline after a stage reset. The worker now waits the remaining
+time to its current monotonic deadline. At the maintainer's request, the default
+interval is <strong>four seconds</strong>, for both human status and file events, superseding
+the original ten-second value. Heartbeats still indicate local liveness only.</p>
+<p>The same test exposed bounded provenance defects. Saved artifact provenance now
+uses schema <code>2.0</code>: all original frontmatter is nested under <code>source_metadata</code>,
+including when generated markers are disabled. Source title, author, status, and
+translation labels therefore cannot masquerade as derivative identity. The API
+result and status event schemas are unchanged. New GenAI service timestamps are
+UTC-aware; the saved-artifact formatter converts aware times to UTC and preserves
+legacy unknown timezones without appending a misleading <code>Z</code>.</p>
+<p>The <a href="../../../knowledge-base/notes/concept-extraction-live-review-2026-09-17/">brief KB review</a>
+links the preserved generated data and records why concept extraction must not
+require a separate agent's manual cleanup. Concept-map redesign remains outside
+this processing-system repair.</p>
+<p>A <a href="../../../knowledge-base/notes/assets/concept-extraction-2026-09-17/repaired-verification.json">repeat live-run verification</a>
+confirmed the first heartbeat 4.007 seconds after generation began, nine heartbeats
+in a 39.497-second run, schema <code>2.0</code> source isolation, and agreement between saved
+UTC provenance and terminal-event time. Full regression validation: 673 passed,
+two skipped; focused validation: 138 passed. No concept-map post-processing was
+required to verify these processing-system repairs.</p>
 
 
 

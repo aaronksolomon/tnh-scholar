@@ -8682,6 +8682,8 @@
       
         
       
+        
+      
     
     
     
@@ -8834,6 +8836,120 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_11_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../architecture/knowledge-base/notes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_11_3" id="__nav_9_11_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_11_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_11_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concept extraction live-test review
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
   
 
   
@@ -16083,7 +16199,16 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Dependency Refresh and OCR Installation</strong> (2026-09-15)</li>
+<li><strong>Live-Test Runtime and Provenance Repairs</strong> (2026-09-17)</li>
+<li>Attribute payload-building failures to output, preserve stage timing across error rendering, and protect implicit configuration paths from status output.</li>
+<li>Schedule heartbeats against their actual deadline and use a four-second default for terminal and file status.</li>
+<li>Preserve input frontmatter under <code>source_metadata</code> in saved provenance schema <code>2.0</code>, preventing source identity from being assigned to generated output.</li>
+<li>
+<p>Generate UTC-aware service timestamps and avoid assigning UTC to timezone-unspecified legacy timestamps.</p>
+</li>
+<li>
+<p><strong>Dependency Refresh and OCR Installation</strong> (2026-09-15)</p>
+</li>
 <li>Refreshed the Poetry lockfile for the core, development, and optional dependency groups.</li>
 <li>Replaced the unrelated <code>fitz</code> distribution with PyMuPDF in the OCR extra and used its canonical <code>pymupdf</code> import.</li>
 <li>
@@ -16099,7 +16224,15 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong><code>tnh-gen</code> Model-Max Output Token Mode</strong> (2026-06-20)</li>
+<li><strong><code>tnh-gen</code> Runtime Status Events (TG06)</strong> (2026-09-17)</li>
+<li>Added explicit <code>--status-file</code> JSONL events for API, quiet, and external-directory runs, with typed stages, heartbeats, trace correlation, and terminal outcomes.</li>
+<li>Replaced direct spinner orchestration with isolated Rich/file sinks and a command lifecycle that preserves primary failure origin through error rendering.</li>
+<li>
+<p>Completion follows requested output writes and stdout flushing; reporting failures never replay generation or replace a known primary failure.</p>
+</li>
+<li>
+<p><strong><code>tnh-gen</code> Model-Max Output Token Mode</strong> (2026-06-20)</p>
+</li>
 <li>Added a typed output-token limit policy to the GenAI service so request token budgeting is explicit at the policy layer rather than encoded as ad hoc CLI or provider behavior</li>
 <li>Added <code>tnh-gen run --no-max-tokens-limit</code>, which resolves output tokens to the selected model's maximum safe budget for the rendered prompt while preserving concrete provider request values</li>
 <li>Updated safety and service orchestration to resolve effective output tokens against both provider model limits and remaining context window before cost estimation and provider dispatch</li>

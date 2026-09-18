@@ -8923,6 +8923,8 @@
       
         
       
+        
+      
     
     
     
@@ -9075,6 +9077,120 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_11_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../architecture/knowledge-base/notes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_11_3" id="__nav_9_11_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_11_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_11_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concept extraction live-test review
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
   
 
   
@@ -16577,7 +16693,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <p>This sequence takes precedence over the older priority groupings below. Pilot sizes are starting targets to refine with corpus availability and reviewer input.</p>
 <ol>
 <li><strong>Status reconciliation and PR #78 — merge complete.</strong> The budget-enforcement fix merged on 2026-09-15 after user approval. Roadmap, Sourcery authorization, and merge-log updates are included in the follow-up housekeeping commit.</li>
-<li><strong>Build bounded runtime status for <code>tnh-gen</code>.</strong> Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md">ADR-TG06</a>: typed stages, explicit JSONL event files usable with <code>--api</code>, heartbeats, and terminal outcomes that preserve failure origin. Validate agent-driven use outside the repository. PR #79 dependency refresh is merged.</li>
+<li><strong>Runtime status for <code>tnh-gen</code> — implemented on feature branch; review/merge next.</strong> Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md">ADR-TG06</a>: typed stages, explicit JSONL event files usable with <code>--api</code>, heartbeats, and terminal outcomes that preserve failure origin. Validate agent-driven use outside the repository. PR #79 dependency refresh is merged.</li>
 <li><strong>Complete the conductor's bounded review/revision loop.</strong> Implement → review → evaluate evidence → at most one revision → validate → present a clear result for human review. Follow <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/agent-orchestration/adr/adr-oa06.1-evaluator-directed-revision-loop.md">ADR-OA06.1</a>; verify runner compatibility and failure diagnostics. The maintained entry path still uses unsupported <code>EVALUATE</code> and <code>GATE</code> implementations. Commit/push/PR automation follows dependable execution and review.</li>
 <li><strong>Build a concept-aware knowledge-base pilot.</strong> Start with approximately 20–30 reviewed concepts, 30–50 documents or talks, and 30 representative questions. Connect a Buddhist conceptual foundation to Plum Village teachings/practices and source passages. Reuse the journal pipeline's provenance approach.</li>
 <li><strong>Evaluate retrieval with and without concept expansion.</strong> Compare relevant-source discovery, citation accuracy, multilingual behavior, and handling of insufficient evidence. Use expert judgments to decide which conceptual relationships and retrieval stages help.</li>
@@ -17281,14 +17397,15 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 </ul>
 <h4 id="tnh-gen-operator-ux">🚧 tnh-gen Operator UX<a class="headerlink" href="#tnh-gen-operator-ux" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
-<li><strong>Status</strong>: PARTIALLY IMPLEMENTED — stderr progress spinner landed in June 2026</li>
+<li><strong>Status</strong>: TG06 IMPLEMENTED ON FEATURE BRANCH — validation/review and merge pending</li>
 <li><strong>Priority</strong>: HIGH — next bounded implementation before the conductor review/revision loop</li>
 <li><strong>Problem</strong>: The current spinner is invisible to API and non-TTY callers; production agents need typed runtime status and accurate failure attribution</li>
 <li><strong>Tasks</strong>:</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Add progress indicator to stderr during model calls</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Review and revise <a href="https://github.com/aaronksolomon/tnh-scholar/blob/main/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md">ADR-TG06</a> for agent-readable events and explicit failure origin (accepted 2026-09-15; implementation pending)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement the TG06 event contract, JSONL/Rich sinks, heartbeat lifecycle, and terminal-decision mapping</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Validate live event consumption and result purity from an external working directory</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Implement the TG06 event contract, JSONL/Rich sinks, heartbeat lifecycle, and terminal-decision mapping (2026-09-17; feature branch)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Validate live event consumption and result purity from an external working directory</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Review and merge the TG06 implementation slice</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Later: integrate shared diagnostic logging; V1 uses an explicit status file without shared logging setup</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Later: persist <code>tnh-gen</code> run output by default to a temp or run-artifact directory when no <code>--output-file</code> is provided</li>
 </ul>

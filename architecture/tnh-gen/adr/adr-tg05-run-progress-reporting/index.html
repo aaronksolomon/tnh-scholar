@@ -8131,6 +8131,8 @@
       
         
       
+        
+      
     
     
     
@@ -8283,6 +8285,120 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_11_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../knowledge-base/notes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_11_3" id="__nav_9_11_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_11_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_11_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../knowledge-base/notes/concept-extraction-live-review-2026-09-17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concept extraction live-test review
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
   
 
   
@@ -10772,6 +10888,17 @@
     <span class="md-ellipsis">
       
         As-Built Notes &amp; Addendums
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addendum-2026-09-17-tg06-runtime-status-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Addendum 2026-09-17: TG06 Runtime Status Implementation
       
     </span>
   </a>
@@ -15382,6 +15509,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#addendum-2026-09-17-tg06-runtime-status-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Addendum 2026-09-17: TG06 Runtime Status Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -15509,6 +15647,13 @@
 <hr />
 <h2 id="as-built-notes-addendums">As-Built Notes &amp; Addendums<a class="headerlink" href="#as-built-notes-addendums" title="Link to this section">&para;</a></h2>
 <p><em>None yet.</em></p>
+<h2 id="addendum-2026-09-17-tg06-runtime-status-implementation">Addendum 2026-09-17: TG06 Runtime Status Implementation<a class="headerlink" href="#addendum-2026-09-17-tg06-runtime-status-implementation" title="Link to this section">&para;</a></h2>
+<p>The implementation of <a href="../adr-tg06-runtime-status-events/">ADR-TG06</a>
+replaces <code>output/progress.py</code> with typed application events and a private Rich sink.
+The terminal indicator remains disabled for API, quiet, and non-TTY calls; an
+explicit JSONL status file supports those consumers independently. TG05's original
+direct-spinner decision remains historical context. Provider internals remain
+outside the CLI event contract.</p>
 
 
 

@@ -2432,6 +2432,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#runtime-status-for-agents-and-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Status for Agents and Operators
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-precedence" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8765,6 +8776,8 @@
       
         
       
+        
+      
     
     
     
@@ -8917,6 +8930,120 @@
   
   
     <span class="md-status md-status--current"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_11_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../architecture/knowledge-base/notes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--current"></span>
+  
+
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9_11_3" id="__nav_9_11_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_9_11_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_11_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concept extraction live-test review
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
   
 
   
@@ -15862,6 +15989,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#runtime-status-for-agents-and-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Status for Agents and Operators
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-precedence" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -16440,9 +16578,45 @@ Cost estimates depend on local pricing and input-token estimates, so this output
 bound is not a guarantee of exact billed dollars or an aggregate retry budget.</p>
 <h4 id="output-options">Output Options<a class="headerlink" href="#output-options" title="Link to this section">&para;</a></h4>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>--output-file<span class="w"> </span>PATH<span class="w">       </span><span class="c1"># Write result to file</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>--no-provenance<span class="w">          </span><span class="c1"># Omit provenance markers from output</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>--status-file<span class="w"> </span>PATH<span class="w">       </span><span class="c1"># Write live JSONL runtime events to a fresh file</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>--no-provenance<span class="w">          </span><span class="c1"># Omit provenance markers from output</span>
 </span></code></pre></div>
-<p>Note: <code>--format</code> and <code>--api</code> are global flags that must come before <code>run</code>.</p>
+<p><code>--api</code> and <code>--format</code> may be supplied globally or on <code>run</code>.</p>
+<h4 id="runtime-status-for-agents-and-operators">Runtime Status for Agents and Operators<a class="headerlink" href="#runtime-status-for-agents-and-operators" title="Link to this section">&para;</a></h4>
+<p>Human TTY runs show a transient stage indicator on stderr. API mode, quiet mode,
+and non-TTY invocations suppress that indicator. Explicit <code>--status-file</code> output
+works in all of these modes and leaves stdout reserved for the result payload.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Run from any working directory; choose a fresh event path for each invocation.</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>tnh-gen<span class="w"> </span>--quiet<span class="w"> </span>run<span class="w"> </span>--api<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span>--prompt-dir<span class="w"> </span>/path/to/prompts<span class="w"> </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span>--status-file<span class="w"> </span>translate-events.jsonl<span class="w"> </span>--output-file<span class="w"> </span>translation.md
+</span></code></pre></div>
+<p>The status-file parent directory must already exist. Existing destinations,
+including symlinks, and collisions with input/config/output paths are rejected
+before generation. Event files contain operational metadata (prompt key and
+filenames), not prompt contents, input text, or generated output. Keep them in a
+location appropriate for that metadata; callers own retention.</p>
+<p>Each UTF-8 JSONL record has schema version <code>1.0</code>, a per-run sequence, trace ID,
+UTC timestamp, elapsed times, and a typed event kind. Stages are <code>starting</code>,
+<code>preparing_run</code>, <code>generating</code>, and <code>emitting_output</code>. A heartbeat is emitted after
+4 seconds without another event; it confirms local process liveness, not remote
+model progress. Only returned service facts populate the resolved model/provider.</p>
+<p>Terminal outcomes are <code>completed</code>, <code>failed</code>, or <code>cancelled</code>. For failures,
+<code>failure.origin_stage</code> identifies where the primary failure occurred even when
+<code>stage</code> is <code>emitting_output</code>. A secondary rendering failure is recorded separately
+as <code>reporting_failure</code>. Existing CLI exit-code mappings remain in effect.</p>
+<p>Records are flushed as they are written. Live readers should consume only complete
+newline-terminated records, ignore unknown additive fields, and reject unsupported
+major schema versions. Combine terminal events with process exit status: a missing
+terminal record, a stopped heartbeat, or EOF does not prove success or justify
+repeating a paid request. Initialization of a requested file must succeed before
+generation; a later sink failure produces a bounded stderr diagnostic and disables
+that sink without changing the task outcome or triggering a retry.</p>
+<p><code>completed</code> is emitted after requested output and provenance writes and stdout
+flushing succeed. It does not guarantee downstream consumption, atomic output
+replacement, or power-loss durability. Hard termination may leave partial events
+or output. Provider retry telemetry, automatic retention, and default result
+persistence remain outside this feature.</p>
 <h4 id="variable-precedence">Variable Precedence<a class="headerlink" href="#variable-precedence" title="Link to this section">&para;</a></h4>
 <p>Variables are merged in this precedence order (highest to lowest):</p>
 <ol>
@@ -16451,49 +16625,49 @@ bound is not a guarantee of exact billed dollars or an aggregate retry budget.</
 <li><strong>Input file content</strong> (auto-injected as <code>input_text</code>) (lowest precedence)</li>
 </ol>
 <p><strong>Example:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span>--vars<span class="w"> </span>base_vars.json<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>vi<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>en
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span>--vars<span class="w"> </span>base_vars.json<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>vi<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>en
 </span></code></pre></div>
 <p>If <code>base_vars.json</code> contains <code>{"source_language": "en"}</code>, the inline <code>--var source_language=vi</code> wins.</p>
 <h4 id="human-friendly-output-default_1">Human-Friendly Output (Default)<a class="headerlink" href="#human-friendly-output-default_1" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>vi<span class="w"> </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>en
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="o">[</span>Generated<span class="w"> </span>translation<span class="w"> </span>text<span class="w"> </span>appears<span class="w"> </span>here<span class="w"> </span>without<span class="w"> </span>JSON<span class="w"> </span>wrapper...<span class="o">]</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>vi<span class="w"> </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>en
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="o">[</span>Generated<span class="w"> </span>translation<span class="w"> </span>text<span class="w"> </span>appears<span class="w"> </span>here<span class="w"> </span>without<span class="w"> </span>JSON<span class="w"> </span>wrapper...<span class="o">]</span>
 </span></code></pre></div>
 <p><strong>Behavior</strong>:
 - Only the generated text is printed to stdout
 - No JSON structure wrapper
 - Suitable for piping to other commands or files</p>
 <h4 id="api-output_1">API Output<a class="headerlink" href="#api-output_1" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>--api<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>vi<span class="w"> </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>en
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="o">{</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;succeeded&quot;</span>,
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span><span class="s2">&quot;result&quot;</span>:<span class="w"> </span><span class="o">{</span>
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span><span class="s2">&quot;text&quot;</span>:<span class="w"> </span><span class="s2">&quot;[Generated translation...]&quot;</span>,
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">    </span><span class="s2">&quot;model&quot;</span>:<span class="w"> </span><span class="s2">&quot;gpt-4o&quot;</span>,
-</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">    </span><span class="s2">&quot;usage&quot;</span>:<span class="w"> </span><span class="o">{</span>
-</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">      </span><span class="s2">&quot;prompt_tokens&quot;</span>:<span class="w"> </span><span class="m">1234</span>,
-</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">      </span><span class="s2">&quot;completion_tokens&quot;</span>:<span class="w"> </span><span class="m">567</span>,
-</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">      </span><span class="s2">&quot;total_tokens&quot;</span>:<span class="w"> </span><span class="m">1801</span>,
-</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">      </span><span class="s2">&quot;estimated_cost_usd&quot;</span>:<span class="w"> </span><span class="m">0</span>.08
-</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">    </span><span class="o">}</span>,
-</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">    </span><span class="s2">&quot;latency_ms&quot;</span>:<span class="w"> </span><span class="m">3456</span>
-</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">  </span><span class="o">}</span>,
-</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="w">  </span><span class="s2">&quot;provenance&quot;</span>:<span class="w"> </span><span class="o">{</span>
-</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="w">    </span><span class="s2">&quot;backend&quot;</span>:<span class="w"> </span><span class="s2">&quot;openai&quot;</span>,
-</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="w">    </span><span class="s2">&quot;model&quot;</span>:<span class="w"> </span><span class="s2">&quot;gpt-4o&quot;</span>,
-</span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="w">    </span><span class="s2">&quot;prompt_key&quot;</span>:<span class="w"> </span><span class="s2">&quot;translate&quot;</span>,
-</span><span id="__span-20-19"><a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="w">    </span><span class="s2">&quot;prompt_fingerprint&quot;</span>:<span class="w"> </span><span class="s2">&quot;sha256:abc123...&quot;</span>,
-</span><span id="__span-20-20"><a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="w">    </span><span class="s2">&quot;prompt_version&quot;</span>:<span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span>,
-</span><span id="__span-20-21"><a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="w">    </span><span class="s2">&quot;started_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2025-12-28T10:30:00Z&quot;</span>,
-</span><span id="__span-20-22"><a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="w">    </span><span class="s2">&quot;completed_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2025-12-28T10:30:03Z&quot;</span>,
-</span><span id="__span-20-23"><a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="w">    </span><span class="s2">&quot;schema_version&quot;</span>:<span class="w"> </span><span class="s2">&quot;1.0&quot;</span>
-</span><span id="__span-20-24"><a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="w">  </span><span class="o">}</span>,
-</span><span id="__span-20-25"><a id="__codelineno-20-25" name="__codelineno-20-25" href="#__codelineno-20-25"></a><span class="w">  </span><span class="s2">&quot;trace_id&quot;</span>:<span class="w"> </span><span class="s2">&quot;01HQXYZ123ABC&quot;</span>
-</span><span id="__span-20-26"><a id="__codelineno-20-26" name="__codelineno-20-26" href="#__codelineno-20-26"></a><span class="o">}</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>--api<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>vi<span class="w"> </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>en
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="o">{</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;succeeded&quot;</span>,
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span><span class="s2">&quot;result&quot;</span>:<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span><span class="s2">&quot;text&quot;</span>:<span class="w"> </span><span class="s2">&quot;[Generated translation...]&quot;</span>,
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">    </span><span class="s2">&quot;model&quot;</span>:<span class="w"> </span><span class="s2">&quot;gpt-4o&quot;</span>,
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">    </span><span class="s2">&quot;usage&quot;</span>:<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">      </span><span class="s2">&quot;prompt_tokens&quot;</span>:<span class="w"> </span><span class="m">1234</span>,
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">      </span><span class="s2">&quot;completion_tokens&quot;</span>:<span class="w"> </span><span class="m">567</span>,
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">      </span><span class="s2">&quot;total_tokens&quot;</span>:<span class="w"> </span><span class="m">1801</span>,
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">      </span><span class="s2">&quot;estimated_cost_usd&quot;</span>:<span class="w"> </span><span class="m">0</span>.08
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="w">    </span><span class="o">}</span>,
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="w">    </span><span class="s2">&quot;latency_ms&quot;</span>:<span class="w"> </span><span class="m">3456</span>
+</span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="w">  </span><span class="o">}</span>,
+</span><span id="__span-21-15"><a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="w">  </span><span class="s2">&quot;provenance&quot;</span>:<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-21-16"><a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="w">    </span><span class="s2">&quot;backend&quot;</span>:<span class="w"> </span><span class="s2">&quot;openai&quot;</span>,
+</span><span id="__span-21-17"><a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a><span class="w">    </span><span class="s2">&quot;model&quot;</span>:<span class="w"> </span><span class="s2">&quot;gpt-4o&quot;</span>,
+</span><span id="__span-21-18"><a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a><span class="w">    </span><span class="s2">&quot;prompt_key&quot;</span>:<span class="w"> </span><span class="s2">&quot;translate&quot;</span>,
+</span><span id="__span-21-19"><a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a><span class="w">    </span><span class="s2">&quot;prompt_fingerprint&quot;</span>:<span class="w"> </span><span class="s2">&quot;sha256:abc123...&quot;</span>,
+</span><span id="__span-21-20"><a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a><span class="w">    </span><span class="s2">&quot;prompt_version&quot;</span>:<span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span>,
+</span><span id="__span-21-21"><a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a><span class="w">    </span><span class="s2">&quot;started_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2025-12-28T10:30:00Z&quot;</span>,
+</span><span id="__span-21-22"><a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a><span class="w">    </span><span class="s2">&quot;completed_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2025-12-28T10:30:03Z&quot;</span>,
+</span><span id="__span-21-23"><a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a><span class="w">    </span><span class="s2">&quot;schema_version&quot;</span>:<span class="w"> </span><span class="s2">&quot;1.0&quot;</span>
+</span><span id="__span-21-24"><a id="__codelineno-21-24" name="__codelineno-21-24" href="#__codelineno-21-24"></a><span class="w">  </span><span class="o">}</span>,
+</span><span id="__span-21-25"><a id="__codelineno-21-25" name="__codelineno-21-25" href="#__codelineno-21-25"></a><span class="w">  </span><span class="s2">&quot;trace_id&quot;</span>:<span class="w"> </span><span class="s2">&quot;01HQXYZ123ABC&quot;</span>
+</span><span id="__span-21-26"><a id="__codelineno-21-26" name="__codelineno-21-26" href="#__codelineno-21-26"></a><span class="o">}</span>
 </span></code></pre></div>
 <h4 id="file-output-handling">File Output Handling<a class="headerlink" href="#file-output-handling" title="Link to this section">&para;</a></h4>
 <p>When <code>--output-file</code> is specified:</p>
@@ -16505,55 +16679,68 @@ bound is not a guarantee of exact billed dollars or an aggregate retry budget.</
 <li>Print JSON response to stdout (for client parsing)</li>
 </ol>
 <p><strong>Provenance Marker Format (YAML frontmatter):</strong></p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nn">---</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="nt">tnh_scholar_generated</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="nt">prompt_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">translate</span>
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="nt">prompt_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0.0&quot;</span>
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o</span>
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="nt">fingerprint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sha256:abc123...</span>
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="nt">trace_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">01HQXYZ123ABC</span>
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="nt">generated_at</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-12-28T10:30:03Z&quot;</span>
-</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="nt">schema_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0&quot;</span>
-</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="nn">---</span>
-</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>
-</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="p p-Indicator">[</span><span class="nv">Generated content follows...</span><span class="p p-Indicator">]</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nn">---</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="nt">tnh_scholar_generated</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="nt">prompt_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">translate</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="nt">prompt_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0.0&quot;</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="nt">fingerprint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sha256:abc123...</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="nt">trace_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">01HQXYZ123ABC</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="nt">generated_at</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-12-28T10:30:03Z&quot;</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="nt">schema_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2.0&quot;</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="nt">source_metadata</span><span class="p">:</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">  </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Original source title</span>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">  </span><span class="nt">author</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Original source author</span>
+</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="nn">---</span>
+</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a>
+</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="p p-Indicator">[</span><span class="nv">Generated content follows...</span><span class="p p-Indicator">]</span>
 </span></code></pre></div>
+<p>Saved provenance schema <code>2.0</code> keeps all input frontmatter under <code>source_metadata</code>.
+Source authorship, title, translation labels, and review status are not assertions
+about the generated document. Multi-step transforms preserve that nested lineage.
+<code>--no-provenance</code> omits generation markers but still preserves namespaced source
+metadata, in a sidecar for structured output. Consumers of the former flat metadata
+layout must read source fields from <code>source_metadata</code>; the API result and runtime
+event schema versions are unchanged.</p>
+<p>New service timestamps are UTC-aware. Aware timestamps are normalized to UTC with
+<code>Z</code>; legacy timestamps without timezone information retain an unspecified timezone
+and are not silently relabeled UTC.</p>
 <h4 id="examples">Examples<a class="headerlink" href="#examples" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Simple translation with inline variables</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>vi<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>en<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">  </span>--output-file<span class="w"> </span>teaching.en.md
-</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>
-</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="c1"># Complex variables via JSON file</span>
-</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>summarize<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">  </span>--input-file<span class="w"> </span>lecture.md<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">  </span>--vars<span class="w"> </span>config.json<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">  </span>--output-file<span class="w"> </span>lecture.summary.md
-</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>
-</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="c1"># Override model</span>
-</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-16"><a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="w">  </span>--vars<span class="w"> </span>vars.json<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="w">  </span>--model<span class="w"> </span>gpt-4o<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-19"><a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a><span class="w">  </span>--output-file<span class="w"> </span>teaching.translate.md
-</span><span id="__span-22-20"><a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a>
-</span><span id="__span-22-21"><a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a><span class="c1"># JSON output for scripting</span>
-</span><span id="__span-22-22"><a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a>tnh-gen<span class="w"> </span>--api<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>extract_quotes<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-22-23"><a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span>&gt;<span class="w"> </span>output.json
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Simple translation with inline variables</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>vi<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>en<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">  </span>--output-file<span class="w"> </span>teaching.en.md
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="c1"># Complex variables via JSON file</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>summarize<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">  </span>--input-file<span class="w"> </span>lecture.md<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">  </span>--vars<span class="w"> </span>config.json<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="w">  </span>--output-file<span class="w"> </span>lecture.summary.md
+</span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a>
+</span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a><span class="c1"># Override model</span>
+</span><span id="__span-23-15"><a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>translate<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-16"><a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-17"><a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a><span class="w">  </span>--vars<span class="w"> </span>vars.json<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-18"><a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a><span class="w">  </span>--model<span class="w"> </span>gpt-4o<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-19"><a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a><span class="w">  </span>--output-file<span class="w"> </span>teaching.translate.md
+</span><span id="__span-23-20"><a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a>
+</span><span id="__span-23-21"><a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a><span class="c1"># JSON output for scripting</span>
+</span><span id="__span-23-22"><a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a>tnh-gen<span class="w"> </span>--api<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>extract_quotes<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-23"><a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a><span class="w">  </span>--input-file<span class="w"> </span>teaching.md<span class="w"> </span>&gt;<span class="w"> </span>output.json
 </span></code></pre></div>
 <hr />
 <h3 id="tnh-gen-config"><code>tnh-gen config</code><a class="headerlink" href="#tnh-gen-config" title="Link to this section">&para;</a></h3>
 <p>Manage configuration settings with hierarchical precedence.</p>
 <h4 id="synopsis_2">Synopsis<a class="headerlink" href="#synopsis_2" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>SUBCOMMAND<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>SUBCOMMAND<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </span></code></pre></div>
 <h4 id="subcommands">Subcommands<a class="headerlink" href="#subcommands" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>show<span class="w">              </span><span class="c1"># Display current configuration</span>
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>get<span class="w"> </span>KEY<span class="w">           </span><span class="c1"># Get specific config value</span>
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>KEY<span class="w"> </span>VALUE<span class="w">     </span><span class="c1"># Set config value</span>
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>list<span class="w">              </span><span class="c1"># List all config keys</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>show<span class="w">              </span><span class="c1"># Display current configuration</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>get<span class="w"> </span>KEY<span class="w">           </span><span class="c1"># Get specific config value</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>KEY<span class="w"> </span>VALUE<span class="w">     </span><span class="c1"># Set config value</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>list<span class="w">              </span><span class="c1"># List all config keys</span>
 </span></code></pre></div>
 <h4 id="configuration-sources-and-precedence">Configuration Sources and Precedence<a class="headerlink" href="#configuration-sources-and-precedence" title="Link to this section">&para;</a></h4>
 <p>Configuration loaded in this order (highest to lowest precedence):</p>
@@ -16565,86 +16752,86 @@ bound is not a guarantee of exact billed dollars or an aggregate retry budget.</
 <li><strong>Defaults</strong> (defined in GenAI Service and prompt system)</li>
 </ol>
 <h4 id="configuration-schema">Configuration Schema<a class="headerlink" href="#configuration-schema" title="Link to this section">&para;</a></h4>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="p">{</span>
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="nt">&quot;prompt_catalog_dir&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/prompts&quot;</span><span class="p">,</span>
-</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">  </span><span class="nt">&quot;default_model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
-</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">  </span><span class="nt">&quot;max_dollars&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.30</span><span class="p">,</span>
-</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">  </span><span class="nt">&quot;max_input_chars&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="p">,</span>
-</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">  </span><span class="nt">&quot;default_temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span>
-</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="w">  </span><span class="nt">&quot;provider_api_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="w">    </span><span class="nt">&quot;openai&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$OPENAI_API_KEY&quot;</span><span class="p">,</span>
-</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="w">    </span><span class="nt">&quot;anthropic&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$ANTHROPIC_API_KEY&quot;</span>
-</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="p">{</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">&quot;prompt_catalog_dir&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/prompts&quot;</span><span class="p">,</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">  </span><span class="nt">&quot;default_model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">  </span><span class="nt">&quot;max_dollars&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.30</span><span class="p">,</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">  </span><span class="nt">&quot;max_input_chars&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="p">,</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="w">  </span><span class="nt">&quot;default_temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">  </span><span class="nt">&quot;provider_api_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="w">    </span><span class="nt">&quot;openai&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$OPENAI_API_KEY&quot;</span><span class="p">,</span>
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="w">    </span><span class="nt">&quot;anthropic&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$ANTHROPIC_API_KEY&quot;</span>
+</span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-26-11"><a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="p">}</span>
 </span></code></pre></div>
 <p><strong>Note</strong>: API keys can reference environment variables using <code>$VAR_NAME</code> syntax.</p>
 <h4 id="human-friendly-output-default_2">Human-Friendly Output (Default)<a class="headerlink" href="#human-friendly-output-default_2" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>config<span class="w"> </span>show
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>prompt_catalog_dir:<span class="w"> </span>/custom/path
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>default_model:<span class="w"> </span>gpt-4o-mini
-</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>max_dollars:<span class="w"> </span><span class="m">0</span>.30
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>config<span class="w"> </span>show
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>prompt_catalog_dir:<span class="w"> </span>/custom/path
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>default_model:<span class="w"> </span>gpt-4o-mini
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>max_dollars:<span class="w"> </span><span class="m">0</span>.30
 </span></code></pre></div>
 <p><strong>Behavior</strong>:
 - YAML format for editability
 - Shows only user/workspace overrides
 - Omits defaults and source annotations</p>
 <h4 id="api-output_2">API Output<a class="headerlink" href="#api-output_2" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>--api<span class="w"> </span>config<span class="w"> </span>show
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="o">{</span>
-</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">  </span><span class="s2">&quot;config&quot;</span>:<span class="w"> </span><span class="o">{</span>
-</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">    </span><span class="s2">&quot;prompt_catalog_dir&quot;</span>:<span class="w"> </span><span class="s2">&quot;/custom/path&quot;</span>,
-</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">    </span><span class="s2">&quot;default_model&quot;</span>:<span class="w"> </span><span class="s2">&quot;gpt-4o-mini&quot;</span>,
-</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">    </span><span class="s2">&quot;max_dollars&quot;</span>:<span class="w"> </span><span class="m">0</span>.30,
-</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">    </span><span class="s2">&quot;provider_api_keys&quot;</span>:<span class="w"> </span><span class="o">{</span>
-</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="w">      </span><span class="s2">&quot;openai&quot;</span>:<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">OPENAI_API_KEY</span><span class="si">}</span><span class="s2">&quot;</span>,
-</span><span id="__span-27-9"><a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="w">      </span><span class="s2">&quot;anthropic&quot;</span>:<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">ANTHROPIC_API_KEY</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-27-10"><a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="w">    </span><span class="o">}</span>
-</span><span id="__span-27-11"><a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="w">  </span><span class="o">}</span>,
-</span><span id="__span-27-12"><a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a><span class="w">  </span><span class="s2">&quot;sources&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;defaults+env&quot;</span>,<span class="w"> </span><span class="s2">&quot;user&quot;</span>,<span class="w"> </span><span class="s2">&quot;workspace&quot;</span><span class="o">]</span>,
-</span><span id="__span-27-13"><a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a><span class="w">  </span><span class="s2">&quot;config_files&quot;</span>:<span class="w"> </span><span class="o">[</span>
-</span><span id="__span-27-14"><a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a><span class="w">    </span><span class="s2">&quot;/path/to/workspace/.vscode/tnh-scholar.json&quot;</span>,
-</span><span id="__span-27-15"><a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a><span class="w">    </span><span class="s2">&quot;~/.config/tnh-scholar/tnh-gen.json&quot;</span>
-</span><span id="__span-27-16"><a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a><span class="w">  </span><span class="o">]</span>
-</span><span id="__span-27-17"><a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a><span class="o">}</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>--api<span class="w"> </span>config<span class="w"> </span>show
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="o">{</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">  </span><span class="s2">&quot;config&quot;</span>:<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">    </span><span class="s2">&quot;prompt_catalog_dir&quot;</span>:<span class="w"> </span><span class="s2">&quot;/custom/path&quot;</span>,
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">    </span><span class="s2">&quot;default_model&quot;</span>:<span class="w"> </span><span class="s2">&quot;gpt-4o-mini&quot;</span>,
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">    </span><span class="s2">&quot;max_dollars&quot;</span>:<span class="w"> </span><span class="m">0</span>.30,
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="w">    </span><span class="s2">&quot;provider_api_keys&quot;</span>:<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-28-8"><a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="w">      </span><span class="s2">&quot;openai&quot;</span>:<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">OPENAI_API_KEY</span><span class="si">}</span><span class="s2">&quot;</span>,
+</span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="w">      </span><span class="s2">&quot;anthropic&quot;</span>:<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">ANTHROPIC_API_KEY</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-28-10"><a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="w">    </span><span class="o">}</span>
+</span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="w">  </span><span class="o">}</span>,
+</span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a><span class="w">  </span><span class="s2">&quot;sources&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;defaults+env&quot;</span>,<span class="w"> </span><span class="s2">&quot;user&quot;</span>,<span class="w"> </span><span class="s2">&quot;workspace&quot;</span><span class="o">]</span>,
+</span><span id="__span-28-13"><a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="w">  </span><span class="s2">&quot;config_files&quot;</span>:<span class="w"> </span><span class="o">[</span>
+</span><span id="__span-28-14"><a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="w">    </span><span class="s2">&quot;/path/to/workspace/.vscode/tnh-scholar.json&quot;</span>,
+</span><span id="__span-28-15"><a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a><span class="w">    </span><span class="s2">&quot;~/.config/tnh-scholar/tnh-gen.json&quot;</span>
+</span><span id="__span-28-16"><a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a><span class="w">  </span><span class="o">]</span>
+</span><span id="__span-28-17"><a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a><span class="o">}</span>
 </span></code></pre></div>
 <h4 id="examples_1">Examples<a class="headerlink" href="#examples_1" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># Show all configuration (human-friendly YAML)</span>
-</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>show
-</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>
-</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="c1"># Show all configuration with sources (API mode)</span>
-</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>tnh-gen<span class="w"> </span>--api<span class="w"> </span>config<span class="w"> </span>show
-</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>
-</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="c1"># Get specific value</span>
-</span><span id="__span-28-8"><a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>get<span class="w"> </span>default_model
-</span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>gpt-4o-mini
-</span><span id="__span-28-10"><a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a>
-</span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="c1"># Set value (writes to user config)</span>
-</span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>max_dollars<span class="w"> </span><span class="m">0</span>.30
-</span><span id="__span-28-13"><a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a>
-</span><span id="__span-28-14"><a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="c1"># Set workspace-level config</span>
-</span><span id="__span-28-15"><a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>--workspace<span class="w"> </span>prompt_catalog_dir<span class="w"> </span>./tnh-prompts
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># Show all configuration (human-friendly YAML)</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>show
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="c1"># Show all configuration with sources (API mode)</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>tnh-gen<span class="w"> </span>--api<span class="w"> </span>config<span class="w"> </span>show
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="c1"># Get specific value</span>
+</span><span id="__span-29-8"><a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span>get<span class="w"> </span>default_model
+</span><span id="__span-29-9"><a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>gpt-4o-mini
+</span><span id="__span-29-10"><a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>
+</span><span id="__span-29-11"><a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="c1"># Set value (writes to user config)</span>
+</span><span id="__span-29-12"><a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>max_dollars<span class="w"> </span><span class="m">0</span>.30
+</span><span id="__span-29-13"><a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a>
+</span><span id="__span-29-14"><a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a><span class="c1"># Set workspace-level config</span>
+</span><span id="__span-29-15"><a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a>tnh-gen<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>--workspace<span class="w"> </span>prompt_catalog_dir<span class="w"> </span>./tnh-prompts
 </span></code></pre></div>
 <hr />
 <h3 id="tnh-gen-version"><code>tnh-gen version</code><a class="headerlink" href="#tnh-gen-version" title="Link to this section">&para;</a></h3>
 <p>Display version information for debugging and compatibility verification.</p>
 <h4 id="synopsis_3">Synopsis<a class="headerlink" href="#synopsis_3" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>tnh-gen<span class="w"> </span>version<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>tnh-gen<span class="w"> </span>version<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </span></code></pre></div>
 <h4 id="human-friendly-output-default_3">Human-Friendly Output (Default)<a class="headerlink" href="#human-friendly-output-default_3" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>version
-</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>tnh-gen<span class="w"> </span><span class="m">0</span>.2.2<span class="w"> </span><span class="o">(</span>tnh-scholar<span class="w"> </span><span class="m">0</span>.2.2<span class="o">)</span>
-</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>Python<span class="w"> </span><span class="m">3</span>.12.4<span class="w"> </span>on<span class="w"> </span>darwin
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>version
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>tnh-gen<span class="w"> </span><span class="m">0</span>.2.2<span class="w"> </span><span class="o">(</span>tnh-scholar<span class="w"> </span><span class="m">0</span>.2.2<span class="o">)</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>Python<span class="w"> </span><span class="m">3</span>.12.4<span class="w"> </span>on<span class="w"> </span>darwin
 </span></code></pre></div>
 <h4 id="api-output_3">API Output<a class="headerlink" href="#api-output_3" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>--api<span class="w"> </span>version
-</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="o">{</span>
-</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span><span class="s2">&quot;tnh_scholar&quot;</span>:<span class="w"> </span><span class="s2">&quot;0.2.2&quot;</span>,
-</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">  </span><span class="s2">&quot;tnh_gen&quot;</span>:<span class="w"> </span><span class="s2">&quot;0.2.2&quot;</span>,
-</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="w">  </span><span class="s2">&quot;python&quot;</span>:<span class="w"> </span><span class="s2">&quot;3.12.4&quot;</span>,
-</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="w">  </span><span class="s2">&quot;platform&quot;</span>:<span class="w"> </span><span class="s2">&quot;darwin&quot;</span>,
-</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="w">  </span><span class="s2">&quot;prompt_system_version&quot;</span>:<span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span>,
-</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="w">  </span><span class="s2">&quot;genai_service_version&quot;</span>:<span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span>
-</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="o">}</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>--api<span class="w"> </span>version
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="o">{</span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">  </span><span class="s2">&quot;tnh_scholar&quot;</span>:<span class="w"> </span><span class="s2">&quot;0.2.2&quot;</span>,
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">  </span><span class="s2">&quot;tnh_gen&quot;</span>:<span class="w"> </span><span class="s2">&quot;0.2.2&quot;</span>,
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="w">  </span><span class="s2">&quot;python&quot;</span>:<span class="w"> </span><span class="s2">&quot;3.12.4&quot;</span>,
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="w">  </span><span class="s2">&quot;platform&quot;</span>:<span class="w"> </span><span class="s2">&quot;darwin&quot;</span>,
+</span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="w">  </span><span class="s2">&quot;prompt_system_version&quot;</span>:<span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span>,
+</span><span id="__span-32-8"><a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="w">  </span><span class="s2">&quot;genai_service_version&quot;</span>:<span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span>
+</span><span id="__span-32-9"><a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="o">}</span>
 </span></code></pre></div>
 <hr />
 <h2 id="pipeline-examples">Pipeline Examples<a class="headerlink" href="#pipeline-examples" title="Link to this section">&para;</a></h2>
@@ -16656,69 +16843,69 @@ See the <a href="../../user-guide/journal-pipeline-case-study/">Thầy Edited Jo
 fully annotated current workflow.</p>
 <h3 id="recommended-pipeline-section-clean-translate">Recommended Pipeline (section → clean → translate)<a class="headerlink" href="#recommended-pipeline-section-clean-translate" title="Link to this section">&para;</a></h3>
 <p><code>section_by_break</code> performs the document split using structural breaks in the numbered OCR text — page headers, blank lines, article titles. Each section (roughly one journal page) is then cleaned and translated in a focused, contained call.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># Step 1: Number raw lines (preprocessing)</span>
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>tnh-lines<span class="w"> </span>number<span class="w"> </span>source.txt<span class="w"> </span>source_numbered.txt
-</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>
-</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="c1"># Step 2: Section — identifies page breaks, produces metadata JSON</span>
-</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>section_by_break<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="w">  </span>--input-file<span class="w"> </span>source_numbered.txt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-8"><a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_section_count</span><span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-9"><a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">document_metadata</span><span class="o">=</span><span class="s1">&#39;title: ...\nauthor: ...\njournal: ...&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-10"><a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="w">  </span>--output-file<span class="w"> </span>sections.json
-</span><span id="__span-32-11"><a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a>
-</span><span id="__span-32-12"><a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a><span class="c1"># Step 3: Extract section line ranges (see Pipeline Walkthrough for helper script)</span>
-</span><span id="__span-32-13"><a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a><span class="c1"># → produces section_1_raw.txt ... section_4_raw.txt</span>
-</span><span id="__span-32-14"><a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a>
-</span><span id="__span-32-15"><a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a><span class="c1"># Step 4: Clean each section (focused per-page context)</span>
-</span><span id="__span-32-16"><a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">4</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-32-17"><a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a><span class="w">  </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>default_clean_numbered<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-18"><a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a><span class="w">    </span>--input-file<span class="w"> </span>section_<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_raw.txt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-19"><a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-20"><a id="__codelineno-32-20" name="__codelineno-32-20" href="#__codelineno-32-20"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">publication_name</span><span class="o">=</span><span class="s2">&quot;Phật Giáo Việt Nam&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-21"><a id="__codelineno-32-21" name="__codelineno-32-21" href="#__codelineno-32-21"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">publisher_mark</span><span class="o">=</span><span class="s2">&quot;Tư Viện Huệ Quang&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-22"><a id="__codelineno-32-22" name="__codelineno-32-22" href="#__codelineno-32-22"></a><span class="w">    </span>--output-file<span class="w"> </span>section_<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_clean.txt
-</span><span id="__span-32-23"><a id="__codelineno-32-23" name="__codelineno-32-23" href="#__codelineno-32-23"></a><span class="k">done</span>
-</span><span id="__span-32-24"><a id="__codelineno-32-24" name="__codelineno-32-24" href="#__codelineno-32-24"></a>
-</span><span id="__span-32-25"><a id="__codelineno-32-25" name="__codelineno-32-25" href="#__codelineno-32-25"></a><span class="c1"># Step 5: Translate each section with full document context</span>
-</span><span id="__span-32-26"><a id="__codelineno-32-26" name="__codelineno-32-26" href="#__codelineno-32-26"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">4</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-32-27"><a id="__codelineno-32-27" name="__codelineno-32-27" href="#__codelineno-32-27"></a><span class="w">  </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>default_line_translate<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-28"><a id="__codelineno-32-28" name="__codelineno-32-28" href="#__codelineno-32-28"></a><span class="w">    </span>--input-file<span class="w"> </span>section_<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_clean.txt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-29"><a id="__codelineno-32-29" name="__codelineno-32-29" href="#__codelineno-32-29"></a><span class="w">    </span>--vars<span class="w"> </span>sections.json<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-30"><a id="__codelineno-32-30" name="__codelineno-32-30" href="#__codelineno-32-30"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-31"><a id="__codelineno-32-31" name="__codelineno-32-31" href="#__codelineno-32-31"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>English<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-32"><a id="__codelineno-32-32" name="__codelineno-32-32" href="#__codelineno-32-32"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">style</span><span class="o">=</span>scholarly<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-32-33"><a id="__codelineno-32-33" name="__codelineno-32-33" href="#__codelineno-32-33"></a><span class="w">    </span>--output-file<span class="w"> </span>section_<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_translated.txt
-</span><span id="__span-32-34"><a id="__codelineno-32-34" name="__codelineno-32-34" href="#__codelineno-32-34"></a><span class="k">done</span>
-</span><span id="__span-32-35"><a id="__codelineno-32-35" name="__codelineno-32-35" href="#__codelineno-32-35"></a>
-</span><span id="__span-32-36"><a id="__codelineno-32-36" name="__codelineno-32-36" href="#__codelineno-32-36"></a><span class="c1"># Step 6: Combine</span>
-</span><span id="__span-32-37"><a id="__codelineno-32-37" name="__codelineno-32-37" href="#__codelineno-32-37"></a>cat<span class="w"> </span>section_<span class="o">{</span><span class="m">1</span>,2,3,4<span class="o">}</span>_translated.txt<span class="w"> </span>&gt;<span class="w"> </span>final_translated.txt
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1"># Step 1: Number raw lines (preprocessing)</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>tnh-lines<span class="w"> </span>number<span class="w"> </span>source.txt<span class="w"> </span>source_numbered.txt
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="c1"># Step 2: Section — identifies page breaks, produces metadata JSON</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>section_by_break<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="w">  </span>--input-file<span class="w"> </span>source_numbered.txt<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">target_section_count</span><span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="w">  </span>--var<span class="w"> </span><span class="nv">document_metadata</span><span class="o">=</span><span class="s1">&#39;title: ...\nauthor: ...\njournal: ...&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-10"><a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="w">  </span>--output-file<span class="w"> </span>sections.json
+</span><span id="__span-33-11"><a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a>
+</span><span id="__span-33-12"><a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a><span class="c1"># Step 3: Extract section line ranges (see Pipeline Walkthrough for helper script)</span>
+</span><span id="__span-33-13"><a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a><span class="c1"># → produces section_1_raw.txt ... section_4_raw.txt</span>
+</span><span id="__span-33-14"><a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a>
+</span><span id="__span-33-15"><a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="c1"># Step 4: Clean each section (focused per-page context)</span>
+</span><span id="__span-33-16"><a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">4</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-33-17"><a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a><span class="w">  </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>default_clean_numbered<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-18"><a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a><span class="w">    </span>--input-file<span class="w"> </span>section_<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_raw.txt<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-19"><a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-20"><a id="__codelineno-33-20" name="__codelineno-33-20" href="#__codelineno-33-20"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">publication_name</span><span class="o">=</span><span class="s2">&quot;Phật Giáo Việt Nam&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-21"><a id="__codelineno-33-21" name="__codelineno-33-21" href="#__codelineno-33-21"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">publisher_mark</span><span class="o">=</span><span class="s2">&quot;Tư Viện Huệ Quang&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-22"><a id="__codelineno-33-22" name="__codelineno-33-22" href="#__codelineno-33-22"></a><span class="w">    </span>--output-file<span class="w"> </span>section_<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_clean.txt
+</span><span id="__span-33-23"><a id="__codelineno-33-23" name="__codelineno-33-23" href="#__codelineno-33-23"></a><span class="k">done</span>
+</span><span id="__span-33-24"><a id="__codelineno-33-24" name="__codelineno-33-24" href="#__codelineno-33-24"></a>
+</span><span id="__span-33-25"><a id="__codelineno-33-25" name="__codelineno-33-25" href="#__codelineno-33-25"></a><span class="c1"># Step 5: Translate each section with full document context</span>
+</span><span id="__span-33-26"><a id="__codelineno-33-26" name="__codelineno-33-26" href="#__codelineno-33-26"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">4</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-33-27"><a id="__codelineno-33-27" name="__codelineno-33-27" href="#__codelineno-33-27"></a><span class="w">  </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>default_line_translate<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-28"><a id="__codelineno-33-28" name="__codelineno-33-28" href="#__codelineno-33-28"></a><span class="w">    </span>--input-file<span class="w"> </span>section_<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_clean.txt<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-29"><a id="__codelineno-33-29" name="__codelineno-33-29" href="#__codelineno-33-29"></a><span class="w">    </span>--vars<span class="w"> </span>sections.json<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-30"><a id="__codelineno-33-30" name="__codelineno-33-30" href="#__codelineno-33-30"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-31"><a id="__codelineno-33-31" name="__codelineno-33-31" href="#__codelineno-33-31"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">target_language</span><span class="o">=</span>English<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-32"><a id="__codelineno-33-32" name="__codelineno-33-32" href="#__codelineno-33-32"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">style</span><span class="o">=</span>scholarly<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-33"><a id="__codelineno-33-33" name="__codelineno-33-33" href="#__codelineno-33-33"></a><span class="w">    </span>--output-file<span class="w"> </span>section_<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_translated.txt
+</span><span id="__span-33-34"><a id="__codelineno-33-34" name="__codelineno-33-34" href="#__codelineno-33-34"></a><span class="k">done</span>
+</span><span id="__span-33-35"><a id="__codelineno-33-35" name="__codelineno-33-35" href="#__codelineno-33-35"></a>
+</span><span id="__span-33-36"><a id="__codelineno-33-36" name="__codelineno-33-36" href="#__codelineno-33-36"></a><span class="c1"># Step 6: Combine</span>
+</span><span id="__span-33-37"><a id="__codelineno-33-37" name="__codelineno-33-37" href="#__codelineno-33-37"></a>cat<span class="w"> </span>section_<span class="o">{</span><span class="m">1</span>,2,3,4<span class="o">}</span>_translated.txt<span class="w"> </span>&gt;<span class="w"> </span>final_translated.txt
 </span></code></pre></div>
 <p><strong>What raw OCR looks like before cleaning:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>1.―
-</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>1-                                ← duplicate section marker
-</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>Khuynh hướng Túc mệnh-luận...
-</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>...
-</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>PHẬT GIÁO VIỆT NAM                ← running footer mid-paragraph
+<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>1.―
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>1-                                ← duplicate section marker
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>Khuynh hướng Túc mệnh-luận...
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>...
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>PHẬT GIÁO VIỆT NAM                ← running footer mid-paragraph
 </span></code></pre></div>
 <p><strong>After <code>default_clean_numbered</code>:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>10:1. Khuynh hướng Túc mệnh-luận (Pubba kata hetu)
-</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>11:Các triết phái thuộc khuynh hướng này...
+<div class="language-text highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>10:1. Khuynh hướng Túc mệnh-luận (Pubba kata hetu)
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>11:Các triết phái thuộc khuynh hướng này...
 </span></code></pre></div>
 <p>Footer removed; duplicate marker resolved; line numbers contiguous.</p>
 <h3 id="simpler-alternative-no-line-tracking">Simpler Alternative (no line tracking)<a class="headerlink" href="#simpler-alternative-no-line-tracking" title="Link to this section">&para;</a></h3>
 <p>For quick passes where section metadata and line references are not needed:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">for</span><span class="w"> </span>page<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="m">9</span><span class="w"> </span><span class="m">10</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>default_clean<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">    </span>--input-file<span class="w"> </span>source_page_<span class="si">${</span><span class="nv">page</span><span class="si">}</span>.txt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="w">    </span>--output-file<span class="w"> </span>page_<span class="si">${</span><span class="nv">page</span><span class="si">}</span>_clean.txt
-</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>
-</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="w">  </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>default_punctuate<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-35-8"><a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a><span class="w">    </span>--input-file<span class="w"> </span>page_<span class="si">${</span><span class="nv">page</span><span class="si">}</span>_clean.txt<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-35-9"><a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-35-10"><a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="w">    </span>--output-file<span class="w"> </span>page_<span class="si">${</span><span class="nv">page</span><span class="si">}</span>_punctuated.txt
-</span><span id="__span-35-11"><a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a><span class="k">done</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">for</span><span class="w"> </span>page<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="m">9</span><span class="w"> </span><span class="m">10</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">  </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>default_clean<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">    </span>--input-file<span class="w"> </span>source_page_<span class="si">${</span><span class="nv">page</span><span class="si">}</span>.txt<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">    </span>--output-file<span class="w"> </span>page_<span class="si">${</span><span class="nv">page</span><span class="si">}</span>_clean.txt
+</span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>
+</span><span id="__span-36-7"><a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="w">  </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>default_punctuate<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-8"><a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="w">    </span>--input-file<span class="w"> </span>page_<span class="si">${</span><span class="nv">page</span><span class="si">}</span>_clean.txt<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-9"><a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="w">    </span>--var<span class="w"> </span><span class="nv">source_language</span><span class="o">=</span>Vietnamese<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-10"><a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="w">    </span>--output-file<span class="w"> </span>page_<span class="si">${</span><span class="nv">page</span><span class="si">}</span>_punctuated.txt
+</span><span id="__span-36-11"><a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a><span class="k">done</span>
 </span></code></pre></div>
 <p>Per-page source files (<code>source_page_7.txt</code> etc.) are pre-extracted and available in <code>tests/golden/journal-pipeline/</code>.</p>
 <hr />
@@ -16767,41 +16954,41 @@ fully annotated current workflow.</p>
 </table>
 <h3 id="error-output">Error Output<a class="headerlink" href="#error-output" title="Link to this section">&para;</a></h3>
 <h4 id="human-friendly-error">Human-Friendly Error<a class="headerlink" href="#human-friendly-error" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>missing_prompt<span class="w"> </span>--input-file<span class="w"> </span>test.md
-</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="c1"># stdout:</span>
-</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>Error:<span class="w"> </span>Prompt<span class="w"> </span><span class="s1">&#39;missing_prompt&#39;</span><span class="w"> </span>not<span class="w"> </span>found
-</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>
-</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>Suggestion:<span class="w"> </span>Run<span class="w"> </span><span class="s1">&#39;tnh-gen list&#39;</span><span class="w"> </span>to<span class="w"> </span>see<span class="w"> </span>available<span class="w"> </span>prompts,<span class="w"> </span>or<span class="w"> </span>check<span class="w"> </span>your<span class="w"> </span>prompt<span class="w"> </span>key<span class="w"> </span>spelling.
-</span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>
-</span><span id="__span-36-7"><a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="c1"># stderr:</span>
-</span><span id="__span-36-8"><a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="o">[</span><span class="m">2025</span>-12-28<span class="w"> </span><span class="m">10</span>:15:23<span class="o">]</span><span class="w"> </span><span class="nv">trace_id</span><span class="o">=</span>01JGKZ...<span class="w"> </span><span class="nv">error_code</span><span class="o">=</span>PROMPT_NOT_FOUND
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>missing_prompt<span class="w"> </span>--input-file<span class="w"> </span>test.md
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="c1"># stdout:</span>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>Error:<span class="w"> </span>Prompt<span class="w"> </span><span class="s1">&#39;missing_prompt&#39;</span><span class="w"> </span>not<span class="w"> </span>found
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>Suggestion:<span class="w"> </span>Run<span class="w"> </span><span class="s1">&#39;tnh-gen list&#39;</span><span class="w"> </span>to<span class="w"> </span>see<span class="w"> </span>available<span class="w"> </span>prompts,<span class="w"> </span>or<span class="w"> </span>check<span class="w"> </span>your<span class="w"> </span>prompt<span class="w"> </span>key<span class="w"> </span>spelling.
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a>
+</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="c1"># stderr:</span>
+</span><span id="__span-37-8"><a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="o">[</span><span class="m">2025</span>-12-28<span class="w"> </span><span class="m">10</span>:15:23<span class="o">]</span><span class="w"> </span><span class="nv">trace_id</span><span class="o">=</span>01JGKZ...<span class="w"> </span><span class="nv">error_code</span><span class="o">=</span>PROMPT_NOT_FOUND
 </span></code></pre></div>
 <h4 id="api-error">API Error<a class="headerlink" href="#api-error" title="Link to this section">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>--api<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>missing_prompt<span class="w"> </span>--input-file<span class="w"> </span>test.md
-</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="c1"># stdout:</span>
-</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="o">{</span>
-</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">  </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;failed&quot;</span>,
-</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">  </span><span class="s2">&quot;error&quot;</span>:<span class="w"> </span><span class="s2">&quot;Prompt &#39;missing_prompt&#39; not found&quot;</span>,
-</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">  </span><span class="s2">&quot;diagnostics&quot;</span>:<span class="w"> </span><span class="o">{</span>
-</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="w">    </span><span class="s2">&quot;error_type&quot;</span>:<span class="w"> </span><span class="s2">&quot;PromptNotFoundError&quot;</span>,
-</span><span id="__span-37-8"><a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="w">    </span><span class="s2">&quot;error_code&quot;</span>:<span class="w"> </span><span class="s2">&quot;PROMPT_NOT_FOUND&quot;</span>,
-</span><span id="__span-37-9"><a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="w">    </span><span class="s2">&quot;suggestion&quot;</span>:<span class="w"> </span><span class="s2">&quot;Run &#39;tnh-gen list&#39; to see available prompts&quot;</span>
-</span><span id="__span-37-10"><a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="w">  </span><span class="o">}</span>,
-</span><span id="__span-37-11"><a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a><span class="w">  </span><span class="s2">&quot;trace_id&quot;</span>:<span class="w"> </span><span class="s2">&quot;01JGKZ...&quot;</span>
-</span><span id="__span-37-12"><a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a><span class="o">}</span>
-</span><span id="__span-37-13"><a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a>
-</span><span id="__span-37-14"><a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a><span class="c1"># stderr:</span>
-</span><span id="__span-37-15"><a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a><span class="o">[</span><span class="m">2025</span>-12-28<span class="w"> </span><span class="m">10</span>:15:23<span class="o">]</span><span class="w"> </span><span class="nv">trace_id</span><span class="o">=</span>01JGKZ...<span class="w"> </span><span class="nv">error_code</span><span class="o">=</span>PROMPT_NOT_FOUND
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>$<span class="w"> </span>tnh-gen<span class="w"> </span>--api<span class="w"> </span>run<span class="w"> </span>--prompt<span class="w"> </span>missing_prompt<span class="w"> </span>--input-file<span class="w"> </span>test.md
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="c1"># stdout:</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="o">{</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">  </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;failed&quot;</span>,
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">  </span><span class="s2">&quot;error&quot;</span>:<span class="w"> </span><span class="s2">&quot;Prompt &#39;missing_prompt&#39; not found&quot;</span>,
+</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="w">  </span><span class="s2">&quot;diagnostics&quot;</span>:<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-38-7"><a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="w">    </span><span class="s2">&quot;error_type&quot;</span>:<span class="w"> </span><span class="s2">&quot;PromptNotFoundError&quot;</span>,
+</span><span id="__span-38-8"><a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a><span class="w">    </span><span class="s2">&quot;error_code&quot;</span>:<span class="w"> </span><span class="s2">&quot;PROMPT_NOT_FOUND&quot;</span>,
+</span><span id="__span-38-9"><a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a><span class="w">    </span><span class="s2">&quot;suggestion&quot;</span>:<span class="w"> </span><span class="s2">&quot;Run &#39;tnh-gen list&#39; to see available prompts&quot;</span>
+</span><span id="__span-38-10"><a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a><span class="w">  </span><span class="o">}</span>,
+</span><span id="__span-38-11"><a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a><span class="w">  </span><span class="s2">&quot;trace_id&quot;</span>:<span class="w"> </span><span class="s2">&quot;01JGKZ...&quot;</span>
+</span><span id="__span-38-12"><a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a><span class="o">}</span>
+</span><span id="__span-38-13"><a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a>
+</span><span id="__span-38-14"><a id="__codelineno-38-14" name="__codelineno-38-14" href="#__codelineno-38-14"></a><span class="c1"># stderr:</span>
+</span><span id="__span-38-15"><a id="__codelineno-38-15" name="__codelineno-38-15" href="#__codelineno-38-15"></a><span class="o">[</span><span class="m">2025</span>-12-28<span class="w"> </span><span class="m">10</span>:15:23<span class="o">]</span><span class="w"> </span><span class="nv">trace_id</span><span class="o">=</span>01JGKZ...<span class="w"> </span><span class="nv">error_code</span><span class="o">=</span>PROMPT_NOT_FOUND
 </span></code></pre></div>
 <p><strong>Trace ID</strong>: Use the trace ID from stderr to correlate with logs or support requests. Set <code>TNH_TRACE_ID</code> environment variable to override auto-generation.</p>
 <hr />
 <h2 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this section">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>TNH_PROMPT_DIR<span class="w">         </span><span class="c1"># Path to prompt catalog directory</span>
-</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>OPENAI_API_KEY<span class="w">         </span><span class="c1"># OpenAI API key (required for OpenAI models)</span>
-</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>ANTHROPIC_API_KEY<span class="w">      </span><span class="c1"># Anthropic API key (required for Claude models)</span>
-</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>TNH_GENAI_MODEL<span class="w">        </span><span class="c1"># Default model to use</span>
-</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>TNH_TRACE_ID<span class="w">           </span><span class="c1"># Override auto-generated trace ID</span>
-</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>TNH_CONFIG_PATH<span class="w">        </span><span class="c1"># Override config file location</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>TNH_PROMPT_DIR<span class="w">         </span><span class="c1"># Path to prompt catalog directory</span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>OPENAI_API_KEY<span class="w">         </span><span class="c1"># OpenAI API key (required for OpenAI models)</span>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>ANTHROPIC_API_KEY<span class="w">      </span><span class="c1"># Anthropic API key (required for Claude models)</span>
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>TNH_GENAI_MODEL<span class="w">        </span><span class="c1"># Default model to use</span>
+</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>TNH_TRACE_ID<span class="w">           </span><span class="c1"># Override auto-generated trace ID</span>
+</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a>TNH_CONFIG_PATH<span class="w">        </span><span class="c1"># Override config file location</span>
 </span></code></pre></div>
 <hr />
 <h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Link to this section">&para;</a></h2>
