@@ -73,9 +73,9 @@ class RunStatusEmitter:
             raise
 
     def emit_stage(self, stage: RunStage) -> None:
-        """Atomically transition stage and publish its first event."""
+        """Atomically transition once, preserving timing when already in the stage."""
         with self._lock:
-            if self._finished:
+            if self._finished or stage is self._stage:
                 return
             self._stage, self._stage_started = stage, self._clock.monotonic()
             self._publish(self._event(EventType.STAGE_STARTED))

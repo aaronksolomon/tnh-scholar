@@ -231,3 +231,19 @@ def test_heartbeat_deadline_after_stage_reset(
     assert len(beats) == 1
     assert beats[0].elapsed_ms == 4050
     assert beats[0].stage_elapsed_ms == 4000
+
+
+def test_repeated_stage_preserves_elapsed_time(metadata: RunStatusMetadata) -> None:
+    timer, sink = Mock(return_value=0.0), Mock()
+    emitter = RunStatusEmitter(
+        metadata, RunStatusConfig(), [ManagedSink(sink, Mock())], StatusClock(monotonic=timer)
+    )
+    emitter.open()
+    emitter.emit_stage(RunStage.EMITTING_OUTPUT)
+    timer.return_value = 1.0
+    emitter.emit_stage(RunStage.EMITTING_OUTPUT)
+    timer.return_value = 2.0
+    emitter.finish(TerminalDecision())
+    events = [call.args[0] for call in sink.emit.call_args_list]
+    assert len(events) == 3
+    assert events[-1].stage_elapsed_ms == 2000

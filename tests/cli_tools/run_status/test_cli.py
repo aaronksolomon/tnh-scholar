@@ -149,3 +149,35 @@ def test_non_tty_default_keeps_stdout_plain(invocation) -> None:
     assert result.stdout == "generated text\n"
     assert "starting" not in result.stderr
     service.generate.assert_called_once()
+
+
+@pytest.mark.parametrize("destination", [".tnh-gen.json", ".vscode/tnh-scholar.json", "config/tnh-gen.json"])
+def test_implicit_config_paths_remain_absent(
+    tmp_path: Path, invocation, monkeypatch: pytest.MonkeyPatch, destination: str
+) -> None:
+    args, service = invocation
+    monkeypatch.chdir(tmp_path)
+    path = tmp_path / destination
+    path.parent.mkdir(parents=True, exist_ok=True)
+    result = CliRunner(mix_stderr=False).invoke(tnh_gen.app, ["--api"] + args + ["--status-file", str(path)])
+    assert result.exit_code == 5
+    assert not path.exists()
+    service.generate.assert_not_called()
+
+
+def test_payload_failure_is_output_failure(
+    tmp_path: Path, invocation, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    args, service = invocation
+    monkeypatch.setattr(run_module, "_build_success_payload", Mock(side_effect=ValueError("invalid payload")))
+    status = tmp_path / "events"
+    result = CliRunner(mix_stderr=False).invoke(
+        tnh_gen.app, ["--api"] + args + ["--status-file", str(status)]
+    )
+    events = [RunStatusEvent.model_validate_json(line) for line in status.read_text().splitlines()]
+    assert result.exit_code != 0
+    assert events[-1].failure.origin_stage.value == "emitting_output"
+    assert (
+        sum(e.event_type.value == "stage_started" and e.stage.value == "emitting_output" for e in events) == 1
+    )
+    service.generate.assert_called_once()

@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Live-Test Runtime and Provenance Repairs** (2026-09-17)
+  - Attribute payload-building failures to output, preserve stage timing across error rendering, and protect implicit configuration paths from status output.
   - Schedule heartbeats against their actual deadline and use a four-second default for terminal and file status.
   - Preserve input frontmatter under `source_metadata` in saved provenance schema `2.0`, preventing source identity from being assigned to generated output.
   - Generate UTC-aware service timestamps and avoid assigning UTC to timezone-unspecified legacy timestamps.

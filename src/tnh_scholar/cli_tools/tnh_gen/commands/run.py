@@ -9,7 +9,7 @@ from uuid import uuid4
 
 import typer
 
-from tnh_scholar.cli_tools.tnh_gen.config_loader import CLIConfig, load_config
+from tnh_scholar.cli_tools.tnh_gen.config_loader import CLIConfig, load_config, reserved_config_paths
 from tnh_scholar.cli_tools.tnh_gen.errors import ExitCode, emit_trace_id, render_error
 from tnh_scholar.cli_tools.tnh_gen.factory import ServiceFactory, ServiceOverrides
 from tnh_scholar.cli_tools.tnh_gen.output.formatter import render_output
@@ -778,7 +778,7 @@ def _run_lifecycle(
             (
                 input_file,
                 vars_file,
-                ctx.config_path,
+                *reserved_config_paths(ctx.config_path),
                 output_file,
                 sidecar_path(output_file) if output_file else None,
             )
@@ -881,6 +881,6 @@ def run_prompt(
         run.emitter.emit_stage(RunStage.GENERATING)
         envelope = _execute_prompt(context)
         run.classify(envelope)
-        payload = _build_success_payload(envelope, context.metadata, context.config_meta, trace_id)
         run.emitter.emit_stage(RunStage.EMITTING_OUTPUT)
+        payload = _build_success_payload(envelope, context.metadata, context.config_meta, trace_id)
         _emit_run_output(context, envelope, payload, ctx.api)
