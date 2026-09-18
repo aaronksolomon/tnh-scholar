@@ -267,3 +267,32 @@ Tests cover event/schema invariants, primary and secondary failure attribution,
 sink failures, output flushing, path protection, API/quiet selection, and live
 observation from an actual subprocess outside the checkout using a controlled
 service fixture. No provider calls are made by these tests.
+
+## Addendum 2026-09-17: Live-Test Repairs and Four-Second Heartbeats
+
+A production-provider run exposed a first heartbeat near 20 seconds: fixed-interval
+polling missed the deadline after a stage reset. The worker now waits the remaining
+time to its current monotonic deadline. At the maintainer's request, the default
+interval is **four seconds**, for both human status and file events, superseding
+the original ten-second value. Heartbeats still indicate local liveness only.
+
+The same test exposed bounded provenance defects. Saved artifact provenance now
+uses schema `2.0`: all original frontmatter is nested under `source_metadata`,
+including when generated markers are disabled. Source title, author, status, and
+translation labels therefore cannot masquerade as derivative identity. The API
+result and status event schemas are unchanged. New GenAI service timestamps are
+UTC-aware; the saved-artifact formatter converts aware times to UTC and preserves
+legacy unknown timezones without appending a misleading `Z`.
+
+The [brief KB review](/architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17.md)
+links the preserved generated data and records why concept extraction must not
+require a separate agent's manual cleanup. Concept-map redesign remains outside
+this processing-system repair.
+
+
+A [repeat live-run verification](/architecture/knowledge-base/notes/assets/concept-extraction-2026-09-17/repaired-verification.json)
+confirmed the first heartbeat 4.007 seconds after generation began, nine heartbeats
+in a 39.497-second run, schema `2.0` source isolation, and agreement between saved
+UTC provenance and terminal-event time. Full regression validation: 673 passed,
+two skipped; focused validation: 138 passed. No concept-map post-processing was
+required to verify these processing-system repairs.

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 from tnh_scholar.gen_ai_service.models.domain import CompletionEnvelope, CompletionOutcomeStatus
@@ -8,15 +8,17 @@ from tnh_scholar.metadata import Frontmatter, Metadata
 
 
 def _iso(dt: datetime) -> str:
-    """Format datetime without microseconds and with trailing Z.
+    """Normalize aware timestamps to UTC; never invent a zone for legacy data."""
+    if dt.utcoffset() is None:
+        return dt.replace(microsecond=0).isoformat()
+    return dt.astimezone(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
-    Args:
-        dt: Datetime value to format.
 
-    Returns:
-        ISO8601 string suitable for provenance headers.
-    """
-    return f"{dt.replace(microsecond=0).isoformat()}Z"
+def source_provenance(source_metadata: Metadata | None) -> Metadata:
+    """Preserve input identity separately from the generated document's identity."""
+    if not source_metadata:
+        return Metadata()
+    return Metadata({"source_metadata": source_metadata.to_dict()})
 
 
 def provenance_block(
@@ -46,7 +48,7 @@ def provenance_metadata(
     trace_id: str,
     prompt_version: str | None,
 ) -> Metadata:
-    """Build merged provenance metadata for persisted sidecars or headers."""
+    """Build derivative provenance with namespaced input metadata (schema 2.0)."""
     fp = envelope.provenance.fingerprint
     version = prompt_version or "unknown"
     generated_metadata = Metadata(
@@ -58,12 +60,10 @@ def provenance_metadata(
             "fingerprint": fp.prompt_content_hash,
             "trace_id": trace_id,
             "generated_at": _iso(envelope.provenance.finished_at),
-            "schema_version": "1.0",
+            "schema_version": "2.0",
         }
     )
-    if source_metadata:
-        return source_metadata | generated_metadata
-    return generated_metadata
+    return source_provenance(source_metadata) | generated_metadata
 
 
 def sidecar_path(path: Path) -> Path:
@@ -99,7 +99,7 @@ def write_output_file(
             sidecar.write_text(metadata.to_yaml(), encoding="utf-8")
         elif source_metadata:
             sidecar = sidecar_path(path)
-            sidecar.write_text(source_metadata.to_yaml(), encoding="utf-8")
+            sidecar.write_text(source_provenance(source_metadata).to_yaml(), encoding="utf-8")
         return
     if include_provenance:
         header = provenance_block(
@@ -110,7 +110,7 @@ def write_output_file(
         )
         path.write_text(f"{header}{result_text}", encoding="utf-8")
     elif source_metadata:
-        header = str(Frontmatter.generate(source_metadata))
+        header = str(Frontmatter.generate(source_provenance(source_metadata)))
         path.write_text(f"{header}{result_text}", encoding="utf-8")
     else:
         path.write_text(result_text, encoding="utf-8")

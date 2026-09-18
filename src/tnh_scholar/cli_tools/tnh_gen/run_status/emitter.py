@@ -126,8 +126,15 @@ class RunStatusEmitter:
             self._thread = None
 
     def _heartbeat_loop(self) -> None:
-        while not self._stop.wait(self._config.heartbeat_seconds):
+        while not self._stop.wait(self._heartbeat_delay()):
             self.heartbeat()
+
+    def _heartbeat_delay(self) -> float:
+        """Wait only until the current deadline after any stage transition."""
+        with self._lock:
+            elapsed = self._clock.monotonic() - self._last_event
+            remaining: float = self._config.heartbeat_seconds - elapsed
+            return max(0.0, remaining)
 
     def _publish(self, event: RunStatusEvent) -> None:
         for sink in self._sinks:

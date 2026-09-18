@@ -195,3 +195,39 @@ def test_rich_constructor_failure_does_not_cancel_run(
     emitter.emit_stage(RunStage.GENERATING)
     emitter.finish(TerminalDecision())
     constructor.assert_called_once()
+
+
+def test_heartbeat_deadline_after_stage_reset(
+    metadata: RunStatusMetadata, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A stage just after a timer tick must not defer the first beat to 8s."""
+    timer, sink, worker = Mock(return_value=0.0), Mock(), Mock()
+    monkeypatch.setattr(
+        "tnh_scholar.cli_tools.tnh_gen.run_status.emitter.threading.Thread", Mock(return_value=worker)
+    )
+    emitter = RunStatusEmitter(
+        metadata, RunStatusConfig(), [ManagedSink(sink, Mock())], StatusClock(monotonic=timer)
+    )
+    emitter.open()
+    waits = []
+
+    def advance(delay: float) -> bool:
+        waits.append(delay)
+        if len(waits) == 1:
+            timer.return_value = 0.05
+            emitter.emit_stage(RunStage.GENERATING)
+            timer.return_value = delay
+            return False
+        if len(waits) == 2:
+            timer.return_value += delay
+            return False
+        return True
+
+    monkeypatch.setattr(emitter._stop, "wait", advance)
+    emitter._heartbeat_loop()
+    emitter.finish(TerminalDecision())
+    beats = [c.args[0] for c in sink.emit.call_args_list if c.args[0].event_type is EventType.HEARTBEAT]
+    assert waits[:2] == pytest.approx([4, 0.05])
+    assert len(beats) == 1
+    assert beats[0].elapsed_ms == 4050
+    assert beats[0].stage_elapsed_ms == 4000

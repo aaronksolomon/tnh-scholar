@@ -12,7 +12,7 @@ class RunStatusConfig(BaseModel):
     status_file: Path | None = None
     interactive: bool = False
     no_color: bool = False
-    heartbeat_seconds: float = Field(default=10.0, gt=0, allow_inf_nan=False)
+    heartbeat_seconds: float = Field(default=4.0, gt=0, allow_inf_nan=False)
 
     @classmethod
     def resolve(

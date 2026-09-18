@@ -307,7 +307,7 @@ location appropriate for that metadata; callers own retention.
 Each UTF-8 JSONL record has schema version `1.0`, a per-run sequence, trace ID,
 UTC timestamp, elapsed times, and a typed event kind. Stages are `starting`,
 `preparing_run`, `generating`, and `emitting_output`. A heartbeat is emitted after
-10 seconds without another event; it confirms local process liveness, not remote
+4 seconds without another event; it confirms local process liveness, not remote
 model progress. Only returned service facts populate the resolved model/provider.
 
 Terminal outcomes are `completed`, `failed`, or `cancelled`. For failures,
@@ -414,11 +414,26 @@ model: gpt-4o
 fingerprint: sha256:abc123...
 trace_id: 01HQXYZ123ABC
 generated_at: "2025-12-28T10:30:03Z"
-schema_version: "1.0"
+schema_version: "2.0"
+source_metadata:
+  title: Original source title
+  author: Original source author
 ---
 
 [Generated content follows...]
 ```
+
+Saved provenance schema `2.0` keeps all input frontmatter under `source_metadata`.
+Source authorship, title, translation labels, and review status are not assertions
+about the generated document. Multi-step transforms preserve that nested lineage.
+`--no-provenance` omits generation markers but still preserves namespaced source
+metadata, in a sidecar for structured output. Consumers of the former flat metadata
+layout must read source fields from `source_metadata`; the API result and runtime
+event schema versions are unchanged.
+
+New service timestamps are UTC-aware. Aware timestamps are normalized to UTC with
+`Z`; legacy timestamps without timezone information retain an unspecified timezone
+and are not silently relabeled UTC.
 
 #### Examples
 

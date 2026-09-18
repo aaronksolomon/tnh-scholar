@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import UTC
 from textwrap import dedent
 
 import pytest
@@ -126,6 +127,8 @@ def test_gen_ai_service_golden_path(tmp_path, monkeypatch: pytest.MonkeyPatch):
     )
 
     envelope = service.generate(render_request)
+    assert envelope.provenance.started_at.utcoffset() == UTC.utcoffset(None)
+    assert envelope.provenance.finished_at.utcoffset() == UTC.utcoffset(None)
 
     assert apply_calls == [("study-plan", None)]
     assert select_calls and select_calls[0][2] is settings
