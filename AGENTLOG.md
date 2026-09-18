@@ -594,3 +594,49 @@ The maintainer approved a separate PR for the existing lockfile refresh, then ap
 - [PR #79](https://github.com/aaronksolomon/tnh-scholar/pull/79)
 
 ---
+
+## [2026-09-17 19:56 PDT] TG06 Runtime Status Merge
+
+**Agent**: Codex
+**Chat Reference**: PR #80
+**Human Collaborator**: phapman
+
+### Context
+The maintainer approved merging the runtime-status implementation after a live journal concept-extraction test and automated review repairs. PR #80 merged as `7c6ebd5f`.
+
+### Key Decisions
+- **Four-second heartbeat**: Use deadline-based scheduling for human and JSONL status.
+- **Derivative provenance**: Saved metadata schema 2.0 nests source identity under `source_metadata`; service timestamps are UTC-aware.
+- **Failure boundaries**: Preserve generation failure origin and output-stage timing; protect implicit config paths from status artifacts.
+
+### Work Completed
+- [x] Implemented TG06 status lifecycle, sinks, failure classification, and regression coverage.
+- [x] Completed an external-directory live run: first heartbeat at 4.007 seconds, nine beats over 39.497 seconds, correct UTC provenance.
+- [x] Added a brief KB concept-extraction review and unchanged raw evidence, linked from the relevant ADRs.
+- [x] Addressed Sourcery/Codex findings and docs validation errors; full local suite passed (678 tests, two skips).
+- [x] Confirmed GitHub PR validation, docs, CodeQL, and Sourcery checks passed before the authorized merge; GitHub full-test was skipped.
+
+### Discoveries & Insights
+- **Concept quality**: Evidence quotes and relation direction need pipeline validation; routine extraction should not depend on a separate agent cleanup pass.
+- **Validation limitation**: The stale June 20 yt-dlp health record still blocks `make ci-check`; tests, types, lint, and docs passed separately.
+
+### Files Modified/Created
+- `src/tnh_scholar/cli_tools/tnh_gen/run_status/`: Typed runtime events and lifecycle.
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`, `config_loader.py`, `output/provenance.py`: CLI integration and provenance/path safeguards.
+- `src/tnh_scholar/gen_ai_service/service.py`: UTC-aware execution timestamps.
+- `tests/cli_tools/run_status/`: Runtime and provenance regression coverage.
+- `docs/architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17.md`: Brief review with evidence references.
+- `AGENTLOG.md`: Post-merge continuity entry; remaining changed files are recorded in PR #80.
+
+### Next Steps
+- [ ] Review authoritative post-merge main CI.
+- [ ] Develop concept extraction validation and reviewed Buddhist/PV vocabularies as a separate slice.
+
+### Open Questions
+- Deferred runtime observers and artifact retention remain outside TG06's implemented scope.
+
+### References
+- [PR #80](https://github.com/aaronksolomon/tnh-scholar/pull/80)
+- [ADR-TG06](/docs/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md)
+
+---
