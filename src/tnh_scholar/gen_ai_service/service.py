@@ -14,7 +14,7 @@ Connected modules:
 
 import copy
 import json
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
@@ -113,13 +113,13 @@ class GenAIService:
             ),
         )
 
-        started = datetime.now()
+        started = datetime.now(UTC)
         if selection.provider == "openai":
             response: ProviderResponse = self.openai_client.generate(provider_request)
         else:
             # (Anthropic skeleton later)
             raise NotImplementedError(selection.provider)
-        finished = datetime.now()
+        finished = datetime.now(UTC)
 
         provenance = build_provenance(
             fingerprint=fingerprint,

@@ -240,3 +240,59 @@ The acceptance criterion is that an agent outside the repository can observe sta
 - [ADR-TG05: Run Progress Reporting](/architecture/tnh-gen/adr/adr-tg05-run-progress-reporting.md): narrow terminal-feedback predecessor.
 - [tnh-gen UX Directions and Issues — May 2026](/architecture/tnh-gen/notes/tnh-gen-ux-directions-2026-05.md): production observations motivating liveness feedback.
 - [Issue #55: Agent/script ergonomics](https://github.com/aaronksolomon/tnh-scholar/issues/55): predictable controls and output for delegated use.
+
+
+## Addendum 2026-09-17: V1 Implementation on Feature Branch
+
+**Status**: Implemented on `feat/tnh-gen-runtime-status-events`; review and merge pending.
+
+The `run_status` package now owns typed events, sink policy, sequence/timing,
+heartbeats, and terminal decisions. `run.py` classifies the service envelope before
+constructing or rendering its output payload. Rendering no longer selects the
+process exit code. Primary failure origin is retained if later rendering fails.
+
+`--status-file` uses exclusive creation and flushes complete JSONL records. Rich
+rendering stops before output while the file sink remains active. Heartbeat and
+terminal emission share serialized state, and the worker stops before terminal
+emission. Failed status sinks are retired without retrying generation. Failure
+records contain codes and stages only; optional free-text summaries are omitted.
+
+Cancellation follows Typer/Click's existing keyboard-interrupt abort behavior
+(exit 1), records `cancelled` when possible, and propagates the interruption.
+Other process termination retains best-effort cleanup without inventing a terminal
+success. Event readers accept additive V1 minor versions and unknown fields while
+rejecting unsupported major versions.
+
+Tests cover event/schema invariants, primary and secondary failure attribution,
+sink failures, output flushing, path protection, API/quiet selection, and live
+observation from an actual subprocess outside the checkout using a controlled
+service fixture. No provider calls are made by these tests.
+
+## Addendum 2026-09-17: Live-Test Repairs and Four-Second Heartbeats
+
+A production-provider run exposed a first heartbeat near 20 seconds: fixed-interval
+polling missed the deadline after a stage reset. The worker now waits the remaining
+time to its current monotonic deadline. At the maintainer's request, the default
+interval is **four seconds**, for both human status and file events, superseding
+the original ten-second value. Heartbeats still indicate local liveness only.
+
+The same test exposed bounded provenance defects. Saved artifact provenance now
+uses schema `2.0`: all original frontmatter is nested under `source_metadata`,
+including when generated markers are disabled. Source title, author, status, and
+translation labels therefore cannot masquerade as derivative identity. The API
+result and status event schemas are unchanged. New GenAI service timestamps are
+UTC-aware; the saved-artifact formatter converts aware times to UTC and preserves
+legacy unknown timezones without appending a misleading `Z`.
+
+The [brief KB review](/architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17.md)
+links the preserved generated data and records why concept extraction must not
+require a separate agent's manual cleanup. Concept-map redesign remains outside
+this processing-system repair.
+
+
+A [repeat live-run verification](/architecture/knowledge-base/notes/assets/concept-extraction-2026-09-17/repaired-verification.json)
+confirmed the first heartbeat 4.007 seconds after generation began, nine heartbeats
+in a 39.497-second run, schema `2.0` source isolation, and agreement between saved
+UTC provenance and terminal-event time. Full regression validation: 673 passed,
+two skipped; focused validation: 138 passed. No concept-map post-processing was
+required to verify these processing-system repairs.

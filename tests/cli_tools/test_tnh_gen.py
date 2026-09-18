@@ -897,7 +897,7 @@ def test_run_strips_input_frontmatter_and_merges_output_metadata(tmp_path, monke
     header, body = written.split("---\n", 2)[1:]
     payload = yaml.safe_load(header)
 
-    assert payload["source"] == "draft"
+    assert payload["source_metadata"]["source"] == "draft"
     assert payload["prompt_key"] == "daily"
     assert payload["tnh_scholar_generated"] is True
     assert body.lstrip("\n") == "generated text"
@@ -950,7 +950,7 @@ def test_run_preserves_yaml_date_frontmatter(tmp_path, monkeypatch):
     written = output_file.read_text(encoding="utf-8")
     header = written.split("---\n", 2)[1]
     payload = yaml.safe_load(header)
-    assert payload["date"] == "2026-04-17"
+    assert payload["source_metadata"]["date"] == "2026-04-17"
 
 
 def test_run_accepts_forwarded_config_api_and_prompt_dir(tmp_path, monkeypatch):
@@ -1168,7 +1168,7 @@ def test_run_api_json_prompt_includes_structured_result_and_writes_canonical_jso
     assert output_file.read_text(encoding="utf-8") == '{"message":"generated"}'
     sidecar = Path(f"{output_file}.provenance.yaml")
     sidecar_payload = yaml.safe_load(sidecar.read_text(encoding="utf-8"))
-    assert sidecar_payload["source"] == "draft"
+    assert sidecar_payload["source_metadata"]["source"] == "draft"
     assert sidecar_payload["tnh_scholar_generated"] is True
     assert sidecar_payload["prompt_key"] == "json-echo"
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import UTC, datetime
 from types import SimpleNamespace
 
 import pytest
@@ -79,7 +79,7 @@ def _prompt_metadata(**overrides) -> PromptMetadata:
 
 
 def _envelope_with_warnings() -> CompletionEnvelope:
-    started = datetime.now()
+    started = datetime.now(UTC)
     finished = started
     return CompletionEnvelope(
         outcome=CompletionOutcomeStatus.SUCCEEDED,
@@ -583,7 +583,7 @@ def test_provenance_write_structured_output_skips_headers_even_with_metadata(tmp
     assert output_file.read_text(encoding="utf-8") == result_text
     sidecar = provenance_module.sidecar_path(output_file)
     payload = yaml.safe_load(sidecar.read_text(encoding="utf-8"))
-    assert payload["source"] == "draft"
+    assert payload["source_metadata"]["source"] == "draft"
     assert payload["tnh_scholar_generated"] is True
 
 
@@ -604,7 +604,7 @@ def test_provenance_write_structured_output_without_generated_provenance_writes_
     assert output_file.read_text(encoding="utf-8") == '{"message":"ok"}'
     sidecar = provenance_module.sidecar_path(output_file)
     payload = yaml.safe_load(sidecar.read_text(encoding="utf-8"))
-    assert payload["source"] == "draft"
+    assert payload["source_metadata"]["source"] == "draft"
     assert "tnh_scholar_generated" not in payload
 
 
@@ -643,7 +643,7 @@ def test_provenance_yaml_roundtrip(tmp_path):
     assert payload["fingerprint"] == envelope.provenance.fingerprint.prompt_content_hash
     assert payload["trace_id"] == "trace"
     assert payload["generated_at"].endswith("Z")
-    assert payload["schema_version"] == "1.0"
+    assert payload["schema_version"] == "2.0"
     assert body.lstrip("\n") == "plain text"
 
 
@@ -665,7 +665,7 @@ def test_provenance_merges_source_metadata_and_preserves_it_without_provenance(t
     header, body = written.split("---\n", 2)[1:]
     payload = yaml.safe_load(header)
 
-    assert payload["source"] == "draft"
+    assert payload["source_metadata"]["source"] == "draft"
     assert payload["prompt_key"] == envelope.provenance.fingerprint.prompt_key
     assert payload["tnh_scholar_generated"] is True
     assert body.lstrip("\n") == "plain text"
@@ -685,7 +685,7 @@ def test_provenance_merges_source_metadata_and_preserves_it_without_provenance(t
     plain_header, plain_body = plain_written.split("---\n", 2)[1:]
     plain_payload = yaml.safe_load(plain_header)
 
-    assert plain_payload["source"] == "draft"
+    assert plain_payload["source_metadata"]["source"] == "draft"
     assert "tnh_scholar_generated" not in plain_payload
     assert plain_body.lstrip("\n") == "plain text"
 

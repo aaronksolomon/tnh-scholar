@@ -160,3 +160,13 @@ No new dependencies. `rich` (already required), `threading` and `time` (stdlib).
 ## As-Built Notes & Addendums
 
 *None yet.*
+
+
+## Addendum 2026-09-17: TG06 Runtime Status Implementation
+
+The implementation of [ADR-TG06](/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md)
+replaces `output/progress.py` with typed application events and a private Rich sink.
+The terminal indicator remains disabled for API, quiet, and non-TTY calls; an
+explicit JSONL status file supports those consumers independently. TG05's original
+direct-spinner decision remains historical context. Provider internals remain
+outside the CLI event contract.

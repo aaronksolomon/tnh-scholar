@@ -1,0 +1,16 @@
+{
+  "outcome": "completed",
+  "elapsed_seconds": 39.497,
+  "first_heartbeat_delay_seconds": 4.007,
+  "heartbeat_count": 9,
+  "generated_at": "2026-09-18T01:33:07Z",
+  "terminal_timestamp": "2026-09-18T01:33:07.251671Z",
+  "artifact_schema": "2.0",
+  "source_metadata_namespaced": true,
+  "usage": {
+    "prompt_tokens": 8450,
+    "completion_tokens": 3814,
+    "total_tokens": 12264
+  },
+  "trace_id": "74472c58d4154b9d9345b31cc1a443e7"
+}

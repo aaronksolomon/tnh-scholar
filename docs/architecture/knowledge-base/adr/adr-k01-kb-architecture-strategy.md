@@ -54,3 +54,11 @@ Adopt a two-phase strategy:
 5. **Evaluation Harness**: Build the test query set, gold judgments, and logging needed to compute precision, recall, MAP, and nDCG as outlined (`docs/research/tnh-scholar-knowledge-vector-search.md:214-273`).
 
 Approval of this ADR should be revisited once Phase 1 metrics and user feedback reports are available.
+
+## Addendum 2026-09-17: Concept Extraction Pilot Evidence
+
+The [live-test review](/architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17.md)
+links generated concept data and records the need for general Buddhist and
+Plum Village vocabularies with source-grounded mappings. Concept collection must
+include evaluated validation and bounded repair within the processing system,
+without depending on an additional agent's manual post-processing for each article.

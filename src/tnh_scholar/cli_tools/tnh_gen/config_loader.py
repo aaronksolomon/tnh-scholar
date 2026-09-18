@@ -76,6 +76,12 @@ def _workspace_config_path(cwd: Path | None = None) -> Path:
     return vscode_path if vscode_path.exists() else root / ".tnh-gen.json"
 
 
+def reserved_config_paths(config_path: Path | None = None) -> tuple[Path | None, ...]:
+    """Return config destinations that runtime artifacts must never occupy."""
+    root = Path.cwd()
+    return (_user_config_path(), root / ".tnh-gen.json", root / ".vscode" / "tnh-scholar.json", config_path)
+
+
 def _load_json(path: Path) -> ConfigData:
     """Load JSON config data from a file, returning an empty dict when missing.
 

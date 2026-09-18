@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Live-Test Runtime and Provenance Repairs** (2026-09-17)
+  - Attribute payload-building failures to output, preserve stage timing across error rendering, and protect implicit configuration paths from status output.
+  - Schedule heartbeats against their actual deadline and use a four-second default for terminal and file status.
+  - Preserve input frontmatter under `source_metadata` in saved provenance schema `2.0`, preventing source identity from being assigned to generated output.
+  - Generate UTC-aware service timestamps and avoid assigning UTC to timezone-unspecified legacy timestamps.
+
+
 - **Dependency Refresh and OCR Installation** (2026-09-15)
   - Refreshed the Poetry lockfile for the core, development, and optional dependency groups.
   - Replaced the unrelated `fitz` distribution with PyMuPDF in the OCR extra and used its canonical `pymupdf` import.
@@ -29,6 +36,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Retained explicit failure for incompatible provider limits; no uncapped fallback is introduced.
 
 ### Added
+
+- **`tnh-gen` Runtime Status Events (TG06)** (2026-09-17)
+  - Added explicit `--status-file` JSONL events for API, quiet, and external-directory runs, with typed stages, heartbeats, trace correlation, and terminal outcomes.
+  - Replaced direct spinner orchestration with isolated Rich/file sinks and a command lifecycle that preserves primary failure origin through error rendering.
+  - Completion follows requested output writes and stdout flushing; reporting failures never replay generation or replace a known primary failure.
+
 
 - **`tnh-gen` Model-Max Output Token Mode** (2026-06-20)
   - Added a typed output-token limit policy to the GenAI service so request token budgeting is explicit at the policy layer rather than encoded as ad hoc CLI or provider behavior

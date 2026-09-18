@@ -35,7 +35,7 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 This sequence takes precedence over the older priority groupings below. Pilot sizes are starting targets to refine with corpus availability and reviewer input.
 
 1. **Status reconciliation and PR #78 — merge complete.** The budget-enforcement fix merged on 2026-09-15 after user approval. Roadmap, Sourcery authorization, and merge-log updates are included in the follow-up housekeeping commit.
-2. **Build bounded runtime status for `tnh-gen`.** Follow [ADR-TG06](/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md): typed stages, explicit JSONL event files usable with `--api`, heartbeats, and terminal outcomes that preserve failure origin. Validate agent-driven use outside the repository. PR #79 dependency refresh is merged.
+2. **Runtime status for `tnh-gen` — implemented on feature branch; review/merge next.** Follow [ADR-TG06](/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md): typed stages, explicit JSONL event files usable with `--api`, heartbeats, and terminal outcomes that preserve failure origin. Validate agent-driven use outside the repository. PR #79 dependency refresh is merged.
 3. **Complete the conductor's bounded review/revision loop.** Implement → review → evaluate evidence → at most one revision → validate → present a clear result for human review. Follow [ADR-OA06.1](/architecture/agent-orchestration/adr/adr-oa06.1-evaluator-directed-revision-loop.md); verify runner compatibility and failure diagnostics. The maintained entry path still uses unsupported `EVALUATE` and `GATE` implementations. Commit/push/PR automation follows dependable execution and review.
 4. **Build a concept-aware knowledge-base pilot.** Start with approximately 20–30 reviewed concepts, 30–50 documents or talks, and 30 representative questions. Connect a Buddhist conceptual foundation to Plum Village teachings/practices and source passages. Reuse the journal pipeline's provenance approach.
 5. **Evaluate retrieval with and without concept expansion.** Compare relevant-source discovery, citation accuracy, multilingual behavior, and handling of insufficient evidence. Use expert judgments to decide which conceptual relationships and retrieval stages help.
@@ -670,14 +670,15 @@ docs/architecture/jvb-viewer/adr/
 
 #### 🚧 tnh-gen Operator UX
 
-- **Status**: PARTIALLY IMPLEMENTED — stderr progress spinner landed in June 2026
+- **Status**: TG06 IMPLEMENTED ON FEATURE BRANCH — validation/review and merge pending
 - **Priority**: HIGH — next bounded implementation before the conductor review/revision loop
 - **Problem**: The current spinner is invisible to API and non-TTY callers; production agents need typed runtime status and accurate failure attribution
 - **Tasks**:
   - [x] Add progress indicator to stderr during model calls
   - [x] Review and revise [ADR-TG06](/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md) for agent-readable events and explicit failure origin (accepted 2026-09-15; implementation pending)
-  - [ ] Implement the TG06 event contract, JSONL/Rich sinks, heartbeat lifecycle, and terminal-decision mapping
-  - [ ] Validate live event consumption and result purity from an external working directory
+  - [x] Implement the TG06 event contract, JSONL/Rich sinks, heartbeat lifecycle, and terminal-decision mapping (2026-09-17; feature branch)
+  - [x] Validate live event consumption and result purity from an external working directory
+  - [ ] Review and merge the TG06 implementation slice
   - [ ] Later: integrate shared diagnostic logging; V1 uses an explicit status file without shared logging setup
   - [ ] Later: persist `tnh-gen` run output by default to a temp or run-artifact directory when no `--output-file` is provided
 
