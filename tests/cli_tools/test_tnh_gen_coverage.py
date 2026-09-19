@@ -761,3 +761,11 @@ def test_default_service_factory_builds_service(monkeypatch):
 
     assert isinstance(service, _FakeService)
     assert captured["settings"].default_model == "gpt-4o"
+
+
+@pytest.mark.parametrize("override,expected", [(None, "xhigh"), ("max", "max"), ("auto", "auto")])
+def test_reasoning_config_survives_absent_override(override, expected):
+    config = CLIConfig(default_reasoning_effort="xhigh")
+    overrides = factory_module.ServiceOverrides(reasoning_effort=override)
+    payload = factory_module.cli_config_to_settings_kwargs(config, overrides)
+    assert payload["default_reasoning_effort"] == expected

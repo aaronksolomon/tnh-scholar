@@ -1535,7 +1535,7 @@ def test_run_human_mode_outputs_text_only(tmp_path, monkeypatch):
     assert not result.stdout.lstrip().startswith("{")
 
 
-def test_run_defaults_reasoning_to_high(tmp_path, monkeypatch):
+def test_run_leaves_default_reasoning_to_registry(tmp_path, monkeypatch):
     prompt_dir = _write_prompt(tmp_path)
     input_file = tmp_path / "input.txt"
     input_file.write_text("file-input", encoding="utf-8")
@@ -1585,10 +1585,10 @@ def test_run_defaults_reasoning_to_high(tmp_path, monkeypatch):
     )
 
     assert result.exit_code == 0, result.output
-    assert captured["reasoning_effort"] == "high"
+    assert captured["reasoning_effort"] is None
 
 
-def test_run_reasoning_max_alias_and_none_disable(tmp_path, monkeypatch):
+def test_run_preserves_literal_reasoning_values(tmp_path, monkeypatch):
     prompt_dir = _write_prompt(tmp_path)
     input_file = tmp_path / "input.txt"
     input_file.write_text("file-input", encoding="utf-8")
@@ -1633,12 +1633,11 @@ def test_run_reasoning_max_alias_and_none_disable(tmp_path, monkeypatch):
         "--var",
         "audience=students",
     ]
-    max_result = runner.invoke(tnh_gen.app, [*base_args, "--reasoning", "max"])
-    none_result = runner.invoke(tnh_gen.app, [*base_args, "--reasoning", "none"])
-
-    assert max_result.exit_code == 0, max_result.output
-    assert none_result.exit_code == 0, none_result.output
-    assert captured == ["high", "none"]
+    efforts = ["max", "none", "xhigh", "deep", "auto"]
+    for effort in efforts:
+        result = runner.invoke(tnh_gen.app, [*base_args, "--reasoning", effort])
+        assert result.exit_code == 0, result.output
+    assert captured == efforts
 
 
 def test_run_no_max_tokens_limit_passes_flag_to_initializer(tmp_path, monkeypatch):

@@ -11,6 +11,8 @@ from typing import Dict, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
+from tnh_scholar.gen_ai_service.models.request_profile import ModelRequestProfile
+
 
 class ModelCapabilities(BaseModel):
     """Model capability flags."""
@@ -23,12 +25,34 @@ class ModelCapabilities(BaseModel):
     audio_output: bool = False
 
 
+class LongContextPricing(BaseModel):
+    """Multipliers applied to the entire request above an input-token threshold."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    input_token_threshold: int = Field(gt=0)
+    input_multiplier: float = Field(ge=1)
+    output_multiplier: float = Field(ge=1)
+
+
 class ModelPricing(BaseModel):
     """Per-model pricing in dollars per 1K tokens for a specific tier."""
 
     input_per_1k: float = Field(ge=0, description="Input token price per 1K")
     output_per_1k: float = Field(ge=0, description="Output token price per 1K")
     cached_input_per_1k: float | None = Field(None, ge=0, description="Cached input price (if supported)")
+
+    cache_write_input_per_1k: float | None = Field(None, ge=0)
+    long_context: LongContextPricing | None = None
+
+    def estimate_cost(self, tokens_in: int, tokens_out: int) -> float:
+        """Conservatively budget unknown cache writes and long-context surcharges."""
+        input_rate = max(self.input_per_1k, self.cache_write_input_per_1k or 0)
+        output_rate = self.output_per_1k
+        if self.long_context and tokens_in > self.long_context.input_token_threshold:
+            input_rate *= self.long_context.input_multiplier
+            output_rate *= self.long_context.output_multiplier
+        return tokens_in / 1000 * input_rate + tokens_out / 1000 * output_rate
 
 
 class ModelPricingTiers(BaseModel):
@@ -46,6 +70,7 @@ class ModelInfo(BaseModel):
     display_name: str
     family: str
     capabilities: ModelCapabilities
+    request_profile: ModelRequestProfile = Field(default_factory=ModelRequestProfile)
     context_window: int = Field(gt=0)
     max_output_tokens: int = Field(gt=0)
     pricing_tiers: ModelPricingTiers
@@ -123,6 +148,8 @@ class PricingOverride(BaseModel):
     input_per_1k: float | None = Field(None, ge=0)
     output_per_1k: float | None = Field(None, ge=0)
     cached_input_per_1k: float | None = Field(None, ge=0)
+    cache_write_input_per_1k: float | None = Field(None, ge=0)
+    long_context: LongContextPricing | None = None
 
 
 class PricingTiersOverride(BaseModel):
@@ -137,6 +164,7 @@ class PricingTiersOverride(BaseModel):
 class ModelOverride(BaseModel):
     """Override for a single model's metadata."""
 
+    request_profile: ModelRequestProfile | None = None
     pricing_tiers: PricingTiersOverride | None = None
     deprecated: bool | None = None
 

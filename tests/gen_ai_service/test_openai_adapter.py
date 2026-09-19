@@ -187,7 +187,7 @@ def test_openai_adapter_preserves_resolved_output_bound():
     assert openai_request.max_completion_tokens == 128
 
 
-def test_openai_adapter_suppresses_reasoning_when_requested_none():
+def test_openai_adapter_preserves_literal_none():
     adapter = OpenAIAdapter()
     request = ProviderRequest(
         provider="openai",
@@ -202,7 +202,7 @@ def test_openai_adapter_suppresses_reasoning_when_requested_none():
     openai_request = adapter.to_openai_request(request)
 
     assert openai_request.temperature is None
-    assert openai_request.reasoning_effort is None
+    assert openai_request.reasoning_effort == "none"
 
 
 def test_openai_adapter_keeps_temperature_for_gpt54():

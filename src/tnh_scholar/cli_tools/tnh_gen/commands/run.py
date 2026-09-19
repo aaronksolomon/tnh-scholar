@@ -87,10 +87,10 @@ class TnhGenCLIOptions:
     )
     TEMPERATURE = typer.Option(None, "--temperature", help="Model temperature.")
     REASONING = typer.Option(
-        "high",
+        None,
         "--reasoning",
         "--reasoning-effort",
-        help="Reasoning effort for supported models: minimal, low, medium, high, max, auto, or none.",
+        help="Literal reasoning level supported by the model registry; auto uses the provider default.",
         case_sensitive=False,
     )
     TOP_P = typer.Option(None, "--top-p", help="Top-p sampling (not yet supported).")
@@ -701,13 +701,9 @@ def _normalize_reasoning_effort(reasoning: str | None) -> str | None:
     if reasoning is None:
         return None
     normalized = reasoning.strip().lower()
-    if normalized in {"", "auto", "none", "off", "disabled"}:
-        return "none"
-    if normalized in {"max", "maximum"}:
-        return "high"
-    if normalized in {"minimal", "low", "medium", "high"}:
-        return normalized
-    raise ValueError("--reasoning must be one of: minimal, low, medium, high, max, auto, none")
+    if not normalized:
+        raise ValueError("--reasoning must not be empty; use auto for the provider default")
+    return normalized
 
 
 def _validate_run_options(

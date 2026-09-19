@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Registry-driven OpenAI request profiles and GPT-6 Astra** (2026-09-19)
+  - Added registry-defined reasoning levels/defaults and temperature rules, replacing model-prefix checks.
+  - Added Astra with literal `max`/`xhigh` support, unsupported-temperature omission, and conservative cache-write/long-context cost estimates.
+  - Changed `max` from a `high` alias to a literal effort; `none` is literal and `auto` omits the provider field. Removed `maximum`/`off`/`disabled` aliases.
+  - Removed the unconditional CLI `high` default and honored configured reasoning defaults before registry defaults.
+
 - **Live-Test Runtime and Provenance Repairs** (2026-09-17)
   - Attribute payload-building failures to output, preserve stage timing across error rendering, and protect implicit configuration paths from status output.
   - Schedule heartbeats against their actual deadline and use a four-second default for terminal and file status.

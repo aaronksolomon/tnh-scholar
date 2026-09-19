@@ -37,7 +37,56 @@
   },
 
   "models": {
+    // Astra tool calling requires Responses; this profile targets Chat Completions.
+    // https://developers.openai.com/api/docs/models/gpt-6-astra
+    "gpt-6-astra": {
+      "display_name": "GPT-6 Astra",
+      "family": "gpt-6",
+      "request_profile": {
+        "reasoning_efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "temperature": "never"
+      },
+      "capabilities": {
+        "vision": true,
+        "structured_output": true,
+        "function_calling": false,
+        "streaming": true
+      },
+      "context_window": 1050000,
+      "max_output_tokens": 128000,
+      "pricing_tiers": {
+        "standard": {
+          "input_per_1k": 0.01,
+          "output_per_1k": 0.05,
+          "cached_input_per_1k": 0.001,
+          "cache_write_input_per_1k": 0.0125,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        }
+      },
+      "training_cutoff": "2026-04-30"
+    },
+
     "gpt-5-mini": {
+      "request_profile": {
+        "reasoning_efforts": [
+          "minimal",
+          "low",
+          "medium",
+          "high"
+        ],
+        "default_reasoning_effort": "minimal",
+        "temperature": "never"
+      },
       "display_name": "GPT-5 Mini",
       "family": "gpt-5",
       "capabilities": {
@@ -77,6 +126,16 @@
     },
 
     "gpt-5": {
+      "request_profile": {
+        "reasoning_efforts": [
+          "minimal",
+          "low",
+          "medium",
+          "high"
+        ],
+        "default_reasoning_effort": "minimal",
+        "temperature": "never"
+      },
       "display_name": "GPT-5",
       "family": "gpt-5",
       "capabilities": {
@@ -116,6 +175,17 @@
     },
 
     "gpt-5.4": {
+      "request_profile": {
+        "reasoning_efforts": [
+          "none",
+          "low",
+          "medium",
+          "high",
+          "xhigh"
+        ],
+        "temperature": "without_reasoning",
+        "temperature_without_effort": true
+      },
       "display_name": "GPT-5.4",
       "family": "gpt-5",
       "capabilities": {
@@ -140,6 +210,17 @@
     },
 
     "gpt-5.5": {
+      "request_profile": {
+        "reasoning_efforts": [
+          "none",
+          "low",
+          "medium",
+          "high",
+          "xhigh"
+        ],
+        "default_reasoning_effort": "high",
+        "temperature": "never"
+      },
       "display_name": "GPT-5.5",
       "family": "gpt-5",
       "capabilities": {
