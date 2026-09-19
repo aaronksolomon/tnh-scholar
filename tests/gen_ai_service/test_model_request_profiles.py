@@ -8,14 +8,17 @@ import pytest
 from openai import OpenAI
 from pydantic import ValidationError
 
+from tnh_scholar.cli_tools.tnh_gen.errors import ExitCode, map_exception
 from tnh_scholar.exceptions import ConfigurationError
 from tnh_scholar.gen_ai_service.config.registry import RegistryLoader, RegistryPaths
 from tnh_scholar.gen_ai_service.models.domain import Message
+from tnh_scholar.gen_ai_service.models.errors import ProviderError
 from tnh_scholar.gen_ai_service.models.registry import ModelPricing
 from tnh_scholar.gen_ai_service.models.request_profile import ModelRequestProfile
 from tnh_scholar.gen_ai_service.models.transport import ProviderRequest
 from tnh_scholar.gen_ai_service.providers import openai_adapter
 from tnh_scholar.gen_ai_service.providers.openai_client import OpenAIClient
+from tnh_scholar.gen_ai_service.safety import safety_gate
 
 
 @pytest.fixture
@@ -202,3 +205,60 @@ def test_registry_schema_accepts_bundled_profiles(loader: RegistryLoader) -> Non
     # JSON serialization drops optional null fields that the hand-maintained schema omits.
     payload = loader.get_provider("openai").model_dump(mode="json", by_alias=True, exclude_none=True)
     jsonschema.validate(payload, json.loads(schema_path.read_text()))
+
+
+@pytest.mark.parametrize("model,effort", [("gpt-4o", "high"), ("gpt-6-astra", "none")])
+def test_client_preserves_unsupported_effort_as_input_error(
+    loader: RegistryLoader,
+    monkeypatch: pytest.MonkeyPatch,
+    model: str,
+    effort: str,
+) -> None:
+    client = OpenAIClient(api_key="test-key", organization=None)
+
+    def unexpected_dispatch(*args, **kwargs):
+        pytest.fail("Invalid local request must never enter provider dispatch/retries")
+
+    monkeypatch.setattr(client, "_call_with_retries", unexpected_dispatch)
+    try:
+        with pytest.raises(ValueError, match="Unsupported reasoning effort") as caught:
+            client.generate(request(model, effort))
+        assert map_exception(caught.value) == ExitCode.INPUT_ERROR
+    finally:
+        client._client.close()
+
+
+def test_client_still_wraps_sdk_failures_as_provider_errors(
+    loader: RegistryLoader,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    client = OpenAIClient(api_key="test-key", organization=None)
+    failure = ValueError("SDK response parsing failed")
+
+    def fail_in_sdk(*args, **kwargs):
+        raise failure
+
+    monkeypatch.setattr(client, "_chat_create", fail_in_sdk)
+    try:
+        with pytest.raises(ProviderError) as caught:
+            client.generate(request("gpt-6-astra", "max"))
+        assert caught.value.__cause__ is failure
+        assert map_exception(caught.value) == ExitCode.PROVIDER_ERROR
+    finally:
+        client._client.close()
+
+
+@pytest.mark.parametrize("tokens_in,expected", [(272_000, 3.45), (272_001, 6.875025)])
+def test_cache_aware_estimate_preserves_astra_write_and_long_context_rates(
+    loader: RegistryLoader,
+    monkeypatch: pytest.MonkeyPatch,
+    tokens_in: int,
+    expected: float,
+) -> None:
+    monkeypatch.setattr(safety_gate, "get_registry_loader", lambda: loader)
+    monkeypatch.setattr(safety_gate, "get_model_info", loader.get_model)
+    cost = safety_gate._estimate_cost("openai", "gpt-6-astra", tokens_in, 1000, use_cache=True)
+    assert cost == pytest.approx(expected)
+    # Models without cache-write rates retain the existing cached-input discount.
+    legacy = safety_gate._estimate_cost("openai", "gpt-5-mini", 1000, 1000, use_cache=True)
+    assert legacy == pytest.approx(0.002025)

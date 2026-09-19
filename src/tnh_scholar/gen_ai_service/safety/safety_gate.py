@@ -64,6 +64,7 @@ def _pricing_for_model(provider: str, model: str, *, use_cache: bool) -> ModelPr
             input_per_1k=pricing.cached_input_per_1k,
             output_per_1k=pricing.output_per_1k,
             cached_input_per_1k=pricing.cached_input_per_1k,
+            cache_write_input_per_1k=pricing.cache_write_input_per_1k,
             long_context=pricing.long_context,
         )
     return pricing

@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added Astra with literal `max`/`xhigh` support, unsupported-temperature omission, and conservative cache-write/long-context cost estimates.
   - Changed `max` from a `high` alias to a literal effort; `none` is literal and `auto` omits the provider field. Removed `maximum`/`off`/`disabled` aliases.
   - Removed the unconditional CLI `high` default and honored configured reasoning defaults before registry defaults.
+  - Preserved input-error classification for invalid local requests and cache-write surcharges in cache-aware cost estimates.
 
 - **Live-Test Runtime and Provenance Repairs** (2026-09-17)
   - Attribute payload-building failures to output, preserve stage timing across error rendering, and protect implicit configuration paths from status output.

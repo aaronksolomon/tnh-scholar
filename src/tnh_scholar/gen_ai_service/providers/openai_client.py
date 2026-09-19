@@ -101,9 +101,9 @@ class OpenAIClient(ProviderClient):
         Generate a response from the OpenAI provider given a ProviderRequest.
         Handles retries and error adaptation.
         """
+        # Local request validation must retain its input/configuration error type.
+        openai_request = self._adapter.to_openai_request(request)
         try:
-            openai_request = self._adapter.to_openai_request(request)
-
             raw_response, attempts = self._call_with_retries(
                 self._retry_caller,
                 self._chat_create,
