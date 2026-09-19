@@ -640,3 +640,52 @@ The maintainer approved merging the runtime-status implementation after a live j
 - [ADR-TG06](/docs/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md)
 
 ---
+
+## [2026-09-19 08:04 PDT] Registry Model Profiles and Astra Merge
+
+**Agent**: Codex
+**Chat Reference**: PR #81
+**Human Collaborator**: phapman
+
+### Context
+The maintainer approved merging registry-driven model request compatibility and GPT-6 Astra support after both automated review findings were repaired. PR #81 merged as `c7be9914`.
+
+### Key Decisions
+- **Registry-driven compatibility**: Reasoning levels, defaults, and temperature rules are typed registry data instead of model-prefix heuristics.
+- **Literal effort semantics**: Preserve `max` and `none`; `auto` omits reasoning. CLI defaults defer to configuration and then the registry.
+- **Conservative estimates**: Preserve cache-write rates and long-context multipliers, including the optional cache-aware path.
+
+### Work Completed
+- [x] Added Astra registry metadata, request profiles, override support, and maintenance documentation.
+- [x] Verified registry-only addition of a fictional model and reasoning level and SDK serialization of all Astra effort levels using mocked HTTP.
+- [x] Repaired input-error classification for unsupported efforts and cache-aware cost estimation based on PR review.
+- [x] Passed local CI: 716 tests passed, three skipped, with clean lint, formatting, and type checks.
+- [x] Confirmed all GitHub checks, including full-test, docs, CodeQL, and Sourcery, passed before the authorized merge.
+- [x] Fast-forwarded main in the isolated worktree, preserving the original knowledge-base working tree and feature branch.
+
+### Discoveries & Insights
+- **Original failure**: The CLI rewrote `max` to `high`; the adapter dropped Astra reasoning and sent unsupported temperature.
+- **Review boundaries**: Local request validation must happen outside the provider error wrapper; pricing copies must retain surcharges.
+- **Validation scope**: No paid live OpenAI request was made. Sourcery CLI was unavailable on the account tier; GitHub review completed.
+
+### Files Modified/Created
+- `src/tnh_scholar/gen_ai_service/models/request_profile.py`: Typed reasoning and temperature rules.
+- `src/tnh_scholar/gen_ai_service/models/registry.py`, `adapters/registry/override_merger.py`: Profile and pricing metadata with overrides.
+- `src/tnh_scholar/gen_ai_service/providers/openai_adapter.py`, `providers/openai_client.py`, `safety/safety_gate.py`: Request shaping, validation boundary, and estimates.
+- `src/tnh_scholar/runtime_assets/registries/providers/openai.jsonc`, `schema.json`: Astra metadata and registry schema.
+- `src/tnh_scholar/cli_tools/tnh_gen/commands/run.py`, `factory.py`: Literal reasoning and configuration precedence.
+- `tests/gen_ai_service/test_model_request_profiles.py`, `test_openai_adapter.py`, `tests/cli_tools/test_tnh_gen.py`, `test_tnh_gen_coverage.py`: Regression coverage.
+- `docs/development/model-request-profiles.md`, `docs/cli-reference/tnh-gen.md`, `CHANGELOG.md`: Maintenance guidance and behavior changes.
+- `AGENTLOG.md`: Post-merge continuity record.
+
+### Next Steps
+- [ ] Review post-merge main CI.
+
+### Open Questions
+- None blocking this merge; new endpoints and parameter shapes still require transport implementation.
+
+### References
+- [PR #81](https://github.com/aaronksolomon/tnh-scholar/pull/81)
+- [Model request profiles](/docs/development/model-request-profiles.md)
+
+---
