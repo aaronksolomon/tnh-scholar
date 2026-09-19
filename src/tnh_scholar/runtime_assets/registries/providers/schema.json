@@ -4,7 +4,13 @@
   "title": "TNH Scholar Provider Registry",
   "description": "Registry of AI provider models, capabilities, and pricing",
   "type": "object",
-  "required": ["schema_version", "provider", "last_updated", "defaults", "models"],
+  "required": [
+    "schema_version",
+    "provider",
+    "last_updated",
+    "defaults",
+    "models"
+  ],
   "properties": {
     "$schema": {
       "type": "string",
@@ -12,12 +18,17 @@
     },
     "schema_version": {
       "type": "string",
-      "enum": ["1.0"],
+      "enum": [
+        "1.0"
+      ],
       "description": "Registry schema version"
     },
     "provider": {
       "type": "string",
-      "enum": ["openai", "anthropic"],
+      "enum": [
+        "openai",
+        "anthropic"
+      ],
       "description": "Provider identifier"
     },
     "last_updated": {
@@ -32,12 +43,21 @@
     },
     "update_method": {
       "type": "string",
-      "enum": ["manual", "auto-scrape", "api"],
+      "enum": [
+        "manual",
+        "auto-scrape",
+        "api"
+      ],
       "description": "How this registry is updated"
     },
     "pricing_tier": {
       "type": "string",
-      "enum": ["batch", "flex", "standard", "priority"],
+      "enum": [
+        "batch",
+        "flex",
+        "standard",
+        "priority"
+      ],
       "description": "Default pricing tier for this registry"
     },
     "pricing_tier_metadata": {
@@ -49,7 +69,9 @@
     },
     "defaults": {
       "type": "object",
-      "required": ["base_url"],
+      "required": [
+        "base_url"
+      ],
       "properties": {
         "base_url": {
           "type": "string",
@@ -140,12 +162,17 @@
             "type": "string"
           },
           "description": "Alternative names for this model"
+        },
+        "request_profile": {
+          "$ref": "#/definitions/ModelRequestProfile"
         }
       }
     },
     "ModelPricingTiers": {
       "type": "object",
-      "required": ["standard"],
+      "required": [
+        "standard"
+      ],
       "properties": {
         "batch": {
           "$ref": "#/definitions/ModelPricing"
@@ -192,7 +219,10 @@
     },
     "ModelPricing": {
       "type": "object",
-      "required": ["input_per_1k", "output_per_1k"],
+      "required": [
+        "input_per_1k",
+        "output_per_1k"
+      ],
       "properties": {
         "input_per_1k": {
           "type": "number",
@@ -208,12 +238,22 @@
           "type": "number",
           "minimum": 0,
           "description": "Price per 1K cached input tokens in USD"
+        },
+        "cache_write_input_per_1k": {
+          "type": "number",
+          "minimum": 0
+        },
+        "long_context": {
+          "$ref": "#/definitions/LongContextPricing"
         }
       }
     },
     "RateLimitTier": {
       "type": "object",
-      "required": ["requests_per_minute", "tokens_per_minute"],
+      "required": [
+        "requests_per_minute",
+        "tokens_per_minute"
+      ],
       "properties": {
         "requests_per_minute": {
           "type": "integer",
@@ -240,10 +280,90 @@
         },
         "availability": {
           "type": "string",
-          "enum": ["public", "beta", "internal"],
+          "enum": [
+            "public",
+            "beta",
+            "internal"
+          ],
           "description": "Availability of the tier"
         }
       }
+    },
+    "TemperatureMode": {
+      "description": "Conditions under which a model accepts temperature.",
+      "enum": [
+        "always",
+        "never",
+        "without_reasoning"
+      ],
+      "title": "TemperatureMode",
+      "type": "string"
+    },
+    "ModelRequestProfile": {
+      "additionalProperties": false,
+      "description": "Request rules for the existing Chat Completions transport.\n\nEffort names are registry data so new provider values need no code update.\nAn omitted user setting uses the application default; auto omits the field.",
+      "properties": {
+        "reasoning_efforts": {
+          "default": [],
+          "items": {
+            "pattern": "^[a-z][a-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Reasoning Efforts",
+          "type": "array"
+        },
+        "default_reasoning_effort": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default Reasoning Effort"
+        },
+        "temperature": {
+          "$ref": "#/definitions/TemperatureMode",
+          "default": "always"
+        },
+        "temperature_without_effort": {
+          "default": false,
+          "title": "Temperature Without Effort",
+          "type": "boolean"
+        }
+      },
+      "title": "ModelRequestProfile",
+      "type": "object"
+    },
+    "LongContextPricing": {
+      "additionalProperties": false,
+      "description": "Multipliers applied to the entire request above an input-token threshold.",
+      "properties": {
+        "input_token_threshold": {
+          "exclusiveMinimum": 0,
+          "title": "Input Token Threshold",
+          "type": "integer"
+        },
+        "input_multiplier": {
+          "minimum": 1,
+          "title": "Input Multiplier",
+          "type": "number"
+        },
+        "output_multiplier": {
+          "minimum": 1,
+          "title": "Output Multiplier",
+          "type": "number"
+        }
+      },
+      "required": [
+        "input_token_threshold",
+        "input_multiplier",
+        "output_multiplier"
+      ],
+      "title": "LongContextPricing",
+      "type": "object"
     }
   }
 }

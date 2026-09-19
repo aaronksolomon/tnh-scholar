@@ -41,6 +41,7 @@ class SafetyReport:
     estimated_cost: float
     warnings: List[str]
 
+
 def _estimate_cost(
     provider: str,
     model: str,
@@ -50,9 +51,7 @@ def _estimate_cost(
     use_cache: bool = False,
 ) -> float:
     pricing = _pricing_for_model(provider, model, use_cache=use_cache)
-    input_cost = (tokens_in / 1000.0) * pricing.input_per_1k
-    output_cost = (max_tokens_out / 1000.0) * pricing.output_per_1k
-    return float(input_cost + output_cost)
+    return float(pricing.estimate_cost(tokens_in, max_tokens_out))
 
 
 def _pricing_for_model(provider: str, model: str, *, use_cache: bool) -> ModelPricing:
@@ -65,6 +64,8 @@ def _pricing_for_model(provider: str, model: str, *, use_cache: bool) -> ModelPr
             input_per_1k=pricing.cached_input_per_1k,
             output_per_1k=pricing.output_per_1k,
             cached_input_per_1k=pricing.cached_input_per_1k,
+            cache_write_input_per_1k=pricing.cache_write_input_per_1k,
+            long_context=pricing.long_context,
         )
     return pricing
 

@@ -259,9 +259,26 @@ tnh-gen run --prompt KEY [OPTIONS]
 --intent INTENT          # Routing hint (translation, summarization, etc.)
 --max-tokens INT         # Explicit output-token cap
 --no-max-tokens-limit    # Resolve the model/context maximum; budget checks still apply
---temperature FLOAT      # Model temperature (0.0-2.0)
+--reasoning LEVEL        # Literal model-supported effort; --reasoning-effort is an alias
+--temperature FLOAT      # Sent only when supported by the registered request profile
 --top-p FLOAT            # Nucleus sampling parameter
 ```
+
+Reasoning levels come from the selected model's registry entry. For Astra, use
+`--model gpt-6-astra --reasoning max` (or `low`, `medium`, `high`, `xhigh`).
+`max` is a literal provider value, no longer an alias for `high`. Unsupported
+values fail with the model's supported levels; `maximum`, `off`, and `disabled`
+are no longer aliases.
+
+Without `--reasoning`, the configured `default_reasoning_effort` takes precedence
+over the registry default. The CLI no longer unconditionally selects `high`.
+The bundled GPT-5/Mini default is `minimal`, GPT-5.5 remains `high`, and Astra
+leaves the choice to OpenAI. Explicit `auto` omits the API reasoning field even
+when a registry default exists. `none` is a literal request for no reasoning,
+accepted only by profiles that list it; Astra rejects it.
+
+Model request rules and maintenance instructions are documented in
+[Model request profiles](/development/model-request-profiles.md).
 
 `--no-max-tokens-limit` removes the user-selected token cap. The service still
 resolves a concrete bound from the registered model maximum and remaining
