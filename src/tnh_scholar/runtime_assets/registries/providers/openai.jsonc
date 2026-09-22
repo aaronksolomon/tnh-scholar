@@ -259,6 +259,235 @@
       "aliases": ["gpt-5.5-latest"]
     },
 
+    // GPT-5.6 models and pricing verified 2026-09-21:
+    // https://developers.openai.com/api/docs/models/gpt-5.6-sol
+    // https://developers.openai.com/api/docs/models/gpt-5.6-terra
+    // https://developers.openai.com/api/docs/models/gpt-5.6-luna
+    // https://developers.openai.com/api/docs/pricing
+    "gpt-5.6-sol": {
+      "display_name": "GPT-5.6 Sol",
+      "family": "gpt-5",
+      "capabilities": {
+        "vision": true,
+        "structured_output": true,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 1050000,
+      "max_output_tokens": 128000,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.002,
+          "output_per_1k": 0.01,
+          "cached_input_per_1k": 0.0002,
+          "cache_write_input_per_1k": 0.0025,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        },
+        "flex": {
+          "input_per_1k": 0.002,
+          "output_per_1k": 0.01,
+          "cached_input_per_1k": 0.0002,
+          "cache_write_input_per_1k": 0.0025,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        },
+        "standard": {
+          "input_per_1k": 0.004,
+          "output_per_1k": 0.02,
+          "cached_input_per_1k": 0.0004,
+          "cache_write_input_per_1k": 0.005,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        },
+        "priority": {
+          "input_per_1k": 0.008,
+          "output_per_1k": 0.04,
+          "cached_input_per_1k": 0.0008,
+          "cache_write_input_per_1k": 0.01,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        }
+      },
+      "training_cutoff": "2026-02",
+      "deprecated": false,
+      "aliases": [
+        "gpt-5.6"
+      ],
+      "request_profile": {
+        "reasoning_efforts": [
+          "none",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "default_reasoning_effort": "medium",
+        "temperature": "never"
+      }
+    },
+
+    "gpt-5.6-terra": {
+      "display_name": "GPT-5.6 Terra",
+      "family": "gpt-5",
+      "capabilities": {
+        "vision": true,
+        "structured_output": true,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 1050000,
+      "max_output_tokens": 128000,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.001,
+          "output_per_1k": 0.006,
+          "cached_input_per_1k": 0.0001,
+          "cache_write_input_per_1k": 0.00125,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        },
+        "flex": {
+          "input_per_1k": 0.001,
+          "output_per_1k": 0.006,
+          "cached_input_per_1k": 0.0001,
+          "cache_write_input_per_1k": 0.00125,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        },
+        "standard": {
+          "input_per_1k": 0.002,
+          "output_per_1k": 0.012,
+          "cached_input_per_1k": 0.0002,
+          "cache_write_input_per_1k": 0.0025,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        },
+        "priority": {
+          "input_per_1k": 0.004,
+          "output_per_1k": 0.024,
+          "cached_input_per_1k": 0.0004,
+          "cache_write_input_per_1k": 0.005,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        }
+      },
+      "training_cutoff": "2026-02",
+      "deprecated": false,
+      "aliases": [],
+      "request_profile": {
+        "reasoning_efforts": [
+          "none",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "default_reasoning_effort": "medium",
+        "temperature": "never"
+      }
+    },
+
+    "gpt-5.6-luna": {
+      "display_name": "GPT-5.6 Luna",
+      "family": "gpt-5",
+      "capabilities": {
+        "vision": true,
+        "structured_output": true,
+        "function_calling": true,
+        "streaming": true
+      },
+      "context_window": 1050000,
+      "max_output_tokens": 128000,
+      "pricing_tiers": {
+        "batch": {
+          "input_per_1k": 0.0001,
+          "output_per_1k": 0.0006,
+          "cached_input_per_1k": 1e-05,
+          "cache_write_input_per_1k": 0.000125,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        },
+        "flex": {
+          "input_per_1k": 0.0001,
+          "output_per_1k": 0.0006,
+          "cached_input_per_1k": 1e-05,
+          "cache_write_input_per_1k": 0.000125,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        },
+        "standard": {
+          "input_per_1k": 0.0002,
+          "output_per_1k": 0.0012,
+          "cached_input_per_1k": 2e-05,
+          "cache_write_input_per_1k": 0.00025,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        },
+        "priority": {
+          "input_per_1k": 0.0004,
+          "output_per_1k": 0.0024,
+          "cached_input_per_1k": 4e-05,
+          "cache_write_input_per_1k": 0.0005,
+          "long_context": {
+            "input_token_threshold": 272000,
+            "input_multiplier": 2,
+            "output_multiplier": 1.5
+          }
+        }
+      },
+      "training_cutoff": "2026-02",
+      "deprecated": false,
+      "aliases": [],
+      "request_profile": {
+        "reasoning_efforts": [
+          "none",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "default_reasoning_effort": "medium",
+        "temperature": "never"
+      }
+    },
+
     "gpt-4o-mini": {
       "display_name": "GPT-4o Mini",
       "family": "gpt-4",

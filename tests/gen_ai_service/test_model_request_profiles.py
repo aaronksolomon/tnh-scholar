@@ -40,8 +40,9 @@ def request(model: str, effort: str | None = None) -> ProviderRequest:
     )
 
 
+@pytest.mark.parametrize("model", ["gpt-6-astra", "gpt-5.6", "gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna"])
 @pytest.mark.parametrize("effort", ["low", "medium", "high", "xhigh", "max"])
-def test_astra_efforts_reach_sdk_wire_unchanged(loader: RegistryLoader, effort: str) -> None:
+def test_model_efforts_reach_sdk_wire_unchanged(loader: RegistryLoader, model: str, effort: str) -> None:
     captured = []
 
     def respond(http_request: httpx.Request) -> httpx.Response:
@@ -52,7 +53,7 @@ def test_astra_efforts_reach_sdk_wire_unchanged(loader: RegistryLoader, effort: 
                 "id": "test",
                 "object": "chat.completion",
                 "created": 0,
-                "model": "gpt-6-astra",
+                "model": model,
                 "choices": [
                     {"index": 0, "message": {"role": "assistant", "content": "ACK"}, "finish_reason": "stop"}
                 ],
@@ -63,7 +64,7 @@ def test_astra_efforts_reach_sdk_wire_unchanged(loader: RegistryLoader, effort: 
     client._client.close()
     with OpenAI(api_key="test-key", http_client=httpx.Client(transport=httpx.MockTransport(respond))) as sdk:
         client._client = sdk
-        client.generate(request("gpt-6-astra", effort))
+        client.generate(request(model, effort))
     assert captured[0]["reasoning_effort"] == effort
     assert "temperature" not in captured[0]
     assert captured[0]["max_completion_tokens"] == 128
@@ -262,3 +263,50 @@ def test_cache_aware_estimate_preserves_astra_write_and_long_context_rates(
     # Models without cache-write rates retain the existing cached-input discount.
     legacy = safety_gate._estimate_cost("openai", "gpt-5-mini", 1000, 1000, use_cache=True)
     assert legacy == pytest.approx(0.002025)
+
+
+@pytest.mark.parametrize("model", ["gpt-5.6", "gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna"])
+@pytest.mark.parametrize("effort,expected", [(None, "medium"), ("auto", None), ("none", "none")])
+def test_gpt56_default_and_disabled_reasoning(
+    loader: RegistryLoader,
+    model: str,
+    effort: str | None,
+    expected: str | None,
+) -> None:
+    info = loader.get_model("openai", model)
+    assert info.context_window == 1_050_000
+    assert info.max_output_tokens == 128_000
+    mapped = openai_adapter.OpenAIAdapter().to_openai_request(request(model, effort))
+    assert mapped.reasoning_effort == expected
+    assert mapped.temperature is None
+
+
+@pytest.mark.parametrize("model", ["gpt-5.6", "gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna"])
+@pytest.mark.parametrize("effort", ["minimal", "ultra", "typo"])
+def test_gpt56_rejects_unsupported_reasoning(loader: RegistryLoader, model: str, effort: str) -> None:
+    with pytest.raises(ValueError, match="Unsupported reasoning effort"):
+        openai_adapter.OpenAIAdapter().to_openai_request(request(model, effort))
+
+
+@pytest.mark.parametrize(
+    "model,input_price,output_price",
+    [
+        ("gpt-5.6", 0.004, 0.020),
+        ("gpt-5.6-sol", 0.004, 0.020),
+        ("gpt-5.6-terra", 0.002, 0.012),
+        ("gpt-5.6-luna", 0.0002, 0.0012),
+    ],
+)
+def test_gpt56_pricing_surcharges(
+    loader: RegistryLoader,
+    model: str,
+    input_price: float,
+    output_price: float,
+) -> None:
+    pricing = loader.get_model("openai", model).get_pricing()
+    assert pricing.input_per_1k == input_price
+    assert pricing.output_per_1k == output_price
+    assert pricing.estimate_cost(1000, 1000) == pytest.approx(input_price * 1.25 + output_price)
+    assert pricing.estimate_cost(273000, 1000) == pytest.approx(
+        input_price * 1.25 * 2 * 273 + output_price * 1.5
+    )
