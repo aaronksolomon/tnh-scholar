@@ -689,3 +689,45 @@ The maintainer approved merging registry-driven model request compatibility and 
 - [Model request profiles](/docs/development/model-request-profiles.md)
 
 ---
+
+## [2026-09-21 22:03 PDT] GPT-5.6 Registry Hotfix Merge
+
+**Agent**: Codex
+**Chat Reference**: PR #82
+**Human Collaborator**: phapman
+
+### Context
+The maintainer approved a hotfix merge to make GPT-5.6 available through the locally installed tnh-gen. PR #82 merged to main as `5ec12adf`.
+
+### Key Decisions
+- **Reuse current main**: Add registry data to the existing request-profile implementation rather than carry adapter changes from the older documentation checkout.
+- **Preserve in-progress work**: Install a wheel from the merged hotfix into the existing pipx environment; leave the original documentation checkout untouched.
+
+### Work Completed
+- [x] Registered Sol, Terra, Luna, and the gpt-5.6 alias with six reasoning levels, medium default, limits, and cache-write/long-context pricing.
+- [x] Passed 286 focused GenAI/CLI tests, repository lint/format/source typing, and changed-test typing.
+- [x] Merged the explicitly approved hotfix and installed its packaged runtime locally.
+- [x] Verified all four installed model names preserve all six reasoning levels without a paid API call.
+
+### Discoveries & Insights
+- **Local CI limitation**: Full CI stops at an audio CLI logging-permission failure, also reproduced on unchanged main.
+- **Missing runtime dependency**: The existing pipx environment lacked jsonschema; inject the locked version to allow the CLI to start.
+- **Review limitation**: Sourcery CLI is unavailable on the account tier; GitHub checks were still running when the approved hotfix merged.
+
+### Files Modified/Created
+- `src/tnh_scholar/runtime_assets/registries/providers/openai.jsonc`: GPT-5.6 registry entries.
+- `tests/gen_ai_service/test_model_request_profiles.py`: Wire serialization, reasoning validation, defaults, and pricing regressions.
+- `CHANGELOG.md`: Hotfix description.
+- `AGENTLOG.md`: Merge and local-install continuity record.
+
+### Next Steps
+- [ ] Declare jsonschema as a direct runtime dependency in a focused packaging follow-up.
+- [ ] Review post-merge main CI.
+
+### Open Questions
+- None blocking local GPT-5.6 model selection.
+
+### References
+- [PR #82](https://github.com/aaronksolomon/tnh-scholar/pull/82)
+
+---
