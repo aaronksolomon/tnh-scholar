@@ -394,6 +394,9 @@ docs/architecture/jvb-viewer/adr/
   - [ ] Coverage for all yt-dlp entry points + error paths
   - [ ] Monthly ops check runs without manual intervention (cron)
   - [ ] Clear failure report includes test URL, date, yt-dlp version
+  - [x] Bound live audio checks to a short media range, preserve download failures, and reject recent failed health records
+  - [ ] Replace the URL list with capability-aware fixture records and report metadata, transcript, and audio separately
+  - [ ] Evaluate automated PO-token support if current runtime configuration still receives playback HTTP 403 responses
 
 #### 🔮 Patch ytt-fetch Robustness
 

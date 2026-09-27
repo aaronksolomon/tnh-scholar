@@ -10,6 +10,7 @@ from typing import List, Optional
 from xml.etree.ElementTree import ParseError
 
 import yt_dlp
+from yt_dlp.utils import download_range_func, parse_duration
 
 from tnh_scholar.logging_config import get_child_logger
 from tnh_scholar.metadata import Metadata
@@ -262,7 +263,12 @@ class DLPDownloader(YTDownloader):
         """Download audio and get metadata for a YouTube video."""
         temp_path = Path.cwd() / TEMP_FILENAME_FORMAT
         options = self._with_runtime_options(
-            DEFAULT_AUDIO_OPTIONS | self.config | {"outtmpl": str(temp_path)}
+            DEFAULT_AUDIO_OPTIONS
+            | self.config
+            | {
+                "outtmpl": str(temp_path),
+                "ignoreerrors": False,
+            }
         )
 
         self._add_start_stop_times(options, start, end)
@@ -312,28 +318,28 @@ class DLPDownloader(YTDownloader):
                 logger.error("Info not found.")
                 raise VideoDownloadError(f"Unable to download video for {url}.")
 
-    # TODO this function is not affecting the start time of processing.
-    # find a fix or new implementation
-    # (pydub postprocessing after yt-dlp? keep yt-dlp minimal?)
     def _add_start_stop_times(self, options: dict, start: Optional[str], end: Optional[str]) -> None:
-        """
-        Adds -ss and -to arguments for FFmpegExtractAudio via postprocessor_args dict.
-        Modifies options in place.
-        """
-        if start or end:
-            ppa_args = []
-            if start:
-                ppa_args.extend(["-ss", start])
-                logger.debug(f"Added start time to postprocessor args: {start}")
-            if end:
-                ppa_args.extend(["-to", end])
-                logger.debug(f"Added end time to postprocessor args: {end}")
+        """Limit the media transfer to the requested time range."""
+        if end is None:
+            if start is not None:
+                postprocessor_args = options.setdefault("postprocessor_args", {})
+                postprocessor_args.setdefault("ExtractAudio", []).extend(["-ss", start])
+            return
+        start_seconds = self._parse_download_time(start, default=0.0)
+        end_seconds = self._parse_download_time(end)
+        if end_seconds <= start_seconds:
+            raise ValueError("Audio range end must be after its start")
+        options["download_ranges"] = download_range_func(None, [(start_seconds, end_seconds)])
+        options["force_keyframes_at_cuts"] = True
 
-            postprocessor_args = options.setdefault("postprocessor_args", {})
-
-            postprocessor_args.setdefault("ExtractAudio", []).extend(ppa_args)
-
-        logger.info(f"Updated options for postprocessor_args: {options.get('postprocessor_args')}")
+    def _parse_download_time(self, value: Optional[str], default: float | None = None) -> float:
+        """Parse a yt-dlp duration value or return an explicit default."""
+        if value is None and default is not None:
+            return default
+        parsed = parse_duration(value)
+        if parsed is None:
+            raise ValueError(f"Invalid audio range time: {value!r}")
+        return float(parsed)
 
     def _extract_metadata(self, info: dict) -> Metadata:
         """Extract standard metadata fields from yt-dlp info."""

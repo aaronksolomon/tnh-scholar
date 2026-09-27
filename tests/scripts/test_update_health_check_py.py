@@ -62,6 +62,27 @@ def test_check_status_succeeds_when_fresh(tmp_path: Path) -> None:
     assert "fresh" in outcome.summary
 
 
+def test_check_status_fails_when_most_recent_run_failed(tmp_path: Path) -> None:
+    status_path = tmp_path / "status.json"
+    _write_status(status_path, (_fixed_now() - timedelta(days=1)).isoformat(), 1)
+    paths = health_check.HealthCheckPaths(
+        repo_root=tmp_path,
+        status_path=status_path,
+        yt_dlp_script_path=tmp_path / "scripts" / "yt_dlp_ops_check.py",
+    )
+    service = health_check.UpdateHealthCheckService(
+        paths=paths,
+        runner=lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("runner should not be called")),
+        now_provider=_fixed_now,
+    )
+
+    outcome = service.check_status(warn_after_days=10, fail_after_days=30)
+
+    assert outcome.ran is False
+    assert outcome.success is False
+    assert "most recent run failed" in outcome.summary
+
+
 def test_check_status_warns_when_stale_but_not_expired(tmp_path: Path) -> None:
     status_path = tmp_path / "status.json"
     _write_status(status_path, (_fixed_now() - timedelta(days=15)).isoformat(), 0)

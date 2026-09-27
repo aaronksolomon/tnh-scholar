@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **yt-dlp Health Check Accuracy and Cost** (2026-09-26)
+  - Limited each live audio probe to 15 seconds and preserved the original yt-dlp download exception.
+  - Made the passive freshness gate fail when the most recent live check failed.
+
 - **GPT-5.6 registry support** (2026-09-21)
   - Registered Sol, Terra, Luna, and the `gpt-5.6` alias with reasoning levels `none`, `low`, `medium`, `high`, `xhigh`, and `max`, defaulting to `medium`.
   - Added model limits and pricing, including cache-write and long-context surcharges, using the existing request-profile implementation.

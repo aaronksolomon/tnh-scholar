@@ -14,11 +14,14 @@ from tnh_scholar.video_processing.video_processing import VideoAudio
 @dataclass
 class StubDownloader:
     audio_bytes: bytes
+    audio_calls: list[dict[str, object]] | None = None
 
     def get_metadata(self, url: str) -> Metadata:
         return Metadata({"id": "x", "title": url})
 
     def get_audio(self, url: str, output_path: Path, **kwargs) -> VideoAudio:
+        if self.audio_calls is not None:
+            self.audio_calls.append({"url": url, "output_path": output_path, **kwargs})
         output_path.write_bytes(self.audio_bytes)
         return VideoAudio(metadata=Metadata({"id": "x", "title": url}), filepath=output_path)
 
@@ -42,6 +45,22 @@ def test_ops_check_success(tmp_path: Path) -> None:
     assert report.ok() is True
     assert report.successes == 1
     assert report.failures == ()
+
+
+def test_ops_check_downloads_bounded_audio_sample(tmp_path: Path) -> None:
+    urls_path = tmp_path / "urls.txt"
+    _write_urls(urls_path, "https://example.com\n")
+    calls: list[dict[str, object]] = []
+    config = OpsCheckConfig(
+        urls_path=urls_path,
+        url_limit=None,
+        output_dir=tmp_path / "out",
+        audio_sample_seconds=12,
+    )
+
+    OpsCheckRunner(downloader=StubDownloader(b"data", calls), config=config).run()
+
+    assert calls[0]["end"] == "12"
 
 
 def test_ops_check_failure(tmp_path: Path) -> None:

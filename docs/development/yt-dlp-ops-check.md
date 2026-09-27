@@ -5,7 +5,7 @@ owner: ""
 author: ""
 status: current
 created: "2026-02-01"
-updated: "2026-04-21"
+updated: "2026-09-26"
 ---
 # yt-dlp Ops Check
 
@@ -23,9 +23,18 @@ make health-check
 
 - warns when the last yt-dlp ops run is older than 10 days
 - fails when the last yt-dlp ops run is older than 30 days
+- fails when the most recent live run failed, regardless of its age
 - does not run the live suite automatically
 
 `make health-check` explicitly runs the live yt-dlp ops suite now and updates the status file. Thresholds can be configured with `TNH_HEALTH_WARN_AFTER_DAYS`, `TNH_HEALTH_FAIL_AFTER_DAYS`, and `TNH_YT_DLP_RECOMMENDED_INTERVAL_DAYS`.
+The live check retrieves metadata and a 15-second audio sample from each configured URL.
+
+## Follow-up Improvements
+
+- Replace the plain URL list with typed fixture records describing purpose, expected capabilities, language, and last verification date.
+- Separate metadata, transcript, and audio outcomes so one failure identifies the affected capability.
+- Evaluate an automated PO-token provider if ranged audio downloads still receive playback HTTP 403 responses.
+- Include the yt-dlp version and runtime profile in each saved report.
 
 ## Script
 
