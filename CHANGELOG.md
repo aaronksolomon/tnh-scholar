@@ -48,6 +48,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Bounded Knowledge-Base Exploration Proposals** (2026-09-26)
+  - Added proposed K02/K03, a small search-comparison plan, and the bsearch implementation review.
+  - Prioritized hand-checked concept expansion against a fixed search baseline; deferred conductor completion and production KB infrastructure.
+
 - **`tnh-gen` Runtime Status Events (TG06)** (2026-09-17)
   - Added explicit `--status-file` JSONL events for API, quiet, and external-directory runs, with typed stages, heartbeats, trace correlation, and terminal outcomes.
   - Replaced direct spinner orchestration with isolated Rich/file sinks and a command lifecycle that preserves primary failure origin through error rendering.

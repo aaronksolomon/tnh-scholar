@@ -62,3 +62,13 @@ links generated concept data and records the need for general Buddhist and
 Plum Village vocabularies with source-grounded mappings. Concept collection must
 include evaluated validation and bounded repair within the processing system,
 without depending on an additional agent's manual post-processing for each article.
+
+## Addendum 2026-09-18: Proposed Concept-Grounded Direction
+
+[ADR-K02](/architecture/knowledge-base/adr/adr-k02-concept-grounded-knowledge-base.md) proposes a replacement pilot direction: reviewed Buddhist/PV vocabularies, passage discovery, a bilingual evaluation slice, and direct versus concept-expanded retrieval. [ADR-K03](/architecture/knowledge-base/adr/adr-k03-concept-extraction-evidence-contract.md) defines extraction and evidence boundaries. Both await maintainer review; this addendum does not accept or supersede any decision.
+
+The earlier research path cited above is no longer present; the available background is [KB design research](/research/kb-design-document.md). Its vendor, cost, and schedule suggestions are historical exploration. Use the [pilot review map](/architecture/knowledge-base/design/kb-pilot-roadmap.md) for current proposed sequencing.
+
+## Addendum 2026-09-19: Narrow Exploration First
+
+The maintainer requested a smaller experiment before policy and architecture commitments. K02/K03 now propose a hand-checked concept table and a direct-search comparison, with extraction as an optional later probe. The [bsearch review](/architecture/knowledge-base/notes/bsearch-review-2026-09-19.md) identifies existing search components and reuse limits. Formal publication workflows, repair automation, and infrastructure decisions are deferred.
