@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-09-26"
+updated: "2026-09-29"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-09-26 (KB exploration preserved; merged model support reconciled; packaging follow-up tracked)
+> **Last Updated**: 2026-09-29 (KB review controls and extraction follow-up incorporated into proposed plan)
 > **Version**: 0.4.2 (Alpha)
 > **Status**: Active Development — v0.4.2 released; conductor bootstrap usable; runtime status complete; concept-grounded KB design and pilot next
 >
@@ -37,7 +37,7 @@ This sequence takes precedence over the older priority groupings below. Pilot si
 1. **Status reconciliation and PR #78 — merge complete.** The budget-enforcement fix merged on 2026-09-15 after user approval. Roadmap, Sourcery authorization, and merge-log updates are included in the follow-up housekeeping commit.
 2. **Runtime status for `tnh-gen` — complete.** PR #80 merged: four-second heartbeats, explicit JSONL status, failure-origin preservation, and saved provenance repairs. External-directory live testing and 678 passing local tests validate the slice; PR #79 dependency refresh is also merged.
 3. **Review the concept-grounded KB design.** Review [K02](/architecture/knowledge-base/adr/adr-k02-concept-grounded-knowledge-base.md), [K03](/architecture/knowledge-base/adr/adr-k03-concept-extraction-evidence-contract.md), and the [KB pilot task map](/architecture/knowledge-base/design/kb-pilot-roadmap.md). Choose a tiny corpus, hand-checked concept table, and real questions; use the bsearch review to keep reuse narrow.
-4. **Build the bounded KB pilot after design approval.** Existing search baseline → small concept table → expansion off/on comparison → review and stop. Starting scope: 8–12 concepts, 10–15 texts/talks, 12–15 questions. Automatic extraction is an optional later probe, not a prerequisite.
+4. **Build the bounded KB pilot after design approval.** Existing search baseline → small concept table → direct/generic/curated held-out comparison → review and stop. Starting scope: 8–12 concepts, 10–15 texts/talks, 12–15 questions. Automatic extraction is an optional later probe, not a prerequisite.
 5. **Evaluate before scaling or answer synthesis.** Compare direct and expanded retrieval, citation integrity, conceptual accuracy, multilingual behavior, cost, and review effort. Retain direct search if expansion does not help.
 6. **Add source navigation.** Connect passages to originals/scans, translations, and reviewed concepts; build on JVB viewer work after the retrieval contract is demonstrated.
 
@@ -714,9 +714,9 @@ docs/architecture/jvb-viewer/adr/
   - [x] Reduce K02/K03 to a small exploration; defer publication workflow and service scaffolding
   - [ ] Choose 10–15 texts/talks, 8–12 hand-checked concepts, and 12–15 real questions (smaller is acceptable)
   - [ ] Establish a reproducible existing-search baseline with source locators and visible errors
-  - [ ] Compare expansion off/on using the same corpus, query set, and base search
-  - [ ] Record useful results, losses/noise, citation correctness, cost, and reviewer effort; decide whether to continue
-  - [ ] Optional follow-up: test assisted concept extraction on two or three passages, retaining raw output and measuring correction effort
+  - [ ] Compare direct/generic/curated expansion on frozen held-out questions with matched expansion limits and scope-sensitive mappings
+  - [ ] Grade deduplicated pooled passages with retrieval origin hidden; record metrics, losses/noise, citation correctness, cost, and reviewer effort
+  - [ ] Optional extraction smoke test: two or three passages; if promising, freeze settings for 10–20 additional passages and measure review/correction effort
 - **Deferred**: General ontology, approval state machine, automated repair pipeline, production storage, answer synthesis, and source-viewer buildout
 
 #### 🚧 Configuration & Data Layout

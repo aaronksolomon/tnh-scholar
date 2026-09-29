@@ -48,6 +48,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **KB Pilot Independent-Review Refinements** (2026-09-29)
+  - Extended proposed K02/K03 with a generic-expansion control, scope-sensitive mappings, pooled origin-hidden judgments, and descriptive retrieval metrics.
+  - Distinguished the extraction smoke test from an optional frozen follow-up batch with review/correction effort measurement; retained the bounded exploration scope.
+
 - **Bounded Knowledge-Base Exploration Proposals** (2026-09-26)
   - Added proposed K02/K03, a small search-comparison plan, and the bsearch implementation review.
   - Prioritized hand-checked concept expansion against a fixed search baseline; deferred conductor completion and production KB infrastructure.

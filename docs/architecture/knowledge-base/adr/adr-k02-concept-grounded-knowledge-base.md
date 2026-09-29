@@ -45,3 +45,16 @@ Publication/approval state machines, immutable revision graphs, automatic invali
 Manual curation of a tiny map is deliberate: it tests the value of concepts separately from extraction quality. It cannot establish whole-corpus coverage or production reliability. The [exploration plan](/architecture/knowledge-base/design/kb-pilot-roadmap.md) defines the smallest deliverables and a stop point before further engineering. [K03](/architecture/knowledge-base/adr/adr-k03-concept-extraction-evidence-contract.md) scopes an optional extraction probe after the first search comparison.
 
 The [Bayer case study](https://martinfowler.com/articles/reliable-llm-bayer.html) motivates traceable evidence and evaluation; it is not a requirement to reproduce its orchestration or infrastructure.
+
+
+## Addendum 2026-09-29: Controls and Scope-Sensitive Expansion
+
+The independent GPT review supplied by the maintainer strengthens the experiment without changing its architecture or proposed status. This addendum extends the off/on comparison above; the [pilot roadmap](/architecture/knowledge-base/design/kb-pilot-roadmap.md) specifies the evaluation procedure.
+
+On the frozen held-out questions, compare direct search, generic LLM expansion without access to the concept table or corpus, and hand-checked concept expansion. Use the same base search and the same expansion limits and fusion rule for both expansion conditions. Retain all generated terms and their provenance. Generic expansion is a practical alternative, not a knowledge-free control: a model may already know Buddhist terminology. A gain over it supports the value of this curated map under these settings, not a claim that a graph or formal ontology is necessary.
+
+Only reviewed aliases or equivalents in the requested sense and scope enter ordinary expansion. Related concepts and later PV interpretations are not synonyms. Use them only for questions explicitly asking for connections, or in a separately labeled secondary search with its own results and scores. Preserve the supporting source and explanation for each mapping. Freeze query intent and scope before retrieval; an ambiguous question gets the same recorded interpretation in every condition or remains unexpanded.
+
+Pool and deduplicate passages across conditions before origin-hidden relevance grading. Preserve per-condition rankings separately, and use the same judgments for all scores. Report descriptive retrieval metrics alongside examples and regressions; no numeric promotion threshold or whole-corpus recall claim follows. An off/on-only run remains useful preliminary evidence but cannot establish an advantage over generic expansion.
+
+The cited Bayer case study is by Sarang Kulkarni of Thoughtworks, published on Martin Fowler's site. It motivates evaluation and traceability; it does not establish that conceptual expansion will help this corpus.
