@@ -23,7 +23,8 @@ make health-check
 
 - warns when the last yt-dlp ops run is older than 10 days
 - fails when the last yt-dlp ops run is older than 30 days
-- fails when the most recent live run failed, regardless of its age
+- fails when the most recent live run has an explicit nonzero exit code, regardless of its age
+- applies the normal age-based freshness rules to legacy records without an exit code
 - does not run the live suite automatically
 
 `make health-check` explicitly runs the live yt-dlp ops suite now and updates the status file. Thresholds can be configured with `TNH_HEALTH_WARN_AFTER_DAYS`, `TNH_HEALTH_FAIL_AFTER_DAYS`, and `TNH_YT_DLP_RECOMMENDED_INTERVAL_DAYS`.
