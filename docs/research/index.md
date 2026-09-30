@@ -16,7 +16,7 @@ Research documents/notes and experiments across the project. Includes initial fe
 
 Key starting points:
 
-- [Finding Connections in Thích Nhất Hạnh’s Teachings: A Pilot Proposal](/research/kb-pilot-proposal.md) — the proposed search experiment, starting collection, and invitation to contribute materials and research questions.
+- [Proposed Pilot Study: Concept-Based Search and Retrieval for TNH Scholar](/research/kb-pilot-proposal.md) — research hypothesis, required materials, controlled comparison, and evaluation criteria.
 
 - [TNH Scholar Knowledge Base: Design Document](/research/kb-design-document.md)
 - [Summary Report on Metadata Extraction, Source Parsing, and Model Training](/research/metadata-summary-report.md)

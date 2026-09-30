@@ -1,46 +1,53 @@
 ---
-title: "Finding Connections in Thích Nhất Hạnh’s Teachings: A Pilot Proposal"
-description: "A small research pilot to test whether a reviewed map of Buddhist concepts helps readers discover useful passages across Thích Nhất Hạnh’s teachings and classical sources."
+title: "Proposed Pilot Study: Concept-Based Search and Retrieval for TNH Scholar"
+description: "A controlled comparison of direct search, AI query expansion, and reviewed concept-based retrieval across Thích Nhất Hạnh’s teachings and classical Buddhist sources."
 owner: "aaronksolomon"
 author: "Codex"
 status: proposed
 created: "2026-09-30"
+updated: "2026-09-30"
 ---
-# Finding Connections in Thích Nhất Hạnh’s Teachings
+# Proposed Pilot Study: Concept-Based Search and Retrieval for TNH Scholar
 
-*A small research pilot for TNH Scholar*
+**Research context:** Sarang Kulkarni’s Bayer/Thoughtworks case study, [*Building Reliable Agentic AI Systems*](https://martinfowler.com/articles/reliable-llm-bayer.html), published on Martin Fowler’s website, describes a progression from search to evidence-based assistance. It informs this pilot’s emphasis on source traceability and evaluation before extending the system to generated answers.
 
-A researcher may recognize a connection between two teachings even when they use different words. Can a search tool help uncover those connections while preserving the differences between traditions, periods, and interpretations?
+## Objective and hypothesis
 
-We propose a small experiment building on **bsearch**: add a modest, researcher-reviewed map of concepts and test whether it helps find passages that ordinary search misses. The aim is useful discovery with an inspectable explanation of each connection and a reference back to the source.
+Determine whether a reviewed conceptual model improves passage retrieval across Thích Nhất Hạnh’s teachings and classical Buddhist texts. The hypothesis is that explicit knowledge of terminology, context, and conceptual relationships can uncover relevant passages missed by direct search or general AI-generated query expansion—adding related wording to a search request.
 
-## The starting collection
+The pilot builds on **bsearch**. Its conceptual model is a small table of concepts, alternative names, meanings, tradition or historical context, and supported relationships. Each connection records its source and rationale. Equivalent terms can expand a query directly; related ideas or later Plum Village interpretations require an explicit request for connections or a separately labeled search.
 
-Four proposed books by Thích Nhất Hạnh provide the core:
+## Required materials to begin pilot
+
+The proposed TNH collection comprises:
 
 - *Chanting from the Heart*
 - *Fragrant Palm Leaves*
 - *The Miracle of Mindfulness*
 - *The Heart of the Buddha’s Teaching*
 
-We can begin with selected chapters or sections, a few talk transcripts, and a small selection of classical Buddhist discourses from a collection already supported by bsearch, such as SuttaCentral. We will choose sources together around genuine research interests, with enough variety to reveal misleading matches as well as helpful ones. One shared language is sufficient for the first comparison; a whole canon is unnecessary.
+**Source files:** EPUB preferred; PDF acceptable. Selected talks can be supplied as UTF-8 plain text, preserving paragraphs and available timestamps. Include title, author or speaker, language, date, edition, translator, source location, and any restrictions on use. Original files are retained alongside extracted text; conversion is part of pilot preparation.
 
-## What we will try
+**Classical comparison material:** A small selection of discourses from a corpus already supported by bsearch, initially SuttaCentral or CBETA as appropriate to the research questions and language. Preserve canonical identifiers and translation attribution. Selected book sections, talks, and discourses should form roughly 10–15 manageable source units, including material that could produce misleading matches. Start in one shared language; multilingual retrieval is a later extension.
 
-Choose about **12–15 real research questions** and **8–12 concepts**. An illustrative question might be: “Where does Thầy connect mindful breathing with everyday activities, and what connections can we responsibly draw to earlier teachings?”
+**Research input:** Approximately 12–15 authentic questions and 8–12 initial concepts, with researcher review of meanings and relationships. Questions should include exact terms, paraphrases, historical distinctions, ambiguous terminology, and at least one question the collection cannot answer.
 
-Search the same collection three ways: using the original question, using AI-suggested alternative wording, and using terms from the reviewed concept map. Reserve some questions until the map is settled. Then review passages in shuffled order, without seeing which method retrieved them, judging usefulness, missed connections, and misleading associations.
+## Experimental design
 
-Every passage stays linked to its source. A later Plum Village interpretation will be identified as a connection, not silently treated as equivalent to an earlier teaching. The first pilot returns passages for the researcher to assess; answer-writing can be considered later.
+All conditions search the same frozen collection, with identical passage boundaries, filters, and ranking settings:
 
-## What we need from you
+| Condition | Search input | Purpose |
+| --- | --- | --- |
+| Direct search | Original question | Establish baseline performance |
+| General AI expansion | Original question plus AI-suggested terms, without access to the concept table or source collection | Measure the benefit of general reformulation |
+| Concept-based expansion | Original question plus terms from the reviewed conceptual model | Measure the additional value of curated knowledge |
 
-**The most valuable contribution is source selection and scholarly judgment.** Please provide available EPUBs of the four books, or PDFs where EPUBs are unavailable, plus selected talks as plain text. Include known titles, dates, editions, translators, source links, and any limits on use. No conversion or programming is needed; we will prepare searchable text and source references.
+The two expansion conditions use matching limits on added terms and searches. Keyword search provides the initial baseline; semantic search, which retrieves by similarity of meaning, can be evaluated separately if already available. General AI expansion may itself contain Buddhist knowledge: the comparison tests the added value of the reviewed model.
 
-Bring a short list of questions you genuinely want to investigate, and help review the concept connections and retrieved passages. We can start with whichever materials are ready.
+Reserve several questions from tuning. Freeze the concept map and settings before evaluating those questions. Preserve source versions, passage identifiers, actual queries, and ranked results so the comparison can be reproduced.
 
-## What this will tell us
+## Evaluation and decision
 
-The outcome is a compact comparison showing useful discoveries, errors, and the effort needed to maintain the concept map. It will help us decide whether curated concepts earn their place in TNH Scholar—or whether simpler search is sufficient.
+Pool the top ten passages from each condition, remove duplicates, and grade each passage once with retrieval origin hidden: not useful, partly useful, or directly useful. Report useful passages in the top five, the rank of the first useful passage, gains and regressions by question, citation accuracy, latency, cost, and researcher review effort.
 
-This staged approach is informed by Sarang Kulkarni’s Bayer/Thoughtworks case study, [*Building Reliable Agentic AI Systems*](https://martinfowler.com/articles/reliable-llm-bayer.html), published on Martin Fowler’s website. Its progression from search toward more capable assistance motivates starting with traceable evidence and evaluation. This pilot tests that direction for our own scholarly needs.
+The deliverable is a comparative results table with representative discoveries and errors. Expansion should justify its curation effort through meaningful retrieval gains. Automated concept extraction and answer generation remain subsequent experiments; neither is required to establish the value of the conceptual model.
