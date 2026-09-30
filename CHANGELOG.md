@@ -56,6 +56,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Researcher-Facing KB Pilot Proposal** (2026-09-30)
+  - Added a concise invitation to the search pilot, naming the four proposed Thích Nhất Hạnh books, resource preparation, researcher participation, and the motivating Bayer/Thoughtworks case study.
+  - Linked the proposal from the Research landing page; the documentation navigation includes it automatically.
+
 - **`tnh-gen` Runtime Status Events (TG06)** (2026-09-17)
   - Added explicit `--status-file` JSONL events for API, quiet, and external-directory runs, with typed stages, heartbeats, trace correlation, and terminal outcomes.
   - Replaced direct spinner orchestration with isolated Rich/file sinks and a command lifecycle that preserves primary failure origin through error rendering.
