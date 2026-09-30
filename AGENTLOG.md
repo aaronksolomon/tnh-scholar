@@ -768,3 +768,38 @@ The maintainer approved merging PR #83 after reviewing GitHub checks and reviews
 - [PR #84](https://github.com/aaronksolomon/tnh-scholar/pull/84)
 
 ---
+
+## [2026-09-30 08:46 PDT] yt-dlp Health-Check Review Fix Merge
+
+**Agent**: Codex
+**Chat Reference**: PR #84
+**Human Collaborator**: phapman
+
+### Context
+The maintainer explicitly approved merging PR #84 after its legacy-record review fix. It merged to main as `60f8c2c6`.
+
+### Key Decisions
+- **Legacy records**: Apply age-based freshness when no exit code is recorded; explicit nonzero codes still fail.
+- **Bounded probes**: Retain short audio probes and propagation of underlying download failures.
+
+### Work Completed
+- [x] Merged reviewed head `160b9cff` with maintainer approval and confirmed the merged state.
+- [x] Recorded successful GitHub PR/docs validation, CodeQL, and Sourcery checks.
+
+### Discoveries & Insights
+- **Review**: Sourcery marked its finding addressed and resolved; Codex's recorded review covered the earlier head.
+- **Validation**: The follow-up passed 18 focused tests, changed-file lint/format/type checks, and strict docs build. GitHub full-test was skipped; no new full-suite or live-download claim is made.
+
+### Files Modified/Created
+- `AGENTLOG.md`: Post-merge continuity entry.
+
+### Next Steps
+- [ ] Select resources and questions for the bounded KB pilot.
+
+### Open Questions
+- Live YouTube access failures remain separate operational follow-up work.
+
+### References
+- [PR #84](https://github.com/aaronksolomon/tnh-scholar/pull/84)
+
+---
