@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Limited each live audio probe to 15 seconds and preserved the original yt-dlp download exception.
   - Made the passive freshness gate fail when the most recent live check failed.
 
+- **Core JSON Schema Runtime Dependency** (2026-09-26)
+  - Declared `jsonschema` directly so core-only installations can load `tnh-gen` and validate prompt contracts without manual dependency injection.
+
 - **GPT-5.6 registry support** (2026-09-21)
   - Registered Sol, Terra, Luna, and the `gpt-5.6` alias with reasoning levels `none`, `low`, `medium`, `high`, `xhigh`, and `max`, defaulting to `medium`.
   - Added model limits and pricing, including cache-write and long-context surcharges, using the existing request-profile implementation.
