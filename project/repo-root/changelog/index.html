@@ -16236,7 +16236,28 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="Link to this section">&para;</a></h2>
 <h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Link to this section">&para;</a></h3>
 <ul>
-<li><strong>Registry-driven OpenAI request profiles and GPT-6 Astra</strong> (2026-09-19)</li>
+<li><strong>yt-dlp Health Check Accuracy and Cost</strong> (2026-09-26)</li>
+<li>Limited each live audio probe to 15 seconds and preserved the original yt-dlp download exception.</li>
+<li>Made the passive freshness gate fail when the most recent live check failed.</li>
+<li>
+<p>Preserved age-based freshness checks for legacy records without an exit code.</p>
+</li>
+<li>
+<p><strong>Core JSON Schema Runtime Dependency</strong> (2026-09-26)</p>
+</li>
+<li>
+<p>Declared <code>jsonschema</code> directly so core-only installations can load <code>tnh-gen</code> and validate prompt contracts without manual dependency injection.</p>
+</li>
+<li>
+<p><strong>GPT-5.6 registry support</strong> (2026-09-21)</p>
+</li>
+<li>Registered Sol, Terra, Luna, and the <code>gpt-5.6</code> alias with reasoning levels <code>none</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>xhigh</code>, and <code>max</code>, defaulting to <code>medium</code>.</li>
+<li>
+<p>Added model limits and pricing, including cache-write and long-context surcharges, using the existing request-profile implementation.</p>
+</li>
+<li>
+<p><strong>Registry-driven OpenAI request profiles and GPT-6 Astra</strong> (2026-09-19)</p>
+</li>
 <li>Added registry-defined reasoning levels/defaults and temperature rules, replacing model-prefix checks.</li>
 <li>Added Astra with literal <code>max</code>/<code>xhigh</code> support, unsupported-temperature omission, and conservative cache-write/long-context cost estimates.</li>
 <li>Changed <code>max</code> from a <code>high</code> alias to a literal effort; <code>none</code> is literal and <code>auto</code> omits the provider field. Removed <code>maximum</code>/<code>off</code>/<code>disabled</code> aliases.</li>

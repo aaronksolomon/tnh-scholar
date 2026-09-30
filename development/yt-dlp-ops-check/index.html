@@ -14002,6 +14002,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#follow-up-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-up Improvements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#script" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -15254,6 +15265,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#follow-up-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-up Improvements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#script" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -15328,9 +15350,19 @@
 <ul>
 <li>warns when the last yt-dlp ops run is older than 10 days</li>
 <li>fails when the last yt-dlp ops run is older than 30 days</li>
+<li>fails when the most recent live run has an explicit nonzero exit code, regardless of its age</li>
+<li>applies the normal age-based freshness rules to legacy records without an exit code</li>
 <li>does not run the live suite automatically</li>
 </ul>
-<p><code>make health-check</code> explicitly runs the live yt-dlp ops suite now and updates the status file. Thresholds can be configured with <code>TNH_HEALTH_WARN_AFTER_DAYS</code>, <code>TNH_HEALTH_FAIL_AFTER_DAYS</code>, and <code>TNH_YT_DLP_RECOMMENDED_INTERVAL_DAYS</code>.</p>
+<p><code>make health-check</code> explicitly runs the live yt-dlp ops suite now and updates the status file. Thresholds can be configured with <code>TNH_HEALTH_WARN_AFTER_DAYS</code>, <code>TNH_HEALTH_FAIL_AFTER_DAYS</code>, and <code>TNH_YT_DLP_RECOMMENDED_INTERVAL_DAYS</code>.
+The live check retrieves metadata and a 15-second audio sample from each configured URL.</p>
+<h2 id="follow-up-improvements">Follow-up Improvements<a class="headerlink" href="#follow-up-improvements" title="Link to this section">&para;</a></h2>
+<ul>
+<li>Replace the plain URL list with typed fixture records describing purpose, expected capabilities, language, and last verification date.</li>
+<li>Separate metadata, transcript, and audio outcomes so one failure identifies the affected capability.</li>
+<li>Evaluate an automated PO-token provider if ranged audio downloads still receive playback HTTP 403 responses.</li>
+<li>Include the yt-dlp version and runtime profile in each saved report.</li>
+</ul>
 <h2 id="script">Script<a class="headerlink" href="#script" title="Link to this section">&para;</a></h2>
 <p>Use:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>scripts/yt_dlp_ops_check.py
