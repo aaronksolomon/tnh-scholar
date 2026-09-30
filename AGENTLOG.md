@@ -731,3 +731,40 @@ The maintainer approved a hotfix merge to make GPT-5.6 available through the loc
 - [PR #82](https://github.com/aaronksolomon/tnh-scholar/pull/82)
 
 ---
+
+## [2026-09-29 22:19 PDT] Core JSON Schema Dependency Merge
+
+**Agent**: Codex
+**Chat Reference**: PR #83
+**Human Collaborator**: phapman
+
+### Context
+The maintainer approved merging PR #83 after reviewing GitHub checks and reviews. It merged to main as `76c04728`.
+
+### Key Decisions
+- **Core dependency**: Make JSON Schema validation available in core-only installations.
+- **Separate follow-up**: Address the legacy health-record review finding in PR #84; that PR remains open.
+
+### Work Completed
+- [x] Verified the reviewed PR head and successful executed GitHub checks; merged PR #83 with maintainer approval.
+- [x] Confirmed the merged state and brought main into the PR #84 follow-up checkout.
+
+### Discoveries & Insights
+- **Validation scope**: PR #83 records 97 focused tests and clean core-only installation checks; the full local CI target was blocked by the stale health gate. GitHub full-test was skipped.
+- **Reviews**: Sourcery found no issues; Codex completed with no posted findings.
+
+### Files Modified/Created
+- `pyproject.toml`, `poetry.lock`, `CHANGELOG.md`: Merged PR #83 dependency fix and documentation.
+- `AGENTLOG.md`: Post-merge continuity entry, carried in PR #84.
+
+### Next Steps
+- [ ] Review PR #84 after its legacy-record fix and validation.
+
+### Open Questions
+- None blocking PR #83's completed merge.
+
+### References
+- [PR #83](https://github.com/aaronksolomon/tnh-scholar/pull/83)
+- [PR #84](https://github.com/aaronksolomon/tnh-scholar/pull/84)
+
+---

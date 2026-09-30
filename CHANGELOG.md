@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **yt-dlp Health Check Accuracy and Cost** (2026-09-26)
+  - Limited each live audio probe to 15 seconds and preserved the original yt-dlp download exception.
+  - Made the passive freshness gate fail when the most recent live check failed.
+  - Preserved age-based freshness checks for legacy records without an exit code.
+
 - **Core JSON Schema Runtime Dependency** (2026-09-26)
   - Declared `jsonschema` directly so core-only installations can load `tnh-gen` and validate prompt contracts without manual dependency injection.
 

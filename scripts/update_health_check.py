@@ -115,6 +115,13 @@ class UpdateHealthCheckService:
             summary = "yt-dlp health check status unreadable; run `make health-check`."
             print(summary)
             return CheckOutcome(ran=False, success=True, summary=summary)
+        if record.last_exit_code is not None and record.last_exit_code != 0:
+            summary = (
+                "yt-dlp health check most recent run failed; rerun after repair. "
+                f"last run: {record.last_run_at}, exit_code: {record.last_exit_code}."
+            )
+            print(summary)
+            return CheckOutcome(ran=False, success=False, summary=summary)
         age = self.now_provider() - last_run_at
         if age >= timedelta(days=fail_after_days):
             summary = (

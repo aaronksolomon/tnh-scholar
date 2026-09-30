@@ -4,6 +4,8 @@ import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+import pytest
+
 
 def _load_module():
     script_path = Path(__file__).resolve().parents[2] / "scripts" / "update_health_check.py"
@@ -18,13 +20,14 @@ def _load_module():
 health_check = _load_module()
 
 
-def _write_status(status_path: Path, last_run_at: str, exit_code: int) -> None:
+def _write_status(status_path: Path, last_run_at: str, exit_code: int | None) -> None:
+    exit_code_field = f'"last_exit_code": {exit_code},' if exit_code is not None else ""
     status_path.write_text(
         f"""
         {{
           "checks": {{
             "yt_dlp_ops_check": {{
-              "last_exit_code": {exit_code},
+              {exit_code_field}
               "last_run_at": "{last_run_at}",
               "last_success_at": "{last_run_at}",
               "recommended_interval_days": 10
@@ -41,9 +44,10 @@ def _fixed_now() -> datetime:
     return datetime(2026, 4, 21, 12, 0, tzinfo=UTC)
 
 
-def test_check_status_succeeds_when_fresh(tmp_path: Path) -> None:
+@pytest.mark.parametrize("exit_code", [0, None], ids=["recorded-success", "legacy-missing-exit-code"])
+def test_check_status_succeeds_when_fresh(tmp_path: Path, exit_code: int | None) -> None:
     status_path = tmp_path / "status.json"
-    _write_status(status_path, (_fixed_now() - timedelta(days=1)).isoformat(), 0)
+    _write_status(status_path, (_fixed_now() - timedelta(days=1)).isoformat(), exit_code)
     paths = health_check.HealthCheckPaths(
         repo_root=tmp_path,
         status_path=status_path,
@@ -62,9 +66,31 @@ def test_check_status_succeeds_when_fresh(tmp_path: Path) -> None:
     assert "fresh" in outcome.summary
 
 
-def test_check_status_warns_when_stale_but_not_expired(tmp_path: Path) -> None:
+def test_check_status_fails_when_most_recent_run_failed(tmp_path: Path) -> None:
     status_path = tmp_path / "status.json"
-    _write_status(status_path, (_fixed_now() - timedelta(days=15)).isoformat(), 0)
+    _write_status(status_path, (_fixed_now() - timedelta(days=1)).isoformat(), 1)
+    paths = health_check.HealthCheckPaths(
+        repo_root=tmp_path,
+        status_path=status_path,
+        yt_dlp_script_path=tmp_path / "scripts" / "yt_dlp_ops_check.py",
+    )
+    service = health_check.UpdateHealthCheckService(
+        paths=paths,
+        runner=lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("runner should not be called")),
+        now_provider=_fixed_now,
+    )
+
+    outcome = service.check_status(warn_after_days=10, fail_after_days=30)
+
+    assert outcome.ran is False
+    assert outcome.success is False
+    assert "most recent run failed" in outcome.summary
+
+
+@pytest.mark.parametrize("exit_code", [0, None], ids=["recorded-success", "legacy-missing-exit-code"])
+def test_check_status_warns_when_stale_but_not_expired(tmp_path: Path, exit_code: int | None) -> None:
+    status_path = tmp_path / "status.json"
+    _write_status(status_path, (_fixed_now() - timedelta(days=15)).isoformat(), exit_code)
     paths = health_check.HealthCheckPaths(
         repo_root=tmp_path,
         status_path=status_path,
@@ -83,9 +109,10 @@ def test_check_status_warns_when_stale_but_not_expired(tmp_path: Path) -> None:
     assert "stale" in outcome.summary
 
 
-def test_check_status_fails_when_too_old(tmp_path: Path) -> None:
+@pytest.mark.parametrize("exit_code", [0, None], ids=["recorded-success", "legacy-missing-exit-code"])
+def test_check_status_fails_when_too_old(tmp_path: Path, exit_code: int | None) -> None:
     status_path = tmp_path / "status.json"
-    _write_status(status_path, (_fixed_now() - timedelta(days=60)).isoformat(), 0)
+    _write_status(status_path, (_fixed_now() - timedelta(days=60)).isoformat(), exit_code)
     paths = health_check.HealthCheckPaths(
         repo_root=tmp_path,
         status_path=status_path,

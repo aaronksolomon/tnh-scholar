@@ -10,6 +10,7 @@ class OpsCheckConfig:
     urls_path: Path
     url_limit: int | None
     output_dir: Path
+    audio_sample_seconds: int = 15
 
 
 @dataclass(frozen=True)
@@ -120,7 +121,12 @@ class OpsCheckRunner:
     def _download_audio(self, url: str, index: int) -> VideoAudio:
         filename = f"ops_audio_{index}.mp3"
         output_path = self._config.output_dir / filename
-        return self._downloader.get_audio(url, output_path=output_path)
+        return self._downloader.get_audio(
+            url,
+            start=None,
+            end=str(self._config.audio_sample_seconds),
+            output_path=output_path,
+        )
 
     def _validate_audio(self, audio: VideoAudio) -> None:
         if audio.filepath is None:
