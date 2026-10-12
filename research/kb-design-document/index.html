@@ -6,8 +6,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Design document for the TNH Scholar knowledge base and semantic search stack.">
+        <meta name="description" content="Current concept-aware KB design, beginning with a controlled bsearch retrieval pilot and evidence-led extensions.">
       
+      
+        <meta name="author" content="Codex">
       
       
       
@@ -14768,22 +14770,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#project-overview" class="md-nav__link">
+  <a href="#design-status-and-scope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project Overview
+        Design status and scope
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Project Overview">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives-and-research-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives and research questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collection-preparation-and-provenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collection preparation and provenance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Collection preparation and provenance">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#core-objectives" class="md-nav__link">
+  <a href="#source-selection" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Core Objectives
+        Source selection
       
     </span>
   </a>
@@ -14791,10 +14815,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#query-types-to-support" class="md-nav__link">
+  <a href="#processing-and-metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Query Types to Support
+        Processing and metadata
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#passage-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passage boundaries
       
     </span>
   </a>
@@ -14807,111 +14842,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#content-scope-and-processing" class="md-nav__link">
+  <a href="#reviewed-conceptual-model" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Content Scope and Processing
+        Reviewed conceptual model
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Content Scope and Processing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#source-materials" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source Materials
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#content-processing-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Content Processing Pipeline
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Content Processing Pipeline">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-text-normalization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Text Normalization
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-transcription-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Transcription Integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-metadata-enrichment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Metadata Enrichment
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-text-segmentation-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Text Segmentation Strategy
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#search-and-retrieval-architecture" class="md-nav__link">
+  <a href="#retrieval-design" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Search and Retrieval Architecture
+        Retrieval design
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Search and Retrieval Architecture">
+    <nav class="md-nav" aria-label="Retrieval design">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#vector-embeddings-technical-foundation" class="md-nav__link">
+  <a href="#controlled-comparison" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Vector Embeddings: Technical Foundation
+        Controlled comparison
       
     </span>
   </a>
@@ -14919,22 +14876,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#embedding-model-options" class="md-nav__link">
+  <a href="#evolution-toward-hybrid-retrieval" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Embedding Model Options
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Embedding Model Options">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#commercial-solutions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Commercial Solutions
+        Evolution toward hybrid retrieval
       
     </span>
   </a>
@@ -14942,193 +14887,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#open-source-solutions" class="md-nav__link">
+  <a href="#results-and-evidence-sufficiency" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Open Source Solutions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#search-paradigms" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Search Paradigms
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Search Paradigms">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-vector-based-semantic-search" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Vector-Based Semantic Search
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-keyword-based-search" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Keyword-Based Search
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-hybrid-search-systems" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Hybrid Search Systems
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#storage-and-infrastructure-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Storage and Infrastructure Options
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Storage and Infrastructure Options">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#vector-database-solutions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vector Database Solutions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#infrastructure-decision-matrix" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Infrastructure Decision Matrix
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#advanced-retrieval-techniques" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Advanced Retrieval Techniques
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Advanced Retrieval Techniques">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#passage-ranking-and-re-ranking" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Passage Ranking and Re-ranking
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#query-processing-enhancement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Query Processing Enhancement
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-pathways" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Implementation Pathways
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Implementation Pathways">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#fully-commercial-pathway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fully Commercial Pathway
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fully-open-source-pathway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fully Open Source Pathway
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hybrid-approach-recommended-for-prototyping" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hybrid Approach (Recommended for Prototyping)
+        Results and evidence sufficiency
       
     </span>
   </a>
@@ -15141,22 +14903,44 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#evaluation-framework" class="md-nav__link">
+  <a href="#evaluation-and-decision-gates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Evaluation Framework
+        Evaluation and decision gates
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Evaluation Framework">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation sequence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsequent-experiments-and-architectural-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subsequent experiments and architectural boundaries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Subsequent experiments and architectural boundaries">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#technical-metrics" class="md-nav__link">
+  <a href="#automated-concept-extraction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Technical Metrics
+        Automated concept extraction
       
     </span>
   </a>
@@ -15164,10 +14948,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#user-centered-evaluation" class="md-nav__link">
+  <a href="#multilingual-retrieval-and-answer-generation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        User-Centered Evaluation
+        Multilingual retrieval and answer generation
       
     </span>
   </a>
@@ -15175,10 +14959,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#evaluation-data-requirements" class="md-nav__link">
+  <a href="#infrastructure-and-service-boundaries" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Evaluation Data Requirements
+        Infrastructure and service boundaries
       
     </span>
   </a>
@@ -15191,185 +14975,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#open-decision-points-and-areas-for-exploration" class="md-nav__link">
+  <a href="#open-decisions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Open Decision Points and Areas for Exploration
+        Open decisions
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Open Decision Points and Areas for Exploration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-chunking-strategy-selection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Chunking Strategy Selection
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-multilingual-handling-approach" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Multilingual Handling Approach
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-metadata-schema-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Metadata Schema Design
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-commercial-vs-open-source-technology-mix" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Commercial vs. Open Source Technology Mix
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-advanced-feature-development-priority" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Advanced Feature Development Priority
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-query-response-pair-integration-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Query-Response Pair Integration Strategy
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-phases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Implementation Phases
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Implementation Phases">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#phase-1-foundation-development-4-6-weeks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 1: Foundation Development (4-6 weeks)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-2-enhanced-retrieval-6-8-weeks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 2: Enhanced Retrieval (6-8 weeks)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-3-advanced-features-8-12-weeks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 3: Advanced Features (8-12 weeks)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#success-criteria" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Success Criteria
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Success Criteria">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#technical-success-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Technical Success Metrics
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#user-success-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        User Success Metrics
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#content-success-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Content Success Metrics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -15853,22 +15465,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#project-overview" class="md-nav__link">
+  <a href="#design-status-and-scope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project Overview
+        Design status and scope
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Project Overview">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectives-and-research-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives and research questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collection-preparation-and-provenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collection preparation and provenance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Collection preparation and provenance">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#core-objectives" class="md-nav__link">
+  <a href="#source-selection" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Core Objectives
+        Source selection
       
     </span>
   </a>
@@ -15876,10 +15510,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#query-types-to-support" class="md-nav__link">
+  <a href="#processing-and-metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Query Types to Support
+        Processing and metadata
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#passage-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passage boundaries
       
     </span>
   </a>
@@ -15892,111 +15537,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#content-scope-and-processing" class="md-nav__link">
+  <a href="#reviewed-conceptual-model" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Content Scope and Processing
+        Reviewed conceptual model
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Content Scope and Processing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#source-materials" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source Materials
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#content-processing-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Content Processing Pipeline
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Content Processing Pipeline">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-text-normalization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Text Normalization
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-transcription-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Transcription Integration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-metadata-enrichment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Metadata Enrichment
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-text-segmentation-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Text Segmentation Strategy
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#search-and-retrieval-architecture" class="md-nav__link">
+  <a href="#retrieval-design" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Search and Retrieval Architecture
+        Retrieval design
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Search and Retrieval Architecture">
+    <nav class="md-nav" aria-label="Retrieval design">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#vector-embeddings-technical-foundation" class="md-nav__link">
+  <a href="#controlled-comparison" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Vector Embeddings: Technical Foundation
+        Controlled comparison
       
     </span>
   </a>
@@ -16004,22 +15571,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#embedding-model-options" class="md-nav__link">
+  <a href="#evolution-toward-hybrid-retrieval" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Embedding Model Options
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Embedding Model Options">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#commercial-solutions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Commercial Solutions
+        Evolution toward hybrid retrieval
       
     </span>
   </a>
@@ -16027,193 +15582,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#open-source-solutions" class="md-nav__link">
+  <a href="#results-and-evidence-sufficiency" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Open Source Solutions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#search-paradigms" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Search Paradigms
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Search Paradigms">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-vector-based-semantic-search" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Vector-Based Semantic Search
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-keyword-based-search" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Keyword-Based Search
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-hybrid-search-systems" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Hybrid Search Systems
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#storage-and-infrastructure-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Storage and Infrastructure Options
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Storage and Infrastructure Options">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#vector-database-solutions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vector Database Solutions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#infrastructure-decision-matrix" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Infrastructure Decision Matrix
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#advanced-retrieval-techniques" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Advanced Retrieval Techniques
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Advanced Retrieval Techniques">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#passage-ranking-and-re-ranking" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Passage Ranking and Re-ranking
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#query-processing-enhancement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Query Processing Enhancement
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-pathways" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Implementation Pathways
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Implementation Pathways">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#fully-commercial-pathway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fully Commercial Pathway
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fully-open-source-pathway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fully Open Source Pathway
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hybrid-approach-recommended-for-prototyping" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hybrid Approach (Recommended for Prototyping)
+        Results and evidence sufficiency
       
     </span>
   </a>
@@ -16226,22 +15598,44 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#evaluation-framework" class="md-nav__link">
+  <a href="#evaluation-and-decision-gates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Evaluation Framework
+        Evaluation and decision gates
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Evaluation Framework">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation sequence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsequent-experiments-and-architectural-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subsequent experiments and architectural boundaries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Subsequent experiments and architectural boundaries">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#technical-metrics" class="md-nav__link">
+  <a href="#automated-concept-extraction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Technical Metrics
+        Automated concept extraction
       
     </span>
   </a>
@@ -16249,10 +15643,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#user-centered-evaluation" class="md-nav__link">
+  <a href="#multilingual-retrieval-and-answer-generation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        User-Centered Evaluation
+        Multilingual retrieval and answer generation
       
     </span>
   </a>
@@ -16260,10 +15654,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#evaluation-data-requirements" class="md-nav__link">
+  <a href="#infrastructure-and-service-boundaries" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Evaluation Data Requirements
+        Infrastructure and service boundaries
       
     </span>
   </a>
@@ -16276,185 +15670,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#open-decision-points-and-areas-for-exploration" class="md-nav__link">
+  <a href="#open-decisions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Open Decision Points and Areas for Exploration
+        Open decisions
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Open Decision Points and Areas for Exploration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-chunking-strategy-selection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Chunking Strategy Selection
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-multilingual-handling-approach" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Multilingual Handling Approach
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-metadata-schema-design" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Metadata Schema Design
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-commercial-vs-open-source-technology-mix" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Commercial vs. Open Source Technology Mix
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-advanced-feature-development-priority" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Advanced Feature Development Priority
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-query-response-pair-integration-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Query-Response Pair Integration Strategy
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-phases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Implementation Phases
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Implementation Phases">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#phase-1-foundation-development-4-6-weeks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 1: Foundation Development (4-6 weeks)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-2-enhanced-retrieval-6-8-weeks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 2: Enhanced Retrieval (6-8 weeks)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-3-advanced-features-8-12-weeks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phase 3: Advanced Features (8-12 weeks)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#success-criteria" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Success Criteria
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Success Criteria">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#technical-success-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Technical Success Metrics
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#user-success-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        User Success Metrics
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#content-success-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Content Success Metrics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -16479,460 +15701,207 @@
 
 
 <h1 id="tnh-scholar-knowledge-base-design-document">TNH Scholar Knowledge Base: Design Document<a class="headerlink" href="#tnh-scholar-knowledge-base-design-document" title="Link to this section">&para;</a></h1>
-<p>Design document for the TNH Scholar knowledge base and semantic search stack.</p>
-<h2 id="project-overview">Project Overview<a class="headerlink" href="#project-overview" title="Link to this section">&para;</a></h2>
-<p>The TNH Scholar Knowledge Base project aims to create an AI-driven searchable knowledge base for the works of Thich Nhat Hanh, enabling researchers to perform semantic searches across a comprehensive corpus of teachings. The system will support complex queries ranging from thematic exploration to perspective synthesis while maintaining scholarly accuracy and source attribution.</p>
-<h3 id="core-objectives">Core Objectives<a class="headerlink" href="#core-objectives" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Primary Goal</strong>: Enable semantic search across Thich Nhat Hanh's complete works with accurate source attribution</li>
-<li><strong>Target Users</strong>: Monastics and senior community members for research purposes (internal use only)</li>
-<li><strong>Output Focus</strong>: Concrete passage references rather than synthesized responses (initially)</li>
-<li><strong>Technical Approach</strong>: Leverage off-the-shelf systems and technologies where possible</li>
-</ul>
-<h3 id="query-types-to-support">Query Types to Support<a class="headerlink" href="#query-types-to-support" title="Link to this section">&para;</a></h3>
-<p>The system must handle diverse query patterns:</p>
-<ol>
-<li><strong>Factual Retrieval</strong>: "Where is the best description of touching the earth practice?"</li>
-<li><strong>Thematic Exploration</strong>: "Find all works referencing climate change and transcending separate self"</li>
-<li><strong>Perspective Analysis</strong>: "What does Thay say about soldiers, police officers, and nonviolence?"</li>
-<li><strong>Qualitative Assessment</strong>: "What were some of Thay's most difficult/profound/loving moments?"</li>
-<li><strong>Cross-Domain Inquiry</strong>: "Does Thay ever talk about physics and dharma teachings?"</li>
-<li><strong>Synthetic Analysis</strong> (future): "What would Thay say about the Israel Palestine conflict today?"</li>
-</ol>
-<h2 id="content-scope-and-processing">Content Scope and Processing<a class="headerlink" href="#content-scope-and-processing" title="Link to this section">&para;</a></h2>
-<h3 id="source-materials">Source Materials<a class="headerlink" href="#source-materials" title="Link to this section">&para;</a></h3>
-<ul>
-<li><strong>Text Sources</strong>: Hundreds of texts in Vietnamese and English (predominant languages)</li>
-<li><strong>Audio/Video Sources</strong>: Potentially thousands of sources requiring transcription</li>
-<li><strong>Processing Approach</strong>: All sources converted to digital text with unified metadata structure</li>
-<li><strong>Transcription Capability</strong>: Robust transcription tools already available in the project</li>
-</ul>
-<h3 id="content-processing-pipeline">Content Processing Pipeline<a class="headerlink" href="#content-processing-pipeline" title="Link to this section">&para;</a></h3>
-<h4 id="1-text-normalization">1. Text Normalization<a class="headerlink" href="#1-text-normalization" title="Link to this section">&para;</a></h4>
-<ul>
-<li>Consistent formatting, punctuation, and character handling</li>
-<li>Language-specific processing for Vietnamese and English</li>
-<li>Special character and encoding standardization</li>
-</ul>
-<h4 id="2-transcription-integration">2. Transcription Integration<a class="headerlink" href="#2-transcription-integration" title="Link to this section">&para;</a></h4>
-<ul>
-<li>Audio/video content processed through existing transcription tools</li>
-<li>Quality assurance for transcribed content</li>
-<li>Timestamping preservation for multimedia sources</li>
-</ul>
-<h4 id="3-metadata-enrichment">3. Metadata Enrichment<a class="headerlink" href="#3-metadata-enrichment" title="Link to this section">&para;</a></h4>
-<p>Development of consistent metadata schema including:</p>
-<p><strong>Bibliographic Information</strong>:</p>
-<ul>
-<li>Source identification and publication details</li>
-<li>Date, author/speaker, and publication context</li>
-<li>Original format and processing information</li>
-</ul>
-<p><strong>Content Classification</strong>:</p>
-<ul>
-<li>Topics, themes, and spiritual practices</li>
-<li>Target audiences and contexts</li>
-<li>Relationship to other works in corpus</li>
-</ul>
-<p><strong>Structural Metadata</strong>:</p>
-<ul>
-<li>Position within larger works</li>
-<li>Section and subsection organization</li>
-<li>Cross-references and citations</li>
-</ul>
-<p><strong>Technical Metadata</strong>:</p>
-<ul>
-<li>Processing timestamps and methods</li>
-<li>Language identification and translation links</li>
-<li>Quality scores and confidence measures</li>
-</ul>
-<h4 id="4-text-segmentation-strategy">4. Text Segmentation Strategy<a class="headerlink" href="#4-text-segmentation-strategy" title="Link to this section">&para;</a></h4>
-<p><strong>Key Decision Point</strong>: Determining optimal chunk size for retrieval</p>
-<p>Options for consideration:</p>
-<ul>
-<li><strong>Paragraph-level chunks</strong>: Balance between context and precision</li>
-<li><strong>Section-based chunks</strong>: Preserving logical content boundaries  </li>
-<li><strong>Sliding window approaches</strong>: Overlapping chunks to prevent context loss</li>
-<li><strong>Hierarchical chunking</strong>: Multiple granularities (section → paragraph → sentence)</li>
-</ul>
-<h2 id="search-and-retrieval-architecture">Search and Retrieval Architecture<a class="headerlink" href="#search-and-retrieval-architecture" title="Link to this section">&para;</a></h2>
-<h3 id="vector-embeddings-technical-foundation">Vector Embeddings: Technical Foundation<a class="headerlink" href="#vector-embeddings-technical-foundation" title="Link to this section">&para;</a></h3>
-<p>Vector embeddings convert text into high-dimensional numerical representations where semantically similar content occupies nearby positions in vector space. This enables semantic search beyond keyword matching.</p>
-<p><strong>Key Concepts</strong>:</p>
-<ul>
-<li>Text converted to vectors (lists of numbers) representing meaning</li>
-<li>Similar concepts have mathematically similar vectors</li>
-<li>Search performed by finding nearest neighbors in vector space</li>
-<li>Typical dimensions: 768-3072 numbers per text segment</li>
-</ul>
-<p><strong>Example Flow</strong>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Text: &quot;The practice of mindful breathing&quot;
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>→ Embedding Model → [0.016, -0.028, 0.044, ..., 0.037]
-</span></code></pre></div>
-<h3 id="embedding-model-options">Embedding Model Options<a class="headerlink" href="#embedding-model-options" title="Link to this section">&para;</a></h3>
-<h4 id="commercial-solutions">Commercial Solutions<a class="headerlink" href="#commercial-solutions" title="Link to this section">&para;</a></h4>
-<ul>
-<li><strong>OpenAI text-embedding-3-large</strong>: 3,072 dimensions, high quality, API-based</li>
-<li><strong>Cohere Embed</strong>: Multilingual support, commercial API</li>
-<li><strong>Azure AI Embeddings</strong>: Enterprise integration capabilities</li>
-</ul>
-<h4 id="open-source-solutions">Open Source Solutions<a class="headerlink" href="#open-source-solutions" title="Link to this section">&para;</a></h4>
-<ul>
-<li><strong>Sentence-BERT (SBERT)</strong>: Wide model variety, multilingual options available</li>
-<li><strong>E5 Models</strong>: Microsoft's efficient embeddings with strong performance</li>
-<li><strong>BGE Models</strong>: Multilingual embeddings with strong cross-language capabilities</li>
-<li><strong>Multilingual Models</strong>: Specialized for Vietnamese-English bilingual corpus</li>
-</ul>
-<p><strong>Key Decision Point</strong>: Commercial vs. Open Source Embedding Strategy</p>
-<ul>
-<li>Commercial: Higher quality, faster development, ongoing costs</li>
-<li>Open Source: Full control, customization potential, infrastructure overhead</li>
-</ul>
-<h3 id="search-paradigms">Search Paradigms<a class="headerlink" href="#search-paradigms" title="Link to this section">&para;</a></h3>
-<h4 id="1-vector-based-semantic-search">1. Vector-Based Semantic Search<a class="headerlink" href="#1-vector-based-semantic-search" title="Link to this section">&para;</a></h4>
-<ul>
-<li><strong>Approach</strong>: Dense vector embeddings with nearest neighbor search</li>
-<li><strong>Strengths</strong>: Captures conceptual relationships, handles paraphrasing</li>
-<li><strong>Limitations</strong>: Computationally expensive, may lose precision on technical terms</li>
-<li><strong>Best For</strong>: Thematic queries, conceptual exploration</li>
-</ul>
-<h4 id="2-keyword-based-search">2. Keyword-Based Search<a class="headerlink" href="#2-keyword-based-search" title="Link to this section">&para;</a></h4>
-<ul>
-<li><strong>Approach</strong>: Traditional BM25/TF-IDF algorithms with boolean operators</li>
-<li><strong>Strengths</strong>: Precise terminology matching, computationally efficient</li>
-<li><strong>Limitations</strong>: Misses semantic relationships, language-dependent</li>
-<li><strong>Best For</strong>: Exact phrase matching, specific terminology</li>
-</ul>
-<h4 id="3-hybrid-search-systems">3. Hybrid Search Systems<a class="headerlink" href="#3-hybrid-search-systems" title="Link to this section">&para;</a></h4>
-<ul>
-<li><strong>Approach</strong>: Combining vector and keyword search with result fusion</li>
-<li><strong>Strengths</strong>: Balances precision and recall, handles diverse query types</li>
-<li><strong>Limitations</strong>: Complex implementation, requires careful tuning</li>
-<li><strong>Best For</strong>: Production systems serving varied query patterns</li>
-</ul>
-<p><strong>Recommended Approach</strong>: Start with pure vector search, evolve to hybrid system based on user feedback and query patterns.</p>
-<h3 id="storage-and-infrastructure-options">Storage and Infrastructure Options<a class="headerlink" href="#storage-and-infrastructure-options" title="Link to this section">&para;</a></h3>
-<h4 id="vector-database-solutions">Vector Database Solutions<a class="headerlink" href="#vector-database-solutions" title="Link to this section">&para;</a></h4>
-<p><strong>Specialized Vector Databases</strong>:</p>
-<ul>
-<li><strong>Pinecone</strong>: Fully managed, simple API, commercial service</li>
-<li><strong>Weaviate</strong>: Open-source, schema support, self-hosted or cloud</li>
-<li><strong>Milvus</strong>: High-performance, enterprise features, complex setup</li>
-<li><strong>Qdrant</strong>: Fast performance, good filtering, moderate complexity</li>
-<li><strong>Chroma</strong>: Simple open-source, ideal for prototypes</li>
-<li><strong>PGVector</strong>: PostgreSQL extension, leverages existing database skills</li>
-</ul>
-<p><strong>Traditional Search with Vector Extensions</strong>:</p>
-<ul>
-<li><strong>Elasticsearch</strong>: Mature ecosystem, hybrid search capabilities, complex configuration</li>
-<li><strong>Solr</strong>: Similar to Elasticsearch, vector plugins available</li>
-</ul>
-<h4 id="infrastructure-decision-matrix">Infrastructure Decision Matrix<a class="headerlink" href="#infrastructure-decision-matrix" title="Link to this section">&para;</a></h4>
+<p>The TNH Scholar Knowledge Base supports scholarly discovery of source passages across Thích Nhất Hạnh’s teachings and classical Buddhist texts. Its immediate design is a controlled retrieval study, followed by extensions justified by measured usefulness and review effort.</p>
+<h2 id="design-status-and-scope">Design status and scope<a class="headerlink" href="#design-status-and-scope" title="Link to this section">&para;</a></h2>
+<p>This document consolidates the earlier semantic-search design with the September 30 <a href="../kb-pilot-proposal/">pilot study proposal</a> and the <a href="../../architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17/">concept-extraction review</a>. The proposal describes researcher participation and the experiment; this document describes the supporting design and subsequent decision gates. Both describe proposed work, not an implemented KB.</p>
+<p>The first study uses <strong>bsearch</strong>, a small reviewed concept table, one shared language, and passage-first results. It compares direct search, general AI query expansion, and reviewed concept expansion on the same collection. The starting targets are <strong>8–12 concepts, 10–15 source units, and 12–15 authentic questions</strong>. The earlier roadmap’s 20–30 concepts, 30–50 sources, and 30 questions are possible expansion sizes after the first study, not initial requirements.</p>
+<p><a href="../../architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy/">ADR-K01</a> remains proposed. Its original managed/vector-first and English-first assumptions are historical proposals; its October 3 addendum points to this revised pilot direction. Embedding providers, storage, multilingual strategy, and production architecture remain open.</p>
+<h2 id="objectives-and-research-questions">Objectives and research questions<a class="headerlink" href="#objectives-and-research-questions" title="Link to this section">&para;</a></h2>
+<p>The primary users are monastics, researchers, and senior community members. The first output is a useful passage with an accurate citation and a path back to its source. Generated answers are a later experiment.</p>
+<p>The study asks whether reviewed terminology and relationships discover useful passages missed by direct search or general AI expansion, and whether the improvement justifies curation and operational effort. It also tests whether expansion creates misleading connections across traditions, translations, or historical contexts.</p>
+<p>Select questions across these use cases, scaled to the small collection:</p>
 <table>
 <thead>
 <tr>
-<th>Solution</th>
-<th>Setup Complexity</th>
-<th>Performance</th>
-<th>Cost Model</th>
-<th>Best For</th>
+<th>Query type</th>
+<th>Example or test purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Pinecone</td>
-<td>Low</td>
-<td>High</td>
-<td>Usage-based</td>
-<td>Rapid prototyping</td>
+<td>Factual or practice lookup</td>
+<td>Find a description of touching the earth practice.</td>
 </tr>
 <tr>
-<td>Elasticsearch</td>
-<td>Medium</td>
-<td>High</td>
-<td>Infrastructure</td>
-<td>Hybrid search needs</td>
+<td>Thematic exploration</td>
+<td>Find passages connecting environmental responsibility and non-separate self.</td>
 </tr>
 <tr>
-<td>Chroma</td>
-<td>Low</td>
-<td>Medium</td>
-<td>Self-hosted</td>
-<td>Initial development</td>
+<td>Perspective analysis</td>
+<td>Find teachings concerning nonviolence and public service.</td>
 </tr>
 <tr>
-<td>Weaviate</td>
-<td>Medium</td>
-<td>High</td>
-<td>Flexible</td>
-<td>Production deployment</td>
+<td>Qualitative inquiry</td>
+<td>Find passages a researcher considers especially difficult or compassionate; record the researcher’s criteria.</td>
+</tr>
+<tr>
+<td>Cross-domain inquiry</td>
+<td>Find connections between physics and Dharma teachings where the collection supports them.</td>
+</tr>
+<tr>
+<td>Ambiguity and historical distinction</td>
+<td>Distinguish shared terminology with different meanings or later interpretations.</td>
+</tr>
+<tr>
+<td>Insufficient evidence</td>
+<td>Include at least one question the selected collection cannot answer.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="advanced-retrieval-techniques">Advanced Retrieval Techniques<a class="headerlink" href="#advanced-retrieval-techniques" title="Link to this section">&para;</a></h3>
-<h4 id="passage-ranking-and-re-ranking">Passage Ranking and Re-ranking<a class="headerlink" href="#passage-ranking-and-re-ranking" title="Link to this section">&para;</a></h4>
-<p>Methods to improve relevance of returned results:</p>
+<p>These examples guide question selection; the study does not claim every topic is represented. Speculative attribution such as “What would Thay say about a present-day conflict?” is outside the pilot.</p>
+<h2 id="collection-preparation-and-provenance">Collection preparation and provenance<a class="headerlink" href="#collection-preparation-and-provenance" title="Link to this section">&para;</a></h2>
+<h3 id="source-selection">Source selection<a class="headerlink" href="#source-selection" title="Link to this section">&para;</a></h3>
+<p>The proposed TNH books are <em>Chanting from the Heart</em>, <em>Fragrant Palm Leaves</em>, <em>The Miracle of Mindfulness</em>, and <em>The Heart of the Buddha’s Teaching</em>. Selected talks may supplement them. Compare selected sections with a small classical collection already supported by bsearch, initially SuttaCentral or CBETA as appropriate to the questions and shared language. Confirm available files, permissions, editions, translations, and bsearch ingestion capabilities before freezing the collection.</p>
+<p>A source unit is a selected book section, talk, or discourse; it is distinct from a retrieval passage. Include potentially misleading material so improved recall can be assessed alongside false matches. Preserve canonical identifiers for classical texts. EPUB is preferred, PDF acceptable, and talks may use UTF-8 text with paragraphs and available timestamps.</p>
+<h3 id="processing-and-metadata">Processing and metadata<a class="headerlink" href="#processing-and-metadata" title="Link to this section">&para;</a></h3>
+<p>Retain original files alongside extracted text. Normalize encoding and formatting while keeping a traceable mapping back to source locations. Review OCR or transcription errors that could alter meaning. Existing processing tools may assist preparation, but complete audio/video ingestion is not required for the study.</p>
+<p>Reuse the <a href="../../user-guide/journal-pipeline-case-study/">journal pipeline’s provenance approach</a>. Distinguish source metadata from processing metadata and derived interpretations.</p>
+<table>
+<thead>
+<tr>
+<th>Record</th>
+<th>Minimum information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source</td>
+<td>Stable ID, title, author/speaker, language, known date, edition, translator, canonical identifier where applicable, source location, and use restrictions.</td>
+</tr>
+<tr>
+<td>Passage</td>
+<td>Stable ID, source ID and version, section position, page/canonical locator/timestamp as available, boundaries, and original text location.</td>
+</tr>
+<tr>
+<td>Processing</td>
+<td>Extraction or transcription method/version, processing time, normalization steps, and review status.</td>
+</tr>
+<tr>
+<td>Translation</td>
+<td>Original/translation links and attribution when available; explicitly record missing links.</td>
+</tr>
+<tr>
+<td>Concept annotation</td>
+<td>Concept ID, evidence span or locator, relationship type and direction, rationale, provenance, and review status.</td>
+</tr>
+<tr>
+<td>Experiment</td>
+<td>Collection and concept-table versions, passage policy, retrieval settings, expansion limits, actual queries, ranked passage IDs, and judgments.</td>
+</tr>
+</tbody>
+</table>
+<p>Do not invent missing dates, translators, or page numbers. Use the available locator and identify its limitations. Generated annotations and model confidence must not be presented as verified bibliographic facts or expert judgments.</p>
+<h3 id="passage-boundaries">Passage boundaries<a class="headerlink" href="#passage-boundaries" title="Link to this section">&para;</a></h3>
+<p>Start with a documented paragraph or logical-section policy, retaining parent-section context and reliable source navigation. Record how long passages, boundary splits, and any overlap are handled. Use <strong>identical boundaries across all three study conditions</strong>.</p>
+<p>If preparation shows that boundaries regularly remove necessary context, compare paragraph-based and section-based passage policies on development questions before freezing the main experiment. Keep this comparison separate from the query-expansion comparison. Sliding windows and hierarchical retrieval remain options if observed boundary failures justify them.</p>
+<h2 id="reviewed-conceptual-model">Reviewed conceptual model<a class="headerlink" href="#reviewed-conceptual-model" title="Link to this section">&para;</a></h2>
+<p>Use a small reviewed table rather than requiring a graph database or automated concept extraction. Each concept has a stable ID, preferred label, alternative names, scoped meaning, tradition or historical context, source evidence, and review status. Preserve the distinction between general Buddhist concepts and Plum Village teachings/practices.</p>
+<p>Relationships must identify their type, direction, scope, evidence, and rationale. Distinguish equivalents and translation variants from broader/narrower concepts, related teachings, and practice expressions. Related concepts must not automatically become synonyms. A later Plum Village interpretation must not be projected onto a classical source as though it were the source’s own terminology.</p>
+<p>Reviewed equivalent terms may expand ordinary queries within their documented scope. Related ideas or interpretive connections require an explicit request for connections or a separately labeled search. Retain original-query retrieval for uncatalogued material. Record which concept and relationship caused each added term so gains and errors can be explained.</p>
+<p>The first study uses one shared language. The data model should accommodate multilingual labels and original/translation links, but multilingual retrieval is a separately evaluated extension.</p>
+<h2 id="retrieval-design">Retrieval design<a class="headerlink" href="#retrieval-design" title="Link to this section">&para;</a></h2>
+<h3 id="controlled-comparison">Controlled comparison<a class="headerlink" href="#controlled-comparison" title="Link to this section">&para;</a></h3>
+<p>All conditions use the same frozen collection, passage boundaries, metadata filters, ranking settings, and result limit.</p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Input</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Direct search</td>
+<td>Original question.</td>
+<td>Baseline without expansion.</td>
+</tr>
+<tr>
+<td>General AI expansion</td>
+<td>Original question plus AI-suggested terms; no access to the reviewed table or study collection.</td>
+<td>Measure general reformulation.</td>
+</tr>
+<tr>
+<td>Concept-based expansion</td>
+<td>Original question plus terms from the reviewed table.</td>
+<td>Measure the added value of curated knowledge.</td>
+</tr>
+</tbody>
+</table>
+<p>Use matching limits on added terms and search calls for both expansion conditions. Document how searches are combined, duplicate passages removed, and results ordered; use the same combination policy for both expansion conditions. Log actual expansions and results. General AI expansion may already contain Buddhist knowledge, so the comparison measures the table’s added value rather than knowledge versus no knowledge.</p>
+<p>Keyword search is the initial baseline. If semantic retrieval is already available, evaluate it as a separate comparison while keeping the query-expansion conditions comparable. Do not introduce new ranking stages or model choices in only one expansion condition.</p>
+<h3 id="evolution-toward-hybrid-retrieval">Evolution toward hybrid retrieval<a class="headerlink" href="#evolution-toward-hybrid-retrieval" title="Link to this section">&para;</a></h3>
+<p>The older design’s distinction remains useful: keyword retrieval tests exact terminology, semantic retrieval tests paraphrases and conceptual similarity, and hybrid retrieval combines their candidates. Metadata filtering and source context apply across these approaches.</p>
+<p>Introduce semantic or hybrid retrieval only when the baseline reveals missed relevant passages that justify another experiment. Reranking, query rewriting, intent routing, and hierarchical retrieval are possible later interventions; each should address an observed failure and be compared against the established baseline.</p>
+<h3 id="results-and-evidence-sufficiency">Results and evidence sufficiency<a class="headerlink" href="#results-and-evidence-sufficiency" title="Link to this section">&para;</a></h3>
+<p>Return passages, source citations, surrounding context, and clearly labeled expansion reasons. Provide a basic path to original text or file during the study; an integrated scan/translation/concept viewer can follow later.</p>
+<p>Evaluate whether returned passages actually support the researcher’s question. Empty results and top-ranked weak matches must remain visible in the report. Retrieval scores alone do not establish sufficient evidence, and no match in this small collection does not establish absence from TNH’s complete works.</p>
+<h2 id="evaluation-and-decision-gates">Evaluation and decision gates<a class="headerlink" href="#evaluation-and-decision-gates" title="Link to this section">&para;</a></h2>
+<p>Reserve several questions from tuning. Before held-out evaluation, freeze the collection, concept table, boundaries, prompts/models, retrieval settings, and budgets. Agree with researchers on what constitutes a worthwhile gain and unacceptable regressions before seeing held-out results.</p>
+<p>Pool the top ten passages from each condition for each question, remove duplicates, and grade each passage once with retrieval origin hidden: <strong>not useful, partly useful, or directly useful</strong>. Define the rubric with researchers, record disagreements, and distinguish interpretive usefulness from explicit source support. Review existing query-response pairs as possible question/evidence candidates; do not treat generated pairs as ground truth without source checks.</p>
+<table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Pilot use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Top-five usefulness</td>
+<td>Report partly and directly useful passages separately, using the same rubric across conditions.</td>
+</tr>
+<tr>
+<td>First useful result</td>
+<td>Report first-useful rank or reciprocal rank, including failures to retrieve a useful passage.</td>
+</tr>
+<tr>
+<td>Gains and regressions</td>
+<td>Show discoveries, false matches, and losses by question and query type.</td>
+</tr>
+<tr>
+<td>Citation and context accuracy</td>
+<td>Check source identity, locator resolution, quotation fidelity, and whether surrounding context changes the interpretation.</td>
+</tr>
+<tr>
+<td>Insufficient evidence</td>
+<td>Assess behavior on unanswerable questions and misleading matches; record collection limitations.</td>
+</tr>
+<tr>
+<td>Operational effort</td>
+<td>Report latency, API cost, preparation/curation effort, and researcher review effort.</td>
+</tr>
+</tbody>
+</table>
+<p>The pooled judgments support comparisons within the study, not absolute corpus-wide recall. More comprehensive recall measurement or graded nDCG can follow if the question set and judgments justify them. Report results per question alongside aggregates; a small pilot cannot establish broad statistical or production claims.</p>
+<p>Proceed with concept expansion only if its discoveries justify effort without unacceptable misleading associations or citation errors. If general AI expansion performs similarly, simplify the design or identify where curation provides a defensible contextual benefit. If expansion harms retrieval, narrow relations or retain direct search. Treat citation defects and misleading equivalences as failures to repair and re-evaluate, not gains masked by an aggregate relevance score.</p>
+<h2 id="implementation-sequence">Implementation sequence<a class="headerlink" href="#implementation-sequence" title="Link to this section">&para;</a></h2>
+<ol>
+<li><strong>Prepare and review.</strong> Confirm bsearch capabilities and source availability; select units, concepts, and questions; define provenance and passage policies; agree on judgments and decision criteria.</li>
+<li><strong>Run the controlled study.</strong> Establish direct retrieval, implement bounded expansion conditions, freeze inputs, collect blinded judgments, and publish a reproducible comparative report with representative discoveries and errors.</li>
+<li><strong>Choose the next experiment.</strong> Based on failures and researcher needs, consider a larger collection, semantic/hybrid retrieval, a bilingual subset, or improved source navigation. Keep experiment variables separable.</li>
+<li><strong>Develop assistance after retrieval evidence.</strong> Consider automated extraction, evidence-linked answers, and a fuller viewer only when their prerequisites and evaluation are defined.</li>
+</ol>
+<p>No fixed production schedule, monthly infrastructure budget, corpus-coverage percentage, availability target, or adoption target is established by this pilot. Measure actual effort and cost before committing to them.</p>
+<h2 id="subsequent-experiments-and-architectural-boundaries">Subsequent experiments and architectural boundaries<a class="headerlink" href="#subsequent-experiments-and-architectural-boundaries" title="Link to this section">&para;</a></h2>
+<h3 id="automated-concept-extraction">Automated concept extraction<a class="headerlink" href="#automated-concept-extraction" title="Link to this section">&para;</a></h3>
+<p>The <a href="../../architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17/">September 17 live test</a> found reversed relationships and altered quotations, including loss of a crucial negation. It motivates validation work; it does not establish an accepted production concept map.</p>
+<p>A later extraction pipeline should use typed outputs against reviewed vocabularies, preserve evidence spans and negation, validate IDs and predicates, evaluate relationship direction, and propose novel terms separately. Detectable failures should trigger bounded repair or an explicit review queue. Measure unassisted acceptance and correction rates before scaling. Expert review curates vocabularies and assesses sampled/flagged results; schema validity alone cannot establish doctrinal correctness. Per-document ad hoc agent cleanup must not become a required processing stage.</p>
+<h3 id="multilingual-retrieval-and-answer-generation">Multilingual retrieval and answer generation<a class="headerlink" href="#multilingual-retrieval-and-answer-generation" title="Link to this section">&para;</a></h3>
+<p>Use a small Vietnamese–English subset to compare cross-language discovery and translation effects after the shared-language study. Preserve language, translation attribution, scoped equivalents, and direct access to originals. Unified multilingual embeddings, separate indexes, and translation-based expansion are options to evaluate rather than settled choices.</p>
+<p>Evidence-linked answers require demonstrated passage retrieval, source-linked claims, explicit insufficient-evidence behavior, and evaluation against passages and originals. Speculative attribution, fine-tuning, temporal analytics, visualization, and collaborative annotation remain future research rather than pilot deliverables.</p>
+<h3 id="infrastructure-and-service-boundaries">Infrastructure and service boundaries<a class="headerlink" href="#infrastructure-and-service-boundaries" title="Link to this section">&para;</a></h3>
+<p>Reuse bsearch and existing preparation tools wherever feasible. Select storage and embedding infrastructure from measured needs: integration effort, metadata filtering, reproducible indexing, exportability, source restrictions, latency, and total operational cost. Managed and open-source approaches remain alternatives; neither managed-to-open migration nor Supabase is predetermined. Detailed provider comparisons and pricing should be refreshed when selecting a stack.</p>
+<p>New GenAI services must follow <a href="../../architecture/object-service/adr/adr-os01-object-service-architecture-v3/">ADR-OS01</a>: typed Pydantic domain models, Protocol boundaries, service orchestration, and provider adapters with bidirectional mappers and isolated transports. Use Settings → Config → Params → Policy, config at initialization, and params per call. Keep provider selection independent of concept semantics and scholarly judgments.</p>
+<h2 id="open-decisions">Open decisions<a class="headerlink" href="#open-decisions" title="Link to this section">&para;</a></h2>
 <ul>
-<li><strong>Cross-Encoders</strong>: Direct query-passage relevance scoring</li>
-<li><strong>LLM-based Reranking</strong>: Large language models for relevance judgment  </li>
-<li><strong>Learning to Rank</strong>: Machine learning approaches using multiple features</li>
-<li><strong>Multi-stage Retrieval</strong>: Initial retrieval followed by sophisticated ranking</li>
+<li>Which source editions, classical corpus, shared language, and authentic questions are available?</li>
+<li>Which bsearch ingestion, filtering, ranking, and export capabilities can be reused without new infrastructure?</li>
+<li>Which passage policy preserves necessary context while keeping the comparison manageable?</li>
+<li>Which scoped equivalences and relationship types are reviewed strongly enough for expansion?</li>
+<li>What gain and regression criteria do researchers accept relative to curation effort?</li>
+<li>Which observed limitation warrants the next experiment, and what evidence would justify a larger KB?</li>
 </ul>
-<h4 id="query-processing-enhancement">Query Processing Enhancement<a class="headerlink" href="#query-processing-enhancement" title="Link to this section">&para;</a></h4>
-<ul>
-<li><strong>Query Expansion</strong>: Adding related terms to improve recall</li>
-<li><strong>Query Rewriting</strong>: Reformulating queries for better matching</li>
-<li><strong>Retrieval Augmented Generation for Queries</strong>: LLM-generated query improvements</li>
-<li><strong>Intent Classification</strong>: Understanding query type to optimize search strategy</li>
-</ul>
-<h2 id="implementation-pathways">Implementation Pathways<a class="headerlink" href="#implementation-pathways" title="Link to this section">&para;</a></h2>
-<h3 id="fully-commercial-pathway">Fully Commercial Pathway<a class="headerlink" href="#fully-commercial-pathway" title="Link to this section">&para;</a></h3>
-<p><strong>Components</strong>:</p>
-<ul>
-<li>Embedding: OpenAI text-embedding-3-large API</li>
-<li>Storage: Pinecone or Azure Cognitive Search</li>
-<li>Query Processing: OpenAI API for query understanding</li>
-<li>Infrastructure: Cloud providers (AWS, Azure, GCP)</li>
-</ul>
-<p><strong>Cost Estimate</strong>: $500-2000/month depending on usage
-<strong>Timeline</strong>: 2-4 weeks for initial prototype
-<strong>Advantages</strong>: Rapid development, managed infrastructure, high-quality embeddings
-<strong>Disadvantages</strong>: Recurring costs, vendor dependency, data privacy considerations</p>
-<h3 id="fully-open-source-pathway">Fully Open Source Pathway<a class="headerlink" href="#fully-open-source-pathway" title="Link to this section">&para;</a></h3>
-<p><strong>Components</strong>:</p>
-<ul>
-<li>Embedding: SBERT, E5, or BGE models (self-hosted)</li>
-<li>Storage: Elasticsearch, Qdrant, or Milvus (self-hosted)</li>
-<li>Query Processing: Open source rerankers, self-hosted LLMs</li>
-<li>Infrastructure: Self-managed servers</li>
-</ul>
-<p><strong>Cost Estimate</strong>: Primarily hardware and operational overhead
-<strong>Timeline</strong>: 6-12 weeks for initial prototype<br />
-<strong>Advantages</strong>: No recurring API costs, full control, complete customization
-<strong>Disadvantages</strong>: Higher development effort, infrastructure management, technical expertise required</p>
-<h3 id="hybrid-approach-recommended-for-prototyping">Hybrid Approach (Recommended for Prototyping)<a class="headerlink" href="#hybrid-approach-recommended-for-prototyping" title="Link to this section">&para;</a></h3>
-<p><strong>Phase 1 - Rapid Prototype</strong>:</p>
-<ul>
-<li>Commercial embedding API + simple vector database</li>
-<li>Focus on core functionality validation</li>
-<li>Minimal infrastructure overhead</li>
-</ul>
-<p><strong>Phase 2 - Production System</strong>:</p>
-<ul>
-<li>Evaluate commercial vs. open source based on Phase 1 learnings</li>
-<li>Implement sophisticated ranking and query processing</li>
-<li>Scale infrastructure based on usage patterns</li>
-</ul>
-<h2 id="evaluation-framework">Evaluation Framework<a class="headerlink" href="#evaluation-framework" title="Link to this section">&para;</a></h2>
-<h3 id="technical-metrics">Technical Metrics<a class="headerlink" href="#technical-metrics" title="Link to this section">&para;</a></h3>
-<p><strong>Relevance Metrics</strong>:</p>
-<ul>
-<li><strong>Precision/Recall</strong>: Classical search performance measures</li>
-<li><strong>Mean Average Precision (MAP)</strong>: Standard information retrieval metric</li>
-<li><strong>Normalized Discounted Cumulative Gain (nDCG)</strong>: Ranking quality assessment</li>
-<li><strong>Mean Reciprocal Rank (MRR)</strong>: Position of first relevant result</li>
-</ul>
-<p><strong>System Performance</strong>:</p>
-<ul>
-<li>Query response time and throughput</li>
-<li>Index size and memory requirements</li>
-<li>Computational resource utilization</li>
-<li>System availability and reliability</li>
-</ul>
-<h3 id="user-centered-evaluation">User-Centered Evaluation<a class="headerlink" href="#user-centered-evaluation" title="Link to this section">&para;</a></h3>
-<p><strong>Relevance Assessment</strong>:</p>
-<ul>
-<li>Human judgment of search result quality</li>
-<li>Task completion rates for researchers</li>
-<li>Side-by-side comparison of different approaches</li>
-<li>Feedback collection and analysis systems</li>
-</ul>
-<p><strong>Usage Analytics</strong>:</p>
-<ul>
-<li>Query patterns and frequency analysis</li>
-<li>Result click-through and usage patterns</li>
-<li>User satisfaction surveys and interviews</li>
-<li>Feature usage and adoption metrics</li>
-</ul>
-<h3 id="evaluation-data-requirements">Evaluation Data Requirements<a class="headerlink" href="#evaluation-data-requirements" title="Link to this section">&para;</a></h3>
-<p><strong>Test Query Development</strong>:</p>
-<ul>
-<li>Representative query sets across all supported types</li>
-<li>Ground truth relevance judgments</li>
-<li>Edge cases and challenging queries</li>
-<li>Multilingual query examples</li>
-</ul>
-<p><strong>Benchmark Creation</strong>:</p>
-<ul>
-<li>Gold standard query-document pairs</li>
-<li>Cross-validation datasets for model training</li>
-<li>Hold-out test sets for final evaluation</li>
-<li>Adversarial examples for robustness testing</li>
-</ul>
-<h2 id="open-decision-points-and-areas-for-exploration">Open Decision Points and Areas for Exploration<a class="headerlink" href="#open-decision-points-and-areas-for-exploration" title="Link to this section">&para;</a></h2>
-<h3 id="1-chunking-strategy-selection">1. Chunking Strategy Selection<a class="headerlink" href="#1-chunking-strategy-selection" title="Link to this section">&para;</a></h3>
-<p><strong>Decision Required</strong>: Optimal text segment size and boundaries
-<strong>Options</strong>:</p>
-<ul>
-<li>Paragraph-level with context preservation</li>
-<li>Section-based following logical boundaries</li>
-<li>Sliding window with overlap</li>
-<li>Hierarchical multi-granularity approach</li>
-</ul>
-<p><strong>Exploration Needed</strong>:</p>
-<ul>
-<li>Performance testing with different chunk sizes</li>
-<li>User feedback on result granularity preferences</li>
-<li>Context preservation vs. precision trade-offs</li>
-</ul>
-<h3 id="2-multilingual-handling-approach">2. Multilingual Handling Approach<a class="headerlink" href="#2-multilingual-handling-approach" title="Link to this section">&para;</a></h3>
-<p><strong>Decision Required</strong>: Strategy for Vietnamese-English bilingual corpus
-<strong>Options</strong>:</p>
-<ul>
-<li>Separate indices for each language</li>
-<li>Cross-lingual embeddings for unified search</li>
-<li>Translation-based query expansion</li>
-<li>Language-specific optimization</li>
-</ul>
-<p><strong>Exploration Needed</strong>:</p>
-<ul>
-<li>Cross-language retrieval effectiveness</li>
-<li>Translation quality impact on search results</li>
-<li>User preference for language-specific vs. unified results</li>
-</ul>
-<h3 id="3-metadata-schema-design">3. Metadata Schema Design<a class="headerlink" href="#3-metadata-schema-design" title="Link to this section">&para;</a></h3>
-<p><strong>Decision Required</strong>: Comprehensive metadata structure for all content types
-<strong>Critical Elements</strong>:</p>
-<ul>
-<li>Standardization across diverse source materials</li>
-<li>Balance between detail and usability</li>
-<li>Automatic vs. manual metadata generation</li>
-<li>Evolution and versioning strategy</li>
-</ul>
-<p><strong>Exploration Needed</strong>:</p>
-<ul>
-<li>Analysis of existing source material organization</li>
-<li>User requirements for filtering and faceting</li>
-<li>Automated metadata extraction capabilities</li>
-</ul>
-<h3 id="4-commercial-vs-open-source-technology-mix">4. Commercial vs. Open Source Technology Mix<a class="headerlink" href="#4-commercial-vs-open-source-technology-mix" title="Link to this section">&para;</a></h3>
-<p><strong>Decision Required</strong>: Optimal balance of commercial and open source components
-<strong>Considerations</strong>:</p>
-<ul>
-<li>Budget constraints and cost predictability</li>
-<li>Data privacy and control requirements</li>
-<li>Development timeline and resource availability</li>
-<li>Long-term maintenance and scaling needs</li>
-</ul>
-<p><strong>Exploration Needed</strong>:</p>
-<ul>
-<li>Pilot testing of different technology combinations</li>
-<li>Total cost of ownership analysis</li>
-<li>Performance and quality comparisons</li>
-<li>Risk assessment for vendor dependencies</li>
-</ul>
-<h3 id="5-advanced-feature-development-priority">5. Advanced Feature Development Priority<a class="headerlink" href="#5-advanced-feature-development-priority" title="Link to this section">&para;</a></h3>
-<p><strong>Decision Required</strong>: Roadmap for sophisticated features beyond basic retrieval
-<strong>Potential Features</strong>:</p>
-<ul>
-<li>Synthetic query answering ("What would Thay say about...")</li>
-<li>Cross-reference and citation analysis</li>
-<li>Temporal analysis of teaching evolution</li>
-<li>Thematic clustering and visualization</li>
-<li>Collaborative annotation and correction systems</li>
-</ul>
-<p><strong>Exploration Needed</strong>:</p>
-<ul>
-<li>User interviews to prioritize feature importance</li>
-<li>Technical feasibility assessment for advanced features</li>
-<li>Resource requirements for feature development</li>
-<li>Integration complexity with core search functionality</li>
-</ul>
-<h3 id="6-query-response-pair-integration-strategy">6. Query-Response Pair Integration Strategy<a class="headerlink" href="#6-query-response-pair-integration-strategy" title="Link to this section">&para;</a></h3>
-<p><strong>Decision Required</strong>: Optimal use of existing query-response pair prototype
-<strong>Options</strong>:</p>
-<ul>
-<li>Training data for custom embedding fine-tuning</li>
-<li>Evaluation benchmarks for system performance</li>
-<li>Re-ranking model training data</li>
-<li>Query expansion and reformulation examples</li>
-</ul>
-<p><strong>Exploration Needed</strong>:</p>
-<ul>
-<li>Quality assessment of existing query-response pairs</li>
-<li>Expansion strategies for broader coverage</li>
-<li>Integration methods with chosen search architecture</li>
-<li>Contribution to overall system performance</li>
-</ul>
-<h2 id="implementation-phases">Implementation Phases<a class="headerlink" href="#implementation-phases" title="Link to this section">&para;</a></h2>
-<h3 id="phase-1-foundation-development-4-6-weeks">Phase 1: Foundation Development (4-6 weeks)<a class="headerlink" href="#phase-1-foundation-development-4-6-weeks" title="Link to this section">&para;</a></h3>
-<p><strong>Objectives</strong>:</p>
-<ul>
-<li>Establish core document processing pipeline</li>
-<li>Implement basic vector search functionality</li>
-<li>Create initial metadata schema</li>
-<li>Develop evaluation framework</li>
-</ul>
-<p><strong>Deliverables</strong>:</p>
-<ul>
-<li>Document ingestion and processing system</li>
-<li>Basic search interface for internal testing</li>
-<li>Initial performance benchmarks</li>
-<li>Technology stack validation</li>
-</ul>
-<h3 id="phase-2-enhanced-retrieval-6-8-weeks">Phase 2: Enhanced Retrieval (6-8 weeks)<a class="headerlink" href="#phase-2-enhanced-retrieval-6-8-weeks" title="Link to this section">&para;</a></h3>
-<p><strong>Objectives</strong>:</p>
-<ul>
-<li>Implement sophisticated ranking and filtering</li>
-<li>Optimize query processing and understanding</li>
-<li>Expand metadata richness and utility</li>
-<li>Integrate user feedback mechanisms</li>
-</ul>
-<p><strong>Deliverables</strong>:</p>
-<ul>
-<li>Production-quality search system</li>
-<li>Comprehensive evaluation results</li>
-<li>User training materials and documentation</li>
-<li>Performance optimization and scaling plan</li>
-</ul>
-<h3 id="phase-3-advanced-features-8-12-weeks">Phase 3: Advanced Features (8-12 weeks)<a class="headerlink" href="#phase-3-advanced-features-8-12-weeks" title="Link to this section">&para;</a></h3>
-<p><strong>Objectives</strong>:</p>
-<ul>
-<li>Develop synthetic query capabilities</li>
-<li>Implement collaborative features</li>
-<li>Create analytical and visualization tools</li>
-<li>Establish long-term maintenance procedures</li>
-</ul>
-<p><strong>Deliverables</strong>:</p>
-<ul>
-<li>Feature-complete knowledge base system</li>
-<li>Advanced query processing capabilities</li>
-<li>Analytics dashboard and reporting tools</li>
-<li>Comprehensive system documentation</li>
-</ul>
-<h2 id="success-criteria">Success Criteria<a class="headerlink" href="#success-criteria" title="Link to this section">&para;</a></h2>
-<h3 id="technical-success-metrics">Technical Success Metrics<a class="headerlink" href="#technical-success-metrics" title="Link to this section">&para;</a></h3>
-<ul>
-<li>Query response time under 2 seconds for 95% of searches</li>
-<li>Relevance scores above 0.8 for top-3 results on benchmark queries</li>
-<li>System availability above 99% during operating hours</li>
-<li>Support for concurrent users without performance degradation</li>
-</ul>
-<h3 id="user-success-metrics">User Success Metrics<a class="headerlink" href="#user-success-metrics" title="Link to this section">&para;</a></h3>
-<ul>
-<li>User satisfaction scores above 4.0/5.0 in system evaluation</li>
-<li>Task completion rates above 85% for research queries</li>
-<li>Adoption rate above 90% among target user community</li>
-<li>Positive feedback on system utility and accuracy</li>
-</ul>
-<h3 id="content-success-metrics">Content Success Metrics<a class="headerlink" href="#content-success-metrics" title="Link to this section">&para;</a></h3>
-<ul>
-<li>Coverage of 95% of available source materials</li>
-<li>Metadata completeness above 90% for all indexed content</li>
-<li>Cross-language retrieval accuracy comparable to single-language performance</li>
-<li>Successful handling of all defined query types</li>
-</ul>
-<p>This design document provides a comprehensive framework for developing the TNH Scholar Knowledge Base while highlighting critical decision points that require further investigation and stakeholder input. The modular approach allows for iterative development and refinement based on user feedback and technical validation.</p>
 
 
 
