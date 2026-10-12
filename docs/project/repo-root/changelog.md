@@ -20,7 +20,95 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Consolidated KB Design and Pilot Plan** (2026-10-03)
+  - Reconciled the general KB design with the September 30 bsearch study, retaining useful query coverage, provenance, passage preparation, and evaluation considerations from the earlier design.
+  - Synchronized roadmap tasks and cross-linked the design and pilot proposal; appended an ADR-K01 update preserving the original proposal.
+  - Kept semantic/hybrid retrieval, multilingual retrieval, automated extraction, and generated answers as evidence-led subsequent experiments rather than pilot prerequisites.
+
+### Fixed
+
+- **yt-dlp Health Check Accuracy and Cost** (2026-09-26)
+  - Limited each live audio probe to 15 seconds and preserved the original yt-dlp download exception.
+  - Made the passive freshness gate fail when the most recent live check failed.
+  - Preserved age-based freshness checks for legacy records without an exit code.
+
+- **Core JSON Schema Runtime Dependency** (2026-09-26)
+  - Declared `jsonschema` directly so core-only installations can load `tnh-gen` and validate prompt contracts without manual dependency injection.
+
+- **GPT-5.6 registry support** (2026-09-21)
+  - Registered Sol, Terra, Luna, and the `gpt-5.6` alias with reasoning levels `none`, `low`, `medium`, `high`, `xhigh`, and `max`, defaulting to `medium`.
+  - Added model limits and pricing, including cache-write and long-context surcharges, using the existing request-profile implementation.
+
+- **Registry-driven OpenAI request profiles and GPT-6 Astra** (2026-09-19)
+  - Added registry-defined reasoning levels/defaults and temperature rules, replacing model-prefix checks.
+  - Added Astra with literal `max`/`xhigh` support, unsupported-temperature omission, and conservative cache-write/long-context cost estimates.
+  - Changed `max` from a `high` alias to a literal effort; `none` is literal and `auto` omits the provider field. Removed `maximum`/`off`/`disabled` aliases.
+  - Removed the unconditional CLI `high` default and honored configured reasoning defaults before registry defaults.
+  - Preserved input-error classification for invalid local requests and cache-write surcharges in cache-aware cost estimates.
+
+- **Live-Test Runtime and Provenance Repairs** (2026-09-17)
+  - Attribute payload-building failures to output, preserve stage timing across error rendering, and protect implicit configuration paths from status output.
+  - Schedule heartbeats against their actual deadline and use a four-second default for terminal and file status.
+  - Preserve input frontmatter under `source_metadata` in saved provenance schema `2.0`, preventing source identity from being assigned to generated output.
+  - Generate UTC-aware service timestamps and avoid assigning UTC to timezone-unspecified legacy timestamps.
+
+
+- **Dependency Refresh and OCR Installation** (2026-09-15)
+  - Refreshed the Poetry lockfile for the core, development, and optional dependency groups.
+  - Replaced the unrelated `fitz` distribution with PyMuPDF in the OCR extra and used its canonical `pymupdf` import.
+  - Added a PDF image round-trip regression covering the OCR extra without cloud credentials.
+
+- **Output Budget Enforcement Contract** (2026-09-15)
+  - Kept policy resolution as the single source for the output bound used in budget approval, provider dispatch, and provenance, including model-max runs.
+  - Required positive integer output limits at both provider request boundaries and removed the service-layer model-max cap omission.
+  - Added regressions for stale-low registry limits, remaining-context limits, budget rejection before dispatch, and cap preservation in regular and structured provider calls.
+  - Retained explicit failure for incompatible provider limits; no uncapped fallback is introduced.
+
 ### Added
+
+- **Researcher-Facing KB Pilot Proposal** (2026-09-30)
+  - Added a concise invitation to the search pilot, naming the four proposed Thích Nhất Hạnh books, resource preparation, researcher participation, and the motivating Bayer/Thoughtworks case study.
+  - Linked the proposal from the Research landing page; the documentation navigation includes it automatically.
+  - Refined the proposal into a technical study outline with defined retrieval conditions, reproducibility controls, evaluation criteria, and required materials.
+
+- **`tnh-gen` Runtime Status Events (TG06)** (2026-09-17)
+  - Added explicit `--status-file` JSONL events for API, quiet, and external-directory runs, with typed stages, heartbeats, trace correlation, and terminal outcomes.
+  - Replaced direct spinner orchestration with isolated Rich/file sinks and a command lifecycle that preserves primary failure origin through error rendering.
+  - Completion follows requested output writes and stdout flushing; reporting failures never replay generation or replace a known primary failure.
+
+
+- **`tnh-gen` Model-Max Output Token Mode** (2026-06-20)
+  - Added a typed output-token limit policy to the GenAI service so request token budgeting is explicit at the policy layer rather than encoded as ad hoc CLI or provider behavior
+  - Added `tnh-gen run --no-max-tokens-limit`, which resolves output tokens to the selected model's maximum safe budget for the rendered prompt while preserving concrete provider request values
+  - Updated safety and service orchestration to resolve effective output tokens against both provider model limits and remaining context window before cost estimation and provider dispatch
+  - Added focused service, safety, settings, and CLI regression coverage for capped mode, model-max mode, conflict validation, and provider request shaping
+  - Files: `src/tnh_scholar/gen_ai_service/`, `src/tnh_scholar/cli_tools/tnh_gen/`, `tests/gen_ai_service/`, `tests/cli_tools/`
+
+- **Ruff Format Baseline + Release Gate Alignment** (2026-05-26)
+  - Applied the current Ruff formatter across the repository so the codebase matches the format contract already enforced by GitHub `Main CI`
+  - Added a blocking local `format-check` target and wired `release-check` to include `ruff format --check .`, closing the gap between local release validation and remote main-branch validation
+  - Revalidated the formatted tree with `ruff check`, `ruff format --check`, and the full local release gate
+  - Files: `Makefile`, `scripts/`, `src/`, `tests/`
+
+- **Notebook Secret Hygiene Fix for YouTube Playlist Tooling** (2026-05-26)
+  - Removed a hardcoded Google API key from the tracked YouTube playlist notebook and switched the notebook to load `YOUTUBE_API_KEY` from the environment or a local `.env` file
+  - Added `.env` ignore rules so replacement local secrets can stay out of version control
+  - Files: `notebooks/video_processing/youtube_playlist_process.ipynb`, `.gitignore`
+
+- **Dependency Security Refresh for Release Prep** (2026-05-25)
+  - Updated `GitPython` to `3.1.50` to clear the current newline-injection and path-traversal advisories affecting repository config and reference APIs
+  - Refreshed the locked transitive graph for `urllib3`, `idna`, `mistune`, and `pymdown-extensions` to the currently patched lines accepted by the Poetry resolver
+  - Revalidated the release candidate state with the full local release gate after the dependency changes
+  - Files: `pyproject.toml`, `poetry.lock`
+
+- **Journal Facsimile Docs + `audio-transcribe` Release Hardening** (2026-05-25)
+  - Added a new post-pipeline facsimile note, linked the journal case study to the new facsimile artifact set, and added local Typst/web helper assets and scripts for the experimental page-7 facsimile workflow
+  - Updated user-facing project vision/community copy to clarify corpus scope beyond Thích Nhất Hạnh-only materials
+  - Fixed `audio-transcribe` validation so `--no_transcribe` fails cleanly instead of crashing, aligned config defaults with the CLI surface, and added a regression test for the download-only validation path
+  - Cleaned release-doc quality blockers by excluding PDFs from `codespell`, fixing a small set of documentation typos, and normalizing Ruff import ordering in maintained Python modules
+  - Files: `docs/user-guide/`, `docs/project/vision.md`, `docs/index.md`, `docs/community/parallax-overview.md`, `experiments/`, `scripts/build_typst_facsimile_assets.sh`, `scripts/render_typst_facsimile.sh`, `src/tnh_scholar/cli_tools/audio_transcribe/`, `tests/cli_tools/test_audio_transcribe.py`, `Makefile`, `.codespell-ignore.txt`
 
 - **`tnh-gen` Golden Artifact Policy Normalization** (2026-05-03)
   - Standardized the live-golden directories on a single policy: tracked source fixtures and operator docs, untracked generated run artifacts

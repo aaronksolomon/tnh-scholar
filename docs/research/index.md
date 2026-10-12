@@ -18,7 +18,7 @@ Key starting points:
 
 - [Proposed Pilot Study: Concept-Based Search and Retrieval for TNH Scholar](/research/kb-pilot-proposal.md) — research hypothesis, required materials, controlled comparison, and evaluation criteria.
 
-- [TNH Scholar Knowledge Base: Design Document](/research/kb-design-document.md)
+- [TNH Scholar Knowledge Base: Design Document](/research/kb-design-document.md) — current pilot scope, provenance, retrieval design, evaluation gates, and subsequent experiments.
 - [Summary Report on Metadata Extraction, Source Parsing, and Model Training](/research/metadata-summary-report.md)
 - [Preliminary Feasibility Study](/research/preliminary-feasibility-study.md)
 - [Structural-Informed Adaptive Processing (SIAP) Methodology](/research/siap-methodology.md)

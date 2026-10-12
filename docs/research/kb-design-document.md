@@ -1,476 +1,166 @@
 ---
 title: "TNH Scholar Knowledge Base: Design Document"
-description: "Design document for the TNH Scholar knowledge base and semantic search stack."
-owner: ""
-author: ""
+description: "Current concept-aware KB design, beginning with a controlled bsearch retrieval pilot and evidence-led extensions."
+owner: "aaronksolomon"
+author: "Codex"
 status: current
 created: "2025-06-10"
+updated: "2026-10-03"
 ---
 # TNH Scholar Knowledge Base: Design Document
 
-Design document for the TNH Scholar knowledge base and semantic search stack.
+The TNH Scholar Knowledge Base supports scholarly discovery of source passages across Thích Nhất Hạnh’s teachings and classical Buddhist texts. Its immediate design is a controlled retrieval study, followed by extensions justified by measured usefulness and review effort.
 
-## Project Overview
+## Design status and scope
 
-The TNH Scholar Knowledge Base project aims to create an AI-driven searchable knowledge base for the works of Thich Nhat Hanh, enabling researchers to perform semantic searches across a comprehensive corpus of teachings. The system will support complex queries ranging from thematic exploration to perspective synthesis while maintaining scholarly accuracy and source attribution.
+This document consolidates the earlier semantic-search design with the September 30 [pilot study proposal](/research/kb-pilot-proposal.md) and the [concept-extraction review](/architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17.md). The proposal describes researcher participation and the experiment; this document describes the supporting design and subsequent decision gates. Both describe proposed work, not an implemented KB.
 
-### Core Objectives
+The first study uses **bsearch**, a small reviewed concept table, one shared language, and passage-first results. It compares direct search, general AI query expansion, and reviewed concept expansion on the same collection. The starting targets are **8–12 concepts, 10–15 source units, and 12–15 authentic questions**. The earlier roadmap’s 20–30 concepts, 30–50 sources, and 30 questions are possible expansion sizes after the first study, not initial requirements.
 
-- **Primary Goal**: Enable semantic search across Thich Nhat Hanh's complete works with accurate source attribution
-- **Target Users**: Monastics and senior community members for research purposes (internal use only)
-- **Output Focus**: Concrete passage references rather than synthesized responses (initially)
-- **Technical Approach**: Leverage off-the-shelf systems and technologies where possible
+[ADR-K01](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md) remains proposed. Its original managed/vector-first and English-first assumptions are historical proposals; its October 3 addendum points to this revised pilot direction. Embedding providers, storage, multilingual strategy, and production architecture remain open.
 
-### Query Types to Support
+## Objectives and research questions
 
-The system must handle diverse query patterns:
+The primary users are monastics, researchers, and senior community members. The first output is a useful passage with an accurate citation and a path back to its source. Generated answers are a later experiment.
 
-1. **Factual Retrieval**: "Where is the best description of touching the earth practice?"
-2. **Thematic Exploration**: "Find all works referencing climate change and transcending separate self"
-3. **Perspective Analysis**: "What does Thay say about soldiers, police officers, and nonviolence?"
-4. **Qualitative Assessment**: "What were some of Thay's most difficult/profound/loving moments?"
-5. **Cross-Domain Inquiry**: "Does Thay ever talk about physics and dharma teachings?"
-6. **Synthetic Analysis** (future): "What would Thay say about the Israel Palestine conflict today?"
+The study asks whether reviewed terminology and relationships discover useful passages missed by direct search or general AI expansion, and whether the improvement justifies curation and operational effort. It also tests whether expansion creates misleading connections across traditions, translations, or historical contexts.
 
-## Content Scope and Processing
+Select questions across these use cases, scaled to the small collection:
 
-### Source Materials
+| Query type | Example or test purpose |
+| --- | --- |
+| Factual or practice lookup | Find a description of touching the earth practice. |
+| Thematic exploration | Find passages connecting environmental responsibility and non-separate self. |
+| Perspective analysis | Find teachings concerning nonviolence and public service. |
+| Qualitative inquiry | Find passages a researcher considers especially difficult or compassionate; record the researcher’s criteria. |
+| Cross-domain inquiry | Find connections between physics and Dharma teachings where the collection supports them. |
+| Ambiguity and historical distinction | Distinguish shared terminology with different meanings or later interpretations. |
+| Insufficient evidence | Include at least one question the selected collection cannot answer. |
 
-- **Text Sources**: Hundreds of texts in Vietnamese and English (predominant languages)
-- **Audio/Video Sources**: Potentially thousands of sources requiring transcription
-- **Processing Approach**: All sources converted to digital text with unified metadata structure
-- **Transcription Capability**: Robust transcription tools already available in the project
+These examples guide question selection; the study does not claim every topic is represented. Speculative attribution such as “What would Thay say about a present-day conflict?” is outside the pilot.
 
-### Content Processing Pipeline
+## Collection preparation and provenance
 
-#### 1. Text Normalization
+### Source selection
 
-- Consistent formatting, punctuation, and character handling
-- Language-specific processing for Vietnamese and English
-- Special character and encoding standardization
+The proposed TNH books are *Chanting from the Heart*, *Fragrant Palm Leaves*, *The Miracle of Mindfulness*, and *The Heart of the Buddha’s Teaching*. Selected talks may supplement them. Compare selected sections with a small classical collection already supported by bsearch, initially SuttaCentral or CBETA as appropriate to the questions and shared language. Confirm available files, permissions, editions, translations, and bsearch ingestion capabilities before freezing the collection.
 
-#### 2. Transcription Integration
+A source unit is a selected book section, talk, or discourse; it is distinct from a retrieval passage. Include potentially misleading material so improved recall can be assessed alongside false matches. Preserve canonical identifiers for classical texts. EPUB is preferred, PDF acceptable, and talks may use UTF-8 text with paragraphs and available timestamps.
 
-- Audio/video content processed through existing transcription tools
-- Quality assurance for transcribed content
-- Timestamping preservation for multimedia sources
+### Processing and metadata
 
-#### 3. Metadata Enrichment
+Retain original files alongside extracted text. Normalize encoding and formatting while keeping a traceable mapping back to source locations. Review OCR or transcription errors that could alter meaning. Existing processing tools may assist preparation, but complete audio/video ingestion is not required for the study.
 
-Development of consistent metadata schema including:
+Reuse the [journal pipeline’s provenance approach](/user-guide/journal-pipeline-case-study.md). Distinguish source metadata from processing metadata and derived interpretations.
 
-**Bibliographic Information**:
+| Record | Minimum information |
+| --- | --- |
+| Source | Stable ID, title, author/speaker, language, known date, edition, translator, canonical identifier where applicable, source location, and use restrictions. |
+| Passage | Stable ID, source ID and version, section position, page/canonical locator/timestamp as available, boundaries, and original text location. |
+| Processing | Extraction or transcription method/version, processing time, normalization steps, and review status. |
+| Translation | Original/translation links and attribution when available; explicitly record missing links. |
+| Concept annotation | Concept ID, evidence span or locator, relationship type and direction, rationale, provenance, and review status. |
+| Experiment | Collection and concept-table versions, passage policy, retrieval settings, expansion limits, actual queries, ranked passage IDs, and judgments. |
 
-- Source identification and publication details
-- Date, author/speaker, and publication context
-- Original format and processing information
+Do not invent missing dates, translators, or page numbers. Use the available locator and identify its limitations. Generated annotations and model confidence must not be presented as verified bibliographic facts or expert judgments.
 
-**Content Classification**:
+### Passage boundaries
 
-- Topics, themes, and spiritual practices
-- Target audiences and contexts
-- Relationship to other works in corpus
+Start with a documented paragraph or logical-section policy, retaining parent-section context and reliable source navigation. Record how long passages, boundary splits, and any overlap are handled. Use **identical boundaries across all three study conditions**.
 
-**Structural Metadata**:
+If preparation shows that boundaries regularly remove necessary context, compare paragraph-based and section-based passage policies on development questions before freezing the main experiment. Keep this comparison separate from the query-expansion comparison. Sliding windows and hierarchical retrieval remain options if observed boundary failures justify them.
 
-- Position within larger works
-- Section and subsection organization
-- Cross-references and citations
+## Reviewed conceptual model
 
-**Technical Metadata**:
+Use a small reviewed table rather than requiring a graph database or automated concept extraction. Each concept has a stable ID, preferred label, alternative names, scoped meaning, tradition or historical context, source evidence, and review status. Preserve the distinction between general Buddhist concepts and Plum Village teachings/practices.
 
-- Processing timestamps and methods
-- Language identification and translation links
-- Quality scores and confidence measures
+Relationships must identify their type, direction, scope, evidence, and rationale. Distinguish equivalents and translation variants from broader/narrower concepts, related teachings, and practice expressions. Related concepts must not automatically become synonyms. A later Plum Village interpretation must not be projected onto a classical source as though it were the source’s own terminology.
 
-#### 4. Text Segmentation Strategy
+Reviewed equivalent terms may expand ordinary queries within their documented scope. Related ideas or interpretive connections require an explicit request for connections or a separately labeled search. Retain original-query retrieval for uncatalogued material. Record which concept and relationship caused each added term so gains and errors can be explained.
 
-**Key Decision Point**: Determining optimal chunk size for retrieval
+The first study uses one shared language. The data model should accommodate multilingual labels and original/translation links, but multilingual retrieval is a separately evaluated extension.
 
-Options for consideration:
+## Retrieval design
 
-- **Paragraph-level chunks**: Balance between context and precision
-- **Section-based chunks**: Preserving logical content boundaries  
-- **Sliding window approaches**: Overlapping chunks to prevent context loss
-- **Hierarchical chunking**: Multiple granularities (section → paragraph → sentence)
+### Controlled comparison
 
-## Search and Retrieval Architecture
+All conditions use the same frozen collection, passage boundaries, metadata filters, ranking settings, and result limit.
 
-### Vector Embeddings: Technical Foundation
+| Condition | Input | Purpose |
+| --- | --- | --- |
+| Direct search | Original question. | Baseline without expansion. |
+| General AI expansion | Original question plus AI-suggested terms; no access to the reviewed table or study collection. | Measure general reformulation. |
+| Concept-based expansion | Original question plus terms from the reviewed table. | Measure the added value of curated knowledge. |
 
-Vector embeddings convert text into high-dimensional numerical representations where semantically similar content occupies nearby positions in vector space. This enables semantic search beyond keyword matching.
+Use matching limits on added terms and search calls for both expansion conditions. Document how searches are combined, duplicate passages removed, and results ordered; use the same combination policy for both expansion conditions. Log actual expansions and results. General AI expansion may already contain Buddhist knowledge, so the comparison measures the table’s added value rather than knowledge versus no knowledge.
 
-**Key Concepts**:
+Keyword search is the initial baseline. If semantic retrieval is already available, evaluate it as a separate comparison while keeping the query-expansion conditions comparable. Do not introduce new ranking stages or model choices in only one expansion condition.
 
-- Text converted to vectors (lists of numbers) representing meaning
-- Similar concepts have mathematically similar vectors
-- Search performed by finding nearest neighbors in vector space
-- Typical dimensions: 768-3072 numbers per text segment
+### Evolution toward hybrid retrieval
 
-**Example Flow**:
+The older design’s distinction remains useful: keyword retrieval tests exact terminology, semantic retrieval tests paraphrases and conceptual similarity, and hybrid retrieval combines their candidates. Metadata filtering and source context apply across these approaches.
 
-```plaintext
-Text: "The practice of mindful breathing"
-→ Embedding Model → [0.016, -0.028, 0.044, ..., 0.037]
-```
+Introduce semantic or hybrid retrieval only when the baseline reveals missed relevant passages that justify another experiment. Reranking, query rewriting, intent routing, and hierarchical retrieval are possible later interventions; each should address an observed failure and be compared against the established baseline.
 
-### Embedding Model Options
+### Results and evidence sufficiency
 
-#### Commercial Solutions
+Return passages, source citations, surrounding context, and clearly labeled expansion reasons. Provide a basic path to original text or file during the study; an integrated scan/translation/concept viewer can follow later.
 
-- **OpenAI text-embedding-3-large**: 3,072 dimensions, high quality, API-based
-- **Cohere Embed**: Multilingual support, commercial API
-- **Azure AI Embeddings**: Enterprise integration capabilities
+Evaluate whether returned passages actually support the researcher’s question. Empty results and top-ranked weak matches must remain visible in the report. Retrieval scores alone do not establish sufficient evidence, and no match in this small collection does not establish absence from TNH’s complete works.
 
-#### Open Source Solutions
+## Evaluation and decision gates
 
-- **Sentence-BERT (SBERT)**: Wide model variety, multilingual options available
-- **E5 Models**: Microsoft's efficient embeddings with strong performance
-- **BGE Models**: Multilingual embeddings with strong cross-language capabilities
-- **Multilingual Models**: Specialized for Vietnamese-English bilingual corpus
+Reserve several questions from tuning. Before held-out evaluation, freeze the collection, concept table, boundaries, prompts/models, retrieval settings, and budgets. Agree with researchers on what constitutes a worthwhile gain and unacceptable regressions before seeing held-out results.
 
-**Key Decision Point**: Commercial vs. Open Source Embedding Strategy
+Pool the top ten passages from each condition for each question, remove duplicates, and grade each passage once with retrieval origin hidden: **not useful, partly useful, or directly useful**. Define the rubric with researchers, record disagreements, and distinguish interpretive usefulness from explicit source support. Review existing query-response pairs as possible question/evidence candidates; do not treat generated pairs as ground truth without source checks.
 
-- Commercial: Higher quality, faster development, ongoing costs
-- Open Source: Full control, customization potential, infrastructure overhead
+| Measure | Pilot use |
+| --- | --- |
+| Top-five usefulness | Report partly and directly useful passages separately, using the same rubric across conditions. |
+| First useful result | Report first-useful rank or reciprocal rank, including failures to retrieve a useful passage. |
+| Gains and regressions | Show discoveries, false matches, and losses by question and query type. |
+| Citation and context accuracy | Check source identity, locator resolution, quotation fidelity, and whether surrounding context changes the interpretation. |
+| Insufficient evidence | Assess behavior on unanswerable questions and misleading matches; record collection limitations. |
+| Operational effort | Report latency, API cost, preparation/curation effort, and researcher review effort. |
 
-### Search Paradigms
+The pooled judgments support comparisons within the study, not absolute corpus-wide recall. More comprehensive recall measurement or graded nDCG can follow if the question set and judgments justify them. Report results per question alongside aggregates; a small pilot cannot establish broad statistical or production claims.
 
-#### 1. Vector-Based Semantic Search
+Proceed with concept expansion only if its discoveries justify effort without unacceptable misleading associations or citation errors. If general AI expansion performs similarly, simplify the design or identify where curation provides a defensible contextual benefit. If expansion harms retrieval, narrow relations or retain direct search. Treat citation defects and misleading equivalences as failures to repair and re-evaluate, not gains masked by an aggregate relevance score.
 
-- **Approach**: Dense vector embeddings with nearest neighbor search
-- **Strengths**: Captures conceptual relationships, handles paraphrasing
-- **Limitations**: Computationally expensive, may lose precision on technical terms
-- **Best For**: Thematic queries, conceptual exploration
+## Implementation sequence
 
-#### 2. Keyword-Based Search  
+1. **Prepare and review.** Confirm bsearch capabilities and source availability; select units, concepts, and questions; define provenance and passage policies; agree on judgments and decision criteria.
+2. **Run the controlled study.** Establish direct retrieval, implement bounded expansion conditions, freeze inputs, collect blinded judgments, and publish a reproducible comparative report with representative discoveries and errors.
+3. **Choose the next experiment.** Based on failures and researcher needs, consider a larger collection, semantic/hybrid retrieval, a bilingual subset, or improved source navigation. Keep experiment variables separable.
+4. **Develop assistance after retrieval evidence.** Consider automated extraction, evidence-linked answers, and a fuller viewer only when their prerequisites and evaluation are defined.
 
-- **Approach**: Traditional BM25/TF-IDF algorithms with boolean operators
-- **Strengths**: Precise terminology matching, computationally efficient
-- **Limitations**: Misses semantic relationships, language-dependent
-- **Best For**: Exact phrase matching, specific terminology
+No fixed production schedule, monthly infrastructure budget, corpus-coverage percentage, availability target, or adoption target is established by this pilot. Measure actual effort and cost before committing to them.
 
-#### 3. Hybrid Search Systems
+## Subsequent experiments and architectural boundaries
 
-- **Approach**: Combining vector and keyword search with result fusion
-- **Strengths**: Balances precision and recall, handles diverse query types
-- **Limitations**: Complex implementation, requires careful tuning
-- **Best For**: Production systems serving varied query patterns
+### Automated concept extraction
 
-**Recommended Approach**: Start with pure vector search, evolve to hybrid system based on user feedback and query patterns.
+The [September 17 live test](/architecture/knowledge-base/notes/concept-extraction-live-review-2026-09-17.md) found reversed relationships and altered quotations, including loss of a crucial negation. It motivates validation work; it does not establish an accepted production concept map.
 
-### Storage and Infrastructure Options
+A later extraction pipeline should use typed outputs against reviewed vocabularies, preserve evidence spans and negation, validate IDs and predicates, evaluate relationship direction, and propose novel terms separately. Detectable failures should trigger bounded repair or an explicit review queue. Measure unassisted acceptance and correction rates before scaling. Expert review curates vocabularies and assesses sampled/flagged results; schema validity alone cannot establish doctrinal correctness. Per-document ad hoc agent cleanup must not become a required processing stage.
 
-#### Vector Database Solutions
+### Multilingual retrieval and answer generation
 
-**Specialized Vector Databases**:
+Use a small Vietnamese–English subset to compare cross-language discovery and translation effects after the shared-language study. Preserve language, translation attribution, scoped equivalents, and direct access to originals. Unified multilingual embeddings, separate indexes, and translation-based expansion are options to evaluate rather than settled choices.
 
-- **Pinecone**: Fully managed, simple API, commercial service
-- **Weaviate**: Open-source, schema support, self-hosted or cloud
-- **Milvus**: High-performance, enterprise features, complex setup
-- **Qdrant**: Fast performance, good filtering, moderate complexity
-- **Chroma**: Simple open-source, ideal for prototypes
-- **PGVector**: PostgreSQL extension, leverages existing database skills
+Evidence-linked answers require demonstrated passage retrieval, source-linked claims, explicit insufficient-evidence behavior, and evaluation against passages and originals. Speculative attribution, fine-tuning, temporal analytics, visualization, and collaborative annotation remain future research rather than pilot deliverables.
 
-**Traditional Search with Vector Extensions**:
+### Infrastructure and service boundaries
 
-- **Elasticsearch**: Mature ecosystem, hybrid search capabilities, complex configuration
-- **Solr**: Similar to Elasticsearch, vector plugins available
+Reuse bsearch and existing preparation tools wherever feasible. Select storage and embedding infrastructure from measured needs: integration effort, metadata filtering, reproducible indexing, exportability, source restrictions, latency, and total operational cost. Managed and open-source approaches remain alternatives; neither managed-to-open migration nor Supabase is predetermined. Detailed provider comparisons and pricing should be refreshed when selecting a stack.
 
-#### Infrastructure Decision Matrix
+New GenAI services must follow [ADR-OS01](/architecture/object-service/adr/adr-os01-object-service-architecture-v3.md): typed Pydantic domain models, Protocol boundaries, service orchestration, and provider adapters with bidirectional mappers and isolated transports. Use Settings → Config → Params → Policy, config at initialization, and params per call. Keep provider selection independent of concept semantics and scholarly judgments.
 
-| Solution | Setup Complexity | Performance | Cost Model | Best For |
-|----------|------------------|-------------|------------|----------|
-| Pinecone | Low | High | Usage-based | Rapid prototyping |
-| Elasticsearch | Medium | High | Infrastructure | Hybrid search needs |
-| Chroma | Low | Medium | Self-hosted | Initial development |
-| Weaviate | Medium | High | Flexible | Production deployment |
+## Open decisions
 
-### Advanced Retrieval Techniques
-
-#### Passage Ranking and Re-ranking
-
-Methods to improve relevance of returned results:
-
-- **Cross-Encoders**: Direct query-passage relevance scoring
-- **LLM-based Reranking**: Large language models for relevance judgment  
-- **Learning to Rank**: Machine learning approaches using multiple features
-- **Multi-stage Retrieval**: Initial retrieval followed by sophisticated ranking
-
-#### Query Processing Enhancement
-
-- **Query Expansion**: Adding related terms to improve recall
-- **Query Rewriting**: Reformulating queries for better matching
-- **Retrieval Augmented Generation for Queries**: LLM-generated query improvements
-- **Intent Classification**: Understanding query type to optimize search strategy
-
-## Implementation Pathways
-
-### Fully Commercial Pathway
-
-**Components**:
-
-- Embedding: OpenAI text-embedding-3-large API
-- Storage: Pinecone or Azure Cognitive Search
-- Query Processing: OpenAI API for query understanding
-- Infrastructure: Cloud providers (AWS, Azure, GCP)
-
-**Cost Estimate**: $500-2000/month depending on usage
-**Timeline**: 2-4 weeks for initial prototype
-**Advantages**: Rapid development, managed infrastructure, high-quality embeddings
-**Disadvantages**: Recurring costs, vendor dependency, data privacy considerations
-
-### Fully Open Source Pathway
-
-**Components**:
-
-- Embedding: SBERT, E5, or BGE models (self-hosted)
-- Storage: Elasticsearch, Qdrant, or Milvus (self-hosted)
-- Query Processing: Open source rerankers, self-hosted LLMs
-- Infrastructure: Self-managed servers
-
-**Cost Estimate**: Primarily hardware and operational overhead
-**Timeline**: 6-12 weeks for initial prototype  
-**Advantages**: No recurring API costs, full control, complete customization
-**Disadvantages**: Higher development effort, infrastructure management, technical expertise required
-
-### Hybrid Approach (Recommended for Prototyping)
-
-**Phase 1 - Rapid Prototype**:
-
-- Commercial embedding API + simple vector database
-- Focus on core functionality validation
-- Minimal infrastructure overhead
-
-**Phase 2 - Production System**:
-
-- Evaluate commercial vs. open source based on Phase 1 learnings
-- Implement sophisticated ranking and query processing
-- Scale infrastructure based on usage patterns
-
-## Evaluation Framework
-
-### Technical Metrics
-
-**Relevance Metrics**:
-
-- **Precision/Recall**: Classical search performance measures
-- **Mean Average Precision (MAP)**: Standard information retrieval metric
-- **Normalized Discounted Cumulative Gain (nDCG)**: Ranking quality assessment
-- **Mean Reciprocal Rank (MRR)**: Position of first relevant result
-
-**System Performance**:
-
-- Query response time and throughput
-- Index size and memory requirements
-- Computational resource utilization
-- System availability and reliability
-
-### User-Centered Evaluation
-
-**Relevance Assessment**:
-
-- Human judgment of search result quality
-- Task completion rates for researchers
-- Side-by-side comparison of different approaches
-- Feedback collection and analysis systems
-
-**Usage Analytics**:
-
-- Query patterns and frequency analysis
-- Result click-through and usage patterns
-- User satisfaction surveys and interviews
-- Feature usage and adoption metrics
-
-### Evaluation Data Requirements
-
-**Test Query Development**:
-
-- Representative query sets across all supported types
-- Ground truth relevance judgments
-- Edge cases and challenging queries
-- Multilingual query examples
-
-**Benchmark Creation**:
-
-- Gold standard query-document pairs
-- Cross-validation datasets for model training
-- Hold-out test sets for final evaluation
-- Adversarial examples for robustness testing
-
-## Open Decision Points and Areas for Exploration
-
-### 1. Chunking Strategy Selection
-
-**Decision Required**: Optimal text segment size and boundaries
-**Options**:
-
-- Paragraph-level with context preservation
-- Section-based following logical boundaries
-- Sliding window with overlap
-- Hierarchical multi-granularity approach
-
-**Exploration Needed**:
-
-- Performance testing with different chunk sizes
-- User feedback on result granularity preferences
-- Context preservation vs. precision trade-offs
-
-### 2. Multilingual Handling Approach
-
-**Decision Required**: Strategy for Vietnamese-English bilingual corpus
-**Options**:
-
-- Separate indices for each language
-- Cross-lingual embeddings for unified search
-- Translation-based query expansion
-- Language-specific optimization
-
-**Exploration Needed**:
-
-- Cross-language retrieval effectiveness
-- Translation quality impact on search results
-- User preference for language-specific vs. unified results
-
-### 3. Metadata Schema Design
-
-**Decision Required**: Comprehensive metadata structure for all content types
-**Critical Elements**:
-
-- Standardization across diverse source materials
-- Balance between detail and usability
-- Automatic vs. manual metadata generation
-- Evolution and versioning strategy
-
-**Exploration Needed**:
-
-- Analysis of existing source material organization
-- User requirements for filtering and faceting
-- Automated metadata extraction capabilities
-
-### 4. Commercial vs. Open Source Technology Mix
-
-**Decision Required**: Optimal balance of commercial and open source components
-**Considerations**:
-
-- Budget constraints and cost predictability
-- Data privacy and control requirements
-- Development timeline and resource availability
-- Long-term maintenance and scaling needs
-
-**Exploration Needed**:
-
-- Pilot testing of different technology combinations
-- Total cost of ownership analysis
-- Performance and quality comparisons
-- Risk assessment for vendor dependencies
-
-### 5. Advanced Feature Development Priority
-
-**Decision Required**: Roadmap for sophisticated features beyond basic retrieval
-**Potential Features**:
-
-- Synthetic query answering ("What would Thay say about...")
-- Cross-reference and citation analysis
-- Temporal analysis of teaching evolution
-- Thematic clustering and visualization
-- Collaborative annotation and correction systems
-
-**Exploration Needed**:
-
-- User interviews to prioritize feature importance
-- Technical feasibility assessment for advanced features
-- Resource requirements for feature development
-- Integration complexity with core search functionality
-
-### 6. Query-Response Pair Integration Strategy
-
-**Decision Required**: Optimal use of existing query-response pair prototype
-**Options**:
-
-- Training data for custom embedding fine-tuning
-- Evaluation benchmarks for system performance
-- Re-ranking model training data
-- Query expansion and reformulation examples
-
-**Exploration Needed**:
-
-- Quality assessment of existing query-response pairs
-- Expansion strategies for broader coverage
-- Integration methods with chosen search architecture
-- Contribution to overall system performance
-
-## Implementation Phases
-
-### Phase 1: Foundation Development (4-6 weeks)
-
-**Objectives**:
-
-- Establish core document processing pipeline
-- Implement basic vector search functionality
-- Create initial metadata schema
-- Develop evaluation framework
-
-**Deliverables**:
-
-- Document ingestion and processing system
-- Basic search interface for internal testing
-- Initial performance benchmarks
-- Technology stack validation
-
-### Phase 2: Enhanced Retrieval (6-8 weeks)
-
-**Objectives**:
-
-- Implement sophisticated ranking and filtering
-- Optimize query processing and understanding
-- Expand metadata richness and utility
-- Integrate user feedback mechanisms
-
-**Deliverables**:
-
-- Production-quality search system
-- Comprehensive evaluation results
-- User training materials and documentation
-- Performance optimization and scaling plan
-
-### Phase 3: Advanced Features (8-12 weeks)
-
-**Objectives**:
-
-- Develop synthetic query capabilities
-- Implement collaborative features
-- Create analytical and visualization tools
-- Establish long-term maintenance procedures
-
-**Deliverables**:
-
-- Feature-complete knowledge base system
-- Advanced query processing capabilities
-- Analytics dashboard and reporting tools
-- Comprehensive system documentation
-
-## Success Criteria
-
-### Technical Success Metrics
-
-- Query response time under 2 seconds for 95% of searches
-- Relevance scores above 0.8 for top-3 results on benchmark queries
-- System availability above 99% during operating hours
-- Support for concurrent users without performance degradation
-
-### User Success Metrics  
-
-- User satisfaction scores above 4.0/5.0 in system evaluation
-- Task completion rates above 85% for research queries
-- Adoption rate above 90% among target user community
-- Positive feedback on system utility and accuracy
-
-### Content Success Metrics
-
-- Coverage of 95% of available source materials
-- Metadata completeness above 90% for all indexed content
-- Cross-language retrieval accuracy comparable to single-language performance
-- Successful handling of all defined query types
-
-This design document provides a comprehensive framework for developing the TNH Scholar Knowledge Base while highlighting critical decision points that require further investigation and stakeholder input. The modular approach allows for iterative development and refinement based on user feedback and technical validation.
+- Which source editions, classical corpus, shared language, and authentic questions are available?
+- Which bsearch ingestion, filtering, ranking, and export capabilities can be reused without new infrastructure?
+- Which passage policy preserves necessary context while keeping the comparison manageable?
+- Which scoped equivalences and relationship types are reviewed strongly enough for expansion?
+- What gain and regression criteria do researchers accept relative to curation effort?
+- Which observed limitation warrants the next experiment, and what evidence would justify a larger KB?

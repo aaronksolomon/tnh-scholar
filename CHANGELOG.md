@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Consolidated KB Design and Pilot Plan** (2026-10-03)
+  - Reconciled the general KB design with the September 30 bsearch study, retaining useful query coverage, provenance, passage preparation, and evaluation considerations from the earlier design.
+  - Synchronized roadmap tasks and cross-linked the design and pilot proposal; appended an ADR-K01 update preserving the original proposal.
+  - Kept semantic/hybrid retrieval, multilingual retrieval, automated extraction, and generated answers as evidence-led subsequent experiments rather than pilot prerequisites.
+
 ### Fixed
 
 - **yt-dlp Health Check Accuracy and Cost** (2026-09-26)

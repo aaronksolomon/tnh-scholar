@@ -62,3 +62,11 @@ links generated concept data and records the need for general Buddhist and
 Plum Village vocabularies with source-grounded mappings. Concept collection must
 include evaluated validation and bounded repair within the processing system,
 without depending on an additional agent's manual post-processing for each article.
+
+## Addendum 2026-10-03: Consolidated Retrieval Pilot Direction
+
+The [current KB design](/research/kb-design-document.md) and [pilot study proposal](/research/kb-pilot-proposal.md) refine the original learning prototype into a controlled bsearch study. Start with 8–12 reviewed concepts, 10–15 source units from TNH and classical Buddhist material, and 12–15 authentic questions in one shared language. Compare direct keyword search, bounded general AI expansion, and reviewed concept expansion with identical passages, filters, ranking, and matching expansion budgets.
+
+Preserve source/translation attribution and stable passage locators. Freeze the collection and concept table before held-out evaluation; use blinded pooled judgments to report useful-source discoveries, regressions, citation fidelity, and operational/curation effort. Passage-boundary comparisons occur separately on development questions. Related teachings and later interpretations must not silently become equivalent terms.
+
+This pilot direction replaces the original vector-first managed-stack assumption for the initial study. Provider/storage selection and a managed-to-open migration are not decided. Semantic/hybrid retrieval, multilingual retrieval, automated extraction with the September 17 validation requirements, and generated answers are evidence-led subsequent experiments. The ADR remains proposed; this addendum records the updated plan without claiming implementation or production validation.

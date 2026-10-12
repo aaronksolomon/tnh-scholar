@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-09-15"
+updated: "2026-10-03"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-09-15 (release/status reconciliation; conductor completion and concept-aware knowledge-base roadmap)
+> **Last Updated**: 2026-10-03 (KB plan consolidated with the September 30 controlled study; other status entries retain their stated verification dates)
 > **Version**: 0.4.2 (Alpha)
 > **Status**: Active Development — v0.4.2 released; conductor bootstrap usable; runtime status next, then bounded conductor completion and knowledge-base pilot
 >
@@ -28,20 +28,20 @@ Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
 **Release Status**: ✅ **v0.4.2 released 2026-05-26**. Latest verified `main` commit is `42a3ecbc` (2026-09-15, post-PR #79 merge log). Release preparation for `0.4.0` is historical, not the next milestone.
 
-**Knowledge Base Status**: **PRELIMINARY DESIGN; IMPLEMENTATION PENDING** — ADR-K01 is proposed. Concept modeling, source metadata, chunking, multilingual retrieval, and storage choices need a focused pilot decision.
+**Knowledge Base Status**: **PILOT STUDY PROPOSED; IMPLEMENTATION PENDING** — the [pilot proposal](/research/kb-pilot-proposal.md) and [current KB design](/research/kb-design-document.md) define a controlled bsearch retrieval study. ADR-K01 remains proposed; infrastructure and later extensions depend on pilot evidence.
 
 ### Agreed High-Level Roadmap (2026-09-15)
 
-This sequence takes precedence over the older priority groupings below. Pilot sizes are starting targets to refine with corpus availability and reviewer input.
+This sequence takes precedence over the older priority groupings below. KB items 4–6 were refined on 2026-10-03 to match the September 30 study proposal. Pilot sizes are starting targets to refine with corpus availability and reviewer input.
 
 1. **Status reconciliation and PR #78 — merge complete.** The budget-enforcement fix merged on 2026-09-15 after user approval. Roadmap, Sourcery authorization, and merge-log updates are included in the follow-up housekeeping commit.
 2. **Runtime status for `tnh-gen` — implemented on feature branch; review/merge next.** Follow [ADR-TG06](/architecture/tnh-gen/adr/adr-tg06-runtime-status-events.md): typed stages, explicit JSONL event files usable with `--api`, heartbeats, and terminal outcomes that preserve failure origin. Validate agent-driven use outside the repository. PR #79 dependency refresh is merged.
 3. **Complete the conductor's bounded review/revision loop.** Implement → review → evaluate evidence → at most one revision → validate → present a clear result for human review. Follow [ADR-OA06.1](/architecture/agent-orchestration/adr/adr-oa06.1-evaluator-directed-revision-loop.md); verify runner compatibility and failure diagnostics. The maintained entry path still uses unsupported `EVALUATE` and `GATE` implementations. Commit/push/PR automation follows dependable execution and review.
-4. **Build a concept-aware knowledge-base pilot.** Start with approximately 20–30 reviewed concepts, 30–50 documents or talks, and 30 representative questions. Connect a Buddhist conceptual foundation to Plum Village teachings/practices and source passages. Reuse the journal pipeline's provenance approach.
-5. **Evaluate retrieval with and without concept expansion.** Compare relevant-source discovery, citation accuracy, multilingual behavior, and handling of insufficient evidence. Use expert judgments to decide which conceptual relationships and retrieval stages help.
-6. **Add a source viewer.** Show the retrieved passage alongside original text or scan, translation, and conceptual connections. Build on the JVB viewer work; confirm the interface choice with pilot users.
+4. **Prepare the controlled concept-aware retrieval study.** Follow the [pilot proposal](/research/kb-pilot-proposal.md) and [KB design](/research/kb-design-document.md): 8–12 reviewed concepts, 10–15 source units, and 12–15 authentic questions in one shared language. Build on bsearch; preserve source identity, locators, translation attribution, and processing provenance. Cover varied question types and unanswerable cases.
+5. **Compare direct search, general AI expansion, and reviewed concept expansion.** Freeze passages, filters, ranking, and matched expansion budgets; reserve questions from tuning. Use blinded pooled judgments to report top-five usefulness, first-useful rank, gains/regressions, citation fidelity, and cost/curation/review effort. Agree on decision criteria before held-out evaluation.
+6. **Choose extensions from the results.** Provide source navigation during the study. Consider a larger collection, semantic/hybrid search, multilingual retrieval, or an integrated viewer when evidence warrants it. Automated extraction and generated answers are subsequent experiments. The earlier 20–30 concepts, 30–50 sources, and 30 questions remain possible later expansion sizes.
 
-**Design reference**: [Bayer's reliable LLM application case study](https://martinfowler.com/articles/reliable-llm-bayer.html). Adapt metadata-aware hybrid retrieval, evidence sufficiency checks, source citations, and expert evaluation to the TNH corpus. Choose infrastructure after a measurable pilot.
+**Design reference**: [Bayer's reliable LLM application case study](https://martinfowler.com/articles/reliable-llm-bayer.html). Retain source traceability, evidence sufficiency, and expert evaluation; test metadata-aware hybrid retrieval as a later intervention if observed retrieval failures justify it. Choose infrastructure after a measurable pilot.
 
 ### Open GitHub Work (verified 2026-09-15)
 
@@ -699,19 +699,21 @@ docs/architecture/jvb-viewer/adr/
 
 #### 🚧 Knowledge Base Implementation
 
-- **Status**: PRELIMINARY DESIGN; IMPLEMENTATION PENDING
+- **Status**: PILOT STUDY PROPOSED; IMPLEMENTATION PENDING
 - **Priority**: NEXT PRODUCT MILESTONE after bounded conductor completion
-- **ADR**: [ADR-K01](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md) remains proposed; its storage, chunking, metadata, and multilingual assumptions need a pilot-specific follow-up decision
+- **Design**: [KB design](/research/kb-design-document.md) and [pilot proposal](/research/kb-pilot-proposal.md); [ADR-K01](/architecture/knowledge-base/adr/adr-k01-kb-architecture-strategy.md) remains proposed and records the refined direction in its October 3 addendum
 - **Tasks**:
-  - [ ] Define reviewed Buddhist concepts and a connected Plum Village teaching/practice layer, with stable identifiers, multilingual labels, scoped definitions, and source-backed relationships
-  - [ ] Distinguish translation variants, broader concepts, related teachings, and practice expressions; preserve tradition and historical context
-  - [ ] Select a small corpus and representative questions with scholars/practitioners (initial targets: 20–30 concepts, 30–50 sources, 30 questions)
-  - [ ] Define passage metadata and provenance: source identity, author/speaker, date, language, page/timestamp, original/translation links, and review status
-  - [ ] Implement ingestion and keyword/semantic retrieval with metadata filtering; choose storage against pilot needs rather than assuming Supabase is already decided
-  - [ ] Add bounded concept expansion while retaining direct retrieval for uncatalogued material
-  - [ ] Compare retrieval with and without expansion; assess relevant-source discovery, citation accuracy, multilingual behavior, and insufficient-evidence handling
-  - [ ] Add evidence-linked answers and source navigation once retrieval quality is demonstrated
-- **Product Follow-Up**: Connect source passages, scans/original text, translations, and concepts in the viewer; coordinate with the JVB viewer backlog
+  - [ ] Confirm bsearch ingestion, filtering, ranking, and export capabilities and available source editions/permissions
+  - [ ] Select 10–15 TNH/classical source units, 8–12 concepts, and 12–15 authentic questions with researchers in one shared language; include misleading material, varied query types, and unanswerable questions
+  - [ ] Review concept IDs, scoped definitions, aliases, tradition/historical context, and source-backed relationships; distinguish equivalents from broader/narrower concepts, related teachings, and later practice interpretations
+  - [ ] Define source/passage IDs, locators, original/translation links, attribution, processing provenance, and review status
+  - [ ] Establish a paragraph or logical-section passage policy; compare boundaries on development questions if needed, separately from expansion
+  - [ ] Implement direct keyword retrieval plus bounded general AI and reviewed concept expansion with common result combination, filters, ranking, and matched budgets; retain retrieval for uncatalogued material
+  - [ ] Reserve questions from tuning; freeze collection, concept table, prompts/models, and retrieval settings; record actual queries and ranked results
+  - [ ] Agree on usefulness rubric and gain/regression criteria before held-out evaluation; conduct blinded pooled judgments and check source locators, quotation fidelity, and insufficient-evidence cases
+  - [ ] Report discoveries/regressions, top-five usefulness, first-useful rank, latency, cost, preparation/curation/review effort, and next-experiment recommendation
+- **Subsequent Experiments**: Larger collection, semantic/hybrid retrieval, Vietnamese–English subset, automated extraction with bounded validation/repair and measured acceptance rates, and evidence-linked answers; choose storage from demonstrated needs rather than assuming a provider
+- **Product Follow-Up**: Basic source navigation during the study; an integrated passage/original/scan/translation/concept viewer can build on the JVB viewer after researcher feedback
 
 #### 🚧 Configuration & Data Layout
 
