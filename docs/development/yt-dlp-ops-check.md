@@ -5,7 +5,7 @@ owner: ""
 author: ""
 status: current
 created: "2026-02-01"
-updated: "2026-09-26"
+updated: "2026-10-17"
 ---
 # yt-dlp Ops Check
 
@@ -31,6 +31,15 @@ make health-check
 The live check retrieves metadata and a 15-second audio sample from each configured URL.
 
 ## Follow-up Improvements
+
+The 2026-10-17 local validation used yt-dlp 2026.8.19, Node 22.13.0,
+configured `ejs:github` remote components, and the existing ffmpeg path.
+All five configured URLs passed metadata retrieval and 15-second audio
+download probes. The older 2026.6.9 release had failed all five audio probes.
+One initial probe with the updated release still returned HTTP 403; an
+unchanged-download retry and the subsequent full run succeeded. This is a
+verified working runtime snapshot, not a guarantee against future CDN failures.
+No player-client, cookie, or format-selection workaround was added.
 
 - Replace the plain URL list with typed fixture records describing purpose, expected capabilities, language, and last verification date.
 - Separate metadata, transcript, and audio outcomes so one failure identifies the affected capability.
