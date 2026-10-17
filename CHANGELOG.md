@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **AnyIO Security Update** (2026-10-16)
+  - Updated the locked AnyIO dependency from 4.14.0 to 4.15.1, including fixes for TLS hostname validation, subprocess supplementary groups, and process-worker stderr deadlocks.
+  - Updated typing-extensions to 4.16.0 as required by AnyIO; retained existing dependency declarations and parent constraints.
+
 - **yt-dlp Health Check Accuracy and Cost** (2026-09-26)
   - Limited each live audio probe to 15 seconds and preserved the original yt-dlp download exception.
   - Made the passive freshness gate fail when the most recent live check failed.
