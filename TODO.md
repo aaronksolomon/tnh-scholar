@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-10-03"
+updated: "2026-10-16"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-10-03 (KB plan consolidated with the September 30 controlled study; other status entries retain their stated verification dates)
+> **Last Updated**: 2026-10-16 (security triage inventory added; other status entries retain their stated verification dates)
 > **Version**: 0.4.2 (Alpha)
 > **Status**: Active Development — v0.4.2 released; conductor bootstrap usable; runtime status next, then bounded conductor completion and knowledge-base pilot
 >
@@ -44,6 +44,8 @@ This sequence takes precedence over the older priority groupings below. KB items
 **Design reference**: [Bayer's reliable LLM application case study](https://martinfowler.com/articles/reliable-llm-bayer.html). Retain source traceability, evidence sufficiency, and expert evaluation; test metadata-aware hybrid retrieval as a later intervention if observed retrieval failures justify it. Choose infrastructure after a measurable pilot.
 
 ### Open GitHub Work (verified 2026-09-15)
+
+- **Security remediation (2026-10-16)**: [Alert inventory and proposed work slices](/development/security-remediation-triage-2026-10-16.md) account for 197 open records / 131 advisories. Initial exposure and scanning review is recorded; next implementation slice is the targeted AnyIO update. NLTK advisory reconciliation, legacy support decisions, and the CI setuptools constraint remain explicit follow-ups. The full staged TODO sequence is retained on `docs/kb-design-consolidation` pending integration.
 
 - [#55: agent/script ergonomics](https://github.com/aaronksolomon/tnh-scholar/issues/55) — explicit runtime controls and predictable machine output for delegated `tnh-gen` use.
 - [#22: concurrency hardening](https://github.com/aaronksolomon/tnh-scholar/issues/22) — deferred thread safety and rate limiting.

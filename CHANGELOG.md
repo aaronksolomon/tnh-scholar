@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Security Alert Triage** (2026-10-16)
+  - Recorded all 197 open dependency alert records as 131 advisory groups, initial critical-path exposure, scanning coverage, and proposed remediation slices.
+
 - **Consolidated KB Design and Pilot Plan** (2026-10-03)
   - Reconciled the general KB design with the September 30 bsearch study, retaining useful query coverage, provenance, passage preparation, and evaluation considerations from the earlier design.
   - Synchronized roadmap tasks and cross-linked the design and pilot proposal; appended an ADR-K01 update preserving the original proposal.
