@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-10-03"
+updated: "2026-10-17"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-10-03 (KB plan consolidated with the September 30 controlled study; other status entries retain their stated verification dates)
+> **Last Updated**: 2026-10-17 (yt-dlp operational status refreshed; other status entries retain their stated verification dates)
 > **Version**: 0.4.2 (Alpha)
 > **Status**: Active Development — v0.4.2 released; conductor bootstrap usable; runtime status next, then bounded conductor completion and knowledge-base pilot
 >
@@ -373,6 +373,7 @@ docs/architecture/jvb-viewer/adr/
 #### 🔮 Full-Coverage yt-dlp Test Suite + Monthly Ops Trigger
 
 - **Status**: IN PROGRESS
+- **Operational update (2026-10-17)**: yt-dlp 2026.8.19 passed metadata and 15-second audio probes for all five validation URLs with the existing Node/ejs runtime configuration. Refreshed the root minimum/lock and standalone audio pin. An earlier upgraded run had one transient 403; no format/client workaround was established as necessary. Broader capability coverage and automated maintenance remain pending.
 - **Priority**: HIGH (external dependency instability)
 - **Goal**: Add full coverage for all yt-dlp usage modules (transcript, audio, metadata, video download), then run a scheduled monthly ops test to surface breakage early.
 - **Scope (Code)**:

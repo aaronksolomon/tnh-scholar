@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **YouTube Downloader Refresh** (2026-10-17)
+  - Updated yt-dlp from 2026.6.9 to 2026.8.19 and set that release as the minimum root dependency.
+  - Aligned the standalone audio-transcribe environment with the same release, replacing its older 2026.3.17 pin.
+
 - **AnyIO Security Update** (2026-10-16)
   - Updated the locked AnyIO dependency from 4.14.0 to 4.15.1, including fixes for TLS hostname validation, subprocess supplementary groups, and process-worker stderr deadlocks.
   - Updated typing-extensions to 4.16.0 as required by AnyIO; retained existing dependency declarations and parent constraints.
