@@ -17,6 +17,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Security Remediation Roadmap** (2026-10-16)
+  - Added a staged TODO sequence for alert triage, dependency remediation, legacy environment decisions, and closure verification.
+
+- **Shared CLI Rate-Limit Recommendation** (2026-10-13)
+  - Drafted proposed ADR-TG07 for coordinating independent `tnh-gen` processes through atomic SQLite reservations and learned provider quota headers, extending the existing ADR-A15 recommendation.
+
+- **Sr. Dang Nghiem Transcription Workflow** (2026-10-13)
+  - Added a retained two-stage transcript workflow: whitespace-only paragraph formatting, then individual paragraph grammar correction through `tnh-gen`.
+  - Added workflow prompts, per-paragraph comparisons and diagnostics, and concurrent processing with configurable shared request pacing and token reservations.
+  - Kept raw transcripts and generated artifacts outside the repository; documented YouTube title/date naming and the download fallback.
+
 - **Consolidated KB Design and Pilot Plan** (2026-10-03)
   - Reconciled the general KB design with the September 30 bsearch study, retaining useful query coverage, provenance, passage preparation, and evaluation considerations from the earlier design.
   - Synchronized roadmap tasks and cross-linked the design and pilot proposal; appended an ADR-K01 update preserving the original proposal.

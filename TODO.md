@@ -5,13 +5,13 @@ owner: ""
 author: ""
 status: processing
 created: "2025-01-20"
-updated: "2026-10-03"
+updated: "2026-10-16"
 ---
 # TNH Scholar TODO List
 
 Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.
 
-> **Last Updated**: 2026-10-03 (KB plan consolidated with the September 30 controlled study; other status entries retain their stated verification dates)
+> **Last Updated**: 2026-10-16 (added the security remediation sequence; other status entries retain their stated verification dates)
 > **Version**: 0.4.2 (Alpha)
 > **Status**: Active Development — v0.4.2 released; conductor bootstrap usable; runtime status next, then bounded conductor completion and knowledge-base pilot
 >
@@ -42,6 +42,62 @@ This sequence takes precedence over the older priority groupings below. KB items
 6. **Choose extensions from the results.** Provide source navigation during the study. Consider a larger collection, semantic/hybrid search, multilingual retrieval, or an integrated viewer when evidence warrants it. Automated extraction and generated answers are subsequent experiments. The earlier 20–30 concepts, 30–50 sources, and 30 questions remain possible later expansion sizes.
 
 **Design reference**: [Bayer's reliable LLM application case study](https://martinfowler.com/articles/reliable-llm-bayer.html). Retain source traceability, evidence sufficiency, and expert evaluation; test metadata-aware hybrid retrieval as a later intervention if observed retrieval failures justify it. Choose infrastructure after a measurable pilot.
+
+### Security Remediation Sequence (planned 2026-10-16)
+
+Treat this as a bounded maintenance sequence alongside the feature roadmap. Prioritize reachable critical/high findings once triage establishes exposure. Earlier completed Dependabot stages below are historical; they do not establish current security status.
+
+- **Baseline**: GitHub queries on 2026-10-15 returned 197 open Dependabot alerts covering 131 distinct advisories: 9 critical, 119 high, 61 medium, and 8 low. Code-scanning and secret-scanning queries returned no open alerts; scanning coverage still needs verification. Refresh this snapshot before choosing upgrade versions.
+- **Tracking**: [Dependabot alerts](https://github.com/aaronksolomon/tnh-scholar/security/dependabot). Deduplicate by advisory and package, retaining every affected manifest and alert URL. Alert counts are not counts of independently exploitable defects.
+- **Status**: PLANNED — initial read-only assessment complete; detailed inventory and remediation pending.
+
+#### Security Slice A — Verify Inventory and Exposure
+
+- [ ] Refresh GitHub alerts against current default-branch manifests and record the assessed commit/date.
+- [ ] Produce a compact triage inventory: advisory, severity, affected manifests/versions, dependency parent/group/extra, reachable behavior, patched version or mitigation, and proposed slice.
+- [ ] Assess NLTK tokenizer downloads/loaders, GitPython repository/config operations, and AnyIO TLS usage first. Distinguish confirmed usage from exploit reachability that still needs investigation.
+- [ ] Verify code-scanning/secret-scanning configuration and latest successful runs; record coverage gaps separately from vulnerability findings.
+- [ ] Confirm which standalone environments remain supported and check the CI `setuptools<82` constraint against current build requirements.
+- **Done when**: critical/high findings have a proposed disposition and owner/work slice; unresolved exposure questions and advisories without patches are explicit. This slice changes no dependencies and dismisses no alerts.
+
+#### Security Slice B — Critical Python Dependency Paths
+
+- [ ] Select compatible patched releases for AnyIO and GitPython using the refreshed inventory; inspect transitive constraints before changing pins.
+- [ ] Upgrade NLTK and review resource-loading behavior together. The initial snapshot includes an advisory without a listed patch; record a concrete mitigation or a human-reviewed, time-bounded exception for any remaining exposure.
+- [ ] Split AnyIO, GitPython, and NLTK into separate PRs when their compatibility or behavioral changes can be reviewed independently.
+- **Scope**: `pyproject.toml`, `poetry.lock`, affected runtime paths, focused regressions, and changelog. Avoid unrelated dependency refreshes.
+- **Done when**: resolved versions are verified against all relevant advisories, affected paths pass focused tests, and remaining findings have explicit dispositions.
+
+#### Security Slice C — Remaining Python Runtime and Optional Extras
+
+- [ ] Address Pillow, urllib3, cryptography, Tornado, and other remaining packages in groups determined by the dependency graph and exposure.
+- [ ] Validate core installation and each affected optional extra, including OCR/image processing and GUI/network behavior where relevant.
+- **Done when**: affected supported install profiles resolve and pass relevant checks; upgrade conflicts are recorded rather than bypassed.
+
+#### Security Slice D — Development and Documentation Tooling
+
+- [ ] Address aiohttp, Mistune, virtualenv, documentation tooling, and remaining development dependencies after verifying their actual dependency groups and execution contexts.
+- [ ] Resolve the setuptools advisory and CI compatibility cap together; prove clean installation before removing or replacing the constraint.
+- **Done when**: clean development/CI installation and affected tooling checks pass, including `make docs-build` for documentation dependency changes.
+
+#### Security Slice E — VS Code Extension Dependencies
+
+- [ ] Update vulnerable npm dependency chains and reassess existing overrides; retain compatible manifest/lockfile changes together.
+- [ ] Run extension compilation and unit tests, plus integration checks when affected behavior warrants them.
+- **Done when**: a fresh npm audit accounts for remaining findings and the extension checks pass.
+
+#### Security Slice F — Standalone and Legacy Environments
+
+- [ ] Address audio-transcribe standalone yt-dlp pins independently of the root Poetry environment.
+- [ ] Decide whether to maintain or retire the exploratory `pattern_share` environment before investing in LangChain compatibility work. Retirement requires removing the supported install path and updating its documentation; excluding a manifest from scanning is not remediation.
+- **Done when**: retained environments install and pass relevant smoke checks, or retirement is explicitly agreed and documented.
+
+#### Security Slice G — Closure and Recurrence Prevention
+
+- [ ] Re-query GitHub alerts after each merged slice and confirm expected closures; investigate persistent alerts rather than assuming a lockfile update resolved them.
+- [ ] Add appropriately grouped scheduled dependency updates and dependency audits for supported Python/npm profiles; address scanning coverage gaps from Slice A.
+- [ ] Record remaining accepted risks with rationale, owner, mitigation, and review date; keep unresolved findings visible.
+- **Per remediation PR**: follow branch preflight/diff-size guidance, commit manifest and lockfile changes together, update `CHANGELOG.md`, run affected-file checks plus `make pr-check` and `make ci-check`, and use `full-ci` when broader GitHub validation is warranted. Merge decisions remain human-owned; append `AGENTLOG.md` after substantive merges.
 
 ### Open GitHub Work (verified 2026-09-15)
 
@@ -487,6 +543,8 @@ docs/architecture/jvb-viewer/adr/
     - **Impact**: Affects message representation throughout GenAIService
 
 #### ⏸️ GenAIService Thread Safety and Rate Limiting (ADR-A15)
+
+- **Cross-invocation recommendation**: [ADR-TG07: Shared Provider Rate Limits](/architecture/tnh-gen/adr/adr-tg07-shared-provider-rate-limits.md) proposes atomic local reservations across CLI processes, provider-header discovery, and retry coordination. Proposed; existing ADR-A15 implementation remains paused.
 
 - **Status**: DEFERRED - Not needed for VS Code integration (process isolation)
 - **Priority**: MEDIUM (revisit when building Python batch pipelines)
