@@ -803,3 +803,38 @@ The maintainer explicitly approved merging PR #84 after its legacy-record review
 - [PR #84](https://github.com/aaronksolomon/tnh-scholar/pull/84)
 
 ---
+
+## [2026-10-17 08:51 PDT] AnyIO Security Slice Merge
+
+**Agent**: Codex
+**Chat Reference**: PR #85
+**Human Collaborator**: phapman
+
+### Context
+The maintainer authorized merging the reviewed AnyIO security update before investigating the failing live yt-dlp health check. PR #85 merged as `313f48a0`.
+
+### Key Decisions
+- **Bounded dependency slice**: Keep the AnyIO/typing-extensions update separate from downloader repair.
+- **Retain branches**: No branch deletion was requested or performed.
+
+### Work Completed
+- [x] Merged reviewed head `df585f93`; confirmed GitHub's merged state.
+- [x] Recorded successful PR validation, CodeQL, and Sourcery checks with no unresolved review findings.
+
+### Discoveries & Insights
+- **Validation**: Local suite passed 771 tests with 3 skips; GitHub full-test was skipped. The aggregate local CI gate remained blocked by live downloader failures.
+- **Downloader**: The October 16 live check reached metadata retrieval but all five ranged audio downloads failed with HTTP 403 from ffmpeg.
+
+### Files Modified/Created
+- `AGENTLOG.md`: Post-merge continuity entry carried with the downloader follow-up.
+
+### Next Steps
+- [ ] Validate a targeted yt-dlp upgrade, then repair any remaining runtime/download issue.
+
+### Open Questions
+- Whether updating the outdated downloader alone restores ranged audio access.
+
+### References
+- [PR #85](https://github.com/aaronksolomon/tnh-scholar/pull/85)
+
+---
