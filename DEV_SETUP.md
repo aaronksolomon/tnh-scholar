@@ -322,7 +322,7 @@ poetry add <package>
 poetry update <package>
 ```
 
-- **Special case: yt-dlp** — This package is intentionally unpinned (`>=2025.1.15` in `pyproject.toml`) and should always use the latest version. Run `make build-all` to ensure yt-dlp is updated along with Poetry and docs.
+- **Special case: yt-dlp** — This package is intentionally unpinned (`>=2026.8.19` in `pyproject.toml`) and should always use the latest version. Run `make build-all` to ensure yt-dlp is updated along with Poetry and docs.
 
 - Avoid global packages. Use Poetry environments or `pipx` for global tools.
 
