@@ -16751,7 +16751,7 @@
 <h1 id="tnh-scholar-todo-list">TNH Scholar TODO List<a class="headerlink" href="#tnh-scholar-todo-list" title="Link to this section">&para;</a></h1>
 <p>Roadmap tracking the highest-priority TNH Scholar tasks and release blockers.</p>
 <blockquote>
-<p><strong>Last Updated</strong>: 2026-10-03 (KB plan consolidated with the September 30 controlled study; other status entries retain their stated verification dates)
+<p><strong>Last Updated</strong>: 2026-10-17 (yt-dlp operational status refreshed; other status entries retain their stated verification dates)
 <strong>Version</strong>: 0.4.2 (Alpha)
 <strong>Status</strong>: Active Development — v0.4.2 released; conductor bootstrap usable; runtime status next, then bounded conductor completion and knowledge-base pilot</p>
 <p><strong>Style Note</strong>: Tasks use descriptive headers (not numbered items) to avoid renumbering churn when reorganizing.
@@ -17127,6 +17127,7 @@ Use <code>####</code> (h4) for task headers within priority sections.</p>
 <h4 id="full-coverage-yt-dlp-test-suite-monthly-ops-trigger">🔮 Full-Coverage yt-dlp Test Suite + Monthly Ops Trigger<a class="headerlink" href="#full-coverage-yt-dlp-test-suite-monthly-ops-trigger" title="Link to this section">&para;</a></h4>
 <ul class="task-list">
 <li><strong>Status</strong>: IN PROGRESS</li>
+<li><strong>Operational update (2026-10-17)</strong>: yt-dlp 2026.8.19 passed metadata and 15-second audio probes for all five validation URLs with the existing Node/ejs runtime configuration. Refreshed the root minimum/lock and standalone audio pin. An earlier upgraded run had one transient 403; no format/client workaround was established as necessary. Broader capability coverage and automated maintenance remain pending.</li>
 <li><strong>Priority</strong>: HIGH (external dependency instability)</li>
 <li><strong>Goal</strong>: Add full coverage for all yt-dlp usage modules (transcript, audio, metadata, video download), then run a scheduled monthly ops test to surface breakage early.</li>
 <li><strong>Scope (Code)</strong>:</li>

@@ -15394,6 +15394,14 @@
 <p><code>make health-check</code> explicitly runs the live yt-dlp ops suite now and updates the status file. Thresholds can be configured with <code>TNH_HEALTH_WARN_AFTER_DAYS</code>, <code>TNH_HEALTH_FAIL_AFTER_DAYS</code>, and <code>TNH_YT_DLP_RECOMMENDED_INTERVAL_DAYS</code>.
 The live check retrieves metadata and a 15-second audio sample from each configured URL.</p>
 <h2 id="follow-up-improvements">Follow-up Improvements<a class="headerlink" href="#follow-up-improvements" title="Link to this section">&para;</a></h2>
+<p>The 2026-10-17 local validation used yt-dlp 2026.8.19, Node 22.13.0,
+configured <code>ejs:github</code> remote components, and the existing ffmpeg path.
+All five configured URLs passed metadata retrieval and 15-second audio
+download probes. The older 2026.6.9 release had failed all five audio probes.
+One initial probe with the updated release still returned HTTP 403; an
+unchanged-download retry and the subsequent full run succeeded. This is a
+verified working runtime snapshot, not a guarantee against future CDN failures.
+No player-client, cookie, or format-selection workaround was added.</p>
 <ul>
 <li>Replace the plain URL list with typed fixture records describing purpose, expected capabilities, language, and last verification date.</li>
 <li>Separate metadata, transcript, and audio outcomes so one failure identifies the affected capability.</li>
