@@ -838,3 +838,39 @@ The maintainer authorized merging the reviewed AnyIO security update before inve
 - [PR #85](https://github.com/aaronksolomon/tnh-scholar/pull/85)
 
 ---
+
+## [2026-10-19 08:42 PDT] yt-dlp Live-Check Repair Merge
+
+**Agent**: Codex
+**Chat Reference**: PR #86
+**Human Collaborator**: phapman
+
+### Context
+The maintainer authorized merging PR #86 if GitHub review was clean. The reviewed downloader refresh merged as `fd85ab10` after correcting the sole review finding.
+
+### Key Decisions
+- **Review correction**: Aligned the obsolete yt-dlp minimum in `DEV_SETUP.md` with `pyproject.toml`; resolved the addressed Sourcery thread.
+- **Validation judgment**: Prior full GitHub tests and local CI passed. The one-line documentation follow-up passed strict docs validation and the latest Sourcery check; fresh GitHub validation jobs were still queued at merge. No fresh full-CI success is claimed.
+
+### Work Completed
+- [x] Pushed documentation correction `f879fdd9` and merged that exact head with maintainer authorization.
+- [x] Confirmed GitHub's merged state and retained existing branches.
+
+### Discoveries & Insights
+- **Runtime evidence**: yt-dlp 2026.8.19 passed all five metadata/15-second audio probes with the existing Node/ejs configuration. One earlier transient 403 cleared on an unchanged retry.
+- **Validation**: Local full CI passed 771 tests with 3 skips; 28 focused tests and strict docs validation passed. GitHub full-test passed on the implementation head before the documentation correction.
+
+### Files Modified/Created
+- `DEV_SETUP.md`: Review correction merged with PR #86.
+- `AGENTLOG.md`: Required post-merge continuity entry.
+
+### Next Steps
+- [ ] Check post-merge GitHub validation and resume remaining dependency-security slices.
+
+### Open Questions
+- Future YouTube/CDN behavior remains an external dependency; the successful live run is a tested runtime snapshot.
+
+### References
+- [PR #86](https://github.com/aaronksolomon/tnh-scholar/pull/86)
+
+---
