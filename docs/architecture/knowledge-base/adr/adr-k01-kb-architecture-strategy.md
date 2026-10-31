@@ -70,3 +70,7 @@ The [current KB design](/research/kb-design-document.md) and [pilot study propos
 Preserve source/translation attribution and stable passage locators. Freeze the collection and concept table before held-out evaluation; use blinded pooled judgments to report useful-source discoveries, regressions, citation fidelity, and operational/curation effort. Passage-boundary comparisons occur separately on development questions. Related teachings and later interpretations must not silently become equivalent terms.
 
 This pilot direction replaces the original vector-first managed-stack assumption for the initial study. Provider/storage selection and a managed-to-open migration are not decided. Semantic/hybrid retrieval, multilingual retrieval, automated extraction with the September 17 validation requirements, and generated answers are evidence-led subsequent experiments. The ADR remains proposed; this addendum records the updated plan without claiming implementation or production validation.
+
+## Addendum 2026-10-25: Historical Research Reference Repair
+
+The original references to `docs/research/tnh-scholar-knowledge-vector-search.md` now resolve to a [compatibility entry point](/research/tnh-scholar-knowledge-vector-search.md) linking to the [current KB design](/research/kb-design-document.md) and [pilot study proposal](/research/kb-pilot-proposal.md). Original line-number citations describe the earlier research revision and do not apply to these current documents. The historical Context and Rationale remain unchanged.

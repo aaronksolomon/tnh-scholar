@@ -4,7 +4,7 @@ description: "Table of contents for architecture/ai-text-processing/adr"
 owner: ""
 author: ""
 status: current
-created: "2026-05-12"
+created: "2026-10-31"
 auto_generated: true
 ---
 

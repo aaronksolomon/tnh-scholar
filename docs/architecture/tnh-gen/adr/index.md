@@ -4,7 +4,7 @@ description: "Table of contents for architecture/tnh-gen/adr"
 owner: ""
 author: ""
 status: current
-created: "2026-05-12"
+created: "2026-10-31"
 auto_generated: true
 ---
 
@@ -29,6 +29,10 @@ auto_generated: true
 **[ADR-TG04.2: Structured JSON Provenance Sidecars](adr-tg04.2-structured-json-provenance-sidecars.md)** - Clarify how tnh-gen preserves first-class provenance for structured JSON outputs without violating JSON artifact purity.
 
 **[ADR-TG04.3: Structured Output Trust Boundaries and Control Surfaces](adr-tg04.3-structured-output-trust-boundaries.md)** - Define how tnh-gen and downstream consumers should treat model-produced structured data, distinguish artifact contracts from control contracts, and prefer deterministic control outside AI-generated payloads.
+
+**[ADR-TG05: Run Progress Reporting](adr-tg05-run-progress-reporting.md)** - Spinner and elapsed-time status on stderr during tnh-gen run invocations.
+
+**[ADR-TG06: Runtime Status Events for tnh-gen run](adr-tg06-runtime-status-events.md)** - Typed application events for terminal feedback and agent-readable runtime status, with explicit failure attribution.
 
 ---
 

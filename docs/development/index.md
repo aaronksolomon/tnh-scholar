@@ -4,7 +4,7 @@ description: "Table of contents for development"
 owner: ""
 author: ""
 status: current
-created: "2026-05-12"
+created: "2026-10-31"
 auto_generated: true
 ---
 
@@ -29,6 +29,8 @@ auto_generated: true
 **[Human-AI Software Engineering Principles](human-ai-software-engineering-principles.md)** - This document presents the **Human-AI Software Engineering Principles**, a comprehensive framework that builds upon established **software engineering, architecture, and design principles** from human-only teams and extends them to optimize collaboration between humans and AI agents. Central to this framework is the clear distinction between the **Design Phase** and the **Coding Phase**, each with distinct goals, modes, and workflows. It also addresses challenges such as **context window limitations** and maintaining alignment despite session resets. In addition to general principles, this framework incorporates concrete documentation and planning strategies designed to support long-term, sustainable human-AI collaboration.
 
 **[Improvements / Initial structure](improvements-initial-structure.md)** - Initial high-level view of the TNH Scholar ecosystem.
+
+**[Model Request Profiles](model-request-profiles.md)** - Maintain model reasoning and sampling compatibility through the provider registry.
 
 **[Development Documentation](overview.md)** - Landing page for contributor guides, design principles, and engineering practices for TNH Scholar.
 

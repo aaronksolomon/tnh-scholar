@@ -5,7 +5,7 @@ owner: "aaronksolomon"
 author: "Codex"
 status: current
 created: "2025-06-10"
-updated: "2026-10-03"
+updated: "2026-10-25"
 ---
 # TNH Scholar Knowledge Base: Design Document
 
@@ -43,7 +43,7 @@ These examples guide question selection; the study does not claim every topic is
 
 ### Source selection
 
-The proposed TNH books are *Chanting from the Heart*, *Fragrant Palm Leaves*, *The Miracle of Mindfulness*, and *The Heart of the Buddha’s Teaching*. Selected talks may supplement them. Compare selected sections with a small classical collection already supported by bsearch, initially SuttaCentral or CBETA as appropriate to the questions and shared language. Confirm available files, permissions, editions, translations, and bsearch ingestion capabilities before freezing the collection.
+Suggested TNH books are *Chanting from the Heart*, *Fragrant Palm Leaves*, *The Miracle of Mindfulness*, and *The Heart of the Buddha’s Teaching*. This is a proposed starting list; the final book list will include up to eight titles, selected at researcher request. Selected talks may supplement them. Compare selected sections with a small classical collection already supported by bsearch, initially SuttaCentral or CBETA as appropriate to the questions and shared language. Confirm available files, permissions, editions, translations, and bsearch ingestion capabilities before freezing the collection.
 
 A source unit is a selected book section, talk, or discourse; it is distinct from a retrieval passage. Include potentially misleading material so improved recall can be assessed alongside false matches. Preserve canonical identifiers for classical texts. EPUB is preferred, PDF acceptable, and talks may use UTF-8 text with paragraphs and available timestamps.
 

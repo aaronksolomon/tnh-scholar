@@ -5,7 +5,7 @@ owner: "aaronksolomon"
 author: "Codex"
 status: proposed
 created: "2026-09-30"
-updated: "2026-10-03"
+updated: "2026-10-25"
 ---
 # Proposed Pilot Study: Concept-Based Search and Retrieval for TNH Scholar
 
@@ -21,7 +21,7 @@ The pilot builds on **bsearch**. Its conceptual model is a small table of concep
 
 ## Required materials to begin pilot
 
-The proposed TNH collection comprises:
+The final TNH book list will include up to eight titles, selected at researcher request. The following titles are suggested as a proposed starting list:
 
 - *Chanting from the Heart*
 - *Fragrant Palm Leaves*
